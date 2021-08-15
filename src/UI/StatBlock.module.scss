@@ -1,0 +1,20 @@
+.Stats {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.Stat {
+  flex-grow: 1;
+  text-align: center;
+
+  .StatName,
+  .StatValue {
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  .StatName {
+    margin-right: 8px;
+  }
+}
