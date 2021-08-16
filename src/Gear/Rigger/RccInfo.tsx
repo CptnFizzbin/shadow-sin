@@ -28,11 +28,7 @@ export const RccInfo: FC<RccInfoProps> = ({
       </Box>
 
       <Box sx={{ padding: 1 }}>
-        <StatBlock>
-          <Stat name="Device Rating" value={rcc.deviceRating} />
-          <Stat name="Data Processing" value={rcc.dataProcessing} />
-          <Stat name="Firewall" value={rcc.firewall} />
-        </StatBlock>
+        <RccStatBlock rcc={rcc} />
       </Box>
 
       <Box sx={{ padding: 1 }}>
@@ -40,5 +36,21 @@ export const RccInfo: FC<RccInfoProps> = ({
         <AutosoftsList autosofts={autosofts} />
       </Box>
     </Paper>
+  )
+}
+
+interface RccStatBlockProps {
+  rcc: RccData
+}
+
+export const RccStatBlock: FC<RccStatBlockProps> = ({
+  rcc,
+}) => {
+  return (
+    <StatBlock>
+      <Stat name="Device Rating" value={rcc.deviceRating} />
+      <Stat name="Data Processing" value={rcc.dataProcessing} />
+      <Stat name="Firewall" value={rcc.firewall} />
+    </StatBlock>
   )
 }

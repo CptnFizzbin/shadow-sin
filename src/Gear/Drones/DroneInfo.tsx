@@ -4,10 +4,12 @@ import { FC } from 'react'
 
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
 import { Stat, StatBlock } from '../../UI/StatBlock'
-import { useAttachedGear, useGearOfType } from '../GearContext'
+import { useAttachedGear, useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
 import { NestedGear } from '../GearInfo'
+import { RccData } from '../Rigger/RccData'
+import { RccStatBlock } from '../Rigger/RccInfo'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { HandlingStat, SeatStat } from '../Vehicles/Stats'
@@ -27,6 +29,8 @@ export const DroneInfo: FC<DroneInfoProps> = ({
 
   const autosofts = useGearOfType<AutosoftData>(GearType.autosoft)
     .filter(gear => gear.attachedTo === drone.id || drone.slavedAutosofts?.includes(gear.id))
+
+  const rcc = useGear<RccData>(drone.slavedTo)
 
   const physicalMax = Math.ceil(drone.body / 2) + 8
 
@@ -51,7 +55,16 @@ export const DroneInfo: FC<DroneInfoProps> = ({
       </Box>
 
       <Box sx={{ display: 'flex' }}>
+
         <Box sx={{ flexGrow: 1 }}>
+          {rcc && (
+            <Box sx={{ padding: 1 }}>
+              <Typography variant={'h6'}>Slaved To</Typography>
+              <Typography>{rcc.name}</Typography>
+              <RccStatBlock rcc={rcc} />
+            </Box>
+          )}
+
           <Box sx={{ padding: 1 }}>
             <Typography variant={'h6'}>Autosofts</Typography>
             <AutosoftsList autosofts={autosofts} slavedIds={drone.slavedAutosofts} />
