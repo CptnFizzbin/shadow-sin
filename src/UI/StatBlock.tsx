@@ -8,8 +8,8 @@ export const StatBlock: FC = ({
   children,
 }) => {
   return (
-    <Paper variant="outlined">
-      <Box className={styles.Stats}>{children}</Box>
+    <Paper variant="outlined" className={styles.Stats}>
+      {children}
     </Paper>
   )
 }

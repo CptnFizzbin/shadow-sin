@@ -14,25 +14,37 @@ export const CharacterSheet: FC = () => {
   const vehicles = useGearOfType(GearType.vehicle)
   const otherGear = useAllGear()
     .filter(gear => !gear.attachedTo)
-    .filter(gear => [GearType.other, GearType.rcc].includes(gear.gearType))
+    .filter(gear => {
+      const excludedGear = [
+        GearType.weapon,
+        GearType.drone,
+        GearType.vehicle,
+      ]
+
+      return !excludedGear.includes(gear.gearType)
+    })
 
   return (
     <Box>
       <Box sx={{ padding: 1 }}>
         <CharacterInfo />
       </Box>
+
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h4'}>Weapons</Typography>
         <GearList gear={weapons} />
       </Box>
+
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h4'}>Drones</Typography>
         <GearList gear={drones} />
       </Box>
+
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h4'}>Vehicles</Typography>
         <GearList gear={vehicles} />
       </Box>
+
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h4'}>Other</Typography>
         <GearList gear={otherGear} />
