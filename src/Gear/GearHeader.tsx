@@ -17,18 +17,19 @@ export const GearHeader: FC<GearHeaderProps> = ({
 }) => {
   return (
     <Box sx={{ display: 'flex' }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h5" sx={{display: 'inline-block'}}>{gear.name}</Typography>
+      <Box sx={{ padding: 1, flexGrow: 1 }}>
+        <Typography variant="h5" sx={{ display: 'inline-block', color: 'primary.main' }}>{gear.name}</Typography>
         {gear?.quantity && (
           <Chip
             variant="outlined" color="primary" size="small"
-            sx={{verticalAlign: 'top', marginLeft: 1}}
+            sx={{ verticalAlign: 'top', marginLeft: 1 }}
             label={`x${gear.quantity}`}
           />
         )}
         <Typography variant="subtitle1">{type || gear.type}</Typography>
       </Box>
-      <Box>
+
+      <Box sx={{ padding: 1 }}>
         <StatBlock>
           <AvailabilityStat avail={gear.avail} />
           <CostStat cost={gear.cost} />

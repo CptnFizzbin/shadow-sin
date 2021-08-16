@@ -7,22 +7,20 @@ import { Stat, StatBlock } from '../UI/StatBlock'
 import { useAttachedGear } from './GearContext'
 import { GearData } from './GearData'
 import { GearHeader } from './GearHeader'
-import { NestedGear } from './GearInfo'
+import { NestedGear } from './NestedGear'
 
 interface OtherGearInfoProps {
   gear: GearData
 }
 
-export const OtherGearInfo: FC<OtherGearInfoProps> = ({
+export const DefaultGearInfo: FC<OtherGearInfoProps> = ({
   gear,
 }) => {
   const attachedGear = useAttachedGear(gear.id)
 
   return (
     <Paper elevation={1}>
-      <Box sx={{ padding: 1 }}>
-        <GearHeader gear={gear} />
-      </Box>
+      <GearHeader gear={gear} />
 
       {gear.stats && (
         <Box sx={{ padding: 1 }}>

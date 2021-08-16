@@ -7,50 +7,45 @@ import { Stat, StatBlock } from '../../UI/StatBlock'
 import { useAttachedGear, useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
-import { NestedGear } from '../GearInfo'
+import { NestedGear } from '../NestedGear'
 import { RccData } from '../Rigger/RccData'
 import { RccStatBlock } from '../Rigger/RccInfo'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
-import { HandlingStat, SeatStat } from '../Vehicles/Stats'
-import { VehicleModData } from '../Vehicles/VehicleModData'
-import { DroneData } from './DroneData'
+import { HandlingStat, SeatStat } from './Stats'
+import { VehicleData } from './VehicleData'
 
-interface DroneInfoProps {
-  drone: DroneData
+interface VehicleInfoProps {
+  vehicle: VehicleData
 }
 
-export const DroneInfo: FC<DroneInfoProps> = ({
-  drone,
+export const VehicleInfo: FC<VehicleInfoProps> = ({
+  vehicle,
 }) => {
-  const attachedMods = useAttachedGear<VehicleModData>(drone.id, {
-    type: GearType.vehicleMod,
-  })
+  const attachedMods = useAttachedGear(vehicle.id)
 
   const autosofts = useGearOfType<AutosoftData>(GearType.autosoft)
-    .filter(gear => gear.attachedTo === drone.id || drone.slavedAutosofts?.includes(gear.id))
+    .filter(gear => gear.attachedTo === vehicle.id || vehicle.slavedAutosofts?.includes(gear.id))
 
-  const rcc = useGear<RccData>(drone.slavedTo)
+  const rcc = useGear<RccData>(vehicle.slavedTo)
 
-  const physicalMax = Math.ceil(drone.body / 2) + 8
+  const physicalMax = Math.ceil(vehicle.body / 2) + 8
 
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>
-      <Box sx={{ padding: 1 }}>
-        <GearHeader gear={drone} type={[drone.size, drone.type, 'drone'].join(' ')} />
-      </Box>
+      <GearHeader gear={vehicle} />
 
       <Box sx={{ padding: 1 }}>
         <StatBlock>
-          <HandlingStat handling={drone.handling} />
-          <Stat name={'Accel'} value={drone.accel} />
-          <Stat name={'Speed Interval'} value={drone.speedInterval} />
-          <Stat name={'Top Speed'} value={drone.topSpeed} />
-          <Stat name={'Body'} value={drone.body} />
-          <Stat name={'Armor'} value={drone.armor} />
-          <Stat name={'Pilot'} value={drone.pilot} />
-          <Stat name={'Sensor'} value={drone.pilot} />
-          <SeatStat seat={drone.seat} />
+          <HandlingStat handling={vehicle.handling} />
+          <Stat name={'Accel'} value={vehicle.accel} />
+          <Stat name={'Speed Interval'} value={vehicle.speedInterval} />
+          <Stat name={'Top Speed'} value={vehicle.topSpeed} />
+          <Stat name={'Body'} value={vehicle.body} />
+          <Stat name={'Armor'} value={vehicle.armor} />
+          <Stat name={'Pilot'} value={vehicle.pilot} />
+          <Stat name={'Sensor'} value={vehicle.pilot} />
+          <SeatStat seat={vehicle.seat} />
         </StatBlock>
       </Box>
 
@@ -67,7 +62,7 @@ export const DroneInfo: FC<DroneInfoProps> = ({
 
           <Box sx={{ padding: 1 }}>
             <Typography variant={'h6'}>Autosofts</Typography>
-            <AutosoftsList autosofts={autosofts} slavedIds={drone.slavedAutosofts} />
+            <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
           </Box>
         </Box>
 

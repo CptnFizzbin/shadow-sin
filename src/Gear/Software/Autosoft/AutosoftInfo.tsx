@@ -15,9 +15,7 @@ export const AutosoftInfo: FC<AutosoftInfoProps> = ({
 }) => {
   return (
     <Paper elevation={1}>
-      <Box sx={{ padding: 1 }}>
-        <GearHeader gear={autosoft} />
-      </Box>
+      <GearHeader gear={autosoft} />
 
       <Box sx={{ padding: 1 }}>
         <StatBlock>

@@ -1,12 +1,11 @@
 import { Paper } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { useAttachedGear } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
+import { NestedGear } from '../NestedGear'
 import { WeaponData } from '../Weapons/WeaponData'
-import { WeaponList } from '../Weapons/WeaponList'
 import { VehicleModData } from './VehicleModData'
 
 interface VehicleModInfoProps {
@@ -22,13 +21,9 @@ export const VehicleModInfo: FC<VehicleModInfoProps> = ({
 
   return (
     <Paper elevation={1}>
-      <Box sx={{ padding: 1 }}>
-        <GearHeader gear={mod} />
-      </Box>
+      <GearHeader gear={mod} />
 
-      <Paper variant="outlined" sx={{ padding: 1 }}>
-        <WeaponList weapons={attachedWeapons} />
-      </Paper>
+      <NestedGear gear={attachedWeapons} />
     </Paper>
   )
 }

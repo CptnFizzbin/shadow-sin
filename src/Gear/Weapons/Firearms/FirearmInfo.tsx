@@ -17,9 +17,7 @@ export const FirearmInfo: FC<FirearmProps> = ({
 }) => {
   return (
     <Paper>
-      <Box sx={{ padding: 1 }}>
-        <GearHeader gear={firearm} />
-      </Box>
+      <GearHeader gear={firearm} />
 
       <Box sx={{ padding: 1 }}>
         <StatBlock>

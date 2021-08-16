@@ -1,9 +1,10 @@
 import { CharacterData } from '../Character/CharacterData'
 import { SkillType } from '../Character/Skill/SkillData'
-import { DroneData } from '../Gear/Drones/DroneData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccData } from '../Gear/Rigger/RccData'
 import { AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
+import { DroneData } from '../Gear/Vehicles/DroneData'
+import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 
@@ -155,7 +156,7 @@ const rcc: RccData = addGear({
 })
 
 const autosofts: AutosoftData[] = [
-  addGear<AutosoftData>({
+  addGear({
     id: null,
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
@@ -167,7 +168,7 @@ const autosofts: AutosoftData[] = [
     attr: 'Sensor',
     attachedTo: rcc.id,
   }),
-  addGear<AutosoftData>({
+  addGear({
     id: null,
     gearType: GearType.autosoft,
     name: 'Clearsight',
@@ -239,8 +240,38 @@ const stdWeaponMount: VehicleModData = {
   cost: 4_500,
 }
 
+const riggerInterface: VehicleModData = {
+  id: null,
+  gearType: GearType.vehicleMod,
+  name: 'Rigger Interface',
+  type: 'vehicle mod',
+  avail: { rarity: 2, license: true },
+  cost: 1_000,
+}
+
+const car: VehicleData = addGear({
+  id: null,
+  gearType: GearType.vehicle,
+  name: 'Range Rover Model 2080',
+  type: 'vehicle',
+  cost: 5_000,
+  avail: { rarity: 2 },
+  handling: [4, 5],
+  accel: 12,
+  speedInterval: 20,
+  topSpeed: 160,
+  body: 16,
+  armor: 10,
+  pilot: 4,
+  sensor: 4,
+  seat: 7,
+  slavedTo: rcc.id,
+  slavedAutosofts: autosofts.map(gear => gear.id),
+})
+rcc.attachedTo = car.id
+
 new Array(2).fill(null).forEach((_, index) => {
-  const combatDrone: DroneData = addGear<DroneData>({
+  const combatDrone: DroneData = addGear({
     id: null,
     gearType: GearType.drone,
     size: 'medium',
@@ -261,6 +292,11 @@ new Array(2).fill(null).forEach((_, index) => {
     slavedAutosofts: autosofts.map(gear => gear.id),
   })
 
+  addGear({
+    ...riggerInterface,
+    attachedTo: combatDrone.id,
+  })
+
   const droneWepMount: VehicleModData = addGear({
     ...stdWeaponMount,
     attachedTo: combatDrone.id,
@@ -273,7 +309,7 @@ new Array(2).fill(null).forEach((_, index) => {
 })
 
 new Array(4).fill(null).forEach((_, index) => {
-  const combatDrone: DroneData = addGear<DroneData>({
+  const combatDrone: DroneData = addGear({
     id: null,
     gearType: GearType.drone,
     size: 'small',
@@ -294,6 +330,11 @@ new Array(4).fill(null).forEach((_, index) => {
     slavedAutosofts: autosofts.map(gear => gear.id),
   })
 
+  addGear({
+    ...riggerInterface,
+    attachedTo: combatDrone.id,
+  })
+
   const droneWepMount: VehicleModData = addGear({
     ...stdWeaponMount,
     attachedTo: combatDrone.id,
@@ -306,7 +347,7 @@ new Array(4).fill(null).forEach((_, index) => {
 })
 
 new Array(1).fill(null).forEach((_, index) => {
-  addGear<DroneData>({
+  const scoutDrone = addGear({
     id: null,
     gearType: GearType.drone,
     size: 'small',
@@ -325,6 +366,11 @@ new Array(1).fill(null).forEach((_, index) => {
     seat: null,
     slavedTo: rcc.id,
     slavedAutosofts: autosofts.map(gear => gear.id),
+  })
+
+  addGear({
+    ...riggerInterface,
+    attachedTo: scoutDrone.id,
   })
 })
 

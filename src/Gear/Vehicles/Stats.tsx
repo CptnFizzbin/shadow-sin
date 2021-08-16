@@ -14,7 +14,7 @@ export const HandlingStat: FC<HandlingStatProps> = ({
   if (typeof handling === 'number') {
     return <Stat name="Handling">{handling}</Stat>
   } else {
-    return <Stat name="Handling (On/Off road)">{handling[0]}/{handling[1]}</Stat>
+    return <Stat name="Handling (On/Off Road)">{handling[0]}/{handling[1]}</Stat>
   }
 }
 

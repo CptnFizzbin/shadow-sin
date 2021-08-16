@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { GearData } from './GearData'
@@ -12,7 +13,11 @@ export const GearList: FC<GearListProps> = ({
 }) => {
   return (
     <>
-      {gear.map(gear => <GearInfo key={gear.id} gear={gear} />)}
+      {gear.map((gear, index) => (
+        <Box key={gear.id} sx={{ paddingTop: index === 0 ? 0 : 1 }}>
+          <GearInfo gear={gear} />
+        </Box>
+      ))}
     </>
   )
 }
