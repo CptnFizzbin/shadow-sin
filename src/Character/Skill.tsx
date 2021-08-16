@@ -9,7 +9,7 @@ import {
 import { FC } from 'react'
 
 import { Attribute } from './Attribute'
-import { Character } from './Character'
+import { CharacterData } from './CharacterData'
 
 export type SkillId = string;
 
@@ -41,7 +41,7 @@ export interface KnowledgeSkill extends BasicSkill {
 export type Skill = StatSkill | LanguageSkill | KnowledgeSkill
 
 interface SkillListProps {
-  character: Character
+  character: CharacterData
 }
 
 export const SkillList: FC<SkillListProps> = ({

@@ -8,15 +8,17 @@ import { AvailabilityStat, CostStat } from './Stats'
 
 interface GearHeaderProps {
   gear: GearData
+  type?: string
 }
 
 export const GearHeader: FC<GearHeaderProps> = ({
   gear,
+  type,
 }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" sx={{display: 'inline-block'}}>{gear.name}</Typography>
+        <Typography variant="h5" sx={{display: 'inline-block'}}>{gear.name}</Typography>
         {gear?.quantity && (
           <Chip
             variant="outlined" color="primary" size="small"
@@ -24,7 +26,7 @@ export const GearHeader: FC<GearHeaderProps> = ({
             label={`x${gear.quantity}`}
           />
         )}
-        <Typography variant="subtitle1">{gear.type}</Typography>
+        <Typography variant="subtitle1">{type || gear.type}</Typography>
       </Box>
       <Box>
         <StatBlock>

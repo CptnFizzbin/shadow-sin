@@ -91,13 +91,33 @@ export function useAllGear (): GearData[] {
   return gear
 }
 
-export function useGear<T extends GearData> (gearId: GearId): T | undefined {
-  const gear = useAllGear().find(gear => gear.id === gearId)
+export function useGear<T extends GearData> (gearId: GearId | undefined): T | undefined {
+  const allGear = useAllGear()
+
+  if (!gearId) return undefined
+  const gear = allGear.find(gear => gear.id === gearId)
   return gear ? gear as T : undefined
 }
 
-export function useAttachedGear (gearId: GearId): GearData[] {
-  return useAllGear().filter(gear => gear.attachedTo === gearId)
+interface GearHookOptions {
+  type?: GearType
+
+  filter? (gear: GearData): boolean
+}
+
+export function useAttachedGear<T extends GearData> (gearId: GearId, options: GearHookOptions = {}): T[] {
+  let gear = useAllGear()
+    .filter(gear => gear.attachedTo === gearId)
+
+  if (options.type) {
+    gear = gear.filter(gear => gear.gearType === options.type)
+  }
+
+  if (options.filter) {
+    gear = gear.filter(options.filter)
+  }
+
+  return gear.map(gear => gear as T)
 }
 
 export function useGearOfType<T extends GearData> (gearType: GearType): T[] {

@@ -9,6 +9,7 @@ export enum GearType {
   vehicle,
   vehicleMod,
   autosoft,
+  rcc,
 }
 
 export interface GearData {
@@ -18,7 +19,6 @@ export interface GearData {
   type: string
   avail: Availability
   cost: Cost
-  quantity?: number
   stats?: {
     [key: string]: string | number | null
   }

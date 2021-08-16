@@ -4,6 +4,8 @@ import { DroneData } from './Drones/DroneData'
 import { DroneInfo } from './Drones/DroneInfo'
 import { GearData, GearType } from './GearData'
 import { OtherGearInfo } from './OtherGearInfo'
+import { RccData } from './Rigger/RccData'
+import { RccInfo } from './Rigger/RccInfo'
 import { AutosoftData } from './Software/Autosoft/AutosoftData'
 import { AutosoftInfo } from './Software/Autosoft/AutosoftInfo'
 import { VehicleModData } from './Vehicles/VehicleModData'
@@ -27,6 +29,8 @@ export const GearInfo: FC<GearInfoProps> = ({
     return <DroneInfo drone={gear as DroneData} />
   case GearType.vehicleMod:
     return <VehicleModInfo mod={gear as VehicleModData} />
+  case GearType.rcc:
+    return <RccInfo rcc={gear as RccData} />
   case GearType.other:
   default:
     return <OtherGearInfo gear={gear} />

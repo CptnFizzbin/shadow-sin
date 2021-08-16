@@ -1,10 +1,10 @@
 import { createContext, FC, useContext } from 'react'
 
 import { Attribute } from './Attribute'
-import { Character } from './Character'
+import { CharacterData } from './CharacterData'
 import { Skill, SkillId } from './Skill'
 
-const defaultCharacter: Character = {
+const defaultCharacter: CharacterData = {
   name: 'unknown',
   metaType: 'human',
   karma: 0,
@@ -27,22 +27,22 @@ const defaultCharacter: Character = {
 }
 
 interface CharacterContextData {
-  character: Character
+  character: CharacterData
 
-  setCharacter (character: Character): void
+  setCharacter (character: CharacterData): void
 }
 
 const CharacterContext = createContext<CharacterContextData>({
   character: defaultCharacter,
   setCharacter () {
-    console.error('Default Character is read only')
+    console.error('Default CharacterData is read only')
   },
 })
 
 interface CharacterProviderProps {
-  character: Character
+  character: CharacterData
 
-  onChange (character: Character): void
+  onChange (character: CharacterData): void
 }
 
 export const CharacterProvider: FC<CharacterProviderProps> = ({
@@ -62,9 +62,9 @@ export const useCharacter = (): CharacterContextData => {
   return useContext(CharacterContext)
 }
 
-export const useAttribute = (attr: Attribute): number | undefined => {
+export const useAttribute = (attr: Attribute, defaultVal = 1): number => {
   const { character } = useContext(CharacterContext)
-  return character.attributes[attr]
+  return character.attributes[attr] || defaultVal
 }
 
 export const useSkill = (skillId: SkillId): Skill | undefined => {

@@ -10,16 +10,24 @@ export type Availability = {
   license?: boolean
 }
 
-interface CostStatProps {
+interface CostProps {
   cost: Cost
 }
 
 const costFormatter = new Intl.NumberFormat('en')
-export const CostStat: FC<CostStatProps> = ({
+export const CostStat: FC<CostProps> = ({
   cost,
 }) => {
   return (
-    <Stat name="Cost" value={`${costFormatter.format(cost)}¥`} />
+    <Stat name="Cost"><CostDisplay cost={cost} /></Stat>
+  )
+}
+
+export const CostDisplay: FC<CostProps> = ({
+  cost,
+}) => {
+  return (
+    <span>{costFormatter.format(cost)}¥</span>
   )
 }
 
@@ -31,10 +39,18 @@ export const AvailabilityStat: FC<AvailabilityProps> = ({
   avail,
 }) => {
   return (
-    <Stat name={'Avail'}>
+    <Stat name={'Avail'}><AvailabilityDisplay avail={avail} /></Stat>
+  )
+}
+
+export const AvailabilityDisplay: FC<AvailabilityProps> = ({
+  avail,
+}) => {
+  return (
+    <span>
       {avail.rarity}
       {avail.illegal ? '(i)' : null}
       {avail.license ? '(L)' : null}
-    </Stat>
+    </span>
   )
 }

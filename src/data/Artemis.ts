@@ -1,11 +1,12 @@
-import { Character } from '../Character/Character'
+import { CharacterData } from '../Character/CharacterData'
 import { DroneData } from '../Gear/Drones/DroneData'
 import { GearData, GearType } from '../Gear/GearData'
+import { RccData } from '../Gear/Rigger/RccData'
 import { AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
 import { VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 
-const Artemis: Character = {
+const Artemis: CharacterData = {
   name: 'Artemis',
   metaType: 'Elf',
   karma: 0,
@@ -104,34 +105,31 @@ addGear<WeaponData>({
   cost: 520,
 })
 
-const rcc: GearData = addGear({
+const rcc: RccData = addGear({
   id: null,
-  gearType: GearType.other,
+  gearType: GearType.rcc,
   name: 'Proteus Poseidon',
   type: 'RCC',
   avail: { rarity: 6, license: true },
   cost: 68_000,
-  stats: {
-    deviceRating: 5,
-    dataProcessing: 5,
-    firewall: 5,
-  },
-})
-
-addGear<AutosoftData>({
-  id: null,
-  gearType: GearType.autosoft,
-  name: 'RPK HMG Targeting',
-  type: 'targeting autosoft',
-  avail: { rarity: 8 },
-  cost: 4_000,
-  rating: 8,
-  weapon: 'RPK HMG',
-  attr: 'Sensor',
-  attachedTo: rcc.id,
+  deviceRating: 5,
+  dataProcessing: 5,
+  firewall: 5,
 })
 
 const autosofts: AutosoftData[] = [
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'FN-HAR Targeting',
+    type: 'targeting autosoft',
+    avail: { rarity: 8 },
+    cost: 4_000,
+    rating: 8,
+    weapon: 'FN-HAR',
+    attr: 'Sensor',
+    attachedTo: rcc.id,
+  }),
   addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
@@ -182,50 +180,115 @@ const autosofts: AutosoftData[] = [
   }),
 ]
 
-const combatDrone: DroneData = addGear<DroneData>({
+const FnHar: WeaponData = {
   id: null,
-  gearType: GearType.drone,
-  quantity: 2,
-  size: 'medium',
-  name: 'MCT-Nissan Roto-drone',
-  type: 'medium rotor drone',
-  cost: 5_000,
-  avail: { rarity: 2 },
-  handling: 3,
-  accel: 20,
-  speedInterval: 30,
-  topSpeed: 160,
-  body: 5,
-  armor: 6,
-  pilot: 3,
-  sensor: 2,
-  seat: null,
-  slavedTo: rcc.id,
-  slavedAutosofts: autosofts.map(gear => gear.id),
-})
+  gearType: GearType.weapon,
+  name: 'FN-HAR',
+  type: 'Rifle',
+  dv: { value: 5, type: 'P' },
+  modes: ['SA', 'BF', 'FA'],
+  attackRatings: [3, 11, 10, 6, 1],
+  ammo: { size: 35, type: 'c' },
+  avail: { rarity: 3, license: true },
+  cost: 2_100,
+}
 
-const droneWepMount: VehicleModData = addGear({
+const stdWeaponMount: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
-  name: 'Heavy Weapon Mount',
+  name: 'Standard Weapon Mount',
   type: 'weapon mount',
   avail: { rarity: 5, illegal: true },
   cost: 5_000,
-  attachedTo: combatDrone.id,
+}
+
+new Array(2).fill(null).forEach((_, index) => {
+  const combatDrone: DroneData = addGear<DroneData>({
+    id: null,
+    gearType: GearType.drone,
+    size: 'medium',
+    type: 'rotor',
+    name: `MCT-Nissan Roto-drone ${index + 1}`,
+    cost: 5_000,
+    avail: { rarity: 2 },
+    handling: 3,
+    accel: 20,
+    speedInterval: 30,
+    topSpeed: 160,
+    body: 5,
+    armor: 6,
+    pilot: 3,
+    sensor: 2,
+    seat: null,
+    slavedTo: rcc.id,
+    slavedAutosofts: autosofts.map(gear => gear.id),
+  })
+
+  const droneWepMount: VehicleModData = addGear({
+    ...stdWeaponMount,
+    attachedTo: combatDrone.id,
+  })
+
+  addGear({
+    ...FnHar,
+    attachedTo: droneWepMount.id,
+  })
 })
 
-addGear({
-  id: null,
-  gearType: GearType.weapon,
-  name: 'Ares Crusader II',
-  type: 'Machine Pistol',
-  dv: { value: 2, type: 'P' },
-  modes: ['SA', 'BF'],
-  attackRatings: [9, 9, 7, '-', '-'],
-  ammo: { size: 40, type: 'c' },
-  avail: { rarity: 5, license: true },
-  cost: 520,
-  attachedTo: droneWepMount.id,
+new Array(4).fill(null).forEach((_, index) => {
+  const combatDrone: DroneData = addGear<DroneData>({
+    id: null,
+    gearType: GearType.drone,
+    size: 'small',
+    type: 'anthro',
+    name: `Aztech Crawler ${index + 1}`,
+    cost: 4_500,
+    avail: { rarity: 2 },
+    handling: [3, 4],
+    accel: 8,
+    speedInterval: 10,
+    topSpeed: 30,
+    body: 6,
+    armor: 2,
+    pilot: 2,
+    sensor: 2,
+    seat: null,
+    slavedTo: rcc.id,
+    slavedAutosofts: autosofts.map(gear => gear.id),
+  })
+
+  const droneWepMount: VehicleModData = addGear({
+    ...stdWeaponMount,
+    attachedTo: combatDrone.id,
+  })
+
+  addGear({
+    ...FnHar,
+    attachedTo: droneWepMount.id,
+  })
+})
+
+new Array(1).fill(null).forEach((_, index) => {
+  addGear<DroneData>({
+    id: null,
+    gearType: GearType.drone,
+    size: 'small',
+    type: 'anthro',
+    name: `Cyberspace Designs Quadrotor ${index + 1}`,
+    cost: 5_000,
+    avail: { rarity: 2 },
+    handling: 2,
+    accel: 15,
+    speedInterval: 20,
+    topSpeed: 120,
+    body: 3,
+    armor: 1,
+    pilot: 3,
+    sensor: 2,
+    seat: null,
+    slavedTo: rcc.id,
+    slavedAutosofts: autosofts.map(gear => gear.id),
+  })
 })
 
 export {

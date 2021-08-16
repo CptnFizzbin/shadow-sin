@@ -13,11 +13,4 @@ export interface VehicleData extends GearData {
   seat: number | null
   slavedTo?: GearId
   slavedAutosofts?: GearId[]
-  autosofts?: AutosoftData[]
-}
-
-export interface AutosoftData extends GearData {
-  rating: number
-  skill: string
-  attr: string
 }
