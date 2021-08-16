@@ -1,4 +1,5 @@
 import { CharacterData } from '../Character/CharacterData'
+import { SkillType } from '../Character/Skill/SkillData'
 import { DroneData } from '../Gear/Drones/DroneData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccData } from '../Gear/Rigger/RccData'
@@ -27,7 +28,7 @@ const Artemis: CharacterData = {
 
   skills: [
     {
-      type: 'stat',
+      type: SkillType.active,
       id: 'firearms',
       name: 'Firearms',
       rank: 3,
@@ -36,7 +37,7 @@ const Artemis: CharacterData = {
       expertise: null,
     },
     {
-      type: 'stat',
+      type: SkillType.active,
       id: 'electronics',
       name: 'Electronics',
       rank: 4,
@@ -45,7 +46,7 @@ const Artemis: CharacterData = {
       expertise: null,
     },
     {
-      type: 'stat',
+      type: SkillType.active,
       id: 'cracking',
       name: 'Cracking',
       rank: 3,
@@ -55,7 +56,7 @@ const Artemis: CharacterData = {
       expertise: null,
     },
     {
-      type: 'stat',
+      type: SkillType.active,
       id: 'piloting',
       name: 'Piloting',
       rank: 6,
@@ -64,7 +65,7 @@ const Artemis: CharacterData = {
       expertise: null,
     },
     {
-      type: 'stat',
+      type: SkillType.active,
       id: 'engineering',
       name: 'Engineering',
       rank: 5,
@@ -74,10 +75,46 @@ const Artemis: CharacterData = {
       expertise: null,
     },
     {
-      type: 'language',
+      type: SkillType.language,
       id: 'english',
-      name: 'english',
+      name: 'English',
       rank: 'native',
+    },
+    {
+      type: SkillType.language,
+      id: 'elven',
+      name: 'Elven',
+      rank: 'speciality',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'droneModels',
+      name: 'Drone Models',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'popCulture',
+      name: '80/90s Pop Culture',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'trideoSeries',
+      name: 'Trideo Series',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'securitySystems',
+      name: 'Security Systems',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'virtualNightclubs',
+      name: 'Virtual Nightclubs',
+    },
+    {
+      type: SkillType.knowledge,
+      id: 'techCompanies',
+      name: 'Tech Companies',
     },
   ],
 
@@ -199,7 +236,7 @@ const stdWeaponMount: VehicleModData = {
   name: 'Standard Weapon Mount',
   type: 'weapon mount',
   avail: { rarity: 5, illegal: true },
-  cost: 5_000,
+  cost: 4_500,
 }
 
 new Array(2).fill(null).forEach((_, index) => {

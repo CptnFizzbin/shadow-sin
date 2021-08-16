@@ -7,11 +7,11 @@ import { Stat, StatBlock } from '../../UI/StatBlock'
 import { useAttachedGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
+import { NestedGear } from '../GearInfo'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { HandlingStat, SeatStat } from '../Vehicles/Stats'
 import { VehicleModData } from '../Vehicles/VehicleModData'
-import { VehicleModInfo } from '../Vehicles/VehicleModInfo'
 import { DroneData } from './DroneData'
 
 interface DroneInfoProps {
@@ -31,10 +31,12 @@ export const DroneInfo: FC<DroneInfoProps> = ({
   const physicalMax = Math.ceil(drone.body / 2) + 8
 
   return (
-    <Paper elevation={1} sx={{ padding: 1, marginTop: 1 }}>
-      <GearHeader gear={drone} type={[drone.size, drone.type, 'drone'].join(' ')}/>
+    <Paper elevation={1} sx={{ marginTop: 1 }}>
+      <Box sx={{ padding: 1 }}>
+        <GearHeader gear={drone} type={[drone.size, drone.type, 'drone'].join(' ')} />
+      </Box>
 
-      <Box>
+      <Box sx={{ padding: 1 }}>
         <StatBlock>
           <HandlingStat handling={drone.handling} />
           <Stat name={'Accel'} value={drone.accel} />
@@ -50,24 +52,18 @@ export const DroneInfo: FC<DroneInfoProps> = ({
 
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{ paddingTop: 1 }}>
+          <Box sx={{ padding: 1 }}>
             <Typography variant={'h6'}>Autosofts</Typography>
             <AutosoftsList autosofts={autosofts} slavedIds={drone.slavedAutosofts} />
           </Box>
-
-          {attachedMods.length > 0 && (
-            <Box sx={{ paddingTop: 1 }}>
-              <Paper variant="outlined">
-                {attachedMods.map(child => <VehicleModInfo key={child.id} mod={child} />)}
-              </Paper>
-            </Box>
-          )}
         </Box>
 
-        <Box sx={{ paddingLeft: 1, paddingTop: 1 }}>
+        <Box sx={{ padding: 1 }}>
           <DamageTrack current={0} max={physicalMax} label="Physical" />
         </Box>
       </Box>
+
+      <NestedGear gear={attachedMods} />
     </Paper>
   )
 }

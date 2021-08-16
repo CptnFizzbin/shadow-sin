@@ -24,12 +24,11 @@ export const VehicleModInfo: FC<VehicleModInfoProps> = ({
     <Paper elevation={1}>
       <Box sx={{ padding: 1 }}>
         <GearHeader gear={mod} />
-        <Box sx={{ paddingTop: 1 }}>
-          <Paper variant="outlined">
-            <WeaponList weapons={attachedWeapons} />
-          </Paper>
-        </Box>
       </Box>
+
+      <Paper variant="outlined" sx={{ padding: 1 }}>
+        <WeaponList weapons={attachedWeapons} />
+      </Paper>
     </Paper>
   )
 }

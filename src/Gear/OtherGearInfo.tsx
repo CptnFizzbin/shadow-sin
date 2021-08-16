@@ -7,7 +7,7 @@ import { Stat, StatBlock } from '../UI/StatBlock'
 import { useAttachedGear } from './GearContext'
 import { GearData } from './GearData'
 import { GearHeader } from './GearHeader'
-import { GearInfo } from './GearInfo'
+import { NestedGear } from './GearInfo'
 
 interface OtherGearInfoProps {
   gear: GearData
@@ -22,19 +22,19 @@ export const OtherGearInfo: FC<OtherGearInfoProps> = ({
     <Paper elevation={1}>
       <Box sx={{ padding: 1 }}>
         <GearHeader gear={gear} />
-        {gear.stats && (
+      </Box>
+
+      {gear.stats && (
+        <Box sx={{ padding: 1 }}>
           <StatBlock>
             {Object.entries(gear.stats).map(([name, value]) => (
               <Stat key={name} name={toTitleCase(name)} value={value} />
             ))}
           </StatBlock>
-        )}
-        <Box sx={{ paddingTop: 1 }}>
-          <Paper variant="outlined">
-            {attachedGear.map(child => <GearInfo key={child.id} gear={child} />)}
-          </Paper>
         </Box>
-      </Box>
+      )}
+
+      <NestedGear gear={attachedGear} />
     </Paper>
   )
 }

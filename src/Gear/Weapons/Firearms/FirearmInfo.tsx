@@ -19,14 +19,15 @@ export const FirearmInfo: FC<FirearmProps> = ({
     <Paper>
       <Box sx={{ padding: 1 }}>
         <GearHeader gear={firearm} />
-        <div>
-          <StatBlock>
-            <DamageValueStat dv={firearm.dv} />
-            <FirearmModeStat modes={firearm.modes || null} />
-            <AttackRatingStat ratings={firearm.attackRatings} />
-            <AmmoStat ammo={firearm.ammo || null} />
-          </StatBlock>
-        </div>
+      </Box>
+
+      <Box sx={{ padding: 1 }}>
+        <StatBlock>
+          <DamageValueStat dv={firearm.dv} />
+          <FirearmModeStat modes={firearm.modes || null} />
+          <AttackRatingStat ratings={firearm.attackRatings} />
+          <AmmoStat ammo={firearm.ammo || null} />
+        </StatBlock>
       </Box>
     </Paper>
   )

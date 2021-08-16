@@ -1,6 +1,6 @@
 import { GearData } from '../Gear/GearData'
 import { Attribute } from './Attribute'
-import { Skill } from './Skill'
+import { SkillData } from './Skill/SkillData'
 
 export interface CharacterData {
   name: string
@@ -22,7 +22,7 @@ export interface CharacterData {
     [Attr in Attribute]?: number
   }
 
-  skills: Skill[]
+  skills: SkillData[]
 
   gear: GearData[]
 }

@@ -25,19 +25,19 @@ export const RccInfo: FC<RccInfoProps> = ({
     <Paper elevation={1}>
       <Box sx={{ padding: 1 }}>
         <GearHeader gear={rcc} />
+      </Box>
 
-        <Box sx={{ paddingTop: 1 }}>
-          <StatBlock>
-            <Stat name="Device Rating" value={rcc.deviceRating} />
-            <Stat name="Data Processing" value={rcc.dataProcessing} />
-            <Stat name="Firewall" value={rcc.firewall} />
-          </StatBlock>
-        </Box>
+      <Box sx={{ padding: 1 }}>
+        <StatBlock>
+          <Stat name="Device Rating" value={rcc.deviceRating} />
+          <Stat name="Data Processing" value={rcc.dataProcessing} />
+          <Stat name="Firewall" value={rcc.firewall} />
+        </StatBlock>
+      </Box>
 
-        <Box sx={{ paddingTop: 1 }}>
-          <Typography variant={'h6'}>Autosofts</Typography>
-          <AutosoftsList autosofts={autosofts} />
-        </Box>
+      <Box sx={{ padding: 1 }}>
+        <Typography variant={'h6'}>Autosofts</Typography>
+        <AutosoftsList autosofts={autosofts} />
       </Box>
     </Paper>
   )

@@ -17,6 +17,9 @@ export const AutosoftInfo: FC<AutosoftInfoProps> = ({
     <Paper elevation={1}>
       <Box sx={{ padding: 1 }}>
         <GearHeader gear={autosoft} />
+      </Box>
+
+      <Box sx={{ padding: 1 }}>
         <StatBlock>
           <Stat name="Rating" value={autosoft.rating} />
           {autosoft.skill && <Stat name="Skill" value={autosoft.skill} />}

@@ -2,7 +2,7 @@ import { createContext, FC, useContext } from 'react'
 
 import { Attribute } from './Attribute'
 import { CharacterData } from './CharacterData'
-import { Skill, SkillId } from './Skill'
+import { SkillData, SkillId } from './Skill/SkillData'
 
 const defaultCharacter: CharacterData = {
   name: 'unknown',
@@ -67,7 +67,7 @@ export const useAttribute = (attr: Attribute, defaultVal = 1): number => {
   return character.attributes[attr] || defaultVal
 }
 
-export const useSkill = (skillId: SkillId): Skill | undefined => {
+export const useSkill = (skillId: SkillId): SkillData | undefined => {
   const { character } = useContext(CharacterContext)
   return character.skills.find(skill => skill.id === skillId)
 }

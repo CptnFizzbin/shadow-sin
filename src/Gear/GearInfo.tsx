@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
 import { DroneData } from './Drones/DroneData'
@@ -35,4 +36,20 @@ export const GearInfo: FC<GearInfoProps> = ({
   default:
     return <OtherGearInfo gear={gear} />
   }
+}
+
+interface NestedGearProps {
+  gear: GearData[]
+}
+
+export const NestedGear: FC<NestedGearProps> = ({
+  gear,
+}) => {
+  if (gear.length === 0) return null
+
+  return (
+    <Paper variant="outlined" sx={{ padding: 1 }}>
+      {gear.map(gear => <GearInfo key={gear.id} gear={gear} />)}
+    </Paper>
+  )
 }
