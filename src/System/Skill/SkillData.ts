@@ -1,4 +1,4 @@
-import { Attribute } from '../Attribute'
+import { CharacterAttribute } from '../../Character/CharacterAttribute'
 
 export type SkillId = string;
 
@@ -15,10 +15,10 @@ export interface BasicSkillData {
 }
 
 export interface ActiveSkillData extends BasicSkillData {
-  type:  SkillType.active
+  type: SkillType.active
   rank: number
-  attr: Attribute
-  altAttr?: Attribute
+  attr: CharacterAttribute
+  altAttr?: CharacterAttribute
   speciality: string | null
   expertise: string | null
 }
@@ -32,4 +32,12 @@ export interface KnowledgeSkillData extends BasicSkillData {
   type: SkillType.knowledge
 }
 
-export type SkillData = ActiveSkillData | LanguageSkillData | KnowledgeSkillData
+export type SkillData = BasicSkillData | ActiveSkillData | LanguageSkillData | KnowledgeSkillData
+
+export enum ActiveSkillId {
+  firearms = 'active.firearms',
+  electronics = 'active.electronics',
+  cracking = 'active.cracking',
+  piloting = 'active.piloting',
+  engineering = 'active.engineering',
+}

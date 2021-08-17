@@ -91,6 +91,20 @@ export function useAllGear (): GearData[] {
   return gear
 }
 
+export function useParentGear (gearId: GearId | undefined): GearData[] {
+  const allGear = useAllGear()
+  const parentGear: GearData[] = []
+
+  let curGear = allGear.find(gear => gear.id === gearId)
+  while (curGear && curGear.attachedTo) {
+    const parentId = curGear?.attachedTo
+    curGear = allGear.find(gear => gear.id === parentId)
+    if (curGear) parentGear.push(curGear)
+  }
+
+  return parentGear
+}
+
 export function useGear<T extends GearData> (gearId: GearId | undefined): T | undefined {
   const allGear = useAllGear()
 

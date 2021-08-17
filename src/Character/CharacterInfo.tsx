@@ -3,21 +3,23 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { DamageTrack } from '../DamageTrack/DamageTrack'
+import { AttributeStat } from '../System/Attribute'
+import { useAttribute } from '../System/AttributeProvider'
+import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
+import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
+import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
+import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { StatBlock } from '../UI/StatBlock'
-import { AttributeStat } from './Attribute'
-import { useAttribute, useCharacter } from './CharacterContext'
-import { ActiveSkillList } from './Skill/ActiveSkillList'
-import { KnowledgeSkillList } from './Skill/KnowledgeSkillList'
-import { LanguageSkillList } from './Skill/LanguageSkillList'
-import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from './Skill/SkillData'
+import { CharacterAttribute } from './CharacterAttribute'
+import { useCharacter } from './CharacterProvider'
 
 export const CharacterInfo: FC = () => {
   const { character } = useCharacter()
 
-  const body = useAttribute('body', 0)
+  const body = useAttribute(CharacterAttribute.body)?.value || 0
   const physicalMax = Math.ceil(body / 2) + 8
-  const will = useAttribute('willpower', 0)
-  const stunMax = Math.ceil(will / 2) + 8
+  const willpower = useAttribute(CharacterAttribute.willpower)?.value || 0
+  const stunMax = Math.ceil(willpower / 2) + 8
 
   const activeSkills = character.skills
     .filter(skill => skill.type === SkillType.active)
@@ -40,8 +42,8 @@ export const CharacterInfo: FC = () => {
 
       <Box sx={{ padding: 1 }}>
         <StatBlock>
-          {Object.entries(character.attributes).map(([attr, value]) => (
-            <AttributeStat key={attr} attr={attr} value={value} />
+          {character.attributes.map(attr => (
+            <AttributeStat key={attr.name} attr={attr} />
           ))}
         </StatBlock>
       </Box>

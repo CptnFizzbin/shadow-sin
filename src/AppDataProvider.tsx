@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 
-import { CharacterProvider } from './Character/CharacterContext'
 import { CharacterData } from './Character/CharacterData'
+import { CharacterProvider } from './Character/CharacterProvider'
 import { Artemis } from './data/Artemis'
 import { GearProvider } from './Gear/GearContext'
 import { GearData } from './Gear/GearData'

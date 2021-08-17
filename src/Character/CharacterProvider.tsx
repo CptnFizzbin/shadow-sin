@@ -1,8 +1,9 @@
 import { createContext, FC, useContext } from 'react'
 
-import { Attribute } from './Attribute'
+import { AttributeProvider } from '../System/AttributeProvider'
+import { SkillData, SkillId } from '../System/Skill/SkillData'
+import { CharacterAttribute } from './CharacterAttribute'
 import { CharacterData } from './CharacterData'
-import { SkillData, SkillId } from './Skill/SkillData'
 
 const defaultCharacter: CharacterData = {
   name: 'unknown',
@@ -10,18 +11,18 @@ const defaultCharacter: CharacterData = {
   karma: 0,
   nuyen: 0,
 
-  attributes: {
-    body: 1,
-    agility: 1,
-    reaction: 1,
-    strength: 1,
-    willpower: 1,
-    logic: 1,
-    intuition: 1,
-    charisma: 1,
-    edge: 1,
-    essence: 6,
-  },
+  attributes: [
+    { name: CharacterAttribute.body, value: 1 },
+    { name: CharacterAttribute.agility, value: 1 },
+    { name: CharacterAttribute.reaction, value: 1 },
+    { name: CharacterAttribute.strength, value: 1 },
+    { name: CharacterAttribute.willpower, value: 1 },
+    { name: CharacterAttribute.logic, value: 1 },
+    { name: CharacterAttribute.intuition, value: 1 },
+    { name: CharacterAttribute.charisma, value: 1 },
+    { name: CharacterAttribute.edge, value: 1 },
+    { name: CharacterAttribute.essence, value: 6 },
+  ],
   skills: [],
   gear: [],
 }
@@ -50,10 +51,11 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   onChange,
   children,
 }) => {
-
   return (
     <CharacterContext.Provider value={{ character, setCharacter: onChange }}>
-      {children}
+      <AttributeProvider attributes={character.attributes}>
+        {children}
+      </AttributeProvider>
     </CharacterContext.Provider>
   )
 }
@@ -62,12 +64,8 @@ export const useCharacter = (): CharacterContextData => {
   return useContext(CharacterContext)
 }
 
-export const useAttribute = (attr: Attribute, defaultVal = 1): number => {
+export function useSkill<T extends SkillData> (skillId: SkillId): T | undefined  {
   const { character } = useContext(CharacterContext)
-  return character.attributes[attr] || defaultVal
-}
-
-export const useSkill = (skillId: SkillId): SkillData | undefined => {
-  const { character } = useContext(CharacterContext)
-  return character.skills.find(skill => skill.id === skillId)
+  const skill = character.skills.find(skill => skill.id === skillId)
+  return skill ? skill as T : undefined
 }

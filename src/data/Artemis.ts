@@ -1,77 +1,78 @@
+import { CharacterAttribute } from '../Character/CharacterAttribute'
 import { CharacterData } from '../Character/CharacterData'
-import { SkillType } from '../Character/Skill/SkillData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccData } from '../Gear/Rigger/RccData'
-import { AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
+import { AutosoftData, AutosoftType } from '../Gear/Software/Autosoft/AutosoftData'
 import { DroneData } from '../Gear/Vehicles/DroneData'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
+import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
 const Artemis: CharacterData = {
   name: 'Artemis',
   metaType: 'Elf',
-  karma: 0,
-  nuyen: 3420,
+  karma: 7,
+  nuyen: 14_420,
 
-  attributes: {
-    body: 1,
-    agility: 3,
-    reaction: 1,
-    strength: 1,
-    willpower: 2,
-    logic: 7,
-    intuition: 5,
-    charisma: 2,
-    edge: 4,
-    essence: 2.1,
-  },
+  attributes: [
+    { name: CharacterAttribute.body, value: 1 },
+    { name: CharacterAttribute.agility, value: 3 },
+    { name: CharacterAttribute.reaction, value: 1 },
+    { name: CharacterAttribute.strength, value: 1 },
+    { name: CharacterAttribute.willpower, value: 2 },
+    { name: CharacterAttribute.logic, value: 7 },
+    { name: CharacterAttribute.intuition, value: 5 },
+    { name: CharacterAttribute.charisma, value: 2 },
+    { name: CharacterAttribute.edge, value: 4 },
+    { name: CharacterAttribute.essence, value: 2.1 },
+  ],
 
   skills: [
     {
       type: SkillType.active,
-      id: 'firearms',
+      id: ActiveSkillId.firearms,
       name: 'Firearms',
       rank: 3,
-      attr: 'agility',
+      attr: CharacterAttribute.agility,
       speciality: 'Automatics',
       expertise: null,
     },
     {
       type: SkillType.active,
-      id: 'electronics',
+      id: ActiveSkillId.electronics,
       name: 'Electronics',
       rank: 4,
-      attr: 'logic',
+      attr: CharacterAttribute.logic,
       speciality: null,
       expertise: null,
     },
     {
       type: SkillType.active,
-      id: 'cracking',
+      id: ActiveSkillId.cracking,
       name: 'Cracking',
       rank: 3,
-      attr: 'logic',
-      altAttr: 'intuition',
+      attr: CharacterAttribute.logic,
+      altAttr: CharacterAttribute.intuition,
       speciality: null,
       expertise: null,
     },
     {
       type: SkillType.active,
-      id: 'piloting',
+      id: ActiveSkillId.piloting,
       name: 'Piloting',
       rank: 6,
-      attr: 'logic',
+      attr: CharacterAttribute.logic,
       speciality: 'Ground Craft',
       expertise: null,
     },
     {
       type: SkillType.active,
-      id: 'engineering',
+      id: ActiveSkillId.engineering,
       name: 'Engineering',
       rank: 5,
-      attr: 'logic',
-      altAttr: 'intuition',
+      attr: CharacterAttribute.logic,
+      altAttr: CharacterAttribute.intuition,
       speciality: null,
       expertise: null,
     },
@@ -160,7 +161,7 @@ const autosofts: AutosoftData[] = [
     id: null,
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
-    type: 'targeting autosoft',
+    type: AutosoftType.targeting,
     avail: { rarity: 8 },
     cost: 4_000,
     rating: 8,
@@ -172,7 +173,7 @@ const autosofts: AutosoftData[] = [
     id: null,
     gearType: GearType.autosoft,
     name: 'Clearsight',
-    type: 'autosoft',
+    type: AutosoftType.clearsight,
     avail: { rarity: 7 },
     cost: 3_500,
     rating: 7,
@@ -184,7 +185,7 @@ const autosofts: AutosoftData[] = [
     id: null,
     gearType: GearType.autosoft,
     name: 'Evasion',
-    type: 'autosoft',
+    type: AutosoftType.evasion,
     avail: { rarity: 5 },
     cost: 2_500,
     rating: 5,
@@ -196,7 +197,7 @@ const autosofts: AutosoftData[] = [
     id: null,
     gearType: GearType.autosoft,
     name: 'Maneuvering',
-    type: 'autosoft',
+    type: AutosoftType.maneuvering,
     avail: { rarity: 5 },
     cost: 2_500,
     rating: 5,
@@ -208,7 +209,7 @@ const autosofts: AutosoftData[] = [
     id: null,
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
-    type: 'Autosoft',
+    type: AutosoftType.electronicWarfare,
     avail: { rarity: 7 },
     cost: 3_500,
     rating: 7,

@@ -8,3 +8,12 @@ export interface AutosoftData extends GearData {
   skill?: string
   weapon?: string
 }
+
+export enum AutosoftType {
+  targeting = 'Weapon Targeting',
+  clearsight = 'clearsight',
+  perception = 'Perception',
+  evasion = 'Evasion',
+  maneuvering = 'Maneuvering',
+  electronicWarfare = 'Electronic Warfare',
+}
