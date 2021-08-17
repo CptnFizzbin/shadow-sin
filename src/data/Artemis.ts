@@ -134,6 +134,8 @@ function addGear<T extends GearData> (gear: T): T {
 addGear<WeaponData>({
   id: null,
   gearType: GearType.weapon,
+  specialtySkill: ActiveSkillId.firearms,
+  specialtyName: 'pistols',
   name: 'Ares Crusader II',
   type: 'Machine Pistol',
   dv: { value: 2, type: 'P' },
@@ -219,11 +221,13 @@ const autosofts: AutosoftData[] = [
   }),
 ]
 
-const FnHar: WeaponData = {
+const fnHar: WeaponData = {
   id: null,
   gearType: GearType.weapon,
   name: 'FN-HAR',
   type: 'Rifle',
+  specialtySkill: ActiveSkillId.firearms,
+  specialtyName: 'Automatics',
   dv: { value: 5, type: 'P' },
   modes: ['SA', 'BF', 'FA'],
   attackRatings: [3, 11, 10, 6, 1],
@@ -231,6 +235,8 @@ const FnHar: WeaponData = {
   avail: { rarity: 3, license: true },
   cost: 2_100,
 }
+
+addGear(fnHar)
 
 const stdWeaponMount: VehicleModData = {
   id: null,
@@ -304,7 +310,7 @@ new Array(2).fill(null).forEach((_, index) => {
   })
 
   addGear({
-    ...FnHar,
+    ...fnHar,
     attachedTo: droneWepMount.id,
   })
 })
@@ -342,7 +348,7 @@ new Array(4).fill(null).forEach((_, index) => {
   })
 
   addGear({
-    ...FnHar,
+    ...fnHar,
     attachedTo: droneWepMount.id,
   })
 })

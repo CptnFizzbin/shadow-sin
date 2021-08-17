@@ -12,17 +12,13 @@ export const AttributeProvider: FC<AttributeProviderProps> = ({
   attributes,
   children,
 }) => {
-  console.log('attributes', attributes)
-
   return (
     <AttributeContext.Provider value={attributes}>{children}</AttributeContext.Provider>
   )
 }
 
 export const useAttributes = (): AttributeData[] => {
-  const attributes = useContext(AttributeContext)
-  console.log('attributes', attributes)
-  return attributes
+  return useContext(AttributeContext)
 }
 
 export const useAttribute = (name: string): AttributeData | undefined => {

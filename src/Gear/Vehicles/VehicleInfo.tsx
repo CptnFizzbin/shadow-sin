@@ -5,6 +5,7 @@ import { FC } from 'react'
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
 import { AttributeData } from '../../System/Attribute'
 import { AttributeProvider, useAttributes } from '../../System/AttributeProvider'
+import { DicePools } from '../../UI/DicePool'
 import { Stat, StatBlock } from '../../UI/StatBlock'
 import { useAttachedGear, useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
@@ -15,6 +16,7 @@ import { RccStatBlock } from '../Rigger/RccInfo'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
+import { PilotEvadePool, RiggedEvadePool } from './DicePools'
 import { HandlingStat } from './Stats'
 import { VehicleAttribute } from './VehicleAttribute'
 import { VehicleData } from './VehicleData'
@@ -47,43 +49,50 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
     <Paper elevation={1} sx={{ marginTop: 1 }}>
       <GearHeader gear={vehicle} />
 
-      <Box sx={{ padding: 1 }}>
-        <StatBlock>
-          <HandlingStat handling={vehicle.handling} />
-          <Stat name={'Accel'} value={vehicle.accel} />
-          <Stat name={'Speed Interval'} value={vehicle.speedInterval} />
-          <Stat name={'Top Speed'} value={vehicle.topSpeed} />
-          <Stat name={'Body'} value={vehicle.body} />
-          <Stat name={'Armor'} value={vehicle.armor} />
-          <Stat name={'Pilot'} value={vehicle.pilot} />
-          <Stat name={'Sensor'} value={vehicle.sensor} />
-          <Stat name={'Seat'} value={vehicle.seat} />
-        </StatBlock>
-      </Box>
-
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ flexGrow: 1 }}>
-          {rcc && (
-            <Box sx={{ padding: 1 }}>
-              <Typography variant={'h6'}>Slaved To</Typography>
-              <Typography>{rcc.name}</Typography>
-              <RccStatBlock rcc={rcc} />
-            </Box>
-          )}
-
-          <Box sx={{ padding: 1 }}>
-            <Typography variant={'h6'}>Autosofts</Typography>
-            <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
-          </Box>
-        </Box>
-
-        <Box sx={{ padding: 1 }}>
-          <DamageTrack current={0} max={physicalMax} label="Physical" />
-        </Box>
-      </Box>
-
       <AttributeProvider attributes={attributes}>
         <AutosoftProvider autosofts={autosofts}>
+          <Box sx={{ padding: 1 }}>
+            <StatBlock>
+              <HandlingStat handling={vehicle.handling} />
+              <Stat name={'Accel'} value={vehicle.accel} />
+              <Stat name={'Speed Interval'} value={vehicle.speedInterval} />
+              <Stat name={'Top Speed'} value={vehicle.topSpeed} />
+              <Stat name={'Body'} value={vehicle.body} />
+              <Stat name={'Armor'} value={vehicle.armor} />
+              <Stat name={'Pilot'} value={vehicle.pilot} />
+              <Stat name={'Sensor'} value={vehicle.sensor} />
+              <Stat name={'Seat'} value={vehicle.seat} />
+            </StatBlock>
+          </Box>
+
+          <Box sx={{ display: 'flex' }}>
+            <Box sx={{ flexGrow: 1 }}>
+              {rcc && (
+                <Box sx={{ padding: 1 }}>
+                  <Typography variant={'h6'}>Slaved To</Typography>
+                  <Typography>{rcc.name}</Typography>
+                  <RccStatBlock rcc={rcc} />
+                </Box>
+              )}
+
+              <Box sx={{ padding: 1 }}>
+                <Typography variant={'h6'}>Autosofts</Typography>
+                <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
+              </Box>
+
+              <Box sx={{ padding: 1 }}>
+                <DicePools>
+                  <PilotEvadePool vehicle={vehicle} />
+                  <RiggedEvadePool vehicle={vehicle} />
+                </DicePools>
+              </Box>
+            </Box>
+
+            <Box sx={{ padding: 1 }}>
+              <DamageTrack current={0} max={physicalMax} label="Physical" />
+            </Box>
+          </Box>
+
           <NestedGear gear={attachedMods} />
         </AutosoftProvider>
       </AttributeProvider>
