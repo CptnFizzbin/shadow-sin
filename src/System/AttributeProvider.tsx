@@ -1,11 +1,11 @@
 import { createContext, FC, useContext } from 'react'
 
-import { AttributeData } from './Attribute'
+import { AttributeData, AttributeList, AttributeValue } from './Attribute'
 
-const AttributeContext = createContext<AttributeData[]>([])
+const AttributeContext = createContext<AttributeList>({})
 
 interface AttributeProviderProps {
-  attributes: AttributeData[]
+  attributes: AttributeList
 }
 
 export const AttributeProvider: FC<AttributeProviderProps> = ({
@@ -17,10 +17,14 @@ export const AttributeProvider: FC<AttributeProviderProps> = ({
   )
 }
 
-export const useAttributes = (): AttributeData[] => {
+export const useAttributes = (): AttributeList => {
   return useContext(AttributeContext)
 }
 
-export const useAttribute = (name: string): AttributeData | undefined => {
-  return useAttributes().find(attr => attr.name === name)
+export function useAttribute<T extends AttributeValue> (name: string): AttributeData<T> | undefined {
+  return useAttributes()[name] as AttributeData<T>
+}
+
+export function useAttributeValue<T extends AttributeValue> (name: string, defaultValue: T): T {
+  return useAttributes()[name]?.value as T || defaultValue
 }

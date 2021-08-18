@@ -3,22 +3,19 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
-import { AttributeData } from '../../System/Attribute'
+import { AttributeList } from '../../System/Attribute'
 import { AttributeProvider, useAttributes } from '../../System/AttributeProvider'
 import { DicePools } from '../../UI/DicePool'
-import { Stat, StatBlock } from '../../UI/StatBlock'
-import { useAttachedGear, useGear, useGearOfType } from '../GearContext'
+import { GearAttributes } from '../GearAttributes'
+import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
 import { NestedGear } from '../NestedGear'
 import { RccData } from '../Rigger/RccData'
-import { RccStatBlock } from '../Rigger/RccInfo'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { PilotEvadePool, RiggedEvadePool } from './DicePools'
-import { HandlingStat } from './Stats'
-import { VehicleAttribute } from './VehicleAttribute'
 import { VehicleData } from './VehicleData'
 
 interface VehicleInfoProps {
@@ -28,50 +25,32 @@ interface VehicleInfoProps {
 export const VehicleInfo: FC<VehicleInfoProps> = ({
   vehicle,
 }) => {
-  const attachedMods = useAttachedGear(vehicle.id)
-
   const autosofts = useGearOfType<AutosoftData>(GearType.autosoft)
     .filter(gear => gear.attachedTo === vehicle.id || vehicle.slavedAutosofts?.includes(gear.id))
 
   const rcc = useGear<RccData>(vehicle.slavedTo)
 
-  const physicalMax = Math.ceil(vehicle.body / 2) + 8
+  const physicalMax = Math.ceil(vehicle.attributes.body.value / 2) + 8
 
-  const attributes: AttributeData[] = [
+  const attributes: AttributeList = {
     ...useAttributes(),
-    { name: VehicleAttribute.body, value: vehicle.body },
-    { name: VehicleAttribute.armor, value: vehicle.armor },
-    { name: VehicleAttribute.pilot, value: vehicle.pilot },
-    { name: VehicleAttribute.sensor, value: vehicle.sensor },
-  ]
+    ...vehicle.attributes,
+  }
 
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>
-      <GearHeader gear={vehicle} />
+      <GearHeader item={vehicle} />
+      <GearAttributes item={vehicle} />
 
       <AttributeProvider attributes={attributes}>
         <AutosoftProvider autosofts={autosofts}>
-          <Box sx={{ padding: 1 }}>
-            <StatBlock>
-              <HandlingStat handling={vehicle.handling} />
-              <Stat name={'Accel'} value={vehicle.accel} />
-              <Stat name={'Speed Interval'} value={vehicle.speedInterval} />
-              <Stat name={'Top Speed'} value={vehicle.topSpeed} />
-              <Stat name={'Body'} value={vehicle.body} />
-              <Stat name={'Armor'} value={vehicle.armor} />
-              <Stat name={'Pilot'} value={vehicle.pilot} />
-              <Stat name={'Sensor'} value={vehicle.sensor} />
-              <Stat name={'Seat'} value={vehicle.seat} />
-            </StatBlock>
-          </Box>
-
           <Box sx={{ display: 'flex' }}>
             <Box sx={{ flexGrow: 1 }}>
               {rcc && (
                 <Box sx={{ padding: 1 }}>
                   <Typography variant={'h6'}>Slaved To</Typography>
                   <Typography>{rcc.name}</Typography>
-                  <RccStatBlock rcc={rcc} />
+                  <GearAttributes item={rcc} />
                 </Box>
               )}
 
@@ -93,7 +72,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
             </Box>
           </Box>
 
-          <NestedGear gear={attachedMods} />
+          <NestedGear item={vehicle} />
         </AutosoftProvider>
       </AttributeProvider>
     </Paper>

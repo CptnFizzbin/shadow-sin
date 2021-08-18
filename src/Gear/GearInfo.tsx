@@ -8,32 +8,31 @@ import { AutosoftData } from './Software/Autosoft/AutosoftData'
 import { AutosoftInfo } from './Software/Autosoft/AutosoftInfo'
 import { VehicleData } from './Vehicles/VehicleData'
 import { VehicleInfo } from './Vehicles/VehicleInfo'
-import { VehicleModData } from './Vehicles/VehicleModData'
-import { VehicleModInfo } from './Vehicles/VehicleModInfo'
 import { FirearmInfo } from './Weapons/Firearms/FirearmInfo'
 import { WeaponData } from './Weapons/WeaponData'
 
 interface GearInfoProps {
-  gear: GearData
+  item: GearData
 }
 
 export const GearInfo: FC<GearInfoProps> = ({
-  gear,
+  item,
 }) => {
-  switch (gear.gearType) {
+  switch (item.gearType) {
   case GearType.weapon:
-    return <FirearmInfo firearm={gear as WeaponData} />
+    return <FirearmInfo firearm={item as WeaponData} />
   case GearType.autosoft:
-    return <AutosoftInfo autosoft={gear as AutosoftData} />
+    return <AutosoftInfo autosoft={item as AutosoftData} />
   case GearType.drone:
   case GearType.vehicle:
-    return <VehicleInfo vehicle={gear as VehicleData} />
-  case GearType.vehicleMod:
-    return <VehicleModInfo mod={gear as VehicleModData} />
+    return <VehicleInfo vehicle={item as VehicleData} />
   case GearType.rcc:
-    return <RccInfo rcc={gear as RccData} />
+    return <RccInfo rcc={item as RccData} />
   case GearType.other:
   default:
-    return <DefaultGearInfo gear={gear} />
+    return <DefaultGearInfo item={item} />
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type GearInfoBlock<Props = {}> = FC<GearInfoProps & Props>

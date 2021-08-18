@@ -1,38 +1,32 @@
 import { Chip, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
-import { FC } from 'react'
 
 import { StatBlock } from '../UI/StatBlock'
-import { GearData } from './GearData'
+import { GearInfoBlock } from './GearInfo'
 import { AvailabilityStat, CostStat } from './Stats'
 
-interface GearHeaderProps {
-  gear: GearData
-  type?: string
-}
-
-export const GearHeader: FC<GearHeaderProps> = ({
-  gear,
+export const GearHeader: GearInfoBlock<{ type?: string }> = ({
+  item,
   type,
 }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ padding: 1, flexGrow: 1 }}>
-        <Typography variant="h5" sx={{ display: 'inline-block', color: 'primary.main' }}>{gear.name}</Typography>
-        {gear?.quantity && (
+        <Typography variant="h5" sx={{ display: 'inline-block', color: 'primary.main' }}>{item.name}</Typography>
+        {item?.quantity && (
           <Chip
             variant="outlined" color="primary" size="small"
             sx={{ verticalAlign: 'top', marginLeft: 1 }}
-            label={`x${gear.quantity}`}
+            label={`x${item.quantity}`}
           />
         )}
-        <Typography variant="subtitle1">{type || gear.type}</Typography>
+        <Typography variant="subtitle1">{type || item.type}</Typography>
       </Box>
 
       <Box sx={{ padding: 1 }}>
         <StatBlock>
-          <AvailabilityStat avail={gear.avail} />
-          <CostStat cost={gear.cost} />
+          <AvailabilityStat avail={item.avail} />
+          <CostStat cost={item.cost} />
         </StatBlock>
       </Box>
     </Box>

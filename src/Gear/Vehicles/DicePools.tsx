@@ -1,6 +1,5 @@
 import { FC } from 'react'
 
-import { CharacterAttribute } from '../../Character/CharacterAttribute'
 import { useSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
@@ -19,19 +18,19 @@ export const PilotEvadePool: VehicleDicePool = () => {
   const evasionAutosoft = useAutosoft(AutosoftType.evasion)
   const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
 
-  const groups: DiceGroup[] = []
-  groups.push({ name: 'Piloting', size: maneuveringAutosoft?.rating })
-  groups.push({ name: 'Evasion', size: evasionAutosoft?.rating })
+  const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes.rating.value : 0
+  const evasion: number = evasionAutosoft ? evasionAutosoft.attributes.rating.value : 0
 
-  return <DicePool
-    name={'Pilot Evade'}
-    groups={groups}
-  />
+  const groups: DiceGroup[] = []
+  groups.push({ name: 'Piloting', size: piloting })
+  groups.push({ name: 'Evasion', size: evasion })
+
+  return <DicePool name={'Pilot Evade'} groups={groups} />
 }
 
 export const RiggedEvadePool: VehicleDicePool = () => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
-  const reactionAttr = useAttribute(CharacterAttribute.reaction)
+  const reactionAttr = useAttribute<number>('reaction')
 
   const groups: DiceGroup[] = []
   groups.push({ name: 'Piloting', size: pilotingSkill?.rank })

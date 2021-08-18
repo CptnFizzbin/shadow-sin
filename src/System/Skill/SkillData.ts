@@ -1,5 +1,3 @@
-import { CharacterAttribute } from '../../Character/CharacterAttribute'
-
 export type SkillId = string;
 
 export enum SkillType {
@@ -17,8 +15,8 @@ export interface BasicSkillData {
 export interface ActiveSkillData extends BasicSkillData {
   type: SkillType.active
   rank: number
-  attr: CharacterAttribute
-  altAttr?: CharacterAttribute
+  attr: string
+  altAttr?: string
   speciality: string | null
   expertise: string | null
 }

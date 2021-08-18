@@ -15,18 +15,18 @@ const Artemis: CharacterData = {
   karma: 7,
   nuyen: 14_420,
 
-  attributes: [
-    { name: CharacterAttribute.body, value: 1 },
-    { name: CharacterAttribute.agility, value: 3 },
-    { name: CharacterAttribute.reaction, value: 1 },
-    { name: CharacterAttribute.strength, value: 1 },
-    { name: CharacterAttribute.willpower, value: 2 },
-    { name: CharacterAttribute.logic, value: 7 },
-    { name: CharacterAttribute.intuition, value: 5 },
-    { name: CharacterAttribute.charisma, value: 2 },
-    { name: CharacterAttribute.edge, value: 4 },
-    { name: CharacterAttribute.essence, value: 2.1 },
-  ],
+  attributes: {
+    body: { name: 'Body', value: 1 },
+    agility: { name: 'Agility', value: 3 },
+    reaction: { name: 'Reaction', value: 1 },
+    strength: { name: 'Strength', value: 1 },
+    willpower: { name: 'Willpower', value: 2 },
+    logic: { name: 'Logic', value: 7 },
+    intuition: { name: 'Intuition', value: 5 },
+    charisma: { name: 'Charisma', value: 2 },
+    edge: { name: 'Edge', value: 4 },
+    essence: { name: 'Essence', value: 2.1 },
+  },
 
   skills: [
     {
@@ -138,12 +138,14 @@ addGear<WeaponData>({
   specialtyName: 'pistols',
   name: 'Ares Crusader II',
   type: 'Machine Pistol',
-  dv: { value: 2, type: 'P' },
-  modes: ['SA', 'BF'],
-  attackRatings: [9, 9, 7, '-', '-'],
-  ammo: { size: 40, type: 'c' },
   avail: { rarity: 5, license: true },
   cost: 520,
+  attributes: {
+    dv: { name: 'DV', value: '2P' },
+    modes: { name: 'Modes', value: 'SA/BF' },
+    attackRatings: { name: 'Atk. Ratings', value: '9/9/7/-/-' },
+    ammo: { name: 'Ammo', value: '40(c)' },
+  },
 })
 
 const rcc: RccData = addGear({
@@ -153,9 +155,12 @@ const rcc: RccData = addGear({
   type: 'RCC',
   avail: { rarity: 6, license: true },
   cost: 68_000,
-  deviceRating: 5,
-  dataProcessing: 5,
-  firewall: 5,
+
+  attributes: {
+    deviceRating: { name: 'Device Rating', value: 5 },
+    dataProcessing: { name: 'Data Processing', value: 5 },
+    firewall: { name: 'Firewall', value: 5 },
+  },
 })
 
 const autosofts: AutosoftData[] = [
@@ -166,10 +171,13 @@ const autosofts: AutosoftData[] = [
     type: AutosoftType.targeting,
     avail: { rarity: 8 },
     cost: 4_000,
-    rating: 8,
-    weapon: 'FN-HAR',
-    attr: 'Sensor',
     attachedTo: rcc.id,
+
+    attributes: {
+      rating: { name: 'Rating', value: 8 },
+      weapon: { name: 'Weapon', value: 'FN-HAR' },
+      attr: { name: 'Attr', value: 'Sensor' },
+    },
   }),
   addGear({
     id: null,
@@ -178,10 +186,13 @@ const autosofts: AutosoftData[] = [
     type: AutosoftType.clearsight,
     avail: { rarity: 7 },
     cost: 3_500,
-    rating: 7,
-    skill: 'Perception',
-    attr: 'Sensor',
     attachedTo: rcc.id,
+
+    attributes: {
+      rating: { name: 'Rating', value: 7 },
+      skill: { name: 'Skill', value: 'Perception' },
+      attr: { name: 'Attr', value: 'Sensor' },
+    },
   }),
   addGear({
     id: null,
@@ -190,10 +201,13 @@ const autosofts: AutosoftData[] = [
     type: AutosoftType.evasion,
     avail: { rarity: 5 },
     cost: 2_500,
-    rating: 5,
-    skill: 'Evasion',
-    attr: 'Pilot',
     attachedTo: rcc.id,
+
+    attributes: {
+      rating: { name: 'Rating', value: 5 },
+      skill: { name: 'Skill', value: 'Evasion' },
+      attr: { name: 'Attr', value: 'Pilot' },
+    },
   }),
   addGear({
     id: null,
@@ -202,10 +216,13 @@ const autosofts: AutosoftData[] = [
     type: AutosoftType.maneuvering,
     avail: { rarity: 5 },
     cost: 2_500,
-    rating: 5,
-    skill: 'Piloting',
-    attr: 'Pilot',
     attachedTo: rcc.id,
+
+    attributes: {
+      rating: { name: 'Rating', value: 5 },
+      skill: { name: 'Skill', value: 'Piloting' },
+      attr: { name: 'Attr', value: 'Pilot' },
+    },
   }),
   addGear({
     id: null,
@@ -214,10 +231,13 @@ const autosofts: AutosoftData[] = [
     type: AutosoftType.electronicWarfare,
     avail: { rarity: 7 },
     cost: 3_500,
-    rating: 7,
-    skill: 'Cracking',
-    attr: 'Sensor',
     attachedTo: rcc.id,
+
+    attributes: {
+      rating: { name: 'Rating', value: 7 },
+      skill: { name: 'Skill', value: 'Cracking' },
+      attr: { name: 'Attr', value: 'Sensor' },
+    },
   }),
 ]
 
@@ -226,14 +246,17 @@ const fnHar: WeaponData = {
   gearType: GearType.weapon,
   name: 'FN-HAR',
   type: 'Rifle',
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'Automatics',
-  dv: { value: 5, type: 'P' },
-  modes: ['SA', 'BF', 'FA'],
-  attackRatings: [3, 11, 10, 6, 1],
-  ammo: { size: 35, type: 'c' },
   avail: { rarity: 3, license: true },
   cost: 2_100,
+  attributes: {
+    dv: { name: 'DV', value: '5P' },
+    modes: { name: 'Modes', value: 'SA/BF/FA' },
+    attackRatings: { name: 'Atk. Ratings', value: '3/11/10/6/1' },
+    ammo: { name: 'Ammo', value: '35(c)' },
+  },
+
+  specialtySkill: ActiveSkillId.firearms,
+  specialtyName: 'Automatics',
 }
 
 addGear(fnHar)
@@ -263,15 +286,19 @@ const car: VehicleData = addGear({
   type: 'vehicle',
   cost: 5_000,
   avail: { rarity: 2 },
-  handling: [4, 5],
-  accel: 12,
-  speedInterval: 20,
-  topSpeed: 160,
-  body: 16,
-  armor: 10,
-  pilot: 4,
-  sensor: 4,
-  seat: 7,
+
+  attributes: {
+    handling: { name: 'Handling', value: '4/5' },
+    accel: { name: 'Accel', value: 12 },
+    speedInterval: { name: 'Speed Interval', value: 20 },
+    topSpeed: { name: 'Top Speed', value: 160 },
+    body: { name: 'Body', value: 16 },
+    armor: { name: 'Armor', value: 10 },
+    pilot: { name: 'Pilot', value: 4 },
+    sensor: { name: 'Sensor', value: 4 },
+    seat: { name: 'Seat', value: 7 },
+  },
+
   slavedTo: rcc.id,
   slavedAutosofts: autosofts.map(gear => gear.id),
 })
@@ -286,15 +313,19 @@ new Array(2).fill(null).forEach((_, index) => {
     name: `MCT-Nissan Roto-drone ${index + 1}`,
     cost: 5_000,
     avail: { rarity: 2 },
-    handling: 3,
-    accel: 20,
-    speedInterval: 30,
-    topSpeed: 160,
-    body: 5,
-    armor: 6,
-    pilot: 3,
-    sensor: 2,
-    seat: null,
+
+    attributes: {
+      handling: { name: 'Handling', value: 3 },
+      accel: { name: 'Accel', value: 20 },
+      speedInterval: { name: 'Speed Interval', value: 30 },
+      topSpeed: { name: 'Top Speed', value: 160 },
+      body: { name: 'Body', value: 5 },
+      armor: { name: 'Armor', value: 6 },
+      pilot: { name: 'Pilot', value: 3 },
+      sensor: { name: 'Sensor', value: 2 },
+      seat: { name: 'Seat', value: null },
+    },
+
     slavedTo: rcc.id,
     slavedAutosofts: autosofts.map(gear => gear.id),
   })
@@ -324,15 +355,19 @@ new Array(4).fill(null).forEach((_, index) => {
     name: `Aztech Crawler ${index + 1}`,
     cost: 4_500,
     avail: { rarity: 2 },
-    handling: [3, 4],
-    accel: 8,
-    speedInterval: 10,
-    topSpeed: 30,
-    body: 6,
-    armor: 2,
-    pilot: 2,
-    sensor: 2,
-    seat: null,
+
+    attributes: {
+      handling: { name: 'Handling', value: '3/4' },
+      accel: { name: 'Accel', value: 8 },
+      speedInterval: { name: 'Speed Interval', value: 10 },
+      topSpeed: { name: 'Top Speed', value: 30 },
+      body: { name: 'Body', value: 6 },
+      armor: { name: 'Armor', value: 2 },
+      pilot: { name: 'Pilot', value: 2 },
+      sensor: { name: 'Sensor', value: 2 },
+      seat: { name: 'Seat', value: null },
+    },
+
     slavedTo: rcc.id,
     slavedAutosofts: autosofts.map(gear => gear.id),
   })
@@ -362,15 +397,19 @@ new Array(1).fill(null).forEach((_, index) => {
     name: `Cyberspace Designs Quadrotor ${index + 1}`,
     cost: 5_000,
     avail: { rarity: 2 },
-    handling: 2,
-    accel: 15,
-    speedInterval: 20,
-    topSpeed: 120,
-    body: 3,
-    armor: 1,
-    pilot: 3,
-    sensor: 2,
-    seat: null,
+
+    attributes: {
+      handling: { name: 'Handling', value: 2 },
+      accel: { name: 'Accel', value: 15 },
+      speedInterval: { name: 'Speed Interval', value: 20 },
+      topSpeed: { name: 'Top Speed', value: 120 },
+      body: { name: 'Body', value: 3 },
+      armor: { name: 'Armor', value: 1 },
+      pilot: { name: 'Pilot', value: 3 },
+      sensor: { name: 'Sensor', value: 2 },
+      seat: { name: 'Seat', value: null },
+    },
+
     slavedTo: rcc.id,
     slavedAutosofts: autosofts.map(gear => gear.id),
   })

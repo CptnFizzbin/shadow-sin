@@ -1,12 +1,14 @@
+import { AttributeData } from '../../System/Attribute'
 import { GearData } from '../GearData'
-import { Ammo, FireMode } from './Firearms/Stats'
-import { AttackRating, DamageValue } from './Stats'
 
 export interface WeaponData extends GearData {
-  dv: DamageValue
-  attackRatings: AttackRating[]
+  attributes: {
+    dv: AttributeData<string>
+    attackRatings: AttributeData<string>
+    modes?: AttributeData<string>
+    ammo?: AttributeData<string>
+  }
+
   specialtySkill: string
   specialtyName: string
-  modes?: FireMode[]
-  ammo?: Ammo
 }

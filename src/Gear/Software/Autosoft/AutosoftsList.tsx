@@ -28,22 +28,39 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {autosofts.map(soft => (
-          <TableRow key={soft.id}>
-            <TableCell>
-              {slavedIds?.includes(soft.id) && (
-                <ScreenShareIcon fontSize={'small'} sx={{ verticalAlign: 'text-bottom', marginRight: 1}} />
-              )}
-              {soft.name}
-            </TableCell>
-            <TableCell>{soft.rating}</TableCell>
-            <TableCell>{soft.skill || soft.weapon}</TableCell>
-            <TableCell>{soft.attr}</TableCell>
-            <TableCell><AvailabilityDisplay avail={soft.avail} /></TableCell>
-            <TableCell><CostDisplay cost={soft.cost} /></TableCell>
-          </TableRow>
-        ))}
+        {autosofts.map(autosoft => <AutosoftListItem key={autosoft.id} autosoft={autosoft} slavedIds={slavedIds} />)}
       </TableBody>
     </Table>
+  )
+}
+
+interface AutosoftListItemProps {
+  autosoft: AutosoftData
+  slavedIds?: GearId[]
+}
+
+const AutosoftListItem: FC<AutosoftListItemProps> = ({
+  autosoft,
+  slavedIds,
+}) => {
+  const rating = autosoft.attributes.rating.value
+  const skill = autosoft.attributes.rating.value
+  const weapon = autosoft.attributes.rating.value
+  const attr = autosoft.attributes.rating.value
+
+  return (
+    <TableRow key={autosoft.id}>
+      <TableCell>
+        {slavedIds?.includes(autosoft.id) && (
+          <ScreenShareIcon fontSize={'small'} sx={{ verticalAlign: 'text-bottom', marginRight: 1 }} />
+        )}
+        {autosoft.name}
+      </TableCell>
+      <TableCell>{rating}</TableCell>
+      <TableCell>{skill || weapon}</TableCell>
+      <TableCell>{attr}</TableCell>
+      <TableCell><AvailabilityDisplay avail={autosoft.avail} /></TableCell>
+      <TableCell><CostDisplay cost={autosoft.cost} /></TableCell>
+    </TableRow>
   )
 }

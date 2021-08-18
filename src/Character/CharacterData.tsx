@@ -18,7 +18,20 @@ export interface CharacterData {
   karma: number
   misc?: string
 
-  attributes: AttributeData[]
+  attributes: {
+    body: AttributeData<number>
+    agility: AttributeData<number>
+    reaction: AttributeData<number>
+    strength: AttributeData<number>
+    willpower: AttributeData<number>
+    logic: AttributeData<number>
+    intuition: AttributeData<number>
+    charisma: AttributeData<number>
+    edge: AttributeData<number>
+    essence: AttributeData<number>
+    magic?: AttributeData<number>
+    resonance?: AttributeData<number>
+  }
 
   skills: SkillData[]
 

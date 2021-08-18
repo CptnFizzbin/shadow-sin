@@ -3,9 +3,15 @@ import { FC } from 'react'
 import { toTitleCase } from '../Helpers'
 import { Stat } from '../UI/StatBlock'
 
-export interface AttributeData {
+export type AttributeValue = number | string | null
+
+export interface AttributeList {
+  [type: string]: AttributeData
+}
+
+export type AttributeData<T extends AttributeValue = AttributeValue> = {
   name: string
-  value: number
+  value: T
 }
 
 interface AttributeStatProps {

@@ -1,21 +1,25 @@
 import { Paper } from '@material-ui/core'
-import React, { FC } from 'react'
 
-import { GearData } from './GearData'
+import { AttributeProvider, useAttributes } from '../System/AttributeProvider'
+import { useAttachedGear } from './GearContext'
+import { GearInfoBlock } from './GearInfo'
 import { GearList } from './GearList'
 
-interface NestedGearProps {
-  gear: GearData[]
-}
-
-export const NestedGear: FC<NestedGearProps> = ({
-  gear,
+export const NestedGear: GearInfoBlock = ({
+  item,
 }) => {
-  if (gear.length === 0) return null
+  const attachedGear = useAttachedGear(item.id)
+
+  const attributes = {
+    ...useAttributes(),
+    ...item.attributes,
+  }
 
   return (
     <Paper variant="outlined" sx={{ padding: 1 }}>
-      <GearList gear={gear} />
+      <AttributeProvider attributes={attributes}>
+        <GearList gear={attachedGear} />
+      </AttributeProvider>
     </Paper>
   )
 }

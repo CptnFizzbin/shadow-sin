@@ -1,13 +1,11 @@
 import { FC } from 'react'
 
-import { CharacterAttribute } from '../../../Character/CharacterAttribute'
 import { useSkill } from '../../../Character/CharacterProvider'
-import { useAttribute } from '../../../System/AttributeProvider'
+import { useAttributeValue } from '../../../System/AttributeProvider'
 import { hasExpertise, hasSpecialty } from '../../../System/Skill/Helpers'
 import { ActiveSkillData, ActiveSkillId } from '../../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../../UI/DicePool'
 import { useTargetingAutosoft } from '../../Software/Autosoft/AutosoftProvider'
-import { VehicleAttribute } from '../../Vehicles/VehicleAttribute'
 import { WeaponData } from '../WeaponData'
 
 interface FirearmPoolProps {
@@ -15,11 +13,11 @@ interface FirearmPoolProps {
 }
 
 export const BasicAttackPool: FC<FirearmPoolProps> = ({ weapon }) => {
-  const agilityAttr = useAttribute(CharacterAttribute.agility)
+  const agility = useAttributeValue<number>('agility', 0)
   const firearmsSkill = useSkill<ActiveSkillData>(ActiveSkillId.firearms)
 
   const groups: DiceGroup[] = []
-  groups.push({ name: 'Agility', size: agilityAttr?.value })
+  groups.push({ name: 'Agility', size: agility })
   groups.push({ name: 'Firearms', size: firearmsSkill?.rank })
 
   if (hasSpecialty(firearmsSkill, weapon.specialtyName)) {
@@ -37,39 +35,43 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({ weapon }) => {
 }
 
 export const DroneAttackPool: FC<FirearmPoolProps> = ({ weapon }) => {
-  const sensorAttr = useAttribute(VehicleAttribute.sensor)
+  const sensor = useAttributeValue<number>('sensor', 0)
   const targetingAutosoft = useTargetingAutosoft(weapon.name)
+
+  const targeting = targetingAutosoft
+    ? targetingAutosoft.attributes.rating.value
+    : -1
 
   return <DicePool
     name={'Drone Attack'}
     groups={[
-      { name: 'Sensor', size: sensorAttr?.value },
-      { name: 'Targeting', size: targetingAutosoft?.rating, default: -1 },
+      { name: 'Sensor', size: sensor },
+      { name: 'Targeting', size: targeting },
     ]}
   />
 }
 
 export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
-  const logicAttr = useAttribute(CharacterAttribute.logic)
+  const logic = useAttributeValue<number>('logic', 0)
   const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
   return <DicePool
     name={'Vehicle Attack'}
     groups={[
-      { name: 'Logic', size: logicAttr?.value },
+      { name: 'Logic', size: logic },
       { name: 'Engineering', size: engineeringSkill?.rank },
     ]}
   />
 }
 
 export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
-  const logicAttr = useAttribute(CharacterAttribute.logic)
+  const logicAttr = useAttributeValue<number>('logic', 0)
   const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
   return <DicePool
     name={'Rigged Attack'}
     groups={[
-      { name: 'Logic', size: logicAttr?.value },
+      { name: 'Logic', size: logicAttr },
       { name: 'Engineering', size: engineeringSkill?.rank },
     ]}
   />

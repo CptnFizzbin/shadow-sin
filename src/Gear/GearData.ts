@@ -1,15 +1,17 @@
+import { AttributeList } from '../System/Attribute'
 import { Availability, Cost } from './Stats'
 
 export type GearId = number | null;
 
 export enum GearType {
-  other,
-  drone,
-  weapon,
-  vehicle,
-  vehicleMod,
-  autosoft,
-  rcc,
+  other = 'other',
+  drone = 'drone',
+  weapon = 'weapon',
+  vehicle = 'vehicle',
+  vehicleMod = 'vehicleMod',
+  autosoft = 'autosoft',
+  rcc = 'rcc',
+  augment = 'augment',
 }
 
 export interface GearData {
@@ -19,9 +21,8 @@ export interface GearData {
   type: string
   avail: Availability
   cost: Cost
-  stats?: {
-    [key: string]: string | number | null
-  }
+
+  attributes?: AttributeList
   attachedTo?: GearId
 
   [key: string]: unknown

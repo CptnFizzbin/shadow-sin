@@ -15,7 +15,7 @@ export const GearList: FC<GearListProps> = ({
     <>
       {gear.map((gear, index) => (
         <Box key={gear.id} sx={{ paddingTop: index === 0 ? 0 : 1 }}>
-          <GearInfo gear={gear} />
+          <GearInfo item={gear} />
         </Box>
       ))}
     </>
