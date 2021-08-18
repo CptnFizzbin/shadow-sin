@@ -28,7 +28,6 @@ export const GearInfo: FC<GearInfoProps> = ({
     return <VehicleInfo vehicle={item as VehicleData} />
   case GearType.rcc:
     return <RccInfo rcc={item as RccData} />
-  case GearType.other:
   default:
     return <DefaultGearInfo item={item} />
   }

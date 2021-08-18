@@ -44,9 +44,9 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
   slavedIds,
 }) => {
   const rating = autosoft.attributes.rating.value
-  const skill = autosoft.attributes.rating.value
-  const weapon = autosoft.attributes.rating.value
-  const attr = autosoft.attributes.rating.value
+  const skill = autosoft.attributes.skill?.value
+  const weapon = autosoft.attributes.weapon?.value
+  const attr = autosoft.attributes.attr.value
 
   return (
     <TableRow key={autosoft.id}>
