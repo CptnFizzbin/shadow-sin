@@ -9,11 +9,12 @@ export const NestedGear: GearInfoBlock = ({
   item,
 }) => {
   const attachedGear = useAttachedGear(item.id)
-
   const attributes = {
     ...useAttributes(),
     ...item.attributes,
   }
+
+  if (attachedGear.length === 0) return null
 
   return (
     <Paper variant="outlined" sx={{ padding: 1 }}>
