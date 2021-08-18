@@ -1,4 +1,3 @@
-import { CharacterAttribute } from '../Character/CharacterAttribute'
 import { CharacterData } from '../Character/CharacterData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccData } from '../Gear/Rigger/RccData'
@@ -34,7 +33,7 @@ const Artemis: CharacterData = {
       id: ActiveSkillId.firearms,
       name: 'Firearms',
       rank: 3,
-      attr: CharacterAttribute.agility,
+      attr: 'agility',
       speciality: 'Automatics',
       expertise: null,
     },
@@ -43,7 +42,7 @@ const Artemis: CharacterData = {
       id: ActiveSkillId.electronics,
       name: 'Electronics',
       rank: 4,
-      attr: CharacterAttribute.logic,
+      attr: 'logic',
       speciality: null,
       expertise: null,
     },
@@ -52,8 +51,8 @@ const Artemis: CharacterData = {
       id: ActiveSkillId.cracking,
       name: 'Cracking',
       rank: 3,
-      attr: CharacterAttribute.logic,
-      altAttr: CharacterAttribute.intuition,
+      attr: 'logic',
+      altAttr: 'intuition',
       speciality: null,
       expertise: null,
     },
@@ -62,7 +61,7 @@ const Artemis: CharacterData = {
       id: ActiveSkillId.piloting,
       name: 'Piloting',
       rank: 6,
-      attr: CharacterAttribute.logic,
+      attr: 'logic',
       speciality: 'Ground Craft',
       expertise: null,
     },
@@ -71,8 +70,8 @@ const Artemis: CharacterData = {
       id: ActiveSkillId.engineering,
       name: 'Engineering',
       rank: 5,
-      attr: CharacterAttribute.logic,
-      altAttr: CharacterAttribute.intuition,
+      attr: 'logic',
+      altAttr: 'intuition',
       speciality: null,
       expertise: null,
     },
