@@ -91,20 +91,6 @@ export function useAllGear (): GearData[] {
   return gear
 }
 
-export function useParentGear (gearId: GearId | undefined): GearData[] {
-  const allGear = useAllGear()
-  const parentGear: GearData[] = []
-
-  let curGear = allGear.find(gear => gear.id === gearId)
-  while (curGear && curGear.attachedTo) {
-    const parentId = curGear?.attachedTo
-    curGear = allGear.find(gear => gear.id === parentId)
-    if (curGear) parentGear.push(curGear)
-  }
-
-  return parentGear
-}
-
 export function useGear<T extends GearData> (gearId: GearId | undefined): T | undefined {
   const allGear = useAllGear()
 
@@ -119,9 +105,8 @@ interface GearHookOptions {
   filter? (gear: GearData): boolean
 }
 
-export function useAttachedGear<T extends GearData> (gearId: GearId, options: GearHookOptions = {}): T[] {
-  let gear = useAllGear()
-    .filter(gear => gear.attachedTo === gearId)
+export function useAttachedGear<T extends GearData = GearData> (gearId: GearId, options: GearHookOptions = {}): T[] {
+  let gear = useFilterGear(gear => gear.attachedTo === gearId)
 
   if (options.type) {
     gear = gear.filter(gear => gear.gearType === options.type)
@@ -134,6 +119,17 @@ export function useAttachedGear<T extends GearData> (gearId: GearId, options: Ge
   return gear.map(gear => gear as T)
 }
 
-export function useGearOfType<T extends GearData> (gearType: GearType): T[] {
-  return useAllGear().filter(gear => gear.gearType === gearType).map(gear => gear as T)
+export function useGearOfType<T extends GearData = GearData> (gearType: GearType): T[] {
+  return useFilterGear<T>(gear => gear.gearType === gearType)
+}
+
+type GearFilter = (gear: GearData) => boolean
+
+export function useFindGear<T extends GearData = GearData> (filter: GearFilter): T | undefined {
+  const foundGear = useAllGear().find(filter)
+  return foundGear ? foundGear as T : undefined
+}
+
+export function useFilterGear<T extends GearData = GearData> (filter: GearFilter): T[] {
+  return useAllGear().filter(filter).map(gear => gear as T)
 }

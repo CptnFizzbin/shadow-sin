@@ -1,9 +1,11 @@
 import { FC } from 'react'
 
 import { useSkill } from '../../Character/CharacterProvider'
-import { useAttribute } from '../../System/AttributeProvider'
+import { useAttributeValue } from '../../System/AttributeProvider'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
+import { ControlRigData, HeadwearTypes } from '../Augments/HeadwearData'
+import { useFindGear } from '../GearContext'
 import { AutosoftType } from '../Software/Autosoft/AutosoftData'
 import { useAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleData } from './VehicleData'
@@ -30,14 +32,16 @@ export const PilotEvadePool: VehicleDicePool = () => {
 
 export const RiggedEvadePool: VehicleDicePool = () => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
-  const reactionAttr = useAttribute<number>('reaction')
+  const intuition = useAttributeValue<number>('intuition', 0)
 
-  const groups: DiceGroup[] = []
-  groups.push({ name: 'Piloting', size: pilotingSkill?.rank })
-  groups.push({ name: 'Reaction', size: reactionAttr?.value })
+  const controlRig = useFindGear<ControlRigData>(gear => gear.type === HeadwearTypes.controlRig)
+  if (!controlRig) return null
 
-  return <DicePool
-    name={'Rigged Evade'}
-    groups={groups}
-  />
+  const groups: DiceGroup[] = [
+    { name: 'Piloting', size: pilotingSkill?.rank },
+    { name: 'Intuition', size: intuition },
+    { name: 'Control Rig', size: controlRig.attributes.rating.value },
+  ]
+
+  return <DicePool name={'Rigged Evade'} groups={groups} />
 }

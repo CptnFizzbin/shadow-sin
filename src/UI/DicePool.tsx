@@ -1,7 +1,5 @@
-import { Avatar, Box, Chip, Paper } from '@material-ui/core'
+import { Box, Paper } from '@material-ui/core'
 import { FC } from 'react'
-
-import { toTitleCase } from '../Helpers'
 
 export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
   return {
@@ -31,7 +29,7 @@ interface DicePoolProps {
 export const DicePools: FC = ({
   children,
 }) => {
-  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex'}}>{children}</Paper>
+  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex' }}>{children}</Paper>
 }
 
 export const DicePool: FC<DicePoolProps> = ({
@@ -42,13 +40,9 @@ export const DicePool: FC<DicePoolProps> = ({
 
   return (
     <Paper sx={{ display: 'inline-flex', padding: 1, flexDirection: 'column' }}>
-      <Box sx={{ padding: 0.5 }}>
-        <DiceGroupDisplay name={name} size={total} />
-      </Box>
+      <DiceGroupDisplay name={name} size={total} total />
       {groups.map(group => (
-        <Box key={group.name} sx={{ padding: 0.5 }}>
-          <DiceGroupDisplay name={group.name} size={group.size || group.default || 0} outlined small />
-        </Box>
+        <DiceGroupDisplay key={group.name} name={group.name} size={group.size || group.default || 0} />
       ))}
     </Paper>
   )
@@ -57,22 +51,21 @@ export const DicePool: FC<DicePoolProps> = ({
 interface DiceGroupDisplayProps {
   name: string
   size: number
-  outlined?: boolean
-  small?: boolean
+  total?: boolean
 }
 
 const DiceGroupDisplay: FC<DiceGroupDisplayProps> = ({
   name,
   size,
-  outlined = false,
-  small,
+  total,
 }) => {
+  const sizeStyles = { display: 'inline-block', padding: 0.5, width: 30, textAlign: 'center' } as const
+  const nameStyles = { display: 'inline-block', padding: 0.5, marginRight: 1 } as const
+
   return (
-    <Chip
-      avatar={<Avatar>{size}</Avatar>}
-      label={toTitleCase(name)}
-      variant={outlined ? 'outlined' : undefined}
-      size={small ? 'small' : undefined}
-    />
+    <Box sx={{ display: 'flex', fontSize: total ? 14 : 12, backgroundColor: total ? '#424242' : undefined }}>
+      <Box sx={sizeStyles}>{size}</Box>
+      <Box sx={nameStyles}>{name}</Box>
+    </Box>
   )
 }

@@ -5,6 +5,8 @@ import { useAttributeValue } from '../../../System/AttributeProvider'
 import { hasExpertise, hasSpecialty } from '../../../System/Skill/Helpers'
 import { ActiveSkillData, ActiveSkillId } from '../../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../../UI/DicePool'
+import { ControlRigData, HeadwearTypes } from '../../Augments/HeadwearData'
+import { useFindGear } from '../../GearContext'
 import { useTargetingAutosoft } from '../../Software/Autosoft/AutosoftProvider'
 import { WeaponData } from '../WeaponData'
 
@@ -68,11 +70,15 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
   const logicAttr = useAttributeValue<number>('logic', 0)
   const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
+  const controlRig = useFindGear<ControlRigData>(gear => gear.type === HeadwearTypes.controlRig)
+  if (!controlRig) return null
+
   return <DicePool
     name={'Rigged Attack'}
     groups={[
       { name: 'Logic', size: logicAttr },
       { name: 'Engineering', size: engineeringSkill?.rank },
+      { name: 'Control Rig', size: controlRig.attributes.rating.value },
     ]}
   />
 }

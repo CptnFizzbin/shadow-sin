@@ -1,4 +1,6 @@
 import { CharacterData } from '../Character/CharacterData'
+import { AugmentGrade, AugmentType } from '../Gear/Augments/AugmentData'
+import { ControlRigData, HeadwearTypes } from '../Gear/Augments/HeadwearData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccData } from '../Gear/Rigger/RccData'
 import { AutosoftData, AutosoftType } from '../Gear/Software/Autosoft/AutosoftData'
@@ -129,6 +131,21 @@ function addGear<T extends GearData> (gear: T): T {
   Artemis.gear.push(gear)
   return gear
 }
+
+addGear<ControlRigData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Control Rig',
+  type: HeadwearTypes.controlRig,
+  augmentType: AugmentType.headware,
+  avail: { rarity: 3, license: true },
+  cost: 60_000,
+
+  attributes: {
+    rating: { name: 'Rating', value: 2 },
+    grade: { name: 'Grade', value: AugmentGrade.used },
+  },
+})
 
 addGear<WeaponData>({
   id: null,
