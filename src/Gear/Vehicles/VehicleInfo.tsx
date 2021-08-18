@@ -5,6 +5,7 @@ import { FC } from 'react'
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
 import { AttributeList } from '../../System/Attribute'
 import { AttributeProvider, useAttributes } from '../../System/AttributeProvider'
+import { AttributeBlock } from '../../UI/AttributeBlock'
 import { DicePools } from '../../UI/DicePool'
 import { GearAttributes } from '../GearAttributes'
 import { useGear, useGearOfType } from '../GearContext'
@@ -50,7 +51,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
                 <Box sx={{ padding: 1 }}>
                   <Typography variant={'h6'}>Slaved To</Typography>
                   <Typography>{rcc.name}</Typography>
-                  <GearAttributes item={rcc} />
+                  <AttributeBlock attributes={rcc.attributes} />
                 </Box>
               )}
 
