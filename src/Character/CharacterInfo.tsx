@@ -4,22 +4,26 @@ import { FC } from 'react'
 
 import { DamageTrack } from '../DamageTrack/DamageTrack'
 import { useAttributeValue } from '../System/AttributeProvider'
+import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
 import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
 import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
+import { StatBlock } from '../UI/StatBlock'
 import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 
 export const CharacterInfo: FC = () => {
   const { character } = useCharacter()
 
-  const bodyAttr = useAttributeValue<number>(CharacterAttr.body, 0)
-  const physicalMax = Math.ceil(bodyAttr / 2) + 8
+  const body = useAttributeValue<number>(CharacterAttr.body, 0)
+  const reaction = useAttributeValue<number>(CharacterAttr.reaction, 0)
+  const intuition = useAttributeValue<number>(CharacterAttr.intuition, 0)
+  const willpower = useAttributeValue<number>(CharacterAttr.willpower, 0)
 
-  const willpowerAttr = useAttributeValue<number>(CharacterAttr.willpower, 0)
-  const stunMax = Math.ceil(willpowerAttr / 2) + 8
+  const physicalMax = Math.ceil(body / 2) + 8
+  const stunMax = Math.ceil(willpower / 2) + 8
 
   const activeSkills = character.skills
     .filter(skill => skill.type === SkillType.active)
@@ -61,17 +65,27 @@ export const CharacterInfo: FC = () => {
               <Typography variant={'h6'}>Knowledge</Typography>
               <KnowledgeSkillList skills={languageSkills} />
             </Box>
-
           </Box>
         </Box>
 
-        <Box sx={{ display: 'flex' }}>
-          <Box sx={{ padding: 1 }}>
-            <DamageTrack current={0} max={physicalMax} label="Physical" />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ padding: 1, paddingBottom: 0 }}>
+            <StatBlock vertical>
+              {/* NOTE: pg. 67 => 0changed by augments */}
+              <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
+              <CharacterHotVrInit />
+              <CharacterColdVrInit />
+            </StatBlock>
           </Box>
 
-          <Box sx={{ padding: 1 }}>
-            <DamageTrack current={0} max={stunMax} label="Stun" />
+          <Box>
+            <Box sx={{ padding: 1 }}>
+              <DamageTrack current={0} max={physicalMax} label="Physical" />
+            </Box>
+
+            <Box sx={{ padding: 1 }}>
+              <DamageTrack current={0} max={stunMax} label="Stun" />
+            </Box>
           </Box>
         </Box>
       </Box>

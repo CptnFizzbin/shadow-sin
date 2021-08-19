@@ -4,11 +4,16 @@ import { FC } from 'react'
 
 import styles from './StatBlock.module.scss'
 
-export const StatBlock: FC = ({
+interface StatBlockProps {
+  vertical?: boolean
+}
+
+export const StatBlock: FC<StatBlockProps> = ({
+  vertical,
   children,
 }) => {
   return (
-    <Paper variant="outlined" className={styles.Stats}>
+    <Paper variant="outlined" className={styles.Stats} sx={{ display: 'flex', flexDirection: vertical ? 'column' : 'row'}}>
       {children}
     </Paper>
   )

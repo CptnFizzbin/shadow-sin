@@ -3,7 +3,9 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
+import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
+import { StatBlock } from '../../UI/StatBlock'
 import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearAttributes } from '../GearInfo/GearAttributes'
@@ -24,6 +26,7 @@ interface VehicleInfoProps {
 export const VehicleInfo: FC<VehicleInfoProps> = ({
   vehicle,
 }) => {
+  const pilot = vehicle.attributes[VehicleAttr.pilot].value || 0
   const autosofts = useGearOfType<AutosoftData>(GearType.autosoft)
     .filter(gear => gear.attachedTo === vehicle.id || vehicle.slavedAutosofts?.includes(gear.id))
 
@@ -57,8 +60,18 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
             </Box>
           </Box>
 
-          <Box sx={{ padding: 1 }}>
-            <DamageTrack current={0} max={physicalMax} label="Physical" />
+          <Box>
+            <Box sx={{ padding: 1, paddingBottom: 0 }}>
+              <StatBlock vertical>
+                <InitiativeStat name={'Drone Init'} base={pilot * 2} dice={4} />
+                <CharacterHotVrInit />
+                <CharacterColdVrInit />
+              </StatBlock>
+            </Box>
+
+            <Box sx={{ padding: 1 }}>
+              <DamageTrack current={0} max={physicalMax} label="Physical" />
+            </Box>
           </Box>
         </Box>
 
