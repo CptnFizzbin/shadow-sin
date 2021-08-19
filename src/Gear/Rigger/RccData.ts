@@ -1,5 +1,5 @@
 import { AttributeData } from '../../System/Attribute'
-import { GearData, GearType } from '../GearData'
+import { GearData, GearId, GearType } from '../GearData'
 
 export interface RccData extends GearData {
   gearType:  GearType.rcc
@@ -9,4 +9,6 @@ export interface RccData extends GearData {
     dataProcessing: AttributeData<number>
     firewall: AttributeData<number>
   }
+
+  slavedAutosofts: GearId[]
 }

@@ -18,6 +18,7 @@ interface RccInfoProps {
 export const RccInfo: FC<RccInfoProps> = ({
   rcc,
 }) => {
+  const dataProcessing = rcc.attributes.dataProcessing.value
   const autosofts = useAttachedGear<AutosoftData>(rcc.id, {
     type: GearType.autosoft,
   })
@@ -34,8 +35,8 @@ export const RccInfo: FC<RccInfoProps> = ({
       <GearAttributes item={rcc} />
 
       <Box sx={{ padding: 1 }}>
-        <Typography variant={'h6'}>Autosofts</Typography>
-        <AutosoftsList autosofts={autosofts} />
+        <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
+        <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} />
       </Box>
 
       <Box sx={{ padding: 1 }}>

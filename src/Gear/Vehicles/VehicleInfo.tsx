@@ -27,11 +27,23 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
   vehicle,
 }) => {
   const pilot = vehicle.attributes[VehicleAttr.pilot].value || 0
-  const autosofts = useGearOfType<AutosoftData>(GearType.autosoft)
-    .filter(gear => gear.attachedTo === vehicle.id || vehicle.slavedAutosofts?.includes(gear.id))
 
   const rcc = useGear<RccData>(vehicle.slavedTo)
   const physicalMax = Math.ceil(vehicle.attributes[VehicleAttr.body].value / 2) + 8
+  const allAutosofts = useGearOfType<AutosoftData>(GearType.autosoft)
+
+  const localAutosofts = allAutosofts
+    .filter(gear => gear.attachedTo === vehicle.id)
+
+  const slavedAutosofts: AutosoftData[] = []
+  if (rcc) {
+    allAutosofts
+      .filter(autosoft => autosoft.attachedTo === rcc.id)
+      .filter(autosoft => rcc.slavedAutosofts.includes(autosoft.id))
+      .forEach(autosoft => slavedAutosofts.push(autosoft))
+  }
+
+  const autosofts = [...localAutosofts, ...slavedAutosofts]
 
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>
@@ -56,7 +68,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
 
             <Box sx={{ padding: 1 }}>
               <Typography variant={'h6'}>Autosofts</Typography>
-              <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
+              <AutosoftsList autosofts={autosofts} slavedIds={slavedAutosofts.map(soft => soft.id)} />
             </Box>
           </Box>
 

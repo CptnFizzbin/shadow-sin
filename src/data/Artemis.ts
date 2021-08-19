@@ -177,6 +177,8 @@ const rcc: RccData = addGear({
     dataProcessing: { name: 'Data Processing', value: 5 },
     firewall: { name: 'Firewall', value: 5 },
   },
+
+  slavedAutosofts: [],
 })
 
 const autosofts: AutosoftData[] = [
@@ -256,6 +258,8 @@ const autosofts: AutosoftData[] = [
     },
   }),
 ]
+
+rcc.slavedAutosofts = autosofts.map(soft => soft.id)
 
 const fnHar: WeaponData = {
   id: null,

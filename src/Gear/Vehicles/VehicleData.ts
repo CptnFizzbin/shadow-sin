@@ -27,5 +27,4 @@ export interface VehicleData extends GearData {
   }
 
   slavedTo?: GearId
-  slavedAutosofts?: GearId[]
 }
