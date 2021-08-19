@@ -1,7 +1,7 @@
 import { createContext, FC, useContext } from 'react'
 
 import { GearType } from '../../GearData'
-import { AutosoftData } from './AutosoftData'
+import { AutosoftAttr, AutosoftData } from './AutosoftData'
 
 const AutosoftContext = createContext<AutosoftData[]>([])
 
@@ -28,5 +28,5 @@ export const useTargetingAutosoft = (weaponName: string): AutosoftData | undefin
   return autosofts
     .filter(autosoft => autosoft.gearType === GearType.autosoft)
     .map(autosoft => autosoft as AutosoftData)
-    .find(autosoft => autosoft.attributes.weapon?.value === weaponName)
+    .find(autosoft => autosoft.attributes[AutosoftAttr.weapon]?.value === weaponName)
 }

@@ -9,15 +9,16 @@ import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
 import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
+import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 
 export const CharacterInfo: FC = () => {
   const { character } = useCharacter()
 
-  const bodyAttr = useAttributeValue<number>('body', 0)
+  const bodyAttr = useAttributeValue<number>(CharacterAttr.body, 0)
   const physicalMax = Math.ceil(bodyAttr / 2) + 8
 
-  const willpowerAttr = useAttributeValue<number>('willpower', 0)
+  const willpowerAttr = useAttributeValue<number>(CharacterAttr.willpower, 0)
   const stunMax = Math.ceil(willpowerAttr / 2) + 8
 
   const activeSkills = character.skills

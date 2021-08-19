@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core'
+import { Box, Paper } from '@material-ui/core'
 import React, { FC } from 'react'
 
 import { AppDataProvider } from './AppDataProvider'
@@ -12,7 +12,9 @@ const App: FC = () => {
       <Paper square sx={{ bgcolor: 'background.default' }} className="App">
         <AppDataProvider>
           <NavBar />
-          <CharacterSheet />
+          <Box sx={{ maxWidth: 1200, margin: 'auto'}}>
+            <CharacterSheet />
+          </Box>
         </AppDataProvider>
       </Paper>
     </AppThemeProvider>

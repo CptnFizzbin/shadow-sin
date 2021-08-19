@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { toTitleCase } from '../Helpers'
 import { Stat } from '../UI/StatBlock'
 
+export type AttrType = string;
 export type AttributeValue = number | string | null
 
 export interface AttributeList {

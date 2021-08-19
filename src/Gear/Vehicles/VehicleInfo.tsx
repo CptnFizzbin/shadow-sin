@@ -15,7 +15,7 @@ import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { PilotEvadePool, RiggedEvadePool } from './DicePools'
-import { VehicleData } from './VehicleData'
+import { VehicleAttr, VehicleData } from './VehicleData'
 
 interface VehicleInfoProps {
   vehicle: VehicleData
@@ -28,8 +28,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
     .filter(gear => gear.attachedTo === vehicle.id || vehicle.slavedAutosofts?.includes(gear.id))
 
   const rcc = useGear<RccData>(vehicle.slavedTo)
-
-  const physicalMax = Math.ceil(vehicle.attributes.body.value / 2) + 8
+  const physicalMax = Math.ceil(vehicle.attributes[VehicleAttr.body].value / 2) + 8
 
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>

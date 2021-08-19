@@ -2,7 +2,7 @@ import { createContext, FC, useContext } from 'react'
 
 import { AttributeProvider } from '../System/AttributeProvider'
 import { SkillData, SkillId } from '../System/Skill/SkillData'
-import { CharacterData } from './CharacterData'
+import { CharacterAttr, CharacterData } from './CharacterData'
 
 const defaultCharacter: CharacterData = {
   name: 'unknown',
@@ -11,16 +11,16 @@ const defaultCharacter: CharacterData = {
   nuyen: 0,
 
   attributes: {
-    body: { name: 'Body', value: 1 },
-    agility: { name: 'Agility', value: 1 },
-    reaction: { name: 'Reaction', value: 1 },
-    strength: { name: 'Strength', value: 1 },
-    willpower: { name: 'Willpower', value: 1 },
-    logic: { name: 'Logic', value: 1 },
-    intuition: { name: 'Intuition', value: 1 },
-    charisma: { name: 'Charisma', value: 1 },
-    edge: { name: 'Edge', value: 1 },
-    essence: { name: 'Essence', value: 6 },
+    [CharacterAttr.body]: { name: 'Body', value: 1 },
+    [CharacterAttr.agility]: { name: 'Agility', value: 1 },
+    [CharacterAttr.reaction]: { name: 'Reaction', value: 1 },
+    [CharacterAttr.strength]: { name: 'Strength', value: 1 },
+    [CharacterAttr.willpower]: { name: 'Willpower', value: 1 },
+    [CharacterAttr.logic]: { name: 'Logic', value: 1 },
+    [CharacterAttr.intuition]: { name: 'Intuition', value: 1 },
+    [CharacterAttr.charisma]: { name: 'Charisma', value: 1 },
+    [CharacterAttr.edge]: { name: 'Edge', value: 1 },
+    [CharacterAttr.essence]: { name: 'Essence', value: 6 },
   },
 
   skills: [],

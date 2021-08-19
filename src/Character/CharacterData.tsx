@@ -2,6 +2,21 @@ import { GearData } from '../Gear/GearData'
 import { AttributeData } from '../System/Attribute'
 import { SkillData } from '../System/Skill/SkillData'
 
+export enum CharacterAttr {
+  body = 'char.body',
+  agility = 'char.agility',
+  reaction = 'char.reaction',
+  strength = 'char.strength',
+  willpower = 'char.willpower',
+  logic = 'char.logic',
+  intuition = 'char.intuition',
+  charisma = 'char.charisma',
+  edge = 'char.edge',
+  essence = 'char.essence',
+  magic = 'char.magic',
+  resonance = 'char.resonance',
+}
+
 export interface CharacterData {
   name: string
   metaType: string
@@ -19,18 +34,18 @@ export interface CharacterData {
   misc?: string
 
   attributes: {
-    body: AttributeData<number>
-    agility: AttributeData<number>
-    reaction: AttributeData<number>
-    strength: AttributeData<number>
-    willpower: AttributeData<number>
-    logic: AttributeData<number>
-    intuition: AttributeData<number>
-    charisma: AttributeData<number>
-    edge: AttributeData<number>
-    essence: AttributeData<number>
-    magic?: AttributeData<number>
-    resonance?: AttributeData<number>
+    [CharacterAttr.body]: AttributeData<number>
+    [CharacterAttr.agility]: AttributeData<number>
+    [CharacterAttr.reaction]: AttributeData<number>
+    [CharacterAttr.strength]: AttributeData<number>
+    [CharacterAttr.willpower]: AttributeData<number>
+    [CharacterAttr.logic]: AttributeData<number>
+    [CharacterAttr.intuition]: AttributeData<number>
+    [CharacterAttr.charisma]: AttributeData<number>
+    [CharacterAttr.edge]: AttributeData<number>
+    [CharacterAttr.essence]: AttributeData<number>
+    [CharacterAttr.magic]?: AttributeData<number>
+    [CharacterAttr.resonance]?: AttributeData<number>
   }
 
   skills: SkillData[]
