@@ -29,7 +29,7 @@ interface DicePoolProps {
 export const DicePools: FC = ({
   children,
 }) => {
-  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex' }}>{children}</Paper>
+  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex' , gap: 1 }}>{children}</Paper>
 }
 
 export const DicePool: FC<DicePoolProps> = ({
@@ -39,12 +39,12 @@ export const DicePool: FC<DicePoolProps> = ({
   const total = groups.map(g => g.size || g.default || 0).reduce((a, b) => a + b, 0)
 
   return (
-    <Paper sx={{ display: 'inline-flex', padding: 1, flexDirection: 'column' }}>
+    <Box sx={{ display: 'inline-flex', flexDirection: 'column' }}>
       <DiceGroupDisplay name={name} size={total} total />
       {groups.map(group => (
         <DiceGroupDisplay key={group.name} name={group.name} size={group.size || group.default || 0} />
       ))}
-    </Paper>
+    </Box>
   )
 }
 

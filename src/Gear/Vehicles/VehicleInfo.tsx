@@ -3,15 +3,13 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { DamageTrack } from '../../DamageTrack/DamageTrack'
-import { AttributeList } from '../../System/Attribute'
-import { AttributeProvider, useAttributes } from '../../System/AttributeProvider'
 import { AttributeBlock } from '../../UI/AttributeBlock'
-import { DicePools } from '../../UI/DicePool'
-import { GearAttributes } from '../GearAttributes'
 import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
-import { GearHeader } from '../GearHeader'
-import { NestedGear } from '../NestedGear'
+import { GearAttributes } from '../GearInfo/GearAttributes'
+import { GearDicePools } from '../GearInfo/GearDicePools'
+import { GearHeader } from '../GearInfo/GearHeader'
+import { NestedGear } from '../GearInfo/NestedGear'
 import { RccData } from '../Rigger/RccData'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
@@ -33,49 +31,40 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
 
   const physicalMax = Math.ceil(vehicle.attributes.body.value / 2) + 8
 
-  const attributes: AttributeList = {
-    ...useAttributes(),
-    ...vehicle.attributes,
-  }
-
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>
       <GearHeader item={vehicle} />
       <GearAttributes item={vehicle} />
 
-      <AttributeProvider attributes={attributes}>
-        <AutosoftProvider autosofts={autosofts}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ flexGrow: 1 }}>
-              {rcc && (
-                <Box sx={{ padding: 1 }}>
-                  <Typography variant={'h6'}>Slaved To</Typography>
-                  <Typography>{rcc.name}</Typography>
-                  <AttributeBlock attributes={rcc.attributes} />
-                </Box>
-              )}
+      <AutosoftProvider autosofts={autosofts}>
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <GearDicePools>
+              <PilotEvadePool vehicle={vehicle} />
+              <RiggedEvadePool vehicle={vehicle} />
+            </GearDicePools>
 
+            {rcc && (
               <Box sx={{ padding: 1 }}>
-                <Typography variant={'h6'}>Autosofts</Typography>
-                <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
+                <Typography variant={'h6'}>Slaved To</Typography>
+                <Typography>{rcc.name}</Typography>
+                <AttributeBlock attributes={rcc.attributes} />
               </Box>
-
-              <Box sx={{ padding: 1 }}>
-                <DicePools>
-                  <PilotEvadePool vehicle={vehicle} />
-                  <RiggedEvadePool vehicle={vehicle} />
-                </DicePools>
-              </Box>
-            </Box>
+            )}
 
             <Box sx={{ padding: 1 }}>
-              <DamageTrack current={0} max={physicalMax} label="Physical" />
+              <Typography variant={'h6'}>Autosofts</Typography>
+              <AutosoftsList autosofts={autosofts} slavedIds={vehicle.slavedAutosofts} />
             </Box>
           </Box>
 
-          <NestedGear item={vehicle} />
-        </AutosoftProvider>
-      </AttributeProvider>
+          <Box sx={{ padding: 1 }}>
+            <DamageTrack current={0} max={physicalMax} label="Physical" />
+          </Box>
+        </Box>
+
+        <NestedGear item={vehicle} />
+      </AutosoftProvider>
     </Paper>
   )
 }

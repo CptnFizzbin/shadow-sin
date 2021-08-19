@@ -1,8 +1,8 @@
 import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
-import { GearHeader } from '../GearHeader'
-import { NestedGear } from '../NestedGear'
+import { GearHeader } from '../GearInfo/GearHeader'
+import { NestedGear } from '../GearInfo/NestedGear'
 import { VehicleModData } from './VehicleModData'
 
 interface VehicleModInfoProps {

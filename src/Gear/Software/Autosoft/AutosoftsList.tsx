@@ -1,9 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
-import ScreenShareIcon from '@material-ui/icons/ScreenShare'
+import { faBroadcastTower, faSave } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
+import { Stat, StatBlock } from '../../../UI/StatBlock'
 import { GearId } from '../../GearData'
-import { AvailabilityDisplay, CostDisplay } from '../../Stats'
+import { AvailabilityStat, CostStat } from '../../Stats'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
@@ -16,21 +18,9 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
   slavedIds,
 }) => {
   return (
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Rating</TableCell>
-          <TableCell>Skill/Weapon</TableCell>
-          <TableCell>Attribute</TableCell>
-          <TableCell>Avail</TableCell>
-          <TableCell>Cost</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {autosofts.map(autosoft => <AutosoftListItem key={autosoft.id} autosoft={autosoft} slavedIds={slavedIds} />)}
-      </TableBody>
-    </Table>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      {autosofts.map(autosoft => <AutosoftListItem key={autosoft.id} autosoft={autosoft} slavedIds={slavedIds} />)}
+    </Box>
   )
 }
 
@@ -43,24 +33,27 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
   autosoft,
   slavedIds,
 }) => {
-  const rating = autosoft.attributes.rating.value
-  const skill = autosoft.attributes.skill?.value
-  const weapon = autosoft.attributes.weapon?.value
-  const attr = autosoft.attributes.attr.value
-
   return (
-    <TableRow key={autosoft.id}>
-      <TableCell>
-        {slavedIds?.includes(autosoft.id) && (
-          <ScreenShareIcon fontSize={'small'} sx={{ verticalAlign: 'text-bottom', marginRight: 1 }} />
-        )}
+    <Box>
+      <Box>
+        <Box sx={{ display: 'inline-block', marginRight: 1 }}>
+          {slavedIds?.includes(autosoft.id) ? (
+            <FontAwesomeIcon icon={faBroadcastTower} />
+          ) : (
+            <FontAwesomeIcon icon={faSave} />
+          )}
+        </Box>
         {autosoft.name}
-      </TableCell>
-      <TableCell>{rating}</TableCell>
-      <TableCell>{skill || weapon}</TableCell>
-      <TableCell>{attr}</TableCell>
-      <TableCell><AvailabilityDisplay avail={autosoft.avail} /></TableCell>
-      <TableCell><CostDisplay cost={autosoft.cost} /></TableCell>
-    </TableRow>
+      </Box>
+      <Box>
+        <StatBlock>
+          {Object.entries(autosoft.attributes).map(([type, attr]) => (
+            <Stat key={type} name={attr.name} value={attr.value === null ? '-' : attr.value} />
+          ))}
+          <AvailabilityStat avail={autosoft.avail} />
+          <CostStat cost={autosoft.cost} />
+        </StatBlock>
+      </Box>
+    </Box>
   )
 }

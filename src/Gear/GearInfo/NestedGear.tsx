@@ -1,11 +1,12 @@
 import { Paper } from '@material-ui/core'
+import { FC } from 'react'
 
-import { AttributeProvider, useAttributes } from '../System/AttributeProvider'
-import { useAttachedGear } from './GearContext'
-import { GearInfoBlock } from './GearInfo'
-import { GearList } from './GearList'
+import { AttributeProvider, useAttributes } from '../../System/AttributeProvider'
+import { useAttachedGear } from '../GearContext'
+import { GearList } from '../GearList'
+import { GearInfoSectionProps } from './GearInfoSectionProps'
 
-export const NestedGear: GearInfoBlock = ({
+export const NestedGear: FC<GearInfoSectionProps> = ({
   item,
 }) => {
   const attachedGear = useAttachedGear(item.id)

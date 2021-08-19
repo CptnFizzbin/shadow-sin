@@ -1,8 +1,8 @@
 import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
+import { GearData } from '../GearData'
 import { GearAttributes } from './GearAttributes'
-import { GearData } from './GearData'
 import { GearHeader } from './GearHeader'
 import { NestedGear } from './NestedGear'
 
