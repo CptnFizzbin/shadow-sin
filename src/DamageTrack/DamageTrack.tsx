@@ -31,8 +31,8 @@ export const DamageTrack: FC<DamageTrackProps> = ({
   return (
     <Box sx={{ maxWidth: 300 }}>
       <Typography variant={'h6'}>{label}</Typography>
-      <Box sx={{ paddingBottom: 0.5 }}>
-        <TrackButton onClick={() => setCurValue(0)}>Clear</TrackButton>
+      <Box sx={{ paddingBottom: 0.5, textAlign: 'right'}}>
+        <TrackButton onClick={() => setCurValue(0)}>0</TrackButton>
       </Box>
       <Box className={styles.DamageTrack}>
         {new Array(max).fill(null).map((_, index) => (
