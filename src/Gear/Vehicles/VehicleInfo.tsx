@@ -18,6 +18,7 @@ import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { PilotEvadePool, RiggedEvadePool } from './DicePools'
 import { VehicleAttr, VehicleData } from './VehicleData'
+import { ModType, VehicleModData } from './VehicleModData'
 
 interface VehicleInfoProps {
   vehicle: VehicleData
@@ -27,6 +28,10 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
   vehicle,
 }) => {
   const pilot = vehicle.attributes[VehicleAttr.pilot].value || 0
+
+  const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
+    .filter(gear => gear.attachedTo === vehicle.id)
+    .find(gear => gear.modType === ModType.riggerInterface)
 
   const rcc = useGear<RccData>(vehicle.slavedTo)
   const physicalMax = Math.ceil(vehicle.attributes[VehicleAttr.body].value / 2) + 8
@@ -76,8 +81,12 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
             <Box sx={{ padding: 1, paddingBottom: 0 }}>
               <StatBlock vertical>
                 <InitiativeStat name={'Drone Init'} base={pilot * 2} dice={4} />
-                <CharacterHotVrInit />
-                <CharacterColdVrInit />
+                {riggerInterface && (
+                  <>
+                    <CharacterHotVrInit />
+                    <CharacterColdVrInit />
+                  </>
+                )}
               </StatBlock>
             </Box>
 

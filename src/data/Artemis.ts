@@ -6,7 +6,7 @@ import { RccData } from '../Gear/Rigger/RccData'
 import { AutosoftAttr, AutosoftData, AutosoftType } from '../Gear/Software/Autosoft/AutosoftData'
 import { DroneData } from '../Gear/Vehicles/DroneData'
 import { VehicleAttr, VehicleData } from '../Gear/Vehicles/VehicleData'
-import { VehicleModData } from '../Gear/Vehicles/VehicleModData'
+import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
@@ -284,6 +284,7 @@ addGear(fnHar)
 const stdWeaponMount: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
+  modType: ModType.stdWeaponMount,
   name: 'Standard Weapon Mount',
   type: 'weapon mount',
   avail: { rarity: 5, illegal: true },
@@ -293,6 +294,7 @@ const stdWeaponMount: VehicleModData = {
 const riggerInterface: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
+  modType: ModType.riggerInterface,
   name: 'Rigger Interface',
   type: 'vehicle mod',
   avail: { rarity: 2, license: true },
@@ -321,6 +323,11 @@ const car: VehicleData = addGear({
 
   slavedTo: rcc.id,
   slavedAutosofts: autosofts.map(gear => gear.id),
+})
+
+addGear({
+  ...riggerInterface,
+  attachedTo: car.id,
 })
 rcc.attachedTo = car.id
 

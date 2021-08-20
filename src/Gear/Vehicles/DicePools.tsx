@@ -6,10 +6,12 @@ import { useAttributeValue } from '../../System/AttributeProvider'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
 import { ControlRigData, HeadwearTypes } from '../Augments/HeadwearData'
-import { useFindGear } from '../GearContext'
+import { useFindGear, useGearOfType } from '../GearContext'
+import { GearType } from '../GearData'
 import { AutosoftAttr, AutosoftType } from '../Software/Autosoft/AutosoftData'
 import { useAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleData } from './VehicleData'
+import { ModType, VehicleModData } from './VehicleModData'
 
 interface VehiclePoolProps {
   vehicle: VehicleData
@@ -31,12 +33,18 @@ export const PilotEvadePool: VehicleDicePool = () => {
   return <DicePool name={'Pilot Evade'} groups={groups} />
 }
 
-export const RiggedEvadePool: VehicleDicePool = () => {
+export const RiggedEvadePool: VehicleDicePool = ({
+  vehicle,
+}) => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
   const intuition = useAttributeValue<number>(CharacterAttr.intuition, 0)
 
+  const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
+    .filter(gear => gear.attachedTo === vehicle.id)
+    .find(gear => gear.modType === ModType.riggerInterface)
+
   const controlRig = useFindGear<ControlRigData>(gear => gear.type === HeadwearTypes.controlRig)
-  if (!controlRig) return null
+  if (!controlRig || !riggerInterface) return null
 
   const groups: DiceGroup[] = [
     { name: 'Piloting', size: pilotingSkill?.rank },
