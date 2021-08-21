@@ -37,7 +37,11 @@ const SkillListRow: FC<SkillListRowProps> = ({
 }) => {
   return (
     <TableRow key={skill.name}>
-      <TableCell>{skill.name}</TableCell>
+      <TableCell>
+        <div>{skill.name}</div>
+        {skill.speciality && <div>(S. {skill.speciality})</div>}
+        {skill.expertise && <div>{skill.expertise}</div>}
+      </TableCell>
       <TableCell>
         {skill.rank}
       </TableCell>
