@@ -1,5 +1,5 @@
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
-import { AugmentAttr, AugmentGrade, AugmentType } from '../Gear/Augments/AugmentData'
+import { AugmentAttr, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { ControlRigAttr, ControlRigData } from '../Gear/Augments/ControlRigData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccAttr, RccData } from '../Gear/Rigger/RccData'
@@ -139,9 +139,9 @@ addGear<ControlRigData>({
   type: 'Headwear Augment',
   avail: { rarity: 3, license: true },
   cost: 60_000,
+  augmentSlot: AugmentSlot.headware,
 
   attributes: {
-    [AugmentAttr.type]: AugmentType.headware,
     [AugmentAttr.grade]: AugmentGrade.used,
     [ControlRigAttr.rating]: 2,
   },

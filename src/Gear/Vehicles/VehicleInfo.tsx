@@ -12,12 +12,12 @@ import { GearAttributes } from '../GearInfo/GearAttributes'
 import { GearDicePools } from '../GearInfo/GearDicePools'
 import { GearHeader } from '../GearInfo/GearHeader'
 import { NestedGear } from '../GearInfo/NestedGear'
-import { RccAttrNames, RccData } from '../Rigger/RccData'
+import { RccData } from '../Rigger/RccData'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { PilotEvadePool, RiggedEvadePool } from './DicePools'
-import { VehicleAttr, VehicleAttrNames, VehicleData } from './VehicleData'
+import { VehicleAttr, VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
 interface VehicleInfoProps {
@@ -53,7 +53,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
   return (
     <Paper elevation={1} sx={{ marginTop: 1 }}>
       <GearHeader item={vehicle} />
-      <GearAttributes item={vehicle} attrNames={VehicleAttrNames} />
+      <GearAttributes item={vehicle} />
 
       <AutosoftProvider autosofts={autosofts}>
         <Box sx={{ display: 'flex' }}>
@@ -67,7 +67,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
               <Box sx={{ padding: 1 }}>
                 <Typography variant={'h6'}>Slaved To</Typography>
                 <Typography>{rcc.name}</Typography>
-                <AttributeBlock attributes={rcc.attributes} names={RccAttrNames} />
+                <AttributeBlock attributes={rcc.attributes} />
               </Box>
             )}
 

@@ -1,4 +1,4 @@
-import { AttrNames } from '../../System/Attribute'
+import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData, GearId } from '../GearData'
 
 export enum VehicleAttr {
@@ -13,7 +13,7 @@ export enum VehicleAttr {
   seat = 'vehicle.seat',
 }
 
-export const VehicleAttrNames: AttrNames = {
+registerAttrNames({
   [VehicleAttr.handling]: 'Handling',
   [VehicleAttr.accel]: 'Accel',
   [VehicleAttr.speedInterval]: 'Speed Interval',
@@ -23,7 +23,7 @@ export const VehicleAttrNames: AttrNames = {
   [VehicleAttr.pilot]: 'Pilot',
   [VehicleAttr.sensor]: 'Sensor',
   [VehicleAttr.seat]: 'Seat',
-}
+})
 
 export interface VehicleData extends GearData {
   attributes: {

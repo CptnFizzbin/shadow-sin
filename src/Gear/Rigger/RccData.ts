@@ -1,4 +1,4 @@
-import { AttrNames } from '../../System/Attribute'
+import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData, GearId, GearType } from '../GearData'
 
 export enum RccAttr {
@@ -7,11 +7,11 @@ export enum RccAttr {
   firewall = 'rcc.firewall'
 }
 
-export const RccAttrNames: AttrNames = {
+registerAttrNames({
   [RccAttr.deviceRating]: 'Device Rating',
   [RccAttr.dataProcessing]: 'Data Processing',
   [RccAttr.firewall]: 'Firewall',
-}
+})
 
 export interface RccData extends GearData {
   gearType: GearType.rcc

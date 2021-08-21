@@ -8,7 +8,7 @@ import { StatBlock } from '../../../UI/StatBlock'
 import { GearId } from '../../GearData'
 import { AvailabilityStat } from '../../Stats/Availability'
 import { CostStat } from '../../Stats/Cost'
-import { AutosoftAttrNames, AutosoftData } from './AutosoftData'
+import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
   autosofts: AutosoftData[]
@@ -65,7 +65,7 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1 }}>
-          <AttributeBlock attributes={autosoft.attributes} names={AutosoftAttrNames} />
+          <AttributeBlock attributes={autosoft.attributes} />
         </Box>
         {(withAvail || withCost) && (
           <Box sx={{ marginLeft: 1 }}>

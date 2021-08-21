@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@material-ui/core'
+import { Chip, Paper, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
@@ -9,7 +9,7 @@ import { GearHeader } from '../GearInfo/GearHeader'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { VehicleData } from '../Vehicles/VehicleData'
-import { RccAttr, RccAttrNames, RccData } from './RccData'
+import { RccAttr, RccData } from './RccData'
 
 interface RccInfoProps {
   rcc: RccData
@@ -32,7 +32,7 @@ export const RccInfo: FC<RccInfoProps> = ({
   return (
     <Paper elevation={1}>
       <GearHeader item={rcc} />
-      <GearAttributes item={rcc} attrNames={RccAttrNames} />
+      <GearAttributes item={rcc} />
 
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
@@ -41,9 +41,11 @@ export const RccInfo: FC<RccInfoProps> = ({
 
       <Box sx={{ padding: 1 }}>
         <Typography variant={'h6'}>Slaved ({slavedVehicles.length} / {maxSlaved})</Typography>
-        {slavedVehicles.map(gear => (
-          <Typography key={gear.id}>{gear.name}</Typography>
-        ))}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {slavedVehicles.map(gear => (
+            <Chip key={gear.id} label={gear.name} />
+          ))}
+        </Box>
       </Box>
     </Paper>
   )

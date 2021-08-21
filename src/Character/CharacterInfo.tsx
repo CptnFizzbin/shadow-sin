@@ -13,7 +13,7 @@ import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } fro
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { DicePools } from '../UI/DicePool'
 import { StatBlock } from '../UI/StatBlock'
-import { CharacterAttr, characterAttrNames } from './CharacterData'
+import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 import { DodgePool, ResistDamagePool } from './DicePools'
 
@@ -53,7 +53,7 @@ export const CharacterInfo: FC = () => {
 
 
       <Box sx={{ padding: 1 }}>
-        <AttributeBlock attributes={character.attributes} names={characterAttrNames} />
+        <AttributeBlock attributes={character.attributes} />
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>

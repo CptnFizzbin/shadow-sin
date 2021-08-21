@@ -1,4 +1,4 @@
-import { AttrNames } from '../../System/Attribute'
+import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData } from '../GearData'
 
 export enum WeaponAttr {
@@ -8,12 +8,12 @@ export enum WeaponAttr {
   ammo = 'weapon.ammo',
 }
 
-export const WeaponAttrNames: AttrNames = {
+registerAttrNames({
   [WeaponAttr.dv]: 'DV',
   [WeaponAttr.attackRatings]: 'Atk. Ratings',
   [WeaponAttr.modes]: 'Modes',
   [WeaponAttr.ammo]: 'Ammo',
-}
+})
 
 export interface WeaponData extends GearData {
   attributes: {

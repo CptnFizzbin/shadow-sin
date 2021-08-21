@@ -1,26 +1,29 @@
-import { GearData, GearType } from '../GearData'
+import { registerAttrNames } from '../../UI/AttributeBlock'
+import { GearData } from '../GearData'
 
 export enum AugmentAttr {
   grade = 'augment.grade',
-  type = 'augment.type',
 }
 
+registerAttrNames({
+  [AugmentAttr.grade]: 'Grade',
+})
+
 export interface AugmentData extends GearData {
-  gearType: GearType.augment
-  augmentType: AugmentType
+  augmentSlot: AugmentSlot
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade
   }
 }
 
-export enum AugmentType {
-  headware = 'aug.headware',
-  eyeware = 'aug.eyeware',
-  earwear = 'aug.earwear',
-  bodywear = 'aug.bodywear',
-  cyberlimb = 'aug.cyberlimb',
-  bioware = 'aug.bioware',
+export enum AugmentSlot {
+  headware = 'headware',
+  eyeware = 'eyeware',
+  earwear = 'earwear',
+  bodywear = 'bodywear',
+  cyberlimb = 'cyberlimb',
+  bioware = 'bioware',
 }
 
 export enum AugmentGrade {

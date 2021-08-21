@@ -1,6 +1,6 @@
 import { GearData } from '../Gear/GearData'
-import { AttrNames } from '../System/Attribute'
 import { SkillData } from '../System/Skill/SkillData'
+import { registerAttrNames } from '../UI/AttributeBlock'
 
 export enum CharacterAttr {
   body = 'char.body',
@@ -17,7 +17,7 @@ export enum CharacterAttr {
   resonance = 'char.resonance',
 }
 
-export const characterAttrNames: AttrNames = {
+registerAttrNames({
   [CharacterAttr.body]: 'Body',
   [CharacterAttr.agility]: 'Agility',
   [CharacterAttr.reaction]: 'Reaction',
@@ -30,7 +30,7 @@ export const characterAttrNames: AttrNames = {
   [CharacterAttr.essence]: 'Essence',
   [CharacterAttr.magic]: 'Magic',
   [CharacterAttr.resonance]: 'Resonance',
-}
+})
 
 export interface CharacterData {
   name: string
