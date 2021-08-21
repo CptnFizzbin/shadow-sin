@@ -1,4 +1,4 @@
-import { AttributeData } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 import { GearData, GearId } from '../GearData'
 
 export enum VehicleAttr {
@@ -13,17 +13,29 @@ export enum VehicleAttr {
   seat = 'vehicle.seat',
 }
 
+export const VehicleAttrNames: AttrNames = {
+  [VehicleAttr.handling]: 'Handling',
+  [VehicleAttr.accel]: 'Accel',
+  [VehicleAttr.speedInterval]: 'Speed Interval',
+  [VehicleAttr.topSpeed]: 'Top Speed',
+  [VehicleAttr.body]: 'Body',
+  [VehicleAttr.armor]: 'armor',
+  [VehicleAttr.pilot]: 'Pilot',
+  [VehicleAttr.sensor]: 'Sensor',
+  [VehicleAttr.seat]: 'Seat',
+}
+
 export interface VehicleData extends GearData {
   attributes: {
-    [VehicleAttr.handling]: AttributeData<string | number>
-    [VehicleAttr.accel]: AttributeData<number>
-    [VehicleAttr.speedInterval]: AttributeData<number>
-    [VehicleAttr.topSpeed]: AttributeData<number>
-    [VehicleAttr.body]: AttributeData<number>
-    [VehicleAttr.armor]: AttributeData<number>
-    [VehicleAttr.pilot]: AttributeData<number>
-    [VehicleAttr.sensor]: AttributeData<number>
-    [VehicleAttr.seat]: AttributeData<number | null>
+    [VehicleAttr.handling]: string | number
+    [VehicleAttr.accel]: number
+    [VehicleAttr.speedInterval]: number
+    [VehicleAttr.topSpeed]: number
+    [VehicleAttr.body]: number
+    [VehicleAttr.armor]: number
+    [VehicleAttr.pilot]: number
+    [VehicleAttr.sensor]: number
+    [VehicleAttr.seat]: number | null
   }
 
   slavedTo?: GearId

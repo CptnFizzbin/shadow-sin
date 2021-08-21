@@ -1,4 +1,4 @@
-import { AttributeData } from '../../../System/Attribute'
+import { AttrNames } from '../../../System/Attribute'
 import { GearData, GearType } from '../../GearData'
 
 export enum AutosoftAttr {
@@ -8,14 +8,21 @@ export enum AutosoftAttr {
   weapon = 'autosoft.weapon',
 }
 
+export const AutosoftAttrNames: AttrNames = {
+  [AutosoftAttr.rating]: 'Rating',
+  [AutosoftAttr.attr]: 'Attr',
+  [AutosoftAttr.skill]: 'Skill',
+  [AutosoftAttr.weapon]: 'Weapon',
+}
+
 export interface AutosoftData extends GearData {
   gearType: GearType.autosoft
   type: string
   attributes: {
-    [AutosoftAttr.rating]: AttributeData<number>
-    [AutosoftAttr.attr]: AttributeData<string>
-    [AutosoftAttr.skill]?: AttributeData<string>
-    [AutosoftAttr.weapon]?: AttributeData<string>
+    [AutosoftAttr.rating]: number
+    [AutosoftAttr.attr]: string
+    [AutosoftAttr.skill]?: string
+    [AutosoftAttr.weapon]?: string
   }
 }
 

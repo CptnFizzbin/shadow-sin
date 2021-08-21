@@ -1,5 +1,5 @@
 import { GearData } from '../Gear/GearData'
-import { AttributeData } from '../System/Attribute'
+import { AttrNames } from '../System/Attribute'
 import { SkillData } from '../System/Skill/SkillData'
 
 export enum CharacterAttr {
@@ -15,6 +15,21 @@ export enum CharacterAttr {
   essence = 'char.essence',
   magic = 'char.magic',
   resonance = 'char.resonance',
+}
+
+export const characterAttrNames: AttrNames = {
+  [CharacterAttr.body]: 'Body',
+  [CharacterAttr.agility]: 'Agility',
+  [CharacterAttr.reaction]: 'Reaction',
+  [CharacterAttr.strength]: 'Strength',
+  [CharacterAttr.willpower]: 'Willpower',
+  [CharacterAttr.logic]: 'Logic',
+  [CharacterAttr.intuition]: 'Intuition',
+  [CharacterAttr.charisma]: 'Charisma',
+  [CharacterAttr.edge]: 'Edge',
+  [CharacterAttr.essence]: 'Essence',
+  [CharacterAttr.magic]: 'Magic',
+  [CharacterAttr.resonance]: 'Resonance',
 }
 
 export interface CharacterData {
@@ -34,18 +49,18 @@ export interface CharacterData {
   misc?: string
 
   attributes: {
-    [CharacterAttr.body]: AttributeData<number>
-    [CharacterAttr.agility]: AttributeData<number>
-    [CharacterAttr.reaction]: AttributeData<number>
-    [CharacterAttr.strength]: AttributeData<number>
-    [CharacterAttr.willpower]: AttributeData<number>
-    [CharacterAttr.logic]: AttributeData<number>
-    [CharacterAttr.intuition]: AttributeData<number>
-    [CharacterAttr.charisma]: AttributeData<number>
-    [CharacterAttr.edge]: AttributeData<number>
-    [CharacterAttr.essence]: AttributeData<number>
-    [CharacterAttr.magic]?: AttributeData<number>
-    [CharacterAttr.resonance]?: AttributeData<number>
+    [CharacterAttr.body]: number
+    [CharacterAttr.agility]: number
+    [CharacterAttr.reaction]: number
+    [CharacterAttr.strength]: number
+    [CharacterAttr.willpower]: number
+    [CharacterAttr.logic]: number
+    [CharacterAttr.intuition]: number
+    [CharacterAttr.charisma]: number
+    [CharacterAttr.edge]: number
+    [CharacterAttr.essence]: number
+    [CharacterAttr.magic]?: number
+    [CharacterAttr.resonance]?: number
   }
 
   skills: SkillData[]

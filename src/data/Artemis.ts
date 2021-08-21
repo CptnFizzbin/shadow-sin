@@ -1,13 +1,13 @@
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
-import { AugmentGrade, AugmentType } from '../Gear/Augments/AugmentData'
-import { ControlRigData, HeadwearTypes } from '../Gear/Augments/HeadwearData'
+import { AugmentAttr, AugmentGrade, AugmentType } from '../Gear/Augments/AugmentData'
+import { ControlRigAttr, ControlRigData } from '../Gear/Augments/ControlRigData'
 import { GearData, GearType } from '../Gear/GearData'
-import { RccData } from '../Gear/Rigger/RccData'
+import { RccAttr, RccData } from '../Gear/Rigger/RccData'
 import { AutosoftAttr, AutosoftData, AutosoftType } from '../Gear/Software/Autosoft/AutosoftData'
 import { DroneData } from '../Gear/Vehicles/DroneData'
 import { VehicleAttr, VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
-import { WeaponData } from '../Gear/Weapons/WeaponData'
+import { WeaponAttr, WeaponData } from '../Gear/Weapons/WeaponData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
 const Artemis: CharacterData = {
@@ -17,16 +17,16 @@ const Artemis: CharacterData = {
   nuyen: 14_420,
 
   attributes: {
-    [CharacterAttr.body]: { name: 'Body', value: 1 },
-    [CharacterAttr.agility]: { name: 'Agility', value: 3 },
-    [CharacterAttr.reaction]: { name: 'Reaction', value: 1 },
-    [CharacterAttr.strength]: { name: 'Strength', value: 1 },
-    [CharacterAttr.willpower]: { name: 'Willpower', value: 2 },
-    [CharacterAttr.logic]: { name: 'Logic', value: 7 },
-    [CharacterAttr.intuition]: { name: 'Intuition', value: 5 },
-    [CharacterAttr.charisma]: { name: 'Charisma', value: 2 },
-    [CharacterAttr.edge]: { name: 'Edge', value: 4 },
-    [CharacterAttr.essence]: { name: 'Essence', value: 2.1 },
+    [CharacterAttr.body]: 1,
+    [CharacterAttr.agility]: 3,
+    [CharacterAttr.reaction]: 1,
+    [CharacterAttr.strength]: 1,
+    [CharacterAttr.willpower]: 2,
+    [CharacterAttr.logic]: 7,
+    [CharacterAttr.intuition]: 5,
+    [CharacterAttr.charisma]: 2,
+    [CharacterAttr.edge]: 4,
+    [CharacterAttr.essence]: 2.1,
   },
 
   skills: [
@@ -134,16 +134,16 @@ function addGear<T extends GearData> (gear: T): T {
 
 addGear<ControlRigData>({
   id: null,
-  gearType: GearType.augment,
+  gearType: GearType.controlRig,
   name: 'Control Rig',
-  type: HeadwearTypes.controlRig,
-  augmentType: AugmentType.headware,
+  type: 'Headwear Augment',
   avail: { rarity: 3, license: true },
   cost: 60_000,
 
   attributes: {
-    rating: { name: 'Rating', value: 2 },
-    grade: { name: 'Grade', value: AugmentGrade.used },
+    [AugmentAttr.type]: AugmentType.headware,
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [ControlRigAttr.rating]: 2,
   },
 })
 
@@ -157,10 +157,10 @@ addGear<WeaponData>({
   avail: { rarity: 5, license: true },
   cost: 520,
   attributes: {
-    dv: { name: 'DV', value: '2P' },
-    modes: { name: 'Modes', value: 'SA/BF' },
-    attackRatings: { name: 'Atk. Ratings', value: '9/9/7/-/-' },
-    ammo: { name: 'Ammo', value: '40(c)' },
+    [WeaponAttr.dv]: '2P',
+    [WeaponAttr.modes]: 'SA/BF',
+    [WeaponAttr.attackRatings]: '9/9/7/-/-',
+    [WeaponAttr.ammo]: '40(c)',
   },
 })
 
@@ -173,16 +173,16 @@ const rcc: RccData = addGear({
   cost: 68_000,
 
   attributes: {
-    deviceRating: { name: 'Device Rating', value: 5 },
-    dataProcessing: { name: 'Data Processing', value: 5 },
-    firewall: { name: 'Firewall', value: 5 },
+    [RccAttr.deviceRating]: 5,
+    [RccAttr.dataProcessing]: 5,
+    [RccAttr.firewall]: 5,
   },
 
   slavedAutosofts: [],
 })
 
 const autosofts: AutosoftData[] = [
-  addGear({
+  addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
@@ -192,12 +192,12 @@ const autosofts: AutosoftData[] = [
     attachedTo: rcc.id,
 
     attributes: {
-      [AutosoftAttr.rating]: { name: 'Rating', value: 8 },
-      [AutosoftAttr.weapon]: { name: 'Weapon', value: 'FN-HAR' },
-      [AutosoftAttr.attr]: { name: 'Attr', value: 'Sensor' },
+      [AutosoftAttr.rating]: 8,
+      [AutosoftAttr.weapon]: 'FN-HAR',
+      [AutosoftAttr.attr]: 'Sensor',
     },
   }),
-  addGear({
+  addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
     name: 'Clearsight',
@@ -207,12 +207,12 @@ const autosofts: AutosoftData[] = [
     attachedTo: rcc.id,
 
     attributes: {
-      [AutosoftAttr.rating]: { name: 'Rating', value: 7 },
-      [AutosoftAttr.skill]: { name: 'Skill', value: 'Perception' },
-      [AutosoftAttr.attr]: { name: 'Attr', value: 'Sensor' },
+      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.skill]: 'Perception',
+      [AutosoftAttr.attr]: 'Sensor',
     },
   }),
-  addGear({
+  addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
     name: 'Evasion',
@@ -222,12 +222,12 @@ const autosofts: AutosoftData[] = [
     attachedTo: rcc.id,
 
     attributes: {
-      [AutosoftAttr.rating]: { name: 'Rating', value: 5 },
-      [AutosoftAttr.skill]: { name: 'Skill', value: 'Evasion' },
-      [AutosoftAttr.attr]: { name: 'Attr', value: 'Pilot' },
+      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.skill]: 'Evasion',
+      [AutosoftAttr.attr]: 'Pilot',
     },
   }),
-  addGear({
+  addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
     name: 'Maneuvering',
@@ -237,12 +237,12 @@ const autosofts: AutosoftData[] = [
     attachedTo: rcc.id,
 
     attributes: {
-      [AutosoftAttr.rating]: { name: 'Rating', value: 5 },
-      [AutosoftAttr.skill]: { name: 'Skill', value: 'Piloting' },
-      [AutosoftAttr.attr]: { name: 'Attr', value: 'Pilot' },
+      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.skill]: 'Piloting',
+      [AutosoftAttr.attr]: 'Pilot',
     },
   }),
-  addGear({
+  addGear<AutosoftData>({
     id: null,
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
@@ -252,9 +252,9 @@ const autosofts: AutosoftData[] = [
     attachedTo: rcc.id,
 
     attributes: {
-      [AutosoftAttr.rating]: { name: 'Rating', value: 7 },
-      [AutosoftAttr.skill]: { name: 'Skill', value: 'Cracking' },
-      [AutosoftAttr.attr]: { name: 'Attr', value: 'Sensor' },
+      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.skill]: 'Cracking',
+      [AutosoftAttr.attr]: 'Sensor',
     },
   }),
 ]
@@ -269,10 +269,10 @@ const fnHar: WeaponData = {
   avail: { rarity: 3, license: true },
   cost: 2_100,
   attributes: {
-    dv: { name: 'DV', value: '5P' },
-    modes: { name: 'Modes', value: 'SA/BF/FA' },
-    attackRatings: { name: 'Atk. Ratings', value: '3/11/10/6/1' },
-    ammo: { name: 'Ammo', value: '35(c)' },
+    [WeaponAttr.dv]: '5P',
+    [WeaponAttr.modes]: 'SA/BF/FA',
+    [WeaponAttr.attackRatings]: '3/11/10/6/1',
+    [WeaponAttr.ammo]: '35(c)',
   },
 
   specialtySkill: ActiveSkillId.firearms,
@@ -310,15 +310,15 @@ const car: VehicleData = addGear({
   avail: { rarity: 2 },
 
   attributes: {
-    [VehicleAttr.handling]: { name: 'Handling', value: '4/5' },
-    [VehicleAttr.accel]: { name: 'Accel', value: 12 },
-    [VehicleAttr.speedInterval]: { name: 'Speed Interval', value: 20 },
-    [VehicleAttr.topSpeed]: { name: 'Top Speed', value: 160 },
-    [VehicleAttr.body]: { name: 'Body', value: 16 },
-    [VehicleAttr.armor]: { name: 'Armor', value: 10 },
-    [VehicleAttr.pilot]: { name: 'Pilot', value: 4 },
-    [VehicleAttr.sensor]: { name: 'Sensor', value: 4 },
-    [VehicleAttr.seat]: { name: 'Seat', value: 7 },
+    [VehicleAttr.handling]: '4/5',
+    [VehicleAttr.accel]: 12,
+    [VehicleAttr.speedInterval]: 20,
+    [VehicleAttr.topSpeed]: 160,
+    [VehicleAttr.body]: 16,
+    [VehicleAttr.armor]: 10,
+    [VehicleAttr.pilot]: 4,
+    [VehicleAttr.sensor]: 4,
+    [VehicleAttr.seat]: 7,
   },
 
   slavedTo: rcc.id,
@@ -332,7 +332,7 @@ addGear({
 rcc.attachedTo = car.id
 
 new Array(2).fill(null).forEach((_, index) => {
-  const combatDrone: DroneData = addGear({
+  const combatDrone = addGear<DroneData>({
     id: null,
     gearType: GearType.drone,
     size: 'medium',
@@ -342,15 +342,15 @@ new Array(2).fill(null).forEach((_, index) => {
     avail: { rarity: 2 },
 
     attributes: {
-      [VehicleAttr.handling]: { name: 'Handling', value: 3 },
-      [VehicleAttr.accel]: { name: 'Accel', value: 20 },
-      [VehicleAttr.speedInterval]: { name: 'Speed Interval', value: 30 },
-      [VehicleAttr.topSpeed]: { name: 'Top Speed', value: 160 },
-      [VehicleAttr.body]: { name: 'Body', value: 5 },
-      [VehicleAttr.armor]: { name: 'Armor', value: 6 },
-      [VehicleAttr.pilot]: { name: 'Pilot', value: 3 },
-      [VehicleAttr.sensor]: { name: 'Sensor', value: 2 },
-      [VehicleAttr.seat]: { name: 'Seat', value: null },
+      [VehicleAttr.handling]: 3,
+      [VehicleAttr.accel]: 20,
+      [VehicleAttr.speedInterval]: 30,
+      [VehicleAttr.topSpeed]: 160,
+      [VehicleAttr.body]: 5,
+      [VehicleAttr.armor]: 6,
+      [VehicleAttr.pilot]: 3,
+      [VehicleAttr.sensor]: 2,
+      [VehicleAttr.seat]: null,
     },
 
     slavedTo: rcc.id,
@@ -384,15 +384,15 @@ new Array(4).fill(null).forEach((_, index) => {
     avail: { rarity: 2 },
 
     attributes: {
-      [VehicleAttr.handling]: { name: 'Handling', value: '3/4' },
-      [VehicleAttr.accel]: { name: 'Accel', value: 8 },
-      [VehicleAttr.speedInterval]: { name: 'Speed Interval', value: 10 },
-      [VehicleAttr.topSpeed]: { name: 'Top Speed', value: 30 },
-      [VehicleAttr.body]: { name: 'Body', value: 6 },
-      [VehicleAttr.armor]: { name: 'Armor', value: 2 },
-      [VehicleAttr.pilot]: { name: 'Pilot', value: 2 },
-      [VehicleAttr.sensor]: { name: 'Sensor', value: 2 },
-      [VehicleAttr.seat]: { name: 'Seat', value: null },
+      [VehicleAttr.handling]: '3/4',
+      [VehicleAttr.accel]: 8,
+      [VehicleAttr.speedInterval]: 10,
+      [VehicleAttr.topSpeed]: 30,
+      [VehicleAttr.body]: 6,
+      [VehicleAttr.armor]: 2,
+      [VehicleAttr.pilot]: 2,
+      [VehicleAttr.sensor]: 2,
+      [VehicleAttr.seat]: null,
     },
 
     slavedTo: rcc.id,
@@ -426,15 +426,15 @@ new Array(1).fill(null).forEach((_, index) => {
     avail: { rarity: 2 },
 
     attributes: {
-      [VehicleAttr.handling]: { name: 'Handling', value: 2 },
-      [VehicleAttr.accel]: { name: 'Accel', value: 15 },
-      [VehicleAttr.speedInterval]: { name: 'Speed Interval', value: 20 },
-      [VehicleAttr.topSpeed]: { name: 'Top Speed', value: 120 },
-      [VehicleAttr.body]: { name: 'Body', value: 3 },
-      [VehicleAttr.armor]: { name: 'Armor', value: 1 },
-      [VehicleAttr.pilot]: { name: 'Pilot', value: 3 },
-      [VehicleAttr.sensor]: { name: 'Sensor', value: 2 },
-      [VehicleAttr.seat]: { name: 'Seat', value: null },
+      [VehicleAttr.handling]: 2,
+      [VehicleAttr.accel]: 15,
+      [VehicleAttr.speedInterval]: 20,
+      [VehicleAttr.topSpeed]: 120,
+      [VehicleAttr.body]: 3,
+      [VehicleAttr.armor]: 1,
+      [VehicleAttr.pilot]: 3,
+      [VehicleAttr.sensor]: 2,
+      [VehicleAttr.seat]: null,
     },
 
     slavedTo: rcc.id,

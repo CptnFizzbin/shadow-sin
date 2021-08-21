@@ -1,13 +1,25 @@
-import { AttributeData } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 import { GearData, GearId, GearType } from '../GearData'
 
+export enum RccAttr {
+  deviceRating = 'rcc.deviceRating',
+  dataProcessing = 'rcc.dataProcessing',
+  firewall = 'rcc.firewall'
+}
+
+export const RccAttrNames: AttrNames = {
+  [RccAttr.deviceRating]: 'Device Rating',
+  [RccAttr.dataProcessing]: 'Data Processing',
+  [RccAttr.firewall]: 'Firewall',
+}
+
 export interface RccData extends GearData {
-  gearType:  GearType.rcc
+  gearType: GearType.rcc
 
   attributes: {
-    deviceRating: AttributeData<number>
-    dataProcessing: AttributeData<number>
-    firewall: AttributeData<number>
+    [RccAttr.deviceRating]: number
+    [RccAttr.dataProcessing]: number
+    [RccAttr.firewall]: number
   }
 
   slavedAutosofts: GearId[]

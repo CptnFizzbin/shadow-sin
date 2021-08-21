@@ -1,12 +1,16 @@
-import { AttributeData } from '../../System/Attribute'
 import { GearData, GearType } from '../GearData'
+
+export enum AugmentAttr {
+  grade = 'augment.grade',
+  type = 'augment.type',
+}
 
 export interface AugmentData extends GearData {
   gearType: GearType.augment
   augmentType: AugmentType
 
   attributes: {
-    grade: AttributeData<string>
+    [AugmentAttr.grade]: AugmentGrade
   }
 }
 

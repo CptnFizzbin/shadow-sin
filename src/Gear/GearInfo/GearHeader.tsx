@@ -4,7 +4,8 @@ import { FC } from 'react'
 
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../../UI/StatBlock'
-import { AvailabilityStat, CostStat } from '../Stats'
+import { AvailabilityStat } from '../Stats/Availability'
+import { CostStat } from '../Stats/Cost'
 import { GearInfoSectionProps } from './GearInfoSectionProps'
 
 export const GearHeader: FC<GearInfoSectionProps & { type?: string }> = ({

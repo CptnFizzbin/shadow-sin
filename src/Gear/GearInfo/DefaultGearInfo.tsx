@@ -16,7 +16,7 @@ export const DefaultGearInfo: FC<OtherGearInfoProps> = ({
   return (
     <Paper elevation={1}>
       <GearHeader item={item} />
-      <GearAttributes item={item} />
+      <GearAttributes item={item} attrNames={{}}/>
       <NestedGear item={item} />
     </Paper>
   )

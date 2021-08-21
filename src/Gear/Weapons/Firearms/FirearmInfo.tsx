@@ -6,7 +6,7 @@ import { GearType } from '../../GearData'
 import { GearAttributes } from '../../GearInfo/GearAttributes'
 import { GearDicePools } from '../../GearInfo/GearDicePools'
 import { GearHeader } from '../../GearInfo/GearHeader'
-import { WeaponData } from '../WeaponData'
+import { WeaponAttrNames, WeaponData } from '../WeaponData'
 import { BasicAttackPool, DroneAttackPool, RiggedAttackPool, VehicleAttackPool } from './DicePools'
 
 interface FirearmProps {
@@ -21,7 +21,7 @@ export const FirearmInfo: FC<FirearmProps> = ({
   return (
     <Paper>
       <GearHeader item={firearm} />
-      <GearAttributes item={firearm} />
+      <GearAttributes item={firearm} attrNames={WeaponAttrNames} />
       <GearDicePools>
         {mounted ? (
           <>

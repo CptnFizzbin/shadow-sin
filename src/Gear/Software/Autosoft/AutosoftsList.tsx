@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
-import { Stat, StatBlock } from '../../../UI/StatBlock'
+import { AttributeBlock } from '../../../UI/AttributeBlock'
 import { GearId } from '../../GearData'
-import { AvailabilityStat, CostStat } from '../../Stats'
-import { AutosoftData } from './AutosoftData'
+import { AutosoftAttrNames, AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
   autosofts: AutosoftData[]
@@ -45,14 +44,10 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
         </Box>
         {autosoft.name}
       </Box>
-      <Box>
-        <StatBlock>
-          {Object.entries(autosoft.attributes).map(([type, attr]) => (
-            <Stat key={type} name={attr.name} value={attr.value === null ? '-' : attr.value} />
-          ))}
-          <AvailabilityStat avail={autosoft.avail} />
-          <CostStat cost={autosoft.cost} />
-        </StatBlock>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <AttributeBlock attributes={autosoft.attributes} names={AutosoftAttrNames} />
+        </Box>
       </Box>
     </Box>
   )

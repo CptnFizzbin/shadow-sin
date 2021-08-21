@@ -1,5 +1,6 @@
-import { AttributeList } from '../System/Attribute'
-import { Availability, Cost } from './Stats'
+import { AttrList } from '../System/Attribute'
+import { Availability } from './Stats/Availability'
+import { Cost } from './Stats/Cost'
 
 export type GearId = number | null;
 
@@ -12,6 +13,7 @@ export enum GearType {
   autosoft = 'autosoft',
   rcc = 'rcc',
   augment = 'augment',
+  controlRig = 'controlRig',
 }
 
 export interface GearData {
@@ -22,7 +24,7 @@ export interface GearData {
   avail: Availability
   cost: Cost
 
-  attributes?: AttributeList
+  attributes?: AttrList
   attachedTo?: GearId
 
   [key: string]: unknown

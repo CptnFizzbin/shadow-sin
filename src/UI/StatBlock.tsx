@@ -13,7 +13,11 @@ export const StatBlock: FC<StatBlockProps> = ({
   children,
 }) => {
   return (
-    <Paper variant="outlined" className={styles.Stats} sx={{ display: 'flex', flexDirection: vertical ? 'column' : 'row'}}>
+    <Paper
+      variant="outlined"
+      className={styles.Stats}
+      sx={{ display: 'flex', flexDirection: vertical ? 'column' : 'row' }}
+    >
       {children}
     </Paper>
   )
@@ -21,20 +25,17 @@ export const StatBlock: FC<StatBlockProps> = ({
 
 interface StatProps {
   name: string
-  value?: string | number | null
+  value: string | number | null
 }
 
 export const Stat: FC<StatProps> = ({
   name,
   value,
-  children,
 }) => {
   return (
     <Box sx={{ padding: 1 }} className={styles.Stat}>
       <Typography color="primary" className={styles.StatName}>{name}</Typography>
-      <div className={styles.StatValue}>
-        {typeof value === 'undefined' ? children : (value || '-')}
-      </div>
+      <div className={styles.StatValue}>{value || '-'}</div>
     </Box>
   )
 }

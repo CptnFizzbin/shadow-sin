@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { DamageTrack } from '../DamageTrack/DamageTrack'
-import { useAttributeValue } from '../System/AttributeProvider'
+import { useAttribute } from '../System/AttributeProvider'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
 import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
@@ -11,16 +11,16 @@ import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { StatBlock } from '../UI/StatBlock'
-import { CharacterAttr } from './CharacterData'
+import { characterAttrNames, CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 
 export const CharacterInfo: FC = () => {
   const { character } = useCharacter()
 
-  const body = useAttributeValue<number>(CharacterAttr.body, 0)
-  const reaction = useAttributeValue<number>(CharacterAttr.reaction, 0)
-  const intuition = useAttributeValue<number>(CharacterAttr.intuition, 0)
-  const willpower = useAttributeValue<number>(CharacterAttr.willpower, 0)
+  const body = useAttribute<number>(CharacterAttr.body, 0)
+  const reaction = useAttribute<number>(CharacterAttr.reaction, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const willpower = useAttribute<number>(CharacterAttr.willpower, 0)
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
@@ -45,7 +45,7 @@ export const CharacterInfo: FC = () => {
       </Box>
 
       <Box sx={{ padding: 1 }}>
-        <AttributeBlock attributes={character.attributes} />
+        <AttributeBlock attributes={character.attributes} names={characterAttrNames}/>
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>

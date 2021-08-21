@@ -1,17 +1,24 @@
 import { FC } from 'react'
 
+import { AttrNames } from '../../System/Attribute'
 import { AttributeBlock } from '../../UI/AttributeBlock'
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
-import { GearInfoSectionProps } from './GearInfoSectionProps'
+import { GearData } from '../GearData'
 
-export const GearAttributes: FC<GearInfoSectionProps> = ({
+interface GearAttributesProps {
+  item: GearData
+  attrNames: AttrNames
+}
+
+export const GearAttributes: FC<GearAttributesProps> = ({
   item,
+  attrNames = {},
 }) => {
   if (!item.attributes) return null
 
   return (
     <InfoSection>
-      <AttributeBlock attributes={item.attributes} />
+      <AttributeBlock attributes={item.attributes} names={attrNames} />
     </InfoSection>
   )
 }

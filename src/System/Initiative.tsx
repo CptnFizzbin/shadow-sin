@@ -3,9 +3,9 @@ import { FC } from 'react'
 import { CharacterAttr } from '../Character/CharacterData'
 import { useFindGear } from '../Gear/GearContext'
 import { GearType } from '../Gear/GearData'
-import { RccData } from '../Gear/Rigger/RccData'
+import { RccAttr, RccData } from '../Gear/Rigger/RccData'
 import { Stat } from '../UI/StatBlock'
-import { useAttributeValue } from './AttributeProvider'
+import { useAttribute } from './AttributeProvider'
 
 interface InitiativeStatProps {
   name: string
@@ -19,30 +19,30 @@ export const InitiativeStat: FC<InitiativeStatProps> = ({
   dice = 1,
 }) => {
   return (
-    <Stat name={name}>{base} + {dice}D6</Stat>
+    <Stat name={name} value={`${base} + ${dice}D6`} />
   )
 }
 
 export const CharacterHotVrInit: FC = () => {
-  const intuition = useAttributeValue<number>(CharacterAttr.intuition, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
   const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
-  const dataProcessing = rcc?.attributes?.dataProcessing || null
+  if (!rcc) return null
 
-  if (!dataProcessing) return null
+  const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
 
   return (
-    <InitiativeStat name="VR Cold Init" base={intuition + dataProcessing.value} dice={2} />
+    <InitiativeStat name="VR Cold Init" base={intuition + dataProcessing} dice={2} />
   )
 }
 
 export const CharacterColdVrInit: FC = () => {
-  const intuition = useAttributeValue<number>(CharacterAttr.intuition, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
   const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
-  const dataProcessing = rcc?.attributes?.dataProcessing || null
+  if (!rcc) return null
 
-  if (!dataProcessing) return null
+  const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
 
   return (
-    <InitiativeStat name="VR Hot Init" base={intuition + dataProcessing.value} dice={3} />
+    <InitiativeStat name="VR Hot Init" base={intuition + dataProcessing} dice={3} />
   )
 }
