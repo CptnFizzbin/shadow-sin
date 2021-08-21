@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
-import { AttributeBlock } from '../../UI/AttributeBlock'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
-import { GearData } from '../GearData'
+import { AttributeBlock } from '../UI/AttributeBlock'
+import { InfoSection } from '../UI/InfoBlock/InfoSection'
+import { GearData } from './GearData'
 
 interface GearAttributesProps {
   item: GearData

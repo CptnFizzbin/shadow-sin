@@ -12,6 +12,7 @@ import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { DicePools } from '../UI/DicePool'
+import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../UI/StatBlock'
 import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
@@ -44,47 +45,49 @@ export const CharacterInfo: FC = () => {
 
   return (
     <Paper elevation={1}>
-      <Box sx={{ padding: 1 }}>
+      <InfoSection>
         <Typography variant="h3">
           {character.alias || character.name}
         </Typography>
         <Typography variant="subtitle1">{character.metaType}</Typography>
-      </Box>
+      </InfoSection>
 
 
-      <Box sx={{ padding: 1 }}>
+      <InfoSection>
         <AttributeBlock attributes={character.attributes} />
-      </Box>
+      </InfoSection>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{ padding: 1 }}>
+          <InfoSection>
             <DicePools>
               <DodgePool />
               <ResistDamagePool />
             </DicePools>
-          </Box>
+          </InfoSection>
 
-          <Box sx={{ padding: 1 }}>
+          <InfoSection>
             <EdgeTracker current={edge} />
-          </Box>
+          </InfoSection>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <Box sx={{ padding: 1, flexGrow: 1 }}>
-              <Typography variant={'h6'}>Skills</Typography>
-              <ActiveSkillList skills={activeSkills} />
-            </Box>
+          <InfoSection>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              <Box sx={{ padding: 1, flexGrow: 1 }}>
+                <Typography variant={'h6'}>Skills</Typography>
+                <ActiveSkillList skills={activeSkills} />
+              </Box>
 
-            <Box sx={{ padding: 1, flexGrow: 1 }}>
-              <Typography variant={'h6'}>Languages</Typography>
-              <LanguageSkillList skills={knowledgeSkills} />
-            </Box>
+              <Box sx={{ padding: 1, flexGrow: 1 }}>
+                <Typography variant={'h6'}>Languages</Typography>
+                <LanguageSkillList skills={knowledgeSkills} />
+              </Box>
 
-            <Box sx={{ padding: 1, flexGrow: 1 }}>
-              <Typography variant={'h6'}>Knowledge</Typography>
-              <KnowledgeSkillList skills={languageSkills} />
+              <Box sx={{ padding: 1, flexGrow: 1 }}>
+                <Typography variant={'h6'}>Knowledge</Typography>
+                <KnowledgeSkillList skills={languageSkills} />
+              </Box>
             </Box>
-          </Box>
+          </InfoSection>
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: smScreen ? 'row' : 'column' }}>

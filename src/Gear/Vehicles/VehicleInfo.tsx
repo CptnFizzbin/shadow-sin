@@ -5,14 +5,15 @@ import { FC } from 'react'
 import { DamageTrack } from '../../System/DamageTrack/DamageTrack'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../../UI/StatBlock'
+import { GearAttributes } from '../GearAttributes'
 import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
-import { GearAttributes } from '../GearInfo/GearAttributes'
-import { GearDicePools } from '../GearInfo/GearDicePools'
-import { GearHeader } from '../GearInfo/GearHeader'
-import { NestedGear } from '../GearInfo/NestedGear'
-import { RccData } from '../Rigger/RccData'
+import { GearDicePools } from '../GearDicePools'
+import { GearHeader } from '../GearHeader'
+import { NestedGear } from '../NestedGear'
+import { RccData } from '../Rcc/RccData'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
@@ -64,23 +65,23 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
             </GearDicePools>
 
             {rcc && (
-              <Box sx={{ padding: 1 }}>
+              <InfoSection>
                 <Typography variant={'h6'}>Slaved To</Typography>
                 <Typography>{rcc.name}</Typography>
                 <AttributeBlock attributes={rcc.attributes} />
-              </Box>
+              </InfoSection>
             )}
 
-            <Box sx={{ padding: 1 }}>
+            <InfoSection>
               <Typography variant={'h6'}>Autosofts</Typography>
               <AutosoftsList autosofts={autosofts} slavedIds={slavedAutosofts.map(soft => soft.id)} />
-            </Box>
+            </InfoSection>
           </Box>
 
           <Box>
             <Box sx={{ padding: 1, paddingBottom: 0 }}>
               <StatBlock vertical>
-                <InitiativeStat name={'Drone Init'} base={pilot * 2} dice={4} />
+                <InitiativeStat name='Drone Init' base={pilot * 2} dice={4} />
                 {riggerInterface && (
                   <>
                     <CharacterHotVrInit />

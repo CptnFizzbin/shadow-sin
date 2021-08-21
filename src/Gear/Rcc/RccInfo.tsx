@@ -2,10 +2,11 @@ import { Chip, Paper, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { GearAttributes } from '../GearAttributes'
 import { useAttachedGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
-import { GearAttributes } from '../GearInfo/GearAttributes'
-import { GearHeader } from '../GearInfo/GearHeader'
+import { GearHeader } from '../GearHeader'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { VehicleData } from '../Vehicles/VehicleData'
@@ -34,19 +35,19 @@ export const RccInfo: FC<RccInfoProps> = ({
       <GearHeader item={rcc} />
       <GearAttributes item={rcc} />
 
-      <Box sx={{ padding: 1 }}>
+      <InfoSection>
         <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
         <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} withCost withAvail />
-      </Box>
+      </InfoSection>
 
-      <Box sx={{ padding: 1 }}>
+      <InfoSection>
         <Typography variant={'h6'}>Slaved ({slavedVehicles.length} / {maxSlaved})</Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {slavedVehicles.map(gear => (
             <Chip key={gear.id} label={gear.name} />
           ))}
         </Box>
-      </Box>
+      </InfoSection>
     </Paper>
   )
 }

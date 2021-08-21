@@ -1,5 +1,5 @@
 import { registerAttrNames } from '../../UI/AttributeBlock'
-import { GearData, GearId } from '../GearData'
+import { GearData, GearId, GearType } from '../GearData'
 
 export enum VehicleAttr {
   handling = 'vehicle.handling',
@@ -26,6 +26,8 @@ registerAttrNames({
 })
 
 export interface VehicleData extends GearData {
+  gearType: GearType.vehicle | GearType.drone
+
   attributes: {
     [VehicleAttr.handling]: string | number
     [VehicleAttr.accel]: number

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
-import { DicePools } from '../../UI/DicePool'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { DicePools } from '../UI/DicePool'
+import { InfoSection } from '../UI/InfoBlock/InfoSection'
 
 export const GearDicePools: FC = ({
   children,

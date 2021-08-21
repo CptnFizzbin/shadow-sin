@@ -4,10 +4,8 @@ import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
 import { AttributeBlock } from '../../../UI/AttributeBlock'
-import { StatBlock } from '../../../UI/StatBlock'
-import { GearId } from '../../GearData'
-import { AvailabilityStat } from '../../Stats/Availability'
-import { CostStat } from '../../Stats/Cost'
+import { Stat, StatBlock } from '../../../UI/StatBlock'
+import { formatAvail, formatCost, GearId } from '../../GearData'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
@@ -70,8 +68,8 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
         {(withAvail || withCost) && (
           <Box sx={{ marginLeft: 1 }}>
             <StatBlock>
-              {withAvail && <AvailabilityStat avail={autosoft.avail} />}
-              {withCost && <CostStat cost={autosoft.cost} />}
+              {withAvail && <Stat name="Avail" value={formatAvail(autosoft.avail)} />}
+              {withCost && <Stat name="Cost" value={formatCost(autosoft.cost)} />}
             </StatBlock>
           </Box>
         )}

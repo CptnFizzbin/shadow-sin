@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { GearData } from './GearData'
-import { GearInfo } from './GearInfo/GearInfo'
+import { GearInfo } from './GearInfo'
 
 interface GearListProps {
   gear: GearData[]

@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { CharacterAttr } from '../Character/CharacterData'
 import { useFindGear } from '../Gear/GearContext'
 import { GearType } from '../Gear/GearData'
-import { RccAttr, RccData } from '../Gear/Rigger/RccData'
+import { RccAttr, RccData } from '../Gear/Rcc/RccData'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
 

@@ -1,8 +1,12 @@
 import { AttrList } from '../System/Attribute'
-import { Availability } from './Stats/Availability'
-import { Cost } from './Stats/Cost'
 
 export type GearId = number | null;
+export type Cost = number
+export type Availability = {
+  rarity: number
+  illegal?: boolean
+  license?: boolean
+}
 
 export enum GearType {
   other = 'other',
@@ -28,4 +32,13 @@ export interface GearData {
   attachedTo?: GearId
 
   [key: string]: unknown
+}
+
+export const formatAvail = (avail: Availability): string => {
+  return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
+}
+
+const costFormatter = new Intl.NumberFormat('en')
+export const formatCost = (cost: number): string => {
+  return costFormatter.format(cost) + '¥'
 }

@@ -1,8 +1,8 @@
 import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
-import { GearAttributes } from '../../GearInfo/GearAttributes'
-import { GearHeader } from '../../GearInfo/GearHeader'
+import { GearAttributes } from '../../GearAttributes'
+import { GearHeader } from '../../GearHeader'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftInfoProps {

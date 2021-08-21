@@ -2,13 +2,16 @@ import { Chip, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
-import { StatBlock } from '../../UI/StatBlock'
-import { AvailabilityStat } from '../Stats/Availability'
-import { CostStat } from '../Stats/Cost'
-import { GearInfoSectionProps } from './GearInfoSectionProps'
+import { InfoSection } from '../UI/InfoBlock/InfoSection'
+import { Stat, StatBlock } from '../UI/StatBlock'
+import { formatAvail, formatCost, GearData } from './GearData'
 
-export const GearHeader: FC<GearInfoSectionProps & { type?: string }> = ({
+export interface GearHeaderProps {
+  item: GearData
+  type?: string
+}
+
+export const GearHeader: FC<GearHeaderProps> = ({
   item,
   type,
 }) => {
@@ -29,8 +32,8 @@ export const GearHeader: FC<GearInfoSectionProps & { type?: string }> = ({
 
         <Box>
           <StatBlock>
-            <AvailabilityStat avail={item.avail} />
-            <CostStat cost={item.cost} />
+            <Stat name="Avail" value={formatAvail(item.avail)} />
+            <Stat name="Cost" value={formatCost(item.cost)} />
           </StatBlock>
         </Box>
       </Box>
