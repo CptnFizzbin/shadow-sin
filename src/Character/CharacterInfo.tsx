@@ -10,9 +10,11 @@ import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
 import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
+import { DicePools } from '../UI/DicePool'
 import { StatBlock } from '../UI/StatBlock'
 import { characterAttrNames, CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
+import { DodgePool, ResistDamagePool } from './DicePools'
 
 export const CharacterInfo: FC = () => {
   const { character } = useCharacter()
@@ -50,6 +52,13 @@ export const CharacterInfo: FC = () => {
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ padding: 1 }}>
+            <DicePools>
+              <DodgePool />
+              <ResistDamagePool />
+            </DicePools>
+          </Box>
+
           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <Box sx={{ padding: 1, flexGrow: 1 }}>
               <Typography variant={'h6'}>Skills</Typography>
