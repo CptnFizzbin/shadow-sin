@@ -4,7 +4,7 @@ import { FC } from 'react'
 
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { GearAttributes } from '../GearAttributes'
-import { useAttachedGear, useGearOfType } from '../GearContext'
+import { useAttachedGear, useFilterGear } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearHeader } from '../GearHeader'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
@@ -20,14 +20,11 @@ export const RccInfo: FC<RccInfoProps> = ({
   rcc,
 }) => {
   const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
-  const autosofts = useAttachedGear<AutosoftData>(rcc.id, {
-    type: GearType.autosoft,
-  })
+  const autosofts = useAttachedGear(rcc.id)
+    .filter(gear => gear.gearType === GearType.autosoft)
+    .map(gear => gear as AutosoftData)
 
-  const slavedVehicles: VehicleData[] = [
-    ...useGearOfType<VehicleData>(GearType.drone),
-    ...useGearOfType<VehicleData>(GearType.vehicle),
-  ].filter(vehicle => vehicle.slavedTo === rcc.id)
+  const slavedVehicles: VehicleData[] = useFilterGear(gear => gear.slavedTo === rcc.id)
   const maxSlaved = rcc.attributes[RccAttr.deviceRating] * 3
 
   return (

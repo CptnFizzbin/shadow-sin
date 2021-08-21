@@ -91,36 +91,12 @@ export function useAllGear (): GearData[] {
   return gear
 }
 
-export function useGear<T extends GearData> (gearId: GearId | undefined): T | undefined {
+export function useGear<T extends GearData = GearData> (gearId: GearId | undefined): T | undefined {
   const allGear = useAllGear()
 
   if (!gearId) return undefined
   const gear = allGear.find(gear => gear.id === gearId)
   return gear ? gear as T : undefined
-}
-
-interface GearHookOptions {
-  type?: GearType
-
-  filter? (gear: GearData): boolean
-}
-
-export function useAttachedGear<T extends GearData = GearData> (gearId: GearId, options: GearHookOptions = {}): T[] {
-  let gear = useFilterGear(gear => gear.attachedTo === gearId)
-
-  if (options.type) {
-    gear = gear.filter(gear => gear.gearType === options.type)
-  }
-
-  if (options.filter) {
-    gear = gear.filter(options.filter)
-  }
-
-  return gear.map(gear => gear as T)
-}
-
-export function useGearOfType<T extends GearData = GearData> (gearType: GearType): T[] {
-  return useFilterGear<T>(gear => gear.gearType === gearType)
 }
 
 type GearFilter = (gear: GearData) => boolean
@@ -132,4 +108,12 @@ export function useFindGear<T extends GearData = GearData> (filter: GearFilter):
 
 export function useFilterGear<T extends GearData = GearData> (filter: GearFilter): T[] {
   return useAllGear().filter(filter).map(gear => gear as T)
+}
+
+export function useAttachedGear(gearId: GearId): GearData[] {
+  return useFilterGear(gear => gear.attachedTo === gearId)
+}
+
+export function useGearOfType<T extends GearData> (gearType: GearType): T[] {
+  return useFilterGear<T>(gear => gear.gearType === gearType)
 }
