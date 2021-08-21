@@ -1,9 +1,10 @@
-import { Paper, Typography } from '@material-ui/core'
+import { Paper, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
-import { DamageTrack } from '../DamageTrack/DamageTrack'
 import { useAttribute } from '../System/AttributeProvider'
+import { DamageTrack } from '../System/DamageTrack/DamageTrack'
+import { EdgeTracker } from '../System/Edge/EdgeTracker'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
 import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
@@ -12,17 +13,21 @@ import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } fro
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { DicePools } from '../UI/DicePool'
 import { StatBlock } from '../UI/StatBlock'
-import { characterAttrNames, CharacterAttr } from './CharacterData'
+import { CharacterAttr, characterAttrNames } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 import { DodgePool, ResistDamagePool } from './DicePools'
 
 export const CharacterInfo: FC = () => {
+  const theme = useTheme()
+  const smScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   const { character } = useCharacter()
 
   const body = useAttribute<number>(CharacterAttr.body, 0)
   const reaction = useAttribute<number>(CharacterAttr.reaction, 0)
   const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
   const willpower = useAttribute<number>(CharacterAttr.willpower, 0)
+  const edge = useAttribute<number>(CharacterAttr.edge, 0)
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
@@ -46,8 +51,9 @@ export const CharacterInfo: FC = () => {
         <Typography variant="subtitle1">{character.metaType}</Typography>
       </Box>
 
+
       <Box sx={{ padding: 1 }}>
-        <AttributeBlock attributes={character.attributes} names={characterAttrNames}/>
+        <AttributeBlock attributes={character.attributes} names={characterAttrNames} />
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -57,6 +63,10 @@ export const CharacterInfo: FC = () => {
               <DodgePool />
               <ResistDamagePool />
             </DicePools>
+          </Box>
+
+          <Box sx={{ padding: 1 }}>
+            <EdgeTracker current={edge} />
           </Box>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -77,7 +87,7 @@ export const CharacterInfo: FC = () => {
           </Box>
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: smScreen ? 'row' : 'column' }}>
           <Box sx={{ padding: 1, paddingBottom: 0 }}>
             <StatBlock vertical>
               {/* NOTE: pg. 67 => 0changed by augments */}
@@ -87,14 +97,12 @@ export const CharacterInfo: FC = () => {
             </StatBlock>
           </Box>
 
-          <Box>
-            <Box sx={{ padding: 1 }}>
-              <DamageTrack current={0} max={physicalMax} label="Physical" />
-            </Box>
+          <Box sx={{ padding: 1 }}>
+            <DamageTrack current={0} max={physicalMax} label="Physical" />
+          </Box>
 
-            <Box sx={{ padding: 1 }}>
-              <DamageTrack current={0} max={stunMax} label="Stun" />
-            </Box>
+          <Box sx={{ padding: 1 }}>
+            <DamageTrack current={0} max={stunMax} label="Stun" />
           </Box>
         </Box>
       </Box>

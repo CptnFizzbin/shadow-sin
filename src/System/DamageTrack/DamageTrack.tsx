@@ -1,9 +1,9 @@
 import { Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
 import { FC, useState } from 'react'
 
-import { noOp } from '../Helpers'
+import { noOp } from '../../Helpers'
+import { TrackCell } from '../../UI/TrackCell'
 
 import styles from './DamageTrack.module.scss'
 
@@ -31,8 +31,8 @@ export const DamageTrack: FC<DamageTrackProps> = ({
   return (
     <Box sx={{ maxWidth: 300 }}>
       <Typography variant={'h6'}>{label}</Typography>
-      <Box sx={{ paddingBottom: 0.5, textAlign: 'right'}}>
-        <TrackButton onClick={() => setCurValue(0)}>0</TrackButton>
+      <Box sx={{ paddingBottom: 0.5, textAlign: 'right' }}>
+        <TrackCell onClick={() => setCurValue(0)}>0</TrackCell>
       </Box>
       <Box className={styles.DamageTrack}>
         {new Array(max).fill(null).map((_, index) => (
@@ -40,37 +40,6 @@ export const DamageTrack: FC<DamageTrackProps> = ({
         ))}
       </Box>
     </Box>
-  )
-}
-
-interface TrackButtonProps {
-  onClick? (): void
-
-  filled?: boolean
-}
-
-const TrackButton: FC<TrackButtonProps> = ({
-  children,
-  onClick = noOp,
-  filled = false,
-}) => {
-  const [hovered, setHovered] = useState<boolean>(false)
-
-  let backgroundColor = 'default'
-  if (filled) backgroundColor = 'primary.dark'
-  if (hovered) backgroundColor = 'primary.light'
-
-  return (
-    <Paper
-      sx={{ padding: 1, userSelect: 'none', backgroundColor }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => {
-        setHovered(false)
-        onClick()
-      }}
-      variant={'outlined'}
-    >{children}</Paper>
   )
 }
 
@@ -89,10 +58,10 @@ const DamageCell: FC<DamageCellProps> = ({
   const penalty = Math.floor((value + 1) / 3)
 
   return (
-    <TrackButton onClick={() => toggleCell(value)} filled={filled}>
+    <TrackCell onClick={() => toggleCell(value)} filled={filled}>
       <Box sx={{ textAlign: 'right' }}>
         {value % 3 === 0 ? penalty * -1 : '\u00A0'}
       </Box>
-    </TrackButton>
+    </TrackCell>
   )
 }

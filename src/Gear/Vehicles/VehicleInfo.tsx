@@ -2,7 +2,7 @@ import { Paper, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
-import { DamageTrack } from '../../DamageTrack/DamageTrack'
+import { DamageTrack } from '../../System/DamageTrack/DamageTrack'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
 import { StatBlock } from '../../UI/StatBlock'
