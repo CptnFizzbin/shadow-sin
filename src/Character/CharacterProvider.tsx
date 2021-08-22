@@ -53,13 +53,24 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   onChange,
   children,
 }) => {
-  const [physicalDmg, setPhysicalDmg] = useState<number>(0)
-  const [stunDmg, setStunDmg] = useState<number>(0)
+  const physicalDmgKey = 'dmg.char.physical'
+  const [physicalDmg, setPhysicalDmg] = useState<number>(parseInt(localStorage.getItem(physicalDmgKey) || '0'))
+  const onPhysicalChange = (value: number) => {
+    setPhysicalDmg(value)
+    localStorage.setItem(physicalDmgKey, value.toString())
+  }
+
+  const stunDmgKey = 'dmg.char.stun'
+  const [stunDmg, setStunDmg] = useState<number>(parseInt(localStorage.getItem(stunDmgKey) || '0'))
+  const onStunChange = (value: number) => {
+    setStunDmg(value)
+    localStorage.setItem(stunDmgKey, value.toString())
+  }
 
   return (
     <CharacterContext.Provider value={{ character, setCharacter: onChange }}>
-      <DamageProvider type={DamageType.charPhysical} value={physicalDmg} onChange={setPhysicalDmg}>
-        <DamageProvider type={DamageType.charStun} value={stunDmg} onChange={setStunDmg}>
+      <DamageProvider type={DamageType.charPhysical} value={physicalDmg} onChange={onPhysicalChange}>
+        <DamageProvider type={DamageType.charStun} value={stunDmg} onChange={onStunChange}>
           <AttributeProvider attributes={character.attributes}>
             {children}
           </AttributeProvider>

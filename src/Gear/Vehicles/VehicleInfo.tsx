@@ -32,7 +32,12 @@ interface VehicleInfoProps {
 export const VehicleInfo: FC<VehicleInfoProps> = ({
   vehicle,
 }) => {
-  const [damage, setDamage] = useState<number>(0)
+  const damageKey = `dmg.${vehicle.id}.physical`
+  const [damage, setDamage] = useState<number>(parseInt(localStorage.getItem(damageKey) || '0'))
+  const onDamageChange = (value: number) => {
+    setDamage(value)
+    localStorage.setItem(damageKey, value.toString())
+  }
 
   const pilot = vehicle.attributes[VehicleAttr.pilot] || 0
 
@@ -57,7 +62,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
   }
 
   return (
-    <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={setDamage}>
+    <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={onDamageChange}>
       <AttributeProvider attributes={vehicle.attributes}>
         <AutosoftProvider autosofts={autosofts}>
           <InfoBlock>
@@ -102,7 +107,7 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
                 </InfoSection>
 
                 <InfoSection>
-                  <DamageTrack current={damage} max={physicalMax} onChange={setDamage} label="Physical" />
+                  <DamageTrack current={damage} max={physicalMax} onChange={onDamageChange} label="Physical" />
                 </InfoSection>
               </InfoBlock.Aside>
             </InfoBlock.Body>

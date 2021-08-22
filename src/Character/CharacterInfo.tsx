@@ -34,7 +34,6 @@ export const CharacterInfo: FC = () => {
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
   const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
-  const edge = useAttribute<number>(CharacterAttr.edge) || 0
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
@@ -67,7 +66,7 @@ export const CharacterInfo: FC = () => {
       <InfoBlock.Body>
         <InfoBlock.Main>
           <InfoSection>
-            <EdgeTracker current={edge} />
+            <EdgeTracker />
           </InfoSection>
 
           <InfoSection>
