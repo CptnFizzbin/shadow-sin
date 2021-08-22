@@ -1,6 +1,9 @@
 import { Box, Paper } from '@material-ui/core'
 import { FC } from 'react'
 
+import { useDamagePenalty } from '../System/Damage/DamageContext'
+import { DamageType } from '../System/Damage/DamageType'
+
 export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
   return {
     name: input.name,
@@ -30,19 +33,20 @@ export const DicePools: FC = ({
 interface DicePoolProps {
   name: string
   groups: DiceGroup[]
-  damagePenalty?: number
+  dmgPenaltyTypes: DamageType[]
 }
 
 export const DicePool: FC<DicePoolProps> = ({
   name,
   groups,
-  damagePenalty = 0,
+  dmgPenaltyTypes = [],
 }) => {
-  if (damagePenalty) {
-    groups = [...groups, { name: 'Dmg. Penalty', size: damagePenalty * -1 }]
+  const dmgPenalty = useDamagePenalty(dmgPenaltyTypes)
+  if (dmgPenalty > 0) {
+    groups = [...groups, { name: 'Dmg. Penalty', size: dmgPenalty * -1 }]
   }
 
-  const total = groups.map(g => g.size || g.default || 0).reduce((a, b) => a + b, 0)
+  const total = Math.max(0, groups.map(g => g.size || g.default || 0).reduce((a, b) => a + b, 0))
 
   return (
     <Box sx={{ display: 'inline-flex', flexDirection: 'column' }}>

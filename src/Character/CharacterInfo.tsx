@@ -19,7 +19,7 @@ import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../UI/StatBlock'
 import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
-import { DodgePool, ResistDamagePool } from './DicePools'
+import { ComposurePool, DodgePool, ResistDamagePool } from './DicePools'
 
 export const CharacterInfo: FC = () => {
   const curDamage = useDamage(DamageType.charPhysical)
@@ -71,6 +71,7 @@ export const CharacterInfo: FC = () => {
             <DicePools>
               <DodgePool />
               <ResistDamagePool />
+              <ComposurePool/>
             </DicePools>
           </InfoSection>
 

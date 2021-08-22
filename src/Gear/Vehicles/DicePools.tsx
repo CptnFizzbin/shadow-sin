@@ -3,7 +3,6 @@ import { FC } from 'react'
 import { CharacterAttr } from '../../Character/CharacterData'
 import { useSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
-import { useDamagePenalty } from '../../System/Damage/DamageContext'
 import { DamageType } from '../../System/Damage/DamageType'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
@@ -26,14 +25,12 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
   const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : 0
   const evasion: number = evasionAutosoft ? evasionAutosoft.attributes[AutosoftAttr.rating] : 0
 
-  const dmgPenalty = useDamagePenalty([DamageType.vehiclePhysical])
-
   const diceGroups: DiceGroup[] = [
     { name: 'Piloting', size: piloting },
     { name: 'Evasion', size: evasion },
   ]
 
-  return <DicePool name={'Pilot Evade'} groups={diceGroups} damagePenalty={dmgPenalty} />
+  return <DicePool name={'Pilot Evade'} groups={diceGroups} dmgPenaltyTypes={[DamageType.vehiclePhysical]} />
 }
 
 export const RiggedEvadePool: FC<VehiclePoolProps> = ({
@@ -41,8 +38,6 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
 }) => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-
-  const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical])
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
     .filter(gear => gear.attachedTo === vehicle.id)
@@ -57,5 +52,6 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
     { name: 'Control Rig', size: controlRig.attributes[ControlRigAttr.rating] },
   ]
 
-  return <DicePool name={'Rigged Evade'} groups={groups} damagePenalty={dmgPenalty} />
+  const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
+  return <DicePool name={'Rigged Evade'} groups={groups} dmgPenaltyTypes={dmgPenaltyTypes} />
 }
