@@ -7,8 +7,8 @@ import { DiceGroup, DicePool } from '../UI/DicePool'
 import { CharacterAttr } from './CharacterData'
 
 export const DodgePool: FC = () => {
-  const reaction = useAttribute<number>(CharacterAttr.reaction, 0)
-  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
   const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun])
 
   const diceGroups: DiceGroup[] = [
@@ -22,9 +22,9 @@ export const DodgePool: FC = () => {
 }
 
 export const ResistDamagePool: FC = () => {
-  const body = useAttribute(CharacterAttr.body, 0)
+  const body = useAttribute<number>(CharacterAttr.body) || 0
 
-  const diceGroups = [
+  const diceGroups: DiceGroup[] = [
     { name: 'Body', size: body },
   ]
 

@@ -40,7 +40,7 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
-  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
 
   const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical])
 

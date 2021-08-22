@@ -6,6 +6,7 @@ import { useAttribute } from '../System/AttributeProvider'
 import { useDamage, useSetDamage } from '../System/Damage/DamageContext'
 import { DamageTrack } from '../System/Damage/DamageTrack'
 import { DamageType } from '../System/Damage/DamageType'
+import { CharacterDefRatingStat } from '../System/DefenseRating'
 import { EdgeTracker } from '../System/Edge/EdgeTracker'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
@@ -31,11 +32,11 @@ export const CharacterInfo: FC = () => {
 
   const { character } = useCharacter()
 
-  const body = useAttribute<number>(CharacterAttr.body, 0)
-  const reaction = useAttribute<number>(CharacterAttr.reaction, 0)
-  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
-  const willpower = useAttribute<number>(CharacterAttr.willpower, 0)
-  const edge = useAttribute<number>(CharacterAttr.edge, 0)
+  const body = useAttribute<number>(CharacterAttr.body) || 0
+  const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
+  const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
+  const edge = useAttribute<number>(CharacterAttr.edge) || 0
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
@@ -104,6 +105,7 @@ export const CharacterInfo: FC = () => {
               <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
               <CharacterHotVrInit />
               <CharacterColdVrInit />
+              <CharacterDefRatingStat />
             </StatBlock>
           </Box>
 

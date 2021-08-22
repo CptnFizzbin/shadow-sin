@@ -23,7 +23,7 @@ interface FirearmPoolProps {
 export const BasicAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const agility = useAttribute<number>(CharacterAttr.agility, 0)
+  const agility = useAttribute<number>(CharacterAttr.agility) || 0
   const firearmsSkill = useSkill<ActiveSkillData>(ActiveSkillId.firearms)
   const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun])
 
@@ -45,7 +45,7 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({
 export const DroneAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const sensor = useAttribute<number>(VehicleAttr.sensor, 0)
+  const sensor = useAttribute<number>(VehicleAttr.sensor) || 0
   const targetingAutosoft = useTargetingAutosoft(weapon.name)
   const dmgPenalty = useDamagePenalty([DamageType.vehiclePhysical])
 
@@ -62,7 +62,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
 }
 
 export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
-  const logic = useAttribute<number>(CharacterAttr.logic, 0)
+  const logic = useAttribute<number>(CharacterAttr.logic) || 0
   const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
   const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun])
 
@@ -75,7 +75,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
 }
 
 export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
-  const logicAttr = useAttribute<number>(CharacterAttr.logic, 0)
+  const logicAttr = useAttribute<number>(CharacterAttr.logic) || 0
   const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
   const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical])
 

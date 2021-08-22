@@ -24,7 +24,7 @@ export const InitiativeStat: FC<InitiativeStatProps> = ({
 }
 
 export const CharacterHotVrInit: FC = () => {
-  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
   const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
   if (!rcc) return null
 
@@ -36,7 +36,7 @@ export const CharacterHotVrInit: FC = () => {
 }
 
 export const CharacterColdVrInit: FC = () => {
-  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
   const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
   if (!rcc) return null
 

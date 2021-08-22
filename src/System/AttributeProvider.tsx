@@ -25,6 +25,6 @@ export const useAttributes = (): AttrList => {
   return useContext(AttributeContext)
 }
 
-export function useAttribute<T extends AttrValue> (type: AttrType, defaultValue: T): T {
-  return (useAttributes()[type] as T) || defaultValue
+export function useAttribute<T extends AttrValue> (type: AttrType): T {
+  return (useAttributes()[type] as T)
 }

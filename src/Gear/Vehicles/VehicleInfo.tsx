@@ -2,9 +2,11 @@ import { Paper, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC, useState } from 'react'
 
+import { AttributeProvider } from '../../System/AttributeProvider'
 import { DamageProvider } from '../../System/Damage/DamageContext'
 import { DamageTrack } from '../../System/Damage/DamageTrack'
 import { DamageType } from '../../System/Damage/DamageType'
+import { VehicleDefRatingStat } from '../../System/DefenseRating'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
@@ -60,51 +62,53 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
       <GearHeader item={vehicle} />
       <GearAttributes item={vehicle} />
 
-
       <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={setDamage}>
-        <AutosoftProvider autosofts={autosofts}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <GearDicePools>
-                <PilotEvadePool vehicle={vehicle} />
-                <RiggedEvadePool vehicle={vehicle} />
-              </GearDicePools>
+        <AttributeProvider attributes={vehicle.attributes}>
+          <AutosoftProvider autosofts={autosofts}>
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <GearDicePools>
+                  <PilotEvadePool vehicle={vehicle} />
+                  <RiggedEvadePool vehicle={vehicle} />
+                </GearDicePools>
 
-              {rcc && (
+                {rcc && (
+                  <InfoSection>
+                    <Typography variant={'h6'}>Slaved To</Typography>
+                    <Typography>{rcc.name}</Typography>
+                    <AttributeBlock attributes={rcc.attributes} />
+                  </InfoSection>
+                )}
+
                 <InfoSection>
-                  <Typography variant={'h6'}>Slaved To</Typography>
-                  <Typography>{rcc.name}</Typography>
-                  <AttributeBlock attributes={rcc.attributes} />
+                  <Typography variant={'h6'}>Autosofts</Typography>
+                  <AutosoftsList autosofts={autosofts} slavedIds={slavedAutosofts.map(soft => soft.id)} />
                 </InfoSection>
-              )}
-
-              <InfoSection>
-                <Typography variant={'h6'}>Autosofts</Typography>
-                <AutosoftsList autosofts={autosofts} slavedIds={slavedAutosofts.map(soft => soft.id)} />
-              </InfoSection>
-            </Box>
-
-            <Box>
-              <Box sx={{ padding: 1, paddingBottom: 0 }}>
-                <StatBlock vertical>
-                  <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
-                  {riggerInterface && (
-                    <>
-                      <CharacterHotVrInit />
-                      <CharacterColdVrInit />
-                    </>
-                  )}
-                </StatBlock>
               </Box>
 
-              <Box sx={{ padding: 1 }}>
-                <DamageTrack current={damage} max={physicalMax} onChange={setDamage} label="Physical" />
+              <Box>
+                <Box sx={{ padding: 1, paddingBottom: 0 }}>
+                  <StatBlock vertical>
+                    <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
+                    {riggerInterface && (
+                      <>
+                        <CharacterHotVrInit />
+                        <CharacterColdVrInit />
+                      </>
+                    )}
+                    <VehicleDefRatingStat />
+                  </StatBlock>
+                </Box>
+
+                <Box sx={{ padding: 1 }}>
+                  <DamageTrack current={damage} max={physicalMax} onChange={setDamage} label="Physical" />
+                </Box>
               </Box>
             </Box>
-          </Box>
 
-          <NestedGear item={vehicle} />
-        </AutosoftProvider>
+            <NestedGear item={vehicle} />
+          </AutosoftProvider>
+        </AttributeProvider>
       </DamageProvider>
     </Paper>
   )
