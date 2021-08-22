@@ -3,7 +3,9 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { useAttribute } from '../System/AttributeProvider'
-import { DamageTrack } from '../System/DamageTrack/DamageTrack'
+import { useDamage, useSetDamage } from '../System/Damage/DamageContext'
+import { DamageTrack } from '../System/Damage/DamageTrack'
+import { DamageType } from '../System/Damage/DamageType'
 import { EdgeTracker } from '../System/Edge/EdgeTracker'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
@@ -19,6 +21,11 @@ import { useCharacter } from './CharacterProvider'
 import { DodgePool, ResistDamagePool } from './DicePools'
 
 export const CharacterInfo: FC = () => {
+  const curDamage = useDamage(DamageType.charPhysical)
+  const setCurDamage = useSetDamage(DamageType.charPhysical)
+  const curStun = useDamage(DamageType.charStun)
+  const setCurStun = useSetDamage(DamageType.charStun)
+
   const theme = useTheme()
   const smScreen = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -101,11 +108,11 @@ export const CharacterInfo: FC = () => {
           </Box>
 
           <Box sx={{ padding: 1 }}>
-            <DamageTrack current={0} max={physicalMax} label="Physical" />
+            <DamageTrack current={curDamage} max={physicalMax} onChange={setCurDamage} label="Physical" />
           </Box>
 
           <Box sx={{ padding: 1 }}>
-            <DamageTrack current={0} max={stunMax} label="Stun" />
+            <DamageTrack current={curStun} max={stunMax} onChange={setCurStun} label="Stun" />
           </Box>
         </Box>
       </Box>

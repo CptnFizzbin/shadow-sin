@@ -3,6 +3,8 @@ import { FC } from 'react'
 import { CharacterAttr } from '../../Character/CharacterData'
 import { useSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
+import { useDamagePenalty } from '../../System/Damage/DamageContext'
+import { DamageType } from '../../System/Damage/DamageType'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
 import { ControlRigAttr, ControlRigData } from '../Augments/ControlRigData'
@@ -17,27 +19,30 @@ interface VehiclePoolProps {
   vehicle: VehicleData
 }
 
-type VehicleDicePool = FC<VehiclePoolProps>
-
-export const PilotEvadePool: VehicleDicePool = () => {
+export const PilotEvadePool: FC<VehiclePoolProps> = () => {
   const evasionAutosoft = useAutosoft(AutosoftType.evasion)
   const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
 
   const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : 0
   const evasion: number = evasionAutosoft ? evasionAutosoft.attributes[AutosoftAttr.rating] : 0
 
-  const groups: DiceGroup[] = []
-  groups.push({ name: 'Piloting', size: piloting })
-  groups.push({ name: 'Evasion', size: evasion })
+  const dmgPenalty = useDamagePenalty([DamageType.vehiclePhysical])
 
-  return <DicePool name={'Pilot Evade'} groups={groups} />
+  const diceGroups: DiceGroup[] = [
+    { name: 'Piloting', size: piloting },
+    { name: 'Evasion', size: evasion },
+  ]
+
+  return <DicePool name={'Pilot Evade'} groups={diceGroups} damagePenalty={dmgPenalty} />
 }
 
-export const RiggedEvadePool: VehicleDicePool = ({
+export const RiggedEvadePool: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
   const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+
+  const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical])
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
     .filter(gear => gear.attachedTo === vehicle.id)
@@ -52,5 +57,5 @@ export const RiggedEvadePool: VehicleDicePool = ({
     { name: 'Control Rig', size: controlRig.attributes[ControlRigAttr.rating] },
   ]
 
-  return <DicePool name={'Rigged Evade'} groups={groups} />
+  return <DicePool name={'Rigged Evade'} groups={groups} damagePenalty={dmgPenalty} />
 }

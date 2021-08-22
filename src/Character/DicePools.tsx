@@ -1,20 +1,23 @@
 import { FC } from 'react'
 
 import { useAttribute } from '../System/AttributeProvider'
-import { DicePool } from '../UI/DicePool'
+import { useDamagePenalty } from '../System/Damage/DamageContext'
+import { DamageType } from '../System/Damage/DamageType'
+import { DiceGroup, DicePool } from '../UI/DicePool'
 import { CharacterAttr } from './CharacterData'
 
 export const DodgePool: FC = () => {
-  const reaction = useAttribute(CharacterAttr.reaction, 0)
-  const intuition = useAttribute(CharacterAttr.intuition, 0)
+  const reaction = useAttribute<number>(CharacterAttr.reaction, 0)
+  const intuition = useAttribute<number>(CharacterAttr.intuition, 0)
+  const dmgPenalty = useDamagePenalty([DamageType.charPhysical, DamageType.charStun])
 
-  const diceGroups = [
+  const diceGroups: DiceGroup[] = [
     { name: 'Reaction', size: reaction },
     { name: 'Intution', size: intuition },
   ]
 
   return (
-    <DicePool name={'Dodge'} groups={diceGroups} />
+    <DicePool name={'Dodge'} groups={diceGroups} damagePenalty={dmgPenalty} />
   )
 }
 

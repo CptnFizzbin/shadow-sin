@@ -21,21 +21,27 @@ export interface DiceGroup {
   default?: number
 }
 
-interface DicePoolProps {
-  name: string
-  groups: DiceGroup[]
-}
-
 export const DicePools: FC = ({
   children,
 }) => {
-  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex' , gap: 1 }}>{children}</Paper>
+  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex', gap: 1 }}>{children}</Paper>
+}
+
+interface DicePoolProps {
+  name: string
+  groups: DiceGroup[]
+  damagePenalty?: number
 }
 
 export const DicePool: FC<DicePoolProps> = ({
   name,
   groups,
+  damagePenalty = 0,
 }) => {
+  if (damagePenalty) {
+    groups = [...groups, { name: 'Dmg. Penalty', size: damagePenalty * -1 }]
+  }
+
   const total = groups.map(g => g.size || g.default || 0).reduce((a, b) => a + b, 0)
 
   return (

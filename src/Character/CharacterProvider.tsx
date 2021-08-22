@@ -1,6 +1,8 @@
-import { createContext, FC, useContext } from 'react'
+import { createContext, FC, useContext, useState } from 'react'
 
 import { AttributeProvider } from '../System/AttributeProvider'
+import { DamageProvider } from '../System/Damage/DamageContext'
+import { DamageType } from '../System/Damage/DamageType'
 import { SkillData, SkillId } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
@@ -51,11 +53,18 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   onChange,
   children,
 }) => {
+  const [physicalDmg, setPhysicalDmg] = useState<number>(0)
+  const [stunDmg, setStunDmg] = useState<number>(0)
+
   return (
     <CharacterContext.Provider value={{ character, setCharacter: onChange }}>
-      <AttributeProvider attributes={character.attributes}>
-        {children}
-      </AttributeProvider>
+      <DamageProvider type={DamageType.charPhysical} value={physicalDmg} onChange={setPhysicalDmg}>
+        <DamageProvider type={DamageType.charStun} value={stunDmg} onChange={setStunDmg}>
+          <AttributeProvider attributes={character.attributes}>
+            {children}
+          </AttributeProvider>
+        </DamageProvider>
+      </DamageProvider>
     </CharacterContext.Provider>
   )
 }

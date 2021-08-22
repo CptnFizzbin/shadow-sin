@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import { noOp } from '../../Helpers'
 import { TrackCell } from '../../UI/TrackCell'
@@ -11,20 +11,21 @@ interface DamageTrackProps {
   current: number
   max: number
   label?: string
+
+  onChange (value: number): void
 }
 
 export const DamageTrack: FC<DamageTrackProps> = ({
   current,
   max,
   label = 'Physical',
+  onChange,
 }) => {
-  const [curValue, setCurValue] = useState<number>(current)
-
   const onToggleCell = (value: number) => {
-    if (value === curValue) {
-      setCurValue(value - 1)
+    if (value === current) {
+      onChange(value - 1)
     } else {
-      setCurValue(value)
+      onChange(value)
     }
   }
 
@@ -32,11 +33,11 @@ export const DamageTrack: FC<DamageTrackProps> = ({
     <Box sx={{ maxWidth: 300 }}>
       <Typography variant={'h6'}>{label}</Typography>
       <Box sx={{ paddingBottom: 0.5, textAlign: 'right' }}>
-        <TrackCell onClick={() => setCurValue(0)}>0</TrackCell>
+        <TrackCell onClick={() => onChange(0)}>0</TrackCell>
       </Box>
       <Box className={styles.DamageTrack}>
         {new Array(max).fill(null).map((_, index) => (
-          <DamageCell key={index} value={index + 1} filled={index < curValue} toggleCell={onToggleCell} />
+          <DamageCell key={index} value={index + 1} filled={index < current} toggleCell={onToggleCell} />
         ))}
       </Box>
     </Box>
