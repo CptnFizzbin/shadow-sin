@@ -27,7 +27,9 @@ export interface DiceGroup {
 export const DicePools: FC = ({
   children,
 }) => {
-  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex', gap: 1 }}>{children}</Paper>
+  return <Paper variant="outlined" sx={{ padding: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+    {children}
+  </Paper>
 }
 
 interface DicePoolProps {
