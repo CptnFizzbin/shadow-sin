@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Chip, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC, useState } from 'react'
 
@@ -12,7 +12,7 @@ export const EdgeTracker: FC = () => {
   const defaultEdge = parseInt(localStorage.getItem(edgeSessionKey) || charEdgeAttr.toString())
 
   const [curValue, setCurValue] = useState<number>(defaultEdge)
-  const onEdgeChange = (value: number) => {
+  const setEdge = (value: number) => {
     setCurValue(value)
     localStorage.setItem(edgeSessionKey, value.toString())
   }
@@ -21,18 +21,25 @@ export const EdgeTracker: FC = () => {
 
   const onToggleCell = (value: number) => {
     if (value === curValue) {
-      onEdgeChange(value - 1)
+      setEdge(value - 1)
     } else {
-      onEdgeChange(value)
+      setEdge(value)
     }
+  }
+
+  const onReset = () => {
+    setEdge(charEdgeAttr)
   }
 
   return (
     <Box>
-      <Typography variant={'h6'}>Edge</Typography>
+      <Box>
+        <Typography variant="h6" sx={{ display: 'inline', marginRight: 1 }}>Edge</Typography>
+        <Chip onClick={onReset} label="Reset" size="small" variant="outlined" sx={{ verticalAlign: 'text-bottom' }}/>
+      </Box>
       <Box sx={{ display: 'flex', textAlign: 'center', gap: 0.5 }}>
         <Box sx={{ flexGrow: 0.5 }}>
-          <TrackCell onClick={() => onEdgeChange(0)}>0</TrackCell>
+          <TrackCell onClick={() => setEdge(0)}>0</TrackCell>
         </Box>
         {new Array(7).fill(null).map((_, index) => (
           <Box key={index} sx={{ flexGrow: 1 }}>
