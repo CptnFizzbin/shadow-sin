@@ -37,10 +37,52 @@ export const ComposurePool: FC = () => {
 
   const diceGroups: DiceGroup[] = [
     { name: 'Willpower', size: willpower },
-    { name: 'Cillpower', size: charisma },
+    { name: 'Charisma', size: charisma },
   ]
 
   return (
     <DicePool name={'Composure'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+  )
+}
+
+export const JudgeIntentPool: FC = () => {
+  const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
+
+  const diceGroups: DiceGroup[] = [
+    { name: 'Willpower', size: willpower },
+    { name: 'Intuition', size: intuition },
+  ]
+
+  return (
+    <DicePool name={'Judge Intent'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+  )
+}
+
+export const MemoryPool: FC = () => {
+  const logic = useAttribute<number>(CharacterAttr.logic) || 0
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
+
+  const diceGroups: DiceGroup[] = [
+    { name: 'Logic', size: logic },
+    { name: 'Intuition', size: intuition },
+  ]
+
+  return (
+    <DicePool name={'Memory'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+  )
+}
+
+export const LiftPool: FC = () => {
+  const body = useAttribute<number>(CharacterAttr.body) || 0
+  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
+
+  const diceGroups: DiceGroup[] = [
+    { name: 'Body', size: body },
+    { name: 'Intuition', size: intuition },
+  ]
+
+  return (
+    <DicePool name={'Lift/Carry'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
   )
 }
