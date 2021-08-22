@@ -1,5 +1,4 @@
-import { Paper, Typography } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
+import { Typography } from '@material-ui/core'
 import { FC, useState } from 'react'
 
 import { AttributeProvider } from '../../System/AttributeProvider'
@@ -9,6 +8,7 @@ import { DamageType } from '../../System/Damage/DamageType'
 import { VehicleDefRatingStat } from '../../System/DefenseRating'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
+import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../../UI/StatBlock'
 import { GearAttributes } from '../GearAttributes'
@@ -44,29 +44,30 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
   const physicalMax = Math.ceil(vehicle.attributes[VehicleAttr.body] / 2) + 8
   const allAutosofts = useGearOfType<AutosoftData>(GearType.autosoft)
 
-  const localAutosofts = allAutosofts
+  let autosofts = allAutosofts
     .filter(gear => gear.attachedTo === vehicle.id)
 
-  const slavedAutosofts: AutosoftData[] = []
   if (rcc) {
-    allAutosofts
-      .filter(autosoft => autosoft.attachedTo === rcc.id)
-      .filter(autosoft => rcc.slavedAutosofts.includes(autosoft.id))
-      .forEach(autosoft => slavedAutosofts.push(autosoft))
+    autosofts = [
+      ...autosofts,
+      ...allAutosofts
+        .filter(autosoft => autosoft.attachedTo === rcc.id)
+        .filter(autosoft => rcc.slavedAutosofts.includes(autosoft.id)),
+    ]
   }
 
-  const autosofts = [...localAutosofts, ...slavedAutosofts]
-
   return (
-    <Paper elevation={1} sx={{ marginTop: 1 }}>
-      <GearHeader item={vehicle} />
-      <GearAttributes item={vehicle} />
+    <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={setDamage}>
+      <AttributeProvider attributes={vehicle.attributes}>
+        <AutosoftProvider autosofts={autosofts}>
+          <InfoBlock>
+            <InfoBlock.Header>
+              <GearHeader item={vehicle} />
+              <GearAttributes item={vehicle} />
+            </InfoBlock.Header>
 
-      <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={setDamage}>
-        <AttributeProvider attributes={vehicle.attributes}>
-          <AutosoftProvider autosofts={autosofts}>
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ flexGrow: 1 }}>
+            <InfoBlock.Body>
+              <InfoBlock.Main>
                 <GearDicePools>
                   <PilotEvadePool vehicle={vehicle} />
                   <RiggedEvadePool vehicle={vehicle} />
@@ -82,12 +83,12 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
 
                 <InfoSection>
                   <Typography variant={'h6'}>Autosofts</Typography>
-                  <AutosoftsList autosofts={autosofts} slavedIds={slavedAutosofts.map(soft => soft.id)} />
+                  <AutosoftsList autosofts={autosofts} slavedIds={rcc?.slavedAutosofts} />
                 </InfoSection>
-              </Box>
+              </InfoBlock.Main>
 
-              <Box>
-                <Box sx={{ padding: 1, paddingBottom: 0 }}>
+              <InfoBlock.Aside>
+                <InfoSection>
                   <StatBlock vertical>
                     <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
                     {riggerInterface && (
@@ -98,18 +99,20 @@ export const VehicleInfo: FC<VehicleInfoProps> = ({
                     )}
                     <VehicleDefRatingStat />
                   </StatBlock>
-                </Box>
+                </InfoSection>
 
-                <Box sx={{ padding: 1 }}>
+                <InfoSection>
                   <DamageTrack current={damage} max={physicalMax} onChange={setDamage} label="Physical" />
-                </Box>
-              </Box>
-            </Box>
+                </InfoSection>
+              </InfoBlock.Aside>
+            </InfoBlock.Body>
 
-            <NestedGear item={vehicle} />
-          </AutosoftProvider>
-        </AttributeProvider>
-      </DamageProvider>
-    </Paper>
+            <InfoBlock.Footer>
+              <NestedGear item={vehicle} />
+            </InfoBlock.Footer>
+          </InfoBlock>
+        </AutosoftProvider>
+      </AttributeProvider>
+    </DamageProvider>
   )
 }

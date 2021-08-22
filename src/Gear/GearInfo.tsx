@@ -1,6 +1,6 @@
-import { Paper } from '@material-ui/core'
 import React, { FC } from 'react'
 
+import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
 import { GearAttributes } from './GearAttributes'
 import { GearData, GearType } from './GearData'
 import { GearHeader } from './GearHeader'
@@ -11,6 +11,8 @@ import { AutosoftData } from './Software/Autosoft/AutosoftData'
 import { AutosoftInfo } from './Software/Autosoft/AutosoftInfo'
 import { VehicleData } from './Vehicles/VehicleData'
 import { VehicleInfo } from './Vehicles/VehicleInfo'
+import { VehicleModData } from './Vehicles/VehicleModData'
+import { VehicleModInfo } from './Vehicles/VehicleModInfo'
 import { WeaponData } from './Weapons/WeaponData'
 import { WeaponInfo } from './Weapons/WeaponInfo'
 
@@ -29,6 +31,8 @@ export const GearInfo: FC<GearInfoProps> = ({
   case GearType.drone:
   case GearType.vehicle:
     return <VehicleInfo vehicle={item as VehicleData} />
+  case GearType.vehicleMod:
+    return <VehicleModInfo mod={item as VehicleModData} />
   case GearType.rcc:
     return <RccInfo rcc={item as RccData} />
   default:
@@ -40,10 +44,15 @@ export const DefaultGearInfo: FC<GearInfoProps> = ({
   item,
 }) => {
   return (
-    <Paper elevation={1}>
-      <GearHeader item={item} />
-      <GearAttributes item={item} />
-      <NestedGear item={item} />
-    </Paper>
+    <InfoBlock>
+      <InfoBlock.Header>
+        <GearHeader item={item} />
+        <GearAttributes item={item} />
+      </InfoBlock.Header>
+
+      <InfoBlock.Footer>
+        <NestedGear item={item} />
+      </InfoBlock.Footer>
+    </InfoBlock>
   )
 }

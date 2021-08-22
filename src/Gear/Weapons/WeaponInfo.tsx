@@ -1,6 +1,6 @@
-import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
+import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
 import { GearAttributes } from '../GearAttributes'
 import { useGear } from '../GearContext'
 import { GearType } from '../GearData'
@@ -19,22 +19,29 @@ export const WeaponInfo: FC<FirearmProps> = ({
   const mounted = useGear(weapon.attachedTo)?.gearType === GearType.vehicleMod
 
   return (
-    <Paper>
-      <GearHeader item={weapon} />
-      <GearAttributes item={weapon} />
-      <GearDicePools>
-        {mounted ? (
-          <>
-            <VehicleAttackPool weapon={weapon} />
-            <DroneAttackPool weapon={weapon} />
-            <RiggedAttackPool weapon={weapon} />
-          </>
-        ) : (
-          <>
-            <BasicAttackPool weapon={weapon} />
-          </>
-        )}
-      </GearDicePools>
-    </Paper>
+    <InfoBlock>
+      <InfoBlock.Header>
+        <GearHeader item={weapon} />
+        <GearAttributes item={weapon} />
+      </InfoBlock.Header>
+
+      <InfoBlock.Body>
+        <InfoBlock.Main>
+          <GearDicePools>
+            {mounted ? (
+              <>
+                <VehicleAttackPool weapon={weapon} />
+                <DroneAttackPool weapon={weapon} />
+                <RiggedAttackPool weapon={weapon} />
+              </>
+            ) : (
+              <>
+                <BasicAttackPool weapon={weapon} />
+              </>
+            )}
+          </GearDicePools>
+        </InfoBlock.Main>
+      </InfoBlock.Body>
+    </InfoBlock>
   )
 }

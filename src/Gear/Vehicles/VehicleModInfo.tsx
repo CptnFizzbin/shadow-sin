@@ -1,6 +1,6 @@
-import { Paper } from '@material-ui/core'
 import { FC } from 'react'
 
+import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
 import { GearHeader } from '../GearHeader'
 import { NestedGear } from '../NestedGear'
 import { VehicleModData } from './VehicleModData'
@@ -13,9 +13,11 @@ export const VehicleModInfo: FC<VehicleModInfoProps> = ({
   mod,
 }) => {
   return (
-    <Paper elevation={1}>
-      <GearHeader item={mod} />
-      <NestedGear item={mod} />
-    </Paper>
+    <InfoBlock>
+      <InfoBlock.Header>
+        <GearHeader item={mod} />
+        <NestedGear item={mod} />
+      </InfoBlock.Header>
+    </InfoBlock>
   )
 }

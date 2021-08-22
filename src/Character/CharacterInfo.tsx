@@ -1,4 +1,4 @@
-import { Paper, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
@@ -15,6 +15,7 @@ import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
 import { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillType } from '../System/Skill/SkillData'
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { DicePools } from '../UI/DicePool'
+import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../UI/StatBlock'
 import { CharacterAttr } from './CharacterData'
@@ -26,9 +27,6 @@ export const CharacterInfo: FC = () => {
   const setCurDamage = useSetDamage(DamageType.charPhysical)
   const curStun = useDamage(DamageType.charStun)
   const setCurStun = useSetDamage(DamageType.charStun)
-
-  const theme = useTheme()
-  const smScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   const { character } = useCharacter()
 
@@ -52,21 +50,26 @@ export const CharacterInfo: FC = () => {
     .map(skill => skill as LanguageSkillData)
 
   return (
-    <Paper elevation={1}>
-      <InfoSection>
-        <Typography variant="h3">
-          {character.alias || character.name}
-        </Typography>
-        <Typography variant="subtitle1">{character.metaType}</Typography>
-      </InfoSection>
+    <InfoBlock>
+      <InfoBlock.Header>
+        <InfoSection>
+          <Typography variant="h3">
+            {character.alias || character.name}
+          </Typography>
+          <Typography variant="subtitle1">{character.metaType}</Typography>
+        </InfoSection>
 
+        <InfoSection>
+          <AttributeBlock attributes={character.attributes} />
+        </InfoSection>
+      </InfoBlock.Header>
 
-      <InfoSection>
-        <AttributeBlock attributes={character.attributes} />
-      </InfoSection>
+      <InfoBlock.Body>
+        <InfoBlock.Main>
+          <InfoSection>
+            <EdgeTracker current={edge} />
+          </InfoSection>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        <Box sx={{ flexGrow: 1 }}>
           <InfoSection>
             <DicePools>
               <DodgePool />
@@ -76,10 +79,6 @@ export const CharacterInfo: FC = () => {
               <MemoryPool />
               <LiftPool />
             </DicePools>
-          </InfoSection>
-
-          <InfoSection>
-            <EdgeTracker current={edge} />
           </InfoSection>
 
           <InfoSection>
@@ -100,12 +99,12 @@ export const CharacterInfo: FC = () => {
               </Box>
             </Box>
           </InfoSection>
-        </Box>
+        </InfoBlock.Main>
 
-        <Box sx={{ display: 'flex', flexDirection: smScreen ? 'row' : 'column' }}>
+        <InfoBlock.Aside>
           <Box sx={{ padding: 1, paddingBottom: 0 }}>
             <StatBlock vertical>
-              {/* NOTE: pg. 67 => 0changed by augments */}
+              {/* NOTE: pg. 67 => changed by augments */}
               <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
               <CharacterHotVrInit />
               <CharacterColdVrInit />
@@ -120,8 +119,8 @@ export const CharacterInfo: FC = () => {
           <Box sx={{ padding: 1 }}>
             <DamageTrack current={curStun} max={stunMax} onChange={setCurStun} label="Stun" />
           </Box>
-        </Box>
-      </Box>
-    </Paper>
+        </InfoBlock.Aside>
+      </InfoBlock.Body>
+    </InfoBlock>
   )
 }

@@ -1,7 +1,8 @@
-import { Chip, Paper, Typography } from '@material-ui/core'
+import { Chip, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
+import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { GearAttributes } from '../GearAttributes'
 import { useAttachedGear, useFilterGear } from '../GearContext'
@@ -28,23 +29,29 @@ export const RccInfo: FC<RccInfoProps> = ({
   const maxSlaved = rcc.attributes[RccAttr.deviceRating] * 3
 
   return (
-    <Paper elevation={1}>
-      <GearHeader item={rcc} />
-      <GearAttributes item={rcc} />
+    <InfoBlock>
+      <InfoBlock.Header>
+        <GearHeader item={rcc} />
+        <GearAttributes item={rcc} />
+      </InfoBlock.Header>
 
-      <InfoSection>
-        <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
-        <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} withCost withAvail />
-      </InfoSection>
+      <InfoBlock.Body>
+        <InfoBlock.Main>
+          <InfoSection>
+            <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
+            <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} withCost withAvail />
+          </InfoSection>
 
-      <InfoSection>
-        <Typography variant={'h6'}>Slaved ({slavedVehicles.length} / {maxSlaved})</Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {slavedVehicles.map(gear => (
-            <Chip key={gear.id} label={gear.name} />
-          ))}
-        </Box>
-      </InfoSection>
-    </Paper>
+          <InfoSection>
+            <Typography variant={'h6'}>Slaved ({slavedVehicles.length} / {maxSlaved})</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {slavedVehicles.map(gear => (
+                <Chip key={gear.id} label={gear.name} />
+              ))}
+            </Box>
+          </InfoSection>
+        </InfoBlock.Main>
+      </InfoBlock.Body>
+    </InfoBlock>
   )
 }
