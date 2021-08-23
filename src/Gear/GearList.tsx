@@ -12,12 +12,12 @@ export const GearList: FC<GearListProps> = ({
   gear,
 }) => {
   return (
-    <>
-      {gear.map((gear, index) => (
-        <Box key={gear.id} sx={{ paddingTop: index === 0 ? 0 : 1 }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+      {gear.map((gear) => (
+        <Box key={gear.id} sx={{ flexGrow: 1 }}>
           <GearInfo item={gear} />
         </Box>
       ))}
-    </>
+    </Box>
   )
 }

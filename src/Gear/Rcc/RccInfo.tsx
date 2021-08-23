@@ -39,7 +39,7 @@ export const RccInfo: FC<RccInfoProps> = ({
         <InfoBlock.Main>
           <InfoSection>
             <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
-            <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} withCost withAvail />
+            <AutosoftsList autosofts={autosofts} slavedIds={rcc.slavedAutosofts} />
           </InfoSection>
 
           <InfoSection>

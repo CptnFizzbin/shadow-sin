@@ -1,10 +1,10 @@
-import { Chip, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { InfoSection } from '../UI/InfoBlock/InfoSection'
-import { Stat, StatBlock } from '../UI/StatBlock'
-import { formatAvail, formatCost, GearData } from './GearData'
+import { GearAvailCost } from './GearAvailCost'
+import { GearData } from './GearData'
 
 export interface GearHeaderProps {
   item: GearData
@@ -20,23 +20,36 @@ export const GearHeader: FC<GearHeaderProps> = ({
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h5" sx={{ display: 'inline-block', color: 'primary.main' }}>{item.name}</Typography>
-          {item?.quantity && (
-            <Chip
-              variant="outlined" color="primary" size="small"
-              sx={{ verticalAlign: 'top', marginLeft: 1 }}
-              label={`x${item.quantity}`}
-            />
-          )}
+        </Box>
+        <GearAvailCost item={item} />
+      </Box>
+
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Typography variant="subtitle1">{type || item.type}</Typography>
         </Box>
 
-        <Box>
-          <StatBlock>
-            <Stat name="Avail" value={formatAvail(item.avail)} />
-            <Stat name="Cost" value={formatCost(item.cost)} />
-          </StatBlock>
-        </Box>
+        {item.source && (
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography variant="overline">
+              {item.source === 'Homebrew' ? 'Homebrew' : (
+                <>{item.source.book} p.{item.source.page}</>
+              )}
+            </Typography>
+          </Box>
+        )}
       </Box>
+
+      {item.description && (
+        <Typography sx={{ fontStyle: 'italic' }}>{item.description}</Typography>
+      )}
+
+      {item.wirelessBonus && (
+        <Box sx={{ fontStyle: 'italic' }}>
+          <Typography variant="body2" sx={{ color: 'primary.main', display: 'inline' }}>Wireless Bonus:</Typography>
+          <Typography variant="body2" sx={{ display: 'inline', marginLeft: 0.5}}>{item.wirelessBonus.description}</Typography>
+        </Box>
+      )}
     </InfoSection>
   )
 }

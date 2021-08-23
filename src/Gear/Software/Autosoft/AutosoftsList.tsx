@@ -4,8 +4,8 @@ import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
 import { AttributeBlock } from '../../../UI/AttributeBlock'
-import { Stat, StatBlock } from '../../../UI/StatBlock'
-import { formatAvail, formatCost, GearId } from '../../GearData'
+import { GearAvailCost } from '../../GearAvailCost'
+import { GearId } from '../../GearData'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
@@ -18,8 +18,6 @@ interface AutosoftsListProps {
 export const AutosoftsList: FC<AutosoftsListProps> = ({
   autosofts,
   slavedIds,
-  withAvail = false,
-  withCost = false,
 }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -28,8 +26,6 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
           key={autosoft.id}
           autosoft={autosoft}
           slavedIds={slavedIds}
-          withAvail={withAvail}
-          withCost={withCost}
         />
       ))}
     </Box>
@@ -46,8 +42,6 @@ interface AutosoftListItemProps {
 const AutosoftListItem: FC<AutosoftListItemProps> = ({
   autosoft,
   slavedIds,
-  withAvail = false,
-  withCost = false,
 }) => {
   return (
     <Box>
@@ -65,14 +59,8 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
         <Box sx={{ flexGrow: 1 }}>
           <AttributeBlock attributes={autosoft.attributes} />
         </Box>
-        {(withAvail || withCost) && (
-          <Box sx={{ marginLeft: 1 }}>
-            <StatBlock>
-              {withAvail && <Stat name="Avail" value={formatAvail(autosoft.avail)} />}
-              {withCost && <Stat name="Cost" value={formatCost(autosoft.cost)} />}
-            </StatBlock>
-          </Box>
-        )}
+
+        <GearAvailCost item={autosoft} />
       </Box>
     </Box>
   )

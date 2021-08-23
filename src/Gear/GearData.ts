@@ -1,6 +1,7 @@
 import { AttrList } from '../System/Attribute'
 
 export type GearId = number | null;
+export type Source = { book: 'COR'; page: number }
 export type Cost = number
 export type Availability = {
   rarity: number
@@ -18,18 +19,28 @@ export enum GearType {
   rcc = 'rcc',
   augment = 'augment',
   controlRig = 'controlRig',
+  weaponMod = 'weaponMod',
 }
 
 export interface GearData {
   id: GearId
+  source?: Source | 'Homebrew'
   gearType: GearType
   name: string
+  description?: string
   type: string
-  avail: Availability
-  cost: Cost
+  avail?: Availability
+  cost?: Cost
+  capacity?: number
 
   attributes?: AttrList
   attachedTo?: GearId
+
+  wirelessBonus?: {
+    enabled: boolean
+    description: string
+    effect?: unknown
+  }
 
   [key: string]: unknown
 }
