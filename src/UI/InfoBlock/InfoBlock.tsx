@@ -1,75 +1,52 @@
-import { Box, Paper, useMediaQuery, useTheme } from '@material-ui/core'
-import { FC } from 'react'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
+import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, IconButton, Paper, Typography } from '@material-ui/core'
+import { FC, ReactElement, useState } from 'react'
 
-interface InfoBlockType extends FC {
-  Header: FC
-  Body: FC
-  Main: FC
-  Aside: FC
-  Footer: FC
+import { displayFontFamily } from '../../AppThemeProvider'
+
+library.add(faCaretSquareDown, faCaretSquareRight)
+
+interface InfoBlockProps {
+  title: string
+  subtitle?: string
+  titleRight?: ReactElement
+  expanded?: boolean
+  expandable?: boolean
 }
 
-export const InfoBlock: InfoBlockType = ({
+export const InfoBlock: FC<InfoBlockProps> = ({
+  title,
+  subtitle,
+  titleRight,
   children,
+  expanded: defaultExpanded = true,
+  expandable,
 }) => {
+  const [expanded, setExpanded] = useState<boolean>(defaultExpanded)
+
   return (
     <Paper elevation={1}>
-      {children}
+      <Box sx={{ display: 'flex', gap: 1, padding: 1 }}>
+        {expandable && (
+          <Box>
+            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+              <FontAwesomeIcon icon={expanded ? 'caret-square-down' : ['far', 'caret-square-right']} />
+            </IconButton>
+          </Box>
+        )}
+
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography sx={{ fontFamily: displayFontFamily, fontSize: 20, color: 'primary.main' }}>{title}</Typography>
+          {subtitle}
+        </Box>
+
+        {titleRight}
+      </Box>
+
+      {expanded && children}
     </Paper>
   )
 }
-
-const Header: FC = ({
-  children,
-}) => {
-  return (
-    <Box>{children}</Box>
-  )
-}
-InfoBlock.Header = Header
-
-const Body: FC = ({
-  children,
-}) => {
-  const theme = useTheme()
-  const smScreen = useMediaQuery(theme.breakpoints.down('md'))
-
-  return (
-    <Box sx={{ display: 'flex', flexDirection: smScreen ? 'column-reverse' : 'row' }}>{children}</Box>
-  )
-}
-InfoBlock.Body = Body
-
-const Main: FC = ({
-  children,
-}) => {
-  return (
-    <Box sx={{ flexGrow: 1 }}>{children}</Box>
-  )
-}
-InfoBlock.Main = Main
-
-const Aside: FC = ({
-  children,
-}) => {
-  const theme = useTheme()
-  const smScreen = useMediaQuery(theme.breakpoints.down('md'))
-
-  return (
-    <Box sx={{ display: 'flex', flexDirection: smScreen ? 'row' : 'column' }}>
-      {children}
-    </Box>
-  )
-}
-InfoBlock.Aside = Aside
-
-const Footer: FC = ({
-  children,
-}) => {
-  return (
-    <Box>
-      {children}
-    </Box>
-  )
-}
-InfoBlock.Footer = Footer

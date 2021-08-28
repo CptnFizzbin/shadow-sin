@@ -3,14 +3,15 @@ import { AugmentAttr, AugmentGrade, AugmentSlot } from '../Gear/Augments/Augment
 import { ControlRigAttr, ControlRigData } from '../Gear/Augments/ControlRigData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccAttr, RccData } from '../Gear/Rcc/RccData'
-import { AutosoftAttr, AutosoftData, AutosoftType } from '../Gear/Software/Autosoft/AutosoftData'
-import { DroneData } from '../Gear/Vehicles/DroneData'
+import { AutosoftAttr, AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
 import { VehicleAttr, VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr, WeaponData } from '../Gear/Weapons/WeaponData'
+import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
 const Artemis: CharacterData = {
+  appVersion: 1,
   name: 'Artemis',
   metaType: 'Elf',
   karma: 7,
@@ -29,6 +30,7 @@ const Artemis: CharacterData = {
     [CharacterAttr.essence]: 2.1,
   },
 
+  contacts: [],
   skills: [
     {
       type: SkillType.active,
@@ -126,10 +128,32 @@ const Artemis: CharacterData = {
 
 let nextId = 0
 
-function addGear<T extends GearData> (gear: T): T {
-  gear.id = nextId++
+export function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
+  gear = { ...gear, id: nextId++ }
+
   Artemis.gear.push(gear)
+  attachedGear.forEach(item => item.attachedTo = gear.id)
+
   return gear
+}
+
+const smartGunIntMod: WeaponModData = {
+  id: null,
+  source: { book: 'COR', page: 260 },
+  gearType: GearType.weaponMod,
+  name: 'Smart Gun Int.',
+  type: 'Weapon Mod',
+  cost: 500,
+
+  slot: null,
+  removable: false,
+  wirelessBonus: {
+    enabled: true,
+    description:
+      'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
+      'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
+      'clip or change fire mode.',
+  },
 }
 
 addGear<ControlRigData>({
@@ -149,20 +173,175 @@ addGear<ControlRigData>({
 
 addGear<WeaponData>({
   id: null,
+  source: { book: 'COR', page: 254 },
   gearType: GearType.weapon,
+  name: 'FN P93 Praetor',
+  type: 'Submachine Gun',
+  avail: { rarity: 4, license: true },
+  cost: 925,
+
+  attributes: {
+    [WeaponAttr.dv]: '4P',
+    [WeaponAttr.modes]: 'SA/BF/FA',
+    [WeaponAttr.attackRatings]: '9/12/7/-/-',
+    [WeaponAttr.ammo]: '50(c)',
+  },
+
   specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'pistols',
-  name: 'Ares Crusader II',
-  type: 'Machine Pistol',
-  avail: { rarity: 5, license: true },
-  cost: 520,
+  specialtyName: 'automatics',
+}, [
+  addGear<WeaponModData>({
+    id: null,
+    source: { book: 'COR', page: 254 },
+    gearType: GearType.weaponMod,
+    name: 'Rigid Stock',
+    type: 'Weapon Mod',
+
+    slot: null,
+    removable: false,
+  }),
+  addGear<WeaponModData>({
+    id: null,
+    source: { book: 'COR', page: 254 },
+    gearType: GearType.weaponMod,
+    name: 'Laser sight',
+    type: 'Weapon Mod',
+
+    slot: WeaponModSlot.topOrUnder,
+  }),
+  addGear<WeaponModData>({
+    id: null,
+    source: { book: 'COR', page: 254 },
+    gearType: GearType.weaponMod,
+    name: 'Flashlight',
+    type: 'Weapon Mod',
+
+    slot: WeaponModSlot.topOrUnder,
+  }),
+  addGear(smartGunIntMod),
+])
+
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'COR', page: 252 },
+  gearType: GearType.weapon,
+  name: 'Colt America L36',
+  type: 'Light Pistol',
+  avail: { rarity: 2, license: true },
+  cost: 230,
+
   attributes: {
     [WeaponAttr.dv]: '2P',
-    [WeaponAttr.modes]: 'SA/BF',
-    [WeaponAttr.attackRatings]: '9/9/7/-/-',
-    [WeaponAttr.ammo]: '40(c)',
+    [WeaponAttr.modes]: 'SA',
+    [WeaponAttr.attackRatings]: '8/8/6/-/-',
+    [WeaponAttr.ammo]: '11(c)',
   },
-})
+  wirelessBonus: {
+    enabled: true,
+    description:
+      'The user can alter ownership with a Minor Action',
+  },
+
+  specialtySkill: ActiveSkillId.firearms,
+  specialtyName: 'pistols',
+}, [
+  addGear(smartGunIntMod),
+])
+
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'COR', page: 253 },
+  gearType: GearType.weapon,
+  name: 'Ares Predator VI',
+  type: 'Heavy Pistol',
+  avail: { rarity: 2, license: true },
+  cost: 750,
+
+  attributes: {
+    [WeaponAttr.dv]: '3P',
+    [WeaponAttr.modes]: 'SA/BF',
+    [WeaponAttr.attackRatings]: '10/10/8/-/-',
+    [WeaponAttr.ammo]: '15(c)',
+  },
+
+  specialtySkill: ActiveSkillId.firearms,
+  specialtyName: 'pistols',
+}, [
+  addGear(smartGunIntMod),
+])
+
+const autosofts: AutosoftData[] = [
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'FN-HAR Targeting',
+    type: 'Targeting Autosoft',
+    avail: { rarity: 8 },
+    cost: 4_000,
+
+    attributes: {
+      [AutosoftAttr.rating]: 8,
+      [AutosoftAttr.weapon]: 'FN-HAR',
+      [AutosoftAttr.attr]: 'Sensor',
+    },
+  }),
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'Clearsight',
+    type: 'Autosoft',
+    avail: { rarity: 7 },
+    cost: 3_500,
+
+    attributes: {
+      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.skill]: 'Perception',
+      [AutosoftAttr.attr]: 'Sensor',
+    },
+  }),
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'Evasion',
+    type: 'Autosoft',
+    avail: { rarity: 5 },
+    cost: 2_500,
+
+    attributes: {
+      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.skill]: 'Evasion',
+      [AutosoftAttr.attr]: 'Pilot',
+    },
+  }),
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'Maneuvering',
+    type: 'Autosoft',
+    avail: { rarity: 5 },
+    cost: 2_500,
+
+    attributes: {
+      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.skill]: 'Piloting',
+      [AutosoftAttr.attr]: 'Pilot',
+    },
+  }),
+  addGear<AutosoftData>({
+    id: null,
+    gearType: GearType.autosoft,
+    name: 'Electronic Warfare',
+    type: 'Autosoft',
+    avail: { rarity: 7 },
+    cost: 3_500,
+
+    attributes: {
+      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.skill]: 'Cracking',
+      [AutosoftAttr.attr]: 'Sensor',
+    },
+  }),
+]
 
 const rcc: RccData = addGear({
   id: null,
@@ -181,84 +360,7 @@ const rcc: RccData = addGear({
   slavedAutosofts: [],
 })
 
-const autosofts: AutosoftData[] = [
-  addGear<AutosoftData>({
-    id: null,
-    gearType: GearType.autosoft,
-    name: 'FN-HAR Targeting',
-    type: AutosoftType.targeting,
-    avail: { rarity: 8 },
-    cost: 4_000,
-    attachedTo: rcc.id,
-
-    attributes: {
-      [AutosoftAttr.rating]: 8,
-      [AutosoftAttr.weapon]: 'FN-HAR',
-      [AutosoftAttr.attr]: 'Sensor',
-    },
-  }),
-  addGear<AutosoftData>({
-    id: null,
-    gearType: GearType.autosoft,
-    name: 'Clearsight',
-    type: AutosoftType.clearsight,
-    avail: { rarity: 7 },
-    cost: 3_500,
-    attachedTo: rcc.id,
-
-    attributes: {
-      [AutosoftAttr.rating]: 7,
-      [AutosoftAttr.skill]: 'Perception',
-      [AutosoftAttr.attr]: 'Sensor',
-    },
-  }),
-  addGear<AutosoftData>({
-    id: null,
-    gearType: GearType.autosoft,
-    name: 'Evasion',
-    type: AutosoftType.evasion,
-    avail: { rarity: 5 },
-    cost: 2_500,
-    attachedTo: rcc.id,
-
-    attributes: {
-      [AutosoftAttr.rating]: 5,
-      [AutosoftAttr.skill]: 'Evasion',
-      [AutosoftAttr.attr]: 'Pilot',
-    },
-  }),
-  addGear<AutosoftData>({
-    id: null,
-    gearType: GearType.autosoft,
-    name: 'Maneuvering',
-    type: AutosoftType.maneuvering,
-    avail: { rarity: 5 },
-    cost: 2_500,
-    attachedTo: rcc.id,
-
-    attributes: {
-      [AutosoftAttr.rating]: 5,
-      [AutosoftAttr.skill]: 'Piloting',
-      [AutosoftAttr.attr]: 'Pilot',
-    },
-  }),
-  addGear<AutosoftData>({
-    id: null,
-    gearType: GearType.autosoft,
-    name: 'Electronic Warfare',
-    type: AutosoftType.electronicWarfare,
-    avail: { rarity: 7 },
-    cost: 3_500,
-    attachedTo: rcc.id,
-
-    attributes: {
-      [AutosoftAttr.rating]: 7,
-      [AutosoftAttr.skill]: 'Cracking',
-      [AutosoftAttr.attr]: 'Sensor',
-    },
-  }),
-]
-
+autosofts.forEach(soft => soft.attachedTo = rcc.id)
 rcc.slavedAutosofts = autosofts.map(soft => soft.id)
 
 const fnHar: WeaponData = {
@@ -278,8 +380,6 @@ const fnHar: WeaponData = {
   specialtySkill: ActiveSkillId.firearms,
   specialtyName: 'Automatics',
 }
-
-addGear(fnHar)
 
 const stdWeaponMount: VehicleModData = {
   id: null,
@@ -301,11 +401,11 @@ const riggerInterface: VehicleModData = {
   cost: 1_000,
 }
 
-const car: VehicleData = addGear({
+addGear<VehicleData>({
   id: null,
   gearType: GearType.vehicle,
   name: 'Range Rover Model 2080',
-  type: 'vehicle',
+  type: 'Van',
   cost: 5_000,
   avail: { rarity: 2 },
 
@@ -322,21 +422,16 @@ const car: VehicleData = addGear({
   },
 
   slavedTo: rcc.id,
-  slavedAutosofts: autosofts.map(gear => gear.id),
-})
-
-addGear({
-  ...riggerInterface,
-  attachedTo: car.id,
-})
-rcc.attachedTo = car.id
+}, [
+  addGear(riggerInterface),
+  rcc,
+])
 
 new Array(2).fill(null).forEach((_, index) => {
-  const combatDrone = addGear<DroneData>({
+  addGear<VehicleData>({
     id: null,
-    gearType: GearType.drone,
-    size: 'medium',
-    type: 'rotor',
+    gearType: GearType.vehicle,
+    type: 'Medium Rotor Drone',
     name: `MCT-Nissan Roto-drone ${index + 1}`,
     cost: 5_000,
     avail: { rarity: 2 },
@@ -354,32 +449,20 @@ new Array(2).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
-    slavedAutosofts: autosofts.map(gear => gear.id),
-  })
-
-  addGear({
-    ...riggerInterface,
-    attachedTo: combatDrone.id,
-  })
-
-  const droneWepMount: VehicleModData = addGear({
-    ...stdWeaponMount,
-    attachedTo: combatDrone.id,
-  })
-
-  addGear({
-    ...fnHar,
-    attachedTo: droneWepMount.id,
-  })
+  }, [
+    addGear(riggerInterface),
+    addGear(stdWeaponMount, [
+      addGear(fnHar),
+    ]),
+  ])
 })
 
 new Array(4).fill(null).forEach((_, index) => {
-  const combatDrone: DroneData = addGear({
+  addGear<VehicleData>({
     id: null,
-    gearType: GearType.drone,
-    size: 'small',
-    type: 'anthro',
+    gearType: GearType.vehicle,
     name: `Aztech Crawler ${index + 1}`,
+    type: 'Small Anthro Drone',
     cost: 4_500,
     avail: { rarity: 2 },
 
@@ -396,31 +479,19 @@ new Array(4).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
-    slavedAutosofts: autosofts.map(gear => gear.id),
-  })
-
-  addGear({
-    ...riggerInterface,
-    attachedTo: combatDrone.id,
-  })
-
-  const droneWepMount: VehicleModData = addGear({
-    ...stdWeaponMount,
-    attachedTo: combatDrone.id,
-  })
-
-  addGear({
-    ...fnHar,
-    attachedTo: droneWepMount.id,
-  })
+  }, [
+    addGear(riggerInterface),
+    addGear(stdWeaponMount, [
+      addGear(fnHar),
+    ]),
+  ])
 })
 
 new Array(1).fill(null).forEach((_, index) => {
-  const scoutDrone = addGear({
+  addGear<VehicleData>({
     id: null,
-    gearType: GearType.drone,
-    size: 'small',
-    type: 'anthro',
+    gearType: GearType.vehicle,
+    type: 'Small Rotor Drone',
     name: `Cyberspace Designs Quadrotor ${index + 1}`,
     cost: 5_000,
     avail: { rarity: 2 },
@@ -438,13 +509,9 @@ new Array(1).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
-    slavedAutosofts: autosofts.map(gear => gear.id),
-  })
-
-  addGear({
-    ...riggerInterface,
-    attachedTo: scoutDrone.id,
-  })
+  }, [
+    addGear(riggerInterface),
+  ])
 })
 
 export {

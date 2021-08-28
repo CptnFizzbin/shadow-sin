@@ -6,18 +6,16 @@ import { GearInfo } from './GearInfo'
 
 interface GearListProps {
   gear: GearData[]
+  expanded?: boolean
 }
 
 export const GearList: FC<GearListProps> = ({
   gear,
+  expanded = true,
 }) => {
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-      {gear.map((gear) => (
-        <Box key={gear.id} sx={{ flexGrow: 1 }}>
-          <GearInfo item={gear} />
-        </Box>
-      ))}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      {gear.map((gear) => <GearInfo key={gear.id} item={gear} expanded={expanded} />)}
     </Box>
   )
 }

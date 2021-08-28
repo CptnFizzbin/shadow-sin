@@ -1,7 +1,7 @@
 import { AttrList } from '../System/Attribute'
 
 export type GearId = number | null;
-export type Source = { book: 'COR'; page: number }
+export type Source = { book: string; page: number } | 'Homebrew'
 export type Cost = number
 export type Availability = {
   rarity: number
@@ -11,7 +11,6 @@ export type Availability = {
 
 export enum GearType {
   other = 'other',
-  drone = 'drone',
   weapon = 'weapon',
   vehicle = 'vehicle',
   vehicleMod = 'vehicleMod',
@@ -24,7 +23,7 @@ export enum GearType {
 
 export interface GearData {
   id: GearId
-  source?: Source | 'Homebrew'
+  source?: Source
   gearType: GearType
   name: string
   description?: string
@@ -52,4 +51,9 @@ export const formatAvail = (avail: Availability): string => {
 const costFormatter = new Intl.NumberFormat('en')
 export const formatCost = (cost: number): string => {
   return costFormatter.format(cost) + '¥'
+}
+
+export const formatSource = (source: Source): string => {
+  if (typeof source === 'string') return source
+  return `${source.book} p.${source.page}`
 }

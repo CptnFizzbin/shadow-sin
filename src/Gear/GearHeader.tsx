@@ -39,17 +39,6 @@ export const GearHeader: FC<GearHeaderProps> = ({
           </Box>
         )}
       </Box>
-
-      {item.description && (
-        <Typography sx={{ fontStyle: 'italic' }}>{item.description}</Typography>
-      )}
-
-      {item.wirelessBonus && (
-        <Box sx={{ fontStyle: 'italic' }}>
-          <Typography variant="body2" sx={{ color: 'primary.main', display: 'inline' }}>Wireless Bonus:</Typography>
-          <Typography variant="body2" sx={{ display: 'inline', marginLeft: 0.5}}>{item.wirelessBonus.description}</Typography>
-        </Box>
-      )}
     </InfoSection>
   )
 }

@@ -2,7 +2,7 @@
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import { FC } from 'react'
 
-const headingFontFamily = '"Comfortaa", "Helvetica", "Arial", sans-serif'
+export const displayFontFamily = '"Comfortaa", "Helvetica", "Arial", sans-serif'
 
 const theme = createTheme({
   palette: {
@@ -22,12 +22,12 @@ const theme = createTheme({
   },
 
   typography: {
-    h1: { fontFamily: headingFontFamily },
-    h2: { fontFamily: headingFontFamily },
-    h3: { fontFamily: headingFontFamily },
-    h4: { fontFamily: headingFontFamily },
-    h5: { fontFamily: headingFontFamily },
-    h6: { fontFamily: headingFontFamily },
+    h1: { fontFamily: displayFontFamily },
+    h2: { fontFamily: displayFontFamily },
+    h3: { fontFamily: displayFontFamily },
+    h4: { fontFamily: displayFontFamily },
+    h5: { fontFamily: displayFontFamily },
+    h6: { fontFamily: displayFontFamily },
   },
 })
 

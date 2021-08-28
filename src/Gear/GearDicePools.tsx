@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core'
 import { FC } from 'react'
 
 import { DicePools } from '../UI/DicePool'
@@ -8,6 +9,7 @@ export const GearDicePools: FC = ({
 }) => {
   return (
     <InfoSection>
+      <Typography variant={'h6'}>Dice Pools</Typography>
       <DicePools>{children}</DicePools>
     </InfoSection>
   )

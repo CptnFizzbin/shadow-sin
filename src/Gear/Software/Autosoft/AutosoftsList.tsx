@@ -4,7 +4,6 @@ import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
 import { AttributeBlock } from '../../../UI/AttributeBlock'
-import { GearAvailCost } from '../../GearAvailCost'
 import { GearId } from '../../GearData'
 import { AutosoftData } from './AutosoftData'
 
@@ -20,13 +19,15 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
   slavedIds,
 }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Box>
       {autosofts.map(autosoft => (
-        <AutosoftListItem
-          key={autosoft.id}
-          autosoft={autosoft}
-          slavedIds={slavedIds}
-        />
+        <Box key={autosoft.id} sx={{paddingTop: 1}}>
+          <AutosoftListItem
+            key={autosoft.id}
+            autosoft={autosoft}
+            slavedIds={slavedIds}
+          />
+        </Box>
       ))}
     </Box>
   )
@@ -55,13 +56,8 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
         </Box>
         {autosoft.name}
       </Box>
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <AttributeBlock attributes={autosoft.attributes} />
-        </Box>
 
-        <GearAvailCost item={autosoft} />
-      </Box>
+      <AttributeBlock attributes={autosoft.attributes} />
     </Box>
   )
 }

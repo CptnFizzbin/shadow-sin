@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
@@ -23,6 +23,9 @@ import { useCharacter } from './CharacterProvider'
 import { ComposurePool, DodgePool, JudgeIntentPool, LiftPool, MemoryPool, ResistDamagePool } from './DicePools'
 
 export const CharacterInfo: FC = () => {
+  const theme = useTheme()
+  const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
+
   const curDamage = useDamage(DamageType.charPhysical)
   const setCurDamage = useSetDamage(DamageType.charPhysical)
   const curStun = useDamage(DamageType.charStun)
@@ -49,27 +52,40 @@ export const CharacterInfo: FC = () => {
     .map(skill => skill as LanguageSkillData)
 
   return (
-    <InfoBlock>
-      <InfoBlock.Header>
-        <InfoSection>
-          <Typography variant="h3">
-            {character.alias || character.name}
-          </Typography>
-          <Typography variant="subtitle1">{character.metaType}</Typography>
-        </InfoSection>
+    <InfoBlock title={character.alias || character.name} subtitle={character.metaType}>
+      <InfoSection>
+        <AttributeBlock attributes={character.attributes} />
+      </InfoSection>
 
-        <InfoSection>
-          <AttributeBlock attributes={character.attributes} />
-        </InfoSection>
-      </InfoBlock.Header>
+      <InfoSection>
+        <EdgeTracker />
+      </InfoSection>
 
-      <InfoBlock.Body>
-        <InfoBlock.Main>
+      <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1 }}>
+          <Box>
+            <Typography variant={'h6'}>Combat</Typography>
+            <StatBlock vertical>
+              {/* NOTE: pg. 67 => changed by augments */}
+              <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
+              <CharacterHotVrInit />
+              <CharacterColdVrInit />
+              <CharacterDefRatingStat />
+            </StatBlock>
+          </Box>
+
+          <Box>
+            <DamageTrack current={curDamage} max={physicalMax} onChange={setCurDamage} label="Physical" />
+          </Box>
+
+          <Box>
+            <DamageTrack current={curStun} max={stunMax} onChange={setCurStun} label="Stun" />
+          </Box>
+        </Box>
+
+        <Box sx={{ flexGrow: 1 }}>
           <InfoSection>
-            <EdgeTracker />
-          </InfoSection>
-
-          <InfoSection>
+            <Typography variant={'h6'}>Dice Pools</Typography>
             <DicePools>
               <DodgePool />
               <ResistDamagePool />
@@ -98,28 +114,8 @@ export const CharacterInfo: FC = () => {
               </Box>
             </Box>
           </InfoSection>
-        </InfoBlock.Main>
-
-        <InfoBlock.Aside>
-          <Box sx={{ padding: 1, paddingBottom: 0 }}>
-            <StatBlock vertical>
-              {/* NOTE: pg. 67 => changed by augments */}
-              <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
-              <CharacterHotVrInit />
-              <CharacterColdVrInit />
-              <CharacterDefRatingStat />
-            </StatBlock>
-          </Box>
-
-          <Box sx={{ padding: 1 }}>
-            <DamageTrack current={curDamage} max={physicalMax} onChange={setCurDamage} label="Physical" />
-          </Box>
-
-          <Box sx={{ padding: 1 }}>
-            <DamageTrack current={curStun} max={stunMax} onChange={setCurStun} label="Stun" />
-          </Box>
-        </InfoBlock.Aside>
-      </InfoBlock.Body>
+        </Box>
+      </Box>
     </InfoBlock>
   )
 }

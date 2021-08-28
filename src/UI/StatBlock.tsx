@@ -1,8 +1,6 @@
-import { Paper, Typography } from '@material-ui/core'
+import { Paper } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
-
-import styles from './StatBlock.module.scss'
 
 interface StatBlockProps {
   vertical?: boolean
@@ -15,8 +13,13 @@ export const StatBlock: FC<StatBlockProps> = ({
   return (
     <Paper
       variant="outlined"
-      className={styles.Stats}
-      sx={{ display: 'flex', flexDirection: vertical ? 'column' : 'row' }}
+      sx={{
+        display: 'flex',
+        padding: 1,
+        gap: 1,
+        flexDirection: vertical ? 'column' : 'row',
+        justifyContent: 'space-around',
+      }}
     >
       {children}
     </Paper>
@@ -33,9 +36,13 @@ export const Stat: FC<StatProps> = ({
   value,
 }) => {
   return (
-    <Box sx={{ padding: 1 }} className={styles.Stat}>
-      <Typography color="primary" className={styles.StatName}>{name}</Typography>
-      <div className={styles.StatValue}>{value || '-'}</div>
+    <Box sx={{ display: 'flex', gap: 1 }}>
+      <Box sx={{ fontSize: 14, display: 'inline-block', color: 'primary.main', textAlign: 'left', flexGrow: 1 }}>
+        {name}
+      </Box>
+      <Box sx={{ fontSize: 14, display: 'inline-block', textAlign: 'right', flexGrow: 1 }}>
+        {value || '-'}
+      </Box>
     </Box>
   )
 }

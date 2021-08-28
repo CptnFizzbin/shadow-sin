@@ -1,3 +1,4 @@
+import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
 import { SkillData } from '../System/Skill/SkillData'
 import { registerAttrNames } from '../UI/AttributeBlock'
@@ -33,6 +34,7 @@ registerAttrNames({
 })
 
 export interface CharacterData {
+  appVersion: number
   name: string
   metaType: string
   nuyen: number
@@ -64,6 +66,6 @@ export interface CharacterData {
   }
 
   skills: SkillData[]
-
+  contacts: ContactData[]
   gear: GearData[]
 }

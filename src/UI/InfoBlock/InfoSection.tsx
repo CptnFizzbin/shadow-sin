@@ -8,3 +8,13 @@ export const InfoSection: FC = ({
     <Box sx={{ padding: 1 }}>{children}</Box>
   )
 }
+
+export const CombatSection: FC = ({
+  children,
+}) => {
+  return (
+    <Box sx={{ display: 'flex', gap: 1, padding: 1, flexWrap: 'wrap' }}>
+      {children}
+    </Box>
+  )
+}

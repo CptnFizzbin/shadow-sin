@@ -19,14 +19,14 @@ registerAttrNames({
   [VehicleAttr.speedInterval]: 'Speed Interval',
   [VehicleAttr.topSpeed]: 'Top Speed',
   [VehicleAttr.body]: 'Body',
-  [VehicleAttr.armor]: 'armor',
+  [VehicleAttr.armor]: 'Armor',
   [VehicleAttr.pilot]: 'Pilot',
   [VehicleAttr.sensor]: 'Sensor',
   [VehicleAttr.seat]: 'Seat',
 })
 
 export interface VehicleData extends GearData {
-  gearType: GearType.vehicle | GearType.drone
+  gearType: GearType.vehicle
 
   attributes: {
     [VehicleAttr.handling]: string | number
