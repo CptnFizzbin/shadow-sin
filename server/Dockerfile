@@ -1,5 +1,6 @@
 FROM ruby:3.0.2
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN gem install bundler:2.2.26 debase ruby-debug-ide
 
 WORKDIR /shadowsin
 COPY Gemfile /shadowsin/Gemfile

@@ -15,9 +15,9 @@
 # gem 'pg'
 #
 default: &default
-  host: localhost
+  host: db
   port: 5432
-  username: shadowsin
+  username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
   adapter: postgresql
   encoding: unicode
