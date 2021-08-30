@@ -7,7 +7,7 @@ import { SkillData, SkillId } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
 const defaultCharacter: CharacterData = {
-  appVersion: 1,
+  dataVersion: 1,
   name: 'unknown',
   metaType: 'human',
   karma: 0,

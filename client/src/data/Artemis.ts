@@ -11,7 +11,7 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
 const Artemis: CharacterData = {
-  appVersion: 1,
+  dataVersion: 1,
   name: 'Artemis',
   metaType: 'Elf',
   karma: 7,
@@ -129,7 +129,7 @@ const Artemis: CharacterData = {
 let nextId = 0
 
 export function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, id: nextId++ }
+  gear = { ...gear, dataVersion: 1, id: nextId++ }
 
   Artemis.gear.push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)

@@ -22,6 +22,7 @@ export enum GearType {
 }
 
 export interface GearData {
+  dataVersion?: number
   id: GearId
   source?: Source
   gearType: GearType

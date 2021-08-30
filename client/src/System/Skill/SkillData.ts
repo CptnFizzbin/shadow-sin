@@ -7,6 +7,7 @@ export enum SkillType {
 }
 
 export interface BasicSkillData {
+  dataVersion?: number
   id: SkillId
   type: SkillType
   name: string
