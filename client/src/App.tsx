@@ -1,6 +1,6 @@
 import { Box, Paper } from '@material-ui/core'
 import React, { FC, useState } from 'react'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AppDataProvider } from './AppDataProvider'
 import { AppThemeProvider } from './AppThemeProvider'
@@ -15,7 +15,7 @@ const App: FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppThemeProvider>
         <AppDataProvider>
           <NavDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
@@ -33,7 +33,7 @@ const App: FC = () => {
           </Paper>
         </AppDataProvider>
       </AppThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
