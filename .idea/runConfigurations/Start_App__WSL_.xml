@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start App [WSL]" type="CompoundRunConfigurationType">
+    <toRun name="Yarn start" type="js.build_tools.npm" />
+    <toRun name="docker-compose up db" type="docker-deploy" />
+    <toRun name="Start Server" type="RailsRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
