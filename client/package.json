@@ -20,6 +20,7 @@
     "@types/node": "^12.20.19",
     "@types/react": "^17.0.18",
     "@types/react-dom": "^17.0.9",
+    "env-cmd": "^10.1.0",
     "eslint-plugin-import": "^2.23.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -30,12 +31,12 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext .tsx,.ts src/",
-    "deploy": "yarn build && gh-pages -d build"
+    "start": "env-cmd -f ../.env react-scripts start",
+    "build": "env-cmd -f ../.env react-scripts build",
+    "test": "env-cmd -f ../.env react-scripts test",
+    "eject": "env-cmd -f ../.env react-scripts eject",
+    "lint": "env-cmd -f ../.env eslint --ext .tsx,.ts src/",
+    "deploy": "env-cmd -f ../.env yarn build && gh-pages -d build"
   },
   "browserslist": {
     "production": [

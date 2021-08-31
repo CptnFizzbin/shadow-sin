@@ -17,8 +17,6 @@ export const EdgeTracker: FC = () => {
     localStorage.setItem(edgeSessionKey, value.toString())
   }
 
-  console.log(curValue)
-
   const onToggleCell = (value: number) => {
     if (value === curValue) {
       setEdge(value - 1)
