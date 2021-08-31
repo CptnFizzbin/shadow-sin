@@ -8,13 +8,13 @@ export enum SkillType {
 
 export interface BasicSkillData {
   dataVersion?: number
-  id: SkillId
   type: SkillType
   name: string
 }
 
 export interface ActiveSkillData extends BasicSkillData {
   type: SkillType.active
+  skillId: SkillId
   rank: number
   attr: string
   altAttr?: string
