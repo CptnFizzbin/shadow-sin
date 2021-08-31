@@ -1,9 +1,9 @@
 export type SkillId = string;
 
 export enum SkillType {
-  active,
-  language,
-  knowledge
+  active = 'active',
+  language = 'language',
+  knowledge = 'knowledge',
 }
 
 export interface BasicSkillData {
