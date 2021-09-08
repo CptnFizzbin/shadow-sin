@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   patch 'user', to: 'user#update'
 
   resources :characters
+  resources :gear
 end
