@@ -1,23 +1,28 @@
-base_data = {
-  'dataVersion' => 1,
-  'name' => 'Artemis',
-  'metaType' => 'Elf',
-  'karma' => 7,
-  'nuyen' => 14_420,
+artemis = Character.create({
+  user: User.find_by_username!('Zeragamba'),
+  name: 'Artemis',
+  data: {
+    'dataVersion' => 1,
+    'metaType' => 'Elf',
+    'karma' => 7,
+    'nuyen' => 14_420,
 
-  'attributes' => {
-    'char.body' => 1,
-    'char.agility' => 3,
-    'char.reaction' => 1,
-    'char.strength' => 1,
-    'char.willpower' => 2,
-    'char.logic' => 7,
-    'char.intuition' => 5,
-    'char.charisma' => 2,
-    'char.edge' => 4,
-    'char.essence' => 2.1,
-  },
-}
+    'attributes' => {
+      'char.body' => 1,
+      'char.agility' => 3,
+      'char.reaction' => 1,
+      'char.strength' => 1,
+      'char.willpower' => 2,
+      'char.logic' => 7,
+      'char.intuition' => 5,
+      'char.charisma' => 2,
+      'char.edge' => 4,
+      'char.essence' => 2.1,
+    },
+
+    'skills' => []
+  }
+})
 
 active_skills = [
   {
@@ -114,17 +119,10 @@ knowledge_skills = [
   },
 ]
 
-Character.create({
-  user: User.find_by_username!('Zeragamba'),
-  name: 'Artemis',
-  data: {
-    **base_data,
-    skills: [
-      *active_skills,
-      *language_skills,
-      *knowledge_skills,
-    ]
-  }
-})
+artemis.data['skills'] = [
+  *active_skills,
+  *language_skills,
+  *knowledge_skills,
+]
 
 require_relative './gear'
