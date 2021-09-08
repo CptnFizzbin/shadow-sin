@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { CharacterAttr } from '../../Character/CharacterData'
-import { useSkill } from '../../Character/CharacterProvider'
+import { useActiveSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
 import { hasExpertise, hasSpecialty } from '../../System/Skill/Helpers'
@@ -23,7 +23,7 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
   const agility = useAttribute<number>(CharacterAttr.agility) || 0
-  const firearmsSkill = useSkill<ActiveSkillData>(ActiveSkillId.firearms)
+  const firearmsSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.firearms)
 
   const groups: DiceGroup[] = []
   groups.push({ name: 'Agility', size: agility })
@@ -61,7 +61,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
 
 export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
   const logic = useAttribute<number>(CharacterAttr.logic) || 0
-  const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
+  const engineeringSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
   const diceGroups: DiceGroup[] = [
     { name: 'Logic', size: logic },
@@ -74,7 +74,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
 
 export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
   const logicAttr = useAttribute<number>(CharacterAttr.logic) || 0
-  const engineeringSkill = useSkill<ActiveSkillData>(ActiveSkillId.engineering)
+  const engineeringSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
   const controlRig = useFindGear<ControlRigData>(gear => gear.gearType === GearType.controlRig)
   if (!controlRig) return null

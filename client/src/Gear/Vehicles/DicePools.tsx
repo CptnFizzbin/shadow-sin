@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { CharacterAttr } from '../../Character/CharacterData'
-import { useSkill } from '../../Character/CharacterProvider'
+import { useActiveSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
@@ -36,7 +36,7 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
 export const RiggedEvadePool: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useSkill<ActiveSkillData>(ActiveSkillId.piloting)
+  const pilotingSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)

@@ -20,7 +20,7 @@ export const LanguageSkillList: FC<SkillListProps> = ({
       </TableHead>
       <TableBody>
         {skills.map(skill => (
-          <SkillListRow key={skill.id} skill={skill} />
+          <SkillListRow key={skill.name} skill={skill} />
         ))}
       </TableBody>
     </Table>

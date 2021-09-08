@@ -21,7 +21,7 @@ export const ActiveSkillList: FC<SkillListProps> = ({
       </TableHead>
       <TableBody>
         {skills.map(skill => (
-          <SkillListRow key={skill.id} skill={skill} />
+          <SkillListRow key={skill.skillId} skill={skill} />
         ))}
       </TableBody>
     </Table>

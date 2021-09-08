@@ -34,7 +34,7 @@ const Artemis: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      id: ActiveSkillId.firearms,
+      skillId: ActiveSkillId.firearms,
       name: 'Firearms',
       rank: 3,
       attr: 'agility',
@@ -43,7 +43,7 @@ const Artemis: CharacterData = {
     },
     {
       type: SkillType.active,
-      id: ActiveSkillId.electronics,
+      skillId: ActiveSkillId.electronics,
       name: 'Electronics',
       rank: 4,
       attr: 'logic',
@@ -52,7 +52,7 @@ const Artemis: CharacterData = {
     },
     {
       type: SkillType.active,
-      id: ActiveSkillId.cracking,
+      skillId: ActiveSkillId.cracking,
       name: 'Cracking',
       rank: 3,
       attr: 'logic',
@@ -62,7 +62,7 @@ const Artemis: CharacterData = {
     },
     {
       type: SkillType.active,
-      id: ActiveSkillId.piloting,
+      skillId: ActiveSkillId.piloting,
       name: 'Piloting',
       rank: 6,
       attr: 'logic',
@@ -71,7 +71,7 @@ const Artemis: CharacterData = {
     },
     {
       type: SkillType.active,
-      id: ActiveSkillId.engineering,
+      skillId: ActiveSkillId.engineering,
       name: 'Engineering',
       rank: 5,
       attr: 'logic',
@@ -81,44 +81,36 @@ const Artemis: CharacterData = {
     },
     {
       type: SkillType.language,
-      id: 'english',
       name: 'English',
       rank: 'native',
     },
     {
       type: SkillType.language,
-      id: 'elven',
       name: 'Elven',
       rank: 'speciality',
     },
     {
       type: SkillType.knowledge,
-      id: 'droneModels',
       name: 'Drone Models',
     },
     {
       type: SkillType.knowledge,
-      id: 'popCulture',
       name: '80/90s Pop Culture',
     },
     {
       type: SkillType.knowledge,
-      id: 'trideoSeries',
       name: 'Trideo Series',
     },
     {
       type: SkillType.knowledge,
-      id: 'securitySystems',
       name: 'Security Systems',
     },
     {
       type: SkillType.knowledge,
-      id: 'virtualNightclubs',
       name: 'Virtual Nightclubs',
     },
     {
       type: SkillType.knowledge,
-      id: 'techCompanies',
       name: 'Tech Companies',
     },
   ],

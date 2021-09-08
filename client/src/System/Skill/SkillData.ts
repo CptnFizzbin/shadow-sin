@@ -31,7 +31,7 @@ export interface KnowledgeSkillData extends BasicSkillData {
   type: SkillType.knowledge
 }
 
-export type SkillData = BasicSkillData | ActiveSkillData | LanguageSkillData | KnowledgeSkillData
+export type SkillData = ActiveSkillData | LanguageSkillData | KnowledgeSkillData
 
 export enum ActiveSkillId {
   firearms = 'active.firearms',

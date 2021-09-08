@@ -3,7 +3,7 @@ import { createContext, FC, useContext, useState } from 'react'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageContext'
 import { DamageType } from '../System/Damage/DamageType'
-import { SkillData, SkillId } from '../System/Skill/SkillData'
+import { ActiveSkillData, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
 const defaultCharacter: CharacterData = {
@@ -86,8 +86,11 @@ export const useCharacter = (): CharacterContextData => {
   return useContext(CharacterContext)
 }
 
-export function useSkill<T extends SkillData> (skillId: SkillId): T | undefined {
+export function useActiveSkill<T extends SkillData> (skillId: SkillId): T | undefined {
   const { character } = useContext(CharacterContext)
-  const skill = character.skills.find(skill => skill.id === skillId)
+  const skill = character.skills
+    .filter(skill => skill.type === SkillType.active)
+    .map(skill => skill as ActiveSkillData)
+    .find(skill => skill.skillId === skillId)
   return skill ? skill as T : undefined
 }
