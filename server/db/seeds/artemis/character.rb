@@ -1,5 +1,5 @@
 artemis = Character.create({
-  user: User.find_by_username!('Zeragamba'),
+  user: User.find_by_username!('zeragamba'),
   name: 'Artemis',
   data: {
     'dataVersion' => 1,

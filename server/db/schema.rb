@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_30_014732) do
+ActiveRecord::Schema.define(version: 2021_09_08_183349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "api_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "token", default: -> { "gen_random_uuid()" }
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_api_tokens_on_token"
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
 
   create_table "characters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
@@ -40,8 +49,10 @@ ActiveRecord::Schema.define(version: 2021_08_30_014732) do
     t.string "username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
   end
 
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "characters", "users"
   add_foreign_key "gear", "characters"
   add_foreign_key "gear", "gear", column: "parent_id"

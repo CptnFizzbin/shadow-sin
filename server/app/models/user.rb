@@ -12,7 +12,12 @@
 #   @return [Time]
 #
 class User < ApplicationRecord
+  has_secure_password
+
   has_many :characters
 
   validates_presence_of :username
+  validates_uniqueness_of :username, case_sensitive: false
+
+  before_save { self.username = username.downcase }
 end
