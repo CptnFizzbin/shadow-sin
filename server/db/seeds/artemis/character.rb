@@ -126,3 +126,5 @@ Character.create({
     ]
   }
 })
+
+require_relative './gear'
