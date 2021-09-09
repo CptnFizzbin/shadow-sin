@@ -1,31 +1,20 @@
 import { ServerApi } from '../Api/ServerApi'
 import { User } from '../Api/User'
 
-export type AuthToken = string
-
-interface LoginData {
-  username: string
-  password: string
-}
-
-interface LoginResponse {
-  authToken: AuthToken
-}
-
-interface FetchUserResponse {
-  user: User
-}
-
 export const AuthApi = {
-  login (username: string, password: string): Promise<AuthToken> {
+  login (username: string, password: string): Promise<User> {
     return ServerApi
-      .post<LoginData, LoginResponse>('/login', { username, password })
-      .then(data => data.authToken)
+      .post<{ user: User }>('/login', { username, password })
+      .then(data => data.user)
+  },
+
+  logout (): Promise<never> {
+    return ServerApi
+      .post<never>('/logout')
   },
 
   fetchUser (): Promise<User> {
-    return ServerApi
-      .get<FetchUserResponse>('/user')
+    return ServerApi.get<{ user: User }>('/user')
       .then(data => data.user)
   },
 }

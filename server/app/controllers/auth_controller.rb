@@ -2,12 +2,19 @@ class AuthController < ApplicationController
   skip_before_action :authenticate
 
   def login
+    self.logout
+
     user = User
-      .find_by(username: params[:username])
+      .find_by(username: params[:username].downcase)
       &.authenticate(params[:password])
 
-    raise ActiveRecord::RecordNotFound, "User not found" if !user
+    return self.render_error(status: 400, type: 'AuthError', message: "Invalid Login") if !user
 
-    render json: { "authToken": AuthToken.create(user) }
+    self.current_user = user
+    render json: { "user": self.current_user }
+  end
+
+  def logout
+    self.current_user = nil
   end
 end

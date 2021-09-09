@@ -1,71 +1,54 @@
-import { AxiosError } from 'axios'
-import { createContext, FC, useContext, useEffect, useState } from 'react'
+import { createContext, FC, useContext, useState } from 'react'
 
-import { ServerApi } from '../Api/ServerApi'
 import { User } from '../Api/User'
-import { noOp } from '../Helpers'
-import { AuthApi, AuthToken } from './AuthApi'
-
-const SESSION_KEY = 'auth.token'
+import { AuthApi } from './AuthApi'
 
 interface AuthContextState {
   user: User | null
-  message: string | null
-  authorizing: boolean
 
-  authorize (username: string, password: string): void
+  login (username: string, password: string): Promise<User>
+
+  fetchUser (): Promise<User>
+
+  logout (username: string, password: string): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextState>({
   user: null,
-  message: null,
-  authorizing: false,
-  authorize: noOp,
+  login: () => { throw new Error('Invalid AuthContext') },
+  fetchUser: () => { throw new Error('Invalid AuthContext') },
+  logout: () => { throw new Error('Invalid AuthContext') },
 })
+
 export const AuthProvider: FC = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null)
-  const [authToken, setAuthToken] = useState<AuthToken | null>(localStorage.getItem(SESSION_KEY) || null)
-  const [authorizing, setAuthorizing] = useState<boolean>(false)
-  const [message, setMessage] = useState<string | null>(null)
 
-  const authorize = (username: string, password: string) => {
-    setAuthorizing(true)
-    setMessage('Authorizing...')
-    AuthApi.login(username, password)
-      .then(authToken => setAuthToken(authToken))
-      .catch(handleError)
+  const login = (username: string, password: string) => {
+    return AuthApi.login(username, password).then(user => {
+      setUser(user)
+      return user
+    })
   }
 
-  const handleError = (error: AxiosError) => {
-    if (error.response) {
-      setAuthorizing(false)
-      setMessage(error.response.data.error.message)
-    } else {
-      throw error
-    }
+  const fetchUser = (): Promise<User> => {
+    return AuthApi.fetchUser().then(user => {
+      setUser(user)
+      return user
+    })
   }
 
-  useEffect(() => {
-    localStorage.setItem(SESSION_KEY, authToken || '')
-    ServerApi.authToken = authToken
-
-    if (ServerApi.authToken) {
-      setAuthorizing(true)
-      setMessage('Authorizing...')
-      AuthApi.fetchUser()
-        .then(user => setUser(user))
-        .then(() => setAuthorizing(false))
-        .catch(handleError)
-    }
-  }, [authToken])
+  const logout = () => {
+    setUser(null)
+    return AuthApi.logout()
+  }
 
   const state: AuthContextState = {
     user,
-    message,
-    authorizing,
-    authorize,
+    fetchUser,
+    login,
+    logout,
   }
 
   return (
@@ -73,10 +56,10 @@ export const AuthProvider: FC = ({
   )
 }
 
-export const useCurrentUser = (): User | null => {
-  return useContext(AuthContext).user
-}
-
 export const useAuth = (): AuthContextState => {
   return useContext(AuthContext)
+}
+
+export const useCurrentUser = (): User | null => {
+  return useAuth().user
 }

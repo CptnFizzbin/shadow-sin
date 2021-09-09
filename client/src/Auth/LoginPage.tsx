@@ -1,15 +1,36 @@
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
+import { ServerApi } from '../Api/ServerApi'
 import { useAuth } from './AuthProvider'
 
 export const LoginPage: FC = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [authorizing, setAuthorizing] = useState<boolean>(false)
+  const [message, setMessage] = useState<string | null>(null)
 
-  const { authorizing, message, authorize } = useAuth()
+  const { login, fetchUser } = useAuth()
 
-  const onSubmit = () => {authorize(username, password)}
+  useEffect(() => {
+    setAuthorizing(true)
+    fetchUser().catch(() => setAuthorizing(false))
+  }, [fetchUser])
+
+  const onSubmit = () => {
+    setAuthorizing(true)
+    setMessage('Connecting...')
+
+    login(username, password).catch((error) => {
+      setAuthorizing(false)
+      if (ServerApi.isApiError(error)) {
+        setMessage(error.msg)
+      } else {
+        console.error(error)
+        setMessage('Server Error')
+      }
+    })
+  }
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw', justifyContent: 'center', alignItems: 'center' }}>
