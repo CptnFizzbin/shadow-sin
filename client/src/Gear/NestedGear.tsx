@@ -19,7 +19,7 @@ export const NestedGear: FC<NestedGearProps> = ({
   return (
     <Paper variant="outlined" sx={{ padding: 1 }}>
       <AttributeProvider attributes={item.attributes || {}}>
-        <GearList gear={attachedGear} expanded={false}/>
+        <GearList gear={attachedGear} />
       </AttributeProvider>
     </Paper>
   )

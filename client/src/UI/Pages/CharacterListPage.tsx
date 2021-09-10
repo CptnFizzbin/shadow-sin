@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import { RecordId } from '../../Api/Model'
 import { Artemis } from '../../data/Artemis'
+import { Silicus } from '../../data/Silicus'
 import { RootLayout } from './RootLayout'
 
 type SavedCharacter = {
@@ -12,12 +13,14 @@ type SavedCharacter = {
   metaType: string
 }
 
-if (!localStorage.getItem('characters')) {
-  localStorage.setItem(`character.${Artemis.id}`, JSON.stringify(Artemis))
-  localStorage.setItem('characters', JSON.stringify([
-    { id: Artemis.id, name: Artemis.name, metaType: Artemis.metaType },
-  ]))
-}
+// if (!localStorage.getItem('characters')) {
+const savedCharacters: SavedCharacter[] = [Artemis, Silicus]
+  .map(character => {
+    localStorage.setItem(`character.${character.id}`, JSON.stringify(character))
+    return { id: character.id, name: character.name, metaType: character.metaType }
+  })
+localStorage.setItem('characters', JSON.stringify(savedCharacters))
+// }
 
 export const CharacterListPage: FC = () => {
   const history = useHistory()

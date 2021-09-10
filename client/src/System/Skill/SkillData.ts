@@ -18,8 +18,8 @@ export interface ActiveSkillData extends BasicSkillData {
   rank: number
   attr: string
   altAttr?: string
-  speciality: string | null
-  expertise: string | null
+  speciality?: string | null
+  expertise?: string | null
 }
 
 export interface LanguageSkillData extends BasicSkillData {
@@ -34,9 +34,14 @@ export interface KnowledgeSkillData extends BasicSkillData {
 export type SkillData = ActiveSkillData | LanguageSkillData | KnowledgeSkillData
 
 export enum ActiveSkillId {
-  firearms = 'active.firearms',
-  electronics = 'active.electronics',
-  cracking = 'active.cracking',
-  piloting = 'active.piloting',
-  engineering = 'active.engineering',
+  athletics = 'athletics',
+  biotech = 'biotech',
+  closeCombat = 'closeCombat',
+  cracking = 'cracking',
+  electronics = 'electronics',
+  engineering = 'engineering',
+  firearms = 'firearms',
+  perception = 'perception',
+  piloting = 'piloting',
+  stealth = 'stealth',
 }

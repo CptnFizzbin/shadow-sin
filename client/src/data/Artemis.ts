@@ -11,8 +11,8 @@ import { WeaponAttr, WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
-const Artemis: CharacterData = {
-  id: nextRecordId(),
+export const Artemis: CharacterData = {
+  id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
   dataVersion: 1,
   name: 'Artemis',
   metaType: 'Elf',
@@ -41,7 +41,6 @@ const Artemis: CharacterData = {
       rank: 3,
       attr: 'agility',
       speciality: 'Automatics',
-      expertise: null,
     },
     {
       type: SkillType.active,
@@ -49,8 +48,6 @@ const Artemis: CharacterData = {
       name: 'Electronics',
       rank: 4,
       attr: 'logic',
-      speciality: null,
-      expertise: null,
     },
     {
       type: SkillType.active,
@@ -59,8 +56,6 @@ const Artemis: CharacterData = {
       rank: 3,
       attr: 'logic',
       altAttr: 'intuition',
-      speciality: null,
-      expertise: null,
     },
     {
       type: SkillType.active,
@@ -69,7 +64,6 @@ const Artemis: CharacterData = {
       rank: 6,
       attr: 'logic',
       speciality: 'Ground Craft',
-      expertise: null,
     },
     {
       type: SkillType.active,
@@ -78,8 +72,6 @@ const Artemis: CharacterData = {
       rank: 5,
       attr: 'logic',
       altAttr: 'intuition',
-      speciality: null,
-      expertise: null,
     },
     {
       type: SkillType.language,
@@ -156,6 +148,7 @@ addGear<ControlRigData>({
   avail: { rarity: 3, license: true },
   cost: 60_000,
   augmentSlot: AugmentSlot.headware,
+  essenceCost: 2.2,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
@@ -167,7 +160,7 @@ addGear<WeaponData>({
   id: null,
   source: { book: 'COR', page: 254 },
   gearType: GearType.weapon,
-  name: 'FN P93 Praetor',
+  name: 'FN P93 Predator',
   type: 'Submachine Gun',
   avail: { rarity: 4, license: true },
   cost: 925,
@@ -505,7 +498,3 @@ new Array(1).fill(null).forEach((_, index) => {
     addGear(riggerInterface),
   ])
 })
-
-export {
-  Artemis,
-}

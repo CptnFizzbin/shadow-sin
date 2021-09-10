@@ -1,5 +1,6 @@
 import { RecordId } from '../Api/Model'
 import { AttrList } from '../System/Attribute'
+import { Effect } from './Effect'
 
 export type Source = { book: string; page: number } | 'Homebrew'
 export type Cost = number
@@ -19,6 +20,7 @@ export enum GearType {
   augment = 'augment',
   controlRig = 'controlRig',
   weaponMod = 'weaponMod',
+  armor = 'armor',
 }
 
 export interface GearData {
@@ -26,7 +28,6 @@ export interface GearData {
   source?: Source
   gearType: GearType
   name: string
-  description?: string
   type: string
   avail?: Availability
   cost?: Cost
@@ -38,8 +39,11 @@ export interface GearData {
   wirelessBonus?: {
     enabled: boolean
     description: string
-    effect?: unknown
+    effects?: Effect[]
   }
+
+  description?: string
+  effects?: Effect[]
 
   [key: string]: unknown
 }
