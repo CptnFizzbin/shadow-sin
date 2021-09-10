@@ -7,9 +7,8 @@ import { DamageType } from '../../System/Damage/DamageType'
 import { hasExpertise, hasSpecialty } from '../../System/Skill/Helpers'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
-import { ControlRigAttr, ControlRigData } from '../Augments/ControlRigData'
+import { AugmentAttr, AugmentData, AugmentType } from '../Augments/AugmentData'
 import { useFindGear } from '../GearContext'
-import { GearType } from '../GearData'
 import { AutosoftAttr } from '../Software/Autosoft/AutosoftData'
 import { useTargetingAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleAttr } from '../Vehicles/VehicleData'
@@ -76,13 +75,13 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
   const logicAttr = useAttribute<number>(CharacterAttr.logic) || 0
   const engineeringSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.engineering)
 
-  const controlRig = useFindGear<ControlRigData>(gear => gear.gearType === GearType.controlRig)
+  const controlRig = useFindGear<AugmentData>(gear => gear.augmentType === AugmentType.controlRig)
   if (!controlRig) return null
 
   const diceGroups: DiceGroup[] = [
     { name: 'Logic', size: logicAttr },
     { name: 'Engineering', size: engineeringSkill?.rank },
-    { name: 'Control Rig', size: controlRig.attributes[ControlRigAttr.rating] },
+    { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
   ]
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]

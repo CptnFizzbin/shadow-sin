@@ -1,7 +1,6 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
-import { AugmentAttr, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
-import { ControlRigAttr, ControlRigData } from '../Gear/Augments/ControlRigData'
+import { AugmentAttr, AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccAttr, RccData } from '../Gear/Rcc/RccData'
 import { AutosoftAttr, AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
@@ -140,19 +139,20 @@ const smartGunIntMod: WeaponModData = {
   },
 }
 
-addGear<ControlRigData>({
+addGear<AugmentData>({
   id: null,
-  gearType: GearType.controlRig,
+  gearType: GearType.augment,
   name: 'Control Rig',
   type: 'Headwear Augment',
   avail: { rarity: 3, license: true },
   cost: 60_000,
   augmentSlot: AugmentSlot.headware,
+  augmentType: AugmentType.controlRig,
   essenceCost: 2.2,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
-    [ControlRigAttr.rating]: 2,
+    [AugmentAttr.rating]: 2,
   },
 })
 

@@ -18,6 +18,7 @@ registerAttrNames({
 export interface AugmentData extends GearData {
   augmentSlot: AugmentSlot
   essenceCost: number
+  augmentType?: AugmentType
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade
@@ -25,6 +26,10 @@ export interface AugmentData extends GearData {
     [AugmentAttr.capacity]?: number
     [AugmentAttr.capacityCost]?: number
   }
+}
+
+export enum AugmentType {
+  controlRig = 'controlRig',
 }
 
 export enum AugmentSlot {

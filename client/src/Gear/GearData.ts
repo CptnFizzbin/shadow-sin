@@ -11,16 +11,16 @@ export type Availability = {
 }
 
 export enum GearType {
-  other = 'other',
-  weapon = 'weapon',
-  vehicle = 'vehicle',
-  vehicleMod = 'vehicleMod',
+  armor = 'armor',
+  augment = 'augment',
   autosoft = 'autosoft',
   rcc = 'rcc',
-  augment = 'augment',
-  controlRig = 'controlRig',
+  vehicle = 'vehicle',
+  vehicleMod = 'vehicleMod',
+  weapon = 'weapon',
   weaponMod = 'weaponMod',
-  armor = 'armor',
+
+  other = 'other',
 }
 
 export interface GearData {

@@ -6,7 +6,7 @@ import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
-import { ControlRigAttr, ControlRigData } from '../Augments/ControlRigData'
+import { AugmentAttr, AugmentData, AugmentType } from '../Augments/AugmentData'
 import { useFindGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
 import { AutosoftAttr, AutosoftType } from '../Software/Autosoft/AutosoftData'
@@ -43,13 +43,13 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
     .filter(gear => gear.attachedTo === vehicle.id)
     .find(gear => gear.modType === ModType.riggerInterface)
 
-  const controlRig = useFindGear<ControlRigData>(gear => gear.gearType === GearType.controlRig)
+  const controlRig = useFindGear<AugmentData>(gear => gear.augmentType === AugmentType.controlRig)
   if (!controlRig || !riggerInterface) return null
 
   const groups: DiceGroup[] = [
     { name: 'Piloting', size: pilotingSkill?.rank },
     { name: 'Intuition', size: intuition },
-    { name: 'Control Rig', size: controlRig.attributes[ControlRigAttr.rating] },
+    { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
   ]
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
