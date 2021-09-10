@@ -1,10 +1,10 @@
-import { faArchive, faCarAlt, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faArchive, faCarAlt, faCogs, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { List } from '@material-ui/core'
 
 import { useCharacter } from '../../Character/CharacterProvider'
 import { PistolSvg } from '../../Gear/Weapons/PistolSvg'
-import { DefaultNavDrawer} from './DefaultNavDrawer'
+import { DefaultNavDrawer } from './DefaultNavDrawer'
 
 import { NavButton, NavDrawer } from './index'
 
@@ -35,6 +35,12 @@ export const CharacterNavDrawer: NavDrawer = ({
           icon={<FontAwesomeIcon icon={faCarAlt} />}
           label="Vehicles"
           routeTo={`/${character.id}/vehicles`}
+          closeDrawer={closeDrawer}
+        />
+        <NavButton
+          icon={<FontAwesomeIcon icon={faCogs} />}
+          label="Augments"
+          routeTo={`/${character.id}/augments`}
           closeDrawer={closeDrawer}
         />
         <NavButton

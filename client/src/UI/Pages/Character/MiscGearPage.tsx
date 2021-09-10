@@ -9,6 +9,7 @@ export const MiscGearPage: FC = () => {
   const excludedGear: GearType[] = [
     GearType.weapon,
     GearType.vehicle,
+    GearType.augment,
   ]
 
   const otherGear = useAllGear()

@@ -6,6 +6,7 @@ import { CharacterData } from '../../Character/CharacterData'
 import { CharacterInfo } from '../../Character/CharacterInfo'
 import { CharacterProvider } from '../../Character/CharacterProvider'
 import { CharacterNavDrawer } from '../NavDrawer/CharacterNavDrawer'
+import { AugmentsPage } from './Character/AugmentsPage'
 import { MiscGearPage } from './Character/MiscGearPage'
 import { VehiclesPage } from './Character/VehiclesPage'
 import { WeaponsPage } from './Character/WeaponsPage'
@@ -31,6 +32,7 @@ export const CharacterPage: FC = () => {
         <Switch>
           <Route path={`${path}/weapons`} component={WeaponsPage} />
           <Route path={`${path}/vehicles`} component={VehiclesPage} />
+          <Route path={`${path}/augments`} component={AugmentsPage} />
           <Route path={`${path}/misc`} component={MiscGearPage} />
           <Route path={`${path}/`} component={CharacterInfo} />
           <Route><Redirect to="/" /></Route>
