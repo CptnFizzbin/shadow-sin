@@ -1,3 +1,4 @@
+import { RecordId } from '../Api/Model'
 import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
 import { SkillData } from '../System/Skill/SkillData'
@@ -34,6 +35,7 @@ registerAttrNames({
 })
 
 export interface CharacterData {
+  id: RecordId
   dataVersion: number
   name: string
   metaType: string

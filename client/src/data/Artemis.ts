@@ -12,6 +12,7 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
 
 const Artemis: CharacterData = {
+  id: nextRecordId(),
   dataVersion: 1,
   name: 'Artemis',
   metaType: 'Elf',

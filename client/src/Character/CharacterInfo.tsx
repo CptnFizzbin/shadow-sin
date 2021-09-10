@@ -3,7 +3,6 @@ import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
 import { useAttribute } from '../System/AttributeProvider'
-import { useDamage, useSetDamage } from '../System/Damage/DamageContext'
 import { DamageTrack } from '../System/Damage/DamageTrack'
 import { DamageType } from '../System/Damage/DamageType'
 import { CharacterDefRatingStat } from '../System/DefenseRating'
@@ -25,11 +24,6 @@ import { ComposurePool, DodgePool, JudgeIntentPool, LiftPool, MemoryPool, Resist
 export const CharacterInfo: FC = () => {
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
-
-  const curDamage = useDamage(DamageType.charPhysical)
-  const setCurDamage = useSetDamage(DamageType.charPhysical)
-  const curStun = useDamage(DamageType.charStun)
-  const setCurStun = useSetDamage(DamageType.charStun)
 
   const { character } = useCharacter()
 
@@ -75,11 +69,11 @@ export const CharacterInfo: FC = () => {
           </Box>
 
           <Box>
-            <DamageTrack current={curDamage} max={physicalMax} onChange={setCurDamage} label="Physical" />
+            <DamageTrack type={DamageType.charPhysical} max={physicalMax} label="Physical" />
           </Box>
 
           <Box>
-            <DamageTrack current={curStun} max={stunMax} onChange={setCurStun} label="Stun" />
+            <DamageTrack type={DamageType.charStun} max={stunMax} label="Stun" />
           </Box>
         </Box>
 

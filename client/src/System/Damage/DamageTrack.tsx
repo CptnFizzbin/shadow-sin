@@ -4,23 +4,25 @@ import { FC } from 'react'
 
 import { noOp } from '../../Helpers'
 import { TrackCell } from '../../UI/TrackCell'
+import { useDamage, useSetDamage } from './DamageProvider'
+import { DamageType } from './DamageType'
 
 import styles from './DamageTrack.module.scss'
 
 interface DamageTrackProps {
-  current: number
+  type: DamageType
   max: number
   label?: string
-
-  onChange (value: number): void
 }
 
 export const DamageTrack: FC<DamageTrackProps> = ({
-  current,
+  type,
   max,
   label = 'Physical',
-  onChange,
 }) => {
+  const current = useDamage(type)
+  const onChange = useSetDamage(type)
+
   const onToggleCell = (value: number) => {
     if (value === current) {
       onChange(value - 1)

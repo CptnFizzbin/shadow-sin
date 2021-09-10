@@ -1,7 +1,7 @@
 import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
-import { DamageProvider } from '../../System/Damage/DamageContext'
+import { DamageProvider } from '../../System/Damage/DamageProvider'
 import { DamageTrack } from '../../System/Damage/DamageTrack'
 import { DamageType } from '../../System/Damage/DamageType'
 import { VehicleDefRatingStat } from '../../System/DefenseRating'
@@ -29,13 +29,6 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
 
-  const damageKey = `dmg.${vehicle.id}.physical`
-  const [damage, setDamage] = useState<number>(parseInt(localStorage.getItem(damageKey) || '0'))
-  const onDamageChange = (value: number) => {
-    setDamage(value)
-    localStorage.setItem(damageKey, value.toString())
-  }
-
   const pilot = vehicle.attributes[VehicleAttr.pilot] || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
@@ -59,7 +52,7 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
   }
 
   return (
-    <DamageProvider type={DamageType.vehiclePhysical} value={damage} onChange={onDamageChange}>
+    <DamageProvider type={DamageType.vehiclePhysical} id={vehicle.id}>
       <AutosoftProvider autosofts={autosofts}>
         <GearInfoBlock item={vehicle} expanded={expanded}>
           <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column', flexWrap: 'wrap' }}>
@@ -79,7 +72,7 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
               </Box>
 
               <Box>
-                <DamageTrack current={damage} max={physicalMax} onChange={onDamageChange} label="Physical" />
+                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
               </Box>
             </Box>
 

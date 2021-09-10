@@ -1,5 +1,6 @@
-import { createContext, FC, useContext } from 'react'
+import { createContext, FC, useContext, useEffect, useState } from 'react'
 
+import { RecordId } from '../../Api/Model'
 import { noOp } from '../../Helpers'
 import { DamageType } from './DamageType'
 
@@ -16,20 +17,30 @@ const DamageContext = createContext<DamageContextData>({})
 
 interface DamageProviderProps {
   type: DamageType
-  value: number
-
-  onChange? (value: number): void
+  id: RecordId
 }
 
 export const DamageProvider: FC<DamageProviderProps> = ({
   type,
-  value,
-  onChange = noOp,
+  id,
   children,
 }) => {
+  const dmgSessionKey = `dmg.${id}.${type}`
+  const [value, setDmgValue] = useState<number>(0)
+
+  useEffect(() => {
+    const value = parseInt(localStorage.getItem(dmgSessionKey) || '0')
+    setDmgValue(value)
+  }, [dmgSessionKey])
+
+  const onDmgChange = (value: number) => {
+    setDmgValue(value)
+    localStorage.setItem(dmgSessionKey, value.toString())
+  }
+
   const damages: DamageContextData = {
     ...useContext(DamageContext),
-    [type]: { value, setValue: onChange },
+    [type]: { value, setValue: onDmgChange },
   }
 
   return (

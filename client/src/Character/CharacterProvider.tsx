@@ -1,12 +1,13 @@
-import { createContext, FC, useContext, useState } from 'react'
+import { createContext, FC, useContext } from 'react'
 
 import { AttributeProvider } from '../System/AttributeProvider'
-import { DamageProvider } from '../System/Damage/DamageContext'
+import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { ActiveSkillData, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
 const defaultCharacter: CharacterData = {
+  id: null,
   dataVersion: 1,
   name: 'unknown',
   metaType: 'human',
@@ -55,24 +56,10 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   onChange,
   children,
 }) => {
-  const physicalDmgKey = 'dmg.char.physical'
-  const [physicalDmg, setPhysicalDmg] = useState<number>(parseInt(localStorage.getItem(physicalDmgKey) || '0'))
-  const onPhysicalChange = (value: number) => {
-    setPhysicalDmg(value)
-    localStorage.setItem(physicalDmgKey, value.toString())
-  }
-
-  const stunDmgKey = 'dmg.char.stun'
-  const [stunDmg, setStunDmg] = useState<number>(parseInt(localStorage.getItem(stunDmgKey) || '0'))
-  const onStunChange = (value: number) => {
-    setStunDmg(value)
-    localStorage.setItem(stunDmgKey, value.toString())
-  }
-
   return (
     <CharacterContext.Provider value={{ character, setCharacter: onChange }}>
-      <DamageProvider type={DamageType.charPhysical} value={physicalDmg} onChange={onPhysicalChange}>
-        <DamageProvider type={DamageType.charStun} value={stunDmg} onChange={onStunChange}>
+      <DamageProvider type={DamageType.charPhysical} id={character.id}>
+        <DamageProvider type={DamageType.charStun} id={character.id}>
           <AttributeProvider attributes={character.attributes}>
             {children}
           </AttributeProvider>

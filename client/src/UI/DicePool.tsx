@@ -1,7 +1,7 @@
 import { Box, Paper } from '@material-ui/core'
 import { FC } from 'react'
 
-import { useDamagePenalty } from '../System/Damage/DamageContext'
+import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 
 export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
