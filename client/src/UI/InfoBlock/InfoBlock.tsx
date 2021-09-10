@@ -11,6 +11,7 @@ library.add(faCaretSquareDown, faCaretSquareRight)
 
 interface InfoBlockProps {
   title: string
+  titleFontSize?: number
   subtitle?: string
   titleRight?: ReactElement
   expanded?: boolean
@@ -19,6 +20,7 @@ interface InfoBlockProps {
 
 export const InfoBlock: FC<InfoBlockProps> = ({
   title,
+  titleFontSize = 20,
   subtitle,
   titleRight,
   children,
@@ -39,7 +41,13 @@ export const InfoBlock: FC<InfoBlockProps> = ({
         )}
 
         <Box sx={{ flexGrow: 1 }}>
-          <Typography sx={{ fontFamily: displayFontFamily, fontSize: 20, color: 'primary.main' }}>{title}</Typography>
+          <Typography
+            sx={{
+              fontFamily: displayFontFamily,
+              fontSize: titleFontSize,
+              color: 'primary.main',
+            }}
+          >{title}</Typography>
           {subtitle}
         </Box>
 

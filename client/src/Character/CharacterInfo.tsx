@@ -48,7 +48,7 @@ export const CharacterInfo: FC = () => {
     .map(skill => skill as LanguageSkillData)
 
   return (
-    <InfoBlock title={character.alias || character.name} subtitle={character.metaType}>
+    <InfoBlock title={character.alias || character.name} subtitle={character.metaType} titleFontSize={50}>
       <InfoSection>
         <AttributeBlock attributes={character.attributes} />
       </InfoSection>

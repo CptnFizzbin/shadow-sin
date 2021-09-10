@@ -1,13 +1,14 @@
 import { faArchive, faCarAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { List } from '@material-ui/core'
-import { FC } from 'react'
 
 import { useCharacter } from '../../Character/CharacterProvider'
 import { PistolSvg } from '../../Gear/Weapons/PistolSvg'
-import { NavButton, NavDrawer, NavDrawerProps } from './NavDrawer'
+import { DefaultNavDrawer} from './DefaultNavDrawer'
 
-export const CharacterNavDrawer: FC<NavDrawerProps> = ({
+import { NavButton, NavDrawer } from './index'
+
+export const CharacterNavDrawer: NavDrawer = ({
   open,
   closeDrawer,
 }) => {
@@ -16,7 +17,7 @@ export const CharacterNavDrawer: FC<NavDrawerProps> = ({
   if (!character) return null
 
   return (
-    <NavDrawer open={open} closeDrawer={closeDrawer}>
+    <DefaultNavDrawer open={open} closeDrawer={closeDrawer}>
       <List>
         <NavButton
           icon={<FontAwesomeIcon icon={faUser} />}
@@ -43,6 +44,6 @@ export const CharacterNavDrawer: FC<NavDrawerProps> = ({
           closeDrawer={closeDrawer}
         />
       </List>
-    </NavDrawer>
+    </DefaultNavDrawer>
   )
 }

@@ -5,11 +5,8 @@ import { FC } from 'react'
 import { noOp } from '../Helpers'
 
 type NavBarProps = {
-  withMenu?: false
-  openMenu?: never
-} | {
-  withMenu: true
-  openMenu (): void
+  withMenu?: boolean
+  openMenu? (): void
 }
 
 export const AppBar: FC<NavBarProps> = ({
