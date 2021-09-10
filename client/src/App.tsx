@@ -1,17 +1,19 @@
 import React, { FC } from 'react'
-import { HashRouter } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import { AppDataProvider } from './AppDataProvider'
 import { AppThemeProvider } from './AppThemeProvider'
-import { AppLayout } from './UI/AppLayout'
+import { CharacterListPage } from './UI/Pages/CharacterListPage'
+import { CharacterPage } from './UI/Pages/CharacterPage'
 
 const App: FC = () => {
   return (
     <HashRouter>
       <AppThemeProvider>
-        <AppDataProvider>
-          <AppLayout />
-        </AppDataProvider>
+        <Switch>
+          <Route path="/characters" component={CharacterListPage} />
+          <Route path="/:characterId" component={CharacterPage} />
+          <Route><Redirect to="/characters" /></Route>
+        </Switch>
       </AppThemeProvider>
     </HashRouter>
   )

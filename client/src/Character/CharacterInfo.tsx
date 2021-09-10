@@ -25,7 +25,7 @@ export const CharacterInfo: FC = () => {
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
 
-  const { character } = useCharacter()
+  const character = useCharacter()
 
   const body = useAttribute<number>(CharacterAttr.body) || 0
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
@@ -34,6 +34,8 @@ export const CharacterInfo: FC = () => {
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
+
+  if (!character) return null
 
   const activeSkills = character.skills
     .filter(skill => skill.type === SkillType.active)

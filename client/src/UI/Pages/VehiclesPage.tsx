@@ -1,10 +1,10 @@
 import { Typography } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { useGearOfType } from '../GearContext'
-import { GearType } from '../GearData'
-import { GearList } from '../GearList'
-import { VehicleData } from './VehicleData'
+import { useGearOfType } from '../../Gear/GearContext'
+import { GearType } from '../../Gear/GearData'
+import { GearList } from '../../Gear/GearList'
+import { VehicleData } from '../../Gear/Vehicles/VehicleData'
 
 export const VehiclesPage: FC = () => {
   const vehicles = useGearOfType<VehicleData>(GearType.vehicle)

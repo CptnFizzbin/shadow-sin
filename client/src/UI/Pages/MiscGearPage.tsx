@@ -1,9 +1,9 @@
 import { Typography } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { useAllGear } from './GearContext'
-import { GearType } from './GearData'
-import { GearList } from './GearList'
+import { useAllGear } from '../../Gear/GearContext'
+import { GearType } from '../../Gear/GearData'
+import { GearList } from '../../Gear/GearList'
 
 export const MiscGearPage: FC = () => {
   const excludedGear: GearType[] = [
