@@ -17,6 +17,7 @@ export const StatBlock: FC<StatBlockProps> = ({
         display: 'flex',
         padding: 1,
         gap: 1,
+        flexWrap: 'wrap',
         flexDirection: vertical ? 'column' : 'row',
         justifyContent: 'space-around',
       }}
