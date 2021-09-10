@@ -1,4 +1,10 @@
+import * as uuid from 'uuid'
+
 export type RecordId = string | null;
+
+export function nextRecordId (): RecordId {
+  return uuid.v4()
+}
 
 export interface Model {
   id: RecordId

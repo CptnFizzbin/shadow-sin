@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 import { ApiError } from './ApiError'
+import { RecordId } from './Model'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 

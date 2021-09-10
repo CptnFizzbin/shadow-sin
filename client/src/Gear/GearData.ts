@@ -1,6 +1,6 @@
+import { RecordId } from '../Api/Model'
 import { AttrList } from '../System/Attribute'
 
-export type GearId = number | null;
 export type Source = { book: string; page: number } | 'Homebrew'
 export type Cost = number
 export type Availability = {
@@ -23,7 +23,7 @@ export enum GearType {
 
 export interface GearData {
   dataVersion?: number
-  id: GearId
+  id: RecordId
   source?: Source
   gearType: GearType
   name: string
@@ -34,7 +34,7 @@ export interface GearData {
   capacity?: number
 
   attributes?: AttrList
-  attachedTo?: GearId
+  attachedTo?: RecordId
 
   wirelessBonus?: {
     enabled: boolean

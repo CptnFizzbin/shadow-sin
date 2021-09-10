@@ -1,5 +1,6 @@
+import { RecordId } from '../../Api/Model'
 import { registerAttrNames } from '../../UI/AttributeBlock'
-import { GearData, GearId, GearType } from '../GearData'
+import { GearData, GearType } from '../GearData'
 
 export enum VehicleAttr {
   handling = 'vehicle.handling',
@@ -40,5 +41,5 @@ export interface VehicleData extends GearData {
     [VehicleAttr.seat]: number | null
   }
 
-  slavedTo?: GearId
+  slavedTo?: RecordId
 }

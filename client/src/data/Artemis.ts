@@ -1,3 +1,4 @@
+import { nextRecordId } from '../Api/Model'
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
 import { AugmentAttr, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { ControlRigAttr, ControlRigData } from '../Gear/Augments/ControlRigData'
@@ -118,10 +119,8 @@ const Artemis: CharacterData = {
   gear: [],
 }
 
-let nextId = 0
-
 export function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, dataVersion: 1, id: nextId++ }
+  gear = { ...gear, dataVersion: 1, id: nextRecordId() }
 
   Artemis.gear.push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)

@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box } from '@material-ui/core'
 import { FC } from 'react'
 
+import { RecordId } from '../../../Api/Model'
 import { AttributeBlock } from '../../../UI/AttributeBlock'
-import { GearId } from '../../GearData'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {
   autosofts: AutosoftData[]
-  slavedIds?: GearId[]
+  slavedIds?: RecordId[]
   withAvail?: boolean
   withCost?: boolean
 }
@@ -21,7 +21,7 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
   return (
     <Box>
       {autosofts.map(autosoft => (
-        <Box key={autosoft.id} sx={{paddingTop: 1}}>
+        <Box key={autosoft.id} sx={{ paddingTop: 1 }}>
           <AutosoftListItem
             key={autosoft.id}
             autosoft={autosoft}
@@ -35,7 +35,7 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
 
 interface AutosoftListItemProps {
   autosoft: AutosoftData
-  slavedIds?: GearId[]
+  slavedIds?: RecordId[]
   withAvail?: boolean
   withCost?: boolean
 }

@@ -1,5 +1,6 @@
+import { RecordId } from '../../Api/Model'
 import { registerAttrNames } from '../../UI/AttributeBlock'
-import { GearData, GearId, GearType } from '../GearData'
+import { GearData, GearType } from '../GearData'
 
 export enum RccAttr {
   deviceRating = 'rcc.deviceRating',
@@ -22,5 +23,5 @@ export interface RccData extends GearData {
     [RccAttr.firewall]: number
   }
 
-  slavedAutosofts: GearId[]
+  slavedAutosofts: RecordId[]
 }
