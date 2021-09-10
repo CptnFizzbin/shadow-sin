@@ -34,7 +34,7 @@ registerAttrNames({
 })
 
 export interface CharacterData {
-  dataVersion?: number
+  dataVersion: number
   name: string
   metaType: string
   nuyen: number

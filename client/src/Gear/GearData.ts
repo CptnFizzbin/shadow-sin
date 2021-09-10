@@ -22,7 +22,6 @@ export enum GearType {
 }
 
 export interface GearData {
-  dataVersion?: number
   id: RecordId
   source?: Source
   gearType: GearType
