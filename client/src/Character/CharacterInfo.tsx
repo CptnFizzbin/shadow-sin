@@ -2,7 +2,10 @@ import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
-import { useAttribute } from '../System/AttributeProvider'
+import { isInitBonus } from '../Gear/Effect'
+import { useAllGear } from '../Gear/GearContext'
+import { collectGearEffects } from '../Gear/GearData'
+import { useAttributes } from '../System/AttributeProvider'
 import { DamageTrack } from '../System/Damage/DamageTrack'
 import { DamageType } from '../System/Damage/DamageType'
 import { CharacterDefRatingStat } from '../System/DefenseRating'
@@ -26,11 +29,27 @@ export const CharacterInfo: FC = () => {
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
 
   const character = useCharacter()
+  const gear = useAllGear()
 
-  const body = useAttribute<number>(CharacterAttr.body) || 0
-  const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
-  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-  const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
+  const charAttributes = useAttributes([
+    CharacterAttr.body,
+    CharacterAttr.agility,
+    CharacterAttr.reaction,
+    CharacterAttr.strength,
+    CharacterAttr.willpower,
+    CharacterAttr.logic,
+    CharacterAttr.intuition,
+    CharacterAttr.charisma,
+    CharacterAttr.edge,
+    CharacterAttr.essence,
+    CharacterAttr.magic,
+    CharacterAttr.resonance,
+  ])
+
+  const body = charAttributes[CharacterAttr.body] as number || 0
+  const reaction = charAttributes[CharacterAttr.reaction] as number || 0
+  const intuition = charAttributes[CharacterAttr.intuition] as number || 0
+  const willpower = charAttributes[CharacterAttr.willpower] as number || 0
 
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
@@ -47,10 +66,14 @@ export const CharacterInfo: FC = () => {
     .filter(skill => skill.type === SkillType.language)
     .map(skill => skill as LanguageSkillData)
 
+  const initDice = collectGearEffects(gear)
+    .filter(isInitBonus)
+    .reduce((sum, effect) => sum + effect.dice, 1)
+
   return (
     <InfoBlock title={character.alias || character.name} subtitle={character.metaType} titleFontSize={50}>
       <InfoSection>
-        <AttributeBlock attributes={character.attributes} />
+        <AttributeBlock attributes={charAttributes} />
       </InfoSection>
 
       <InfoSection>
@@ -63,7 +86,7 @@ export const CharacterInfo: FC = () => {
             <Typography variant={'h6'}>Combat</Typography>
             <StatBlock vertical>
               {/* NOTE: pg. 67 => changed by augments */}
-              <InitiativeStat name="Init" base={reaction + intuition} dice={1} />
+              <InitiativeStat name="Init" base={reaction + intuition} dice={initDice} />
               <CharacterHotVrInit />
               <CharacterColdVrInit />
               <CharacterDefRatingStat />

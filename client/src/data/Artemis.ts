@@ -29,7 +29,6 @@ export const Artemis: CharacterData = {
     [CharacterAttr.intuition]: 5,
     [CharacterAttr.charisma]: 2,
     [CharacterAttr.edge]: 4,
-    [CharacterAttr.essence]: 2.1,
   },
 
   contacts: [],

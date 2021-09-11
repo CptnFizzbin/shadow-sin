@@ -1,5 +1,5 @@
 import { registerAttrNames } from '../../UI/AttributeBlock'
-import { GearData } from '../GearData'
+import { GearData, GearType } from '../GearData'
 
 export enum AugmentAttr {
   grade = 'augment.grade',
@@ -26,6 +26,10 @@ export interface AugmentData extends GearData {
     [AugmentAttr.capacity]?: number
     [AugmentAttr.capacityCost]?: number
   }
+}
+
+export function isAugment (gear: GearData): gear is AugmentData {
+  return gear.gearType === GearType.augment
 }
 
 export enum AugmentType {

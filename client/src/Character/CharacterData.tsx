@@ -62,7 +62,6 @@ export interface CharacterData {
     [CharacterAttr.intuition]: number
     [CharacterAttr.charisma]: number
     [CharacterAttr.edge]: number
-    [CharacterAttr.essence]: number
     [CharacterAttr.magic]?: number
     [CharacterAttr.resonance]?: number
   }

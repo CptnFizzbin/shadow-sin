@@ -21,8 +21,13 @@ export const AttributeProvider: FC<AttributeProviderProps> = ({
   )
 }
 
-export const useAttributes = (): AttrList => {
-  return useContext(AttributeContext)
+export const useAttributes = (keys?: string[]): AttrList => {
+  const allAttributes = useContext(AttributeContext)
+  if (!keys) return allAttributes
+
+  const filtered: AttrList = {}
+  keys.forEach(key => filtered[key] = allAttributes[key])
+  return filtered
 }
 
 export function useAttribute<T extends AttrValue> (type: AttrType): T {

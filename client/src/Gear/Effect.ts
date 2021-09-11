@@ -16,9 +16,17 @@ interface AttrBonus extends BaseGearEffect {
   bonus: number
 }
 
+export function isAttrBonus (effect: BaseGearEffect): effect is AttrBonus {
+  return effect.type === EffectType.attrBonus
+}
+
 interface InitBonus extends BaseGearEffect {
   type: EffectType.initBonus
-  bonus: number
+  dice: number
+}
+
+export function isInitBonus (effect: BaseGearEffect): effect is InitBonus {
+  return effect.type === EffectType.initBonus
 }
 
 interface SkillBonus extends BaseGearEffect {

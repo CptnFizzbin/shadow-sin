@@ -61,3 +61,9 @@ export const formatSource = (source: Source): string => {
   if (typeof source === 'string') return source
   return `${source.book} p.${source.page}`
 }
+
+export const collectGearEffects = (gear: GearData[]): Effect[] => {
+  return gear
+    .filter(gear => gear.effects)
+    .flatMap(gear => gear.effects as Effect[])
+}

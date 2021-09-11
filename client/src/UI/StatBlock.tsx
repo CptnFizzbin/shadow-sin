@@ -36,6 +36,10 @@ export const Stat: FC<StatProps> = ({
   name,
   value,
 }) => {
+  if (typeof value == 'number') {
+    value = value.toFixed(2).toString()
+  }
+
   return (
     <Box sx={{ display: 'flex', gap: 1 }}>
       <Box sx={{ fontSize: 14, display: 'inline-block', color: 'primary.main', textAlign: 'left', flexGrow: 1 }}>

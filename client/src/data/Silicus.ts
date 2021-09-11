@@ -25,7 +25,6 @@ export const Silicus: CharacterData = {
     [CharacterAttr.intuition]: 2,
     [CharacterAttr.charisma]: 1,
     [CharacterAttr.edge]: 4,
-    [CharacterAttr.essence]: 2.55,
   },
 
   contacts: [],
@@ -279,7 +278,7 @@ addGear<AugmentData>({
   enabled: true,
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 1 },
-    { type: EffectType.initBonus, bonus: 1 },
+    { type: EffectType.initBonus, dice: 1 },
   ],
 })
 

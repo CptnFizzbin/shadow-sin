@@ -1,11 +1,15 @@
 import { createContext, FC, useContext } from 'react'
 
+import { isAugment } from '../Gear/Augments/AugmentData'
+import { isAttrBonus } from '../Gear/Effect'
 import { GearProvider } from '../Gear/GearContext'
+import { collectGearEffects } from '../Gear/GearData'
+import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { ActiveSkillData, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
-import { CharacterData } from './CharacterData'
+import { CharacterAttr, CharacterData } from './CharacterData'
 
 const CharacterContext = createContext<CharacterData | null>(null)
 
@@ -17,17 +21,32 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   character,
   children,
 }) => {
+  const attributes: AttrList = {}
+
+  const attrBonuses = collectGearEffects(character.gear)
+    .filter(isAttrBonus)
+
+  attributes[CharacterAttr.essence] = character.gear
+    .filter(isAugment)
+    .reduce((essence, gear) => essence - gear.essenceCost, 6)
+
+  Object.entries(character.attributes).forEach(([attr, value]) => {
+    attributes[attr] = attrBonuses
+      .filter(effect => effect.attr === attr)
+      .reduce((sum, effect) => sum + effect.bonus, value)
+  })
+
   return (
     <CharacterContext.Provider value={character}>
-      <GearProvider gear={character.gear}>
-        <DamageProvider type={DamageType.charPhysical} id={character.id}>
-          <DamageProvider type={DamageType.charStun} id={character.id}>
-            <AttributeProvider attributes={character.attributes}>
+      <AttributeProvider attributes={attributes}>
+        <GearProvider gear={character.gear}>
+          <DamageProvider type={DamageType.charPhysical} id={character.id}>
+            <DamageProvider type={DamageType.charStun} id={character.id}>
               {children}
-            </AttributeProvider>
+            </DamageProvider>
           </DamageProvider>
-        </DamageProvider>
-      </GearProvider>
+        </GearProvider>
+      </AttributeProvider>
     </CharacterContext.Provider>
   )
 }
