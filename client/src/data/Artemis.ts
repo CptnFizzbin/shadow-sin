@@ -1,6 +1,7 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
 import { AugmentAttr, AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
+import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
 import { RccAttr, RccData } from '../Gear/Rcc/RccData'
 import { AutosoftAttr, AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
@@ -497,4 +498,171 @@ new Array(1).fill(null).forEach((_, index) => {
   }, [
     addGear(riggerInterface),
   ])
+})
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Cybereyes',
+  type: 'Augment',
+  source: { book: 'COR', page: 285 },
+  avail: { rarity: 2 },
+  cost: 5_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 4,
+    [AugmentAttr.capacity]: 12,
+  },
+
+  essenceCost: 0.44,
+  augmentSlot: AugmentSlot.eyeware,
+}, [
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Smartlink',
+    type: 'Cybereye Augment',
+    source: { book: 'COR', page: 285 },
+    avail: { rarity: 2, license: true },
+    cost: 2_000,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.capacityCost]: 3,
+    },
+
+    essenceCost: 0.22,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Imagelink',
+    type: 'Cybereye Augment',
+    source: { book: 'COR', page: 285 },
+    avail: { rarity: 1 },
+    cost: 750,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.used,
+    },
+
+    essenceCost: 0.11,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Low-Light Vision',
+    type: 'Cybereye Augment',
+    source: { book: 'COR', page: 285 },
+    avail: { rarity: 1 },
+    cost: 750,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.capacityCost]: 2,
+    },
+
+    essenceCost: 0.11,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Thermographic Vision',
+    type: 'Cybereye Augment',
+    source: { book: 'COR', page: 285 },
+    avail: { rarity: 1 },
+    cost: 1_000,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.capacityCost]: 2,
+    },
+
+    essenceCost: 0.11,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Vision Enhancement',
+    type: 'Cybereye Augment',
+    source: { book: 'COR', page: 285 },
+    avail: { rarity: 2 },
+    cost: 2_000,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.capacityCost]: 2,
+    },
+
+    essenceCost: 0.11,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+])
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Commlink',
+  type: 'Headware Augment',
+  source: { book: 'COR', page: 283 },
+  avail: { rarity: 1 },
+  cost: 1_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+  },
+
+  essenceCost: 0.11,
+  augmentSlot: AugmentSlot.headware,
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.other,
+    name: 'Transys Avalon',
+    type: 'Commlink',
+    source: { book: 'COR', page: 267 },
+    avail: { rarity: 3 },
+    cost: 8_000,
+
+    attributes: {
+      'commlink.deviceRating': 6,
+      'commlink.attributes': '3/1',
+      'commlink.programSlots': 3,
+    },
+
+    essenceCost: 0.11,
+    augmentSlot: AugmentSlot.bioware,
+
+    enabled: true,
+    effects: [
+      { type: EffectType.skillBonus, skill: ActiveSkillId.stealth, bonus: 1 },
+    ],
+  }),
+])
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Reaction Enahancers',
+  type: 'Bodyware Augment',
+  source: { book: 'COR', page: 283 },
+  avail: { rarity: 3, license: true },
+  cost: 22_500,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 3,
+  },
+
+  essenceCost: 0.99,
+  augmentSlot: AugmentSlot.headware,
+
+  effects: [
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
+  ],
 })
