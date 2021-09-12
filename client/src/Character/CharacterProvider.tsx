@@ -8,7 +8,7 @@ import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { ActiveSkillData, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
+import { ActiveSkillData, isActiveSkill, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
 const CharacterContext = createContext<CharacterData | null>(null)
@@ -53,6 +53,24 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
 
 export const useCharacter = (): CharacterData | null => {
   return useContext(CharacterContext)
+}
+
+export interface SkillList {
+  [skillId: string]: number
+}
+
+export function useSkills (skillIds?: string[]): SkillList {
+  const character = useContext(CharacterContext)
+  const skillList: SkillList = {}
+
+  if (character) {
+    character.skills
+      .filter(isActiveSkill)
+      .filter(skill => skillIds ? skillIds.includes(skill.skillId) : true)
+      .forEach(skill => skillList[skill.skillId] = skill.rank)
+  }
+
+  return skillList
 }
 
 export function useActiveSkill<T extends SkillData> (skillId: SkillId): T | undefined {

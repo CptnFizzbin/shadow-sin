@@ -22,6 +22,10 @@ export interface ActiveSkillData extends BasicSkillData {
   expertise?: string | null
 }
 
+export function isActiveSkill (skill: BasicSkillData): skill is ActiveSkillData {
+  return skill.type === SkillType.active
+}
+
 export interface LanguageSkillData extends BasicSkillData {
   type: SkillType.language
   rank: 'basic' | 'speciality' | 'expertise' | 'native'
