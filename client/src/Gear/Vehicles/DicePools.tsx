@@ -14,6 +14,11 @@ import { useAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
+export enum VehiclePoolKeys {
+  pilotEvade = 'vehicle.pilotEvade',
+  riggedEvade = 'vehicle.riggedEvade',
+}
+
 interface VehiclePoolProps {
   vehicle: VehicleData
 }
@@ -30,7 +35,12 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
     { name: 'Evasion', size: evasion },
   ]
 
-  return <DicePool name={'Pilot Evade'} groups={diceGroups} dmgPenaltyTypes={[DamageType.vehiclePhysical]} />
+  return <DicePool
+    key={VehiclePoolKeys.pilotEvade}
+    name={'Pilot Evade'}
+    groups={diceGroups}
+    dmgPenaltyTypes={[DamageType.vehiclePhysical]}
+  />
 }
 
 export const RiggedEvadePool: FC<VehiclePoolProps> = ({
@@ -53,5 +63,10 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
   ]
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
-  return <DicePool name={'Rigged Evade'} groups={groups} dmgPenaltyTypes={dmgPenaltyTypes} />
+  return <DicePool
+    key={VehiclePoolKeys.riggedEvade}
+    name={'Rigged Evade'}
+    groups={groups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
 }

@@ -14,6 +14,13 @@ import { useTargetingAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleAttr } from '../Vehicles/VehicleData'
 import { WeaponData } from './WeaponData'
 
+export enum WeaponPoolKeys {
+  basicAttack = 'weapon.basicAttack',
+  droneAttack = 'weapon.droneAttack',
+  mountedAttack = 'weapon.mountedAttack',
+  riggedAttack = 'weapon.riggedAttack',
+}
+
 interface FirearmPoolProps {
   weapon: WeaponData
 }
@@ -37,7 +44,12 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({
   }
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun]
-  return <DicePool name={'Basic Attack'} groups={groups} dmgPenaltyTypes={dmgPenaltyTypes} />
+  return <DicePool
+    key={WeaponPoolKeys.basicAttack}
+    name={'Basic Attack'}
+    groups={groups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
 }
 
 export const DroneAttackPool: FC<FirearmPoolProps> = ({
@@ -55,7 +67,12 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
     { name: 'Targeting', size: targeting },
   ]
   const dmgPenaltyTypes = [DamageType.vehiclePhysical]
-  return <DicePool name={'Drone Attack'} groups={diceGroups} dmgPenaltyTypes={dmgPenaltyTypes} />
+  return <DicePool
+    key={WeaponPoolKeys.droneAttack}
+    name={'Drone Attack'}
+    groups={diceGroups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
 }
 
 export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
@@ -68,7 +85,12 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = () => {
   ]
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun]
-  return <DicePool name={'Vehicle Attack'} groups={diceGroups} dmgPenaltyTypes={dmgPenaltyTypes} />
+  return <DicePool
+    key={WeaponPoolKeys.mountedAttack}
+    name={'Mounted Attack'}
+    groups={diceGroups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
 }
 
 export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
@@ -85,5 +107,10 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
   ]
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
-  return <DicePool name={'Rigged Attack'} groups={diceGroups} dmgPenaltyTypes={dmgPenaltyTypes} />
+  return <DicePool
+    key={WeaponPoolKeys.riggedAttack}
+    name={'Rigged Attack'}
+    groups={diceGroups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
 }

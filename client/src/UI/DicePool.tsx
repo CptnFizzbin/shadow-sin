@@ -32,11 +32,20 @@ export const DicePools: FC = ({
   </Paper>
 }
 
-interface DicePoolProps {
+export interface DicePoolData {
+  key: string
+  name: string
+  skills?: string[]
+  attrs?: string[]
+  bonus?: string[]
+  dmgPenaltyTypes?: DamageType[]
+}
+
+type DicePoolProps = {
   name: string
   groups: DiceGroup[]
   dmgPenaltyTypes: DamageType[]
-}
+} & DicePoolData
 
 export const DicePool: FC<DicePoolProps> = ({
   name,

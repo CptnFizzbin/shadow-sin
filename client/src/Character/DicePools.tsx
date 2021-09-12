@@ -6,7 +6,12 @@ import { DiceGroup, DicePool } from '../UI/DicePool'
 import { CharacterAttr } from './CharacterData'
 
 export enum CharacterPoolTypes {
+  dodge = 'character.dodge',
   dmgResist = 'character.dmgResist',
+  composure = 'character.composure',
+  judgeIntent = 'character.judgeIntent',
+  memory = 'character.memory',
+  liftCarry = 'character.liftCarry',
 }
 
 export const DodgePool: FC = () => {
@@ -19,7 +24,12 @@ export const DodgePool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Dodge'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+    <DicePool
+      key={CharacterPoolTypes.dodge}
+      name={'Dodge'}
+      groups={diceGroups}
+      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+    />
   )
 }
 
@@ -31,7 +41,7 @@ export const ResistDamagePool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Resist Dmg.'} groups={diceGroups} dmgPenaltyTypes={[]} />
+    <DicePool key={CharacterPoolTypes.dmgResist} name={'Resist Dmg.'} groups={diceGroups} dmgPenaltyTypes={[]} />
   )
 }
 
@@ -45,7 +55,12 @@ export const ComposurePool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Composure'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+    <DicePool
+      key={CharacterPoolTypes.composure}
+      name={'Composure'}
+      groups={diceGroups}
+      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+    />
   )
 }
 
@@ -60,6 +75,7 @@ export const JudgeIntentPool: FC = () => {
 
   return (
     <DicePool
+      key={CharacterPoolTypes.judgeIntent}
       name={'Judge Intent'}
       groups={diceGroups}
       dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
@@ -77,7 +93,12 @@ export const MemoryPool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Memory'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+    <DicePool
+      key={CharacterPoolTypes.memory}
+      name={'Memory'}
+      groups={diceGroups}
+      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+    />
   )
 }
 
@@ -92,6 +113,7 @@ export const LiftPool: FC = () => {
 
   return (
     <DicePool
+      key={CharacterPoolTypes.liftCarry}
       name={'Lift/Carry'}
       groups={diceGroups}
       dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
