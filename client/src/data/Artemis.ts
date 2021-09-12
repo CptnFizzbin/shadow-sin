@@ -65,7 +65,6 @@ export const Artemis: CharacterData = {
       name: 'Firearms',
       rank: 3,
       attr: 'agility',
-      speciality: 'Automatics',
     },
     {
       type: SkillType.active,
@@ -465,7 +464,7 @@ addGear<VehicleData>({
     [VehicleAttr.armor]: 10,
     [VehicleAttr.pilot]: 4,
     [VehicleAttr.sensor]: 4,
-    [VehicleAttr.seat]: 7,
+    [VehicleAttr.seat]: 4,
   },
 
   slavedTo: rcc.id,
@@ -684,25 +683,20 @@ addGear<AugmentData>({
   addGear({
     id: null,
     gearType: GearType.other,
-    name: 'Transys Avalon',
+    name: 'Hermes Ikon',
     type: 'Commlink',
     source: { book: 'COR', page: 267 },
     avail: { rarity: 3 },
-    cost: 8_000,
+    cost: 5_000,
 
     attributes: {
-      'commlink.deviceRating': 6,
-      'commlink.attributes': '3/1',
-      'commlink.programSlots': 3,
+      'commlink.deviceRating': 5,
+      'commlink.attributes': '3/0',
+      'commlink.programSlots': 2,
     },
 
     essenceCost: 0.11,
     augmentSlot: AugmentSlot.bioware,
-
-    enabled: true,
-    effects: [
-      { type: EffectType.skillBonus, skill: ActiveSkillId.stealth, bonus: 1 },
-    ],
   }),
 ])
 
@@ -726,4 +720,52 @@ addGear<AugmentData>({
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
   ],
+})
+
+addGear({
+  id: null,
+  gearType: GearType.armor,
+  name: 'Davina Hasselhoff',
+  type: 'Fake SIN',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 4, illegal: true },
+  cost: 15_000,
+
+  description: 'General use SIN',
+
+  attributes: {
+    'Rating': 6,
+  },
+})
+
+addGear({
+  id: null,
+  gearType: GearType.armor,
+  name: 'Sara McCabe',
+  type: 'Fake SIN',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 4, illegal: true },
+  cost: 10_000,
+
+  description: 'Runner SIN',
+
+  attributes: {
+    'Rating': 4,
+  },
+})
+
+addGear({
+  id: null,
+  gearType: GearType.armor,
+  name: 'Jane Smith',
+  type: 'Fake SIN',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 4, illegal: true },
+  cost: 5_000,
+
+  description: 'Burner SIN',
+
+  attributes: {
+    'Rating': 2,
+  },
 })

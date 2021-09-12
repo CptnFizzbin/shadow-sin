@@ -1,8 +1,11 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr, CharacterData } from '../Character/CharacterData'
+import { CharacterPoolTypes } from '../Character/DicePools'
 import { AugmentAttr, AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
+import { VehicleAttr, VehicleData } from '../Gear/Vehicles/VehicleData'
+import { ModType } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr, WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
@@ -22,14 +25,14 @@ export const Silicus: CharacterData = {
   },
 
   attributes: {
-    [CharacterAttr.body]: 3,
-    [CharacterAttr.agility]: 7,
+    [CharacterAttr.body]: 2,
+    [CharacterAttr.agility]: 8,
     [CharacterAttr.reaction]: 1,
     [CharacterAttr.strength]: 1,
     [CharacterAttr.willpower]: 1,
     [CharacterAttr.logic]: 5,
     [CharacterAttr.intuition]: 2,
-    [CharacterAttr.charisma]: 1,
+    [CharacterAttr.charisma]: 3,
     [CharacterAttr.edge]: 4,
   },
 
@@ -59,7 +62,7 @@ export const Silicus: CharacterData = {
       type: SkillType.active,
       skillId: ActiveSkillId.athletics,
       name: 'Athletics',
-      rank: 4,
+      rank: 5,
       attr: 'agility',
       altAttr: 'strength',
     },
@@ -67,17 +70,17 @@ export const Silicus: CharacterData = {
       type: SkillType.active,
       skillId: ActiveSkillId.biotech,
       name: 'Biotech',
-      rank: 4,
+      rank: 6,
       attr: 'logic',
       altAttr: 'intuition',
+      speciality: 'First Aid',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.firearms,
       name: 'Firearms',
-      rank: 6,
+      rank: 7,
       attr: 'agility',
-      speciality: 'Automatics',
     },
     {
       type: SkillType.active,
@@ -96,24 +99,9 @@ export const Silicus: CharacterData = {
     },
     {
       type: SkillType.active,
-      skillId: ActiveSkillId.electronics,
-      name: 'Electronics',
-      rank: 3,
-      attr: 'logic',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.cracking,
-      name: 'Cracking',
-      rank: 3,
-      attr: 'logic',
-      altAttr: 'intuition',
-    },
-    {
-      type: SkillType.active,
       skillId: ActiveSkillId.closeCombat,
       name: 'Close Combat',
-      rank: 3,
+      rank: 5,
       attr: 'agility',
     },
     {
@@ -123,7 +111,7 @@ export const Silicus: CharacterData = {
     },
     {
       type: SkillType.knowledge,
-      name: 'Espionage Techniques',
+      name: 'Law Enforcement Corps',
     },
     {
       type: SkillType.knowledge,
@@ -139,7 +127,7 @@ export const Silicus: CharacterData = {
     },
     {
       type: SkillType.knowledge,
-      name: 'Hacker Groups',
+      name: 'Local Gangs',
     },
   ],
 
@@ -205,6 +193,9 @@ const smartGunIntMod: WeaponModData = {
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
+    effects: [
+      { type: EffectType.dicePoolBonus, poolType: 'weapon.all', bonus: 1 },
+    ],
   },
 }
 
@@ -556,22 +547,52 @@ addGear<AugmentData>({
 addGear<AugmentData>({
   id: null,
   gearType: GearType.augment,
-  name: 'Reflex Recorder (Stealth)',
+  name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
   source: { book: 'COR', page: 293 },
-  avail: { rarity: 4 },
-  cost: 7_000,
+  avail: { rarity: 5 },
+  cost: 47_250,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 3,
   },
 
-  essenceCost: 0.11,
+  essenceCost: 0.66,
   augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
-    { type: EffectType.skillBonus, skill: ActiveSkillId.stealth, bonus: 1 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.logic, bonus: 3 },
+  ],
+})
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Bone Density',
+  type: 'Bioware Augment',
+  source: { book: 'COR', page: 291 },
+  avail: { rarity: 3, license: true },
+  cost: 5_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 2,
+  },
+
+  description: (`
+      Increases Body during damage resistance test by rating. 
+      Melee damage: 3P, Atk. Rating: +2
+  `),
+
+  essenceCost: 0.66,
+  augmentSlot: AugmentSlot.bioware,
+
+  effects: [
+    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 3 },
+    // Melee damage: 3P
+    // Melee Atk. Rating: +2
   ],
 })
 
@@ -594,27 +615,39 @@ addGear<AugmentData>({
   addGear({
     id: null,
     gearType: GearType.other,
-    name: 'Transys Avalon',
+    name: 'Hermes Ikon',
     type: 'Commlink',
     source: { book: 'COR', page: 267 },
     avail: { rarity: 3 },
-    cost: 8_000,
+    cost: 5_000,
 
     attributes: {
-      'commlink.deviceRating': 6,
-      'commlink.attributes': '3/1',
-      'commlink.programSlots': 3,
+      'commlink.deviceRating': 5,
+      'commlink.attributes': '3/0',
+      'commlink.programSlots': 2,
     },
 
     essenceCost: 0.11,
-    augmentSlot: AugmentSlot.bioware,
-
-    enabled: true,
-    effects: [
-      { type: EffectType.skillBonus, skill: ActiveSkillId.stealth, bonus: 1 },
-    ],
+    augmentSlot: AugmentSlot.headware,
   }),
 ])
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Datajack',
+  type: 'Headware Augment',
+  source: { book: 'COR', page: 283 },
+  avail: { rarity: 1 },
+  cost: 500,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+  },
+
+  essenceCost: 0.11,
+  augmentSlot: AugmentSlot.headware,
+})
 
 addGear({
   id: null,
@@ -628,5 +661,231 @@ addGear({
   attributes: {
     'armor.defenseBonus': 4,
     'armor.capacity': 8,
+  },
+})
+
+addGear({
+  id: null,
+  gearType: GearType.armor,
+  name: 'Full Body Armor',
+  type: 'Armor',
+  source: { book: 'COR', page: 265 },
+  avail: { rarity: 4, license: true },
+  cost: 2_000,
+
+  attributes: {
+    'armor.defenseBonus': 5,
+    'armor.capacity': 10,
+  },
+})
+
+addGear({
+  id: null,
+  gearType: GearType.armor,
+  name: 'Auctioneer Business Clothes',
+  type: 'Armor',
+  source: { book: 'COR', page: 265 },
+  avail: { rarity: 2 },
+  cost: 1_500,
+
+  attributes: {
+    'armor.defenseBonus': 2,
+    'armor.capacity': 6,
+  },
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.armorMod,
+    name: 'Concealed Hostler',
+    type: 'Armor Mod',
+    source: { book: 'COR', page: 259 },
+
+    wirelessBonus: {
+      enabled: true,
+      description: 'Increases cancellability threshold by 1',
+    },
+  }),
+])
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'Medkit',
+  type: 'Biotech',
+  source: { book: 'COR', page: 281 },
+  avail: { rarity: 3 },
+  cost: 1_500,
+
+  attributes: {
+    'medkit.rating': 6,
+  },
+
+  wirelessBonus: {
+    enabled: true,
+    description: (`
+      The medkit provides a +1 dice pool modifier to healing tests
+    `),
+  },
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.other,
+    name: 'Medkit Supplies',
+    type: 'Supplies',
+    source: { book: 'COR', page: 273 },
+    avail: { rarity: 1 },
+    cost: 100,
+    quantity: 5,
+  }),
+])
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'First Aid Kit',
+  type: 'Kit',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 1 },
+  cost: 500,
+})
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'Trauma Patch',
+  type: 'Slap Patch',
+  source: { book: 'COR', page: 282 },
+  avail: { rarity: 3 },
+  cost: 500,
+  quantity: 2,
+  description: (`
+    If placed on a patient with Overflow Damage, the patient is automatically stabilized.
+    These patches are always wireless, and connect to the matrix the moment they are applied.
+  `),
+})
+
+addGear<VehicleData>({
+  id: null,
+  gearType: GearType.vehicle,
+  name: 'Suzuki Mirage',
+  type: 'Bike',
+  cost: 12_000,
+  avail: { rarity: 2 },
+  source: { book: 'COR', page: 295 },
+
+  attributes: {
+    [VehicleAttr.handling]: '2/6',
+    [VehicleAttr.accel]: 29,
+    [VehicleAttr.speedInterval]: 30,
+    [VehicleAttr.topSpeed]: 260,
+    [VehicleAttr.body]: 4,
+    [VehicleAttr.armor]: 2,
+    [VehicleAttr.pilot]: 1,
+    [VehicleAttr.sensor]: 1,
+    [VehicleAttr.seat]: 1,
+  },
+})
+
+addGear<VehicleData>({
+  id: null,
+  gearType: GearType.vehicle,
+  name: 'Hyundai Shin-Hyung',
+  type: 'Car',
+  cost: 20_000,
+  avail: { rarity: 2 },
+  source: { book: 'COR', page: 295 },
+
+  attributes: {
+    [VehicleAttr.handling]: '3/5',
+    [VehicleAttr.accel]: 12,
+    [VehicleAttr.speedInterval]: 25,
+    [VehicleAttr.topSpeed]: 200,
+    [VehicleAttr.body]: 7,
+    [VehicleAttr.armor]: 1,
+    [VehicleAttr.pilot]: 1,
+    [VehicleAttr.sensor]: 1,
+    [VehicleAttr.seat]: 3,
+  },
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.vehicleMod,
+    modType: ModType.riggerInterface,
+    name: 'Rigger Interface',
+    type: 'vehicle mod',
+    avail: { rarity: 2, license: true },
+    cost: 1_000,
+  }),
+])
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'Jake Ozbourne',
+  type: 'Fake SIN',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 4, illegal: true },
+  cost: 15_000,
+
+  description: 'General use SIN',
+
+  attributes: {
+    'Rating': 6,
+  },
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.license,
+    name: 'License: Concealed Carry',
+    type: 'Fake License',
+    source: { book: 'COR', page: 273 },
+    avail: { rarity: 4, illegal: true },
+    cost: 1_000,
+
+    attributes: {
+      'Rating': 5,
+    },
+  }),
+  addGear({
+    id: null,
+    gearType: GearType.license,
+    name: 'License: Firearm Carry',
+    type: 'Fake License',
+    source: { book: 'COR', page: 273 },
+    avail: { rarity: 4, illegal: true },
+    cost: 1_000,
+
+    attributes: {
+      'Rating': 5,
+    },
+  }),
+  addGear({
+    id: null,
+    gearType: GearType.license,
+    name: 'License: Ares Viper Silvergun',
+    type: 'Fake License',
+    source: { book: 'COR', page: 273 },
+    avail: { rarity: 4, illegal: true },
+    cost: 1_000,
+
+    attributes: {
+      'Rating': 5,
+    },
+  }),
+])
+
+addGear({
+  id: null,
+  gearType: GearType.sin,
+  name: 'Picard DeLance',
+  type: 'Fake SIN',
+  source: { book: 'COR', page: 273 },
+  avail: { rarity: 4, illegal: true },
+  cost: 10_000,
+
+  description: 'Runner use SIN',
+
+  attributes: {
+    'Rating': 4,
   },
 })

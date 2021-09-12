@@ -12,6 +12,7 @@ export type Availability = {
 
 export enum GearType {
   armor = 'armor',
+  armorMod = 'armorMod',
   augment = 'augment',
   autosoft = 'autosoft',
   license = 'license',
