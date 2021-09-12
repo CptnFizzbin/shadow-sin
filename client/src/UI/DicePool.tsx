@@ -1,8 +1,11 @@
 import { Box, Paper } from '@material-ui/core'
 import { FC } from 'react'
 
+import { useSkills } from '../Character/CharacterProvider'
+import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
+import { formatAttr } from './AttributeBlock'
 
 export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
   return {
@@ -32,27 +35,49 @@ export const DicePools: FC = ({
   </Paper>
 }
 
+export interface PoolBonus {
+  value: number
+  name: string
+}
+
 export interface DicePoolData {
   key: string
   name: string
   skills?: string[]
   attrs?: string[]
-  bonus?: string[]
+  bonuses?: DiceGroup[]
   dmgPenaltyTypes?: DamageType[]
 }
 
 type DicePoolProps = {
   name: string
-  groups: DiceGroup[]
-  dmgPenaltyTypes: DamageType[]
+  groups?: DiceGroup[]
+  dmgPenaltyTypes?: DamageType[]
 } & DicePoolData
 
 export const DicePool: FC<DicePoolProps> = ({
+  key,
   name,
-  groups,
+  skills = [],
+  attrs = [],
+  bonuses = [],
+  groups = [],
   dmgPenaltyTypes = [],
 }) => {
+  const skillList = useSkills(skills)
+  const attrList = useAttributes(attrs)
   const dmgPenalty = useDamagePenalty(dmgPenaltyTypes)
+
+  groups = [
+    ...groups,
+    ...Object.entries(skillList)
+      .map(([skillId, rank]) => ({ name: skillId, size: rank })),
+    ...Object.entries(attrList)
+      .filter(([_, value]) => typeof value === 'number')
+      .map(([attrType, value]) => ({ name: formatAttr(attrType), size: value as number })),
+    ...bonuses,
+  ]
+
   if (dmgPenalty > 0) {
     groups = [...groups, { name: 'Dmg. Penalty', size: dmgPenalty * -1 }]
   }
