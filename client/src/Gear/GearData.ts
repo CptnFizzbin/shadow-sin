@@ -1,8 +1,8 @@
 import { RecordId } from '../Api/Model'
 import { AttrList } from '../System/Attribute'
+import { Source } from '../System/Source'
 import { Effect } from './Effect'
 
-export type Source = { book: string; page: number } | 'Homebrew'
 export type Cost = number
 export type Availability = {
   rarity: number
@@ -51,11 +51,6 @@ export interface GearData {
 
 export const formatAvail = (avail: Availability): string => {
   return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
-}
-
-export const formatSource = (source: Source): string => {
-  if (typeof source === 'string') return source
-  return `${source.book} p.${source.page}`
 }
 
 export const collectGearEffects = (gear: GearData[]): Effect[] => {
