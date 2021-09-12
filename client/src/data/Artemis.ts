@@ -728,7 +728,7 @@ addGear<AugmentData>({
 
 addGear({
   id: null,
-  gearType: GearType.armor,
+  gearType: GearType.sin,
   name: 'Davina Hasselhoff',
   type: 'Fake SIN',
   source: { book: 'COR', page: 273 },
@@ -744,7 +744,7 @@ addGear({
 
 addGear({
   id: null,
-  gearType: GearType.armor,
+  gearType: GearType.sin,
   name: 'Sara McCabe',
   type: 'Fake SIN',
   source: { book: 'COR', page: 273 },
@@ -760,7 +760,7 @@ addGear({
 
 addGear({
   id: null,
-  gearType: GearType.armor,
+  gearType: GearType.sin,
   name: 'Jane Smith',
   type: 'Fake SIN',
   source: { book: 'COR', page: 273 },

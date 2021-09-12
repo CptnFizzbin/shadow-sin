@@ -4,6 +4,7 @@ import { CharacterPoolTypes } from '../Character/DicePools'
 import { AugmentAttr, AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
+import { SinAttr, SinData } from '../Gear/Sins/SinData'
 import { VehicleAttr, VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr, WeaponData } from '../Gear/Weapons/WeaponData'
@@ -817,9 +818,9 @@ addGear<VehicleData>({
   }),
 ])
 
-addGear({
+addGear<SinData>({
   id: null,
-  gearType: GearType.other,
+  gearType: GearType.sin,
   name: 'Jake Ozbourne',
   type: 'Fake SIN',
   source: { book: 'COR', page: 273 },
@@ -829,7 +830,7 @@ addGear({
   description: 'General use SIN',
 
   attributes: {
-    'Rating': 6,
+    [SinAttr.rating]: 6,
   },
 }, [
   addGear({
@@ -873,7 +874,7 @@ addGear({
   }),
 ])
 
-addGear({
+addGear<SinData>({
   id: null,
   gearType: GearType.sin,
   name: 'Picard DeLance',
@@ -885,6 +886,6 @@ addGear({
   description: 'Runner use SIN',
 
   attributes: {
-    'Rating': 4,
+    [SinAttr.rating]: 4,
   },
 })
