@@ -19,13 +19,13 @@ export const GearInfo: FC<GearInfoProps> = ({
   expanded,
 }) => {
   switch (item.gearType) {
-  case GearType.weapon:
-    return <WeaponInfo item={item as WeaponData} expanded={expanded} />
-  case GearType.vehicle:
-    return <VehicleInfo item={item as VehicleData} expanded={expanded} />
-  case GearType.rcc:
-    return <RccInfo item={item as RccData} expanded={expanded} />
-  default:
-    return <GearInfoBlock item={item} expanded={expanded} />
+    case GearType.weapon:
+      return <WeaponInfo item={item as WeaponData} expanded={expanded} />
+    case GearType.vehicle:
+      return <VehicleInfo item={item as VehicleData} expanded={expanded} />
+    case GearType.rcc:
+      return <RccInfo item={item as RccData} expanded={expanded} />
+    default:
+      return <GearInfoBlock item={item} expanded={expanded} />
   }
 }

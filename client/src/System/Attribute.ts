@@ -1,5 +1,5 @@
-export type AttrType = string;
-export type AttrValue = number | string | null
+export type AttrType = string
+export type AttrValue = number | string | null | undefined
 
 export interface AttrList {
   [type: string]: AttrValue

@@ -22,6 +22,7 @@ export const AttributeBlock: FC<AttributeBlockProps> = ({
   vertical,
 }) => {
   if (!attributes) return null
+  if (Object.keys(attributes).length === 0) return null
 
   return (
     <StatBlock vertical={vertical}>

@@ -6,6 +6,7 @@ import { ContactList } from '../Contacts/ContactList'
 import { isInitBonus } from '../Gear/Effect'
 import { useAllGear } from '../Gear/GearContext'
 import { collectGearEffects } from '../Gear/GearData'
+import { QualitiesList } from '../Qualities/QualitiesList'
 import { useAttributes } from '../System/AttributeProvider'
 import { DamageTrack } from '../System/Damage/DamageTrack'
 import { DamageType } from '../System/Damage/DamageType'
@@ -142,6 +143,11 @@ export const CharacterInfo: FC = () => {
                 <KnowledgeSkillList skills={languageSkills} />
               </Box>
             </Box>
+          </InfoSection>
+
+          <InfoSection>
+            <Typography variant={'h6'}>Qualities</Typography>
+            <QualitiesList qualities={character.qualities} />
           </InfoSection>
 
           <InfoSection>

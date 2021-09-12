@@ -1,3 +1,4 @@
+import { AttrValue } from '../../System/Attribute'
 import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData } from '../GearData'
 
@@ -21,8 +22,9 @@ export interface WeaponData extends GearData {
     [WeaponAttr.attackRatings]: string
     [WeaponAttr.modes]?: string
     [WeaponAttr.ammo]?: string
+    [key: string]: AttrValue
   }
 
-  specialtySkill: string
-  specialtyName: string
+  specialtySkill?: string
+  specialtyName?: string
 }

@@ -29,7 +29,7 @@ export const StatBlock: FC<StatBlockProps> = ({
 
 interface StatProps {
   name: string
-  value: string | number | null
+  value: string | number | null | undefined
 }
 
 export const Stat: FC<StatProps> = ({

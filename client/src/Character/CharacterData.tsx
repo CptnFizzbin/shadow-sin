@@ -1,9 +1,9 @@
 import { RecordId } from '../Api/Model'
 import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
+import { QualityData } from '../Qualities/QualityData'
 import { SkillData } from '../System/Skill/SkillData'
 import { registerAttrNames } from '../UI/AttributeBlock'
-import { QualityData } from './QualityData'
 
 export enum CharacterAttr {
   body = 'char.body',
