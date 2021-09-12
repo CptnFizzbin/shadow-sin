@@ -27,8 +27,12 @@ export const AttributeBlock: FC<AttributeBlockProps> = ({
   return (
     <StatBlock vertical={vertical}>
       {Object.entries(attributes).map(([type, value]) => (
-        <Stat key={type} name={attributeNames[type] || type} value={value} />
+        <Stat key={type} name={formatAttr(type)} value={value} />
       ))}
     </StatBlock>
   )
+}
+
+export const formatAttr = (type: string): string => {
+  return attributeNames[type] || type
 }
