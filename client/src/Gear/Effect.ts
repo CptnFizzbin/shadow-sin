@@ -4,6 +4,7 @@ export enum EffectType {
   attrBonus = 'attrBonus',
   initBonus = 'initBonus',
   skillBonus = 'skillBonus',
+  dicePoolBonus = 'dicePoolBonus',
 }
 
 interface BaseGearEffect {
@@ -35,7 +36,22 @@ interface SkillBonus extends BaseGearEffect {
   bonus: number
 }
 
+export function isSkillBonus (effect: BaseGearEffect): effect is SkillBonus {
+  return effect.type === EffectType.skillBonus
+}
+
+interface DicePoolBonus extends BaseGearEffect {
+  type: EffectType.dicePoolBonus
+  poolType: string
+  bonus: number
+}
+
+export function isDicePoolBonus (effect: BaseGearEffect): effect is DicePoolBonus {
+  return effect.type === EffectType.dicePoolBonus
+}
+
 export type Effect =
   | AttrBonus
   | InitBonus
   | SkillBonus
+  | DicePoolBonus

@@ -5,6 +5,10 @@ import { DamageType } from '../System/Damage/DamageType'
 import { DiceGroup, DicePool } from '../UI/DicePool'
 import { CharacterAttr } from './CharacterData'
 
+export enum CharacterPoolTypes {
+  dmgResist = 'character.dmgResist',
+}
+
 export const DodgePool: FC = () => {
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
@@ -55,7 +59,11 @@ export const JudgeIntentPool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Judge Intent'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+    <DicePool
+      name={'Judge Intent'}
+      groups={diceGroups}
+      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+    />
   )
 }
 
@@ -83,6 +91,10 @@ export const LiftPool: FC = () => {
   ]
 
   return (
-    <DicePool name={'Lift/Carry'} groups={diceGroups} dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]} />
+    <DicePool
+      name={'Lift/Carry'}
+      groups={diceGroups}
+      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+    />
   )
 }
