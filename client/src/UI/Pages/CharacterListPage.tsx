@@ -3,8 +3,8 @@ import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { RecordId } from '../../Api/Model'
-import { Artemis } from '../../data/Artemis'
-import { Silicus } from '../../data/Silicus'
+import Artemis from '../../data/Artemis.json'
+import Silicus from '../../data/Silicus.json'
 import { RootLayout } from './RootLayout'
 
 type SavedCharacter = {

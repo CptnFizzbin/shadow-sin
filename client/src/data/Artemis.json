@@ -1,0 +1,1243 @@
+{
+  "id": "aebc2a1a-d12e-487e-aa5b-1f2daa18817a",
+  "dataVersion": 1,
+  "name": "Artemis",
+  "metaType": "Elf",
+  "karma": 7,
+  "nuyen": 14420,
+  "lifestyle": {
+    "grade": "middle",
+    "upkeep": 3000,
+    "prepaid": 6
+  },
+  "attributes": {
+    "char.body": 1,
+    "char.agility": 3,
+    "char.reaction": 1,
+    "char.strength": 1,
+    "char.willpower": 2,
+    "char.logic": 7,
+    "char.intuition": 5,
+    "char.charisma": 2,
+    "char.edge": 4
+  },
+  "contacts": [
+    {
+      "name": "James Serif",
+      "connection": 2,
+      "loyalty": 2,
+      "description": "Drone Parts Dealer"
+    },
+    {
+      "name": "Frank",
+      "connection": 2,
+      "loyalty": 2,
+      "description": "Matrix Developer"
+    },
+    {
+      "name": "George Crabtree",
+      "connection": 2,
+      "loyalty": 2,
+      "description": "Lone Star officer"
+    }
+  ],
+  "skills": [
+    {
+      "type": "active",
+      "skillId": "firearms",
+      "name": "Firearms",
+      "rank": 3,
+      "attr": "agility"
+    },
+    {
+      "type": "active",
+      "skillId": "electronics",
+      "name": "Electronics",
+      "rank": 4,
+      "attr": "logic"
+    },
+    {
+      "type": "active",
+      "skillId": "cracking",
+      "name": "Cracking",
+      "rank": 3,
+      "attr": "logic",
+      "altAttr": "intuition"
+    },
+    {
+      "type": "active",
+      "skillId": "piloting",
+      "name": "Piloting",
+      "rank": 6,
+      "attr": "logic",
+      "speciality": "Ground Craft"
+    },
+    {
+      "type": "active",
+      "skillId": "engineering",
+      "name": "Engineering",
+      "rank": 5,
+      "attr": "logic",
+      "altAttr": "intuition"
+    },
+    {
+      "type": "language",
+      "name": "English",
+      "rank": "native"
+    },
+    {
+      "type": "language",
+      "name": "Elven",
+      "rank": "speciality"
+    },
+    {
+      "type": "knowledge",
+      "name": "Drone Models"
+    },
+    {
+      "type": "knowledge",
+      "name": "80/90s Pop Culture"
+    },
+    {
+      "type": "knowledge",
+      "name": "Trideo Series"
+    },
+    {
+      "type": "knowledge",
+      "name": "Security Systems"
+    },
+    {
+      "type": "knowledge",
+      "name": "Virtual Nightclubs"
+    },
+    {
+      "type": "knowledge",
+      "name": "Tech Companies"
+    }
+  ],
+  "gear": [
+    {
+      "id": "1bcfa99e-3aea-49c2-917a-78465e4acfeb",
+      "gearType": "augment",
+      "name": "Control Rig",
+      "type": "Headwear Augment",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 60000,
+      "augmentSlot": "headware",
+      "augmentType": "controlRig",
+      "essenceCost": 2.2,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.rating": 2
+      },
+      "dataVersion": 1
+    },
+    {
+      "id": "6c3b2a91-c6f4-4434-9657-aca207e8fa9e",
+      "source": {
+        "book": "COR",
+        "page": 254
+      },
+      "gearType": "weaponMod",
+      "name": "Rigid Stock",
+      "type": "Weapon Mod",
+      "slot": null,
+      "removable": false,
+      "dataVersion": 1,
+      "attachedTo": "3e8dcba8-4650-4aa4-9cc7-72f8ef3b6925"
+    },
+    {
+      "id": "ca870fb5-4d9e-4f55-8dd9-7408c032eb05",
+      "source": {
+        "book": "COR",
+        "page": 254
+      },
+      "gearType": "weaponMod",
+      "name": "Laser sight",
+      "type": "Weapon Mod",
+      "slot": "Top or Under",
+      "dataVersion": 1,
+      "attachedTo": "3e8dcba8-4650-4aa4-9cc7-72f8ef3b6925"
+    },
+    {
+      "id": "eae53ad8-5470-4236-a547-3dfb20de6d4a",
+      "source": {
+        "book": "COR",
+        "page": 254
+      },
+      "gearType": "weaponMod",
+      "name": "Flashlight",
+      "type": "Weapon Mod",
+      "slot": "Top or Under",
+      "dataVersion": 1,
+      "attachedTo": "3e8dcba8-4650-4aa4-9cc7-72f8ef3b6925"
+    },
+    {
+      "id": "fccef8b1-22c7-4058-b60f-795fec46d0e8",
+      "source": {
+        "book": "COR",
+        "page": 260
+      },
+      "gearType": "weaponMod",
+      "name": "Smart Gun Int.",
+      "type": "Weapon Mod",
+      "cost": 500,
+      "slot": null,
+      "removable": false,
+      "wirelessBonus": {
+        "enabled": true,
+        "description": "You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when you use the Reload Smartgun or Change Device Mode actions to eject a clip or change fire mode."
+      },
+      "dataVersion": 1,
+      "attachedTo": "3e8dcba8-4650-4aa4-9cc7-72f8ef3b6925"
+    },
+    {
+      "id": "3e8dcba8-4650-4aa4-9cc7-72f8ef3b6925",
+      "source": {
+        "book": "COR",
+        "page": 254
+      },
+      "gearType": "weapon",
+      "name": "FN P93 Predator",
+      "type": "Submachine Gun",
+      "avail": {
+        "rarity": 4,
+        "license": true
+      },
+      "cost": 925,
+      "attributes": {
+        "weapon.dv": "4P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "9/12/7/-/-",
+        "weapon.ammo": "50(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "automatics",
+      "dataVersion": 1
+    },
+    {
+      "id": "889c44fb-ea2b-40c8-952f-7aa6abf9cbf7",
+      "source": {
+        "book": "COR",
+        "page": 260
+      },
+      "gearType": "weaponMod",
+      "name": "Smart Gun Int.",
+      "type": "Weapon Mod",
+      "cost": 500,
+      "slot": null,
+      "removable": false,
+      "wirelessBonus": {
+        "enabled": true,
+        "description": "You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when you use the Reload Smartgun or Change Device Mode actions to eject a clip or change fire mode."
+      },
+      "dataVersion": 1,
+      "attachedTo": "b1bbd5a1-bb75-48cc-8b7b-e0a89e1e6719"
+    },
+    {
+      "id": "b1bbd5a1-bb75-48cc-8b7b-e0a89e1e6719",
+      "source": {
+        "book": "COR",
+        "page": 252
+      },
+      "gearType": "weapon",
+      "name": "Colt America L36",
+      "type": "Light Pistol",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 230,
+      "attributes": {
+        "weapon.dv": "2P",
+        "weapon.modes": "SA",
+        "weapon.attackRatings": "8/8/6/-/-",
+        "weapon.ammo": "11(c)"
+      },
+      "wirelessBonus": {
+        "enabled": true,
+        "description": "The user can alter ownership with a Minor Action"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "pistols",
+      "dataVersion": 1
+    },
+    {
+      "id": "03dd9d38-7fec-4aec-95be-83aca7bc0955",
+      "source": {
+        "book": "COR",
+        "page": 260
+      },
+      "gearType": "weaponMod",
+      "name": "Smart Gun Int.",
+      "type": "Weapon Mod",
+      "cost": 500,
+      "slot": null,
+      "removable": false,
+      "wirelessBonus": {
+        "enabled": true,
+        "description": "You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when you use the Reload Smartgun or Change Device Mode actions to eject a clip or change fire mode."
+      },
+      "dataVersion": 1,
+      "attachedTo": "10eccbfe-2e42-478a-b0f2-7a59ecaba005"
+    },
+    {
+      "id": "10eccbfe-2e42-478a-b0f2-7a59ecaba005",
+      "source": {
+        "book": "COR",
+        "page": 253
+      },
+      "gearType": "weapon",
+      "name": "Ares Predator VI",
+      "type": "Heavy Pistol",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 750,
+      "attributes": {
+        "weapon.dv": "3P",
+        "weapon.modes": "SA/BF",
+        "weapon.attackRatings": "10/10/8/-/-",
+        "weapon.ammo": "15(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "pistols",
+      "dataVersion": 1
+    },
+    {
+      "id": "8f55e373-a5ca-4e71-b0dd-7e1ed235741b",
+      "gearType": "autosoft",
+      "name": "FN-HAR Targeting",
+      "type": "Targeting Autosoft",
+      "avail": {
+        "rarity": 8
+      },
+      "cost": 4000,
+      "attributes": {
+        "autosoft.rating": 8,
+        "autosoft.weapon": "FN-HAR",
+        "autosoft.attr": "Sensor"
+      },
+      "dataVersion": 1,
+      "attachedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46"
+    },
+    {
+      "id": "99e6d392-6609-4b74-94c5-63e867ddb4bf",
+      "gearType": "autosoft",
+      "name": "Clearsight",
+      "type": "Autosoft",
+      "avail": {
+        "rarity": 7
+      },
+      "cost": 3500,
+      "attributes": {
+        "autosoft.rating": 7,
+        "autosoft.skill": "Perception",
+        "autosoft.attr": "Sensor"
+      },
+      "dataVersion": 1,
+      "attachedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46"
+    },
+    {
+      "id": "8c639d16-1375-4797-a182-fc9f4e58ea3a",
+      "gearType": "autosoft",
+      "name": "Evasion",
+      "type": "Autosoft",
+      "avail": {
+        "rarity": 5
+      },
+      "cost": 2500,
+      "attributes": {
+        "autosoft.rating": 5,
+        "autosoft.skill": "Evasion",
+        "autosoft.attr": "Pilot"
+      },
+      "dataVersion": 1,
+      "attachedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46"
+    },
+    {
+      "id": "abab952e-4189-4dd2-9e1a-d450677f5bcf",
+      "gearType": "autosoft",
+      "name": "Maneuvering",
+      "type": "Autosoft",
+      "avail": {
+        "rarity": 5
+      },
+      "cost": 2500,
+      "attributes": {
+        "autosoft.rating": 5,
+        "autosoft.skill": "Piloting",
+        "autosoft.attr": "Pilot"
+      },
+      "dataVersion": 1,
+      "attachedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46"
+    },
+    {
+      "id": "802acf0c-5781-4cac-8f21-35372ff53894",
+      "gearType": "autosoft",
+      "name": "Electronic Warfare",
+      "type": "Autosoft",
+      "avail": {
+        "rarity": 7
+      },
+      "cost": 3500,
+      "attributes": {
+        "autosoft.rating": 7,
+        "autosoft.skill": "Cracking",
+        "autosoft.attr": "Sensor"
+      },
+      "dataVersion": 1,
+      "attachedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46"
+    },
+    {
+      "id": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "gearType": "rcc",
+      "name": "Proteus Poseidon",
+      "type": "RCC",
+      "avail": {
+        "rarity": 6,
+        "license": true
+      },
+      "cost": 68000,
+      "attributes": {
+        "rcc.deviceRating": 5,
+        "rcc.dataProcessing": 5,
+        "rcc.firewall": 5
+      },
+      "slavedAutosofts": [
+        "8f55e373-a5ca-4e71-b0dd-7e1ed235741b",
+        "99e6d392-6609-4b74-94c5-63e867ddb4bf",
+        "8c639d16-1375-4797-a182-fc9f4e58ea3a",
+        "abab952e-4189-4dd2-9e1a-d450677f5bcf",
+        "802acf0c-5781-4cac-8f21-35372ff53894"
+      ],
+      "dataVersion": 1,
+      "attachedTo": "83f9115c-b7a2-4665-8d26-96551d5423d7"
+    },
+    {
+      "id": "adc10128-127a-4b6a-98f4-0165393fa1d6",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "83f9115c-b7a2-4665-8d26-96551d5423d7"
+    },
+    {
+      "id": "83f9115c-b7a2-4665-8d26-96551d5423d7",
+      "gearType": "vehicle",
+      "name": "Range Rover Model 2080",
+      "type": "Van",
+      "cost": 5000,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": "4/5",
+        "vehicle.accel": 12,
+        "vehicle.speedInterval": 20,
+        "vehicle.topSpeed": 160,
+        "vehicle.body": 16,
+        "vehicle.armor": 10,
+        "vehicle.pilot": 4,
+        "vehicle.sensor": 4,
+        "vehicle.seat": 4
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "a50f2f44-a513-46ab-8f08-df65044f90d0",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "39f4d0cc-2e77-4700-8540-e472b0304a79"
+    },
+    {
+      "id": "750d64b5-2485-4471-a441-1a16390aee32",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "01b975e1-629b-476c-a491-b69010e983ee"
+    },
+    {
+      "id": "01b975e1-629b-476c-a491-b69010e983ee",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "39f4d0cc-2e77-4700-8540-e472b0304a79"
+    },
+    {
+      "id": "39f4d0cc-2e77-4700-8540-e472b0304a79",
+      "gearType": "vehicle",
+      "type": "Medium Rotor Drone",
+      "name": "MCT-Nissan Roto-drone 1",
+      "cost": 5000,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": 3,
+        "vehicle.accel": 20,
+        "vehicle.speedInterval": 30,
+        "vehicle.topSpeed": 160,
+        "vehicle.body": 5,
+        "vehicle.armor": 6,
+        "vehicle.pilot": 3,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "98e1d21d-4beb-4971-9754-fece2016d2f6",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "c84005d4-3d7f-4a8a-bb52-f9f8f85e1d44"
+    },
+    {
+      "id": "763f93db-73d8-446b-aafd-d56893a4b66d",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "810f6088-08ac-4637-a072-8d3f79a11f4e"
+    },
+    {
+      "id": "810f6088-08ac-4637-a072-8d3f79a11f4e",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "c84005d4-3d7f-4a8a-bb52-f9f8f85e1d44"
+    },
+    {
+      "id": "c84005d4-3d7f-4a8a-bb52-f9f8f85e1d44",
+      "gearType": "vehicle",
+      "type": "Medium Rotor Drone",
+      "name": "MCT-Nissan Roto-drone 2",
+      "cost": 5000,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": 3,
+        "vehicle.accel": 20,
+        "vehicle.speedInterval": 30,
+        "vehicle.topSpeed": 160,
+        "vehicle.body": 5,
+        "vehicle.armor": 6,
+        "vehicle.pilot": 3,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "5e81d42c-ed2d-45b7-9424-c60a3953eef4",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "831c8703-0c53-4f9a-8901-028c8d5e1d74"
+    },
+    {
+      "id": "b51b564c-2e26-4ae7-ac45-93c7117c142b",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "127df891-73f1-4cc3-9680-c4c18fb48042"
+    },
+    {
+      "id": "127df891-73f1-4cc3-9680-c4c18fb48042",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "831c8703-0c53-4f9a-8901-028c8d5e1d74"
+    },
+    {
+      "id": "831c8703-0c53-4f9a-8901-028c8d5e1d74",
+      "gearType": "vehicle",
+      "name": "Aztech Crawler 1",
+      "type": "Small Anthro Drone",
+      "cost": 4500,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": "3/4",
+        "vehicle.accel": 8,
+        "vehicle.speedInterval": 10,
+        "vehicle.topSpeed": 30,
+        "vehicle.body": 6,
+        "vehicle.armor": 2,
+        "vehicle.pilot": 2,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "9a311042-73d2-468c-8192-e81601e6bc9d",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "1f77e34e-9554-4171-87a4-58fd3991e6b9"
+    },
+    {
+      "id": "7cdf1283-5744-4cb4-b09c-8669807b8380",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "e7d1beb4-3299-4b3d-b1ee-59766818dbeb"
+    },
+    {
+      "id": "e7d1beb4-3299-4b3d-b1ee-59766818dbeb",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "1f77e34e-9554-4171-87a4-58fd3991e6b9"
+    },
+    {
+      "id": "1f77e34e-9554-4171-87a4-58fd3991e6b9",
+      "gearType": "vehicle",
+      "name": "Aztech Crawler 2",
+      "type": "Small Anthro Drone",
+      "cost": 4500,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": "3/4",
+        "vehicle.accel": 8,
+        "vehicle.speedInterval": 10,
+        "vehicle.topSpeed": 30,
+        "vehicle.body": 6,
+        "vehicle.armor": 2,
+        "vehicle.pilot": 2,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "309bb553-e3e1-40e3-8d99-3b067483a4f4",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "50a9efcc-ef75-4975-b711-b239ecbc42b5"
+    },
+    {
+      "id": "3be164e8-c570-4b63-9f63-b9aeab10f84d",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "7ba7d163-16ec-45d9-b160-a8700ef8c85c"
+    },
+    {
+      "id": "7ba7d163-16ec-45d9-b160-a8700ef8c85c",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "50a9efcc-ef75-4975-b711-b239ecbc42b5"
+    },
+    {
+      "id": "50a9efcc-ef75-4975-b711-b239ecbc42b5",
+      "gearType": "vehicle",
+      "name": "Aztech Crawler 3",
+      "type": "Small Anthro Drone",
+      "cost": 4500,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": "3/4",
+        "vehicle.accel": 8,
+        "vehicle.speedInterval": 10,
+        "vehicle.topSpeed": 30,
+        "vehicle.body": 6,
+        "vehicle.armor": 2,
+        "vehicle.pilot": 2,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "10d2fbf8-592b-4b42-8ea9-4efef5ea56b1",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "bf296630-fabb-490c-bdbf-8cbde75f9664"
+    },
+    {
+      "id": "32ba9c87-84ed-4c43-ad56-4dec74c7ef84",
+      "gearType": "weapon",
+      "name": "FN-HAR",
+      "type": "Rifle",
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 2100,
+      "attributes": {
+        "weapon.dv": "5P",
+        "weapon.modes": "SA/BF/FA",
+        "weapon.attackRatings": "3/11/10/6/1",
+        "weapon.ammo": "35(c)"
+      },
+      "specialtySkill": "firearms",
+      "specialtyName": "Automatics",
+      "dataVersion": 1,
+      "attachedTo": "a5ef96af-4b9a-4849-abb3-0b90a5f6a9f1"
+    },
+    {
+      "id": "a5ef96af-4b9a-4849-abb3-0b90a5f6a9f1",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.stdWeaponMount",
+      "name": "Standard Weapon Mount",
+      "type": "weapon mount",
+      "avail": {
+        "rarity": 5,
+        "illegal": true
+      },
+      "cost": 4500,
+      "dataVersion": 1,
+      "attachedTo": "bf296630-fabb-490c-bdbf-8cbde75f9664"
+    },
+    {
+      "id": "bf296630-fabb-490c-bdbf-8cbde75f9664",
+      "gearType": "vehicle",
+      "name": "Aztech Crawler 4",
+      "type": "Small Anthro Drone",
+      "cost": 4500,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": "3/4",
+        "vehicle.accel": 8,
+        "vehicle.speedInterval": 10,
+        "vehicle.topSpeed": 30,
+        "vehicle.body": 6,
+        "vehicle.armor": 2,
+        "vehicle.pilot": 2,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "709dc8b1-34a0-42fd-9fc4-cd15e08c2e51",
+      "gearType": "vehicleMod",
+      "modType": "vehicleMod.riggerInterface",
+      "name": "Rigger Interface",
+      "type": "vehicle mod",
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 1000,
+      "dataVersion": 1,
+      "attachedTo": "10f469f0-3206-465e-85d7-78e70bfd7a2b"
+    },
+    {
+      "id": "10f469f0-3206-465e-85d7-78e70bfd7a2b",
+      "gearType": "vehicle",
+      "type": "Small Rotor Drone",
+      "name": "Cyberspace Designs Quadrotor 1",
+      "cost": 5000,
+      "avail": {
+        "rarity": 2
+      },
+      "attributes": {
+        "vehicle.handling": 2,
+        "vehicle.accel": 15,
+        "vehicle.speedInterval": 20,
+        "vehicle.topSpeed": 120,
+        "vehicle.body": 3,
+        "vehicle.armor": 1,
+        "vehicle.pilot": 3,
+        "vehicle.sensor": 2,
+        "vehicle.seat": null
+      },
+      "slavedTo": "a7dcf7e7-2c4e-4a30-b329-a74cc32ace46",
+      "dataVersion": 1
+    },
+    {
+      "id": "6787a7de-6536-4cd6-abcb-feeb3aa7abd4",
+      "gearType": "augment",
+      "name": "Smartlink",
+      "type": "Cybereye Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 2,
+        "license": true
+      },
+      "cost": 2000,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.capacityCost": 3
+      },
+      "essenceCost": 0.22,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1,
+      "attachedTo": "57e9c790-ab53-4a33-9892-55d07a13dcef"
+    },
+    {
+      "id": "249b17f7-a893-472c-80aa-33c4527165c7",
+      "gearType": "augment",
+      "name": "Imagelink",
+      "type": "Cybereye Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 1
+      },
+      "cost": 750,
+      "attributes": {
+        "augment.grade": "used"
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1,
+      "attachedTo": "57e9c790-ab53-4a33-9892-55d07a13dcef"
+    },
+    {
+      "id": "29280dfb-b5ce-4080-a780-0a17447850b5",
+      "gearType": "augment",
+      "name": "Low-Light Vision",
+      "type": "Cybereye Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 1
+      },
+      "cost": 750,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.capacityCost": 2
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1,
+      "attachedTo": "57e9c790-ab53-4a33-9892-55d07a13dcef"
+    },
+    {
+      "id": "c8c4d525-e473-4952-b44e-574116271663",
+      "gearType": "augment",
+      "name": "Thermographic Vision",
+      "type": "Cybereye Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 1
+      },
+      "cost": 1000,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.capacityCost": 2
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1,
+      "attachedTo": "57e9c790-ab53-4a33-9892-55d07a13dcef"
+    },
+    {
+      "id": "cbc58145-4232-42ae-88bd-9ee9ec205ff5",
+      "gearType": "augment",
+      "name": "Vision Enhancement",
+      "type": "Cybereye Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 2
+      },
+      "cost": 2000,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.capacityCost": 2
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1,
+      "attachedTo": "57e9c790-ab53-4a33-9892-55d07a13dcef"
+    },
+    {
+      "id": "57e9c790-ab53-4a33-9892-55d07a13dcef",
+      "gearType": "augment",
+      "name": "Cybereyes",
+      "type": "Augment",
+      "source": {
+        "book": "COR",
+        "page": 285
+      },
+      "avail": {
+        "rarity": 2
+      },
+      "cost": 5000,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.rating": 4,
+        "augment.capacity": 12
+      },
+      "essenceCost": 0.44,
+      "augmentSlot": "eyeware",
+      "dataVersion": 1
+    },
+    {
+      "id": "967c7085-a3f0-4327-8059-1487f70d5ff2",
+      "gearType": "other",
+      "name": "Hermes Ikon",
+      "type": "Commlink",
+      "source": {
+        "book": "COR",
+        "page": 267
+      },
+      "avail": {
+        "rarity": 3
+      },
+      "cost": 5000,
+      "attributes": {
+        "commlink.deviceRating": 5,
+        "commlink.attributes": "3/0",
+        "commlink.programSlots": 2
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "bioware",
+      "dataVersion": 1,
+      "attachedTo": "20e1d6a3-41ab-4821-935b-bd66e729eca5"
+    },
+    {
+      "id": "20e1d6a3-41ab-4821-935b-bd66e729eca5",
+      "gearType": "augment",
+      "name": "Commlink",
+      "type": "Headware Augment",
+      "source": {
+        "book": "COR",
+        "page": 283
+      },
+      "avail": {
+        "rarity": 1
+      },
+      "cost": 1000,
+      "attributes": {
+        "augment.grade": "used"
+      },
+      "essenceCost": 0.11,
+      "augmentSlot": "headware",
+      "dataVersion": 1
+    },
+    {
+      "id": "1be59c49-e1d5-4d13-943e-1693b5fe2364",
+      "gearType": "augment",
+      "name": "Reaction Enahancers",
+      "type": "Bodyware Augment",
+      "source": {
+        "book": "COR",
+        "page": 283
+      },
+      "avail": {
+        "rarity": 3,
+        "license": true
+      },
+      "cost": 22500,
+      "attributes": {
+        "augment.grade": "used",
+        "augment.rating": 3
+      },
+      "essenceCost": 0.99,
+      "augmentSlot": "headware",
+      "effects": [
+        {
+          "type": "attrBonus",
+          "attr": "char.reaction",
+          "bonus": 3
+        }
+      ],
+      "dataVersion": 1
+    },
+    {
+      "id": "78bedd73-d197-4092-bf01-278706ec72bd",
+      "gearType": "sin",
+      "name": "Davina Hasselhoff",
+      "type": "Fake SIN",
+      "source": {
+        "book": "COR",
+        "page": 273
+      },
+      "avail": {
+        "rarity": 4,
+        "illegal": true
+      },
+      "cost": 15000,
+      "description": "General use SIN",
+      "attributes": {
+        "Rating": 6
+      },
+      "dataVersion": 1
+    },
+    {
+      "id": "85cbfe56-de3d-40ed-bb3a-daffb0a5b432",
+      "gearType": "sin",
+      "name": "Sara McCabe",
+      "type": "Fake SIN",
+      "source": {
+        "book": "COR",
+        "page": 273
+      },
+      "avail": {
+        "rarity": 4,
+        "illegal": true
+      },
+      "cost": 10000,
+      "description": "Runner SIN",
+      "attributes": {
+        "Rating": 4
+      },
+      "dataVersion": 1
+    },
+    {
+      "id": "94d9cd2d-8333-482b-a056-a6bb822275de",
+      "gearType": "sin",
+      "name": "Jane Smith",
+      "type": "Fake SIN",
+      "source": {
+        "book": "COR",
+        "page": 273
+      },
+      "avail": {
+        "rarity": 4,
+        "illegal": true
+      },
+      "cost": 5000,
+      "description": "Burner SIN",
+      "attributes": {
+        "Rating": 2
+      },
+      "dataVersion": 1
+    }
+  ],
+  "qualities": [
+    {
+      "name": "Exceptional (Logic)",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "cost": 12
+    },
+    {
+      "name": "Social Stress (Large Groups)",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "bonus": 8
+    },
+    {
+      "name": "Juryrigger",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "cost": 12
+    },
+    {
+      "name": "Photographic Memory",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "cost": 12
+    },
+    {
+      "name": "Analytical Mind",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "gameEffect": "Bonus edge when making Logic tests",
+      "cost": 3
+    },
+    {
+      "name": "Ambidextrous",
+      "source": {
+        "book": "COR",
+        "page": 2
+      },
+      "cost": 4
+    }
+  ]
+}
