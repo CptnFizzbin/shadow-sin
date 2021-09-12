@@ -22,7 +22,8 @@ export const useAutosoft = (name: string): AutosoftData | undefined => {
   return autosofts.find(autosoft => autosoft.name === name)
 }
 
-export const useTargetingAutosoft = (weaponName: string): AutosoftData | undefined => {
-  const autosofts = useContext(AutosoftContext)
-  return autosofts.find(autosoft => autosoft.attributes[AutosoftAttr.weapon] === weaponName)
+export const useTargetingAutosoft = (weaponName: string): number | undefined => {
+  return useContext(AutosoftContext)
+    .find(autosoft => autosoft.attributes[AutosoftAttr.weapon] === weaponName)
+    ?.attributes[AutosoftAttr.rating]
 }

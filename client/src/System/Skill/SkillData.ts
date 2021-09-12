@@ -1,5 +1,13 @@
 export type SkillId = string;
 
+export interface SkillList {
+  [skillId: string]: number
+}
+
+export type SkillNames = {
+  [skillId: string]: string
+}
+
 export enum SkillType {
   active = 'active',
   language = 'language',
@@ -48,4 +56,21 @@ export enum ActiveSkillId {
   perception = 'perception',
   piloting = 'piloting',
   stealth = 'stealth',
+}
+
+const skillNames: SkillNames = {
+  [ActiveSkillId.athletics]: 'Athletics',
+  [ActiveSkillId.biotech]: 'Biotech',
+  [ActiveSkillId.closeCombat]: 'Close Combat',
+  [ActiveSkillId.cracking]: 'Cracking',
+  [ActiveSkillId.electronics]: 'Electronics',
+  [ActiveSkillId.engineering]: 'Engineering',
+  [ActiveSkillId.firearms]: 'Firearms',
+  [ActiveSkillId.perception]: 'Perception',
+  [ActiveSkillId.piloting]: 'Piloting',
+  [ActiveSkillId.stealth]: 'Stealth',
+}
+
+export const formatSkill = (skillId: string): string => {
+  return skillNames[skillId] || skillId
 }

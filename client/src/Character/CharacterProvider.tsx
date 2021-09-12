@@ -8,7 +8,7 @@ import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { ActiveSkillData, isActiveSkill, SkillData, SkillId, SkillType } from '../System/Skill/SkillData'
+import { ActiveSkillData, isActiveSkill, SkillData, SkillId, SkillList, SkillType } from '../System/Skill/SkillData'
 import { CharacterAttr, CharacterData } from './CharacterData'
 
 const CharacterContext = createContext<CharacterData | null>(null)
@@ -53,10 +53,6 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
 
 export const useCharacter = (): CharacterData | null => {
   return useContext(CharacterContext)
-}
-
-export interface SkillList {
-  [skillId: string]: number
 }
 
 export function useSkills (skillIds?: string[]): SkillList {
