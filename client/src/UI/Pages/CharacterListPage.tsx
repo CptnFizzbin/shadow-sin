@@ -13,14 +13,15 @@ type SavedCharacter = {
   metaType: string
 }
 
-// if (!localStorage.getItem('characters')) {
-const savedCharacters: SavedCharacter[] = [Artemis, Silicus]
-  .map(character => {
-    localStorage.setItem(`character.${character.id}`, JSON.stringify(character))
-    return { id: character.id, name: character.name, metaType: character.metaType }
-  })
-localStorage.setItem('characters', JSON.stringify(savedCharacters))
-// }
+const DEBUG_LOAD = true
+if (DEBUG_LOAD || !localStorage.getItem('characters')) {
+  const savedCharacters: SavedCharacter[] = [Artemis, Silicus]
+    .map(character => {
+      localStorage.setItem(`character.${character.id}`, JSON.stringify(character))
+      return { id: character.id, name: character.name, metaType: character.metaType }
+    })
+  localStorage.setItem('characters', JSON.stringify(savedCharacters))
+}
 
 export const CharacterListPage: FC = () => {
   const history = useHistory()

@@ -4,6 +4,7 @@ import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'r
 
 import { CharacterData } from '../../Character/CharacterData'
 import { CharacterProvider } from '../../Character/CharacterProvider'
+import { migrateCharacter } from '../../Character/Migrations'
 import { CharacterNavDrawer } from '../NavDrawer/CharacterNavDrawer'
 import { AugmentsPage } from './Character/AugmentsPage'
 import { CharacterInfoPage } from './Character/CharacterInfoPage'
@@ -21,7 +22,7 @@ export const CharacterPage: FC = () => {
   useEffect(() => {
     const character: CharacterData = JSON.parse(localStorage.getItem(`character.${characterId}`) || 'null')
     if (!character) history.push('/')
-    setCharacter(character)
+    setCharacter(migrateCharacter(character))
   }, [history, characterId])
 
   if (!character) { return <Paper>Loading...</Paper>}
