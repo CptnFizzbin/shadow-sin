@@ -1,8 +1,8 @@
 import { createContext, FC, useContext } from 'react'
 
 import { isAugment } from '../Gear/Augments/AugmentData'
-import { isAttrBonus } from '../Gear/Effect'
-import { GearProvider } from '../Gear/GearContext'
+import { isAttrBonus, isSkillBonus } from '../Gear/Effect'
+import { GearProvider, useAllGear } from '../Gear/GearContext'
 import { collectGearEffects } from '../Gear/GearData'
 import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
@@ -57,11 +57,20 @@ export const useCharacter = (): CharacterData | null => {
 
 export function useActiveSkill<T extends SkillData> (skillId: SkillId): T | undefined {
   const character = useContext(CharacterContext)
+  const gear = useAllGear()
   if (!character) return undefined
 
   const skill = character.skills
     .filter(skill => skill.type === SkillType.active)
     .map(skill => skill as ActiveSkillData)
     .find(skill => skill.skillId === skillId)
-  return skill ? skill as T : undefined
+
+  if (!skill) return undefined
+
+  const rank = collectGearEffects(gear)
+    .filter(isSkillBonus)
+    .filter(effect => effect.skill === skillId)
+    .reduce((sum, effect) => sum + effect.bonus, skill.rank)
+
+  return { ...skill, rank } as T
 }
