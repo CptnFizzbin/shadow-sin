@@ -139,14 +139,12 @@ export const Silicus: CharacterData = {
       name: 'Analytical Mind',
       source: { book: 'COR', page: 70 },
       gameEffect: 'Bonus edge when making Logic tests',
-      type: 'positive',
       cost: 3,
     },
     {
       name: 'Exceptional (Agility)',
       source: { book: 'COR', page: 71 },
       gameEffect: 'Increase max of one Physical or Mental attribute by 1',
-      type: 'positive',
       cost: 12,
     },
     {
@@ -156,7 +154,6 @@ export const Silicus: CharacterData = {
         -2 penalty to Memory test to remember if they have seen me before.
         Threshold to tests to notice if I am following them is increased by 1. 
       `),
-      type: 'negative',
       bonus: 10,
     },
   ],

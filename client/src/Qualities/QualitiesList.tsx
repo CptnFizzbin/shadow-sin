@@ -1,8 +1,8 @@
-import { Box, Typography } from '@material-ui/core'
-import { FC } from 'react'
+import { Box, Paper, Typography } from '@material-ui/core'
+import React, { FC } from 'react'
 
-import { AttrList } from '../System/Attribute'
-import { AttributeBlock } from '../UI/AttributeBlock'
+import { formatSource } from '../System/Source'
+import { Stat } from '../UI/StatBlock'
 import { QualityData } from './QualityData'
 
 interface ContactListProps {
@@ -30,27 +30,20 @@ interface QualitiesListItemProps {
 export const QualitiesListItem: FC<QualitiesListItemProps> = ({
   quality,
 }) => {
-  const attributes: AttrList = {
-    'Type': quality.type,
-  }
-  if (quality.level) attributes['Level'] = quality.level
-
-  switch (quality.type) {
-    case 'negative':
-      attributes['Bonus'] = quality.bonus
-      break
-    case 'positive':
-      attributes['Cost'] = quality.cost
-      break
-  }
-
   return (
-    <Box>
-      <Typography variant="body1">{quality.name}</Typography>
-      <Typography variant="caption">{quality.description}</Typography>
-      <Typography variant="caption">{quality.gameEffect}</Typography>
+    <Paper variant="outlined" sx={{ padding: 1, display: 'flex' }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography variant="body1">{quality.name}</Typography>
+        <Typography variant="caption">{quality.description}</Typography>
+        <Typography variant="caption">{quality.gameEffect}</Typography>
+      </Box>
 
-      <AttributeBlock attributes={attributes} />
-    </Box>
+      <Box>
+        {quality.source && <Stat name="Source" value={formatSource(quality.source)} />}
+        {quality.bonus && <Stat name="Bonus" value={quality.bonus} />}
+        {quality.cost && <Stat name="Cost" value={quality.cost} />}
+        {quality.level && <Stat name="Level" value={quality.level} />}
+      </Box>
+    </Paper>
   )
 }

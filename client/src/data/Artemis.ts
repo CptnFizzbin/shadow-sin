@@ -139,38 +139,32 @@ export const Artemis: CharacterData = {
     {
       name: 'Exceptional (Logic)',
       source: { book: 'COR', page: 2 },
-      type: 'positive',
       cost: 12,
     },
     {
       name: 'Social Stress (Large Groups)',
       source: { book: 'COR', page: 2 },
-      type: 'negative',
       bonus: 8,
     },
     {
       name: 'Juryrigger',
       source: { book: 'COR', page: 2 },
-      type: 'positive',
       cost: 12,
     },
     {
       name: 'Photographic Memory',
       source: { book: 'COR', page: 2 },
-      type: 'positive',
       cost: 12,
     },
     {
       name: 'Analytical Mind',
       source: { book: 'COR', page: 2 },
       gameEffect: 'Bonus edge when making Logic tests',
-      type: 'positive',
       cost: 3,
     },
     {
       name: 'Ambidextrous',
       source: { book: 'COR', page: 2 },
-      type: 'positive',
       cost: 4,
     },
   ],
