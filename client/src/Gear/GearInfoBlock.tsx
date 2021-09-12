@@ -37,6 +37,7 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
     <AttributeProvider attributes={item.attributes || {}}>
       <InfoBlock
         title={item.name}
+        quantity={item.quantity || 0}
         subtitle={item.type}
         titleRight={blockTitleRight}
         expandable={expandable}

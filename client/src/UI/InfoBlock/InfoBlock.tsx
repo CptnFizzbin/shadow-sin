@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, IconButton, Paper, Typography } from '@material-ui/core'
+import { Box, Chip, IconButton, Paper, Typography } from '@material-ui/core'
 import { FC, ReactElement, useState } from 'react'
 
 import { displayFontFamily } from '../../AppThemeProvider'
@@ -16,11 +16,13 @@ interface InfoBlockProps {
   titleRight?: ReactElement
   expanded?: boolean
   expandable?: boolean
+  quantity?: number
 }
 
 export const InfoBlock: FC<InfoBlockProps> = ({
   title,
   titleFontSize = 20,
+  quantity = 0,
   subtitle,
   titleRight,
   children,
@@ -41,13 +43,25 @@ export const InfoBlock: FC<InfoBlockProps> = ({
         )}
 
         <Box sx={{ flexGrow: 1 }}>
-          <Typography
-            sx={{
-              fontFamily: displayFontFamily,
-              fontSize: titleFontSize,
-              color: 'primary.main',
-            }}
-          >{title}</Typography>
+          <Box>
+            <Typography
+              sx={{
+                display: 'inline-block',
+                fontFamily: displayFontFamily,
+                fontSize: titleFontSize,
+                color: 'primary.main',
+              }}
+            >{title}</Typography>
+            {quantity >= 1 && (
+              <Chip
+                sx={{ marginLeft: 1, verticalAlign: 'top' }}
+                label={`x${quantity}`}
+                variant="outlined"
+                size="small"
+              />
+            )}
+          </Box>
+
           {subtitle}
         </Box>
 

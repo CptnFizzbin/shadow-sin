@@ -32,6 +32,7 @@ export interface GearData {
   avail?: Availability
   cost?: Cost
   capacity?: number
+  quantity?: number
 
   attributes?: AttrList
   attachedTo?: RecordId
