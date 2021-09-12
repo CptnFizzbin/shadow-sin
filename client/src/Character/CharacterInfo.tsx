@@ -54,6 +54,12 @@ export const CharacterInfo: FC = () => {
   const intuition = charAttributes[CharacterAttr.intuition] as number || 0
   const willpower = charAttributes[CharacterAttr.willpower] as number || 0
 
+  const magic = charAttributes[CharacterAttr.magic]
+  if (!magic) delete charAttributes[CharacterAttr.magic]
+
+  const resonance = charAttributes[CharacterAttr.resonance]
+  if (!resonance) delete charAttributes[CharacterAttr.resonance]
+
   const physicalMax = Math.ceil(body / 2) + 8
   const stunMax = Math.ceil(willpower / 2) + 8
 
