@@ -53,11 +53,6 @@ export const formatAvail = (avail: Availability): string => {
   return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
 }
 
-const costFormatter = new Intl.NumberFormat('en')
-export const formatCost = (cost: number): string => {
-  return costFormatter.format(cost) + '¥'
-}
-
 export const formatSource = (source: Source): string => {
   if (typeof source === 'string') return source
   return `${source.book} p.${source.page}`

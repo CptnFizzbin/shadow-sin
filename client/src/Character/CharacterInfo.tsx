@@ -11,6 +11,7 @@ import { DamageType } from '../System/Damage/DamageType'
 import { CharacterDefRatingStat } from '../System/DefenseRating'
 import { EdgeTracker } from '../System/Edge/EdgeTracker'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../System/Initiative'
+import { formatNuyen } from '../System/Nuyen'
 import { ActiveSkillList } from '../System/Skill/ActiveSkillList'
 import { KnowledgeSkillList } from '../System/Skill/KnowledgeSkillList'
 import { LanguageSkillList } from '../System/Skill/LanguageSkillList'
@@ -19,7 +20,7 @@ import { AttributeBlock } from '../UI/AttributeBlock'
 import { DicePools } from '../UI/DicePool'
 import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../UI/InfoBlock/InfoSection'
-import { StatBlock } from '../UI/StatBlock'
+import { Stat, StatBlock } from '../UI/StatBlock'
 import { CharacterAttr } from './CharacterData'
 import { useCharacter } from './CharacterProvider'
 import { ComposurePool, DodgePool, JudgeIntentPool, LiftPool, MemoryPool, ResistDamagePool } from './DicePools'
@@ -70,8 +71,16 @@ export const CharacterInfo: FC = () => {
     .filter(isInitBonus)
     .reduce((sum, effect) => sum + effect.dice, 1)
 
+  const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
+    <Stat name="Karma" value={character.karma} />
+    <Stat name="Nuyen" value={formatNuyen(character.nuyen)} />
+  </Box>
+
   return (
-    <InfoBlock title={character.alias || character.name} subtitle={character.metaType} titleFontSize={50}>
+    <InfoBlock
+      title={character.alias || character.name} subtitle={character.metaType} titleFontSize={50}
+      titleRight={blockTitleRight}
+    >
       <InfoSection>
         <AttributeBlock attributes={charAttributes} />
       </InfoSection>
