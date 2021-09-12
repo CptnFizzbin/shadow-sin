@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { RecordId } from '../../Api/Model'
+import { CharacterData } from '../../Character/CharacterData'
 import Artemis from '../../data/Artemis.json'
 import Silicus from '../../data/Silicus.json'
 import { RootLayout } from './RootLayout'
@@ -15,12 +16,16 @@ type SavedCharacter = {
 
 const DEBUG_LOAD = true
 if (DEBUG_LOAD || !localStorage.getItem('characters')) {
-  const savedCharacters: SavedCharacter[] = [Artemis, Silicus]
-    .map(character => {
-      localStorage.setItem(`character.${character.id}`, JSON.stringify(character))
-      return { id: character.id, name: character.name, metaType: character.metaType }
-    })
-  localStorage.setItem('characters', JSON.stringify(savedCharacters))
+  const characters = [Artemis, Silicus] as unknown as CharacterData[]
+  characters.forEach(character => localStorage.setItem(`character.${character.id}`, JSON.stringify(character)))
+
+  localStorage.setItem('characters', JSON.stringify(
+    characters.map(character => ({
+      id: character.id,
+      name: character.name,
+      metaType: character.metaType,
+    })),
+  ))
 }
 
 export const CharacterListPage: FC = () => {
