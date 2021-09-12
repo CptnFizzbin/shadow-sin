@@ -291,6 +291,26 @@ addGear<WeaponData>({
   }),
 ])
 
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'COR', page: 255 },
+  gearType: GearType.weapon,
+  name: 'Defiance SuperShocker',
+  type: 'Taser',
+  avail: { rarity: 1 },
+  cost: 340,
+
+  attributes: {
+    [WeaponAttr.dv]: '6S(e)',
+    [WeaponAttr.modes]: 'SS',
+    [WeaponAttr.attackRatings]: '10/6/-/-/-',
+    [WeaponAttr.ammo]: '4(m)',
+    'Max Range': '20m',
+  },
+}, [
+  addGear(smartGunIntMod),
+])
+
 addGear<AugmentData>({
   id: null,
   name: 'Synaptic Booster',
@@ -375,6 +395,35 @@ addGear<AugmentData>({
   enabled: true,
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.agility, bonus: 4 },
+  ],
+})
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Bone Density',
+  type: 'Bioware Augment',
+  source: { book: 'COR', page: 291 },
+  avail: { rarity: 3, license: true },
+  cost: 5_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 2,
+  },
+
+  description: (`
+      Increases Body during damage resistance test by rating. 
+      Melee damage: 3P, Atk. Rating: +2
+  `),
+
+  essenceCost: 0.66,
+  augmentSlot: AugmentSlot.bioware,
+
+  effects: [
+    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 3 },
+    // Melee damage: 3P
+    // Melee Atk. Rating: +2
   ],
 })
 
@@ -564,35 +613,6 @@ addGear<AugmentData>({
 addGear<AugmentData>({
   id: null,
   gearType: GearType.augment,
-  name: 'Bone Density',
-  type: 'Bioware Augment',
-  source: { book: 'COR', page: 291 },
-  avail: { rarity: 3, license: true },
-  cost: 5_000,
-
-  attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 2,
-  },
-
-  description: (`
-      Increases Body during damage resistance test by rating. 
-      Melee damage: 3P, Atk. Rating: +2
-  `),
-
-  essenceCost: 0.66,
-  augmentSlot: AugmentSlot.bioware,
-
-  effects: [
-    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 3 },
-    // Melee damage: 3P
-    // Melee Atk. Rating: +2
-  ],
-})
-
-addGear<AugmentData>({
-  id: null,
-  gearType: GearType.augment,
   name: 'Commlink',
   type: 'Headware Augment',
   source: { book: 'COR', page: 283 },
@@ -655,21 +675,6 @@ addGear({
   attributes: {
     'armor.defenseBonus': 4,
     'armor.capacity': 8,
-  },
-})
-
-addGear({
-  id: null,
-  gearType: GearType.armor,
-  name: 'Full Body Armor',
-  type: 'Armor',
-  source: { book: 'COR', page: 265 },
-  avail: { rarity: 4, license: true },
-  cost: 2_000,
-
-  attributes: {
-    'armor.defenseBonus': 5,
-    'armor.capacity': 10,
   },
 })
 
