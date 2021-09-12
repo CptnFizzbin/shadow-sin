@@ -36,8 +36,8 @@ export const Stat: FC<StatProps> = ({
   name,
   value,
 }) => {
-  if (typeof value == 'number') {
-    value = value.toFixed(2).toString()
+  if (name === 'Essence') {
+    value = (value as number).toFixed(2).toString()
   }
 
   return (
