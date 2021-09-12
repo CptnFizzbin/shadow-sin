@@ -3,6 +3,7 @@ import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
 import { SkillData } from '../System/Skill/SkillData'
 import { registerAttrNames } from '../UI/AttributeBlock'
+import { QualityData } from './QualityData'
 
 export enum CharacterAttr {
   body = 'char.body',
@@ -69,4 +70,5 @@ export interface CharacterData {
   skills: SkillData[]
   contacts: ContactData[]
   gear: GearData[]
+  qualities: QualityData[]
 }

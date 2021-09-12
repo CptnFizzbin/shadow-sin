@@ -109,6 +109,42 @@ export const Artemis: CharacterData = {
   ],
 
   gear: [],
+
+  qualities: [
+    {
+      name: 'Exceptional (Logic)',
+      source: { book: 'COR', page: 2 },
+      description: '',
+      gameEffect: '',
+      cost: 12,
+    },
+    {
+      name: 'Social Stress (Large Groups)',
+      source: { book: 'COR', page: 2 },
+      bonus: 8,
+    },
+    {
+      name: 'Juryrigger',
+      source: { book: 'COR', page: 2 },
+      cost: 12,
+    },
+    {
+      name: 'Photographic Memory',
+      source: { book: 'COR', page: 2 },
+      cost: 12,
+    },
+    {
+      name: 'Analytical Mind',
+      source: { book: 'COR', page: 2 },
+      gameEffect: 'Bonus edge when making Logic tests',
+      cost: 3,
+    },
+    {
+      name: 'Ambidextrous',
+      source: { book: 'COR', page: 2 },
+      cost: 4,
+    },
+  ],
 }
 
 export function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {

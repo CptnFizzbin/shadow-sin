@@ -118,6 +118,39 @@ export const Silicus: CharacterData = {
   ],
 
   gear: [],
+
+  qualities: [
+    {
+      name: 'Analytical Mind',
+      source: { book: 'COR', page: 70 },
+      gameEffect: 'Bonus edge when making Logic tests',
+      cost: 3,
+    },
+    {
+      name: 'Exceptional (Agility)',
+      source: { book: 'COR', page: 71 },
+      gameEffect: 'Increase max of one Physical or Mental attribute by 1',
+      cost: 12,
+    },
+    {
+      name: 'Blandness',
+      source: { book: 'COR', page: 70 },
+      gameEffect: (`
+        -2 penalty to Memory test to remember if they have seen me before.
+        Threshold to tests to notice if I am following them is increased by 1. 
+      `),
+      cost: 8,
+    },
+    {
+      name: 'Blandness',
+      source: { book: 'COR', page: 70 },
+      gameEffect: (`
+        -2 penalty to Memory test to remember if they have seen me before.
+        Threshold to tests to notice if I am following them is increased by 1. 
+      `),
+      bonus: 10,
+    },
+  ],
 }
 
 function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
