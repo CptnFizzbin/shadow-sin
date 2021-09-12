@@ -1,8 +1,7 @@
 import { FC } from 'react'
 
-import { useAttribute } from '../System/AttributeProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { DiceGroup, DicePool } from '../UI/DicePool'
+import { DicePool } from '../UI/DicePool'
 import { CharacterAttr } from './CharacterData'
 
 export enum CharacterPoolTypes {
@@ -14,109 +13,44 @@ export enum CharacterPoolTypes {
   liftCarry = 'character.liftCarry',
 }
 
-export const DodgePool: FC = () => {
-  const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
-  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
+export const DodgePool: FC = () => <DicePool
+  key={CharacterPoolTypes.dodge}
+  name={'Dodge'}
+  attrs={[CharacterAttr.reaction, CharacterAttr.intuition]}
+  dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+/>
 
-  const diceGroups: DiceGroup[] = [
-    { name: 'Reaction', size: reaction },
-    { name: 'Intution', size: intuition },
-  ]
+export const ResistDamagePool: FC = () => <DicePool
+  key={CharacterPoolTypes.dmgResist}
+  name={'Resist Dmg.'}
+  attrs={[CharacterAttr.body]}
+  dmgPenaltyTypes={[]}
+/>
 
-  return (
-    <DicePool
-      key={CharacterPoolTypes.dodge}
-      name={'Dodge'}
-      groups={diceGroups}
-      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
-    />
-  )
-}
+export const ComposurePool: FC = () => <DicePool
+  key={CharacterPoolTypes.composure}
+  name={'Composure'}
+  attrs={[CharacterAttr.willpower, CharacterAttr.charisma]}
+  dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+/>
 
-export const ResistDamagePool: FC = () => {
-  const body = useAttribute<number>(CharacterAttr.body) || 0
+export const JudgeIntentPool: FC = () => <DicePool
+  key={CharacterPoolTypes.judgeIntent}
+  name={'Judge Intent'}
+  attrs={[CharacterAttr.willpower, CharacterAttr.intuition]}
+  dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+/>
 
-  const diceGroups: DiceGroup[] = [
-    { name: 'Body', size: body },
-  ]
+export const MemoryPool: FC = () => <DicePool
+  key={CharacterPoolTypes.memory}
+  name={'Memory'}
+  attrs={[CharacterAttr.logic, CharacterAttr.intuition]}
+  dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+/>
 
-  return (
-    <DicePool key={CharacterPoolTypes.dmgResist} name={'Resist Dmg.'} groups={diceGroups} dmgPenaltyTypes={[]} />
-  )
-}
-
-export const ComposurePool: FC = () => {
-  const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
-  const charisma = useAttribute<number>(CharacterAttr.charisma) || 0
-
-  const diceGroups: DiceGroup[] = [
-    { name: 'Willpower', size: willpower },
-    { name: 'Charisma', size: charisma },
-  ]
-
-  return (
-    <DicePool
-      key={CharacterPoolTypes.composure}
-      name={'Composure'}
-      groups={diceGroups}
-      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
-    />
-  )
-}
-
-export const JudgeIntentPool: FC = () => {
-  const willpower = useAttribute<number>(CharacterAttr.willpower) || 0
-  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-
-  const diceGroups: DiceGroup[] = [
-    { name: 'Willpower', size: willpower },
-    { name: 'Intuition', size: intuition },
-  ]
-
-  return (
-    <DicePool
-      key={CharacterPoolTypes.judgeIntent}
-      name={'Judge Intent'}
-      groups={diceGroups}
-      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
-    />
-  )
-}
-
-export const MemoryPool: FC = () => {
-  const logic = useAttribute<number>(CharacterAttr.logic) || 0
-  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-
-  const diceGroups: DiceGroup[] = [
-    { name: 'Logic', size: logic },
-    { name: 'Intuition', size: intuition },
-  ]
-
-  return (
-    <DicePool
-      key={CharacterPoolTypes.memory}
-      name={'Memory'}
-      groups={diceGroups}
-      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
-    />
-  )
-}
-
-export const LiftPool: FC = () => {
-  const body = useAttribute<number>(CharacterAttr.body) || 0
-  const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-
-  const diceGroups: DiceGroup[] = [
-    { name: 'Body', size: body },
-    { name: 'Intuition', size: intuition },
-  ]
-
-  return (
-    <DicePool
-      key={CharacterPoolTypes.liftCarry}
-      name={'Lift/Carry'}
-      groups={diceGroups}
-      dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
-    />
-  )
-}
+export const LiftPool: FC = () => <DicePool
+  key={CharacterPoolTypes.liftCarry}
+  name={'Lift/Carry'}
+  attrs={[CharacterAttr.body, CharacterAttr.strength]}
+  dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
+/>
