@@ -3,10 +3,10 @@ import React, { FC, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
 
 import { CharacterData } from '../../Character/CharacterData'
-import { CharacterInfo } from '../../Character/CharacterInfo'
 import { CharacterProvider } from '../../Character/CharacterProvider'
 import { CharacterNavDrawer } from '../NavDrawer/CharacterNavDrawer'
 import { AugmentsPage } from './Character/AugmentsPage'
+import { CharacterInfoPage } from './Character/CharacterInfoPage'
 import { MiscGearPage } from './Character/MiscGearPage'
 import { VehiclesPage } from './Character/VehiclesPage'
 import { WeaponsPage } from './Character/WeaponsPage'
@@ -34,7 +34,7 @@ export const CharacterPage: FC = () => {
           <Route path={`${path}/vehicles`} component={VehiclesPage} />
           <Route path={`${path}/augments`} component={AugmentsPage} />
           <Route path={`${path}/misc`} component={MiscGearPage} />
-          <Route path={`${path}/`} component={CharacterInfo} />
+          <Route path={`${path}/`} component={CharacterInfoPage} />
           <Route><Redirect to="/" /></Route>
         </Switch>
       </RootLayout>

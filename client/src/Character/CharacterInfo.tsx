@@ -2,7 +2,6 @@ import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { FC } from 'react'
 
-import { ContactList } from '../Contacts/ContactList'
 import { isInitBonus } from '../Gear/Effect'
 import { useAllGear } from '../Gear/GearContext'
 import { collectGearEffects } from '../Gear/GearData'
@@ -154,11 +153,6 @@ export const CharacterInfo: FC = () => {
           <InfoSection>
             <Typography variant={'h6'}>Qualities</Typography>
             <QualitiesList qualities={character.qualities} />
-          </InfoSection>
-
-          <InfoSection>
-            <Typography variant={'h6'}>Contacts</Typography>
-            <ContactList contacts={character.contacts} />
           </InfoSection>
         </Box>
       </Box>
