@@ -19,6 +19,12 @@ export const Artemis: CharacterData = {
   karma: 7,
   nuyen: 14_420,
 
+  lifestyle: {
+    grade: 'middle',
+    upkeep: 3_000,
+    prepaid: 6,
+  },
+
   attributes: {
     [CharacterAttr.body]: 1,
     [CharacterAttr.agility]: 3,

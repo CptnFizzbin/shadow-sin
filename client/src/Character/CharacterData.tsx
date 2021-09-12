@@ -51,7 +51,12 @@ export interface CharacterData {
   reputation?: string
   heat?: string
   karma: number
-  misc?: string
+
+  lifestyle: {
+    grade: string
+    upkeep: number
+    prepaid: number
+  }
 
   attributes: {
     [CharacterAttr.body]: number
