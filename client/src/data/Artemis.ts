@@ -37,7 +37,27 @@ export const Artemis: CharacterData = {
     [CharacterAttr.edge]: 4,
   },
 
-  contacts: [],
+  contacts: [
+    {
+      name: 'James Serif',
+      connection: 2,
+      loyalty: 2,
+      description: 'Drone Parts Dealer',
+    },
+    {
+      name: 'Frank',
+      connection: 2,
+      loyalty: 2,
+      description: 'Matrix Developer',
+    },
+    {
+      name: 'George Crabtree',
+      connection: 2,
+      loyalty: 2,
+      description: 'Lone Star officer',
+    },
+  ],
+
   skills: [
     {
       type: SkillType.active,

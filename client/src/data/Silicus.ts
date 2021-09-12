@@ -12,8 +12,8 @@ export const Silicus: CharacterData = {
   dataVersion: 1,
   name: 'Silicus',
   metaType: 'Elf',
-  karma: 7,
-  nuyen: 14_420,
+  karma: 2,
+  nuyen: 4_200,
 
   lifestyle: {
     grade: 'middle',
@@ -33,7 +33,27 @@ export const Silicus: CharacterData = {
     [CharacterAttr.edge]: 4,
   },
 
-  contacts: [],
+  contacts: [
+    {
+      name: 'Hunter Morgan',
+      connection: 3,
+      loyalty: 3,
+      description: 'Researcher at Kamino Biotech',
+    },
+    {
+      name: 'Johennes',
+      connection: 3,
+      loyalty: 3,
+      description: 'Fence',
+    },
+    {
+      name: 'Dr. Weber',
+      connection: 3,
+      loyalty: 3,
+      description: 'Ripperdoc',
+    },
+  ],
+
   skills: [
     {
       type: SkillType.active,
