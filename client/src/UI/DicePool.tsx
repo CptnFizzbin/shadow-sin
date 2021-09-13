@@ -6,21 +6,7 @@ import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { formatSkill } from '../System/Skill/SkillData'
-
-export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
-  return {
-    name: input.name,
-    size: input.size || input.rank || input.value || 0,
-  }
-}
-
-export interface DiceGroupLike {
-  name: string
-  size?: number
-  rank?: number
-  value?: number
-}
+import { formatSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 
 export interface DiceGroup {
   name: string

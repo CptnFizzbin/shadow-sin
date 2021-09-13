@@ -1,7 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
 import { FC } from 'react'
 
-import { ActiveSkillData } from './SkillData'
+import { ActiveSkillData } from './ActiveSkillData'
+import { formatSkill } from './ActiveSkillId'
 
 interface SkillListProps {
   skills: ActiveSkillData[]
@@ -36,9 +37,9 @@ const SkillListRow: FC<SkillListRowProps> = ({
   skill,
 }) => {
   return (
-    <TableRow key={skill.name}>
+    <TableRow key={skill.skillId}>
       <TableCell>
-        <div>{skill.name}</div>
+        <div>{formatSkill(skill.skillId)}</div>
         {skill.speciality && <div>(S. {skill.speciality})</div>}
         {skill.expertise && <div>{skill.expertise}</div>}
       </TableCell>

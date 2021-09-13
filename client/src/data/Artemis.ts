@@ -17,7 +17,8 @@ import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
+import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { SkillType } from '../System/Skill/SkillData'
 
 export const Artemis: CharacterData = {
   id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
@@ -70,21 +71,18 @@ export const Artemis: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.firearms,
-      name: 'Firearms',
       rank: 3,
       attr: 'agility',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.electronics,
-      name: 'Electronics',
       rank: 4,
       attr: 'logic',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.cracking,
-      name: 'Cracking',
       rank: 3,
       attr: 'logic',
       altAttr: 'intuition',
@@ -92,7 +90,6 @@ export const Artemis: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.piloting,
-      name: 'Piloting',
       rank: 6,
       attr: 'logic',
       speciality: 'Ground Craft',
@@ -100,7 +97,6 @@ export const Artemis: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.engineering,
-      name: 'Engineering',
       rank: 5,
       attr: 'logic',
       altAttr: 'intuition',

@@ -7,7 +7,9 @@ import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { ActiveSkillData, isActiveSkill, SkillData, SkillId, SkillList, SkillType } from '../System/Skill/SkillData'
+import { isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
+import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { SkillData} from '../System/Skill/SkillData'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
 
@@ -69,14 +71,13 @@ export function useSkills (skillIds?: string[]): SkillList {
   return skillList
 }
 
-export function useActiveSkill<T extends SkillData> (skillId: SkillId): T | undefined {
+export function useActiveSkill<T extends SkillData> (skillId: ActiveSkillId): T | undefined {
   const character = useContext(CharacterContext)
   const gear = useAllGear()
   if (!character) return undefined
 
   const skill = character.skills
-    .filter(skill => skill.type === SkillType.active)
-    .map(skill => skill as ActiveSkillData)
+    .filter(isActiveSkill)
     .find(skill => skill.skillId === skillId)
 
   if (!skill) return undefined

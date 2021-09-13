@@ -16,7 +16,8 @@ import { ModType } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId, SkillType } from '../System/Skill/SkillData'
+import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { SkillType } from '../System/Skill/SkillData'
 
 export const Silicus: CharacterData = {
   id: 'fc7d8ad1-c25e-4c1b-8c13-0e795a449ef2',
@@ -69,7 +70,6 @@ export const Silicus: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.athletics,
-      name: 'Athletics',
       rank: 5,
       attr: 'agility',
       altAttr: 'strength',
@@ -77,7 +77,6 @@ export const Silicus: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.biotech,
-      name: 'Biotech',
       rank: 6,
       attr: 'logic',
       altAttr: 'intuition',
@@ -86,14 +85,12 @@ export const Silicus: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.firearms,
-      name: 'Firearms',
       rank: 7,
       attr: 'agility',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.perception,
-      name: 'Perception',
       rank: 3,
       attr: 'intuition',
       altAttr: 'logic',
@@ -101,14 +98,12 @@ export const Silicus: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.stealth,
-      name: 'Stealth',
       rank: 5,
       attr: 'agility',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.closeCombat,
-      name: 'Close Combat',
       rank: 5,
       attr: 'agility',
     },

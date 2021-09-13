@@ -1,13 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
 import { FC } from 'react'
 
-import { KnowledgeSkillData, SkillData } from './SkillData'
+import { LanguageSkillData } from './LanguageSkillData'
 
 interface SkillListProps {
-  skills: KnowledgeSkillData[]
+  skills: LanguageSkillData[]
 }
 
-export const KnowledgeSkillList: FC<SkillListProps> = ({
+export const LanguageSkillList: FC<SkillListProps> = ({
   skills,
 }) => {
   return (
@@ -15,17 +15,20 @@ export const KnowledgeSkillList: FC<SkillListProps> = ({
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
+          <TableCell>Rank</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {skills.map(skill => <SkillListRow key={skill.name} skill={skill} />)}
+        {skills.map(skill => (
+          <SkillListRow key={skill.name} skill={skill} />
+        ))}
       </TableBody>
     </Table>
   )
 }
 
 interface SkillListRowProps {
-  skill: SkillData
+  skill: LanguageSkillData
 }
 
 const SkillListRow: FC<SkillListRowProps> = ({
@@ -33,7 +36,8 @@ const SkillListRow: FC<SkillListRowProps> = ({
 }) => {
   return (
     <TableRow key={skill.name}>
-      <TableCell colSpan={3}>{skill.name}</TableCell>
+      <TableCell>{skill.name}</TableCell>
+      <TableCell>{skill.rank}</TableCell>
     </TableRow>
   )
 }
