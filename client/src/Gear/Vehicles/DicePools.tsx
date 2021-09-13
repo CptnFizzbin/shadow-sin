@@ -4,7 +4,6 @@ import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
-import { ActiveSkillData } from '../../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
@@ -49,7 +48,7 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
 export const RiggedEvadePool: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.piloting)
+  const pilotingSkill = useActiveSkill(ActiveSkillId.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)

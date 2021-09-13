@@ -8,6 +8,7 @@ import { Availability } from './Availability'
 import { Effect } from './Effect'
 import { LicenseData } from './License/LicenseData'
 import { SinData } from './License/SinData'
+import { OtherGearData } from './OtherGearData'
 import { RccData } from './Rcc/RccData'
 import { AutosoftData } from './Software/Autosoft/AutosoftData'
 import { VehicleData } from './Vehicles/VehicleData'
@@ -57,10 +58,6 @@ export interface BaseGearData {
   effects?: Effect[]
 
   [key: string]: unknown
-}
-
-export interface OtherGearData extends BaseGearData {
-  gearType: GearType.other
 }
 
 export type GearData =

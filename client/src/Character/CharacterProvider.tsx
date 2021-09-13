@@ -7,9 +7,8 @@ import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
+import { ActiveSkillData, isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillData} from '../System/Skill/SkillData'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
 
@@ -71,7 +70,7 @@ export function useSkills (skillIds?: string[]): SkillList {
   return skillList
 }
 
-export function useActiveSkill<T extends SkillData> (skillId: ActiveSkillId): T | undefined {
+export function useActiveSkill (skillId: ActiveSkillId): ActiveSkillData | undefined {
   const character = useContext(CharacterContext)
   const gear = useAllGear()
   if (!character) return undefined
@@ -87,5 +86,5 @@ export function useActiveSkill<T extends SkillData> (skillId: ActiveSkillId): T 
     .filter(effect => effect.skill === skillId)
     .reduce((sum, effect) => sum + effect.bonus, skill.rank)
 
-  return { ...skill, rank } as T
+  return { ...skill, rank }
 }

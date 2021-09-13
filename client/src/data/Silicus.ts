@@ -1,15 +1,17 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { CharacterData } from '../Character/CharacterData'
-import { CharacterPoolTypes } from '../Character/DicePools'
+import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
 import { ArmorAttrs } from '../Gear/Armor/ArmorAttrs'
 import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
-import { GearData, GearType, OtherGearData } from '../Gear/GearData'
+import { GearData, GearType } from '../Gear/GearData'
+import { KitType } from '../Gear/Kit/KitType'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
+import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType } from '../Gear/Vehicles/VehicleModData'
@@ -717,7 +719,7 @@ addGear({
   cost: 1_500,
 
   attributes: {
-    'medkit.rating': 6,
+    [OtherGearAttr.medkitRating]: 6,
   },
 
   wirelessBonus: {
@@ -726,6 +728,8 @@ addGear({
       The medkit provides a +1 dice pool modifier to healing tests
     `),
   },
+
+  kit: KitType.medKit,
 }, [
   addGear({
     id: null,
@@ -747,6 +751,8 @@ addGear({
   source: { book: 'COR', page: 273 },
   avail: { rarity: 1 },
   cost: 500,
+
+  kit: KitType.firstAid,
 })
 
 addGear({

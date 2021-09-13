@@ -6,6 +6,7 @@ import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
+import { ActiveSkillData, hasExpertise, hasSpecialty } from '../System/Skill/ActiveSkill/ActiveSkillData'
 import { formatSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 
 export interface DiceGroup {
@@ -22,11 +23,6 @@ export const DicePools: FC = ({
   </Paper>
 }
 
-export interface PoolBonus {
-  value: number
-  name: string
-}
-
 export interface DicePoolData {
   key: string
   name: string
@@ -34,6 +30,22 @@ export interface DicePoolData {
   attrs?: string[]
   bonuses?: DiceGroup[]
   dmgPenaltyTypes?: DamageType[]
+}
+
+export const skillSpecialtyBonus = (
+  skill: ActiveSkillData | undefined,
+  specialtyName: string | undefined,
+): DiceGroup | null => {
+  if (!skill || !specialtyName)
+    return null
+
+  if (hasSpecialty(skill, specialtyName))
+    return { name: 'Specialty', size: 2 }
+
+  if (hasExpertise(skill, specialtyName))
+    return { name: 'Expertise', size: 3 }
+
+  return null
 }
 
 type DicePoolProps = {

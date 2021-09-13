@@ -3,9 +3,8 @@ import { FC } from 'react'
 import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
 import { DamageType } from '../../System/Damage/DamageType'
-import { ActiveSkillData, hasExpertise, hasSpecialty } from '../../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
-import { DiceGroup, DicePool } from '../../UI/DicePool'
+import { DiceGroup, DicePool, skillSpecialtyBonus } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
 import { AugmentData, AugmentType } from '../Augments/AugmentData'
 import { useFindGear } from '../GearContext'
@@ -27,11 +26,11 @@ interface FirearmPoolProps {
 export const BasicAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const firearmsSkill = useActiveSkill<ActiveSkillData>(ActiveSkillId.firearms)
+  const firearmsSkill = useActiveSkill(ActiveSkillId.firearms)
+  const specialtyBonus = skillSpecialtyBonus(firearmsSkill, weapon.specialtyName)
 
   const bonuses: DiceGroup[] = []
-  if (hasSpecialty(firearmsSkill, weapon.specialtyName)) bonuses.push({ name: 'Specialty', size: 2 })
-  if (hasExpertise(firearmsSkill, weapon.specialtyName)) bonuses.push({ name: 'Expertise', size: 3 })
+  if (specialtyBonus) bonuses.push(specialtyBonus)
 
   return <DicePool
     key={WeaponPoolKeys.basicAttack}
