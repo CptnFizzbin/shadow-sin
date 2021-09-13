@@ -10,6 +10,8 @@ export const MiscGearPage: FC = () => {
     GearType.weapon,
     GearType.vehicle,
     GearType.augment,
+    GearType.sin,
+    GearType.license,
   ]
 
   const otherGear = useAllGear()
