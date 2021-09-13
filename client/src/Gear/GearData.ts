@@ -1,14 +1,10 @@
 import { RecordId } from '../Api/Model'
 import { AttrList } from '../System/Attribute'
 import { Source } from '../System/Source'
+import { Availability } from './Availability'
 import { Effect } from './Effect'
 
 export type Cost = number
-export type Availability = {
-  rarity: number
-  illegal?: boolean
-  license?: boolean
-}
 
 export enum GearType {
   armor = 'armor',
@@ -50,8 +46,4 @@ export interface GearData {
   effects?: Effect[]
 
   [key: string]: unknown
-}
-
-export const formatAvail = (avail: Availability): string => {
-  return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
 }
