@@ -4,7 +4,9 @@ import { CharacterData } from '../Character/CharacterData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
-import { GearData, GearType } from '../Gear/GearData'
+import { GearData, GearType, OtherGearData } from '../Gear/GearData'
+import { SinAttr } from '../Gear/License/SinAttr'
+import { SinData } from '../Gear/License/SinData'
 import { RccAttr } from '../Gear/Rcc/RccAttr'
 import { RccData } from '../Gear/Rcc/RccData'
 import { AutosoftAttr } from '../Gear/Software/Autosoft/AutosoftAttr'
@@ -176,7 +178,7 @@ export const Artemis: CharacterData = {
   ],
 }
 
-export function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
+export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
   gear = { ...gear, dataVersion: 1, id: nextRecordId() }
 
   Artemis.gear.push(gear)
@@ -726,7 +728,7 @@ addGear<AugmentData>({
   ],
 })
 
-addGear({
+addGear<SinData>({
   id: null,
   gearType: GearType.sin,
   name: 'Davina Hasselhoff',
@@ -738,11 +740,11 @@ addGear({
   description: 'General use SIN',
 
   attributes: {
-    'Rating': 6,
+    [SinAttr.rating]: 6,
   },
 })
 
-addGear({
+addGear<SinData>({
   id: null,
   gearType: GearType.sin,
   name: 'Sara McCabe',
@@ -754,11 +756,11 @@ addGear({
   description: 'Runner SIN',
 
   attributes: {
-    'Rating': 4,
+    [SinAttr.rating]: 4,
   },
 })
 
-addGear({
+addGear<SinData>({
   id: null,
   gearType: GearType.sin,
   name: 'Jane Smith',
@@ -770,6 +772,6 @@ addGear({
   description: 'Burner SIN',
 
   attributes: {
-    'Rating': 2,
+    [SinAttr.rating]: 2,
   },
 })

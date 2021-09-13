@@ -1,8 +1,19 @@
 import { RecordId } from '../Api/Model'
 import { AttrList } from '../System/Attribute'
 import { Source } from '../System/Source'
+import { ArmorData } from './Armor/ArmorData'
+import { ArmorModData } from './Armor/ArmorModData'
+import { AugmentData } from './Augments/AugmentData'
 import { Availability } from './Availability'
 import { Effect } from './Effect'
+import { LicenseData } from './License/LicenseData'
+import { SinData } from './License/SinData'
+import { RccData } from './Rcc/RccData'
+import { AutosoftData } from './Software/Autosoft/AutosoftData'
+import { VehicleData } from './Vehicles/VehicleData'
+import { VehicleModData } from './Vehicles/VehicleModData'
+import { WeaponData } from './Weapons/WeaponData'
+import { WeaponModData } from './Weapons/WeaponModData'
 
 export type Cost = number
 
@@ -22,7 +33,7 @@ export enum GearType {
   other = 'other',
 }
 
-export interface GearData {
+export interface BaseGearData {
   id: RecordId
   source?: Source
   gearType: GearType
@@ -47,3 +58,21 @@ export interface GearData {
 
   [key: string]: unknown
 }
+
+export interface OtherGearData extends BaseGearData {
+  gearType: GearType.other
+}
+
+export type GearData =
+  | OtherGearData
+  | ArmorData
+  | ArmorModData
+  | AugmentData
+  | AutosoftData
+  | LicenseData
+  | RccData
+  | SinData
+  | VehicleData
+  | VehicleModData
+  | WeaponData
+  | WeaponModData

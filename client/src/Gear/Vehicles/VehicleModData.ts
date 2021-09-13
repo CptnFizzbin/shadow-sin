@@ -1,4 +1,4 @@
-import { GearData, GearType } from '../GearData'
+import { BaseGearData, GearType } from '../GearData'
 
 export enum ModType {
   other = 'vehicleMod.other',
@@ -8,7 +8,7 @@ export enum ModType {
   manualControl = 'vehicleMod.manualControl',
 }
 
-export interface VehicleModData extends GearData {
+export interface VehicleModData extends BaseGearData {
   gearType: GearType.vehicleMod
   modType: ModType
 }

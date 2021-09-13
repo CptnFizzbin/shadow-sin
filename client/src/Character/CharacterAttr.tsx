@@ -1,3 +1,5 @@
+import { registerAttrNames } from '../System/Attribute'
+
 export enum CharacterAttr {
   body = 'char.body',
   agility = 'char.agility',
@@ -12,3 +14,18 @@ export enum CharacterAttr {
   magic = 'char.magic',
   resonance = 'char.resonance',
 }
+
+registerAttrNames({
+  [CharacterAttr.body]: 'Body',
+  [CharacterAttr.agility]: 'Agility',
+  [CharacterAttr.reaction]: 'Reaction',
+  [CharacterAttr.strength]: 'Strength',
+  [CharacterAttr.willpower]: 'Willpower',
+  [CharacterAttr.logic]: 'Logic',
+  [CharacterAttr.intuition]: 'Intuition',
+  [CharacterAttr.charisma]: 'Charisma',
+  [CharacterAttr.edge]: 'Edge',
+  [CharacterAttr.essence]: 'Essence',
+  [CharacterAttr.magic]: 'Magic',
+  [CharacterAttr.resonance]: 'Resonance',
+})

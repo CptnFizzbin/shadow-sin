@@ -1,7 +1,7 @@
-import { GearData, GearType } from '../GearData'
+import { BaseGearData, GearData, GearType } from '../GearData'
 import { AugmentAttr } from './AugmentAttr'
 
-export interface AugmentData extends GearData {
+export interface AugmentData extends BaseGearData {
   augmentSlot: AugmentSlot
   essenceCost: number
   augmentType?: AugmentType

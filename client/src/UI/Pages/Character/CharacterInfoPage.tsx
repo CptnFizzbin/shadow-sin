@@ -6,7 +6,7 @@ import { CharacterInfo } from '../../../Character/InfoBlock/CharacterInfo'
 import { ContactList } from '../../../Contacts/ContactList'
 import { useAllGear } from '../../../Gear/GearContext'
 import { GearList } from '../../../Gear/GearList'
-import { isSin } from '../../../Gear/Sins/SinData'
+import { isSin } from '../../../Gear/License/SinData'
 
 export const CharacterInfoPage: FC = () => {
   const character = useCharacter()

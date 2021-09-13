@@ -1,8 +1,8 @@
 import { RecordId } from '../../Api/Model'
-import { GearData, GearType } from '../GearData'
+import { BaseGearData, GearData, GearType } from '../GearData'
 import { VehicleAttr } from './VehicleAttr'
 
-export interface VehicleData extends GearData {
+export interface VehicleData extends BaseGearData {
   gearType: GearType.vehicle
 
   attributes: {

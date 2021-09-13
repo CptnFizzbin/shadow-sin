@@ -1,8 +1,8 @@
 import { AttrValue } from '../../System/Attribute'
-import { GearData } from '../GearData'
+import { BaseGearData } from '../GearData'
 import { WeaponAttr } from './WeaponAttr'
 
-export interface WeaponData extends GearData {
+export interface WeaponData extends BaseGearData {
   attributes: {
     [WeaponAttr.dv]: string
     [WeaponAttr.attackRatings]: string

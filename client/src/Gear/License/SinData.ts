@@ -1,7 +1,7 @@
-import { GearData, GearType } from '../GearData'
+import { BaseGearData, GearData, GearType } from '../GearData'
 import { SinAttr } from './SinAttr'
 
-export interface SinData extends GearData {
+export interface SinData extends BaseGearData {
   gearType: GearType.sin
   attributes: {
     [SinAttr.rating]: number

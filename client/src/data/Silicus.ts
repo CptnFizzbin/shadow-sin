@@ -2,12 +2,14 @@ import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/DicePools'
+import { ArmorAttrs } from '../Gear/Armor/ArmorAttrs'
+import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
-import { GearData, GearType } from '../Gear/GearData'
-import { SinAttr } from '../Gear/Sins/SinAttr'
-import { SinData } from '../Gear/Sins/SinData'
+import { GearData, GearType, OtherGearData } from '../Gear/GearData'
+import { SinAttr } from '../Gear/License/SinAttr'
+import { SinData } from '../Gear/License/SinData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType } from '../Gear/Vehicles/VehicleModData'
@@ -164,7 +166,7 @@ export const Silicus: CharacterData = {
   ],
 }
 
-function addGear<T extends GearData> (gear: T, attachedGear: GearData[] = []): T {
+function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
   gear = { ...gear, dataVersion: 1, id: nextRecordId() }
 
   Silicus.gear.push(gear)
@@ -281,7 +283,7 @@ addGear<WeaponData>({
   specialtyName: 'pistols',
 }, [
   addGear(smartGunIntMod),
-  addGear({
+  addGear<WeaponModData>({
     id: null,
     source: { book: 'COR', page: 260 },
     gearType: GearType.weaponMod,
@@ -291,6 +293,7 @@ addGear<WeaponData>({
     cost: 175,
 
     description: 'Use of a Quick-Draw holster provides a bonus Minor action when the Quick-Draw Action is taken',
+    slot: null,
   }),
 ])
 
@@ -666,7 +669,7 @@ addGear<AugmentData>({
   augmentSlot: AugmentSlot.headware,
 })
 
-addGear({
+addGear<ArmorData>({
   id: null,
   gearType: GearType.armor,
   name: 'Armor Jacket',
@@ -676,8 +679,8 @@ addGear({
   cost: 1_000,
 
   attributes: {
-    'armor.defenseBonus': 4,
-    'armor.capacity': 8,
+    [ArmorAttrs.defenseBonus]: 4,
+    [ArmorAttrs.capacity]: 8,
   },
 })
 

@@ -1,10 +1,10 @@
-import { GearData, GearType } from '../GearData'
+import { BaseGearData, GearType } from '../GearData'
 
 export enum WeaponModAttr {
 
 }
 
-export interface WeaponModData extends GearData {
+export interface WeaponModData extends BaseGearData {
   gearType: GearType.weaponMod
   slot: WeaponModSlot | null
   removable?: boolean
