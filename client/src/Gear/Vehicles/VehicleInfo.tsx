@@ -19,7 +19,8 @@ import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { PilotEvadePool, RiggedEvadePool } from './DicePools'
-import { VehicleAttr, VehicleData } from './VehicleData'
+import { VehicleAttr } from './VehicleAttr'
+import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
 export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({

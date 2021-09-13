@@ -1,15 +1,16 @@
 import { FC } from 'react'
 
-import { CharacterAttr } from '../../Character/CharacterData'
+import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
 import { DamageType } from '../../System/Damage/DamageType'
 import { hasExpertise, hasSpecialty } from '../../System/Skill/Helpers'
 import { ActiveSkillData, ActiveSkillId } from '../../System/Skill/SkillData'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
-import { AugmentAttr, AugmentData, AugmentType } from '../Augments/AugmentData'
+import { AugmentAttr } from '../Augments/AugmentAttr'
+import { AugmentData, AugmentType } from '../Augments/AugmentData'
 import { useFindGear } from '../GearContext'
 import { useTargetingAutosoft } from '../Software/Autosoft/AutosoftProvider'
-import { VehicleAttr } from '../Vehicles/VehicleData'
+import { VehicleAttr } from '../Vehicles/VehicleAttr'
 import { WeaponData } from './WeaponData'
 
 export enum WeaponPoolKeys {

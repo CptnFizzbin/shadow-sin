@@ -1,19 +1,5 @@
-import { registerAttrNames } from '../../../UI/AttributeBlock'
 import { GearData, GearType } from '../../GearData'
-
-export enum AutosoftAttr {
-  rating = 'autosoft.rating',
-  attr = 'autosoft.attr',
-  skill = 'autosoft.skill',
-  weapon = 'autosoft.weapon',
-}
-
-registerAttrNames({
-  [AutosoftAttr.rating]: 'Rating',
-  [AutosoftAttr.attr]: 'Attr',
-  [AutosoftAttr.skill]: 'Skill',
-  [AutosoftAttr.weapon]: 'Weapon',
-})
+import { AutosoftAttr } from './AutosoftAttr'
 
 export interface AutosoftData extends GearData {
   gearType: GearType.autosoft

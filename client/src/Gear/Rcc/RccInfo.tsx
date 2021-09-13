@@ -9,7 +9,8 @@ import { GearInfoProps } from '../GearInfo'
 import { GearInfoBlock } from '../GearInfoBlock'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { VehicleData } from '../Vehicles/VehicleData'
-import { RccAttr, RccData } from './RccData'
+import { RccAttr } from './RccAttr'
+import { RccData } from './RccData'
 
 export const RccInfo: FC<GearInfoProps<RccData>> = ({
   item: rcc,

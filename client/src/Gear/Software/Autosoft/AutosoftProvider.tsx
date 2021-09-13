@@ -1,6 +1,7 @@
 import { createContext, FC, useContext } from 'react'
 
-import { AutosoftAttr, AutosoftData } from './AutosoftData'
+import { AutosoftAttr } from './AutosoftAttr'
+import { AutosoftData } from './AutosoftData'
 
 const AutosoftContext = createContext<AutosoftData[]>([])
 

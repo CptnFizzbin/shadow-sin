@@ -1,9 +1,10 @@
 import { FC } from 'react'
 
-import { CharacterAttr } from '../Character/CharacterData'
+import { CharacterAttr } from '../Character/CharacterAttr'
 import { useFindGear } from '../Gear/GearContext'
 import { GearType } from '../Gear/GearData'
-import { RccAttr, RccData } from '../Gear/Rcc/RccData'
+import { RccAttr } from '../Gear/Rcc/RccAttr'
+import { RccData } from '../Gear/Rcc/RccData'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
 

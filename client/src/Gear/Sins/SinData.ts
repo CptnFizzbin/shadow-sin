@@ -1,13 +1,5 @@
-import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData, GearType } from '../GearData'
-
-export enum SinAttr {
-  rating = 'sin.rating',
-}
-
-registerAttrNames({
-  [SinAttr.rating]: 'Rating',
-})
+import { SinAttr } from './SinAttr'
 
 export interface SinData extends GearData {
   gearType: GearType.sin

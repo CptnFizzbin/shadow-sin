@@ -1,19 +1,5 @@
-import { registerAttrNames } from '../../UI/AttributeBlock'
 import { GearData, GearType } from '../GearData'
-
-export enum AugmentAttr {
-  grade = 'augment.grade',
-  rating = 'augment.rating',
-  capacity = 'augment.capacity',
-  capacityCost = 'augment.capacityCost',
-}
-
-registerAttrNames({
-  [AugmentAttr.grade]: 'Grade',
-  [AugmentAttr.rating]: 'Rating',
-  [AugmentAttr.capacity]: 'Capacity',
-  [AugmentAttr.capacityCost]: 'Capacity Cost',
-})
+import { AugmentAttr } from './AugmentAttr'
 
 export interface AugmentData extends GearData {
   augmentSlot: AugmentSlot

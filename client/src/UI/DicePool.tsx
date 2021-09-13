@@ -2,11 +2,11 @@ import { Box, Paper } from '@material-ui/core'
 import { FC } from 'react'
 
 import { useSkills } from '../Character/CharacterProvider'
+import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { formatSkill } from '../System/Skill/SkillData'
-import { formatAttr } from './AttributeBlock'
 
 export const toDiceGroup = (input: DiceGroupLike): DiceGroup => {
   return {

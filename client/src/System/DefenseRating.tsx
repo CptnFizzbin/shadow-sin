@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
-import { CharacterAttr } from '../Character/CharacterData'
-import { VehicleAttr } from '../Gear/Vehicles/VehicleData'
+import { CharacterAttr } from '../Character/CharacterAttr'
+import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
 

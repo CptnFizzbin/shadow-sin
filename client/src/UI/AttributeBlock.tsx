@@ -1,16 +1,7 @@
 import { FC } from 'react'
 
-import { AttrList, AttrNames } from '../System/Attribute'
+import { AttrList, formatAttr } from '../System/Attribute'
 import { Stat, StatBlock } from './StatBlock'
-
-let attributeNames: AttrNames = {}
-
-export const registerAttrNames = (names: AttrNames): void => {
-  attributeNames = {
-    ...attributeNames,
-    ...names,
-  }
-}
 
 interface AttributeBlockProps {
   attributes: AttrList
@@ -31,8 +22,4 @@ export const AttributeBlock: FC<AttributeBlockProps> = ({
       ))}
     </StatBlock>
   )
-}
-
-export const formatAttr = (type: string): string => {
-  return attributeNames[type] || type
 }
