@@ -1,4 +1,5 @@
 import { SkillId } from '../System/Skill/SkillData'
+import { GearData } from './GearData'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
@@ -55,3 +56,9 @@ export type Effect =
   | InitBonus
   | SkillBonus
   | DicePoolBonus
+
+export const collectGearEffects = (gear: GearData[]): Effect[] => {
+  return gear
+    .filter(gear => gear.effects)
+    .flatMap(gear => gear.effects as Effect[])
+}

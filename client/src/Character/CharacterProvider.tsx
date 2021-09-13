@@ -1,9 +1,8 @@
 import { createContext, FC, useContext } from 'react'
 
 import { isAugment } from '../Gear/Augments/AugmentData'
-import { isAttrBonus, isSkillBonus } from '../Gear/Effect'
+import { collectGearEffects, isAttrBonus, isSkillBonus } from '../Gear/Effect'
 import { GearProvider, useAllGear } from '../Gear/GearContext'
-import { collectGearEffects } from '../Gear/GearData'
 import { AttrList } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'

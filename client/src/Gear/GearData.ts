@@ -55,9 +55,3 @@ export interface GearData {
 export const formatAvail = (avail: Availability): string => {
   return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
 }
-
-export const collectGearEffects = (gear: GearData[]): Effect[] => {
-  return gear
-    .filter(gear => gear.effects)
-    .flatMap(gear => gear.effects as Effect[])
-}
