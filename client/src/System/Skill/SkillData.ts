@@ -1,12 +1,6 @@
 export type SkillId = string;
 
-export interface SkillList {
-  [skillId: string]: number
-}
-
-export type SkillNames = {
-  [skillId: string]: string
-}
+export type SkillList = { [skillId: string]: number }
 
 export enum SkillType {
   active = 'active',
@@ -58,7 +52,7 @@ export enum ActiveSkillId {
   stealth = 'stealth',
 }
 
-const skillNames: SkillNames = {
+const skillNames: Record<SkillId, string> = {
   [ActiveSkillId.athletics]: 'Athletics',
   [ActiveSkillId.biotech]: 'Biotech',
   [ActiveSkillId.closeCombat]: 'Close Combat',

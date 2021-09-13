@@ -9,7 +9,8 @@ import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { ActiveSkillData, isActiveSkill, SkillData, SkillId, SkillList, SkillType } from '../System/Skill/SkillData'
-import { CharacterAttr, CharacterData } from './CharacterData'
+import { CharacterAttr } from './CharacterAttr'
+import { CharacterData } from './CharacterData'
 
 const CharacterContext = createContext<CharacterData | null>(null)
 

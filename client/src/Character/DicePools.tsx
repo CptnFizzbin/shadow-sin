@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { DamageType } from '../System/Damage/DamageType'
 import { DicePool } from '../UI/DicePool'
-import { CharacterAttr } from './CharacterData'
+import { CharacterAttr } from './CharacterAttr'
 
 export enum CharacterPoolTypes {
   dodge = 'character.dodge',
