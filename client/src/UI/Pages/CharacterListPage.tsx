@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom'
 
 import { RecordId } from '../../Api/Model'
 import { CharacterData } from '../../Character/CharacterData'
-import Artemis from '../../data/Artemis.json'
-import Silicus from '../../data/Silicus.json'
+import { Artemis } from '../../data/Artemis'
+import { Silicus } from '../../data/Silicus'
 import { RootLayout } from './RootLayout'
 
 type SavedCharacter = {

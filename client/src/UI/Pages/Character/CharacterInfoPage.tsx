@@ -1,8 +1,8 @@
 import { Box, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { CharacterInfo } from '../../../Character/CharacterInfo'
 import { useCharacter } from '../../../Character/CharacterProvider'
+import { CharacterInfo } from '../../../Character/InfoBlock/CharacterInfo'
 import { ContactList } from '../../../Contacts/ContactList'
 import { useAllGear } from '../../../Gear/GearContext'
 import { GearList } from '../../../Gear/GearList'
