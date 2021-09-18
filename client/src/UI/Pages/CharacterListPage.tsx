@@ -2,40 +2,14 @@ import { Box, Button, Typography } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { RecordId } from '../../Api/Model'
-import { CharacterData } from '../../Character/CharacterData'
-import { Artemis } from '../../data/Artemis'
-import { Silicus } from '../../data/Silicus'
+import { loadCharacters, SavedCharacter } from '../../StorageService'
 import { RootLayout } from './RootLayout'
-
-type SavedCharacter = {
-  id: RecordId
-  name: string
-  metaType: string
-}
-
-const DEBUG_LOAD = true
-if (DEBUG_LOAD || !localStorage.getItem('characters')) {
-  const characters = [Artemis, Silicus] as unknown as CharacterData[]
-  characters.forEach(character => localStorage.setItem(`character.${character.id}`, JSON.stringify(character)))
-
-  localStorage.setItem('characters', JSON.stringify(
-    characters.map(character => ({
-      id: character.id,
-      name: character.name,
-      metaType: character.metaType,
-    })),
-  ))
-}
 
 export const CharacterListPage: FC = () => {
   const history = useHistory()
   const [characters, setCharacters] = useState<SavedCharacter[]>([])
 
-  useEffect(() => {
-    const savedCharacters: SavedCharacter[] = JSON.parse(localStorage.getItem('characters') || '[]')
-    setCharacters(savedCharacters)
-  }, [])
+  useEffect(() => setCharacters(loadCharacters()), [])
 
   return (
     <RootLayout>

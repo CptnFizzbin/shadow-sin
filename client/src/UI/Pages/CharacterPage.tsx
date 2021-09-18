@@ -2,9 +2,9 @@ import { Paper } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
 
-import { CharacterData } from '../../Character/CharacterData'
+import { CharacterData} from '../../Character/CharacterData'
 import { CharacterProvider } from '../../Character/CharacterProvider'
-import { migrateCharacter } from '../../Character/Migrations'
+import { loadCharacter } from '../../StorageService'
 import { CharacterNavDrawer } from '../NavDrawer/CharacterNavDrawer'
 import { AugmentsPage } from './Character/AugmentsPage'
 import { CharacterInfoPage } from './Character/CharacterInfoPage'
@@ -20,9 +20,9 @@ export const CharacterPage: FC = () => {
   const [character, setCharacter] = useState<CharacterData | null>(null)
 
   useEffect(() => {
-    const character: CharacterData = JSON.parse(localStorage.getItem(`character.${characterId}`) || 'null')
-    if (!character) history.push('/')
-    setCharacter(migrateCharacter(character))
+    const character: CharacterData | null = loadCharacter(characterId)
+    if (character === null) history.push('/')
+    setCharacter(character)
   }, [history, characterId])
 
   if (!character) { return <Paper>Loading...</Paper>}
