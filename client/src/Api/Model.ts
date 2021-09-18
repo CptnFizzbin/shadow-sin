@@ -2,7 +2,7 @@ import * as uuid from 'uuid'
 
 export type RecordId = string | null;
 
-export function nextRecordId (): RecordId {
+export function nextRecordId (): string {
   return uuid.v4()
 }
 

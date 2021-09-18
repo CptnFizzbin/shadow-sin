@@ -10,13 +10,14 @@ export interface Migration {
 
 export interface SavedCharacterData {
   dataVersion: number
+
   [key: string]: unknown
 }
 
-export const migrateCharacter = (character: SavedCharacterData): CharacterData => {
+export const migrateCharacter = (character: SavedCharacterData | CharacterData): CharacterData => {
   for (const migration of migrations) {
     if (character.dataVersion >= migration.version) continue
-    character = migration.run(character)
+    character = migration.run(character as SavedCharacterData)
     character.dataVersion = migration.version
   }
 

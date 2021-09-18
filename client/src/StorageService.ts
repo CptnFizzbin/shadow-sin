@@ -1,4 +1,4 @@
-import { RecordId } from './Api/Model'
+import { nextRecordId } from './Api/Model'
 import { CharacterData } from './Character/CharacterData'
 import { migrateCharacter, SavedCharacterData } from './Character/Migrations'
 import { Artemis } from './data/Artemis'
@@ -8,30 +8,27 @@ const characterStorageKey = (characterId: string) => `character.${characterId}`
 const charactersStorageKey = 'characters'
 const DEBUG_LOAD = true
 
-export interface SavedCharacter {
-  id: RecordId
-  name: string
-  metaType: string
-}
+export type SavedCharacters = Record<string, string>
 
-export function loadCharacters (): SavedCharacter[] {
+export function loadCharacters (): SavedCharacters {
   if (DEBUG_LOAD || !localStorage.getItem(charactersStorageKey)) {
+    const savedCharacters: SavedCharacters = {}
+
     const characters = [
       migrateCharacter(Artemis),
       migrateCharacter(Silicus),
     ]
 
-    characters.forEach(character => saveCharacter(character))
-    localStorage.setItem(charactersStorageKey, JSON.stringify(
-      characters.map(character => ({
-        id: character.id,
-        name: character.bio.alias || character.bio.name,
-        metaType: character.bio.metaType,
-      })),
-    ))
+    characters.forEach(character => {
+      if (character.id === null) character.id = nextRecordId()
+      saveCharacter(character)
+      savedCharacters[character.id] = character.bio.alias || character.bio.name
+    })
+
+    localStorage.setItem(charactersStorageKey, JSON.stringify(savedCharacters))
   }
 
-  return JSON.parse(localStorage.getItem(charactersStorageKey) || '[]')
+  return JSON.parse(localStorage.getItem(charactersStorageKey) || '{}')
 }
 
 export function saveCharacter (character: CharacterData): void {

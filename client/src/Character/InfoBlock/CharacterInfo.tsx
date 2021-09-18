@@ -27,7 +27,6 @@ export const CharacterInfo: FC = () => {
     <Stat name="Nuyen" value={formatNuyen(character.nuyen)} />
   </Box>
 
-
   return (
     <InfoBlock
       title={bio.alias || bio.name} subtitle={bio.metaType} titleFontSize={50}

@@ -21,11 +21,18 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Artemis: SavedCharacterData = {
+export const Artemis: CharacterData = {
   id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
-  dataVersion: 1,
-  name: 'Artemis',
-  metaType: 'Elf',
+  dataVersion: 3,
+
+  bio: {
+    name: 'Davina Janeway',
+    alias: 'Artemis',
+    role: 'rigger',
+    gender: 'female',
+    metaType: 'Elf',
+  },
+
   karma: 7,
   nuyen: 14_420,
 

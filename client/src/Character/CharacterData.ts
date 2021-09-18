@@ -21,11 +21,9 @@ export interface CharacterData {
   dataVersion: 2
   bio: BioData
 
-  name: string
-  nuyen: number
-
   reputation?: string
   heat?: string
+  nuyen: number
   karma: number
 
   lifestyle: {

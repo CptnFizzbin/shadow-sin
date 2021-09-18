@@ -21,7 +21,7 @@ export const CharacterNavDrawer: NavDrawer = ({
       <List>
         <NavButton
           icon={<FontAwesomeIcon icon={faUser} />}
-          label={character.name}
+          label={character.bio.alias || character.bio.name}
           routeTo={`/${character.id}`}
           closeDrawer={closeDrawer}
         />
