@@ -35,17 +35,18 @@ export const Silicus: CharacterData = {
   karma: [
     {
       id: '06c06985-4024-45e3-9a73-a49375e0b095',
-      date: '2021-08-28',
+      date: '2021-09-12',
       value: 2,
-      note: 'Balance import',
+      note: 'Session reward',
     },
   ],
+
   nuyen: [
     {
       id: '24b4f26a-0c8e-42d0-b8e9-49e668785783',
       date: '2021-08-28',
-      value: 4_200,
-      note: 'Balance import',
+      value: 450_000,
+      note: 'Char creation',
     },
   ],
 
@@ -56,13 +57,13 @@ export const Silicus: CharacterData = {
   },
 
   attributes: {
-    [CharacterAttr.body]: 2,
+    [CharacterAttr.body]: 4,
     [CharacterAttr.agility]: 8,
-    [CharacterAttr.reaction]: 1,
+    [CharacterAttr.reaction]: 2,
     [CharacterAttr.strength]: 1,
     [CharacterAttr.willpower]: 1,
     [CharacterAttr.logic]: 5,
-    [CharacterAttr.intuition]: 2,
+    [CharacterAttr.intuition]: 4,
     [CharacterAttr.charisma]: 3,
     [CharacterAttr.edge]: 4,
   },
@@ -91,15 +92,8 @@ export const Silicus: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      skillId: ActiveSkillId.athletics,
-      rank: 5,
-      attr: 'agility',
-      altAttr: 'strength',
-    },
-    {
-      type: SkillType.active,
       skillId: ActiveSkillId.biotech,
-      rank: 6,
+      rank: 5,
       attr: 'logic',
       altAttr: 'intuition',
       speciality: 'First Aid',
@@ -107,7 +101,7 @@ export const Silicus: CharacterData = {
     {
       type: SkillType.active,
       skillId: ActiveSkillId.firearms,
-      rank: 7,
+      rank: 6,
       attr: 'agility',
     },
     {
@@ -116,12 +110,6 @@ export const Silicus: CharacterData = {
       rank: 3,
       attr: 'intuition',
       altAttr: 'logic',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.stealth,
-      rank: 5,
-      attr: 'agility',
     },
     {
       type: SkillType.active,
@@ -356,7 +344,7 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 1,
+    [AugmentAttr.rating]: 3,
   },
 
   essenceCost: 0.55,
@@ -364,8 +352,8 @@ addGear<AugmentData>({
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 1 },
-    { type: EffectType.initBonus, dice: 1 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
+    { type: EffectType.initBonus, dice: 3 },
   ],
 })
 
@@ -431,8 +419,8 @@ addGear<AugmentData>({
   cost: 5_000,
 
   attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 2,
+    [AugmentAttr.grade]: AugmentGrade.alpha,
+    [AugmentAttr.rating]: 4,
   },
 
   description: (`
@@ -444,149 +432,11 @@ addGear<AugmentData>({
   augmentSlot: AugmentSlot.bioware,
 
   effects: [
-    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 3 },
+    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
     // Melee damage: 3P
     // Melee Atk. Rating: +2
   ],
 })
-
-addGear<AugmentData>({
-  id: null,
-  gearType: GearType.augment,
-  name: 'Cybereyes',
-  type: 'Augment',
-  source: { book: 'COR', page: 285 },
-  avail: { rarity: 2 },
-  cost: 5_000,
-
-  attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 4,
-    [AugmentAttr.capacity]: 12,
-  },
-
-  essenceCost: 0.44,
-  augmentSlot: AugmentSlot.eyeware,
-}, [
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Smartlink',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 2, license: true },
-    cost: 2_000,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 3,
-    },
-
-    essenceCost: 0.22,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Imagelink',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 750,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Flare Compensation',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 500,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 1,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Low-Light Vision',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 750,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 2,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Thermographic Vision',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 1_000,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 2,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Vision Enhancement',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 2 },
-    cost: 2_000,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 2,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Vision Magnification',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 2 },
-    cost: 1_000,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 2,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-])
 
 addGear<AugmentData>({
   id: null,
@@ -633,41 +483,24 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
+addGear({
   id: null,
-  gearType: GearType.augment,
-  name: 'Commlink',
-  type: 'Headware Augment',
-  source: { book: 'COR', page: 283 },
-  avail: { rarity: 1 },
-  cost: 1_000,
+  gearType: GearType.other,
+  name: 'Hermes Ikon',
+  type: 'Commlink',
+  source: { book: 'COR', page: 267 },
+  avail: { rarity: 3 },
+  cost: 5_000,
 
   attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
+    'commlink.deviceRating': 5,
+    'commlink.attributes': '3/0',
+    'commlink.programSlots': 2,
   },
 
   essenceCost: 0.11,
   augmentSlot: AugmentSlot.headware,
-}, [
-  addGear({
-    id: null,
-    gearType: GearType.other,
-    name: 'Hermes Ikon',
-    type: 'Commlink',
-    source: { book: 'COR', page: 267 },
-    avail: { rarity: 3 },
-    cost: 5_000,
-
-    attributes: {
-      'commlink.deviceRating': 5,
-      'commlink.attributes': '3/0',
-      'commlink.programSlots': 2,
-    },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.headware,
-  }),
-])
+})
 
 addGear<AugmentData>({
   id: null,
