@@ -29,42 +29,42 @@ export const DicePoolsSection: FC = () => {
 }
 
 const DodgePool: FC = () => <DicePool
-  key={CharacterPoolTypes.dodge}
+  poolKey={CharacterPoolTypes.dodge}
   name={'Dodge'}
   attrs={[CharacterAttr.reaction, CharacterAttr.intuition]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
 />
 
 const ResistDamagePool: FC = () => <DicePool
-  key={CharacterPoolTypes.dmgResist}
+  poolKey={CharacterPoolTypes.dmgResist}
   name={'Resist Dmg.'}
   attrs={[CharacterAttr.body]}
   dmgPenaltyTypes={[]}
 />
 
 const ComposurePool: FC = () => <DicePool
-  key={CharacterPoolTypes.composure}
+  poolKey={CharacterPoolTypes.composure}
   name={'Composure'}
   attrs={[CharacterAttr.willpower, CharacterAttr.charisma]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
 />
 
 const JudgeIntentPool: FC = () => <DicePool
-  key={CharacterPoolTypes.judgeIntent}
+  poolKey={CharacterPoolTypes.judgeIntent}
   name={'Judge Intent'}
   attrs={[CharacterAttr.willpower, CharacterAttr.intuition]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
 />
 
 const MemoryPool: FC = () => <DicePool
-  key={CharacterPoolTypes.memory}
+  poolKey={CharacterPoolTypes.memory}
   name={'Memory'}
   attrs={[CharacterAttr.logic, CharacterAttr.intuition]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
 />
 
 const LiftPool: FC = () => <DicePool
-  key={CharacterPoolTypes.liftCarry}
+  poolKey={CharacterPoolTypes.liftCarry}
   name={'Lift/Carry'}
   attrs={[CharacterAttr.body, CharacterAttr.strength]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
@@ -83,7 +83,7 @@ const FirstAidPool: FC = () => {
 
   return (
     <DicePool
-      key={CharacterPoolTypes.firstAid}
+      poolKey={CharacterPoolTypes.firstAid}
       name={'First Aid'}
       skills={[ActiveSkillId.biotech]}
       attrs={[CharacterAttr.logic]}
@@ -106,7 +106,7 @@ const MedkitPool: FC = () => {
 
   return (
     <DicePool
-      key={CharacterPoolTypes.firstAid}
+      poolKey={CharacterPoolTypes.firstAid}
       name={'MedKit'}
       skills={[ActiveSkillId.biotech]}
       attrs={[CharacterAttr.logic]}

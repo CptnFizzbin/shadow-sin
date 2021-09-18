@@ -1,6 +1,6 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { SavedCharacterData } from '../Character/Migrations'
+import { CharacterData } from '../Character/CharacterData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
@@ -26,15 +26,36 @@ export const Artemis: CharacterData = {
   dataVersion: 3,
 
   bio: {
-    name: 'Davina Janeway',
+    name: 'Jessica Nelson',
     alias: 'Artemis',
     role: 'rigger',
     gender: 'female',
     metaType: 'Elf',
   },
 
-  karma: 7,
-  nuyen: 14_420,
+  karma: [
+    {
+      id: '0b622011-0e72-4e75-883b-73a565b0e35f',
+      date: '2021-09-11',
+      value: 2,
+      note: 'Session reward',
+    },
+    {
+      id: '49de36c4-cc58-4484-96f7-0fac55fe72db',
+      date: '2021-08-28',
+      value: 14,
+      note: 'Balance import',
+    },
+  ],
+
+  nuyen: [
+    {
+      id: 'ff344122-9196-4c9f-98f6-42620097383a',
+      date: '2021-08-28',
+      value: 18_070,
+      note: 'Balance import',
+    },
+  ],
 
   lifestyle: {
     grade: 'middle',

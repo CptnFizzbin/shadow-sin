@@ -21,10 +21,12 @@ export const CharacterInfo: FC = () => {
   if (!character) return null
 
   const bio = character.bio
+  const nuyen: number = character.nuyen.reduce((sum, entry) => sum + entry.value, 0)
+  const karma: number = character.karma.reduce((sum, entry) => sum + entry.value, 0)
 
   const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
-    <Stat name="Karma" value={character.karma} />
-    <Stat name="Nuyen" value={formatNuyen(character.nuyen)} />
+    <Stat name="Nuyen" value={formatNuyen(nuyen)} />
+    <Stat name="Karma" value={karma} />
   </Box>
 
   return (

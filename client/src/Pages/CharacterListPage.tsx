@@ -2,7 +2,7 @@ import { Button, Stack } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { loadCharacters, SavedCharacters } from '../../StorageService'
+import { loadCharacters, SavedCharacters } from '../StorageService'
 import { RootLayout } from './RootLayout'
 
 export const CharacterListPage: FC = () => {

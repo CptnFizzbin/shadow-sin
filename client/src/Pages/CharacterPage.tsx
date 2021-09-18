@@ -2,13 +2,15 @@ import { Paper } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
 
-import { CharacterData} from '../../Character/CharacterData'
-import { CharacterProvider } from '../../Character/CharacterProvider'
-import { loadCharacter } from '../../StorageService'
-import { CharacterNavDrawer } from '../NavDrawer/CharacterNavDrawer'
+import { CharacterData } from '../Character/CharacterData'
+import { CharacterProvider } from '../Character/CharacterProvider'
+import { loadCharacter } from '../StorageService'
+import { CharacterNavDrawer } from '../UI/NavDrawer/CharacterNavDrawer'
 import { AugmentsPage } from './Character/AugmentsPage'
 import { CharacterInfoPage } from './Character/CharacterInfoPage'
+import { KarmaPage } from './Character/KarmaPage'
 import { MiscGearPage } from './Character/MiscGearPage'
+import { NuyenPage } from './Character/NuyenPage'
 import { VehiclesPage } from './Character/VehiclesPage'
 import { WeaponsPage } from './Character/WeaponsPage'
 import { RootLayout } from './RootLayout'
@@ -35,6 +37,8 @@ export const CharacterPage: FC = () => {
           <Route path={`${path}/vehicles`} component={VehiclesPage} />
           <Route path={`${path}/augments`} component={AugmentsPage} />
           <Route path={`${path}/misc`} component={MiscGearPage} />
+          <Route path={`${path}/karma`} component={KarmaPage} />
+          <Route path={`${path}/nuyen`} component={NuyenPage} />
           <Route path={`${path}/`} component={CharacterInfoPage} />
           <Route><Redirect to="/" /></Route>
         </Switch>

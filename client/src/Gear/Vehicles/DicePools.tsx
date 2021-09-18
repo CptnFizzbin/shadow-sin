@@ -38,7 +38,7 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
   ]
 
   return <DicePool
-    key={VehiclePoolKeys.pilotEvade}
+    poolKey={VehiclePoolKeys.pilotEvade}
     name={'Pilot Evade'}
     groups={diceGroups}
     dmgPenaltyTypes={[DamageType.vehiclePhysical]}
@@ -66,7 +66,7 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
 
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
   return <DicePool
-    key={VehiclePoolKeys.riggedEvade}
+    poolKey={VehiclePoolKeys.riggedEvade}
     name={'Rigged Evade'}
     groups={groups}
     dmgPenaltyTypes={dmgPenaltyTypes}

@@ -1,10 +1,10 @@
 import { Typography } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { useGearOfType } from '../../../Gear/GearContext'
-import { GearType } from '../../../Gear/GearData'
-import { GearList } from '../../../Gear/GearList'
-import { WeaponData } from '../../../Gear/Weapons/WeaponData'
+import { useGearOfType } from '../../Gear/GearContext'
+import { GearType } from '../../Gear/GearData'
+import { GearList } from '../../Gear/GearList'
+import { WeaponData } from '../../Gear/Weapons/WeaponData'
 
 export const WeaponsPage: FC = () => {
   const weapons = useGearOfType<WeaponData>(GearType.weapon)

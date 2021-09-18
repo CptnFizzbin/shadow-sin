@@ -1,7 +1,7 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
+import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
-import { SavedCharacterData } from '../Character/Migrations'
 import { ArmorAttrs } from '../Gear/Armor/ArmorAttrs'
 import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
@@ -23,7 +23,7 @@ import { SkillType } from '../System/Skill/SkillData'
 
 export const Silicus: CharacterData = {
   id: 'fc7d8ad1-c25e-4c1b-8c13-0e795a449ef2',
-  dataVersion: 2,
+  dataVersion: 3,
 
   bio: {
     name: 'Silicus',
@@ -31,6 +31,23 @@ export const Silicus: CharacterData = {
     gender: 'male',
     role: 'Street Samurai',
   },
+
+  karma: [
+    {
+      id: '06c06985-4024-45e3-9a73-a49375e0b095',
+      date: '2021-08-28',
+      value: 2,
+      note: 'Balance import',
+    },
+  ],
+  nuyen: [
+    {
+      id: '24b4f26a-0c8e-42d0-b8e9-49e668785783',
+      date: '2021-08-28',
+      value: 4_200,
+      note: 'Balance import',
+    },
+  ],
 
   lifestyle: {
     grade: 'middle',

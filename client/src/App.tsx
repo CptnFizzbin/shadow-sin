@@ -2,8 +2,11 @@ import React, { FC } from 'react'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AppThemeProvider } from './AppThemeProvider'
-import { CharacterListPage } from './UI/Pages/CharacterListPage'
-import { CharacterPage } from './UI/Pages/CharacterPage'
+import { CharacterListPage } from './Pages/CharacterListPage'
+import { CharacterPage } from './Pages/CharacterPage'
+import { loadCharacters } from './StorageService'
+
+loadCharacters()
 
 const App: FC = () => {
   return (

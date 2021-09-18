@@ -33,7 +33,7 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({
   if (specialtyBonus) bonuses.push(specialtyBonus)
 
   return <DicePool
-    key={WeaponPoolKeys.basicAttack}
+    poolKey={WeaponPoolKeys.basicAttack}
     name={'Basic Attack'}
     attrs={[CharacterAttr.agility]}
     skills={[ActiveSkillId.firearms]}
@@ -50,7 +50,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
   const targetingGroup: DiceGroup = { name: 'Targeting', size: targetingAutosoft }
 
   return <DicePool
-    key={WeaponPoolKeys.droneAttack}
+    poolKey={WeaponPoolKeys.droneAttack}
     name={'Drone Attack'}
     attrs={[VehicleAttr.sensor]}
     groups={[targetingGroup]}
@@ -59,7 +59,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
 }
 
 export const VehicleAttackPool: FC<FirearmPoolProps> = () => <DicePool
-  key={WeaponPoolKeys.mountedAttack}
+  poolKey={WeaponPoolKeys.mountedAttack}
   name={'Mounted Attack'}
   attrs={[CharacterAttr.logic]}
   skills={[ActiveSkillId.engineering]}
@@ -71,7 +71,7 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
   if (!controlRig) return null
 
   return <DicePool
-    key={WeaponPoolKeys.riggedAttack}
+    poolKey={WeaponPoolKeys.riggedAttack}
     name={'Rigged Attack'}
     attrs={[CharacterAttr.logic]}
     skills={[ActiveSkillId.engineering]}

@@ -2,12 +2,14 @@ import { RecordId } from '../Api/Model'
 import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
 import { QualityData } from '../Qualities/QualityData'
+import { BalanceLog } from '../System/BalanceLog'
 import { SkillData } from '../System/Skill/SkillData'
 import { CharacterAttr } from './CharacterAttr'
 
 export interface BioData {
   name: string
   metaType: string
+  role?: string
   alias?: string
   ethnicity?: string
   age?: number
@@ -18,13 +20,13 @@ export interface BioData {
 
 export interface CharacterData {
   id: RecordId
-  dataVersion: 2
+  dataVersion: 3
   bio: BioData
 
   reputation?: string
   heat?: string
-  nuyen: number
-  karma: number
+  nuyen: BalanceLog
+  karma: BalanceLog
 
   lifestyle: {
     grade: string

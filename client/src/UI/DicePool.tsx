@@ -24,7 +24,7 @@ export const DicePools: FC = ({
 }
 
 export interface DicePoolData {
-  key: string
+  poolKey: string
   name: string
   skills?: string[]
   attrs?: string[]
@@ -55,7 +55,6 @@ type DicePoolProps = {
 } & DicePoolData
 
 export const DicePool: FC<DicePoolProps> = ({
-  key,
   name,
   skills = [],
   attrs = [],

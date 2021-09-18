@@ -1,8 +1,8 @@
 import { Box, Paper } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 
-import { AppBar } from '../AppBar'
-import { NavDrawerProps } from '../NavDrawer'
+import { AppBar } from '../UI/AppBar'
+import { NavDrawerProps } from '../UI/NavDrawer'
 
 interface RootLayoutProps {
   NavDrawer?: FC<NavDrawerProps>

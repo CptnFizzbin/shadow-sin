@@ -1,12 +1,12 @@
 import { Box, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { useCharacter } from '../../../Character/CharacterProvider'
-import { CharacterInfo } from '../../../Character/InfoBlock/CharacterInfo'
-import { ContactList } from '../../../Contacts/ContactList'
-import { useAllGear } from '../../../Gear/GearContext'
-import { GearList } from '../../../Gear/GearList'
-import { isSin } from '../../../Gear/License/SinData'
+import { useCharacter } from '../../Character/CharacterProvider'
+import { CharacterInfo } from '../../Character/InfoBlock/CharacterInfo'
+import { ContactList } from '../../Contacts/ContactList'
+import { useAllGear } from '../../Gear/GearContext'
+import { GearList } from '../../Gear/GearList'
+import { isSin } from '../../Gear/License/SinData'
 
 export const CharacterInfoPage: FC = () => {
   const character = useCharacter()
