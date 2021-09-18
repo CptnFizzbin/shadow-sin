@@ -1,6 +1,6 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
+import { SavedCharacterData } from '../Character/Migrations'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
@@ -21,7 +21,7 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Artemis: CharacterData = {
+export const Artemis: SavedCharacterData = {
   id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
   dataVersion: 1,
   name: 'Artemis',
@@ -176,9 +176,9 @@ export const Artemis: CharacterData = {
 }
 
 export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, dataVersion: 1, id: nextRecordId() }
+  gear = { ...gear, dataVersion: 1, id: nextRecordId() };
 
-  Artemis.gear.push(gear)
+  (Artemis.gear as GearData[]).push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)
 
   return gear

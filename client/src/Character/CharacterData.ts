@@ -5,19 +5,25 @@ import { QualityData } from '../Qualities/QualityData'
 import { SkillData } from '../System/Skill/SkillData'
 import { CharacterAttr } from './CharacterAttr'
 
-export interface CharacterData {
-  id: RecordId
-  dataVersion: number
+export interface BioData {
   name: string
   metaType: string
-  nuyen: number
-
   alias?: string
   ethnicity?: string
   age?: number
   gender?: string
   height?: string
   weight?: string
+}
+
+export interface CharacterData {
+  id: RecordId
+  dataVersion: 2
+  bio: BioData
+
+  name: string
+  nuyen: number
+
   reputation?: string
   heat?: string
   karma: number

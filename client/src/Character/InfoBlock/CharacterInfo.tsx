@@ -20,14 +20,17 @@ export const CharacterInfo: FC = () => {
   const character = useCharacter()
   if (!character) return null
 
+  const bio = character.bio
+
   const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
     <Stat name="Karma" value={character.karma} />
     <Stat name="Nuyen" value={formatNuyen(character.nuyen)} />
   </Box>
 
+
   return (
     <InfoBlock
-      title={character.alias || character.name} subtitle={character.metaType} titleFontSize={50}
+      title={bio.alias || bio.name} subtitle={bio.metaType} titleFontSize={50}
       titleRight={blockTitleRight}
     >
       <AttributesSection />

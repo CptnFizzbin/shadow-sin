@@ -1,7 +1,7 @@
 import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
+import { SavedCharacterData } from '../Character/Migrations'
 import { ArmorAttrs } from '../Gear/Armor/ArmorAttrs'
 import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
@@ -21,7 +21,7 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Silicus: CharacterData = {
+export const Silicus: SavedCharacterData = {
   id: 'fc7d8ad1-c25e-4c1b-8c13-0e795a449ef2',
   dataVersion: 1,
   name: 'Silicus',
@@ -164,9 +164,9 @@ export const Silicus: CharacterData = {
 }
 
 function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, dataVersion: 1, id: nextRecordId() }
+  gear = { ...gear, dataVersion: 1, id: nextRecordId() };
 
-  Silicus.gear.push(gear)
+  (Silicus.gear as GearData[]).push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)
 
   return gear

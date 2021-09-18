@@ -16,14 +16,17 @@ export interface SavedCharacter {
 
 export function loadCharacters (): SavedCharacter[] {
   if (DEBUG_LOAD || !localStorage.getItem(charactersStorageKey)) {
-    const characters = [Artemis, Silicus]
-    characters.forEach(character => saveCharacter(character))
+    const characters = [
+      migrateCharacter(Artemis),
+      migrateCharacter(Silicus),
+    ]
 
+    characters.forEach(character => saveCharacter(character))
     localStorage.setItem(charactersStorageKey, JSON.stringify(
       characters.map(character => ({
         id: character.id,
-        name: character.name,
-        metaType: character.metaType,
+        name: character.bio.alias || character.bio.name,
+        metaType: character.bio.metaType,
       })),
     ))
   }
