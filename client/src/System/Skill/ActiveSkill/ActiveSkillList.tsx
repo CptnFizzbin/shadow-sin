@@ -41,7 +41,7 @@ const SkillListRow: FC<SkillListRowProps> = ({
       <TableCell>
         <div>{formatSkill(skill.skillId)}</div>
         {skill.speciality && <div>(S. {skill.speciality})</div>}
-        {skill.expertise && <div>{skill.expertise}</div>}
+        {skill.expertise && <div>(E. {skill.expertise})</div>}
       </TableCell>
       <TableCell>
         {skill.rank}

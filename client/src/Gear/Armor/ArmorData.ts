@@ -1,11 +1,11 @@
 import { BaseGearData, GearType } from '../GearData'
-import { ArmorAttrs } from './ArmorAttrs'
+import { ArmorAttr } from './ArmorAttr'
 
 export interface ArmorData extends BaseGearData {
   gearType: GearType.armor
 
   attributes: {
-    [ArmorAttrs.defenseBonus]: number
-    [ArmorAttrs.capacity]: number
+    [ArmorAttr.defenseBonus]: number
+    [ArmorAttr.capacity]: number
   }
 }

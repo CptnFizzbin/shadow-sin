@@ -1,10 +1,6 @@
 import { AttrValue, registerAttrNames } from '../System/Attribute'
 import { BaseGearData, GearType } from './GearData'
 
-export enum OtherGearAttr {
-  medkitRating = 'medkit.rating',
-}
-
 export interface OtherGearData extends BaseGearData {
   gearType: GearType.other
 
@@ -13,6 +9,14 @@ export interface OtherGearData extends BaseGearData {
   }
 }
 
+export enum OtherGearAttr {
+  capacity = 'other.capacity',
+  capacityCost = 'other.capacityCost',
+  rating = 'other.rating',
+}
+
 registerAttrNames({
-  [OtherGearAttr.medkitRating]: 'Rating',
+  [OtherGearAttr.capacity]: 'Capacity',
+  [OtherGearAttr.capacityCost]: 'Capacity Cost',
+  [OtherGearAttr.rating]: 'Rating',
 })

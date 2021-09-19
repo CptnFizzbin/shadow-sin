@@ -28,6 +28,8 @@ export const BalanceLogTable: FC<BalanceLogTableProps> = ({
       </TableRow>
     ))
 
+  logRows.reverse()
+
   return (
     <Paper>
       <Table>

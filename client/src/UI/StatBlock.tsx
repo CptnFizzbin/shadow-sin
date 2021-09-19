@@ -41,7 +41,7 @@ export const Stat: FC<StatProps> = ({
   }
 
   return (
-    <Box sx={{ display: 'flex', gap: 1 }}>
+    <Box sx={{ display: 'flex', gap: 1, whiteSpace: 'nowrap' }}>
       <Box sx={{ fontSize: 14, display: 'inline-block', color: 'primary.main', textAlign: 'left', flexGrow: 1 }}>
         {name}
       </Box>

@@ -2,8 +2,9 @@ import { Typography } from '@material-ui/core'
 import { FC } from 'react'
 
 import { useAllGear } from '../../../Gear/GearContext'
+import { KitAttr } from '../../../Gear/Kit/KitAttr'
 import { KitType } from '../../../Gear/Kit/KitType'
-import { OtherGearAttr, OtherGearData } from '../../../Gear/OtherGearData'
+import { OtherGearData } from '../../../Gear/OtherGearData'
 import { DamageType } from '../../../System/Damage/DamageType'
 import { ActiveSkillId } from '../../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool, DicePools, skillSpecialtyBonus } from '../../../UI/DicePool'
@@ -101,8 +102,8 @@ const MedkitPool: FC = () => {
   if (!medKit) return null
 
   const bonuses: DiceGroup[] = []
-  if (medKit.attributes && medKit.attributes[OtherGearAttr.medkitRating])
-    bonuses.push({ name: 'Medkit', size: medKit.attributes[OtherGearAttr.medkitRating] as number || 0 })
+  if (medKit.attributes && medKit.attributes[KitAttr.medkitRating])
+    bonuses.push({ name: 'Medkit', size: medKit.attributes[KitAttr.medkitRating] as number || 0 })
 
   return (
     <DicePool

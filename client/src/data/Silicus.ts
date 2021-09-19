@@ -2,12 +2,14 @@ import { nextRecordId } from '../Api/Model'
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
-import { ArmorAttrs } from '../Gear/Armor/ArmorAttrs'
+import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
 import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
+import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
 import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
+import { KitAttr } from '../Gear/Kit/KitAttr'
 import { KitType } from '../Gear/Kit/KitType'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
@@ -43,8 +45,20 @@ export const Silicus: CharacterData = {
 
   nuyen: [
     {
+      id: 'bb9f128e-641a-4a71-a980-b46ae4358b32',
+      date: '2021-08-28T00:03',
+      value: -9_000,
+      note: '3 months lifestyle (middle)',
+    },
+    {
+      id: '737b40e5-9820-4382-98f5-2d564565ed4e',
+      date: '2021-08-28T00:02',
+      value: -439_575,
+      note: 'Char creation Gear',
+    },
+    {
       id: '24b4f26a-0c8e-42d0-b8e9-49e668785783',
-      date: '2021-08-28',
+      date: '2021-08-28T00:01',
       value: 450_000,
       note: 'Char creation',
     },
@@ -53,7 +67,7 @@ export const Silicus: CharacterData = {
   lifestyle: {
     grade: 'middle',
     upkeep: 3_000,
-    prepaid: 6,
+    prepaid: 3,
   },
 
   attributes: {
@@ -96,13 +110,14 @@ export const Silicus: CharacterData = {
       rank: 5,
       attr: 'logic',
       altAttr: 'intuition',
-      speciality: 'First Aid',
+      expertise: 'First Aid',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.firearms,
       rank: 6,
       attr: 'agility',
+      speciality: 'Automatics',
     },
     {
       type: SkillType.active,
@@ -158,15 +173,6 @@ export const Silicus: CharacterData = {
       source: { book: 'COR', page: 71 },
       gameEffect: 'Increase max of one Physical or Mental attribute by 1',
       cost: 12,
-    },
-    {
-      name: 'Blandness',
-      source: { book: 'COR', page: 70 },
-      gameEffect: (`
-        -2 penalty to Memory test to remember if they have seen me before.
-        Threshold to tests to notice if I am following them is increased by 1. 
-      `),
-      bonus: 10,
     },
   ],
 }
@@ -316,11 +322,31 @@ addGear<WeaponData>({
     [WeaponAttr.modes]: 'SS',
     [WeaponAttr.attackRatings]: '10/6/-/-/-',
     [WeaponAttr.ammo]: '4(m)',
-    'Max Range': '20m',
+    [WeaponAttr.maxRange]: '20m',
   },
 }, [
   addGear(smartGunIntMod),
 ])
+
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'COR', page: 254 },
+  gearType: GearType.weapon,
+  name: 'Survival Knife',
+  type: 'Blade',
+  avail: { rarity: 2 },
+  cost: 250,
+
+  attributes: {
+    [WeaponAttr.dv]: '3P',
+    [WeaponAttr.modes]: 'SA/BF/FA',
+    [WeaponAttr.attackRatings]: '8/2/-/-/-',
+    [WeaponAttr.maxRange]: '20m',
+  },
+
+  specialtySkill: ActiveSkillId.closeCombat,
+  specialtyName: 'Blades',
+})
 
 addGear<AugmentData>({
   id: null,
@@ -329,7 +355,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   source: { book: 'COR', page: 293 },
   avail: { rarity: 4, license: true },
-  cost: 47_500,
+  cost: 142_500,
 
   description: (`
     The nerve cells making up the spinal cord are both broadened and replicated 
@@ -347,7 +373,7 @@ addGear<AugmentData>({
     [AugmentAttr.rating]: 3,
   },
 
-  essenceCost: 0.55,
+  essenceCost: 1.65,
   augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
@@ -373,7 +399,6 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 1,
   },
 
   essenceCost: 0.22,
@@ -416,7 +441,7 @@ addGear<AugmentData>({
   type: 'Bioware Augment',
   source: { book: 'COR', page: 291 },
   avail: { rarity: 3, license: true },
-  cost: 5_000,
+  cost: 24_000,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.alpha,
@@ -428,13 +453,48 @@ addGear<AugmentData>({
       Melee damage: 3P, Atk. Rating: +2
   `),
 
-  essenceCost: 0.66,
+  essenceCost: 0.48,
   augmentSlot: AugmentSlot.bioware,
 
   effects: [
     { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
     // Melee damage: 3P
     // Melee Atk. Rating: +2
+  ],
+})
+
+addGear<AugmentData>({
+  id: null,
+  name: 'Pain Editor',
+  type: 'Cultured Bioware Augment',
+  gearType: GearType.augment,
+  source: { book: 'COR', page: 293 },
+  avail: { rarity: 5, illegal: true },
+  cost: 72_000,
+
+  description: (`
+    This cluster of specialized nervous tissue is designed to filter sensory stimuli.
+    If the pain editor is active, this allows you to ignore all injury modifiers, 
+    and you can even stay conscious when your stun condition monitor is completely 
+    full. You feel no pain—you're blissfully, dangerously, recklessly unaware of
+    the extent of the damage you've taken without either performing a self-examination
+    (Observe in Detail action) or being informed by a biomonitor. While active, the
+    pain editor increases your willpower by 1 and decreases your intuition by 1;
+    additionally, all tactile Perception tests you make have their threshold increased
+    by 1. 
+  `),
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.beta,
+  },
+
+  essenceCost: 0.21,
+  augmentSlot: AugmentSlot.bioware,
+
+  enabled: true,
+  effects: [
+    { type: EffectType.attrBonus, attr: CharacterAttr.willpower, bonus: 1 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.intuition, bonus: -1 },
   ],
 })
 
@@ -486,38 +546,82 @@ addGear<AugmentData>({
 addGear({
   id: null,
   gearType: GearType.other,
-  name: 'Hermes Ikon',
+  name: 'Sony Emperor',
   type: 'Commlink',
   source: { book: 'COR', page: 267 },
-  avail: { rarity: 3 },
-  cost: 5_000,
+  avail: { rarity: 2 },
+  cost: 700,
 
   attributes: {
-    'commlink.deviceRating': 5,
-    'commlink.attributes': '3/0',
-    'commlink.programSlots': 2,
+    [CommlinkAttr.deviceRating]: 2,
+    [CommlinkAttr.attributes]: '1/1',
+    [CommlinkAttr.programSlots]: 1,
   },
-
-  essenceCost: 0.11,
-  augmentSlot: AugmentSlot.headware,
 })
 
-addGear<AugmentData>({
+addGear({
   id: null,
-  gearType: GearType.augment,
-  name: 'Datajack',
-  type: 'Headware Augment',
-  source: { book: 'COR', page: 283 },
-  avail: { rarity: 1 },
-  cost: 500,
+  gearType: GearType.other,
+  name: 'Biomonitor',
+  type: 'Biotech',
+  source: { book: 'COR', page: 281 },
+  avail: { rarity: 2 },
+  cost: 300,
+})
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'Glasses',
+  type: 'Clothing',
+  source: { book: 'COR', page: 285 },
+  avail: { rarity: 2 },
+  cost: 400,
 
   attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
+    [OtherGearAttr.capacity]: 4,
   },
+}, [
+  addGear({
+    id: null,
+    gearType: GearType.other,
+    name: 'Smartlink',
+    type: 'Visual Enhancement',
+    source: { book: 'COR', page: 275 },
+    avail: { rarity: 2 },
+    cost: 2_000,
 
-  essenceCost: 0.11,
-  augmentSlot: AugmentSlot.headware,
-})
+    attributes: {
+      [OtherGearAttr.capacityCost]: 2,
+    },
+  }),
+  addGear({
+    id: null,
+    gearType: GearType.other,
+    name: 'Imagelink',
+    type: 'Visual Enhancement',
+    source: { book: 'COR', page: 275 },
+    avail: { rarity: 1 },
+    cost: 25,
+
+    attributes: {
+      [OtherGearAttr.capacityCost]: 1,
+    },
+  }),
+  addGear({
+    id: null,
+    gearType: GearType.other,
+    name: 'Thermographic Vision',
+    type: 'Visual Enhancement',
+    source: { book: 'COR', page: 275 },
+    avail: { rarity: 2 },
+    cost: 500,
+
+    attributes: {
+      [OtherGearAttr.capacityCost]: 1,
+    },
+  }),
+])
 
 addGear<ArmorData>({
   id: null,
@@ -529,8 +633,8 @@ addGear<ArmorData>({
   cost: 1_000,
 
   attributes: {
-    [ArmorAttrs.defenseBonus]: 4,
-    [ArmorAttrs.capacity]: 8,
+    [ArmorAttr.defenseBonus]: 4,
+    [ArmorAttr.capacity]: 8,
   },
 })
 
@@ -572,7 +676,7 @@ addGear({
   cost: 1_500,
 
   attributes: {
-    [OtherGearAttr.medkitRating]: 6,
+    [KitAttr.medkitRating]: 6,
   },
 
   wirelessBonus: {

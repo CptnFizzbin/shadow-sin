@@ -463,7 +463,7 @@ const stdWeaponMount: VehicleModData = {
   gearType: GearType.vehicleMod,
   modType: ModType.stdWeaponMount,
   name: 'Standard Weapon Mount',
-  type: 'weapon mount',
+  type: 'vehicle mod',
   avail: { rarity: 5, illegal: true },
   cost: 4_500,
 }

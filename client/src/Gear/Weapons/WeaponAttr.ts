@@ -5,6 +5,7 @@ export enum WeaponAttr {
   attackRatings = 'weapon.attackRatings',
   modes = 'weapon.modes',
   ammo = 'weapon.ammo',
+  maxRange = 'weapon.maxRange',
 }
 
 registerAttrNames({
@@ -12,4 +13,5 @@ registerAttrNames({
   [WeaponAttr.attackRatings]: 'Atk. Ratings',
   [WeaponAttr.modes]: 'Modes',
   [WeaponAttr.ammo]: 'Ammo',
+  [WeaponAttr.maxRange]: 'Max Range',
 })
