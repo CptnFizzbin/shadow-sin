@@ -4,6 +4,7 @@ import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
+import { hasExpertise, hasSpecialty } from '../../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
@@ -25,7 +26,7 @@ interface VehiclePoolProps {
   vehicle: VehicleData
 }
 
-export const PilotEvadePool: FC<VehiclePoolProps> = () => {
+export const AutosoftPiloting: FC<VehiclePoolProps> = () => {
   const evasionAutosoft = useAutosoft(AutosoftType.evasion)
   const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
 
@@ -39,13 +40,38 @@ export const PilotEvadePool: FC<VehiclePoolProps> = () => {
 
   return <DicePool
     poolKey={VehiclePoolKeys.pilotEvade}
-    name={'Pilot Evade'}
+    name={'Autosoft Piloting'}
     groups={diceGroups}
     dmgPenaltyTypes={[DamageType.vehiclePhysical]}
   />
 }
 
-export const RiggedEvadePool: FC<VehiclePoolProps> = ({
+export const DriverPiloting: FC<VehiclePoolProps> = ({
+  vehicle,
+}) => {
+  const pilotingSkill = useActiveSkill(ActiveSkillId.piloting)
+  const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
+
+  const groups: DiceGroup[] = [
+    { name: 'Piloting', size: pilotingSkill?.rank },
+    { name: 'Reaction', size: reaction },
+  ]
+
+  if (hasSpecialty(pilotingSkill, vehicle.pilotingSpeciality)) groups.push(
+    { name: vehicle.pilotingSpeciality, size: 2 })
+  if (hasExpertise(pilotingSkill, vehicle.pilotingSpeciality)) groups.push(
+    { name: vehicle.pilotingSpeciality, size: 3 })
+
+  const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
+  return <DicePool
+    poolKey={VehiclePoolKeys.riggedEvade}
+    name={'Piloting'}
+    groups={groups}
+    dmgPenaltyTypes={dmgPenaltyTypes}
+  />
+}
+
+export const RiggedPiloting: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
   const pilotingSkill = useActiveSkill(ActiveSkillId.piloting)
@@ -64,10 +90,15 @@ export const RiggedEvadePool: FC<VehiclePoolProps> = ({
     { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
   ]
 
+  if (hasSpecialty(pilotingSkill, vehicle.pilotingSpeciality)) groups.push(
+    { name: vehicle.pilotingSpeciality, size: 2 })
+  if (hasExpertise(pilotingSkill, vehicle.pilotingSpeciality)) groups.push(
+    { name: vehicle.pilotingSpeciality, size: 3 })
+
   const dmgPenaltyTypes = [DamageType.charPhysical, DamageType.charStun, DamageType.vehiclePhysical]
   return <DicePool
     poolKey={VehiclePoolKeys.riggedEvade}
-    name={'Rigged Evade'}
+    name={'Rigged Piloting'}
     groups={groups}
     dmgPenaltyTypes={dmgPenaltyTypes}
   />

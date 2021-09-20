@@ -3,6 +3,7 @@ import { GearData } from './GearData'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
+  attrOverride = 'attrOverride',
   initBonus = 'initBonus',
   skillBonus = 'skillBonus',
   dicePoolBonus = 'dicePoolBonus',
@@ -20,6 +21,16 @@ interface AttrBonus extends BaseGearEffect {
 
 export function isAttrBonus (effect: BaseGearEffect): effect is AttrBonus {
   return effect.type === EffectType.attrBonus
+}
+
+interface AttrOverride extends BaseGearEffect {
+  type: EffectType.attrOverride
+  attr: string
+  value: number
+}
+
+export function isAttrOverride (effect: BaseGearEffect): effect is AttrOverride {
+  return effect.type === EffectType.attrOverride
 }
 
 interface InitBonus extends BaseGearEffect {
@@ -53,6 +64,7 @@ export function isDicePoolBonus (effect: BaseGearEffect): effect is DicePoolBonu
 
 export type Effect =
   | AttrBonus
+  | AttrOverride
   | InitBonus
   | SkillBonus
   | DicePoolBonus

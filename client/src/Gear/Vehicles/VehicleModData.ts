@@ -10,5 +10,5 @@ export enum ModType {
 
 export interface VehicleModData extends BaseGearData {
   gearType: GearType.vehicleMod
-  modType: ModType
+  modType?: ModType
 }

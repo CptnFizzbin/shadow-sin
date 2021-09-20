@@ -1,9 +1,9 @@
 import { createContext, FC, useContext } from 'react'
 
 import { isAugment } from '../Gear/Augments/AugmentData'
-import { collectGearEffects, isAttrBonus, isSkillBonus } from '../Gear/Effect'
+import { collectGearEffects, isSkillBonus } from '../Gear/Effect'
 import { GearProvider, useAllGear } from '../Gear/GearContext'
-import { AttrList } from '../System/Attribute'
+import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
@@ -22,20 +22,11 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   character,
   children,
 }) => {
-  const attributes: AttrList = {}
-
-  const attrBonuses = collectGearEffects(character.gear)
-    .filter(isAttrBonus)
+  const attributes = calculateAttributes(character.attributes, character.gear)
 
   attributes[CharacterAttr.essence] = character.gear
     .filter(isAugment)
     .reduce((essence, gear) => essence - gear.essenceCost, 6)
-
-  Object.entries(character.attributes).forEach(([attr, value]) => {
-    attributes[attr] = attrBonuses
-      .filter(effect => effect.attr === attr)
-      .reduce((sum, effect) => sum + effect.bonus, value)
-  })
 
   return (
     <CharacterContext.Provider value={character}>

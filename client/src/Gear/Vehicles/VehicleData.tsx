@@ -1,5 +1,5 @@
 import { RecordId } from '../../Api/Model'
-import { BaseGearData, GearData, GearType } from '../GearData'
+import { BaseGearData, GearType } from '../GearData'
 import { VehicleAttr } from './VehicleAttr'
 
 export interface VehicleData extends BaseGearData {
@@ -18,4 +18,5 @@ export interface VehicleData extends BaseGearData {
   }
 
   slavedTo?: RecordId
+  pilotingSpeciality: string
 }

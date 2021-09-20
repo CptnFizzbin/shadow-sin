@@ -1,18 +1,19 @@
-import { Typography } from '@material-ui/core'
+import { Paper, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import React, { FC } from 'react'
 
+import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { formatNuyen } from '../System/Nuyen'
 import { formatSource } from '../System/Source'
+import { AttributeBlock } from '../UI/AttributeBlock'
 import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { Stat } from '../UI/StatBlock'
 import { formatAvail } from './Availability'
-import { GearAttributes } from './GearAttributes'
 import { useAttachedGear } from './GearContext'
 import { GearInfoProps } from './GearInfo'
-import { NestedGear } from './NestedGear'
+import { GearList } from './GearList'
 
 export const GearInfoBlock: FC<GearInfoProps> = ({
   item,
@@ -35,8 +36,10 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
     || attachedGear.length > 0,
   )
 
+  const attributes = calculateAttributes(item.attributes || {}, attachedGear)
+
   return (
-    <AttributeProvider attributes={item.attributes || {}}>
+    <AttributeProvider attributes={attributes}>
       <InfoBlock
         title={item.name}
         quantity={item.quantity || 0}
@@ -64,11 +67,17 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
           </InfoSection>
         )}
 
-        {item.attributes && <GearAttributes item={item} />}
+        <InfoSection>
+          <AttributeBlock attributes={attributes} />
+        </InfoSection>
 
         {children}
 
-        <NestedGear item={item} />
+        {attachedGear.length >= 1 && (
+          <Paper variant="outlined" sx={{ padding: 1 }}>
+            <GearList gear={attachedGear} />
+          </Paper>
+        )}
       </InfoBlock>
     </AttributeProvider>
   )

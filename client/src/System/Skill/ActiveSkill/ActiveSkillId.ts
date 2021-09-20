@@ -33,3 +33,16 @@ export const registerSkillNames = (names: SkillNames): void => {
 export const formatSkill = (skillId: string): string => {
   return skillNames[skillId] || skillId
 }
+
+export enum FirearmSpecialties {
+  trasers = 'Tasers',
+  holdOuts = 'Hold-Outs',
+  lightPistols = 'Light Pistols',
+  machinePistols = 'Machine Pistols',
+  heavyPistols = 'Heavy Pistols',
+  submachineGuns = 'Submachine Guns',
+  shotguns = 'Shotguns',
+  rifles = 'Rifles',
+  machineGuns = 'Machine Guns',
+  assaultCannon = 'Assault Cannon',
+}

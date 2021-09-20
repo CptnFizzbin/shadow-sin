@@ -18,7 +18,7 @@ import { RccData } from '../Rcc/RccData'
 import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
-import { PilotEvadePool, RiggedEvadePool } from './DicePools'
+import { DriverPiloting, AutosoftPiloting, RiggedPiloting } from './DicePools'
 import { VehicleAttr } from './VehicleAttr'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
@@ -79,8 +79,9 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
 
             <Box sx={{ flexGrow: 1 }}>
               <GearDicePools>
-                <PilotEvadePool vehicle={vehicle} />
-                <RiggedEvadePool vehicle={vehicle} />
+                <DriverPiloting vehicle={vehicle} />
+                <AutosoftPiloting vehicle={vehicle} />
+                <RiggedPiloting vehicle={vehicle} />
               </GearDicePools>
 
               {rcc && (
