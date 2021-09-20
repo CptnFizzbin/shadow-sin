@@ -4,7 +4,7 @@ import { useCharacter } from '../Character/CharacterProvider'
 
 const nuyenFormatter = new Intl.NumberFormat('en')
 export const formatNuyen = (cost: number): string => {
-  return nuyenFormatter.format(cost) + '¥'
+  return nuyenFormatter.format(cost) + ' ¥'
 }
 
 export const useNuyenBalance = (): number => {
