@@ -7,7 +7,7 @@ import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
-import { OtherGearData } from '../Gear/OtherGearData'
+import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
 import { RccAttr } from '../Gear/Rcc/RccAttr'
 import { RccData } from '../Gear/Rcc/RccData'
 import { AutosoftAttr } from '../Gear/Software/Autosoft/AutosoftAttr'
@@ -18,7 +18,7 @@ import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
 export const Artemis: CharacterData = {
@@ -35,6 +35,18 @@ export const Artemis: CharacterData = {
 
   karma: [
     {
+      id: 'ac8b777c-143e-42c3-a2e1-9d8e53c00eb4',
+      date: '2021-09-19T22:00',
+      value: -10,
+      note: 'Body 1 => 2',
+    },
+    {
+      id: 'f2d5f7fb-612b-4e1f-b7f1-e65b71e85f98',
+      date: '2021-09-19T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
       id: '0b622011-0e72-4e75-883b-73a565b0e35f',
       date: '2021-09-11',
       value: 2,
@@ -48,30 +60,23 @@ export const Artemis: CharacterData = {
     },
   ],
 
-  nuyen: [
-    {
-      id: 'ff344122-9196-4c9f-98f6-42620097383a',
-      date: '2021-08-28',
-      value: 18_070,
-      note: 'Balance import',
-    },
-  ],
+  nuyen: [],
 
   lifestyle: {
     grade: 'middle',
-    upkeep: 3_000,
-    prepaid: 6,
+    upkeep: 5_000,
+    prepaid: 3,
   },
 
   attributes: {
-    [CharacterAttr.body]: 1,
+    [CharacterAttr.body]: 2,
     [CharacterAttr.agility]: 3,
-    [CharacterAttr.reaction]: 1,
+    [CharacterAttr.reaction]: 3,
     [CharacterAttr.strength]: 1,
     [CharacterAttr.willpower]: 2,
     [CharacterAttr.logic]: 7,
     [CharacterAttr.intuition]: 5,
-    [CharacterAttr.charisma]: 2,
+    [CharacterAttr.charisma]: 4,
     [CharacterAttr.edge]: 4,
   },
 
@@ -99,34 +104,27 @@ export const Artemis: CharacterData = {
   skills: [
     {
       type: SkillType.active,
+      skillId: ActiveSkillId.electronics,
+      rank: 3,
+      attr: 'logic',
+    },
+    {
+      type: SkillType.active,
       skillId: ActiveSkillId.firearms,
       rank: 3,
       attr: 'agility',
     },
     {
       type: SkillType.active,
-      skillId: ActiveSkillId.electronics,
-      rank: 4,
-      attr: 'logic',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.cracking,
-      rank: 3,
-      attr: 'logic',
-      altAttr: 'intuition',
-    },
-    {
-      type: SkillType.active,
       skillId: ActiveSkillId.piloting,
       rank: 6,
-      attr: 'logic',
+      attr: 'reaction',
       speciality: 'Ground Craft',
     },
     {
       type: SkillType.active,
       skillId: ActiveSkillId.engineering,
-      rank: 5,
+      rank: 7,
       attr: 'logic',
       altAttr: 'intuition',
     },
@@ -171,33 +169,33 @@ export const Artemis: CharacterData = {
   qualities: [
     {
       name: 'Exceptional (Logic)',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       cost: 12,
     },
     {
       name: 'Social Stress (Large Groups)',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       bonus: 8,
     },
     {
       name: 'Juryrigger',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       cost: 12,
     },
     {
       name: 'Photographic Memory',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       cost: 12,
     },
     {
       name: 'Analytical Mind',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       gameEffect: 'Bonus edge when making Logic tests',
       cost: 3,
     },
     {
       name: 'Ambidextrous',
-      source: { book: 'COR', page: 2 },
+      source: { book: 'CRB', page: 2 },
       cost: 4,
     },
   ],
@@ -214,7 +212,7 @@ export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGe
 
 const smartGunIntMod: WeaponModData = {
   id: null,
-  source: { book: 'COR', page: 260 },
+  source: { book: 'CRB', page: 260 },
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
   type: 'Weapon Mod',
@@ -248,9 +246,52 @@ addGear<AugmentData>({
   },
 })
 
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Cerebral Booster',
+  type: 'Cultured Bioware Augment',
+  avail: { rarity: 4 },
+  cost: 47_250,
+  augmentSlot: AugmentSlot.bioware,
+  essenceCost: 0.66,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.rating]: 3,
+  },
+
+  effects: [
+    { type: EffectType.attrBonus, attr: CharacterAttr.logic, bonus: 3 },
+  ],
+})
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Sleep Regulator',
+  type: 'Cultured Bioware Augment',
+  avail: { rarity: 4 },
+  source: { book: 'CRB', page: 293 },
+  cost: 6_000,
+  augmentSlot: AugmentSlot.bioware,
+  essenceCost: 0.11,
+
+  description: (`
+    You need less sleep per day, and the sleep you get is deep and restful (and harder
+    to wake up from). The sleep regulator lets you get by with three hours of sleep
+    each night, and you can stay awake for twice as long as normal without acquiring 
+    the Fatigued status. Resting hours for healing purposes are not affected.
+  `),
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+  },
+})
+
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 254 },
+  source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
   type: 'Submachine Gun',
@@ -264,12 +305,12 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'automatics',
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.submachineGuns,
 }, [
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
     type: 'Weapon Mod',
@@ -279,7 +320,7 @@ addGear<WeaponData>({
   }),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Laser sight',
     type: 'Weapon Mod',
@@ -288,7 +329,7 @@ addGear<WeaponData>({
   }),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Flashlight',
     type: 'Weapon Mod',
@@ -300,7 +341,7 @@ addGear<WeaponData>({
 
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 252 },
+  source: { book: 'CRB', page: 252 },
   gearType: GearType.weapon,
   name: 'Colt America L36',
   type: 'Light Pistol',
@@ -319,30 +360,8 @@ addGear<WeaponData>({
       'The user can alter ownership with a Minor Action',
   },
 
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'pistols',
-}, [
-  addGear(smartGunIntMod),
-])
-
-addGear<WeaponData>({
-  id: null,
-  source: { book: 'COR', page: 253 },
-  gearType: GearType.weapon,
-  name: 'Ares Predator VI',
-  type: 'Heavy Pistol',
-  avail: { rarity: 2, license: true },
-  cost: 750,
-
-  attributes: {
-    [WeaponAttr.dv]: '3P',
-    [WeaponAttr.modes]: 'SA/BF',
-    [WeaponAttr.attackRatings]: '10/10/8/-/-',
-    [WeaponAttr.ammo]: '15(c)',
-  },
-
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'pistols',
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.lightPistols,
 }, [
   addGear(smartGunIntMod),
 ])
@@ -367,11 +386,11 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Clearsight',
     type: 'Autosoft',
-    avail: { rarity: 7 },
-    cost: 3_500,
+    avail: { rarity: 8 },
+    cost: 4_000,
 
     attributes: {
-      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.rating]: 8,
       [AutosoftAttr.skill]: 'Perception',
       [AutosoftAttr.attr]: 'Sensor',
     },
@@ -381,11 +400,11 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Evasion',
     type: 'Autosoft',
-    avail: { rarity: 5 },
-    cost: 2_500,
+    avail: { rarity: 8 },
+    cost: 4_000,
 
     attributes: {
-      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.rating]: 8,
       [AutosoftAttr.skill]: 'Evasion',
       [AutosoftAttr.attr]: 'Pilot',
     },
@@ -395,11 +414,11 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Maneuvering',
     type: 'Autosoft',
-    avail: { rarity: 5 },
-    cost: 2_500,
+    avail: { rarity: 8 },
+    cost: 4_000,
 
     attributes: {
-      [AutosoftAttr.rating]: 5,
+      [AutosoftAttr.rating]: 8,
       [AutosoftAttr.skill]: 'Piloting',
       [AutosoftAttr.attr]: 'Pilot',
     },
@@ -409,11 +428,11 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
     type: 'Autosoft',
-    avail: { rarity: 7 },
-    cost: 3_500,
+    avail: { rarity: 8 },
+    cost: 4_000,
 
     attributes: {
-      [AutosoftAttr.rating]: 7,
+      [AutosoftAttr.rating]: 8,
       [AutosoftAttr.skill]: 'Cracking',
       [AutosoftAttr.attr]: 'Sensor',
     },
@@ -454,8 +473,8 @@ const fnHar: WeaponData = {
     [WeaponAttr.ammo]: '35(c)',
   },
 
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'Automatics',
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.rifles,
 }
 
 const stdWeaponMount: VehicleModData = {
@@ -476,6 +495,23 @@ const riggerInterface: VehicleModData = {
   type: 'vehicle mod',
   avail: { rarity: 2, license: true },
   cost: 1_000,
+}
+
+const sensorArray: VehicleModData = {
+  id: null,
+  gearType: GearType.vehicleMod,
+  name: 'Sensor Array',
+  type: 'vehicle mod',
+  avail: { rarity: 3 },
+  cost: 4_000,
+
+  attributes: {
+    [OtherGearAttr.rating]: 4,
+  },
+
+  effects: [
+    { type: EffectType.attrOverride, attr: VehicleAttr.sensor, value: 4 },
+  ],
 }
 
 addGear<VehicleData>({
@@ -499,6 +535,7 @@ addGear<VehicleData>({
   },
 
   slavedTo: rcc.id,
+  pilotingSpeciality: 'Ground Craft',
 }, [
   addGear(riggerInterface),
   rcc,
@@ -526,11 +563,13 @@ new Array(2).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
+    pilotingSpeciality: 'Aircraft',
   }, [
-    addGear(riggerInterface),
     addGear(stdWeaponMount, [
       addGear(fnHar),
     ]),
+    addGear(riggerInterface),
+    addGear(sensorArray),
   ])
 })
 
@@ -556,15 +595,17 @@ new Array(4).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
+    pilotingSpeciality: 'Ground Craft',
   }, [
-    addGear(riggerInterface),
     addGear(stdWeaponMount, [
       addGear(fnHar),
     ]),
+    addGear(riggerInterface),
+    addGear(sensorArray),
   ])
 })
 
-new Array(1).fill(null).forEach((_, index) => {
+new Array(2).fill(null).forEach((_, index) => {
   addGear<VehicleData>({
     id: null,
     gearType: GearType.vehicle,
@@ -586,27 +627,55 @@ new Array(1).fill(null).forEach((_, index) => {
     },
 
     slavedTo: rcc.id,
+    pilotingSpeciality: 'Aircraft',
   }, [
     addGear(riggerInterface),
   ])
 })
+
+addGear<VehicleData>({
+  id: null,
+  gearType: GearType.vehicle,
+  type: 'Micro Rotor Drone',
+  name: 'MCT Gnat',
+  cost: 800,
+  quantity: 10,
+  avail: { rarity: 2 },
+
+  attributes: {
+    [VehicleAttr.handling]: 3,
+    [VehicleAttr.accel]: 4,
+    [VehicleAttr.speedInterval]: 10,
+    [VehicleAttr.topSpeed]: 30,
+    [VehicleAttr.body]: 0,
+    [VehicleAttr.armor]: 0,
+    [VehicleAttr.pilot]: 2,
+    [VehicleAttr.sensor]: 1,
+    [VehicleAttr.seat]: null,
+  },
+
+  slavedTo: rcc.id,
+  pilotingSpeciality: 'Aircraft',
+}, [
+  addGear(riggerInterface),
+])
 
 addGear<AugmentData>({
   id: null,
   gearType: GearType.augment,
   name: 'Cybereyes',
   type: 'Augment',
-  source: { book: 'COR', page: 285 },
-  avail: { rarity: 2 },
-  cost: 5_000,
+  source: { book: 'CRB', page: 285 },
+  avail: { rarity: 4 },
+  cost: 12_000,
 
   attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 4,
+    [AugmentAttr.grade]: AugmentGrade.alpha,
+    [AugmentAttr.rating]: 3,
     [AugmentAttr.capacity]: 12,
   },
 
-  essenceCost: 0.44,
+  essenceCost: 0.32,
   augmentSlot: AugmentSlot.eyeware,
 }, [
   addGear<AugmentData>({
@@ -614,16 +683,16 @@ addGear<AugmentData>({
     gearType: GearType.augment,
     name: 'Smartlink',
     type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 2, license: true },
-    cost: 2_000,
+    source: { book: 'CRB', page: 275 },
+    avail: { rarity: 4, license: true },
+    cost: 4_800,
 
     attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 3,
     },
 
-    essenceCost: 0.22,
+    essenceCost: 0.16,
     augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
@@ -631,15 +700,16 @@ addGear<AugmentData>({
     gearType: GearType.augment,
     name: 'Imagelink',
     type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 750,
+    source: { book: 'CRB', page: 275 },
+    avail: { rarity: 3 },
+    cost: 960,
 
     attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.grade]: AugmentGrade.alpha,
+      [AugmentAttr.capacityCost]: 0,
     },
 
-    essenceCost: 0.11,
+    essenceCost: 0.08,
     augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
@@ -647,33 +717,16 @@ addGear<AugmentData>({
     gearType: GearType.augment,
     name: 'Low-Light Vision',
     type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 750,
+    source: { book: 'CRB', page: 275 },
+    avail: { rarity: 3 },
+    cost: 900,
 
     attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
     },
 
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.eyeware,
-  }),
-  addGear<AugmentData>({
-    id: null,
-    gearType: GearType.augment,
-    name: 'Thermographic Vision',
-    type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 1 },
-    cost: 1_000,
-
-    attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
-      [AugmentAttr.capacityCost]: 2,
-    },
-
-    essenceCost: 0.11,
+    essenceCost: 0.08,
     augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
@@ -681,16 +734,33 @@ addGear<AugmentData>({
     gearType: GearType.augment,
     name: 'Vision Enhancement',
     type: 'Cybereye Augment',
-    source: { book: 'COR', page: 285 },
-    avail: { rarity: 2 },
-    cost: 2_000,
+    source: { book: 'CRB', page: 275 },
+    avail: { rarity: 4 },
+    cost: 4_800,
 
     attributes: {
-      [AugmentAttr.grade]: AugmentGrade.used,
+      [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
     },
 
-    essenceCost: 0.11,
+    essenceCost: 0.08,
+    augmentSlot: AugmentSlot.eyeware,
+  }),
+  addGear<AugmentData>({
+    id: null,
+    gearType: GearType.augment,
+    name: 'Vision Magnification',
+    type: 'Cybereye Augment',
+    source: { book: 'CRB', page: 275 },
+    avail: { rarity: 4 },
+    cost: 2_400,
+
+    attributes: {
+      [AugmentAttr.grade]: AugmentGrade.alpha,
+      [AugmentAttr.capacityCost]: 2,
+    },
+
+    essenceCost: 0.08,
     augmentSlot: AugmentSlot.eyeware,
   }),
 ])
@@ -700,7 +770,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Commlink',
   type: 'Headware Augment',
-  source: { book: 'COR', page: 283 },
+  source: { book: 'CRB', page: 283 },
   avail: { rarity: 1 },
   cost: 1_000,
 
@@ -716,7 +786,7 @@ addGear<AugmentData>({
     gearType: GearType.other,
     name: 'Hermes Ikon',
     type: 'Commlink',
-    source: { book: 'COR', page: 267 },
+    source: { book: 'CRB', page: 267 },
     avail: { rarity: 3 },
     cost: 5_000,
 
@@ -725,18 +795,15 @@ addGear<AugmentData>({
       'commlink.attributes': '3/0',
       'commlink.programSlots': 2,
     },
-
-    essenceCost: 0.11,
-    augmentSlot: AugmentSlot.bioware,
   }),
 ])
 
 addGear<AugmentData>({
   id: null,
   gearType: GearType.augment,
-  name: 'Reaction Enahancers',
+  name: 'Reaction Enhancers',
   type: 'Bodyware Augment',
-  source: { book: 'COR', page: 283 },
+  source: { book: 'CRB', page: 287 },
   avail: { rarity: 3, license: true },
   cost: 22_500,
 
@@ -746,7 +813,7 @@ addGear<AugmentData>({
   },
 
   essenceCost: 0.99,
-  augmentSlot: AugmentSlot.headware,
+  augmentSlot: AugmentSlot.bodyware,
 
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
@@ -758,7 +825,7 @@ addGear<SinData>({
   gearType: GearType.sin,
   name: 'Davina Hasselhoff',
   type: 'Fake SIN',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
   cost: 15_000,
 
@@ -774,7 +841,7 @@ addGear<SinData>({
   gearType: GearType.sin,
   name: 'Sara McCabe',
   type: 'Fake SIN',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
   cost: 10_000,
 
@@ -790,7 +857,7 @@ addGear<SinData>({
   gearType: GearType.sin,
   name: 'Jane Smith',
   type: 'Fake SIN',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
   cost: 5_000,
 
@@ -800,3 +867,52 @@ addGear<SinData>({
     [SinAttr.rating]: 2,
   },
 })
+
+addGear({
+  id: null,
+  gearType: GearType.other,
+  name: 'Engineering Workshop',
+  type: 'Facility',
+  source: { book: 'CRB', page: 273 },
+  avail: { rarity: 7 },
+  cost: 50_000,
+})
+
+Artemis.nuyen = [
+  {
+    id: '16d0a750-32c4-47eb-8c22-b7070e21dd31',
+    date: '2021-09-19T22:00',
+    value: -22_500,
+    note: 'Buy Reaction Enhancers',
+  },
+  {
+    id: '4dd2c72c-bbaf-4d71-b48f-ef276b2f8421',
+    date: '2021-09-19T16:00',
+    value: 25_000,
+    note: 'Session Reward',
+  },
+  {
+    id: '5119778e-31f6-47ce-bdbc-b63f80d35bb0',
+    date: '2021-08-28T00:04',
+    value: 18_070,
+    note: 'Session Reward',
+  },
+  {
+    id: '21cc28eb-8b84-4df3-995e-94a5553ff52f',
+    date: '2021-08-28T00:03',
+    value: -15_000,
+    note: 'Lifestyle (3 months)',
+  },
+  {
+    id: '62535d44-5922-4fb4-8cf4-295434279d72',
+    date: '2021-08-28T00:02',
+    value: -432_665,
+    note: 'Starting Gear',
+  },
+  {
+    id: 'ff344122-9196-4c9f-98f6-42620097383a',
+    date: '2021-08-28T00:01',
+    value: 450_000,
+    note: 'Character Creation',
+  },
+]

@@ -20,7 +20,7 @@ import { ModType } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
 export const Silicus: CharacterData = {
@@ -36,6 +36,12 @@ export const Silicus: CharacterData = {
 
   karma: [
     {
+      id: '43d8f19c-7c78-4f6e-95ae-9895781556f1',
+      date: '2021-09-19T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
       id: '06c06985-4024-45e3-9a73-a49375e0b095',
       date: '2021-09-12',
       value: 2,
@@ -44,6 +50,12 @@ export const Silicus: CharacterData = {
   ],
 
   nuyen: [
+    {
+      id: 'cb349d2e-d2ca-40b6-ac31-6134f07312f9',
+      date: '2021-09-19T16:00',
+      value: 25_000,
+      note: 'Session reward',
+    },
     {
       id: 'bb9f128e-641a-4a71-a980-b46ae4358b32',
       date: '2021-08-28T00:03',
@@ -66,7 +78,7 @@ export const Silicus: CharacterData = {
 
   lifestyle: {
     grade: 'middle',
-    upkeep: 3_000,
+    upkeep: 5_000,
     prepaid: 3,
   },
 
@@ -164,13 +176,13 @@ export const Silicus: CharacterData = {
   qualities: [
     {
       name: 'Analytical Mind',
-      source: { book: 'COR', page: 70 },
+      source: { book: 'CRB', page: 70 },
       gameEffect: 'Bonus edge when making Logic tests',
       cost: 3,
     },
     {
       name: 'Exceptional (Agility)',
-      source: { book: 'COR', page: 71 },
+      source: { book: 'CRB', page: 71 },
       gameEffect: 'Increase max of one Physical or Mental attribute by 1',
       cost: 12,
     },
@@ -188,7 +200,7 @@ function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: Gea
 
 const smartGunIntMod: WeaponModData = {
   id: null,
-  source: { book: 'COR', page: 260 },
+  source: { book: 'CRB', page: 260 },
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
   type: 'Weapon Mod',
@@ -211,7 +223,7 @@ const smartGunIntMod: WeaponModData = {
 
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 254 },
+  source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
   type: 'Submachine Gun',
@@ -225,12 +237,12 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'automatics',
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.submachineGuns,
 }, [
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
     type: 'Weapon Mod',
@@ -240,7 +252,7 @@ addGear<WeaponData>({
   }),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Laser sight',
     type: 'Weapon Mod',
@@ -249,7 +261,7 @@ addGear<WeaponData>({
   }),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 254 },
+    source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Flashlight',
     type: 'Weapon Mod',
@@ -260,7 +272,7 @@ addGear<WeaponData>({
   addGear(smartGunIntMod),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 259 },
+    source: { book: 'CRB', page: 259 },
     gearType: GearType.weaponMod,
     name: 'Gas Vent',
     type: 'Weapon Mod',
@@ -276,7 +288,7 @@ addGear<WeaponData>({
 
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 255 },
+  source: { book: 'CRB', page: 255 },
   gearType: GearType.weapon,
   name: 'Ares Viper Silvergun',
   type: 'Heavy Pistol',
@@ -290,13 +302,13 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '30(c)',
   },
 
-  specialtySkill: ActiveSkillId.firearms,
-  specialtyName: 'pistols',
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.heavyPistols,
 }, [
   addGear(smartGunIntMod),
   addGear<WeaponModData>({
     id: null,
-    source: { book: 'COR', page: 260 },
+    source: { book: 'CRB', page: 260 },
     gearType: GearType.weaponMod,
     name: 'Quick Draw Holster',
     type: 'Weapon Mod',
@@ -310,7 +322,7 @@ addGear<WeaponData>({
 
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 255 },
+  source: { book: 'CRB', page: 255 },
   gearType: GearType.weapon,
   name: 'Defiance SuperShocker',
   type: 'Taser',
@@ -324,13 +336,16 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '4(m)',
     [WeaponAttr.maxRange]: '20m',
   },
+
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.trasers,
 }, [
   addGear(smartGunIntMod),
 ])
 
 addGear<WeaponData>({
   id: null,
-  source: { book: 'COR', page: 254 },
+  source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'Survival Knife',
   type: 'Blade',
@@ -344,7 +359,7 @@ addGear<WeaponData>({
     [WeaponAttr.maxRange]: '20m',
   },
 
-  specialtySkill: ActiveSkillId.closeCombat,
+  skill: ActiveSkillId.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -353,7 +368,7 @@ addGear<AugmentData>({
   name: 'Synaptic Booster',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'COR', page: 293 },
+  source: { book: 'CRB', page: 293 },
   avail: { rarity: 4, license: true },
   cost: 142_500,
 
@@ -364,7 +379,7 @@ addGear<AugmentData>({
     adjustment to Initiative Score), 1 additional Initiative Die, and 1 additional
     Minor Action per point of Rating. The synaptic booster cannot be combined with 
     any other form of Reaction or Initiative enhancement. Unlike other enhancements,
-    this cannot be turned off, leaving the use in a perpetual state of being in
+    this cannot be turned off, leaving the user in a perpetual state of being in
     surrounded by slow motion.  
   `),
 
@@ -388,7 +403,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Platelet Factories',
   type: 'Bioware Augment',
-  source: { book: 'COR', page: 292 },
+  source: { book: 'CRB', page: 292 },
   avail: { rarity: 3 },
   cost: 8_500,
 
@@ -410,7 +425,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Muscle Toner',
   type: 'Bioware Augment',
-  source: { book: 'COR', page: 292 },
+  source: { book: 'CRB', page: 292 },
   avail: { rarity: 3, license: true },
   cost: 64_000,
 
@@ -439,7 +454,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Bone Density',
   type: 'Bioware Augment',
-  source: { book: 'COR', page: 291 },
+  source: { book: 'CRB', page: 291 },
   avail: { rarity: 3, license: true },
   cost: 24_000,
 
@@ -468,7 +483,7 @@ addGear<AugmentData>({
   name: 'Pain Editor',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'COR', page: 293 },
+  source: { book: 'CRB', page: 293 },
   avail: { rarity: 5, illegal: true },
   cost: 72_000,
 
@@ -503,7 +518,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Reflex Recorder (Firearms)',
   type: 'Cultured Bioware Augment',
-  source: { book: 'COR', page: 293 },
+  source: { book: 'CRB', page: 293 },
   avail: { rarity: 4 },
   cost: 7_000,
 
@@ -525,7 +540,7 @@ addGear<AugmentData>({
   gearType: GearType.augment,
   name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
-  source: { book: 'COR', page: 293 },
+  source: { book: 'CRB', page: 293 },
   avail: { rarity: 5 },
   cost: 47_250,
 
@@ -548,7 +563,7 @@ addGear({
   gearType: GearType.other,
   name: 'Sony Emperor',
   type: 'Commlink',
-  source: { book: 'COR', page: 267 },
+  source: { book: 'CRB', page: 267 },
   avail: { rarity: 2 },
   cost: 700,
 
@@ -564,7 +579,7 @@ addGear({
   gearType: GearType.other,
   name: 'Biomonitor',
   type: 'Biotech',
-  source: { book: 'COR', page: 281 },
+  source: { book: 'CRB', page: 281 },
   avail: { rarity: 2 },
   cost: 300,
 })
@@ -574,7 +589,7 @@ addGear({
   gearType: GearType.other,
   name: 'Glasses',
   type: 'Clothing',
-  source: { book: 'COR', page: 285 },
+  source: { book: 'CRB', page: 285 },
   avail: { rarity: 2 },
   cost: 400,
 
@@ -587,7 +602,7 @@ addGear({
     gearType: GearType.other,
     name: 'Smartlink',
     type: 'Visual Enhancement',
-    source: { book: 'COR', page: 275 },
+    source: { book: 'CRB', page: 275 },
     avail: { rarity: 2 },
     cost: 2_000,
 
@@ -600,7 +615,7 @@ addGear({
     gearType: GearType.other,
     name: 'Imagelink',
     type: 'Visual Enhancement',
-    source: { book: 'COR', page: 275 },
+    source: { book: 'CRB', page: 275 },
     avail: { rarity: 1 },
     cost: 25,
 
@@ -613,7 +628,7 @@ addGear({
     gearType: GearType.other,
     name: 'Thermographic Vision',
     type: 'Visual Enhancement',
-    source: { book: 'COR', page: 275 },
+    source: { book: 'CRB', page: 275 },
     avail: { rarity: 2 },
     cost: 500,
 
@@ -628,7 +643,7 @@ addGear<ArmorData>({
   gearType: GearType.armor,
   name: 'Armor Jacket',
   type: 'Armor',
-  source: { book: 'COR', page: 265 },
+  source: { book: 'CRB', page: 265 },
   avail: { rarity: 2 },
   cost: 1_000,
 
@@ -643,7 +658,7 @@ addGear({
   gearType: GearType.armor,
   name: 'Auctioneer Business Clothes',
   type: 'Armor',
-  source: { book: 'COR', page: 265 },
+  source: { book: 'CRB', page: 265 },
   avail: { rarity: 2 },
   cost: 1_500,
 
@@ -657,7 +672,7 @@ addGear({
     gearType: GearType.armorMod,
     name: 'Concealed Hostler',
     type: 'Armor Mod',
-    source: { book: 'COR', page: 259 },
+    source: { book: 'CRB', page: 259 },
 
     wirelessBonus: {
       enabled: true,
@@ -671,7 +686,7 @@ addGear({
   gearType: GearType.other,
   name: 'Medkit',
   type: 'Biotech',
-  source: { book: 'COR', page: 281 },
+  source: { book: 'CRB', page: 281 },
   avail: { rarity: 3 },
   cost: 1_500,
 
@@ -693,7 +708,7 @@ addGear({
     gearType: GearType.other,
     name: 'Medkit Supplies',
     type: 'Supplies',
-    source: { book: 'COR', page: 273 },
+    source: { book: 'CRB', page: 273 },
     avail: { rarity: 1 },
     cost: 100,
     quantity: 5,
@@ -705,7 +720,7 @@ addGear({
   gearType: GearType.other,
   name: 'First Aid Kit',
   type: 'Kit',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 1 },
   cost: 500,
 
@@ -717,7 +732,7 @@ addGear({
   gearType: GearType.other,
   name: 'Trauma Patch',
   type: 'Slap Patch',
-  source: { book: 'COR', page: 282 },
+  source: { book: 'CRB', page: 282 },
   avail: { rarity: 3 },
   cost: 500,
   quantity: 2,
@@ -734,7 +749,7 @@ addGear<VehicleData>({
   type: 'Bike',
   cost: 12_000,
   avail: { rarity: 2 },
-  source: { book: 'COR', page: 295 },
+  source: { book: 'CRB', page: 295 },
 
   attributes: {
     [VehicleAttr.handling]: '2/6',
@@ -747,6 +762,8 @@ addGear<VehicleData>({
     [VehicleAttr.sensor]: 1,
     [VehicleAttr.seat]: 1,
   },
+
+  pilotingSpeciality: 'Ground Craft',
 })
 
 addGear<VehicleData>({
@@ -756,7 +773,7 @@ addGear<VehicleData>({
   type: 'Car',
   cost: 20_000,
   avail: { rarity: 2 },
-  source: { book: 'COR', page: 295 },
+  source: { book: 'CRB', page: 295 },
 
   attributes: {
     [VehicleAttr.handling]: '3/5',
@@ -769,6 +786,8 @@ addGear<VehicleData>({
     [VehicleAttr.sensor]: 1,
     [VehicleAttr.seat]: 3,
   },
+
+  pilotingSpeciality: 'Ground Craft',
 }, [
   addGear({
     id: null,
@@ -786,7 +805,7 @@ addGear<SinData>({
   gearType: GearType.sin,
   name: 'Jake Ozbourne',
   type: 'Fake SIN',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
   cost: 15_000,
 
@@ -801,7 +820,7 @@ addGear<SinData>({
     gearType: GearType.license,
     name: 'License: Concealed Carry',
     type: 'Fake License',
-    source: { book: 'COR', page: 273 },
+    source: { book: 'CRB', page: 273 },
     avail: { rarity: 4, illegal: true },
     cost: 1_000,
 
@@ -814,7 +833,7 @@ addGear<SinData>({
     gearType: GearType.license,
     name: 'License: Firearm Carry',
     type: 'Fake License',
-    source: { book: 'COR', page: 273 },
+    source: { book: 'CRB', page: 273 },
     avail: { rarity: 4, illegal: true },
     cost: 1_000,
 
@@ -827,7 +846,7 @@ addGear<SinData>({
     gearType: GearType.license,
     name: 'License: Ares Viper Silvergun',
     type: 'Fake License',
-    source: { book: 'COR', page: 273 },
+    source: { book: 'CRB', page: 273 },
     avail: { rarity: 4, illegal: true },
     cost: 1_000,
 
@@ -842,7 +861,7 @@ addGear<SinData>({
   gearType: GearType.sin,
   name: 'Picard DeLance',
   type: 'Fake SIN',
-  source: { book: 'COR', page: 273 },
+  source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
   cost: 10_000,
 
