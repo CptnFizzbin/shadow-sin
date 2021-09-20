@@ -26,7 +26,7 @@ export enum AugmentSlot {
   headware = 'headware',
   eyeware = 'eyeware',
   earwear = 'earwear',
-  bodywear = 'bodywear',
+  bodyware = 'bodyware',
   cyberlimb = 'cyberlimb',
   bioware = 'bioware',
 }

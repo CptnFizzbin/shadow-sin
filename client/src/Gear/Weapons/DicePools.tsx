@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
+import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
 import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool, skillSpecialtyBonus } from '../../UI/DicePool'
@@ -26,7 +27,7 @@ interface FirearmPoolProps {
 export const BasicAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const firearmsSkill = useActiveSkill(ActiveSkillId.firearms)
+  const firearmsSkill = useActiveSkill(weapon.skill)
   const specialtyBonus = skillSpecialtyBonus(firearmsSkill, weapon.specialtyName)
 
   const bonuses: DiceGroup[] = []
