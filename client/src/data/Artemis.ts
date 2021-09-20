@@ -519,7 +519,7 @@ addGear<VehicleData>({
   gearType: GearType.vehicle,
   name: 'Range Rover Model 2080',
   type: 'Van',
-  cost: 5_000,
+  cost: 73_000,
   avail: { rarity: 2 },
 
   attributes: {
@@ -569,7 +569,7 @@ new Array(2).fill(null).forEach((_, index) => {
       addGear(fnHar),
     ]),
     addGear(riggerInterface),
-    addGear(sensorArray),
+    // addGear(sensorArray),
   ])
 })
 
@@ -605,7 +605,7 @@ new Array(4).fill(null).forEach((_, index) => {
   ])
 })
 
-new Array(2).fill(null).forEach((_, index) => {
+new Array(1).fill(null).forEach((_, index) => {
   addGear<VehicleData>({
     id: null,
     gearType: GearType.vehicle,
@@ -871,14 +871,20 @@ addGear<SinData>({
 addGear({
   id: null,
   gearType: GearType.other,
-  name: 'Engineering Workshop',
-  type: 'Facility',
+  name: 'Engineering Shop',
+  type: 'Shop',
   source: { book: 'CRB', page: 273 },
-  avail: { rarity: 7 },
-  cost: 50_000,
+  avail: { rarity: 4 },
+  cost: 5_000,
 })
 
 Artemis.nuyen = [
+  {
+    id: '2ea02500-4f16-4f4b-a8bd-6f8f1264bf3c',
+    date: '2021-09-19T22:01',
+    value: -16_000,
+    note: 'Buy r4 sensor arrays for crawlers',
+  },
   {
     id: '16d0a750-32c4-47eb-8c22-b7070e21dd31',
     date: '2021-09-19T22:00',
@@ -906,7 +912,7 @@ Artemis.nuyen = [
   {
     id: '62535d44-5922-4fb4-8cf4-295434279d72',
     date: '2021-08-28T00:02',
-    value: -432_665,
+    value: -431_665,
     note: 'Starting Gear',
   },
   {
