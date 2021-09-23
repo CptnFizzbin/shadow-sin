@@ -186,6 +186,12 @@ export const Silicus: CharacterData = {
       gameEffect: 'Increase max of one Physical or Mental attribute by 1',
       cost: 12,
     },
+    {
+      name: 'Bad Luck',
+      source: { book: 'CRB', page: 71 },
+      gameEffect: 'Glitch on 2s',
+      bonus: 10,
+    },
   ],
 }
 
