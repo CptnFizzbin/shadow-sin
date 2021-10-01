@@ -5,6 +5,7 @@ import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
+import { LicenseData } from '../Gear/License/LicenseData'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
 import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
@@ -35,32 +36,105 @@ export const Artemis: CharacterData = {
 
   karma: [
     {
-      id: 'ac8b777c-143e-42c3-a2e1-9d8e53c00eb4',
+      id: nextRecordId(),
+      date: '2021-09-26T16:00',
+      value: 4,
+      note: 'Session reward',
+    },
+    {
+      id: nextRecordId(),
       date: '2021-09-19T22:00',
       value: -10,
       note: 'Body 1 => 2',
     },
     {
-      id: 'f2d5f7fb-612b-4e1f-b7f1-e65b71e85f98',
+      id: nextRecordId(),
       date: '2021-09-19T16:00',
       value: 5,
       note: 'Session reward',
     },
     {
-      id: '0b622011-0e72-4e75-883b-73a565b0e35f',
+      id: nextRecordId(),
       date: '2021-09-11',
       value: 2,
       note: 'Session reward',
     },
     {
-      id: '49de36c4-cc58-4484-96f7-0fac55fe72db',
+      id: nextRecordId(),
       date: '2021-08-28',
       value: 14,
       note: 'Balance import',
     },
   ],
 
-  nuyen: [],
+  nuyen: [
+    {
+      id: nextRecordId(),
+      date: '2021-09-26T16:00',
+      value: 10_166,
+      note: 'Session reward',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-26T15:02',
+      value: 300,
+      note: 'Buy forklift rental',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-26T15:01',
+      value: 500,
+      note: 'Buy Semi-truck rental',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-26T15:00',
+      value: 1_000,
+      note: 'Buy Semi-truck driver license',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-19T22:01',
+      value: -16_000,
+      note: 'Buy r4 sensor arrays for crawlers',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-19T22:00',
+      value: -22_500,
+      note: 'Buy Reaction Enhancers',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-19T16:00',
+      value: 25_000,
+      note: 'Session Reward',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-28T00:04',
+      value: 18_070,
+      note: 'Session Reward',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-28T00:03',
+      value: -15_000,
+      note: 'Lifestyle (3 months)',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-28T00:02',
+      value: -431_665,
+      note: 'Starting Gear',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-28T00:01',
+      value: 450_000,
+      note: 'Character Creation',
+    },
+  ],
 
   lifestyle: {
     grade: 'middle',
@@ -850,7 +924,21 @@ addGear<SinData>({
   attributes: {
     [SinAttr.rating]: 4,
   },
-})
+}, [
+  addGear<LicenseData>({
+    id: null,
+    gearType: GearType.license,
+    name: 'Driver License (Semi-Truck)',
+    type: 'Fake License',
+    source: { book: 'CRB', page: 273 },
+    avail: { rarity: 5, illegal: true },
+    cost: 1_000,
+
+    attributes: {
+      [SinAttr.rating]: 5,
+    },
+  }),
+])
 
 addGear<SinData>({
   id: null,
@@ -877,48 +965,3 @@ addGear({
   avail: { rarity: 4 },
   cost: 5_000,
 })
-
-Artemis.nuyen = [
-  {
-    id: '2ea02500-4f16-4f4b-a8bd-6f8f1264bf3c',
-    date: '2021-09-19T22:01',
-    value: -16_000,
-    note: 'Buy r4 sensor arrays for crawlers',
-  },
-  {
-    id: '16d0a750-32c4-47eb-8c22-b7070e21dd31',
-    date: '2021-09-19T22:00',
-    value: -22_500,
-    note: 'Buy Reaction Enhancers',
-  },
-  {
-    id: '4dd2c72c-bbaf-4d71-b48f-ef276b2f8421',
-    date: '2021-09-19T16:00',
-    value: 25_000,
-    note: 'Session Reward',
-  },
-  {
-    id: '5119778e-31f6-47ce-bdbc-b63f80d35bb0',
-    date: '2021-08-28T00:04',
-    value: 18_070,
-    note: 'Session Reward',
-  },
-  {
-    id: '21cc28eb-8b84-4df3-995e-94a5553ff52f',
-    date: '2021-08-28T00:03',
-    value: -15_000,
-    note: 'Lifestyle (3 months)',
-  },
-  {
-    id: '62535d44-5922-4fb4-8cf4-295434279d72',
-    date: '2021-08-28T00:02',
-    value: -431_665,
-    note: 'Starting Gear',
-  },
-  {
-    id: 'ff344122-9196-4c9f-98f6-42620097383a',
-    date: '2021-08-28T00:01',
-    value: 450_000,
-    note: 'Character Creation',
-  },
-]

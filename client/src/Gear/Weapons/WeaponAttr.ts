@@ -1,6 +1,7 @@
 import { registerAttrNames } from '../../System/Attribute'
 
 export enum WeaponAttr {
+  type = 'weapon.type',
   dv = 'weapon.dv',
   attackRatings = 'weapon.attackRatings',
   modes = 'weapon.modes',
@@ -9,6 +10,7 @@ export enum WeaponAttr {
 }
 
 registerAttrNames({
+  [WeaponAttr.type]: 'Type',
   [WeaponAttr.dv]: 'DV',
   [WeaponAttr.attackRatings]: 'Atk. Ratings',
   [WeaponAttr.modes]: 'Modes',

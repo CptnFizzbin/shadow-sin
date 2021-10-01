@@ -36,40 +36,94 @@ export const Silicus: CharacterData = {
 
   karma: [
     {
-      id: '43d8f19c-7c78-4f6e-95ae-9895781556f1',
+      id: nextRecordId(),
       date: '2021-09-19T16:00',
       value: 5,
       note: 'Session reward',
     },
     {
-      id: '06c06985-4024-45e3-9a73-a49375e0b095',
+      id: nextRecordId(),
       date: '2021-09-12',
       value: 2,
       note: 'Session reward',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:05',
+      value: -10,
+      note: 'Buy reaction 1 -> 2',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:04',
+      value: -25,
+      note: 'Buy charisma 1 -> 3',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:03',
+      value: -12,
+      note: 'Buy Exceptional (Agility)',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:02',
+      value: -3,
+      note: 'Buy Analytical Mind',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:01',
+      value: 10,
+      note: 'Gain Bad Luck',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-08-29T16:00',
+      value: 50,
+      note: 'Character Creation',
     },
   ],
 
   nuyen: [
     {
-      id: 'cb349d2e-d2ca-40b6-ac31-6134f07312f9',
+      id: nextRecordId(),
+      date: '2021-09-26T16:00',
+      value: 10_166,
+      note: 'Session reward',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-25T13:45',
+      value: 2 * 100,
+      note: 'Medical Supplies',
+    },
+    {
+      id: nextRecordId(),
+      date: '2021-09-25T13:44',
+      value: 8 * 500,
+      note: 'Trauma Patch',
+    },
+    {
+      id: nextRecordId(),
       date: '2021-09-19T16:00',
       value: 25_000,
       note: 'Session reward',
     },
     {
-      id: 'bb9f128e-641a-4a71-a980-b46ae4358b32',
+      id: nextRecordId(),
       date: '2021-08-28T00:03',
       value: -9_000,
       note: '3 months lifestyle (middle)',
     },
     {
-      id: '737b40e5-9820-4382-98f5-2d564565ed4e',
+      id: nextRecordId(),
       date: '2021-08-28T00:02',
       value: -439_575,
       note: 'Char creation Gear',
     },
     {
-      id: '24b4f26a-0c8e-42d0-b8e9-49e668785783',
+      id: nextRecordId(),
       date: '2021-08-28T00:01',
       value: 450_000,
       note: 'Char creation',
@@ -188,7 +242,7 @@ export const Silicus: CharacterData = {
     },
     {
       name: 'Bad Luck',
-      source: { book: 'CRB', page: 71 },
+      source: { book: 'CRB', page: 70 },
       gameEffect: 'Glitch on 2s',
       bonus: 10,
     },
@@ -369,6 +423,25 @@ addGear<WeaponData>({
   specialtyName: 'Blades',
 })
 
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'CRB', page: 254 },
+  gearType: GearType.weapon,
+  name: 'Shock Gloves',
+  type: 'Other Melee',
+  avail: { rarity: 4 },
+  cost: 790,
+
+  attributes: {
+    [WeaponAttr.type]: 'Unarmed',
+    [WeaponAttr.dv]: '4S(e)',
+    [WeaponAttr.attackRatings]: '5/-/-/-/-',
+  },
+
+  skill: ActiveSkillId.closeCombat,
+  specialtyName: 'Blades',
+})
+
 addGear<AugmentData>({
   id: null,
   name: 'Synaptic Booster',
@@ -516,6 +589,28 @@ addGear<AugmentData>({
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.willpower, bonus: 1 },
     { type: EffectType.attrBonus, attr: CharacterAttr.intuition, bonus: -1 },
+  ],
+})
+
+addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'Reflex Recorder (Firearms)',
+  type: 'Cultured Bioware Augment',
+  source: { book: 'CRB', page: 293 },
+  avail: { rarity: 4 },
+  cost: 7_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+  },
+
+  essenceCost: 0.11,
+  augmentSlot: AugmentSlot.bioware,
+
+  enabled: true,
+  effects: [
+    { type: EffectType.skillBonus, skill: ActiveSkillId.firearms, bonus: 1 },
   ],
 })
 
@@ -741,7 +836,7 @@ addGear({
   source: { book: 'CRB', page: 282 },
   avail: { rarity: 3 },
   cost: 500,
-  quantity: 2,
+  quantity: 10,
   description: (`
     If placed on a patient with Overflow Damage, the patient is automatically stabilized.
     These patches are always wireless, and connect to the matrix the moment they are applied.
