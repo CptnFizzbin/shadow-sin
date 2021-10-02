@@ -1,7 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar as MuiAppBar,
-  Box,
   Button,
   CircularProgress,
   IconButton,
@@ -28,33 +27,31 @@ export const AppBar: FC<NavBarProps> = ({
   const { fetching: fetchingUser, user: currentUser } = useAuth()
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <MuiAppBar position="static">
-        <Toolbar>
-          {withMenu && (
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => openMenu()}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ShadowSIN 6e
-          </Typography>
+    <MuiAppBar position="sticky" sx={{ top: 0 }}>
+      <Toolbar>
+        {withMenu && (
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={() => openMenu()}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          ShadowSIN 6e
+        </Typography>
 
-          {fetchingUser ? (
-            <CircularProgress sx={{ width: '20px' }} />
-          ) : (
-            currentUser ? <UserMenu /> : <LoginButton />
-          )}
-        </Toolbar>
-      </MuiAppBar>
-    </Box>
+        {fetchingUser ? (
+          <CircularProgress sx={{ width: '20px' }} />
+        ) : (
+          currentUser ? <UserMenu /> : <LoginButton />
+        )}
+      </Toolbar>
+    </MuiAppBar>
   )
 }
 
