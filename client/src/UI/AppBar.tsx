@@ -1,9 +1,19 @@
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar as MuiAppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import {
+  AppBar as MuiAppBar,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material'
 import React, { FC, useState } from 'react'
 
 import { useAuth, useCurrentUser } from '../Auth/AuthProvider'
-import { LoginDialog } from '../Auth/LoginDialog'
+import { LoginDialog } from '../Auth/Login/LoginDialog'
 import { noOp } from '../Helpers'
 
 type NavBarProps = {
@@ -15,7 +25,7 @@ export const AppBar: FC<NavBarProps> = ({
   withMenu,
   openMenu = noOp,
 }) => {
-  const currentUser = useCurrentUser()
+  const { fetching: fetchingUser, user: currentUser } = useAuth()
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -37,7 +47,11 @@ export const AppBar: FC<NavBarProps> = ({
             ShadowSIN 6e
           </Typography>
 
-          {currentUser ? <UserMenu /> : <LoginButton />}
+          {fetchingUser ? (
+            <CircularProgress sx={{ width: '20px' }} />
+          ) : (
+            currentUser ? <UserMenu /> : <LoginButton />
+          )}
         </Toolbar>
       </MuiAppBar>
     </Box>

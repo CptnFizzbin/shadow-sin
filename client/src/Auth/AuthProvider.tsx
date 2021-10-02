@@ -5,8 +5,11 @@ import { AuthApi } from './AuthApi'
 
 interface AuthContextState {
   user: User | null
+  fetching: boolean
 
   login (username: string, password: string): Promise<User>
+
+  signup (username: string, password: string): Promise<User>
 
   fetchUser (): Promise<User>
 
@@ -15,7 +18,9 @@ interface AuthContextState {
 
 const AuthContext = createContext<AuthContextState>({
   user: null,
+  fetching: false,
   login: () => { throw new Error('Invalid AuthContext') },
+  signup: () => { throw new Error('Invalid AuthContext') },
   fetchUser: () => { throw new Error('Invalid AuthContext') },
   logout: () => { throw new Error('Invalid AuthContext') },
 })
@@ -24,6 +29,7 @@ export const AuthProvider: FC = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null)
+  const [fetching, setFetching] = useState<boolean>(false)
 
   const login = (username: string, password: string) => {
     return AuthApi.login(username, password).then(user => {
@@ -32,11 +38,21 @@ export const AuthProvider: FC = ({
     })
   }
 
-  const fetchUser = (): Promise<User> => {
-    return AuthApi.fetchUser().then(user => {
+  const signup = (username: string, password: string) => {
+    return AuthApi.signup(username, password).then(user => {
       setUser(user)
       return user
     })
+  }
+
+  const fetchUser = (): Promise<User> => {
+    setFetching(true)
+    return AuthApi.fetchUser()
+      .then(user => {
+        setUser(user)
+        return user
+      })
+      .finally(() => setFetching(false))
   }
 
   const logout = () => {
@@ -46,7 +62,9 @@ export const AuthProvider: FC = ({
 
   const state: AuthContextState = {
     user,
+    fetching,
     fetchUser,
+    signup,
     login,
     logout,
   }

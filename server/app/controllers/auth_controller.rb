@@ -9,7 +9,7 @@ class AuthController < ApplicationController
     if user.save
       self.login
     else
-      self.render_error(status: :bad_request, type: 'AuthError', message: user.errors)
+      self.render_error(status: :bad_request, type: 'AuthError', message: user.errors.full_messages.join(', '))
     end
   end
 
