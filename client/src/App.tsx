@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AppThemeProvider } from './AppThemeProvider'
+import { AuthProvider } from './Auth/AuthProvider'
 import { CharacterListPage } from './Pages/CharacterListPage'
 import { CharacterPage } from './Pages/CharacterPage'
 import { loadCharacters } from './StorageService'
@@ -12,11 +13,13 @@ const App: FC = () => {
   return (
     <HashRouter>
       <AppThemeProvider>
-        <Switch>
-          <Route path="/characters" component={CharacterListPage} />
-          <Route path="/:characterId" component={CharacterPage} />
-          <Route><Redirect to="/characters" /></Route>
-        </Switch>
+        <AuthProvider>
+          <Switch>
+            <Route path="/characters" component={CharacterListPage} />
+            <Route path="/:characterId" component={CharacterPage} />
+            <Route><Redirect to="/characters" /></Route>
+          </Switch>
+        </AuthProvider>
       </AppThemeProvider>
     </HashRouter>
   )
