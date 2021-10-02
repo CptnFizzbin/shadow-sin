@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Chip, IconButton, Paper, Typography } from '@material-ui/core'
+import { Box, Chip, IconButton, Paper, Typography } from '@mui/material'
 import { FC, ReactElement, useState } from 'react'
 
 import { displayFontFamily } from '../../AppThemeProvider'

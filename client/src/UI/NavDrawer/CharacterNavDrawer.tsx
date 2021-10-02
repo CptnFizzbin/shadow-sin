@@ -1,6 +1,6 @@
 import { faArchive, faAward, faCarAlt, faCogs, faUser, faYenSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Divider, List } from '@material-ui/core'
+import { Divider, List } from '@mui/material'
 
 import { useCharacter } from '../../Character/CharacterProvider'
 import { PistolSvg } from '../../Gear/Weapons/PistolSvg'

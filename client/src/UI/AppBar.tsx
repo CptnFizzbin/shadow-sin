@@ -1,5 +1,5 @@
-import { AppBar as MuiAppBar, Box, IconButton, Toolbar, Typography } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
+import { AppBar as MuiAppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { FC } from 'react'
 
 import { noOp } from '../Helpers'

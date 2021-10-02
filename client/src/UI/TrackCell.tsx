@@ -1,4 +1,4 @@
-import Paper from '@material-ui/core/Paper'
+import Paper from '@mui/material/Paper'
 import { FC, useState } from 'react'
 
 import { noOp } from '../Helpers'

@@ -1,5 +1,5 @@
-import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
+import { Typography, useMediaQuery, useTheme } from '@mui/material'
+import Box from '@mui/material/Box'
 import { FC } from 'react'
 
 import { collectGearEffects, isInitBonus } from '../../Gear/Effect'

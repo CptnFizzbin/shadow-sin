@@ -1,5 +1,5 @@
-import { Typography } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
+import { Typography } from '@mui/material'
+import Box from '@mui/material/Box'
 import React, { FC } from 'react'
 
 import { InfoBlock } from '../UI/InfoBlock/InfoBlock'

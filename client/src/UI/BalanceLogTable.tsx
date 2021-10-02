@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core'
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { parseISO } from 'date-fns'
 import { FC } from 'react'
 

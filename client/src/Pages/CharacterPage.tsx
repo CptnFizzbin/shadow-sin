@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core'
+import { Paper } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
 

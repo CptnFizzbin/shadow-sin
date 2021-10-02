@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 import { DamageProvider } from '../../System/Damage/DamageProvider'

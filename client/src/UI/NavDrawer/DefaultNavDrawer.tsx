@@ -1,6 +1,6 @@
 import { faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Drawer, List } from '@material-ui/core'
+import { Box, Drawer, List } from '@mui/material'
 
 import { NavButton, NavDrawer } from './index'
 

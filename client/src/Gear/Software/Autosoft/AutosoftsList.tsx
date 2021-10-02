@@ -1,6 +1,6 @@
 import { faBroadcastTower, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import { FC } from 'react'
 
 import { RecordId } from '../../../Api/Model'

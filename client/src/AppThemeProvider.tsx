@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { createTheme, ThemeProvider } from '@material-ui/core'
+import { adaptV4Theme, createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { FC } from 'react'
 
 export const displayFontFamily = '"Comfortaa", "Helvetica", "Arial", sans-serif'
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
     mode: 'dark',
     primary: {
@@ -29,12 +29,14 @@ const theme = createTheme({
     h5: { fontFamily: displayFontFamily },
     h6: { fontFamily: displayFontFamily },
   },
-})
+}))
 
 export const AppThemeProvider: FC = ({
   children,
 }) => {
   return (
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </StyledEngineProvider>
   )
 }

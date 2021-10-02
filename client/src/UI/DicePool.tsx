@@ -1,4 +1,4 @@
-import { Box, Paper } from '@material-ui/core'
+import { Box, Paper } from '@mui/material'
 import { FC } from 'react'
 
 import { useSkills } from '../Character/CharacterProvider'

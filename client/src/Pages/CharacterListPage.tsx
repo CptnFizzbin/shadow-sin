@@ -1,4 +1,4 @@
-import { Button, Stack } from '@material-ui/core'
+import { Button, Stack } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 

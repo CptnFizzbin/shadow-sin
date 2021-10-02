@@ -1,4 +1,4 @@
-import { ListItem, ListItemIcon, ListItemText, SvgIcon } from '@material-ui/core'
+import { ListItem, ListItemIcon, ListItemText, SvgIcon } from '@mui/material'
 import { FC, ReactElement } from 'react'
 import { useHistory } from 'react-router-dom'
 

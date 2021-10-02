@@ -1,4 +1,4 @@
-import { Box, Button, Paper, TextField, Typography } from '@material-ui/core'
+import { Box, Button, Paper, TextField, Typography } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
 
 import { ServerApi } from '../Api/ServerApi'

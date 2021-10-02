@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useCharacter } from '../../Character/CharacterProvider'

@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@material-ui/core'
+import { Box, Paper, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { formatSource } from '../System/Source'
