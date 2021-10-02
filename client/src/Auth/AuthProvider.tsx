@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useState } from 'react'
+import { createContext, FC, useContext, useEffect, useState } from 'react'
 
 import { User } from '../Api/User'
 import { AuthApi } from './AuthApi'
@@ -10,7 +10,7 @@ interface AuthContextState {
 
   fetchUser (): Promise<User>
 
-  logout (username: string, password: string): Promise<void>
+  logout (): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextState>({
@@ -50,6 +50,10 @@ export const AuthProvider: FC = ({
     login,
     logout,
   }
+
+  useEffect(() => {
+    fetchUser().catch(console.error)
+  }, [])
 
   return (
     <AuthContext.Provider value={state}>{children}</AuthContext.Provider>

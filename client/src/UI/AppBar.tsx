@@ -1,7 +1,9 @@
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar as MuiAppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { FC } from 'react'
+import { AppBar as MuiAppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import React, { FC, useState } from 'react'
 
+import { useAuth, useCurrentUser } from '../Auth/AuthProvider'
+import { LoginDialog } from '../Auth/LoginDialog'
 import { noOp } from '../Helpers'
 
 type NavBarProps = {
@@ -13,6 +15,8 @@ export const AppBar: FC<NavBarProps> = ({
   withMenu,
   openMenu = noOp,
 }) => {
+  const currentUser = useCurrentUser()
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <MuiAppBar position="static">
@@ -32,8 +36,53 @@ export const AppBar: FC<NavBarProps> = ({
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ShadowSIN 6e
           </Typography>
+
+          {currentUser ? <UserMenu /> : <LoginButton />}
         </Toolbar>
       </MuiAppBar>
     </Box>
+  )
+}
+
+export const UserMenu: FC = () => {
+  const currentUser = useCurrentUser()
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const { logout } = useAuth()
+
+  if (!currentUser) return null
+
+  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+    setMenuOpen(true)
+  }
+
+  const onLogout = () => {
+    logout().catch(console.error)
+  }
+
+  return (
+    <>
+      <Button onClick={openMenu}>{currentUser.username}</Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      >
+        <MenuItem onClick={onLogout}>Logout</MenuItem>
+      </Menu>
+    </>
+  )
+}
+
+export const LoginButton: FC = () => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+
+  return (
+    <>
+      <Button onClick={() => setDialogOpen(true)}>Login</Button>
+      <LoginDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+    </>
   )
 }

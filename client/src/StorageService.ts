@@ -33,7 +33,6 @@ export function loadCharacters (): SavedCharacters {
 
 export function saveCharacter (character: CharacterData): void {
   if (character.id == null) throw new Error('Character has no id')
-  console.log(`Saved ${character.id}`)
   localStorage.setItem(characterStorageKey(character.id), JSON.stringify(character))
 }
 
