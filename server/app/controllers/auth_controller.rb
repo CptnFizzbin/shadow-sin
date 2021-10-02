@@ -3,6 +3,16 @@
 class AuthController < ApplicationController
   skip_before_action :authenticate
 
+  def sign_up
+    user = User.new(username: params[:username], password: params[:password])
+
+    if user.save
+      self.login
+    else
+      self.render_error(status: :bad_request, type: 'AuthError', message: user.errors)
+    end
+  end
+
   def login
     self.logout
 
