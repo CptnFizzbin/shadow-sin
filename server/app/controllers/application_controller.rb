@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
   include ActionController::Cookies
 
@@ -15,25 +17,25 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate
-    self.render_error status: 401, type: 'UNAUTHORIZED', message: "Not Authorized" if !self.current_user
+    render_error status: 401, type: 'UNAUTHORIZED', message: 'Not Authorized' unless current_user
   end
 
   def server_error(exception)
     Rails.logger.error(exception)
     Rails.logger.error(exception.backtrace.join("\n"))
-    self.render_error status: 500, exception: exception
+    render_error status: 500, exception: exception
   end
 
   def record_not_found(exception)
-    self.render_error status: 404, exception: exception
+    render_error status: 404, exception: exception
   end
 
   def render_error(status:, message: nil, type: nil, exception: nil)
     message ||= exception&.message
-    raise ArgumentError "Error Message is missing" if !message
+    raise ArgumentError 'Error Message is missing' if !message
 
     type ||= exception&.class&.name
-    raise ArgumentError "Error Type is missing" if !type
+    raise ArgumentError 'Error Type is missing' if !type
 
     render json: { err: type, msg: message }, status: status
   end

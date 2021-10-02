@@ -1,16 +1,18 @@
 class CharactersController < ApplicationController
   def index
-    characters = Character.where(:user => current_user)
+    characters = Character.where(user: current_user)
 
-    render json: characters.all.map { |char| {
-      id: char.id,
-      name: char.data[:name],
-    } }
+    render json: characters.all.map { |char|
+      {
+        id: char.id,
+        name: char.data[:name],
+      }
+    }
   end
 
   def show
     character = Character
-      .where(:user => current_user, :id => params[:id])
+      .where(user: current_user, id: params[:id])
       .first!
 
     render json: character
@@ -27,7 +29,7 @@ class CharactersController < ApplicationController
 
   def update
     character = Character
-      .where(:user => current_user, :id => params[:id])
+      .where(user: current_user, id: params[:id])
       .first!
 
     character.data = params[:data]
@@ -38,7 +40,7 @@ class CharactersController < ApplicationController
 
   def destroy
     character = Character
-      .where(:user => current_user, :id => params[:id])
+      .where(user: current_user, id: params[:id])
       .first!
 
     character.destroy!

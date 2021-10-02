@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthController < ApplicationController
   skip_before_action :authenticate
 
@@ -8,10 +10,10 @@ class AuthController < ApplicationController
       .find_by(username: params[:username].downcase)
       &.authenticate(params[:password])
 
-    return self.render_error(status: 400, type: 'AuthError', message: "Invalid Login") if !user
+    return self.render_error(status: :bad_request, type: 'AuthError', message: 'Invalid Login') if !user
 
     self.current_user = user
-    render json: { "user": self.current_user }
+    render json: { user: self.current_user }
   end
 
   def logout
