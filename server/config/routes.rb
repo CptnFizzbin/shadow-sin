@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: 'status#status'
+
   post '/signup', to: 'auth#sign_up'
   post '/login', to: 'auth#login'
   post '/logout', to: 'auth#logout'
