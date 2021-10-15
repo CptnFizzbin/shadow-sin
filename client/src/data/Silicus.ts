@@ -1,6 +1,6 @@
 import { nextRecordId } from '../Api/Model'
+import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
 import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
 import { ArmorData } from '../Gear/Armor/ArmorData'
@@ -23,236 +23,242 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Silicus: CharacterData = {
+export const Silicus: Character = {
+  name: 'Silicus',
   id: 'fc7d8ad1-c25e-4c1b-8c13-0e795a449ef2',
-  dataVersion: 3,
+  userId: 'affbd8b8-8c41-4e82-86b6-85d184a71318',
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  data: {
+    dataVersion: 3,
 
-  bio: {
-    name: 'Silicus',
-    metaType: 'Elf',
-    gender: 'male',
-    role: 'Street Samurai',
+    bio: {
+      name: 'Silicus',
+      metaType: 'Elf',
+      gender: 'male',
+      role: 'Street Samurai',
+    },
+
+    karma: [
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T16:00',
+        value: 5,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-12',
+        value: 2,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:05',
+        value: -10,
+        note: 'Buy reaction 1 -> 2',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:04',
+        value: -25,
+        note: 'Buy charisma 1 -> 3',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:03',
+        value: -12,
+        note: 'Buy Exceptional (Agility)',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:02',
+        value: -3,
+        note: 'Buy Analytical Mind',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:01',
+        value: 10,
+        note: 'Gain Bad Luck',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-29T16:00',
+        value: 50,
+        note: 'Character Creation',
+      },
+    ],
+
+    nuyen: [
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T16:00',
+        value: 10_166,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-25T13:45',
+        value: 2 * 100,
+        note: 'Medical Supplies',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-25T13:44',
+        value: 8 * 500,
+        note: 'Trauma Patch',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T16:00',
+        value: 25_000,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:03',
+        value: -9_000,
+        note: '3 months lifestyle (middle)',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:02',
+        value: -439_575,
+        note: 'Char creation Gear',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:01',
+        value: 450_000,
+        note: 'Char creation',
+      },
+    ],
+
+    lifestyle: {
+      grade: 'middle',
+      upkeep: 5_000,
+      prepaid: 3,
+    },
+
+    attributes: {
+      [CharacterAttr.body]: 4,
+      [CharacterAttr.agility]: 8,
+      [CharacterAttr.reaction]: 2,
+      [CharacterAttr.strength]: 1,
+      [CharacterAttr.willpower]: 1,
+      [CharacterAttr.logic]: 5,
+      [CharacterAttr.intuition]: 4,
+      [CharacterAttr.charisma]: 3,
+      [CharacterAttr.edge]: 4,
+    },
+
+    contacts: [
+      {
+        name: 'Hunter Morgan',
+        connection: 3,
+        loyalty: 3,
+        description: 'Researcher at Kamino Biotech',
+      },
+      {
+        name: 'Johennes',
+        connection: 3,
+        loyalty: 3,
+        description: 'Fence',
+      },
+      {
+        name: 'Dr. Weber',
+        connection: 3,
+        loyalty: 3,
+        description: 'Ripperdoc',
+      },
+    ],
+
+    skills: [
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.biotech,
+        rank: 5,
+        attr: 'logic',
+        altAttr: 'intuition',
+        expertise: 'First Aid',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.firearms,
+        rank: 6,
+        attr: 'agility',
+        speciality: 'Automatics',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.perception,
+        rank: 3,
+        attr: 'intuition',
+        altAttr: 'logic',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.closeCombat,
+        rank: 5,
+        attr: 'agility',
+      },
+      {
+        type: SkillType.language,
+        name: 'English',
+        rank: 'native',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Law Enforcement Corps',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Security Systems',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Tech Companies',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Weapon Manufacturers',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Local Gangs',
+      },
+    ],
+
+    gear: [],
+
+    qualities: [
+      {
+        name: 'Analytical Mind',
+        source: { book: 'CRB', page: 70 },
+        gameEffect: 'Bonus edge when making Logic tests',
+        cost: 3,
+      },
+      {
+        name: 'Exceptional (Agility)',
+        source: { book: 'CRB', page: 71 },
+        gameEffect: 'Increase max of one Physical or Mental attribute by 1',
+        cost: 12,
+      },
+      {
+        name: 'Bad Luck',
+        source: { book: 'CRB', page: 70 },
+        gameEffect: 'Glitch on 2s',
+        bonus: 10,
+      },
+    ],
   },
-
-  karma: [
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-12',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:05',
-      value: -10,
-      note: 'Buy reaction 1 -> 2',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:04',
-      value: -25,
-      note: 'Buy charisma 1 -> 3',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:03',
-      value: -12,
-      note: 'Buy Exceptional (Agility)',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:02',
-      value: -3,
-      note: 'Buy Analytical Mind',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:01',
-      value: 10,
-      note: 'Gain Bad Luck',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-29T16:00',
-      value: 50,
-      note: 'Character Creation',
-    },
-  ],
-
-  nuyen: [
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T16:00',
-      value: 10_166,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-25T13:45',
-      value: 2 * 100,
-      note: 'Medical Supplies',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-25T13:44',
-      value: 8 * 500,
-      note: 'Trauma Patch',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T16:00',
-      value: 25_000,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:03',
-      value: -9_000,
-      note: '3 months lifestyle (middle)',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:02',
-      value: -439_575,
-      note: 'Char creation Gear',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:01',
-      value: 450_000,
-      note: 'Char creation',
-    },
-  ],
-
-  lifestyle: {
-    grade: 'middle',
-    upkeep: 5_000,
-    prepaid: 3,
-  },
-
-  attributes: {
-    [CharacterAttr.body]: 4,
-    [CharacterAttr.agility]: 8,
-    [CharacterAttr.reaction]: 2,
-    [CharacterAttr.strength]: 1,
-    [CharacterAttr.willpower]: 1,
-    [CharacterAttr.logic]: 5,
-    [CharacterAttr.intuition]: 4,
-    [CharacterAttr.charisma]: 3,
-    [CharacterAttr.edge]: 4,
-  },
-
-  contacts: [
-    {
-      name: 'Hunter Morgan',
-      connection: 3,
-      loyalty: 3,
-      description: 'Researcher at Kamino Biotech',
-    },
-    {
-      name: 'Johennes',
-      connection: 3,
-      loyalty: 3,
-      description: 'Fence',
-    },
-    {
-      name: 'Dr. Weber',
-      connection: 3,
-      loyalty: 3,
-      description: 'Ripperdoc',
-    },
-  ],
-
-  skills: [
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.biotech,
-      rank: 5,
-      attr: 'logic',
-      altAttr: 'intuition',
-      expertise: 'First Aid',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.firearms,
-      rank: 6,
-      attr: 'agility',
-      speciality: 'Automatics',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.perception,
-      rank: 3,
-      attr: 'intuition',
-      altAttr: 'logic',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.closeCombat,
-      rank: 5,
-      attr: 'agility',
-    },
-    {
-      type: SkillType.language,
-      name: 'English',
-      rank: 'native',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Law Enforcement Corps',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Security Systems',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Tech Companies',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Weapon Manufacturers',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Local Gangs',
-    },
-  ],
-
-  gear: [],
-
-  qualities: [
-    {
-      name: 'Analytical Mind',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Bonus edge when making Logic tests',
-      cost: 3,
-    },
-    {
-      name: 'Exceptional (Agility)',
-      source: { book: 'CRB', page: 71 },
-      gameEffect: 'Increase max of one Physical or Mental attribute by 1',
-      cost: 12,
-    },
-    {
-      name: 'Bad Luck',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Glitch on 2s',
-      bonus: 10,
-    },
-  ],
 }
 
 function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
   gear = { ...gear, dataVersion: 1, id: nextRecordId() };
 
-  (Silicus.gear as GearData[]).push(gear)
+  (Silicus.data.gear as GearData[]).push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)
 
   return gear

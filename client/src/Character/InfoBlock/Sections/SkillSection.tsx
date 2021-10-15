@@ -10,10 +10,10 @@ import { LanguageSkillData } from '../../../System/Skill/LanguageSkill/LanguageS
 import { LanguageSkillList } from '../../../System/Skill/LanguageSkill/LanguageSkillList'
 import { SkillType } from '../../../System/Skill/SkillData'
 import { InfoSection } from '../../../UI/InfoBlock/InfoSection'
-import { useCharacter } from '../../CharacterProvider'
+import { useCharacterData } from '../../CharacterProvider'
 
 export const SkillSection: FC = () => {
-  const character = useCharacter()
+  const character = useCharacterData()
   if (!character) return null
 
   const activeSkills = character.skills

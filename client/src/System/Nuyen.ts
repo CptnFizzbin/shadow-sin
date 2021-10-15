@@ -1,6 +1,6 @@
 import { parseISO } from 'date-fns'
 
-import { useCharacter } from '../Character/CharacterProvider'
+import { useCharacterData } from '../Character/CharacterProvider'
 
 const nuyenFormatter = new Intl.NumberFormat('en')
 export const formatNuyen = (cost: number): string => {
@@ -8,7 +8,7 @@ export const formatNuyen = (cost: number): string => {
 }
 
 export const useNuyenBalance = (): number => {
-  const character = useCharacter()
+  const character = useCharacterData()
   if (!character) return 0
 
   return character.nuyen

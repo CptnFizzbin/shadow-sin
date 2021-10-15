@@ -2,7 +2,7 @@ import { Paper } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
 
-import { CharacterData } from '../Character/CharacterData'
+import { Character } from '../Character/Character'
 import { CharacterProvider } from '../Character/CharacterProvider'
 import { loadCharacter } from '../StorageService'
 import { CharacterNavDrawer } from '../UI/NavDrawer/CharacterNavDrawer'
@@ -19,10 +19,10 @@ export const CharacterPage: FC = () => {
   const history = useHistory()
   const { path } = useRouteMatch()
   const { characterId } = useParams<{ characterId: string }>()
-  const [character, setCharacter] = useState<CharacterData | null>(null)
+  const [character, setCharacter] = useState<Character | null>(null)
 
   useEffect(() => {
-    const character: CharacterData | null = loadCharacter(characterId)
+    const character = loadCharacter(characterId)
     if (character === null) history.push('/')
     setCharacter(character)
   }, [history, characterId])

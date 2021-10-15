@@ -1,5 +1,5 @@
 import { ServerApi } from '../Api/ServerApi'
-import { User } from '../Api/User'
+import { User } from './User'
 
 export const AuthApi = {
   signup (username: string, password: string): Promise<User> {

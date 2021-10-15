@@ -45,10 +45,12 @@ export const AppBar: FC<NavBarProps> = ({
           ShadowSIN 6e
         </Typography>
 
-        {fetchingUser ? (
-          <CircularProgress sx={{ width: '20px' }} />
-        ) : (
-          currentUser ? <UserMenu /> : <LoginButton />
+        {process.env['REACT_APP_ENABLE_SERVER'] === 'true' && (
+          fetchingUser ? (
+            <CircularProgress sx={{ width: '20px' }} />
+          ) : (
+            currentUser ? <UserMenu /> : <LoginButton />
+          )
         )}
       </Toolbar>
     </MuiAppBar>

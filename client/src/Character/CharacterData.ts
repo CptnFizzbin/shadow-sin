@@ -1,4 +1,3 @@
-import { RecordId } from '../Api/Model'
 import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
 import { QualityData } from '../Qualities/QualityData'
@@ -19,7 +18,6 @@ export interface BioData {
 }
 
 export interface CharacterData {
-  id: RecordId
   dataVersion: 3
   bio: BioData
 

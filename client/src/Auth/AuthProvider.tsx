@@ -1,7 +1,7 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react'
 
-import { User } from '../Api/User'
 import { AuthApi } from './AuthApi'
+import { User } from './User'
 
 interface AuthContextState {
   user: User | null

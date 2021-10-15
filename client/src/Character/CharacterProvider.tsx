@@ -9,29 +9,32 @@ import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { ActiveSkillData, isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { Character } from './Character'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
 
-const CharacterContext = createContext<CharacterData | null>(null)
+const CharacterContext = createContext<Character | null>(null)
 
 interface CharacterProviderProps {
-  character: CharacterData
+  character: Character
 }
 
 export const CharacterProvider: FC<CharacterProviderProps> = ({
   character,
   children,
 }) => {
-  const attributes = calculateAttributes(character.attributes, character.gear)
+  const characterData = character.data
 
-  attributes[CharacterAttr.essence] = character.gear
+  const attributes = calculateAttributes(characterData.attributes, characterData.gear)
+
+  attributes[CharacterAttr.essence] = characterData.gear
     .filter(isAugment)
     .reduce((essence, gear) => essence - gear.essenceCost, 6)
 
   return (
     <CharacterContext.Provider value={character}>
       <AttributeProvider attributes={attributes}>
-        <GearProvider gear={character.gear}>
+        <GearProvider gear={characterData.gear}>
           <DamageProvider type={DamageType.charPhysical} id={character.id}>
             <DamageProvider type={DamageType.charStun} id={character.id}>
               {children}
@@ -43,12 +46,16 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
   )
 }
 
-export const useCharacter = (): CharacterData | null => {
+export const useCharacter = (): Character | null => {
   return useContext(CharacterContext)
 }
 
+export const useCharacterData = (): CharacterData | null => {
+  return useCharacter()?.data || null
+}
+
 export function useSkills (skillIds?: string[]): SkillList {
-  const character = useContext(CharacterContext)
+  const character = useCharacterData()
   const skillList: SkillList = {}
 
   if (character) {
@@ -62,7 +69,7 @@ export function useSkills (skillIds?: string[]): SkillList {
 }
 
 export function useActiveSkill (skillId: ActiveSkillId): ActiveSkillData | undefined {
-  const character = useContext(CharacterContext)
+  const character = useCharacterData()
   const gear = useAllGear()
   if (!character) return undefined
 

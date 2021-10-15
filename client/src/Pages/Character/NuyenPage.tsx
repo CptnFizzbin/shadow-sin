@@ -1,14 +1,14 @@
 import { Paper } from '@mui/material'
 import { FC } from 'react'
 
-import { useCharacter } from '../../Character/CharacterProvider'
+import { useCharacterData } from '../../Character/CharacterProvider'
 import { useAllGear } from '../../Gear/GearContext'
 import { formatNuyen, useNuyenBalance } from '../../System/Nuyen'
 import { BalanceLogTable } from '../../UI/BalanceLogTable'
 import { Stat, StatBlock } from '../../UI/StatBlock'
 
 export const NuyenPage: FC = () => {
-  const character = useCharacter()
+  const character = useCharacterData()
   const nuyenBalance = useNuyenBalance()
   const gear = useAllGear()
   if (!character) return null

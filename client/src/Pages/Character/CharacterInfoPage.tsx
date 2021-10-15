@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useCharacter } from '../../Character/CharacterProvider'
+import { useCharacterData } from '../../Character/CharacterProvider'
 import { CharacterInfo } from '../../Character/InfoBlock/CharacterInfo'
 import { ContactList } from '../../Contacts/ContactList'
 import { useAllGear } from '../../Gear/GearContext'
@@ -9,7 +9,7 @@ import { GearList } from '../../Gear/GearList'
 import { isSin } from '../../Gear/License/SinData'
 
 export const CharacterInfoPage: FC = () => {
-  const character = useCharacter()
+  const character = useCharacterData()
   const sins = useAllGear().filter(isSin)
   if (!character) return null
 

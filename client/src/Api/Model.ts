@@ -1,6 +1,7 @@
 import * as uuid from 'uuid'
 
 export type RecordId = string | null;
+export type IsoDateString = string;
 
 export function nextRecordId (): string {
   return uuid.v4()
@@ -8,6 +9,6 @@ export function nextRecordId (): string {
 
 export interface Model {
   id: RecordId
-  created_at: string
-  updated_at: string
+  createdAt: IsoDateString
+  updatedAt: IsoDateString
 }

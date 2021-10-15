@@ -6,6 +6,7 @@ class CharactersController < ApplicationController
       {
         id: char.id,
         name: char.data[:name],
+        updated_at: char.updated_at,
       }
     }
   end

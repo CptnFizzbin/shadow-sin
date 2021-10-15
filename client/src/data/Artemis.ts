@@ -1,6 +1,6 @@
 import { nextRecordId } from '../Api/Model'
+import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
@@ -22,263 +22,269 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Artemis: CharacterData = {
+export const Artemis: Character = {
+  name: 'Artemis',
   id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
-  dataVersion: 3,
+  userId: 'affbd8b8-8c41-4e82-86b6-85d184a71318',
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  data: {
+    dataVersion: 3,
 
-  bio: {
-    name: 'Jessica Nelson',
-    alias: 'Artemis',
-    role: 'rigger',
-    gender: 'female',
-    metaType: 'Elf',
+    bio: {
+      name: 'Jessica Nelson',
+      alias: 'Artemis',
+      role: 'rigger',
+      gender: 'female',
+      metaType: 'Elf',
+    },
+
+    karma: [
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T16:00',
+        value: 4,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T22:00',
+        value: -10,
+        note: 'Body 1 => 2',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T16:00',
+        value: 5,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-11',
+        value: 2,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28',
+        value: 14,
+        note: 'Balance import',
+      },
+    ],
+
+    nuyen: [
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T16:00',
+        value: 10_166,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T15:02',
+        value: 300,
+        note: 'Buy forklift rental',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T15:01',
+        value: 500,
+        note: 'Buy Semi-truck rental',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-26T15:00',
+        value: 1_000,
+        note: 'Buy Semi-truck driver license',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T22:01',
+        value: -16_000,
+        note: 'Buy r4 sensor arrays for crawlers',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T22:00',
+        value: -22_500,
+        note: 'Buy Reaction Enhancers',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-09-19T16:00',
+        value: 25_000,
+        note: 'Session Reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:04',
+        value: 18_070,
+        note: 'Session Reward',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:03',
+        value: -15_000,
+        note: 'Lifestyle (3 months)',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:02',
+        value: -431_665,
+        note: 'Starting Gear',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-08-28T00:01',
+        value: 450_000,
+        note: 'Character Creation',
+      },
+    ],
+
+    lifestyle: {
+      grade: 'middle',
+      upkeep: 5_000,
+      prepaid: 3,
+    },
+
+    attributes: {
+      [CharacterAttr.body]: 2,
+      [CharacterAttr.agility]: 3,
+      [CharacterAttr.reaction]: 3,
+      [CharacterAttr.strength]: 1,
+      [CharacterAttr.willpower]: 2,
+      [CharacterAttr.logic]: 7,
+      [CharacterAttr.intuition]: 5,
+      [CharacterAttr.charisma]: 4,
+      [CharacterAttr.edge]: 4,
+    },
+
+    contacts: [
+      {
+        name: 'James Serif',
+        connection: 2,
+        loyalty: 2,
+        description: 'Drone Parts Dealer',
+      },
+      {
+        name: 'Frank',
+        connection: 2,
+        loyalty: 2,
+        description: 'Matrix Developer',
+      },
+      {
+        name: 'George Crabtree',
+        connection: 2,
+        loyalty: 2,
+        description: 'Lone Star officer',
+      },
+    ],
+
+    skills: [
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.electronics,
+        rank: 3,
+        attr: 'logic',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.firearms,
+        rank: 3,
+        attr: 'agility',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.piloting,
+        rank: 6,
+        attr: 'reaction',
+        speciality: 'Ground Craft',
+      },
+      {
+        type: SkillType.active,
+        skillId: ActiveSkillId.engineering,
+        rank: 7,
+        attr: 'logic',
+        altAttr: 'intuition',
+      },
+      {
+        type: SkillType.language,
+        name: 'English',
+        rank: 'native',
+      },
+      {
+        type: SkillType.language,
+        name: 'Elven',
+        rank: 'speciality',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Drone Models',
+      },
+      {
+        type: SkillType.knowledge,
+        name: '80/90s Pop Culture',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Trideo Series',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Security Systems',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Virtual Nightclubs',
+      },
+      {
+        type: SkillType.knowledge,
+        name: 'Tech Companies',
+      },
+    ],
+
+    gear: [],
+
+    qualities: [
+      {
+        name: 'Exceptional (Logic)',
+        source: { book: 'CRB', page: 2 },
+        cost: 12,
+      },
+      {
+        name: 'Social Stress (Large Groups)',
+        source: { book: 'CRB', page: 2 },
+        bonus: 8,
+      },
+      {
+        name: 'Juryrigger',
+        source: { book: 'CRB', page: 2 },
+        cost: 12,
+      },
+      {
+        name: 'Photographic Memory',
+        source: { book: 'CRB', page: 2 },
+        cost: 12,
+      },
+      {
+        name: 'Analytical Mind',
+        source: { book: 'CRB', page: 2 },
+        gameEffect: 'Bonus edge when making Logic tests',
+        cost: 3,
+      },
+      {
+        name: 'Ambidextrous',
+        source: { book: 'CRB', page: 2 },
+        cost: 4,
+      },
+    ],
   },
-
-  karma: [
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T22:00',
-      value: -10,
-      note: 'Body 1 => 2',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-11',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28',
-      value: 14,
-      note: 'Balance import',
-    },
-  ],
-
-  nuyen: [
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T16:00',
-      value: 10_166,
-      note: 'Session reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T15:02',
-      value: 300,
-      note: 'Buy forklift rental',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T15:01',
-      value: 500,
-      note: 'Buy Semi-truck rental',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-26T15:00',
-      value: 1_000,
-      note: 'Buy Semi-truck driver license',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T22:01',
-      value: -16_000,
-      note: 'Buy r4 sensor arrays for crawlers',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T22:00',
-      value: -22_500,
-      note: 'Buy Reaction Enhancers',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-09-19T16:00',
-      value: 25_000,
-      note: 'Session Reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:04',
-      value: 18_070,
-      note: 'Session Reward',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:03',
-      value: -15_000,
-      note: 'Lifestyle (3 months)',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:02',
-      value: -431_665,
-      note: 'Starting Gear',
-    },
-    {
-      id: nextRecordId(),
-      date: '2021-08-28T00:01',
-      value: 450_000,
-      note: 'Character Creation',
-    },
-  ],
-
-  lifestyle: {
-    grade: 'middle',
-    upkeep: 5_000,
-    prepaid: 3,
-  },
-
-  attributes: {
-    [CharacterAttr.body]: 2,
-    [CharacterAttr.agility]: 3,
-    [CharacterAttr.reaction]: 3,
-    [CharacterAttr.strength]: 1,
-    [CharacterAttr.willpower]: 2,
-    [CharacterAttr.logic]: 7,
-    [CharacterAttr.intuition]: 5,
-    [CharacterAttr.charisma]: 4,
-    [CharacterAttr.edge]: 4,
-  },
-
-  contacts: [
-    {
-      name: 'James Serif',
-      connection: 2,
-      loyalty: 2,
-      description: 'Drone Parts Dealer',
-    },
-    {
-      name: 'Frank',
-      connection: 2,
-      loyalty: 2,
-      description: 'Matrix Developer',
-    },
-    {
-      name: 'George Crabtree',
-      connection: 2,
-      loyalty: 2,
-      description: 'Lone Star officer',
-    },
-  ],
-
-  skills: [
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.electronics,
-      rank: 3,
-      attr: 'logic',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.firearms,
-      rank: 3,
-      attr: 'agility',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.piloting,
-      rank: 6,
-      attr: 'reaction',
-      speciality: 'Ground Craft',
-    },
-    {
-      type: SkillType.active,
-      skillId: ActiveSkillId.engineering,
-      rank: 7,
-      attr: 'logic',
-      altAttr: 'intuition',
-    },
-    {
-      type: SkillType.language,
-      name: 'English',
-      rank: 'native',
-    },
-    {
-      type: SkillType.language,
-      name: 'Elven',
-      rank: 'speciality',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Drone Models',
-    },
-    {
-      type: SkillType.knowledge,
-      name: '80/90s Pop Culture',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Trideo Series',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Security Systems',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Virtual Nightclubs',
-    },
-    {
-      type: SkillType.knowledge,
-      name: 'Tech Companies',
-    },
-  ],
-
-  gear: [],
-
-  qualities: [
-    {
-      name: 'Exceptional (Logic)',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Social Stress (Large Groups)',
-      source: { book: 'CRB', page: 2 },
-      bonus: 8,
-    },
-    {
-      name: 'Juryrigger',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Photographic Memory',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Analytical Mind',
-      source: { book: 'CRB', page: 2 },
-      gameEffect: 'Bonus edge when making Logic tests',
-      cost: 3,
-    },
-    {
-      name: 'Ambidextrous',
-      source: { book: 'CRB', page: 2 },
-      cost: 4,
-    },
-  ],
 }
 
 export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
   gear = { ...gear, dataVersion: 1, id: nextRecordId() };
 
-  (Artemis.gear as GearData[]).push(gear)
+  (Artemis.data.gear as GearData[]).push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)
 
   return gear

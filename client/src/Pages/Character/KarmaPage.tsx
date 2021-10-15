@@ -1,11 +1,11 @@
 import { Paper } from '@mui/material'
 import { FC } from 'react'
 
-import { useCharacter } from '../../Character/CharacterProvider'
+import { useCharacterData } from '../../Character/CharacterProvider'
 import { BalanceLogTable } from '../../UI/BalanceLogTable'
 
 export const KarmaPage: FC = () => {
-  const character = useCharacter()
+  const character = useCharacterData()
   if (!character) return null
 
   return (
