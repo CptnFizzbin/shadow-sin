@@ -1,16 +1,23 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { FC, useState } from 'react'
 
+import { AwakenedType } from '../../AwakenedType'
+import { Metatype } from '../../Metatypes'
 import { PriorityStat, PriorityValues, priorityValues } from './Priorities'
 import { PriorityRow } from './PriorityRow'
 
 export type SelectedPriorities = Record<string, PriorityStat>
 
-interface PrioritiesProps {
+interface PrioritiesTableProps {
+  metatype: Metatype
+  awakened: AwakenedType
+
   onChange (priorities: PriorityValues): void
 }
 
-export const PrioritiesTable: FC<PrioritiesProps> = ({
+export const PrioritiesTable: FC<PrioritiesTableProps> = ({
+  metatype,
+  awakened,
   onChange,
 }) => {
   const [selectedPriorities, setSelectedPriorities] = useState<SelectedPriorities>({})
@@ -41,6 +48,7 @@ export const PrioritiesTable: FC<PrioritiesProps> = ({
           <TableCell variant="head">Resources</TableCell>
         </TableRow>
       </TableHead>
+
       <TableBody>
         {Object.entries(priorityValues).map(([level, values]) => (
           <PriorityRow
@@ -49,6 +57,8 @@ export const PrioritiesTable: FC<PrioritiesProps> = ({
             values={values}
             selectedType={selectedPriorities[level]}
             onSelect={onPriorityChange}
+            metatype={metatype}
+            awakened={awakened}
           />
         ))}
       </TableBody>
@@ -80,10 +90,10 @@ export function toPriorityValues (selectedPriorities: SelectedPriorities): Prior
       case PriorityStat.skills:
         values.skillPoints = levelValues.skillPoints
         break
-      case PriorityStat.nuyen:
+      case PriorityStat.magic:
         values.magic = levelValues.magic
         break
-      case PriorityStat.magic:
+      case PriorityStat.nuyen:
         values.nuyen = levelValues.nuyen
         break
     }

@@ -1,6 +1,8 @@
 import { nextRecordId } from '../Api/Model'
+import { AwakenedType } from '../Character/AwakenedType'
 import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
+import { Metatype } from '../Character/Metatypes'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
@@ -36,7 +38,8 @@ export const Artemis: Character = {
       alias: 'Artemis',
       role: 'rigger',
       gender: 'female',
-      metatype: 'Elf',
+      metatype: Metatype.Elf,
+      awakened: AwakenedType.Mundane,
     },
 
     karma: [
@@ -157,6 +160,9 @@ export const Artemis: Character = {
       [CharacterAttr.intuition]: 5,
       [CharacterAttr.charisma]: 4,
       [CharacterAttr.edge]: 4,
+      [CharacterAttr.magic]: 0,
+      [CharacterAttr.resonance]: 0,
+      [CharacterAttr.essence]: 6,
     },
 
     contacts: [

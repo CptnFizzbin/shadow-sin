@@ -1,7 +1,9 @@
 import { nextRecordId } from '../Api/Model'
+import { AwakenedType } from '../Character/AwakenedType'
 import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
+import { Metatype } from '../Character/Metatypes'
 import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
 import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
@@ -34,7 +36,8 @@ export const Silicus: Character = {
 
     bio: {
       name: 'Silicus',
-      metatype: 'Elf',
+      metatype: Metatype.Elf,
+      awakened: AwakenedType.Mundane,
       gender: 'male',
       role: 'Street Samurai',
     },
@@ -151,6 +154,9 @@ export const Silicus: Character = {
       [CharacterAttr.intuition]: 4,
       [CharacterAttr.charisma]: 3,
       [CharacterAttr.edge]: 4,
+      [CharacterAttr.magic]: 0,
+      [CharacterAttr.resonance]: 0,
+      [CharacterAttr.essence]: 6,
     },
 
     contacts: [

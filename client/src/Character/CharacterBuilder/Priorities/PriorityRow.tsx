@@ -2,12 +2,16 @@ import { TableCell, TableRow } from '@mui/material'
 import { FC } from 'react'
 
 import { formatNuyen } from '../../../System/Nuyen'
+import { AwakenedType } from '../../AwakenedType'
+import { Metatype } from '../../Metatypes'
 import { PriorityStat, PriorityValues } from './Priorities'
 
 interface PriorityRowProps {
   level: string
   values: PriorityValues
   selectedType?: PriorityStat
+  metatype: Metatype
+  awakened: AwakenedType
 
   onSelect (level: string, type: PriorityStat): void
 }
@@ -16,6 +20,8 @@ export const PriorityRow: FC<PriorityRowProps> = ({
   level,
   values,
   selectedType,
+  metatype,
+  awakened,
   onSelect,
 }) => {
   return (
@@ -31,7 +37,11 @@ export const PriorityRow: FC<PriorityRowProps> = ({
         onClick={() => onSelect(level, PriorityStat.metatype)}
         selected={selectedType === PriorityStat.metatype}
       >
-        {values.metatypes.join(', ')} ({values.adjustmentPoints})
+        {values.metatypes.includes(metatype) ? (
+          <>{metatype} ({values.adjustmentPoints})</>
+        ) : (
+          '-'
+        )}
       </PriorityCell>
       <PriorityCell
         onClick={() => onSelect(level, PriorityStat.attributes)}
@@ -53,11 +63,12 @@ export const PriorityRow: FC<PriorityRowProps> = ({
           'Mundane'
         ) : (
           <>
-            <div>Full: {values.magic} Magic</div>
-            <div>Aspected: {values.magic + 1} Magic</div>
-            <div>Mystic Adept: {values.magic} Magic</div>
-            <div>Adept: {values.magic} Magic</div>
-            <div>Technomancer: {values.magic} Resonance</div>
+            {awakened === AwakenedType.Mundane && '-'}
+            {awakened === AwakenedType.Full && values.magic + ' Magic'}
+            {awakened === AwakenedType.Aspected && (values.magic + 1) + ' Magic'}
+            {awakened === AwakenedType.Mystic && values.magic + ' Magic'}
+            {awakened === AwakenedType.Adept && values.magic + ' Magic'}
+            {awakened === AwakenedType.Technomancer && values.magic + ' Resonance'}
           </>
         )}
       </PriorityCell>

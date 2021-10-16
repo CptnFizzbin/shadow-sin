@@ -3,7 +3,7 @@ import { GearData } from '../Gear/GearData'
 
 export type AttrType = string
 export type AttrValue = number | string | null | undefined
-export type AttrList = Record<AttrType, AttrValue>
+export type AttrList<T = AttrValue> = Record<AttrType, T | undefined>
 export type AttrNames = Record<AttrType, string>
 
 let attributeNames: AttrNames = {}

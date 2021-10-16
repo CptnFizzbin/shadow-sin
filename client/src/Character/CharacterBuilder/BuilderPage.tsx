@@ -3,8 +3,11 @@ import { FC, useState } from 'react'
 
 import { RootLayout } from '../../Pages/RootLayout'
 import { CharacterNavDrawer } from '../../UI/NavDrawer/CharacterNavDrawer'
+import { AwakenedType } from '../AwakenedType'
 import { CharacterAttr } from '../CharacterAttr'
 import { CharacterData } from '../CharacterData'
+import { Metatype } from '../Metatypes'
+import { AttributesTable } from './Attributes/AttributesTable'
 import { BioSection } from './BioSection'
 import { PriorityValues } from './Priorities/Priorities'
 import { PrioritiesTable } from './Priorities/PrioritiesTable'
@@ -14,7 +17,8 @@ const defaultCharacter: CharacterData = {
 
   bio: {
     name: '',
-    metatype: '',
+    metatype: Metatype.Human,
+    awakened: AwakenedType.Mundane,
     role: '',
     alias: '',
     ethnicity: '',
@@ -39,6 +43,7 @@ const defaultCharacter: CharacterData = {
     [CharacterAttr.edge]: 0,
     [CharacterAttr.magic]: 0,
     [CharacterAttr.resonance]: 0,
+    [CharacterAttr.essence]: 0,
   },
 
   heat: '',
@@ -72,12 +77,29 @@ export const BuilderPage: FC = () => {
             bio={characterData.bio}
             onChange={bio => setCharacterData({ ...characterData, bio })}
             metatypes={priorities.metatypes}
+            magicPriority={priorities.magic}
           />
         </Paper>
 
         <Paper variant="outlined" sx={{ padding: 1 }}>
           <Typography variant="h3">Priorities</Typography>
-          <PrioritiesTable onChange={setPriorities} />
+          <PrioritiesTable
+            metatype={characterData.bio.metatype}
+            awakened={characterData.bio.awakened}
+            onChange={setPriorities}
+          />
+        </Paper>
+
+        <Paper variant="outlined" sx={{ padding: 1 }}>
+          <Typography variant="h3">Attributes</Typography>
+          <AttributesTable
+            metatype={characterData.bio.metatype}
+            awakened={characterData.bio.awakened}
+            attributePoints={priorities.attributePoints}
+            adjustmentPoints={priorities.adjustmentPoints}
+            magic={priorities.magic}
+            onChange={attributes => setCharacterData({ ...characterData, attributes })}
+          />
         </Paper>
       </Stack>
     </RootLayout>

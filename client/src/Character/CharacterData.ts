@@ -3,11 +3,14 @@ import { GearData } from '../Gear/GearData'
 import { QualityData } from '../Qualities/QualityData'
 import { BalanceLog } from '../System/BalanceLog'
 import { SkillData } from '../System/Skill/SkillData'
+import { AwakenedType } from './AwakenedType'
 import { CharacterAttr } from './CharacterAttr'
+import { Metatype } from './Metatypes'
 
 export interface BioData {
   name: string
-  metatype: string
+  metatype: Metatype
+  awakened: AwakenedType
   role?: string
   alias?: string
   ethnicity?: string
@@ -32,22 +35,12 @@ export interface CharacterData {
     prepaid: number
   }
 
-  attributes: {
-    [CharacterAttr.body]: number
-    [CharacterAttr.agility]: number
-    [CharacterAttr.reaction]: number
-    [CharacterAttr.strength]: number
-    [CharacterAttr.willpower]: number
-    [CharacterAttr.logic]: number
-    [CharacterAttr.intuition]: number
-    [CharacterAttr.charisma]: number
-    [CharacterAttr.edge]: number
-    [CharacterAttr.magic]?: number
-    [CharacterAttr.resonance]?: number
-  }
+  attributes: CharAttributes
 
   skills: SkillData[]
   contacts: ContactData[]
   gear: GearData[]
   qualities: QualityData[]
 }
+
+export type CharAttributes = Record<CharacterAttr, number>

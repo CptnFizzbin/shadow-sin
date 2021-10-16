@@ -1,3 +1,5 @@
+import { Metatype } from '../../Metatypes'
+
 export enum PriorityStat {
   metatype = 'metatype',
   attributes = 'attributes',
@@ -17,7 +19,11 @@ export interface PriorityValues {
 
 export const priorityValues: Record<string, PriorityValues> = {
   'A': {
-    metatypes: ['Dwarf', 'Ork', 'Troll'],
+    metatypes: [
+      Metatype.Dwarf,
+      Metatype.Ork,
+      Metatype.Troll,
+    ],
     adjustmentPoints: 13,
     attributePoints: 24,
     skillPoints: 32,
@@ -25,7 +31,12 @@ export const priorityValues: Record<string, PriorityValues> = {
     nuyen: 450_000,
   },
   'B': {
-    metatypes: ['Dwarf', 'Elf', 'Ork', 'Troll'],
+    metatypes: [
+      Metatype.Dwarf,
+      Metatype.Elf,
+      Metatype.Ork,
+      Metatype.Troll,
+    ],
     adjustmentPoints: 11,
     attributePoints: 16,
     skillPoints: 24,
@@ -33,7 +44,13 @@ export const priorityValues: Record<string, PriorityValues> = {
     nuyen: 275_000,
   },
   'C': {
-    metatypes: ['Dwarf', 'Elf', 'Human', 'Ork', 'Troll'],
+    metatypes: [
+      Metatype.Dwarf,
+      Metatype.Elf,
+      Metatype.Human,
+      Metatype.Ork,
+      Metatype.Troll,
+    ],
     adjustmentPoints: 9,
     attributePoints: 12,
     skillPoints: 20,
@@ -41,7 +58,13 @@ export const priorityValues: Record<string, PriorityValues> = {
     nuyen: 150_000,
   },
   'D': {
-    metatypes: ['Dwarf', 'Elf', 'Human', 'Ork', 'Troll'],
+    metatypes: [
+      Metatype.Dwarf,
+      Metatype.Elf,
+      Metatype.Human,
+      Metatype.Ork,
+      Metatype.Troll,
+    ],
     adjustmentPoints: 4,
     attributePoints: 8,
     skillPoints: 16,
@@ -49,7 +72,13 @@ export const priorityValues: Record<string, PriorityValues> = {
     nuyen: 50_000,
   },
   'E': {
-    metatypes: ['Dwarf', 'Elf', 'Human', 'Ork', 'Troll'],
+    metatypes: [
+      Metatype.Dwarf,
+      Metatype.Elf,
+      Metatype.Human,
+      Metatype.Ork,
+      Metatype.Troll,
+    ],
     adjustmentPoints: 1,
     attributePoints: 2,
     skillPoints: 10,
