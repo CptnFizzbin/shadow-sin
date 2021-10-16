@@ -36,7 +36,7 @@ export const Artemis: Character = {
       alias: 'Artemis',
       role: 'rigger',
       gender: 'female',
-      metaType: 'Elf',
+      metatype: 'Elf',
     },
 
     karma: [

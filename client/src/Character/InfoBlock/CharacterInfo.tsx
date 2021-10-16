@@ -31,7 +31,7 @@ export const CharacterInfo: FC = () => {
 
   return (
     <InfoBlock
-      title={bio.alias || bio.name} subtitle={bio.metaType} titleFontSize={50}
+      title={bio.alias || bio.name} subtitle={bio.metatype} titleFontSize={50}
       titleRight={blockTitleRight}
     >
       <AttributesSection />

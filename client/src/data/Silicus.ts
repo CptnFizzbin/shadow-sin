@@ -34,7 +34,7 @@ export const Silicus: Character = {
 
     bio: {
       name: 'Silicus',
-      metaType: 'Elf',
+      metatype: 'Elf',
       gender: 'male',
       role: 'Street Samurai',
     },

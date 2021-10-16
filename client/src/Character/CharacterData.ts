@@ -7,11 +7,11 @@ import { CharacterAttr } from './CharacterAttr'
 
 export interface BioData {
   name: string
-  metaType: string
+  metatype: string
   role?: string
   alias?: string
   ethnicity?: string
-  age?: number
+  age?: string
   gender?: string
   height?: string
   weight?: string
