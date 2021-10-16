@@ -476,11 +476,10 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 1.65,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
     [AugmentAttr.rating]: 3,
   },
-
-  essenceCost: 1.65,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
@@ -505,10 +504,9 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.22,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.22,
-  augmentSlot: AugmentSlot.bioware,
 })
 
 addGear<AugmentData>({
@@ -529,10 +527,9 @@ addGear<AugmentData>({
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
     [AugmentAttr.rating]: 4,
+    [AugmentAttr.essenceCost]: 0.88,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.88,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
@@ -552,15 +549,14 @@ addGear<AugmentData>({
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.alpha,
     [AugmentAttr.rating]: 4,
+    [AugmentAttr.essenceCost]: 0.48,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
 
   description: (`
       Increases Body during damage resistance test by rating. 
       Melee damage: 3P, Atk. Rating: +2
   `),
-
-  essenceCost: 0.48,
-  augmentSlot: AugmentSlot.bioware,
 
   effects: [
     { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
@@ -592,10 +588,9 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.beta,
+    [AugmentAttr.essenceCost]: 0.21,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.21,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
@@ -615,10 +610,9 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.11,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.11,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
@@ -637,10 +631,9 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.11,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.11,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [
@@ -660,10 +653,9 @@ addGear<AugmentData>({
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
     [AugmentAttr.rating]: 3,
+    [AugmentAttr.essenceCost]: 0.66,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
-
-  essenceCost: 0.66,
-  augmentSlot: AugmentSlot.bioware,
 
   enabled: true,
   effects: [

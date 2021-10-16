@@ -1,5 +1,6 @@
 import { createContext, FC, useContext } from 'react'
 
+import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { isAugment } from '../Gear/Augments/AugmentData'
 import { collectGearEffects, isSkillBonus } from '../Gear/Effect'
 import { GearProvider, useAllGear } from '../Gear/GearContext'
@@ -29,7 +30,8 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
 
   attributes[CharacterAttr.essence] = characterData.gear
     .filter(isAugment)
-    .reduce((essence, gear) => essence - gear.essenceCost, 6)
+    .map(augment => augment.attributes[AugmentAttr.essenceCost])
+    .reduce((essence, essenceCost) => essence - essenceCost, 6)
 
   return (
     <CharacterContext.Provider value={character}>

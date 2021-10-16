@@ -2,12 +2,12 @@ import { BaseGearData, GearData, GearType } from '../GearData'
 import { AugmentAttr } from './AugmentAttr'
 
 export interface AugmentData extends BaseGearData {
-  augmentSlot: AugmentSlot
-  essenceCost: number
   augmentType?: AugmentType
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade
+    [AugmentAttr.essenceCost]: number
+    [AugmentAttr.slot]: AugmentSlot
     [AugmentAttr.rating]?: number
     [AugmentAttr.capacity]?: number
     [AugmentAttr.capacityCost]?: number

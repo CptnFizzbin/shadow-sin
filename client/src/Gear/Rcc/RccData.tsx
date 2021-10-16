@@ -1,5 +1,5 @@
 import { RecordId } from '../../Api/Model'
-import { BaseGearData, GearData, GearType } from '../GearData'
+import { BaseGearData, GearType } from '../GearData'
 import { RccAttr } from './RccAttr'
 
 export interface RccData extends BaseGearData {

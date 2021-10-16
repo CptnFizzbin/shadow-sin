@@ -126,14 +126,8 @@ export const Artemis: Character = {
       },
       {
         id: nextRecordId(),
-        date: '2021-08-28T00:03',
-        value: -15_000,
-        note: 'Lifestyle (3 months)',
-      },
-      {
-        id: nextRecordId(),
         date: '2021-08-28T00:02',
-        value: -431_665,
+        value: -445_665,
         note: 'Starting Gear',
       },
       {
@@ -321,15 +315,16 @@ addGear<AugmentData>({
   name: 'Control Rig',
   type: 'Headwear Augment',
   avail: { rarity: 3, license: true },
-  cost: 60_000,
-  augmentSlot: AugmentSlot.headware,
-  augmentType: AugmentType.controlRig,
-  essenceCost: 2.2,
+  cost: 72_000,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 1.6,
+    [AugmentAttr.slot]: AugmentSlot.headware,
     [AugmentAttr.rating]: 2,
   },
+
+  augmentType: AugmentType.controlRig,
 })
 
 addGear<AugmentData>({
@@ -339,11 +334,11 @@ addGear<AugmentData>({
   type: 'Cultured Bioware Augment',
   avail: { rarity: 4 },
   cost: 47_250,
-  augmentSlot: AugmentSlot.bioware,
-  essenceCost: 0.66,
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.66,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
     [AugmentAttr.rating]: 3,
   },
 
@@ -360,8 +355,6 @@ addGear<AugmentData>({
   avail: { rarity: 4 },
   source: { book: 'CRB', page: 293 },
   cost: 6_000,
-  augmentSlot: AugmentSlot.bioware,
-  essenceCost: 0.11,
 
   description: (`
     You need less sleep per day, and the sleep you get is deep and restful (and harder
@@ -372,6 +365,8 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.11,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
   },
 })
 
@@ -525,7 +520,24 @@ const autosofts: AutosoftData[] = [
   }),
 ]
 
-const rcc: RccData = addGear({
+const rccHeadwear = addGear<AugmentData>({
+  id: null,
+  gearType: GearType.augment,
+  name: 'RCC Headwear',
+  type: 'Headwear Augment',
+  avail: { rarity: 2, license: true },
+  source: { book: 'DC', page: 145 },
+  cost: 2_000,
+
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.33,
+    [AugmentAttr.slot]: AugmentSlot.headware,
+    [AugmentAttr.capacityCost]: 3,
+  },
+})
+
+const rcc = addGear<RccData>({
   id: null,
   gearType: GearType.rcc,
   name: 'Proteus Poseidon',
@@ -540,6 +552,8 @@ const rcc: RccData = addGear({
   },
 
   slavedAutosofts: [],
+
+  attachedTo: rccHeadwear.id,
 })
 
 autosofts.forEach(soft => soft.attachedTo = rcc.id)
@@ -624,7 +638,6 @@ addGear<VehicleData>({
   pilotingSpeciality: 'Ground Craft',
 }, [
   addGear(riggerInterface),
-  rcc,
 ])
 
 new Array(2).fill(null).forEach((_, index) => {
@@ -759,10 +772,9 @@ addGear<AugmentData>({
     [AugmentAttr.grade]: AugmentGrade.alpha,
     [AugmentAttr.rating]: 3,
     [AugmentAttr.capacity]: 12,
+    [AugmentAttr.essenceCost]: 0.32,
+    [AugmentAttr.slot]: AugmentSlot.eyeware,
   },
-
-  essenceCost: 0.32,
-  augmentSlot: AugmentSlot.eyeware,
 }, [
   addGear<AugmentData>({
     id: null,
@@ -775,11 +787,10 @@ addGear<AugmentData>({
 
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
+      [AugmentAttr.essenceCost]: 0.16,
+      [AugmentAttr.slot]: AugmentSlot.eyeware,
       [AugmentAttr.capacityCost]: 3,
     },
-
-    essenceCost: 0.16,
-    augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
     id: null,
@@ -792,11 +803,10 @@ addGear<AugmentData>({
 
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
+      [AugmentAttr.essenceCost]: 0.08,
+      [AugmentAttr.slot]: AugmentSlot.eyeware,
       [AugmentAttr.capacityCost]: 0,
     },
-
-    essenceCost: 0.08,
-    augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
     id: null,
@@ -810,10 +820,9 @@ addGear<AugmentData>({
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
+      [AugmentAttr.essenceCost]: 0.08,
+      [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
-
-    essenceCost: 0.08,
-    augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
     id: null,
@@ -827,10 +836,9 @@ addGear<AugmentData>({
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
+      [AugmentAttr.essenceCost]: 0.08,
+      [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
-
-    essenceCost: 0.08,
-    augmentSlot: AugmentSlot.eyeware,
   }),
   addGear<AugmentData>({
     id: null,
@@ -844,10 +852,9 @@ addGear<AugmentData>({
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
+      [AugmentAttr.essenceCost]: 0.08,
+      [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
-
-    essenceCost: 0.08,
-    augmentSlot: AugmentSlot.eyeware,
   }),
 ])
 
@@ -862,10 +869,9 @@ addGear<AugmentData>({
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
+    [AugmentAttr.essenceCost]: 0.11,
+    [AugmentAttr.slot]: AugmentSlot.headware,
   },
-
-  essenceCost: 0.11,
-  augmentSlot: AugmentSlot.headware,
 }, [
   addGear({
     id: null,
@@ -896,10 +902,9 @@ addGear<AugmentData>({
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
     [AugmentAttr.rating]: 3,
+    [AugmentAttr.essenceCost]: 0.99,
+    [AugmentAttr.slot]: AugmentSlot.bodyware,
   },
-
-  essenceCost: 0.99,
-  augmentSlot: AugmentSlot.bodyware,
 
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
