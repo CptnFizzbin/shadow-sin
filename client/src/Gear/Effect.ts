@@ -7,6 +7,7 @@ export enum EffectType {
   initBonus = 'initBonus',
   skillBonus = 'skillBonus',
   dicePoolBonus = 'dicePoolBonus',
+  defRatingBonus = 'defRatingBonus',
 }
 
 interface BaseGearEffect {
@@ -62,12 +63,22 @@ export function isDicePoolBonus (effect: BaseGearEffect): effect is DicePoolBonu
   return effect.type === EffectType.dicePoolBonus
 }
 
+interface DefRatingBonus extends BaseGearEffect {
+  type: EffectType.defRatingBonus
+  bonus: number
+}
+
+export function isDefRatingBonus (effect: BaseGearEffect): effect is DefRatingBonus {
+  return effect.type === EffectType.defRatingBonus
+}
+
 export type Effect =
   | AttrBonus
   | AttrOverride
   | InitBonus
   | SkillBonus
   | DicePoolBonus
+  | DefRatingBonus
 
 export const collectGearEffects = (gear: GearData[]): Effect[] => {
   return gear

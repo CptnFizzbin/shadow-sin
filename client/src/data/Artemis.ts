@@ -46,6 +46,12 @@ export const Artemis: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-10-03T16:00',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-09-26T16:00',
         value: 4,
         note: 'Session reward',
@@ -282,11 +288,17 @@ export const Artemis: Character = {
   },
 }
 
-export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, dataVersion: 1, id: nextRecordId() };
+const usedIds = new Set()
 
-  (Artemis.data.gear as GearData[]).push(gear)
+export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
+  gear = { ...gear }
+
+  if (gear.id === null) { throw new Error(`Null gear id for ${gear.name}`) }
+  if (usedIds.has(gear.id)) { throw new Error(`Duplicate gear id for ${gear.name}`) }
+
+  Artemis.data.gear.push(gear)
   attachedGear.forEach(item => item.attachedTo = gear.id)
+  usedIds.add(gear.id)
 
   return gear
 }
@@ -311,7 +323,7 @@ const smartGunIntMod: WeaponModData = {
 }
 
 addGear<AugmentData>({
-  id: null,
+  id: '37f9da35-c67f-46fd-9e79-3929db823816',
   gearType: GearType.augment,
   name: 'Control Rig',
   type: 'Headwear Augment',
@@ -329,7 +341,7 @@ addGear<AugmentData>({
 })
 
 addGear<AugmentData>({
-  id: null,
+  id: 'd89aafe6-111f-4e60-9fe2-fe5c1c3f94b8',
   gearType: GearType.augment,
   name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
@@ -349,7 +361,7 @@ addGear<AugmentData>({
 })
 
 addGear<AugmentData>({
-  id: null,
+  id: 'de13c340-89b3-4bc9-b6f4-29288cff00bc',
   gearType: GearType.augment,
   name: 'Sleep Regulator',
   type: 'Cultured Bioware Augment',
@@ -372,7 +384,7 @@ addGear<AugmentData>({
 })
 
 addGear<WeaponData>({
-  id: null,
+  id: 'e7f70f35-8d96-43be-8b19-fc9d8718ed95',
   source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
@@ -391,7 +403,7 @@ addGear<WeaponData>({
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
   addGear<WeaponModData>({
-    id: null,
+    id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
@@ -401,7 +413,7 @@ addGear<WeaponData>({
     removable: false,
   }),
   addGear<WeaponModData>({
-    id: null,
+    id: '02fbb521-e039-4c06-9aaf-cead333e3885',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Laser sight',
@@ -410,7 +422,7 @@ addGear<WeaponData>({
     slot: WeaponModSlot.topOrUnder,
   }),
   addGear<WeaponModData>({
-    id: null,
+    id: '21d66c66-4615-49d6-b330-e4c25eea631a',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Flashlight',
@@ -418,11 +430,11 @@ addGear<WeaponData>({
 
     slot: WeaponModSlot.topOrUnder,
   }),
-  addGear(smartGunIntMod),
+  addGear({ ...smartGunIntMod, id: '429f440e-ffc3-459d-b08f-b013af1648dc' }),
 ])
 
 addGear<WeaponData>({
-  id: null,
+  id: 'ae2baf27-bd6f-43e2-8198-a19e37231b7d',
   source: { book: 'CRB', page: 252 },
   gearType: GearType.weapon,
   name: 'Colt America L36',
@@ -445,12 +457,12 @@ addGear<WeaponData>({
   skill: ActiveSkillId.firearms,
   specialtyName: FirearmSpecialties.lightPistols,
 }, [
-  addGear(smartGunIntMod),
+  addGear({ ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
 ])
 
 const autosofts: AutosoftData[] = [
   addGear<AutosoftData>({
-    id: null,
+    id: 'de5e973c-134d-427e-9a3a-205422341b7b',
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
     type: 'Targeting Autosoft',
@@ -464,7 +476,7 @@ const autosofts: AutosoftData[] = [
     },
   }),
   addGear<AutosoftData>({
-    id: null,
+    id: 'a0af5540-37c7-44ca-af2a-03cb21efd83a',
     gearType: GearType.autosoft,
     name: 'Clearsight',
     type: 'Autosoft',
@@ -478,7 +490,7 @@ const autosofts: AutosoftData[] = [
     },
   }),
   addGear<AutosoftData>({
-    id: null,
+    id: '3a459c98-5354-4fa1-a230-dfe77b199ffa',
     gearType: GearType.autosoft,
     name: 'Evasion',
     type: 'Autosoft',
@@ -492,7 +504,7 @@ const autosofts: AutosoftData[] = [
     },
   }),
   addGear<AutosoftData>({
-    id: null,
+    id: '78a5f82e-636f-468a-85e3-5af73304b7c0',
     gearType: GearType.autosoft,
     name: 'Maneuvering',
     type: 'Autosoft',
@@ -506,7 +518,7 @@ const autosofts: AutosoftData[] = [
     },
   }),
   addGear<AutosoftData>({
-    id: null,
+    id: 'a5b8c866-38cb-40a2-a136-d3feb39ea68d',
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
     type: 'Autosoft',
@@ -522,7 +534,7 @@ const autosofts: AutosoftData[] = [
 ]
 
 const rccHeadwear = addGear<AugmentData>({
-  id: null,
+  id: '1f8b016d-a36f-45b6-8099-7527e2986093',
   gearType: GearType.augment,
   name: 'RCC Headwear',
   type: 'Headwear Augment',
@@ -539,7 +551,7 @@ const rccHeadwear = addGear<AugmentData>({
 })
 
 const rcc = addGear<RccData>({
-  id: null,
+  id: 'bb6e3208-418d-41b8-85c3-447e6328aa5bs',
   gearType: GearType.rcc,
   name: 'Proteus Poseidon',
   type: 'RCC',
@@ -616,7 +628,7 @@ const sensorArray: VehicleModData = {
 }
 
 addGear<VehicleData>({
-  id: null,
+  id: '4a5eb8d5-004b-4cdd-bce5-e0db64a33639',
   gearType: GearType.vehicle,
   name: 'Range Rover Model 2080',
   type: 'Van',
@@ -638,108 +650,162 @@ addGear<VehicleData>({
   slavedTo: rcc.id,
   pilotingSpeciality: 'Ground Craft',
 }, [
-  addGear(riggerInterface),
+  addGear({ ...riggerInterface, id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3' }),
 ])
 
-new Array(2).fill(null).forEach((_, index) => {
-  addGear<VehicleData>({
-    id: null,
-    gearType: GearType.vehicle,
-    type: 'Medium Rotor Drone',
-    name: `MCT-Nissan Roto-drone ${index + 1}`,
-    cost: 5_000,
-    avail: { rarity: 2 },
+const rotoDrone: VehicleData = {
+  id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
+  gearType: GearType.vehicle,
+  type: 'Medium Rotor Drone',
+  name: 'MCT-Nissan Roto-drone',
+  cost: 5_000,
+  avail: { rarity: 2 },
 
-    attributes: {
-      [VehicleAttr.handling]: 3,
-      [VehicleAttr.accel]: 20,
-      [VehicleAttr.speedInterval]: 30,
-      [VehicleAttr.topSpeed]: 160,
-      [VehicleAttr.body]: 5,
-      [VehicleAttr.armor]: 6,
-      [VehicleAttr.pilot]: 3,
-      [VehicleAttr.sensor]: 2,
-      [VehicleAttr.seat]: null,
-    },
+  attributes: {
+    [VehicleAttr.handling]: 3,
+    [VehicleAttr.accel]: 20,
+    [VehicleAttr.speedInterval]: 30,
+    [VehicleAttr.topSpeed]: 160,
+    [VehicleAttr.body]: 5,
+    [VehicleAttr.armor]: 6,
+    [VehicleAttr.pilot]: 3,
+    [VehicleAttr.sensor]: 2,
+    [VehicleAttr.seat]: null,
+  },
 
-    slavedTo: rcc.id,
-    pilotingSpeciality: 'Aircraft',
-  }, [
-    addGear(stdWeaponMount, [
-      addGear(fnHar),
-    ]),
-    addGear(riggerInterface),
-    // addGear(sensorArray),
-  ])
-})
-
-new Array(4).fill(null).forEach((_, index) => {
-  addGear<VehicleData>({
-    id: null,
-    gearType: GearType.vehicle,
-    name: `Aztech Crawler ${index + 1}`,
-    type: 'Small Anthro Drone',
-    cost: 4_500,
-    avail: { rarity: 2 },
-
-    attributes: {
-      [VehicleAttr.handling]: '3/4',
-      [VehicleAttr.accel]: 8,
-      [VehicleAttr.speedInterval]: 10,
-      [VehicleAttr.topSpeed]: 30,
-      [VehicleAttr.body]: 6,
-      [VehicleAttr.armor]: 2,
-      [VehicleAttr.pilot]: 2,
-      [VehicleAttr.sensor]: 2,
-      [VehicleAttr.seat]: null,
-    },
-
-    slavedTo: rcc.id,
-    pilotingSpeciality: 'Ground Craft',
-  }, [
-    addGear(stdWeaponMount, [
-      addGear(fnHar),
-    ]),
-    addGear(riggerInterface),
-    addGear(sensorArray),
-  ])
-})
-
-new Array(1).fill(null).forEach((_, index) => {
-  addGear<VehicleData>({
-    id: null,
-    gearType: GearType.vehicle,
-    type: 'Small Rotor Drone',
-    name: `Cyberspace Designs Quadrotor ${index + 1}`,
-    cost: 5_000,
-    avail: { rarity: 2 },
-
-    attributes: {
-      [VehicleAttr.handling]: 2,
-      [VehicleAttr.accel]: 15,
-      [VehicleAttr.speedInterval]: 20,
-      [VehicleAttr.topSpeed]: 120,
-      [VehicleAttr.body]: 3,
-      [VehicleAttr.armor]: 1,
-      [VehicleAttr.pilot]: 3,
-      [VehicleAttr.sensor]: 2,
-      [VehicleAttr.seat]: null,
-    },
-
-    slavedTo: rcc.id,
-    pilotingSpeciality: 'Aircraft',
-  }, [
-    addGear(riggerInterface),
-  ])
-})
+  slavedTo: rcc.id,
+  pilotingSpeciality: 'Aircraft',
+}
 
 addGear<VehicleData>({
+  ...rotoDrone,
+  id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
+  name: 'MCT-Nissan Roto-drone 1',
+}, [
+  addGear({ ...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d' }, [
+    addGear({ ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' }),
+  ]),
+  addGear({ ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' }),
+  // addGear(sensorArray),
+])
+
+addGear<VehicleData>({
+  ...rotoDrone,
+  id: '17fe3632-c927-4def-91eb-7376ea1cdd3f',
+  name: 'MCT-Nissan Roto-drone 2',
+}, [
+  addGear({ ...stdWeaponMount, id: '7a1c1485-0f2f-4434-b216-3379c0b47e83' }, [
+    addGear({ ...fnHar, id: 'c068d8c7-de94-41d6-91c1-45c55fa58a93' }),
+  ]),
+  addGear({ ...riggerInterface, id: '0dfe8000-84db-430b-8cd6-7684b18ac5da' }),
+  // addGear(sensorArray),
+])
+
+const crawlerDrone: VehicleData = {
   id: null,
+  gearType: GearType.vehicle,
+  name: 'Aztech Crawler',
+  type: 'Small Anthro Drone',
+  cost: 4_500,
+  avail: { rarity: 2 },
+
+  attributes: {
+    [VehicleAttr.handling]: '3/4',
+    [VehicleAttr.accel]: 8,
+    [VehicleAttr.speedInterval]: 10,
+    [VehicleAttr.topSpeed]: 30,
+    [VehicleAttr.body]: 6,
+    [VehicleAttr.armor]: 2,
+    [VehicleAttr.pilot]: 2,
+    [VehicleAttr.sensor]: 2,
+    [VehicleAttr.seat]: null,
+  },
+
+  slavedTo: rcc.id,
+  pilotingSpeciality: 'Ground Craft',
+}
+
+addGear<VehicleData>({
+  ...crawlerDrone,
+  id: '2d42aac6-71a2-4154-a00b-ba9ba681a3af',
+  name: 'Aztech Crawler 1',
+}, [
+  addGear({ ...stdWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
+    addGear({ ...fnHar, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
+  ]),
+  addGear({ ...riggerInterface, id: '428e551d-516e-4450-a9b1-e2b775ea4a20' }),
+  addGear({ ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
+])
+
+addGear<VehicleData>({
+  ...crawlerDrone,
+  id: 'a969b8fa-2e3a-49d3-acb9-e6e2a877a1ae',
+  name: 'Aztech Crawler 2',
+}, [
+  addGear({ ...stdWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
+    addGear({ ...fnHar, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
+  ]),
+  addGear({ ...riggerInterface, id: '7753605b-6ffb-4295-bc8b-93859021c8a9' }),
+  addGear({ ...sensorArray, id: 'd952c534-d98c-4b24-a3d1-3f367835ec76' }),
+])
+
+addGear<VehicleData>({
+  ...crawlerDrone,
+  id: '573791c8-e686-4411-927a-052452d8dcba',
+  name: 'Aztech Crawler 3',
+}, [
+  addGear({ ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
+    addGear({ ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
+  ]),
+  addGear({ ...riggerInterface, id: 'cee46222-8727-40f3-9788-c08dd29369ae' }),
+  addGear({ ...sensorArray, id: '40ef5411-038c-4b97-abfd-a70d8dcd2b3b' }),
+])
+
+addGear<VehicleData>({
+  ...crawlerDrone,
+  id: 'b02313b9-c024-4c5b-a661-9e23fbc6e816',
+  name: 'Aztech Crawler 4',
+}, [
+  addGear({ ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
+    addGear({ ...fnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071' }),
+  ]),
+  addGear({ ...riggerInterface, id: '2801f808-849f-4226-bbb6-6db12fe6ddb9' }),
+  addGear({ ...sensorArray, id: '11805cad-896c-4cba-ba18-e81eeff71dae' }),
+])
+
+addGear<VehicleData>({
+  id: '9159eaaa-f444-4f54-ac01-db6b65464764',
+  gearType: GearType.vehicle,
+  type: 'Small Rotor Drone',
+  name: 'Cyberspace Designs Quadrotor',
+  cost: 5_000,
+  avail: { rarity: 2 },
+
+  attributes: {
+    [VehicleAttr.handling]: 2,
+    [VehicleAttr.accel]: 15,
+    [VehicleAttr.speedInterval]: 20,
+    [VehicleAttr.topSpeed]: 120,
+    [VehicleAttr.body]: 3,
+    [VehicleAttr.armor]: 1,
+    [VehicleAttr.pilot]: 3,
+    [VehicleAttr.sensor]: 2,
+    [VehicleAttr.seat]: null,
+  },
+
+  slavedTo: rcc.id,
+  pilotingSpeciality: 'Aircraft',
+}, [
+  addGear({ ...riggerInterface, id: 'f1118f16-1105-428f-ba17-67d90e00377a' }),
+])
+
+addGear<VehicleData>({
+  id: 'fbbbd8b6-7e5a-46c4-ad0c-5b8c7cadb1f3',
   gearType: GearType.vehicle,
   type: 'Micro Rotor Drone',
   name: 'MCT Gnat',
   cost: 800,
-  quantity: 10,
+  quantity: 8,
   avail: { rarity: 2 },
 
   attributes: {
@@ -757,11 +823,11 @@ addGear<VehicleData>({
   slavedTo: rcc.id,
   pilotingSpeciality: 'Aircraft',
 }, [
-  addGear(riggerInterface),
+  addGear({ ...riggerInterface, id: 'b4ba0a55-150b-47b4-b391-cc1da213d48a' }),
 ])
 
 addGear<AugmentData>({
-  id: null,
+  id: '62c928a2-2a1e-4195-83ee-c760b6f93e1b',
   gearType: GearType.augment,
   name: 'Cybereyes',
   type: 'Augment',
@@ -778,7 +844,7 @@ addGear<AugmentData>({
   },
 }, [
   addGear<AugmentData>({
-    id: null,
+    id: 'a19ea646-4212-49a2-908c-1da5f3ab498f',
     gearType: GearType.augment,
     name: 'Smartlink',
     type: 'Cybereye Augment',
@@ -794,7 +860,7 @@ addGear<AugmentData>({
     },
   }),
   addGear<AugmentData>({
-    id: null,
+    id: '31e7ddd1-dca5-4f99-a67d-2fecadcf2853',
     gearType: GearType.augment,
     name: 'Imagelink',
     type: 'Cybereye Augment',
@@ -810,7 +876,7 @@ addGear<AugmentData>({
     },
   }),
   addGear<AugmentData>({
-    id: null,
+    id: '1660efc9-98d5-4ed1-b2da-651e7ea578c5',
     gearType: GearType.augment,
     name: 'Low-Light Vision',
     type: 'Cybereye Augment',
@@ -826,7 +892,7 @@ addGear<AugmentData>({
     },
   }),
   addGear<AugmentData>({
-    id: null,
+    id: '31189433-ba37-4186-a453-6e236d915caa',
     gearType: GearType.augment,
     name: 'Vision Enhancement',
     type: 'Cybereye Augment',
@@ -842,7 +908,7 @@ addGear<AugmentData>({
     },
   }),
   addGear<AugmentData>({
-    id: null,
+    id: '1b6cdf25-9374-4a09-b2a1-76ed1a9be01b',
     gearType: GearType.augment,
     name: 'Vision Magnification',
     type: 'Cybereye Augment',
@@ -860,7 +926,7 @@ addGear<AugmentData>({
 ])
 
 addGear<AugmentData>({
-  id: null,
+  id: '89192a52-adf6-41d1-8978-0f0787185b5a',
   gearType: GearType.augment,
   name: 'Commlink',
   type: 'Headware Augment',
@@ -875,7 +941,7 @@ addGear<AugmentData>({
   },
 }, [
   addGear({
-    id: null,
+    id: '8c2e404d-5678-4dad-8cdd-dcda26e9d866',
     gearType: GearType.other,
     name: 'Hermes Ikon',
     type: 'Commlink',
@@ -892,7 +958,7 @@ addGear<AugmentData>({
 ])
 
 addGear<AugmentData>({
-  id: null,
+  id: '3803d92f-1869-41b0-975a-dbdd929af4d7',
   gearType: GearType.augment,
   name: 'Reaction Enhancers',
   type: 'Bodyware Augment',
@@ -913,7 +979,7 @@ addGear<AugmentData>({
 })
 
 addGear<SinData>({
-  id: null,
+  id: '110a3b00-ac94-4698-a60c-7cf34d829bcb',
   gearType: GearType.sin,
   name: 'Davina Hasselhoff',
   type: 'Fake SIN',
@@ -929,7 +995,7 @@ addGear<SinData>({
 })
 
 addGear<SinData>({
-  id: null,
+  id: '25a3030a-4850-4f68-914f-95276c893352',
   gearType: GearType.sin,
   name: 'Sara McCabe',
   type: 'Fake SIN',
@@ -944,7 +1010,7 @@ addGear<SinData>({
   },
 }, [
   addGear<LicenseData>({
-    id: null,
+    id: 'eae7b822-7dee-4734-8e7b-1c1ebd7aa46d',
     gearType: GearType.license,
     name: 'Driver License (Semi-Truck)',
     type: 'Fake License',
@@ -959,7 +1025,7 @@ addGear<SinData>({
 ])
 
 addGear<SinData>({
-  id: null,
+  id: '50f91ebf-e206-4843-be29-ac1bcb3a45ba',
   gearType: GearType.sin,
   name: 'Jane Smith',
   type: 'Fake SIN',
@@ -975,7 +1041,7 @@ addGear<SinData>({
 })
 
 addGear({
-  id: null,
+  id: 'f2b9526c-5db1-4076-81c0-c0bf52280e8a',
   gearType: GearType.other,
   name: 'Engineering Shop',
   type: 'Shop',

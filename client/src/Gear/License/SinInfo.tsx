@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material'
-import { FC } from 'react'
+import { FC, ReactElement } from 'react'
 
 import { formatNuyen } from '../../System/Nuyen'
 import { formatSource } from '../../System/Source'
@@ -19,6 +19,17 @@ export const SinInfo: FC<GearInfoProps<SinData>> = ({
   const licenses = useGearOfType<LicenseData>(GearType.license)
     .filter(license => license.attachedTo === sin.id)
 
+  let footer: ReactElement | undefined = undefined
+  if (licenses.length >= 1) {
+    footer = <>
+      {licenses.length >= 1 && (
+        <Stack gap={1}>
+          {licenses.map(license => <LicenseInfo key={license.id} item={license} />)}
+        </Stack>
+      )}
+    </>
+  }
+
   return (
     <SimpleInfoBlock
       name={sin.name}
@@ -32,15 +43,7 @@ export const SinInfo: FC<GearInfoProps<SinData>> = ({
       body={
         <Typography variant="caption">{sin.type}</Typography>
       }
-      footer={
-        <>
-          {licenses.length >= 1 && (
-            <Stack gap={1}>
-              {licenses.map(license => <LicenseInfo key={license.id} item={license} />)}
-            </Stack>
-          )}
-        </>
-      }
+      footer={footer}
     />
   )
 }

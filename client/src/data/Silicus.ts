@@ -46,6 +46,12 @@ export const Silicus: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-10-03T16:00',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-09-19T16:00',
         value: 5,
         note: 'Session reward',
@@ -95,6 +101,12 @@ export const Silicus: Character = {
     ],
 
     nuyen: [
+      {
+        id: nextRecordId(),
+        date: '2021-10-03T16:00',
+        value: -30_000,
+        note: 'Orthoskin',
+      },
       {
         id: nextRecordId(),
         date: '2021-09-26T16:00',
@@ -195,7 +207,7 @@ export const Silicus: Character = {
         skillId: ActiveSkillId.firearms,
         rank: 6,
         attr: 'agility',
-        speciality: 'Automatics',
+        speciality: FirearmSpecialties.submachineGuns,
       },
       {
         type: SkillType.active,
@@ -602,22 +614,30 @@ addGear<AugmentData>({
 
 addGear<AugmentData>({
   id: null,
+  name: 'Orthoskin',
+  type: 'Bioware Augment',
   gearType: GearType.augment,
-  name: 'Reflex Recorder (Firearms)',
-  type: 'Cultured Bioware Augment',
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 4 },
-  cost: 7_000,
+  source: { book: 'CRB', page: 292 },
+  avail: { rarity: 7, license: true },
+  cost: 30_000,
+
+  description: (`
+    A web of biofibers in the skin provides the
+    equivalent of personal armor while being virtually
+    indistinguishable from natural skin. Orthoskin
+    provides a bonus equal to its rating to your Defense
+    Rating. Orthoskin cannot be combined with
+    skin augmentations, including dermal plating. 
+  `),
 
   attributes: {
-    [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.essenceCost]: 0.11,
+    [AugmentAttr.grade]: AugmentGrade.delta,
+    [AugmentAttr.essenceCost]: 0.25,
     [AugmentAttr.slot]: AugmentSlot.bioware,
   },
 
-  enabled: true,
   effects: [
-    { type: EffectType.skillBonus, skill: ActiveSkillId.firearms, bonus: 1 },
+    { type: EffectType.defRatingBonus, bonus: 2 },
   ],
 })
 
@@ -629,6 +649,15 @@ addGear<AugmentData>({
   source: { book: 'CRB', page: 293 },
   avail: { rarity: 4 },
   cost: 7_000,
+
+  description: (`
+    This system uses extra nervous tissue linked to
+    specific areas of the body to improve muscle memory.
+    The reflex recorder adds 1 to the rating of a
+    skill linked to a Physical attribute. Multiple recorders
+    may be taken for multiple skills, but you can’t
+    implant two reflex recorders for the same skill.
+  `),
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
@@ -650,6 +679,14 @@ addGear<AugmentData>({
   source: { book: 'CRB', page: 293 },
   avail: { rarity: 5 },
   cost: 47_250,
+
+  description: (`
+    The convolutions and gyri of your cerebrum
+    are augmented and amplified with additional
+    nervous tissue, improving overall brain function.
+    Your cerebral booster increases your Logic attribute
+    by its rating.
+  `),
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
