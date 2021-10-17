@@ -14,16 +14,26 @@ import { GearType } from '../GearData'
 import { AutosoftAttr } from '../Software/Autosoft/AutosoftAttr'
 import { AutosoftType } from '../Software/Autosoft/AutosoftData'
 import { useAutosoft } from '../Software/Autosoft/AutosoftProvider'
+import {VehicleAttr} from './VehicleAttr'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
 export enum VehiclePoolKeys {
+  resistDmg = 'vehicle.resistDmg',
   pilotEvade = 'vehicle.pilotEvade',
   riggedEvade = 'vehicle.riggedEvade',
 }
 
 interface VehiclePoolProps {
   vehicle: VehicleData
+}
+
+export const VehicleResistDmg: FC<VehiclePoolProps> = () => {
+  return <DicePool
+    name="Resist Dmg."
+    poolKey={VehiclePoolKeys.resistDmg}
+    attrs={[VehicleAttr.body]}
+  />
 }
 
 export const AutosoftPiloting: FC<VehiclePoolProps> = () => {

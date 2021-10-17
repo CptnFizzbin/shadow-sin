@@ -1,29 +1,29 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { FC } from 'react'
+import {Box, Typography, useMediaQuery, useTheme} from '@mui/material'
+import {FC} from 'react'
 
-import { DamageProvider } from '../../System/Damage/DamageProvider'
-import { DamageTrack } from '../../System/Damage/DamageTrack'
-import { DamageType } from '../../System/Damage/DamageType'
-import { VehicleDefRatingStat } from '../../System/DefenseRating'
-import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
-import { AttributeBlock } from '../../UI/AttributeBlock'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
-import { StatBlock } from '../../UI/StatBlock'
-import { useGear, useGearOfType } from '../GearContext'
-import { GearType } from '../GearData'
-import { GearDicePools } from '../GearDicePools'
-import { GearInfoProps } from '../GearInfo'
-import { GearInfoBlock } from '../GearInfoBlock'
-import { RccData } from '../Rcc/RccData'
-import { AutosoftData } from '../Software/Autosoft/AutosoftData'
-import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
-import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
-import { DriverPiloting, AutosoftPiloting, RiggedPiloting } from './DicePools'
-import { VehicleAttr } from './VehicleAttr'
-import { VehicleData } from './VehicleData'
-import { ModType, VehicleModData } from './VehicleModData'
+import {DamageProvider} from '../../System/Damage/DamageProvider'
+import {DamageTrack} from '../../System/Damage/DamageTrack'
+import {DamageType} from '../../System/Damage/DamageType'
+import {VehicleDefRatingStat} from '../../System/DefenseRating'
+import {CharacterColdVrInit, CharacterHotVrInit, InitiativeStat} from '../../System/Initiative'
+import {AttributeBlock} from '../../UI/AttributeBlock'
+import {InfoSection} from '../../UI/InfoBlock/InfoSection'
+import {StatBlock} from '../../UI/StatBlock'
+import {useGear, useGearOfType} from '../GearContext'
+import {GearType} from '../GearData'
+import {GearDicePools} from '../GearDicePools'
+import {GearInfoProps} from '../GearInfo'
+import {GearInfoBlock} from '../GearInfoBlock'
+import {RccData} from '../Rcc/RccData'
+import {AutosoftData} from '../Software/Autosoft/AutosoftData'
+import {AutosoftProvider} from '../Software/Autosoft/AutosoftProvider'
+import {AutosoftsList} from '../Software/Autosoft/AutosoftsList'
+import {AutosoftPiloting, DriverPiloting, RiggedPiloting, VehicleResistDmg} from './DicePools'
+import {VehicleAttr} from './VehicleAttr'
+import {VehicleData} from './VehicleData'
+import {ModType, VehicleModData} from './VehicleModData'
 
-export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
+export const VehicleInfo:FC<GearInfoProps<VehicleData>> = ({
   item: vehicle,
   expanded,
 }) => {
@@ -56,12 +56,12 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
     <DamageProvider type={DamageType.vehiclePhysical} id={vehicle.id}>
       <AutosoftProvider autosofts={autosofts}>
         <GearInfoBlock item={vehicle} expanded={expanded}>
-          <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column', flexWrap: 'wrap' }}>
-            <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1 }}>
+          <Box sx={{display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column', flexWrap: 'wrap'}}>
+            <Box sx={{display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1}}>
               <Box>
                 <Typography variant={'h6'}>Combat</Typography>
                 <StatBlock vertical>
-                  <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
+                  <InitiativeStat name='Drone Init' base={pilot * 2} dice={4} />
                   {riggerInterface && (
                     <>
                       <CharacterHotVrInit />
@@ -73,12 +73,13 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
               </Box>
 
               <Box>
-                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
+                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label='Physical' />
               </Box>
             </Box>
 
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{flexGrow: 1}}>
               <GearDicePools>
+                <VehicleResistDmg vehicle={vehicle} />
                 <DriverPiloting vehicle={vehicle} />
                 <AutosoftPiloting vehicle={vehicle} />
                 <RiggedPiloting vehicle={vehicle} />
