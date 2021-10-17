@@ -1,4 +1,4 @@
-import { Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC } from 'react'
 
@@ -29,24 +29,29 @@ export const CombatArea: FC = () => {
     .filter(isInitBonus)
     .reduce((sum, effect) => sum + effect.dice, 1)
 
-  return <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1 }}>
-    <Box>
-      <Typography variant={'h6'}>Combat</Typography>
-      <StatBlock vertical>
-        {/* NOTE: pg. 67 => changed by augments */}
-        <InitiativeStat name="Init" base={reaction + intuition} dice={initDice} />
-        <CharacterHotVrInit />
-        <CharacterColdVrInit />
-        <CharacterDefRatingStat />
-      </StatBlock>
-    </Box>
+  return (
+    <Stack
+      gap={1}
+      padding={1}
+      direction={mdScreenOrLarger ? 'column' : 'row'}
+      alignContent="flex-start"
+      justifyContent={mdScreenOrLarger ? 'flex-start' : 'space-between'}
+      sx={{ flexWrap: 'wrap' }}
+    >
+      <Box>
+        <Typography variant={'h6'}>Combat</Typography>
+        <StatBlock vertical>
+          <InitiativeStat name="Init" base={reaction + intuition} dice={initDice} />
+          <CharacterHotVrInit />
+          <CharacterColdVrInit />
+          <CharacterDefRatingStat />
+        </StatBlock>
+      </Box>
 
-    <Box>
-      <DamageTrack type={DamageType.charPhysical} max={physicalMax} label="Physical" />
-    </Box>
-
-    <Box>
-      <DamageTrack type={DamageType.charStun} max={stunMax} label="Stun" />
-    </Box>
-  </Box>
+      <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'}>
+        <DamageTrack type={DamageType.charPhysical} max={physicalMax} label="Physical" />
+        <DamageTrack type={DamageType.charStun} max={stunMax} label="Stun" />
+      </Stack>
+    </Stack>
+  )
 }

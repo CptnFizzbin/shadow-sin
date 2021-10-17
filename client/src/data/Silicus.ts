@@ -46,6 +46,12 @@ export const Silicus: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-10-17T16:00',
+        value: 5,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-10-03T16:00',
         value: 3,
         note: 'Session reward',
@@ -101,6 +107,12 @@ export const Silicus: Character = {
     ],
 
     nuyen: [
+      {
+        id: nextRecordId(),
+        date: '2021-10-17T16:00',
+        value: 11_400,
+        note: 'Session reward',
+      },
       {
         id: nextRecordId(),
         date: '2021-10-03T16:00',
