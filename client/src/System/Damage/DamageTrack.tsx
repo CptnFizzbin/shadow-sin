@@ -32,7 +32,7 @@ export const DamageTrack: FC<DamageTrackProps> = ({
   }
 
   return (
-    <Box sx={{ maxWidth: 300 }}>
+    <Box sx={{ minWidth: 150, maxWidth: 300 }}>
       <Typography variant={'h6'}>{label}</Typography>
       <Box sx={{ paddingBottom: 0.5, textAlign: 'right' }}>
         <TrackCell onClick={() => onChange(0)}>0</TrackCell>
