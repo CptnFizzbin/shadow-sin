@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
-import { useAttributes } from '../../../System/AttributeProvider'
-import { AttributeBlock } from '../../../UI/AttributeBlock'
-import { InfoSection } from '../../../UI/InfoBlock/InfoSection'
-import { CharacterAttr } from '../../CharacterAttr'
+import { useAttributes } from '../../System/AttributeProvider'
+import { AttributeBlock } from '../../UI/AttributeBlock'
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { CharacterAttr } from '../CharacterAttr'
 
 export const AttributesSection: FC = () => {
   const charAttributes = useAttributes([

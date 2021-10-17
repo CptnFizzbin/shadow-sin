@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material'
 import { FC } from 'react'
 
-import { QualitiesList } from '../../../Qualities/QualitiesList'
-import { InfoSection } from '../../../UI/InfoBlock/InfoSection'
-import { useCharacterData } from '../../CharacterProvider'
+import { QualitiesList } from '../../Qualities/QualitiesList'
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { useCharacterData } from '../CharacterProvider'
 
 export const QualitiesSection: FC = () => {
   const character = useCharacterData()

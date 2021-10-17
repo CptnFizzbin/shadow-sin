@@ -2,10 +2,10 @@ import { Chip, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC, useState } from 'react'
 
-import { useAttribute } from '../../../System/AttributeProvider'
-import { InfoSection } from '../../../UI/InfoBlock/InfoSection'
-import { TrackCell } from '../../../UI/TrackCell'
-import { CharacterAttr } from '../../CharacterAttr'
+import { useAttribute } from '../../System/AttributeProvider'
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { TrackCell } from '../../UI/TrackCell'
+import { CharacterAttr } from '../CharacterAttr'
 
 export const EdgeTracker: FC = () => {
   const edgeSessionKey = 'char.edge'

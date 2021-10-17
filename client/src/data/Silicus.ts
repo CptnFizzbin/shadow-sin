@@ -13,6 +13,7 @@ import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
 import { KitAttr } from '../Gear/Kit/KitAttr'
 import { KitType } from '../Gear/Kit/KitType'
+import { LicenseAttr } from '../Gear/License/LicenseAttr'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
 import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
@@ -930,7 +931,7 @@ addGear<SinData>({
     cost: 1_000,
 
     attributes: {
-      'Rating': 5,
+      [LicenseAttr.rating]: 5,
     },
   }),
   addGear({
@@ -943,7 +944,7 @@ addGear<SinData>({
     cost: 1_000,
 
     attributes: {
-      'Rating': 5,
+      [LicenseAttr.rating]: 5,
     },
   }),
   addGear({
@@ -956,7 +957,7 @@ addGear<SinData>({
     cost: 1_000,
 
     attributes: {
-      'Rating': 5,
+      [LicenseAttr.rating]: 5,
     },
   }),
 ])

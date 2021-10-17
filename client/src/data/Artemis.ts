@@ -7,6 +7,7 @@ import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
+import { LicenseAttr } from '../Gear/License/LicenseAttr'
 import { LicenseData } from '../Gear/License/LicenseData'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
@@ -952,7 +953,7 @@ addGear<SinData>({
     cost: 1_000,
 
     attributes: {
-      [SinAttr.rating]: 5,
+      [LicenseAttr.rating]: 5,
     },
   }),
 ])

@@ -1,10 +1,16 @@
 import { faBroadcastTower, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box } from '@mui/material'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 import { RecordId } from '../../../Api/Model'
+import { formatAttr } from '../../../System/Attribute'
+import { formatNuyen } from '../../../System/Nuyen'
+import { formatSource } from '../../../System/Source'
 import { AttributeBlock } from '../../../UI/AttributeBlock'
+import { SimpleInfoBlock } from '../../../UI/InfoBlock/SimpleInfoBlock'
+import { Stat } from '../../../UI/StatBlock'
+import { formatAvail } from '../../Availability'
 import { AutosoftData } from './AutosoftData'
 
 interface AutosoftsListProps {

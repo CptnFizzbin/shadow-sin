@@ -1,17 +1,17 @@
 import { Typography } from '@mui/material'
 import { FC } from 'react'
 
-import { useAllGear } from '../../../Gear/GearContext'
-import { KitAttr } from '../../../Gear/Kit/KitAttr'
-import { KitType } from '../../../Gear/Kit/KitType'
-import { OtherGearData } from '../../../Gear/OtherGearData'
-import { DamageType } from '../../../System/Damage/DamageType'
-import { ActiveSkillId } from '../../../System/Skill/ActiveSkill/ActiveSkillId'
-import { DiceGroup, DicePool, DicePools, skillSpecialtyBonus } from '../../../UI/DicePool'
-import { InfoSection } from '../../../UI/InfoBlock/InfoSection'
-import { CharacterAttr } from '../../CharacterAttr'
-import { CharacterPoolTypes } from '../../CharacterPoolTypes'
-import { useActiveSkill } from '../../CharacterProvider'
+import { useAllGear } from '../../Gear/GearContext'
+import { KitAttr } from '../../Gear/Kit/KitAttr'
+import { KitType } from '../../Gear/Kit/KitType'
+import { OtherGearData } from '../../Gear/OtherGearData'
+import { DamageType } from '../../System/Damage/DamageType'
+import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
+import { DiceGroup, DicePool, DicePools, skillSpecialtyBonus } from '../../UI/DicePool'
+import { InfoSection } from '../../UI/InfoBlock/InfoSection'
+import { CharacterAttr } from '../CharacterAttr'
+import { CharacterPoolTypes } from '../CharacterPoolTypes'
+import { useActiveSkill } from '../CharacterProvider'
 
 export const DicePoolsSection: FC = () => {
   return <InfoSection>
