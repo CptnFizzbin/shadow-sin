@@ -11,6 +11,7 @@ import { AttributesTable } from './Attributes/AttributesTable'
 import { BioSection } from './BioSection'
 import { PriorityValues } from './Priorities/Priorities'
 import { PrioritiesTable } from './Priorities/PrioritiesTable'
+import { SkillsSection } from './Skills/SkillsSection'
 
 const defaultCharacter: CharacterData = {
   dataVersion: 3,
@@ -100,6 +101,11 @@ export const BuilderPage: FC = () => {
             magic={priorities.magic}
             onChange={attributes => setCharacterData({ ...characterData, attributes })}
           />
+        </Paper>
+
+        <Paper variant="outlined" sx={{ padding: 1 }}>
+          <Typography variant="h3">Skills</Typography>
+          <SkillsSection />
         </Paper>
       </Stack>
     </RootLayout>
