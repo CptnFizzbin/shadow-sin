@@ -27,12 +27,13 @@ export const PriorityRow: FC<PriorityRowProps> = ({
   return (
     <TableRow
       sx={{
-        '& .MuiTableCell-root:hover, & .MuiTableCell-body.selected': {
+        '& td': { textAlign: 'center' },
+        '& .priority-cell:hover, & .priority-cell.selected': {
           backgroundColor: 'primary.dark',
         },
       }}
     >
-      <TableCell>{level}</TableCell>
+      <TableCell align="center">{level}</TableCell>
       <PriorityCell
         onClick={() => onSelect(level, PriorityStat.metatype)}
         selected={selectedType === PriorityStat.metatype}
@@ -60,7 +61,9 @@ export const PriorityRow: FC<PriorityRowProps> = ({
         selected={selectedType === PriorityStat.magic}
       >
         {values.magic === 0 ? (
-          'Mundane'
+          <>
+            {awakened === AwakenedType.Mundane ? 'Mundane' : '-'}
+          </>
         ) : (
           <>
             {awakened === AwakenedType.Mundane && '-'}
@@ -94,7 +97,7 @@ export const PriorityCell: FC<PriorityCellProps> = ({
   children,
 }) => {
   return (
-    <TableCell onClick={onClick} className={selected ? 'selected' : ''}>{children}
+    <TableCell onClick={onClick} className={selected ? 'priority-cell selected' : 'priority-cell'}>{children}
     </TableCell>
   )
 }

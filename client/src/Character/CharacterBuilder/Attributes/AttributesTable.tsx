@@ -1,12 +1,11 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { FC, useState } from 'react'
 
-import { formatAttr } from '../../../System/Attribute'
-import { Incrementor } from '../../../UI/Incrementor'
 import { AwakenedType } from '../../AwakenedType'
 import { CharacterAttr } from '../../CharacterAttr'
 import { CharAttributes } from '../../CharacterData'
 import { Metatype } from '../../Metatypes'
+import { AttrTableRow } from './AttrTableRow'
 import { metatypeMaximums } from './metatypeMaximums'
 
 const defaultAttributes: CharAttributes = {
@@ -42,16 +41,9 @@ export const AttributesTable: FC<AttributesTableProps> = ({
   magic,
   onChange,
 }) => {
-  const attributeMaximums = metatypeMaximums[metatype]
   const [adjPointsSpent, setAdjPointsSpent] = useState<CharAttributes>(defaultAttributes)
   const [pointsSpent, setPointsSpent] = useState<CharAttributes>(defaultAttributes)
   const [karmaPoints, setKarmaPoints] = useState<CharAttributes>(defaultAttributes)
-
-  const totalAdjPointsSpent = (Object.values(adjPointsSpent) as number[])
-    .reduce((sum: number, points: number) => sum + points)
-
-  const totalPointsSpent = (Object.values(pointsSpent) as number[])
-    .reduce((sum: number, points: number) => sum + points)
 
   const base: CharAttributes = {
     [CharacterAttr.body]: 1,
@@ -68,92 +60,95 @@ export const AttributesTable: FC<AttributesTableProps> = ({
     [CharacterAttr.essence]: 0,
   }
 
+  const excludedAttributes: CharacterAttr[] = [
+    CharacterAttr.essence,
+  ]
+
   switch (awakened) {
     case AwakenedType.Technomancer:
       base[CharacterAttr.resonance] = magic
+      excludedAttributes.push(CharacterAttr.magic)
       break
     case AwakenedType.Aspected:
       base[CharacterAttr.magic] = magic + 1
+      excludedAttributes.push(CharacterAttr.resonance)
       break
     case AwakenedType.Mundane:
+      excludedAttributes.push(CharacterAttr.magic)
+      excludedAttributes.push(CharacterAttr.resonance)
       break
     default:
       base[CharacterAttr.magic] = magic
+      excludedAttributes.push(CharacterAttr.resonance)
   }
 
-  const totalPreKarma = mergePointLists([base, pointsSpent, adjPointsSpent])
-  const totalKarmaCost = Object.entries(totalPreKarma)
-    .map(([attr, rank]): number => {
-      if (!rank) return 0
+  const totalAdjPointsSpent = Object.entries(adjPointsSpent)
+    .map(([attr, rank]) => ({ attr: attr as CharacterAttr, rank }))
+    .filter(({ attr }) => !excludedAttributes.includes(attr))
+    .map(({ rank }) => rank)
+    .reduce((sum: number, points: number) => sum + points)
 
-      let cost = 0
-      let points = karmaPoints[attr as CharacterAttr] || 0
+  const totalPointsSpent = Object.entries(pointsSpent)
+    .map(([attr, rank]) => ({ attr: attr as CharacterAttr, rank }))
+    .filter(({ attr }) => !excludedAttributes.includes(attr))
+    .map(({ rank }) => rank)
+    .reduce((sum: number, points: number) => sum + points)
 
-      while (points >= 1) {
-        cost += (rank + 1) * 5
-        rank += 1
-        points -= 1
-      }
-
-      return cost
-    })
-    .reduce((sum, cost) => sum + cost)
-
-  const total = mergePointLists([totalPreKarma, karmaPoints])
+  const totalKarmaCost = calcKaramaCost(karmaPoints, mergePointLists([
+    adjPointsSpent,
+    pointsSpent,
+    base,
+  ]))
 
   return (
     <TableContainer component={Paper}>
-      <Table size="small">
+      <Table>
         <TableHead>
-          <TableRow>
-            <TableCell>Attribute</TableCell>
-            <TableCell>Base</TableCell>
-            <TableCell>Adjustment ({totalAdjPointsSpent} / {adjustmentPoints})</TableCell>
-            <TableCell>Points ({totalPointsSpent} / {attributePoints})</TableCell>
-            <TableCell>Karma ({totalKarmaCost} Karma)</TableCell>
-            <TableCell>Total</TableCell>
+          <TableRow sx={{ '& th': { color: 'primary.main', textAlign: 'center' } }}>
+            <TableCell>
+              Attribute
+            </TableCell>
+            <TableCell>
+              Max
+            </TableCell>
+            <TableCell>
+              Base
+            </TableCell>
+            <TableCell
+              sx={{ color: totalAdjPointsSpent > adjustmentPoints ? 'error.main' : undefined }}
+            >
+              Metatype ({adjustmentPoints - totalAdjPointsSpent})
+            </TableCell>
+            <TableCell
+              sx={{ color: totalPointsSpent > attributePoints ? 'error.main' : undefined }}
+            >
+              Points ({attributePoints - totalPointsSpent})
+            </TableCell>
+            <TableCell>
+              Karma ({totalKarmaCost} Karma)
+            </TableCell>
+            <TableCell>
+              Total
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {(Object.keys(base) as CharacterAttr[]).map(attribute => (
-            <TableRow key={attribute}>
-              <TableCell>
-                {formatAttr(attribute)}
-              </TableCell>
-              <TableCell>
-                {base[attribute]}
-              </TableCell>
-              <TableCell>
-                {((typeof attributeMaximums[attribute] === 'number' && attributeMaximums[attribute] as number >= 7)
-                  || [CharacterAttr.edge, CharacterAttr.magic, CharacterAttr.resonance].includes(attribute)) ? (
-                    <Incrementor
-                      min={0}
-                      value={adjPointsSpent[attribute] as number}
-                      onChange={value => setAdjPointsSpent({ ...adjPointsSpent, [attribute]: value })}
-                    />
-                  ) : (
-                    '-'
-                  )}
-              </TableCell>
-              <TableCell>
-                <Incrementor
-                  min={0}
-                  value={pointsSpent[attribute] as number}
-                  onChange={value => setPointsSpent({ ...pointsSpent, [attribute]: value })}
-                />
-              </TableCell>
-              <TableCell>
-                <Incrementor
-                  min={0}
-                  value={karmaPoints[attribute] as number}
-                  onChange={value => setKarmaPoints({ ...karmaPoints, [attribute]: value })}
-                />
-              </TableCell>
-              <TableCell>
-                {total[attribute]} / {attributeMaximums[attribute]}
-              </TableCell>
-            </TableRow>
-          ))}
+          {(Object.keys(base) as CharacterAttr[])
+            .filter(attribute => !excludedAttributes.includes(attribute))
+            .map(attribute => (
+              <AttrTableRow
+                key={attribute}
+                attribute={attribute}
+                base={base[attribute]}
+                adjPoints={adjPointsSpent[attribute]}
+                attrPoints={pointsSpent[attribute]}
+                karmaPoints={karmaPoints[attribute]}
+                maximum={metatypeMaximums[metatype][attribute]}
+                onAdjPointsChange={value => setAdjPointsSpent({ ...adjPointsSpent, [attribute]: value })}
+                onAttrPointsChange={value => setPointsSpent({ ...pointsSpent, [attribute]: value })}
+                onKarmaPointsChange={value => setKarmaPoints({ ...karmaPoints, [attribute]: value })}
+              />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
@@ -168,4 +163,23 @@ function mergePointLists (lists: CharAttributes[]): CharAttributes {
 
     return total
   })
+}
+
+function calcKaramaCost (karmaPoints: CharAttributes, preKarma: CharAttributes) {
+  return Object.entries(preKarma)
+    .map(([attr, rank]) => ({ attr: attr as CharacterAttr, rank }))
+    .filter(({ rank }) => rank && rank !== 0)
+    .map(({ attr, rank }): number => {
+      let cost = 0
+      let points = karmaPoints[attr] || 0
+
+      while (points >= 1) {
+        cost += (rank + 1) * 5
+        rank += 1
+        points -= 1
+      }
+
+      return cost
+    })
+    .reduce((sum, cost) => sum + cost)
 }

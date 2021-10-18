@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { FC, useState } from 'react'
 
 import { AwakenedType } from '../../AwakenedType'
@@ -37,32 +37,36 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
   }
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell variant="head">Priority</TableCell>
-          <TableCell variant="head">Metatype</TableCell>
-          <TableCell variant="head">Attributes</TableCell>
-          <TableCell variant="head">Skills</TableCell>
-          <TableCell variant="head">Magic or Resonance</TableCell>
-          <TableCell variant="head">Resources</TableCell>
-        </TableRow>
-      </TableHead>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow sx={{ '& th': { color: 'primary.main' } }}>
+            <TableCell variant="head" align="center">Priority</TableCell>
+            <TableCell variant="head" align="center">Metatype</TableCell>
+            <TableCell variant="head" align="center">Attributes</TableCell>
+            <TableCell variant="head" align="center">Skills</TableCell>
+            <TableCell variant="head" align="center">
+              {awakened === AwakenedType.Technomancer ? 'Resonance' : 'Magic'}
+            </TableCell>
+            <TableCell variant="head" align="center">Resources</TableCell>
+          </TableRow>
+        </TableHead>
 
-      <TableBody>
-        {Object.entries(priorityValues).map(([level, values]) => (
-          <PriorityRow
-            key={level}
-            level={level}
-            values={values}
-            selectedType={selectedPriorities[level]}
-            onSelect={onPriorityChange}
-            metatype={metatype}
-            awakened={awakened}
-          />
-        ))}
-      </TableBody>
-    </Table>
+        <TableBody>
+          {Object.entries(priorityValues).map(([level, values]) => (
+            <PriorityRow
+              key={level}
+              level={level}
+              values={values}
+              selectedType={selectedPriorities[level]}
+              onSelect={onPriorityChange}
+              metatype={metatype}
+              awakened={awakened}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 

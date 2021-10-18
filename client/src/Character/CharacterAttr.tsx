@@ -15,6 +15,27 @@ export enum CharacterAttr {
   resonance = 'char.resonance',
 }
 
+export const physicalAttrs = [
+  CharacterAttr.body,
+  CharacterAttr.agility,
+  CharacterAttr.reaction,
+  CharacterAttr.strength,
+]
+
+export const mentalAttrs = [
+  CharacterAttr.willpower,
+  CharacterAttr.logic,
+  CharacterAttr.intuition,
+  CharacterAttr.charisma,
+]
+
+export const specialAttrs = [
+  CharacterAttr.edge,
+  CharacterAttr.essence,
+  CharacterAttr.magic,
+  CharacterAttr.resonance,
+]
+
 registerAttrNames({
   [CharacterAttr.body]: 'Body',
   [CharacterAttr.agility]: 'Agility',

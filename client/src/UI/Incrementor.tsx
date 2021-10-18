@@ -2,7 +2,7 @@ import { Add, Remove } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
 import { FC } from 'react'
 
-interface IncrementorProps {
+export interface IncrementorProps {
   min?: number
   max?: number
   value: number
