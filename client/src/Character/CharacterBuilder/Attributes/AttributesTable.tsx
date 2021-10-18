@@ -102,9 +102,9 @@ export const AttributesTable: FC<AttributesTableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table sx={{ '& th, & td': { textAlign: 'center' } }}>
         <TableHead>
-          <TableRow sx={{ '& th': { color: 'primary.main', textAlign: 'center' } }}>
+          <TableRow>
             <TableCell>
               Attribute
             </TableCell>

@@ -27,7 +27,6 @@ export const PriorityRow: FC<PriorityRowProps> = ({
   return (
     <TableRow
       sx={{
-        '& td': { textAlign: 'center' },
         '& .priority-cell:hover, & .priority-cell.selected': {
           backgroundColor: 'primary.dark',
         },

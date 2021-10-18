@@ -35,7 +35,7 @@ export const AttrTableRow: FC<AttrTableRowProps> = ({
   const total = base + adjPoints + attrPoints + karmaPoints
 
   return (
-    <TableRow sx={{ '& td': { textAlign: 'center' } }}>
+    <TableRow>
       <TableCell>
         {formatAttr(attribute)}
       </TableCell>

@@ -21,7 +21,7 @@ export const Incrementor: FC<IncrementorProps> = ({
       <IconButton aria-label="delete" size="small" onClick={() => onChange(Math.max(value - 1, min))}>
         <Remove fontSize="inherit" />
       </IconButton>
-      {value}
+      <Box sx={{ display: 'inline-block', padding: '0 4px' }}>{value}</Box>
       <IconButton aria-label="delete" size="small" onClick={() => onChange(Math.min(value + 1, max))}>
         <Add fontSize="inherit" />
       </IconButton>

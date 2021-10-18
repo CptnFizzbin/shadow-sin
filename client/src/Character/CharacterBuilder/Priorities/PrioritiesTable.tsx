@@ -38,9 +38,9 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table sx={{ '& th, & td': { textAlign: 'center' } }}>
         <TableHead>
-          <TableRow sx={{ '& th': { color: 'primary.main' } }}>
+          <TableRow>
             <TableCell variant="head" align="center">Priority</TableCell>
             <TableCell variant="head" align="center">Metatype</TableCell>
             <TableCell variant="head" align="center">Attributes</TableCell>
