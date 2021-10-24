@@ -45,7 +45,6 @@ export const GearInfo: FC<GearInfoProps> = ({
     case GearType.weaponMod:
     case GearType.armorMod:
     case GearType.vehicleMod:
-    case GearType.autosoft:
       return <SimpleGearInfo item={item} expanded={expanded} />
     default:
       return <GearInfoBlock item={item} expanded={expanded} />
@@ -54,7 +53,6 @@ export const GearInfo: FC<GearInfoProps> = ({
 
 export const SimpleGearInfo: FC<GearInfoProps> = ({
   item,
-  expanded,
 }) => {
   const attachedGear = useAttachedGear(item.id)
 

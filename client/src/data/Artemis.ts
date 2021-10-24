@@ -91,6 +91,30 @@ export const Artemis: Character = {
     nuyen: [
       {
         id: nextRecordId(),
+        date: '2021-10-24T16:03',
+        value: -9_200*2,
+        note: 'Ingram Black Knight x2',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-10-24T16:02',
+        value: 500,
+        note: 'Loan from Slicus',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-10-24T16:01',
+        value: -4_000,
+        note: 'Ingram Black Knight Targeting Autosoft',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-10-24T16:00',
+        value: -5_000*2,
+        note: 'Heavy Weapon Mount x2',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-10-17T16:00',
         value: 11_400,
         note: 'Session reward',
@@ -543,6 +567,20 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Sensor',
     },
   }),
+  addGear<AutosoftData>({
+    id: '0b3dae26-a9d1-4752-a298-db024d13476b',
+    gearType: GearType.autosoft,
+    name: 'Black Knight Targeting',
+    type: 'Targeting Autosoft',
+    avail: { rarity: 8 },
+    cost: 4_000,
+
+    attributes: {
+      [AutosoftAttr.rating]: 8,
+      [AutosoftAttr.weapon]: 'Ingram Black Knight',
+      [AutosoftAttr.attr]: 'Sensor',
+    },
+  }),
 ]
 
 const rccHeadwear = addGear<AugmentData>({
@@ -576,13 +614,18 @@ const rcc = addGear<RccData>({
     [RccAttr.firewall]: 5,
   },
 
-  slavedAutosofts: [],
+  slavedAutosofts: [
+    'de5e973c-134d-427e-9a3a-205422341b7b',
+    'a0af5540-37c7-44ca-af2a-03cb21efd83a',
+    '3a459c98-5354-4fa1-a230-dfe77b199ffa',
+    '78a5f82e-636f-468a-85e3-5af73304b7c0',
+    '0b3dae26-a9d1-4752-a298-db024d13476b',
+  ],
 
   attachedTo: rccHeadwear.id,
 })
 
 autosofts.forEach(soft => soft.attachedTo = rcc.id)
-rcc.slavedAutosofts = autosofts.map(soft => soft.id)
 
 const fnHar: WeaponData = {
   id: null,
@@ -602,14 +645,42 @@ const fnHar: WeaponData = {
   specialtyName: FirearmSpecialties.rifles,
 }
 
+const blackKnight: WeaponData = {
+  id: null,
+  gearType: GearType.weapon,
+  name: 'Ingram Black Knight',
+  type: 'Rifle',
+  avail: { rarity: 3, license: true },
+  cost: 9_200,
+  attributes: {
+    [WeaponAttr.dv]: '6P',
+    [WeaponAttr.modes]: 'BF/FA',
+    [WeaponAttr.attackRatings]: '1/10/11/8/8',
+    [WeaponAttr.ammo]: '10(m)',
+  },
+
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.machineGuns,
+}
+
 const stdWeaponMount: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
   modType: ModType.stdWeaponMount,
   name: 'Standard Weapon Mount',
   type: 'vehicle mod',
-  avail: { rarity: 5, illegal: true },
+  avail: { rarity: 4, illegal: true },
   cost: 4_500,
+}
+
+const heavyWeaponMount: VehicleModData = {
+  id: null,
+  gearType: GearType.vehicleMod,
+  modType: ModType.heavyWeaponMount,
+  name: 'Heavy Weapon Mount',
+  type: 'vehicle mod',
+  avail: { rarity: 5, illegal: true },
+  cost: 5_000,
 }
 
 const riggerInterface: VehicleModData = {
@@ -742,11 +813,19 @@ addGear<VehicleData>({
   id: '2d42aac6-71a2-4154-a00b-ba9ba681a3af',
   name: 'Aztech Crawler 1',
 }, [
-  addGear({ ...stdWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
-    addGear({ ...fnHar, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
+  addGear({ ...heavyWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
+    addGear({ ...blackKnight, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
   ]),
   addGear({ ...riggerInterface, id: '428e551d-516e-4450-a9b1-e2b775ea4a20' }),
   addGear({ ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
+])
+
+addGear({ ...stdWeaponMount, id: '35c6817f-afee-4f5a-b36d-f50bc4bfa3e9' }, [
+  addGear({ ...fnHar, id: '4ab1cbc7-dfe6-483f-a13a-4e4826072d1c' }),
+])
+
+addGear({ ...stdWeaponMount, id: '0fa50968-3166-41f8-823c-9aa750d61897' }, [
+  addGear({ ...fnHar, id: 'ceb08542-ee69-4d0b-a532-64948ea79554' }),
 ])
 
 addGear<VehicleData>({
@@ -754,8 +833,8 @@ addGear<VehicleData>({
   id: 'a969b8fa-2e3a-49d3-acb9-e6e2a877a1ae',
   name: 'Aztech Crawler 2',
 }, [
-  addGear({ ...stdWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
-    addGear({ ...fnHar, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
+  addGear({ ...heavyWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
+    addGear({ ...blackKnight, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
   ]),
   addGear({ ...riggerInterface, id: '7753605b-6ffb-4295-bc8b-93859021c8a9' }),
   addGear({ ...sensorArray, id: 'd952c534-d98c-4b24-a3d1-3f367835ec76' }),

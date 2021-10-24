@@ -109,6 +109,18 @@ export const Silicus: Character = {
     nuyen: [
       {
         id: nextRecordId(),
+        date: '2021-10-24T16:01',
+        value: -500,
+        note: 'Loan to Artemis',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-10-24T16:00',
+        value: 2_050,
+        note: 'Ranger Arms AA-16',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-10-17T16:00',
         value: 11_400,
         note: 'Session reward',
@@ -317,6 +329,38 @@ const smartGunIntMod: WeaponModData = {
     ],
   },
 }
+
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'FSQ', page: 22 },
+  gearType: GearType.weapon,
+  name: 'Ranger Arms AA-16',
+  type: 'Shotgun',
+  avail: { rarity: 6, illegal: true },
+  cost: 2_050,
+
+  attributes: {
+    [WeaponAttr.dv]: '5P',
+    [WeaponAttr.modes]: 'SA/BF/FA',
+    [WeaponAttr.attackRatings]: '5/11/7/-/-',
+    [WeaponAttr.ammo]: '12(c)',
+  },
+
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.shotguns,
+},[
+  addGear({...smartGunIntMod, removable: false }),
+  addGear({
+    id: null,
+    source: { book: 'FSQ', page: 22 },
+    gearType: GearType.weaponMod,
+    name: 'Foregrip',
+    type: 'Weapon Mod',
+
+    slot: null,
+    removable: false,
+  }),
+])
 
 addGear<WeaponData>({
   id: null,
