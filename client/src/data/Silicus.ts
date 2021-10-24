@@ -116,7 +116,7 @@ export const Silicus: Character = {
       {
         id: nextRecordId(),
         date: '2021-10-24T16:00',
-        value: 2_050,
+        value: 2_050 + 75 + 500,
         note: 'Ranger Arms AA-16',
       },
       {
@@ -358,6 +358,30 @@ addGear<WeaponData>({
     type: 'Weapon Mod',
 
     slot: null,
+    removable: false,
+  }),
+  addGear({
+    id: null,
+    source: { book: 'FSQ', page: 71 },
+    cost: 75,
+    gearType: GearType.weaponMod,
+    name: 'Detachable Drum Magazine',
+    type: 'Weapon Mod',
+
+    slot: WeaponModSlot.under,
+  }),
+  addGear<WeaponModData>({
+    id: null,
+    source: { book: 'CRB', page: 259 },
+    gearType: GearType.weaponMod,
+    name: 'Gas Vent',
+    type: 'Weapon Mod',
+    avail: { rarity: 3 },
+    cost: 500,
+
+    description: 'Removes the attack rating penalty for Semi-Automatic fire, and reduces it to 2 for Burst Fire',
+
+    slot: WeaponModSlot.barrel,
     removable: false,
   }),
 ])
