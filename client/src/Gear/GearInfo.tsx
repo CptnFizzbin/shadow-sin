@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import React, { FC } from 'react'
+import React, { FC, ReactElement } from 'react'
 
 import { formatAttr } from '../System/Attribute'
 import { formatNuyen } from '../System/Nuyen'
@@ -25,6 +25,8 @@ import { WeaponInfo } from './Weapons/WeaponInfo'
 export interface GearInfoProps<Type extends GearData = GearData> {
   item: Type
   expanded?: boolean
+  title?: ReactElement
+  subTitle?: ReactElement
 }
 
 export const GearInfo: FC<GearInfoProps> = ({

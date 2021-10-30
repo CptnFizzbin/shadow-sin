@@ -46,4 +46,5 @@ export enum FirearmSpecialties {
   rifles = 'Rifles',
   machineGuns = 'Machine Guns',
   assaultCannon = 'Assault Cannon',
+  launchers = 'Launchers',
 }

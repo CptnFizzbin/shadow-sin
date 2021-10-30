@@ -19,4 +19,5 @@ export interface VehicleData extends BaseGearData {
 
   slavedTo?: RecordId
   pilotingSpeciality: string
+  destroyed?: boolean
 }

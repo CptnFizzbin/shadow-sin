@@ -354,8 +354,8 @@ addGear<WeaponData>({
 
   skill: ActiveSkillId.firearms,
   specialtyName: FirearmSpecialties.shotguns,
-},[
-  addGear({...smartGunIntMod, removable: false }),
+}, [
+  addGear({ ...smartGunIntMod, removable: false }),
   addGear({
     id: null,
     source: { book: 'FSQ', page: 22 },
@@ -454,6 +454,43 @@ addGear<WeaponData>({
 
     slot: WeaponModSlot.barrel,
     removable: false,
+  }),
+])
+
+addGear<WeaponData>({
+  id: null,
+  source: { book: 'FS', page: 36 },
+  gearType: GearType.weapon,
+  name: 'Krime Thumper',
+  type: 'Launcher',
+  avail: { rarity: 3, license: true },
+  cost: 1_500,
+
+  attributes: {
+    [WeaponAttr.dv]: 'Grenade',
+    [WeaponAttr.modes]: 'SA',
+    [WeaponAttr.attackRatings]: '-/8/7/5/-',
+    [WeaponAttr.ammo]: '30(m)',
+  },
+
+  skill: ActiveSkillId.firearms,
+  specialtyName: FirearmSpecialties.launchers,
+}, [
+  addGear<WeaponData>({
+    id: null,
+    gearType: GearType.weapon,
+    name: 'Shotgun configuration',
+    type: 'Weapon configuration',
+
+    attributes: {
+      [WeaponAttr.dv]: '4P',
+      [WeaponAttr.modes]: 'SS',
+      [WeaponAttr.attackRatings]: '12/6/3/-/-',
+    },
+
+    removable: false,
+    skill: ActiveSkillId.firearms,
+    specialtyName: FirearmSpecialties.launchers,
   }),
 ])
 

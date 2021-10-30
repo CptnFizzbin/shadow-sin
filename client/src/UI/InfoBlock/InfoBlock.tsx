@@ -10,7 +10,7 @@ import { displayFontFamily } from '../../AppThemeProvider'
 library.add(faCaretSquareDown, faCaretSquareRight)
 
 interface InfoBlockProps {
-  title: string
+  title: string | ReactElement
   titleFontSize?: number
   subtitle?: string
   titleRight?: ReactElement
