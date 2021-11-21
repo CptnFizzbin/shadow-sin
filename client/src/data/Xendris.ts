@@ -28,6 +28,12 @@ export const Xendris: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-11-21T15:05',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-11-21T12:17',
         value: 2,
         note: 'Character Creation',

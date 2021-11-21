@@ -46,6 +46,12 @@ export const Silicus: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-11-21T15:05',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-10-17T16:00',
         value: 5,
         note: 'Session reward',
