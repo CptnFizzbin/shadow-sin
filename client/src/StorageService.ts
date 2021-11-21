@@ -3,6 +3,7 @@ import { Character } from './Character/Character'
 import { migrateCharacter, SavedCharacter } from './Character/Migrations'
 import { Artemis } from './data/Artemis'
 import { Silicus } from './data/Silicus'
+import { Xendris } from './data/Xendris'
 
 const characterStorageKey = (characterId: string) => `character.${characterId}`
 const charactersStorageKey = 'characters'
@@ -17,6 +18,7 @@ export function loadCharacters (): SavedCharacters {
     const characters = [
       migrateCharacter(Artemis),
       migrateCharacter(Silicus),
+      migrateCharacter(Xendris),
     ]
 
     characters.forEach(character => {
