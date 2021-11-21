@@ -10,6 +10,7 @@ export enum ActiveSkillId {
   firearms = 'firearms',
   perception = 'perception',
   piloting = 'piloting',
+  sorcery = 'sorcery',
   stealth = 'stealth',
 }
 

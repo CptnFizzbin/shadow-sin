@@ -24,8 +24,8 @@ export const DicePools: FC = ({
 }
 
 export interface DicePoolData {
-  poolKey: string
   name: string
+  poolKey?: string
   skills?: string[]
   attrs?: string[]
   bonuses?: DiceGroup[]
