@@ -9,7 +9,6 @@ import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
 import { KitAttr } from '../Gear/Kit/KitAttr'
 import { KitType } from '../Gear/Kit/KitType'
@@ -23,7 +22,8 @@ import { ModType } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { EffectType } from '../System/Effect'
+import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
 export const Silicus: Character = {
@@ -226,7 +226,7 @@ export const Silicus: Character = {
     skills: [
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.biotech,
+        name: ActiveSkill.biotech,
         rank: 5,
         attr: 'logic',
         altAttr: 'intuition',
@@ -234,21 +234,21 @@ export const Silicus: Character = {
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.firearms,
+        name: ActiveSkill.firearms,
         rank: 6,
         attr: 'agility',
         speciality: FirearmSpecialties.submachineGuns,
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.perception,
+        name: ActiveSkill.perception,
         rank: 3,
         attr: 'intuition',
         altAttr: 'logic',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.closeCombat,
+        name: ActiveSkill.closeCombat,
         rank: 5,
         attr: 'agility',
       },
@@ -352,7 +352,7 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '12(c)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.shotguns,
 }, [
   addGear({ ...smartGunIntMod, removable: false }),
@@ -408,7 +408,7 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
   addGear<WeaponModData>({
@@ -473,7 +473,7 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '30(m)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.launchers,
 }, [
   addGear<WeaponData>({
@@ -489,7 +489,7 @@ addGear<WeaponData>({
     },
 
     removable: false,
-    skill: ActiveSkillId.firearms,
+    skill: ActiveSkill.firearms,
     specialtyName: FirearmSpecialties.launchers,
   }),
 ])
@@ -510,7 +510,7 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '30(c)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.heavyPistols,
 }, [
   addGear(smartGunIntMod),
@@ -545,7 +545,7 @@ addGear<WeaponData>({
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.trasers,
 }, [
   addGear(smartGunIntMod),
@@ -567,7 +567,7 @@ addGear<WeaponData>({
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillId.closeCombat,
+  skill: ActiveSkill.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -586,7 +586,7 @@ addGear<WeaponData>({
     [WeaponAttr.attackRatings]: '5/-/-/-/-',
   },
 
-  skill: ActiveSkillId.closeCombat,
+  skill: ActiveSkill.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -790,7 +790,7 @@ addGear<AugmentData>({
 
   enabled: true,
   effects: [
-    { type: EffectType.skillBonus, skill: ActiveSkillId.firearms, bonus: 1 },
+    { type: EffectType.skillBonus, skill: ActiveSkill.firearms, bonus: 1 },
   ],
 })
 

@@ -11,6 +11,7 @@ import { CharacterInfoPage } from './Character/CharacterInfoPage'
 import { KarmaPage } from './Character/KarmaPage'
 import { MiscGearPage } from './Character/MiscGearPage'
 import { NuyenPage } from './Character/NuyenPage'
+import { SpellsPage } from './Character/SpellsPage'
 import { VehiclesPage } from './Character/VehiclesPage'
 import { WeaponsPage } from './Character/WeaponsPage'
 import { RootLayout } from './RootLayout'
@@ -36,6 +37,7 @@ export const CharacterPage: FC = () => {
           <Route path={`${path}/weapons`} component={WeaponsPage} />
           <Route path={`${path}/vehicles`} component={VehiclesPage} />
           <Route path={`${path}/augments`} component={AugmentsPage} />
+          <Route path={`${path}/spells`} component={SpellsPage} />
           <Route path={`${path}/misc`} component={MiscGearPage} />
           <Route path={`${path}/karma`} component={KarmaPage} />
           <Route path={`${path}/nuyen`} component={NuyenPage} />

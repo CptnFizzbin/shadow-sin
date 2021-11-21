@@ -1,11 +1,11 @@
 import { BasicSkillData, SkillType } from '../SkillData'
-import { ActiveSkillId } from './ActiveSkillId'
+import { ActiveSkill } from './ActiveSkillId'
 
 export type SkillList = Record<string, number>
 
 export interface ActiveSkillData extends BasicSkillData {
   type: SkillType.active
-  skillId: ActiveSkillId
+  name: ActiveSkill
   rank: number
   attr: string
   altAttr?: string

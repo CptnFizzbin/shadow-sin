@@ -1,12 +1,17 @@
-import {nextRecordId} from '../Api/Model'
-import {AwakenedType} from '../Character/AwakenedType'
-import {Character} from '../Character/Character'
-import {CharacterAttr} from '../Character/CharacterAttr'
-import {Metatype} from '../Character/Metatypes'
-import {SpellCategory} from '../Spells/SpellCategory'
-import {SpellType} from '../Spells/SpellType'
-import {ActiveSkillId} from '../System/Skill/ActiveSkill/ActiveSkillId'
-import {SkillType} from '../System/Skill/SkillData'
+import { nextRecordId } from '../Api/Model'
+import { AwakenedType } from '../Character/AwakenedType'
+import { Character } from '../Character/Character'
+import { CharacterAttr } from '../Character/CharacterAttr'
+import { Metatype } from '../Character/Metatypes'
+import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
+import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../Gear/GearData'
+import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
+import { SpellCategory } from '../Spells/SpellCategory'
+import { SpellType } from '../Spells/SpellType'
+import { EffectType } from '../System/Effect'
+import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { SkillType } from '../System/Skill/SkillData'
 
 export const Xendris: Character = {
   name: 'Xendris',
@@ -43,8 +48,14 @@ export const Xendris: Character = {
     nuyen: [
       {
         id: nextRecordId(),
-        date: '2021-11-21T12:19',
-        value: -6_700,
+        date: '2021-11-21T12:21',
+        value: -5_000,
+        note: 'Lifestyle (1 month)',
+      },
+      {
+        id: nextRecordId(),
+        date: '2021-11-21T12:20',
+        value: -2_450,
         note: 'Char creation Gear',
       },
       {
@@ -100,20 +111,20 @@ export const Xendris: Character = {
     skills: [
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.closeCombat,
+        name: ActiveSkill.closeCombat,
         rank: 7,
         attr: 'agility',
         speciality: 'Blades',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.sorcery,
+        name: ActiveSkill.sorcery,
         rank: 6,
         attr: 'logic',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.firearms,
+        name: ActiveSkill.firearms,
         rank: 6,
         attr: 'agility',
       },
@@ -124,15 +135,105 @@ export const Xendris: Character = {
       },
     ],
 
-    gear: [
+    qualities: [
+      {
+        name: 'High Pain Tolerance',
+        source: { book: 'CRB', page: 72 },
+        gameEffect: `
+          When wounded, reduce your wound penalty by 1 (to a minimum of 0).
+        `,
+        cost: 7,
+      },
+      {
+        name: 'Analytical Mind',
+        source: { book: 'CRB', page: 70 },
+        gameEffect: 'Bonus edge when making Logic tests',
+        cost: 3,
+      },
+      {
+        name: 'Built Tough (4)',
+        source: { book: 'CRB', page: 70 },
+        gameEffect: `
+          You have a number of additional boxes on your physical Condition
+          Monitor equal to the rank of this quality
+        `,
+        effects: [
+          {
+            type: EffectType.conditionTrackBonus,
+            track: 'physical',
+            bonus: 4,
+          },
+        ],
+        cost: 12,
+      },
+      {
+        name: 'Long Reach',
+        source: { book: 'CRB', page: 72 },
+        gameEffect: `
+          When you are using a melee weapon, Close range is extended to 5 meters
+          instead of 3.
+        `,
+        cost: 3,
+      },
+    ],
 
+    gear: [
+      {
+        id: nextRecordId(),
+        source: { book: 'CRB', page: 265 },
+        gearType: GearType.armor,
+        name: 'Armored Jacket',
+        type: 'Armor',
+        avail: { rarity: 2 },
+        cost: 1_000,
+        attributes: {
+          [ArmorAttr.defenseBonus]: 4,
+          [ArmorAttr.capacity]: 8,
+        },
+        description: `
+          Available in all manner of styles, it offers good protection without 
+          catching too much attention. But don’t think of wearing one to a 
+          social event or government building.
+        `,
+      },
+      {
+        id: nextRecordId(),
+        source: { book: 'CRB', page: 267 },
+        gearType: GearType.other,
+        name: 'Sony Emperor',
+        type: 'Commlink',
+        avail: { rarity: 2 },
+        cost: 700,
+        attributes: {
+          [CommlinkAttr.deviceRating]: 2,
+          [CommlinkAttr.attributes]: '1/1',
+          [CommlinkAttr.programSlots]: 1,
+        },
+      },
+      {
+        id: nextRecordId(),
+        source: { book: 'CRB', page: 267 },
+        gearType: GearType.weapon,
+        name: 'Ares Predator VI',
+        type: 'Heavy Pistol',
+        avail: { rarity: 2, license: true },
+        cost: 750,
+        attributes: {
+          [WeaponAttr.dv]: '3P',
+          [WeaponAttr.modes]: 'SA/BF',
+          [WeaponAttr.attackRatings]: '10/10/8/-/-',
+          [WeaponAttr.ammo]: '15(c)',
+        },
+        skill: ActiveSkill.firearms,
+        specialtyName: FirearmSpecialties.heavyPistols,
+      },
     ],
 
     spells: [
       {
         id: nextRecordId(),
         name: 'Manabolt',
-        source: {book: 'CRB', page: 133},
+        source: { book: 'CRB', page: 133 },
         category: SpellCategory.Combat,
         range: 'LOS',
         type: SpellType.Mana,
@@ -150,7 +251,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Fireball',
-        source: {book: 'CRB', page: 133},
+        source: { book: 'CRB', page: 133 },
         category: SpellCategory.Combat,
         range: 'LOS (A)',
         type: SpellType.Physical,
@@ -171,7 +272,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Firestrike',
-        source: {book: 'CRB', page: 133},
+        source: { book: 'CRB', page: 133 },
         category: SpellCategory.Combat,
         range: 'LOS',
         type: SpellType.Physical,
@@ -192,7 +293,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Resist Pain',
-        source: {book: 'CRB', page: 137},
+        source: { book: 'CRB', page: 137 },
         category: SpellCategory.Health,
         range: 'Touch',
         type: SpellType.Mana,
@@ -208,7 +309,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Increase Attribute',
-        source: {book: 'CRB', page: 137},
+        source: { book: 'CRB', page: 137 },
         category: SpellCategory.Health,
         range: 'Touch',
         type: SpellType.Physical,
@@ -229,7 +330,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Decrease Attribute',
-        source: {book: 'CRB', page: 136},
+        source: { book: 'CRB', page: 136 },
         category: SpellCategory.Health,
         range: 'Touch',
         type: SpellType.Physical,
@@ -249,7 +350,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Increase Reflexes',
-        source: {book: 'CRB', page: 137},
+        source: { book: 'CRB', page: 137 },
         category: SpellCategory.Health,
         range: 'Touch',
         type: SpellType.Physical,
@@ -268,7 +369,7 @@ export const Xendris: Character = {
       {
         id: nextRecordId(),
         name: 'Heal',
-        source: {book: 'CRB', page: 136},
+        source: { book: 'CRB', page: 136 },
         category: SpellCategory.Health,
         range: 'Touch',
         type: SpellType.Physical,
@@ -282,41 +383,6 @@ export const Xendris: Character = {
           Injuries can only be affected once by any Heal spell (including
           Cleansing Heal, Colling Heal, and Warming Heal).
         `,
-      },
-    ],
-
-    qualities: [
-      {
-        name: 'High Pain Tolerance',
-        source: {book: 'CRB', page: 72},
-        gameEffect: `
-          When wounded, reduce your wound penalty by 1 (to a minimum of 0).
-        `,
-        cost: 7,
-      },
-      {
-        name: 'Analytical Mind',
-        source: {book: 'CRB', page: 70},
-        gameEffect: 'Bonus edge when making Logic tests',
-        cost: 3,
-      },
-      {
-        name: 'Built Tough (4)',
-        source: {book: 'CRB', page: 70},
-        gameEffect: `
-          You have a number of additional boxes on your physical Condition
-          Monitor equal to the rank of this quality
-        `,
-        cost: 12,
-      },
-      {
-        name: 'Long Reach',
-        source: {book: 'CRB', page: 72},
-        gameEffect: `
-          When you are using a melee weapon, Close range is extended to 5 meters
-          instead of 3.
-        `,
-        cost: 3,
       },
     ],
   },

@@ -2,14 +2,14 @@ import { createContext, FC, useContext } from 'react'
 
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { isAugment } from '../Gear/Augments/AugmentData'
-import { collectGearEffects, isSkillBonus } from '../Gear/Effect'
 import { GearProvider, useAllGear } from '../Gear/GearContext'
 import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
+import { collectGearEffects, isSkillBonus } from '../System/Effect'
 import { ActiveSkillData, isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
-import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { Character } from './Character'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
@@ -63,21 +63,21 @@ export function useSkills (skillIds?: string[]): SkillList {
   if (character) {
     character.skills
       .filter(isActiveSkill)
-      .filter(skill => skillIds ? skillIds.includes(skill.skillId) : true)
-      .forEach(skill => skillList[skill.skillId] = skill.rank)
+      .filter(skill => skillIds ? skillIds.includes(skill.name) : true)
+      .forEach(skill => skillList[skill.name] = skill.rank)
   }
 
   return skillList
 }
 
-export function useActiveSkill (skillId: ActiveSkillId): ActiveSkillData | undefined {
+export function useActiveSkill (skillId: ActiveSkill): ActiveSkillData | undefined {
   const character = useCharacterData()
   const gear = useAllGear()
   if (!character) return undefined
 
   const skill = character.skills
     .filter(isActiveSkill)
-    .find(skill => skill.skillId === skillId)
+    .find(skill => skill.name === skillId)
 
   if (!skill) return undefined
 

@@ -1,5 +1,5 @@
-import { ActiveSkillId } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { GearData } from './GearData'
+import { GearData } from '../Gear/GearData'
+import { ActiveSkill } from './Skill/ActiveSkill/ActiveSkillId'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
@@ -8,6 +8,7 @@ export enum EffectType {
   skillBonus = 'skillBonus',
   dicePoolBonus = 'dicePoolBonus',
   defRatingBonus = 'defRatingBonus',
+  conditionTrackBonus = 'conditionTrackBonus',
 }
 
 interface BaseGearEffect {
@@ -45,7 +46,7 @@ export function isInitBonus (effect: BaseGearEffect): effect is InitBonus {
 
 interface SkillBonus extends BaseGearEffect {
   type: EffectType.skillBonus
-  skill: ActiveSkillId
+  skill: ActiveSkill
   bonus: number
 }
 
@@ -72,6 +73,16 @@ export function isDefRatingBonus (effect: BaseGearEffect): effect is DefRatingBo
   return effect.type === EffectType.defRatingBonus
 }
 
+interface ConditionTrackBonus extends BaseGearEffect {
+  type: EffectType.conditionTrackBonus
+  track: string
+  bonus: number
+}
+
+export function isConditionTrackBonus (effect: BaseGearEffect): effect is ConditionTrackBonus {
+  return effect.type === EffectType.conditionTrackBonus
+}
+
 export type Effect =
   | AttrBonus
   | AttrOverride
@@ -79,6 +90,7 @@ export type Effect =
   | SkillBonus
   | DicePoolBonus
   | DefRatingBonus
+  | ConditionTrackBonus
 
 export const collectGearEffects = (gear: GearData[]): Effect[] => {
   return gear

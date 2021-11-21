@@ -1,5 +1,5 @@
 import { AttrValue } from '../../System/Attribute'
-import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkill } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { BaseGearData } from '../GearData'
 import { WeaponAttr } from './WeaponAttr'
 
@@ -12,6 +12,6 @@ export interface WeaponData extends BaseGearData {
     [key: string]: AttrValue
   }
 
-  skill: ActiveSkillId
+  skill: ActiveSkill
   specialtyName?: string
 }

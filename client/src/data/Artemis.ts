@@ -5,7 +5,6 @@ import { CharacterAttr } from '../Character/CharacterAttr'
 import { Metatype } from '../Character/Metatypes'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
-import { EffectType } from '../Gear/Effect'
 import { GearData, GearType } from '../Gear/GearData'
 import { LicenseAttr } from '../Gear/License/LicenseAttr'
 import { LicenseData } from '../Gear/License/LicenseData'
@@ -22,7 +21,8 @@ import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillId, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
+import { EffectType } from '../System/Effect'
+import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
 export const Artemis: Character = {
@@ -232,26 +232,26 @@ export const Artemis: Character = {
     skills: [
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.electronics,
+        name: ActiveSkill.electronics,
         rank: 3,
         attr: 'logic',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.firearms,
+        name: ActiveSkill.firearms,
         rank: 3,
         attr: 'agility',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.piloting,
+        name: ActiveSkill.piloting,
         rank: 6,
         attr: 'reaction',
         speciality: 'Ground Craft',
       },
       {
         type: SkillType.active,
-        skillId: ActiveSkillId.engineering,
+        name: ActiveSkill.engineering,
         rank: 7,
         attr: 'logic',
         altAttr: 'intuition',
@@ -441,7 +441,7 @@ addGear<WeaponData>({
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
   addGear<WeaponModData>({
@@ -496,7 +496,7 @@ addGear<WeaponData>({
       'The user can alter ownership with a Minor Action',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.lightPistols,
 }, [
   addGear({ ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
@@ -647,7 +647,7 @@ const fnHar: WeaponData = {
     [WeaponAttr.ammo]: '35(c)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.rifles,
 }
 
@@ -665,7 +665,7 @@ const blackKnight: WeaponData = {
     [WeaponAttr.ammo]: '10(m)',
   },
 
-  skill: ActiveSkillId.firearms,
+  skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.machineGuns,
 }
 

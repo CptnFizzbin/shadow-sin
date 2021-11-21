@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
 import { DamageType } from '../../System/Damage/DamageType'
-import { ActiveSkillId } from '../../System/Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkill } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool, skillSpecialtyBonus } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
 import { AugmentData, AugmentType } from '../Augments/AugmentData'
@@ -62,7 +62,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = () => <DicePool
   poolKey={WeaponPoolKeys.mountedAttack}
   name={'Mounted Attack'}
   attrs={[CharacterAttr.logic]}
-  skills={[ActiveSkillId.engineering]}
+  skills={[ActiveSkill.engineering]}
   dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
 />
 
@@ -74,7 +74,7 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = () => {
     poolKey={WeaponPoolKeys.riggedAttack}
     name={'Rigged Attack'}
     attrs={[CharacterAttr.logic]}
-    skills={[ActiveSkillId.engineering]}
+    skills={[ActiveSkill.engineering]}
     bonuses={[
       { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
     ]}

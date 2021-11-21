@@ -1,13 +1,13 @@
-import {ContactData} from '../Contacts/ContactData'
-import {GearData} from '../Gear/GearData'
-import {QualityData} from '../Qualities/QualityData'
-import {RitualData} from '../Spells/RitualData'
-import {SpellData} from '../Spells/SpellData'
-import {BalanceLog} from '../System/BalanceLog'
-import {SkillData} from '../System/Skill/SkillData'
-import {AwakenedType} from './AwakenedType'
-import {CharacterAttr} from './CharacterAttr'
-import {Metatype} from './Metatypes'
+import { ContactData } from '../Contacts/ContactData'
+import { GearData } from '../Gear/GearData'
+import { QualityData } from '../Qualities/QualityData'
+import { RitualData } from '../Spells/RitualData'
+import { SpellData } from '../Spells/SpellData'
+import { BalanceLog } from '../System/BalanceLog'
+import { SkillData } from '../System/Skill/SkillData'
+import { AwakenedType } from './AwakenedType'
+import { CharacterAttr } from './CharacterAttr'
+import { Metatype } from './Metatypes'
 
 export interface BioData {
   name: string
@@ -44,7 +44,9 @@ export interface CharacterData {
   gear: GearData[]
   qualities: QualityData[]
 
-  spells?: (SpellData | RitualData)[]
+  spells?: SpellData[]
+  spellcastingAttr?: CharacterAttr
+  rituals?: RitualData[]
 }
 
 export type CharAttributes = Record<CharacterAttr, number>

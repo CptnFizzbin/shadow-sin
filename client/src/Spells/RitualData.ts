@@ -8,6 +8,7 @@ export enum RitualType {
 
 export interface RitualData {
   id: string
+  ritual: true
   ritualTypes: RitualType[]
   threshold: number
 }

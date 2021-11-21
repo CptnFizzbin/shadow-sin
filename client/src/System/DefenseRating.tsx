@@ -1,11 +1,11 @@
 import { FC } from 'react'
 
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { collectGearEffects, isDefRatingBonus } from '../Gear/Effect'
 import { useAllGear } from '../Gear/GearContext'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
+import { collectGearEffects, isDefRatingBonus } from './Effect'
 
 export const CharacterDefRatingStat: FC = () => {
   const body = useAttribute<number>(CharacterAttr.body) || 0

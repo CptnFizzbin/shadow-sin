@@ -1,5 +1,5 @@
-import { collectGearEffects, isAttrBonus, isAttrOverride } from '../Gear/Effect'
 import { GearData } from '../Gear/GearData'
+import { collectGearEffects, isAttrBonus, isAttrOverride } from './Effect'
 
 export type AttrType = string
 export type AttrValue = number | string | null | undefined

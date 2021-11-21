@@ -7,7 +7,6 @@ import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { ActiveSkillData, hasExpertise, hasSpecialty } from '../System/Skill/ActiveSkill/ActiveSkillData'
-import { formatSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 
 export interface DiceGroup {
   name: string
@@ -69,7 +68,7 @@ export const DicePool: FC<DicePoolProps> = ({
   groups = [
     ...groups,
     ...Object.entries(skillList)
-      .map(([skillId, rank]) => ({ name: formatSkill(skillId), size: rank })),
+      .map(([name, rank]) => ({ name: name, size: rank })),
     ...Object.entries(attrList)
       .filter(([_, value]) => typeof value === 'number')
       .map(([attrType, value]) => ({ name: formatAttr(attrType), size: value as number })),

@@ -1,4 +1,4 @@
-import { faArchive, faAward, faCarAlt, faCogs, faUser, faYenSign } from '@fortawesome/free-solid-svg-icons'
+import { faArchive, faAward, faCarAlt, faCogs, faMagic, faUser, faYenSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Divider, List } from '@mui/material'
 
@@ -29,6 +29,12 @@ export const CharacterNavDrawer: NavDrawer = ({
           icon={<PistolSvg />}
           label="Weapons"
           routeTo={`/${character.id}/weapons`}
+          closeDrawer={closeDrawer}
+        />
+        <NavButton
+          icon={<FontAwesomeIcon icon={faMagic} />}
+          label="Spells"
+          routeTo={`/${character.id}/spells`}
           closeDrawer={closeDrawer}
         />
         <NavButton
