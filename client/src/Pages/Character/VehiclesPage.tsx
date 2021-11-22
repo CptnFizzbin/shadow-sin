@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useGearOfType } from '../../Gear/GearContext'
@@ -10,9 +10,9 @@ export const VehiclesPage: FC = () => {
   const vehicles = useGearOfType<VehicleData>(GearType.vehicle)
 
   return (
-    <>
+    <Stack gap={1}>
       <Typography variant={'h4'}>Vehicles</Typography>
       <GearList gear={vehicles} />
-    </>
+    </Stack>
   )
 }

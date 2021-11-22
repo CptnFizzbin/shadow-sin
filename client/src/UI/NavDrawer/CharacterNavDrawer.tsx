@@ -2,8 +2,10 @@ import { faArchive, faAward, faCarAlt, faCogs, faMagic, faUser, faYenSign } from
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Divider, List } from '@mui/material'
 
+import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useCharacter } from '../../Character/CharacterProvider'
 import { PistolSvg } from '../../Gear/Weapons/PistolSvg'
+import { useAttribute } from '../../System/AttributeProvider'
 import { DefaultNavDrawer } from './DefaultNavDrawer'
 
 import { NavButton, NavDrawer } from './index'
@@ -13,6 +15,7 @@ export const CharacterNavDrawer: NavDrawer = ({
   closeDrawer,
 }) => {
   const character = useCharacter()
+  const showSpells = useAttribute(CharacterAttr.magic) || 0 >= 1
 
   if (!character) return null
 
@@ -31,12 +34,14 @@ export const CharacterNavDrawer: NavDrawer = ({
           routeTo={`/${character.id}/weapons`}
           closeDrawer={closeDrawer}
         />
-        <NavButton
-          icon={<FontAwesomeIcon icon={faMagic} />}
-          label="Spells"
-          routeTo={`/${character.id}/spells`}
-          closeDrawer={closeDrawer}
-        />
+        {showSpells && (
+          <NavButton
+            icon={<FontAwesomeIcon icon={faMagic} />}
+            label="Spells"
+            routeTo={`/${character.id}/spells`}
+            closeDrawer={closeDrawer}
+          />
+        )}
         <NavButton
           icon={<FontAwesomeIcon icon={faCarAlt} />}
           label="Vehicles"

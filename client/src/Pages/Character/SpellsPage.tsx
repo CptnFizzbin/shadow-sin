@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material'
-import { FC } from 'react'
+import { Stack, Typography } from '@mui/material'
+import React, { FC } from 'react'
 
 import { useActiveSkill, useCharacterData } from '../../Character/CharacterProvider'
 import { SpellBlock } from '../../Spells/SpellBlock'
@@ -24,6 +24,8 @@ export const SpellsPage: FC = () => {
 
   return (
     <Stack gap={1}>
+      <Typography variant={'h4'}>Spells</Typography>
+
       <DicePools>
         {sorcery && <SorcerySpellcastingPool />}
         {conjuration && <ConjurationSpellcastingPool />}

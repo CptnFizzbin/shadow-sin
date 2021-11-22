@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useGearOfType } from '../../Gear/GearContext'
@@ -11,9 +11,9 @@ export const WeaponsPage: FC = () => {
     .filter(gear => !gear.attachedTo)
 
   return (
-    <>
+    <Stack gap={1}>
       <Typography variant={'h4'}>Weapons</Typography>
       <GearList gear={weapons} />
-    </>
+    </Stack>
   )
 }

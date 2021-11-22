@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useAllGear } from '../../Gear/GearContext'
@@ -19,9 +19,9 @@ export const MiscGearPage: FC = () => {
     .filter(gear => !excludedGear.includes(gear.gearType))
 
   return (
-    <>
+    <Stack gap={1}>
       <Typography variant={'h4'}>Other Gear</Typography>
       <GearList gear={otherGear} />
-    </>
-  )
-}
+      <Stack />
+      )
+      }

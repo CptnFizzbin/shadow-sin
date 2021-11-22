@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { AugmentData } from '../../Gear/Augments/AugmentData'
@@ -11,9 +11,9 @@ export const AugmentsPage: FC = () => {
     .filter(gear => !gear.attachedTo)
 
   return (
-    <>
+    <Stack gap={1}>
       <Typography variant={'h4'}>Augments</Typography>
       <GearList gear={augments} />
-    </>
+    </Stack>
   )
 }
