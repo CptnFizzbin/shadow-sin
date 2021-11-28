@@ -52,6 +52,12 @@ export const Silicus: Character = {
       },
       {
         id: nextRecordId(),
+        date: '2021-11-07T16:00',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-10-17T16:00',
         value: 5,
         note: 'Session reward',

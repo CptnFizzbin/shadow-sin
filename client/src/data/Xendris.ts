@@ -39,6 +39,12 @@ export const Xendris: Character = {
       },
       {
         id: nextRecordId(),
+        date: '2021-11-07T16:00',
+        value: 3,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-11-21T12:17',
         value: 2,
         note: 'Character Creation',
