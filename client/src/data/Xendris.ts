@@ -239,6 +239,21 @@ export const Xendris: Character = {
         skill: ActiveSkill.firearms,
         specialtyName: FirearmSpecialties.heavyPistols,
       },
+      {
+        id: nextRecordId(),
+        source: { book: 'CRB', page: 247 },
+        gearType: GearType.weapon,
+        name: 'Katana',
+        type: 'Blade Weapon',
+        avail: { rarity: 3 },
+        cost: 350,
+        attributes: {
+          [WeaponAttr.dv]: '4P',
+          [WeaponAttr.attackRatings]: '10/-/-/-/-',
+        },
+        skill: ActiveSkill.closeCombat,
+        specialtyName: 'Blades',
+      },
     ],
 
     spellDrainAttr: CharacterAttr.logic,
