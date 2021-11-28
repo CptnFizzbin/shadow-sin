@@ -22,6 +22,6 @@ export const MiscGearPage: FC = () => {
     <Stack gap={1}>
       <Typography variant={'h4'}>Other Gear</Typography>
       <GearList gear={otherGear} />
-      <Stack />
-      )
-      }
+    </Stack>
+  )
+}
