@@ -54,6 +54,12 @@ export const Xendris: Character = {
     nuyen: [
       {
         id: nextRecordId(),
+        date: '2021-11-27T16:00',
+        value: 4,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-11-21T16:00',
         value: 2_000,
         note: 'Stream income',

@@ -46,6 +46,12 @@ export const Artemis: Character = {
     karma: [
       {
         id: nextRecordId(),
+        date: '2021-11-27T16:00',
+        value: 4,
+        note: 'Session reward',
+      },
+      {
+        id: nextRecordId(),
         date: '2021-11-21T15:05',
         value: 3,
         note: 'Session reward',
@@ -772,6 +778,30 @@ const rotoDrone: VehicleData = {
   pilotingSpeciality: 'Aircraft',
 }
 
+const oniDrone: VehicleData = {
+  id: null,
+  gearType: GearType.vehicle,
+  name: 'Nissan Oni',
+  type: 'Medium Antro Drone',
+  cost: 6_700,
+  avail: { rarity: 2 },
+
+  attributes: {
+    [VehicleAttr.handling]: 4,
+    [VehicleAttr.accel]: 10,
+    [VehicleAttr.speedInterval]: 8,
+    [VehicleAttr.topSpeed]: 30,
+    [VehicleAttr.body]: 9,
+    [VehicleAttr.armor]: 10,
+    [VehicleAttr.pilot]: 3,
+    [VehicleAttr.sensor]: 2,
+    [VehicleAttr.seat]: null,
+  },
+
+  pilotingSpeciality: 'Ground Craft',
+}
+
+
 addGear<VehicleData>({
   ...rotoDrone,
   id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
@@ -858,6 +888,7 @@ addGear<VehicleData>({
   ...crawlerDrone,
   id: '573791c8-e686-4411-927a-052452d8dcba',
   name: 'Aztech Crawler 3',
+  destroyed: true,
 }, [
   addGear({ ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
     addGear({ ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
@@ -931,6 +962,30 @@ addGear<VehicleData>({
 }, [
   addGear({ ...riggerInterface, id: 'b4ba0a55-150b-47b4-b391-cc1da213d48a' }),
 ])
+
+addGear<VehicleData>({
+  ...crawlerDrone,
+  id: 'f086ff48-0a38-40d9-9d62-0cd0a9d2e148',
+  name: 'Aztech Crawler',
+  quantity: 5,
+  slavedTo: null,
+})
+
+addGear<VehicleData>({
+  ...rotoDrone,
+  id: '2be9530b-621f-4f50-9188-722d3843f1c4',
+  name: 'MCT-Nissan Roto-drone',
+  quantity: 1,
+  slavedTo: null,
+})
+
+addGear<VehicleData>({
+  ...oniDrone,
+  id: '2be9530b-621f-4f50-9188-722d3843f1c4',
+  name: 'Nissan Oni',
+  quantity: 4,
+  slavedTo: null,
+})
 
 addGear<AugmentData>({
   id: '62c928a2-2a1e-4195-83ee-c760b6f93e1b',
