@@ -858,7 +858,6 @@ addGear<VehicleData>({
   ...crawlerDrone,
   id: '573791c8-e686-4411-927a-052452d8dcba',
   name: 'Aztech Crawler 3',
-  destroyed: true,
 }, [
   addGear({ ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
     addGear({ ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
@@ -871,7 +870,7 @@ addGear<VehicleData>({
   ...crawlerDrone,
   id: 'b02313b9-c024-4c5b-a661-9e23fbc6e816',
   name: 'Aztech Crawler 4',
-  destroyed: true,
+
 }, [
   addGear({ ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
     addGear({ ...fnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071' }),
