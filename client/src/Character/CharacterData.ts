@@ -45,7 +45,7 @@ export interface CharacterData {
   qualities: QualityData[]
 
   spells?: SpellData[]
-  spellcastingAttr?: CharacterAttr
+  spellDrainAttr?: CharacterAttr
   rituals?: RitualData[]
 }
 

@@ -1,17 +1,17 @@
-import { nextRecordId } from '../Api/Model'
-import { AwakenedType } from '../Character/AwakenedType'
-import { Character } from '../Character/Character'
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { Metatype } from '../Character/Metatypes'
-import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
-import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../Gear/GearData'
-import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
-import { SpellCategory } from '../Spells/SpellCategory'
-import { SpellType } from '../Spells/SpellType'
-import { EffectType } from '../System/Effect'
-import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../System/Skill/SkillData'
+import {nextRecordId} from '../Api/Model'
+import {AwakenedType} from '../Character/AwakenedType'
+import {Character} from '../Character/Character'
+import {CharacterAttr} from '../Character/CharacterAttr'
+import {Metatype} from '../Character/Metatypes'
+import {ArmorAttr} from '../Gear/Armor/ArmorAttr'
+import {CommlinkAttr} from '../Gear/Commlink/CommlinkAttr'
+import {GearType} from '../Gear/GearData'
+import {WeaponAttr} from '../Gear/Weapons/WeaponAttr'
+import {SpellCategory} from '../Spells/SpellCategory'
+import {SpellType} from '../Spells/SpellType'
+import {EffectType} from '../System/Effect'
+import {ActiveSkill, FirearmSpecialties} from '../System/Skill/ActiveSkill/ActiveSkillId'
+import {SkillType} from '../System/Skill/SkillData'
 
 export const Xendris: Character = {
   name: 'Xendris',
@@ -235,6 +235,7 @@ export const Xendris: Character = {
       },
     ],
 
+    spellDrainAttr: CharacterAttr.logic,
     spells: [
       {
         id: nextRecordId(),

@@ -39,12 +39,12 @@ export const ResistDrain: FC = () => {
   const characterData = useCharacterData()
   if (!characterData) return null
 
-  const spellcastingAttr = characterData.spellcastingAttr || CharacterAttr.charisma
+  const spellDrainAttr = characterData.spellDrainAttr || CharacterAttr.charisma
 
   return (
     <DicePool
       name="Drain"
-      attrs={[CharacterAttr.willpower, spellcastingAttr]}
+      attrs={[CharacterAttr.willpower, spellDrainAttr]}
     />
   )
 }
