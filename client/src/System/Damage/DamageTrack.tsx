@@ -31,6 +31,8 @@ export const DamageTrack: FC<DamageTrackProps> = ({
     }
   }
 
+  const numCells = Math.max(max, current + 1)
+
   return (
     <Box sx={{ minWidth: 150, maxWidth: 300 }}>
       <Typography variant={'h6'}>{label}</Typography>
@@ -38,8 +40,14 @@ export const DamageTrack: FC<DamageTrackProps> = ({
         <TrackCell onClick={() => onChange(0)}>0</TrackCell>
       </Box>
       <Box className={styles.DamageTrack}>
-        {new Array(max).fill(null).map((_, index) => (
-          <DamageCell key={index} value={index + 1} filled={index < current} toggleCell={onToggleCell} />
+        {new Array(numCells).fill(null).map((_, index) => (
+          <DamageCell
+            key={index}
+            value={index + 1}
+            filled={index < current}
+            toggleCell={onToggleCell}
+            isOverflow={index >= max}
+          />
         ))}
       </Box>
     </Box>
@@ -49,6 +57,7 @@ export const DamageTrack: FC<DamageTrackProps> = ({
 interface DamageCellProps {
   value: number
   filled?: boolean
+  isOverflow?: boolean
 
   toggleCell? (newValue: number): void
 }
@@ -56,12 +65,13 @@ interface DamageCellProps {
 const DamageCell: FC<DamageCellProps> = ({
   value,
   filled = false,
+  isOverflow = false,
   toggleCell = noOp,
 }) => {
   const penalty = Math.floor((value + 1) / 3)
 
   return (
-    <TrackCell onClick={() => toggleCell(value)} filled={filled}>
+    <TrackCell onClick={() => toggleCell(value)} filled={filled} isOverflow={isOverflow}>
       <Box sx={{ textAlign: 'right' }}>
         {value % 3 === 0 ? penalty * -1 : '\u00A0'}
       </Box>

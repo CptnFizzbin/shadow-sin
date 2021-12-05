@@ -7,12 +7,14 @@ interface TrackCellProps {
   onClick? (): void
 
   filled?: boolean
+  isOverflow?: boolean
 }
 
 export const TrackCell: FC<TrackCellProps> = ({
   children,
   onClick = noOp,
   filled = false,
+  isOverflow = false,
 }) => {
   const [hovered, setHovered] = useState<boolean>(false)
 
@@ -20,9 +22,12 @@ export const TrackCell: FC<TrackCellProps> = ({
   if (filled) backgroundColor = 'primary.dark'
   if (hovered) backgroundColor = 'primary.light'
 
+  let borderColor = undefined
+  if (isOverflow) borderColor = 'red'
+
   return (
     <Paper
-      sx={{ padding: 1, userSelect: 'none', backgroundColor }}
+      sx={{ padding: 1, userSelect: 'none', backgroundColor, borderColor }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => {
