@@ -14,6 +14,7 @@ export enum ActiveSkill {
   piloting = 'Piloting',
   sorcery = 'Sorcery',
   stealth = 'Stealth',
+  con = 'Con',
 }
 
 export enum FirearmSpecialties {

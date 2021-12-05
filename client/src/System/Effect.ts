@@ -1,5 +1,5 @@
-import { GearData } from '../Gear/GearData'
-import { ActiveSkill } from './Skill/ActiveSkill/ActiveSkillId'
+import {GearData} from '../Gear/GearData'
+import {ActiveSkill} from './Skill/ActiveSkill/ActiveSkillId'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
@@ -9,77 +9,87 @@ export enum EffectType {
   dicePoolBonus = 'dicePoolBonus',
   defRatingBonus = 'defRatingBonus',
   conditionTrackBonus = 'conditionTrackBonus',
+  woundPenaltyReduction = 'woundPenaltyReduction',
 }
 
-interface BaseGearEffect {
+interface BaseEffect {
   type: EffectType
 }
 
-interface AttrBonus extends BaseGearEffect {
+interface AttrBonus extends BaseEffect {
   type: EffectType.attrBonus
   attr: string
   bonus: number
 }
 
-export function isAttrBonus (effect: BaseGearEffect): effect is AttrBonus {
+export function isAttrBonus(effect: BaseEffect): effect is AttrBonus {
   return effect.type === EffectType.attrBonus
 }
 
-interface AttrOverride extends BaseGearEffect {
+interface AttrOverride extends BaseEffect {
   type: EffectType.attrOverride
   attr: string
   value: number
 }
 
-export function isAttrOverride (effect: BaseGearEffect): effect is AttrOverride {
+export function isAttrOverride(effect: BaseEffect): effect is AttrOverride {
   return effect.type === EffectType.attrOverride
 }
 
-interface InitBonus extends BaseGearEffect {
+interface InitBonus extends BaseEffect {
   type: EffectType.initBonus
   dice: number
 }
 
-export function isInitBonus (effect: BaseGearEffect): effect is InitBonus {
+export function isInitBonus(effect: BaseEffect): effect is InitBonus {
   return effect.type === EffectType.initBonus
 }
 
-interface SkillBonus extends BaseGearEffect {
+interface SkillBonus extends BaseEffect {
   type: EffectType.skillBonus
   skill: ActiveSkill
   bonus: number
 }
 
-export function isSkillBonus (effect: BaseGearEffect): effect is SkillBonus {
+export function isSkillBonus(effect: BaseEffect): effect is SkillBonus {
   return effect.type === EffectType.skillBonus
 }
 
-interface DicePoolBonus extends BaseGearEffect {
+interface DicePoolBonus extends BaseEffect {
   type: EffectType.dicePoolBonus
   poolType: string
   bonus: number
 }
 
-export function isDicePoolBonus (effect: BaseGearEffect): effect is DicePoolBonus {
+export function isDicePoolBonus(effect: BaseEffect): effect is DicePoolBonus {
   return effect.type === EffectType.dicePoolBonus
 }
 
-interface DefRatingBonus extends BaseGearEffect {
+interface DefRatingBonus extends BaseEffect {
   type: EffectType.defRatingBonus
   bonus: number
 }
 
-export function isDefRatingBonus (effect: BaseGearEffect): effect is DefRatingBonus {
+export function isDefRatingBonus(effect: BaseEffect): effect is DefRatingBonus {
   return effect.type === EffectType.defRatingBonus
 }
 
-interface ConditionTrackBonus extends BaseGearEffect {
+interface ConditionTrackBonus extends BaseEffect {
   type: EffectType.conditionTrackBonus
   track: string
   bonus: number
 }
 
-export function isConditionTrackBonus (effect: BaseGearEffect): effect is ConditionTrackBonus {
+export function isConditionTrackBonus(effect: BaseEffect): effect is ConditionTrackBonus {
+  return effect.type === EffectType.conditionTrackBonus
+}
+
+interface WoundPenaltyReduction extends BaseEffect {
+  type: EffectType.woundPenaltyReduction
+  value: number | 'all'
+}
+
+export function isWoundReduction(effect: BaseEffect): effect is WoundPenaltyReduction {
   return effect.type === EffectType.conditionTrackBonus
 }
 
@@ -91,6 +101,7 @@ export type Effect =
   | DicePoolBonus
   | DefRatingBonus
   | ConditionTrackBonus
+  | WoundPenaltyReduction
 
 export const collectGearEffects = (gear: GearData[]): Effect[] => {
   return gear

@@ -1,5 +1,5 @@
-import { BaseGearData, GearData, GearType } from '../GearData'
-import { AugmentAttr } from './AugmentAttr'
+import {BaseGearData, GearData, GearType} from '../GearData'
+import {AugmentAttr} from './AugmentAttr'
 
 export interface AugmentData extends BaseGearData {
   augmentType?: AugmentType
@@ -14,7 +14,7 @@ export interface AugmentData extends BaseGearData {
   }
 }
 
-export function isAugment (gear: GearData): gear is AugmentData {
+export function isAugment(gear: GearData): gear is AugmentData {
   return gear.gearType === GearType.augment
 }
 
@@ -33,6 +33,7 @@ export enum AugmentSlot {
 
 export enum AugmentGrade {
   used = 'used',
+  standard = 'standard',
   alpha = 'alphaware',
   beta = 'betaware',
   delta = 'deltaware'
