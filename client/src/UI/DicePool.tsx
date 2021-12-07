@@ -55,7 +55,7 @@ export const skillSpecialtyBonus = (
 export const collectEffectBonuses = (
   gear: GearData[],
   poolKey: string,
-) => {
+): DiceGroup[] => {
   return collectEffects(gear)
     .filter(isDicePoolBonus)
     .filter(effect => effect.poolType === poolKey)
