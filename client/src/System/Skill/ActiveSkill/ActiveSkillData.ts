@@ -1,3 +1,4 @@
+import { CharacterAttr } from '../../../Character/CharacterAttr'
 import { BasicSkillData, SkillType } from '../SkillData'
 import { ActiveSkill } from './ActiveSkillId'
 
@@ -7,8 +8,8 @@ export interface ActiveSkillData extends BasicSkillData {
   type: SkillType.active
   name: ActiveSkill
   rank: number
-  attr: string
-  altAttr?: string
+  attr: CharacterAttr | ''
+  altAttr?: CharacterAttr | ''
   speciality?: string | null
   expertise?: string | null
 }

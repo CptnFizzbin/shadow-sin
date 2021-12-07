@@ -14,7 +14,7 @@ import { GearType } from '../GearData'
 import { AutosoftAttr } from '../Software/Autosoft/AutosoftAttr'
 import { AutosoftType } from '../Software/Autosoft/AutosoftData'
 import { useAutosoft } from '../Software/Autosoft/AutosoftProvider'
-import {VehicleAttr} from './VehicleAttr'
+import { VehicleAttr } from './VehicleAttr'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
@@ -39,9 +39,10 @@ export const VehicleResistDmg: FC<VehiclePoolProps> = () => {
 export const AutosoftPiloting: FC<VehiclePoolProps> = () => {
   const evasionAutosoft = useAutosoft(AutosoftType.evasion)
   const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
+  const pilotAttr = useAttribute<number>(VehicleAttr.pilot) || 0
 
-  const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : 0
-  const evasion: number = evasionAutosoft ? evasionAutosoft.attributes[AutosoftAttr.rating] : 0
+  const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : pilotAttr
+  const evasion: number = evasionAutosoft ? evasionAutosoft.attributes[AutosoftAttr.rating] : -1
 
   const diceGroups: DiceGroup[] = [
     { name: 'Piloting', size: piloting },
@@ -63,7 +64,7 @@ export const DriverPiloting: FC<VehiclePoolProps> = ({
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
 
   const groups: DiceGroup[] = [
-    { name: 'Piloting', size: pilotingSkill?.rank },
+    { name: 'Piloting', size: pilotingSkill?.rank || -1 },
     { name: 'Reaction', size: reaction },
   ]
 
@@ -95,7 +96,7 @@ export const RiggedPiloting: FC<VehiclePoolProps> = ({
   if (!controlRig || !riggerInterface) return null
 
   const groups: DiceGroup[] = [
-    { name: 'Piloting', size: pilotingSkill?.rank },
+    { name: 'Piloting', size: pilotingSkill?.rank || -1 },
     { name: 'Intuition', size: intuition },
     { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
   ]

@@ -1,6 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { FC } from 'react'
 
+import { formatAttr } from '../../Attribute'
+import { useAttribute } from '../../AttributeProvider'
 import { ActiveSkillData } from './ActiveSkillData'
 
 interface SkillListProps {
@@ -16,7 +18,7 @@ export const ActiveSkillList: FC<SkillListProps> = ({
         <TableRow>
           <TableCell>Name</TableCell>
           <TableCell>Rank</TableCell>
-          <TableCell>Attr</TableCell>
+          <TableCell colSpan={2}>Attr</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -35,6 +37,9 @@ interface SkillListRowProps {
 const SkillListRow: FC<SkillListRowProps> = ({
   skill,
 }) => {
+  const attrValue = useAttribute(skill.attr) || 0
+  const altAttrValue = useAttribute(skill.altAttr || '') || 0
+
   return (
     <TableRow key={skill.name}>
       <TableCell>
@@ -46,8 +51,12 @@ const SkillListRow: FC<SkillListRowProps> = ({
         {skill.rank}
       </TableCell>
       <TableCell>
-        {skill.attr}
-        {skill.altAttr && `/${skill.altAttr}`}
+        <div>{formatAttr(skill.attr)}</div>
+        {skill.altAttr && <div>{formatAttr(skill.altAttr)}</div>}
+      </TableCell>
+      <TableCell>
+        <div>{attrValue}</div>
+        {skill.altAttr && <div>{altAttrValue}</div>}
       </TableCell>
     </TableRow>
   )

@@ -115,20 +115,20 @@ export const Xendris: CharacterData = {
       type: SkillType.active,
       name: ActiveSkill.closeCombat,
       rank: 7,
-      attr: 'agility',
+      attr: CharacterAttr.agility,
       speciality: 'Blades',
     },
     {
       type: SkillType.active,
       name: ActiveSkill.sorcery,
       rank: 6,
-      attr: 'logic',
+      attr: CharacterAttr.logic,
     },
     {
       type: SkillType.active,
       name: ActiveSkill.firearms,
       rank: 6,
-      attr: 'agility',
+      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.language,
