@@ -41,7 +41,11 @@ export function useFilterGear<T extends GearData = GearData> (filter: GearFilter
   return useAllGear().filter(filter).map(gear => gear as T)
 }
 
-export function useNestedGear (gearId: RecordId): GearData[] {
+export function useAttachedGear (gearId: RecordId): GearData[] {
+  return useAllGear().filter(gear => gear.attachedTo === gearId)
+}
+
+export function useAllNestedGear (gearId: RecordId): GearData[] {
   return collectNestedGear(gearId, useAllGear())
 }
 

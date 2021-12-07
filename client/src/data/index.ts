@@ -9,10 +9,6 @@ export function addGear<T extends GearData = OtherGearData> (
 ): T {
   if (gear.id === null) { throw new Error(`Null gear id for ${gear.name}`)}
   character.gear.push(gear)
-
-  attachedGear
-    .map(item => addGear(character, item))
-    .map(item => item.attachedTo = gear.id)
-
+  attachedGear.map(item => item.attachedTo = gear.id)
   return gear
 }

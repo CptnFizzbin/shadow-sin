@@ -1,9 +1,10 @@
+import { faWifi } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Paper } from '@mui/material'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 import { useSkills } from '../Character/CharacterProvider'
 import { GearData } from '../Gear/GearData'
-import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
@@ -15,6 +16,7 @@ export interface DiceGroup {
   name: string
   size: number | undefined
   default?: number
+  wireless?: boolean
 }
 
 export const DicePools: FC = ({
@@ -57,7 +59,7 @@ export const collectEffectBonuses = (
   return collectEffects(gear)
     .filter(isDicePoolBonus)
     .filter(effect => effect.poolType === poolKey)
-    .map(effect => ({ name: effect.name, size: effect.bonus }) as DiceGroup)
+    .map(effect => ({ name: effect.name, size: effect.bonus, wireless: effect.wireless }) as DiceGroup)
 }
 
 type DicePoolProps = {
@@ -98,7 +100,12 @@ export const DicePool: FC<DicePoolProps> = ({
     <Box sx={{ display: 'inline-flex', flexDirection: 'column' }}>
       <DiceGroupDisplay name={name} size={total} total />
       {groups.map(group => (
-        <DiceGroupDisplay key={group.name} name={group.name} size={group.size || group.default || 0} />
+        <DiceGroupDisplay
+          key={group.name}
+          name={group.name}
+          size={group.size || group.default || 0}
+          wireless={group.wireless}
+        />
       ))}
     </Box>
   )
@@ -108,12 +115,14 @@ interface DiceGroupDisplayProps {
   name: string
   size: number
   total?: boolean
+  wireless?: boolean
 }
 
 const DiceGroupDisplay: FC<DiceGroupDisplayProps> = ({
   name,
   size,
   total,
+  wireless = false,
 }) => {
   const sizeStyles = { display: 'inline-block', padding: 0.5, width: 30, textAlign: 'center' } as const
   const nameStyles = { display: 'inline-block', padding: 0.5, marginRight: 1 } as const
@@ -122,6 +131,7 @@ const DiceGroupDisplay: FC<DiceGroupDisplayProps> = ({
     <Box sx={{ display: 'flex', fontSize: total ? 14 : 12, backgroundColor: total ? '#424242' : undefined }}>
       <Box sx={sizeStyles}>{size}</Box>
       <Box sx={nameStyles}>{name}</Box>
+      {wireless && <Box sx={nameStyles}><FontAwesomeIcon icon={faWifi} /></Box>}
     </Box>
   )
 }

@@ -1,4 +1,4 @@
-import { faBroadcastTower, faSave } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faWifi } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box } from '@mui/material'
 import React, { FC } from 'react'
@@ -49,7 +49,7 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
       <Box>
         <Box sx={{ display: 'inline-block', marginRight: 1 }}>
           {slavedIds?.includes(autosoft.id) ? (
-            <FontAwesomeIcon icon={faBroadcastTower} />
+            <FontAwesomeIcon icon={faWifi} />
           ) : (
             <FontAwesomeIcon icon={faSave} />
           )}

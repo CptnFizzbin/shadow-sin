@@ -297,17 +297,22 @@ const smartGunIntMod: WeaponModData = {
 
   slot: null,
   removable: false,
-
   wirelessBonus: {
     enabled: true,
     description:
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
-    effects: [
-      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
-    ],
   },
+  effects: [
+    {
+      wireless: true,
+      name: 'Smart Gun',
+      type: EffectType.dicePoolBonus,
+      poolType: WeaponPoolKeys.basicAttack,
+      bonus: 1,
+    },
+  ],
 }
 
 addGear<WeaponData>(Silicus, {
@@ -329,12 +334,12 @@ addGear<WeaponData>(Silicus, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.shotguns,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '7be1a881-fa5a-4a24-83db-0d8f3af8e738',
     removable: false,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'ac4025a9-3e0c-4702-971f-a52cc56100a0',
     source: { book: 'FSQ', page: 22 },
     gearType: GearType.weaponMod,
@@ -343,8 +348,8 @@ addGear<WeaponData>(Silicus, {
 
     slot: null,
     removable: false,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'c2c50d7e-ec56-469f-903c-a5d84a109779',
     source: { book: 'FSQ', page: 71 },
     cost: 75,
@@ -353,8 +358,8 @@ addGear<WeaponData>(Silicus, {
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.under,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'c5abefe0-575b-4a5f-8e5f-a39723faffc8',
     source: { book: 'CRB', page: 259 },
     gearType: GearType.weaponMod,
@@ -367,7 +372,7 @@ addGear<WeaponData>(Silicus, {
 
     slot: WeaponModSlot.barrel,
     removable: false,
-  },
+  }),
 ])
 
 addGear<WeaponData>(Silicus, {
@@ -389,7 +394,7 @@ addGear<WeaponData>(Silicus, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
-  {
+  addGear(Silicus, {
     id: '81ef8a86-6cdf-49fc-a01e-b059c9757fed',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -398,8 +403,8 @@ addGear<WeaponData>(Silicus, {
 
     slot: null,
     removable: false,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '77fe6e86-2189-47a9-972d-61077b90c242',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -407,8 +412,8 @@ addGear<WeaponData>(Silicus, {
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '86c75812-6258-40d7-8d9a-539e297cbb2a',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -417,12 +422,12 @@ addGear<WeaponData>(Silicus, {
 
     slot: null,
     removable: false,
-  },
-  {
+  }),
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '291a7eae-7369-4add-843f-73b68d3e1fe2',
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'ec2415cc-832b-4fda-bbd1-b19516cc389f',
     source: { book: 'CRB', page: 259 },
     gearType: GearType.weaponMod,
@@ -435,7 +440,7 @@ addGear<WeaponData>(Silicus, {
 
     slot: WeaponModSlot.barrel,
     removable: false,
-  },
+  }),
 ])
 
 addGear<WeaponData>(Silicus, {
@@ -457,7 +462,7 @@ addGear<WeaponData>(Silicus, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.launchers,
 }, [
-  {
+  addGear(Silicus, {
     id: '76d1fc48-02c9-41b6-ae81-87bee8ad9b9e',
     gearType: GearType.weapon,
     name: 'Shotgun configuration',
@@ -472,7 +477,7 @@ addGear<WeaponData>(Silicus, {
     removable: false,
     skill: ActiveSkill.firearms,
     specialtyName: FirearmSpecialties.launchers,
-  },
+  }),
 ])
 
 addGear<WeaponData>(Silicus, {
@@ -494,11 +499,11 @@ addGear<WeaponData>(Silicus, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.heavyPistols,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '322b3cb5-c37f-4600-a47e-c9c48d68cd87',
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'b987971b-814f-489d-b0f4-ffc5f8602069',
     source: { book: 'CRB', page: 260 },
     gearType: GearType.weaponMod,
@@ -509,7 +514,7 @@ addGear<WeaponData>(Silicus, {
 
     description: 'Use of a Quick-Draw holster provides a bonus Minor action when the Quick-Draw Action is taken',
     slot: null,
-  },
+  }),
 ])
 
 addGear<WeaponData>(Silicus, {
@@ -532,10 +537,10 @@ addGear<WeaponData>(Silicus, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.trasers,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '08cd19d1-94c2-4e51-9a8b-89bc34c34212',
-  },
+  }),
 ])
 
 addGear<WeaponData>(Silicus, {
@@ -850,7 +855,7 @@ addGear(Silicus, {
     [OtherGearAttr.capacity]: 4,
   },
 }, [
-  {
+  addGear(Silicus, {
     id: 'cc67fef4-05a5-4be3-a671-20df801d04a6',
     gearType: GearType.other,
     name: 'Smartlink',
@@ -862,8 +867,8 @@ addGear(Silicus, {
     attributes: {
       [OtherGearAttr.capacityCost]: 2,
     },
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '0f074916-55c1-4889-8fae-61228b5c71c2',
     gearType: GearType.other,
     name: 'Imagelink',
@@ -875,8 +880,8 @@ addGear(Silicus, {
     attributes: {
       [OtherGearAttr.capacityCost]: 1,
     },
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'e11702ae-1c89-451e-8d6e-04597abc157a',
     gearType: GearType.other,
     name: 'Thermographic Vision',
@@ -888,7 +893,7 @@ addGear(Silicus, {
     attributes: {
       [OtherGearAttr.capacityCost]: 1,
     },
-  },
+  }),
 ])
 
 addGear<ArmorData>(Silicus, {
@@ -920,7 +925,7 @@ addGear(Silicus, {
     'armor.capacity': 6,
   },
 }, [
-  {
+  addGear(Silicus, {
     id: 'cc7ed3c8-3b21-4406-a954-0cabf5232be2',
     gearType: GearType.armorMod,
     name: 'Concealed Hostler',
@@ -931,7 +936,7 @@ addGear(Silicus, {
       enabled: true,
       description: 'Increases cancellability threshold by 1',
     },
-  },
+  }),
 ])
 
 addGear(Silicus, {
@@ -956,7 +961,7 @@ addGear(Silicus, {
 
   kit: KitType.medKit,
 }, [
-  {
+  addGear(Silicus, {
     id: '8b766655-5394-4a88-b37e-b8ecfe481e06',
     gearType: GearType.other,
     name: 'Medkit Supplies',
@@ -965,7 +970,7 @@ addGear(Silicus, {
     avail: { rarity: 1 },
     cost: 100,
     quantity: 5,
-  },
+  }),
 ])
 
 addGear(Silicus, {
@@ -1042,7 +1047,7 @@ addGear<VehicleData>(Silicus, {
 
   pilotingSpeciality: 'Ground Craft',
 }, [
-  {
+  addGear(Silicus, {
     id: 'd8e171f9-c1b1-4b22-bf28-bebcee03e859',
     gearType: GearType.vehicleMod,
     modType: ModType.riggerInterface,
@@ -1050,7 +1055,7 @@ addGear<VehicleData>(Silicus, {
     type: 'vehicle mod',
     avail: { rarity: 2, license: true },
     cost: 1_000,
-  },
+  }),
 ])
 
 addGear<SinData>(Silicus, {
@@ -1068,7 +1073,7 @@ addGear<SinData>(Silicus, {
     [SinAttr.rating]: 6,
   },
 }, [
-  {
+  addGear(Silicus, {
     id: '5b529806-1ab6-4363-9218-00846f1c86d2',
     gearType: GearType.license,
     name: 'License: Concealed Carry',
@@ -1080,8 +1085,8 @@ addGear<SinData>(Silicus, {
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '33cd2f9a-2c84-412e-9081-16c916f53eff',
     gearType: GearType.license,
     name: 'License: Firearm Carry',
@@ -1093,8 +1098,8 @@ addGear<SinData>(Silicus, {
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '989639ae-1592-46b9-b7b8-cdd7dad6b958',
     gearType: GearType.license,
     name: 'License: Ares Viper Silvergun',
@@ -1106,7 +1111,7 @@ addGear<SinData>(Silicus, {
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  },
+  }),
 ])
 
 addGear<SinData>(Silicus, {

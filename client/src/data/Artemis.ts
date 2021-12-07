@@ -328,10 +328,16 @@ const smartGunIntMod: WeaponModData = {
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
-    effects: [
-      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
-    ],
   },
+  effects: [
+    {
+      wireless: true,
+      name: 'Smart Gun',
+      type: EffectType.dicePoolBonus,
+      poolType: WeaponPoolKeys.basicAttack,
+      bonus: 1,
+    },
+  ],
 }
 
 addGear<AugmentData>(Artemis, {
@@ -414,7 +420,7 @@ addGear<WeaponData>(Artemis, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
-  {
+  addGear(Artemis, {
     id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -423,8 +429,8 @@ addGear<WeaponData>(Artemis, {
 
     slot: null,
     removable: false,
-  },
-  {
+  }),
+  addGear(Artemis, {
     id: '02fbb521-e039-4c06-9aaf-cead333e3885',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -432,8 +438,8 @@ addGear<WeaponData>(Artemis, {
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  },
-  {
+  }),
+  addGear(Artemis, {
     id: '21d66c66-4615-49d6-b330-e4c25eea631a',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -441,11 +447,8 @@ addGear<WeaponData>(Artemis, {
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  },
-  {
-    ...smartGunIntMod,
-    id: '429f440e-ffc3-459d-b08f-b013af1648dc',
-  },
+  }),
+  addGear(Artemis, { ...smartGunIntMod, id: '429f440e-ffc3-459d-b08f-b013af1648dc' }),
 ])
 
 addGear<WeaponData>(Artemis, {
@@ -472,10 +475,7 @@ addGear<WeaponData>(Artemis, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.lightPistols,
 }, [
-  {
-    ...smartGunIntMod,
-    id: '7c94f42b-e770-472f-85d8-992cde7e2606',
-  },
+  addGear(Artemis, { ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
 ])
 
 const autosofts: AutosoftData[] = [
@@ -715,10 +715,7 @@ addGear<VehicleData>(Artemis, {
   slavedTo: rcc.id,
   pilotingSpeciality: 'Ground Craft',
 }, [
-  {
-    ...riggerInterface,
-    id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3',
-  },
+  addGear(Artemis, { ...riggerInterface, id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3' }),
 ])
 
 const rotoDrone: VehicleData = {
@@ -774,9 +771,9 @@ addGear<VehicleData>(Artemis, {
   name: 'MCT-Nissan Roto-drone 1',
 }, [
   addGear(Artemis, { ...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d' }, [
-    { ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' },
+    addGear(Artemis, { ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' }),
   ]),
-  { ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' },
+  addGear(Artemis, { ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' }),
   // addGear(sensorArray),
 ])
 

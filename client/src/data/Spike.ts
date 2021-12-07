@@ -16,6 +16,7 @@ import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { EffectType } from '../System/Effect'
 import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
+import { Silicus } from './Silicus'
 
 import { addGear } from '.'
 
@@ -215,7 +216,7 @@ addGear(Spike, {
     ],
   },
 }, [
-  {
+  addGear(Silicus, {
     attachedTo: '2dd5ed6d-14aa-450b-b5f2-85e1d7ca5063',
     id: '91aa36e4-a048-41c9-9652-3b84b99468e9',
     gearType: GearType.armorMod,
@@ -226,11 +227,11 @@ addGear(Spike, {
     cost: 1_000,
     attributes: { 'Rating': 4, 'Uses': 4 },
     description: 'Cancels the Zapped status up to 4 times, then is worn away',
-  },
+  }),
 ])
 
 const smartGunIntMod: WeaponModData = {
-  id: 'dfaeb9e3-f162-4fd9-a6c5-db0cafaa6d67',
+  id: null,
   source: { book: 'CRB', page: 260 },
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
@@ -245,10 +246,16 @@ const smartGunIntMod: WeaponModData = {
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
-    effects: [
-      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
-    ],
   },
+  effects: [
+    {
+      wireless: true,
+      name: 'Smart Gun',
+      type: EffectType.dicePoolBonus,
+      poolType: WeaponPoolKeys.basicAttack,
+      bonus: 1,
+    },
+  ],
 }
 
 addGear(Spike, {
@@ -268,22 +275,25 @@ addGear(Spike, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.rifles,
 }, [
-  { ...smartGunIntMod },
-  {
+  addGear(Silicus, {
+    ...smartGunIntMod,
+    id: '5c6a5325-1f21-435e-b39d-559b8d7367ba',
+  }),
+  addGear(Silicus, {
     id: 'ff521abf-4f69-43bc-8842-42c70fa57677',
     gearType: GearType.weaponMod,
     name: 'Rigid Stock with shock pad',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '604f8e10-23ee-49c0-9e03-47129f56f984',
     gearType: GearType.weaponMod,
     name: 'Imaging Scope',
     type: 'Weapon Mod',
     slot: WeaponModSlot.top,
     removable: true,
-  },
+  }),
 ])
 
 addGear(Spike, {
@@ -303,25 +313,25 @@ addGear(Spike, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.rifles,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '34253074-4c73-4e12-9434-856d363a394c',
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'd3f6211d-9057-498b-8c52-9f137a63a248',
     gearType: GearType.weaponMod,
     name: 'Rigid Stock with shock pad',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '71e863dc-c0e8-4b71-b0a4-69ce58e5e4d1',
     gearType: GearType.weaponMod,
     name: 'Imaging Scope',
     type: 'Weapon Mod',
     slot: WeaponModSlot.top,
     removable: true,
-  },
+  }),
 ])
 
 addGear(Spike, {
@@ -341,26 +351,26 @@ addGear(Spike, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '3443bc88-c268-4b39-940e-d3c4adf1bfe9',
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'a746b9e4-8076-4ca9-9ee9-bb6f6bea0e15',
     gearType: GearType.weaponMod,
     name: 'Gas Vent System',
     type: 'Weapon Mod',
     slot: WeaponModSlot.barrel,
     removable: false,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: 'f47ecf4d-36bc-4a16-8abb-7006dcfc1461',
     gearType: GearType.weaponMod,
     name: 'Silencer',
     type: 'Weapon Mod',
     slot: WeaponModSlot.barrel,
     removable: false,
-  },
+  }),
 ])
 
 addGear(Spike, {
@@ -380,24 +390,24 @@ addGear(Spike, {
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.lightPistols,
 }, [
-  {
+  addGear(Silicus, {
     ...smartGunIntMod,
     id: '9d32fd3a-25ed-4954-9d69-e27f6f153830',
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '1a8c4cb4-f56c-41df-9884-36373fbf698f',
     gearType: GearType.weaponMod,
     name: 'Folding Stock',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
-  },
-  {
+  }),
+  addGear(Silicus, {
     id: '5001b8fc-817f-41fc-afee-118e39a0bbea',
     gearType: GearType.weaponMod,
     name: 'Laser Sight',
     type: 'Weapon Mod',
     slot: WeaponModSlot.barrel,
-  },
+  }),
 ])
 
 addGear<AugmentData>(Spike, {
@@ -486,7 +496,6 @@ addGear<AugmentData>(Spike, {
     while being virtually indistinguishable from natural skin. Orthoskin 
     provides a bonus equal to its rating to your Defense Rating. Orthoskin 
     cannot be combined with skin augmentations, including dermal plating.
-    
   `,
   effects: [
     { type: EffectType.defRatingBonus, bonus: 1 },

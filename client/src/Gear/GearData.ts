@@ -51,7 +51,6 @@ export interface BaseGearData {
   wirelessBonus?: {
     enabled: boolean
     description: string
-    effects?: Effect[]
   }
 
   description?: string

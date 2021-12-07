@@ -40,7 +40,6 @@ export const Xendris: CharacterData = {
       note: 'Character Creation',
     },
   ],
-
   nuyen: [
     {
       date: '2021-11-27T16:00',

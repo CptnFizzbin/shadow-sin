@@ -7,7 +7,7 @@ import { ActiveSkill } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { collectEffectBonuses, DiceGroup, DicePool, skillSpecialtyBonus } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
 import { AugmentData, AugmentType } from '../Augments/AugmentData'
-import { useFindGear, useNestedGear } from '../GearContext'
+import { useAllNestedGear, useFindGear } from '../GearContext'
 import { useTargetingAutosoft } from '../Software/Autosoft/AutosoftProvider'
 import { VehicleAttr } from '../Vehicles/VehicleAttr'
 import { WeaponData } from './WeaponData'
@@ -27,7 +27,7 @@ export const BasicAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
   const skill = useActiveSkill(weapon.skill)
-  const nestedGear = useNestedGear(weapon.id)
+  const nestedGear = useAllNestedGear(weapon.id)
 
   let bonuses: DiceGroup[] = []
 
@@ -52,7 +52,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
 }) => {
   const targetingAutosoft = useTargetingAutosoft(weapon.name) || -1
   const targetingGroup: DiceGroup = { name: 'Targeting', size: targetingAutosoft }
-  const nestedGear = useNestedGear(weapon.id)
+  const nestedGear = useAllNestedGear(weapon.id)
 
   return <DicePool
     poolKey={WeaponPoolKeys.droneAttack}
@@ -67,7 +67,7 @@ export const DroneAttackPool: FC<FirearmPoolProps> = ({
 export const VehicleAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const nestedGear = useNestedGear(weapon.id)
+  const nestedGear = useAllNestedGear(weapon.id)
 
   return <DicePool
     poolKey={WeaponPoolKeys.mountedAttack}
@@ -82,7 +82,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = ({
 export const RiggedAttackPool: FC<FirearmPoolProps> = ({
   weapon,
 }) => {
-  const nestedGear = useNestedGear(weapon.id)
+  const nestedGear = useAllNestedGear(weapon.id)
 
   const controlRig = useFindGear<AugmentData>(gear => gear.augmentType === AugmentType.controlRig)
   if (!controlRig) return null

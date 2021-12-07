@@ -1,3 +1,5 @@
+import { faWifi } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Typography } from '@mui/material'
 import React, { FC, ReactElement } from 'react'
 
@@ -7,7 +9,7 @@ import { formatSource } from '../System/Source'
 import { SimpleInfoBlock } from '../UI/InfoBlock/SimpleInfoBlock'
 import { Stat } from '../UI/StatBlock'
 import { formatAvail } from './Availability'
-import { useNestedGear } from './GearContext'
+import { useAttachedGear } from './GearContext'
 import { GearData, GearType } from './GearData'
 import { GearInfoBlock } from './GearInfoBlock'
 import { GearList } from './GearList'
@@ -56,7 +58,7 @@ export const GearInfo: FC<GearInfoProps> = ({
 export const SimpleGearInfo: FC<GearInfoProps> = ({
   item,
 }) => {
-  const attachedGear = useNestedGear(item.id)
+  const attachedGear = useAttachedGear(item.id)
 
   return (
     <SimpleInfoBlock
@@ -73,8 +75,19 @@ export const SimpleGearInfo: FC<GearInfoProps> = ({
       }
       body={
         <>
-          {item.type && <Typography variant="caption">{item.type}</Typography>}
-          {item.description && <Typography variant="caption">{item.description}</Typography>}
+          {item.type && (
+            <div><Typography variant="caption">{item.type}</Typography></div>
+          )}
+          {item.description && (
+            <div><Typography variant="caption">{item.description}</Typography></div>
+          )}
+          {item.wirelessBonus?.description && (
+            <div>
+              <Typography variant="caption">
+                <FontAwesomeIcon icon={faWifi} /> {item.wirelessBonus.description}
+              </Typography>
+            </div>
+          )}
         </>
       }
       footer={attachedGear.length >= 1 ? <GearList gear={attachedGear} /> : undefined}

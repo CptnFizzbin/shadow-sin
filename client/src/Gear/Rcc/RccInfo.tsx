@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import { FC } from 'react'
 
 import { InfoSection } from '../../UI/InfoBlock/InfoSection'
-import { useNestedGear, useFilterGear } from '../GearContext'
+import { useAttachedGear, useFilterGear } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearInfoProps } from '../GearInfo'
 import { GearInfoBlock } from '../GearInfoBlock'
@@ -17,7 +17,7 @@ export const RccInfo: FC<GearInfoProps<RccData>> = ({
   expanded,
 }) => {
   const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
-  const autosofts = useNestedGear(rcc.id)
+  const autosofts = useAttachedGear(rcc.id)
     .filter(gear => gear.gearType === GearType.autosoft)
     .map(gear => gear as AutosoftData)
   const slavedAutosofts = autosofts

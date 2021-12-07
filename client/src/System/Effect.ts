@@ -14,6 +14,7 @@ export enum EffectType {
 
 interface BaseEffect {
   type: EffectType
+  wireless?: boolean
 }
 
 interface AttrBonus extends BaseEffect {
@@ -105,14 +106,11 @@ export type Effect =
   | WoundPenaltyReduction
 
 export const collectEffects = (gear: GearData[]): Effect[] => {
-  const basicEffects = gear
-    .filter(gear => gear.effects)
-    .flatMap(gear => gear.effects as Effect[])
-
-  const wirelessEffects = gear
-    .filter(gear => gear.wirelessBonus?.enabled)
-    .filter(gear => gear.wirelessBonus?.effects)
-    .flatMap(gear => gear.wirelessBonus?.effects as Effect[])
-
-  return [...basicEffects, ...wirelessEffects]
+  return gear.flatMap(gear => {
+    if (gear.wirelessBonus?.enabled) {
+      return gear.effects || []
+    } else {
+      return gear.effects?.filter(effect => !effect.wireless) || []
+    }
+  })
 }
