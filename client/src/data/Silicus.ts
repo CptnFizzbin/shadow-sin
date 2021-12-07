@@ -1,7 +1,6 @@
-import { nextRecordId } from '../Api/Model'
 import { AwakenedType } from '../Character/AwakenedType'
-import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
+import { CharacterData } from '../Character/CharacterData'
 import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
 import { Metatype } from '../Character/Metatypes'
 import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
@@ -9,13 +8,13 @@ import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
 import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { GearData, GearType } from '../Gear/GearData'
+import { GearType } from '../Gear/GearData'
 import { KitAttr } from '../Gear/Kit/KitAttr'
 import { KitType } from '../Gear/Kit/KitType'
 import { LicenseAttr } from '../Gear/License/LicenseAttr'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
-import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
+import { OtherGearAttr } from '../Gear/OtherGearData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType } from '../Gear/Vehicles/VehicleModData'
@@ -26,303 +25,265 @@ import { EffectType } from '../System/Effect'
 import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Silicus: Character = {
-  name: 'Silicus',
-  id: 'fc7d8ad1-c25e-4c1b-8c13-0e795a449ef2',
-  userId: 'affbd8b8-8c41-4e82-86b6-85d184a71318',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-  data: {
-    dataVersion: 3,
+import { addGear } from './index'
 
-    bio: {
-      name: 'Silicus',
-      metatype: Metatype.Elf,
-      awakened: AwakenedType.Mundane,
-      gender: 'male',
-      role: 'Street Samurai',
-    },
+export const Silicus: CharacterData = {
+  dataVersion: 3,
 
-    karma: [
-      {
-        id: nextRecordId(),
-        date: '2021-11-27T16:00',
-        value: 4,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-11-21T15:05',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-11-07T16:00',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-17T16:00',
-        value: 5,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-03T16:00',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T16:00',
-        value: 5,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-12',
-        value: 2,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:05',
-        value: -10,
-        note: 'Buy reaction 1 -> 2',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:04',
-        value: -25,
-        note: 'Buy charisma 1 -> 3',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:03',
-        value: -12,
-        note: 'Buy Exceptional (Agility)',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:02',
-        value: -3,
-        note: 'Buy Analytical Mind',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:01',
-        value: 10,
-        note: 'Gain Bad Luck',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-29T16:00',
-        value: 50,
-        note: 'Character Creation',
-      },
-    ],
-
-    nuyen: [
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:01',
-        value: -500,
-        note: 'Loan to Artemis',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:00',
-        value: 2_050 + 75 + 500,
-        note: 'Ranger Arms AA-16',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-17T16:00',
-        value: 11_400,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-03T16:00',
-        value: -30_000,
-        note: 'Orthoskin',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T16:00',
-        value: 10_166,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-25T13:45',
-        value: 2 * 100,
-        note: 'Medical Supplies',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-25T13:44',
-        value: 8 * 500,
-        note: 'Trauma Patch',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T16:00',
-        value: 25_000,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:03',
-        value: -9_000,
-        note: '3 months lifestyle (middle)',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:02',
-        value: -439_575,
-        note: 'Char creation Gear',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:01',
-        value: 450_000,
-        note: 'Char creation',
-      },
-    ],
-
-    lifestyle: {
-      grade: 'middle',
-      upkeep: 5_000,
-      prepaid: 3,
-    },
-
-    attributes: {
-      [CharacterAttr.body]: 4,
-      [CharacterAttr.agility]: 8,
-      [CharacterAttr.reaction]: 2,
-      [CharacterAttr.strength]: 1,
-      [CharacterAttr.willpower]: 1,
-      [CharacterAttr.logic]: 5,
-      [CharacterAttr.intuition]: 4,
-      [CharacterAttr.charisma]: 3,
-      [CharacterAttr.edge]: 4,
-      [CharacterAttr.magic]: 0,
-      [CharacterAttr.resonance]: 0,
-      [CharacterAttr.essence]: 6,
-    },
-
-    contacts: [
-      {
-        name: 'Hunter Morgan',
-        connection: 3,
-        loyalty: 3,
-        description: 'Researcher at Kamino Biotech',
-      },
-      {
-        name: 'Johennes',
-        connection: 3,
-        loyalty: 3,
-        description: 'Fence',
-      },
-      {
-        name: 'Dr. Weber',
-        connection: 3,
-        loyalty: 3,
-        description: 'Ripperdoc',
-      },
-    ],
-
-    skills: [
-      {
-        type: SkillType.active,
-        name: ActiveSkill.biotech,
-        rank: 5,
-        attr: 'logic',
-        altAttr: 'intuition',
-        expertise: 'First Aid',
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.firearms,
-        rank: 6,
-        attr: 'agility',
-        speciality: FirearmSpecialties.submachineGuns,
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.perception,
-        rank: 3,
-        attr: 'intuition',
-        altAttr: 'logic',
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.closeCombat,
-        rank: 5,
-        attr: 'agility',
-      },
-      {
-        type: SkillType.language,
-        name: 'English',
-        rank: 'native',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Law Enforcement Corps',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Security Systems',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Tech Companies',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Weapon Manufacturers',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Local Gangs',
-      },
-    ],
-
-    gear: [],
-
-    qualities: [
-      {
-        name: 'Analytical Mind',
-        source: { book: 'CRB', page: 70 },
-        gameEffect: 'Bonus edge when making Logic tests',
-        cost: 3,
-      },
-      {
-        name: 'Exceptional (Agility)',
-        source: { book: 'CRB', page: 71 },
-        gameEffect: 'Increase max of one Physical or Mental attribute by 1',
-        cost: 12,
-      },
-      {
-        name: 'Bad Luck',
-        source: { book: 'CRB', page: 70 },
-        gameEffect: 'Glitch on 2s',
-        bonus: 10,
-      },
-    ],
+  bio: {
+    name: 'Silicus',
+    metatype: Metatype.Elf,
+    awakened: AwakenedType.Mundane,
+    gender: 'male',
+    role: 'Street Samurai',
   },
-}
 
-function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear, dataVersion: 1, id: nextRecordId() };
+  karma: [
+    {
+      date: '2021-11-27T16:00',
+      value: 4,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-11-21T15:05',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-11-07T16:00',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-10-17T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-10-03T16:00',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-19T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-12',
+      value: 2,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-08-29T16:05',
+      value: -10,
+      note: 'Buy reaction 1 -> 2',
+    },
+    {
+      date: '2021-08-29T16:04',
+      value: -25,
+      note: 'Buy charisma 1 -> 3',
+    },
+    {
+      date: '2021-08-29T16:03',
+      value: -12,
+      note: 'Buy Exceptional (Agility)',
+    },
+    {
+      date: '2021-08-29T16:02',
+      value: -3,
+      note: 'Buy Analytical Mind',
+    },
+    {
+      date: '2021-08-29T16:01',
+      value: 10,
+      note: 'Gain Bad Luck',
+    },
+    {
+      date: '2021-08-29T16:00',
+      value: 50,
+      note: 'Character Creation',
+    },
+  ],
 
-  (Silicus.data.gear as GearData[]).push(gear)
-  attachedGear.forEach(item => item.attachedTo = gear.id)
+  nuyen: [
+    {
+      date: '2021-10-24T16:01',
+      value: -500,
+      note: 'Loan to Artemis',
+    },
+    {
+      date: '2021-10-24T16:00',
+      value: 2_050 + 75 + 500,
+      note: 'Ranger Arms AA-16',
+    },
+    {
+      date: '2021-10-17T16:00',
+      value: 11_400,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-10-03T16:00',
+      value: -30_000,
+      note: 'Orthoskin',
+    },
+    {
+      date: '2021-09-26T16:00',
+      value: 10_166,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-25T13:45',
+      value: 2 * 100,
+      note: 'Medical Supplies',
+    },
+    {
+      date: '2021-09-25T13:44',
+      value: 8 * 500,
+      note: 'Trauma Patch',
+    },
+    {
+      date: '2021-09-19T16:00',
+      value: 25_000,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-08-28T00:03',
+      value: -9_000,
+      note: '3 months lifestyle (middle)',
+    },
+    {
+      date: '2021-08-28T00:02',
+      value: -439_575,
+      note: 'Char creation Gear',
+    },
+    {
+      date: '2021-08-28T00:01',
+      value: 450_000,
+      note: 'Char creation',
+    },
+  ],
 
-  return gear
+  lifestyle: {
+    grade: 'middle',
+    upkeep: 5_000,
+    prepaid: 3,
+  },
+
+  attributes: {
+    [CharacterAttr.body]: 4,
+    [CharacterAttr.agility]: 8,
+    [CharacterAttr.reaction]: 2,
+    [CharacterAttr.strength]: 1,
+    [CharacterAttr.willpower]: 1,
+    [CharacterAttr.logic]: 5,
+    [CharacterAttr.intuition]: 4,
+    [CharacterAttr.charisma]: 3,
+    [CharacterAttr.edge]: 4,
+    [CharacterAttr.magic]: 0,
+    [CharacterAttr.resonance]: 0,
+    [CharacterAttr.essence]: 6,
+  },
+
+  contacts: [
+    {
+      name: 'Hunter Morgan',
+      connection: 3,
+      loyalty: 3,
+      description: 'Researcher at Kamino Biotech',
+    },
+    {
+      name: 'Johennes',
+      connection: 3,
+      loyalty: 3,
+      description: 'Fence',
+    },
+    {
+      name: 'Dr. Weber',
+      connection: 3,
+      loyalty: 3,
+      description: 'Ripperdoc',
+    },
+  ],
+
+  skills: [
+    {
+      type: SkillType.active,
+      name: ActiveSkill.biotech,
+      rank: 5,
+      attr: 'logic',
+      altAttr: 'intuition',
+      expertise: 'First Aid',
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.firearms,
+      rank: 6,
+      attr: 'agility',
+      speciality: FirearmSpecialties.submachineGuns,
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.perception,
+      rank: 3,
+      attr: 'intuition',
+      altAttr: 'logic',
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.closeCombat,
+      rank: 5,
+      attr: 'agility',
+    },
+    {
+      type: SkillType.language,
+      name: 'English',
+      rank: 'native',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Law Enforcement Corps',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Security Systems',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Tech Companies',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Weapon Manufacturers',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Local Gangs',
+    },
+  ],
+
+  gear: [],
+
+  qualities: [
+    {
+      name: 'Analytical Mind',
+      source: { book: 'CRB', page: 70 },
+      gameEffect: 'Bonus edge when making Logic tests',
+      cost: 3,
+    },
+    {
+      name: 'Exceptional (Agility)',
+      source: { book: 'CRB', page: 71 },
+      gameEffect: 'Increase max of one Physical or Mental attribute by 1',
+      cost: 12,
+    },
+    {
+      name: 'Bad Luck',
+      source: { book: 'CRB', page: 70 },
+      gameEffect: 'Glitch on 2s',
+      bonus: 10,
+    },
+  ],
 }
 
 const smartGunIntMod: WeaponModData = {
@@ -348,8 +309,8 @@ const smartGunIntMod: WeaponModData = {
   },
 }
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: 'c77afa27-e7f2-4fa5-ab8f-53830ce79f1d',
   source: { book: 'FSQ', page: 22 },
   gearType: GearType.weapon,
   name: 'Ranger Arms AA-16',
@@ -367,9 +328,13 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.shotguns,
 }, [
-  addGear({ ...smartGunIntMod, removable: false }),
-  addGear({
-    id: null,
+  {
+    ...smartGunIntMod,
+    id: '7be1a881-fa5a-4a24-83db-0d8f3af8e738',
+    removable: false,
+  },
+  {
+    id: 'ac4025a9-3e0c-4702-971f-a52cc56100a0',
     source: { book: 'FSQ', page: 22 },
     gearType: GearType.weaponMod,
     name: 'Foregrip',
@@ -377,9 +342,9 @@ addGear<WeaponData>({
 
     slot: null,
     removable: false,
-  }),
-  addGear({
-    id: null,
+  },
+  {
+    id: 'c2c50d7e-ec56-469f-903c-a5d84a109779',
     source: { book: 'FSQ', page: 71 },
     cost: 75,
     gearType: GearType.weaponMod,
@@ -387,9 +352,9 @@ addGear<WeaponData>({
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.under,
-  }),
-  addGear<WeaponModData>({
-    id: null,
+  },
+  {
+    id: 'c5abefe0-575b-4a5f-8e5f-a39723faffc8',
     source: { book: 'CRB', page: 259 },
     gearType: GearType.weaponMod,
     name: 'Gas Vent',
@@ -401,11 +366,11 @@ addGear<WeaponData>({
 
     slot: WeaponModSlot.barrel,
     removable: false,
-  }),
+  },
 ])
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: 'd7aac7b6-6113-41e0-8087-53515753e9a3',
   source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
@@ -423,8 +388,8 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
-  addGear<WeaponModData>({
-    id: null,
+  {
+    id: '81ef8a86-6cdf-49fc-a01e-b059c9757fed',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
@@ -432,18 +397,18 @@ addGear<WeaponData>({
 
     slot: null,
     removable: false,
-  }),
-  addGear<WeaponModData>({
-    id: null,
+  },
+  {
+    id: '77fe6e86-2189-47a9-972d-61077b90c242',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Laser sight',
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  }),
-  addGear<WeaponModData>({
-    id: null,
+  },
+  {
+    id: '86c75812-6258-40d7-8d9a-539e297cbb2a',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
     name: 'Flashlight',
@@ -451,10 +416,13 @@ addGear<WeaponData>({
 
     slot: null,
     removable: false,
-  }),
-  addGear(smartGunIntMod),
-  addGear<WeaponModData>({
-    id: null,
+  },
+  {
+    ...smartGunIntMod,
+    id: '291a7eae-7369-4add-843f-73b68d3e1fe2',
+  },
+  {
+    id: 'ec2415cc-832b-4fda-bbd1-b19516cc389f',
     source: { book: 'CRB', page: 259 },
     gearType: GearType.weaponMod,
     name: 'Gas Vent',
@@ -466,11 +434,11 @@ addGear<WeaponData>({
 
     slot: WeaponModSlot.barrel,
     removable: false,
-  }),
+  },
 ])
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: '2c28bae0-15fc-4564-826e-84397c260a1c',
   source: { book: 'FS', page: 36 },
   gearType: GearType.weapon,
   name: 'Krime Thumper',
@@ -488,8 +456,8 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.launchers,
 }, [
-  addGear<WeaponData>({
-    id: null,
+  {
+    id: '76d1fc48-02c9-41b6-ae81-87bee8ad9b9e',
     gearType: GearType.weapon,
     name: 'Shotgun configuration',
     type: 'Weapon configuration',
@@ -503,11 +471,11 @@ addGear<WeaponData>({
     removable: false,
     skill: ActiveSkill.firearms,
     specialtyName: FirearmSpecialties.launchers,
-  }),
+  },
 ])
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: '7a055ec1-6048-4b36-a555-445f28fdfdbf',
   source: { book: 'CRB', page: 255 },
   gearType: GearType.weapon,
   name: 'Ares Viper Silvergun',
@@ -525,9 +493,12 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.heavyPistols,
 }, [
-  addGear(smartGunIntMod),
-  addGear<WeaponModData>({
-    id: null,
+  {
+    ...smartGunIntMod,
+    id: '322b3cb5-c37f-4600-a47e-c9c48d68cd87',
+  },
+  {
+    id: 'b987971b-814f-489d-b0f4-ffc5f8602069',
     source: { book: 'CRB', page: 260 },
     gearType: GearType.weaponMod,
     name: 'Quick Draw Holster',
@@ -537,11 +508,11 @@ addGear<WeaponData>({
 
     description: 'Use of a Quick-Draw holster provides a bonus Minor action when the Quick-Draw Action is taken',
     slot: null,
-  }),
+  },
 ])
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: '6d431911-4038-4c64-b543-13af0b9cab5f',
   source: { book: 'CRB', page: 255 },
   gearType: GearType.weapon,
   name: 'Defiance SuperShocker',
@@ -560,11 +531,14 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.trasers,
 }, [
-  addGear(smartGunIntMod),
+  {
+    ...smartGunIntMod,
+    id: '08cd19d1-94c2-4e51-9a8b-89bc34c34212',
+  },
 ])
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: 'c99f8aba-d4d6-4880-8d4d-866dace1eb75',
   source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'Survival Knife',
@@ -583,8 +557,8 @@ addGear<WeaponData>({
   specialtyName: 'Blades',
 })
 
-addGear<WeaponData>({
-  id: null,
+addGear<WeaponData>(Silicus, {
+  id: '604ab904-d3e7-4f4e-9da0-182495de68a1',
   source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
   name: 'Shock Gloves',
@@ -602,8 +576,8 @@ addGear<WeaponData>({
   specialtyName: 'Blades',
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: 'b8d896da-e201-4e6b-96e6-adefd3c8d1a3',
   name: 'Synaptic Booster',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
@@ -636,8 +610,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '62c28948-dc2b-42cc-95ee-22732203fe04',
   gearType: GearType.augment,
   name: 'Platelet Factories',
   type: 'Bioware Augment',
@@ -657,8 +631,8 @@ addGear<AugmentData>({
   },
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '89a8b4ed-8e1b-4ab0-84c5-e0fb4bfdd437',
   gearType: GearType.augment,
   name: 'Muscle Toner',
   type: 'Bioware Augment',
@@ -685,8 +659,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '3addb3cb-d1f2-42c0-b1ea-59aa267c34e2',
   gearType: GearType.augment,
   name: 'Bone Density',
   type: 'Bioware Augment',
@@ -713,8 +687,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '8bbf6a1b-ccf2-4fc8-828a-ec2170e67c84',
   name: 'Pain Editor',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
@@ -747,8 +721,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '6b343cba-32e4-4177-899c-eab7deabdb6d',
   name: 'Orthoskin',
   type: 'Bioware Augment',
   gearType: GearType.augment,
@@ -776,8 +750,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: 'eb40f7f5-0037-43e1-bb3e-422513555003',
   gearType: GearType.augment,
   name: 'Reflex Recorder (Firearms)',
   type: 'Cultured Bioware Augment',
@@ -806,8 +780,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
-  id: null,
+addGear<AugmentData>(Silicus, {
+  id: '951f4aa6-76f4-4626-bd0c-ca33da7569d9',
   gearType: GearType.augment,
   name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
@@ -836,8 +810,8 @@ addGear<AugmentData>({
   ],
 })
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: '1962503b-a324-4fe2-8dde-06bf534da060',
   gearType: GearType.other,
   name: 'Sony Emperor',
   type: 'Commlink',
@@ -852,8 +826,8 @@ addGear({
   },
 })
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: '6b7d26a5-47de-48b7-a6b6-c8b5c1b483e9',
   gearType: GearType.other,
   name: 'Biomonitor',
   type: 'Biotech',
@@ -862,8 +836,8 @@ addGear({
   cost: 300,
 })
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: 'b9f302ee-7018-44d3-bf31-93438259ca3b',
   gearType: GearType.other,
   name: 'Glasses',
   type: 'Clothing',
@@ -875,8 +849,8 @@ addGear({
     [OtherGearAttr.capacity]: 4,
   },
 }, [
-  addGear({
-    id: null,
+  {
+    id: 'cc67fef4-05a5-4be3-a671-20df801d04a6',
     gearType: GearType.other,
     name: 'Smartlink',
     type: 'Visual Enhancement',
@@ -887,9 +861,9 @@ addGear({
     attributes: {
       [OtherGearAttr.capacityCost]: 2,
     },
-  }),
-  addGear({
-    id: null,
+  },
+  {
+    id: '0f074916-55c1-4889-8fae-61228b5c71c2',
     gearType: GearType.other,
     name: 'Imagelink',
     type: 'Visual Enhancement',
@@ -900,9 +874,9 @@ addGear({
     attributes: {
       [OtherGearAttr.capacityCost]: 1,
     },
-  }),
-  addGear({
-    id: null,
+  },
+  {
+    id: 'e11702ae-1c89-451e-8d6e-04597abc157a',
     gearType: GearType.other,
     name: 'Thermographic Vision',
     type: 'Visual Enhancement',
@@ -913,11 +887,11 @@ addGear({
     attributes: {
       [OtherGearAttr.capacityCost]: 1,
     },
-  }),
+  },
 ])
 
-addGear<ArmorData>({
-  id: null,
+addGear<ArmorData>(Silicus, {
+  id: '9e95c3e8-216f-4576-95ee-0fc33ef2c3df',
   gearType: GearType.armor,
   name: 'Armor Jacket',
   type: 'Armor',
@@ -931,8 +905,8 @@ addGear<ArmorData>({
   },
 })
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: '843f901e-49df-41ad-8f5d-494038a96b98',
   gearType: GearType.armor,
   name: 'Auctioneer Business Clothes',
   type: 'Armor',
@@ -945,8 +919,8 @@ addGear({
     'armor.capacity': 6,
   },
 }, [
-  addGear({
-    id: null,
+  {
+    id: 'cc7ed3c8-3b21-4406-a954-0cabf5232be2',
     gearType: GearType.armorMod,
     name: 'Concealed Hostler',
     type: 'Armor Mod',
@@ -956,11 +930,11 @@ addGear({
       enabled: true,
       description: 'Increases cancellability threshold by 1',
     },
-  }),
+  },
 ])
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: 'cb0f423e-44ab-48f5-bebd-41164def3b50',
   gearType: GearType.other,
   name: 'Medkit',
   type: 'Biotech',
@@ -981,8 +955,8 @@ addGear({
 
   kit: KitType.medKit,
 }, [
-  addGear({
-    id: null,
+  {
+    id: '8b766655-5394-4a88-b37e-b8ecfe481e06',
     gearType: GearType.other,
     name: 'Medkit Supplies',
     type: 'Supplies',
@@ -990,11 +964,11 @@ addGear({
     avail: { rarity: 1 },
     cost: 100,
     quantity: 5,
-  }),
+  },
 ])
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: '4160259c-a62e-402b-b94d-c7c92b0c2370',
   gearType: GearType.other,
   name: 'First Aid Kit',
   type: 'Kit',
@@ -1005,8 +979,8 @@ addGear({
   kit: KitType.firstAid,
 })
 
-addGear({
-  id: null,
+addGear(Silicus, {
+  id: '8f7bd7b0-7521-4f30-abe5-a6c09826a610',
   gearType: GearType.other,
   name: 'Trauma Patch',
   type: 'Slap Patch',
@@ -1020,8 +994,8 @@ addGear({
   `),
 })
 
-addGear<VehicleData>({
-  id: null,
+addGear<VehicleData>(Silicus, {
+  id: 'eac7b24b-fa6d-4ab8-8f09-b1083e6054ae',
   gearType: GearType.vehicle,
   name: 'Suzuki Mirage',
   type: 'Bike',
@@ -1044,8 +1018,8 @@ addGear<VehicleData>({
   pilotingSpeciality: 'Ground Craft',
 })
 
-addGear<VehicleData>({
-  id: null,
+addGear<VehicleData>(Silicus, {
+  id: 'c55a0573-670d-4f31-993b-60f151f30e86',
   gearType: GearType.vehicle,
   name: 'Hyundai Shin-Hyung',
   type: 'Car',
@@ -1067,19 +1041,19 @@ addGear<VehicleData>({
 
   pilotingSpeciality: 'Ground Craft',
 }, [
-  addGear({
-    id: null,
+  {
+    id: 'd8e171f9-c1b1-4b22-bf28-bebcee03e859',
     gearType: GearType.vehicleMod,
     modType: ModType.riggerInterface,
     name: 'Rigger Interface',
     type: 'vehicle mod',
     avail: { rarity: 2, license: true },
     cost: 1_000,
-  }),
+  },
 ])
 
-addGear<SinData>({
-  id: null,
+addGear<SinData>(Silicus, {
+  id: '97ec7a5b-358e-4cfd-b2ab-040934ec1f88',
   gearType: GearType.sin,
   name: 'Jake Ozbourne',
   type: 'Fake SIN',
@@ -1093,8 +1067,8 @@ addGear<SinData>({
     [SinAttr.rating]: 6,
   },
 }, [
-  addGear({
-    id: null,
+  {
+    id: '5b529806-1ab6-4363-9218-00846f1c86d2',
     gearType: GearType.license,
     name: 'License: Concealed Carry',
     type: 'Fake License',
@@ -1105,9 +1079,9 @@ addGear<SinData>({
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  }),
-  addGear({
-    id: null,
+  },
+  {
+    id: '33cd2f9a-2c84-412e-9081-16c916f53eff',
     gearType: GearType.license,
     name: 'License: Firearm Carry',
     type: 'Fake License',
@@ -1118,9 +1092,9 @@ addGear<SinData>({
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  }),
-  addGear({
-    id: null,
+  },
+  {
+    id: '989639ae-1592-46b9-b7b8-cdd7dad6b958',
     gearType: GearType.license,
     name: 'License: Ares Viper Silvergun',
     type: 'Fake License',
@@ -1131,11 +1105,11 @@ addGear<SinData>({
     attributes: {
       [LicenseAttr.rating]: 5,
     },
-  }),
+  },
 ])
 
-addGear<SinData>({
-  id: null,
+addGear<SinData>(Silicus, {
+  id: '7cd3e825-ca8f-40b6-ad50-ae2af68fa91c',
   gearType: GearType.sin,
   name: 'Picard DeLance',
   type: 'Fake SIN',

@@ -1,7 +1,6 @@
 import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC } from 'react'
-import { Simulate } from 'react-dom/test-utils'
 
 import { useAllGear } from '../../Gear/GearContext'
 import { useQualities } from '../../Qualities/QualityData'

@@ -20,7 +20,7 @@ export const BalanceLogTable: FC<BalanceLogTableProps> = ({
   const logRows = log
     .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
     .map(entry => (
-      <TableRow key={entry.id}>
+      <TableRow key={entry.date}>
         <TableCell>{formatDate(entry.date)}</TableCell>
         <TableCell>{entry.note}</TableCell>
         <TableCell align="right">{formatValue(entry.value)}</TableCell>

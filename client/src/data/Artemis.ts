@@ -1,16 +1,15 @@
-import { nextRecordId } from '../Api/Model'
 import { AwakenedType } from '../Character/AwakenedType'
-import { Character } from '../Character/Character'
 import { CharacterAttr } from '../Character/CharacterAttr'
+import { CharacterData } from '../Character/CharacterData'
 import { Metatype } from '../Character/Metatypes'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
-import { GearData, GearType } from '../Gear/GearData'
+import { GearType } from '../Gear/GearData'
 import { LicenseAttr } from '../Gear/License/LicenseAttr'
 import { LicenseData } from '../Gear/License/LicenseData'
 import { SinAttr } from '../Gear/License/SinAttr'
 import { SinData } from '../Gear/License/SinData'
-import { OtherGearAttr, OtherGearData } from '../Gear/OtherGearData'
+import { OtherGearAttr } from '../Gear/OtherGearData'
 import { RccAttr } from '../Gear/Rcc/RccAttr'
 import { RccData } from '../Gear/Rcc/RccData'
 import { AutosoftAttr } from '../Gear/Software/Autosoft/AutosoftAttr'
@@ -25,336 +24,291 @@ import { EffectType } from '../System/Effect'
 import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { SkillType } from '../System/Skill/SkillData'
 
-export const Artemis: Character = {
-  name: 'Artemis',
-  id: 'aebc2a1a-d12e-487e-aa5b-1f2daa18817a',
-  userId: 'affbd8b8-8c41-4e82-86b6-85d184a71318',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-  data: {
-    dataVersion: 3,
+import { addGear } from '.'
 
-    bio: {
-      name: 'Jessica Nelson',
-      alias: 'Artemis',
-      role: 'rigger',
-      gender: 'female',
-      metatype: Metatype.Elf,
-      awakened: AwakenedType.Mundane,
-    },
+export const Artemis: CharacterData = {
+  dataVersion: 3,
 
-    karma: [
-      {
-        id: nextRecordId(),
-        date: '2021-11-27T16:00',
-        value: 4,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-11-21T15:05',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-11-07T16:00',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-17T16:00',
-        value: 5,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-03T16:00',
-        value: 3,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T16:00',
-        value: 4,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T22:00',
-        value: -10,
-        note: 'Body 1 => 2',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T16:00',
-        value: 5,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-11',
-        value: 2,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28',
-        value: 14,
-        note: 'Balance import',
-      },
-    ],
-
-    nuyen: [
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:03',
-        value: -9_200*2,
-        note: 'Ingram Black Knight x2',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:02',
-        value: 500,
-        note: 'Loan from Slicus',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:01',
-        value: -4_000,
-        note: 'Ingram Black Knight Targeting Autosoft',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-24T16:00',
-        value: -5_000*2,
-        note: 'Heavy Weapon Mount x2',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-10-17T16:00',
-        value: 11_400,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T16:00',
-        value: 10_166,
-        note: 'Session reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T15:02',
-        value: 300,
-        note: 'Buy forklift rental',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T15:01',
-        value: 500,
-        note: 'Buy Semi-truck rental',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-26T15:00',
-        value: 1_000,
-        note: 'Buy Semi-truck driver license',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T22:01',
-        value: -16_000,
-        note: 'Buy r4 sensor arrays for crawlers',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T22:00',
-        value: -22_500,
-        note: 'Buy Reaction Enhancers',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-09-19T16:00',
-        value: 25_000,
-        note: 'Session Reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:04',
-        value: 18_070,
-        note: 'Session Reward',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:02',
-        value: -445_665,
-        note: 'Starting Gear',
-      },
-      {
-        id: nextRecordId(),
-        date: '2021-08-28T00:01',
-        value: 450_000,
-        note: 'Character Creation',
-      },
-    ],
-
-    lifestyle: {
-      grade: 'middle',
-      upkeep: 5_000,
-      prepaid: 3,
-    },
-
-    attributes: {
-      [CharacterAttr.body]: 2,
-      [CharacterAttr.agility]: 3,
-      [CharacterAttr.reaction]: 3,
-      [CharacterAttr.strength]: 1,
-      [CharacterAttr.willpower]: 2,
-      [CharacterAttr.logic]: 7,
-      [CharacterAttr.intuition]: 5,
-      [CharacterAttr.charisma]: 4,
-      [CharacterAttr.edge]: 4,
-      [CharacterAttr.magic]: 0,
-      [CharacterAttr.resonance]: 0,
-      [CharacterAttr.essence]: 6,
-    },
-
-    contacts: [
-      {
-        name: 'James Serif',
-        connection: 2,
-        loyalty: 2,
-        description: 'Drone Parts Dealer',
-      },
-      {
-        name: 'Frank',
-        connection: 2,
-        loyalty: 2,
-        description: 'Matrix Developer',
-      },
-      {
-        name: 'George Crabtree',
-        connection: 2,
-        loyalty: 2,
-        description: 'Lone Star officer',
-      },
-    ],
-
-    skills: [
-      {
-        type: SkillType.active,
-        name: ActiveSkill.electronics,
-        rank: 3,
-        attr: 'logic',
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.firearms,
-        rank: 3,
-        attr: 'agility',
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.piloting,
-        rank: 6,
-        attr: 'reaction',
-        speciality: 'Ground Craft',
-      },
-      {
-        type: SkillType.active,
-        name: ActiveSkill.engineering,
-        rank: 7,
-        attr: 'logic',
-        altAttr: 'intuition',
-      },
-      {
-        type: SkillType.language,
-        name: 'English',
-        rank: 'native',
-      },
-      {
-        type: SkillType.language,
-        name: 'Elven',
-        rank: 'speciality',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Drone Models',
-      },
-      {
-        type: SkillType.knowledge,
-        name: '80/90s Pop Culture',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Trideo Series',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Security Systems',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Virtual Nightclubs',
-      },
-      {
-        type: SkillType.knowledge,
-        name: 'Tech Companies',
-      },
-    ],
-
-    gear: [],
-
-    qualities: [
-      {
-        name: 'Exceptional (Logic)',
-        source: { book: 'CRB', page: 2 },
-        cost: 12,
-      },
-      {
-        name: 'Social Stress (Large Groups)',
-        source: { book: 'CRB', page: 2 },
-        bonus: 8,
-      },
-      {
-        name: 'Juryrigger',
-        source: { book: 'CRB', page: 2 },
-        cost: 12,
-      },
-      {
-        name: 'Photographic Memory',
-        source: { book: 'CRB', page: 2 },
-        cost: 12,
-      },
-      {
-        name: 'Analytical Mind',
-        source: { book: 'CRB', page: 2 },
-        gameEffect: 'Bonus edge when making Logic tests',
-        cost: 3,
-      },
-      {
-        name: 'Ambidextrous',
-        source: { book: 'CRB', page: 2 },
-        cost: 4,
-      },
-    ],
+  bio: {
+    name: 'Jessica Nelson',
+    alias: 'Artemis',
+    role: 'rigger',
+    gender: 'female',
+    metatype: Metatype.Elf,
+    awakened: AwakenedType.Mundane,
   },
-}
 
-const usedIds = new Set()
+  karma: [
+    {
+      date: '2021-11-27T16:00',
+      value: 4,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-11-21T15:05',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-11-07T16:00',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-10-17T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-10-03T16:00',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-26T16:00',
+      value: 4,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-19T22:00',
+      value: -10,
+      note: 'Body 1 => 2',
+    },
+    {
+      date: '2021-09-19T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-11',
+      value: 2,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-08-28',
+      value: 14,
+      note: 'Balance import',
+    },
+  ],
 
-export function addGear<T extends GearData = OtherGearData> (gear: T, attachedGear: GearData[] = []): T {
-  gear = { ...gear }
+  nuyen: [
+    {
+      date: '2021-10-24T16:03',
+      value: -9_200 * 2,
+      note: 'Ingram Black Knight x2',
+    },
+    {
+      date: '2021-10-24T16:02',
+      value: 500,
+      note: 'Loan from Slicus',
+    },
+    {
+      date: '2021-10-24T16:01',
+      value: -4_000,
+      note: 'Ingram Black Knight Targeting Autosoft',
+    },
+    {
+      date: '2021-10-24T16:00',
+      value: -5_000 * 2,
+      note: 'Heavy Weapon Mount x2',
+    },
+    {
+      date: '2021-10-17T16:00',
+      value: 11_400,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-26T16:00',
+      value: 10_166,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-09-26T15:02',
+      value: 300,
+      note: 'Buy forklift rental',
+    },
+    {
+      date: '2021-09-26T15:01',
+      value: 500,
+      note: 'Buy Semi-truck rental',
+    },
+    {
+      date: '2021-09-26T15:00',
+      value: 1_000,
+      note: 'Buy Semi-truck driver license',
+    },
+    {
+      date: '2021-09-19T22:01',
+      value: -16_000,
+      note: 'Buy r4 sensor arrays for crawlers',
+    },
+    {
+      date: '2021-09-19T22:00',
+      value: -22_500,
+      note: 'Buy Reaction Enhancers',
+    },
+    {
+      date: '2021-09-19T16:00',
+      value: 25_000,
+      note: 'Session Reward',
+    },
+    {
+      date: '2021-08-28T00:04',
+      value: 18_070,
+      note: 'Session Reward',
+    },
+    {
+      date: '2021-08-28T00:02',
+      value: -445_665,
+      note: 'Starting Gear',
+    },
+    {
+      date: '2021-08-28T00:01',
+      value: 450_000,
+      note: 'Character Creation',
+    },
+  ],
 
-  if (gear.id === null) { throw new Error(`Null gear id for ${gear.name}`) }
-  if (usedIds.has(gear.id)) { throw new Error(`Duplicate gear id for ${gear.name}`) }
+  lifestyle: {
+    grade: 'middle',
+    upkeep: 5_000,
+    prepaid: 3,
+  },
 
-  Artemis.data.gear.push(gear)
-  attachedGear.forEach(item => item.attachedTo = gear.id)
-  usedIds.add(gear.id)
+  attributes: {
+    [CharacterAttr.body]: 2,
+    [CharacterAttr.agility]: 3,
+    [CharacterAttr.reaction]: 3,
+    [CharacterAttr.strength]: 1,
+    [CharacterAttr.willpower]: 2,
+    [CharacterAttr.logic]: 7,
+    [CharacterAttr.intuition]: 5,
+    [CharacterAttr.charisma]: 4,
+    [CharacterAttr.edge]: 4,
+    [CharacterAttr.magic]: 0,
+    [CharacterAttr.resonance]: 0,
+    [CharacterAttr.essence]: 6,
+  },
 
-  return gear
+  contacts: [
+    {
+      name: 'James Serif',
+      connection: 2,
+      loyalty: 2,
+      description: 'Drone Parts Dealer',
+    },
+    {
+      name: 'Frank',
+      connection: 2,
+      loyalty: 2,
+      description: 'Matrix Developer',
+    },
+    {
+      name: 'George Crabtree',
+      connection: 2,
+      loyalty: 2,
+      description: 'Lone Star officer',
+    },
+  ],
+
+  skills: [
+    {
+      type: SkillType.active,
+      name: ActiveSkill.electronics,
+      rank: 3,
+      attr: 'logic',
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.firearms,
+      rank: 3,
+      attr: 'agility',
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.piloting,
+      rank: 6,
+      attr: 'reaction',
+      speciality: 'Ground Craft',
+    },
+    {
+      type: SkillType.active,
+      name: ActiveSkill.engineering,
+      rank: 7,
+      attr: 'logic',
+      altAttr: 'intuition',
+    },
+    {
+      type: SkillType.language,
+      name: 'English',
+      rank: 'native',
+    },
+    {
+      type: SkillType.language,
+      name: 'Elven',
+      rank: 'speciality',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Drone Models',
+    },
+    {
+      type: SkillType.knowledge,
+      name: '80/90s Pop Culture',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Trideo Series',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Security Systems',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Virtual Nightclubs',
+    },
+    {
+      type: SkillType.knowledge,
+      name: 'Tech Companies',
+    },
+  ],
+
+  gear: [],
+
+  qualities: [
+    {
+      name: 'Exceptional (Logic)',
+      source: { book: 'CRB', page: 2 },
+      cost: 12,
+    },
+    {
+      name: 'Social Stress (Large Groups)',
+      source: { book: 'CRB', page: 2 },
+      bonus: 8,
+    },
+    {
+      name: 'Juryrigger',
+      source: { book: 'CRB', page: 2 },
+      cost: 12,
+    },
+    {
+      name: 'Photographic Memory',
+      source: { book: 'CRB', page: 2 },
+      cost: 12,
+    },
+    {
+      name: 'Analytical Mind',
+      source: { book: 'CRB', page: 2 },
+      gameEffect: 'Bonus edge when making Logic tests',
+      cost: 3,
+    },
+    {
+      name: 'Ambidextrous',
+      source: { book: 'CRB', page: 2 },
+      cost: 4,
+    },
+  ],
 }
 
 const smartGunIntMod: WeaponModData = {
@@ -376,7 +330,7 @@ const smartGunIntMod: WeaponModData = {
   },
 }
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: '37f9da35-c67f-46fd-9e79-3929db823816',
   gearType: GearType.augment,
   name: 'Control Rig',
@@ -394,7 +348,7 @@ addGear<AugmentData>({
   augmentType: AugmentType.controlRig,
 })
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: 'd89aafe6-111f-4e60-9fe2-fe5c1c3f94b8',
   gearType: GearType.augment,
   name: 'Cerebral Booster',
@@ -414,7 +368,7 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: 'de13c340-89b3-4bc9-b6f4-29288cff00bc',
   gearType: GearType.augment,
   name: 'Sleep Regulator',
@@ -437,7 +391,7 @@ addGear<AugmentData>({
   },
 })
 
-addGear<WeaponData>({
+addGear<WeaponData>(Artemis, {
   id: 'e7f70f35-8d96-43be-8b19-fc9d8718ed95',
   source: { book: 'CRB', page: 254 },
   gearType: GearType.weapon,
@@ -456,7 +410,7 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.submachineGuns,
 }, [
-  addGear<WeaponModData>({
+  {
     id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -465,8 +419,8 @@ addGear<WeaponData>({
 
     slot: null,
     removable: false,
-  }),
-  addGear<WeaponModData>({
+  },
+  {
     id: '02fbb521-e039-4c06-9aaf-cead333e3885',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -474,8 +428,8 @@ addGear<WeaponData>({
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  }),
-  addGear<WeaponModData>({
+  },
+  {
     id: '21d66c66-4615-49d6-b330-e4c25eea631a',
     source: { book: 'CRB', page: 254 },
     gearType: GearType.weaponMod,
@@ -483,11 +437,14 @@ addGear<WeaponData>({
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
-  }),
-  addGear({ ...smartGunIntMod, id: '429f440e-ffc3-459d-b08f-b013af1648dc' }),
+  },
+  {
+    ...smartGunIntMod,
+    id: '429f440e-ffc3-459d-b08f-b013af1648dc',
+  },
 ])
 
-addGear<WeaponData>({
+addGear<WeaponData>(Artemis, {
   id: 'ae2baf27-bd6f-43e2-8198-a19e37231b7d',
   source: { book: 'CRB', page: 252 },
   gearType: GearType.weapon,
@@ -511,11 +468,14 @@ addGear<WeaponData>({
   skill: ActiveSkill.firearms,
   specialtyName: FirearmSpecialties.lightPistols,
 }, [
-  addGear({ ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
+  {
+    ...smartGunIntMod,
+    id: '7c94f42b-e770-472f-85d8-992cde7e2606',
+  },
 ])
 
 const autosofts: AutosoftData[] = [
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: 'de5e973c-134d-427e-9a3a-205422341b7b',
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
@@ -529,7 +489,7 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Sensor',
     },
   }),
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: 'a0af5540-37c7-44ca-af2a-03cb21efd83a',
     gearType: GearType.autosoft,
     name: 'Clearsight',
@@ -543,7 +503,7 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Sensor',
     },
   }),
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: '3a459c98-5354-4fa1-a230-dfe77b199ffa',
     gearType: GearType.autosoft,
     name: 'Evasion',
@@ -557,7 +517,7 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Pilot',
     },
   }),
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: '78a5f82e-636f-468a-85e3-5af73304b7c0',
     gearType: GearType.autosoft,
     name: 'Maneuvering',
@@ -571,7 +531,7 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Pilot',
     },
   }),
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: 'a5b8c866-38cb-40a2-a136-d3feb39ea68d',
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
@@ -585,7 +545,7 @@ const autosofts: AutosoftData[] = [
       [AutosoftAttr.attr]: 'Sensor',
     },
   }),
-  addGear<AutosoftData>({
+  addGear<AutosoftData>(Artemis, {
     id: '0b3dae26-a9d1-4752-a298-db024d13476b',
     gearType: GearType.autosoft,
     name: 'Black Knight Targeting',
@@ -601,7 +561,7 @@ const autosofts: AutosoftData[] = [
   }),
 ]
 
-const rccHeadwear = addGear<AugmentData>({
+const rccHeadwear = addGear<AugmentData>(Artemis, {
   id: '1f8b016d-a36f-45b6-8099-7527e2986093',
   gearType: GearType.augment,
   name: 'RCC Headwear',
@@ -618,7 +578,7 @@ const rccHeadwear = addGear<AugmentData>({
   },
 })
 
-const rcc = addGear<RccData>({
+const rcc = addGear<RccData>(Artemis, {
   id: 'bb6e3208-418d-41b8-85c3-447e6328aa5bs',
   gearType: GearType.rcc,
   name: 'Proteus Poseidon',
@@ -728,7 +688,7 @@ const sensorArray: VehicleModData = {
   ],
 }
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   id: '4a5eb8d5-004b-4cdd-bce5-e0db64a33639',
   gearType: GearType.vehicle,
   name: 'Range Rover Model 2080',
@@ -751,7 +711,10 @@ addGear<VehicleData>({
   slavedTo: rcc.id,
   pilotingSpeciality: 'Ground Craft',
 }, [
-  addGear({ ...riggerInterface, id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3' }),
+  {
+    ...riggerInterface,
+    id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3',
+  },
 ])
 
 const rotoDrone: VehicleData = {
@@ -801,28 +764,27 @@ const oniDrone: VehicleData = {
   pilotingSpeciality: 'Ground Craft',
 }
 
-
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...rotoDrone,
   id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
   name: 'MCT-Nissan Roto-drone 1',
 }, [
-  addGear({ ...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d' }, [
-    addGear({ ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' }),
+  addGear(Artemis, { ...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d' }, [
+    { ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' },
   ]),
-  addGear({ ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' }),
+  { ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' },
   // addGear(sensorArray),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...rotoDrone,
   id: '17fe3632-c927-4def-91eb-7376ea1cdd3f',
   name: 'MCT-Nissan Roto-drone 2',
 }, [
-  addGear({ ...stdWeaponMount, id: '7a1c1485-0f2f-4434-b216-3379c0b47e83' }, [
-    addGear({ ...fnHar, id: 'c068d8c7-de94-41d6-91c1-45c55fa58a93' }),
+  addGear(Artemis, { ...stdWeaponMount, id: '7a1c1485-0f2f-4434-b216-3379c0b47e83' }, [
+    addGear(Artemis, { ...fnHar, id: 'c068d8c7-de94-41d6-91c1-45c55fa58a93' }),
   ]),
-  addGear({ ...riggerInterface, id: '0dfe8000-84db-430b-8cd6-7684b18ac5da' }),
+  addGear(Artemis, { ...riggerInterface, id: '0dfe8000-84db-430b-8cd6-7684b18ac5da' }),
   // addGear(sensorArray),
 ])
 
@@ -850,67 +812,67 @@ const crawlerDrone: VehicleData = {
   pilotingSpeciality: 'Ground Craft',
 }
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: '2d42aac6-71a2-4154-a00b-ba9ba681a3af',
   name: 'Aztech Crawler 1',
   destroyed: true,
 }, [
-  addGear({ ...heavyWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
-    addGear({ ...blackKnight, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
+  addGear(Artemis, { ...heavyWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
+    addGear(Artemis, { ...blackKnight, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
   ]),
-  addGear({ ...riggerInterface, id: '428e551d-516e-4450-a9b1-e2b775ea4a20' }),
-  addGear({ ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
+  addGear(Artemis, { ...riggerInterface, id: '428e551d-516e-4450-a9b1-e2b775ea4a20' }),
+  addGear(Artemis, { ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
 ])
 
-addGear({ ...stdWeaponMount, id: '35c6817f-afee-4f5a-b36d-f50bc4bfa3e9' }, [
-  addGear({ ...fnHar, id: '4ab1cbc7-dfe6-483f-a13a-4e4826072d1c' }),
+addGear(Artemis, { ...stdWeaponMount, id: '35c6817f-afee-4f5a-b36d-f50bc4bfa3e9' }, [
+  addGear(Artemis, { ...fnHar, id: '4ab1cbc7-dfe6-483f-a13a-4e4826072d1c' }),
 ])
 
-addGear({ ...stdWeaponMount, id: '0fa50968-3166-41f8-823c-9aa750d61897' }, [
-  addGear({ ...fnHar, id: 'ceb08542-ee69-4d0b-a532-64948ea79554' }),
+addGear(Artemis, { ...stdWeaponMount, id: '0fa50968-3166-41f8-823c-9aa750d61897' }, [
+  addGear(Artemis, { ...fnHar, id: 'ceb08542-ee69-4d0b-a532-64948ea79554' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: 'a969b8fa-2e3a-49d3-acb9-e6e2a877a1ae',
   name: 'Aztech Crawler 2',
   destroyed: true,
 }, [
-  addGear({ ...heavyWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
-    addGear({ ...blackKnight, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
+  addGear(Artemis, { ...heavyWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
+    addGear(Artemis, { ...blackKnight, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
   ]),
-  addGear({ ...riggerInterface, id: '7753605b-6ffb-4295-bc8b-93859021c8a9' }),
-  addGear({ ...sensorArray, id: 'd952c534-d98c-4b24-a3d1-3f367835ec76' }),
+  addGear(Artemis, { ...riggerInterface, id: '7753605b-6ffb-4295-bc8b-93859021c8a9' }),
+  addGear(Artemis, { ...sensorArray, id: 'd952c534-d98c-4b24-a3d1-3f367835ec76' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: '573791c8-e686-4411-927a-052452d8dcba',
   name: 'Aztech Crawler 3',
   destroyed: true,
 }, [
-  addGear({ ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
-    addGear({ ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
+  addGear(Artemis, { ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
+    addGear(Artemis, { ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
   ]),
-  addGear({ ...riggerInterface, id: 'cee46222-8727-40f3-9788-c08dd29369ae' }),
-  addGear({ ...sensorArray, id: '40ef5411-038c-4b97-abfd-a70d8dcd2b3b' }),
+  addGear(Artemis, { ...riggerInterface, id: 'cee46222-8727-40f3-9788-c08dd29369ae' }),
+  addGear(Artemis, { ...sensorArray, id: '40ef5411-038c-4b97-abfd-a70d8dcd2b3b' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: 'b02313b9-c024-4c5b-a661-9e23fbc6e816',
   name: 'Aztech Crawler 4',
 
 }, [
-  addGear({ ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
-    addGear({ ...fnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071' }),
+  addGear(Artemis, { ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
+    addGear(Artemis, { ...fnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071' }),
   ]),
-  addGear({ ...riggerInterface, id: '2801f808-849f-4226-bbb6-6db12fe6ddb9' }),
-  addGear({ ...sensorArray, id: '11805cad-896c-4cba-ba18-e81eeff71dae' }),
+  addGear(Artemis, { ...riggerInterface, id: '2801f808-849f-4226-bbb6-6db12fe6ddb9' }),
+  addGear(Artemis, { ...sensorArray, id: '11805cad-896c-4cba-ba18-e81eeff71dae' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   id: '9159eaaa-f444-4f54-ac01-db6b65464764',
   gearType: GearType.vehicle,
   type: 'Small Rotor Drone',
@@ -933,10 +895,10 @@ addGear<VehicleData>({
   slavedTo: rcc.id,
   pilotingSpeciality: 'Aircraft',
 }, [
-  addGear({ ...riggerInterface, id: 'f1118f16-1105-428f-ba17-67d90e00377a' }),
+  addGear(Artemis, { ...riggerInterface, id: 'f1118f16-1105-428f-ba17-67d90e00377a' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   id: 'fbbbd8b6-7e5a-46c4-ad0c-5b8c7cadb1f3',
   gearType: GearType.vehicle,
   type: 'Micro Rotor Drone',
@@ -960,10 +922,10 @@ addGear<VehicleData>({
   slavedTo: rcc.id,
   pilotingSpeciality: 'Aircraft',
 }, [
-  addGear({ ...riggerInterface, id: 'b4ba0a55-150b-47b4-b391-cc1da213d48a' }),
+  addGear(Artemis, { ...riggerInterface, id: 'b4ba0a55-150b-47b4-b391-cc1da213d48a' }),
 ])
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: 'f086ff48-0a38-40d9-9d62-0cd0a9d2e148',
   name: 'Aztech Crawler',
@@ -971,7 +933,7 @@ addGear<VehicleData>({
   slavedTo: null,
 })
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...rotoDrone,
   id: '2be9530b-621f-4f50-9188-722d3843f1c4',
   name: 'MCT-Nissan Roto-drone',
@@ -979,15 +941,15 @@ addGear<VehicleData>({
   slavedTo: null,
 })
 
-addGear<VehicleData>({
+addGear<VehicleData>(Artemis, {
   ...oniDrone,
-  id: '2be9530b-621f-4f50-9188-722d3843f1c4',
+  id: '449a5812-9a81-409a-ba25-4e400e2281b1',
   name: 'Nissan Oni',
   quantity: 4,
   slavedTo: null,
 })
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: '62c928a2-2a1e-4195-83ee-c760b6f93e1b',
   gearType: GearType.augment,
   name: 'Cybereyes',
@@ -1004,7 +966,7 @@ addGear<AugmentData>({
     [AugmentAttr.slot]: AugmentSlot.eyeware,
   },
 }, [
-  addGear<AugmentData>({
+  addGear<AugmentData>(Artemis, {
     id: 'a19ea646-4212-49a2-908c-1da5f3ab498f',
     gearType: GearType.augment,
     name: 'Smartlink',
@@ -1020,7 +982,7 @@ addGear<AugmentData>({
       [AugmentAttr.capacityCost]: 3,
     },
   }),
-  addGear<AugmentData>({
+  addGear<AugmentData>(Artemis, {
     id: '31e7ddd1-dca5-4f99-a67d-2fecadcf2853',
     gearType: GearType.augment,
     name: 'Imagelink',
@@ -1036,7 +998,7 @@ addGear<AugmentData>({
       [AugmentAttr.capacityCost]: 0,
     },
   }),
-  addGear<AugmentData>({
+  addGear<AugmentData>(Artemis, {
     id: '1660efc9-98d5-4ed1-b2da-651e7ea578c5',
     gearType: GearType.augment,
     name: 'Low-Light Vision',
@@ -1052,7 +1014,7 @@ addGear<AugmentData>({
       [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
   }),
-  addGear<AugmentData>({
+  addGear<AugmentData>(Artemis, {
     id: '31189433-ba37-4186-a453-6e236d915caa',
     gearType: GearType.augment,
     name: 'Vision Enhancement',
@@ -1068,7 +1030,7 @@ addGear<AugmentData>({
       [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
   }),
-  addGear<AugmentData>({
+  addGear<AugmentData>(Artemis, {
     id: '1b6cdf25-9374-4a09-b2a1-76ed1a9be01b',
     gearType: GearType.augment,
     name: 'Vision Magnification',
@@ -1086,7 +1048,7 @@ addGear<AugmentData>({
   }),
 ])
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: '89192a52-adf6-41d1-8978-0f0787185b5a',
   gearType: GearType.augment,
   name: 'Commlink',
@@ -1101,7 +1063,7 @@ addGear<AugmentData>({
     [AugmentAttr.slot]: AugmentSlot.headware,
   },
 }, [
-  addGear({
+  addGear(Artemis, {
     id: '8c2e404d-5678-4dad-8cdd-dcda26e9d866',
     gearType: GearType.other,
     name: 'Hermes Ikon',
@@ -1118,7 +1080,7 @@ addGear<AugmentData>({
   }),
 ])
 
-addGear<AugmentData>({
+addGear<AugmentData>(Artemis, {
   id: '3803d92f-1869-41b0-975a-dbdd929af4d7',
   gearType: GearType.augment,
   name: 'Reaction Enhancers',
@@ -1139,7 +1101,7 @@ addGear<AugmentData>({
   ],
 })
 
-addGear<SinData>({
+addGear<SinData>(Artemis, {
   id: '110a3b00-ac94-4698-a60c-7cf34d829bcb',
   gearType: GearType.sin,
   name: 'Davina Hasselhoff',
@@ -1155,7 +1117,7 @@ addGear<SinData>({
   },
 })
 
-addGear<SinData>({
+addGear<SinData>(Artemis, {
   id: '25a3030a-4850-4f68-914f-95276c893352',
   gearType: GearType.sin,
   name: 'Sara McCabe',
@@ -1170,7 +1132,7 @@ addGear<SinData>({
     [SinAttr.rating]: 4,
   },
 }, [
-  addGear<LicenseData>({
+  addGear<LicenseData>(Artemis, {
     id: 'eae7b822-7dee-4734-8e7b-1c1ebd7aa46d',
     gearType: GearType.license,
     name: 'Driver License (Semi-Truck)',
@@ -1185,7 +1147,7 @@ addGear<SinData>({
   }),
 ])
 
-addGear<SinData>({
+addGear<SinData>(Artemis, {
   id: '50f91ebf-e206-4843-be29-ac1bcb3a45ba',
   gearType: GearType.sin,
   name: 'Jane Smith',
@@ -1201,7 +1163,7 @@ addGear<SinData>({
   },
 })
 
-addGear({
+addGear(Artemis, {
   id: 'f2b9526c-5db1-4076-81c0-c0bf52280e8a',
   gearType: GearType.other,
   name: 'Engineering Shop',
