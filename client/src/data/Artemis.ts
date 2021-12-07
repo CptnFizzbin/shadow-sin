@@ -17,6 +17,7 @@ import { AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
+import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
@@ -327,6 +328,9 @@ const smartGunIntMod: WeaponModData = {
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
+    effects: [
+      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
+    ],
   },
 }
 

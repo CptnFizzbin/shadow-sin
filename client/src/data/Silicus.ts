@@ -18,6 +18,7 @@ import { OtherGearAttr } from '../Gear/OtherGearData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { ModType } from '../Gear/Vehicles/VehicleModData'
+import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
@@ -304,7 +305,7 @@ const smartGunIntMod: WeaponModData = {
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
     effects: [
-      { type: EffectType.dicePoolBonus, poolType: 'weapon.all', bonus: 1 },
+      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
     ],
   },
 }
@@ -606,7 +607,7 @@ addGear<AugmentData>(Silicus, {
   enabled: true,
   effects: [
     { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
-    { type: EffectType.initBonus, dice: 3 },
+    { type: EffectType.initBonus, bonus: 3 },
   ],
 })
 
@@ -681,7 +682,7 @@ addGear<AugmentData>(Silicus, {
   `),
 
   effects: [
-    { type: EffectType.dicePoolBonus, poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
+    { type: EffectType.dicePoolBonus, name: 'Bone Density', poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
     // Melee damage: 3P
     // Melee Atk. Rating: +2
   ],

@@ -7,7 +7,7 @@ import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { collectGearEffects, isSkillBonus } from '../System/Effect'
+import { collectEffects, isSkillBonus } from '../System/Effect'
 import { ActiveSkillData, isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
 import { ActiveSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { Character } from './Character'
@@ -81,7 +81,7 @@ export function useActiveSkill (skillId: ActiveSkill): ActiveSkillData | undefin
 
   if (!skill) return undefined
 
-  const rank = collectGearEffects(gear)
+  const rank = collectEffects(gear)
     .filter(isSkillBonus)
     .filter(effect => effect.skill === skillId)
     .reduce((sum, effect) => sum + effect.bonus, skill.rank)

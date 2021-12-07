@@ -2,10 +2,13 @@ import { Box, Paper } from '@mui/material'
 import { FC } from 'react'
 
 import { useSkills } from '../Character/CharacterProvider'
+import { GearData } from '../Gear/GearData'
+import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
+import { collectEffects, isDicePoolBonus } from '../System/Effect'
 import { ActiveSkillData, hasExpertise, hasSpecialty } from '../System/Skill/ActiveSkill/ActiveSkillData'
 
 export interface DiceGroup {
@@ -45,6 +48,16 @@ export const skillSpecialtyBonus = (
     return { name: 'Expertise', size: 3 }
 
   return null
+}
+
+export const collectEffectBonuses = (
+  gear: GearData[],
+  poolKey: string,
+) => {
+  return collectEffects(gear)
+    .filter(isDicePoolBonus)
+    .filter(effect => effect.poolType === poolKey)
+    .map(effect => ({ name: effect.name, size: effect.bonus }) as DiceGroup)
 }
 
 type DicePoolProps = {

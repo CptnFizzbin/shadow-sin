@@ -10,6 +10,7 @@ import { GearType } from '../Gear/GearData'
 import { OtherGearAttr } from '../Gear/OtherGearData'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../Gear/Vehicles/VehicleData'
+import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
 import { EffectType } from '../System/Effect'
@@ -53,9 +54,9 @@ export const Spike: CharacterData = {
 
   attributes: {
     [CharacterAttr.body]: 5,
-    [CharacterAttr.agility]: 11,
-    [CharacterAttr.reaction]: 7,
-    [CharacterAttr.strength]: 4,
+    [CharacterAttr.agility]: 8,
+    [CharacterAttr.reaction]: 5,
+    [CharacterAttr.strength]: 1,
     [CharacterAttr.willpower]: 5,
     [CharacterAttr.logic]: 1,
     [CharacterAttr.intuition]: 5,
@@ -137,15 +138,12 @@ export const Spike: CharacterData = {
     {
       name: 'Low Light Vision',
       source: { book: 'CRB', page: 72 },
-      gameEffect: `
-        You can see clearly in any light level that is not total darkness.
-      `,
-      cost: 0,
+      gameEffect: 'You can see clearly in any light level that is not total darkness.',
     },
     {
       name: 'Exceptional (Agility)',
       source: { book: 'CRB', page: 71 },
-      gameEffect: 'Your maximum for Agility is 9',
+      gameEffect: 'Your maximum for Agility is 8',
       cost: 12,
     },
     {
@@ -205,10 +203,10 @@ addGear(Spike, {
     [ArmorAttr.capacity]: 4,
   },
   description: `
-          Available in all manner of styles, it offers good protection without 
-          catching too much attention. But don’t think of wearing one to a 
-          social event or government building.
-        `,
+    Available in all manner of styles, it offers good protection without 
+    catching too much attention. But don’t think of wearing one to a 
+    social event or government building.
+  `,
   wirelessBonus: {
     enabled: true,
     description: 'Raises defense rating by 2 thanks to improved hiding ability',
@@ -247,6 +245,9 @@ const smartGunIntMod: WeaponModData = {
       'You gain a +1 dice pool bonus. Gain a bonus Minor Action on a turn when ' +
       'you use the Reload Smartgun or Change Device Mode actions to eject a ' +
       'clip or change fire mode.',
+    effects: [
+      { type: EffectType.dicePoolBonus, name: 'Smart Gun', poolType: WeaponPoolKeys.basicAttack, bonus: 1 },
+    ],
   },
 }
 
@@ -409,10 +410,21 @@ addGear<AugmentData>(Spike, {
   cost: 60_000,
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 4,
-    [AugmentAttr.essenceCost]: 3.08,
+    [AugmentAttr.rating]: 3,
+    [AugmentAttr.essenceCost]: 2.31,
     [AugmentAttr.slot]: AugmentSlot.bioware,
   },
+  description: `
+    Vat-grown synthetic muscles replace or augment your own, and calcium 
+    treatments and skeletal reinforcement contribute to your overall strength. 
+    It increases both your Strength and Agility attributes by its rating. It
+    cannot be combined with other augmentations to the muscles, including muscle
+    augmentation or muscle toner bioware
+  `,
+  effects: [
+    { type: EffectType.attrBonus, attr: CharacterAttr.strength, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.agility, bonus: 3 },
+  ],
 })
 
 addGear<AugmentData>(Spike, {
@@ -429,6 +441,23 @@ addGear<AugmentData>(Spike, {
     [AugmentAttr.essenceCost]: 2.0,
     [AugmentAttr.slot]: AugmentSlot.bodyware,
   },
+  enabled: true,
+  description: `
+    This highly invasive, painful, life-changing operation adds a multitude of 
+    neural boosters and adrenaline stimulators in strategic locations throughout 
+    your body to catapult you into a whole new world where everything around you 
+    seems to move in slow motion. The system includes both manual and wireless 
+    triggers to turn the wired reflexes on and off; activating or deactivating 
+    the trigger manually requires a Major Action, while doing so wirelessly is a
+    Minor Action. When activated, each rating point of wired reflexes gives you
+    +1 Reaction (with accompanying bonus to your Initiative Score) and 1 
+    additional Initiative Die (with accompanying Minor Action). Wired reflexes 
+    are incompatible with augmentations that affect Reaction or Initiative
+  `,
+  effects: [
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 2 },
+    { type: EffectType.initBonus, bonus: 2 },
+  ],
   wirelessBonus: {
     enabled: true,
     description: `
@@ -452,6 +481,13 @@ addGear<AugmentData>(Spike, {
     [AugmentAttr.essenceCost]: 0.125,
     [AugmentAttr.slot]: AugmentSlot.bioware,
   },
+  description: `
+    A web of biofibers in the skin provides the equivalent of personal armor 
+    while being virtually indistinguishable from natural skin. Orthoskin 
+    provides a bonus equal to its rating to your Defense Rating. Orthoskin 
+    cannot be combined with skin augmentations, including dermal plating.
+    
+  `,
   effects: [
     { type: EffectType.defRatingBonus, bonus: 1 },
   ],
@@ -472,11 +508,12 @@ addGear<AugmentData>(Spike, {
     [AugmentAttr.slot]: AugmentSlot.bioware,
   },
   description: `
-    Add the rating of the symbiotes as a dice pool modifier on healing tests
-    (physical and stun). The symbiotes have unusual dietary requirements to keep
-    them alive. You need to pay rating x 200¥ per month for special food. If
-    you have high lifestyle or better, it's covered. If they are not fed, they 
-    die in a month.
+    Tailored micro-organisms in your bloodstream greatly enhance your healing. 
+    Add the rating of the symbiotes as a dice pool modifier on healing tests 
+    (Physical and Stun). However, the symbiotes have unusual dietary 
+    requirements that must be met to keep them alive. You need to pay (Rating x 
+    200) nuyen per month for special symbiote food, although if you have a High 
+    Lifestyle or better, it’s covered. If they are not fed, they die in a month.
   `,
 })
 

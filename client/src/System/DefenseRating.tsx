@@ -5,11 +5,11 @@ import { useAllGear } from '../Gear/GearContext'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
-import { collectGearEffects, isDefRatingBonus } from './Effect'
+import { collectEffects, isDefRatingBonus } from './Effect'
 
 export const CharacterDefRatingStat: FC = () => {
   const body = useAttribute<number>(CharacterAttr.body) || 0
-  const bonus = collectGearEffects(useAllGear())
+  const bonus = collectEffects(useAllGear())
     .filter(isDefRatingBonus)
     .reduce((sum, effect) => sum + effect.bonus, 0)
 

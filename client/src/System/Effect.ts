@@ -1,5 +1,5 @@
-import {GearData} from '../Gear/GearData'
-import {ActiveSkill} from './Skill/ActiveSkill/ActiveSkillId'
+import { GearData } from '../Gear/GearData'
+import { ActiveSkill } from './Skill/ActiveSkill/ActiveSkillId'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
@@ -22,7 +22,7 @@ interface AttrBonus extends BaseEffect {
   bonus: number
 }
 
-export function isAttrBonus(effect: BaseEffect): effect is AttrBonus {
+export function isAttrBonus (effect: BaseEffect): effect is AttrBonus {
   return effect.type === EffectType.attrBonus
 }
 
@@ -32,16 +32,16 @@ interface AttrOverride extends BaseEffect {
   value: number
 }
 
-export function isAttrOverride(effect: BaseEffect): effect is AttrOverride {
+export function isAttrOverride (effect: BaseEffect): effect is AttrOverride {
   return effect.type === EffectType.attrOverride
 }
 
 interface InitBonus extends BaseEffect {
   type: EffectType.initBonus
-  dice: number
+  bonus: number
 }
 
-export function isInitBonus(effect: BaseEffect): effect is InitBonus {
+export function isInitBonus (effect: BaseEffect): effect is InitBonus {
   return effect.type === EffectType.initBonus
 }
 
@@ -51,17 +51,18 @@ interface SkillBonus extends BaseEffect {
   bonus: number
 }
 
-export function isSkillBonus(effect: BaseEffect): effect is SkillBonus {
+export function isSkillBonus (effect: BaseEffect): effect is SkillBonus {
   return effect.type === EffectType.skillBonus
 }
 
 interface DicePoolBonus extends BaseEffect {
   type: EffectType.dicePoolBonus
+  name: string
   poolType: string
   bonus: number
 }
 
-export function isDicePoolBonus(effect: BaseEffect): effect is DicePoolBonus {
+export function isDicePoolBonus (effect: BaseEffect): effect is DicePoolBonus {
   return effect.type === EffectType.dicePoolBonus
 }
 
@@ -70,7 +71,7 @@ interface DefRatingBonus extends BaseEffect {
   bonus: number
 }
 
-export function isDefRatingBonus(effect: BaseEffect): effect is DefRatingBonus {
+export function isDefRatingBonus (effect: BaseEffect): effect is DefRatingBonus {
   return effect.type === EffectType.defRatingBonus
 }
 
@@ -80,7 +81,7 @@ interface ConditionTrackBonus extends BaseEffect {
   bonus: number
 }
 
-export function isConditionTrackBonus(effect: BaseEffect): effect is ConditionTrackBonus {
+export function isConditionTrackBonus (effect: BaseEffect): effect is ConditionTrackBonus {
   return effect.type === EffectType.conditionTrackBonus
 }
 
@@ -89,7 +90,7 @@ interface WoundPenaltyReduction extends BaseEffect {
   value: number | 'all'
 }
 
-export function isWoundReduction(effect: BaseEffect): effect is WoundPenaltyReduction {
+export function isWoundReduction (effect: BaseEffect): effect is WoundPenaltyReduction {
   return effect.type === EffectType.conditionTrackBonus
 }
 
@@ -103,8 +104,15 @@ export type Effect =
   | ConditionTrackBonus
   | WoundPenaltyReduction
 
-export const collectGearEffects = (gear: GearData[]): Effect[] => {
-  return gear
+export const collectEffects = (gear: GearData[]): Effect[] => {
+  const basicEffects = gear
     .filter(gear => gear.effects)
     .flatMap(gear => gear.effects as Effect[])
+
+  const wirelessEffects = gear
+    .filter(gear => gear.wirelessBonus?.enabled)
+    .filter(gear => gear.wirelessBonus?.effects)
+    .flatMap(gear => gear.wirelessBonus?.effects as Effect[])
+
+  return [...basicEffects, ...wirelessEffects]
 }

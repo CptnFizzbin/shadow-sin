@@ -41,8 +41,19 @@ export function useFilterGear<T extends GearData = GearData> (filter: GearFilter
   return useAllGear().filter(filter).map(gear => gear as T)
 }
 
-export function useAttachedGear (gearId: RecordId): GearData[] {
-  return useFilterGear(gear => gear.attachedTo === gearId)
+export function useNestedGear (gearId: RecordId): GearData[] {
+  return collectNestedGear(gearId, useAllGear())
+}
+
+function collectNestedGear (parentId: RecordId, allGear: GearData[]) {
+  const children = allGear.filter(gear => gear.attachedTo === parentId)
+  let gear = [...children]
+
+  children.forEach(child => {
+    gear = [...gear, ...collectNestedGear(child.id, allGear)]
+  })
+
+  return gear
 }
 
 export function useGearOfType<T extends GearData> (gearType: GearType): T[] {

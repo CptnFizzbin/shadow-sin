@@ -19,7 +19,7 @@ export function loadCharacters (): SavedCharacters {
     const characters: Character[] = [Artemis, Silicus, Xendris, Spike]
       .map(data => ({
         name: data.bio.alias || data.bio.name,
-        id: nextRecordId(),
+        id: data.bio.alias || data.bio.name,
         userId: 'affbd8b8-8c41-4e82-86b6-85d184a71318',
         updatedAt: new Date().toISOString(),
         createdAt: new Date().toISOString(),

@@ -8,7 +8,7 @@ import { useAttribute } from '../../System/AttributeProvider'
 import { DamageTrack } from '../../System/Damage/DamageTrack'
 import { DamageType } from '../../System/Damage/DamageType'
 import { CharacterDefRatingStat } from '../../System/DefenseRating'
-import { collectGearEffects, Effect, isConditionTrackBonus, isInitBonus } from '../../System/Effect'
+import { collectEffects, Effect, isConditionTrackBonus, isInitBonus } from '../../System/Effect'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { StatBlock } from '../../UI/StatBlock'
 import { CharacterAttr } from '../CharacterAttr'
@@ -39,9 +39,9 @@ export const CombatArea: FC = () => {
     .reduce((sum, effect) => sum + effect.bonus, 0)
   const stunMax = Math.ceil(willpower / 2) + 8 + stunTrackBonus
 
-  const initDice = collectGearEffects(gear)
+  const initDice = collectEffects(gear)
     .filter(isInitBonus)
-    .reduce((sum, effect) => sum + effect.dice, 1)
+    .reduce((sum, effect) => sum + effect.bonus, 1)
 
   return (
     <Stack

@@ -11,7 +11,7 @@ import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
 import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { Stat } from '../UI/StatBlock'
 import { formatAvail } from './Availability'
-import { useAttachedGear } from './GearContext'
+import { useNestedGear } from './GearContext'
 import { GearInfoProps } from './GearInfo'
 import { GearList } from './GearList'
 
@@ -26,7 +26,7 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
     {item.source && <Stat name="Source" value={formatSource(item.source)} />}
   </Box>
 
-  const attachedGear = useAttachedGear(item.id)
+  const attachedGear = useNestedGear(item.id)
 
   const expandable = Boolean(
     item.description
