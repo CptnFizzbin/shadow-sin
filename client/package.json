@@ -41,7 +41,7 @@
     "test": "env-cmd -f ../.env react-scripts test",
     "eject": "env-cmd -f ../.env react-scripts eject",
     "lint": "env-cmd -f ../.env eslint --ext .tsx,.ts src/",
-    "deploy": "env-cmd -f ../.env yarn build && gh-pages -d build"
+    "deploy": "env-cmd -f ../.env gh-pages -d build"
   },
   "browserslist": {
     "production": [
