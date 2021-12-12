@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material'
 import { FC } from 'react'
 
 import { useAllGear } from '../../Gear/GearContext'
@@ -15,7 +14,6 @@ import { useActiveSkill } from '../CharacterProvider'
 
 export const DicePoolsSection: FC = () => {
   return <InfoSection>
-    <Typography variant={'h6'}>Dice Pools</Typography>
     <DicePools>
       <DodgePool />
       <ResistDamagePool />
