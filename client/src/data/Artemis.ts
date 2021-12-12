@@ -843,14 +843,6 @@ addGear<VehicleData>(Artemis, {
   addGear(Artemis, { ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
 ])
 
-addGear(Artemis, { ...stdWeaponMount, id: '35c6817f-afee-4f5a-b36d-f50bc4bfa3e9' }, [
-  addGear(Artemis, { ...fnHar, id: '4ab1cbc7-dfe6-483f-a13a-4e4826072d1c' }),
-])
-
-addGear(Artemis, { ...stdWeaponMount, id: '0fa50968-3166-41f8-823c-9aa750d61897' }, [
-  addGear(Artemis, { ...fnHar, id: 'ceb08542-ee69-4d0b-a532-64948ea79554' }),
-])
-
 addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
   id: 'a969b8fa-2e3a-49d3-acb9-e6e2a877a1ae',
