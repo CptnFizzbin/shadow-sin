@@ -7,10 +7,10 @@ import { DamageType } from '../../System/Damage/DamageType'
 import { VehicleDefRatingStat } from '../../System/DefenseRating'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
+import { DicePools } from '../../UI/DicePool'
 import { StatBlock } from '../../UI/StatBlock'
 import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
-import { GearDicePools } from '../GearDicePools'
 import { GearInfoProps } from '../GearInfo'
 import { GearInfoBlock } from '../GearInfoBlock'
 import { RccData } from '../Rcc/RccData'
@@ -74,12 +74,12 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
             </Stack>
 
             <Box sx={{ flexGrow: 1 }}>
-              <GearDicePools>
+              <DicePools>
                 <VehicleResistDmg vehicle={vehicle} />
                 <DriverPiloting vehicle={vehicle} />
                 <AutosoftPiloting vehicle={vehicle} />
                 <RiggedPiloting vehicle={vehicle} />
-              </GearDicePools>
+              </DicePools>
 
               {rcc && (
                 <Box>

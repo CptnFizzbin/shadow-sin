@@ -2,7 +2,6 @@ import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC } from 'react'
 
-import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { GearAvailCost } from './GearAvailCost'
 import { GearData } from './GearData'
 
@@ -16,7 +15,7 @@ export const GearHeader: FC<GearHeaderProps> = ({
   type,
 }) => {
   return (
-    <InfoSection>
+    <Box>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h5" sx={{ display: 'inline-block', color: 'primary.main' }}>{item.name}</Typography>
@@ -39,6 +38,6 @@ export const GearHeader: FC<GearHeaderProps> = ({
           </Box>
         )}
       </Box>
-    </InfoSection>
+    </Box>
   )
 }

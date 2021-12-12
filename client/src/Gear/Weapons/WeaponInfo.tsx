@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
+import { DicePools } from '../../UI/DicePool'
 import { useGear } from '../GearContext'
 import { GearType } from '../GearData'
-import { GearDicePools } from '../GearDicePools'
 import { GearInfoProps } from '../GearInfo'
 import { GearInfoBlock } from '../GearInfoBlock'
 import { BasicAttackPool, DroneAttackPool, RiggedAttackPool, VehicleAttackPool } from './DicePools'
@@ -13,7 +13,7 @@ export const WeaponInfo: FC<GearInfoProps<WeaponData>> = ({ item: weapon }) => {
 
   return (
     <GearInfoBlock item={weapon}>
-      <GearDicePools>
+      <DicePools>
         {mounted ? (
           <>
             <VehicleAttackPool weapon={weapon} />
@@ -25,7 +25,7 @@ export const WeaponInfo: FC<GearInfoProps<WeaponData>> = ({ item: weapon }) => {
             <BasicAttackPool weapon={weapon} />
           </>
         )}
-      </GearDicePools>
+      </DicePools>
     </GearInfoBlock>
   )
 }

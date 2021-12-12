@@ -2,7 +2,6 @@ import { Chip, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC } from 'react'
 
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { useAttachedGear, useFilterGear } from '../GearContext'
 import { GearType } from '../GearData'
 import { GearInfoProps } from '../GearInfo'
