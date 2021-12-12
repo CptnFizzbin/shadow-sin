@@ -22,7 +22,7 @@ import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillName , SkillType , Specializations } from '../Skills'
+import { ActiveSkillName, SkillType, Specializations } from '../Skills'
 import { EffectType } from '../System/Effect'
 
 import { addGear } from './index'
@@ -892,11 +892,15 @@ addGear(Silicus, {
 addGear<ArmorData>(Silicus, {
   id: '9e95c3e8-216f-4576-95ee-0fc33ef2c3df',
   gearType: GearType.armor,
-  name: 'Armor Jacket',
+  name: 'Armored Jacket',
   type: 'Armor',
   source: { book: 'CRB', page: 265 },
   avail: { rarity: 2 },
   cost: 1_000,
+
+  effects: [
+    { type: EffectType.defRatingBonus, bonus: 4 },
+  ],
 
   attributes: {
     [ArmorAttr.defenseBonus]: 4,

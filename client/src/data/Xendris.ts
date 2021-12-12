@@ -186,6 +186,9 @@ export const Xendris: CharacterData = {
         [ArmorAttr.defenseBonus]: 4,
         [ArmorAttr.capacity]: 8,
       },
+      effects: [
+        { type: EffectType.defRatingBonus, bonus: 4 },
+      ],
       description: `
         Available in all manner of styles, it offers good protection without 
         catching too much attention. But don’t think of wearing one to a 

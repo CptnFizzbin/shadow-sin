@@ -2,6 +2,8 @@ import { AwakenedType } from '../Character/AwakenedType'
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { CharacterData } from '../Character/CharacterData'
 import { Metatype } from '../Character/Metatypes'
+import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
+import { ArmorData } from '../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
 import { GearType } from '../Gear/GearData'
@@ -21,7 +23,7 @@ import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillName, Specializations , SkillType } from '../Skills'
+import { ActiveSkillName, SkillType, Specializations } from '../Skills'
 import { EffectType } from '../System/Effect'
 
 import { addGear } from '.'
@@ -177,13 +179,13 @@ export const Artemis: CharacterData = {
 
   attributes: {
     [CharacterAttr.body]: 2,
-    [CharacterAttr.agility]: 3,
-    [CharacterAttr.reaction]: 3,
+    [CharacterAttr.agility]: 5,
+    [CharacterAttr.reaction]: 4,
     [CharacterAttr.strength]: 1,
-    [CharacterAttr.willpower]: 2,
+    [CharacterAttr.willpower]: 1,
     [CharacterAttr.logic]: 7,
     [CharacterAttr.intuition]: 5,
-    [CharacterAttr.charisma]: 4,
+    [CharacterAttr.charisma]: 2,
     [CharacterAttr.edge]: 4,
     [CharacterAttr.magic]: 0,
     [CharacterAttr.resonance]: 0,
@@ -220,12 +222,12 @@ export const Artemis: CharacterData = {
     {
       type: SkillType.active,
       name: ActiveSkillName.firearms,
-      rank: 3,
+      rank: 5,
     },
     {
       type: SkillType.active,
       name: ActiveSkillName.piloting,
-      rank: 6,
+      rank: 5,
       specialization: 'Ground Craft',
     },
     {
@@ -305,6 +307,25 @@ export const Artemis: CharacterData = {
     },
   ],
 }
+
+addGear<ArmorData>(Artemis, {
+  id: '84596cc0-754e-457e-b862-c6935f028f62',
+  gearType: GearType.armor,
+  name: 'Armored Jacket',
+  type: 'Armor',
+  source: { book: 'CRB', page: 265 },
+  avail: { rarity: 2 },
+  cost: 1_000,
+
+  effects: [
+    { type: EffectType.defRatingBonus, bonus: 4 },
+  ],
+
+  attributes: {
+    [ArmorAttr.defenseBonus]: 4,
+    [ArmorAttr.capacity]: 8,
+  },
+})
 
 const smartGunIntMod: WeaponModData = {
   id: null,
