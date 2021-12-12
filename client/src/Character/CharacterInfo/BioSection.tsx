@@ -10,22 +10,20 @@ export const BioSection: FC = () => {
   const bio = character.bio
 
   return (
-    <Box sx={{ padding: 1 }}>
-      <Paper variant="outlined" sx={{ padding: 1 }}>
-        <Stack gap={2} direction="row" sx={{ flexWrap: 'wrap' }}>
-          <BioField name="Name" value={bio.name} />
-          <BioField name="Metatype" value={bio.metatype} />
-          <BioField name="Awakened" value={bio.awakened} />
-          <BioField name="Role" value={bio.role} />
-          <BioField name="Alias" value={bio.alias} />
-          <BioField name="Ethnicity" value={bio.ethnicity} />
-          <BioField name="Age" value={bio.age} />
-          <BioField name="Gender" value={bio.gender} />
-          <BioField name="Height" value={bio.height} />
-          <BioField name="Weight" value={bio.weight} />
-        </Stack>
-      </Paper>
-    </Box>
+    <Paper variant="outlined" sx={{ padding: 1 }}>
+      <Stack gap={2} direction="row" sx={{ flexWrap: 'wrap' }}>
+        <BioField name="Alias" value={bio.alias} />
+        <BioField name="Name" value={bio.name} />
+        <BioField name="Awakened" value={bio.awakened} />
+        <BioField name="Gender" value={bio.gender} />
+        <BioField name="Metatype" value={bio.metatype} />
+        <BioField name="Age" value={bio.age} />
+        <BioField name="Role" value={bio.role} />
+        <BioField name="Ethnicity" value={bio.ethnicity} />
+        <BioField name="Height" value={bio.height} />
+        <BioField name="Weight" value={bio.weight} />
+      </Stack>
+    </Paper>
   )
 }
 

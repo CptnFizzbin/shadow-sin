@@ -10,7 +10,6 @@ import {
   KnowledgeSkillList,
   LanguageSkillList,
 } from '../../Skills'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { useActiveSkills, useCharacterData } from '../CharacterProvider'
 
 export const SkillSection: FC = () => {
@@ -21,22 +20,24 @@ export const SkillSection: FC = () => {
   const languageSkills = character.skills.filter(isLanguageSkill)
   const knowledgeSkills = character.skills.filter(isKnowledgeSkill)
 
-  return <InfoSection>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <Typography variant={'h6'}>Skills</Typography>
-      <ActiveSkillList charSkills={Object.values(charActiveSkills)} />
-    </Box>
-
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <Box sx={{ padding: 1, flexGrow: 1 }}>
-        <Typography variant={'h6'}>Languages</Typography>
-        <LanguageSkillList skills={languageSkills} />
+  return (
+    <>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Typography variant={'h6'}>Skills</Typography>
+        <ActiveSkillList charSkills={Object.values(charActiveSkills)} />
       </Box>
 
-      <Box sx={{ padding: 1, flexGrow: 1 }}>
-        <Typography variant={'h6'}>Knowledge</Typography>
-        <KnowledgeSkillList skills={knowledgeSkills} />
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant={'h6'}>Languages</Typography>
+          <LanguageSkillList skills={languageSkills} />
+        </Box>
+
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant={'h6'}>Knowledge</Typography>
+          <KnowledgeSkillList skills={knowledgeSkills} />
+        </Box>
       </Box>
-    </Box>
-  </InfoSection>
+    </>
+  )
 }

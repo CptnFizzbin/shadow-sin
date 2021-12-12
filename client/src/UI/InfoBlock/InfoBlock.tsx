@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Chip, IconButton, Paper, Typography } from '@mui/material'
+import { Box, Chip, IconButton, Paper, Stack, Typography } from '@mui/material'
 import { FC, ReactElement, useEffect, useState } from 'react'
 
 import { displayFontFamily } from '../../AppThemeProvider'
@@ -87,7 +87,7 @@ export const InfoBlock: FC<InfoBlockProps> = ({
         {titleRight}
       </Box>
 
-      {expanded && children}
+      {expanded && <Stack gap={1} sx={{ padding: 1 }}>{children}</Stack>}
     </Paper>
   )
 }

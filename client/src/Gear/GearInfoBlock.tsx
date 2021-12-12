@@ -1,3 +1,5 @@
+import { faWifi } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Paper, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import React, { FC } from 'react'
@@ -8,7 +10,6 @@ import { formatNuyen } from '../System/Nuyen'
 import { formatSource } from '../System/Source'
 import { AttributeBlock } from '../UI/AttributeBlock'
 import { InfoBlock } from '../UI/InfoBlock/InfoBlock'
-import { InfoSection } from '../UI/InfoBlock/InfoSection'
 import { Stat } from '../UI/StatBlock'
 import { formatAvail } from './Availability'
 import { useAttachedGear } from './GearContext'
@@ -48,27 +49,14 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
         expandId={item.id || null}
       >
         {item.description && (
-          <InfoSection>
-            <Typography sx={{ fontStyle: 'italic' }}>{item.description}</Typography>
-          </InfoSection>
+          <ItemDescription text={item.description} />
         )}
 
         {item.wirelessBonus && (
-          <InfoSection>
-            <Box sx={{ fontStyle: 'italic' }}>
-              <Typography variant="body2" sx={{ color: 'primary.main', display: 'inline' }}>Wireless
-                Bonus:</Typography>
-              <Typography
-                variant="body2"
-                sx={{ display: 'inline', marginLeft: 0.5 }}
-              >{item.wirelessBonus.description}</Typography>
-            </Box>
-          </InfoSection>
+          <WirelessBonus description={item.wirelessBonus.description} />
         )}
 
-        <InfoSection>
-          <AttributeBlock attributes={attributes} />
-        </InfoSection>
+        <AttributeBlock attributes={attributes} />
 
         {children}
 
@@ -79,5 +67,34 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
         )}
       </InfoBlock>
     </AttributeProvider>
+  )
+}
+
+interface ItemDescriptionProps {
+  text: string
+}
+
+export const ItemDescription: FC<ItemDescriptionProps> = ({
+  text,
+}) => {
+  return (
+    <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ flexGrow: 1 }}>{text}</Box>
+    </Typography>
+  )
+}
+
+interface WirelessBonusProps {
+  description: string
+}
+
+export const WirelessBonus: FC<WirelessBonusProps> = ({
+  description,
+}) => {
+  return (
+    <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <FontAwesomeIcon icon={faWifi} />
+      <Box sx={{ flexGrow: 1 }}>{description}</Box>
+    </Typography>
   )
 }

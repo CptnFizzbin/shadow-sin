@@ -25,23 +25,23 @@ export const RccInfo: FC<GearInfoProps<RccData>> = ({ item: rcc }) => {
 
   return (
     <GearInfoBlock item={rcc}>
-      <InfoSection>
+      <Box>
         <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {slavedAutosofts.map(autosoft => (
             <Chip key={autosoft.id} label={autosoft.name} />
           ))}
         </Box>
-      </InfoSection>
+      </Box>
 
-      <InfoSection>
+      <Box>
         <Typography variant={'h6'}>Slaved ({slavedVehicles.length} / {maxSlaved})</Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {slavedVehicles.map(vehicle => (
             <Chip key={vehicle.id} label={vehicle.name} />
           ))}
         </Box>
-      </InfoSection>
+      </Box>
     </GearInfoBlock>
   )
 }

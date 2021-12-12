@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 import { DamageProvider } from '../../System/Damage/DamageProvider'
@@ -7,7 +7,6 @@ import { DamageType } from '../../System/Damage/DamageType'
 import { VehicleDefRatingStat } from '../../System/DefenseRating'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { AttributeBlock } from '../../UI/AttributeBlock'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { StatBlock } from '../../UI/StatBlock'
 import { useGear, useGearOfType } from '../GearContext'
 import { GearType } from '../GearData'
@@ -58,26 +57,21 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
     <DamageProvider type={DamageType.vehiclePhysical} id={vehicle.id}>
       <AutosoftProvider autosofts={autosofts}>
         <GearInfoBlock item={vehicle}>
-          <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column', flexWrap: 'wrap' }}>
-            <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1 }}>
-              <Box>
-                <Typography variant={'h6'}>Combat</Typography>
-                <StatBlock vertical>
-                  <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
-                  {riggerInterface && (
-                    <>
-                      <CharacterHotVrInit />
-                      <CharacterColdVrInit />
-                    </>
-                  )}
-                  <VehicleDefRatingStat />
-                </StatBlock>
-              </Box>
+          <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'} sx={{ flexWrap: 'wrap' }}>
+            <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'} sx={{ flexWrap: 'wrap' }}>
+              <StatBlock vertical>
+                <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
+                {riggerInterface && (
+                  <>
+                    <CharacterHotVrInit />
+                    <CharacterColdVrInit />
+                  </>
+                )}
+                <VehicleDefRatingStat />
+              </StatBlock>
 
-              <Box>
-                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
-              </Box>
-            </Box>
+              <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
+            </Stack>
 
             <Box sx={{ flexGrow: 1 }}>
               <GearDicePools>
@@ -88,19 +82,19 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
               </GearDicePools>
 
               {rcc && (
-                <InfoSection>
+                <Box>
                   <Typography variant={'h6'}>Slaved To</Typography>
                   <Typography>{rcc.name}</Typography>
                   <AttributeBlock attributes={rcc.attributes} />
-                </InfoSection>
+                </Box>
               )}
 
-              <InfoSection>
+              <Box>
                 <Typography variant={'h6'}>Autosofts</Typography>
                 <AutosoftsList autosofts={autosofts} slavedIds={rcc?.slavedAutosofts} />
-              </InfoSection>
+              </Box>
             </Box>
-          </Box>
+          </Stack>
         </GearInfoBlock>
       </AutosoftProvider>
     </DamageProvider>

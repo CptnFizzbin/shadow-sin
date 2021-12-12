@@ -7,13 +7,12 @@ import { OtherGearData } from '../../Gear/OtherGearData'
 import { ActiveSkillName } from '../../Skills'
 import { DamageType } from '../../System/Damage/DamageType'
 import { DiceGroup, DicePool, DicePools, skillSpecialtyBonus } from '../../UI/DicePool'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { CharacterAttr } from '../CharacterAttr'
 import { CharacterPoolTypes } from '../CharacterPoolTypes'
 import { useActiveSkill } from '../CharacterProvider'
 
 export const DicePoolsSection: FC = () => {
-  return <InfoSection>
+  return (
     <DicePools>
       <DodgePool />
       <ResistDamagePool />
@@ -24,7 +23,7 @@ export const DicePoolsSection: FC = () => {
       <FirstAidPool />
       <MedkitPool />
     </DicePools>
-  </InfoSection>
+  )
 }
 
 const DodgePool: FC = () => <DicePool

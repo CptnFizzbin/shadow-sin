@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { FC } from 'react'
 
 import { ContactList } from '../../Contacts/ContactList'
@@ -7,7 +7,6 @@ import { GearList } from '../../Gear/GearList'
 import { isSin } from '../../Gear/License/SinData'
 import { formatNuyen, useNuyenBalance } from '../../System/Nuyen'
 import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { Stat } from '../../UI/StatBlock'
 import { useCharacterData } from '../CharacterProvider'
 import { AttributesSection } from './AttributesSection'
@@ -36,7 +35,7 @@ export const CharacterInfo: FC = () => {
   </Box>
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Stack direction="column" gap={1}>
       <InfoBlock
         title={bio.alias || bio.name}
         titleFontSize={50}
@@ -45,28 +44,24 @@ export const CharacterInfo: FC = () => {
         <BioSection />
         <AttributesSection />
 
-        <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column' }}>
+        <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'}>
           <CombatArea />
 
-          <Box sx={{ flexGrow: 1 }}>
+          <Stack gap={1} sx={{ flexGrow: 1 }}>
             <EdgeTracker />
 
             <DicePoolsSection />
             <SkillSection />
             <QualitiesSection />
 
-            <InfoSection>
-              <Typography variant={'h4'}>Contacts</Typography>
-              <ContactList contacts={character.contacts} />
-            </InfoSection>
+            <Typography variant={'h4'}>Contacts</Typography>
+            <ContactList contacts={character.contacts} />
 
-            <InfoSection>
-              <Typography variant={'h4'}>SINs</Typography>
-              <GearList gear={sins} />
-            </InfoSection>
-          </Box>
-        </Box>
+            <Typography variant={'h4'}>SINs</Typography>
+            <GearList gear={sins} />
+          </Stack>
+        </Stack>
       </InfoBlock>
-    </Box>
+    </Stack>
   )
 }

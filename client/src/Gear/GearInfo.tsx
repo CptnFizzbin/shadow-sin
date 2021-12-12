@@ -11,7 +11,7 @@ import { Stat } from '../UI/StatBlock'
 import { formatAvail } from './Availability'
 import { useAttachedGear } from './GearContext'
 import { GearData, GearType } from './GearData'
-import { GearInfoBlock } from './GearInfoBlock'
+import { GearInfoBlock, WirelessBonus } from './GearInfoBlock'
 import { GearList } from './GearList'
 import { LicenseData } from './License/LicenseData'
 import { LicenseInfo } from './License/LicenseInfo'
@@ -76,11 +76,7 @@ export const SimpleGearInfo: FC<GearInfoProps> = ({ item }) => {
             <div><Typography variant="caption">{item.description}</Typography></div>
           )}
           {item.wirelessBonus?.description && (
-            <div>
-              <Typography variant="caption">
-                <FontAwesomeIcon icon={faWifi} /> {item.wirelessBonus.description}
-              </Typography>
-            </div>
+            <WirelessBonus description={item.wirelessBonus.description} />
           )}
         </>
       }

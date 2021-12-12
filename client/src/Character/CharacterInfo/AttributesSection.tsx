@@ -2,7 +2,6 @@ import { FC } from 'react'
 
 import { useAttributes } from '../../System/AttributeProvider'
 import { AttributeBlock } from '../../UI/AttributeBlock'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { CharacterAttr } from '../CharacterAttr'
 
 export const AttributesSection: FC = () => {
@@ -27,7 +26,5 @@ export const AttributesSection: FC = () => {
   const resonance = charAttributes[CharacterAttr.resonance]
   if (!resonance) delete charAttributes[CharacterAttr.resonance]
 
-  return <InfoSection>
-    <AttributeBlock attributes={charAttributes} />
-  </InfoSection>
+  return <AttributeBlock attributes={charAttributes} />
 }

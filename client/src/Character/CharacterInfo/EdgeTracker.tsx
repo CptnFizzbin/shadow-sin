@@ -3,7 +3,6 @@ import Box from '@mui/material/Box'
 import { FC, useState } from 'react'
 
 import { useAttribute } from '../../System/AttributeProvider'
-import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { TrackCell } from '../../UI/TrackCell'
 import { CharacterAttr } from '../CharacterAttr'
 
@@ -31,11 +30,12 @@ export const EdgeTracker: FC = () => {
   }
 
   return (
-    <InfoSection>
+    <Box>
       <Box>
         <Typography variant="h6" sx={{ display: 'inline', marginRight: 1 }}>Edge</Typography>
         <Chip onClick={onReset} label="Reset" size="small" variant="outlined" sx={{ verticalAlign: 'text-bottom' }} />
       </Box>
+
       <Box sx={{ display: 'flex', textAlign: 'center', gap: 0.5 }}>
         <Box sx={{ flexGrow: 0.5 }}>
           <TrackCell onClick={() => setEdge(0)}>0</TrackCell>
@@ -48,6 +48,6 @@ export const EdgeTracker: FC = () => {
           </Box>
         ))}
       </Box>
-    </InfoSection>
+    </Box>
   )
 }

@@ -1,6 +1,7 @@
 import { Box, Paper, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
 
+import { DamageType } from '../System/Damage/DamageType'
 import { DicePool } from '../UI/DicePool'
 import { activeSkills } from './ActiveSkill'
 import { CharacterActiveSkill } from './CharacterActiveSkill'
@@ -43,6 +44,7 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
             poolKey={`activeSkill.${activeSkill.name}.${activeSkill.attr}`}
             attrs={[activeSkill.attr]}
             skills={[activeSkill.name]}
+            dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
           />
 
           {activeSkill.altAttr && (
@@ -51,6 +53,7 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
               poolKey={`activeSkill.${activeSkill.name}.${activeSkill.altAttr}`}
               attrs={[activeSkill.altAttr]}
               skills={[activeSkill.name]}
+              dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
             />
           )}
         </Stack>

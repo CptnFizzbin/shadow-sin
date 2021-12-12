@@ -1,4 +1,4 @@
-import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Stack, useMediaQuery, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import { FC } from 'react'
 
@@ -46,14 +46,12 @@ export const CombatArea: FC = () => {
   return (
     <Stack
       gap={1}
-      padding={1}
       direction={mdScreenOrLarger ? 'column' : 'row'}
       alignContent="flex-start"
       justifyContent={mdScreenOrLarger ? 'flex-start' : 'space-between'}
       sx={{ flexWrap: 'wrap' }}
     >
       <Box>
-        <Typography variant={'h6'}>Combat</Typography>
         <StatBlock vertical>
           <InitiativeStat name="Init" base={reaction + intuition} dice={initDice} />
           <CharacterHotVrInit />

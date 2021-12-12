@@ -5,7 +5,7 @@ export const InfoSection: FC = ({
   children,
 }) => {
   return (
-    <Box sx={{ padding: 1 }}>{children}</Box>
+    <Box>{children}</Box>
   )
 }
 
