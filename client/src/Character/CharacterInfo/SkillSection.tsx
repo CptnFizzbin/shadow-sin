@@ -23,10 +23,8 @@ export const SkillSection: FC = () => {
 
   return <InfoSection>
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <Box sx={{ padding: 1, flexGrow: 1 }}>
-        <Typography variant={'h6'}>Trained Skills</Typography>
-        <ActiveSkillList charSkills={Object.values(charActiveSkills)} />
-      </Box>
+      <Typography variant={'h6'}>Skills</Typography>
+      <ActiveSkillList charSkills={Object.values(charActiveSkills)} />
     </Box>
 
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>

@@ -26,38 +26,32 @@ import { WeaponInfo } from './Weapons/WeaponInfo'
 
 export interface GearInfoProps<Type extends GearData = GearData> {
   item: Type
-  expanded?: boolean
   title?: ReactElement
   subTitle?: ReactElement
 }
 
-export const GearInfo: FC<GearInfoProps> = ({
-  item,
-  expanded,
-}) => {
+export const GearInfo: FC<GearInfoProps> = ({ item }) => {
   switch (item.gearType) {
     case GearType.weapon:
-      return <WeaponInfo item={item as WeaponData} expanded={expanded} />
+      return <WeaponInfo item={item as WeaponData} />
     case GearType.vehicle:
-      return <VehicleInfo item={item as VehicleData} expanded={expanded} />
+      return <VehicleInfo item={item as VehicleData} />
     case GearType.rcc:
-      return <RccInfo item={item as RccData} expanded={expanded} />
+      return <RccInfo item={item as RccData} />
     case GearType.sin:
-      return <SinInfo item={item as SinData} expanded={expanded} />
+      return <SinInfo item={item as SinData} />
     case GearType.license:
-      return <LicenseInfo item={item as LicenseData} expanded={expanded} />
+      return <LicenseInfo item={item as LicenseData} />
     case GearType.weaponMod:
     case GearType.armorMod:
     case GearType.vehicleMod:
-      return <SimpleGearInfo item={item} expanded={expanded} />
+      return <SimpleGearInfo item={item} />
     default:
-      return <GearInfoBlock item={item} expanded={expanded} />
+      return <GearInfoBlock item={item} />
   }
 }
 
-export const SimpleGearInfo: FC<GearInfoProps> = ({
-  item,
-}) => {
+export const SimpleGearInfo: FC<GearInfoProps> = ({ item }) => {
   const attachedGear = useAttachedGear(item.id)
 
   return (

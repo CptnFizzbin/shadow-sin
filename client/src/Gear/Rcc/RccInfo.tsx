@@ -12,10 +12,7 @@ import { VehicleData } from '../Vehicles/VehicleData'
 import { RccAttr } from './RccAttr'
 import { RccData } from './RccData'
 
-export const RccInfo: FC<GearInfoProps<RccData>> = ({
-  item: rcc,
-  expanded,
-}) => {
+export const RccInfo: FC<GearInfoProps<RccData>> = ({ item: rcc }) => {
   const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
   const autosofts = useAttachedGear(rcc.id)
     .filter(gear => gear.gearType === GearType.autosoft)
@@ -27,7 +24,7 @@ export const RccInfo: FC<GearInfoProps<RccData>> = ({
   const maxSlaved = rcc.attributes[RccAttr.deviceRating] * 3
 
   return (
-    <GearInfoBlock item={rcc} expanded={expanded}>
+    <GearInfoBlock item={rcc}>
       <InfoSection>
         <Typography variant={'h6'}>Autosofts ({rcc.slavedAutosofts.length}/{dataProcessing} shared)</Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

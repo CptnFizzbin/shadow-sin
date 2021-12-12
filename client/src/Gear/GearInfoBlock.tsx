@@ -17,7 +17,6 @@ import { GearList } from './GearList'
 
 export const GearInfoBlock: FC<GearInfoProps> = ({
   item,
-  expanded,
   children,
 }) => {
   const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
@@ -46,7 +45,7 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
         subtitle={item.type}
         titleRight={blockTitleRight}
         expandable={expandable}
-        expanded={expanded}
+        expandId={item.id || null}
       >
         {item.description && (
           <InfoSection>

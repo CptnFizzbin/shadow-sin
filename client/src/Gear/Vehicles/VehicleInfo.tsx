@@ -24,10 +24,7 @@ import { VehicleAttr } from './VehicleAttr'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
 
-export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
-  item: vehicle,
-  expanded,
-}) => {
+export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) => {
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -42,7 +39,7 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
   const allAutosofts = useGearOfType<AutosoftData>(GearType.autosoft)
 
   if (vehicle.destroyed) {
-    return <DestroyedVehicleInfo item={vehicle} expanded={expanded} />
+    return <DestroyedVehicleInfo item={vehicle} />
   }
 
   let autosofts = allAutosofts
@@ -60,7 +57,7 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({
   return (
     <DamageProvider type={DamageType.vehiclePhysical} id={vehicle.id}>
       <AutosoftProvider autosofts={autosofts}>
-        <GearInfoBlock item={vehicle} expanded={expanded}>
+        <GearInfoBlock item={vehicle}>
           <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column', flexWrap: 'wrap' }}>
             <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'column' : 'row', padding: 1, gap: 1 }}>
               <Box>

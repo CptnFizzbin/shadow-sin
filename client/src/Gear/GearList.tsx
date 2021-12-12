@@ -15,7 +15,7 @@ export const GearList: FC<GearListProps> = ({
 }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-      {gear.map((gear) => <GearInfo key={gear.id} item={gear} expanded={expanded} />)}
+      {gear.map((gear) => <GearInfo key={gear.id} item={gear} />)}
     </Box>
   )
 }

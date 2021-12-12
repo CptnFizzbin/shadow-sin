@@ -8,14 +8,11 @@ import { GearInfoBlock } from '../GearInfoBlock'
 import { BasicAttackPool, DroneAttackPool, RiggedAttackPool, VehicleAttackPool } from './DicePools'
 import { WeaponData } from './WeaponData'
 
-export const WeaponInfo: FC<GearInfoProps<WeaponData>> = ({
-  expanded,
-  item: weapon,
-}) => {
+export const WeaponInfo: FC<GearInfoProps<WeaponData>> = ({ item: weapon }) => {
   const mounted = useGear(weapon.attachedTo)?.gearType === GearType.vehicleMod
 
   return (
-    <GearInfoBlock item={weapon} expanded={expanded}>
+    <GearInfoBlock item={weapon}>
       <GearDicePools>
         {mounted ? (
           <>

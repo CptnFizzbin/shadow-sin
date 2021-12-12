@@ -3,18 +3,37 @@ import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Chip, IconButton, Paper, Typography } from '@mui/material'
-import { FC, ReactElement, useState } from 'react'
+import { FC, ReactElement, useEffect, useState } from 'react'
 
 import { displayFontFamily } from '../../AppThemeProvider'
 
 library.add(faCaretSquareDown, faCaretSquareRight)
+
+function useExpanded (expandId: string | null): [boolean, (set: boolean) => void] {
+  const [expanded, _setExpanded] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (expandId === null) return
+    const saved = sessionStorage.getItem(`expanded.${expandId}`) || 'true'
+    _setExpanded(saved === 'true')
+  }, [expandId])
+
+  function setExpanded (value: boolean): void {
+    if (expandId === null) return
+    sessionStorage.setItem(`expanded.${expandId}`, value.toString())
+    _setExpanded(value)
+  }
+
+  return [expanded, setExpanded]
+
+}
 
 interface InfoBlockProps {
   title: string | ReactElement
   titleFontSize?: number
   subtitle?: string
   titleRight?: ReactElement
-  expanded?: boolean
+  expandId?: string | null
   expandable?: boolean
   quantity?: number
 }
@@ -26,10 +45,10 @@ export const InfoBlock: FC<InfoBlockProps> = ({
   subtitle,
   titleRight,
   children,
-  expanded: defaultExpanded = true,
+  expandId = null,
   expandable,
 }) => {
-  const [expanded, setExpanded] = useState<boolean>(defaultExpanded)
+  const [expanded, setExpanded] = useExpanded(expandId)
 
   return (
     <Paper elevation={1}>
