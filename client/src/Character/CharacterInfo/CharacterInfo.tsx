@@ -11,6 +11,7 @@ import { InfoSection } from '../../UI/InfoBlock/InfoSection'
 import { Stat } from '../../UI/StatBlock'
 import { useCharacterData } from '../CharacterProvider'
 import { AttributesSection } from './AttributesSection'
+import { BioSection } from './BioSection'
 import { CombatArea } from './CombatArea'
 import { DicePoolsSection } from './DicePoolsSection'
 import { EdgeTracker } from './EdgeTracker'
@@ -37,11 +38,12 @@ export const CharacterInfo: FC = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       <InfoBlock
-        title={bio.alias || bio.name} subtitle={bio.metatype} titleFontSize={50}
+        title={bio.alias || bio.name}
+        titleFontSize={50}
         titleRight={blockTitleRight}
       >
+        <BioSection />
         <AttributesSection />
-
 
         <Box sx={{ display: 'flex', flexDirection: mdScreenOrLarger ? 'row-reverse' : 'column' }}>
           <CombatArea />

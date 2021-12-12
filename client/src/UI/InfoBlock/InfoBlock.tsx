@@ -31,7 +31,7 @@ function useExpanded (expandId: string | null): [boolean, (set: boolean) => void
 interface InfoBlockProps {
   title: string | ReactElement
   titleFontSize?: number
-  subtitle?: string
+  subtitle?: string | ReactElement
   titleRight?: ReactElement
   expandId?: string | null
   expandable?: boolean

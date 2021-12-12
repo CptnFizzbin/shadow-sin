@@ -34,10 +34,12 @@ export const Artemis: CharacterData = {
   bio: {
     name: 'Jessica Nelson',
     alias: 'Artemis',
-    role: 'rigger',
-    gender: 'female',
+    role: 'Rigger',
+    gender: 'Female',
     metatype: Metatype.Elf,
     awakened: AwakenedType.Mundane,
+    age: '26',
+    height: '190cm',
   },
 
   karma: [
