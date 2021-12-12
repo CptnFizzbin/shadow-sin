@@ -2,22 +2,22 @@ import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useActiveSkill, useCharacterData } from '../../Character/CharacterProvider'
+import { ActiveSkillName } from '../../Skills'
 import { SpellBlock } from '../../Spells/SpellBlock'
 import {
-  ConjurationSpellcastingPool,
+  ConjuringSpellcastingPool,
   EnchantingSpellcastingPool,
   ResistDrain,
   SorcerySpellcastingPool,
 } from '../../Spells/SpellDicePools'
-import { ActiveSkill } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DicePools } from '../../UI/DicePool'
 
 export const SpellsPage: FC = () => {
   const character = useCharacterData()
 
-  const sorcery = useActiveSkill(ActiveSkill.sorcery)
-  const conjuration = useActiveSkill(ActiveSkill.conjuration)
-  const enchanting = useActiveSkill(ActiveSkill.enchanting)
+  const sorcery = useActiveSkill(ActiveSkillName.sorcery)
+  const conjuring = useActiveSkill(ActiveSkillName.conjuring)
+  const enchanting = useActiveSkill(ActiveSkillName.enchanting)
 
   if (!character) return null
   const spells = character.spells || []
@@ -28,7 +28,7 @@ export const SpellsPage: FC = () => {
 
       <DicePools>
         {sorcery && <SorcerySpellcastingPool />}
-        {conjuration && <ConjurationSpellcastingPool />}
+        {conjuring && <ConjuringSpellcastingPool />}
         {enchanting && <EnchantingSpellcastingPool />}
         <ResistDrain />
       </DicePools>

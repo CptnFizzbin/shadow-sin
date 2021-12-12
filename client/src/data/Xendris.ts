@@ -6,11 +6,10 @@ import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
 import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
 import { GearType } from '../Gear/GearData'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
+import { ActiveSkillName, SkillType, Specializations } from '../Skills'
 import { SpellCategory } from '../Spells/SpellCategory'
 import { SpellType } from '../Spells/SpellType'
 import { EffectType } from '../System/Effect'
-import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../System/Skill/SkillData'
 
 export const Xendris: CharacterData = {
   dataVersion: 3,
@@ -113,22 +112,19 @@ export const Xendris: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkill.closeCombat,
+      name: ActiveSkillName.closeCombat,
       rank: 7,
-      attr: CharacterAttr.agility,
-      speciality: 'Blades',
+      specialization: Specializations.CloseCombat.Blades,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.sorcery,
+      name: ActiveSkillName.sorcery,
       rank: 6,
-      attr: CharacterAttr.logic,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.firearms,
+      name: ActiveSkillName.firearms,
       rank: 6,
-      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.language,
@@ -224,8 +220,8 @@ export const Xendris: CharacterData = {
         [WeaponAttr.attackRatings]: '10/10/8/-/-',
         [WeaponAttr.ammo]: '15(c)',
       },
-      skill: ActiveSkill.firearms,
-      specialtyName: FirearmSpecialties.heavyPistols,
+      skill: ActiveSkillName.firearms,
+      specialtyName: Specializations.Firearms.HeavyPistols,
     },
     {
       id: 'c6b2b887-c31c-4ba4-8fa2-fe6e3b5b1f19',
@@ -239,8 +235,8 @@ export const Xendris: CharacterData = {
         [WeaponAttr.dv]: '4P',
         [WeaponAttr.attackRatings]: '10/-/-/-/-',
       },
-      skill: ActiveSkill.closeCombat,
-      specialtyName: 'Blades',
+      skill: ActiveSkillName.closeCombat,
+      specialtyName: Specializations.CloseCombat.Blades,
     },
   ],
 

@@ -13,27 +13,37 @@ import {
 } from '@mui/material'
 import { FC, useState } from 'react'
 
-import { noOp } from '../../../Helpers'
-import { ActiveSkillData } from '../../../System/Skill/ActiveSkill/ActiveSkillData'
-import { ActiveSkill } from '../../../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../../../System/Skill/SkillData'
+import { ActiveSkill, ActiveSkillName, activeSkills, CharacterActiveSkill, SkillType } from '../../../Skills'
 import { Incrementor } from '../../../UI/Incrementor'
 
 export const SkillsSection: FC = () => {
-  const [skills, setSkills] = useState<ActiveSkillData[]>([])
+  const [charSkills, setCharSkills] = useState<Record<string, CharacterActiveSkill>>({})
 
-  const availableSkills: ActiveSkill[] = Object.values(ActiveSkill)
-    .filter(skillId => !skills.map(skill => skill.name).includes(skillId))
+  const availableSkills: ActiveSkill[] = Object.values(activeSkills)
+    .filter(skill => !Object.keys(charSkills).includes(skill.name))
 
-  const onAddSkill = (skillId: ActiveSkill) => {
-    setSkills([
-      ...skills, {
-        type: SkillType.active, name: skillId, rank: 0, attr: '',
-      }])
+  const onAddSkill = (skill: ActiveSkillName) => {
+    setCharSkills({
+      ...charSkills,
+      [skill]: {
+        type: SkillType.active,
+        name: skill,
+        rank: 0,
+      },
+    })
   }
 
-  const onRemoveSkill = (skillId: ActiveSkill) => {
-    setSkills(skills.filter(skill => skill.name !== skillId))
+  const onRemoveSkill = (skill: ActiveSkillName) => {
+    const skills = { ...charSkills }
+    delete skills[skill]
+    setCharSkills(skills)
+  }
+
+  const onChangeSkill = (skill: CharacterActiveSkill) => {
+    setCharSkills({
+      ...charSkills,
+      [skill.name]: skill,
+    })
   }
 
   return (
@@ -44,16 +54,17 @@ export const SkillsSection: FC = () => {
             <TableCell variant="head" align="center" />
             <TableCell variant="head" align="center" width={'33%'}>Skill</TableCell>
             <TableCell variant="head" align="center" width={'33%'}>Rank</TableCell>
-            <TableCell variant="head" align="center" width={'33%'}>Specialty</TableCell>
+            <TableCell variant="head" align="center" width={'33%'}>Specialization</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {skills.map(skill => (
+          {Object.values(charSkills).map(charSkill => (
             <SkillsTableRow
-              key={skill.name}
-              skill={skill}
-              onRemove={onRemoveSkill}
+              key={charSkill.name}
+              charSkill={charSkill}
+              onRemove={(skill) => onRemoveSkill(skill.name)}
+              onChange={(skill) => onChangeSkill(skill)}
             />
           ))}
 
@@ -68,10 +79,10 @@ export const SkillsSection: FC = () => {
                 select
                 fullWidth
                 value={''}
-                onChange={event => onAddSkill(event.target.value as ActiveSkill)}
+                onChange={event => onAddSkill(event.target.value as ActiveSkillName)}
               >
-                {availableSkills.map(skillName => (
-                  <MenuItem key={skillName} value={skillName}>{skillName}</MenuItem>
+                {availableSkills.map(skill => (
+                  <MenuItem key={skill.name} value={skill.name}>{skill.name}</MenuItem>
                 ))}
               </TextField>
             </TableCell>
@@ -85,30 +96,44 @@ export const SkillsSection: FC = () => {
 }
 
 interface SkillsTableRowProps {
-  skill: ActiveSkillData
+  charSkill: CharacterActiveSkill
 
-  onRemove (skillId: ActiveSkill): void
+  onChange (charSkill: CharacterActiveSkill): void
+
+  onRemove (charSkill: CharacterActiveSkill): void
 }
 
 const SkillsTableRow: FC<SkillsTableRowProps> = ({
-  skill,
+  charSkill,
+  onChange,
   onRemove,
 }) => {
+  const activeSkill = activeSkills[charSkill.name]
+
   return (
     <TableRow>
       <TableCell>
-        <IconButton onClick={() => onRemove(skill.name)}>
+        <IconButton onClick={() => onRemove(charSkill)}>
           <RemoveCircle />
         </IconButton>
       </TableCell>
       <TableCell>
-        {skill.name}
+        {activeSkill.name}
       </TableCell>
       <TableCell>
-        <Incrementor value={0} onChange={noOp} />
+        <Incrementor
+          value={charSkill.rank}
+          onChange={(rank) => onChange({ ...charSkill, rank })}
+        />
       </TableCell>
       <TableCell>
-        <TextField variant={'standard'} />
+        <TextField
+          variant={'standard'}
+          value={charSkill.specialization}
+          onChange={(event) =>
+            onChange({ ...charSkill, specialization: event.target.value })
+          }
+        />
       </TableCell>
     </TableRow>
   )

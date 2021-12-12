@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Paper } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useSkills } from '../Character/CharacterProvider'
+import { useActiveSkills } from '../Character/CharacterProvider'
 import { GearData } from '../Gear/GearData'
+import { ActiveSkillName, CharacterActiveSkill, hasExpertise, hasSpecialty } from '../Skills'
 import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { collectEffects, isDicePoolBonus } from '../System/Effect'
-import { ActiveSkillData, hasExpertise, hasSpecialty } from '../System/Skill/ActiveSkill/ActiveSkillData'
 
 export interface DiceGroup {
   name: string
@@ -30,14 +30,14 @@ export const DicePools: FC = ({
 export interface DicePoolData {
   name: string
   poolKey?: string
-  skills?: string[]
+  skills?: ActiveSkillName[]
   attrs?: string[]
   bonuses?: DiceGroup[]
   dmgPenaltyTypes?: DamageType[]
 }
 
 export const skillSpecialtyBonus = (
-  skill: ActiveSkillData | undefined,
+  skill: CharacterActiveSkill | undefined,
   specialtyName: string | undefined,
 ): DiceGroup | null => {
   if (!skill || !specialtyName)
@@ -76,14 +76,14 @@ export const DicePool: FC<DicePoolProps> = ({
   groups = [],
   dmgPenaltyTypes = [],
 }) => {
-  const skillList = useSkills(skills)
+  const skillList = useActiveSkills(skills)
   const attrList = useAttributes(attrs)
   const dmgPenalty = useDamagePenalty(dmgPenaltyTypes)
 
   groups = [
     ...groups,
-    ...Object.entries(skillList)
-      .map(([name, rank]) => ({ name: name, size: rank })),
+    ...Object.values(skillList)
+      .map(skill => ({ name: skill.name, size: skill.rank })),
     ...Object.entries(attrList)
       .filter(([_, value]) => typeof value === 'number')
       .map(([attrType, value]) => ({ name: formatAttr(attrType), size: value as number })),

@@ -21,9 +21,8 @@ import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
+import { ActiveSkillName, Specializations , SkillType } from '../Skills'
 import { EffectType } from '../System/Effect'
-import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../System/Skill/SkillData'
 
 import { addGear } from '.'
 
@@ -215,29 +214,24 @@ export const Artemis: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkill.electronics,
+      name: ActiveSkillName.electronics,
       rank: 3,
-      attr: CharacterAttr.logic,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.firearms,
+      name: ActiveSkillName.firearms,
       rank: 3,
-      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.piloting,
+      name: ActiveSkillName.piloting,
       rank: 6,
-      attr: CharacterAttr.reaction,
-      speciality: 'Ground Craft',
+      specialization: 'Ground Craft',
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.engineering,
+      name: ActiveSkillName.engineering,
       rank: 7,
-      attr: CharacterAttr.logic,
-      altAttr: CharacterAttr.intuition,
     },
     {
       type: SkillType.language,
@@ -417,8 +411,8 @@ addGear<WeaponData>(Artemis, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.submachineGuns,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Artemis, {
     id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
@@ -472,8 +466,8 @@ addGear<WeaponData>(Artemis, {
       'The user can alter ownership with a Minor Action',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.lightPistols,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.LightPistols,
 }, [
   addGear(Artemis, { ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
 ])
@@ -623,8 +617,8 @@ const fnHar: WeaponData = {
     [WeaponAttr.ammo]: '35(c)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.rifles,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Rifles,
 }
 
 const blackKnight: WeaponData = {
@@ -641,8 +635,8 @@ const blackKnight: WeaponData = {
     [WeaponAttr.ammo]: '10(m)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.machineGuns,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.MachineGuns,
 }
 
 const stdWeaponMount: VehicleModData = {

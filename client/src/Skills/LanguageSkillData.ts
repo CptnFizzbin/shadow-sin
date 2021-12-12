@@ -1,4 +1,4 @@
-import { BasicSkillData, SkillType } from '../SkillData'
+import { BasicSkillData, SkillType } from './SkillData'
 
 export interface LanguageSkillData extends BasicSkillData {
   type: SkillType.language

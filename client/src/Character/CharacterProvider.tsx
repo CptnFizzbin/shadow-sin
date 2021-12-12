@@ -2,14 +2,13 @@ import { createContext, FC, useContext } from 'react'
 
 import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
 import { isAugment } from '../Gear/Augments/AugmentData'
-import { GearProvider, useAllGear } from '../Gear/GearContext'
+import { GearProvider } from '../Gear/GearContext'
+import { ActiveSkillName, activeSkills, CharacterActiveSkill, isActiveSkill, SkillList, SkillType } from '../Skills'
 import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
 import { collectEffects, isSkillBonus } from '../System/Effect'
-import { ActiveSkillData, isActiveSkill, SkillList } from '../System/Skill/ActiveSkill/ActiveSkillData'
-import { ActiveSkill } from '../System/Skill/ActiveSkill/ActiveSkillId'
 import { Character } from './Character'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
@@ -56,35 +55,45 @@ export const useCharacterData = (): CharacterData | null => {
   return useCharacter()?.data || null
 }
 
-export function useSkills (skillIds?: string[]): SkillList {
+export function useActiveSkills (skills: ActiveSkillName[]): SkillList {
   const character = useCharacterData()
+  if (!character) return {}
+
   const skillList: SkillList = {}
 
-  if (character) {
-    character.skills
-      .filter(isActiveSkill)
-      .filter(skill => skillIds ? skillIds.includes(skill.name) : true)
-      .forEach(skill => skillList[skill.name] = skill.rank)
-  }
+  skills.forEach(skill => {
+    const charSkill = getActiveSkill(skill, character)
+    if (charSkill) { skillList[charSkill.name] = charSkill }
+  })
 
   return skillList
 }
 
-export function useActiveSkill (skillId: ActiveSkill): ActiveSkillData | undefined {
+export function useActiveSkill (skill: ActiveSkillName): CharacterActiveSkill | undefined {
   const character = useCharacterData()
-  const gear = useAllGear()
   if (!character) return undefined
 
-  const skill = character.skills
+  return getActiveSkill(skill, character)
+}
+
+export function getActiveSkill (skill: ActiveSkillName, character: CharacterData): CharacterActiveSkill | undefined {
+  const gear = character.gear
+  const activeSkill = activeSkills[skill]
+
+  const charSkill = character.skills
     .filter(isActiveSkill)
-    .find(skill => skill.name === skillId)
+    .find(charSkill => charSkill.name === skill)
 
-  if (!skill) return undefined
+  if (charSkill) {
+    const rank = collectEffects(gear)
+      .filter(isSkillBonus)
+      .filter(effect => effect.skill === skill)
+      .reduce((sum, effect) => sum + effect.bonus, charSkill.rank)
 
-  const rank = collectEffects(gear)
-    .filter(isSkillBonus)
-    .filter(effect => effect.skill === skillId)
-    .reduce((sum, effect) => sum + effect.bonus, skill.rank)
-
-  return { ...skill, rank }
+    return { ...charSkill, rank }
+  } else if (activeSkill.untrained) {
+    return { type: SkillType.active, name: activeSkill.name, rank: -1 }
+  } else {
+    return undefined
+  }
 }

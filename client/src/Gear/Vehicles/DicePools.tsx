@@ -2,10 +2,9 @@ import { FC } from 'react'
 
 import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
+import { ActiveSkillName, hasExpertise, hasSpecialty } from '../../Skills'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageType } from '../../System/Damage/DamageType'
-import { hasExpertise, hasSpecialty } from '../../System/Skill/ActiveSkill/ActiveSkillData'
-import { ActiveSkill } from '../../System/Skill/ActiveSkill/ActiveSkillId'
 import { DiceGroup, DicePool } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
 import { AugmentData, AugmentType } from '../Augments/AugmentData'
@@ -60,7 +59,7 @@ export const AutosoftPiloting: FC<VehiclePoolProps> = () => {
 export const DriverPiloting: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useActiveSkill(ActiveSkill.piloting)
+  const pilotingSkill = useActiveSkill(ActiveSkillName.piloting)
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
 
   const groups: DiceGroup[] = [
@@ -85,7 +84,7 @@ export const DriverPiloting: FC<VehiclePoolProps> = ({
 export const RiggedPiloting: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useActiveSkill(ActiveSkill.piloting)
+  const pilotingSkill = useActiveSkill(ActiveSkillName.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)

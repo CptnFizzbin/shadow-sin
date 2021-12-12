@@ -1,5 +1,5 @@
 import { GearData } from '../Gear/GearData'
-import { ActiveSkill } from './Skill/ActiveSkill/ActiveSkillId'
+import { ActiveSkillName } from '../Skills'
 
 export enum EffectType {
   attrBonus = 'attrBonus',
@@ -48,7 +48,7 @@ export function isInitBonus (effect: BaseEffect): effect is InitBonus {
 
 interface SkillBonus extends BaseEffect {
   type: EffectType.skillBonus
-  skill: ActiveSkill
+  skill: ActiveSkillName
   bonus: number
 }
 

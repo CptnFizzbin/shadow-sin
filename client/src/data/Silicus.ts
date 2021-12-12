@@ -22,9 +22,8 @@ import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
+import { ActiveSkillName , SkillType , Specializations } from '../Skills'
 import { EffectType } from '../System/Effect'
-import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../System/Skill/SkillData'
 
 import { addGear } from './index'
 
@@ -210,31 +209,25 @@ export const Silicus: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkill.biotech,
+      name: ActiveSkillName.biotech,
       rank: 5,
-      attr: CharacterAttr.logic,
-      altAttr: CharacterAttr.intuition,
-      expertise: 'First Aid',
+      expertise: Specializations.Biotech.FirstAid,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.firearms,
+      name: ActiveSkillName.firearms,
       rank: 6,
-      attr: CharacterAttr.agility,
-      speciality: FirearmSpecialties.submachineGuns,
+      specialization: Specializations.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.perception,
+      name: ActiveSkillName.perception,
       rank: 3,
-      attr: CharacterAttr.intuition,
-      altAttr: CharacterAttr.logic,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.closeCombat,
+      name: ActiveSkillName.closeCombat,
       rank: 5,
-      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.language,
@@ -331,8 +324,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '12(c)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.shotguns,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Shotguns,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -391,8 +384,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.submachineGuns,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Silicus, {
     id: '81ef8a86-6cdf-49fc-a01e-b059c9757fed',
@@ -459,8 +452,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(m)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.launchers,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Launchers,
 }, [
   addGear(Silicus, {
     id: '76d1fc48-02c9-41b6-ae81-87bee8ad9b9e',
@@ -475,8 +468,8 @@ addGear<WeaponData>(Silicus, {
     },
 
     removable: false,
-    skill: ActiveSkill.firearms,
-    specialtyName: FirearmSpecialties.launchers,
+    skill: ActiveSkillName.firearms,
+    specialtyName: Specializations.Firearms.Launchers,
   }),
 ])
 
@@ -496,8 +489,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(c)',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.heavyPistols,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.HeavyPistols,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -534,8 +527,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.trasers,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Tasers,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -559,7 +552,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkill.closeCombat,
+  skill: ActiveSkillName.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -578,7 +571,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.attackRatings]: '5/-/-/-/-',
   },
 
-  skill: ActiveSkill.closeCombat,
+  skill: ActiveSkillName.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -782,7 +775,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.skillBonus, skill: ActiveSkill.firearms, bonus: 1 },
+    { type: EffectType.skillBonus, skill: ActiveSkillName.firearms, bonus: 1 },
   ],
 })
 

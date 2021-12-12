@@ -13,9 +13,8 @@ import { VehicleData } from '../Gear/Vehicles/VehicleData'
 import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
 import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
+import { ActiveSkillName, SkillType, Specializations } from '../Skills'
 import { EffectType } from '../System/Effect'
-import { ActiveSkill, FirearmSpecialties } from '../System/Skill/ActiveSkill/ActiveSkillId'
-import { SkillType } from '../System/Skill/SkillData'
 import { Silicus } from './Silicus'
 
 import { addGear } from '.'
@@ -92,40 +91,34 @@ export const Spike: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkill.firearms,
+      name: ActiveSkillName.firearms,
       rank: 7,
-      attr: CharacterAttr.agility,
-      speciality: FirearmSpecialties.submachineGuns,
+      specialization: Specializations.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.stealth,
+      name: ActiveSkillName.stealth,
       rank: 3,
-      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.athletics,
+      name: ActiveSkillName.athletics,
       rank: 4,
-      attr: CharacterAttr.agility,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.piloting,
+      name: ActiveSkillName.piloting,
       rank: 1,
-      attr: CharacterAttr.reaction,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.perception,
+      name: ActiveSkillName.perception,
       rank: 4,
-      attr: CharacterAttr.intuition,
     },
     {
       type: SkillType.active,
-      name: ActiveSkill.con,
+      name: ActiveSkillName.con,
       rank: 2,
-      attr: CharacterAttr.charisma,
     },
 
     {
@@ -272,8 +265,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '8(m)',
   },
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.rifles,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Rifles,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -310,8 +303,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF/FA',
     [WeaponAttr.ammo]: '14(c)',
   },
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.rifles,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.Rifles,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -348,8 +341,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF',
     [WeaponAttr.ammo]: '32(c)',
   },
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.submachineGuns,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -387,8 +380,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '30(c)',
   },
-  skill: ActiveSkill.firearms,
-  specialtyName: FirearmSpecialties.lightPistols,
+  skill: ActiveSkillName.firearms,
+  specialtyName: Specializations.Firearms.LightPistols,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
