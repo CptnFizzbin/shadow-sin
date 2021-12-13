@@ -19,4 +19,5 @@ export enum AutosoftType {
   evasion = 'Evasion',
   maneuvering = 'Maneuvering',
   electronicWarfare = 'Electronic Warfare',
+  stealth = 'stealth',
 }

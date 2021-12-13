@@ -35,23 +35,81 @@ export const VehicleResistDmg: FC<VehiclePoolProps> = () => {
   />
 }
 
-export const AutosoftPiloting: FC<VehiclePoolProps> = () => {
+export const DroneEvasion: FC<VehiclePoolProps> = () => {
   const evasionAutosoft = useAutosoft(AutosoftType.evasion)
-  const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
-  const pilotAttr = useAttribute<number>(VehicleAttr.pilot) || 0
 
-  const piloting: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : pilotAttr
   const evasion: number = evasionAutosoft ? evasionAutosoft.attributes[AutosoftAttr.rating] : -1
 
-  const diceGroups: DiceGroup[] = [
-    { name: 'Piloting', size: piloting },
-    { name: 'Evasion', size: evasion },
-  ]
+  const diceGroups: DiceGroup[] = [{ name: 'Evasion', size: evasion }]
 
   return <DicePool
     poolKey={VehiclePoolKeys.pilotEvade}
-    name={'Autosoft Piloting'}
+    name={'Evasion'}
     groups={diceGroups}
+    attrs={[VehicleAttr.pilot]}
+    dmgPenaltyTypes={[DamageType.vehiclePhysical]}
+  />
+}
+export const DroneManeuvering: FC<VehiclePoolProps> = () => {
+  const maneuveringAutosoft = useAutosoft(AutosoftType.maneuvering)
+
+  const maneuvering: number = maneuveringAutosoft ? maneuveringAutosoft.attributes[AutosoftAttr.rating] : -1
+
+  const diceGroups: DiceGroup[] = [{ name: 'Maneuvering', size: maneuvering }]
+
+  return <DicePool
+    poolKey={VehiclePoolKeys.pilotEvade}
+    name={'Maneuvering'}
+    groups={diceGroups}
+    attrs={[VehicleAttr.pilot]}
+    dmgPenaltyTypes={[DamageType.vehiclePhysical]}
+  />
+}
+
+export const DroneStealth: FC<VehiclePoolProps> = () => {
+  const stealthAutosoft = useAutosoft(AutosoftType.stealth)
+
+  const stealth: number = stealthAutosoft ? stealthAutosoft.attributes[AutosoftAttr.rating] : -1
+
+  const diceGroups: DiceGroup[] = [{ name: 'Stealth', size: stealth }]
+
+  return <DicePool
+    poolKey={VehiclePoolKeys.pilotEvade}
+    name={'Stealth'}
+    groups={diceGroups}
+    attrs={[VehicleAttr.pilot]}
+    dmgPenaltyTypes={[DamageType.vehiclePhysical]}
+  />
+}
+
+export const DronePerception: FC<VehiclePoolProps> = () => {
+  const clearsightAutosoft = useAutosoft(AutosoftType.clearsight)
+
+  const clearsight: number = clearsightAutosoft ? clearsightAutosoft.attributes[AutosoftAttr.rating] : -1
+
+  const diceGroups: DiceGroup[] = [{ name: 'Clearsight', size: clearsight }]
+
+  return <DicePool
+    poolKey={VehiclePoolKeys.pilotEvade}
+    name={'Perception'}
+    groups={diceGroups}
+    attrs={[VehicleAttr.pilot]}
+    dmgPenaltyTypes={[DamageType.vehiclePhysical]}
+  />
+}
+
+export const DroneCracking: FC<VehiclePoolProps> = () => {
+  const warfareAutosoft = useAutosoft(AutosoftType.electronicWarfare)
+
+  const warfare: number = warfareAutosoft ? warfareAutosoft.attributes[AutosoftAttr.rating] : -1
+
+  const diceGroups: DiceGroup[] = [{ name: 'Elc. Warfare', size: warfare }]
+
+  return <DicePool
+    poolKey={VehiclePoolKeys.pilotEvade}
+    name={'Cracking'}
+    groups={diceGroups}
+    attrs={[VehicleAttr.pilot]}
     dmgPenaltyTypes={[DamageType.vehiclePhysical]}
   />
 }

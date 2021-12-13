@@ -18,7 +18,15 @@ import { AutosoftData } from '../Software/Autosoft/AutosoftData'
 import { AutosoftProvider } from '../Software/Autosoft/AutosoftProvider'
 import { AutosoftsList } from '../Software/Autosoft/AutosoftsList'
 import { DestroyedVehicleInfo } from './DestroyedVehicleInfo'
-import { AutosoftPiloting, DriverPiloting, RiggedPiloting, VehicleResistDmg } from './DicePools'
+import {
+  DriverPiloting, DroneCracking,
+  DroneEvasion,
+  DroneManeuvering,
+  DronePerception,
+  DroneStealth,
+  RiggedPiloting,
+  VehicleResistDmg,
+} from './DicePools'
 import { VehicleAttr } from './VehicleAttr'
 import { VehicleData } from './VehicleData'
 import { ModType, VehicleModData } from './VehicleModData'
@@ -57,7 +65,7 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
     <DamageProvider type={DamageType.vehiclePhysical} id={vehicle.id}>
       <AutosoftProvider autosofts={autosofts}>
         <GearInfoBlock item={vehicle}>
-          <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'} sx={{ flexWrap: 'wrap' }}>
+          <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'}>
             <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'} sx={{ flexWrap: 'wrap' }}>
               <Box>
                 <StatBlock vertical>
@@ -81,8 +89,13 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
               <DicePools>
                 <VehicleResistDmg vehicle={vehicle} />
                 <DriverPiloting vehicle={vehicle} />
-                <AutosoftPiloting vehicle={vehicle} />
                 <RiggedPiloting vehicle={vehicle} />
+
+                <DroneEvasion vehicle={vehicle} />
+                <DronePerception vehicle={vehicle} />
+                <DroneStealth vehicle={vehicle} />
+                <DroneManeuvering vehicle={vehicle} />
+                <DroneCracking vehicle={vehicle} />
               </DicePools>
 
               {rcc && (
