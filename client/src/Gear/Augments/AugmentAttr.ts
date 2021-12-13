@@ -1,4 +1,4 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum AugmentAttr {
   grade = 'augment.grade',
@@ -9,11 +9,11 @@ export enum AugmentAttr {
   capacityCost = 'augment.capacityCost',
 }
 
-registerAttrNames({
+export const AugmentAttrNames: AttrNames = {
   [AugmentAttr.grade]: 'Grade',
   [AugmentAttr.rating]: 'Rating',
   [AugmentAttr.slot]: 'Slot',
   [AugmentAttr.essenceCost]: 'Essence',
   [AugmentAttr.capacity]: 'Capacity',
   [AugmentAttr.capacityCost]: 'Capacity Cost',
-})
+}

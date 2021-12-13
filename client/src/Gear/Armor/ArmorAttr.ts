@@ -1,11 +1,11 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum ArmorAttr {
   defenseBonus = 'armor.defenseBonus',
   capacity = 'armor.capacity',
 }
 
-registerAttrNames({
+export const ArmorAttrNames: AttrNames = {
   [ArmorAttr.defenseBonus]: 'Def Rating',
   [ArmorAttr.capacity]: 'Capacity',
-})
+}

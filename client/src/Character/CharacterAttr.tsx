@@ -1,5 +1,3 @@
-import { registerAttrNames } from '../System/Attribute'
-
 export enum CharacterAttr {
   body = 'char.body',
   agility = 'char.agility',
@@ -36,7 +34,7 @@ export const specialAttrs = [
   CharacterAttr.resonance,
 ]
 
-registerAttrNames({
+export const CharacterAttrNames = {
   [CharacterAttr.body]: 'Body',
   [CharacterAttr.agility]: 'Agility',
   [CharacterAttr.reaction]: 'Reaction',
@@ -49,4 +47,4 @@ registerAttrNames({
   [CharacterAttr.essence]: 'Essence',
   [CharacterAttr.magic]: 'Magic',
   [CharacterAttr.resonance]: 'Resonance',
-})
+}

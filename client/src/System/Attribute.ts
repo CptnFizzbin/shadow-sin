@@ -1,15 +1,16 @@
+import { CharacterAttrNames } from '../Character/CharacterAttr'
+import { GearAttributes } from '../Gear/GearAttributes'
 import { GearData } from '../Gear/GearData'
-import { collectEffects, isAttrAdj, isAttrOverride } from './Effect'
+import { collectGearEffects, isAttrAdj, isAttrOverride } from './Effect'
 
 export type AttrType = string
 export type AttrValue = number | string | null | undefined
 export type AttrList<T = AttrValue> = Record<AttrType, T | undefined>
 export type AttrNames = Record<AttrType, string>
 
-let attributeNames: AttrNames = {}
-
-export const registerAttrNames = (names: AttrNames): void => {
-  attributeNames = { ...attributeNames, ...names }
+const attributeNames: AttrNames = {
+  ...CharacterAttrNames,
+  ...GearAttributes,
 }
 
 export const formatAttr = (type: string): string => {
@@ -28,7 +29,7 @@ export const calculateAttributes = (attrs: AttrList, gear: GearData[]): AttrList
 }
 
 export const calculateAttribute = (attr: string, value: number, gear: GearData[]): number => {
-  const effects = collectEffects(gear)
+  const effects = collectGearEffects(gear)
 
   const overrides = effects
     .filter(isAttrOverride)

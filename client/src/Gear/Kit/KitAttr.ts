@@ -1,9 +1,9 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum KitAttr {
   medkitRating = 'medkit.rating',
 }
 
-registerAttrNames({
+export const KitAttrNames: AttrNames = {
   [KitAttr.medkitRating]: 'Rating',
-})
+}

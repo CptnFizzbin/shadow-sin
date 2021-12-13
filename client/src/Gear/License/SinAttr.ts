@@ -1,9 +1,9 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum SinAttr {
   rating = 'sin.rating',
 }
 
-registerAttrNames({
+export const SinAttrNames: AttrNames = {
   [SinAttr.rating]: 'Rating',
-})
+}

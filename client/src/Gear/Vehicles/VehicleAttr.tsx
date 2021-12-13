@@ -1,4 +1,4 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum VehicleAttr {
   handling = 'vehicle.handling',
@@ -12,7 +12,7 @@ export enum VehicleAttr {
   seat = 'vehicle.seat',
 }
 
-registerAttrNames({
+export const VehicleAttrNames: AttrNames = {
   [VehicleAttr.handling]: 'Handling',
   [VehicleAttr.accel]: 'Accel',
   [VehicleAttr.speedInterval]: 'Speed Interval',
@@ -22,4 +22,4 @@ registerAttrNames({
   [VehicleAttr.pilot]: 'Pilot',
   [VehicleAttr.sensor]: 'Sensor',
   [VehicleAttr.seat]: 'Seat',
-})
+}

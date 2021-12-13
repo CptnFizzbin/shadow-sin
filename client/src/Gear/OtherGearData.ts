@@ -1,4 +1,4 @@
-import { AttrValue, registerAttrNames } from '../System/Attribute'
+import { AttrNames, AttrValue } from '../System/Attribute'
 import { BaseGearData, GearType } from './GearData'
 
 export interface OtherGearData extends BaseGearData {
@@ -15,8 +15,8 @@ export enum OtherGearAttr {
   rating = 'other.rating',
 }
 
-registerAttrNames({
+export const OtherGearAttrNames: AttrNames = {
   [OtherGearAttr.capacity]: 'Capacity',
   [OtherGearAttr.capacityCost]: 'Capacity Cost',
   [OtherGearAttr.rating]: 'Rating',
-})
+}

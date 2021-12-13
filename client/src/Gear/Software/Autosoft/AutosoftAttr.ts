@@ -1,4 +1,4 @@
-import { registerAttrNames } from '../../../System/Attribute'
+import { AttrNames } from '../../../System/Attribute'
 
 export enum AutosoftAttr {
   rating = 'autosoft.rating',
@@ -7,9 +7,9 @@ export enum AutosoftAttr {
   weapon = 'autosoft.weapon',
 }
 
-registerAttrNames({
+export const AutosoftAttrNames: AttrNames = {
   [AutosoftAttr.rating]: 'Rating',
   [AutosoftAttr.attr]: 'Attr',
   [AutosoftAttr.skill]: 'Skill',
   [AutosoftAttr.weapon]: 'Weapon',
-})
+}

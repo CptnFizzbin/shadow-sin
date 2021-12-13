@@ -1,4 +1,4 @@
-import { registerAttrNames } from '../../System/Attribute'
+import { AttrNames } from '../../System/Attribute'
 
 export enum CommlinkAttr {
   deviceRating = 'commlink.deviceRating',
@@ -6,8 +6,8 @@ export enum CommlinkAttr {
   programSlots = 'commlink.programSlots',
 }
 
-registerAttrNames({
+export const CommlinkAttrNames: AttrNames = {
   [CommlinkAttr.deviceRating]: 'Device Rating',
   [CommlinkAttr.attributes]: 'Attributes',
   [CommlinkAttr.programSlots]: 'Program Slots',
-})
+}
