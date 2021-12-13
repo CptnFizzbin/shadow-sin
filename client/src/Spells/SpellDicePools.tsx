@@ -2,14 +2,14 @@ import { FC } from 'react'
 
 import { CharacterAttr } from '../Character/CharacterAttr'
 import { useCharacterData } from '../Character/CharacterProvider'
-import { ActiveSkillName } from '../Skills'
+import { ActiveSkillIds } from '../Skills'
 import { DicePool } from '../UI/DicePool'
 
 export const SorcerySpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillName.sorcery]}
+      skills={[ActiveSkillIds.sorcery]}
       attrs={[CharacterAttr.magic]}
     />
   )
@@ -19,7 +19,7 @@ export const ConjuringSpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillName.conjuring]}
+      skills={[ActiveSkillIds.conjuring]}
       attrs={[CharacterAttr.magic]}
     />
   )
@@ -29,7 +29,7 @@ export const EnchantingSpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillName.enchanting]}
+      skills={[ActiveSkillIds.enchanting]}
       attrs={[CharacterAttr.magic]}
     />
   )

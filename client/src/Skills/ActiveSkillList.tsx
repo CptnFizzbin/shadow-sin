@@ -3,8 +3,8 @@ import { FC } from 'react'
 
 import { DamageType } from '../System/Damage/DamageType'
 import { DicePool } from '../UI/DicePool'
-import { activeSkills } from './ActiveSkill'
-import { CharacterActiveSkill } from './CharacterActiveSkill'
+import { ActiveSkills } from './ActiveSkills'
+import { CharacterActiveSkill } from './CharacterSkill'
 
 interface SkillListProps {
   charSkills: CharacterActiveSkill[]
@@ -16,7 +16,7 @@ export const ActiveSkillList: FC<SkillListProps> = ({
   return (
     <Stack gap={1} direction="row" sx={{ flexWrap: 'wrap' }}>
       {charSkills.map(skill => (
-        <ActiveSkillRow key={skill.name} charSkill={skill} />
+        <ActiveSkillRow key={skill.id} charSkill={skill} />
       ))}
     </Stack>
   )
@@ -29,12 +29,12 @@ interface SkillListRowProps {
 const ActiveSkillRow: FC<SkillListRowProps> = ({
   charSkill,
 }) => {
-  const activeSkill = activeSkills[charSkill.name]
+  const activeSkill = ActiveSkills[charSkill.id]
 
   return (
     <Box sx={{ width: 175 }}>
       <div>
-        <Typography sx={{ color: 'primary.main', display: 'inline' }}>{charSkill.name}</Typography>
+        <Typography sx={{ color: 'primary.main', display: 'inline' }}>{charSkill.id}</Typography>
         <Typography sx={{ paddingLeft: 1, display: 'inline' }}>{charSkill.rank}</Typography>
       </div>
       <Paper variant="outlined" sx={{ padding: 1 }}>

@@ -1,30 +1,29 @@
-import { AwakenedType } from '../Character/AwakenedType'
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
-import { Metatype } from '../Character/Metatypes'
-import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
-import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
-import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../Gear/GearData'
-import { OtherGearAttr } from '../Gear/OtherGearData'
-import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../Gear/Vehicles/VehicleData'
-import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
-import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillName, SkillType, Specializations } from '../Skills'
-import { EffectType } from '../System/Effect'
+import { AwakenedType } from '../../Character/AwakenedType'
+import { CharacterAttr } from '../../Character/CharacterAttr'
+import { CharacterData } from '../../Character/CharacterData'
+import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
+import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot } from '../../Gear/Augments/AugmentData'
+import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../../Gear/GearData'
+import { OtherGearAttr } from '../../Gear/OtherGearData'
+import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
+import { VehicleData } from '../../Gear/Vehicles/VehicleData'
+import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
+import { EffectType } from '../../System/Effect'
 import { Silicus } from './Silicus'
 
-import { addGear } from '.'
+import { addGear } from './index'
 
 export const Spike: CharacterData = {
   dataVersion: 3,
 
   bio: {
     name: 'Spike',
-    metatype: Metatype.Elf,
+    metatype: 'Elf',
     awakened: AwakenedType.Mundane,
     gender: 'male',
     role: 'Street Samurai',
@@ -91,33 +90,33 @@ export const Spike: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkillName.firearms,
+      id: ActiveSkillIds.firearms,
       rank: 7,
       specialization: Specializations.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.stealth,
+      id: ActiveSkillIds.stealth,
       rank: 3,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.athletics,
+      id: ActiveSkillIds.athletics,
       rank: 4,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.piloting,
+      id: ActiveSkillIds.piloting,
       rank: 1,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.perception,
+      id: ActiveSkillIds.perception,
       rank: 4,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.con,
+      id: ActiveSkillIds.con,
       rank: 2,
     },
 
@@ -150,7 +149,7 @@ export const Spike: CharacterData = {
       name: 'High Pain Tolerance',
       source: { book: 'CRB', page: 72 },
       gameEffect: 'When wounded, reduce your wound penalty by 1 (to a minimum of 0)',
-      effects: [{ type: EffectType.woundPenaltyReduction, value: 1 }],
+      effects: [{ type: EffectType.woundPenaltyAdj, value: 1 }],
       cost: 7,
     },
     {
@@ -205,7 +204,7 @@ addGear(Spike, {
     enabled: true,
     description: 'Raises defense rating by 2 thanks to improved hiding ability',
     effects: [
-      { type: EffectType.defRatingBonus, bonus: 2 },
+      { type: EffectType.defRatingAdj, bonus: 2 },
     ],
   },
 }, [
@@ -244,9 +243,9 @@ const smartGunIntMod: WeaponModData = {
     {
       wireless: true,
       name: 'Smart Gun',
-      type: EffectType.dicePoolBonus,
+      type: EffectType.dicePoolAdj,
       poolType: WeaponPoolKeys.basicAttack,
-      bonus: 1,
+      value: 1,
     },
   ],
 }
@@ -265,7 +264,7 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '8(m)',
   },
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Rifles,
 }, [
   addGear(Silicus, {
@@ -303,7 +302,7 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF/FA',
     [WeaponAttr.ammo]: '14(c)',
   },
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Rifles,
 }, [
   addGear(Silicus, {
@@ -341,7 +340,7 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF',
     [WeaponAttr.ammo]: '32(c)',
   },
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Silicus, {
@@ -380,7 +379,7 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '30(c)',
   },
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.LightPistols,
 }, [
   addGear(Silicus, {
@@ -425,8 +424,8 @@ addGear<AugmentData>(Spike, {
     augmentation or muscle toner bioware
   `,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.strength, bonus: 3 },
-    { type: EffectType.attrBonus, attr: CharacterAttr.agility, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.strength, value: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 3 },
   ],
 })
 
@@ -458,8 +457,8 @@ addGear<AugmentData>(Spike, {
     are incompatible with augmentations that affect Reaction or Initiative
   `,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 2 },
-    { type: EffectType.initBonus, bonus: 2 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2 },
+    { type: EffectType.initAdj, value: 2 },
   ],
   wirelessBonus: {
     enabled: true,
@@ -491,7 +490,7 @@ addGear<AugmentData>(Spike, {
     cannot be combined with skin augmentations, including dermal plating.
   `,
   effects: [
-    { type: EffectType.defRatingBonus, bonus: 1 },
+    { type: EffectType.defRatingAdj, value: 1 },
   ],
 })
 

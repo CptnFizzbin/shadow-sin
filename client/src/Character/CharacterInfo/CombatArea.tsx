@@ -3,12 +3,12 @@ import Box from '@mui/material/Box'
 import { FC } from 'react'
 
 import { useAllGear } from '../../Gear/GearContext'
-import { useQualities } from '../../Qualities/QualityData'
+import { useQualities } from '../../Qualities/Quality'
 import { useAttribute } from '../../System/AttributeProvider'
 import { DamageTrack } from '../../System/Damage/DamageTrack'
 import { DamageType } from '../../System/Damage/DamageType'
 import { CharacterDefRatingStat } from '../../System/DefenseRating'
-import { collectEffects, Effect, isConditionTrackBonus, isInitBonus } from '../../System/Effect'
+import { collectEffects, Effect, isDmgTrackBonus, isInitAdj } from '../../System/Effect'
 import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../System/Initiative'
 import { StatBlock } from '../../UI/StatBlock'
 import { CharacterAttr } from '../CharacterAttr'
@@ -26,22 +26,22 @@ export const CombatArea: FC = () => {
   const physicalTrackBonus = useQualities()
     .filter(quality => quality.effects)
     .flatMap(quality => quality.effects as Effect[])
-    .filter(isConditionTrackBonus)
-    .filter(effect => effect.track === 'physical')
-    .reduce((sum, effect) => sum + effect.bonus, 0)
+    .filter(isDmgTrackBonus)
+    .filter(effect => effect.track === DamageType.charPhysical)
+    .reduce((sum, effect) => sum + effect.value, 0)
   const physicalMax = Math.ceil(body / 2) + 8 + physicalTrackBonus
 
   const stunTrackBonus = useQualities()
     .filter(quality => quality.effects)
     .flatMap(quality => quality.effects as Effect[])
-    .filter(isConditionTrackBonus)
-    .filter(effect => effect.track === 'stun')
-    .reduce((sum, effect) => sum + effect.bonus, 0)
+    .filter(isDmgTrackBonus)
+    .filter(effect => effect.track === DamageType.charStun)
+    .reduce((sum, effect) => sum + effect.value, 0)
   const stunMax = Math.ceil(willpower / 2) + 8 + stunTrackBonus
 
   const initDice = collectEffects(gear)
-    .filter(isInitBonus)
-    .reduce((sum, effect) => sum + effect.bonus, 1)
+    .filter(isInitAdj)
+    .reduce((sum, effect) => sum + effect.value, 1)
 
   return (
     <Stack

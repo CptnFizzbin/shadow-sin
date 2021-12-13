@@ -6,7 +6,7 @@ import { CharacterNavDrawer } from '../../UI/NavDrawer/CharacterNavDrawer'
 import { AwakenedType } from '../AwakenedType'
 import { CharacterAttr } from '../CharacterAttr'
 import { CharacterData } from '../CharacterData'
-import { Metatype } from '../Metatypes'
+import { MetatypeIds } from '../Metatype'
 import { AttributesTable } from './Attributes/AttributesTable'
 import { BioSection } from './BioSection'
 import { PriorityValues } from './Priorities/Priorities'
@@ -18,7 +18,7 @@ const defaultCharacter: CharacterData = {
 
   bio: {
     name: '',
-    metatype: Metatype.Human,
+    metatype: MetatypeIds.human,
     awakened: AwakenedType.Mundane,
     role: '',
     alias: '',
@@ -85,7 +85,7 @@ export const BuilderPage: FC = () => {
         <Paper variant="outlined" sx={{ padding: 1 }}>
           <Typography variant="h3">Priorities</Typography>
           <PrioritiesTable
-            metatype={characterData.bio.metatype}
+            metatypeId={characterData.bio.metatype}
             awakened={characterData.bio.awakened}
             onChange={setPriorities}
           />
@@ -94,7 +94,7 @@ export const BuilderPage: FC = () => {
         <Paper variant="outlined" sx={{ padding: 1 }}>
           <Typography variant="h3">Attributes</Typography>
           <AttributesTable
-            metatype={characterData.bio.metatype}
+            metatypeId={characterData.bio.metatype}
             awakened={characterData.bio.awakened}
             attributePoints={priorities.attributePoints}
             adjustmentPoints={priorities.adjustmentPoints}

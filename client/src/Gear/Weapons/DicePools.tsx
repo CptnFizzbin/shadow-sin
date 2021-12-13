@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { CharacterAttr } from '../../Character/CharacterAttr'
 import { useActiveSkill } from '../../Character/CharacterProvider'
-import { ActiveSkillName } from '../../Skills'
+import { ActiveSkillIds } from '../../Skills'
 import { DamageType } from '../../System/Damage/DamageType'
 import { collectEffectBonuses, DiceGroup, DicePool, skillSpecialtyBonus } from '../../UI/DicePool'
 import { AugmentAttr } from '../Augments/AugmentAttr'
@@ -73,7 +73,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = ({
     poolKey={WeaponPoolKeys.mountedAttack}
     name={'Mounted Attack'}
     attrs={[CharacterAttr.logic]}
-    skills={[ActiveSkillName.engineering]}
+    skills={[ActiveSkillIds.engineering]}
     bonuses={collectEffectBonuses(nestedGear, WeaponPoolKeys.mountedAttack)}
     dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
   />
@@ -91,7 +91,7 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = ({
     poolKey={WeaponPoolKeys.riggedAttack}
     name={'Rigged Attack'}
     attrs={[CharacterAttr.logic]}
-    skills={[ActiveSkillName.engineering]}
+    skills={[ActiveSkillIds.engineering]}
     bonuses={[
       { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
       ...collectEffectBonuses(nestedGear, WeaponPoolKeys.riggedAttack),

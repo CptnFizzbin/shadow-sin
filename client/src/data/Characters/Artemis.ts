@@ -1,32 +1,31 @@
-import { AwakenedType } from '../Character/AwakenedType'
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
-import { Metatype } from '../Character/Metatypes'
-import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
-import { ArmorData } from '../Gear/Armor/ArmorData'
-import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../Gear/Augments/AugmentData'
-import { GearType } from '../Gear/GearData'
-import { LicenseAttr } from '../Gear/License/LicenseAttr'
-import { LicenseData } from '../Gear/License/LicenseData'
-import { SinAttr } from '../Gear/License/SinAttr'
-import { SinData } from '../Gear/License/SinData'
-import { OtherGearAttr } from '../Gear/OtherGearData'
-import { RccAttr } from '../Gear/Rcc/RccAttr'
-import { RccData } from '../Gear/Rcc/RccData'
-import { AutosoftAttr } from '../Gear/Software/Autosoft/AutosoftAttr'
-import { AutosoftData } from '../Gear/Software/Autosoft/AutosoftData'
-import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../Gear/Vehicles/VehicleData'
-import { ModType, VehicleModData } from '../Gear/Vehicles/VehicleModData'
-import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
-import { WeaponData } from '../Gear/Weapons/WeaponData'
-import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillName, SkillType, Specializations } from '../Skills'
-import { EffectType } from '../System/Effect'
+import { AwakenedType } from '../../Character/AwakenedType'
+import { CharacterAttr } from '../../Character/CharacterAttr'
+import { CharacterData } from '../../Character/CharacterData'
+import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
+import { ArmorData } from '../../Gear/Armor/ArmorData'
+import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../../Gear/Augments/AugmentData'
+import { GearType } from '../../Gear/GearData'
+import { LicenseAttr } from '../../Gear/License/LicenseAttr'
+import { LicenseData } from '../../Gear/License/LicenseData'
+import { SinAttr } from '../../Gear/License/SinAttr'
+import { SinData } from '../../Gear/License/SinData'
+import { OtherGearAttr } from '../../Gear/OtherGearData'
+import { RccAttr } from '../../Gear/Rcc/RccAttr'
+import { RccData } from '../../Gear/Rcc/RccData'
+import { AutosoftAttr } from '../../Gear/Software/Autosoft/AutosoftAttr'
+import { AutosoftData } from '../../Gear/Software/Autosoft/AutosoftData'
+import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
+import { VehicleData } from '../../Gear/Vehicles/VehicleData'
+import { ModType, VehicleModData } from '../../Gear/Vehicles/VehicleModData'
+import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { WeaponData } from '../../Gear/Weapons/WeaponData'
+import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
+import { EffectType } from '../../System/Effect'
 
-import { addGear } from '.'
+import { addGear } from './index'
 
 export const Artemis: CharacterData = {
   dataVersion: 3,
@@ -36,7 +35,7 @@ export const Artemis: CharacterData = {
     alias: 'Artemis',
     role: 'Rigger',
     gender: 'Female',
-    metatype: Metatype.Elf,
+    metatype: 'Elf',
     awakened: AwakenedType.Mundane,
     age: '26',
     height: '190cm',
@@ -218,23 +217,23 @@ export const Artemis: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkillName.electronics,
+      id: ActiveSkillIds.electronics,
       rank: 3,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.firearms,
+      id: ActiveSkillIds.firearms,
       rank: 5,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.piloting,
+      id: ActiveSkillIds.piloting,
       rank: 5,
       specialization: 'Ground Craft',
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.engineering,
+      id: ActiveSkillIds.engineering,
       rank: 7,
     },
     {
@@ -320,7 +319,7 @@ addGear<ArmorData>(Artemis, {
   cost: 1_000,
 
   effects: [
-    { type: EffectType.defRatingBonus, bonus: 4 },
+    { type: EffectType.defRatingAdj, value: 4 },
   ],
 
   attributes: {
@@ -350,9 +349,9 @@ const smartGunIntMod: WeaponModData = {
     {
       wireless: true,
       name: 'Smart Gun',
-      type: EffectType.dicePoolBonus,
+      type: EffectType.dicePoolAdj,
       poolType: WeaponPoolKeys.basicAttack,
-      bonus: 1,
+      value: 1,
     },
   ],
 }
@@ -391,7 +390,7 @@ addGear<AugmentData>(Artemis, {
   },
 
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.logic, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3 },
   ],
 })
 
@@ -434,7 +433,7 @@ addGear<WeaponData>(Artemis, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Artemis, {
@@ -489,7 +488,7 @@ addGear<WeaponData>(Artemis, {
       'The user can alter ownership with a Minor Action',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.LightPistols,
 }, [
   addGear(Artemis, { ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
@@ -640,7 +639,7 @@ const fnHar: WeaponData = {
     [WeaponAttr.ammo]: '35(c)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Rifles,
 }
 
@@ -658,7 +657,7 @@ const blackKnight: WeaponData = {
     [WeaponAttr.ammo]: '10(m)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.MachineGuns,
 }
 
@@ -1107,7 +1106,7 @@ addGear<AugmentData>(Artemis, {
   },
 
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 3 },
   ],
 })
 

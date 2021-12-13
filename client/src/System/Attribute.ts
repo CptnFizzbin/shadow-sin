@@ -1,5 +1,5 @@
 import { GearData } from '../Gear/GearData'
-import { collectEffects, isAttrBonus, isAttrOverride } from './Effect'
+import { collectEffects, isAttrAdj, isAttrOverride } from './Effect'
 
 export type AttrType = string
 export type AttrValue = number | string | null | undefined
@@ -38,7 +38,7 @@ export const calculateAttribute = (attr: string, value: number, gear: GearData[]
   if (overrides.length >= 1) return Math.max(...overrides)
 
   return effects
-    .filter(isAttrBonus)
+    .filter(isAttrAdj)
     .filter(effect => effect.attr === attr)
-    .reduce((sum, effect) => sum + effect.bonus, value)
+    .reduce((sum, effect) => sum + effect.value, value)
 }

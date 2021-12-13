@@ -2,21 +2,21 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { FC, useState } from 'react'
 
 import { AwakenedType } from '../../AwakenedType'
-import { Metatype } from '../../Metatypes'
+import { MetatypeId } from '../../Metatype'
 import { PriorityStat, PriorityValues, priorityValues } from './Priorities'
 import { PriorityRow } from './PriorityRow'
 
 export type SelectedPriorities = Record<string, PriorityStat>
 
 interface PrioritiesTableProps {
-  metatype: Metatype
+  metatypeId: MetatypeId
   awakened: AwakenedType
 
   onChange (priorities: PriorityValues): void
 }
 
 export const PrioritiesTable: FC<PrioritiesTableProps> = ({
-  metatype,
+  metatypeId,
   awakened,
   onChange,
 }) => {
@@ -60,7 +60,7 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
               values={values}
               selectedType={selectedPriorities[level]}
               onSelect={onPriorityChange}
-              metatype={metatype}
+              metatypeId={metatypeId}
               awakened={awakened}
             />
           ))}

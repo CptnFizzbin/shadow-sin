@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 import { useActiveSkill, useCharacterData } from '../../Character/CharacterProvider'
-import { ActiveSkillName } from '../../Skills'
+import { ActiveSkillIds } from '../../Skills'
 import { SpellBlock } from '../../Spells/SpellBlock'
 import {
   ConjuringSpellcastingPool,
@@ -15,9 +15,9 @@ import { DicePools } from '../../UI/DicePool'
 export const SpellsPage: FC = () => {
   const character = useCharacterData()
 
-  const sorcery = useActiveSkill(ActiveSkillName.sorcery)
-  const conjuring = useActiveSkill(ActiveSkillName.conjuring)
-  const enchanting = useActiveSkill(ActiveSkillName.enchanting)
+  const sorcery = useActiveSkill(ActiveSkillIds.sorcery)
+  const conjuring = useActiveSkill(ActiveSkillIds.conjuring)
+  const enchanting = useActiveSkill(ActiveSkillIds.enchanting)
 
   if (!character) return null
   const spells = character.spells || []

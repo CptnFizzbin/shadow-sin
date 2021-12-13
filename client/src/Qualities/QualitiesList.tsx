@@ -4,13 +4,13 @@ import React, { FC } from 'react'
 import { formatSource } from '../System/Source'
 import { SimpleInfoBlock } from '../UI/InfoBlock/SimpleInfoBlock'
 import { Stat } from '../UI/StatBlock'
-import { QualityData } from './QualityData'
+import { CharacterQuality } from './CharacterQuality'
 
-interface ContactListProps {
-  qualities: QualityData[]
+interface QualitiesListProps {
+  qualities: CharacterQuality[]
 }
 
-export const QualitiesList: FC<ContactListProps> = ({
+export const QualitiesList: FC<QualitiesListProps> = ({
   qualities,
 }) => {
   return (
@@ -28,8 +28,8 @@ export const QualitiesList: FC<ContactListProps> = ({
             </>
           }
         >
-          <Typography variant="caption">{quality.description}</Typography>
           <Typography variant="caption">{quality.gameEffect}</Typography>
+          <Typography variant="caption">{quality.notes}</Typography>
         </SimpleInfoBlock>
       ))}
     </Stack>

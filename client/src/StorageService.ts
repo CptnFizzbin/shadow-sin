@@ -1,10 +1,10 @@
 import { nextRecordId } from './Api/Model'
 import { Character } from './Character/Character'
 import { migrateCharacter, SavedCharacter } from './Character/Migrations'
-import { Artemis } from './data/Artemis'
-import { Silicus } from './data/Silicus'
-import { Spike } from './data/Spike'
-import { Xendris } from './data/Xendris'
+import { Artemis } from './data/Characters/Artemis'
+import { Silicus } from './data/Characters/Silicus'
+import { Spike } from './data/Characters/Spike'
+import { Xendris } from './data/Characters/Xendris'
 
 const characterStorageKey = (characterId: string) => `character.${characterId}`
 const charactersStorageKey = 'characters'

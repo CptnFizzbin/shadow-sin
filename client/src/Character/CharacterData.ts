@@ -1,17 +1,16 @@
 import { ContactData } from '../Contacts/ContactData'
 import { GearData } from '../Gear/GearData'
-import { QualityData } from '../Qualities/QualityData'
-import { SkillData } from '../Skills'
+import { CharacterQuality } from '../Qualities/CharacterQuality'
+import { CharacterSkill } from '../Skills'
 import { RitualData } from '../Spells/RitualData'
 import { SpellData } from '../Spells/SpellData'
 import { BalanceLog } from '../System/BalanceLog'
 import { AwakenedType } from './AwakenedType'
 import { CharacterAttr } from './CharacterAttr'
-import { Metatype } from './Metatypes'
 
 export interface BioData {
   name: string
-  metatype: Metatype
+  metatype: string
   awakened: AwakenedType
   role?: string
   alias?: string
@@ -39,10 +38,10 @@ export interface CharacterData {
 
   attributes: CharAttributes
 
-  skills: SkillData[]
+  skills: CharacterSkill[]
   contacts: ContactData[]
   gear: GearData[]
-  qualities: QualityData[]
+  qualities: CharacterQuality[]
 
   spells?: SpellData[]
   spellDrainAttr?: CharacterAttr

@@ -1,10 +1,10 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { FC } from 'react'
 
-import { LanguageSkillData } from './LanguageSkillData'
+import { CharacterLanguageSkill } from './CharacterSkill'
 
 interface SkillListProps {
-  skills: LanguageSkillData[]
+  skills: CharacterLanguageSkill[]
 }
 
 export const LanguageSkillList: FC<SkillListProps> = ({
@@ -28,7 +28,7 @@ export const LanguageSkillList: FC<SkillListProps> = ({
 }
 
 interface SkillListRowProps {
-  skill: LanguageSkillData
+  skill: CharacterLanguageSkill
 }
 
 const SkillListRow: FC<SkillListRowProps> = ({

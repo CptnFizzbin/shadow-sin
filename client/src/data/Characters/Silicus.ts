@@ -1,29 +1,28 @@
-import { AwakenedType } from '../Character/AwakenedType'
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
-import { CharacterPoolTypes } from '../Character/CharacterPoolTypes'
-import { Metatype } from '../Character/Metatypes'
-import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
-import { ArmorData } from '../Gear/Armor/ArmorData'
-import { AugmentAttr } from '../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot } from '../Gear/Augments/AugmentData'
-import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../Gear/GearData'
-import { KitAttr } from '../Gear/Kit/KitAttr'
-import { KitType } from '../Gear/Kit/KitType'
-import { LicenseAttr } from '../Gear/License/LicenseAttr'
-import { SinAttr } from '../Gear/License/SinAttr'
-import { SinData } from '../Gear/License/SinData'
-import { OtherGearAttr } from '../Gear/OtherGearData'
-import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../Gear/Vehicles/VehicleData'
-import { ModType } from '../Gear/Vehicles/VehicleModData'
-import { WeaponPoolKeys } from '../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
-import { WeaponData } from '../Gear/Weapons/WeaponData'
-import { WeaponModData, WeaponModSlot } from '../Gear/Weapons/WeaponModData'
-import { ActiveSkillName, SkillType, Specializations } from '../Skills'
-import { EffectType } from '../System/Effect'
+import { AwakenedType } from '../../Character/AwakenedType'
+import { CharacterAttr } from '../../Character/CharacterAttr'
+import { CharacterData } from '../../Character/CharacterData'
+import { CharacterPoolTypes } from '../../Character/CharacterPoolTypes'
+import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
+import { ArmorData } from '../../Gear/Armor/ArmorData'
+import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot } from '../../Gear/Augments/AugmentData'
+import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../../Gear/GearData'
+import { KitAttr } from '../../Gear/Kit/KitAttr'
+import { KitType } from '../../Gear/Kit/KitType'
+import { LicenseAttr } from '../../Gear/License/LicenseAttr'
+import { SinAttr } from '../../Gear/License/SinAttr'
+import { SinData } from '../../Gear/License/SinData'
+import { OtherGearAttr } from '../../Gear/OtherGearData'
+import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
+import { VehicleData } from '../../Gear/Vehicles/VehicleData'
+import { ModType } from '../../Gear/Vehicles/VehicleModData'
+import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { WeaponData } from '../../Gear/Weapons/WeaponData'
+import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
+import { EffectType } from '../../System/Effect'
 
 import { addGear } from './index'
 
@@ -32,7 +31,7 @@ export const Silicus: CharacterData = {
 
   bio: {
     name: 'Silicus',
-    metatype: Metatype.Elf,
+    metatype: 'Elf',
     awakened: AwakenedType.Mundane,
     gender: 'male',
     role: 'Street Samurai',
@@ -209,24 +208,24 @@ export const Silicus: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkillName.biotech,
+      id: ActiveSkillIds.biotech,
       rank: 5,
       expertise: Specializations.Biotech.FirstAid,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.firearms,
+      id: ActiveSkillIds.firearms,
       rank: 6,
       specialization: Specializations.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.perception,
+      id: ActiveSkillIds.perception,
       rank: 3,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.closeCombat,
+      id: ActiveSkillIds.closeCombat,
       rank: 5,
     },
     {
@@ -301,9 +300,9 @@ const smartGunIntMod: WeaponModData = {
     {
       wireless: true,
       name: 'Smart Gun',
-      type: EffectType.dicePoolBonus,
+      type: EffectType.dicePoolAdj,
       poolType: WeaponPoolKeys.basicAttack,
-      bonus: 1,
+      value: 1,
     },
   ],
 }
@@ -324,7 +323,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '12(c)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Shotguns,
 }, [
   addGear(Silicus, {
@@ -384,7 +383,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
   addGear(Silicus, {
@@ -452,7 +451,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(m)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Launchers,
 }, [
   addGear(Silicus, {
@@ -468,7 +467,7 @@ addGear<WeaponData>(Silicus, {
     },
 
     removable: false,
-    skill: ActiveSkillName.firearms,
+    skill: ActiveSkillIds.firearms,
     specialtyName: Specializations.Firearms.Launchers,
   }),
 ])
@@ -489,7 +488,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(c)',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.HeavyPistols,
 }, [
   addGear(Silicus, {
@@ -527,7 +526,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillName.firearms,
+  skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Tasers,
 }, [
   addGear(Silicus, {
@@ -552,7 +551,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillName.closeCombat,
+  skill: ActiveSkillIds.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -571,7 +570,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.attackRatings]: '5/-/-/-/-',
   },
 
-  skill: ActiveSkillName.closeCombat,
+  skill: ActiveSkillIds.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -604,8 +603,8 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, bonus: 3 },
-    { type: EffectType.initBonus, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 3 },
+    { type: EffectType.initAdj, value: 3 },
   ],
 })
 
@@ -654,7 +653,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.agility, bonus: 4 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 4 },
   ],
 })
 
@@ -680,7 +679,7 @@ addGear<AugmentData>(Silicus, {
   `),
 
   effects: [
-    { type: EffectType.dicePoolBonus, name: 'Bone Density', poolType: CharacterPoolTypes.dmgResist, bonus: 4 },
+    { type: EffectType.dicePoolAdj, name: 'Bone Density', poolType: CharacterPoolTypes.dmgResist, value: 4 },
     // Melee damage: 3P
     // Melee Atk. Rating: +2
   ],
@@ -715,8 +714,8 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.willpower, bonus: 1 },
-    { type: EffectType.attrBonus, attr: CharacterAttr.intuition, bonus: -1 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.willpower, value: 1 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.intuition, value: -1 },
   ],
 })
 
@@ -745,7 +744,7 @@ addGear<AugmentData>(Silicus, {
   },
 
   effects: [
-    { type: EffectType.defRatingBonus, bonus: 2 },
+    { type: EffectType.defRatingAdj, value: 2 },
   ],
 })
 
@@ -775,7 +774,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.skillBonus, skill: ActiveSkillName.firearms, bonus: 1 },
+    { type: EffectType.skillAdj, skill: ActiveSkillIds.firearms, value: 1 },
   ],
 })
 
@@ -805,7 +804,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.logic, bonus: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3 },
   ],
 })
 
@@ -899,7 +898,7 @@ addGear<ArmorData>(Silicus, {
   cost: 1_000,
 
   effects: [
-    { type: EffectType.defRatingBonus, bonus: 4 },
+    { type: EffectType.defRatingAdj, value: 4 },
   ],
 
   attributes: {

@@ -3,14 +3,14 @@ import { FC } from 'react'
 
 import { formatNuyen } from '../../../System/Nuyen'
 import { AwakenedType } from '../../AwakenedType'
-import { Metatype } from '../../Metatypes'
+import { formatMetatype, MetatypeId } from '../../Metatype'
 import { PriorityStat, PriorityValues } from './Priorities'
 
 interface PriorityRowProps {
   level: string
   values: PriorityValues
   selectedType?: PriorityStat
-  metatype: Metatype
+  metatypeId: MetatypeId
   awakened: AwakenedType
 
   onSelect (level: string, type: PriorityStat): void
@@ -20,7 +20,7 @@ export const PriorityRow: FC<PriorityRowProps> = ({
   level,
   values,
   selectedType,
-  metatype,
+  metatypeId,
   awakened,
   onSelect,
 }) => {
@@ -37,8 +37,8 @@ export const PriorityRow: FC<PriorityRowProps> = ({
         onClick={() => onSelect(level, PriorityStat.metatype)}
         selected={selectedType === PriorityStat.metatype}
       >
-        {values.metatypes.includes(metatype) ? (
-          <>{metatype} ({values.adjustmentPoints})</>
+        {values.metatypes.includes(metatypeId) ? (
+          <>{formatMetatype(metatypeId)} ({values.adjustmentPoints})</>
         ) : (
           '-'
         )}

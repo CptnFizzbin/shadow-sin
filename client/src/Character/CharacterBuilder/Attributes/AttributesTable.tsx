@@ -4,9 +4,8 @@ import { FC, useState } from 'react'
 import { AwakenedType } from '../../AwakenedType'
 import { CharacterAttr } from '../../CharacterAttr'
 import { CharAttributes } from '../../CharacterData'
-import { Metatype } from '../../Metatypes'
+import { MetatypeId, Metatypes } from '../../Metatype'
 import { AttrTableRow } from './AttrTableRow'
-import { metatypeMaximums } from './metatypeMaximums'
 
 const defaultAttributes: CharAttributes = {
   [CharacterAttr.body]: 0,
@@ -24,7 +23,7 @@ const defaultAttributes: CharAttributes = {
 }
 
 interface AttributesTableProps {
-  metatype: Metatype
+  metatypeId: MetatypeId
   awakened: AwakenedType
   attributePoints: number
   adjustmentPoints: number
@@ -34,7 +33,7 @@ interface AttributesTableProps {
 }
 
 export const AttributesTable: FC<AttributesTableProps> = ({
-  metatype,
+  metatypeId,
   awakened,
   attributePoints,
   adjustmentPoints,
@@ -114,15 +113,11 @@ export const AttributesTable: FC<AttributesTableProps> = ({
             <TableCell>
               Base
             </TableCell>
-            <TableCell
-              sx={{ color: totalAdjPointsSpent > adjustmentPoints ? 'error.main' : undefined }}
-            >
-              Metatype ({adjustmentPoints - totalAdjPointsSpent})
+            <TableCell sx={{ color: totalAdjPointsSpent > adjustmentPoints ? 'error.main' : undefined }}>
+              Metatype ({totalAdjPointsSpent}/{adjustmentPoints})
             </TableCell>
-            <TableCell
-              sx={{ color: totalPointsSpent > attributePoints ? 'error.main' : undefined }}
-            >
-              Points ({attributePoints - totalPointsSpent})
+            <TableCell sx={{ color: totalPointsSpent > attributePoints ? 'error.main' : undefined }}>
+              Points ({totalPointsSpent}/{attributePoints})
             </TableCell>
             <TableCell>
               Karma ({totalKarmaCost} Karma)
@@ -143,7 +138,7 @@ export const AttributesTable: FC<AttributesTableProps> = ({
                 adjPoints={adjPointsSpent[attribute]}
                 attrPoints={pointsSpent[attribute]}
                 karmaPoints={karmaPoints[attribute]}
-                maximum={metatypeMaximums[metatype][attribute]}
+                maximum={Metatypes[metatypeId].attrMaximums[attribute]}
                 onAdjPointsChange={value => setAdjPointsSpent({ ...adjPointsSpent, [attribute]: value })}
                 onAttrPointsChange={value => setPointsSpent({ ...pointsSpent, [attribute]: value })}
                 onKarmaPointsChange={value => setKarmaPoints({ ...karmaPoints, [attribute]: value })}

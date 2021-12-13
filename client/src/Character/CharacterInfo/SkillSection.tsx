@@ -4,7 +4,7 @@ import { FC } from 'react'
 
 import {
   ActiveSkillList,
-  ActiveSkillName,
+  ActiveSkillIds,
   isKnowledgeSkill,
   isLanguageSkill,
   KnowledgeSkillList,
@@ -14,7 +14,7 @@ import { useActiveSkills, useCharacterData } from '../CharacterProvider'
 
 export const SkillSection: FC = () => {
   const character = useCharacterData()
-  const charActiveSkills = useActiveSkills(Object.values(ActiveSkillName))
+  const charActiveSkills = useActiveSkills(Object.values(ActiveSkillIds))
 
   if (!character) return null
   const languageSkills = character.skills.filter(isLanguageSkill)

@@ -5,12 +5,12 @@ import React, { FC } from 'react'
 
 import { useActiveSkills } from '../Character/CharacterProvider'
 import { GearData } from '../Gear/GearData'
-import { ActiveSkillName, CharacterActiveSkill, hasExpertise, hasSpecialty } from '../Skills'
+import { ActiveSkillId, CharacterActiveSkill, hasExpertise, hasSpecialty } from '../Skills'
 import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { collectEffects, isDicePoolBonus } from '../System/Effect'
+import { collectEffects, isDicePoolAdj } from '../System/Effect'
 
 export interface DiceGroup {
   name: string
@@ -30,7 +30,7 @@ export const DicePools: FC = ({
 export interface DicePoolData {
   name: string
   poolKey?: string
-  skills?: ActiveSkillName[]
+  skills?: ActiveSkillId[]
   attrs?: string[]
   bonuses?: DiceGroup[]
   dmgPenaltyTypes?: DamageType[]
@@ -57,9 +57,9 @@ export const collectEffectBonuses = (
   poolKey: string,
 ): DiceGroup[] => {
   return collectEffects(gear)
-    .filter(isDicePoolBonus)
+    .filter(isDicePoolAdj)
     .filter(effect => effect.poolType === poolKey)
-    .map(effect => ({ name: effect.name, size: effect.bonus, wireless: effect.wireless }) as DiceGroup)
+    .map(effect => ({ name: effect.name, size: effect.value, wireless: effect.wireless }) as DiceGroup)
 }
 
 type DicePoolProps = {
@@ -83,7 +83,7 @@ export const DicePool: FC<DicePoolProps> = ({
   groups = [
     ...groups,
     ...Object.values(skillList)
-      .map(skill => ({ name: skill.name, size: skill.rank })),
+      .map(skill => ({ name: skill.id, size: skill.rank })),
     ...Object.entries(attrList)
       .filter(([_, value]) => typeof value === 'number')
       .map(([attrType, value]) => ({ name: formatAttr(attrType), size: value as number })),

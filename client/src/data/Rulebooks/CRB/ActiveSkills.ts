@@ -1,134 +1,166 @@
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { ActiveSkillName } from './ActiveSkillName'
+import { CharacterAttr } from '../../../Character/CharacterAttr'
+import { ActiveSkill } from '../../../Skills'
 import { Specializations } from './Specializations'
 
-export interface ActiveSkill {
-  name: ActiveSkillName
-  untrained: boolean
-  attr: CharacterAttr
-  altAttr?: CharacterAttr
-  specializations: string[]
-  multiSpecialization?: boolean
+export enum ActiveSkillId {
+  astral = 'Astral',
+  athletics = 'Athletics',
+  biotech = 'Biotech',
+  closeCombat = 'Close Combat',
+  con = 'Con',
+  conjuring = 'Conjuring',
+  cracking = 'Cracking',
+  electronics = 'Electronics',
+  enchanting = 'Enchanting',
+  engineering = 'Engineering',
+  exoticWeapons = 'Exotic Weapons',
+  firearms = 'Firearms',
+  influence = 'Influence',
+  outdoors = 'Outdoors',
+  perception = 'Perception',
+  piloting = 'Piloting',
+  sorcery = 'Sorcery',
+  stealth = 'Stealth',
+  tasking = 'Tasking',
 }
 
-export const activeSkills: Record<ActiveSkillName, ActiveSkill> = {
-  [ActiveSkillName.astral]: {
-    name: ActiveSkillName.astral,
+export const ActiveSkills: Record<ActiveSkillId, ActiveSkill> = {
+  [ActiveSkillId.astral]: {
+    id: ActiveSkillId.astral,
+    name: ActiveSkillId.astral,
     untrained: false,
     attr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Astral),
   },
-  [ActiveSkillName.athletics]: {
-    name: ActiveSkillName.athletics,
+  [ActiveSkillId.athletics]: {
+    id: ActiveSkillId.athletics,
+    name: ActiveSkillId.athletics,
     untrained: true,
     attr: CharacterAttr.agility,
     altAttr: CharacterAttr.strength,
     specializations: Object.values(Specializations.Athletics),
   },
-  [ActiveSkillName.biotech]: {
-    name: ActiveSkillName.biotech,
+  [ActiveSkillId.biotech]: {
+    id: ActiveSkillId.biotech,
+    name: ActiveSkillId.biotech,
     untrained: false,
     attr: CharacterAttr.logic,
     altAttr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Biotech),
   },
-  [ActiveSkillName.closeCombat]: {
-    name: ActiveSkillName.closeCombat,
+  [ActiveSkillId.closeCombat]: {
+    id: ActiveSkillId.closeCombat,
+    name: ActiveSkillId.closeCombat,
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.CloseCombat),
   },
-  [ActiveSkillName.con]: {
-    name: ActiveSkillName.con,
+  [ActiveSkillId.con]: {
+    id: ActiveSkillId.con,
+    name: ActiveSkillId.con,
     untrained: true,
     attr: CharacterAttr.charisma,
     specializations: Object.values(Specializations.Con),
   },
-  [ActiveSkillName.conjuring]: {
-    name: ActiveSkillName.conjuring,
+  [ActiveSkillId.conjuring]: {
+    id: ActiveSkillId.conjuring,
+    name: ActiveSkillId.conjuring,
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Conjuring),
   },
-  [ActiveSkillName.cracking]: {
-    name: ActiveSkillName.cracking,
+  [ActiveSkillId.cracking]: {
+    id: ActiveSkillId.cracking,
+    name: ActiveSkillId.cracking,
     untrained: false,
     attr: CharacterAttr.logic,
     specializations: Object.values(Specializations.Cracking),
   },
-  [ActiveSkillName.electronics]: {
-    name: ActiveSkillName.electronics,
+  [ActiveSkillId.electronics]: {
+    id: ActiveSkillId.electronics,
+    name: ActiveSkillId.electronics,
     untrained: true,
     attr: CharacterAttr.logic,
     altAttr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Electronics),
   },
-  [ActiveSkillName.enchanting]: {
-    name: ActiveSkillName.enchanting,
+  [ActiveSkillId.enchanting]: {
+    id: ActiveSkillId.enchanting,
+    name: ActiveSkillId.enchanting,
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Enchanting),
   },
-  [ActiveSkillName.engineering]: {
-    name: ActiveSkillName.engineering,
+  [ActiveSkillId.engineering]: {
+    id: ActiveSkillId.engineering,
+    name: ActiveSkillId.engineering,
     untrained: true,
     attr: CharacterAttr.logic,
     altAttr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Engineering),
   },
-  [ActiveSkillName.exoticWeapons]: {
-    name: ActiveSkillName.exoticWeapons,
+  [ActiveSkillId.exoticWeapons]: {
+    id: ActiveSkillId.exoticWeapons,
+    name: ActiveSkillId.exoticWeapons,
     untrained: false,
     attr: CharacterAttr.agility,
     multiSpecialization: true,
     specializations: Object.values(Specializations.ExoticWeapons),
   },
-  [ActiveSkillName.firearms]: {
-    name: ActiveSkillName.firearms,
+  [ActiveSkillId.firearms]: {
+    id: ActiveSkillId.firearms,
+    name: ActiveSkillId.firearms,
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.Firearms),
   },
-  [ActiveSkillName.influence]: {
-    name: ActiveSkillName.influence,
+  [ActiveSkillId.influence]: {
+    id: ActiveSkillId.influence,
+    name: ActiveSkillId.influence,
     untrained: true,
     attr: CharacterAttr.charisma,
     altAttr: CharacterAttr.logic,
     specializations: Object.values(Specializations.Influence),
   },
-  [ActiveSkillName.outdoors]: {
-    name: ActiveSkillName.outdoors,
+  [ActiveSkillId.outdoors]: {
+    id: ActiveSkillId.outdoors,
+    name: ActiveSkillId.outdoors,
     untrained: true,
     attr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Outdoors),
   },
-  [ActiveSkillName.perception]: {
-    name: ActiveSkillName.perception,
+  [ActiveSkillId.perception]: {
+    id: ActiveSkillId.perception,
+    name: ActiveSkillId.perception,
     untrained: true,
     attr: CharacterAttr.intuition,
     altAttr: CharacterAttr.logic,
     specializations: Object.values(Specializations.Perception),
   },
-  [ActiveSkillName.piloting]: {
-    name: ActiveSkillName.piloting,
+  [ActiveSkillId.piloting]: {
+    id: ActiveSkillId.piloting,
+    name: ActiveSkillId.piloting,
     untrained: true,
     attr: CharacterAttr.reaction,
     specializations: Object.values(Specializations.Piloting),
   },
-  [ActiveSkillName.sorcery]: {
-    name: ActiveSkillName.sorcery,
+  [ActiveSkillId.sorcery]: {
+    id: ActiveSkillId.sorcery,
+    name: ActiveSkillId.sorcery,
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Sorcery),
   },
-  [ActiveSkillName.stealth]: {
-    name: ActiveSkillName.stealth,
+  [ActiveSkillId.stealth]: {
+    id: ActiveSkillId.stealth,
+    name: ActiveSkillId.stealth,
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.Stealth),
   },
-  [ActiveSkillName.tasking]: {
-    name: ActiveSkillName.tasking,
+  [ActiveSkillId.tasking]: {
+    id: ActiveSkillId.tasking,
+    name: ActiveSkillId.tasking,
     untrained: false,
     attr: CharacterAttr.resonance,
     specializations: Object.values(Specializations.Tasking),

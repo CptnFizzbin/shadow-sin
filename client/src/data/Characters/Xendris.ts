@@ -1,22 +1,22 @@
-import { AwakenedType } from '../Character/AwakenedType'
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { CharacterData } from '../Character/CharacterData'
-import { Metatype } from '../Character/Metatypes'
-import { ArmorAttr } from '../Gear/Armor/ArmorAttr'
-import { CommlinkAttr } from '../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../Gear/GearData'
-import { WeaponAttr } from '../Gear/Weapons/WeaponAttr'
-import { ActiveSkillName, SkillType, Specializations } from '../Skills'
-import { SpellCategory } from '../Spells/SpellCategory'
-import { SpellType } from '../Spells/SpellType'
-import { EffectType } from '../System/Effect'
+import { AwakenedType } from '../../Character/AwakenedType'
+import { CharacterAttr } from '../../Character/CharacterAttr'
+import { CharacterData } from '../../Character/CharacterData'
+import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
+import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../../Gear/GearData'
+import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
+import { SpellCategory } from '../../Spells/SpellCategory'
+import { SpellType } from '../../Spells/SpellType'
+import { DamageType } from '../../System/Damage/DamageType'
+import { EffectType } from '../../System/Effect'
 
 export const Xendris: CharacterData = {
   dataVersion: 3,
 
   bio: {
     name: 'Xendris',
-    metatype: Metatype.Human,
+    metatype: 'Human',
     awakened: AwakenedType.Full,
     gender: 'male',
     role: 'Hermetic Mage',
@@ -112,18 +112,18 @@ export const Xendris: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      name: ActiveSkillName.closeCombat,
+      id: ActiveSkillIds.closeCombat,
       rank: 7,
       specialization: Specializations.CloseCombat.Blades,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.sorcery,
+      id: ActiveSkillIds.sorcery,
       rank: 6,
     },
     {
       type: SkillType.active,
-      name: ActiveSkillName.firearms,
+      id: ActiveSkillIds.firearms,
       rank: 6,
     },
     {
@@ -154,11 +154,7 @@ export const Xendris: CharacterData = {
         Monitor equal to the rank of this quality
       `,
       effects: [
-        {
-          type: EffectType.conditionTrackBonus,
-          track: 'physical',
-          bonus: 4,
-        },
+        { type: EffectType.dmgTrackAdj, track: DamageType.charPhysical, value: 4 },
       ],
       cost: 12,
     },
@@ -187,7 +183,7 @@ export const Xendris: CharacterData = {
         [ArmorAttr.capacity]: 8,
       },
       effects: [
-        { type: EffectType.defRatingBonus, bonus: 4 },
+        { type: EffectType.defRatingAdj, value: 4 },
       ],
       description: `
         Available in all manner of styles, it offers good protection without 
@@ -223,7 +219,7 @@ export const Xendris: CharacterData = {
         [WeaponAttr.attackRatings]: '10/10/8/-/-',
         [WeaponAttr.ammo]: '15(c)',
       },
-      skill: ActiveSkillName.firearms,
+      skill: ActiveSkillIds.firearms,
       specialtyName: Specializations.Firearms.HeavyPistols,
     },
     {
@@ -238,7 +234,7 @@ export const Xendris: CharacterData = {
         [WeaponAttr.dv]: '4P',
         [WeaponAttr.attackRatings]: '10/-/-/-/-',
       },
-      skill: ActiveSkillName.closeCombat,
+      skill: ActiveSkillIds.closeCombat,
       specialtyName: Specializations.CloseCombat.Blades,
     },
   ],

@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { AwakenedType } from '../AwakenedType'
 import { BioData } from '../CharacterData'
-import { Metatype } from '../Metatypes'
+import { formatMetatype, MetatypeIds } from '../Metatype'
 
 interface BioSectionProps {
   bio: BioData
@@ -19,9 +19,7 @@ export const BioSection: FC<BioSectionProps> = ({
   magicPriority,
   onChange,
 }) => {
-  const showMetaTypeWarning = bio.metatype
-    && metatypes.length >= 1
-    && !metatypes.includes(bio.metatype)
+  const showMetaTypeWarning = metatypes.length >= 1 && !metatypes.includes(bio.metatype)
 
   console.log(bio.awakened, magicPriority)
   const showAwakenedWarning =
@@ -53,13 +51,13 @@ export const BioSection: FC<BioSectionProps> = ({
           label="Metatype"
           select
           value={bio.metatype}
-          onChange={event => onChange({ ...bio, metatype: event.target.value as Metatype })}
+          onChange={event => onChange({ ...bio, metatype: event.target.value })}
           focused={showMetaTypeWarning}
           color={showMetaTypeWarning ? 'warning' : undefined}
           helperText={showMetaTypeWarning ? 'Metatype unavailable at current priority' : undefined}
         >
-          {Object.values(Metatype).map(metatype => (
-            <MenuItem key={metatype} value={metatype}>{metatype}</MenuItem>
+          {Object.values(MetatypeIds).map(metatypeId => (
+            <MenuItem key={metatypeId} value={metatypeId}>{formatMetatype(metatypeId)}</MenuItem>
           ))}
         </TextField>
 
