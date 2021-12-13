@@ -1,4 +1,5 @@
 import { Quality, QualityId } from '../../../Qualities/Quality'
+import { formatAttr } from '../../../System/Attribute'
 import { DamageType } from '../../../System/Damage/DamageType'
 import { EffectType } from '../../../System/Effect'
 
@@ -97,10 +98,10 @@ export const Qualities: Record<QualityId, Quality> = {
       Your skill maximum for the selected skill is 10, instead of 9, and your 
       maximum starting rank is 7, instead of 6,
     `,
-    options: { skill: true },
-    getName: ({ skill = '(Skill)' }) => `${skill} Resistance`,
-    getEffects: ({ skill = '' }) => [
-      { type: EffectType.skillMaxAdj, skill: skill || '', value: 1 },
+    options: { type: true },
+    getName: ({ type = '(Skill)' }) => `${type} Resistance`,
+    getEffects: ({ type = '' }) => [
+      { type: EffectType.skillMaxAdj, skill: type, value: 1 },
     ],
   },
   [QualityIds.astralChameleon]: {
@@ -137,7 +138,7 @@ export const Qualities: Record<QualityId, Quality> = {
       You have a number of additional boxes on your Physical Condition Monitor 
       equal to the rank of this quality
     `,
-    maxRank: 4,
+    maxLevel: 4,
     options: {
       level: true,
     },
@@ -182,7 +183,7 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.elementalResistance]: {
     id: QualityIds.elementalResistance,
     name: '(Elemental) Resistance',
-    getName: ({ element = '(Element)' }) => `${element} Resistance`,
+    getName: ({ type = '(Element)' }) => `${type} Resistance`,
     cost: 12,
     source: { book: 'CRB', page: 71 },
     gameEffect: `
@@ -190,12 +191,12 @@ export const Qualities: Record<QualityId, Quality> = {
       that does this form of damage, gain a point of Edge before making your 
       Defense test.
     `,
-    options: { element: true },
+    options: { type: true },
   },
   [QualityIds.exceptional]: {
     id: QualityIds.exceptional,
     name: 'Exceptional (Attribute)',
-    getName: ({ attr = '(Attribute)' }) => `Exceptional ${attr}`,
+    getName: ({ type = '(Attribute)' }) => `Exceptional ${formatAttr(type)}`,
     cost: 12,
     source: { book: 'CRB', page: 71 },
     gameEffect: `
@@ -203,9 +204,9 @@ export const Qualities: Record<QualityId, Quality> = {
       current) rank increases by 1. This quality can only be purchased once per
       attribute.
     `,
-    options: { attr: true },
-    getEffects: ({ attr = '' }) => [
-      { type: EffectType.attrMaxBonus, attr, value: 1 },
+    options: { type: true },
+    getEffects: ({ type = '' }) => [
+      { type: EffectType.attrMaxBonus, attr: type, value: 1 },
     ],
   },
   [QualityIds.firstImpression]: {
@@ -229,8 +230,8 @@ export const Qualities: Record<QualityId, Quality> = {
       suffering the associated penalty. The spell cannot have a modified Drain 
       Value of 7 or greater
     `,
-    maxRank: 3,
-    options: { attr: true },
+    maxLevel: 3,
+    options: { type: true },
   },
   [QualityIds.gearhead]: {
     id: QualityIds.gearhead,
@@ -393,7 +394,7 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.spiritSpriteAffinity]: {
     id: QualityIds.spiritSpriteAffinity,
     name: 'Spirit/Sprite Affinity',
-    getName: ({ spirit = 'Spirit' }) => `${spirit} Affinity`,
+    getName: ({ type = 'Spirit' }) => `${type} Affinity`,
     cost: 14,
     source: { book: 'CRB', page: 73 },
     gameEffect: `
@@ -402,7 +403,7 @@ export const Qualities: Record<QualityId, Quality> = {
       chosen class of spirits/sprites. This quality can be taken multiple times,
       selecting a new class of spirits/sprites each time.
     `,
-    options: { spirit: true },
+    options: { type: true },
   },
   [QualityIds.thermographicVision]: {
     id: QualityIds.thermographicVision,
@@ -440,7 +441,7 @@ export const Qualities: Record<QualityId, Quality> = {
     name: 'Will to Live',
     cost: 8,
     source: { book: 'CRB', page: 74 },
-    maxRank: 3,
+    maxLevel: 3,
     gameEffect: `
       For every rank of this quality you possess, you gain two additional Damage
       Overflow boxes (see p. 121).
@@ -451,25 +452,25 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.addiction]: {
     id: QualityIds.addiction,
     name: 'Addiction',
+    getName: ({ type = '' }) => `Addiction (${type})`,
     bonus: 2,
     source: { book: 'CRB', page: 74 },
-    maxRank: 6,
+    maxLevel: 6,
     options: { level: true },
     gameEffect: `
       You cannot earn Edge or spend Edge in any form while suffering withdrawal. 
-      Withdrawal times (the time that passes before you need your next hit) and 
-      requirements are based on the level of addiction and can be found on the 
-      Addiction Withdrawal table. When in withdrawal, take a –2 dicepool penalty 
-      on all tests; increase that penalty by 1 each time you pass another 
-      Withdrawal time period.
+      When in withdrawal, take a penalty on all tests: -2 after 1 day, -4 after 
+      3 days, and -6 after a week. 
     `,
   },
   [QualityIds.allergy]: {
     id: QualityIds.allergy,
     name: 'Allergy',
-    bonus: 20,
+    getName: ({ type = '' }) => `Allergy (${type})`,
+    bonus: 1,
+    maxLevel: 20,
     source: { book: 'CRB', page: 74 },
-    options: { level: true },
+    options: { level: true, type: true },
     gameEffect: `
       Select an allergen and severity to determine Karma value. You cannot spend
       addiction withdrawal table or earn Edge while exposed to your allergen.
@@ -537,7 +538,7 @@ export const Qualities: Record<QualityId, Quality> = {
     name: 'Dependents',
     bonus: 4,
     source: { book: 'CRB', page: 75 },
-    maxRank: 3,
+    maxLevel: 3,
     options: { level: true },
     gameEffect: `
       Choose a level for the dependents. Level 1 dependents are the equivalent
@@ -619,22 +620,22 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.impairedAttr]: {
     id: QualityIds.impairedAttr,
     name: 'Impaired (Attribute)',
-    getName: ({ attr = 'Attribute' }) => `Impaired ${attr}`,
+    getName: ({ type = 'Attribute' }) => `Impaired ${formatAttr(type)}`,
     bonus: 8,
     source: { book: 'CRB', page: 76 },
-    options: { level: true, attr: true },
+    options: { level: true, type: true },
     gameEffect: `
        For each level, the character’s maximum for the chosen attribute 
        decreases by 1, to a minimum of 2.
     `,
-    getEffects: ({ attr = '', level = 1 }) => [
-      { type: EffectType.attrMaxBonus, attr, value: level * -1 },
+    getEffects: ({ type = '', level = 1 }) => [
+      { type: EffectType.attrMaxBonus, attr: type, value: level * -1 },
     ],
   },
   [QualityIds.incompetentSkill]: {
     id: QualityIds.incompetentSkill,
     name: 'Incompetent Skill',
-    getName: ({ skill = 'skill' }) => `Impaired ${skill}`,
+    getName: ({ type = 'skill' }) => `Impaired ${type}`,
     bonus: 10,
     source: { book: 'CRB', page: 76 },
     gameEffect: `
@@ -769,8 +770,10 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.socialStress]: {
     id: QualityIds.socialStress,
     name: 'Social Stress',
+    getName: ({ type }) => `Social Stress (${type})`,
     bonus: 8,
     source: { book: 'CRB', page: 78 },
+    options: { type: true },
     gameEffect: `
       Select a specific social stressor. When encountering your social
       stressor, you must make a Charisma (2) test as a Minor Action. Failure
@@ -782,10 +785,10 @@ export const Qualities: Record<QualityId, Quality> = {
   [QualityIds.spiritSpriteBane]: {
     id: QualityIds.spiritSpriteBane,
     name: 'Spirit/Sprite Bane',
-    getName: ({ spirit }) => `${spirit} Bane`,
+    getName: ({ type }) => `${type} Bane`,
     bonus: 12,
     source: { book: 'CRB', page: 79 },
-    options: { spirit: true },
+    options: { type: true },
     gameEffect: `
       When selecting this quality, choose a type of spirit or sprite. 
       Spirits/sprites from that category gain a bonus point of Edge when you 

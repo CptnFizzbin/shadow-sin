@@ -1,15 +1,14 @@
 import { FC } from 'react'
 
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { useAllGear } from '../Gear/GearContext'
 import { VehicleAttr } from '../Gear/Vehicles/VehicleAttr'
 import { Stat } from '../UI/StatBlock'
 import { useAttribute } from './AttributeProvider'
-import { collectEffects, isDefRatingAdj } from './Effect'
+import { isDefRatingAdj, useGameEffects } from './Effect'
 
 export const CharacterDefRatingStat: FC = () => {
   const body = useAttribute<number>(CharacterAttr.body) || 0
-  const bonus = collectEffects(useAllGear())
+  const bonus = useGameEffects()
     .filter(isDefRatingAdj)
     .reduce((sum, effect) => sum + effect.value, 0)
 

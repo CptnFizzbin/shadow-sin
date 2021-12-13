@@ -21,6 +21,8 @@ import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../Qualities/Quality'
 import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
 import { EffectType } from '../../System/Effect'
 
@@ -258,24 +260,9 @@ export const Silicus: CharacterData = {
   gear: [],
 
   qualities: [
-    {
-      name: 'Analytical Mind',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Bonus edge when making Logic tests',
-      cost: 3,
-    },
-    {
-      name: 'Exceptional (Agility)',
-      source: { book: 'CRB', page: 71 },
-      gameEffect: 'Increase max of one Physical or Mental attribute by 1',
-      cost: 12,
-    },
-    {
-      name: 'Bad Luck',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Glitch on 2s',
-      bonus: 10,
-    },
+    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
+    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
+    toCharQuality(Qualities[QualityIds.badLuck], {}),
   ],
 }
 

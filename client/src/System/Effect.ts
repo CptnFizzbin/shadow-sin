@@ -1,4 +1,7 @@
+import { CharacterData } from '../Character/CharacterData'
+import { useCharacterData } from '../Character/CharacterProvider'
 import { GearData } from '../Gear/GearData'
+import { CharacterQuality } from '../Qualities/CharacterQuality'
 import { ActiveSkillId } from '../Skills'
 import { DamageType } from './Damage/DamageType'
 
@@ -46,7 +49,7 @@ interface DmgTrackAdj extends BaseEffect {
   value: number
 }
 
-export function isDmgTrackBonus (effect: BaseEffect): effect is DmgTrackAdj {
+export function isDmgTrackAdj (effect: BaseEffect): effect is DmgTrackAdj {
   return effect.type === EffectType.dmgTrackAdj
 }
 
@@ -130,7 +133,14 @@ export type Effect =
   | SkillMaxAdj
   | WoundPenaltyAdj
 
-export const collectEffects = (gear: GearData[]): Effect[] => {
+export const collectCharacterEffects = (character: CharacterData): Effect[] => {
+  return [
+    ...collectGearEffects(character.gear),
+    ...collectQualityEffects(character.qualities),
+  ]
+}
+
+export const collectGearEffects = (gear: GearData[]): Effect[] => {
   return gear.flatMap(gear => {
     if (gear.wirelessBonus?.enabled) {
       return gear.effects || []
@@ -138,4 +148,14 @@ export const collectEffects = (gear: GearData[]): Effect[] => {
       return gear.effects?.filter(effect => !effect.wireless) || []
     }
   })
+}
+
+export const collectQualityEffects = (qualities: CharacterQuality[]): Effect[] => {
+  return qualities.flatMap(quality => quality.effects || [])
+}
+
+export const useGameEffects = (): Effect[] => {
+  const character = useCharacterData()
+  if (!character) return []
+  return collectCharacterEffects(character)
 }

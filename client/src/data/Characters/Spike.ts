@@ -12,6 +12,8 @@ import { VehicleData } from '../../Gear/Vehicles/VehicleData'
 import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
 import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../Qualities/Quality'
 import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
 import { EffectType } from '../../System/Effect'
 import { Silicus } from './Silicus'
@@ -128,56 +130,13 @@ export const Spike: CharacterData = {
   ],
 
   qualities: [
-    {
-      name: 'Low Light Vision',
-      source: { book: 'CRB', page: 72 },
-      gameEffect: 'You can see clearly in any light level that is not total darkness.',
-    },
-    {
-      name: 'Exceptional (Agility)',
-      source: { book: 'CRB', page: 71 },
-      gameEffect: 'Your maximum for Agility is 8',
-      cost: 12,
-    },
-    {
-      name: 'Aptitude (Firearms)',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Your firearms skill maximum is for Firearms is 10',
-      cost: 12,
-    },
-    {
-      name: 'High Pain Tolerance',
-      source: { book: 'CRB', page: 72 },
-      gameEffect: 'When wounded, reduce your wound penalty by 1 (to a minimum of 0)',
-      effects: [{ type: EffectType.woundPenaltyAdj, value: 1 }],
-      cost: 7,
-    },
-    {
-      name: 'Catlike',
-      source: { book: 'CRB', page: 71 },
-      gameEffect: 'You gain a bonus edge on all tests for balance, falling, and landing safely.',
-      cost: 12,
-    },
-    {
-      name: 'Allergy (Sun, Moderate)',
-      source: { book: 'CRB', page: 74 },
-      gameEffect: `
-        You can not spend or earn edge while exposed to Sunlight. You 
-        experience -4 dice pool modifier to any test involving a Physical
-        attribute while in Sunlight. 
-      `,
-      bonus: 14,
-    },
-    {
-      name: 'Addiction (Deepweed, 1 Day)',
-      source: { book: 'CRB', page: 74 },
-      gameEffect: `
-        You can not earn or spend edge while under the effects of withdrawal
-        from Deepweed. When in withdrawal, take a penalty on all tests: -2 
-        after 1 day, -4 after 3 days, and -6 after a week 
-      `,
-      bonus: 6,
-    },
+    toCharQuality(Qualities[QualityIds.lowLightVision], {}),
+    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
+    toCharQuality(Qualities[QualityIds.aptitude], { type: ActiveSkillIds.firearms }),
+    toCharQuality(Qualities[QualityIds.highPainTolerance], {}),
+    toCharQuality(Qualities[QualityIds.catlike], {}),
+    toCharQuality(Qualities[QualityIds.allergy], { type: 'Sun, Moderate', level: 14 }),
+    toCharQuality(Qualities[QualityIds.addiction], { type: 'Deepweed, 1 Day', level: 3 }),
   ],
 
   gear: [],

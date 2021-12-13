@@ -10,7 +10,7 @@ import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { collectEffects, isDicePoolAdj } from '../System/Effect'
+import { collectGearEffects, isDicePoolAdj } from '../System/Effect'
 
 export interface DiceGroup {
   name: string
@@ -52,11 +52,8 @@ export const skillSpecialtyBonus = (
   return null
 }
 
-export const collectEffectBonuses = (
-  gear: GearData[],
-  poolKey: string,
-): DiceGroup[] => {
-  return collectEffects(gear)
+export const collectEffectBonuses = (gear: GearData[], poolKey: string): DiceGroup[] => {
+  return collectGearEffects(gear)
     .filter(isDicePoolAdj)
     .filter(effect => effect.poolType === poolKey)
     .map(effect => ({ name: effect.name, size: effect.value, wireless: effect.wireless }) as DiceGroup)

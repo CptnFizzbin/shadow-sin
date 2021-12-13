@@ -1,4 +1,3 @@
-import { CharacterAttr } from '../Character/CharacterAttr'
 import { useCharacterData } from '../Character/CharacterProvider'
 import { Qualities as CrbQualities, QualityIds as CrbQualityIds } from '../data/Rulebooks/CRB'
 import { Effect } from '../System/Effect'
@@ -16,7 +15,7 @@ export interface Quality {
   gameEffect?: string
 
   options?: QualityOptionFlags
-  maxRank?: number
+  maxLevel?: number
 
   getName? (options: QualityOptions): string
 
@@ -25,10 +24,8 @@ export interface Quality {
 
 export type QualityOptions = {
   level?: number
-  skill?: string
-  attr?: CharacterAttr
-  element?: string
-  spirit?: string
+  type?: string
+  notes?: string
 }
 
 export type QualityOptionFlags = {

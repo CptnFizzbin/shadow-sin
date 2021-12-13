@@ -22,6 +22,8 @@ import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
 import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../../Gear/Weapons/WeaponData'
 import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../Qualities/Quality'
 import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
 import { EffectType } from '../../System/Effect'
 
@@ -275,37 +277,12 @@ export const Artemis: CharacterData = {
   gear: [],
 
   qualities: [
-    {
-      name: 'Exceptional (Logic)',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Social Stress (Large Groups)',
-      source: { book: 'CRB', page: 2 },
-      bonus: 8,
-    },
-    {
-      name: 'Juryrigger',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Photographic Memory',
-      source: { book: 'CRB', page: 2 },
-      cost: 12,
-    },
-    {
-      name: 'Analytical Mind',
-      source: { book: 'CRB', page: 2 },
-      gameEffect: 'Bonus edge when making Logic tests',
-      cost: 3,
-    },
-    {
-      name: 'Ambidextrous',
-      source: { book: 'CRB', page: 2 },
-      cost: 4,
-    },
+    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.logic }),
+    toCharQuality(Qualities[QualityIds.socialStress], { type: 'Large Groups' }),
+    toCharQuality(Qualities[QualityIds.juryrigger], {}),
+    toCharQuality(Qualities[QualityIds.photographicMemory], {}),
+    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
+    toCharQuality(Qualities[QualityIds.ambidextrous], {}),
   ],
 }
 

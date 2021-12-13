@@ -8,7 +8,7 @@ import { calculateAttributes } from '../System/Attribute'
 import { AttributeProvider } from '../System/AttributeProvider'
 import { DamageProvider } from '../System/Damage/DamageProvider'
 import { DamageType } from '../System/Damage/DamageType'
-import { collectEffects, isSkillAdj } from '../System/Effect'
+import { collectCharacterEffects, isSkillAdj } from '../System/Effect'
 import { Character } from './Character'
 import { CharacterAttr } from './CharacterAttr'
 import { CharacterData } from './CharacterData'
@@ -85,7 +85,7 @@ export function getActiveSkill (skillId: ActiveSkillId, character: CharacterData
     .find(charSkill => charSkill.id === skillId)
 
   if (charSkill) {
-    const rank = collectEffects(gear)
+    const rank = collectCharacterEffects(character)
       .filter(isSkillAdj)
       .filter(effect => effect.skill === skillId)
       .reduce((sum, effect) => sum + effect.value, charSkill.rank)

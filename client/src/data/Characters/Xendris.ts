@@ -5,10 +5,11 @@ import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
 import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
 import { GearType } from '../../Gear/GearData'
 import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { toCharQuality } from '../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../Qualities/Quality'
 import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
 import { SpellCategory } from '../../Spells/SpellCategory'
 import { SpellType } from '../../Spells/SpellType'
-import { DamageType } from '../../System/Damage/DamageType'
 import { EffectType } from '../../System/Effect'
 
 export const Xendris: CharacterData = {
@@ -134,39 +135,10 @@ export const Xendris: CharacterData = {
   ],
 
   qualities: [
-    {
-      name: 'High Pain Tolerance',
-      source: { book: 'CRB', page: 72 },
-      gameEffect: 'When wounded, reduce your wound penalty by 1 (to a minimum of 0).',
-      cost: 7,
-    },
-    {
-      name: 'Analytical Mind',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: 'Bonus edge when making Logic tests',
-      cost: 3,
-    },
-    {
-      name: 'Built Tough (4)',
-      source: { book: 'CRB', page: 70 },
-      gameEffect: `
-        You have a number of additional boxes on your physical Condition
-        Monitor equal to the rank of this quality
-      `,
-      effects: [
-        { type: EffectType.dmgTrackAdj, track: DamageType.charPhysical, value: 4 },
-      ],
-      cost: 12,
-    },
-    {
-      name: 'Long Reach',
-      source: { book: 'CRB', page: 72 },
-      gameEffect: `
-        When you are using a melee weapon, Close range is extended to 5 meters
-        instead of 3.
-      `,
-      cost: 3,
-    },
+    toCharQuality(Qualities[QualityIds.highPainTolerance], {}),
+    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
+    toCharQuality(Qualities[QualityIds.builtTough], { level: 3 }),
+    toCharQuality(Qualities[QualityIds.longReach], {}),
   ],
 
   gear: [

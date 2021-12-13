@@ -14,13 +14,16 @@ export interface CharacterQuality {
 }
 
 export function toCharQuality (quality: Quality, options: QualityOptions): CharacterQuality {
+  const level = options.level || 1
+
   return {
     name: quality.getName ? quality.getName(options) : quality.name,
     level: options.level,
-    cost: quality.cost,
-    bonus: quality.bonus,
+    cost: quality.cost ? quality.cost * level : undefined,
+    bonus: quality.bonus ? quality.bonus * level : undefined,
     source: quality.source,
     gameEffect: quality.gameEffect,
     effects: quality.getEffects ? quality.getEffects(options) : [],
+    notes: options.notes,
   }
 }

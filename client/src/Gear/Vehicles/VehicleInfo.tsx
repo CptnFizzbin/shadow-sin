@@ -59,18 +59,22 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
         <GearInfoBlock item={vehicle}>
           <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'} sx={{ flexWrap: 'wrap' }}>
             <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'} sx={{ flexWrap: 'wrap' }}>
-              <StatBlock vertical>
-                <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
-                {riggerInterface && (
-                  <>
-                    <CharacterHotVrInit />
-                    <CharacterColdVrInit />
-                  </>
-                )}
-                <VehicleDefRatingStat />
-              </StatBlock>
+              <Box>
+                <StatBlock vertical>
+                  <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
+                  {riggerInterface && (
+                    <>
+                      <CharacterHotVrInit />
+                      <CharacterColdVrInit />
+                    </>
+                  )}
+                  <VehicleDefRatingStat />
+                </StatBlock>
+              </Box>
 
-              <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
+              <Box>
+                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
+              </Box>
             </Stack>
 
             <Box sx={{ flexGrow: 1 }}>

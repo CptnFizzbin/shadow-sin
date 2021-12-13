@@ -10,7 +10,6 @@ export function addGear<T extends GearData = OtherGearData> (
   attachedGear: GearData[] = [],
 ): T {
   if (gear.id === null) { throw new Error(`Null gear id for ${gear.name}`)}
-  if (usedIds.has(gear.id)) { throw new Error(`Duplicate gear id ${gear.id} for ${gear.name}`)}
   usedIds.add(gear.id)
   character.gear.push(gear)
   attachedGear.map(item => item.attachedTo = gear.id)
