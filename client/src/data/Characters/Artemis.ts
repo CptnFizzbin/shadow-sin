@@ -182,14 +182,14 @@ export const Artemis: CharacterData = {
 
   attributes: {
     [CharacterAttr.body]: 2,
-    [CharacterAttr.agility]: 5,
-    [CharacterAttr.reaction]: 4,
+    [CharacterAttr.agility]: 6,
+    [CharacterAttr.reaction]: 5,
     [CharacterAttr.strength]: 1,
     [CharacterAttr.willpower]: 1,
     [CharacterAttr.logic]: 7,
     [CharacterAttr.intuition]: 5,
     [CharacterAttr.charisma]: 2,
-    [CharacterAttr.edge]: 4,
+    [CharacterAttr.edge]: 2,
     [CharacterAttr.magic]: 0,
     [CharacterAttr.resonance]: 0,
     [CharacterAttr.essence]: 6,
