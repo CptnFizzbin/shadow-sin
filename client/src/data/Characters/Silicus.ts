@@ -134,7 +134,12 @@ export const Silicus: CharacterData = {
 
   nuyen: [
     {
-      date: '2021-12-19T16:00',
+      date: '2021-12-19T16:02',
+      value: -30_000,
+      note: 'Orthoskin 2 => 4',
+    },
+    {
+      date: '2021-12-19T16:01',
       value: 70_000,
       note: 'Karma => Nuyen from Ron',
     },
@@ -748,7 +753,7 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   source: { book: 'CRB', page: 292 },
   avail: { rarity: 7, license: true },
-  cost: 30_000,
+  cost: 60_000,
 
   description: (`
     A web of biofibers in the skin provides the
@@ -761,13 +766,13 @@ addGear<AugmentData>(Silicus, {
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.delta,
-    [AugmentAttr.essenceCost]: 0.25,
+    [AugmentAttr.essenceCost]: 0.50,
     [AugmentAttr.slot]: AugmentSlot.bioware,
-    [AugmentAttr.rating]: 2,
+    [AugmentAttr.rating]: 4,
   },
 
   effects: [
-    { type: EffectType.defRatingAdj, value: 2 },
+    { type: EffectType.defRatingAdj, value: 4 },
   ],
 })
 
