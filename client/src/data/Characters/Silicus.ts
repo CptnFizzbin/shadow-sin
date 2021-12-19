@@ -48,7 +48,7 @@ export const Silicus: CharacterData = {
     {
       date: '2021-12-19T16:02',
       value: -20,
-      note: 'Sell bad luck',
+      note: 'Buy off Bad Luck',
     },
     {
       date: '2021-12-19T16:01',
@@ -302,7 +302,6 @@ export const Silicus: CharacterData = {
   qualities: [
     toCharQuality(Qualities[QualityIds.analyticalMind]),
     toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
-    toCharQuality(Qualities[QualityIds.badLuck]),
   ],
 }
 
