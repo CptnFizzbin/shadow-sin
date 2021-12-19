@@ -41,6 +41,16 @@ export const Silicus: CharacterData = {
 
   karma: [
     {
+      date: '2021-12-19T16:03',
+      value: -28,
+      note: 'Karma => Nuyen (Ron)',
+    },
+    {
+      date: '2021-12-19T16:02',
+      value: -20,
+      note: 'Sell bad luck',
+    },
+    {
       date: '2021-12-19T16:01',
       value: 5,
       note: 'Mission reward',
@@ -123,6 +133,11 @@ export const Silicus: CharacterData = {
   ],
 
   nuyen: [
+    {
+      date: '2021-12-19T16:00',
+      value: 70_000,
+      note: 'Karma => Nuyen from Ron',
+    },
     {
       date: '2021-12-19T16:00',
       value: 40_000,
