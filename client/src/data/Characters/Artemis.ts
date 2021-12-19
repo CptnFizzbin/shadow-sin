@@ -640,24 +640,6 @@ const fnHar: WeaponData = {
   specialtyName: Specializations.Firearms.Rifles,
 }
 
-const blackKnight: WeaponData = {
-  id: null,
-  gearType: GearType.weapon,
-  name: 'Ingram Black Knight',
-  type: 'Rifle',
-  avail: { rarity: 3, license: true },
-  cost: 9_200,
-  attributes: {
-    [WeaponAttr.dv]: '6P',
-    [WeaponAttr.modes]: 'BF/FA',
-    [WeaponAttr.attackRatings]: '1/10/11/8/8',
-    [WeaponAttr.ammo]: '10(m)',
-  },
-
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.MachineGuns,
-}
-
 const stdWeaponMount: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
@@ -666,16 +648,6 @@ const stdWeaponMount: VehicleModData = {
   type: 'vehicle mod',
   avail: { rarity: 4, illegal: true },
   cost: 4_500,
-}
-
-const heavyWeaponMount: VehicleModData = {
-  id: null,
-  gearType: GearType.vehicleMod,
-  modType: ModType.heavyWeaponMount,
-  name: 'Heavy Weapon Mount',
-  type: 'vehicle mod',
-  avail: { rarity: 5, illegal: true },
-  cost: 5_000,
 }
 
 const riggerInterface: VehicleModData = {
@@ -828,47 +800,8 @@ const crawlerDrone: VehicleData = {
 
 addGear<VehicleData>(Artemis, {
   ...crawlerDrone,
-  id: '2d42aac6-71a2-4154-a00b-ba9ba681a3af',
-  name: 'Aztech Crawler 1',
-  destroyed: true,
-}, [
-  addGear(Artemis, { ...heavyWeaponMount, id: '2a40e609-c2be-4eb4-b289-b3038d626392' }, [
-    addGear(Artemis, { ...blackKnight, id: '20bd77d8-0a82-4d02-885d-8c48046975c3' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: '428e551d-516e-4450-a9b1-e2b775ea4a20' }),
-  addGear(Artemis, { ...sensorArray, id: '1ac75091-6d53-43f8-86d5-63c13c233779' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  ...crawlerDrone,
-  id: 'a969b8fa-2e3a-49d3-acb9-e6e2a877a1ae',
-  name: 'Aztech Crawler 2',
-  destroyed: true,
-}, [
-  addGear(Artemis, { ...heavyWeaponMount, id: '1a9454ea-f105-45c1-a9d4-3e874b457f83' }, [
-    addGear(Artemis, { ...blackKnight, id: '9513ac1e-3ae3-457f-aa59-da8b64e9947c' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: '7753605b-6ffb-4295-bc8b-93859021c8a9' }),
-  addGear(Artemis, { ...sensorArray, id: 'd952c534-d98c-4b24-a3d1-3f367835ec76' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  ...crawlerDrone,
-  id: '573791c8-e686-4411-927a-052452d8dcba',
-  name: 'Aztech Crawler 3',
-  destroyed: true,
-}, [
-  addGear(Artemis, { ...stdWeaponMount, id: 'cec78dcc-7911-44d7-bd12-56af38b95193' }, [
-    addGear(Artemis, { ...fnHar, id: 'ab2727cd-d3bc-4461-b201-10d739c5e2f5' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: 'cee46222-8727-40f3-9788-c08dd29369ae' }),
-  addGear(Artemis, { ...sensorArray, id: '40ef5411-038c-4b97-abfd-a70d8dcd2b3b' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  ...crawlerDrone,
   id: 'b02313b9-c024-4c5b-a661-9e23fbc6e816',
-  name: 'Aztech Crawler 4',
+  name: 'Aztech Crawler 1',
 
 }, [
   addGear(Artemis, { ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
