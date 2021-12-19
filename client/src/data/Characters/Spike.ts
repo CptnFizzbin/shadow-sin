@@ -33,6 +33,16 @@ export const Spike: CharacterData = {
 
   karma: [
     {
+      date: '2021-12-19T16:01',
+      value: 5,
+      note: 'Mission reward',
+    },
+    {
+      date: '2021-12-19T16:00',
+      value: 3,
+      note: 'Session reward',
+    },
+    {
       date: '2021-12-05T16:00',
       value: 5,
       note: 'Session reward',
@@ -45,6 +55,11 @@ export const Spike: CharacterData = {
   ],
 
   nuyen: [
+    {
+      date: '2021-12-19T16:00',
+      value: 40_000,
+      note: 'Mission Reward',
+    },
     {
       date: '2021-12-05',
       value: 13_066,
