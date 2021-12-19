@@ -13,7 +13,7 @@ export interface CharacterQuality {
   notes?: string
 }
 
-export function toCharQuality (quality: Quality, options: QualityOptions): CharacterQuality {
+export function toCharQuality (quality: Quality, options: QualityOptions = {}): CharacterQuality {
   const level = options.level || 1
 
   return {

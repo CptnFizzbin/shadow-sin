@@ -265,9 +265,9 @@ export const Silicus: CharacterData = {
   gear: [],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
+    toCharQuality(Qualities[QualityIds.analyticalMind]),
     toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
-    toCharQuality(Qualities[QualityIds.badLuck], {}),
+    toCharQuality(Qualities[QualityIds.badLuck]),
   ],
 }
 

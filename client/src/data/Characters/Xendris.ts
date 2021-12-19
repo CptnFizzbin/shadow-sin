@@ -140,10 +140,10 @@ export const Xendris: CharacterData = {
   ],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.highPainTolerance], {}),
-    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
+    toCharQuality(Qualities[QualityIds.highPainTolerance]),
+    toCharQuality(Qualities[QualityIds.analyticalMind]),
     toCharQuality(Qualities[QualityIds.builtTough], { level: 3 }),
-    toCharQuality(Qualities[QualityIds.longReach], {}),
+    toCharQuality(Qualities[QualityIds.longReach]),
   ],
 
   gear: [

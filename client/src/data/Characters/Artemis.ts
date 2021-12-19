@@ -284,10 +284,10 @@ export const Artemis: CharacterData = {
   qualities: [
     toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.logic }),
     toCharQuality(Qualities[QualityIds.socialStress], { type: 'Large Groups' }),
-    toCharQuality(Qualities[QualityIds.juryrigger], {}),
-    toCharQuality(Qualities[QualityIds.photographicMemory], {}),
-    toCharQuality(Qualities[QualityIds.analyticalMind], {}),
-    toCharQuality(Qualities[QualityIds.ambidextrous], {}),
+    toCharQuality(Qualities[QualityIds.juryrigger]),
+    toCharQuality(Qualities[QualityIds.photographicMemory]),
+    toCharQuality(Qualities[QualityIds.analyticalMind]),
+    toCharQuality(Qualities[QualityIds.ambidextrous]),
   ],
 }
 

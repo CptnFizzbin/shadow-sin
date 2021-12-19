@@ -135,11 +135,11 @@ export const Spike: CharacterData = {
   ],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.lowLightVision], {}),
+    toCharQuality(Qualities[QualityIds.lowLightVision]),
     toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
     toCharQuality(Qualities[QualityIds.aptitude], { type: ActiveSkillIds.firearms }),
-    toCharQuality(Qualities[QualityIds.highPainTolerance], {}),
-    toCharQuality(Qualities[QualityIds.catlike], {}),
+    toCharQuality(Qualities[QualityIds.highPainTolerance]),
+    toCharQuality(Qualities[QualityIds.catlike]),
     toCharQuality(Qualities[QualityIds.allergy], { type: 'Sun, Moderate', level: 14 }),
     toCharQuality(Qualities[QualityIds.addiction], { type: 'Deepweed, 1 Day', level: 3 }),
   ],
