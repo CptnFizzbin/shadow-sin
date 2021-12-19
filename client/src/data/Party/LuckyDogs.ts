@@ -1,7 +1,9 @@
+import {GearData} from '../../Gear/GearData'
 import {BalanceLog} from '../../System/BalanceLog'
 
 interface Party {
   nuyen: BalanceLog
+  gear: GearData[]
 }
 
 export const LuckyDogs: Party = {
@@ -12,4 +14,6 @@ export const LuckyDogs: Party = {
       note: 'Mission Rewards',
     },
   ],
+
+  gear: [],
 }
