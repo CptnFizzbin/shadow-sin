@@ -25,6 +25,16 @@ export const Xendris: CharacterData = {
 
   karma: [
     {
+      date: '2021-12-05T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
+      date: '2021-11-27T16:00',
+      value: 4,
+      note: 'Session reward',
+    },
+    {
       date: '2021-11-21T15:05',
       value: 3,
       note: 'Session reward',
@@ -41,11 +51,6 @@ export const Xendris: CharacterData = {
     },
   ],
   nuyen: [
-    {
-      date: '2021-11-27T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
     {
       date: '2021-11-21T16:00',
       value: 2_000,

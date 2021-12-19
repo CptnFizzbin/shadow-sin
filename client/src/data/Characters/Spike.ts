@@ -33,6 +33,11 @@ export const Spike: CharacterData = {
 
   karma: [
     {
+      date: '2021-12-05T16:00',
+      value: 5,
+      note: 'Session reward',
+    },
+    {
       date: '2021-12-05',
       value: 27,
       note: 'Balance import',
