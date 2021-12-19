@@ -477,8 +477,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(m)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Launchers,
+  skill: ActiveSkillIds.exoticWeapons,
+  specialtyName: 'Launchers',
 }, [
   addGear(Silicus, {
     id: '76d1fc48-02c9-41b6-ae81-87bee8ad9b9e',
@@ -493,8 +493,8 @@ addGear<WeaponData>(Silicus, {
     },
 
     removable: false,
-    skill: ActiveSkillIds.firearms,
-    specialtyName: Specializations.Firearms.Launchers,
+    skill: ActiveSkillIds.exoticWeapons,
+    specialtyName: 'Launchers',
   }),
 ])
 

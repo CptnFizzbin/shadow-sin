@@ -72,7 +72,6 @@ export const Specializations = {
     Rifles: 'Rifles',
     MachineGuns: 'Machine Guns',
     AssaultCannons: 'Assault Cannons',
-    Launchers: 'Launchers',
   },
   Influence: {
     Etiquette: 'Etiquette',
