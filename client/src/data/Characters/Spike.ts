@@ -1,24 +1,25 @@
-import { AwakenedType } from '../../Character/AwakenedType'
-import { CharacterAttr } from '../../Character/CharacterAttr'
-import { CharacterData } from '../../Character/CharacterData'
-import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
-import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot } from '../../Gear/Augments/AugmentData'
-import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../../Gear/GearData'
-import { OtherGearAttr } from '../../Gear/OtherGearData'
-import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../../Gear/Vehicles/VehicleData'
-import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
-import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
-import { toCharQuality } from '../../Qualities/CharacterQuality'
-import { Qualities, QualityIds } from '../../Qualities/Quality'
-import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
-import { EffectType } from '../../System/Effect'
-import { Silicus } from './Silicus'
+import {AwakenedType} from '../../Character/AwakenedType'
+import {CharacterAttr} from '../../Character/CharacterAttr'
+import {CharacterData} from '../../Character/CharacterData'
+import {ArmorAttr} from '../../Gear/Armor/ArmorAttr'
+import {AugmentAttr} from '../../Gear/Augments/AugmentAttr'
+import {AugmentData, AugmentGrade, AugmentSlot} from '../../Gear/Augments/AugmentData'
+import {CommlinkAttr} from '../../Gear/Commlink/CommlinkAttr'
+import {GearType} from '../../Gear/GearData'
+import {SinAttr} from '../../Gear/License/SinAttr'
+import {SinData} from '../../Gear/License/SinData'
+import {OtherGearAttr} from '../../Gear/OtherGearData'
+import {VehicleAttr} from '../../Gear/Vehicles/VehicleAttr'
+import {VehicleData} from '../../Gear/Vehicles/VehicleData'
+import {WeaponPoolKeys} from '../../Gear/Weapons/DicePools'
+import {WeaponAttr} from '../../Gear/Weapons/WeaponAttr'
+import {WeaponModData, WeaponModSlot} from '../../Gear/Weapons/WeaponModData'
+import {toCharQuality} from '../../Qualities/CharacterQuality'
+import {Qualities, QualityIds} from '../../Qualities/Quality'
+import {ActiveSkillIds, SkillType, Specializations} from '../../Skills'
+import {EffectType} from '../../System/Effect'
 
-import { addGear } from './index'
+import {addGear} from './index'
 
 export const Spike: CharacterData = {
   dataVersion: 3,
@@ -151,12 +152,12 @@ export const Spike: CharacterData = {
 
   qualities: [
     toCharQuality(Qualities[QualityIds.lowLightVision]),
-    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
-    toCharQuality(Qualities[QualityIds.aptitude], { type: ActiveSkillIds.firearms }),
+    toCharQuality(Qualities[QualityIds.exceptional], {type: CharacterAttr.agility}),
+    toCharQuality(Qualities[QualityIds.aptitude], {type: ActiveSkillIds.firearms}),
     toCharQuality(Qualities[QualityIds.highPainTolerance]),
     toCharQuality(Qualities[QualityIds.catlike]),
-    toCharQuality(Qualities[QualityIds.allergy], { type: 'Sun, Moderate', level: 14 }),
-    toCharQuality(Qualities[QualityIds.addiction], { type: 'Deepweed, 1 Day', level: 3 }),
+    toCharQuality(Qualities[QualityIds.allergy], {type: 'Sun, Moderate', level: 14}),
+    toCharQuality(Qualities[QualityIds.addiction], {type: 'Deepweed, 1 Day', level: 3}),
   ],
 
   gear: [],
@@ -164,11 +165,11 @@ export const Spike: CharacterData = {
 
 addGear(Spike, {
   id: '2dd5ed6d-14aa-450b-b5f2-85e1d7ca5063',
-  source: { book: 'CRB', page: 265 },
+  source: {book: 'CRB', page: 265},
   gearType: GearType.armor,
   name: 'Chameleon Suit',
   type: 'Armor',
-  avail: { rarity: 4, illegal: true },
+  avail: {rarity: 4, illegal: true},
   cost: 2_000,
   attributes: {
     [ArmorAttr.defenseBonus]: 2,
@@ -183,27 +184,27 @@ addGear(Spike, {
     enabled: true,
     description: 'Raises defense rating by 2 thanks to improved hiding ability',
     effects: [
-      { type: EffectType.defRatingAdj, bonus: 2 },
+      {type: EffectType.defRatingAdj, bonus: 2},
     ],
   },
 }, [
-  addGear(Silicus, {
+  addGear(Spike, {
     attachedTo: '2dd5ed6d-14aa-450b-b5f2-85e1d7ca5063',
     id: '91aa36e4-a048-41c9-9652-3b84b99468e9',
     gearType: GearType.armorMod,
     name: 'Electricity Resistance',
     type: 'Armor Mod',
-    source: { book: 'CRB', page: 266 },
-    avail: { rarity: 3 },
+    source: {book: 'CRB', page: 266},
+    avail: {rarity: 3},
     cost: 1_000,
-    attributes: { 'Rating': 4, 'Uses': 4 },
+    attributes: {'Rating': 4, 'Uses': 4},
     description: 'Cancels the Zapped status up to 4 times, then is worn away',
   }),
 ])
 
 const smartGunIntMod: WeaponModData = {
   id: null,
-  source: { book: 'CRB', page: 260 },
+  source: {book: 'CRB', page: 260},
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
   type: 'Weapon Mod',
@@ -234,8 +235,8 @@ addGear(Spike, {
   gearType: GearType.weapon,
   name: 'Ruger 101',
   type: 'Rifle',
-  source: { book: 'CRB', page: 258 },
-  avail: { rarity: 2, license: true },
+  source: {book: 'CRB', page: 258},
+  avail: {rarity: 2, license: true},
   cost: 11_100,
   attributes: {
     [WeaponAttr.dv]: '5P',
@@ -246,18 +247,18 @@ addGear(Spike, {
   skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Rifles,
 }, [
-  addGear(Silicus, {
+  addGear(Spike, {
     ...smartGunIntMod,
     id: '5c6a5325-1f21-435e-b39d-559b8d7367ba',
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: 'ff521abf-4f69-43bc-8842-42c70fa57677',
     gearType: GearType.weaponMod,
     name: 'Rigid Stock with shock pad',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: '604f8e10-23ee-49c0-9e03-47129f56f984',
     gearType: GearType.weaponMod,
     name: 'Imaging Scope',
@@ -272,8 +273,8 @@ addGear(Spike, {
   gearType: GearType.weapon,
   name: 'Ares Desert Strike',
   type: 'Rifle',
-  source: { book: 'CRB', page: 258 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 258},
+  avail: {rarity: 4, illegal: true},
   cost: 11_000,
   attributes: {
     [WeaponAttr.dv]: '5P',
@@ -284,18 +285,18 @@ addGear(Spike, {
   skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.Rifles,
 }, [
-  addGear(Silicus, {
+  addGear(Spike, {
     ...smartGunIntMod,
     id: '34253074-4c73-4e12-9434-856d363a394c',
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: 'd3f6211d-9057-498b-8c52-9f137a63a248',
     gearType: GearType.weaponMod,
     name: 'Rigid Stock with shock pad',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: '71e863dc-c0e8-4b71-b0a4-69ce58e5e4d1',
     gearType: GearType.weaponMod,
     name: 'Imaging Scope',
@@ -310,8 +311,8 @@ addGear(Spike, {
   gearType: GearType.weapon,
   name: 'Ingram Smartgun XI',
   type: 'Submachine Gun',
-  source: { book: 'CRB', page: 255 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 255},
+  avail: {rarity: 3, license: true},
   cost: 750,
   attributes: {
     [WeaponAttr.dv]: '3P',
@@ -322,11 +323,11 @@ addGear(Spike, {
   skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.SubmachineGuns,
 }, [
-  addGear(Silicus, {
+  addGear(Spike, {
     ...smartGunIntMod,
     id: '3443bc88-c268-4b39-940e-d3c4adf1bfe9',
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: 'a746b9e4-8076-4ca9-9ee9-bb6f6bea0e15',
     gearType: GearType.weaponMod,
     name: 'Gas Vent System',
@@ -334,7 +335,7 @@ addGear(Spike, {
     slot: WeaponModSlot.barrel,
     removable: false,
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: 'f47ecf4d-36bc-4a16-8abb-7006dcfc1461',
     gearType: GearType.weaponMod,
     name: 'Silencer',
@@ -349,8 +350,8 @@ addGear(Spike, {
   gearType: GearType.weapon,
   name: 'Fichetti Security 600',
   type: 'Light Pistol',
-  source: { book: 'CRB', page: 255 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 255},
+  avail: {rarity: 3, license: true},
   cost: 390,
   attributes: {
     [WeaponAttr.dv]: '2P',
@@ -361,18 +362,18 @@ addGear(Spike, {
   skill: ActiveSkillIds.firearms,
   specialtyName: Specializations.Firearms.LightPistols,
 }, [
-  addGear(Silicus, {
+  addGear(Spike, {
     ...smartGunIntMod,
     id: '9d32fd3a-25ed-4954-9d69-e27f6f153830',
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: '1a8c4cb4-f56c-41df-9884-36373fbf698f',
     gearType: GearType.weaponMod,
     name: 'Folding Stock',
     type: 'Weapon Mod',
     slot: WeaponModSlot.under,
   }),
-  addGear(Silicus, {
+  addGear(Spike, {
     id: '5001b8fc-817f-41fc-afee-118e39a0bbea',
     gearType: GearType.weaponMod,
     name: 'Laser Sight',
@@ -386,8 +387,8 @@ addGear<AugmentData>(Spike, {
   gearType: GearType.augment,
   name: 'Muscle Replacement',
   type: 'Bodyware Augment',
-  source: { book: 'CRB', page: 287 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 287},
+  avail: {rarity: 3, license: true},
   cost: 60_000,
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
@@ -403,8 +404,8 @@ addGear<AugmentData>(Spike, {
     augmentation or muscle toner bioware
   `,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.strength, value: 3 },
-    { type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 3 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.strength, value: 3},
+    {type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 3},
   ],
 })
 
@@ -413,8 +414,8 @@ addGear<AugmentData>(Spike, {
   gearType: GearType.augment,
   name: 'Wired Reflexes',
   type: 'Bodyware Augment',
-  source: { book: 'CRB', page: 287 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 287},
+  avail: {rarity: 3, license: true},
   cost: 60_000,
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.standard,
@@ -436,8 +437,8 @@ addGear<AugmentData>(Spike, {
     are incompatible with augmentations that affect Reaction or Initiative
   `,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2 },
-    { type: EffectType.initAdj, value: 2 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2},
+    {type: EffectType.initAdj, value: 2},
   ],
   wirelessBonus: {
     enabled: true,
@@ -453,8 +454,8 @@ addGear<AugmentData>(Spike, {
   gearType: GearType.augment,
   name: 'Orthoskin',
   type: 'Bioware Augment',
-  source: { book: 'CRB', page: 292 },
-  avail: { rarity: 7, license: true },
+  source: {book: 'CRB', page: 292},
+  avail: {rarity: 7, license: true},
   cost: 15_000,
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.delta,
@@ -469,7 +470,7 @@ addGear<AugmentData>(Spike, {
     cannot be combined with skin augmentations, including dermal plating.
   `,
   effects: [
-    { type: EffectType.defRatingAdj, value: 1 },
+    {type: EffectType.defRatingAdj, value: 1},
   ],
 })
 
@@ -478,8 +479,8 @@ addGear<AugmentData>(Spike, {
   gearType: GearType.augment,
   name: 'Symbiotes',
   type: 'Bioware Augment',
-  source: { book: 'CRB', page: 292 },
-  avail: { rarity: 4 },
+  source: {book: 'CRB', page: 292},
+  avail: {rarity: 4},
   cost: 17_500,
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.delta,
@@ -503,8 +504,8 @@ addGear<VehicleData>(Spike, {
   name: 'Suzuki Mirage',
   type: 'Bike',
   cost: 12_000,
-  avail: { rarity: 2 },
-  source: { book: 'CRB', page: 295 },
+  avail: {rarity: 2},
+  source: {book: 'CRB', page: 295},
 
   attributes: {
     [VehicleAttr.handling]: '2/6',
@@ -523,11 +524,11 @@ addGear<VehicleData>(Spike, {
 
 addGear(Spike, {
   id: '35828ade-2256-401b-b99a-cf6c4d4b0712',
-  source: { book: 'CRB', page: 267 },
+  source: {book: 'CRB', page: 267},
   gearType: GearType.other,
   name: 'Renraku Sensei',
   type: 'Commlink',
-  avail: { rarity: 2 },
+  avail: {rarity: 2},
   cost: 1_000,
   attributes: {
     [CommlinkAttr.deviceRating]: 3,
@@ -541,8 +542,8 @@ addGear(Spike, {
   gearType: GearType.other,
   name: 'Glasses',
   type: 'Clothing',
-  source: { book: 'CRB', page: 285 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 285},
+  avail: {rarity: 2},
   cost: 300,
 
   attributes: {
@@ -554,8 +555,8 @@ addGear(Spike, {
     gearType: GearType.other,
     name: 'Smartlink',
     type: 'Visual Enhancement',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 2 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 2},
     cost: 2_000,
 
     attributes: {
@@ -567,8 +568,8 @@ addGear(Spike, {
     gearType: GearType.other,
     name: 'Imagelink',
     type: 'Visual Enhancement',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 1 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 1},
     cost: 25,
 
     attributes: {
@@ -576,3 +577,19 @@ addGear(Spike, {
     },
   }),
 ])
+
+addGear<SinData>(Spike, {
+  id: '378b33ff-2f6a-4000-8fd4-c9f17120f205',
+  gearType: GearType.sin,
+  name: 'Shiro Omagi',
+  type: 'Fake SIN',
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
+  cost: 10_000,
+
+  description: 'Runner use SIN',
+
+  attributes: {
+    [SinAttr.rating]: 4,
+  },
+})

@@ -1043,7 +1043,7 @@ addGear<AugmentData>(Artemis, {
 addGear<SinData>(Artemis, {
   id: '110a3b00-ac94-4698-a60c-7cf34d829bcb',
   gearType: GearType.sin,
-  name: 'Davina Hasselhoff',
+  name: 'Sara McCabe',
   type: 'Fake SIN',
   source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
@@ -1059,7 +1059,7 @@ addGear<SinData>(Artemis, {
 addGear<SinData>(Artemis, {
   id: '25a3030a-4850-4f68-914f-95276c893352',
   gearType: GearType.sin,
-  name: 'Sara McCabe',
+  name: 'Jadzia Dax',
   type: 'Fake SIN',
   source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },

@@ -1140,7 +1140,7 @@ addGear<SinData>(Silicus, {
 addGear<SinData>(Silicus, {
   id: '7cd3e825-ca8f-40b6-ad50-ae2af68fa91c',
   gearType: GearType.sin,
-  name: 'Picard DeLance',
+  name: 'Julian Bashir',
   type: 'Fake SIN',
   source: { book: 'CRB', page: 273 },
   avail: { rarity: 4, illegal: true },
