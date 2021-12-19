@@ -733,6 +733,7 @@ addGear<AugmentData>(Silicus, {
     [AugmentAttr.grade]: AugmentGrade.delta,
     [AugmentAttr.essenceCost]: 0.25,
     [AugmentAttr.slot]: AugmentSlot.bioware,
+    [AugmentAttr.rating]: 2,
   },
 
   effects: [
