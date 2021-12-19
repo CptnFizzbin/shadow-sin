@@ -77,7 +77,6 @@ export function useActiveSkill (skill: ActiveSkillId): CharacterActiveSkill | un
 }
 
 export function getActiveSkill (skillId: ActiveSkillId, character: CharacterData): CharacterActiveSkill | undefined {
-  const gear = character.gear
   const activeSkill = ActiveSkills[skillId]
 
   const charSkill = character.skills
