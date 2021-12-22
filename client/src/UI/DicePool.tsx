@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 
 import { useActiveSkills } from '../Character/CharacterProvider'
 import { GearData } from '../Gear/GearData'
-import { ActiveSkillId, CharacterActiveSkill, hasExpertise, hasSpecialty } from '../Skills'
+import { ActiveSkillId, CharacterActiveSkill, formatSkill, hasExpertise, hasSpecialty } from '../Skills'
 import { formatAttr } from '../System/Attribute'
 import { useAttributes } from '../System/AttributeProvider'
 import { useDamagePenalty } from '../System/Damage/DamageProvider'
@@ -80,7 +80,7 @@ export const DicePool: FC<DicePoolProps> = ({
   groups = [
     ...groups,
     ...Object.values(skillList)
-      .map(skill => ({ name: skill.id, size: skill.rank })),
+      .map(skill => ({ name: formatSkill(skill.id), size: skill.rank })),
     ...Object.entries(attrList)
       .filter(([_, value]) => typeof value === 'number')
       .map(([attrType, value]) => ({ name: formatAttr(attrType), size: value as number })),

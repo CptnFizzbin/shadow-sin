@@ -1,5 +1,5 @@
 import { Specializations as CrbSpecializations } from '../data/Rulebooks/CRB'
 
 export const Specializations = {
-  ...CrbSpecializations,
+  CRB: CrbSpecializations,
 }

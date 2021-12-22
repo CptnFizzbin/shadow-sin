@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { DamageType } from '../System/Damage/DamageType'
 import { DicePool } from '../UI/DicePool'
-import { ActiveSkills } from './ActiveSkills'
+import { ActiveSkills, formatSkill } from './ActiveSkills'
 import { CharacterActiveSkill } from './CharacterSkill'
 
 interface SkillListProps {
@@ -34,25 +34,25 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
   return (
     <Box sx={{ width: 175 }}>
       <div>
-        <Typography sx={{ color: 'primary.main', display: 'inline' }}>{charSkill.id}</Typography>
+        <Typography sx={{ color: 'primary.main', display: 'inline' }}>{formatSkill(charSkill.id)}</Typography>
         <Typography sx={{ paddingLeft: 1, display: 'inline' }}>{charSkill.rank}</Typography>
       </div>
       <Paper variant="outlined" sx={{ padding: 1 }}>
         <Stack gap={1}>
           <DicePool
-            name={activeSkill.name}
+            name={formatSkill(activeSkill.id)}
             poolKey={`activeSkill.${activeSkill.name}.${activeSkill.attr}`}
             attrs={[activeSkill.attr]}
-            skills={[activeSkill.name]}
+            skills={[activeSkill.id]}
             dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
           />
 
           {activeSkill.altAttr && (
             <DicePool
-              name={activeSkill.name}
+              name={formatSkill(activeSkill.id)}
               poolKey={`activeSkill.${activeSkill.name}.${activeSkill.altAttr}`}
               attrs={[activeSkill.altAttr]}
-              skills={[activeSkill.name]}
+              skills={[activeSkill.id]}
               dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
             />
           )}

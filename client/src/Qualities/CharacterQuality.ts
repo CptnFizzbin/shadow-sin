@@ -1,6 +1,6 @@
 import { Effect } from '../System/Effect'
 import { Source } from '../System/Source'
-import { Quality, QualityOptions } from './Quality'
+import { getQuality, Quality, QualityId, QualityOptions } from './Quality'
 
 export interface CharacterQuality {
   name: string
@@ -13,14 +13,15 @@ export interface CharacterQuality {
   notes?: string
 }
 
-export function toCharQuality (quality: Quality, options: QualityOptions = {}): CharacterQuality {
+export function toCharQuality (quality: Quality | QualityId, options: QualityOptions = {}): CharacterQuality {
+  if (typeof quality === 'string') quality = getQuality(quality)
   const level = options.level || 1
 
   return {
     name: quality.getName ? quality.getName(options) : quality.name,
     level: options.level,
-    cost: quality.cost ? quality.cost * level : undefined,
-    bonus: quality.bonus ? quality.bonus * level : undefined,
+    cost: !options.metaType && quality.cost ? quality.cost * level : undefined,
+    bonus: !options.metaType && quality.bonus ? quality.bonus * level : undefined,
     source: quality.source,
     gameEffect: quality.gameEffect,
     effects: quality.getEffects ? quality.getEffects(options) : [],

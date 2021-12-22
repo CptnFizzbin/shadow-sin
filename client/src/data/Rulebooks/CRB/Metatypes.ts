@@ -1,20 +1,24 @@
 import { CharacterAttr } from '../../../Character/CharacterAttr'
 import { Metatype } from '../../../Character/Metatype'
+import { toCharQuality } from '../../../Qualities/CharacterQuality'
 import { QualityIds } from './Qualities'
 
 export enum MetatypeId {
-  dwarf = 'metatype.dwarf',
-  elf = 'metatype.elf',
-  human = 'metatype.human',
-  ork = 'metatype.ork',
-  troll = 'metatype.troll'
+  dwarf = 'metatype.CRB.dwarf',
+  elf = 'metatype.CRB.elf',
+  human = 'metatype.CRB.human',
+  ork = 'metatype.CRB.ork',
+  troll = 'metatype.CRB.troll'
 }
 
-export const Metatypes: Record<MetatypeId, Metatype> = {
-  [MetatypeId.dwarf]: {
+export const Metatypes: Metatype[] = [
+  {
     id: MetatypeId.dwarf,
     name: 'Dwarf',
-    qualities: [],
+    qualities: [
+      toCharQuality(QualityIds.toxinResistance),
+      toCharQuality(QualityIds.thermographicVision),
+    ],
     priorityLevels: ['A', 'B', 'C', 'D', 'E'],
     attrMaximums: {
       [CharacterAttr.body]: 7,
@@ -31,10 +35,12 @@ export const Metatypes: Record<MetatypeId, Metatype> = {
       [CharacterAttr.essence]: 6,
     },
   },
-  [MetatypeId.elf]: {
+  {
     id: MetatypeId.elf,
     name: 'Elf',
-    qualities: [QualityIds.lowLightVision],
+    qualities: [
+      toCharQuality(QualityIds.lowLightVision),
+    ],
     priorityLevels: ['B', 'C', 'D', 'E'],
     attrMaximums: {
       [CharacterAttr.body]: 6,
@@ -51,7 +57,7 @@ export const Metatypes: Record<MetatypeId, Metatype> = {
       [CharacterAttr.essence]: 6,
     },
   },
-  [MetatypeId.human]: {
+  {
     id: MetatypeId.human,
     name: 'Human',
     qualities: [],
@@ -71,10 +77,13 @@ export const Metatypes: Record<MetatypeId, Metatype> = {
       [CharacterAttr.essence]: 6,
     },
   },
-  [MetatypeId.ork]: {
+  {
     id: MetatypeId.ork,
     name: 'Ork',
-    qualities: [],
+    qualities: [
+      toCharQuality(QualityIds.lowLightVision),
+      toCharQuality(QualityIds.builtTough, { level: 2 }),
+    ],
     priorityLevels: ['A', 'B', 'C', 'D', 'E'],
     attrMaximums: {
       [CharacterAttr.body]: 8,
@@ -91,10 +100,14 @@ export const Metatypes: Record<MetatypeId, Metatype> = {
       [CharacterAttr.essence]: 6,
     },
   },
-  [MetatypeId.troll]: {
+  {
     id: MetatypeId.troll,
     name: 'Troll',
-    qualities: [],
+    qualities: [
+      toCharQuality(QualityIds.dermalDeposits),
+      toCharQuality(QualityIds.thermographicVision),
+      toCharQuality(QualityIds.builtTough, { level: 3 }),
+    ],
     priorityLevels: ['A', 'B', 'C', 'D', 'E'],
     attrMaximums: {
       [CharacterAttr.body]: 9,
@@ -111,4 +124,4 @@ export const Metatypes: Record<MetatypeId, Metatype> = {
       [CharacterAttr.essence]: 6,
     },
   },
-}
+]

@@ -78,6 +78,7 @@ export function useActiveSkill (skill: ActiveSkillId): CharacterActiveSkill | un
 
 export function getActiveSkill (skillId: ActiveSkillId, character: CharacterData): CharacterActiveSkill | undefined {
   const activeSkill = ActiveSkills[skillId]
+  if (!activeSkill) { throw new Error(`Unregistered skill ${skillId}`)}
 
   const charSkill = character.skills
     .filter(isActiveSkill)

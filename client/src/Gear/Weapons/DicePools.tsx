@@ -73,7 +73,7 @@ export const VehicleAttackPool: FC<FirearmPoolProps> = ({
     poolKey={WeaponPoolKeys.mountedAttack}
     name={'Mounted Attack'}
     attrs={[CharacterAttr.logic]}
-    skills={[ActiveSkillIds.engineering]}
+    skills={[ActiveSkillIds.CRB.engineering]}
     bonuses={collectEffectBonuses(nestedGear, WeaponPoolKeys.mountedAttack)}
     dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
   />
@@ -91,7 +91,7 @@ export const RiggedAttackPool: FC<FirearmPoolProps> = ({
     poolKey={WeaponPoolKeys.riggedAttack}
     name={'Rigged Attack'}
     attrs={[CharacterAttr.logic]}
-    skills={[ActiveSkillIds.engineering]}
+    skills={[ActiveSkillIds.CRB.engineering]}
     bonuses={[
       { name: 'Control Rig', size: controlRig.attributes[AugmentAttr.rating] },
       ...collectEffectBonuses(nestedGear, WeaponPoolKeys.riggedAttack),

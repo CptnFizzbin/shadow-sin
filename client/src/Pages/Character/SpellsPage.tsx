@@ -15,9 +15,9 @@ import { DicePools } from '../../UI/DicePool'
 export const SpellsPage: FC = () => {
   const character = useCharacterData()
 
-  const sorcery = useActiveSkill(ActiveSkillIds.sorcery)
-  const conjuring = useActiveSkill(ActiveSkillIds.conjuring)
-  const enchanting = useActiveSkill(ActiveSkillIds.enchanting)
+  const sorcery = useActiveSkill(ActiveSkillIds.CRB.sorcery)
+  const conjuring = useActiveSkill(ActiveSkillIds.CRB.conjuring)
+  const enchanting = useActiveSkill(ActiveSkillIds.CRB.enchanting)
 
   if (!character) return null
   const spells = character.spells || []

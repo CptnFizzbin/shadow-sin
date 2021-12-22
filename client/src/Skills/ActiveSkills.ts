@@ -1,5 +1,4 @@
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { MetatypeId } from '../Character/Metatype'
 import { ActiveSkillId as CrbSkillId, ActiveSkills as CrbSkills } from '../data/Rulebooks/CRB'
 
 export interface ActiveSkill {
@@ -14,17 +13,15 @@ export interface ActiveSkill {
 
 export type ActiveSkillId = string;
 
-export const ActiveSkillIds: Record<string, ActiveSkillId> = {
-  ...CrbSkillId,
+export const ActiveSkillIds = {
+  CRB: CrbSkillId,
 }
 
-export const ActiveSkills: Record<ActiveSkillId, ActiveSkill> = {
-  ...CrbSkills,
-}
+export const ActiveSkills: Record<ActiveSkillId, ActiveSkill> = {}
+const registerSkill = (skill: ActiveSkill) => ActiveSkills[skill.id] = skill
 
-const ActiveSkillNames: Record<MetatypeId, string> = Object.entries(ActiveSkills)
-  .reduce((names, [id, skill]) => ({ ...names, [id]: skill.name }), {})
+CrbSkills.forEach(registerSkill)
 
 export function formatSkill (skillId: ActiveSkillId): string {
-  return ActiveSkillNames[skillId] || ''
+  return ActiveSkills[skillId]?.name || ''
 }

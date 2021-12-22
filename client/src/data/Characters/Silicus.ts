@@ -250,24 +250,24 @@ export const Silicus: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      id: ActiveSkillIds.biotech,
+      id: ActiveSkillIds.CRB.biotech,
       rank: 5,
-      expertise: Specializations.Biotech.FirstAid,
+      expertise: Specializations.CRB.Biotech.FirstAid,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.firearms,
+      id: ActiveSkillIds.CRB.firearms,
       rank: 6,
-      specialization: Specializations.Firearms.SubmachineGuns,
+      specialization: Specializations.CRB.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.perception,
+      id: ActiveSkillIds.CRB.perception,
       rank: 3,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.closeCombat,
+      id: ActiveSkillIds.CRB.closeCombat,
       rank: 5,
     },
     {
@@ -300,8 +300,8 @@ export const Silicus: CharacterData = {
   gear: [],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.analyticalMind]),
-    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.agility }),
+    toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], { type: CharacterAttr.agility }),
   ],
 }
 
@@ -349,8 +349,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '12(c)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Shotguns,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.Shotguns,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -409,8 +409,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.SubmachineGuns,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.SubmachineGuns,
 }, [
   addGear(Silicus, {
     id: '81ef8a86-6cdf-49fc-a01e-b059c9757fed',
@@ -477,7 +477,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(m)',
   },
 
-  skill: ActiveSkillIds.exoticWeapons,
+  skill: ActiveSkillIds.CRB.exoticWeapons,
   specialtyName: 'Launchers',
 }, [
   addGear(Silicus, {
@@ -493,7 +493,7 @@ addGear<WeaponData>(Silicus, {
     },
 
     removable: false,
-    skill: ActiveSkillIds.exoticWeapons,
+    skill: ActiveSkillIds.CRB.exoticWeapons,
     specialtyName: 'Launchers',
   }),
 ])
@@ -514,8 +514,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.ammo]: '30(c)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.HeavyPistols,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.HeavyPistols,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -552,8 +552,8 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Tasers,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.Tasers,
 }, [
   addGear(Silicus, {
     ...smartGunIntMod,
@@ -577,7 +577,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.maxRange]: '20m',
   },
 
-  skill: ActiveSkillIds.closeCombat,
+  skill: ActiveSkillIds.CRB.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -596,7 +596,7 @@ addGear<WeaponData>(Silicus, {
     [WeaponAttr.attackRatings]: '5/-/-/-/-',
   },
 
-  skill: ActiveSkillIds.closeCombat,
+  skill: ActiveSkillIds.CRB.closeCombat,
   specialtyName: 'Blades',
 })
 
@@ -801,7 +801,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.skillAdj, skill: ActiveSkillIds.firearms, value: 1 },
+    { type: EffectType.skillAdj, skill: ActiveSkillIds.CRB.firearms, value: 1 },
   ],
 })
 

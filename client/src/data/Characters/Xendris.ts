@@ -128,18 +128,18 @@ export const Xendris: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      id: ActiveSkillIds.closeCombat,
+      id: ActiveSkillIds.CRB.closeCombat,
       rank: 7,
-      specialization: Specializations.CloseCombat.Blades,
+      specialization: Specializations.CRB.CloseCombat.Blades,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.sorcery,
+      id: ActiveSkillIds.CRB.sorcery,
       rank: 6,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.firearms,
+      id: ActiveSkillIds.CRB.firearms,
       rank: 6,
     },
     {
@@ -150,10 +150,10 @@ export const Xendris: CharacterData = {
   ],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.highPainTolerance]),
-    toCharQuality(Qualities[QualityIds.analyticalMind]),
-    toCharQuality(Qualities[QualityIds.builtTough], { level: 3 }),
-    toCharQuality(Qualities[QualityIds.longReach]),
+    toCharQuality(Qualities[QualityIds.CRB.highPainTolerance]),
+    toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
+    toCharQuality(Qualities[QualityIds.CRB.builtTough], { level: 3 }),
+    toCharQuality(Qualities[QualityIds.CRB.longReach]),
   ],
 
   gear: [
@@ -206,8 +206,8 @@ export const Xendris: CharacterData = {
         [WeaponAttr.attackRatings]: '10/10/8/-/-',
         [WeaponAttr.ammo]: '15(c)',
       },
-      skill: ActiveSkillIds.firearms,
-      specialtyName: Specializations.Firearms.HeavyPistols,
+      skill: ActiveSkillIds.CRB.firearms,
+      specialtyName: Specializations.CRB.Firearms.HeavyPistols,
     },
     {
       id: 'c6b2b887-c31c-4ba4-8fa2-fe6e3b5b1f19',
@@ -221,8 +221,8 @@ export const Xendris: CharacterData = {
         [WeaponAttr.dv]: '4P',
         [WeaponAttr.attackRatings]: '10/-/-/-/-',
       },
-      skill: ActiveSkillIds.closeCombat,
-      specialtyName: Specializations.CloseCombat.Blades,
+      skill: ActiveSkillIds.CRB.closeCombat,
+      specialtyName: Specializations.CRB.CloseCombat.Blades,
     },
   ],
 

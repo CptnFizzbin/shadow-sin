@@ -23,8 +23,16 @@ export const SpellBlock: FC<SpellBlockProps> = ({
     'Drain Value': spell.drainValue,
   }
 
-  if (spell.category === SpellCategory.Combat) {
-    attributes['Damage'] = spell.damage
+  let subtitle: string = spell.category
+
+  switch (spell.category) {
+    case SpellCategory.Combat:
+      attributes['Damage'] = spell.damage
+      subtitle += ` (${spell.damageType}${spell.area ? ', Area' : ''})`
+      break
+    case SpellCategory.Illusion:
+      subtitle += ` (${spell.senseType})`
+      break
   }
 
   const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
@@ -32,13 +40,9 @@ export const SpellBlock: FC<SpellBlockProps> = ({
   </Box>
 
   return (
-    <InfoBlock title={spell.name} subtitle={spell.category} expandable titleRight={blockTitleRight}>
-      <Box padding={1}>
-        <AttributeBlock attributes={attributes} />
-      </Box>
-      <Box padding={1}>
-        <Typography>{spell.effect}</Typography>
-      </Box>
+    <InfoBlock title={spell.name} subtitle={subtitle} expandable titleRight={blockTitleRight}>
+      <AttributeBlock attributes={attributes} />
+      <Typography>{spell.effect}</Typography>
     </InfoBlock>
   )
 }

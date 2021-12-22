@@ -239,23 +239,23 @@ export const Artemis: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      id: ActiveSkillIds.electronics,
+      id: ActiveSkillIds.CRB.electronics,
       rank: 3,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.firearms,
+      id: ActiveSkillIds.CRB.firearms,
       rank: 5,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.piloting,
+      id: ActiveSkillIds.CRB.piloting,
       rank: 5,
       specialization: 'Ground Craft',
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.engineering,
+      id: ActiveSkillIds.CRB.engineering,
       rank: 7,
     },
     {
@@ -297,12 +297,12 @@ export const Artemis: CharacterData = {
   gear: [],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.exceptional], { type: CharacterAttr.logic }),
-    toCharQuality(Qualities[QualityIds.socialStress], { type: 'Large Groups' }),
-    toCharQuality(Qualities[QualityIds.juryrigger]),
-    toCharQuality(Qualities[QualityIds.photographicMemory]),
-    toCharQuality(Qualities[QualityIds.analyticalMind]),
-    toCharQuality(Qualities[QualityIds.ambidextrous]),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], { type: CharacterAttr.logic }),
+    toCharQuality(Qualities[QualityIds.CRB.socialStress], { type: 'Large Groups' }),
+    toCharQuality(Qualities[QualityIds.CRB.juryrigger]),
+    toCharQuality(Qualities[QualityIds.CRB.photographicMemory]),
+    toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
+    toCharQuality(Qualities[QualityIds.CRB.ambidextrous]),
   ],
 }
 
@@ -430,8 +430,8 @@ addGear<WeaponData>(Artemis, {
     [WeaponAttr.ammo]: '50(c)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.SubmachineGuns,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.SubmachineGuns,
 }, [
   addGear(Artemis, {
     id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
@@ -485,8 +485,8 @@ addGear<WeaponData>(Artemis, {
       'The user can alter ownership with a Minor Action',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.LightPistols,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.LightPistols,
 }, [
   addGear(Artemis, { ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
 ])
@@ -636,8 +636,8 @@ const fnHar: WeaponData = {
     [WeaponAttr.ammo]: '35(c)',
   },
 
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Rifles,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.Rifles,
 }
 
 const stdWeaponMount: VehicleModData = {

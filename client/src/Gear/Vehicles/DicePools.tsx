@@ -117,7 +117,7 @@ export const DroneCracking: FC<VehiclePoolProps> = () => {
 export const DriverPiloting: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useActiveSkill(ActiveSkillIds.piloting)
+  const pilotingSkill = useActiveSkill(ActiveSkillIds.CRB.piloting)
   const reaction = useAttribute<number>(CharacterAttr.reaction) || 0
 
   const groups: DiceGroup[] = [
@@ -142,7 +142,7 @@ export const DriverPiloting: FC<VehiclePoolProps> = ({
 export const RiggedPiloting: FC<VehiclePoolProps> = ({
   vehicle,
 }) => {
-  const pilotingSkill = useActiveSkill(ActiveSkillIds.piloting)
+  const pilotingSkill = useActiveSkill(ActiveSkillIds.CRB.piloting)
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)

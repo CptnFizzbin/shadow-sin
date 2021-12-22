@@ -113,33 +113,33 @@ export const Spike: CharacterData = {
   skills: [
     {
       type: SkillType.active,
-      id: ActiveSkillIds.firearms,
+      id: ActiveSkillIds.CRB.firearms,
       rank: 7,
-      specialization: Specializations.Firearms.SubmachineGuns,
+      specialization: Specializations.CRB.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.stealth,
+      id: ActiveSkillIds.CRB.stealth,
       rank: 3,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.athletics,
+      id: ActiveSkillIds.CRB.athletics,
       rank: 4,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.piloting,
+      id: ActiveSkillIds.CRB.piloting,
       rank: 1,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.perception,
+      id: ActiveSkillIds.CRB.perception,
       rank: 4,
     },
     {
       type: SkillType.active,
-      id: ActiveSkillIds.con,
+      id: ActiveSkillIds.CRB.con,
       rank: 2,
     },
 
@@ -151,13 +151,13 @@ export const Spike: CharacterData = {
   ],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.lowLightVision]),
-    toCharQuality(Qualities[QualityIds.exceptional], {type: CharacterAttr.agility}),
-    toCharQuality(Qualities[QualityIds.aptitude], {type: ActiveSkillIds.firearms}),
-    toCharQuality(Qualities[QualityIds.highPainTolerance]),
-    toCharQuality(Qualities[QualityIds.catlike]),
-    toCharQuality(Qualities[QualityIds.allergy], {type: 'Sun, Moderate', level: 14}),
-    toCharQuality(Qualities[QualityIds.addiction], {type: 'Deepweed, 1 Day', level: 3}),
+    toCharQuality(Qualities[QualityIds.CRB.lowLightVision]),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], {type: CharacterAttr.agility}),
+    toCharQuality(Qualities[QualityIds.CRB.aptitude], {type: ActiveSkillIds.CRB.firearms}),
+    toCharQuality(Qualities[QualityIds.CRB.highPainTolerance]),
+    toCharQuality(Qualities[QualityIds.CRB.catlike]),
+    toCharQuality(Qualities[QualityIds.CRB.allergy], {type: 'Sun, Moderate', level: 14}),
+    toCharQuality(Qualities[QualityIds.CRB.addiction], {type: 'Deepweed, 1 Day', level: 3}),
   ],
 
   gear: [],
@@ -244,8 +244,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '8(m)',
   },
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Rifles,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.Rifles,
 }, [
   addGear(Spike, {
     ...smartGunIntMod,
@@ -282,8 +282,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF/FA',
     [WeaponAttr.ammo]: '14(c)',
   },
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.Rifles,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.Rifles,
 }, [
   addGear(Spike, {
     ...smartGunIntMod,
@@ -320,8 +320,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA/BF',
     [WeaponAttr.ammo]: '32(c)',
   },
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.SubmachineGuns,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.SubmachineGuns,
 }, [
   addGear(Spike, {
     ...smartGunIntMod,
@@ -359,8 +359,8 @@ addGear(Spike, {
     [WeaponAttr.modes]: 'SA',
     [WeaponAttr.ammo]: '30(c)',
   },
-  skill: ActiveSkillIds.firearms,
-  specialtyName: Specializations.Firearms.LightPistols,
+  skill: ActiveSkillIds.CRB.firearms,
+  specialtyName: Specializations.CRB.Firearms.LightPistols,
 }, [
   addGear(Spike, {
     ...smartGunIntMod,

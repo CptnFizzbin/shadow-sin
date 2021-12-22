@@ -1,5 +1,5 @@
 import { MetatypeId as CrbMetatypeId, Metatypes as CrbMetatypes } from '../data/Rulebooks/CRB'
-import { QualityId } from '../Qualities/Quality'
+import { CharacterQuality } from '../Qualities/CharacterQuality'
 import { CharAttributes } from './CharacterData'
 
 export type MetatypeId = string;
@@ -7,18 +7,19 @@ export type MetatypeId = string;
 export interface Metatype {
   id: MetatypeId
   name: string
-  qualities: QualityId[]
+  qualities: CharacterQuality[]
   priorityLevels: string[]
   attrMaximums: CharAttributes
 }
 
-export const MetatypeIds: Record<string, MetatypeId> = {
-  ...CrbMetatypeId,
+export const MetatypeIds = {
+  CRB: CrbMetatypeId,
 }
 
-export const Metatypes: Record<MetatypeId, Metatype> = {
-  ...CrbMetatypes,
-}
+export const Metatypes: Record<MetatypeId, Metatype> = {}
+const registerMetatype = (metatype: Metatype) => Metatypes[metatype.id] = metatype
+
+CrbMetatypes.forEach(registerMetatype)
 
 const MetatypeNames: Record<MetatypeId, string> = Object.entries(Metatypes)
   .reduce((names, [id, metatype]) => ({ ...names, [id]: metatype.name }), {})

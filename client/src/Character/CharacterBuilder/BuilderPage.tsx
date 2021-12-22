@@ -18,7 +18,7 @@ const defaultCharacter: CharacterData = {
 
   bio: {
     name: '',
-    metatype: MetatypeIds.human,
+    metatype: MetatypeIds.CRB.human,
     awakened: AwakenedType.Mundane,
     role: '',
     alias: '',

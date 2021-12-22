@@ -9,7 +9,7 @@ export const SorcerySpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillIds.sorcery]}
+      skills={[ActiveSkillIds.CRB.sorcery]}
       attrs={[CharacterAttr.magic]}
     />
   )
@@ -19,7 +19,7 @@ export const ConjuringSpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillIds.conjuring]}
+      skills={[ActiveSkillIds.CRB.conjuring]}
       attrs={[CharacterAttr.magic]}
     />
   )
@@ -29,7 +29,7 @@ export const EnchantingSpellcastingPool: FC = () => {
   return (
     <DicePool
       name="Spellcasting"
-      skills={[ActiveSkillIds.enchanting]}
+      skills={[ActiveSkillIds.CRB.enchanting]}
       attrs={[CharacterAttr.magic]}
     />
   )

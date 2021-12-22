@@ -71,7 +71,7 @@ const LiftPool: FC = () => <DicePool
 const FirstAidPool: FC = () => {
   const firstAidKit = useAllGear()
     .find(gear => gear.kit === KitType.firstAid)
-  const biotechSkill = useActiveSkill(ActiveSkillIds.biotech)
+  const biotechSkill = useActiveSkill(ActiveSkillIds.CRB.biotech)
   if (!biotechSkill) return null
 
   const bonuses: DiceGroup[] = []
@@ -83,7 +83,7 @@ const FirstAidPool: FC = () => {
     <DicePool
       poolKey={CharacterPoolTypes.firstAid}
       name={'First Aid'}
-      skills={[ActiveSkillIds.biotech]}
+      skills={[ActiveSkillIds.CRB.biotech]}
       attrs={[CharacterAttr.logic]}
       bonuses={bonuses}
       dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}
@@ -92,7 +92,7 @@ const FirstAidPool: FC = () => {
 }
 
 const MedkitPool: FC = () => {
-  const biotechSkill = useActiveSkill(ActiveSkillIds.biotech)
+  const biotechSkill = useActiveSkill(ActiveSkillIds.CRB.biotech)
   const medKit = useAllGear().find(gear => gear.kit === KitType.medKit) as OtherGearData | undefined
 
   if (!biotechSkill) return null
@@ -106,7 +106,7 @@ const MedkitPool: FC = () => {
     <DicePool
       poolKey={CharacterPoolTypes.firstAid}
       name={'MedKit'}
-      skills={[ActiveSkillIds.biotech]}
+      skills={[ActiveSkillIds.CRB.biotech]}
       attrs={[CharacterAttr.logic]}
       bonuses={bonuses}
       dmgPenaltyTypes={[DamageType.charPhysical, DamageType.charStun]}

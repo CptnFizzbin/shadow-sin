@@ -26,19 +26,22 @@ export type QualityOptions = {
   level?: number
   type?: string
   notes?: string
+  metaType?: boolean
 }
 
 export type QualityOptionFlags = {
   [option in keyof QualityOptions]?: boolean;
 }
 
-export const QualityIds: Record<string, QualityId> = {
-  ...CrbQualityIds,
+export const QualityIds = {
+  CRB: CrbQualityIds,
 }
 
-export const Qualities: Record<QualityId, Quality> = {
-  ...CrbQualities,
-}
+export const Qualities: Record<QualityId, Quality> = {}
+export const getQuality = (qualityId: QualityId): Quality => Qualities[qualityId]
+const registerQuality = (quality: Quality) => Qualities[quality.id] = quality
+
+CrbQualities.forEach(registerQuality)
 
 export const useQualities = (): CharacterQuality[] => {
   const character = useCharacterData()

@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { AwakenedType } from '../AwakenedType'
 import { BioData } from '../CharacterData'
-import { formatMetatype, MetatypeIds } from '../Metatype'
+import { formatMetatype, Metatypes } from '../Metatype'
 
 interface BioSectionProps {
   bio: BioData
@@ -56,7 +56,7 @@ export const BioSection: FC<BioSectionProps> = ({
           color={showMetaTypeWarning ? 'warning' : undefined}
           helperText={showMetaTypeWarning ? 'Metatype unavailable at current priority' : undefined}
         >
-          {Object.values(MetatypeIds).map(metatypeId => (
+          {Object.keys(Metatypes).map(metatypeId => (
             <MenuItem key={metatypeId} value={metatypeId}>{formatMetatype(metatypeId)}</MenuItem>
           ))}
         </TextField>

@@ -1,4 +1,4 @@
-import { Quality, QualityId } from '../../../Qualities/Quality'
+import { Quality } from '../../../Qualities/Quality'
 import { formatAttr } from '../../../System/Attribute'
 import { DamageType } from '../../../System/Damage/DamageType'
 import { EffectType } from '../../../System/Effect'
@@ -73,23 +73,23 @@ export enum QualityIds {
   weakImmuneSystem = 'quality.CRB.weakImmuneSystem',
 }
 
-export const Qualities: Record<QualityId, Quality> = {
+export const Qualities: Quality[] = [
   // Positive Qualities
-  [QualityIds.ambidextrous]: {
+  {
     id: QualityIds.ambidextrous,
     name: 'Ambidextrous',
     cost: 4,
-    gameEffect: 'No penalty for off-hand weapon use (CRB p110).',
+    gameEffect: 'No penalty for off-hand weapon use (CRB p.110).',
     source: { book: 'CRB', page: 70 },
   },
-  [QualityIds.analyticalMind]: {
+  {
     id: QualityIds.analyticalMind,
     name: 'Analytical Mind',
     cost: 3,
     gameEffect: 'You gain a bonus Edge whe you make any Logic-based test.',
     source: { book: 'CRB', page: 70 },
   },
-  [QualityIds.aptitude]: {
+  {
     id: QualityIds.aptitude,
     name: 'Aptitude (Skill)',
     cost: 12,
@@ -104,23 +104,23 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.skillMaxAdj, skill: type, value: 1 },
     ],
   },
-  [QualityIds.astralChameleon]: {
+  {
     id: QualityIds.astralChameleon,
     name: 'Astral Chameleon',
     cost: 9,
     source: { book: 'CRB', page: 70 },
     gameEffect: `
       Characters receive –2 dice on tests to recognize your aura or astral 
-      signature. Your astral signature fades in half the normal time (CRB p159).
+      signature. Your astral signature fades in half the normal time (CRB p.159).
     `,
   },
-  [QualityIds.blandness]: {
+  {
     id: QualityIds.blandness,
     name: 'Blandness',
     cost: 8,
     source: { book: 'CRB', page: 70 },
     gameEffect: `
-      Characters take a –2 penalty on Memory tests (CRB p67) to remember if they 
+      Characters take a –2 penalty on Memory tests (CRB p.67) to remember if they 
       have seen you before, and the threshold on tests to notice if you are 
       following or observing them is increased by 1. If the character acquires 
       something permanent and distinctive—obvious, unusual cyberware, a unique 
@@ -129,7 +129,7 @@ export const Qualities: Record<QualityId, Quality> = {
       are negated until those changes are reversed.
     `,
   },
-  [QualityIds.builtTough]: {
+  {
     id: QualityIds.builtTough,
     name: 'Built Tough',
     cost: 4,
@@ -146,17 +146,17 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.dmgTrackAdj, track: DamageType.charPhysical, value: level },
     ],
   },
-  [QualityIds.catlike]: {
+  {
     id: QualityIds.catlike,
     name: 'Catlike',
     cost: 12,
     source: { book: 'CRB', page: 71 },
     gameEffect: `
       You gain a bonus Edge on all tests for balance, falling, and landing safely. 
-      Note the rules on Preventing Edge Abuse, CRB p45.
+      Note the rules on Preventing Edge Abuse, CRB p.45.
     `,
   },
-  [QualityIds.dermalDeposits]: {
+  {
     id: QualityIds.dermalDeposits,
     name: 'Dermal Deposits',
     cost: 7,
@@ -169,7 +169,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.defRatingAdj, value: 1 },
     ],
   },
-  [QualityIds.doubleJointed]: {
+  {
     id: QualityIds.doubleJointed,
     name: 'Double Jointed',
     cost: 12,
@@ -177,10 +177,10 @@ export const Qualities: Record<QualityId, Quality> = {
     gameEffect: `
       You gain a bonus Edge on all tests involving grappling, escaping bonds, 
       flexibility, or fitting into tight spaces. Note the rules on Preventing 
-      Edge Abuse, CRB p45.
+      Edge Abuse, CRB p.45.
     `,
   },
-  [QualityIds.elementalResistance]: {
+  {
     id: QualityIds.elementalResistance,
     name: '(Elemental) Resistance',
     getName: ({ type = '(Element)' }) => `${type} Resistance`,
@@ -193,7 +193,7 @@ export const Qualities: Record<QualityId, Quality> = {
     `,
     options: { type: true },
   },
-  [QualityIds.exceptional]: {
+  {
     id: QualityIds.exceptional,
     name: 'Exceptional (Attribute)',
     getName: ({ type = '(Attribute)' }) => `Exceptional ${formatAttr(type)}`,
@@ -209,7 +209,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.attrMaxBonus, attr: type, value: 1 },
     ],
   },
-  [QualityIds.firstImpression]: {
+  {
     id: QualityIds.firstImpression,
     name: 'First Impression',
     cost: 12,
@@ -219,7 +219,7 @@ export const Qualities: Record<QualityId, Quality> = {
       and both your Heat and Reputation are ignored for this first encounter.
     `,
   },
-  [QualityIds.focusedConcentration]: {
+  {
     id: QualityIds.focusedConcentration,
     name: 'Focused Concentration',
     cost: 12,
@@ -233,7 +233,7 @@ export const Qualities: Record<QualityId, Quality> = {
     maxLevel: 3,
     options: { type: true },
   },
-  [QualityIds.gearhead]: {
+  {
     id: QualityIds.gearhead,
     name: 'Gearhead',
     cost: 10,
@@ -243,7 +243,7 @@ export const Qualities: Record<QualityId, Quality> = {
       during downtime to make Extended Repair tests.
     `,
   },
-  [QualityIds.guts]: {
+  {
     id: QualityIds.guts,
     name: 'Guts',
     cost: 12,
@@ -253,7 +253,7 @@ export const Qualities: Record<QualityId, Quality> = {
       Frightened status.
     `,
   },
-  [QualityIds.hardening]: {
+  {
     id: QualityIds.hardening,
     name: 'Hardening',
     cost: 10,
@@ -266,7 +266,7 @@ export const Qualities: Record<QualityId, Quality> = {
       persona at the cost of yourself.
     `,
   },
-  [QualityIds.highPainTolerance]: {
+  {
     id: QualityIds.highPainTolerance,
     name: 'High Pain Tolerance',
     cost: 7,
@@ -278,7 +278,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.woundPenaltyAdj, value: 1 },
     ],
   },
-  [QualityIds.homeGround]: {
+  {
     id: QualityIds.homeGround,
     name: 'Home Ground',
     cost: 10,
@@ -289,7 +289,7 @@ export const Qualities: Record<QualityId, Quality> = {
       use on that test; if you do not use the Edge on that test, it goes away.
     `,
   },
-  [QualityIds.humanLooking]: {
+  {
     id: QualityIds.humanLooking,
     name: 'Human-Looking',
     cost: 8,
@@ -299,7 +299,7 @@ export const Qualities: Record<QualityId, Quality> = {
       tests to hide your metatype and appear more human.
     `,
   },
-  [QualityIds.indomitable]: {
+  {
     id: QualityIds.indomitable,
     name: 'Indomitable',
     cost: 12,
@@ -308,17 +308,17 @@ export const Qualities: Record<QualityId, Quality> = {
       Edge Boost costs are reduced by 1 on tests involving Willpower
     `,
   },
-  [QualityIds.juryrigger]: {
+  {
     id: QualityIds.juryrigger,
     name: 'Juryrigger',
     cost: 12,
     source: { book: 'CRB', page: 72 },
     gameEffect: `
-      When performing a Juryrigging test (see CRB p95), you gain a point of Edge that must 
+      When performing a Juryrigging test (see CRB p.95), you gain a point of Edge that must 
       be spent on that test, or it goes away.
     `,
   },
-  [QualityIds.longReach]: {
+  {
     id: QualityIds.longReach,
     name: 'Long Reach',
     cost: 12,
@@ -328,17 +328,17 @@ export const Qualities: Record<QualityId, Quality> = {
       instead of 3.
     `,
   },
-  [QualityIds.lowLightVision]: {
+  {
     id: QualityIds.lowLightVision,
     name: 'Low-Light Vision',
     cost: 6,
     source: { book: 'CRB', page: 72 },
     gameEffect: `
       You can see clearly in any light level that is not total darkness
-      (See Environment and Visibility, CRB p118).
+      (See Environment and Visibility, CRB p.118).
     `,
   },
-  [QualityIds.magicResistance]: {
+  {
     id: QualityIds.magicResistance,
     name: 'Magic Resistance',
     cost: 8,
@@ -349,39 +349,39 @@ export const Qualities: Record<QualityId, Quality> = {
       you, treat your Essence as if it were 2 points lower than it actually is.
     `,
   },
-  [QualityIds.mentorSpirit]: {
+  {
     id: QualityIds.mentorSpirit,
     name: 'Mentor Spirit',
     cost: 10,
     source: { book: 'CRB', page: 73 },
     gameEffect: `
       You gain the benefits listed with the description of your mentor spirit 
-      (CRB p162). If you fail to keep aligned with one of those tenets, you lose
+      (CRB p.162). If you fail to keep aligned with one of those tenets, you lose
       your faith and connection to your mentor and all associated bonuses.
     `,
   },
-  [QualityIds.photographicMemory]: {
+  {
     id: QualityIds.photographicMemory,
     name: 'Photographic Memory',
     cost: 12,
     source: { book: 'CRB', page: 73 },
     gameEffect: `
-      You gain a bonus Edge point when making a Memory test (CRB p67). If you do
+      You gain a bonus Edge point when making a Memory test (CRB p.67). If you do
       not use this point of Edge on the test, it goes away
     `,
   },
-  [QualityIds.quickHealer]: {
+  {
     id: QualityIds.quickHealer,
     name: 'Quick Healer',
     cost: 8,
     source: { book: 'CRB', page: 73 },
     gameEffect: `
-      Cut the interval for any natural healing test (CRB p120) in half, meaning
+      Cut the interval for any natural healing test (CRB p.120) in half, meaning
       you can heal Stun Damage after half an hour and Physical Damage after half
       a day.
     `,
   },
-  [QualityIds.resistanceToPathogens]: {
+  {
     id: QualityIds.resistanceToPathogens,
     name: 'Resistance to Pathogens',
     cost: 12,
@@ -391,7 +391,7 @@ export const Qualities: Record<QualityId, Quality> = {
       If you do not use it on that test, it goes away.
     `,
   },
-  [QualityIds.spiritSpriteAffinity]: {
+  {
     id: QualityIds.spiritSpriteAffinity,
     name: 'Spirit/Sprite Affinity',
     getName: ({ type = 'Spirit' }) => `${type} Affinity`,
@@ -405,7 +405,7 @@ export const Qualities: Record<QualityId, Quality> = {
     `,
     options: { type: true },
   },
-  [QualityIds.thermographicVision]: {
+  {
     id: QualityIds.thermographicVision,
     name: 'Thermographic Vision',
     cost: 8,
@@ -416,7 +416,7 @@ export const Qualities: Record<QualityId, Quality> = {
       in such conditions.
     `,
   },
-  [QualityIds.toughness]: {
+  {
     id: QualityIds.toughness,
     name: 'Toughness',
     cost: 12,
@@ -426,17 +426,17 @@ export const Qualities: Record<QualityId, Quality> = {
       you do not use it on the test, it goes away.
     `,
   },
-  [QualityIds.toxinResistance]: {
+  {
     id: QualityIds.toxinResistance,
     name: 'Toxin Resistance',
     cost: 12,
     source: { book: 'CRB', page: 73 },
     gameEffect: `
       You gain a bonus point of Edge when you make a Toxin Resistance test 
-      (CRB p121). If you do not use it on that test, it goes away.
+      (CRB p.121). If you do not use it on that test, it goes away.
     `,
   },
-  [QualityIds.willToLive]: {
+  {
     id: QualityIds.willToLive,
     name: 'Will to Live',
     cost: 8,
@@ -449,7 +449,7 @@ export const Qualities: Record<QualityId, Quality> = {
   },
 
   // Negative Qualities
-  [QualityIds.addiction]: {
+  {
     id: QualityIds.addiction,
     name: 'Addiction',
     getName: ({ type = '' }) => `Addiction (${type})`,
@@ -463,7 +463,7 @@ export const Qualities: Record<QualityId, Quality> = {
       3 days, and -6 after a week. 
     `,
   },
-  [QualityIds.allergy]: {
+  {
     id: QualityIds.allergy,
     name: 'Allergy',
     getName: ({ type = '' }) => `Allergy (${type})`,
@@ -477,18 +477,18 @@ export const Qualities: Record<QualityId, Quality> = {
       You also suffer secondary effects.
     `,
   },
-  [QualityIds.arVertigo]: {
+  {
     id: QualityIds.arVertigo,
     name: 'Ar Vertigo',
     bonus: 10,
     source: { book: 'CRB', page: 75 },
     gameEffect: `
       You cannot gain or spend Edge while utilizing AR of any sort. You also
-      gain the Nauseated status (CRB p52) while using AR and for one hour after
+      gain the Nauseated status (CRB p.52) while using AR and for one hour after
       you exit it.
     `,
   },
-  [QualityIds.astralBeacon]: {
+  {
     id: QualityIds.astralBeacon,
     name: 'Astral Beacon',
     bonus: 10,
@@ -500,7 +500,7 @@ export const Qualities: Record<QualityId, Quality> = {
       tests made against you gain 2 Edge, and all thresholds are reduced by half.
     `,
   },
-  [QualityIds.badLuck]: {
+  {
     id: QualityIds.badLuck,
     name: 'Bad Luck',
     bonus: 10,
@@ -511,7 +511,7 @@ export const Qualities: Record<QualityId, Quality> = {
       regular glitches.
     `,
   },
-  [QualityIds.badRep]: {
+  {
     id: QualityIds.badRep,
     name: 'Bad Rep',
     bonus: 8,
@@ -522,7 +522,7 @@ export const Qualities: Record<QualityId, Quality> = {
       individual gains a point of Edge.
     `,
   },
-  [QualityIds.combatParalysis]: {
+  {
     id: QualityIds.combatParalysis,
     name: 'Combat Paralysis',
     bonus: 8,
@@ -533,7 +533,7 @@ export const Qualities: Record<QualityId, Quality> = {
       individual gains a point of Edge.
     `,
   },
-  [QualityIds.dependents]: {
+  {
     id: QualityIds.dependents,
     name: 'Dependents',
     bonus: 4,
@@ -552,7 +552,7 @@ export const Qualities: Record<QualityId, Quality> = {
       25 percent of all their scores
     `,
   },
-  [QualityIds.distinctiveStyle]: {
+  {
     id: QualityIds.distinctiveStyle,
     name: 'Distinctive Style',
     bonus: 6,
@@ -560,11 +560,11 @@ export const Qualities: Record<QualityId, Quality> = {
     gameEffect: `
       You cannot gain or spend Edge when you’re not rocking your distinctive
       look. Others get a +2 dice pool bonus when conducting a Memory test
-      (CRB p67) to recall your appearance or remember if they have seen you 
+      (CRB p.67) to recall your appearance or remember if they have seen you 
       before.
     `,
   },
-  [QualityIds.elfPoser]: {
+  {
     id: QualityIds.elfPoser,
     name: 'Elf Poser',
     bonus: 6,
@@ -574,7 +574,7 @@ export const Qualities: Record<QualityId, Quality> = {
       tests made against you.
     `,
   },
-  [QualityIds.glassJaw]: {
+  {
     id: QualityIds.glassJaw,
     name: 'Glass Jaw',
     bonus: 4,
@@ -587,7 +587,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.dmgTrackAdj, track: DamageType.charStun, value: level * -1 },
     ],
   },
-  [QualityIds.gremlins]: {
+  {
     id: QualityIds.gremlins,
     name: 'Gremlins',
     bonus: 6,
@@ -602,7 +602,7 @@ export const Qualities: Record<QualityId, Quality> = {
       or biofeedback.
     `,
   },
-  [QualityIds.honorbound]: {
+  {
     id: QualityIds.honorbound,
     name: 'Honorbound',
     bonus: 10,
@@ -617,7 +617,7 @@ export const Qualities: Record<QualityId, Quality> = {
      Honorbound sidebar for some sample codes and tenets.
     `,
   },
-  [QualityIds.impairedAttr]: {
+  {
     id: QualityIds.impairedAttr,
     name: 'Impaired (Attribute)',
     getName: ({ type = 'Attribute' }) => `Impaired ${formatAttr(type)}`,
@@ -632,7 +632,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.attrMaxBonus, attr: type, value: level * -1 },
     ],
   },
-  [QualityIds.incompetentSkill]: {
+  {
     id: QualityIds.incompetentSkill,
     name: 'Incompetent Skill',
     getName: ({ type = 'skill' }) => `Impaired ${type}`,
@@ -646,7 +646,7 @@ export const Qualities: Record<QualityId, Quality> = {
       you do not have a Resonance rating. This skill may only be selected once.
     `,
   },
-  [QualityIds.inDebt]: {
+  {
     id: QualityIds.inDebt,
     name: 'In Debt',
     bonus: 0,
@@ -664,7 +664,7 @@ export const Qualities: Record<QualityId, Quality> = {
       not during gameplay.
     `,
   },
-  [QualityIds.insomnia]: {
+  {
     id: QualityIds.insomnia,
     name: 'Insomnia',
     bonus: 4,
@@ -679,7 +679,7 @@ export const Qualities: Record<QualityId, Quality> = {
       (50 nuyen/dose) that reduces the threshold to 2.
     `,
   },
-  [QualityIds.lossOfConfidence]: {
+  {
     id: QualityIds.lossOfConfidence,
     name: 'Loss Of Confidence',
     bonus: 6,
@@ -690,7 +690,7 @@ export const Qualities: Record<QualityId, Quality> = {
       encounter.
     `,
   },
-  [QualityIds.lowPainTolerance]: {
+  {
     id: QualityIds.lowPainTolerance,
     name: 'Low Pain Tolerance',
     bonus: 10,
@@ -700,7 +700,7 @@ export const Qualities: Record<QualityId, Quality> = {
       { type: EffectType.woundPenaltyAdj, value: 'double' },
     ],
   },
-  [QualityIds.orkPoser]: {
+  {
     id: QualityIds.orkPoser,
     name: 'Ork Poser',
     bonus: 6,
@@ -710,7 +710,7 @@ export const Qualities: Record<QualityId, Quality> = {
       tests made against you.
     `,
   },
-  [QualityIds.prejudiced]: {
+  {
     id: QualityIds.prejudiced,
     name: 'Prejudiced (Group)',
     bonus: 8,
@@ -721,7 +721,7 @@ export const Qualities: Record<QualityId, Quality> = {
       directly opposing them).
     `,
   },
-  [QualityIds.scorched]: {
+  {
     id: QualityIds.scorched,
     name: 'Scorched',
     bonus: 6,
@@ -732,7 +732,7 @@ export const Qualities: Record<QualityId, Quality> = {
       the ether.
     `,
   },
-  [QualityIds.sensitiveSystem]: {
+  {
     id: QualityIds.sensitiveSystem,
     name: 'Sensitive System',
     bonus: 8,
@@ -743,18 +743,18 @@ export const Qualities: Record<QualityId, Quality> = {
       a Magic or Resonance rating.
     `,
   },
-  [QualityIds.simsenseVertigo]: {
+  {
     id: QualityIds.simsenseVertigo,
     name: 'Simsense Vertigo',
     bonus: 6,
     source: { book: 'CRB', page: 78 },
     gameEffect: `
       You cannot gain or spend Edge while accessing the Matrix via VR. You also
-      receive the Nauseated status (CRB p52) for one hour after you log off the
+      receive the Nauseated status (CRB p.52) for one hour after you log off the
       Matrix.
     `,
   },
-  [QualityIds.sinner]: {
+  {
     id: QualityIds.sinner,
     name: 'Sinner',
     bonus: 8,
@@ -767,7 +767,7 @@ export const Qualities: Record<QualityId, Quality> = {
       of Edge every time they attempt a Trace Icon action against you.
     `,
   },
-  [QualityIds.socialStress]: {
+  {
     id: QualityIds.socialStress,
     name: 'Social Stress',
     getName: ({ type }) => `Social Stress (${type})`,
@@ -782,7 +782,7 @@ export const Qualities: Record<QualityId, Quality> = {
       Edge.
     `,
   },
-  [QualityIds.spiritSpriteBane]: {
+  {
     id: QualityIds.spiritSpriteBane,
     name: 'Spirit/Sprite Bane',
     getName: ({ type }) => `${type} Bane`,
@@ -799,21 +799,21 @@ export const Qualities: Record<QualityId, Quality> = {
       deck if they have nothing else to do.
     `,
   },
-  [QualityIds.uncouth]: {
+  {
     id: QualityIds.uncouth,
     name: 'Uncouth',
     bonus: 6,
     source: { book: 'CRB', page: 79 },
     gameEffect: 'You cannot spend Edge on any test using Charisma',
   },
-  [QualityIds.uneducated]: {
+  {
     id: QualityIds.uneducated,
     name: 'Uneducated',
     bonus: 6,
     source: { book: 'CRB', page: 79 },
     gameEffect: 'You cannot spend Edge on any test using Logic.',
   },
-  [QualityIds.unsteadyHands]: {
+  {
     id: QualityIds.unsteadyHands,
     name: 'Unsteady Hands',
     bonus: 4,
@@ -826,7 +826,7 @@ export const Qualities: Record<QualityId, Quality> = {
       though the hands are in motion while running).
     `,
   },
-  [QualityIds.weakImmuneSystem]: {
+  {
     id: QualityIds.weakImmuneSystem,
     name: 'Weak Immune System',
     bonus: 8,
@@ -838,4 +838,4 @@ export const Qualities: Record<QualityId, Quality> = {
       modifier to all tests.
     `,
   },
-}
+]
