@@ -2,6 +2,7 @@ import { nextRecordId } from './Api/Model'
 import { Character } from './Character/Character'
 import { migrateCharacter, SavedCharacter } from './Character/Migrations'
 import { Artemis } from './data/Characters/Artemis'
+import { Dusk } from './data/Characters/Dusk'
 import { Silicus } from './data/Characters/Silicus'
 import { Spike } from './data/Characters/Spike'
 import { Xendris } from './data/Characters/Xendris'
@@ -16,7 +17,7 @@ export function loadCharacters (): SavedCharacters {
   if (DEBUG_LOAD || !localStorage.getItem(charactersStorageKey)) {
     const savedCharacters: SavedCharacters = {}
 
-    const characters: Character[] = [Artemis, Silicus, Xendris, Spike]
+    const characters: Character[] = [Artemis, Silicus, Xendris, Spike, Dusk]
       .map(data => ({
         name: data.bio.alias || data.bio.name,
         id: data.bio.alias || data.bio.name,
