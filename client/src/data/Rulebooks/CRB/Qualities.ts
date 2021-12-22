@@ -1,4 +1,5 @@
 import { Quality } from '../../../Qualities/Quality'
+import { formatSkill } from '../../../Skills'
 import { formatAttr } from '../../../System/Attribute'
 import { DamageType } from '../../../System/Damage/DamageType'
 import { EffectType } from '../../../System/Effect'
@@ -99,7 +100,7 @@ export const Qualities: Quality[] = [
       maximum starting rank is 7, instead of 6,
     `,
     options: { type: true },
-    getName: ({ type = '(Skill)' }) => `${type} Resistance`,
+    getName: ({ type = '(Skill)' }) => `${formatSkill(type)} Aptitude`,
     getEffects: ({ type = '' }) => [
       { type: EffectType.skillMaxAdj, skill: type, value: 1 },
     ],
