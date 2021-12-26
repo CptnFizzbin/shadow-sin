@@ -29,7 +29,7 @@ export const CharacterProvider: FC<CharacterProviderProps> = ({
 
   attributes[CharacterAttr.essence] = characterData.gear
     .filter(isAugment)
-    .map(augment => augment.attributes[AugmentAttr.essenceCost])
+    .map(augment => augment.attributes[AugmentAttr.essenceCost] || 0)
     .reduce((essence, essenceCost) => essence - essenceCost, 6)
 
   return (

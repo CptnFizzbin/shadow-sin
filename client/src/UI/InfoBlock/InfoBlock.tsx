@@ -9,7 +9,7 @@ import { displayFontFamily } from '../../AppThemeProvider'
 
 library.add(faCaretSquareDown, faCaretSquareRight)
 
-function useExpanded (expandId: string | null): [boolean, (set: boolean) => void] {
+function useExpanded(expandId: string | null): [boolean, (set: boolean) => void] {
   const [expanded, _setExpanded] = useState<boolean>(true)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function useExpanded (expandId: string | null): [boolean, (set: boolean) => void
     _setExpanded(saved === 'true')
   }, [expandId])
 
-  function setExpanded (value: boolean): void {
+  function setExpanded(value: boolean): void {
     if (expandId === null) return
     sessionStorage.setItem(`expanded.${expandId}`, value.toString())
     _setExpanded(value)
@@ -36,6 +36,8 @@ interface InfoBlockProps {
   expandId?: string | null
   expandable?: boolean
   quantity?: number
+  content?: ReactElement
+  footer?: ReactElement
 }
 
 export const InfoBlock: FC<InfoBlockProps> = ({
@@ -47,21 +49,23 @@ export const InfoBlock: FC<InfoBlockProps> = ({
   children,
   expandId = null,
   expandable,
+  content,
+  footer,
 }) => {
   const [expanded, setExpanded] = useExpanded(expandId)
 
   return (
     <Paper elevation={1}>
-      <Box sx={{ display: 'flex', gap: 1, padding: 1 }}>
+      <Box sx={{display: 'flex', gap: 1, padding: 1}}>
         {expandable && (
           <Box>
-            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+            <IconButton size='small' onClick={() => setExpanded(!expanded)}>
               <FontAwesomeIcon icon={expanded ? 'caret-square-down' : ['far', 'caret-square-right']} />
             </IconButton>
           </Box>
         )}
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
           <Box>
             <Typography
               sx={{
@@ -73,10 +77,10 @@ export const InfoBlock: FC<InfoBlockProps> = ({
             >{title}</Typography>
             {quantity >= 1 && (
               <Chip
-                sx={{ marginLeft: 1, verticalAlign: 'top' }}
+                sx={{marginLeft: 1, verticalAlign: 'top'}}
                 label={`x${quantity}`}
-                variant="outlined"
-                size="small"
+                variant='outlined'
+                size='small'
               />
             )}
           </Box>
@@ -87,7 +91,17 @@ export const InfoBlock: FC<InfoBlockProps> = ({
         {titleRight}
       </Box>
 
-      {expanded && <Stack gap={1} sx={{ padding: 1 }}>{children}</Stack>}
+      {expanded && (
+        <>
+          {(content || children) && (
+            <Stack gap={1} sx={{padding: 1}}>
+              {content || children}
+            </Stack>
+          )}
+
+          {footer}
+        </>
+      )}
     </Paper>
   )
 }

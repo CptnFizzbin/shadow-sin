@@ -2,6 +2,31 @@ import {BalanceLog} from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
+    date: '2022-01-02T15:20',
+    value: 65_000,
+    note: 'Parts to build Ross',
+  },
+  {
+    date: '2022-01-02T15:20',
+    value: 20_000,
+    note: 'Loan from Slicus',
+  },
+  {
+    date: '2022-01-02T13:57',
+    value: 10_388,
+    note: 'Sell Onis',
+  },
+  {
+    date: '2022-01-02T12:06',
+    value: -39_600,
+    note: 'std Weapon Mount x6, FN HAR x6',
+  },
+  {
+    date: '2022-01-02T12:00',
+    value: 20_000,
+    note: 'Karma => Nuyen (Ron)',
+  },
+  {
     date: '2021-12-19T16:00',
     value: 40_000,
     note: 'Mission Reward',
@@ -50,11 +75,6 @@ export const nuyen: BalanceLog = [
     date: '2021-09-26T15:00',
     value: 1_000,
     note: 'Buy Semi-truck driver license',
-  },
-  {
-    date: '2021-09-19T22:01',
-    value: -16_000,
-    note: 'Buy r4 sensor arrays for crawlers',
   },
   {
     date: '2021-09-19T22:00',

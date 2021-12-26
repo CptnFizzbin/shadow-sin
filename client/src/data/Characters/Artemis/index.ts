@@ -464,7 +464,7 @@ export const rcc = addGear<RccData>(Artemis, {
     'a0af5540-37c7-44ca-af2a-03cb21efd83a',
     '3a459c98-5354-4fa1-a230-dfe77b199ffa',
     '78a5f82e-636f-468a-85e3-5af73304b7c0',
-    '0b3dae26-a9d1-4752-a298-db024d13476b',
+    'a5b8c866-38cb-40a2-a136-d3feb39ea68d',
   ],
 
   attachedTo: rccHeadwear.id,
@@ -484,7 +484,7 @@ addGear<AugmentData>(Artemis, {
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.alpha,
-    [AugmentAttr.rating]: 3,
+    [AugmentAttr.rating]: 4,
     [AugmentAttr.capacity]: 12,
     [AugmentAttr.essenceCost]: 0.32,
     [AugmentAttr.slot]: AugmentSlot.eyeware,
@@ -517,7 +517,6 @@ addGear<AugmentData>(Artemis, {
 
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
-      [AugmentAttr.essenceCost]: 0.08,
       [AugmentAttr.slot]: AugmentSlot.eyeware,
       [AugmentAttr.capacityCost]: 0,
     },
@@ -534,7 +533,6 @@ addGear<AugmentData>(Artemis, {
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
-      [AugmentAttr.essenceCost]: 0.08,
       [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
   }),
@@ -550,7 +548,6 @@ addGear<AugmentData>(Artemis, {
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
-      [AugmentAttr.essenceCost]: 0.08,
       [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
   }),
@@ -566,7 +563,6 @@ addGear<AugmentData>(Artemis, {
     attributes: {
       [AugmentAttr.grade]: AugmentGrade.alpha,
       [AugmentAttr.capacityCost]: 2,
-      [AugmentAttr.essenceCost]: 0.08,
       [AugmentAttr.slot]: AugmentSlot.eyeware,
     },
   }),
@@ -606,22 +602,35 @@ addGear<AugmentData>(Artemis, {
 
 addGear<AugmentData>(Artemis, {
   id: '3803d92f-1869-41b0-975a-dbdd929af4d7',
+  name: 'Synaptic Booster',
+  type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  name: 'Reaction Enhancers',
-  type: 'Bodyware Augment',
-  source: { book: 'CRB', page: 287 },
-  avail: { rarity: 3, license: true },
-  cost: 22_500,
+  source: { book: 'CRB', page: 293 },
+  avail: { rarity: 4, license: true },
+  cost: 95_000,
+
+  description: (`
+    The nerve cells making up the spinal cord are both broadened and replicated 
+    with this bioware, allowing for neural bandwidth. The result is a much faster 
+    reaction time. The booster confers a bonus of +1 Reaction (and the accompanying 
+    adjustment to Initiative Score), 1 additional Initiative Die, and 1 additional
+    Minor Action per point of Rating. The synaptic booster cannot be combined with 
+    any other form of Reaction or Initiative enhancement. Unlike other enhancements,
+    this cannot be turned off, leaving the user in a perpetual state of being in
+    surrounded by slow motion.  
+  `),
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade.used,
-    [AugmentAttr.rating]: 3,
-    [AugmentAttr.essenceCost]: 0.99,
-    [AugmentAttr.slot]: AugmentSlot.bodyware,
+    [AugmentAttr.essenceCost]: 1.1,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
+    [AugmentAttr.rating]: 2,
   },
 
+  enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 3 },
+    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2 },
+    { type: EffectType.initAdj, value: 2 },
   ],
 })
 

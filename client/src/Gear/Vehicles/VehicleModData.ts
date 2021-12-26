@@ -28,13 +28,20 @@ export enum SlotType {
   electronic = 'Electronic',
 }
 
+export enum HardpointSize {
+  small = 'Small',
+  medium = 'Medium',
+  large = 'Large',
+  huge = 'Huge',
+}
+
 const slotTypeNames: Record<SlotType, string> = {
   [SlotType.chassis]: 'Chassis',
   [SlotType.powertrain]: 'Powertrain',
   [SlotType.electronic]: 'Electronic',
 }
 
-export function formatSlotType (type: SlotType): string {
+export function formatSlotType(type: SlotType): string {
   return slotTypeNames[type]
 }
 
@@ -46,10 +53,10 @@ export interface VehicleModData extends BaseGearData {
     [VehicleModAttr.rating]?: number
     [VehicleModAttr.slotType]?: SlotType
     [VehicleModAttr.slotCost]?: number
-    [VehicleModAttr.hardpointSize]?: number
+    [VehicleModAttr.hardpointSize]?: 'small' | 'Medium' | 'Large' | 'Huge'
   }
 }
 
-export function isVehicleMod (gear: BaseGearData): gear is VehicleModData {
+export function isVehicleMod(gear: BaseGearData): gear is VehicleModData {
   return gear.gearType === GearType.vehicleMod
 }

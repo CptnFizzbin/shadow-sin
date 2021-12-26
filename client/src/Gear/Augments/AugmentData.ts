@@ -6,7 +6,7 @@ export interface AugmentData extends BaseGearData {
 
   attributes: {
     [AugmentAttr.grade]: AugmentGrade
-    [AugmentAttr.essenceCost]: number
+    [AugmentAttr.essenceCost]?: number
     [AugmentAttr.slot]: AugmentSlot
     [AugmentAttr.rating]?: number
     [AugmentAttr.capacity]?: number

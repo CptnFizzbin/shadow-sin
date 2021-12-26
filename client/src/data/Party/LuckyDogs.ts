@@ -10,6 +10,7 @@ interface Party {
   characterIds: string[]
   nuyen: BalanceLog
   gear: GearData[]
+  notes: string[]
 }
 
 export const LuckyDogs: Party = {
@@ -30,4 +31,8 @@ export const LuckyDogs: Party = {
   ],
 
   gear: [],
+
+  notes: [
+    'Base has level 7 at front door created by Ron',
+  ],
 }

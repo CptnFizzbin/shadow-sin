@@ -47,25 +47,31 @@ export const GearInfoBlock: FC<GearInfoProps> = ({
         titleRight={blockTitleRight}
         expandable={expandable}
         expandId={item.id || null}
-      >
-        {item.description && (
-          <ItemDescription text={item.description} />
-        )}
+        content={
+          <>
+            {item.description && (
+              <ItemDescription text={item.description} />
+            )}
 
-        {item.wirelessBonus && (
-          <WirelessBonus description={item.wirelessBonus.description} />
-        )}
+            {item.wirelessBonus && (
+              <WirelessBonus description={item.wirelessBonus.description} />
+            )}
 
-        <AttributeBlock attributes={attributes} />
+            <AttributeBlock attributes={attributes} />
 
-        {children}
-
-        {attachedGear.length >= 1 && (
-          <Paper variant="outlined" sx={{ padding: 1 }}>
-            <GearList gear={attachedGear} />
-          </Paper>
-        )}
-      </InfoBlock>
+            {children}
+          </>
+        }
+        footer={
+          <>
+            {attachedGear.length >= 1 && (
+              <Paper variant="outlined" sx={{ padding: 1 }}>
+                <GearList gear={attachedGear} />
+              </Paper>
+            )}
+          </>
+        }
+      />
     </AttributeProvider>
   )
 }
