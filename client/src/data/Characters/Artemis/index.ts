@@ -24,6 +24,8 @@ import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
 import { EffectType } from '../../../System/Effect'
 import { addGear } from '../index'
 import { addDrones } from './drones'
+import { karma } from './karma'
+import { nuyen } from './nuyen'
 
 export const Artemis: CharacterData = {
   dataVersion: 3,
@@ -39,156 +41,8 @@ export const Artemis: CharacterData = {
     height: '190cm',
   },
 
-  karma: [
-    {
-      date: '2021-12-19T16:01',
-      value: 5,
-      note: 'Mission reward',
-    },
-    {
-      date: '2021-12-19T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-12-05T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-27T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-21T15:05',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-07T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-10-17T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-10-03T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-26T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-19T22:00',
-      value: -10,
-      note: 'Body 1 => 2',
-    },
-    {
-      date: '2021-09-19T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-11',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-08-28',
-      value: 14,
-      note: 'Balance import',
-    },
-  ],
-
-  nuyen: [
-    {
-      date: '2021-12-19T16:00',
-      value: 40_000,
-      note: 'Mission Reward',
-    },
-    {
-      date: '2021-10-24T16:03',
-      value: -9_200 * 2,
-      note: 'Ingram Black Knight x2',
-    },
-    {
-      date: '2021-10-24T16:02',
-      value: 500,
-      note: 'Loan from Slicus',
-    },
-    {
-      date: '2021-10-24T16:01',
-      value: -4_000,
-      note: 'Ingram Black Knight Targeting Autosoft',
-    },
-    {
-      date: '2021-10-24T16:00',
-      value: -5_000 * 2,
-      note: 'Heavy Weapon Mount x2',
-    },
-    {
-      date: '2021-10-17T16:00',
-      value: 11_400,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-26T16:00',
-      value: 10_166,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-26T15:02',
-      value: 300,
-      note: 'Buy forklift rental',
-    },
-    {
-      date: '2021-09-26T15:01',
-      value: 500,
-      note: 'Buy Semi-truck rental',
-    },
-    {
-      date: '2021-09-26T15:00',
-      value: 1_000,
-      note: 'Buy Semi-truck driver license',
-    },
-    {
-      date: '2021-09-19T22:01',
-      value: -16_000,
-      note: 'Buy r4 sensor arrays for crawlers',
-    },
-    {
-      date: '2021-09-19T22:00',
-      value: -22_500,
-      note: 'Buy Reaction Enhancers',
-    },
-    {
-      date: '2021-09-19T16:00',
-      value: 25_000,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-08-28T00:04',
-      value: 18_070,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-08-28T00:02',
-      value: -445_665,
-      note: 'Starting Gear',
-    },
-    {
-      date: '2021-08-28T00:01',
-      value: 450_000,
-      note: 'Character Creation',
-    },
-  ],
+  karma,
+  nuyen,
 
   lifestyle: {
     grade: 'middle',
@@ -205,7 +59,7 @@ export const Artemis: CharacterData = {
     [CharacterAttr.logic]: 7,
     [CharacterAttr.intuition]: 5,
     [CharacterAttr.charisma]: 2,
-    [CharacterAttr.edge]: 2,
+    [CharacterAttr.edge]: 4,
     [CharacterAttr.magic]: 0,
     [CharacterAttr.resonance]: 0,
     [CharacterAttr.essence]: 6,
