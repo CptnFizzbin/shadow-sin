@@ -9,6 +9,7 @@ import { OtherGearAttrNames } from './OtherGearData'
 import { RccAttrNames } from './Rcc/RccAttr'
 import { AutosoftAttrNames } from './Software/Autosoft/AutosoftAttr'
 import { VehicleAttrNames } from './Vehicles/VehicleAttr'
+import { VehicleModAttrNames } from './Vehicles/VehicleModData'
 import { WeaponAttrNames } from './Weapons/WeaponAttr'
 
 export const GearAttributes: AttrNames = {
@@ -21,6 +22,7 @@ export const GearAttributes: AttrNames = {
   ...RccAttrNames,
   ...AutosoftAttrNames,
   ...VehicleAttrNames,
+  ...VehicleModAttrNames,
   ...WeaponAttrNames,
   ...OtherGearAttrNames,
 }

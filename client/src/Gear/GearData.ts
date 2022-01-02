@@ -1,5 +1,5 @@
 import { RecordId } from '../Api/Model'
-import { AttrList } from '../System/Attribute'
+import { AttrList, AttrType, AttrValue } from '../System/Attribute'
 import { Effect } from '../System/Effect'
 import { Source } from '../System/Source'
 import { ArmorData } from './Armor/ArmorData'
@@ -72,3 +72,8 @@ export type GearData =
   | VehicleModData
   | WeaponData
   | WeaponModData
+
+export function getAttr<T extends AttrValue> (gear: BaseGearData, attribute: AttrType): T | undefined {
+  if (!gear.attributes) return undefined
+  return gear.attributes[attribute] as T
+}
