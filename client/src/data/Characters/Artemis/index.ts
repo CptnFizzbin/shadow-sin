@@ -1,33 +1,29 @@
-import { AwakenedType } from '../../Character/AwakenedType'
-import { CharacterAttr } from '../../Character/CharacterAttr'
-import { CharacterData } from '../../Character/CharacterData'
-import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
-import { ArmorData } from '../../Gear/Armor/ArmorData'
-import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../../Gear/Augments/AugmentData'
-import { GearType } from '../../Gear/GearData'
-import { LicenseAttr } from '../../Gear/License/LicenseAttr'
-import { LicenseData } from '../../Gear/License/LicenseData'
-import { SinAttr } from '../../Gear/License/SinAttr'
-import { SinData } from '../../Gear/License/SinData'
-import { OtherGearAttr } from '../../Gear/OtherGearData'
-import { RccAttr } from '../../Gear/Rcc/RccAttr'
-import { RccData } from '../../Gear/Rcc/RccData'
-import { AutosoftAttr } from '../../Gear/Software/Autosoft/AutosoftAttr'
-import { AutosoftData } from '../../Gear/Software/Autosoft/AutosoftData'
-import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../../Gear/Vehicles/VehicleData'
-import { ModType, VehicleModData } from '../../Gear/Vehicles/VehicleModData'
-import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
-import { WeaponData } from '../../Gear/Weapons/WeaponData'
-import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
-import { toCharQuality } from '../../Qualities/CharacterQuality'
-import { Qualities, QualityIds } from '../../Qualities/Quality'
-import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
-import { EffectType } from '../../System/Effect'
-
-import { addGear } from './index'
+import { AwakenedType } from '../../../Character/AwakenedType'
+import { CharacterAttr } from '../../../Character/CharacterAttr'
+import { CharacterData } from '../../../Character/CharacterData'
+import { ArmorAttr } from '../../../Gear/Armor/ArmorAttr'
+import { ArmorData } from '../../../Gear/Armor/ArmorData'
+import { AugmentAttr } from '../../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot, AugmentType } from '../../../Gear/Augments/AugmentData'
+import { GearType } from '../../../Gear/GearData'
+import { LicenseAttr } from '../../../Gear/License/LicenseAttr'
+import { LicenseData } from '../../../Gear/License/LicenseData'
+import { SinAttr } from '../../../Gear/License/SinAttr'
+import { SinData } from '../../../Gear/License/SinData'
+import { RccAttr } from '../../../Gear/Rcc/RccAttr'
+import { RccData } from '../../../Gear/Rcc/RccData'
+import { AutosoftAttr } from '../../../Gear/Software/Autosoft/AutosoftAttr'
+import { AutosoftData } from '../../../Gear/Software/Autosoft/AutosoftData'
+import { WeaponPoolKeys } from '../../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../../Gear/Weapons/WeaponAttr'
+import { WeaponData } from '../../../Gear/Weapons/WeaponData'
+import { WeaponModData, WeaponModSlot } from '../../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../../Qualities/Quality'
+import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
+import { EffectType } from '../../../System/Effect'
+import { addGear } from '../index'
+import { addDrones } from './drones'
 
 export const Artemis: CharacterData = {
   dataVersion: 3,
@@ -595,7 +591,7 @@ const rccHeadwear = addGear<AugmentData>(Artemis, {
   },
 })
 
-const rcc = addGear<RccData>(Artemis, {
+export const rcc = addGear<RccData>(Artemis, {
   id: 'bb6e3208-418d-41b8-85c3-447e6328aa5bs',
   gearType: GearType.rcc,
   name: 'Proteus Poseidon',
@@ -621,272 +617,7 @@ const rcc = addGear<RccData>(Artemis, {
 })
 
 autosofts.forEach(soft => soft.attachedTo = rcc.id)
-
-const fnHar: WeaponData = {
-  id: null,
-  gearType: GearType.weapon,
-  name: 'FN-HAR',
-  type: 'Rifle',
-  avail: { rarity: 3, license: true },
-  cost: 2_100,
-  attributes: {
-    [WeaponAttr.dv]: '5P',
-    [WeaponAttr.modes]: 'SA/BF/FA',
-    [WeaponAttr.attackRatings]: '3/11/10/6/1',
-    [WeaponAttr.ammo]: '35(c)',
-  },
-
-  skill: ActiveSkillIds.CRB.firearms,
-  specialtyName: Specializations.CRB.Firearms.Rifles,
-}
-
-const stdWeaponMount: VehicleModData = {
-  id: null,
-  gearType: GearType.vehicleMod,
-  modType: ModType.stdWeaponMount,
-  name: 'Standard Weapon Mount',
-  type: 'vehicle mod',
-  avail: { rarity: 4, illegal: true },
-  cost: 4_500,
-}
-
-const riggerInterface: VehicleModData = {
-  id: null,
-  gearType: GearType.vehicleMod,
-  modType: ModType.riggerInterface,
-  name: 'Rigger Interface',
-  type: 'vehicle mod',
-  avail: { rarity: 2, license: true },
-  cost: 1_000,
-}
-
-const sensorArray: VehicleModData = {
-  id: null,
-  gearType: GearType.vehicleMod,
-  name: 'Sensor Array',
-  type: 'vehicle mod',
-  avail: { rarity: 3 },
-  cost: 4_000,
-
-  attributes: {
-    [OtherGearAttr.rating]: 4,
-  },
-
-  effects: [
-    { type: EffectType.attrOverride, attr: VehicleAttr.sensor, value: 4 },
-  ],
-}
-
-addGear<VehicleData>(Artemis, {
-  id: '4a5eb8d5-004b-4cdd-bce5-e0db64a33639',
-  gearType: GearType.vehicle,
-  name: 'Range Rover Model 2080',
-  type: 'Van',
-  cost: 73_000,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: '4/5',
-    [VehicleAttr.accel]: 12,
-    [VehicleAttr.speedInterval]: 20,
-    [VehicleAttr.topSpeed]: 160,
-    [VehicleAttr.body]: 16,
-    [VehicleAttr.armor]: 10,
-    [VehicleAttr.pilot]: 4,
-    [VehicleAttr.sensor]: 4,
-    [VehicleAttr.seat]: 4,
-  },
-
-  slavedTo: rcc.id,
-  pilotingSpeciality: 'Ground Craft',
-}, [
-  addGear(Artemis, { ...riggerInterface, id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3' }),
-])
-
-const rotoDrone: VehicleData = {
-  id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
-  gearType: GearType.vehicle,
-  type: 'Medium Rotor Drone',
-  name: 'MCT-Nissan Roto-drone',
-  cost: 5_000,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: 3,
-    [VehicleAttr.accel]: 20,
-    [VehicleAttr.speedInterval]: 30,
-    [VehicleAttr.topSpeed]: 160,
-    [VehicleAttr.body]: 5,
-    [VehicleAttr.armor]: 6,
-    [VehicleAttr.pilot]: 3,
-    [VehicleAttr.sensor]: 2,
-    [VehicleAttr.seat]: null,
-  },
-
-  slavedTo: rcc.id,
-  pilotingSpeciality: 'Aircraft',
-}
-
-const oniDrone: VehicleData = {
-  id: null,
-  gearType: GearType.vehicle,
-  name: 'Nissan Oni',
-  type: 'Medium Antro Drone',
-  cost: 6_700,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: 4,
-    [VehicleAttr.accel]: 10,
-    [VehicleAttr.speedInterval]: 8,
-    [VehicleAttr.topSpeed]: 30,
-    [VehicleAttr.body]: 9,
-    [VehicleAttr.armor]: 10,
-    [VehicleAttr.pilot]: 3,
-    [VehicleAttr.sensor]: 2,
-    [VehicleAttr.seat]: null,
-  },
-
-  pilotingSpeciality: 'Ground Craft',
-}
-
-addGear<VehicleData>(Artemis, {
-  ...rotoDrone,
-  id: '55887cc1-89b1-4b6d-8fc5-88560d32d31d',
-  name: 'MCT-Nissan Roto-drone 1',
-}, [
-  addGear(Artemis, { ...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d' }, [
-    addGear(Artemis, { ...fnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3' }),
-  // addGear(sensorArray),
-])
-
-addGear<VehicleData>(Artemis, {
-  ...rotoDrone,
-  id: '17fe3632-c927-4def-91eb-7376ea1cdd3f',
-  name: 'MCT-Nissan Roto-drone 2',
-}, [
-  addGear(Artemis, { ...stdWeaponMount, id: '7a1c1485-0f2f-4434-b216-3379c0b47e83' }, [
-    addGear(Artemis, { ...fnHar, id: 'c068d8c7-de94-41d6-91c1-45c55fa58a93' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: '0dfe8000-84db-430b-8cd6-7684b18ac5da' }),
-  // addGear(sensorArray),
-])
-
-const crawlerDrone: VehicleData = {
-  id: null,
-  gearType: GearType.vehicle,
-  name: 'Aztech Crawler',
-  type: 'Small Anthro Drone',
-  cost: 4_500,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: '3/4',
-    [VehicleAttr.accel]: 8,
-    [VehicleAttr.speedInterval]: 10,
-    [VehicleAttr.topSpeed]: 30,
-    [VehicleAttr.body]: 6,
-    [VehicleAttr.armor]: 2,
-    [VehicleAttr.pilot]: 2,
-    [VehicleAttr.sensor]: 2,
-    [VehicleAttr.seat]: null,
-  },
-
-  slavedTo: rcc.id,
-  pilotingSpeciality: 'Ground Craft',
-}
-
-addGear<VehicleData>(Artemis, {
-  ...crawlerDrone,
-  id: 'b02313b9-c024-4c5b-a661-9e23fbc6e816',
-  name: 'Aztech Crawler 1',
-
-}, [
-  addGear(Artemis, { ...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb' }, [
-    addGear(Artemis, { ...fnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071' }),
-  ]),
-  addGear(Artemis, { ...riggerInterface, id: '2801f808-849f-4226-bbb6-6db12fe6ddb9' }),
-  addGear(Artemis, { ...sensorArray, id: '11805cad-896c-4cba-ba18-e81eeff71dae' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  id: '9159eaaa-f444-4f54-ac01-db6b65464764',
-  gearType: GearType.vehicle,
-  type: 'Small Rotor Drone',
-  name: 'Cyberspace Designs Quadrotor',
-  cost: 5_000,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: 2,
-    [VehicleAttr.accel]: 15,
-    [VehicleAttr.speedInterval]: 20,
-    [VehicleAttr.topSpeed]: 120,
-    [VehicleAttr.body]: 3,
-    [VehicleAttr.armor]: 1,
-    [VehicleAttr.pilot]: 3,
-    [VehicleAttr.sensor]: 2,
-    [VehicleAttr.seat]: null,
-  },
-
-  slavedTo: rcc.id,
-  pilotingSpeciality: 'Aircraft',
-}, [
-  addGear(Artemis, { ...riggerInterface, id: 'f1118f16-1105-428f-ba17-67d90e00377a' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  id: 'fbbbd8b6-7e5a-46c4-ad0c-5b8c7cadb1f3',
-  gearType: GearType.vehicle,
-  type: 'Micro Rotor Drone',
-  name: 'MCT Gnat',
-  cost: 800,
-  quantity: 8,
-  avail: { rarity: 2 },
-
-  attributes: {
-    [VehicleAttr.handling]: 3,
-    [VehicleAttr.accel]: 4,
-    [VehicleAttr.speedInterval]: 10,
-    [VehicleAttr.topSpeed]: 30,
-    [VehicleAttr.body]: 0,
-    [VehicleAttr.armor]: 0,
-    [VehicleAttr.pilot]: 2,
-    [VehicleAttr.sensor]: 1,
-    [VehicleAttr.seat]: null,
-  },
-
-  slavedTo: rcc.id,
-  pilotingSpeciality: 'Aircraft',
-}, [
-  addGear(Artemis, { ...riggerInterface, id: 'b4ba0a55-150b-47b4-b391-cc1da213d48a' }),
-])
-
-addGear<VehicleData>(Artemis, {
-  ...crawlerDrone,
-  id: 'f086ff48-0a38-40d9-9d62-0cd0a9d2e148',
-  name: 'Aztech Crawler',
-  quantity: 5,
-  slavedTo: null,
-})
-
-addGear<VehicleData>(Artemis, {
-  ...rotoDrone,
-  id: '2be9530b-621f-4f50-9188-722d3843f1c4',
-  name: 'MCT-Nissan Roto-drone',
-  quantity: 1,
-  slavedTo: null,
-})
-
-addGear<VehicleData>(Artemis, {
-  ...oniDrone,
-  id: '449a5812-9a81-409a-ba25-4e400e2281b1',
-  name: 'Nissan Oni',
-  quantity: 4,
-  slavedTo: null,
-})
+addDrones(Artemis)
 
 addGear<AugmentData>(Artemis, {
   id: '62c928a2-2a1e-4195-83ee-c760b6f93e1b',

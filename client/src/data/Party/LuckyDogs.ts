@@ -1,9 +1,10 @@
-import {GearData} from '../../Gear/GearData'
-import {BalanceLog} from '../../System/BalanceLog'
-import {Artemis} from '../Characters/Artemis'
-import {Silicus} from '../Characters/Silicus'
-import {Spike} from '../Characters/Spike'
-import {Xendris} from '../Characters/Xendris'
+import { GearData } from '../../Gear/GearData'
+import { BalanceLog } from '../../System/BalanceLog'
+import { Artemis } from '../Characters/Artemis'
+import { Dusk } from '../Characters/Dusk'
+import { Silicus } from '../Characters/Silicus'
+import { Spike } from '../Characters/Spike'
+import { Xendris } from '../Characters/Xendris'
 
 interface Party {
   characterIds: string[]
@@ -17,6 +18,7 @@ export const LuckyDogs: Party = {
     Silicus.bio.name,
     Spike.bio.name,
     Xendris.bio.name,
+    Dusk.bio.name,
   ],
 
   nuyen: [
