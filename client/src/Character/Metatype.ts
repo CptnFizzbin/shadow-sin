@@ -1,4 +1,4 @@
-import { MetatypeId as CrbMetatypeId, Metatypes as CrbMetatypes } from '../data/Rulebooks/CRB'
+import { MetatypeIds as CrbMetatypeIds, Metatypes as CrbMetatypes } from '../data/Rulebooks/CRB'
 import { CharacterQuality } from '../Qualities/CharacterQuality'
 import { CharAttributes } from './CharacterData'
 
@@ -13,7 +13,7 @@ export interface Metatype {
 }
 
 export const MetatypeIds = {
-  CRB: CrbMetatypeId,
+  CRB: CrbMetatypeIds,
 }
 
 export const Metatypes: Record<MetatypeId, Metatype> = {}

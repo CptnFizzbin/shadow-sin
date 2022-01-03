@@ -3,7 +3,7 @@ import { Metatype } from '../../../Character/Metatype'
 import { toCharQuality } from '../../../Qualities/CharacterQuality'
 import { QualityIds } from './Qualities'
 
-export enum MetatypeId {
+export enum MetatypeIds {
   dwarf = 'metatype.CRB.dwarf',
   elf = 'metatype.CRB.elf',
   human = 'metatype.CRB.human',
@@ -13,7 +13,7 @@ export enum MetatypeId {
 
 export const Metatypes: Metatype[] = [
   {
-    id: MetatypeId.dwarf,
+    id: MetatypeIds.dwarf,
     name: 'Dwarf',
     qualities: [
       toCharQuality(QualityIds.toxinResistance),
@@ -36,7 +36,7 @@ export const Metatypes: Metatype[] = [
     },
   },
   {
-    id: MetatypeId.elf,
+    id: MetatypeIds.elf,
     name: 'Elf',
     qualities: [
       toCharQuality(QualityIds.lowLightVision),
@@ -58,7 +58,7 @@ export const Metatypes: Metatype[] = [
     },
   },
   {
-    id: MetatypeId.human,
+    id: MetatypeIds.human,
     name: 'Human',
     qualities: [],
     priorityLevels: ['C', 'D', 'E'],
@@ -78,7 +78,7 @@ export const Metatypes: Metatype[] = [
     },
   },
   {
-    id: MetatypeId.ork,
+    id: MetatypeIds.ork,
     name: 'Ork',
     qualities: [
       toCharQuality(QualityIds.lowLightVision),
@@ -101,7 +101,7 @@ export const Metatypes: Metatype[] = [
     },
   },
   {
-    id: MetatypeId.troll,
+    id: MetatypeIds.troll,
     name: 'Troll',
     qualities: [
       toCharQuality(QualityIds.dermalDeposits),
