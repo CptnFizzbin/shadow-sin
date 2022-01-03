@@ -54,7 +54,7 @@ export const Artemis: CharacterData = {
     [CharacterAttr.body]: 2,
     [CharacterAttr.agility]: 6,
     [CharacterAttr.reaction]: 5,
-    [CharacterAttr.strength]: 1,
+    [CharacterAttr.strength]: 3,
     [CharacterAttr.willpower]: 1,
     [CharacterAttr.logic]: 7,
     [CharacterAttr.intuition]: 5,

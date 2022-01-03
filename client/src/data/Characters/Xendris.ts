@@ -25,6 +25,11 @@ export const Xendris: CharacterData = {
 
   karma: [
     {
+      date: '2021-02-13T13:05',
+      value: -15,
+      note: 'CHA 2 => 3',
+    },
+    {
       date: '2021-01-02T16:01',
       value: 2,
       note: 'Session reward',
@@ -102,7 +107,7 @@ export const Xendris: CharacterData = {
     [CharacterAttr.willpower]: 3,
     [CharacterAttr.logic]: 5,
     [CharacterAttr.intuition]: 1,
-    [CharacterAttr.charisma]: 2,
+    [CharacterAttr.charisma]: 3,
     [CharacterAttr.edge]: 4,
     [CharacterAttr.magic]: 5,
     [CharacterAttr.resonance]: 0,

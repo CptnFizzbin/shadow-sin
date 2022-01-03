@@ -2,6 +2,11 @@ import {BalanceLog} from '../../../System/BalanceLog'
 
 export const karma: BalanceLog = [
   {
+    date: '2021-02-13T13:08',
+    value: -25,
+    note: 'STR 1 => 3',
+  },
+  {
     date: '2021-01-03T11:00',
     value: -5,
     note: 'Specialize: Firearms (Submachine Guns)',
