@@ -96,6 +96,7 @@ export const Artemis: CharacterData = {
       type: SkillType.active,
       id: ActiveSkillIds.CRB.firearms,
       rank: 5,
+      specialization: Specializations.CRB.Firearms.SubmachineGuns,
     },
     {
       type: SkillType.active,
@@ -147,12 +148,12 @@ export const Artemis: CharacterData = {
   gear: [],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.CRB.exceptional], { type: CharacterAttr.logic }),
-    toCharQuality(Qualities[QualityIds.CRB.socialStress], { type: 'Large Groups' }),
-    toCharQuality(Qualities[QualityIds.CRB.juryrigger]),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], {type: CharacterAttr.logic}),
+    toCharQuality(Qualities[QualityIds.CRB.aptitude], {type: ActiveSkillIds.CRB.engineering}),
     toCharQuality(Qualities[QualityIds.CRB.photographicMemory]),
     toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
     toCharQuality(Qualities[QualityIds.CRB.ambidextrous]),
+    toCharQuality(Qualities[QualityIds.CRB.socialStress], {type: 'Large Groups'}),
   ],
 }
 
@@ -161,12 +162,12 @@ addGear<ArmorData>(Artemis, {
   gearType: GearType.armor,
   name: 'Armored Jacket',
   type: 'Armor',
-  source: { book: 'CRB', page: 265 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 265},
+  avail: {rarity: 2},
   cost: 1_000,
 
   effects: [
-    { type: EffectType.defRatingAdj, value: 4 },
+    {type: EffectType.defRatingAdj, value: 4},
   ],
 
   attributes: {
@@ -177,7 +178,7 @@ addGear<ArmorData>(Artemis, {
 
 const smartGunIntMod: WeaponModData = {
   id: null,
-  source: { book: 'CRB', page: 260 },
+  source: {book: 'CRB', page: 260},
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
   type: 'Weapon Mod',
@@ -208,7 +209,7 @@ addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'Control Rig',
   type: 'Headwear Augment',
-  avail: { rarity: 3, license: true },
+  avail: {rarity: 3, license: true},
   cost: 72_000,
 
   attributes: {
@@ -226,7 +227,7 @@ addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
-  avail: { rarity: 4 },
+  avail: {rarity: 4},
   cost: 47_250,
 
   attributes: {
@@ -237,7 +238,7 @@ addGear<AugmentData>(Artemis, {
   },
 
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3},
   ],
 })
 
@@ -246,8 +247,8 @@ addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'Sleep Regulator',
   type: 'Cultured Bioware Augment',
-  avail: { rarity: 4 },
-  source: { book: 'CRB', page: 293 },
+  avail: {rarity: 4},
+  source: {book: 'CRB', page: 293},
   cost: 6_000,
 
   description: (`
@@ -266,11 +267,11 @@ addGear<AugmentData>(Artemis, {
 
 addGear<WeaponData>(Artemis, {
   id: 'e7f70f35-8d96-43be-8b19-fc9d8718ed95',
-  source: { book: 'CRB', page: 254 },
+  source: {book: 'CRB', page: 254},
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
   type: 'Submachine Gun',
-  avail: { rarity: 4, license: true },
+  avail: {rarity: 4, license: true},
   cost: 925,
 
   attributes: {
@@ -285,7 +286,7 @@ addGear<WeaponData>(Artemis, {
 }, [
   addGear(Artemis, {
     id: 'f8d19b04-8767-4693-9774-195ff92ed8df',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
     type: 'Weapon Mod',
@@ -295,7 +296,7 @@ addGear<WeaponData>(Artemis, {
   }),
   addGear(Artemis, {
     id: '02fbb521-e039-4c06-9aaf-cead333e3885',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Laser sight',
     type: 'Weapon Mod',
@@ -304,23 +305,23 @@ addGear<WeaponData>(Artemis, {
   }),
   addGear(Artemis, {
     id: '21d66c66-4615-49d6-b330-e4c25eea631a',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Flashlight',
     type: 'Weapon Mod',
 
     slot: WeaponModSlot.topOrUnder,
   }),
-  addGear(Artemis, { ...smartGunIntMod, id: '429f440e-ffc3-459d-b08f-b013af1648dc' }),
+  addGear(Artemis, {...smartGunIntMod, id: '429f440e-ffc3-459d-b08f-b013af1648dc'}),
 ])
 
 addGear<WeaponData>(Artemis, {
   id: 'ae2baf27-bd6f-43e2-8198-a19e37231b7d',
-  source: { book: 'CRB', page: 252 },
+  source: {book: 'CRB', page: 252},
   gearType: GearType.weapon,
   name: 'Colt America L36',
   type: 'Light Pistol',
-  avail: { rarity: 2, license: true },
+  avail: {rarity: 2, license: true},
   cost: 230,
 
   attributes: {
@@ -338,7 +339,7 @@ addGear<WeaponData>(Artemis, {
   skill: ActiveSkillIds.CRB.firearms,
   specialtyName: Specializations.CRB.Firearms.LightPistols,
 }, [
-  addGear(Artemis, { ...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606' }),
+  addGear(Artemis, {...smartGunIntMod, id: '7c94f42b-e770-472f-85d8-992cde7e2606'}),
 ])
 
 const autosofts: AutosoftData[] = [
@@ -347,7 +348,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'FN-HAR Targeting',
     type: 'Targeting Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -361,7 +362,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Clearsight',
     type: 'Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -375,7 +376,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Evasion',
     type: 'Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -389,7 +390,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Maneuvering',
     type: 'Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -403,7 +404,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Electronic Warfare',
     type: 'Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -417,7 +418,7 @@ const autosofts: AutosoftData[] = [
     gearType: GearType.autosoft,
     name: 'Black Knight Targeting',
     type: 'Targeting Autosoft',
-    avail: { rarity: 8 },
+    avail: {rarity: 8},
     cost: 4_000,
 
     attributes: {
@@ -433,8 +434,8 @@ const rccHeadwear = addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'RCC Headwear',
   type: 'Headwear Augment',
-  avail: { rarity: 2, license: true },
-  source: { book: 'DC', page: 145 },
+  avail: {rarity: 2, license: true},
+  source: {book: 'DC', page: 145},
   cost: 2_000,
 
   attributes: {
@@ -450,7 +451,7 @@ export const rcc = addGear<RccData>(Artemis, {
   gearType: GearType.rcc,
   name: 'Proteus Poseidon',
   type: 'RCC',
-  avail: { rarity: 6, license: true },
+  avail: {rarity: 6, license: true},
   cost: 68_000,
 
   attributes: {
@@ -478,8 +479,8 @@ addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'Cybereyes',
   type: 'Augment',
-  source: { book: 'CRB', page: 285 },
-  avail: { rarity: 4 },
+  source: {book: 'CRB', page: 285},
+  avail: {rarity: 4},
   cost: 12_000,
 
   attributes: {
@@ -495,8 +496,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.augment,
     name: 'Smartlink',
     type: 'Cybereye Augment',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 4, license: true },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 4, license: true},
     cost: 4_800,
 
     attributes: {
@@ -511,8 +512,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.augment,
     name: 'Imagelink',
     type: 'Cybereye Augment',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 3 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 3},
     cost: 960,
 
     attributes: {
@@ -526,8 +527,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.augment,
     name: 'Low-Light Vision',
     type: 'Cybereye Augment',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 3 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 3},
     cost: 900,
 
     attributes: {
@@ -541,8 +542,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.augment,
     name: 'Vision Enhancement',
     type: 'Cybereye Augment',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 4 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 4},
     cost: 4_800,
 
     attributes: {
@@ -556,8 +557,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.augment,
     name: 'Vision Magnification',
     type: 'Cybereye Augment',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 4 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 4},
     cost: 2_400,
 
     attributes: {
@@ -573,8 +574,8 @@ addGear<AugmentData>(Artemis, {
   gearType: GearType.augment,
   name: 'Commlink',
   type: 'Headware Augment',
-  source: { book: 'CRB', page: 283 },
-  avail: { rarity: 1 },
+  source: {book: 'CRB', page: 283},
+  avail: {rarity: 1},
   cost: 1_000,
 
   attributes: {
@@ -588,8 +589,8 @@ addGear<AugmentData>(Artemis, {
     gearType: GearType.other,
     name: 'Hermes Ikon',
     type: 'Commlink',
-    source: { book: 'CRB', page: 267 },
-    avail: { rarity: 3 },
+    source: {book: 'CRB', page: 267},
+    avail: {rarity: 3},
     cost: 5_000,
 
     attributes: {
@@ -605,8 +606,8 @@ addGear<AugmentData>(Artemis, {
   name: 'Synaptic Booster',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 4, license: true },
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 4, license: true},
   cost: 95_000,
 
   description: (`
@@ -629,8 +630,8 @@ addGear<AugmentData>(Artemis, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2 },
-    { type: EffectType.initAdj, value: 2 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 2},
+    {type: EffectType.initAdj, value: 2},
   ],
 })
 
@@ -639,8 +640,8 @@ addGear<SinData>(Artemis, {
   gearType: GearType.sin,
   name: 'Sara McCabe',
   type: 'Fake SIN',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
   cost: 15_000,
 
   description: 'General use SIN',
@@ -655,8 +656,8 @@ addGear<SinData>(Artemis, {
   gearType: GearType.sin,
   name: 'Jadzia Dax',
   type: 'Fake SIN',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
   cost: 10_000,
 
   description: 'Runner SIN',
@@ -670,8 +671,8 @@ addGear<SinData>(Artemis, {
     gearType: GearType.license,
     name: 'Driver License (Semi-Truck)',
     type: 'Fake License',
-    source: { book: 'CRB', page: 273 },
-    avail: { rarity: 5, illegal: true },
+    source: {book: 'CRB', page: 273},
+    avail: {rarity: 5, illegal: true},
     cost: 1_000,
 
     attributes: {
@@ -685,8 +686,8 @@ addGear<SinData>(Artemis, {
   gearType: GearType.sin,
   name: 'Jane Smith',
   type: 'Fake SIN',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
   cost: 5_000,
 
   description: 'Burner SIN',
@@ -701,7 +702,7 @@ addGear(Artemis, {
   gearType: GearType.other,
   name: 'Engineering Shop',
   type: 'Shop',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4 },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4},
   cost: 5_000,
 })
