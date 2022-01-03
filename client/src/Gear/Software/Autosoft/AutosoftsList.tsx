@@ -1,6 +1,6 @@
 import { faSave, faWifi } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import React, { FC } from 'react'
 
 import { RecordId } from '../../../Api/Model'
@@ -19,9 +19,9 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
   slavedIds,
 }) => {
   return (
-    <Box>
+    <Stack gap={1} direction='row' flexWrap="wrap">
       {autosofts.map(autosoft => (
-        <Box key={autosoft.id} sx={{ paddingTop: 1 }}>
+        <Box key={autosoft.id}>
           <AutosoftListItem
             key={autosoft.id}
             autosoft={autosoft}
@@ -29,7 +29,7 @@ export const AutosoftsList: FC<AutosoftsListProps> = ({
           />
         </Box>
       ))}
-    </Box>
+    </Stack>
   )
 }
 
@@ -45,19 +45,15 @@ const AutosoftListItem: FC<AutosoftListItemProps> = ({
   slavedIds,
 }) => {
   return (
-    <Box>
-      <Box>
-        <Box sx={{ display: 'inline-block', marginRight: 1 }}>
-          {slavedIds?.includes(autosoft.id) ? (
-            <FontAwesomeIcon icon={faWifi} />
-          ) : (
-            <FontAwesomeIcon icon={faSave} />
-          )}
+    <Box minWidth={150}>
+      <Box padding={0.5}>
+        <Box sx={{display: 'inline-block', marginRight: 1}}>
+          <FontAwesomeIcon icon={slavedIds?.includes(autosoft.id) ? faWifi : faSave} />
         </Box>
         {autosoft.name}
       </Box>
 
-      <AttributeBlock attributes={autosoft.attributes} />
+      <AttributeBlock attributes={autosoft.attributes} vertical />
     </Box>
   )
 }
