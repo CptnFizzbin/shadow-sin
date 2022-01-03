@@ -2,7 +2,7 @@ import { CharacterAttr } from '../../../Character/CharacterAttr'
 import { ActiveSkill } from '../../../Skills'
 import { Specializations } from './Specializations'
 
-export enum ActiveSkillId {
+export enum ActiveSkillIds {
   astral = 'skill.CRB.astral',
   athletics = 'skill.CRB.athletics',
   biotech = 'skill.CRB.biotech',
@@ -26,14 +26,14 @@ export enum ActiveSkillId {
 
 export const ActiveSkills: ActiveSkill[] = [
   {
-    id: ActiveSkillId.astral,
+    id: ActiveSkillIds.astral,
     name: 'Astral',
     untrained: false,
     attr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Astral),
   },
   {
-    id: ActiveSkillId.athletics,
+    id: ActiveSkillIds.athletics,
     name: 'Athletics',
     untrained: true,
     attr: CharacterAttr.agility,
@@ -41,7 +41,7 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Athletics),
   },
   {
-    id: ActiveSkillId.biotech,
+    id: ActiveSkillIds.biotech,
     name: 'Biotech',
     untrained: false,
     attr: CharacterAttr.logic,
@@ -49,35 +49,35 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Biotech),
   },
   {
-    id: ActiveSkillId.closeCombat,
+    id: ActiveSkillIds.closeCombat,
     name: 'Close Combat',
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.CloseCombat),
   },
   {
-    id: ActiveSkillId.con,
+    id: ActiveSkillIds.con,
     name: 'Con',
     untrained: true,
     attr: CharacterAttr.charisma,
     specializations: Object.values(Specializations.Con),
   },
   {
-    id: ActiveSkillId.conjuring,
+    id: ActiveSkillIds.conjuring,
     name: 'Conjuring',
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Conjuring),
   },
   {
-    id: ActiveSkillId.cracking,
+    id: ActiveSkillIds.cracking,
     name: 'Cracking',
     untrained: false,
     attr: CharacterAttr.logic,
     specializations: Object.values(Specializations.Cracking),
   },
   {
-    id: ActiveSkillId.electronics,
+    id: ActiveSkillIds.electronics,
     name: 'Electronics',
     untrained: true,
     attr: CharacterAttr.logic,
@@ -85,14 +85,14 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Electronics),
   },
   {
-    id: ActiveSkillId.enchanting,
+    id: ActiveSkillIds.enchanting,
     name: 'Enchanting',
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Enchanting),
   },
   {
-    id: ActiveSkillId.engineering,
+    id: ActiveSkillIds.engineering,
     name: 'Engineering',
     untrained: true,
     attr: CharacterAttr.logic,
@@ -100,7 +100,7 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Engineering),
   },
   {
-    id: ActiveSkillId.exoticWeapons,
+    id: ActiveSkillIds.exoticWeapons,
     name: 'Exotic Weapons',
     untrained: false,
     attr: CharacterAttr.agility,
@@ -108,14 +108,14 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.ExoticWeapons),
   },
   {
-    id: ActiveSkillId.firearms,
+    id: ActiveSkillIds.firearms,
     name: 'Firearms',
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.Firearms),
   },
   {
-    id: ActiveSkillId.influence,
+    id: ActiveSkillIds.influence,
     name: 'Influence',
     untrained: true,
     attr: CharacterAttr.charisma,
@@ -123,14 +123,14 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Influence),
   },
   {
-    id: ActiveSkillId.outdoors,
+    id: ActiveSkillIds.outdoors,
     name: 'Outdoors',
     untrained: true,
     attr: CharacterAttr.intuition,
     specializations: Object.values(Specializations.Outdoors),
   },
   {
-    id: ActiveSkillId.perception,
+    id: ActiveSkillIds.perception,
     name: 'Perception',
     untrained: true,
     attr: CharacterAttr.intuition,
@@ -138,28 +138,28 @@ export const ActiveSkills: ActiveSkill[] = [
     specializations: Object.values(Specializations.Perception),
   },
   {
-    id: ActiveSkillId.piloting,
+    id: ActiveSkillIds.piloting,
     name: 'Piloting',
     untrained: true,
     attr: CharacterAttr.reaction,
     specializations: Object.values(Specializations.Piloting),
   },
   {
-    id: ActiveSkillId.sorcery,
+    id: ActiveSkillIds.sorcery,
     name: 'Sorcery',
     untrained: false,
     attr: CharacterAttr.magic,
     specializations: Object.values(Specializations.Sorcery),
   },
   {
-    id: ActiveSkillId.stealth,
+    id: ActiveSkillIds.stealth,
     name: 'Stealth',
     untrained: true,
     attr: CharacterAttr.agility,
     specializations: Object.values(Specializations.Stealth),
   },
   {
-    id: ActiveSkillId.tasking,
+    id: ActiveSkillIds.tasking,
     name: 'Tasking',
     untrained: false,
     attr: CharacterAttr.resonance,

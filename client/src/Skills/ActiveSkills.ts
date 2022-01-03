@@ -1,5 +1,5 @@
 import { CharacterAttr } from '../Character/CharacterAttr'
-import { ActiveSkillId as CrbSkillId, ActiveSkills as CrbSkills } from '../data/Rulebooks/CRB'
+import { ActiveSkillIds as CrbSkillIds, ActiveSkills as CrbSkills } from '../data/Rulebooks/CRB'
 
 export interface ActiveSkill {
   id: ActiveSkillId
@@ -14,7 +14,7 @@ export interface ActiveSkill {
 export type ActiveSkillId = string;
 
 export const ActiveSkillIds = {
-  CRB: CrbSkillId,
+  CRB: CrbSkillIds,
 }
 
 export const ActiveSkills: Record<ActiveSkillId, ActiveSkill> = {}
