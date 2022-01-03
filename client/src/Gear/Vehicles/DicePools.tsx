@@ -93,7 +93,7 @@ export const DronePerception: FC<VehiclePoolProps> = () => {
     poolKey={VehiclePoolKeys.pilotEvade}
     name={'Perception'}
     groups={diceGroups}
-    attrs={[VehicleAttr.pilot]}
+    attrs={[VehicleAttr.sensor]}
     dmgPenaltyTypes={[DamageType.vehiclePhysical]}
   />
 }
@@ -109,7 +109,7 @@ export const DroneCracking: FC<VehiclePoolProps> = () => {
     poolKey={VehiclePoolKeys.pilotEvade}
     name={'Cracking'}
     groups={diceGroups}
-    attrs={[VehicleAttr.pilot]}
+    attrs={[VehicleAttr.sensor]}
     dmgPenaltyTypes={[DamageType.vehiclePhysical]}
   />
 }
