@@ -1,6 +1,7 @@
 import { RecordId } from '../../Api/Model'
 import { BaseGearData, GearType } from '../GearData'
 import { VehicleAttr } from './VehicleAttr'
+import { HardpointSize, SlotType } from './VehicleModData'
 
 export interface VehicleData extends BaseGearData {
   gearType: GearType.vehicle
@@ -20,4 +21,7 @@ export interface VehicleData extends BaseGearData {
   slavedTo?: RecordId
   pilotingSpeciality: string
   destroyed?: boolean
+
+  hardpoints?: Record<HardpointSize, number>
+  modSlots?: Record<SlotType, number>
 }

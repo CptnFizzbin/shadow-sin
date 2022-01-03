@@ -4,7 +4,7 @@ import { AutosoftAttr } from '../../../Gear/Software/Autosoft/AutosoftAttr'
 import { AutosoftData } from '../../../Gear/Software/Autosoft/AutosoftData'
 import { VehicleAttr } from '../../../Gear/Vehicles/VehicleAttr'
 import { VehicleData } from '../../../Gear/Vehicles/VehicleData'
-import { ModType, SlotType, VehicleModAttr, VehicleModData } from '../../../Gear/Vehicles/VehicleModData'
+import { HardpointSize, ModType, SlotType, VehicleModAttr, VehicleModData } from '../../../Gear/Vehicles/VehicleModData'
 import { WeaponAttr } from '../../../Gear/Weapons/WeaponAttr'
 import { WeaponData } from '../../../Gear/Weapons/WeaponData'
 import { ActiveSkillIds, Specializations } from '../../../Skills'
@@ -36,9 +36,14 @@ const riggerInterface: VehicleModData = {
   gearType: GearType.vehicleMod,
   modType: ModType.riggerInterface,
   name: 'Rigger Interface',
-  type: 'vehicle mod',
+  type: 'Electronic Mod',
   avail: {rarity: 2, license: true},
   cost: 1_000,
+
+  attributes: {
+    [VehicleModAttr.slotType]: SlotType.electronic,
+    [VehicleModAttr.slotCost]: 0,
+  },
 }
 
 const stdWeaponMount: VehicleModData = {
@@ -46,9 +51,13 @@ const stdWeaponMount: VehicleModData = {
   gearType: GearType.vehicleMod,
   modType: ModType.stdWeaponMount,
   name: 'Standard Weapon Mount',
-  type: 'vehicle mod',
+  type: 'Standard Hardpoint Device',
   avail: {rarity: 4, illegal: true},
   cost: 2_500,
+
+  attributes: {
+    [VehicleModAttr.hardpointSize]: HardpointSize.standard,
+  },
 }
 
 export function addDrones(character: CharacterData): void {
@@ -74,18 +83,45 @@ export function addDrones(character: CharacterData): void {
 
     slavedTo: rcc.id,
     pilotingSpeciality: 'Ground Craft',
+
+    hardpoints: {
+      [HardpointSize.small]: 0,
+      [HardpointSize.standard]: 3,
+      [HardpointSize.large]: 1,
+      [HardpointSize.huge]: 0,
+    },
+
+    modSlots: {
+      [SlotType.chassis]: 16,
+      [SlotType.powertrain]: 16,
+      [SlotType.electronic]: 16,
+    },
   }, [
-    addGear(character, {...riggerInterface, id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3'}),
+    addGear(character, {
+      ...riggerInterface,
+      id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3',
+    }),
     addGear(character, {
       id: '1497c961-81f4-4b75-aed6-90c345671188',
       name: 'Medium Drone Rack',
       gearType: GearType.vehicleMod,
       type: 'Core Mod',
       attributes: {
-        [VehicleModAttr.hardpointSize]: 'Large',
+        [VehicleModAttr.hardpointSize]: HardpointSize.large,
         'Drone Capacity': '8 Medium',
       },
-    }),
+    }, [
+      addGear(character, {
+        id: '4b7ed682-0404-4da1-8830-685a239e567e',
+        name: 'Expanded Drone Storage',
+        gearType: GearType.vehicleMod,
+        type: 'Core Mod',
+        attributes: {
+          [VehicleModAttr.slotType]: SlotType.chassis,
+          [VehicleModAttr.slotCost]: 7,
+        },
+      }),
+    ]),
   ])
 
   addGear<VehicleData>(character, {
@@ -109,15 +145,32 @@ export function addDrones(character: CharacterData): void {
 
     slavedTo: rcc.id,
     pilotingSpeciality: 'Ground Craft',
+
+    hardpoints: {
+      [HardpointSize.small]: 0,
+      [HardpointSize.standard]: 0,
+      [HardpointSize.large]: 1,
+      [HardpointSize.huge]: 0,
+    },
+
+    modSlots: {
+      [SlotType.chassis]: 8,
+      [SlotType.powertrain]: 8,
+      [SlotType.electronic]: 8,
+    },
   }, [
     addGear(character, {
       id: '40e6106a-0f52-4f85-80e5-593b04dbcc76',
       gearType: GearType.vehicleMod,
       modType: ModType.stdWeaponMount,
       name: 'Heavy Weapon Mount',
-      type: 'vehicle mod',
+      type: 'Hardpoint Device',
       avail: {rarity: 4, illegal: true},
       cost: 5_000,
+
+      attributes: {
+        [VehicleModAttr.hardpointSize]: HardpointSize.large,
+      },
     }, [
       addGear(character, {
         id: '199d265e-d203-4df4-b3ef-6225f8c4b8da',
@@ -149,7 +202,7 @@ export function addDrones(character: CharacterData): void {
       },
 
       effects: [
-        { type: EffectType.attrBonus, attr: VehicleAttr.body, value: 4 },
+        {type: EffectType.attrBonus, attr: VehicleAttr.body, value: 4},
       ],
     }),
     addGear(character, {...riggerInterface, id: '3e5e33d7-6e17-4334-8c38-4068106230a5'}),
@@ -158,7 +211,7 @@ export function addDrones(character: CharacterData): void {
       gearType: GearType.autosoft,
       name: 'Panther XXL Targeting',
       type: 'Targeting Autosoft',
-      avail: { rarity: 9 },
+      avail: {rarity: 9},
       cost: 4_500,
 
       attributes: {
@@ -191,6 +244,19 @@ export function addDrones(character: CharacterData): void {
 
     slavedTo: rcc.id,
     pilotingSpeciality: 'Aircraft',
+
+    hardpoints: {
+      [HardpointSize.small]: 0,
+      [HardpointSize.standard]: 1,
+      [HardpointSize.large]: 0,
+      [HardpointSize.huge]: 0,
+    },
+
+    modSlots: {
+      [SlotType.chassis]: 5,
+      [SlotType.powertrain]: 5,
+      [SlotType.electronic]: 5,
+    },
   }
 
   addGear<VehicleData>(character, {
@@ -248,6 +314,19 @@ export function addDrones(character: CharacterData): void {
 
     slavedTo: rcc.id,
     pilotingSpeciality: 'Ground Craft',
+
+    hardpoints: {
+      [HardpointSize.small]: 0,
+      [HardpointSize.standard]: 2,
+      [HardpointSize.large]: 0,
+      [HardpointSize.huge]: 0,
+    },
+
+    modSlots: {
+      [SlotType.chassis]: 6,
+      [SlotType.powertrain]: 6,
+      [SlotType.electronic]: 6,
+    },
   }
 
   addGear<VehicleData>(character, {

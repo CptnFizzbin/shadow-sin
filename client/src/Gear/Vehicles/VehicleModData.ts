@@ -1,4 +1,4 @@
-import { BaseGearData, GearType } from '../GearData'
+import { BaseGearData, GearType, getAttr } from '../GearData'
 
 export enum ModType {
   other = 'vehicleMod.type.other',
@@ -30,7 +30,7 @@ export enum SlotType {
 
 export enum HardpointSize {
   small = 'Small',
-  medium = 'Medium',
+  standard = 'Standard',
   large = 'Large',
   huge = 'Huge',
 }
@@ -53,10 +53,31 @@ export interface VehicleModData extends BaseGearData {
     [VehicleModAttr.rating]?: number
     [VehicleModAttr.slotType]?: SlotType
     [VehicleModAttr.slotCost]?: number
-    [VehicleModAttr.hardpointSize]?: 'small' | 'Medium' | 'Large' | 'Huge'
+    [VehicleModAttr.hardpointSize]?: HardpointSize
+  }
+}
+
+export interface SlottableMod extends VehicleModData {
+  attributes: {
+    [VehicleModAttr.slotType]: SlotType
+    [VehicleModAttr.slotCost]: number
+  }
+}
+
+export interface MountableMod extends VehicleModData {
+  attributes: {
+    [VehicleModAttr.hardpointSize]: HardpointSize
   }
 }
 
 export function isVehicleMod(gear: BaseGearData): gear is VehicleModData {
   return gear.gearType === GearType.vehicleMod
+}
+
+export function isSlottable(mod: VehicleModData): mod is SlottableMod {
+  return !!(getAttr(mod, VehicleModAttr.slotType))
+}
+
+export function isMountable(mod: VehicleModData): mod is MountableMod {
+  return !!(getAttr(mod, VehicleModAttr.hardpointSize))
 }

@@ -9,8 +9,8 @@ import { CharacterColdVrInit, CharacterHotVrInit, InitiativeStat } from '../../S
 import { AttributeBlock } from '../../UI/AttributeBlock'
 import { DicePools } from '../../UI/DicePool'
 import { StatBlock } from '../../UI/StatBlock'
-import { useAttachedGear, useGear, useGearOfType } from '../GearContext'
-import { GearType, getAttr } from '../GearData'
+import { useAllNestedGear, useGear, useGearOfType } from '../GearContext'
+import { GearType } from '../GearData'
 import { GearInfoProps } from '../GearInfo'
 import { GearInfoBlock } from '../GearInfoBlock'
 import { RccData } from '../Rcc/RccData'
@@ -30,26 +30,34 @@ import {
 } from './DicePools'
 import { VehicleAttr } from './VehicleAttr'
 import { VehicleData } from './VehicleData'
-import { formatSlotType, isVehicleMod, ModType, SlotType, VehicleModAttr, VehicleModData } from './VehicleModData'
-import { VehicleModsList } from './VehicleModsList'
+import {
+  formatSlotType,
+  isMountable,
+  isSlottable,
+  isVehicleMod,
+  ModType,
+  SlotType,
+  VehicleModAttr,
+  VehicleModData,
+} from './VehicleModData'
+import { VehicleSlots } from './VehicleSlots'
 
-export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) => {
+
+export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({item: vehicle}) => {
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
 
   const pilot = vehicle.attributes[VehicleAttr.pilot] || 0
-  const body = vehicle.attributes[VehicleAttr.body] || 0
 
   const riggerInterface = useGearOfType<VehicleModData>(GearType.vehicleMod)
     .filter(gear => gear.attachedTo === vehicle.id)
     .find(gear => gear.modType === ModType.riggerInterface)
 
-  const vehicleMods = useAttachedGear(vehicle.id)
-    .filter(isVehicleMod)
-
   const rcc = useGear<RccData>(vehicle.slavedTo)
   const physicalMax = Math.ceil(vehicle.attributes[VehicleAttr.body] / 2) + 8
   const allAutosofts = useGearOfType<AutosoftData>(GearType.autosoft)
+  const vehicleMods = useAllNestedGear(vehicle.id)
+    .filter(isVehicleMod)
 
   if (vehicle.destroyed) {
     return <DestroyedVehicleInfo item={vehicle} />
@@ -72,10 +80,10 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
       <AutosoftProvider autosofts={autosofts}>
         <GearInfoBlock item={vehicle}>
           <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'}>
-            <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'} sx={{ flexWrap: 'wrap' }}>
+            <Stack gap={1} direction={mdScreenOrLarger ? 'column' : 'row'} sx={{flexWrap: 'wrap'}}>
               <Box>
                 <StatBlock vertical>
-                  <InitiativeStat name="Drone Init" base={pilot * 2} dice={4} />
+                  <InitiativeStat name='Drone Init' base={pilot * 2} dice={4} />
                   {riggerInterface && (
                     <>
                       <CharacterHotVrInit />
@@ -87,11 +95,11 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
               </Box>
 
               <Box>
-                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label="Physical" />
+                <DamageTrack type={DamageType.vehiclePhysical} max={physicalMax} label='Physical' />
               </Box>
             </Stack>
 
-            <Box sx={{ flexGrow: 1 }}>
+            <Stack flexGrow={1} gap={1}>
               <DicePools>
                 <VehicleResistDmg vehicle={vehicle} />
                 <DriverPiloting vehicle={vehicle} />
@@ -119,24 +127,56 @@ export const VehicleInfo: FC<GearInfoProps<VehicleData>> = ({ item: vehicle }) =
                 </Box>
               )}
 
-              <Box>
-                <Typography variant={'h6'}>Mod slots</Typography>
-                <Stack gap={1} sx={{ flexDirection: 'row' }}>
-                  <Divider orientation="vertical" flexItem />
-                  {Object.values(SlotType).map(slotType => (
-                    <>
-                      <VehicleModsList
-                        key={slotType}
-                        title={formatSlotType(slotType)}
-                        mods={vehicleMods.filter(mod => getAttr(mod, VehicleModAttr.slotType) === slotType)}
-                        maxSlots={body}
+              {vehicle.modSlots && (
+                <Box>
+                  <Typography variant={'h6'}>Mod Slots</Typography>
+                  <Stack gap={1} direction='row' divider={<Divider orientation='vertical' flexItem />}>
+                    {Object.entries(vehicle.modSlots).map(([type, slots]) => (
+                      <VehicleSlots
+                        key={type}
+                        name={formatSlotType(type as SlotType)}
+                        slots={slots}
+                        items={
+                          vehicleMods
+                            .filter(isSlottable)
+                            .filter(item => item.attributes[VehicleModAttr.slotType] === type)
+                            .map(item => ({
+                              id: item.id,
+                              name: item.name,
+                              size: item.attributes[VehicleModAttr.slotCost],
+                            }))
+                        }
                       />
-                      <Divider orientation="vertical" flexItem />
-                    </>
-                  ))}
-                </Stack>
-              </Box>
-            </Box>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+
+              {vehicle.hardpoints && (
+                <Box>
+                  <Typography variant={'h6'}>Hardpoints</Typography>
+                  <Stack gap={1} direction='row' divider={<Divider orientation='vertical' flexItem />}>
+                    {Object.entries(vehicle.hardpoints).map(([size, slots]) => (
+                      <VehicleSlots
+                        key={size}
+                        name={size}
+                        slots={slots}
+                        items={
+                          vehicleMods
+                            .filter(isMountable)
+                            .filter(item => item.attributes[VehicleModAttr.hardpointSize] === size)
+                            .map(item => ({
+                              id: item.id,
+                              name: item.name,
+                              size: 1,
+                            }))
+                        }
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+            </Stack>
           </Stack>
         </GearInfoBlock>
       </AutosoftProvider>

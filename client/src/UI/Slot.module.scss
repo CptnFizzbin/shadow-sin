@@ -1,0 +1,15 @@
+.slot {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+
+  .slotSize {
+    padding: 2px;
+    border: 1px solid gray;
+  }
+
+  .slotName {
+    padding: 2px;
+    flex-grow: 1;
+  }
+}

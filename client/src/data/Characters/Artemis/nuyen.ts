@@ -2,8 +2,8 @@ import {BalanceLog} from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
-    date: '2022-01-02T15:20',
-    value: 65_000,
+    date: '2022-01-02T15:21',
+    value: -65_000,
     note: 'Parts to build Ross',
   },
   {
