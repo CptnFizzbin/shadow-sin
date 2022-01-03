@@ -2,6 +2,11 @@ import {BalanceLog} from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
+    date: '2022-02-13T12:55',
+    value: 500,
+    note: 'From ron for shooting an collector\'s rubix cube',
+  },
+  {
     date: '2022-01-02T15:21',
     value: -70_250,
     note: 'Parts to build NIX',
