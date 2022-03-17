@@ -1,10 +1,20 @@
-import {BalanceLog} from '../../../System/BalanceLog'
+import { BalanceLog } from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
+    date: '2021-03-13T16:00',
+    value: 14_285,
+    note: 'Mission Rewards',
+  },
+  {
+    date: '2022-03-06T16:00',
+    value: -1_500,
+    note: 'Wingsuit',
+  },
+  {
     date: '2022-02-13T12:55',
     value: 500,
-    note: 'From ron for shooting an collector\'s rubix cube',
+    note: 'From Ron for shooting an collector\'s rubix cube',
   },
   {
     date: '2022-01-02T15:21',

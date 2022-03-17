@@ -24,6 +24,11 @@ export const LuckyDogs: Party = {
 
   nuyen: [
     {
+      date: '2021-03-13T16:00',
+      value: 8_285,
+      note: 'Mission Rewards',
+    },
+    {
       date: '2021-12-19T16:00',
       value: 40_000,
       note: 'Mission Rewards',

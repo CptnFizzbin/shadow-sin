@@ -41,6 +41,16 @@ export const Silicus: CharacterData = {
 
   karma: [
     {
+      date: '2021-03-13T16:00',
+      value: +3,
+      note: 'Session Reward',
+    },
+    {
+      date: '2021-03-06T16:00',
+      value: +5,
+      note: 'Session Reward',
+    },
+    {
       date: '2021-01-02T16:01',
       value: 2,
       note: 'Session reward',
@@ -138,6 +148,21 @@ export const Silicus: CharacterData = {
   ],
 
   nuyen: [
+    {
+      date: '2021-03-13T16:00',
+      value: 14_285,
+      note: 'Mission Rewards',
+    },
+    {
+      date: '2022-03-06T16:00',
+      value: -1_500,
+      note: 'Wingsuit',
+    },
+    {
+      date: '2022-03-06T12:00',
+      value: -1_000,
+      note: 'Dart Launcher',
+    },
     {
       date: '2022-01-02T15:20',
       value: -20_000,
@@ -311,13 +336,13 @@ export const Silicus: CharacterData = {
 
   qualities: [
     toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
-    toCharQuality(Qualities[QualityIds.CRB.exceptional], { type: CharacterAttr.agility }),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], {type: CharacterAttr.agility}),
   ],
 }
 
 const smartGunIntMod: WeaponModData = {
   id: null,
-  source: { book: 'CRB', page: 260 },
+  source: {book: 'CRB', page: 260},
   gearType: GearType.weaponMod,
   name: 'Smart Gun Int.',
   type: 'Weapon Mod',
@@ -345,11 +370,11 @@ const smartGunIntMod: WeaponModData = {
 
 addGear<WeaponData>(Silicus, {
   id: 'c77afa27-e7f2-4fa5-ab8f-53830ce79f1d',
-  source: { book: 'FSQ', page: 22 },
+  source: {book: 'FSQ', page: 22},
   gearType: GearType.weapon,
   name: 'Ranger Arms AA-16',
   type: 'Shotgun',
-  avail: { rarity: 6, illegal: true },
+  avail: {rarity: 6, illegal: true},
   cost: 2_050,
 
   attributes: {
@@ -369,7 +394,7 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: 'ac4025a9-3e0c-4702-971f-a52cc56100a0',
-    source: { book: 'FSQ', page: 22 },
+    source: {book: 'FSQ', page: 22},
     gearType: GearType.weaponMod,
     name: 'Foregrip',
     type: 'Weapon Mod',
@@ -379,7 +404,7 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: 'c2c50d7e-ec56-469f-903c-a5d84a109779',
-    source: { book: 'FSQ', page: 71 },
+    source: {book: 'FSQ', page: 71},
     cost: 75,
     gearType: GearType.weaponMod,
     name: 'Detachable Drum Magazine',
@@ -389,11 +414,11 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: 'c5abefe0-575b-4a5f-8e5f-a39723faffc8',
-    source: { book: 'CRB', page: 259 },
+    source: {book: 'CRB', page: 259},
     gearType: GearType.weaponMod,
     name: 'Gas Vent',
     type: 'Weapon Mod',
-    avail: { rarity: 3 },
+    avail: {rarity: 3},
     cost: 500,
 
     description: 'Removes the attack rating penalty for Semi-Automatic fire, and reduces it to 2 for Burst Fire',
@@ -405,11 +430,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: 'd7aac7b6-6113-41e0-8087-53515753e9a3',
-  source: { book: 'CRB', page: 254 },
+  source: {book: 'CRB', page: 254},
   gearType: GearType.weapon,
   name: 'FN P93 Predator',
   type: 'Submachine Gun',
-  avail: { rarity: 4, license: true },
+  avail: {rarity: 4, license: true},
   cost: 925,
 
   attributes: {
@@ -424,7 +449,7 @@ addGear<WeaponData>(Silicus, {
 }, [
   addGear(Silicus, {
     id: '81ef8a86-6cdf-49fc-a01e-b059c9757fed',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Rigid Stock',
     type: 'Weapon Mod',
@@ -434,7 +459,7 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: '77fe6e86-2189-47a9-972d-61077b90c242',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Laser sight',
     type: 'Weapon Mod',
@@ -443,7 +468,7 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: '86c75812-6258-40d7-8d9a-539e297cbb2a',
-    source: { book: 'CRB', page: 254 },
+    source: {book: 'CRB', page: 254},
     gearType: GearType.weaponMod,
     name: 'Flashlight',
     type: 'Weapon Mod',
@@ -457,11 +482,11 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: 'ec2415cc-832b-4fda-bbd1-b19516cc389f',
-    source: { book: 'CRB', page: 259 },
+    source: {book: 'CRB', page: 259},
     gearType: GearType.weaponMod,
     name: 'Gas Vent',
     type: 'Weapon Mod',
-    avail: { rarity: 3 },
+    avail: {rarity: 3},
     cost: 500,
 
     description: 'Removes the attack rating penalty for Semi-Automatic fire, and reduces it to 2 for Burst Fire',
@@ -473,11 +498,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: '2c28bae0-15fc-4564-826e-84397c260a1c',
-  source: { book: 'FS', page: 36 },
+  source: {book: 'FS', page: 36},
   gearType: GearType.weapon,
   name: 'Krime Thumper',
   type: 'Launcher',
-  avail: { rarity: 3, license: true },
+  avail: {rarity: 3, license: true},
   cost: 1_500,
 
   attributes: {
@@ -510,11 +535,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: '7a055ec1-6048-4b36-a555-445f28fdfdbf',
-  source: { book: 'CRB', page: 255 },
+  source: {book: 'CRB', page: 255},
   gearType: GearType.weapon,
   name: 'Ares Viper Silvergun',
   type: 'Heavy Pistol',
-  avail: { rarity: 4, license: true },
+  avail: {rarity: 4, license: true},
   cost: 610,
 
   attributes: {
@@ -533,11 +558,11 @@ addGear<WeaponData>(Silicus, {
   }),
   addGear(Silicus, {
     id: 'b987971b-814f-489d-b0f4-ffc5f8602069',
-    source: { book: 'CRB', page: 260 },
+    source: {book: 'CRB', page: 260},
     gearType: GearType.weaponMod,
     name: 'Quick Draw Holster',
     type: 'Weapon Mod',
-    avail: { rarity: 2 },
+    avail: {rarity: 2},
     cost: 175,
 
     description: 'Use of a Quick-Draw holster provides a bonus Minor action when the Quick-Draw Action is taken',
@@ -547,11 +572,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: '6d431911-4038-4c64-b543-13af0b9cab5f',
-  source: { book: 'CRB', page: 255 },
+  source: {book: 'CRB', page: 255},
   gearType: GearType.weapon,
   name: 'Defiance SuperShocker',
   type: 'Taser',
-  avail: { rarity: 1 },
+  avail: {rarity: 1},
   cost: 340,
 
   attributes: {
@@ -573,11 +598,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: 'c99f8aba-d4d6-4880-8d4d-866dace1eb75',
-  source: { book: 'CRB', page: 254 },
+  source: {book: 'CRB', page: 254},
   gearType: GearType.weapon,
   name: 'Survival Knife',
   type: 'Blade',
-  avail: { rarity: 2 },
+  avail: {rarity: 2},
   cost: 250,
 
   attributes: {
@@ -593,11 +618,11 @@ addGear<WeaponData>(Silicus, {
 
 addGear<WeaponData>(Silicus, {
   id: '604ab904-d3e7-4f4e-9da0-182495de68a1',
-  source: { book: 'CRB', page: 254 },
+  source: {book: 'CRB', page: 254},
   gearType: GearType.weapon,
   name: 'Shock Gloves',
   type: 'Other Melee',
-  avail: { rarity: 4 },
+  avail: {rarity: 4},
   cost: 790,
 
   attributes: {
@@ -615,8 +640,8 @@ addGear<AugmentData>(Silicus, {
   name: 'Synaptic Booster',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 4, license: true },
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 4, license: true},
   cost: 142_500,
 
   description: (`
@@ -639,8 +664,8 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 3 },
-    { type: EffectType.initAdj, value: 3 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.reaction, value: 3},
+    {type: EffectType.initAdj, value: 3},
   ],
 })
 
@@ -649,8 +674,8 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   name: 'Platelet Factories',
   type: 'Bioware Augment',
-  source: { book: 'CRB', page: 292 },
-  avail: { rarity: 3 },
+  source: {book: 'CRB', page: 292},
+  avail: {rarity: 3},
   cost: 8_500,
 
   description: (`
@@ -670,8 +695,8 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   name: 'Muscle Toner',
   type: 'Bioware Augment',
-  source: { book: 'CRB', page: 292 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 292},
+  avail: {rarity: 3, license: true},
   cost: 64_000,
 
   description: (`
@@ -689,7 +714,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 4 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.agility, value: 4},
   ],
 })
 
@@ -698,8 +723,8 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   name: 'Bone Density',
   type: 'Bioware Augment',
-  source: { book: 'CRB', page: 291 },
-  avail: { rarity: 3, license: true },
+  source: {book: 'CRB', page: 291},
+  avail: {rarity: 3, license: true},
   cost: 24_000,
 
   attributes: {
@@ -715,7 +740,7 @@ addGear<AugmentData>(Silicus, {
   `),
 
   effects: [
-    { type: EffectType.dicePoolAdj, name: 'Bone Density', poolType: CharacterPoolTypes.dmgResist, value: 4 },
+    {type: EffectType.dicePoolAdj, name: 'Bone Density', poolType: CharacterPoolTypes.dmgResist, value: 4},
     // Melee damage: 3P
     // Melee Atk. Rating: +2
   ],
@@ -726,8 +751,8 @@ addGear<AugmentData>(Silicus, {
   name: 'Pain Editor',
   type: 'Cultured Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 5, illegal: true },
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 5, illegal: true},
   cost: 72_000,
 
   description: (`
@@ -750,8 +775,8 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.willpower, value: 1 },
-    { type: EffectType.attrBonus, attr: CharacterAttr.intuition, value: -1 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.willpower, value: 1},
+    {type: EffectType.attrBonus, attr: CharacterAttr.intuition, value: -1},
   ],
 })
 
@@ -760,8 +785,8 @@ addGear<AugmentData>(Silicus, {
   name: 'Orthoskin',
   type: 'Bioware Augment',
   gearType: GearType.augment,
-  source: { book: 'CRB', page: 292 },
-  avail: { rarity: 7, license: true },
+  source: {book: 'CRB', page: 292},
+  avail: {rarity: 7, license: true},
   cost: 60_000,
 
   description: (`
@@ -781,7 +806,7 @@ addGear<AugmentData>(Silicus, {
   },
 
   effects: [
-    { type: EffectType.defRatingAdj, value: 4 },
+    {type: EffectType.defRatingAdj, value: 4},
   ],
 })
 
@@ -790,8 +815,8 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   name: 'Reflex Recorder (Firearms)',
   type: 'Cultured Bioware Augment',
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 4 },
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 4},
   cost: 7_000,
 
   description: (`
@@ -811,7 +836,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.skillAdj, skill: ActiveSkillIds.CRB.firearms, value: 1 },
+    {type: EffectType.skillAdj, skill: ActiveSkillIds.CRB.firearms, value: 1},
   ],
 })
 
@@ -820,8 +845,8 @@ addGear<AugmentData>(Silicus, {
   gearType: GearType.augment,
   name: 'Cerebral Booster',
   type: 'Cultured Bioware Augment',
-  source: { book: 'CRB', page: 293 },
-  avail: { rarity: 5 },
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 5},
   cost: 47_250,
 
   description: (`
@@ -841,7 +866,7 @@ addGear<AugmentData>(Silicus, {
 
   enabled: true,
   effects: [
-    { type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3 },
+    {type: EffectType.attrBonus, attr: CharacterAttr.logic, value: 3},
   ],
 })
 
@@ -850,8 +875,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'Sony Emperor',
   type: 'Commlink',
-  source: { book: 'CRB', page: 267 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 267},
+  avail: {rarity: 2},
   cost: 700,
 
   attributes: {
@@ -866,8 +891,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'Biomonitor',
   type: 'Biotech',
-  source: { book: 'CRB', page: 281 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 281},
+  avail: {rarity: 2},
   cost: 300,
 })
 
@@ -876,8 +901,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'Glasses',
   type: 'Clothing',
-  source: { book: 'CRB', page: 285 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 285},
+  avail: {rarity: 2},
   cost: 400,
 
   attributes: {
@@ -889,8 +914,8 @@ addGear(Silicus, {
     gearType: GearType.other,
     name: 'Smartlink',
     type: 'Visual Enhancement',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 2 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 2},
     cost: 2_000,
 
     attributes: {
@@ -902,8 +927,8 @@ addGear(Silicus, {
     gearType: GearType.other,
     name: 'Imagelink',
     type: 'Visual Enhancement',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 1 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 1},
     cost: 25,
 
     attributes: {
@@ -915,8 +940,8 @@ addGear(Silicus, {
     gearType: GearType.other,
     name: 'Thermographic Vision',
     type: 'Visual Enhancement',
-    source: { book: 'CRB', page: 275 },
-    avail: { rarity: 2 },
+    source: {book: 'CRB', page: 275},
+    avail: {rarity: 2},
     cost: 500,
 
     attributes: {
@@ -930,12 +955,12 @@ addGear<ArmorData>(Silicus, {
   gearType: GearType.armor,
   name: 'Armored Jacket',
   type: 'Armor',
-  source: { book: 'CRB', page: 265 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 265},
+  avail: {rarity: 2},
   cost: 1_000,
 
   effects: [
-    { type: EffectType.defRatingAdj, value: 4 },
+    {type: EffectType.defRatingAdj, value: 4},
   ],
 
   attributes: {
@@ -949,8 +974,8 @@ addGear(Silicus, {
   gearType: GearType.armor,
   name: 'Auctioneer Business Clothes',
   type: 'Armor',
-  source: { book: 'CRB', page: 265 },
-  avail: { rarity: 2 },
+  source: {book: 'CRB', page: 265},
+  avail: {rarity: 2},
   cost: 1_500,
 
   attributes: {
@@ -963,7 +988,7 @@ addGear(Silicus, {
     gearType: GearType.armorMod,
     name: 'Concealed Hostler',
     type: 'Armor Mod',
-    source: { book: 'CRB', page: 259 },
+    source: {book: 'CRB', page: 259},
 
     wirelessBonus: {
       enabled: true,
@@ -977,8 +1002,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'Medkit',
   type: 'Biotech',
-  source: { book: 'CRB', page: 281 },
-  avail: { rarity: 3 },
+  source: {book: 'CRB', page: 281},
+  avail: {rarity: 3},
   cost: 1_500,
 
   attributes: {
@@ -999,10 +1024,10 @@ addGear(Silicus, {
     gearType: GearType.other,
     name: 'Medkit Supplies',
     type: 'Supplies',
-    source: { book: 'CRB', page: 273 },
-    avail: { rarity: 1 },
+    source: {book: 'CRB', page: 273},
+    avail: {rarity: 1},
     cost: 100,
-    quantity: 5,
+    quantity: 100,
   }),
 ])
 
@@ -1011,8 +1036,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'First Aid Kit',
   type: 'Kit',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 1 },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 1},
   cost: 500,
 
   kit: KitType.firstAid,
@@ -1023,8 +1048,8 @@ addGear(Silicus, {
   gearType: GearType.other,
   name: 'Trauma Patch',
   type: 'Slap Patch',
-  source: { book: 'CRB', page: 282 },
-  avail: { rarity: 3 },
+  source: {book: 'CRB', page: 282},
+  avail: {rarity: 3},
   cost: 500,
   quantity: 10,
   description: (`
@@ -1039,8 +1064,8 @@ addGear<VehicleData>(Silicus, {
   name: 'Suzuki Mirage',
   type: 'Bike',
   cost: 12_000,
-  avail: { rarity: 2 },
-  source: { book: 'CRB', page: 295 },
+  avail: {rarity: 2},
+  source: {book: 'CRB', page: 295},
 
   attributes: {
     [VehicleAttr.handling]: '2/6',
@@ -1063,8 +1088,8 @@ addGear<VehicleData>(Silicus, {
   name: 'Hyundai Shin-Hyung',
   type: 'Car',
   cost: 20_000,
-  avail: { rarity: 2 },
-  source: { book: 'CRB', page: 295 },
+  avail: {rarity: 2},
+  source: {book: 'CRB', page: 295},
 
   attributes: {
     [VehicleAttr.handling]: '3/5',
@@ -1086,7 +1111,7 @@ addGear<VehicleData>(Silicus, {
     modType: ModType.riggerInterface,
     name: 'Rigger Interface',
     type: 'vehicle mod',
-    avail: { rarity: 2, license: true },
+    avail: {rarity: 2, license: true},
     cost: 1_000,
   }),
 ])
@@ -1096,8 +1121,8 @@ addGear<SinData>(Silicus, {
   gearType: GearType.sin,
   name: 'Jake Ozbourne',
   type: 'Fake SIN',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
   cost: 15_000,
 
   description: 'General use SIN',
@@ -1111,8 +1136,8 @@ addGear<SinData>(Silicus, {
     gearType: GearType.license,
     name: 'License: Concealed Carry',
     type: 'Fake License',
-    source: { book: 'CRB', page: 273 },
-    avail: { rarity: 4, illegal: true },
+    source: {book: 'CRB', page: 273},
+    avail: {rarity: 4, illegal: true},
     cost: 1_000,
 
     attributes: {
@@ -1124,8 +1149,8 @@ addGear<SinData>(Silicus, {
     gearType: GearType.license,
     name: 'License: Firearm Carry',
     type: 'Fake License',
-    source: { book: 'CRB', page: 273 },
-    avail: { rarity: 4, illegal: true },
+    source: {book: 'CRB', page: 273},
+    avail: {rarity: 4, illegal: true},
     cost: 1_000,
 
     attributes: {
@@ -1137,8 +1162,8 @@ addGear<SinData>(Silicus, {
     gearType: GearType.license,
     name: 'License: Ares Viper Silvergun',
     type: 'Fake License',
-    source: { book: 'CRB', page: 273 },
-    avail: { rarity: 4, illegal: true },
+    source: {book: 'CRB', page: 273},
+    avail: {rarity: 4, illegal: true},
     cost: 1_000,
 
     attributes: {
@@ -1152,8 +1177,8 @@ addGear<SinData>(Silicus, {
   gearType: GearType.sin,
   name: 'Julian Bashir',
   type: 'Fake SIN',
-  source: { book: 'CRB', page: 273 },
-  avail: { rarity: 4, illegal: true },
+  source: {book: 'CRB', page: 273},
+  avail: {rarity: 4, illegal: true},
   cost: 10_000,
 
   description: 'Runner use SIN',

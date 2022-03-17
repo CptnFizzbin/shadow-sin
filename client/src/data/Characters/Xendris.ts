@@ -25,6 +25,11 @@ export const Xendris: CharacterData = {
 
   karma: [
     {
+      date: '2021-03-06T16:00',
+      value: +5,
+      note: 'Session Reward',
+    },
+    {
       date: '2021-02-13T13:05',
       value: -15,
       note: 'CHA 2 => 3',
@@ -162,25 +167,25 @@ export const Xendris: CharacterData = {
   qualities: [
     toCharQuality(Qualities[QualityIds.CRB.highPainTolerance]),
     toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
-    toCharQuality(Qualities[QualityIds.CRB.builtTough], { level: 3 }),
+    toCharQuality(Qualities[QualityIds.CRB.builtTough], {level: 3}),
     toCharQuality(Qualities[QualityIds.CRB.longReach]),
   ],
 
   gear: [
     {
       id: '501f13ec-01c5-4369-8e2b-c61381ca3555',
-      source: { book: 'CRB', page: 265 },
+      source: {book: 'CRB', page: 265},
       gearType: GearType.armor,
       name: 'Armored Jacket',
       type: 'Armor',
-      avail: { rarity: 2 },
+      avail: {rarity: 2},
       cost: 1_000,
       attributes: {
         [ArmorAttr.defenseBonus]: 4,
         [ArmorAttr.capacity]: 8,
       },
       effects: [
-        { type: EffectType.defRatingAdj, value: 4 },
+        {type: EffectType.defRatingAdj, value: 4},
       ],
       description: `
         Available in all manner of styles, it offers good protection without 
@@ -190,11 +195,11 @@ export const Xendris: CharacterData = {
     },
     {
       id: '0795383b-4050-4979-9623-0ad057d14422',
-      source: { book: 'CRB', page: 267 },
+      source: {book: 'CRB', page: 267},
       gearType: GearType.other,
       name: 'Sony Emperor',
       type: 'Commlink',
-      avail: { rarity: 2 },
+      avail: {rarity: 2},
       cost: 700,
       attributes: {
         [CommlinkAttr.deviceRating]: 2,
@@ -204,11 +209,11 @@ export const Xendris: CharacterData = {
     },
     {
       id: '0e6bd0a9-822b-4e5e-931b-82fdab1f4ec8',
-      source: { book: 'CRB', page: 267 },
+      source: {book: 'CRB', page: 267},
       gearType: GearType.weapon,
       name: 'Ares Predator VI',
       type: 'Heavy Pistol',
-      avail: { rarity: 2, license: true },
+      avail: {rarity: 2, license: true},
       cost: 750,
       attributes: {
         [WeaponAttr.dv]: '3P',
@@ -221,11 +226,11 @@ export const Xendris: CharacterData = {
     },
     {
       id: 'c6b2b887-c31c-4ba4-8fa2-fe6e3b5b1f19',
-      source: { book: 'CRB', page: 247 },
+      source: {book: 'CRB', page: 247},
       gearType: GearType.weapon,
       name: 'Katana',
       type: 'Blade Weapon',
-      avail: { rarity: 3 },
+      avail: {rarity: 3},
       cost: 350,
       attributes: {
         [WeaponAttr.dv]: '4P',
@@ -241,7 +246,7 @@ export const Xendris: CharacterData = {
     {
       id: '56e45b2d-d181-4d48-94f4-c343bd324815',
       name: 'Manabolt',
-      source: { book: 'CRB', page: 133 },
+      source: {book: 'CRB', page: 133},
       category: SpellCategory.Combat,
       range: 'LOS',
       type: SpellType.Mana,
@@ -259,7 +264,7 @@ export const Xendris: CharacterData = {
     {
       id: 'e8c1b202-0af1-41c5-a1e0-a97a8737a1bf',
       name: 'Fireball',
-      source: { book: 'CRB', page: 133 },
+      source: {book: 'CRB', page: 133},
       category: SpellCategory.Combat,
       range: 'LOS (A)',
       type: SpellType.Physical,
@@ -280,7 +285,7 @@ export const Xendris: CharacterData = {
     {
       id: '94ed6946-dd22-43a7-9110-6349169092a8',
       name: 'Firestrike',
-      source: { book: 'CRB', page: 133 },
+      source: {book: 'CRB', page: 133},
       category: SpellCategory.Combat,
       range: 'LOS',
       type: SpellType.Physical,
@@ -301,7 +306,7 @@ export const Xendris: CharacterData = {
     {
       id: 'c06c0782-4c65-4dc8-9685-122563f6d600',
       name: 'Resist Pain',
-      source: { book: 'CRB', page: 137 },
+      source: {book: 'CRB', page: 137},
       category: SpellCategory.Health,
       range: 'Touch',
       type: SpellType.Mana,
@@ -317,7 +322,7 @@ export const Xendris: CharacterData = {
     {
       id: 'fe3a1eea-140c-4b09-a324-9832bbe70b83',
       name: 'Increase Attribute',
-      source: { book: 'CRB', page: 137 },
+      source: {book: 'CRB', page: 137},
       category: SpellCategory.Health,
       range: 'Touch',
       type: SpellType.Physical,
@@ -338,7 +343,7 @@ export const Xendris: CharacterData = {
     {
       id: 'e1bc877c-539a-4df3-8653-bac9219f5b55',
       name: 'Decrease Attribute',
-      source: { book: 'CRB', page: 136 },
+      source: {book: 'CRB', page: 136},
       category: SpellCategory.Health,
       range: 'Touch',
       type: SpellType.Physical,
@@ -358,7 +363,7 @@ export const Xendris: CharacterData = {
     {
       id: '5b2c4a6e-5898-4abb-a795-7c8fffbf02ba',
       name: 'Increase Reflexes',
-      source: { book: 'CRB', page: 137 },
+      source: {book: 'CRB', page: 137},
       category: SpellCategory.Health,
       range: 'Touch',
       type: SpellType.Physical,
@@ -377,7 +382,7 @@ export const Xendris: CharacterData = {
     {
       id: '0f906a30-d84d-40af-8adb-76e23892e323',
       name: 'Heal',
-      source: { book: 'CRB', page: 136 },
+      source: {book: 'CRB', page: 136},
       category: SpellCategory.Health,
       range: 'Touch',
       type: SpellType.Physical,

@@ -1,25 +1,25 @@
-import {AwakenedType} from '../../Character/AwakenedType'
-import {CharacterAttr} from '../../Character/CharacterAttr'
-import {CharacterData} from '../../Character/CharacterData'
-import {ArmorAttr} from '../../Gear/Armor/ArmorAttr'
-import {AugmentAttr} from '../../Gear/Augments/AugmentAttr'
-import {AugmentData, AugmentGrade, AugmentSlot} from '../../Gear/Augments/AugmentData'
-import {CommlinkAttr} from '../../Gear/Commlink/CommlinkAttr'
-import {GearType} from '../../Gear/GearData'
-import {SinAttr} from '../../Gear/License/SinAttr'
-import {SinData} from '../../Gear/License/SinData'
-import {OtherGearAttr} from '../../Gear/OtherGearData'
-import {VehicleAttr} from '../../Gear/Vehicles/VehicleAttr'
-import {VehicleData} from '../../Gear/Vehicles/VehicleData'
-import {WeaponPoolKeys} from '../../Gear/Weapons/DicePools'
-import {WeaponAttr} from '../../Gear/Weapons/WeaponAttr'
-import {WeaponModData, WeaponModSlot} from '../../Gear/Weapons/WeaponModData'
-import {toCharQuality} from '../../Qualities/CharacterQuality'
-import {Qualities, QualityIds} from '../../Qualities/Quality'
-import {ActiveSkillIds, SkillType, Specializations} from '../../Skills'
-import {EffectType} from '../../System/Effect'
+import { AwakenedType } from '../../Character/AwakenedType'
+import { CharacterAttr } from '../../Character/CharacterAttr'
+import { CharacterData } from '../../Character/CharacterData'
+import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
+import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot } from '../../Gear/Augments/AugmentData'
+import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../../Gear/GearData'
+import { SinAttr } from '../../Gear/License/SinAttr'
+import { SinData } from '../../Gear/License/SinData'
+import { OtherGearAttr } from '../../Gear/OtherGearData'
+import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
+import { VehicleData } from '../../Gear/Vehicles/VehicleData'
+import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
+import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../Qualities/Quality'
+import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
+import { EffectType } from '../../System/Effect'
 
-import {addGear} from './index'
+import { addGear } from './index'
 
 export const Spike: CharacterData = {
   dataVersion: 3,
@@ -33,6 +33,16 @@ export const Spike: CharacterData = {
   },
 
   karma: [
+    {
+      date: '2021-03-13T16:00',
+      value: +3,
+      note: 'Session Reward',
+    },
+    {
+      date: '2021-03-06T16:00',
+      value: +5,
+      note: 'Session Reward',
+    },
     {
       date: '2021-01-02T16:01',
       value: 2,
@@ -61,6 +71,21 @@ export const Spike: CharacterData = {
   ],
 
   nuyen: [
+    {
+      date: '2021-03-13T16:00',
+      value: 14_285,
+      note: 'Mission Rewards',
+    },
+    {
+      date: '2022-03-06T16:00',
+      value: -1_500,
+      note: 'Wingsuit',
+    },
+    {
+      date: '2022-03-06T12:00',
+      value: -10_000,
+      note: 'Reflex Recorder',
+    },
     {
       date: '2021-12-19T16:00',
       value: 40_000,
@@ -386,6 +411,31 @@ addGear(Spike, {
     slot: WeaponModSlot.barrel,
   }),
 ])
+
+addGear<AugmentData>(Spike, {
+  id: 'd519ba9d-cc88-4744-8875-6f7de05cafd6',
+  gearType: GearType.augment,
+  name: 'Reflex Recorder',
+  type: 'Cultured Bioware Augment',
+  source: {book: 'CRB', page: 293},
+  avail: {rarity: 5},
+  cost: 14_000,
+  attributes: {
+    [AugmentAttr.grade]: AugmentGrade.standard,
+    [AugmentAttr.essenceCost]: 0.1,
+    [AugmentAttr.slot]: AugmentSlot.bioware,
+  },
+  description: `
+    This system uses extra nervous tissue linked to specific areas of the body 
+    to improve muscle memory. The reflex recorder adds 1 to the rating of a 
+    skill linked to a Physical attribute. Multiple recorders may be taken for 
+    multiple skills, but you can’t implant two reflex recorders for the same 
+    skill.
+  `,
+  effects: [
+    {type: EffectType.skillAdj, skill: ActiveSkillIds.CRB.firearms, value: 1},
+  ],
+})
 
 addGear<AugmentData>(Spike, {
   id: '4e9b405a-34c3-4048-b2dc-292136759017',
