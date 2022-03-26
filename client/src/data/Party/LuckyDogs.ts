@@ -24,6 +24,11 @@ export const LuckyDogs: Party = {
 
   nuyen: [
     {
+      date: '2022-03-13T16:00',
+      value: +8_750,
+      note: 'Mission Rewards',
+    },
+    {
       date: '2021-03-13T16:00',
       value: 8_285,
       note: 'Mission Rewards',
@@ -38,6 +43,6 @@ export const LuckyDogs: Party = {
   gear: [],
 
   notes: [
-    'Base has level 7 at front door created by Ron',
+    'Base has level 7 mana barrier at front door created by Ron',
   ],
 }

@@ -2,8 +2,13 @@ import { BalanceLog } from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
-    date: '2021-03-13T16:00',
-    value: 14_285,
+    date: '2022-03-13T16:00',
+    value: +8_750,
+    note: 'Mission Rewards',
+  },
+  {
+    date: '2022-03-13T16:00',
+    value: +14_285,
     note: 'Mission Rewards',
   },
   {
@@ -13,7 +18,7 @@ export const nuyen: BalanceLog = [
   },
   {
     date: '2022-02-13T12:55',
-    value: 500,
+    value: +500,
     note: 'From Ron for shooting an collector\'s rubix cube',
   },
   {

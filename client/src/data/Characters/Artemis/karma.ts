@@ -1,28 +1,43 @@
-import {BalanceLog} from '../../../System/BalanceLog'
+import { BalanceLog } from '../../../System/BalanceLog'
 
 export const karma: BalanceLog = [
   {
-    date: '2021-03-13T16:00',
+    date: '2022-03-22T13:45:01',
+    value: -5,
+    note: 'Skill: Piloting Specialization (Air Craft)',
+  },
+  {
+    date: '2022-03-22T13:45:00',
+    value: -5,
+    note: 'Skill: Piloting Expertise (Ground Craft)',
+  },
+  {
+    date: '2022-03-20T16:00',
+    value: +5,
+    note: 'Session Reward',
+  },
+  {
+    date: '2022-03-13T16:00',
     value: +3,
     note: 'Session Reward',
   },
   {
-    date: '2021-03-06T16:00',
+    date: '2022-03-06T16:00',
     value: +6,
     note: 'Session Reward',
   },
   {
-    date: '2021-02-13T13:08',
+    date: '2022-02-13T13:08',
     value: -25,
     note: 'STR 1 => 3',
   },
   {
-    date: '2021-01-03T11:00',
+    date: '2022-01-03T11:00',
     value: -5,
     note: 'Specialize: Firearms (Submachine Guns)',
   },
   {
-    date: '2021-01-02T16:01',
+    date: '2022-01-02T16:01',
     value: 2,
     note: 'Session reward',
   },

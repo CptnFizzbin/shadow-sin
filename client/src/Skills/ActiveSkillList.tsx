@@ -14,7 +14,7 @@ export const ActiveSkillList: FC<SkillListProps> = ({
   charSkills,
 }) => {
   return (
-    <Stack gap={1} direction="row" sx={{ flexWrap: 'wrap' }}>
+    <Stack gap={1} direction='row' sx={{flexWrap: 'wrap'}}>
       {charSkills.map(skill => (
         <ActiveSkillRow key={skill.id} charSkill={skill} />
       ))}
@@ -32,12 +32,12 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
   const activeSkill = ActiveSkills[charSkill.id]
 
   return (
-    <Box sx={{ width: 175 }}>
+    <Box sx={{width: 175}}>
       <div>
-        <Typography sx={{ color: 'primary.main', display: 'inline' }}>{formatSkill(charSkill.id)}</Typography>
-        <Typography sx={{ paddingLeft: 1, display: 'inline' }}>{charSkill.rank}</Typography>
+        <Typography sx={{color: 'primary.main', display: 'inline'}}>{formatSkill(charSkill.id)}</Typography>
+        <Typography sx={{paddingLeft: 1, display: 'inline'}}>{charSkill.rank}</Typography>
       </div>
-      <Paper variant="outlined" sx={{ padding: 1 }}>
+      <Paper variant='outlined' sx={{padding: 1}}>
         <Stack gap={1}>
           <DicePool
             name={formatSkill(activeSkill.id)}
@@ -58,9 +58,9 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
           )}
         </Stack>
 
-        <Typography variant="caption">
-          {charSkill.specialization && <> S. {charSkill.specialization} (+2)</>}
-          {charSkill.expertise && <> E. {charSkill.expertise} (+3)</>}
+        <Typography variant='caption'>
+          {charSkill.specialization && <div> S. {charSkill.specialization} (+2)</div>}
+          {charSkill.expertise && <div> E. {charSkill.expertise} (+3)</div>}
         </Typography>
       </Paper>
     </Box>

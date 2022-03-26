@@ -1,5 +1,6 @@
 import { CharacterData } from '../../../Character/CharacterData'
 import { GearType } from '../../../Gear/GearData'
+import { RccData } from '../../../Gear/Rcc/RccData'
 import { AutosoftAttr } from '../../../Gear/Software/Autosoft/AutosoftAttr'
 import { AutosoftData } from '../../../Gear/Software/Autosoft/AutosoftData'
 import { VehicleAttr } from '../../../Gear/Vehicles/VehicleAttr'
@@ -10,8 +11,6 @@ import { WeaponData } from '../../../Gear/Weapons/WeaponData'
 import { ActiveSkillIds, Specializations } from '../../../Skills'
 import { EffectType } from '../../../System/Effect'
 import { addGear } from '../index'
-
-import { Artemis, rcc } from './index'
 
 const mountedFnHar: WeaponData = {
   id: null,
@@ -31,7 +30,7 @@ const mountedFnHar: WeaponData = {
   specialtyName: Specializations.CRB.Firearms.Rifles,
 }
 
-const riggerInterface: VehicleModData = {
+export const riggerInterface: VehicleModData = {
   id: null,
   gearType: GearType.vehicleMod,
   modType: ModType.riggerInterface,
@@ -61,73 +60,10 @@ const stdWeaponMount: VehicleModData = {
   },
 }
 
-export function addDrones(character: CharacterData): void {
-  addGear<VehicleData>(character, {
-    id: '4a5eb8d5-004b-4cdd-bce5-e0db64a33639',
-    gearType: GearType.vehicle,
-    name: 'Range Rover Model 2080',
-    type: 'Van',
-    cost: 73_000,
-    avail: {rarity: 2},
-
-    attributes: {
-      [VehicleAttr.handling]: '4/5',
-      [VehicleAttr.accel]: 12,
-      [VehicleAttr.speedInterval]: 20,
-      [VehicleAttr.topSpeed]: 160,
-      [VehicleAttr.body]: 16,
-      [VehicleAttr.armor]: 10,
-      [VehicleAttr.pilot]: 4,
-      [VehicleAttr.sensor]: 4,
-      [VehicleAttr.seat]: 4,
-    },
-
-    slavedTo: rcc.id,
-    pilotingSpeciality: 'Ground Craft',
-
-    hardpoints: {
-      [HardpointSize.small]: 0,
-      [HardpointSize.standard]: 3,
-      [HardpointSize.large]: 1,
-      [HardpointSize.huge]: 0,
-    },
-
-    modSlots: {
-      [SlotType.chassis]: 16,
-      [SlotType.powertrain]: 16,
-      [SlotType.electronic]: 16,
-    },
-  }, [
-    addGear(character, {
-      ...riggerInterface,
-      id: 'cebc1ac9-e097-44f6-9394-bc342a7f71a3',
-    }),
-    addGear(character, {
-      id: '1497c961-81f4-4b75-aed6-90c345671188',
-      name: 'Medium Drone Rack',
-      gearType: GearType.vehicleMod,
-      type: 'Core Mod',
-      attributes: {
-        [VehicleModAttr.hardpointSize]: HardpointSize.large,
-        'Drone Capacity': '8 Medium',
-      },
-    }, [
-      addGear(character, {
-        id: '4b7ed682-0404-4da1-8830-685a239e567e',
-        name: 'Expanded Drone Storage',
-        gearType: GearType.vehicleMod,
-        type: 'Core Mod',
-        attributes: {
-          [VehicleModAttr.slotType]: SlotType.chassis,
-          [VehicleModAttr.slotCost]: 7,
-        },
-      }),
-    ]),
-  ])
-
+export function addDrones(character: CharacterData, rcc: RccData): void {
   addGear<VehicleData>(character, {
     id: '120f2464-312a-4a2f-a53a-22aa9effa85c',
-    name: 'NIX',
+    name: 'She-ra',
     gearType: GearType.vehicle,
     type: 'Medium Crawler Drone',
     cost: 12_750,
@@ -231,7 +167,7 @@ export function addDrones(character: CharacterData): void {
       ],
     }),
     addGear(character, {...riggerInterface, id: '3e5e33d7-6e17-4334-8c38-4068106230a5'}),
-    addGear<AutosoftData>(Artemis, {
+    addGear<AutosoftData>(character, {
       id: 'f78ae905-b77f-44a9-be57-56caa2e3629b',
       gearType: GearType.autosoft,
       name: 'Panther XXL Targeting',

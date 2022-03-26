@@ -5,7 +5,7 @@ import { ContactList } from '../../Contacts/ContactList'
 import { useAllGear } from '../../Gear/GearContext'
 import { GearList } from '../../Gear/GearList'
 import { isSin } from '../../Gear/License/SinData'
-import { formatNuyen, useNuyenBalance } from '../../System/Nuyen'
+import { calcNuyenBalance, formatNuyen } from '../../System/Nuyen'
 import { InfoBlock } from '../../UI/InfoBlock/InfoBlock'
 import { Stat } from '../../UI/StatBlock'
 import { useCharacterData } from '../CharacterProvider'
@@ -22,15 +22,15 @@ export const CharacterInfo: FC = () => {
   const sins = useAllGear().filter(isSin)
   const theme = useTheme()
   const mdScreenOrLarger = useMediaQuery(theme.breakpoints.up('md'))
-  const nuyenBalance = useNuyenBalance()
 
   if (!character) return null
 
   const bio = character.bio
   const karma: number = character.karma.reduce((sum, entry) => sum + entry.value, 0)
+  const nuyen = calcNuyenBalance(character.nuyen)
 
-  const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
-    <Stat name="Nuyen" value={formatNuyen(nuyenBalance)} />
+  const blockTitleRight = <Box sx={{fontSize: 10, textAlign: 'right'}}>
+    <Stat name="Nuyen" value={formatNuyen(nuyen)} />
     <Stat name="Karma" value={karma} />
   </Box>
 
@@ -47,7 +47,7 @@ export const CharacterInfo: FC = () => {
         <Stack gap={1} direction={mdScreenOrLarger ? 'row-reverse' : 'column'}>
           <CombatArea />
 
-          <Stack gap={1} sx={{ flexGrow: 1 }}>
+          <Stack gap={1} sx={{flexGrow: 1}}>
             <EdgeTracker />
 
             <DicePoolsSection />

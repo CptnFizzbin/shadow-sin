@@ -1,25 +1,24 @@
-import { AwakenedType } from '../../Character/AwakenedType'
-import { CharacterAttr } from '../../Character/CharacterAttr'
-import { CharacterData } from '../../Character/CharacterData'
-import { ArmorAttr } from '../../Gear/Armor/ArmorAttr'
-import { AugmentAttr } from '../../Gear/Augments/AugmentAttr'
-import { AugmentData, AugmentGrade, AugmentSlot } from '../../Gear/Augments/AugmentData'
-import { CommlinkAttr } from '../../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../../Gear/GearData'
-import { SinAttr } from '../../Gear/License/SinAttr'
-import { SinData } from '../../Gear/License/SinData'
-import { OtherGearAttr } from '../../Gear/OtherGearData'
-import { VehicleAttr } from '../../Gear/Vehicles/VehicleAttr'
-import { VehicleData } from '../../Gear/Vehicles/VehicleData'
-import { WeaponPoolKeys } from '../../Gear/Weapons/DicePools'
-import { WeaponAttr } from '../../Gear/Weapons/WeaponAttr'
-import { WeaponModData, WeaponModSlot } from '../../Gear/Weapons/WeaponModData'
-import { toCharQuality } from '../../Qualities/CharacterQuality'
-import { Qualities, QualityIds } from '../../Qualities/Quality'
-import { ActiveSkillIds, SkillType, Specializations } from '../../Skills'
-import { EffectType } from '../../System/Effect'
-
-import { addGear } from './index'
+import { AwakenedType } from '../../../Character/AwakenedType'
+import { CharacterAttr } from '../../../Character/CharacterAttr'
+import { CharacterData } from '../../../Character/CharacterData'
+import { ArmorAttr } from '../../../Gear/Armor/ArmorAttr'
+import { AugmentAttr } from '../../../Gear/Augments/AugmentAttr'
+import { AugmentData, AugmentGrade, AugmentSlot } from '../../../Gear/Augments/AugmentData'
+import { CommlinkAttr } from '../../../Gear/Commlink/CommlinkAttr'
+import { GearType } from '../../../Gear/GearData'
+import { SinAttr } from '../../../Gear/License/SinAttr'
+import { SinData } from '../../../Gear/License/SinData'
+import { OtherGearAttr } from '../../../Gear/OtherGearData'
+import { VehicleAttr } from '../../../Gear/Vehicles/VehicleAttr'
+import { VehicleData } from '../../../Gear/Vehicles/VehicleData'
+import { WeaponPoolKeys } from '../../../Gear/Weapons/DicePools'
+import { WeaponAttr } from '../../../Gear/Weapons/WeaponAttr'
+import { WeaponModData, WeaponModSlot } from '../../../Gear/Weapons/WeaponModData'
+import { toCharQuality } from '../../../Qualities/CharacterQuality'
+import { Qualities, QualityIds } from '../../../Qualities/Quality'
+import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
+import { EffectType } from '../../../System/Effect'
+import { addGear } from '../index'
 
 export const Spike: CharacterData = {
   dataVersion: 3,
@@ -33,6 +32,11 @@ export const Spike: CharacterData = {
   },
 
   karma: [
+    {
+      date: '2022-03-20T16:00',
+      value: +5,
+      note: 'Session Reward',
+    },
     {
       date: '2021-03-13T16:00',
       value: +3,
@@ -71,6 +75,11 @@ export const Spike: CharacterData = {
   ],
 
   nuyen: [
+    {
+      date: '2022-03-13T16:00',
+      value: +8_750,
+      note: 'Mission Rewards',
+    },
     {
       date: '2021-03-13T16:00',
       value: 14_285,
