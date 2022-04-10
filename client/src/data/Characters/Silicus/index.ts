@@ -305,43 +305,6 @@ addGear<WeaponData>(Silicus, {
 ])
 
 addGear<WeaponData>(Silicus, {
-  id: '2c28bae0-15fc-4564-826e-84397c260a1c',
-  source: {book: 'FS', page: 36},
-  gearType: GearType.weapon,
-  name: 'Krime Thumper',
-  type: 'Launcher',
-  avail: {rarity: 3, license: true},
-  cost: 1_500,
-
-  attributes: {
-    [WeaponAttr.dv]: 'Grenade',
-    [WeaponAttr.modes]: 'SA',
-    [WeaponAttr.attackRatings]: '-/8/7/5/-',
-    [WeaponAttr.ammo]: '30(m)',
-  },
-
-  skill: ActiveSkillIds.CRB.exoticWeapons,
-  specialtyName: 'Launchers',
-}, [
-  addGear(Silicus, {
-    id: '76d1fc48-02c9-41b6-ae81-87bee8ad9b9e',
-    gearType: GearType.weapon,
-    name: 'Shotgun configuration',
-    type: 'Weapon configuration',
-
-    attributes: {
-      [WeaponAttr.dv]: '4P',
-      [WeaponAttr.modes]: 'SS',
-      [WeaponAttr.attackRatings]: '12/6/3/-/-',
-    },
-
-    removable: false,
-    skill: ActiveSkillIds.CRB.exoticWeapons,
-    specialtyName: 'Launchers',
-  }),
-])
-
-addGear<WeaponData>(Silicus, {
   id: '7a055ec1-6048-4b36-a555-445f28fdfdbf',
   source: {book: 'CRB', page: 255},
   gearType: GearType.weapon,
