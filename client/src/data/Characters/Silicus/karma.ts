@@ -2,54 +2,44 @@ import { BalanceLog } from '../../../System/BalanceLog'
 
 export const karma: BalanceLog = [
   {
+    date: '2022-04-03T16:01',
+    value: -5,
+    note: 'Skill: Athletics',
+  },
+  {
     date: '2022-04-03T16:00',
     value: +3,
     note: 'Session Reward',
   },
   {
-    date: '2022-03-22T13:45:01',
-    value: -5,
-    note: 'Skill: Piloting Specialization (Air Craft)',
-  },
-  {
-    date: '2022-03-22T13:45:00',
-    value: -5,
-    note: 'Skill: Piloting Expertise (Ground Craft)',
-  },
-  {
     date: '2022-03-20T16:00',
-    value: +5,
+    value: +1,
     note: 'Session Reward',
   },
   {
-    date: '2022-03-13T16:00',
+    date: '2021-03-13T16:00',
     value: +3,
     note: 'Session Reward',
   },
   {
-    date: '2022-03-06T16:00',
-    value: +6,
+    date: '2021-03-06T16:00',
+    value: +5,
     note: 'Session Reward',
   },
   {
-    date: '2022-02-13T13:08',
-    value: -25,
-    note: 'STR 1 => 3',
-  },
-  {
-    date: '2022-01-03T11:00',
-    value: -5,
-    note: 'Specialize: Firearms (Submachine Guns)',
-  },
-  {
-    date: '2022-01-02T16:01',
+    date: '2021-01-02T16:01',
     value: 2,
     note: 'Session reward',
   },
   {
-    date: '2022-01-02T12:00',
-    value: -10,
+    date: '2021-12-19T16:03',
+    value: -28,
     note: 'Karma => Nuyen (Ron)',
+  },
+  {
+    date: '2021-12-19T16:02',
+    value: -20,
+    note: 'Buy off Bad Luck',
   },
   {
     date: '2021-12-19T16:01',
@@ -92,28 +82,43 @@ export const karma: BalanceLog = [
     note: 'Session reward',
   },
   {
-    date: '2021-09-26T16:00',
-    value: 4,
-    note: 'Session reward',
-  },
-  {
-    date: '2021-09-19T22:00',
-    value: -10,
-    note: 'Body 1 => 2',
-  },
-  {
     date: '2021-09-19T16:00',
     value: 5,
     note: 'Session reward',
   },
   {
-    date: '2021-09-11',
+    date: '2021-09-12',
     value: 2,
     note: 'Session reward',
   },
   {
-    date: '2021-08-28',
-    value: 14,
-    note: 'Balance import',
+    date: '2021-08-29T16:05',
+    value: -10,
+    note: 'Buy reaction 1 -> 2',
+  },
+  {
+    date: '2021-08-29T16:04',
+    value: -25,
+    note: 'Buy charisma 1 -> 3',
+  },
+  {
+    date: '2021-08-29T16:03',
+    value: -12,
+    note: 'Buy Exceptional (Agility)',
+  },
+  {
+    date: '2021-08-29T16:02',
+    value: -3,
+    note: 'Buy Analytical Mind',
+  },
+  {
+    date: '2021-08-29T16:01',
+    value: 10,
+    note: 'Gain Bad Luck',
+  },
+  {
+    date: '2021-08-29T16:00',
+    value: 50,
+    note: 'Character Creation',
   },
 ]

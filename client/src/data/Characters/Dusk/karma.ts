@@ -2,6 +2,16 @@ import { BalanceLog } from '../../../System/BalanceLog'
 
 export const karma: BalanceLog = [
   {
+    date: '2022-04-03T16:01',
+    value: -10,
+    note: 'Spells: Stunball, Stunbolt',
+  },
+  {
+    date: '2022-04-03T16:00',
+    value: +3,
+    note: 'Session Reward',
+  },
+  {
     date: '2022-03-20T16:00',
     value: +5,
     note: 'Session Reward',

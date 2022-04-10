@@ -26,6 +26,8 @@ import { Qualities, QualityIds } from '../../../Qualities/Quality'
 import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
 import { EffectType } from '../../../System/Effect'
 import { addGear } from '../index'
+import { karma } from './karma'
+import { nuyen } from './nuyen'
 
 export const Silicus: CharacterData = {
   dataVersion: 3,
@@ -38,216 +40,8 @@ export const Silicus: CharacterData = {
     role: 'Street Samurai',
   },
 
-  karma: [
-    {
-      date: '2022-03-20T16:00',
-      value: +1,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-03-13T16:00',
-      value: +3,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-03-06T16:00',
-      value: +5,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-01-02T16:01',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-12-19T16:03',
-      value: -28,
-      note: 'Karma => Nuyen (Ron)',
-    },
-    {
-      date: '2021-12-19T16:02',
-      value: -20,
-      note: 'Buy off Bad Luck',
-    },
-    {
-      date: '2021-12-19T16:01',
-      value: 5,
-      note: 'Mission reward',
-    },
-    {
-      date: '2021-12-19T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-12-05T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-27T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-21T15:05',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-07T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-10-17T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-10-03T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-19T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-12',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-08-29T16:05',
-      value: -10,
-      note: 'Buy reaction 1 -> 2',
-    },
-    {
-      date: '2021-08-29T16:04',
-      value: -25,
-      note: 'Buy charisma 1 -> 3',
-    },
-    {
-      date: '2021-08-29T16:03',
-      value: -12,
-      note: 'Buy Exceptional (Agility)',
-    },
-    {
-      date: '2021-08-29T16:02',
-      value: -3,
-      note: 'Buy Analytical Mind',
-    },
-    {
-      date: '2021-08-29T16:01',
-      value: 10,
-      note: 'Gain Bad Luck',
-    },
-    {
-      date: '2021-08-29T16:00',
-      value: 50,
-      note: 'Character Creation',
-    },
-  ],
-
-  nuyen: [
-    {
-      date: '2022-03-20T16:00',
-      value: +8_750,
-      note: 'Mission Rewards',
-    },
-    {
-      date: '2021-03-13T16:00',
-      value: 14_285,
-      note: 'Mission Rewards',
-    },
-    {
-      date: '2022-03-06T16:00',
-      value: -1_500,
-      note: 'Wingsuit',
-    },
-    {
-      date: '2022-03-06T12:00',
-      value: -1_000,
-      note: 'Dart Launcher',
-    },
-    {
-      date: '2022-01-02T15:20',
-      value: -20_000,
-      note: 'Loan to Artemis',
-    },
-    {
-      date: '2021-12-19T16:02',
-      value: -30_000,
-      note: 'Orthoskin 2 => 4',
-    },
-    {
-      date: '2021-12-19T16:01',
-      value: 70_000,
-      note: 'Karma => Nuyen from Ron',
-    },
-    {
-      date: '2021-12-19T16:00',
-      value: 40_000,
-      note: 'Mission Reward',
-    },
-    {
-      date: '2021-10-24T16:01',
-      value: -500,
-      note: 'Loan to Artemis',
-    },
-    {
-      date: '2021-10-24T16:00',
-      value: 2_050 + 75 + 500,
-      note: 'Ranger Arms AA-16',
-    },
-    {
-      date: '2021-10-17T16:00',
-      value: 11_400,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-10-03T16:00',
-      value: -30_000,
-      note: 'Orthoskin',
-    },
-    {
-      date: '2021-09-26T16:00',
-      value: 10_166,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-09-25T13:45',
-      value: 2 * 100,
-      note: 'Medical Supplies',
-    },
-    {
-      date: '2021-09-25T13:44',
-      value: 8 * 500,
-      note: 'Trauma Patch',
-    },
-    {
-      date: '2021-09-19T16:00',
-      value: 25_000,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-08-28T00:03',
-      value: -9_000,
-      note: '3 months lifestyle (middle)',
-    },
-    {
-      date: '2021-08-28T00:02',
-      value: -439_575,
-      note: 'Char creation Gear',
-    },
-    {
-      date: '2021-08-28T00:01',
-      value: 450_000,
-      note: 'Char creation',
-    },
-  ],
+  karma,
+  nuyen,
 
   lifestyle: {
     grade: 'middle',
@@ -313,6 +107,11 @@ export const Silicus: CharacterData = {
       type: SkillType.active,
       id: ActiveSkillIds.CRB.closeCombat,
       rank: 5,
+    },
+    {
+      type: SkillType.active,
+      id: ActiveSkillIds.CRB.athletics,
+      rank: 1,
     },
     {
       type: SkillType.language,

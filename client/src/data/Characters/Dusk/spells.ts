@@ -6,7 +6,7 @@ export const spells: SpellData[] = [
   {
     id: '3fe6eed8-76eb-4652-a5ca-46021d42a521',
     name: 'Increase Attribute',
-    source: { book: 'CRB', page: 137 },
+    source: {book: 'CRB', page: 137},
     category: SpellCategory.Health,
     range: 'Touch',
     type: SpellType.Physical,
@@ -27,7 +27,7 @@ export const spells: SpellData[] = [
   {
     id: 'fd112538-96cc-41cd-b20f-e9f0d83948ef',
     name: 'Increase Reflexes',
-    source: { book: 'CRB', page: 137 },
+    source: {book: 'CRB', page: 137},
     category: SpellCategory.Health,
     range: 'Touch',
     type: SpellType.Physical,
@@ -46,7 +46,7 @@ export const spells: SpellData[] = [
   {
     id: 'e7cc9291-3f01-49c2-93c9-bb2c3221f23f',
     name: 'Heal',
-    source: { book: 'CRB', page: 136 },
+    source: {book: 'CRB', page: 136},
     category: SpellCategory.Health,
     range: 'Touch',
     type: SpellType.Physical,
@@ -64,7 +64,7 @@ export const spells: SpellData[] = [
   {
     id: '9ac200ec-e301-401a-a1f4-a9cebbdadc0b',
     name: 'Invisibility',
-    source: { book: 'CRB', page: 138 },
+    source: {book: 'CRB', page: 138},
     category: SpellCategory.Illusion,
     senseType: 'Single-Sense',
     range: 'Touch',
@@ -81,7 +81,7 @@ export const spells: SpellData[] = [
   {
     id: '63f34c4d-adf0-4f94-ad60-63f8dc5ebd18',
     name: 'Ice Spear',
-    source: { book: 'CRB', page: 138 },
+    source: {book: 'CRB', page: 138},
     category: SpellCategory.Combat,
     damageType: 'Indirect',
     range: 'LoS',
@@ -97,6 +97,42 @@ export const spells: SpellData[] = [
       doing Cold elemental damage (CRB p.110) along with the normal damage and 
       imposing the Chilled status (CRB p.51) for a number of combat rounds equal 
       to net hits on the Spellcasting test.
+    `,
+  },
+  {
+    id: '9c04e99b-47b8-4cd6-bcc9-7bdefe27f327',
+    name: 'Stunbolt',
+    source: {book: 'CRB', page: 134},
+    category: SpellCategory.Combat,
+    damageType: 'Direct',
+    range: 'LoS',
+    type: SpellType.Mana,
+    duration: 'Instant',
+    drainValue: 3,
+    area: false,
+    damage: 'S',
+    effect: `
+      Sometimes you take a little off the heater to catch the other guy 
+      off-balance. These spells channel mana in a way that hurts, but only to 
+      stun.
+    `,
+  },
+  {
+    id: 'a22855a7-c4d8-456e-bc8a-ea333814991e',
+    name: 'Stunball',
+    source: {book: 'CRB', page: 134},
+    category: SpellCategory.Combat,
+    damageType: 'Indirect',
+    range: 'LoS',
+    type: SpellType.Mana,
+    duration: 'Instant',
+    drainValue: 4,
+    area: true,
+    damage: 'S',
+    effect: `
+      Sometimes you take a little off the heater to catch the other guy 
+      off-balance. These spells channel mana in a way that hurts, but only to 
+      stun.
     `,
   },
 ]
