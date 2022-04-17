@@ -7,11 +7,6 @@ export const karma: BalanceLog = [
     note: 'Mission Rewards',
   },
   {
-    date: '2022-04-03T16:01',
-    value: -10,
-    note: 'Spells: Stunball, Stunbolt',
-  },
-  {
     date: '2022-04-03T16:00',
     value: +3,
     note: 'Session Reward',
@@ -22,23 +17,38 @@ export const karma: BalanceLog = [
     note: 'Session Reward',
   },
   {
-    date: '2022-03-13T16:00',
+    date: '2021-03-13T16:00',
     value: +3,
     note: 'Session Reward',
   },
   {
-    date: '2022-03-06T16:00',
+    date: '2021-03-06T16:00',
     value: +5,
     note: 'Session Reward',
   },
   {
-    date: '2022-01-02T16:01',
+    date: '2021-01-02T16:01',
     value: 2,
     note: 'Session reward',
   },
   {
-    date: '2021-12-22T12:58',
-    value: 0,
-    note: 'Balance Import',
+    date: '2021-12-19T16:01',
+    value: 5,
+    note: 'Mission reward',
+  },
+  {
+    date: '2021-12-19T16:00',
+    value: 3,
+    note: 'Session reward',
+  },
+  {
+    date: '2021-12-05T16:00',
+    value: 5,
+    note: 'Session reward',
+  },
+  {
+    date: '2021-12-05',
+    value: 27,
+    note: 'Balance import',
   },
 ]

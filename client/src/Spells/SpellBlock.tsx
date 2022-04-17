@@ -35,12 +35,12 @@ export const SpellBlock: FC<SpellBlockProps> = ({
       break
   }
 
-  const blockTitleRight = <Box sx={{ fontSize: 10, textAlign: 'right' }}>
-    {spell.source && <Stat name="Source" value={formatSource(spell.source)} />}
+  const blockTitleRight = <Box sx={{fontSize: 10, textAlign: 'right'}}>
+    {spell.source && <Stat name='Source' value={formatSource(spell.source)} />}
   </Box>
 
   return (
-    <InfoBlock title={spell.name} subtitle={subtitle} expandable titleRight={blockTitleRight}>
+    <InfoBlock expandId={spell.id} title={spell.name} subtitle={subtitle} expandable titleRight={blockTitleRight}>
       <AttributeBlock attributes={attributes} />
       <Typography>{spell.effect}</Typography>
     </InfoBlock>

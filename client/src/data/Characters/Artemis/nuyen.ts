@@ -2,6 +2,11 @@ import { BalanceLog } from '../../../System/BalanceLog'
 
 export const nuyen: BalanceLog = [
   {
+    date: '2022-04-10T16:00',
+    value: +15_715,
+    note: 'Mission Rewards',
+  },
+  {
     date: '2022-04-03T16:00',
     value: +10_000,
     note: 'Mission Rewards',

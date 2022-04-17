@@ -91,6 +91,17 @@ export const Artemis: CharacterData = {
       type: SkillType.active,
       id: ActiveSkillIds.CRB.engineering,
       rank: 7,
+      specialization: Specializations.CRB.Engineering.AutomotiveMechanic,
+    },
+    {
+      type: SkillType.active,
+      id: ActiveSkillIds.CRB.perception,
+      rank: 1,
+    },
+    {
+      type: SkillType.active,
+      id: ActiveSkillIds.CRB.athletics,
+      rank: 1,
     },
     {
       type: SkillType.language,

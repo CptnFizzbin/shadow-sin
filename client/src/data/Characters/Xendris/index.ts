@@ -11,6 +11,8 @@ import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
 import { SpellCategory } from '../../../Spells/SpellCategory'
 import { SpellType } from '../../../Spells/SpellType'
 import { EffectType } from '../../../System/Effect'
+import { karma } from './karma'
+import { nuyen } from './nuyen'
 
 export const Xendris: CharacterData = {
   dataVersion: 3,
@@ -23,80 +25,8 @@ export const Xendris: CharacterData = {
     role: 'Hermetic Mage',
   },
 
-  karma: [
-    {
-      date: '2021-03-06T16:00',
-      value: +5,
-      note: 'Session Reward',
-    },
-    {
-      date: '2021-02-13T13:05',
-      value: -15,
-      note: 'CHA 2 => 3',
-    },
-    {
-      date: '2021-01-02T16:01',
-      value: 2,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-12-19T16:00',
-      value: 5,
-      note: 'Mission reward',
-    },
-    {
-      date: '2021-12-05T16:00',
-      value: 5,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-27T16:00',
-      value: 4,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-21T15:05',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-07T16:00',
-      value: 3,
-      note: 'Session reward',
-    },
-    {
-      date: '2021-11-21T12:17',
-      value: 2,
-      note: 'Character Creation',
-    },
-  ],
-  nuyen: [
-    {
-      date: '2021-12-19T16:00',
-      value: 40_000,
-      note: 'Mission Reward',
-    },
-    {
-      date: '2021-11-21T16:00',
-      value: 2_000,
-      note: 'Stream income',
-    },
-    {
-      date: '2021-11-21T12:21',
-      value: -5_000,
-      note: 'Lifestyle (1 month)',
-    },
-    {
-      date: '2021-11-21T12:20',
-      value: -2_450,
-      note: 'Char creation Gear',
-    },
-    {
-      date: '2021-11-21T12:19',
-      value: 8_000,
-      note: 'Char creation',
-    },
-  ],
+  karma: karma,
+  nuyen: nuyen,
 
   lifestyle: {
     grade: 'middle',

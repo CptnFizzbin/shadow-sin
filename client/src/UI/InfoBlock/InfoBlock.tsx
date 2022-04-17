@@ -14,18 +14,18 @@ function useExpanded(expandId: string | null): [boolean, (set: boolean) => void]
 
   useEffect(() => {
     if (expandId === null) return
-    const saved = sessionStorage.getItem(`expanded.${expandId}`) || 'true'
+    const saved = localStorage.getItem(`expanded.${expandId}`) || 'true'
     _setExpanded(saved === 'true')
   }, [expandId])
 
   function setExpanded(value: boolean): void {
+    console.log('set', expandId, value)
     if (expandId === null) return
-    sessionStorage.setItem(`expanded.${expandId}`, value.toString())
+    localStorage.setItem(`expanded.${expandId}`, value.toString())
     _setExpanded(value)
   }
 
   return [expanded, setExpanded]
-
 }
 
 interface InfoBlockProps {
@@ -57,7 +57,7 @@ export const InfoBlock: FC<InfoBlockProps> = ({
   return (
     <Paper elevation={1}>
       <Box sx={{display: 'flex', gap: 1, padding: 1}}>
-        {expandable && (
+        {expandable && expandId && (
           <Box>
             <IconButton size='small' onClick={() => setExpanded(!expanded)}>
               <FontAwesomeIcon icon={expanded ? 'caret-square-down' : ['far', 'caret-square-right']} />

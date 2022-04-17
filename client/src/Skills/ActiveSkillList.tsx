@@ -32,7 +32,7 @@ const ActiveSkillRow: FC<SkillListRowProps> = ({
   const activeSkill = ActiveSkills[charSkill.id]
 
   return (
-    <Box sx={{width: 175}}>
+    <Box sx={{width: 200}}>
       <div>
         <Typography sx={{color: 'primary.main', display: 'inline'}}>{formatSkill(charSkill.id)}</Typography>
         <Typography sx={{paddingLeft: 1, display: 'inline'}}>{charSkill.rank}</Typography>
