@@ -7,7 +7,7 @@ import { ArmorData } from '../../../Gear/Armor/ArmorData'
 import { AugmentAttr } from '../../../Gear/Augments/AugmentAttr'
 import { AugmentData, AugmentGrade, AugmentSlot } from '../../../Gear/Augments/AugmentData'
 import { CommlinkAttr } from '../../../Gear/Commlink/CommlinkAttr'
-import { GearType } from '../../../Gear/GearData'
+import { GearData, GearType } from '../../../Gear/GearData'
 import { KitAttr } from '../../../Gear/Kit/KitAttr'
 import { KitType } from '../../../Gear/Kit/KitType'
 import { LicenseAttr } from '../../../Gear/License/LicenseAttr'
@@ -958,3 +958,26 @@ addGear<SinData>(Silicus, {
     [SinAttr.rating]: 4,
   },
 })
+
+addGear<GearData>(Silicus, {
+  id: '21d5e12f-e8c9-47da-bf69-3a315258ca3e',
+  gearType: GearType.other,
+  name: 'Carromeleg',
+  type: 'Martial Art',
+  attributes: {
+    'Catagories': 'Mobility, Striking, Weapon',
+  },
+}, [
+  addGear<GearData>(Silicus, {
+    id: 'ec3fae32-d74b-47b5-863c-840dffd149e4',
+    gearType: GearType.other,
+    name: 'Bending of the Reed',
+    type: 'Martial Art Technique',
+    attributes: {
+      'Category': 'Mobility',
+    },
+    description:
+      'Gain a bonus Edge when using the Dodge Minor Action against melee and ' +
+      'ranged attacks.',
+  }),
+])
