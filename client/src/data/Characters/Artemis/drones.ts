@@ -60,6 +60,24 @@ const stdWeaponMount: VehicleModData = {
   },
 }
 
+const sensorArray: VehicleModData = {
+  id: null,
+  gearType: GearType.vehicleMod,
+  name: 'Sensor Array',
+  type: 'Vehicle Mod',
+  source: {book: 'CRB', page: 276},
+  avail: {rarity: 4},
+  cost: 4_000,
+
+  attributes: {
+    [VehicleModAttr.rating]: 4,
+  },
+
+  effects: [
+    {type: EffectType.attrOverride, attr: VehicleAttr.sensor, value: 4},
+  ],
+}
+
 export function addDrones(character: CharacterData, rcc: RccData): void {
   addGear<VehicleData>(character, {
     id: '120f2464-312a-4a2f-a53a-22aa9effa85c',
@@ -147,25 +165,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
         {type: EffectType.attrBonus, attr: VehicleAttr.body, value: 4},
       ],
     }),
-    addGear(character, {
-      id: '47cb35c2-8ba5-4365-8605-934afa359762',
-      gearType: GearType.vehicleMod,
-      name: 'Enhanced Sensors',
-      type: 'Sensor Mod',
-      source: {book: 'DC', page: 142},
-      avail: {rarity: 4},
-      cost: 20_000,
-
-      attributes: {
-        [VehicleModAttr.rating]: 4,
-        [VehicleModAttr.slotType]: SlotType.electronic,
-        [VehicleModAttr.slotCost]: 4,
-      },
-
-      effects: [
-        {type: EffectType.attrBonus, attr: VehicleAttr.sensor, value: 4},
-      ],
-    }),
+    addGear(character, {...sensorArray, id: '47cb35c2-8ba5-4365-8605-934afa359762'}),
     addGear(character, {...riggerInterface, id: '3e5e33d7-6e17-4334-8c38-4068106230a5'}),
     addGear<AutosoftData>(character, {
       id: 'f78ae905-b77f-44a9-be57-56caa2e3629b',
@@ -228,6 +228,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: 'f2b1186d-6832-4532-95e9-c627037fcf9d'}, [
       addGear(character, {...mountedFnHar, id: '853a03bb-18fd-42c3-9247-df59e1438904'}),
     ]),
+    addGear(character, {...sensorArray, id: '6d4679a5-00ea-43f2-a97f-10a8c9756d3c'}),
     addGear(character, {...riggerInterface, id: 'ae26eaa6-0e99-41db-b548-383e989865a3'}),
   ])
 
@@ -239,6 +240,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '7a1c1485-0f2f-4434-b216-3379c0b47e83'}, [
       addGear(character, {...mountedFnHar, id: 'c068d8c7-de94-41d6-91c1-45c55fa58a93'}),
     ]),
+    addGear(character, {...sensorArray, id: 'bd3dfb1a-6251-4afb-a700-9c423ea75f76'}),
     addGear(character, {...riggerInterface, id: '0dfe8000-84db-430b-8cd6-7684b18ac5da'}),
   ])
 
@@ -250,6 +252,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '39eb01e7-f91d-4a16-9332-02818904fbd6'}, [
       addGear(character, {...mountedFnHar, id: '842b9dbc-61da-4ec5-a71c-707121f12d00'}),
     ]),
+    addGear(character, {...sensorArray, id: '778a15d7-107f-4512-b152-ea0429650439'}),
     addGear(character, {...riggerInterface, id: '00038dff-c385-46f9-a9d0-9f83464ea691'}),
   ])
 
@@ -298,6 +301,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '91afef0a-9401-46eb-9c3a-66ac3a55a2fb'}, [
       addGear(character, {...mountedFnHar, id: 'd70a4b40-c220-497b-b6ef-460e48477071'}),
     ]),
+    addGear(character, {...sensorArray, id: 'e797ab4a-0afd-47f2-b947-fc70b5060fbb'}),
     addGear(character, {...riggerInterface, id: '2801f808-849f-4226-bbb6-6db12fe6ddb9'}),
   ])
 
@@ -309,6 +313,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: 'ac52b133-3fdd-489d-af2f-88a69e9eeb71'}, [
       addGear(character, {...mountedFnHar, id: 'a4deeead-3438-4d6d-89b1-5c1ff0b2dc38'}),
     ]),
+    addGear(character, {...sensorArray, id: 'ec55858c-cf81-43be-b5f6-39adee71c611'}),
     addGear(character, {...riggerInterface, id: '48cc7529-edce-430a-a966-0d739eada633'}),
   ])
 
@@ -320,6 +325,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: 'cc99eb85-de3c-4b24-b23e-2fcc2a4c7434'}, [
       addGear(character, {...mountedFnHar, id: 'c769571d-b78f-407f-925d-c1b4f39f2204'}),
     ]),
+    addGear(character, {...sensorArray, id: 'a6865fa7-4ed4-40a5-9b9a-8b1ca68ee0ed'}),
     addGear(character, {...riggerInterface, id: 'd6005cd3-36ce-4507-9bd2-c1101df73ad8'}),
   ])
 
@@ -331,6 +337,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '6f0b22cd-2cb7-404b-9b18-3ea8a7ae2199'}, [
       addGear(character, {...mountedFnHar, id: 'e9730f68-5a22-4aa0-8677-496a2178a6f0'}),
     ]),
+    addGear(character, {...sensorArray, id: '5a4c733c-5557-4866-ba79-27b0e43e7b57'}),
     addGear(character, {...riggerInterface, id: 'cf4c20d4-fcef-4ee1-aa16-03404f502199'}),
   ])
 
@@ -342,6 +349,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '5fb480c0-7d6c-4f40-9f19-de2bb6768798'}, [
       addGear(character, {...mountedFnHar, id: 'a96ecc3a-edff-45ff-9378-14df89dffe6a'}),
     ]),
+    addGear(character, {...sensorArray, id: 'b2191a76-e854-4fe5-8ed2-445cb41c626b'}),
     addGear(character, {...riggerInterface, id: '6a671163-3b7a-4715-8533-9c989e872fd0'}),
   ])
 
@@ -353,6 +361,7 @@ export function addDrones(character: CharacterData, rcc: RccData): void {
     addGear(character, {...stdWeaponMount, id: '0950cc03-fda4-4879-8049-b112d1e3d04a'}, [
       addGear(character, {...mountedFnHar, id: '66b31a9d-47de-4241-b114-5dc6aea00de2'}),
     ]),
+    addGear(character, {...sensorArray, id: 'd408a42b-96a7-41fb-977b-ef1017f9c641'}),
     addGear(character, {...riggerInterface, id: 'aab1e2fe-f0a2-4a68-887b-0ea2b671ca10'}),
   ])
 
