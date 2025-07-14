@@ -18,10 +18,7 @@ export const NuyenPage: FC = () => {
 
   return (
     <>
-      <Tabs
-        value={activePage}
-        onChange={(event, value) => setActivePage(value)}
-      >
+      <Tabs value={activePage} onChange={(_, value) => setActivePage(value)}>
         <Tab value="character" label="Character" />
         <Tab value="party" label="Party" />
       </Tabs>

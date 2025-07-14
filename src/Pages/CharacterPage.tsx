@@ -1,12 +1,11 @@
 import { Paper } from "@mui/material"
-import React, { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import {
-  Redirect,
+  Navigate,
   Route,
-  Switch,
-  useHistory,
+  Routes,
+  useNavigate,
   useParams,
-  useRouteMatch,
 } from "react-router-dom"
 
 import { Character } from "../Character/Character"
@@ -24,16 +23,15 @@ import { WeaponsPage } from "./Character/WeaponsPage"
 import { RootLayout } from "./RootLayout"
 
 export const CharacterPage: FC = () => {
-  const history = useHistory()
-  const { path } = useRouteMatch()
+  const navigate = useNavigate()
   const { characterId } = useParams<{ characterId: string }>()
   const [character, setCharacter] = useState<Character | null>(null)
 
   useEffect(() => {
-    const character = loadCharacter(characterId)
-    if (character === null) history.push("/")
+    const character = loadCharacter(characterId!)
+    if (character === null) navigate("/")
     setCharacter(character)
-  }, [history, characterId])
+  }, [navigate, characterId])
 
   if (!character) {
     return <Paper>Loading...</Paper>
@@ -42,19 +40,17 @@ export const CharacterPage: FC = () => {
   return (
     <CharacterProvider character={character}>
       <RootLayout NavDrawer={CharacterNavDrawer}>
-        <Switch>
-          <Route path={`${path}/weapons`} component={WeaponsPage} />
-          <Route path={`${path}/vehicles`} component={VehiclesPage} />
-          <Route path={`${path}/augments`} component={AugmentsPage} />
-          <Route path={`${path}/spells`} component={SpellsPage} />
-          <Route path={`${path}/misc`} component={MiscGearPage} />
-          <Route path={`${path}/karma`} component={KarmaPage} />
-          <Route path={`${path}/nuyen`} component={NuyenPage} />
-          <Route path={`${path}/`} component={CharacterInfoPage} />
-          <Route>
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route index Component={CharacterInfoPage} />
+          <Route path={`weapons`} Component={WeaponsPage} />
+          <Route path={`vehicles`} Component={VehiclesPage} />
+          <Route path={`augments`} Component={AugmentsPage} />
+          <Route path={`spells`} Component={SpellsPage} />
+          <Route path={`misc`} Component={MiscGearPage} />
+          <Route path={`karma`} Component={KarmaPage} />
+          <Route path={`nuyen`} Component={NuyenPage} />
+          <Route path={"*"} element={() => <Navigate to="" />} />
+        </Routes>
       </RootLayout>
     </CharacterProvider>
   )

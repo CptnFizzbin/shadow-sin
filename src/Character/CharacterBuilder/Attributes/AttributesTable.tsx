@@ -46,7 +46,6 @@ export const AttributesTable: FC<AttributesTableProps> = ({
   attributePoints,
   adjustmentPoints,
   magic,
-  onChange,
 }) => {
   const [adjPointsSpent, setAdjPointsSpent] =
     useState<CharAttributes>(defaultAttributes)

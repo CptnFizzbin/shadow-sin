@@ -1,6 +1,6 @@
 import { ListItem, ListItemIcon, ListItemText, SvgIcon } from "@mui/material"
 import { FC, ReactElement } from "react"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export interface NavDrawerProps {
   open: boolean
@@ -24,10 +24,10 @@ export const NavButton: FC<NavButtonProps> = ({
   routeTo,
   closeDrawer,
 }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const onNavClick = () => {
-    history.push(routeTo)
+    navigate(routeTo)
     closeDrawer()
   }
 

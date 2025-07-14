@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
+ 
 import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material"
 import { FC } from "react"
 

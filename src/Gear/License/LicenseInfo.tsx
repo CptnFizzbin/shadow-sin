@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { formatNuyen } from "../../System/Nuyen"
 import { formatSource } from "../../System/Source"

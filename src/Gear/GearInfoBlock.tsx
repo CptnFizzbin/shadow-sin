@@ -2,7 +2,7 @@ import { faWifi } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Paper, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { calculateAttributes } from "../System/Attribute"
 import { AttributeProvider } from "../System/AttributeProvider"

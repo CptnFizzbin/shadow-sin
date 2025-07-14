@@ -1,7 +1,7 @@
 import { faSave, faWifi } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Box, Stack } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { RecordId } from "../../../Api/Model"
 import { AttributeBlock } from "../../../UI/AttributeBlock"

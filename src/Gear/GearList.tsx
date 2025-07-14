@@ -9,7 +9,7 @@ interface GearListProps {
   expanded?: boolean
 }
 
-export const GearList: FC<GearListProps> = ({ gear, expanded = true }) => {
+export const GearList: FC<GearListProps> = ({ gear }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       {gear.map((gear) => (

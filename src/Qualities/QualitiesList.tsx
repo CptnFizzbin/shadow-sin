@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { formatSource } from "../System/Source"
 import { SimpleInfoBlock } from "../UI/InfoBlock/SimpleInfoBlock"

@@ -1,5 +1,5 @@
 import { Box, Chip, Paper, Stack, Typography } from "@mui/material"
-import React, { FC, ReactElement } from "react"
+import { FC, ReactElement } from "react"
 
 import { displayFontFamily } from "../../AppThemeProvider"
 

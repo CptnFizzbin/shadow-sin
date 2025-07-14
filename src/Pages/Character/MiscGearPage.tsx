@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { useAllGear } from "../../Gear/GearContext"
 import { GearType } from "../../Gear/GearData"

@@ -1,5 +1,5 @@
 import { Box, Paper, Stack, Typography } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { useCharacterData } from "../CharacterProvider"
 

@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { ContactList } from "../../Contacts/ContactList"
 import { useAllGear } from "../../Gear/GearContext"

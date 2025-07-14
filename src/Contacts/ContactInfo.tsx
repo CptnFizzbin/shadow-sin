@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material"
 import Box from "@mui/material/Box"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { SimpleInfoBlock } from "../UI/InfoBlock/SimpleInfoBlock"
 import { Stat } from "../UI/StatBlock"

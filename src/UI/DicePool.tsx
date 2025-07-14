@@ -1,7 +1,7 @@
 import { faWifi } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Box, Paper } from "@mui/material"
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { useActiveSkills } from "../Character/CharacterProvider"
 import { GearData } from "../Gear/GearData"

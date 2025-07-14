@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import { FC } from "react"
 
 import { CharacterInfo } from "../../Character/CharacterInfo/CharacterInfo"
 import { useCharacterData } from "../../Character/CharacterProvider"
