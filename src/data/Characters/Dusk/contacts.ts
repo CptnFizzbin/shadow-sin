@@ -1,5 +1,3 @@
-import { ContactData } from '../../../Contacts/ContactData'
+import { ContactData } from "../../../Contacts/ContactData"
 
-export const contacts: ContactData[] = [
-
-]
+export const contacts: ContactData[] = []

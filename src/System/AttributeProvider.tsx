@@ -1,6 +1,6 @@
-import { createContext, FC, useContext } from 'react'
+import { createContext, FC, useContext } from "react"
 
-import { AttrList, AttrType, AttrValue } from './Attribute'
+import { AttrList, AttrType, AttrValue } from "./Attribute"
 
 const AttributeContext = createContext<AttrList>({})
 
@@ -26,10 +26,10 @@ export const useAttributes = (keys?: string[]): AttrList => {
   if (!keys) return allAttributes
 
   const filtered: AttrList = {}
-  keys.forEach(key => filtered[key] = allAttributes[key])
+  keys.forEach((key) => (filtered[key] = allAttributes[key]))
   return filtered
 }
 
-export function useAttribute<T extends AttrValue> (type: AttrType): T {
-  return (useAttributes()[type] as T)
+export function useAttribute<T extends AttrValue>(type: AttrType): T {
+  return useAttributes()[type] as T
 }

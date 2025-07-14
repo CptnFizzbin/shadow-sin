@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material'
-import { FC } from 'react'
+import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material"
+import { FC } from "react"
 
 export const displayFontFamily = '"Comfortaa", "Helvetica", "Arial", sans-serif'
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#CE93D8',
+      main: "#CE93D8",
     },
     secondary: {
-      main: '#03A9F4',
+      main: "#03A9F4",
     },
     text: {
-      primary: '#EEEEEE',
+      primary: "#EEEEEE",
     },
     background: {
-      default: '#2D2736',
+      default: "#2D2736",
     },
   },
 
@@ -31,9 +31,7 @@ const theme = createTheme({
   },
 })
 
-export const AppThemeProvider: FC = ({
-  children,
-}) => {
+export const AppThemeProvider: FC = ({ children }) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

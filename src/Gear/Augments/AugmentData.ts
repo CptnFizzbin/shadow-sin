@@ -1,5 +1,5 @@
-import {BaseGearData, GearData, GearType} from '../GearData'
-import {AugmentAttr} from './AugmentAttr'
+import { BaseGearData, GearData, GearType } from "../GearData"
+import { AugmentAttr } from "./AugmentAttr"
 
 export interface AugmentData extends BaseGearData {
   augmentType?: AugmentType
@@ -19,22 +19,22 @@ export function isAugment(gear: GearData): gear is AugmentData {
 }
 
 export enum AugmentType {
-  controlRig = 'controlRig',
+  controlRig = "controlRig",
 }
 
 export enum AugmentSlot {
-  headware = 'headware',
-  eyeware = 'eyeware',
-  earwear = 'earwear',
-  bodyware = 'bodyware',
-  cyberlimb = 'cyberlimb',
-  bioware = 'bioware',
+  headware = "headware",
+  eyeware = "eyeware",
+  earwear = "earwear",
+  bodyware = "bodyware",
+  cyberlimb = "cyberlimb",
+  bioware = "bioware",
 }
 
 export enum AugmentGrade {
-  used = 'used',
-  standard = 'standard',
-  alpha = 'alphaware',
-  beta = 'betaware',
-  delta = 'deltaware'
+  used = "used",
+  standard = "standard",
+  alpha = "alphaware",
+  beta = "betaware",
+  delta = "deltaware",
 }

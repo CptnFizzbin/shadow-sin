@@ -1,11 +1,19 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import { FC, useState } from 'react'
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material"
+import { FC, useState } from "react"
 
-import { AwakenedType } from '../../AwakenedType'
-import { CharacterAttr } from '../../CharacterAttr'
-import { CharAttributes } from '../../CharacterData'
-import { MetatypeId, Metatypes } from '../../Metatype'
-import { AttrTableRow } from './AttrTableRow'
+import { AwakenedType } from "../../AwakenedType"
+import { CharacterAttr } from "../../CharacterAttr"
+import { CharAttributes } from "../../CharacterData"
+import { MetatypeId, Metatypes } from "../../Metatype"
+import { AttrTableRow } from "./AttrTableRow"
 
 const defaultAttributes: CharAttributes = {
   [CharacterAttr.body]: 0,
@@ -29,7 +37,7 @@ interface AttributesTableProps {
   adjustmentPoints: number
   magic: number
 
-  onChange (attributes: CharAttributes): void
+  onChange(attributes: CharAttributes): void
 }
 
 export const AttributesTable: FC<AttributesTableProps> = ({
@@ -40,9 +48,12 @@ export const AttributesTable: FC<AttributesTableProps> = ({
   magic,
   onChange,
 }) => {
-  const [adjPointsSpent, setAdjPointsSpent] = useState<CharAttributes>(defaultAttributes)
-  const [pointsSpent, setPointsSpent] = useState<CharAttributes>(defaultAttributes)
-  const [karmaPoints, setKarmaPoints] = useState<CharAttributes>(defaultAttributes)
+  const [adjPointsSpent, setAdjPointsSpent] =
+    useState<CharAttributes>(defaultAttributes)
+  const [pointsSpent, setPointsSpent] =
+    useState<CharAttributes>(defaultAttributes)
+  const [karmaPoints, setKarmaPoints] =
+    useState<CharAttributes>(defaultAttributes)
 
   const base: CharAttributes = {
     [CharacterAttr.body]: 1,
@@ -59,9 +70,7 @@ export const AttributesTable: FC<AttributesTableProps> = ({
     [CharacterAttr.essence]: 0,
   }
 
-  const excludedAttributes: CharacterAttr[] = [
-    CharacterAttr.essence,
-  ]
+  const excludedAttributes: CharacterAttr[] = [CharacterAttr.essence]
 
   switch (awakened) {
     case AwakenedType.Technomancer:
@@ -93,44 +102,45 @@ export const AttributesTable: FC<AttributesTableProps> = ({
     .map(({ rank }) => rank)
     .reduce((sum: number, points: number) => sum + points)
 
-  const totalKarmaCost = calcKaramaCost(karmaPoints, mergePointLists([
-    adjPointsSpent,
-    pointsSpent,
-    base,
-  ]))
+  const totalKarmaCost = calcKaramaCost(
+    karmaPoints,
+    mergePointLists([adjPointsSpent, pointsSpent, base]),
+  )
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ '& th, & td': { textAlign: 'center' } }}>
+      <Table sx={{ "& th, & td": { textAlign: "center" } }}>
         <TableHead>
           <TableRow>
-            <TableCell>
-              Attribute
-            </TableCell>
-            <TableCell>
-              Max
-            </TableCell>
-            <TableCell>
-              Base
-            </TableCell>
-            <TableCell sx={{ color: totalAdjPointsSpent > adjustmentPoints ? 'error.main' : undefined }}>
+            <TableCell>Attribute</TableCell>
+            <TableCell>Max</TableCell>
+            <TableCell>Base</TableCell>
+            <TableCell
+              sx={{
+                color:
+                  totalAdjPointsSpent > adjustmentPoints
+                    ? "error.main"
+                    : undefined,
+              }}
+            >
               Metatype ({totalAdjPointsSpent}/{adjustmentPoints})
             </TableCell>
-            <TableCell sx={{ color: totalPointsSpent > attributePoints ? 'error.main' : undefined }}>
+            <TableCell
+              sx={{
+                color:
+                  totalPointsSpent > attributePoints ? "error.main" : undefined,
+              }}
+            >
               Points ({totalPointsSpent}/{attributePoints})
             </TableCell>
-            <TableCell>
-              Karma ({totalKarmaCost} Karma)
-            </TableCell>
-            <TableCell>
-              Total
-            </TableCell>
+            <TableCell>Karma ({totalKarmaCost} Karma)</TableCell>
+            <TableCell>Total</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(Object.keys(base) as CharacterAttr[])
-            .filter(attribute => !excludedAttributes.includes(attribute))
-            .map(attribute => (
+            .filter((attribute) => !excludedAttributes.includes(attribute))
+            .map((attribute) => (
               <AttrTableRow
                 key={attribute}
                 attribute={attribute}
@@ -139,9 +149,15 @@ export const AttributesTable: FC<AttributesTableProps> = ({
                 attrPoints={pointsSpent[attribute]}
                 karmaPoints={karmaPoints[attribute]}
                 maximum={Metatypes[metatypeId].attrMaximums[attribute]}
-                onAdjPointsChange={value => setAdjPointsSpent({ ...adjPointsSpent, [attribute]: value })}
-                onAttrPointsChange={value => setPointsSpent({ ...pointsSpent, [attribute]: value })}
-                onKarmaPointsChange={value => setKarmaPoints({ ...karmaPoints, [attribute]: value })}
+                onAdjPointsChange={(value) =>
+                  setAdjPointsSpent({ ...adjPointsSpent, [attribute]: value })
+                }
+                onAttrPointsChange={(value) =>
+                  setPointsSpent({ ...pointsSpent, [attribute]: value })
+                }
+                onKarmaPointsChange={(value) =>
+                  setKarmaPoints({ ...karmaPoints, [attribute]: value })
+                }
               />
             ))}
         </TableBody>
@@ -150,17 +166,21 @@ export const AttributesTable: FC<AttributesTableProps> = ({
   )
 }
 
-function mergePointLists (lists: CharAttributes[]): CharAttributes {
+function mergePointLists(lists: CharAttributes[]): CharAttributes {
   return lists.reduce((total, points) => {
     for (const attribute of Object.values(CharacterAttr) as CharacterAttr[]) {
-      total = { ...total, [attribute]: (total[attribute] as number) + (points[attribute] as number) }
+      total = {
+        ...total,
+        [attribute]:
+          (total[attribute] as number) + (points[attribute] as number),
+      }
     }
 
     return total
   })
 }
 
-function calcKaramaCost (karmaPoints: CharAttributes, preKarma: CharAttributes) {
+function calcKaramaCost(karmaPoints: CharAttributes, preKarma: CharAttributes) {
   return Object.entries(preKarma)
     .map(([attr, rank]) => ({ attr: attr as CharacterAttr, rank }))
     .filter(({ rank }) => rank && rank !== 0)

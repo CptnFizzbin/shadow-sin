@@ -1,15 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
-import { FC } from 'react'
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
+import { FC } from "react"
 
-import { CharacterLanguageSkill } from './CharacterSkill'
+import { CharacterLanguageSkill } from "./CharacterSkill"
 
 interface SkillListProps {
   skills: CharacterLanguageSkill[]
 }
 
-export const LanguageSkillList: FC<SkillListProps> = ({
-  skills,
-}) => {
+export const LanguageSkillList: FC<SkillListProps> = ({ skills }) => {
   return (
     <Table size="small" aria-label="a dense table">
       <TableHead>
@@ -19,7 +17,7 @@ export const LanguageSkillList: FC<SkillListProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {skills.map(skill => (
+        {skills.map((skill) => (
           <SkillListRow key={skill.name} skill={skill} />
         ))}
       </TableBody>
@@ -31,9 +29,7 @@ interface SkillListRowProps {
   skill: CharacterLanguageSkill
 }
 
-const SkillListRow: FC<SkillListRowProps> = ({
-  skill,
-}) => {
+const SkillListRow: FC<SkillListRowProps> = ({ skill }) => {
   return (
     <TableRow key={skill.name}>
       <TableCell>{skill.name}</TableCell>

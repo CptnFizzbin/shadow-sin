@@ -1,5 +1,5 @@
-import { BaseGearData, GearType } from '../GearData'
-import { ArmorAttr } from './ArmorAttr'
+import { BaseGearData, GearType } from "../GearData"
+import { ArmorAttr } from "./ArmorAttr"
 
 export interface ArmorData extends BaseGearData {
   gearType: GearType.armor

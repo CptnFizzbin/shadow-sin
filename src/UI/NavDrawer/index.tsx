@@ -1,11 +1,11 @@
-import { ListItem, ListItemIcon, ListItemText, SvgIcon } from '@mui/material'
-import { FC, ReactElement } from 'react'
-import { useHistory } from 'react-router-dom'
+import { ListItem, ListItemIcon, ListItemText, SvgIcon } from "@mui/material"
+import { FC, ReactElement } from "react"
+import { useHistory } from "react-router-dom"
 
 export interface NavDrawerProps {
   open: boolean
 
-  closeDrawer (): void
+  closeDrawer(): void
 }
 
 export type NavDrawer = FC<NavDrawerProps>
@@ -15,7 +15,7 @@ interface NavButtonProps {
   label: string
   routeTo: string
 
-  closeDrawer (): void
+  closeDrawer(): void
 }
 
 export const NavButton: FC<NavButtonProps> = ({

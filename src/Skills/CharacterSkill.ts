@@ -1,11 +1,11 @@
-import { ActiveSkillId } from './ActiveSkills'
+import { ActiveSkillId } from "./ActiveSkills"
 
 export type SkillList = Record<string, CharacterActiveSkill>
 
 export enum SkillType {
-  active = 'active',
-  language = 'language',
-  knowledge = 'knowledge',
+  active = "active",
+  language = "language",
+  knowledge = "knowledge",
 }
 
 export interface BasicCharacterSkill {
@@ -23,7 +23,7 @@ export interface CharacterActiveSkill extends BasicCharacterSkill {
 export interface CharacterLanguageSkill extends BasicCharacterSkill {
   type: SkillType.language
   name: string
-  rank: 'basic' | 'speciality' | 'expertise' | 'native'
+  rank: "basic" | "speciality" | "expertise" | "native"
 }
 
 export interface CharacterKnowledgeSkill extends BasicCharacterSkill {
@@ -36,23 +36,35 @@ export type CharacterSkill =
   | CharacterLanguageSkill
   | CharacterKnowledgeSkill
 
-export const hasSpecialty = (skill?: CharacterActiveSkill, specialization?: string): boolean => {
+export const hasSpecialty = (
+  skill?: CharacterActiveSkill,
+  specialization?: string,
+): boolean => {
   if (!specialization || !skill || !skill.specialization) return false
   return skill.specialization.toLowerCase() === specialization.toLowerCase()
 }
-export const hasExpertise = (skill?: CharacterActiveSkill, expertise?: string): boolean => {
+export const hasExpertise = (
+  skill?: CharacterActiveSkill,
+  expertise?: string,
+): boolean => {
   if (!expertise || !skill || !skill.expertise) return false
   return skill.expertise.toLowerCase() === expertise.toLowerCase()
 }
 
-export function isActiveSkill (skill: BasicCharacterSkill): skill is CharacterActiveSkill {
+export function isActiveSkill(
+  skill: BasicCharacterSkill,
+): skill is CharacterActiveSkill {
   return skill.type === SkillType.active
 }
 
-export function isLanguageSkill (skill: BasicCharacterSkill): skill is CharacterLanguageSkill {
+export function isLanguageSkill(
+  skill: BasicCharacterSkill,
+): skill is CharacterLanguageSkill {
   return skill.type === SkillType.language
 }
 
-export function isKnowledgeSkill (skill: BasicCharacterSkill): skill is CharacterKnowledgeSkill {
+export function isKnowledgeSkill(
+  skill: BasicCharacterSkill,
+): skill is CharacterKnowledgeSkill {
   return skill.type === SkillType.knowledge
 }

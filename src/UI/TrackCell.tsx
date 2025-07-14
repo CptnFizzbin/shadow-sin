@@ -1,8 +1,8 @@
-import Paper from '@mui/material/Paper'
-import { FC, useState } from 'react'
+import Paper from "@mui/material/Paper"
+import { FC, useState } from "react"
 
 interface TrackCellProps {
-  onClick? (): void
+  onClick?(): void
 
   filled?: boolean
   isOverflow?: boolean
@@ -18,24 +18,26 @@ export const TrackCell: FC<TrackCellProps> = ({
 }) => {
   const [hovered, setHovered] = useState<boolean>(false)
 
-  let backgroundColor = 'default'
-  if (filled) backgroundColor = 'primary.dark'
-  if (onClick && hovered) backgroundColor = 'primary.light'
+  let backgroundColor = "default"
+  if (filled) backgroundColor = "primary.dark"
+  if (onClick && hovered) backgroundColor = "primary.light"
 
   let borderColor = undefined
-  if (isOverflow) borderColor = 'red'
+  if (isOverflow) borderColor = "red"
 
   return (
     <Paper
-      sx={{ padding: 1, userSelect: 'none', backgroundColor, borderColor }}
+      sx={{ padding: 1, userSelect: "none", backgroundColor, borderColor }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => {
         setHovered(false)
         onClick && onClick()
       }}
-      variant={'outlined'}
+      variant={"outlined"}
       className={className}
-    >{children}</Paper>
+    >
+      {children}
+    </Paper>
   )
 }

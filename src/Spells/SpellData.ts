@@ -1,7 +1,7 @@
-import {Source} from '../System/Source'
-import {DicePoolData} from '../UI/DicePool'
-import {SpellCategory} from './SpellCategory'
-import {SpellType} from './SpellType'
+import { Source } from "../System/Source"
+import { DicePoolData } from "../UI/DicePool"
+import { SpellCategory } from "./SpellCategory"
+import { SpellType } from "./SpellType"
 
 export interface SpellDataBase {
   id: string
@@ -18,7 +18,7 @@ export interface SpellDataBase {
 
 export interface CombatSpellData extends SpellDataBase {
   category: SpellCategory.Combat
-  damageType: 'Indirect' | 'Direct'
+  damageType: "Indirect" | "Direct"
   area?: boolean
   damage: string
 }
@@ -33,7 +33,7 @@ export interface HealthSpellData extends SpellDataBase {
 
 export interface IllusionSpellData extends SpellDataBase {
   category: SpellCategory.Illusion
-  senseType: 'Multi-Sense' | 'Single-Sense'
+  senseType: "Multi-Sense" | "Single-Sense"
 }
 
 export interface ManipulationSpellData extends SpellDataBase {

@@ -1,6 +1,6 @@
-import { RecordId } from '../../Api/Model'
-import { BaseGearData, GearType } from '../GearData'
-import { RccAttr } from './RccAttr'
+import { RecordId } from "../../Api/Model"
+import { BaseGearData, GearType } from "../GearData"
+import { RccAttr } from "./RccAttr"
 
 export interface RccData extends BaseGearData {
   gearType: GearType.rcc

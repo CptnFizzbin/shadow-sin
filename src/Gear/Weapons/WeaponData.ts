@@ -1,7 +1,7 @@
-import { ActiveSkillId } from '../../Skills'
-import { AttrValue } from '../../System/Attribute'
-import { BaseGearData, GearType } from '../GearData'
-import { WeaponAttr } from './WeaponAttr'
+import { ActiveSkillId } from "../../Skills"
+import { AttrValue } from "../../System/Attribute"
+import { BaseGearData, GearType } from "../GearData"
+import { WeaponAttr } from "./WeaponAttr"
 
 export interface WeaponData extends BaseGearData {
   gearType: GearType.weapon

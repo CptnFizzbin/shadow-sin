@@ -1,28 +1,28 @@
-import { AwakenedType } from '../../../Character/AwakenedType'
-import { CharacterAttr } from '../../../Character/CharacterAttr'
-import { CharacterData } from '../../../Character/CharacterData'
-import { toCharQuality } from '../../../Qualities/CharacterQuality'
-import { QualityIds } from '../../../Qualities/Quality'
-import { ActiveSkillIds, SkillType } from '../../../Skills'
-import { contacts } from './contacts'
-import { gear } from './gear'
-import { karma } from './karma'
-import { nuyen } from './nuyen'
-import { spells } from './spells'
+import { AwakenedType } from "../../../Character/AwakenedType"
+import { CharacterAttr } from "../../../Character/CharacterAttr"
+import { CharacterData } from "../../../Character/CharacterData"
+import { toCharQuality } from "../../../Qualities/CharacterQuality"
+import { QualityIds } from "../../../Qualities/Quality"
+import { ActiveSkillIds, SkillType } from "../../../Skills"
+import { contacts } from "./contacts"
+import { gear } from "./gear"
+import { karma } from "./karma"
+import { nuyen } from "./nuyen"
+import { spells } from "./spells"
 
 export const Dusk: CharacterData = {
   dataVersion: 3,
 
   bio: {
-    name: 'Dusk',
-    role: 'Mage',
-    gender: 'Male',
-    metatype: 'Elf',
+    name: "Dusk",
+    role: "Mage",
+    gender: "Male",
+    metatype: "Elf",
     awakened: AwakenedType.Full,
   },
 
   lifestyle: {
-    grade: 'Low',
+    grade: "Low",
     prepaid: 0,
     upkeep: 2_000,
   },
@@ -45,7 +45,9 @@ export const Dusk: CharacterData = {
   qualities: [
     toCharQuality(QualityIds.CRB.lowLightVision, { metaType: true }),
     toCharQuality(QualityIds.CRB.focusedConcentration, { level: 3 }),
-    toCharQuality(QualityIds.CRB.aptitude, { type: ActiveSkillIds.CRB.sorcery }),
+    toCharQuality(QualityIds.CRB.aptitude, {
+      type: ActiveSkillIds.CRB.sorcery,
+    }),
     toCharQuality(QualityIds.CRB.exceptional, { type: CharacterAttr.charisma }),
     toCharQuality(QualityIds.CRB.quickHealer),
     toCharQuality(QualityIds.CRB.arVertigo),
@@ -80,8 +82,8 @@ export const Dusk: CharacterData = {
     },
     {
       type: SkillType.language,
-      name: 'English',
-      rank: 'native',
+      name: "English",
+      rank: "native",
     },
   ],
 

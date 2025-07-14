@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import { FC } from "react"
 
-import { AttrList, formatAttr } from '../System/Attribute'
-import { Stat, StatBlock } from './StatBlock'
+import { AttrList, formatAttr } from "../System/Attribute"
+import { Stat, StatBlock } from "./StatBlock"
 
 interface AttributeBlockProps {
   attributes: AttrList

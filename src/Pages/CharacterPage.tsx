@@ -1,20 +1,27 @@
-import { Paper } from '@mui/material'
-import React, { FC, useEffect, useState } from 'react'
-import { Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom'
+import { Paper } from "@mui/material"
+import React, { FC, useEffect, useState } from "react"
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom"
 
-import { Character } from '../Character/Character'
-import { CharacterProvider } from '../Character/CharacterProvider'
-import { loadCharacter } from '../StorageService'
-import { CharacterNavDrawer } from '../UI/NavDrawer/CharacterNavDrawer'
-import { AugmentsPage } from './Character/AugmentsPage'
-import { CharacterInfoPage } from './Character/CharacterInfoPage'
-import { KarmaPage } from './Character/KarmaPage'
-import { MiscGearPage } from './Character/MiscGearPage'
-import { NuyenPage } from './Character/NuyenPage'
-import { SpellsPage } from './Character/SpellsPage'
-import { VehiclesPage } from './Character/VehiclesPage'
-import { WeaponsPage } from './Character/WeaponsPage'
-import { RootLayout } from './RootLayout'
+import { Character } from "../Character/Character"
+import { CharacterProvider } from "../Character/CharacterProvider"
+import { loadCharacter } from "../StorageService"
+import { CharacterNavDrawer } from "../UI/NavDrawer/CharacterNavDrawer"
+import { AugmentsPage } from "./Character/AugmentsPage"
+import { CharacterInfoPage } from "./Character/CharacterInfoPage"
+import { KarmaPage } from "./Character/KarmaPage"
+import { MiscGearPage } from "./Character/MiscGearPage"
+import { NuyenPage } from "./Character/NuyenPage"
+import { SpellsPage } from "./Character/SpellsPage"
+import { VehiclesPage } from "./Character/VehiclesPage"
+import { WeaponsPage } from "./Character/WeaponsPage"
+import { RootLayout } from "./RootLayout"
 
 export const CharacterPage: FC = () => {
   const history = useHistory()
@@ -24,11 +31,13 @@ export const CharacterPage: FC = () => {
 
   useEffect(() => {
     const character = loadCharacter(characterId)
-    if (character === null) history.push('/')
+    if (character === null) history.push("/")
     setCharacter(character)
   }, [history, characterId])
 
-  if (!character) { return <Paper>Loading...</Paper>}
+  if (!character) {
+    return <Paper>Loading...</Paper>
+  }
 
   return (
     <CharacterProvider character={character}>
@@ -42,7 +51,9 @@ export const CharacterPage: FC = () => {
           <Route path={`${path}/karma`} component={KarmaPage} />
           <Route path={`${path}/nuyen`} component={NuyenPage} />
           <Route path={`${path}/`} component={CharacterInfoPage} />
-          <Route><Redirect to="/" /></Route>
+          <Route>
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </RootLayout>
     </CharacterProvider>

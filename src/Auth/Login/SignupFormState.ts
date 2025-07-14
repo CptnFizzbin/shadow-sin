@@ -1,4 +1,4 @@
-import { Dispatch, Reducer, useReducer } from 'react'
+import { Dispatch, Reducer, useReducer } from "react"
 
 interface FormState {
   username: {
@@ -26,19 +26,19 @@ export const defaultState: FormState = {
   username: {
     dirty: false,
     error: null,
-    value: '',
+    value: "",
   },
 
   confirmPassword: {
     dirty: false,
     error: null,
-    value: '',
+    value: "",
   },
 
   password: {
     dirty: false,
     error: null,
-    value: '',
+    value: "",
   },
 
   dirty: false,
@@ -48,18 +48,18 @@ export const defaultState: FormState = {
 }
 
 type FormAction =
-  | { type: 'setUsername'; value: string }
-  | { type: 'blurUsername' }
-  | { type: 'setPassword'; value: string }
-  | { type: 'blurPassword' }
-  | { type: 'setConfirmPassword'; value: string }
-  | { type: 'blurConfirmPassword' }
-  | { type: 'error'; error: string }
-  | { type: 'submit' }
+  | { type: "setUsername"; value: string }
+  | { type: "blurUsername" }
+  | { type: "setPassword"; value: string }
+  | { type: "blurPassword" }
+  | { type: "setConfirmPassword"; value: string }
+  | { type: "blurConfirmPassword" }
+  | { type: "error"; error: string }
+  | { type: "submit" }
 
 const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
   switch (action.type) {
-    case 'setUsername':
+    case "setUsername":
       return {
         ...state,
         username: {
@@ -68,7 +68,7 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           value: action.value,
         },
       }
-    case 'blurUsername':
+    case "blurUsername":
       return {
         ...state,
         username: {
@@ -76,7 +76,7 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           dirty: true,
         },
       }
-    case 'setPassword':
+    case "setPassword":
       return {
         ...state,
         password: {
@@ -85,7 +85,7 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           error: validatePassword(action.value),
         },
       }
-    case 'blurPassword':
+    case "blurPassword":
       return {
         ...state,
         password: {
@@ -93,7 +93,7 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           dirty: true,
         },
       }
-    case 'setConfirmPassword':
+    case "setConfirmPassword":
       return {
         ...state,
         confirmPassword: {
@@ -102,7 +102,7 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           error: validateConfirmPassword(state.password.value, action.value),
         },
       }
-    case 'blurConfirmPassword':
+    case "blurConfirmPassword":
       return {
         ...state,
         confirmPassword: {
@@ -110,13 +110,13 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
           dirty: true,
         },
       }
-    case 'submit':
+    case "submit":
       return {
         ...state,
         submitting: true,
         error: null,
       }
-    case 'error':
+    case "error":
       return {
         ...state,
         submitting: false,
@@ -127,26 +127,25 @@ const reducer: Reducer<FormState, FormAction> = (state, action): FormState => {
   }
 }
 
-function validateUsername (username: string): string | null {
-  if (!username || username.trim() === '')
-    return 'Username is required'
+function validateUsername(username: string): string | null {
+  if (!username || username.trim() === "") return "Username is required"
 
   return null
 }
 
-function validatePassword (password: string): string | null {
-  if (!password || password === '')
-    return 'Password is required'
+function validatePassword(password: string): string | null {
+  if (!password || password === "") return "Password is required"
 
-  if (password.length <= 10)
-    return 'Password must be longer then 10 characters'
+  if (password.length <= 10) return "Password must be longer then 10 characters"
 
   return null
 }
 
-function validateConfirmPassword (confirmPassword: string, password: string): string | null {
-  if (confirmPassword !== password)
-    return 'Password doesn\'t match'
+function validateConfirmPassword(
+  confirmPassword: string,
+  password: string,
+): string | null {
+  if (confirmPassword !== password) return "Password doesn't match"
 
   return null
 }

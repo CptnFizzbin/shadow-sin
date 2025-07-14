@@ -1,25 +1,27 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faCaretSquareDown } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Chip, IconButton, Paper, Stack, Typography } from '@mui/material'
-import { FC, ReactElement, useEffect, useState } from 'react'
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { faCaretSquareRight } from "@fortawesome/free-regular-svg-icons"
+import { faCaretSquareDown } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Box, Chip, IconButton, Paper, Stack, Typography } from "@mui/material"
+import { FC, ReactElement, useEffect, useState } from "react"
 
-import { displayFontFamily } from '../../AppThemeProvider'
+import { displayFontFamily } from "../../AppThemeProvider"
 
 library.add(faCaretSquareDown, faCaretSquareRight)
 
-function useExpanded(expandId: string | null): [boolean, (set: boolean) => void] {
+function useExpanded(
+  expandId: string | null,
+): [boolean, (set: boolean) => void] {
   const [expanded, _setExpanded] = useState<boolean>(true)
 
   useEffect(() => {
     if (expandId === null) return
-    const saved = localStorage.getItem(`expanded.${expandId}`) || 'true'
-    _setExpanded(saved === 'true')
+    const saved = localStorage.getItem(`expanded.${expandId}`) || "true"
+    _setExpanded(saved === "true")
   }, [expandId])
 
   function setExpanded(value: boolean): void {
-    console.log('set', expandId, value)
+    console.log("set", expandId, value)
     if (expandId === null) return
     localStorage.setItem(`expanded.${expandId}`, value.toString())
     _setExpanded(value)
@@ -56,31 +58,37 @@ export const InfoBlock: FC<InfoBlockProps> = ({
 
   return (
     <Paper elevation={1}>
-      <Box sx={{display: 'flex', gap: 1, padding: 1}}>
+      <Box sx={{ display: "flex", gap: 1, padding: 1 }}>
         {expandable && expandId && (
           <Box>
-            <IconButton size='small' onClick={() => setExpanded(!expanded)}>
-              <FontAwesomeIcon icon={expanded ? 'caret-square-down' : ['far', 'caret-square-right']} />
+            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+              <FontAwesomeIcon
+                icon={
+                  expanded ? "caret-square-down" : ["far", "caret-square-right"]
+                }
+              />
             </IconButton>
           </Box>
         )}
 
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1 }}>
           <Box>
             <Typography
               sx={{
-                display: 'inline-block',
+                display: "inline-block",
                 fontFamily: displayFontFamily,
                 fontSize: titleFontSize,
-                color: 'primary.main',
+                color: "primary.main",
               }}
-            >{title}</Typography>
+            >
+              {title}
+            </Typography>
             {quantity >= 1 && (
               <Chip
-                sx={{marginLeft: 1, verticalAlign: 'top'}}
+                sx={{ marginLeft: 1, verticalAlign: "top" }}
                 label={`x${quantity}`}
-                variant='outlined'
-                size='small'
+                variant="outlined"
+                size="small"
               />
             )}
           </Box>
@@ -94,7 +102,7 @@ export const InfoBlock: FC<InfoBlockProps> = ({
       {expanded && (
         <>
           {(content || children) && (
-            <Stack gap={1} sx={{padding: 1}}>
+            <Stack gap={1} sx={{ padding: 1 }}>
               {content || children}
             </Stack>
           )}

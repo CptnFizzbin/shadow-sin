@@ -1,16 +1,19 @@
-import { Stack, Typography } from '@mui/material'
-import React, { FC } from 'react'
+import { Stack, Typography } from "@mui/material"
+import React, { FC } from "react"
 
-import { useActiveSkill, useCharacterData } from '../../Character/CharacterProvider'
-import { ActiveSkillIds } from '../../Skills'
-import { SpellBlock } from '../../Spells/SpellBlock'
+import {
+  useActiveSkill,
+  useCharacterData,
+} from "../../Character/CharacterProvider"
+import { ActiveSkillIds } from "../../Skills"
+import { SpellBlock } from "../../Spells/SpellBlock"
 import {
   ConjuringSpellcastingPool,
   EnchantingSpellcastingPool,
   ResistDrain,
   SorcerySpellcastingPool,
-} from '../../Spells/SpellDicePools'
-import { DicePools } from '../../UI/DicePool'
+} from "../../Spells/SpellDicePools"
+import { DicePools } from "../../UI/DicePool"
 
 export const SpellsPage: FC = () => {
   const character = useCharacterData()
@@ -24,7 +27,7 @@ export const SpellsPage: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Typography variant={'h4'}>Spells</Typography>
+      <Typography variant={"h4"}>Spells</Typography>
 
       <DicePools>
         {sorcery && <SorcerySpellcastingPool />}
@@ -33,7 +36,7 @@ export const SpellsPage: FC = () => {
         <ResistDrain />
       </DicePools>
 
-      {spells.map(spell => (
+      {spells.map((spell) => (
         <SpellBlock key={spell.id} spell={spell} />
       ))}
     </Stack>

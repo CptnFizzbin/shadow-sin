@@ -1,4 +1,4 @@
-import { Specializations as CrbSpecializations } from '../data/Rulebooks/CRB'
+import { Specializations as CrbSpecializations } from "../data/Rulebooks/CRB"
 
 export const Specializations = {
   CRB: CrbSpecializations,

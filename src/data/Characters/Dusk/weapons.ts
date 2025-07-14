@@ -1,38 +1,38 @@
-import { GearData, GearType } from '../../../Gear/GearData'
-import { WeaponAttr } from '../../../Gear/Weapons/WeaponAttr'
-import { WeaponModSlot } from '../../../Gear/Weapons/WeaponModData'
-import { ActiveSkillIds, Specializations } from '../../../Skills'
+import { GearData, GearType } from "../../../Gear/GearData"
+import { WeaponAttr } from "../../../Gear/Weapons/WeaponAttr"
+import { WeaponModSlot } from "../../../Gear/Weapons/WeaponModData"
+import { ActiveSkillIds, Specializations } from "../../../Skills"
 
 export const weapons: GearData[] = [
   {
-    id: '54f42560-89e0-4373-b105-4504aacb7df8',
-    source: { book: 'CRB', page: 254 },
+    id: "54f42560-89e0-4373-b105-4504aacb7df8",
+    source: { book: "CRB", page: 254 },
     gearType: GearType.weapon,
-    name: 'Browning Ultra Power',
-    type: 'Heavy Pistol',
+    name: "Browning Ultra Power",
+    type: "Heavy Pistol",
     avail: { rarity: 2, license: true },
     cost: 315,
 
     attributes: {
-      [WeaponAttr.dv]: '3P',
-      [WeaponAttr.modes]: 'SA',
-      [WeaponAttr.attackRatings]: '10/9/6/-/-',
-      [WeaponAttr.ammo]: '10(c)',
+      [WeaponAttr.dv]: "3P",
+      [WeaponAttr.modes]: "SA",
+      [WeaponAttr.attackRatings]: "10/9/6/-/-",
+      [WeaponAttr.ammo]: "10(c)",
     },
 
     skill: ActiveSkillIds.CRB.firearms,
     specialtyName: Specializations.CRB.Firearms.HeavyPistols,
   },
   {
-    id: 'a20d6a99-d6e3-4827-b1d4-b0fc250d0370',
-    source: { book: 'CRB', page: 254 },
+    id: "a20d6a99-d6e3-4827-b1d4-b0fc250d0370",
+    source: { book: "CRB", page: 254 },
     gearType: GearType.weaponMod,
-    name: 'Laser Sight',
-    type: 'Weapon Mod',
+    name: "Laser Sight",
+    type: "Weapon Mod",
     slot: WeaponModSlot.top,
     removable: false,
 
-    attachedTo: '54f42560-89e0-4373-b105-4504aacb7df8',
+    attachedTo: "54f42560-89e0-4373-b105-4504aacb7df8",
 
     description: `
       This device uses a laser beam to project a visible dot (normal, low-light, 

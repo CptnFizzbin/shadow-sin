@@ -1,5 +1,5 @@
-import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   Autocomplete,
   IconButton,
@@ -11,18 +11,27 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material'
-import { FC, useState } from 'react'
+} from "@mui/material"
+import { FC, useState } from "react"
 
-import { ActiveSkill, ActiveSkillId, ActiveSkills, CharacterActiveSkill, SkillType } from '../../../Skills'
-import { formatAttr } from '../../../System/Attribute'
-import { Incrementor } from '../../../UI/Incrementor'
+import {
+  ActiveSkill,
+  ActiveSkillId,
+  ActiveSkills,
+  CharacterActiveSkill,
+  SkillType,
+} from "../../../Skills"
+import { formatAttr } from "../../../System/Attribute"
+import { Incrementor } from "../../../UI/Incrementor"
 
 export const SkillsSection: FC = () => {
-  const [charSkills, setCharSkills] = useState<Record<ActiveSkillId, CharacterActiveSkill>>({})
+  const [charSkills, setCharSkills] = useState<
+    Record<ActiveSkillId, CharacterActiveSkill>
+  >({})
 
-  const availableSkills: ActiveSkill[] = Object.values(ActiveSkills)
-    .filter(skill => !Object.keys(charSkills).includes(skill.name))
+  const availableSkills: ActiveSkill[] = Object.values(ActiveSkills).filter(
+    (skill) => !Object.keys(charSkills).includes(skill.name),
+  )
 
   const onAddSkill = (skillId: ActiveSkillId) => {
     setCharSkills({
@@ -46,20 +55,30 @@ export const SkillsSection: FC = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ '& th, & td': { textAlign: 'center' } }}>
+      <Table sx={{ "& th, & td": { textAlign: "center" } }}>
         <TableHead>
           <TableRow>
             <TableCell variant="head" align="center" />
-            <TableCell variant="head" align="center">Skill</TableCell>
-            <TableCell variant="head" align="center">Attr</TableCell>
-            <TableCell variant="head" align="center">Rank</TableCell>
-            <TableCell variant="head" align="center">Specialization</TableCell>
-            <TableCell variant="head" align="center">Expertise</TableCell>
+            <TableCell variant="head" align="center">
+              Skill
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Attr
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Rank
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Specialization
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Expertise
+            </TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {Object.values(charSkills).map(charSkill => (
+          {Object.values(charSkills).map((charSkill) => (
             <SkillsTableRow
               key={charSkill.id}
               charSkill={charSkill}
@@ -76,13 +95,15 @@ export const SkillsSection: FC = () => {
                 blurOnSelect
                 clearOnBlur
                 value={null}
-                onChange={(_, skillId: ActiveSkillId | null) => skillId && onAddSkill(skillId)}
-                options={availableSkills.map(skill => skill.name)}
-                renderInput={params => (
+                onChange={(_, skillId: ActiveSkillId | null) =>
+                  skillId && onAddSkill(skillId)
+                }
+                options={availableSkills.map((skill) => skill.name)}
+                renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder={'Add Skill'}
-                    variant={'standard'}
+                    placeholder={"Add Skill"}
+                    variant={"standard"}
                   />
                 )}
               />
@@ -99,9 +120,9 @@ export const SkillsSection: FC = () => {
 interface SkillsTableRowProps {
   charSkill: CharacterActiveSkill
 
-  onChange (charSkill: CharacterActiveSkill): void
+  onChange(charSkill: CharacterActiveSkill): void
 
-  onRemove (charSkill: CharacterActiveSkill): void
+  onRemove(charSkill: CharacterActiveSkill): void
 }
 
 const SkillsTableRow: FC<SkillsTableRowProps> = ({
@@ -118,12 +139,10 @@ const SkillsTableRow: FC<SkillsTableRowProps> = ({
           <FontAwesomeIcon icon={faMinusCircle} />
         </IconButton>
       </TableCell>
-      <TableCell>
-        {activeSkill.name}
-      </TableCell>
+      <TableCell>{activeSkill.name}</TableCell>
       <TableCell>
         {formatAttr(activeSkill.attr)}
-        {activeSkill.altAttr && ', ' + formatAttr(activeSkill.altAttr)}
+        {activeSkill.altAttr && ", " + formatAttr(activeSkill.altAttr)}
       </TableCell>
       <TableCell>
         <Incrementor
@@ -134,9 +153,9 @@ const SkillsTableRow: FC<SkillsTableRowProps> = ({
       </TableCell>
       <TableCell>
         <TextField
-          variant={'standard'}
+          variant={"standard"}
           value={charSkill.specialization}
-          placeholder={'None'}
+          placeholder={"None"}
           onChange={(event) =>
             onChange({ ...charSkill, specialization: event.target.value })
           }
@@ -144,9 +163,9 @@ const SkillsTableRow: FC<SkillsTableRowProps> = ({
       </TableCell>
       <TableCell>
         <TextField
-          variant={'standard'}
+          variant={"standard"}
           value={charSkill.expertise}
-          placeholder={'None'}
+          placeholder={"None"}
           onChange={(event) =>
             onChange({ ...charSkill, expertise: event.target.value })
           }

@@ -1,19 +1,24 @@
-import { faArchive, faAward, faCarAlt, faCogs, faMagic, faUser, faYenSign } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Divider, List } from '@mui/material'
+import {
+  faArchive,
+  faAward,
+  faCarAlt,
+  faCogs,
+  faMagic,
+  faUser,
+  faYenSign,
+} from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Divider, List } from "@mui/material"
 
-import { CharacterAttr } from '../../Character/CharacterAttr'
-import { useCharacter } from '../../Character/CharacterProvider'
-import { PistolSvg } from '../../Gear/Weapons/PistolSvg'
-import { useAttribute } from '../../System/AttributeProvider'
-import { DefaultNavDrawer } from './DefaultNavDrawer'
+import { CharacterAttr } from "../../Character/CharacterAttr"
+import { useCharacter } from "../../Character/CharacterProvider"
+import { PistolSvg } from "../../Gear/Weapons/PistolSvg"
+import { useAttribute } from "../../System/AttributeProvider"
+import { DefaultNavDrawer } from "./DefaultNavDrawer"
 
-import { NavButton, NavDrawer } from './index'
+import { NavButton, NavDrawer } from "./index"
 
-export const CharacterNavDrawer: NavDrawer = ({
-  open,
-  closeDrawer,
-}) => {
+export const CharacterNavDrawer: NavDrawer = ({ open, closeDrawer }) => {
   const character = useCharacter()
   const showSpells = useAttribute(CharacterAttr.magic) || 0 >= 1
 

@@ -1,9 +1,9 @@
-import { AttrNames } from '../../System/Attribute'
+import { AttrNames } from "../../System/Attribute"
 
 export enum SinAttr {
-  rating = 'sin.rating',
+  rating = "sin.rating",
 }
 
 export const SinAttrNames: AttrNames = {
-  [SinAttr.rating]: 'Rating',
+  [SinAttr.rating]: "Rating",
 }

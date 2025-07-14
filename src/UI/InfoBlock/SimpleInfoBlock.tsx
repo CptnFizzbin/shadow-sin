@@ -1,7 +1,7 @@
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material'
-import React, { FC, ReactElement } from 'react'
+import { Box, Chip, Paper, Stack, Typography } from "@mui/material"
+import React, { FC, ReactElement } from "react"
 
-import { displayFontFamily } from '../../AppThemeProvider'
+import { displayFontFamily } from "../../AppThemeProvider"
 
 interface SimpleInfoBlockProps {
   name: ReactElement | string
@@ -20,16 +20,16 @@ export const SimpleInfoBlock: FC<SimpleInfoBlockProps> = ({
   children,
 }) => {
   return (
-    <Paper variant="outlined" sx={{ padding: 1, display: 'flex' }}>
-      <Stack gap={1} sx={{ width: '100%' }}>
-        <Stack gap={1} direction={'row'}>
+    <Paper variant="outlined" sx={{ padding: 1, display: "flex" }}>
+      <Stack gap={1} sx={{ width: "100%" }}>
+        <Stack gap={1} direction={"row"}>
           <Box sx={{ flexGrow: 1 }}>
             <Box>
               <Typography
                 sx={{
-                  display: 'inline-block',
+                  display: "inline-block",
                   fontFamily: displayFontFamily,
-                  color: 'primary.main',
+                  color: "primary.main",
                 }}
               >
                 {name}
@@ -37,7 +37,7 @@ export const SimpleInfoBlock: FC<SimpleInfoBlockProps> = ({
 
               {quantity >= 1 && (
                 <Chip
-                  sx={{ marginLeft: 1, verticalAlign: 'top' }}
+                  sx={{ marginLeft: 1, verticalAlign: "top" }}
                   label={`x${quantity}`}
                   variant="outlined"
                   size="small"
@@ -45,17 +45,13 @@ export const SimpleInfoBlock: FC<SimpleInfoBlockProps> = ({
               )}
             </Box>
 
-            <Box>
-              {body || children}
-            </Box>
+            <Box>{body || children}</Box>
           </Box>
 
           {attributes && <Box>{attributes}</Box>}
         </Stack>
 
-        {footer && (
-          <Box>{footer}</Box>
-        )}
+        {footer && <Box>{footer}</Box>}
       </Stack>
     </Paper>
   )

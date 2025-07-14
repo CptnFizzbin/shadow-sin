@@ -1,14 +1,21 @@
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
-import { parseISO } from 'date-fns'
-import { FC } from 'react'
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material"
+import { parseISO } from "date-fns"
+import { FC } from "react"
 
-import { formatDate } from '../Helpers'
-import { BalanceLog } from '../System/BalanceLog'
+import { formatDate } from "../Helpers"
+import { BalanceLog } from "../System/BalanceLog"
 
 interface BalanceLogTableProps {
   log: BalanceLog
 
-  formatValue? (value: number): string
+  formatValue?(value: number): string
 }
 
 export const BalanceLogTable: FC<BalanceLogTableProps> = ({
@@ -19,12 +26,14 @@ export const BalanceLogTable: FC<BalanceLogTableProps> = ({
 
   const logRows = log
     .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
-    .map(entry => (
+    .map((entry) => (
       <TableRow key={entry.date}>
         <TableCell>{formatDate(entry.date)}</TableCell>
         <TableCell>{entry.note}</TableCell>
         <TableCell align="right">{formatValue(entry.value)}</TableCell>
-        <TableCell align="right">{formatValue(runningTotal += entry.value)}</TableCell>
+        <TableCell align="right">
+          {formatValue((runningTotal += entry.value))}
+        </TableCell>
       </TableRow>
     ))
 
@@ -41,9 +50,7 @@ export const BalanceLogTable: FC<BalanceLogTableProps> = ({
             <TableCell align="right">Balance</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {logRows}
-        </TableBody>
+        <TableBody>{logRows}</TableBody>
       </Table>
     </Paper>
   )

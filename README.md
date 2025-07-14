@@ -1,40 +1,69 @@
-ShadowSIN 6e
-============
-Shadowrun 6th Edition character sheet manager
+# React + TypeScript + Vite
 
-Setup
------
-Recommended to use RubyMine for development.
-If you're on Windows it's recommended to clone the project into the WSL file system.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Requirements:
-- Docker
-- NodeJS (v16+)
+Currently, two official plugins are available:
 
-After cloning, duplicate `.env.example` as `.env` and configure for your system. The dotenv file will be used for both
-client and server.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-Install client dependencies:
-```bash
-$ cd client
-$ yarn install
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config([
+  globalIgnores(["dist"]),
+  {
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      ...tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      ...tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      ...tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-### RubyMine, Docker, and WSL
-Due to a bug in RubyMine, debugging Rails through Docker while files are in the Linux file system doesn't work as 
-expected. For the time being, it's recommended to install Ruby and run the server outside of Docker. A special run 
-configuration is provided to assist with setting up the application.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-Run
----
-If using RubyMine, use the provided "Start App" run configurations.
+```js
+// eslint.config.js
+import reactX from "eslint-plugin-react-x"
+import reactDom from "eslint-plugin-react-dom"
 
-Start server:
-```bash
-$ docker-compose -up
-```
-Build and start client:
-```bash
-$ cd client
-$ yarn start
+export default tseslint.config([
+  globalIgnores(["dist"]),
+  {
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs["recommended-typescript"],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```

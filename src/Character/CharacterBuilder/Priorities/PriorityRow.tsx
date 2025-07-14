@@ -1,10 +1,10 @@
-import { TableCell, TableRow } from '@mui/material'
-import { FC } from 'react'
+import { TableCell, TableRow } from "@mui/material"
+import { FC } from "react"
 
-import { formatNuyen } from '../../../System/Nuyen'
-import { AwakenedType } from '../../AwakenedType'
-import { formatMetatype, MetatypeId } from '../../Metatype'
-import { PriorityStat, PriorityValues } from './Priorities'
+import { formatNuyen } from "../../../System/Nuyen"
+import { AwakenedType } from "../../AwakenedType"
+import { formatMetatype, MetatypeId } from "../../Metatype"
+import { PriorityStat, PriorityValues } from "./Priorities"
 
 interface PriorityRowProps {
   level: string
@@ -13,7 +13,7 @@ interface PriorityRowProps {
   metatypeId: MetatypeId
   awakened: AwakenedType
 
-  onSelect (level: string, type: PriorityStat): void
+  onSelect(level: string, type: PriorityStat): void
 }
 
 export const PriorityRow: FC<PriorityRowProps> = ({
@@ -27,8 +27,8 @@ export const PriorityRow: FC<PriorityRowProps> = ({
   return (
     <TableRow
       sx={{
-        '& .priority-cell:hover, & .priority-cell.selected': {
-          backgroundColor: 'primary.dark',
+        "& .priority-cell:hover, & .priority-cell.selected": {
+          backgroundColor: "primary.dark",
         },
       }}
     >
@@ -38,9 +38,11 @@ export const PriorityRow: FC<PriorityRowProps> = ({
         selected={selectedType === PriorityStat.metatype}
       >
         {values.metatypes.includes(metatypeId) ? (
-          <>{formatMetatype(metatypeId)} ({values.adjustmentPoints})</>
+          <>
+            {formatMetatype(metatypeId)} ({values.adjustmentPoints})
+          </>
         ) : (
-          '-'
+          "-"
         )}
       </PriorityCell>
       <PriorityCell
@@ -60,17 +62,16 @@ export const PriorityRow: FC<PriorityRowProps> = ({
         selected={selectedType === PriorityStat.magic}
       >
         {values.magic === 0 ? (
-          <>
-            {awakened === AwakenedType.Mundane ? 'Mundane' : '-'}
-          </>
+          <>{awakened === AwakenedType.Mundane ? "Mundane" : "-"}</>
         ) : (
           <>
-            {awakened === AwakenedType.Mundane && '-'}
-            {awakened === AwakenedType.Full && values.magic + ' Magic'}
-            {awakened === AwakenedType.Aspected && (values.magic + 1) + ' Magic'}
-            {awakened === AwakenedType.Mystic && values.magic + ' Magic'}
-            {awakened === AwakenedType.Adept && values.magic + ' Magic'}
-            {awakened === AwakenedType.Technomancer && values.magic + ' Resonance'}
+            {awakened === AwakenedType.Mundane && "-"}
+            {awakened === AwakenedType.Full && values.magic + " Magic"}
+            {awakened === AwakenedType.Aspected && values.magic + 1 + " Magic"}
+            {awakened === AwakenedType.Mystic && values.magic + " Magic"}
+            {awakened === AwakenedType.Adept && values.magic + " Magic"}
+            {awakened === AwakenedType.Technomancer &&
+              values.magic + " Resonance"}
           </>
         )}
       </PriorityCell>
@@ -87,7 +88,7 @@ export const PriorityRow: FC<PriorityRowProps> = ({
 interface PriorityCellProps {
   selected?: boolean
 
-  onClick (): void
+  onClick(): void
 }
 
 export const PriorityCell: FC<PriorityCellProps> = ({
@@ -96,7 +97,11 @@ export const PriorityCell: FC<PriorityCellProps> = ({
   children,
 }) => {
   return (
-    <TableCell onClick={onClick} className={selected ? 'priority-cell selected' : 'priority-cell'}>{children}
+    <TableCell
+      onClick={onClick}
+      className={selected ? "priority-cell selected" : "priority-cell"}
+    >
+      {children}
     </TableCell>
   )
 }

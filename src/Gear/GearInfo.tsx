@@ -1,17 +1,17 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement } from "react"
 
-import { GearData, GearType } from './GearData'
-import { GearInfoBlock } from './GearInfoBlock'
-import { LicenseData } from './License/LicenseData'
-import { LicenseInfo } from './License/LicenseInfo'
-import { SinData } from './License/SinData'
-import { SinInfo } from './License/SinInfo'
-import { RccData } from './Rcc/RccData'
-import { RccInfo } from './Rcc/RccInfo'
-import { VehicleData } from './Vehicles/VehicleData'
-import { VehicleInfo } from './Vehicles/VehicleInfo'
-import { WeaponData } from './Weapons/WeaponData'
-import { WeaponInfo } from './Weapons/WeaponInfo'
+import { GearData, GearType } from "./GearData"
+import { GearInfoBlock } from "./GearInfoBlock"
+import { LicenseData } from "./License/LicenseData"
+import { LicenseInfo } from "./License/LicenseInfo"
+import { SinData } from "./License/SinData"
+import { SinInfo } from "./License/SinInfo"
+import { RccData } from "./Rcc/RccData"
+import { RccInfo } from "./Rcc/RccInfo"
+import { VehicleData } from "./Vehicles/VehicleData"
+import { VehicleInfo } from "./Vehicles/VehicleInfo"
+import { WeaponData } from "./Weapons/WeaponData"
+import { WeaponInfo } from "./Weapons/WeaponInfo"
 
 export interface GearInfoProps<Type extends GearData = GearData> {
   item: Type

@@ -4,5 +4,5 @@ export type Availability = {
   license?: boolean
 }
 export const formatAvail = (avail: Availability): string => {
-  return `${avail.rarity}${avail.illegal ? '(i)' : ''}${avail.license ? '(L)' : ''}`
+  return `${avail.rarity}${avail.illegal ? "(i)" : ""}${avail.license ? "(L)" : ""}`
 }

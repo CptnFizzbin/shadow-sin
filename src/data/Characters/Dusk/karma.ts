@@ -1,44 +1,44 @@
-import { BalanceLog } from '../../../System/BalanceLog'
+import { BalanceLog } from "../../../System/BalanceLog"
 
 export const karma: BalanceLog = [
   {
-    date: '2022-04-10T16:00',
+    date: "2022-04-10T16:00",
     value: +4,
-    note: 'Mission Rewards',
+    note: "Mission Rewards",
   },
   {
-    date: '2022-04-03T16:01',
+    date: "2022-04-03T16:01",
     value: -10,
-    note: 'Spells: Stunball, Stunbolt',
+    note: "Spells: Stunball, Stunbolt",
   },
   {
-    date: '2022-04-03T16:00',
+    date: "2022-04-03T16:00",
     value: +3,
-    note: 'Session Reward',
+    note: "Session Reward",
   },
   {
-    date: '2022-03-20T16:00',
+    date: "2022-03-20T16:00",
     value: +5,
-    note: 'Session Reward',
+    note: "Session Reward",
   },
   {
-    date: '2022-03-13T16:00',
+    date: "2022-03-13T16:00",
     value: +3,
-    note: 'Session Reward',
+    note: "Session Reward",
   },
   {
-    date: '2022-03-06T16:00',
+    date: "2022-03-06T16:00",
     value: +5,
-    note: 'Session Reward',
+    note: "Session Reward",
   },
   {
-    date: '2022-01-02T16:01',
+    date: "2022-01-02T16:01",
     value: 2,
-    note: 'Session reward',
+    note: "Session reward",
   },
   {
-    date: '2021-12-22T12:58',
+    date: "2021-12-22T12:58",
     value: 0,
-    note: 'Balance Import',
+    note: "Balance Import",
   },
 ]

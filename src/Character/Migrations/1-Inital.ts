@@ -1,4 +1,4 @@
-import { Migration } from './index'
+import { Migration } from "./index"
 
 export const InitialMigration: Migration = {
   version: 1,

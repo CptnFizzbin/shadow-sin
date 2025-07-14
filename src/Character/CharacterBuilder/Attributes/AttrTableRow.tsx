@@ -1,9 +1,9 @@
-import { TableCell, TableRow } from '@mui/material'
-import { FC } from 'react'
+import { TableCell, TableRow } from "@mui/material"
+import { FC } from "react"
 
-import { formatAttr } from '../../../System/Attribute'
-import { Incrementor } from '../../../UI/Incrementor'
-import { CharacterAttr, specialAttrs } from '../../CharacterAttr'
+import { formatAttr } from "../../../System/Attribute"
+import { Incrementor } from "../../../UI/Incrementor"
+import { CharacterAttr, specialAttrs } from "../../CharacterAttr"
 
 interface AttrTableRowProps {
   attribute: CharacterAttr
@@ -13,11 +13,11 @@ interface AttrTableRowProps {
   karmaPoints: number
   maximum: number
 
-  onAdjPointsChange (value: number): void
+  onAdjPointsChange(value: number): void
 
-  onAttrPointsChange (value: number): void
+  onAttrPointsChange(value: number): void
 
-  onKarmaPointsChange (value: number): void
+  onKarmaPointsChange(value: number): void
 }
 
 export const AttrTableRow: FC<AttrTableRowProps> = ({
@@ -36,17 +36,17 @@ export const AttrTableRow: FC<AttrTableRowProps> = ({
 
   return (
     <TableRow>
-      <TableCell>
-        {formatAttr(attribute)}
-      </TableCell>
-      <TableCell sx={{ color: total > maximum ? 'error.main' : undefined }}>
+      <TableCell>{formatAttr(attribute)}</TableCell>
+      <TableCell sx={{ color: total > maximum ? "error.main" : undefined }}>
         {maximum}
       </TableCell>
+      <TableCell>{base}</TableCell>
       <TableCell>
-        {base}
-      </TableCell>
-      <TableCell>
-        <AttrIncrementor disabled={!allowAdjPoints} value={adjPoints} onChange={onAdjPointsChange} />
+        <AttrIncrementor
+          disabled={!allowAdjPoints}
+          value={adjPoints}
+          onChange={onAdjPointsChange}
+        />
       </TableCell>
       <TableCell>
         <AttrIncrementor value={attrPoints} onChange={onAttrPointsChange} />
@@ -54,7 +54,7 @@ export const AttrTableRow: FC<AttrTableRowProps> = ({
       <TableCell>
         <AttrIncrementor value={karmaPoints} onChange={onKarmaPointsChange} />
       </TableCell>
-      <TableCell sx={{ color: total > maximum ? 'error.main' : undefined }}>
+      <TableCell sx={{ color: total > maximum ? "error.main" : undefined }}>
         {total}
       </TableCell>
     </TableRow>
@@ -65,7 +65,7 @@ interface AttrIncrementorProps {
   disabled?: boolean
   value: number
 
-  onChange (value: number): void
+  onChange(value: number): void
 }
 
 const AttrIncrementor: FC<AttrIncrementorProps> = ({

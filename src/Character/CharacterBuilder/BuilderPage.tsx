@@ -1,32 +1,32 @@
-import { Paper, Stack, Typography } from '@mui/material'
-import { FC, useState } from 'react'
+import { Paper, Stack, Typography } from "@mui/material"
+import { FC, useState } from "react"
 
-import { RootLayout } from '../../Pages/RootLayout'
-import { CharacterNavDrawer } from '../../UI/NavDrawer/CharacterNavDrawer'
-import { AwakenedType } from '../AwakenedType'
-import { CharacterAttr } from '../CharacterAttr'
-import { CharacterData } from '../CharacterData'
-import { MetatypeIds } from '../Metatype'
-import { AttributesTable } from './Attributes/AttributesTable'
-import { BioSection } from './BioSection'
-import { PriorityValues } from './Priorities/Priorities'
-import { PrioritiesTable } from './Priorities/PrioritiesTable'
-import { SkillsSection } from './Skills/SkillsSection'
+import { RootLayout } from "../../Pages/RootLayout"
+import { CharacterNavDrawer } from "../../UI/NavDrawer/CharacterNavDrawer"
+import { AwakenedType } from "../AwakenedType"
+import { CharacterAttr } from "../CharacterAttr"
+import { CharacterData } from "../CharacterData"
+import { MetatypeIds } from "../Metatype"
+import { AttributesTable } from "./Attributes/AttributesTable"
+import { BioSection } from "./BioSection"
+import { PriorityValues } from "./Priorities/Priorities"
+import { PrioritiesTable } from "./Priorities/PrioritiesTable"
+import { SkillsSection } from "./Skills/SkillsSection"
 
 const defaultCharacter: CharacterData = {
   dataVersion: 3,
 
   bio: {
-    name: '',
+    name: "",
     metatype: MetatypeIds.CRB.human,
     awakened: AwakenedType.Mundane,
-    role: '',
-    alias: '',
-    ethnicity: '',
-    age: '',
-    gender: '',
-    height: '',
-    weight: '',
+    role: "",
+    alias: "",
+    ethnicity: "",
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
   },
 
   karma: [],
@@ -47,9 +47,9 @@ const defaultCharacter: CharacterData = {
     [CharacterAttr.essence]: 0,
   },
 
-  heat: '',
-  reputation: '',
-  lifestyle: { grade: '', prepaid: 0, upkeep: 0 },
+  heat: "",
+  reputation: "",
+  lifestyle: { grade: "", prepaid: 0, upkeep: 0 },
 
   qualities: [],
   skills: [],
@@ -67,7 +67,8 @@ export const BuilderPage: FC = () => {
     nuyen: 0,
     skillPoints: 0,
   })
-  const [characterData, setCharacterData] = useState<CharacterData>(defaultCharacter)
+  const [characterData, setCharacterData] =
+    useState<CharacterData>(defaultCharacter)
 
   return (
     <RootLayout NavDrawer={CharacterNavDrawer}>
@@ -76,7 +77,7 @@ export const BuilderPage: FC = () => {
           <Typography variant="h3">Bio</Typography>
           <BioSection
             bio={characterData.bio}
-            onChange={bio => setCharacterData({ ...characterData, bio })}
+            onChange={(bio) => setCharacterData({ ...characterData, bio })}
             metatypes={priorities.metatypes}
             magicPriority={priorities.magic}
           />
@@ -99,7 +100,9 @@ export const BuilderPage: FC = () => {
             attributePoints={priorities.attributePoints}
             adjustmentPoints={priorities.adjustmentPoints}
             magic={priorities.magic}
-            onChange={attributes => setCharacterData({ ...characterData, attributes })}
+            onChange={(attributes) =>
+              setCharacterData({ ...characterData, attributes })
+            }
           />
         </Paper>
 

@@ -1,8 +1,8 @@
-import { Divider, Stack, Typography } from '@mui/material'
-import { FC } from 'react'
+import { Divider, Stack, Typography } from "@mui/material"
+import { FC } from "react"
 
-import { RecordId } from '../../Api/Model'
-import { Slot } from '../../UI/Slot'
+import { RecordId } from "../../Api/Model"
+import { Slot } from "../../UI/Slot"
 
 interface SlottedItem {
   id: RecordId
@@ -25,9 +25,13 @@ export const VehicleSlots: FC<VehicleModSlotsProps> = ({
 
   return (
     <Stack gap={1}>
-      <Typography>{name} ({usedSlots}/{slots})</Typography>
+      <Typography>
+        {name} ({usedSlots}/{slots})
+      </Typography>
       <Divider />
-      {items.map(item => <Slot key={item.id} name={item.name} size={item.size} />)}
+      {items.map((item) => (
+        <Slot key={item.id} name={item.name} size={item.size} />
+      ))}
     </Stack>
   )
 }

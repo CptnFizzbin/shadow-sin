@@ -1,25 +1,25 @@
-import { CharacterAttr } from '../../../Character/CharacterAttr'
-import { Metatype } from '../../../Character/Metatype'
-import { toCharQuality } from '../../../Qualities/CharacterQuality'
-import { QualityIds } from './Qualities'
+import { CharacterAttr } from "../../../Character/CharacterAttr"
+import { Metatype } from "../../../Character/Metatype"
+import { toCharQuality } from "../../../Qualities/CharacterQuality"
+import { QualityIds } from "./Qualities"
 
 export enum MetatypeIds {
-  dwarf = 'metatype.CRB.dwarf',
-  elf = 'metatype.CRB.elf',
-  human = 'metatype.CRB.human',
-  ork = 'metatype.CRB.ork',
-  troll = 'metatype.CRB.troll'
+  dwarf = "metatype.CRB.dwarf",
+  elf = "metatype.CRB.elf",
+  human = "metatype.CRB.human",
+  ork = "metatype.CRB.ork",
+  troll = "metatype.CRB.troll",
 }
 
 export const Metatypes: Metatype[] = [
   {
     id: MetatypeIds.dwarf,
-    name: 'Dwarf',
+    name: "Dwarf",
     qualities: [
       toCharQuality(QualityIds.toxinResistance),
       toCharQuality(QualityIds.thermographicVision),
     ],
-    priorityLevels: ['A', 'B', 'C', 'D', 'E'],
+    priorityLevels: ["A", "B", "C", "D", "E"],
     attrMaximums: {
       [CharacterAttr.body]: 7,
       [CharacterAttr.agility]: 6,
@@ -37,11 +37,9 @@ export const Metatypes: Metatype[] = [
   },
   {
     id: MetatypeIds.elf,
-    name: 'Elf',
-    qualities: [
-      toCharQuality(QualityIds.lowLightVision),
-    ],
-    priorityLevels: ['B', 'C', 'D', 'E'],
+    name: "Elf",
+    qualities: [toCharQuality(QualityIds.lowLightVision)],
+    priorityLevels: ["B", "C", "D", "E"],
     attrMaximums: {
       [CharacterAttr.body]: 6,
       [CharacterAttr.agility]: 7,
@@ -59,9 +57,9 @@ export const Metatypes: Metatype[] = [
   },
   {
     id: MetatypeIds.human,
-    name: 'Human',
+    name: "Human",
     qualities: [],
-    priorityLevels: ['C', 'D', 'E'],
+    priorityLevels: ["C", "D", "E"],
     attrMaximums: {
       [CharacterAttr.body]: 6,
       [CharacterAttr.agility]: 6,
@@ -79,12 +77,12 @@ export const Metatypes: Metatype[] = [
   },
   {
     id: MetatypeIds.ork,
-    name: 'Ork',
+    name: "Ork",
     qualities: [
       toCharQuality(QualityIds.lowLightVision),
       toCharQuality(QualityIds.builtTough, { level: 2 }),
     ],
-    priorityLevels: ['A', 'B', 'C', 'D', 'E'],
+    priorityLevels: ["A", "B", "C", "D", "E"],
     attrMaximums: {
       [CharacterAttr.body]: 8,
       [CharacterAttr.agility]: 1,
@@ -102,13 +100,13 @@ export const Metatypes: Metatype[] = [
   },
   {
     id: MetatypeIds.troll,
-    name: 'Troll',
+    name: "Troll",
     qualities: [
       toCharQuality(QualityIds.dermalDeposits),
       toCharQuality(QualityIds.thermographicVision),
       toCharQuality(QualityIds.builtTough, { level: 3 }),
     ],
-    priorityLevels: ['A', 'B', 'C', 'D', 'E'],
+    priorityLevels: ["A", "B", "C", "D", "E"],
     attrMaximums: {
       [CharacterAttr.body]: 9,
       [CharacterAttr.agility]: 5,

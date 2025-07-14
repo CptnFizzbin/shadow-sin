@@ -1,12 +1,12 @@
-import { ContactData } from '../Contacts/ContactData'
-import { GearData } from '../Gear/GearData'
-import { CharacterQuality } from '../Qualities/CharacterQuality'
-import { CharacterSkill } from '../Skills'
-import { RitualData } from '../Spells/RitualData'
-import { SpellData } from '../Spells/SpellData'
-import { BalanceLog } from '../System/BalanceLog'
-import { AwakenedType } from './AwakenedType'
-import { CharacterAttr } from './CharacterAttr'
+import { ContactData } from "../Contacts/ContactData"
+import { GearData } from "../Gear/GearData"
+import { CharacterQuality } from "../Qualities/CharacterQuality"
+import { CharacterSkill } from "../Skills"
+import { RitualData } from "../Spells/RitualData"
+import { SpellData } from "../Spells/SpellData"
+import { BalanceLog } from "../System/BalanceLog"
+import { AwakenedType } from "./AwakenedType"
+import { CharacterAttr } from "./CharacterAttr"
 
 export interface BioData {
   name: string

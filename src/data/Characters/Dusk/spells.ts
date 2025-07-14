@@ -1,16 +1,16 @@
-import { SpellCategory } from '../../../Spells/SpellCategory'
-import { SpellData } from '../../../Spells/SpellData'
-import { SpellType } from '../../../Spells/SpellType'
+import { SpellCategory } from "../../../Spells/SpellCategory"
+import { SpellData } from "../../../Spells/SpellData"
+import { SpellType } from "../../../Spells/SpellType"
 
 export const spells: SpellData[] = [
   {
-    id: '3fe6eed8-76eb-4652-a5ca-46021d42a521',
-    name: 'Increase Attribute',
-    source: {book: 'CRB', page: 137},
+    id: "3fe6eed8-76eb-4652-a5ca-46021d42a521",
+    name: "Increase Attribute",
+    source: { book: "CRB", page: 137 },
     category: SpellCategory.Health,
-    range: 'Touch',
+    range: "Touch",
     type: SpellType.Physical,
-    duration: 'Sustained',
+    duration: "Sustained",
     drainValue: 3,
     effect: `
       The touch of the mage strengthens, speeds, or enlightens the target,
@@ -25,13 +25,13 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: 'fd112538-96cc-41cd-b20f-e9f0d83948ef',
-    name: 'Increase Reflexes',
-    source: {book: 'CRB', page: 137},
+    id: "fd112538-96cc-41cd-b20f-e9f0d83948ef",
+    name: "Increase Reflexes",
+    source: { book: "CRB", page: 137 },
     category: SpellCategory.Health,
-    range: 'Touch',
+    range: "Touch",
     type: SpellType.Physical,
-    duration: 'Sustained',
+    duration: "Sustained",
     drainValue: 5,
     effect: `
       The reaction time and speed of the target increase, making them better 
@@ -44,13 +44,13 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: 'e7cc9291-3f01-49c2-93c9-bb2c3221f23f',
-    name: 'Heal',
-    source: {book: 'CRB', page: 136},
+    id: "e7cc9291-3f01-49c2-93c9-bb2c3221f23f",
+    name: "Heal",
+    source: { book: "CRB", page: 136 },
     category: SpellCategory.Health,
-    range: 'Touch',
+    range: "Touch",
     type: SpellType.Physical,
-    duration: 'Permanent',
+    duration: "Permanent",
     drainValue: 3,
     effect: `
       Shadowrunning comes with bumps, bruises, and bullet wounds, and
@@ -62,14 +62,14 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: '9ac200ec-e301-401a-a1f4-a9cebbdadc0b',
-    name: 'Invisibility',
-    source: {book: 'CRB', page: 138},
+    id: "9ac200ec-e301-401a-a1f4-a9cebbdadc0b",
+    name: "Invisibility",
+    source: { book: "CRB", page: 138 },
     category: SpellCategory.Illusion,
-    senseType: 'Single-Sense',
-    range: 'Touch',
+    senseType: "Single-Sense",
+    range: "Touch",
     type: SpellType.Mana,
-    duration: 'Sustained',
+    duration: "Sustained",
     drainValue: 3,
     effect: `
       The target fades from view, becoming transparent so that they can move 
@@ -79,17 +79,17 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: '63f34c4d-adf0-4f94-ad60-63f8dc5ebd18',
-    name: 'Ice Spear',
-    source: {book: 'CRB', page: 138},
+    id: "63f34c4d-adf0-4f94-ad60-63f8dc5ebd18",
+    name: "Ice Spear",
+    source: { book: "CRB", page: 138 },
     category: SpellCategory.Combat,
-    damageType: 'Indirect',
-    range: 'LoS',
+    damageType: "Indirect",
+    range: "LoS",
     type: SpellType.Physical,
-    duration: 'Instant',
+    duration: "Instant",
     drainValue: 5,
     area: false,
-    damage: 'P, Special',
+    damage: "P, Special",
     effect: `
       When every corp security goon you run into starts wearing flame-retardant 
       underwear, it’s time to throw a changeup at them and hit them with the 
@@ -100,17 +100,17 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: '9c04e99b-47b8-4cd6-bcc9-7bdefe27f327',
-    name: 'Stunbolt',
-    source: {book: 'CRB', page: 134},
+    id: "9c04e99b-47b8-4cd6-bcc9-7bdefe27f327",
+    name: "Stunbolt",
+    source: { book: "CRB", page: 134 },
     category: SpellCategory.Combat,
-    damageType: 'Direct',
-    range: 'LoS',
+    damageType: "Direct",
+    range: "LoS",
     type: SpellType.Mana,
-    duration: 'Instant',
+    duration: "Instant",
     drainValue: 3,
     area: false,
-    damage: 'S',
+    damage: "S",
     effect: `
       Sometimes you take a little off the heater to catch the other guy 
       off-balance. These spells channel mana in a way that hurts, but only to 
@@ -118,17 +118,17 @@ export const spells: SpellData[] = [
     `,
   },
   {
-    id: 'a22855a7-c4d8-456e-bc8a-ea333814991e',
-    name: 'Stunball',
-    source: {book: 'CRB', page: 134},
+    id: "a22855a7-c4d8-456e-bc8a-ea333814991e",
+    name: "Stunball",
+    source: { book: "CRB", page: 134 },
     category: SpellCategory.Combat,
-    damageType: 'Indirect',
-    range: 'LoS',
+    damageType: "Indirect",
+    range: "LoS",
     type: SpellType.Mana,
-    duration: 'Instant',
+    duration: "Instant",
     drainValue: 4,
     area: true,
-    damage: 'S',
+    damage: "S",
     effect: `
       Sometimes you take a little off the heater to catch the other guy 
       off-balance. These spells channel mana in a way that hurts, but only to 

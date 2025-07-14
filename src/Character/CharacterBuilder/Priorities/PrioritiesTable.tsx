@@ -1,10 +1,18 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import { FC, useState } from 'react'
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material"
+import { FC, useState } from "react"
 
-import { AwakenedType } from '../../AwakenedType'
-import { MetatypeId } from '../../Metatype'
-import { PriorityStat, PriorityValues, priorityValues } from './Priorities'
-import { PriorityRow } from './PriorityRow'
+import { AwakenedType } from "../../AwakenedType"
+import { MetatypeId } from "../../Metatype"
+import { PriorityStat, PriorityValues, priorityValues } from "./Priorities"
+import { PriorityRow } from "./PriorityRow"
 
 export type SelectedPriorities = Record<string, PriorityStat>
 
@@ -12,7 +20,7 @@ interface PrioritiesTableProps {
   metatypeId: MetatypeId
   awakened: AwakenedType
 
-  onChange (priorities: PriorityValues): void
+  onChange(priorities: PriorityValues): void
 }
 
 export const PrioritiesTable: FC<PrioritiesTableProps> = ({
@@ -20,15 +28,16 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
   awakened,
   onChange,
 }) => {
-  const [selectedPriorities, setSelectedPriorities] = useState<SelectedPriorities>({})
+  const [selectedPriorities, setSelectedPriorities] =
+    useState<SelectedPriorities>({})
 
   const onPriorityChange = (level: string, stat: PriorityStat) => {
     const priorities = { ...selectedPriorities }
 
     Object.entries(priorities)
-      .filter(priority => priority[1] === stat)
-      .map(priority => priority[0])
-      .forEach(oldLevel => priorities[oldLevel] = priorities[level])
+      .filter((priority) => priority[1] === stat)
+      .map((priority) => priority[0])
+      .forEach((oldLevel) => (priorities[oldLevel] = priorities[level]))
 
     priorities[level] = stat
 
@@ -38,17 +47,27 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ '& th, & td': { textAlign: 'center' } }}>
+      <Table sx={{ "& th, & td": { textAlign: "center" } }}>
         <TableHead>
           <TableRow>
-            <TableCell variant="head" align="center">Priority</TableCell>
-            <TableCell variant="head" align="center">Metatype</TableCell>
-            <TableCell variant="head" align="center">Attributes</TableCell>
-            <TableCell variant="head" align="center">Skills</TableCell>
             <TableCell variant="head" align="center">
-              {awakened === AwakenedType.Technomancer ? 'Resonance' : 'Magic'}
+              Priority
             </TableCell>
-            <TableCell variant="head" align="center">Resources</TableCell>
+            <TableCell variant="head" align="center">
+              Metatype
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Attributes
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Skills
+            </TableCell>
+            <TableCell variant="head" align="center">
+              {awakened === AwakenedType.Technomancer ? "Resonance" : "Magic"}
+            </TableCell>
+            <TableCell variant="head" align="center">
+              Resources
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -70,7 +89,9 @@ export const PrioritiesTable: FC<PrioritiesTableProps> = ({
   )
 }
 
-export function toPriorityValues (selectedPriorities: SelectedPriorities): PriorityValues {
+export function toPriorityValues(
+  selectedPriorities: SelectedPriorities,
+): PriorityValues {
   const values: PriorityValues = {
     metatypes: [],
     adjustmentPoints: 0,

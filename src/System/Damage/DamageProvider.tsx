@@ -1,17 +1,17 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react'
+import { createContext, FC, useContext, useEffect, useState } from "react"
 
-import { RecordId } from '../../Api/Model'
-import { noOp } from '../../Helpers'
-import { DamageType } from './DamageType'
+import { RecordId } from "../../Api/Model"
+import { noOp } from "../../Helpers"
+import { DamageType } from "./DamageType"
 
-type DamageSetter = (value: number) => void;
+type DamageSetter = (value: number) => void
 
 type DamageContextData = {
   [type in DamageType]?: {
     value: number
     setValue?: DamageSetter
-  };
-};
+  }
+}
 
 const DamageContext = createContext<DamageContextData>({})
 
@@ -29,7 +29,7 @@ export const DamageProvider: FC<DamageProviderProps> = ({
   const [value, setDmgValue] = useState<number>(0)
 
   useEffect(() => {
-    const value = parseInt(localStorage.getItem(dmgSessionKey) || '0')
+    const value = parseInt(localStorage.getItem(dmgSessionKey) || "0")
     setDmgValue(value)
   }, [dmgSessionKey])
 
@@ -44,9 +44,7 @@ export const DamageProvider: FC<DamageProviderProps> = ({
   }
 
   return (
-    <DamageContext.Provider value={damages}>
-      {children}
-    </DamageContext.Provider>
+    <DamageContext.Provider value={damages}>{children}</DamageContext.Provider>
   )
 }
 
@@ -62,7 +60,7 @@ export const useDamagePenalty = (types: DamageType[]): number => {
   const damageData = useContext(DamageContext)
 
   return types
-    .map(type => damageData[type]?.value || 0)
-    .map(value => Math.floor(value / 3))
+    .map((type) => damageData[type]?.value || 0)
+    .map((value) => Math.floor(value / 3))
     .reduce((a, b) => a + b, 0)
 }

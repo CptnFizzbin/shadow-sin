@@ -1,8 +1,6 @@
-import { BaseGearData, GearType } from '../GearData'
+import { BaseGearData, GearType } from "../GearData"
 
-export enum WeaponModAttr {
-
-}
+export enum WeaponModAttr {}
 
 export interface WeaponModData extends BaseGearData {
   gearType: GearType.weaponMod
@@ -11,8 +9,8 @@ export interface WeaponModData extends BaseGearData {
 }
 
 export enum WeaponModSlot {
-  top = 'Top',
-  barrel = 'Barrel',
-  under = 'Under',
-  topOrUnder = 'Top or Under'
+  top = "Top",
+  barrel = "Barrel",
+  under = "Under",
+  topOrUnder = "Top or Under",
 }

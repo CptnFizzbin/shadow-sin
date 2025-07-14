@@ -1,7 +1,7 @@
-import { Box, Paper, Stack, Typography } from '@mui/material'
-import React, { FC } from 'react'
+import { Box, Paper, Stack, Typography } from "@mui/material"
+import React, { FC } from "react"
 
-import { useCharacterData } from '../CharacterProvider'
+import { useCharacterData } from "../CharacterProvider"
 
 export const BioSection: FC = () => {
   const character = useCharacterData()
@@ -11,7 +11,7 @@ export const BioSection: FC = () => {
 
   return (
     <Paper variant="outlined" sx={{ padding: 1 }}>
-      <Stack gap={2} direction="row" sx={{ flexWrap: 'wrap' }}>
+      <Stack gap={2} direction="row" sx={{ flexWrap: "wrap" }}>
         <BioField name="Alias" value={bio.alias} />
         <BioField name="Name" value={bio.name} />
         <BioField name="Awakened" value={bio.awakened} />
@@ -32,15 +32,14 @@ interface BioFieldProps {
   value: string | undefined
 }
 
-export const BioField: FC<BioFieldProps> = ({
-  name,
-  value,
-}) => {
+export const BioField: FC<BioFieldProps> = ({ name, value }) => {
   if (!value) return null
 
   return (
     <Box>
-      <Typography variant="caption" color="primary">{name}</Typography>
+      <Typography variant="caption" color="primary">
+        {name}
+      </Typography>
       <Typography>{value}</Typography>
     </Box>
   )

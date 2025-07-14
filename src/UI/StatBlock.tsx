@@ -1,25 +1,22 @@
-import { Paper } from '@mui/material'
-import Box from '@mui/material/Box'
-import { FC } from 'react'
+import { Paper } from "@mui/material"
+import Box from "@mui/material/Box"
+import { FC } from "react"
 
 interface StatBlockProps {
   vertical?: boolean
 }
 
-export const StatBlock: FC<StatBlockProps> = ({
-  vertical,
-  children,
-}) => {
+export const StatBlock: FC<StatBlockProps> = ({ vertical, children }) => {
   return (
     <Paper
       variant="outlined"
       sx={{
-        display: 'flex',
+        display: "flex",
         padding: 1,
         gap: 1,
-        flexWrap: 'wrap',
-        flexDirection: vertical ? 'column' : 'row',
-        justifyContent: 'space-around',
+        flexWrap: "wrap",
+        flexDirection: vertical ? "column" : "row",
+        justifyContent: "space-around",
       }}
     >
       {children}
@@ -32,21 +29,33 @@ interface StatProps {
   value: string | number | null | undefined
 }
 
-export const Stat: FC<StatProps> = ({
-  name,
-  value,
-}) => {
-  if (name === 'Essence') {
+export const Stat: FC<StatProps> = ({ name, value }) => {
+  if (name === "Essence") {
     value = (value as number).toFixed(2).toString()
   }
 
   return (
-    <Box sx={{ display: 'flex', gap: 1, whiteSpace: 'nowrap' }}>
-      <Box sx={{ fontSize: 14, display: 'inline-block', color: 'primary.main', textAlign: 'left', flexGrow: 1 }}>
+    <Box sx={{ display: "flex", gap: 1, whiteSpace: "nowrap" }}>
+      <Box
+        sx={{
+          fontSize: 14,
+          display: "inline-block",
+          color: "primary.main",
+          textAlign: "left",
+          flexGrow: 1,
+        }}
+      >
         {name}
       </Box>
-      <Box sx={{ fontSize: 14, display: 'inline-block', textAlign: 'right', flexGrow: 1 }}>
-        {value || '-'}
+      <Box
+        sx={{
+          fontSize: 14,
+          display: "inline-block",
+          textAlign: "right",
+          flexGrow: 1,
+        }}
+      >
+        {value || "-"}
       </Box>
     </Box>
   )

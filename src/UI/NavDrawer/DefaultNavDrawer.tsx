@@ -1,8 +1,8 @@
-import { faUsers } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Drawer, List } from '@mui/material'
+import { faUsers } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Box, Drawer, List } from "@mui/material"
 
-import { NavButton, NavDrawer } from './index'
+import { NavButton, NavDrawer } from "./index"
 
 export const DefaultNavDrawer: NavDrawer = ({
   open,
@@ -19,7 +19,7 @@ export const DefaultNavDrawer: NavDrawer = ({
         <NavButton
           icon={<FontAwesomeIcon icon={faUsers} />}
           label="Characters"
-          routeTo={'/characters'}
+          routeTo={"/characters"}
           closeDrawer={closeDrawer}
         />
       </List>

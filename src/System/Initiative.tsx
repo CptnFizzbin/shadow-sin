@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { FC } from "react"
 
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { useFindGear } from '../Gear/GearContext'
-import { GearType } from '../Gear/GearData'
-import { RccAttr } from '../Gear/Rcc/RccAttr'
-import { RccData } from '../Gear/Rcc/RccData'
-import { Stat } from '../UI/StatBlock'
-import { useAttribute } from './AttributeProvider'
+import { CharacterAttr } from "../Character/CharacterAttr"
+import { useFindGear } from "../Gear/GearContext"
+import { GearType } from "../Gear/GearData"
+import { RccAttr } from "../Gear/Rcc/RccAttr"
+import { RccData } from "../Gear/Rcc/RccData"
+import { Stat } from "../UI/StatBlock"
+import { useAttribute } from "./AttributeProvider"
 
 interface InitiativeStatProps {
   name: string
@@ -19,31 +19,37 @@ export const InitiativeStat: FC<InitiativeStatProps> = ({
   base,
   dice = 1,
 }) => {
-  return (
-    <Stat name={name} value={`${base} + ${dice}D6`} />
-  )
+  return <Stat name={name} value={`${base} + ${dice}D6`} />
 }
 
 export const CharacterHotVrInit: FC = () => {
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-  const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
+  const rcc = useFindGear<RccData>((gear) => gear.gearType === GearType.rcc)
   if (!rcc) return null
 
   const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
 
   return (
-    <InitiativeStat name="VR Cold Init" base={intuition + dataProcessing} dice={2} />
+    <InitiativeStat
+      name="VR Cold Init"
+      base={intuition + dataProcessing}
+      dice={2}
+    />
   )
 }
 
 export const CharacterColdVrInit: FC = () => {
   const intuition = useAttribute<number>(CharacterAttr.intuition) || 0
-  const rcc = useFindGear<RccData>(gear => gear.gearType === GearType.rcc)
+  const rcc = useFindGear<RccData>((gear) => gear.gearType === GearType.rcc)
   if (!rcc) return null
 
   const dataProcessing = rcc.attributes[RccAttr.dataProcessing]
 
   return (
-    <InitiativeStat name="VR Hot Init" base={intuition + dataProcessing} dice={3} />
+    <InitiativeStat
+      name="VR Hot Init"
+      base={intuition + dataProcessing}
+      dice={3}
+    />
   )
 }

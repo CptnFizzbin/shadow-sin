@@ -1,9 +1,9 @@
-import { AttrNames } from '../../System/Attribute'
+import { AttrNames } from "../../System/Attribute"
 
 export enum KitAttr {
-  medkitRating = 'medkit.rating',
+  medkitRating = "medkit.rating",
 }
 
 export const KitAttrNames: AttrNames = {
-  [KitAttr.medkitRating]: 'Rating',
+  [KitAttr.medkitRating]: "Rating",
 }

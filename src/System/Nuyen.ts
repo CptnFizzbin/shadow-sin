@@ -1,10 +1,10 @@
-import { parseISO } from 'date-fns'
+import { parseISO } from "date-fns"
 
-import { BalanceLog } from './BalanceLog'
+import { BalanceLog } from "./BalanceLog"
 
-const nuyenFormatter = new Intl.NumberFormat('en')
+const nuyenFormatter = new Intl.NumberFormat("en")
 export const formatNuyen = (cost: number): string => {
-  return nuyenFormatter.format(cost) + ' ¥'
+  return nuyenFormatter.format(cost) + " ¥"
 }
 
 export const calcNuyenBalance = (nuyen: BalanceLog): number => {

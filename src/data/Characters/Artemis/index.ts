@@ -1,25 +1,25 @@
-import { AwakenedType } from '../../../Character/AwakenedType'
-import { CharacterAttr } from '../../../Character/CharacterAttr'
-import { CharacterData } from '../../../Character/CharacterData'
-import { toCharQuality } from '../../../Qualities/CharacterQuality'
-import { Qualities, QualityIds } from '../../../Qualities/Quality'
-import { ActiveSkillIds, SkillType, Specializations } from '../../../Skills'
-import { addAllGear } from './gear'
-import { karma } from './karma'
-import { nuyen } from './nuyen'
+import { AwakenedType } from "../../../Character/AwakenedType"
+import { CharacterAttr } from "../../../Character/CharacterAttr"
+import { CharacterData } from "../../../Character/CharacterData"
+import { toCharQuality } from "../../../Qualities/CharacterQuality"
+import { Qualities, QualityIds } from "../../../Qualities/Quality"
+import { ActiveSkillIds, SkillType, Specializations } from "../../../Skills"
+import { addAllGear } from "./gear"
+import { karma } from "./karma"
+import { nuyen } from "./nuyen"
 
 export const Artemis: CharacterData = {
   dataVersion: 3,
 
   bio: {
-    name: 'Jessica Nelson',
-    alias: 'Artemis',
-    role: 'Rigger',
-    gender: 'Female',
-    metatype: 'Elf',
+    name: "Jessica Nelson",
+    alias: "Artemis",
+    role: "Rigger",
+    gender: "Female",
+    metatype: "Elf",
     awakened: AwakenedType.Mundane,
-    age: '26',
-    height: '190cm',
+    age: "26",
+    height: "190cm",
   },
 
   karma,
@@ -27,7 +27,7 @@ export const Artemis: CharacterData = {
   gear: [],
 
   lifestyle: {
-    grade: 'middle',
+    grade: "middle",
     upkeep: 5_000,
     prepaid: 3,
   },
@@ -49,22 +49,22 @@ export const Artemis: CharacterData = {
 
   contacts: [
     {
-      name: 'James Serif',
+      name: "James Serif",
       connection: 2,
       loyalty: 2,
-      description: 'Drone Parts Dealer',
+      description: "Drone Parts Dealer",
     },
     {
-      name: 'Frank',
+      name: "Frank",
       connection: 2,
       loyalty: 2,
-      description: 'Matrix Developer',
+      description: "Matrix Developer",
     },
     {
-      name: 'George Crabtree',
+      name: "George Crabtree",
       connection: 2,
       loyalty: 2,
-      description: 'Lone Star officer',
+      description: "Lone Star officer",
     },
   ],
 
@@ -105,47 +105,53 @@ export const Artemis: CharacterData = {
     },
     {
       type: SkillType.language,
-      name: 'English',
-      rank: 'native',
+      name: "English",
+      rank: "native",
     },
     {
       type: SkillType.language,
-      name: 'Elven',
-      rank: 'speciality',
+      name: "Elven",
+      rank: "speciality",
     },
     {
       type: SkillType.knowledge,
-      name: 'Drone Models',
+      name: "Drone Models",
     },
     {
       type: SkillType.knowledge,
-      name: '80/90s Pop Culture',
+      name: "80/90s Pop Culture",
     },
     {
       type: SkillType.knowledge,
-      name: 'Trideo Series',
+      name: "Trideo Series",
     },
     {
       type: SkillType.knowledge,
-      name: 'Security Systems',
+      name: "Security Systems",
     },
     {
       type: SkillType.knowledge,
-      name: 'Virtual Nightclubs',
+      name: "Virtual Nightclubs",
     },
     {
       type: SkillType.knowledge,
-      name: 'Tech Companies',
+      name: "Tech Companies",
     },
   ],
 
   qualities: [
-    toCharQuality(Qualities[QualityIds.CRB.exceptional], {type: CharacterAttr.logic}),
-    toCharQuality(Qualities[QualityIds.CRB.aptitude], {type: ActiveSkillIds.CRB.engineering}),
+    toCharQuality(Qualities[QualityIds.CRB.exceptional], {
+      type: CharacterAttr.logic,
+    }),
+    toCharQuality(Qualities[QualityIds.CRB.aptitude], {
+      type: ActiveSkillIds.CRB.engineering,
+    }),
     toCharQuality(Qualities[QualityIds.CRB.photographicMemory]),
     toCharQuality(Qualities[QualityIds.CRB.analyticalMind]),
     toCharQuality(Qualities[QualityIds.CRB.ambidextrous]),
-    toCharQuality(Qualities[QualityIds.CRB.socialStress], {type: 'Large Groups'}),
+    toCharQuality(Qualities[QualityIds.CRB.socialStress], {
+      type: "Large Groups",
+    }),
   ],
 }
 

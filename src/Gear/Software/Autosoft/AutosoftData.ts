@@ -1,5 +1,5 @@
-import { BaseGearData, GearType } from '../../GearData'
-import { AutosoftAttr } from './AutosoftAttr'
+import { BaseGearData, GearType } from "../../GearData"
+import { AutosoftAttr } from "./AutosoftAttr"
 
 export interface AutosoftData extends BaseGearData {
   gearType: GearType.autosoft
@@ -13,11 +13,11 @@ export interface AutosoftData extends BaseGearData {
 }
 
 export enum AutosoftType {
-  targeting = 'Weapon Targeting',
-  clearsight = 'clearsight',
-  perception = 'Perception',
-  evasion = 'Evasion',
-  maneuvering = 'Maneuvering',
-  electronicWarfare = 'Electronic Warfare',
-  stealth = 'stealth',
+  targeting = "Weapon Targeting",
+  clearsight = "clearsight",
+  perception = "Perception",
+  evasion = "Evasion",
+  maneuvering = "Maneuvering",
+  electronicWarfare = "Electronic Warfare",
+  stealth = "stealth",
 }

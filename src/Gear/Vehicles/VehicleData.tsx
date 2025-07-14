@@ -1,7 +1,7 @@
-import { RecordId } from '../../Api/Model'
-import { BaseGearData, GearType } from '../GearData'
-import { VehicleAttr } from './VehicleAttr'
-import { HardpointSize, SlotType } from './VehicleModData'
+import { RecordId } from "../../Api/Model"
+import { BaseGearData, GearType } from "../GearData"
+import { VehicleAttr } from "./VehicleAttr"
+import { HardpointSize, SlotType } from "./VehicleModData"
 
 export interface VehicleData extends BaseGearData {
   gearType: GearType.vehicle

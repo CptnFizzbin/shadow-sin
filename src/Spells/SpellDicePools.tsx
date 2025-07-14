@@ -1,9 +1,9 @@
-import { FC } from 'react'
+import { FC } from "react"
 
-import { CharacterAttr } from '../Character/CharacterAttr'
-import { useCharacterData } from '../Character/CharacterProvider'
-import { ActiveSkillIds } from '../Skills'
-import { DicePool } from '../UI/DicePool'
+import { CharacterAttr } from "../Character/CharacterAttr"
+import { useCharacterData } from "../Character/CharacterProvider"
+import { ActiveSkillIds } from "../Skills"
+import { DicePool } from "../UI/DicePool"
 
 export const SorcerySpellcastingPool: FC = () => {
   return (
@@ -42,9 +42,6 @@ export const ResistDrain: FC = () => {
   const spellDrainAttr = characterData.spellDrainAttr || CharacterAttr.charisma
 
   return (
-    <DicePool
-      name="Drain"
-      attrs={[CharacterAttr.willpower, spellDrainAttr]}
-    />
+    <DicePool name="Drain" attrs={[CharacterAttr.willpower, spellDrainAttr]} />
   )
 }

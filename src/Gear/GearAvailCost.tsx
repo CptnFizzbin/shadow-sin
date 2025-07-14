@@ -1,10 +1,10 @@
-import Box from '@mui/material/Box'
-import { FC } from 'react'
+import Box from "@mui/material/Box"
+import { FC } from "react"
 
-import { formatNuyen } from '../System/Nuyen'
-import { Stat, StatBlock } from '../UI/StatBlock'
-import { formatAvail } from './Availability'
-import { GearData } from './GearData'
+import { formatNuyen } from "../System/Nuyen"
+import { Stat, StatBlock } from "../UI/StatBlock"
+import { formatAvail } from "./Availability"
+import { GearData } from "./GearData"
 
 interface GearAvailCostProps {
   item: GearData

@@ -1,5 +1,5 @@
-import { AttrNames, AttrValue } from '../System/Attribute'
-import { BaseGearData, GearType } from './GearData'
+import { AttrNames, AttrValue } from "../System/Attribute"
+import { BaseGearData, GearType } from "./GearData"
 
 export interface OtherGearData extends BaseGearData {
   gearType: GearType.other
@@ -10,13 +10,13 @@ export interface OtherGearData extends BaseGearData {
 }
 
 export enum OtherGearAttr {
-  capacity = 'other.capacity',
-  capacityCost = 'other.capacityCost',
-  rating = 'other.rating',
+  capacity = "other.capacity",
+  capacityCost = "other.capacityCost",
+  rating = "other.rating",
 }
 
 export const OtherGearAttrNames: AttrNames = {
-  [OtherGearAttr.capacity]: 'Capacity',
-  [OtherGearAttr.capacityCost]: 'Capacity Cost',
-  [OtherGearAttr.rating]: 'Rating',
+  [OtherGearAttr.capacity]: "Capacity",
+  [OtherGearAttr.capacityCost]: "Capacity Cost",
+  [OtherGearAttr.rating]: "Rating",
 }
