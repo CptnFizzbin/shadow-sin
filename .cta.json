@@ -1,0 +1,23 @@
+{
+  "projectName": "shadow-sin",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "yarn",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {},
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "compiler",
+    "form",
+    "t3env",
+    "table",
+    "store",
+    "tanstack-query"
+  ]
+}
