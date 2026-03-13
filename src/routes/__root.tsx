@@ -1,43 +1,27 @@
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { TanStackDevtools } from '@tanstack/react-devtools';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import Footer from "#/components/UI/Footer";
+import TanStackQueryProvider from "../integrations/tanstack-query/root-provider";
 
-import TanStackQueryProvider from '../integrations/tanstack-query/root-provider';
+type RouterContext = object;
 
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
-
-import type { QueryClient } from '@tanstack/react-query';
-
-interface MyRouterContext {
-  queryClient: QueryClient;
-}
-
-export const Route = createRootRouteWithContext<MyRouterContext>()({
-  component: RootLayout,
+export const Route = createRootRouteWithContext<RouterContext>()({
+	component: RootLayout,
 });
 
-function RootLayout () {
-  return (
-    <TanStackQueryProvider>
-      <Header />
-      <Outlet />
-      <Footer />
-      <TanStackDevtools
-        config={{
-          position: 'bottom-right',
-        }}
-        plugins={[
-          {
-            name: 'Tanstack Router',
-            render: <TanStackRouterDevtoolsPanel />,
-          },
-          TanStackQueryDevtools,
-        ]}
-      />
-    </TanStackQueryProvider>
-  );
+function RootLayout() {
+	return (
+		<TanStackQueryProvider>
+			<Stack sx={{ padding: 1 }} direction={"column"} minHeight={"100vh"}>
+				<Box sx={{ flexGrow: 1 }}>
+					<Outlet />
+				</Box>
+
+				<Box>
+					<Footer />
+				</Box>
+			</Stack>
+		</TanStackQueryProvider>
+	);
 }
-
-
