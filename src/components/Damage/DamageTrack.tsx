@@ -1,11 +1,13 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import { Label } from "#/components/UI/Text/Label.tsx";
 
 interface DamageTrackProps {
 	label: string;
 	max: number;
 	current: number;
 	onChange: (value: number) => void;
+	allowOverflow?: boolean;
 }
 
 export default function DamageTrack({
@@ -13,19 +15,24 @@ export default function DamageTrack({
 	max,
 	current,
 	onChange,
+	allowOverflow,
 }: DamageTrackProps) {
-	const numCells = Math.max(max, current + 1);
+	let numCells = Math.max(max, current);
+	if (allowOverflow && current >= max) {
+		// Add an extra cell for overflow damage
+		numCells += 1;
+	}
 
 	return (
-		<Box sx={{ minWidth: 150, maxWidth: 300 }}>
-			<Typography variant="h6">{label}</Typography>
-			<Box sx={{ pb: 0.5, textAlign: "right" }}>
-				<TrackCell onClick={() => onChange(0)}>0</TrackCell>
-			</Box>
+		<Stack gap={0.5}>
+			<Label label={label} />
+
+			<TrackCell onClick={() => onChange(0)}>0</TrackCell>
+
 			<Box
 				sx={{
 					display: "grid",
-					gridTemplateColumns: "repeat(3, minmax(42px, 1fr))",
+					gridTemplateColumns: "repeat(3, 1fr)",
 					gap: 0.5,
 				}}
 			>
@@ -47,7 +54,7 @@ export default function DamageTrack({
 					),
 				)}
 			</Box>
-		</Box>
+		</Stack>
 	);
 }
 
@@ -99,16 +106,11 @@ function TrackCell({
 			onClick={onClick}
 			sx={{
 				minHeight: 38,
-				minWidth: 42,
 				border: "1px solid",
-				borderColor: isOverflow ? "error.main" : "divider",
-				backgroundColor: filled ? "primary.dark" : "background.paper",
+				borderColor: isOverflow ? "error.main" : "primary.dark",
+				backgroundColor: filled ? "primary.main" : "background.paper",
 				color: filled ? "primary.contrastText" : "text.primary",
 				cursor: "pointer",
-				fontFamily: "inherit",
-				fontSize: 12,
-				px: 0.75,
-				py: 0.5,
 				transition: "background-color 0.15s ease, border-color 0.15s ease",
 				"&:hover": {
 					backgroundColor: filled ? "primary.main" : "primary.light",
