@@ -1,11 +1,14 @@
-import { Divider } from "@mui/material"
-import Grid from "@mui/material/Grid"
-import Paper from "@mui/material/Paper"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
-import { createFileRoute } from "@tanstack/react-router"
-import { useCharacterStore, useCharacterStoreContext } from "#/components/Character/CharacterStoreProvider.tsx"
-import DamageTrack from "#/components/Damage/DamageTrack.tsx"
+import { Divider } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+	useCharacterStore,
+	useCharacterStoreContext,
+} from "#/components/Character/CharacterStoreProvider.tsx";
+import DamageTrack from "#/components/Damage/DamageTrack.tsx";
 import {
 	ManaSpellDefenseDicePool,
 	MeleeBlockDicePool,
@@ -16,11 +19,13 @@ import {
 	MeleeParryDicePool,
 	PhysicalSpellDefenseDicePool,
 	RangedDefenseDicePool,
-	RangedFullDefenseDicePool
-} from "#/components/Damage/ResistanceDicePools.tsx"
-import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts"
-import { Label } from "#/components/UI/Text/Label.tsx"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
+	RangedFullDefenseDicePool,
+	ResistBodyDicePool,
+	ResistWillpowerDicePool,
+} from "#/components/Damage/ResistanceDicePools.tsx";
+import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts";
+import { Label } from "#/components/UI/Text/Label.tsx";
+import { SkillKey } from "#/lib/system/types/SkillKey.ts";
 
 export const Route = createFileRoute("/$characterId/defense")({
 	component: RouteComponent,
@@ -106,7 +111,25 @@ function RouteComponent() {
 				</Grid>
 
 				<Grid size={2}>
-					<Divider flexItem />
+					<Divider flexItem color={"secondary.main"} />
+				</Grid>
+
+				<Grid container size={2}>
+					<Grid size={2}>
+						<Label label={`Resist`} variant={"outlined"} />
+					</Grid>
+
+					<Grid size={1}>
+						<ResistBodyDicePool />
+					</Grid>
+
+					<Grid size={1}>
+						<ResistWillpowerDicePool />
+					</Grid>
+				</Grid>
+
+				<Grid size={2}>
+					<Divider flexItem color={"secondary.main"} />
 				</Grid>
 
 				<Grid container size={2}>
