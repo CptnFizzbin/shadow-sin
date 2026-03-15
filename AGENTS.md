@@ -66,3 +66,11 @@ createFirearm({ name: "Ares Predator VI", ... })
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as `import { env } from "#/env"`.
 - `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the case.
 - Google Drive integration (`src/integrations/google-drive/api.ts`) is a placeholder stub — not implemented.
+
+### Code style
+
+- Don't use short or ambiguous variable names. Prefer descriptive identifiers (e.g. `characterHealth` instead of `hp`, `damageThreshold` instead of `dt`). Short names are allowed only for well-known conventions (e.g. `id`, `ok`, `vs`) or in tiny scopes where a longer name would harm readability.
+- One React component per `.tsx` file. Only combine a tiny helper component with the main component when the helper is extremely simple and only used by that parent (e.g. a small presentational fragment with no props). If a helper is reused or non-trivial, move it to its own file and export it.
+- Prefer functional React components using the style in `src/components/UI/Header.tsx`: use a named exported const with an explicit props interface (for example `export const Header: FC<Props> = ({ ... }) => { ... }`). Avoid class components and default anonymous exports when possible.
+
+These project rules should be followed alongside the existing formatting and tooling conventions (Biome, tabs, double quotes).

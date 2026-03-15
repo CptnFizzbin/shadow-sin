@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import type { FC } from "react";
-
 import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx";
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
 import { AttributeLabels } from "#/lib/system/types/attributeKey.ts";
@@ -15,26 +15,30 @@ const renderAttrList = (
 	keys: AttributeKey[],
 ) => {
 	if (!attrs) return null;
-	const items = keys
+	const attributes = keys
 		.map((k) => ({ key: k, value: attrs[k] }))
 		.filter((it) => it.value !== 0);
 
-	if (items.length === 0) return null;
+	if (attributes.length === 0) return null;
 
 	return (
 		<Box
 			sx={{ display: "flex", gap: 1, flexWrap: "wrap", alignItems: "center" }}
 		>
-			{items.map((it) => (
-				<Box
-					key={it.key}
-					sx={{ display: "flex", gap: 0.5, alignItems: "baseline" }}
-				>
-					<Typography variant="caption" color="text.secondary">
-						{AttributeLabels[it.key as AttributeKey]}
+			{attributes.map((attribute) => (
+				<Stack key={attribute.key} flexGrow={1} alignItems={"center"}>
+					<Typography
+						variant="caption"
+						sx={{
+							backgroundColor: "secondary.dark",
+							width: "100%",
+							textAlign: "center",
+						}}
+					>
+						{AttributeLabels[attribute.key]}
 					</Typography>
-					<Typography variant="body2">{it.value}</Typography>
-				</Box>
+					<Typography variant="body2">{attribute.value}</Typography>
+				</Stack>
 			))}
 		</Box>
 	);
