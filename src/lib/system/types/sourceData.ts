@@ -1,4 +1,4 @@
 export interface SourceData {
-  book: string
-  page: number
+	book: string;
+	page: number;
 }

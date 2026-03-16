@@ -1,19 +1,19 @@
 export interface SpiritData {
-  id: string
-  name: string
+	id: string;
+	name: string;
 
-  force: number
-  services: {
-    max: number
-    used: number
-  }
+	force: number;
+	services: {
+		max: number;
+		used: number;
+	};
 
-  bound?: boolean
+	bound?: boolean;
 
-  source?: {
-    book: string
-    page: number
-  }
+	source?: {
+		book: string;
+		page: number;
+	};
 
-  notes?: string
+	notes?: string;
 }

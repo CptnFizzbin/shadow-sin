@@ -1,18 +1,18 @@
 export interface SpriteData {
-  id: string
-  name: string
-  force: number
-  services: {
-    max: number
-    used: number
-  }
+	id: string;
+	name: string;
+	force: number;
+	services: {
+		max: number;
+		used: number;
+	};
 
-  bound?: boolean
+	bound?: boolean;
 
-  source?: {
-    book: string
-    page: number
-  }
+	source?: {
+		book: string;
+		page: number;
+	};
 
-  notes?: string
+	notes?: string;
 }

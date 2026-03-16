@@ -1,6 +1,6 @@
-import type { FC } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import type { FC } from "react";
 
 import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx";
 
@@ -24,7 +24,8 @@ export const ProfileSection: FC = () => {
 
 			{profile?.lifestyle && (
 				<Typography variant="body2">
-					Lifestyle: Q{profile.lifestyle.quality} — {profile.lifestyle.cost}¥ / m
+					Lifestyle: Q{profile.lifestyle.quality} — {profile.lifestyle.cost}¥ /
+					m
 				</Typography>
 			)}
 		</Box>
