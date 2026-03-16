@@ -29,8 +29,6 @@ export default function CharacterRosterList({
 							})
 						}
 						sx={{
-							py: 2,
-							px: 3,
 							transition: "background-color 0.15s ease",
 						}}
 					>

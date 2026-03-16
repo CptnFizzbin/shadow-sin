@@ -32,6 +32,13 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
+		},
+		"linter": {
+			"rules": {
+				"correctness": {
+					"noChildrenProp": "off"
+				}
+			}
 		}
 	}
 }
