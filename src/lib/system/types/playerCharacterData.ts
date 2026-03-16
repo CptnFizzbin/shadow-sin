@@ -6,6 +6,7 @@ import type { AdeptPowerData } from "./magic/adeptPowerData.ts";
 import type { SpellData } from "./magic/spellData.ts";
 import type { QualityData } from "./qualityData.ts";
 import type { SkillData } from "./skillData.ts";
+import type { LifestyleType } from '#/lib/system/types/LifestyleType';
 
 export interface PlayerCharacterData {
 	id: string;
@@ -23,7 +24,7 @@ export interface PlayerCharacterData {
 		personality?: string;
 
 		lifestyle?: {
-			quality: string;
+			quality: LifestyleType;
 			cost: number;
 			monthsPaid: number;
 		};

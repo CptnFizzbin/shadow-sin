@@ -1032,6 +1032,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remixicon/react@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "@remixicon/react@npm:4.9.0"
+  peerDependencies:
+    react: ">=18.2.0"
+  checksum: 10c0/91bbadb677f45cf8b6687fdf9d273511fddb4e862f1da6c11bc7932acb578bcb26ae5b9e1eb62143a4e916b71797739a36d689866d5b0949f0f0f22c1684cb96
+  languageName: node
+  linkType: hard
+
 "@rolldown/pluginutils@npm:1.0.0-rc.3":
   version: 1.0.0-rc.3
   resolution: "@rolldown/pluginutils@npm:1.0.0-rc.3"
@@ -3664,6 +3673,7 @@ __metadata:
     "@faker-js/faker": "npm:^10.3.0"
     "@mui/icons-material": "npm:^7.0.0"
     "@mui/material": "npm:^7.0.0"
+    "@remixicon/react": "npm:^4.9.0"
     "@t3-oss/env-core": "npm:^0.13.10"
     "@tanstack/devtools-event-client": "npm:latest"
     "@tanstack/devtools-vite": "npm:latest"

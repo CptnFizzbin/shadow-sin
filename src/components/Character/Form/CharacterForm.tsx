@@ -9,6 +9,8 @@ import {
 } from "#/components/Character/Form/UseCharacterForm.ts";
 import { metatypes } from "#/lib/system/types/MetatypeData.ts";
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
+import { AttributesFormGroup } from "./AttributesFormGroup";
+import { BiologyFormGroup } from "./BiologyFormGroup";
 
 interface CharacterFormProps {
 	character?: PlayerCharacterData;
@@ -79,7 +81,33 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
 							)}
 						/>
 
+						<BiologyFormGroup
+							form={form}
+							fields={{
+								metatype: "metatype",
+								attributes: "attributes",
+								buildPoints: "buildPoints",
+							}}
+						/>
+
 						<MetatypeAttributes form={form} />
+					</Stack>
+				</Paper>
+
+				<Paper sx={{ padding: 1 }}>
+					<Stack gap={1}>
+						<Typography variant="h6" sx={{ textAlign: "center" }}>
+							Attributes
+						</Typography>
+
+						<AttributesFormGroup
+							form={form}
+							fields={{
+								buildPoints: "buildPoints",
+								attributes: "attributes",
+								metatype: "metatype",
+							}}
+						/>
 					</Stack>
 				</Paper>
 			</Stack>

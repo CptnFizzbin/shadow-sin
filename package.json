@@ -23,6 +23,7 @@
     "@faker-js/faker": "^10.3.0",
     "@mui/icons-material": "^7.0.0",
     "@mui/material": "^7.0.0",
+    "@remixicon/react": "^4.9.0",
     "@t3-oss/env-core": "^0.13.10",
     "@tanstack/match-sorter-utils": "latest",
     "@tanstack/react-devtools": "latest",
