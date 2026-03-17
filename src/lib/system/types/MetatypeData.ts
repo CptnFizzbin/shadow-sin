@@ -1,109 +1,128 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 
 export enum MetatypeKey {
-	Human = "Human",
-	Ork = "Ork",
-	Dwarf = "Dwarf",
-	Elf = "Elf",
-	Troll = "Troll",
+  Human = "Human",
+  Ork = "Ork",
+  Dwarf = "Dwarf",
+  Elf = "Elf",
+  Troll = "Troll",
+  AI = "AI",
 }
 
 export interface MetatypeData {
-	name: string;
-	cost: number;
-	attributes: Record<
-		AttributeKey,
-		{ value: number; max: number; augMax?: number }
-	>;
-	inateAbilites?: GearEffectData[];
+  name: MetatypeKey;
+  cost: number;
+  attributes: Record<
+    AttributeKey,
+    { min: number; max: number; augMax?: number }
+  >;
+  inateAbilites?: GearEffectData[];
 }
 
 const commonAttributes = {
-	essence: { value: 6, max: 6 },
-	magic: { value: 0, max: 0 },
-	resonance: { value: 0, max: 0 },
-} as const;
+  essence: { min: 6, max: 6 },
+  magic: { min: 0, max: 0 },
+  resonance: { min: 0, max: 0 }
+} as const
 
 export const metatypes: Record<MetatypeKey, MetatypeData> = {
-	Human: {
-		name: MetatypeKey.Human,
-		cost: 0,
-		attributes: {
-			body: { value: 1, max: 6, augMax: 9 },
-			agility: { value: 1, max: 6, augMax: 9 },
-			reaction: { value: 1, max: 6, augMax: 9 },
-			strength: { value: 1, max: 6, augMax: 9 },
-			charisma: { value: 1, max: 6, augMax: 9 },
-			intuition: { value: 1, max: 6, augMax: 9 },
-			logic: { value: 1, max: 6, augMax: 9 },
-			willpower: { value: 1, max: 6, augMax: 9 },
-			edge: { value: 2, max: 7 },
-			...commonAttributes,
-		},
-	},
-	Ork: {
-		name: MetatypeKey.Ork,
-		cost: 20,
-		attributes: {
-			body: { value: 4, max: 9, augMax: 13 },
-			agility: { value: 1, max: 6, augMax: 9 },
-			reaction: { value: 1, max: 6, augMax: 9 },
-			strength: { value: 3, max: 8, augMax: 12 },
-			charisma: { value: 1, max: 5, augMax: 7 },
-			intuition: { value: 1, max: 6, augMax: 9 },
-			logic: { value: 1, max: 5, augMax: 7 },
-			willpower: { value: 1, max: 6, augMax: 9 },
-			edge: { value: 1, max: 6 },
-			...commonAttributes,
-		},
-	},
-	Dwarf: {
-		name: MetatypeKey.Dwarf,
-		cost: 25,
-		attributes: {
-			body: { value: 2, max: 7, augMax: 10 },
-			agility: { value: 1, max: 6, augMax: 9 },
-			reaction: { value: 1, max: 5, augMax: 7 },
-			strength: { value: 3, max: 8, augMax: 12 },
-			charisma: { value: 1, max: 5, augMax: 7 },
-			intuition: { value: 1, max: 6, augMax: 9 },
-			logic: { value: 1, max: 6, augMax: 9 },
-			willpower: { value: 1, max: 7, augMax: 10 },
-			edge: { value: 1, max: 6 },
-			...commonAttributes,
-		},
-	},
-	Elf: {
-		name: MetatypeKey.Elf,
-		cost: 30,
-		attributes: {
-			body: { value: 1, max: 6, augMax: 9 },
-			agility: { value: 2, max: 7, augMax: 10 },
-			reaction: { value: 1, max: 6, augMax: 9 },
-			strength: { value: 1, max: 6, augMax: 9 },
-			charisma: { value: 3, max: 8, augMax: 12 },
-			intuition: { value: 1, max: 6, augMax: 9 },
-			logic: { value: 1, max: 6, augMax: 9 },
-			willpower: { value: 1, max: 6, augMax: 9 },
-			edge: { value: 1, max: 6 },
-			...commonAttributes,
-		},
-	},
-	Troll: {
-		name: MetatypeKey.Troll,
-		cost: 40,
-		attributes: {
-			body: { value: 5, max: 10, augMax: 15 },
-			agility: { value: 1, max: 5, augMax: 7 },
-			reaction: { value: 1, max: 6, augMax: 9 },
-			strength: { value: 5, max: 10, augMax: 15 },
-			charisma: { value: 1, max: 4, augMax: 6 },
-			intuition: { value: 1, max: 5, augMax: 7 },
-			logic: { value: 1, max: 5, augMax: 7 },
-			willpower: { value: 1, max: 6, augMax: 9 },
-			edge: { value: 1, max: 6 },
-			...commonAttributes,
-		},
-	},
-};
+  Human: {
+    name: MetatypeKey.Human,
+    cost: 0,
+    attributes: {
+      body: { min: 1, max: 6, augMax: 9 },
+      agility: { min: 1, max: 6, augMax: 9 },
+      reaction: { min: 1, max: 6, augMax: 9 },
+      strength: { min: 1, max: 6, augMax: 9 },
+      charisma: { min: 1, max: 6, augMax: 9 },
+      intuition: { min: 1, max: 6, augMax: 9 },
+      logic: { min: 1, max: 6, augMax: 9 },
+      willpower: { min: 1, max: 6, augMax: 9 },
+      edge: { min: 2, max: 7 },
+      ...commonAttributes
+    }
+  },
+  Ork: {
+    name: MetatypeKey.Ork,
+    cost: 20,
+    attributes: {
+      body: { min: 4, max: 9, augMax: 13 },
+      agility: { min: 1, max: 6, augMax: 9 },
+      reaction: { min: 1, max: 6, augMax: 9 },
+      strength: { min: 3, max: 8, augMax: 12 },
+      charisma: { min: 1, max: 5, augMax: 7 },
+      intuition: { min: 1, max: 6, augMax: 9 },
+      logic: { min: 1, max: 5, augMax: 7 },
+      willpower: { min: 1, max: 6, augMax: 9 },
+      edge: { min: 1, max: 6 },
+      ...commonAttributes
+    }
+  },
+  Dwarf: {
+    name: MetatypeKey.Dwarf,
+    cost: 25,
+    attributes: {
+      body: { min: 2, max: 7, augMax: 10 },
+      agility: { min: 1, max: 6, augMax: 9 },
+      reaction: { min: 1, max: 5, augMax: 7 },
+      strength: { min: 3, max: 8, augMax: 12 },
+      charisma: { min: 1, max: 5, augMax: 7 },
+      intuition: { min: 1, max: 6, augMax: 9 },
+      logic: { min: 1, max: 6, augMax: 9 },
+      willpower: { min: 1, max: 7, augMax: 10 },
+      edge: { min: 1, max: 6 },
+      ...commonAttributes
+    }
+  },
+  Elf: {
+    name: MetatypeKey.Elf,
+    cost: 30,
+    attributes: {
+      body: { min: 1, max: 6, augMax: 9 },
+      agility: { min: 2, max: 7, augMax: 10 },
+      reaction: { min: 1, max: 6, augMax: 9 },
+      strength: { min: 1, max: 6, augMax: 9 },
+      charisma: { min: 3, max: 8, augMax: 12 },
+      intuition: { min: 1, max: 6, augMax: 9 },
+      logic: { min: 1, max: 6, augMax: 9 },
+      willpower: { min: 1, max: 6, augMax: 9 },
+      edge: { min: 1, max: 6 },
+      ...commonAttributes
+    }
+  },
+  Troll: {
+    name: MetatypeKey.Troll,
+    cost: 40,
+    attributes: {
+      body: { min: 5, max: 10, augMax: 15 },
+      agility: { min: 1, max: 5, augMax: 7 },
+      reaction: { min: 1, max: 6, augMax: 9 },
+      strength: { min: 5, max: 10, augMax: 15 },
+      charisma: { min: 1, max: 4, augMax: 6 },
+      intuition: { min: 1, max: 5, augMax: 7 },
+      logic: { min: 1, max: 5, augMax: 7 },
+      willpower: { min: 1, max: 6, augMax: 9 },
+      edge: { min: 1, max: 6 },
+      ...commonAttributes
+    }
+  },
+  AI: {
+    name: MetatypeKey.AI,
+    cost: 110,
+    attributes: {
+      body: { min: 0, max: 0 },
+      agility: { min: 0, max: 0 },
+      reaction: { min: 0, max: 0 },
+      strength: { min: 0, max: 0 },
+      charisma: { min: 1, max: 4, augMax: 6 },
+      intuition: { min: 1, max: 5, augMax: 7 },
+      logic: { min: 1, max: 5, augMax: 7 },
+      willpower: { min: 1, max: 6, augMax: 9 },
+      edge: { min: 1, max: 6 },
+      essence: { min: 0, max: 0 },
+      magic: { min: 0, max: 0 },
+      resonance: { min: 0, max: 0 }
+    }
+  }
+}

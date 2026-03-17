@@ -1,1 +1,0 @@
-export { AttributesFormGroup } from "./BiologyFormGroup";
