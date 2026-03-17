@@ -1,14 +1,11 @@
-import {
-  type AttributeBuildState,
-  getAttrBuildState,
-} from "#/components/Character/Form/AttributeBuildState.ts";
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts";
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts";
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts";
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import { type AttributeBuildState, getAttrBuildState } from '#/components/Character/Form/AttributeBuildState.ts';
+import { useAppForm } from '#/integrations/tanstack-form/UseAppForm.ts';
+import { AttributeKey } from '#/lib/system/types/attributeKey.ts';
+import { awakenings, AwakeningType } from '#/lib/system/types/awakeningType.ts';
+import { LifestyleType } from '#/lib/system/types/LifestyleType.ts';
+import { MetatypeKey, metatypes } from '#/lib/system/types/MetatypeData.ts';
+import type { PlayerCharacterData } from '#/lib/system/types/playerCharacterData.ts';
+import type { QualityData } from '#/lib/system/types/qualityData.ts';
 
 export interface CharacterFormState {
   buildPoints: {
@@ -64,8 +61,8 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
       },
     },
 
-    name: profile?.name || "",
-    alias: profile?.alias || "",
+    name: profile?.name || '',
+    alias: profile?.alias || '',
     lifestyle: profile?.lifestyle?.quality || LifestyleType.Low,
 
     age: biology?.age || 0,
