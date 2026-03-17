@@ -1,4 +1,4 @@
-import type { QualityData } from "#/lib/system/types/qualityData.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts";
 
 export enum AwakeningType {
   Mundane = "Mundane",
@@ -15,8 +15,8 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     qualities: [],
     attributes: {
       magic: { min: 0, max: 0 },
-      resonance: { min: 0, max: 0 }
-    }
+      resonance: { min: 0, max: 0 },
+    },
   },
   Adept: {
     name: AwakeningType.Adept,
@@ -24,8 +24,8 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     qualities: [],
     attributes: {
       magic: { min: 1, max: 6 },
-      resonance: { min: 0, max: 0 }
-    }
+      resonance: { min: 0, max: 0 },
+    },
   },
   "Mystic Adept": {
     name: AwakeningType.MysticAdept,
@@ -33,8 +33,8 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     qualities: [],
     attributes: {
       magic: { min: 1, max: 6 },
-      resonance: { min: 0, max: 0 }
-    }
+      resonance: { min: 0, max: 0 },
+    },
   },
   Magician: {
     name: AwakeningType.Magician,
@@ -42,8 +42,8 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     qualities: [],
     attributes: {
       magic: { min: 1, max: 6 },
-      resonance: { min: 0, max: 0 }
-    }
+      resonance: { min: 0, max: 0 },
+    },
   },
   Technomancer: {
     name: AwakeningType.Technomancer,
@@ -51,17 +51,17 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
     qualities: [],
     attributes: {
       magic: { min: 0, max: 0 },
-      resonance: { min: 1, max: 6 }
-    }
-  }
-}
+      resonance: { min: 1, max: 6 },
+    },
+  },
+};
 
 export interface AwakeningData {
   name: AwakeningType;
-  cost: number
-  qualities: QualityData[]
+  cost: number;
+  qualities: QualityData[];
   attributes: {
-    magic: { min: number, max: number },
-    resonance: { min: number, max: number },
-  }
+    magic: { min: number; max: number };
+    resonance: { min: number; max: number };
+  };
 }

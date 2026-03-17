@@ -1,11 +1,11 @@
 export interface ContactData {
-	id: string;
-	name: string;
+  id: string;
+  name: string;
 
-	connection: number;
-	loyalty: number;
+  connection: number;
+  loyalty: number;
 
-	role?: string;
+  role?: string;
 
-	notes?: string;
+  notes?: string;
 }

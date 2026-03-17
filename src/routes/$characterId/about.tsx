@@ -6,21 +6,21 @@ import { FinancesSection } from "#/components/Character/FinancesSection.tsx";
 import { ProfileSection } from "#/components/Character/ProfileSection.tsx";
 
 export const Route = createFileRoute("/$characterId/about")({
-	component: RouteComponent,
+  component: RouteComponent,
 });
 
 function RouteComponent() {
-	return (
-		<Stack gap={1}>
-			<Paper sx={{ padding: 1 }}>
-				<ProfileSection />
-			</Paper>
+  return (
+    <Stack gap={1}>
+      <Paper sx={{ padding: 1 }}>
+        <ProfileSection />
+      </Paper>
 
-			<Paper sx={{ padding: 1 }}>
-				<FinancesSection />
-			</Paper>
+      <Paper sx={{ padding: 1 }}>
+        <FinancesSection />
+      </Paper>
 
-			<AttributesSection />
-		</Stack>
-	);
+      <AttributesSection />
+    </Stack>
+  );
 }

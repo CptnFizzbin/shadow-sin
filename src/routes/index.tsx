@@ -7,30 +7,30 @@ import { artemis } from "#/data/characters/artemis.ts";
 import { characterManager } from "#/lib/storage/index.ts";
 
 export const Route = createFileRoute("/")({
-	loader: async () => {
-		return characterManager.ensureCharacters([artemis]);
-	},
-	component: IndexRoute,
+  loader: async () => {
+    return characterManager.ensureCharacters([artemis]);
+  },
+  component: IndexRoute,
 });
 
 function IndexRoute() {
-	const navigate = Route.useNavigate();
-	const characters = Route.useLoaderData();
+  const navigate = Route.useNavigate();
+  const characters = Route.useLoaderData();
 
-	return (
-		<Stack spacing={1}>
-			<Header />
-			<Button
-				variant={"outlined"}
-				onClick={() =>
-					navigate({
-						to: "/new",
-					})
-				}
-			>
-				Create New
-			</Button>
-			<CharacterRosterList characters={characters} />
-		</Stack>
-	);
+  return (
+    <Stack spacing={1}>
+      <Header />
+      <Button
+        variant={"outlined"}
+        onClick={() =>
+          navigate({
+            to: "/new",
+          })
+        }
+      >
+        Create New
+      </Button>
+      <CharacterRosterList characters={characters} />
+    </Stack>
+  );
 }

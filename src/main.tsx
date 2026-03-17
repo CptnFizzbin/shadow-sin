@@ -14,24 +14,24 @@ const router = getRouter();
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-	throw new Error("Root element not found");
+  throw new Error("Root element not found");
 }
 
 ReactDOM.createRoot(rootElement).render(
-	<React.StrictMode>
-		<ThemeProvider theme={theme}>
-			<TanStackQueryProvider>
-				<CssBaseline />
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <TanStackQueryProvider>
+        <CssBaseline />
 
-				<RouterProvider router={router} />
+        <RouterProvider router={router} />
 
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[TanStackRouterDevtools, TanStackQueryDevtools]}
-				/>
-			</TanStackQueryProvider>
-		</ThemeProvider>
-	</React.StrictMode>,
+        <TanStackDevtools
+          config={{
+            position: "bottom-right",
+          }}
+          plugins={[TanStackRouterDevtools, TanStackQueryDevtools]}
+        />
+      </TanStackQueryProvider>
+    </ThemeProvider>
+  </React.StrictMode>,
 );
