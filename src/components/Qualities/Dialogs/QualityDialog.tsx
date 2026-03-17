@@ -73,7 +73,7 @@ const FormActions: FC<FormActionProps> = ({ form, onCancel, onDelete }) => {
   };
 
   return (
-    <Stack justifyItems={"space-between"} direction="row" width="100%">
+    <Stack justifyContent={"space-between"} direction="row" width="100%">
       <Box>
         {onDelete && (
           <Button color="error" onClick={onDelete}>

@@ -139,7 +139,7 @@ const QualityGroup: FC<QualityGroupProps> = ({
 
       {qualities.length === 0 ? (
         <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-          {`No ${label} qualities added`}
+          No {label} qualities added
         </Typography>
       ) : (
         <Stack gap={0.5}>

@@ -35,7 +35,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noChildrenProp": "off"
+        "noChildrenProp": "off",
+        "useImportExtensions": "error"
       }
     }
   },

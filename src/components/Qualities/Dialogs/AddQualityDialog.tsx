@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useStore } from "@tanstack/react-store";
 import { type FC, useState } from "react";
-import { QualityForm } from "#/components/Qualities/Form/QualityForm.tsx";
+import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm";
 import type { QualityData } from "#/lib/system/types/qualityData.ts";
 
 export interface AddQualityDialogProps {
@@ -24,11 +24,9 @@ const createEmptyQuality = (): QualityData => ({
 function FormActions({
   form,
   onClose,
-  onAdd,
 }: {
-  form: any;
+  form: QualityForm;
   onClose: () => void;
-  onAdd: (q: QualityData) => void;
 }) {
   const canSubmit = useStore(form.store, (s) => s.canSubmit);
 
@@ -53,7 +51,7 @@ export const AddQualityDialog: FC<AddQualityDialogProps> = ({
   onClose,
   onAdd,
 }) => {
-  const [formInstance, setFormInstance] = useState<any | null>(null);
+  const [formInstance, setFormInstance] = useState<QualityForm | null>(null);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -70,7 +68,7 @@ export const AddQualityDialog: FC<AddQualityDialogProps> = ({
       </DialogContent>
       <DialogActions>
         {formInstance ? (
-          <FormActions form={formInstance} onClose={onClose} onAdd={onAdd} />
+          <FormActions form={formInstance} onClose={onClose} />
         ) : (
           <>
             <Button onClick={onClose}>Cancel</Button>
