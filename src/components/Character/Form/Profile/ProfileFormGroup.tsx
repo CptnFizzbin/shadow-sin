@@ -3,21 +3,21 @@ import type { FC } from "react";
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm";
 
 export interface ProfileFormGroupProps {
-  form: PlayerCharacterForm;
+	form: PlayerCharacterForm;
 }
 
 export const ProfileFormGroup: FC<ProfileFormGroupProps> = ({ form }) => {
-  return (
-    <>
-      <form.AppField
-        name="alias"
-        children={(field) => <field.TextField label="Alias" />}
-      />
+	return (
+		<>
+			<form.AppField
+				name="alias"
+				children={(field) => <field.TextField label="Alias" />}
+			/>
 
-      <form.AppField
-        name="name"
-        children={(field) => <field.TextField label="Name" />}
-      />
-    </>
-  );
+			<form.AppField
+				name="name"
+				children={(field) => <field.TextField label="Name" />}
+			/>
+		</>
+	);
 };

@@ -1,3 +1,4 @@
+import type { LifestyleType } from "#/lib/system/types/LifestyleType";
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts";
 import type { AttributeKey } from "./attributeKey.ts";
 import type { AwakeningType } from "./awakeningType.ts";
@@ -6,7 +7,6 @@ import type { AdeptPowerData } from "./magic/adeptPowerData.ts";
 import type { SpellData } from "./magic/spellData.ts";
 import type { QualityData } from "./qualityData.ts";
 import type { SkillData } from "./skillData.ts";
-import type { LifestyleType } from "#/lib/system/types/LifestyleType";
 
 export interface PlayerCharacterData {
   id: string;
