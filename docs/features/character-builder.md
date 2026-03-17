@@ -35,9 +35,9 @@ The form state already tracks `buildPoints.spent` by category. Qualities BP spen
 
 ## 3. Skills (Creation Form)
 
-Skills are a major BP sink and need to be part of the creation form before a character can be saved in a legal state.
+Skills are a major BP sink and need to be part of the creation form before a character can be saved in a legal state. For the prototype, manually typing the skill name is sufficient — no pre-built skill catalog needed.
 
-- [ ] **Add skill** section in the creation form — pick from `SkillKey` enum, set rating (1–6), optional specialization
+- [ ] **Add skill** section in the creation form — type skill name, set rating (1–6), optional specialization
 - [ ] **Edit / remove** added skills before saving
 - [ ] Separate display for Active, Knowledge, and Language skills
 - [ ] Reflect BP cost per skill (active: rating × 4; specialization: +2 BP) in the build budget
@@ -46,14 +46,12 @@ Skills are a major BP sink and need to be part of the creation form before a cha
 
 ## 4. Qualities (Creation Form)
 
-The full add/edit/delete flow is implemented in PR #1 ✅. Remaining gaps are a pre-built catalog and incompatibility enforcement.
+The full add/edit/delete flow is implemented in PR #1 ✅. Manual entry of name, source, and costs is sufficient for the prototype — no pre-built catalog needed.
 
 - [x] **Add quality** dialog — name, positive/negative toggle, BP cost, description, source (book + page) ✅ PR #1
 - [x] **Edit quality** — tap a row to open a view/edit/delete dialog ✅ PR #1
 - [x] **Remove quality** ✅ PR #1
 - [x] Group qualities by positive and negative with net-BP summary ✅ PR #1
-- [ ] Pre-built catalog of common SR4e qualities to pick from (avoid manual data entry)
-- [ ] Show incompatibility warnings (e.g., Allergy vs. Resistance)
 
 ---
 
@@ -142,3 +140,12 @@ These features belong to the gameplay / session-play portion and can be tackled 
 - [ ] Karma spend and advancement tracking
 - [ ] Google Drive sync (stub exists in `src/integrations/google-drive/`)
 - [ ] Character export / import (JSON)
+
+## Post-Prototype / Catalog & Data Quality
+
+Catalog data entry is sufficient as manual name + source + costs for the prototype. These enhancements can follow once the core builder ships.
+
+- [ ] Pre-built catalog of common SR4e qualities to pick from
+- [ ] Skill picker backed by the `SkillKey` enum (replaces free-text name entry)
+- [ ] Show quality incompatibility warnings (e.g., Allergy vs. Resistance)
+- [ ] Validate that skill names match known skills (warn on unknown names)
