@@ -16,7 +16,7 @@ Follow the repository conventions described in `AGENTS.md` and these additional 
 
 Formatting and tooling notes:
 
-- The project uses Biome for formatting and linting. Use tabs for indentation and double quotes for JS/TS strings.
+- The project uses Biome for formatting and linting. Use 2 spaces for indentation and double quotes for JS/TS strings.
 - Respect the existing path alias `#/` → `src/` and other conventions in `AGENTS.md`.
 
 When you discover patterns or troubleshooting steps relevant to contributors, update this file with the problem, the

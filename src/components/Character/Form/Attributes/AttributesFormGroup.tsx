@@ -37,6 +37,7 @@ export const AttributesFormGroup: FC<AttributesFormGroupProps> = ({ form }) => {
 					100,
 					Math.round((bpSpent / attrPointCosts.allowance) * 100),
 				)}
+				sx={{ height: 8, borderRadius: 1, width: "100%" }}
 			/>
 
 			<Stack gap={0.5}>

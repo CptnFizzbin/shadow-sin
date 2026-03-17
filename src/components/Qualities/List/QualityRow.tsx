@@ -1,4 +1,5 @@
 import ButtonBase from "@mui/material/ButtonBase";
+import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import type { FC } from "react";
@@ -10,11 +11,15 @@ export interface QualityRowProps {
 }
 
 export const QualityRow: FC<QualityRowProps> = ({ quality, onClick }) => {
-	const costLabel = quality.cost !== undefined ? `${quality.cost} BP` : "— BP";
+	const bpLabel =
+		quality.bpValue !== undefined ? `${quality.bpValue} BP` : "— BP";
 
 	return (
-		<ButtonBase
+		<Paper
+			component={ButtonBase}
 			onClick={onClick}
+			elevation={1}
+			aria-label={`Open quality ${quality.name}`}
 			sx={{
 				display: "flex",
 				width: "100%",
@@ -33,9 +38,9 @@ export const QualityRow: FC<QualityRowProps> = ({ quality, onClick }) => {
 			>
 				<Typography>{quality.name}</Typography>
 				<Typography variant="caption" color="secondary.main">
-					{costLabel}
+					{bpLabel}
 				</Typography>
 			</Stack>
-		</ButtonBase>
+		</Paper>
 	);
 };

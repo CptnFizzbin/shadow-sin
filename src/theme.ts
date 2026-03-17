@@ -102,10 +102,10 @@ export const theme = createTheme({
 					borderRadius: 0,
 					backgroundImage: "none",
 					border: "1px solid",
-					borderColor: "inherit",
+					borderColor: "#4c1d95", // dark purple border
 				},
 				outlined: {
-					border: "1px solid",
+					border: "1px solid #4c1d95",
 				},
 			},
 		},

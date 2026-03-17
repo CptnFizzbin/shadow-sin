@@ -1,100 +1,66 @@
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import LinearProgress from "@mui/material/LinearProgress";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { RiAddLine } from "@remixicon/react";
 import { type FC, useState } from "react";
-import { AddQualityDialog } from "#/components/Character/Form/Qualities/AddQualityDialog.tsx";
-import { QualityDialog } from "#/components/Character/Form/Qualities/QualityDialog.tsx";
-import { QualityRow } from "#/components/Character/Form/Qualities/QualityRow.tsx";
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts";
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts";
+import { AddQualityDialog } from "#/components/Qualities/Dialogs/AddQualityDialog.tsx";
+import { QualityDialog } from "#/components/Qualities/Dialogs/QualityDialog.tsx";
+import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx";
 import type { QualityData } from "#/lib/system/types/qualityData.ts";
+
+export const qualityBuildPoints = {
+	allowance: {
+		negative: 35,
+		positive: 35,
+	},
+};
 
 export interface QualitiesFormGroupProps {
 	form: PlayerCharacterForm;
 }
 
 export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
-	const {
-		positiveQualities,
-		negativeQualities,
-		positiveBPSpent,
-		negativeBPGranted,
-		netBPSpent,
-		addQuality,
-		updateQuality,
-		removeQuality,
-	} = useQualitiesFormGroup(form);
+	const { qualities, buildPoints, addQuality, updateQuality, removeQuality } =
+		useQualitiesFormGroup(form);
 
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-	const [selectedEntry, setSelectedEntry] = useState<{
-		quality: QualityData;
-		index: number;
-	} | null>(null);
-
-	const handleQualitySave = (updated: QualityData) => {
-		if (selectedEntry !== null) {
-			updateQuality(selectedEntry.index, updated);
-		}
-	};
-
-	const handleQualityDelete = () => {
-		if (selectedEntry !== null) {
-			removeQuality(selectedEntry.index);
-		}
-	};
-
-	const netBPLabel =
-		netBPSpent >= 0
-			? `${netBPSpent} BP spent`
-			: `${Math.abs(netBPSpent)} BP gained`;
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [selectedEntry, setSelectedEntry] = useState<QualityData | null>(null);
 
 	return (
 		<>
-			<Stack gap={1}>
-				<Typography variant="caption">
-					{netBPLabel} ({positiveBPSpent} positive, {negativeBPGranted}{" "}
-					negative)
-				</Typography>
+			<Stack gap={0.5}>
+				<QualityGroup
+					label={"Positive"}
+					bpAllowance={qualityBuildPoints.allowance.positive}
+					bpUsed={buildPoints.bpSpent}
+					qualities={qualities.positive}
+					onSelect={(quality) => {
+						setSelectedEntry(quality);
+						setIsEditDialogOpen(true);
+					}}
+				/>
 
-				<Typography variant="subtitle2">Positive Qualities</Typography>
+				<Divider sx={{ my: 1 }} />
 
-				{positiveQualities.length === 0 ? (
-					<Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-						No positive qualities added
-					</Typography>
-				) : (
-					<Stack gap={0.5}>
-						{positiveQualities.map(({ quality, index }) => (
-							<QualityRow
-								key={quality.id ?? index}
-								quality={quality}
-								onClick={() => setSelectedEntry({ quality, index })}
-							/>
-						))}
-					</Stack>
-				)}
+				<QualityGroup
+					label={"Negative"}
+					bpAllowance={qualityBuildPoints.allowance.negative}
+					bpUsed={buildPoints.bpBonus}
+					qualities={qualities.negative}
+					onSelect={(quality) => {
+						setSelectedEntry(quality);
+						setIsEditDialogOpen(true);
+					}}
+				/>
 
-				<Divider />
-
-				<Typography variant="subtitle2">Negative Qualities</Typography>
-
-				{negativeQualities.length === 0 ? (
-					<Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-						No negative qualities added
-					</Typography>
-				) : (
-					<Stack gap={0.5}>
-						{negativeQualities.map(({ quality, index }) => (
-							<QualityRow
-								key={quality.id ?? index}
-								quality={quality}
-								onClick={() => setSelectedEntry({ quality, index })}
-							/>
-						))}
-					</Stack>
-				)}
+				<Divider sx={{ my: 1 }} />
 
 				<Button
 					variant="outlined"
@@ -114,12 +80,77 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
 
 			{selectedEntry !== null && (
 				<QualityDialog
-					quality={selectedEntry.quality}
-					open={selectedEntry !== null}
-					onClose={() => setSelectedEntry(null)}
-					onSave={handleQualitySave}
-					onDelete={handleQualityDelete}
+					quality={selectedEntry}
+					open={isEditDialogOpen}
+					onClose={() => setIsEditDialogOpen(false)}
+					onClosed={() => setSelectedEntry(null)}
+					onSave={updateQuality}
+					onDelete={() => removeQuality(selectedEntry)}
 				/>
+			)}
+		</>
+	);
+};
+
+interface QualityGroupProps {
+	label: string;
+	bpAllowance: number;
+	bpUsed: number;
+	qualities: QualityData[];
+	onSelect: (quality: QualityData) => void;
+}
+
+const QualityGroup: FC<QualityGroupProps> = ({
+	label,
+	bpAllowance,
+	bpUsed,
+	qualities,
+	onSelect,
+}) => {
+	const percentUsed = bpAllowance
+		? Math.min(100, Math.round((bpUsed / bpAllowance) * 100))
+		: 0;
+	const isOver = bpUsed > bpAllowance;
+
+	return (
+		<>
+			<Box sx={{ mt: 0.5 }}>
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+				>
+					<Typography variant="body2">{label}</Typography>
+					<Typography variant="caption">
+						{bpUsed} / {bpAllowance}
+					</Typography>
+				</Stack>
+				<LinearProgress
+					variant="determinate"
+					value={percentUsed}
+					sx={{ height: 8, borderRadius: 1, mt: 0.5, width: "100%" }}
+				/>
+				{isOver && (
+					<Alert severity="error" sx={{ mt: 1 }}>
+						{label} is limited to {bpAllowance} BP
+					</Alert>
+				)}
+			</Box>
+
+			{qualities.length === 0 ? (
+				<Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+					{`No ${label} qualities added`}
+				</Typography>
+			) : (
+				<Stack gap={0.5}>
+					{qualities.map((quality) => (
+						<QualityRow
+							key={quality.id}
+							quality={quality}
+							onClick={() => onSelect(quality)}
+						/>
+						))}
+				</Stack>
 			)}
 		</>
 	);

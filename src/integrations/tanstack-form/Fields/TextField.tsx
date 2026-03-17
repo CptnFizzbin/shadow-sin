@@ -8,7 +8,21 @@ interface TextFieldProps
 	extends Omit<MuiTextFieldProps, "value" | "onChange" | "onBlur"> {}
 
 export const TextField: FC<TextFieldProps> = ({ ...props }) => {
-	const field = useFieldContext<string>();
+	const field = useFieldContext<any>();
+
+	// Ensure controlled input — fallback to empty string when undefined
+	const value = field.state.value ?? "";
+
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		const v = e.target.value;
+		if ((props as any).type === "number") {
+			field.handleChange(v === "" ? undefined : Number(v));
+			return;
+		}
+		field.handleChange(v);
+	};
 
 	return (
 		<MuiTextField
@@ -16,9 +30,9 @@ export const TextField: FC<TextFieldProps> = ({ ...props }) => {
 			variant="outlined"
 			size="small"
 			{...props}
-			value={field.state.value}
+			value={value}
 			onBlur={field.handleBlur}
-			onChange={(e) => field.handleChange(e.target.value)}
+			onChange={handleChange}
 		/>
 	);
 };
