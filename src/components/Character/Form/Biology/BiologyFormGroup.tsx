@@ -6,7 +6,7 @@ import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildSta
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx";
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm";
 import { AttributeKey } from "#/lib/system/types/attributeKey";
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts";
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts";
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
 
 export interface BiologyFormGroupProps {
@@ -18,6 +18,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
 	const awakeningType = useStore(form.store, (s) => s.values.awakening);
 
 	const prevAwakeningRef = useRef(awakeningType);
+	const isInitialMountRef = useRef(true);
 
 	useEffect(() => {
 		if (metatypeKey === MetatypeKey.AI) {
@@ -26,6 +27,11 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
 	}, [metatypeKey, form]);
 
 	useEffect(() => {
+		if (isInitialMountRef.current) {
+			isInitialMountRef.current = false;
+			return;
+		}
+
 		form.setFieldValue("buildPoints.spent.attributes", 0);
 		form.setFieldValue(`attributes`, (prev) => {
 			const metatype = metatypes[metatypeKey];
