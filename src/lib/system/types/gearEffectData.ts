@@ -1,16 +1,16 @@
-import type { AttributeKey } from '#/lib/system/types/attributeKey.ts';
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
 
 export enum GearEffectType {
-  setModifier = 'setModifier',
-  attrBonus = 'attrBonus',
-  skillBonus = 'skillBonus',
-  initiativeBonus = 'initiativeBonus',
-  recoilReduction = 'recoilReduction',
+  setModifier = "setModifier",
+  attrBonus = "attrBonus",
+  skillBonus = "skillBonus",
+  initiativeBonus = "initiativeBonus",
+  recoilReduction = "recoilReduction",
 }
 
 export type GearEffectTarget =
   | string
-  | 'initative'
+  | "initative"
   | `attr.${AttributeKey}`
   | `skill.${string}`
   | `spell.${string}`

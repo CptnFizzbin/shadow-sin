@@ -1,8 +1,8 @@
-import Stack from '@mui/material/Stack';
-import ToggleButton from '@mui/material/ToggleButton';
-import type { FC } from 'react';
-import type { QualityForm } from '#/components/Qualities/Form/UseQualityForm';
-import { SourceField } from '#/components/Sources/SourceField.tsx';
+import Stack from "@mui/material/Stack";
+import ToggleButton from "@mui/material/ToggleButton";
+import type { FC } from "react";
+import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm";
+import { SourceField } from "#/components/Sources/SourceField.tsx";
 
 interface QualityFormFieldsProps {
   form: QualityForm;
@@ -21,16 +21,16 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
             {(field) => (
               <ToggleButton
                 value="positive"
-                selected={field.state.value === 'positive'}
+                selected={field.state.value === "positive"}
                 onChange={() =>
                   field.handleChange(
-                    field.state.value === 'positive' ? 'negative' : 'positive',
+                    field.state.value === "positive" ? "negative" : "positive",
                   )
                 }
                 size="small"
                 sx={{ flexGrow: 1 }}
               >
-                {field.state.value === 'positive' ? 'Positive' : 'Negative'}
+                {field.state.value === "positive" ? "Positive" : "Negative"}
               </ToggleButton>
             )}
           </form.AppField>
@@ -40,7 +40,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
               <form.AppField name="bpValue">
                 {(field) => (
                   <field.TextField
-                    label={type === 'positive' ? 'BP Cost' : 'BP Bonus'}
+                    label={type === "positive" ? "BP Cost" : "BP Bonus"}
                     type="number"
                     slotProps={{ htmlInput: { min: 0 } }}
                     sx={{ minWidth: 120, flex: 1 }}
@@ -59,8 +59,8 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
 
         <form.AppField name="source">
           {(field) => {
-            const book = field.state.value?.book ?? '';
-            const page = field.state.value?.page?.toString() ?? '';
+            const book = field.state.value?.book ?? "";
+            const page = field.state.value?.page?.toString() ?? "";
 
             return (
               <SourceField
@@ -75,7 +75,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
                   field.handleChange(
                     book
                       ? { book, page: Number(p) || 0 }
-                      : { book: '', page: Number(p) || 0 },
+                      : { book: "", page: Number(p) || 0 },
                   )
                 }
               />

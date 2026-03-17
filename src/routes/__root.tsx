@@ -7,21 +7,21 @@ import TanStackQueryProvider from "../integrations/tanstack-query/root-provider"
 type RouterContext = object;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-	component: RootLayout,
+  component: RootLayout,
 });
 
 function RootLayout() {
-	return (
-		<TanStackQueryProvider>
-			<Stack sx={{ padding: 1 }} direction={"column"} minHeight={"100vh"}>
-				<Box sx={{ flexGrow: 1 }}>
-					<Outlet />
-				</Box>
+  return (
+    <TanStackQueryProvider>
+      <Stack sx={{ padding: 1 }} direction={"column"} minHeight={"100vh"}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Outlet />
+        </Box>
 
-				<Box>
-					<Footer />
-				</Box>
-			</Stack>
-		</TanStackQueryProvider>
-	);
+        <Box>
+          <Footer />
+        </Box>
+      </Stack>
+    </TanStackQueryProvider>
+  );
 }

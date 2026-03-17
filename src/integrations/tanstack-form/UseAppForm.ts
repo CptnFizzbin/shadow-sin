@@ -4,11 +4,11 @@ import { TextField } from "#/integrations/tanstack-form/Fields/TextField.tsx";
 import { fieldContext, formContext } from "./FieldContext.ts";
 
 export const { useAppForm, withFieldGroup } = createFormHook({
-	fieldComponents: {
-		TextField,
-		SelectField,
-	},
-	formComponents: {},
-	fieldContext,
-	formContext,
+  fieldComponents: {
+    TextField,
+    SelectField,
+  },
+  formComponents: {},
+  fieldContext,
+  formContext,
 });

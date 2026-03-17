@@ -1,10 +1,10 @@
-import { type FC, type RefObject, useEffect } from 'react';
-import { QualityFormFields } from '#/components/Qualities/Form/QualityForm';
+import { type FC, type RefObject, useEffect } from "react";
+import { QualityFormFields } from "#/components/Qualities/Form/QualityForm";
 import {
   type QualityForm,
   useQualityForm,
-} from '#/components/Qualities/Form/UseQualityForm';
-import type { QualityData } from '#/lib/system/types/qualityData';
+} from "#/components/Qualities/Form/UseQualityForm";
+import type { QualityData } from "#/lib/system/types/qualityData";
 
 interface QualityEditFormProps {
   quality: QualityData;
@@ -17,7 +17,7 @@ export const QualityEditForm: FC<QualityEditFormProps> = ({
   onSubmit,
   formRef,
 }) => {
-  const form = useQualityForm({ mode: 'edit', quality, onSubmit });
+  const form = useQualityForm({ mode: "edit", quality, onSubmit });
 
   useEffect(() => {
     if (!formRef) return;

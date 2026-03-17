@@ -1,12 +1,12 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useStore } from '@tanstack/react-store';
-import { type FC, useState } from 'react';
-import { QualityForm } from '#/components/Qualities/Form/QualityForm.tsx';
-import type { QualityData } from '#/lib/system/types/qualityData.ts';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { useStore } from "@tanstack/react-store";
+import { type FC, useState } from "react";
+import { QualityForm } from "#/components/Qualities/Form/QualityForm.tsx";
+import type { QualityData } from "#/lib/system/types/qualityData.ts";
 
 export interface AddQualityDialogProps {
   open: boolean;
@@ -16,12 +16,12 @@ export interface AddQualityDialogProps {
 
 const createEmptyQuality = (): QualityData => ({
   id: crypto.randomUUID(),
-  name: '',
-  type: 'positive',
-  description: '',
+  name: "",
+  type: "positive",
+  description: "",
 });
 
-function FormActions ({
+function FormActions({
   form,
   onClose,
   onAdd,

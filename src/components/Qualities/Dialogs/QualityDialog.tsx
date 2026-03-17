@@ -1,16 +1,16 @@
-import { Stack } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useStore } from '@tanstack/react-store';
-import { type FC, useRef } from 'react';
-import type { QualityForm } from '#/components/Qualities/Form/UseQualityForm';
-import { noop } from '#/lib/noop';
-import type { QualityData } from '#/lib/system/types/qualityData.ts';
-import { QualityEditForm } from '../Form/QualityEditForm';
+import { Stack } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { useStore } from "@tanstack/react-store";
+import { type FC, useRef } from "react";
+import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm";
+import { noop } from "#/lib/noop";
+import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import { QualityEditForm } from "../Form/QualityEditForm";
 
 export interface QualityDialogProps {
   quality: QualityData;
@@ -34,7 +34,7 @@ export const QualityDialog: FC<QualityDialogProps> = ({
   return (
     <Dialog open={open} onTransitionExited={onClosed} fullWidth>
       <DialogTitle>
-        {quality.type === 'positive' ? 'Positive Quality' : 'Negative Quality'}
+        {quality.type === "positive" ? "Positive Quality" : "Negative Quality"}
       </DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <QualityEditForm
@@ -73,7 +73,7 @@ const FormActions: FC<FormActionProps> = ({ form, onCancel, onDelete }) => {
   };
 
   return (
-    <Stack justifyItems={'space-between'} direction="row" width="100%">
+    <Stack justifyItems={"space-between"} direction="row" width="100%">
       <Box>
         {onDelete && (
           <Button color="error" onClick={onDelete}>
