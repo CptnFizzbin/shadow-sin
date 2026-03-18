@@ -1,9 +1,9 @@
-import type { FC } from "react";
+import type { FC } from "react"
 
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm";
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm"
 
 export interface ProfileFormGroupProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const ProfileFormGroup: FC<ProfileFormGroupProps> = ({ form }) => {
@@ -19,5 +19,5 @@ export const ProfileFormGroup: FC<ProfileFormGroupProps> = ({ form }) => {
         children={(field) => <field.TextField label="Name" />}
       />
     </>
-  );
-};
+  )
+}

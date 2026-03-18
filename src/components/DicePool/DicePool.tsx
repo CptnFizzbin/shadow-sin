@@ -1,15 +1,15 @@
-import Box from "@mui/material/Box";
-import type { FC } from "react";
+import Box from "@mui/material/Box"
+import type { FC } from "react"
 
 export interface DiceGroup {
-  name: string;
-  size: number;
-  color?: string;
+  name: string
+  size: number
+  color?: string
 }
 
 interface DicePoolProps {
-  name: string;
-  groups: (DiceGroup | null | boolean)[];
+  name: string
+  groups: (DiceGroup | null | boolean)[]
 }
 
 export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
@@ -19,12 +19,12 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
       group !== null &&
       "name" in group &&
       "size" in group,
-  );
+  )
 
   const total = Math.max(
     0,
     diceGroups.reduce((sum, group) => sum + group.size, 0),
-  );
+  )
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -39,14 +39,14 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
         />
       ))}
     </Box>
-  );
-};
+  )
+}
 
 interface DiceGroupDisplayProps {
-  name: string;
-  size: number;
-  total?: boolean;
-  color?: string;
+  name: string
+  size: number
+  total?: boolean
+  color?: string
 }
 
 function DiceGroupDisplay({
@@ -60,13 +60,13 @@ function DiceGroupDisplay({
     padding: 0.5,
     width: 30,
     textAlign: "center",
-  } as const;
+  } as const
 
   const nameStyles = {
     display: "inline-block",
     padding: 0.5,
     marginRight: 1,
-  } as const;
+  } as const
 
   return (
     <Box
@@ -80,5 +80,5 @@ function DiceGroupDisplay({
       <Box sx={sizeStyles}>{size}</Box>
       <Box sx={nameStyles}>{name}</Box>
     </Box>
-  );
+  )
 }

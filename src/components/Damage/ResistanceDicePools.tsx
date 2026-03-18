@@ -1,12 +1,12 @@
-import type { FC } from "react";
-import { DicePool } from "#/components/DicePool/DicePool.tsx";
+import type { FC } from "react"
+import { DicePool } from "#/components/DicePool/DicePool.tsx"
 import {
   useDiceAttributeGroup,
   useDiceSkillGroup,
   useWoundDiceGroup,
-} from "#/components/DicePool/UseDiceGroup.ts";
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { SkillKey } from "#/lib/system/types/SkillKey.ts";
+} from "#/components/DicePool/UseDiceGroup.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 
 export const ResistBodyDicePool = () => {
   return (
@@ -14,8 +14,8 @@ export const ResistBodyDicePool = () => {
       name={"Resist Damage"}
       groups={[useDiceAttributeGroup(AttributeKey.body)]}
     />
-  );
-};
+  )
+}
 
 export const ResistWillpowerDicePool = () => {
   return (
@@ -23,8 +23,8 @@ export const ResistWillpowerDicePool = () => {
       name={"Resist Damage"}
       groups={[useDiceAttributeGroup(AttributeKey.willpower)]}
     />
-  );
-};
+  )
+}
 
 export const RangedDefenseDicePool = () => {
   return (
@@ -35,8 +35,8 @@ export const RangedDefenseDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const RangedFullDefenseDicePool = () => {
   return (
@@ -48,8 +48,8 @@ export const RangedFullDefenseDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
   weaponSkill,
@@ -63,8 +63,8 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeBlockDicePool = () => {
   return (
@@ -76,8 +76,8 @@ export const MeleeBlockDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeDodgeDicePool = () => {
   return (
@@ -89,8 +89,8 @@ export const MeleeDodgeDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
   weaponSkill,
@@ -105,8 +105,8 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeFullBlockDicePool = () => {
   return (
@@ -119,8 +119,8 @@ export const MeleeFullBlockDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const MeleeFullDodgeDicePool = () => {
   return (
@@ -133,8 +133,8 @@ export const MeleeFullDodgeDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const PhysicalSpellDefenseDicePool = () => {
   return (
@@ -146,8 +146,8 @@ export const PhysicalSpellDefenseDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}
 
 export const ManaSpellDefenseDicePool = () => {
   return (
@@ -159,5 +159,5 @@ export const ManaSpellDefenseDicePool = () => {
         useWoundDiceGroup(),
       ]}
     />
-  );
-};
+  )
+}

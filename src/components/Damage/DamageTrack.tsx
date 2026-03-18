@@ -1,13 +1,13 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { Label } from "#/components/UI/Text/Label.tsx";
+import Box from "@mui/material/Box"
+import Stack from "@mui/material/Stack"
+import { Label } from "#/components/UI/Text/Label.tsx"
 
 interface DamageTrackProps {
-  label: string;
-  max: number;
-  current: number;
-  onChange: (value: number) => void;
-  allowOverflow?: boolean;
+  label: string
+  max: number
+  current: number
+  onChange: (value: number) => void
+  allowOverflow?: boolean
 }
 
 export default function DamageTrack({
@@ -17,10 +17,10 @@ export default function DamageTrack({
   onChange,
   allowOverflow,
 }: DamageTrackProps) {
-  let numCells = Math.max(max, current);
+  let numCells = Math.max(max, current)
   if (allowOverflow && current >= max) {
     // Add an extra cell for overflow damage
-    numCells += 1;
+    numCells += 1
   }
 
   return (
@@ -45,9 +45,9 @@ export default function DamageTrack({
               isOverflow={value > max}
               toggleCell={(value) => {
                 if (value === current) {
-                  onChange(value - 1);
+                  onChange(value - 1)
                 } else {
-                  onChange(value);
+                  onChange(value)
                 }
               }}
             />
@@ -55,14 +55,14 @@ export default function DamageTrack({
         )}
       </Box>
     </Stack>
-  );
+  )
 }
 
 interface DamageCellProps {
-  value: number;
-  filled: boolean;
-  isOverflow: boolean;
-  toggleCell: (newValue: number) => void;
+  value: number
+  filled: boolean
+  isOverflow: boolean
+  toggleCell: (newValue: number) => void
 }
 
 function DamageCell({
@@ -71,7 +71,7 @@ function DamageCell({
   isOverflow,
   toggleCell,
 }: DamageCellProps) {
-  const penalty = Math.floor((value + 1) / 3);
+  const penalty = Math.floor((value + 1) / 3)
 
   return (
     <TrackCell
@@ -83,14 +83,14 @@ function DamageCell({
         {value % 3 === 0 ? penalty * -1 : "\u00A0"}
       </Box>
     </TrackCell>
-  );
+  )
 }
 
 interface TrackCellProps {
-  children: React.ReactNode;
-  onClick: () => void;
-  filled?: boolean;
-  isOverflow?: boolean;
+  children: React.ReactNode
+  onClick: () => void
+  filled?: boolean
+  isOverflow?: boolean
 }
 
 function TrackCell({
@@ -120,5 +120,5 @@ function TrackCell({
     >
       {children}
     </Box>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 
 export enum MetatypeKey {
   Human = "Human",
@@ -11,20 +11,20 @@ export enum MetatypeKey {
 }
 
 export interface MetatypeData {
-  name: MetatypeKey;
-  cost: number;
+  name: MetatypeKey
+  cost: number
   attributes: Record<
     AttributeKey,
     { min: number; max: number; augMax?: number }
-  >;
-  inateAbilites?: GearEffectData[];
+  >
+  inateAbilites?: GearEffectData[]
 }
 
 const commonAttributes = {
   essence: { min: 6, max: 6 },
   magic: { min: 0, max: 0 },
   resonance: { min: 0, max: 0 },
-} as const;
+} as const
 
 export const metatypes: Record<MetatypeKey, MetatypeData> = {
   Human: {
@@ -125,4 +125,4 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       resonance: { min: 0, max: 0 },
     },
   },
-};
+}

@@ -1,11 +1,11 @@
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/$characterId/vehicles")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   return (
@@ -14,5 +14,5 @@ function RouteComponent() {
         <Typography variant="h6">Vehicles</Typography>
       </Paper>
     </Stack>
-  );
+  )
 }

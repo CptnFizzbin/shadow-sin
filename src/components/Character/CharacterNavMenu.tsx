@@ -1,12 +1,12 @@
-import MenuIcon from "@mui/icons-material/Menu";
-import Dialog from "@mui/material/Dialog";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import { Link, linkOptions } from "@tanstack/react-router";
-import { type FC, useState } from "react";
-import { Route as CharacterRoute } from "#/routes/$characterId/index";
+import MenuIcon from "@mui/icons-material/Menu"
+import Dialog from "@mui/material/Dialog"
+import IconButton from "@mui/material/IconButton"
+import List from "@mui/material/List"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemText from "@mui/material/ListItemText"
+import { Link, linkOptions } from "@tanstack/react-router"
+import { type FC, useState } from "react"
+import { Route as CharacterRoute } from "#/routes/$characterId/index"
 
 const pages = linkOptions([
   { label: "About", from: CharacterRoute.fullPath, to: "about" },
@@ -20,10 +20,10 @@ const pages = linkOptions([
   { label: "Contacts", from: CharacterRoute.fullPath, to: "contacts" },
   { label: "Qualities", from: CharacterRoute.fullPath, to: "qualities" },
   { label: "Notes", from: CharacterRoute.fullPath, to: "notes" },
-]);
+])
 
 export const CharacterNavMenu: FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <>
@@ -52,5 +52,5 @@ export const CharacterNavMenu: FC = () => {
         </List>
       </Dialog>
     </>
-  );
-};
+  )
+}

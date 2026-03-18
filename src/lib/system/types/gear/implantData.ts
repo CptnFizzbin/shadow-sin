@@ -1,4 +1,4 @@
-import type { GearData, GearType } from "./gearData.ts";
+import type { GearData, GearType } from "./gearData.ts"
 
 export enum ImplantType {
   cyberware = "cyberware",
@@ -31,24 +31,24 @@ export enum ImplantLocation {
 }
 
 export interface ImplantData extends GearData {
-  type: GearType.implant;
-  implantType: ImplantType | string;
-  essenceCost: number;
-  rating?: number;
-  grade?: ImplantGrade | string;
+  type: GearType.implant
+  implantType: ImplantType | string
+  essenceCost: number
+  rating?: number
+  grade?: ImplantGrade | string
 
-  location: ImplantLocation | string;
+  location: ImplantLocation | string
 
-  capacity?: number;
+  capacity?: number
 
-  attachments?: ImplantAttachmentData[];
+  attachments?: ImplantAttachmentData[]
 }
 
 export interface ImplantAttachmentData extends GearData {
-  type: string;
+  type: string
 
-  essenceCost: number;
-  capacityCost: number;
+  essenceCost: number
+  capacityCost: number
 
-  rating?: number;
+  rating?: number
 }

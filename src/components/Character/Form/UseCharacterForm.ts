@@ -1,56 +1,56 @@
 import {
   type AttributeBuildState,
   getAttrBuildState,
-} from "#/components/Character/Form/AttributeBuildState.ts";
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts";
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts";
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts";
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
+} from "#/components/Character/Form/AttributeBuildState.ts"
+import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export interface CharacterFormState {
   buildPoints: {
-    total: number;
+    total: number
     spent: {
-      metatype: number;
-      qualities: number;
-      attributes: number;
-      skills: number;
-      gear: number;
-    };
-  };
+      metatype: number
+      qualities: number
+      attributes: number
+      skills: number
+      gear: number
+    }
+  }
 
-  name: string;
-  alias: string;
-  lifestyle: LifestyleType;
-  gender?: string;
-  weight?: string;
-  height?: string;
-  age: number;
-  metatype: MetatypeKey;
-  awakening: AwakeningType;
+  name: string
+  alias: string
+  lifestyle: LifestyleType
+  gender?: string
+  weight?: string
+  height?: string
+  age: number
+  metatype: MetatypeKey
+  awakening: AwakeningType
 
   attributes: {
-    body: AttributeBuildState;
-    agility: AttributeBuildState;
-    reaction: AttributeBuildState;
-    strength: AttributeBuildState;
-    charisma: AttributeBuildState;
-    intuition: AttributeBuildState;
-    logic: AttributeBuildState;
-    willpower: AttributeBuildState;
-    edge: AttributeBuildState;
-    magic: AttributeBuildState;
-    resonance: AttributeBuildState;
-  };
+    body: AttributeBuildState
+    agility: AttributeBuildState
+    reaction: AttributeBuildState
+    strength: AttributeBuildState
+    charisma: AttributeBuildState
+    intuition: AttributeBuildState
+    logic: AttributeBuildState
+    willpower: AttributeBuildState
+    edge: AttributeBuildState
+    magic: AttributeBuildState
+    resonance: AttributeBuildState
+  }
 }
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
-  const { profile, biology } = character || {};
+  const { profile, biology } = character || {}
 
-  const metatype = metatypes[biology?.metatype || MetatypeKey.Human];
-  const awakening = awakenings[biology?.awakening || AwakeningType.Mundane];
+  const metatype = metatypes[biology?.metatype || MetatypeKey.Human]
+  const awakening = awakenings[biology?.awakening || AwakeningType.Mundane]
 
   const defaultValues: CharacterFormState = {
     buildPoints: {
@@ -143,9 +143,9 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
         awakening,
       }),
     },
-  };
+  }
 
-  return useAppForm({ defaultValues });
-};
+  return useAppForm({ defaultValues })
+}
 
-export type PlayerCharacterForm = ReturnType<typeof useCharacterForm>;
+export type PlayerCharacterForm = ReturnType<typeof useCharacterForm>

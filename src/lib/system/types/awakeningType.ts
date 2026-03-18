@@ -1,4 +1,4 @@
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export enum AwakeningType {
   Mundane = "Mundane",
@@ -54,14 +54,14 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
       resonance: { min: 1, max: 6 },
     },
   },
-};
+}
 
 export interface AwakeningData {
-  name: AwakeningType;
-  cost: number;
-  qualities: QualityData[];
+  name: AwakeningType
+  cost: number
+  qualities: QualityData[]
   attributes: {
-    magic: { min: number; max: number };
-    resonance: { min: number; max: number };
-  };
+    magic: { min: number; max: number }
+    resonance: { min: number; max: number }
+  }
 }

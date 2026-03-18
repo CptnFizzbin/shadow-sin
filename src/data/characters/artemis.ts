@@ -1,26 +1,26 @@
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts";
-import type { ArmorData } from "#/lib/system/types/gear/armorData.ts";
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { ArmorData } from "#/lib/system/types/gear/armorData.ts"
 import {
   createFirearm,
   createGear,
   GearType,
-} from "#/lib/system/types/gear/gearData.ts";
-import type { ImplantData } from "#/lib/system/types/gear/implantData.ts";
+} from "#/lib/system/types/gear/gearData.ts"
+import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
 import type {
   LicenseData,
   SinData,
-} from "#/lib/system/types/gear/licenseData.ts";
-import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts";
+} from "#/lib/system/types/gear/licenseData.ts"
+import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts"
 import type {
   FirearmAccessoryData,
   FirearmData,
-} from "#/lib/system/types/gear/weaponData.ts";
-import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts";
-import { GearEffectType } from "#/lib/system/types/gearEffectData.ts";
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts";
-import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts";
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
+} from "#/lib/system/types/gear/weaponData.ts"
+import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
+import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const artemis: PlayerCharacterData = {
   id: "artemis",
@@ -492,4 +492,4 @@ export const artemis: PlayerCharacterData = {
   },
 
   qualities: [],
-};
+}

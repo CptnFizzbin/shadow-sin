@@ -1,22 +1,22 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { useStore } from "@tanstack/react-store";
-import type { FC } from "react";
-import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts";
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts";
-import { Label } from "#/components/UI/Text/Label.tsx";
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
+import type { FC } from "react"
+import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { Label } from "#/components/UI/Text/Label.tsx"
 import {
   type AttributeKey,
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/lib/system/types/attributeKey.ts";
-import { awakenings } from "#/lib/system/types/awakeningType.ts";
-import { metatypes } from "#/lib/system/types/MetatypeData.ts";
+} from "#/lib/system/types/attributeKey.ts"
+import { awakenings } from "#/lib/system/types/awakeningType.ts"
+import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 
 interface MetatypeAttributesProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const BiologyAttributes: FC<MetatypeAttributesProps> = ({ form }) => {
@@ -30,27 +30,27 @@ export const BiologyAttributes: FC<MetatypeAttributesProps> = ({ form }) => {
         <AttrList attrKeys={SpecialAttributes} form={form} />
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
 interface AttrListProps {
-  form: PlayerCharacterForm;
-  attrKeys: readonly AttributeKey[];
+  form: PlayerCharacterForm
+  attrKeys: readonly AttributeKey[]
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys, form }) => {
-  const metatypeName = useStore(form.store, (state) => state.values.metatype);
-  const metatype = metatypes[metatypeName];
+  const metatypeName = useStore(form.store, (state) => state.values.metatype)
+  const metatype = metatypes[metatypeName]
 
-  const awakeningType = useStore(form.store, (state) => state.values.awakening);
-  const awakening = awakenings[awakeningType];
+  const awakeningType = useStore(form.store, (state) => state.values.awakening)
+  const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys
     .map((attr) => {
-      const state = getAttrBuildState({ attr, metatype, awakening });
-      return { label: AttributeLabels[attr], ...state };
+      const state = getAttrBuildState({ attr, metatype, awakening })
+      return { label: AttributeLabels[attr], ...state }
     })
-    .filter((attr) => attr.min !== 0);
+    .filter((attr) => attr.min !== 0)
 
   return (
     <Stack direction={"row"} gap={0.5}>
@@ -64,5 +64,5 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, form }) => {
         </Stack>
       ))}
     </Stack>
-  );
-};
+  )
+}

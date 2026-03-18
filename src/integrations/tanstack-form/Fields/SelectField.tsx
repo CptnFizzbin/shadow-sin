@@ -3,19 +3,19 @@ import {
   type FormControlProps,
   InputLabel,
   Select,
-} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import type { FC, ReactNode } from "react";
-import { useFieldContext } from "../FieldContext.ts";
+} from "@mui/material"
+import MenuItem from "@mui/material/MenuItem"
+import type { FC, ReactNode } from "react"
+import { useFieldContext } from "../FieldContext.ts"
 
 export interface SelectOption {
-  label: ReactNode;
-  value: string;
+  label: ReactNode
+  value: string
 }
 
 export interface SelectFieldProps extends FormControlProps {
-  label: ReactNode;
-  options: SelectOption[];
+  label: ReactNode
+  options: SelectOption[]
 }
 
 export const SelectField: FC<SelectFieldProps> = ({
@@ -23,7 +23,7 @@ export const SelectField: FC<SelectFieldProps> = ({
   label,
   ...props
 }) => {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string>()
 
   return (
     <FormControl {...props}>
@@ -45,5 +45,5 @@ export const SelectField: FC<SelectFieldProps> = ({
         ))}
       </Select>
     </FormControl>
-  );
-};
+  )
+}
