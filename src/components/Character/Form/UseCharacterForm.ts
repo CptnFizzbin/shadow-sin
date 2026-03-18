@@ -9,6 +9,20 @@ import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
+export interface SinFormItem {
+  id: string
+  name: string
+  rating: number
+  kind: "real" | "fake"
+}
+
+export interface LicenseFormItem {
+  id: string
+  name: string
+  rating: number
+  sinId: string
+}
+
 export interface CharacterFormState {
   buildPoints: {
     total: number
@@ -43,6 +57,12 @@ export interface CharacterFormState {
     edge: AttributeBuildState
     magic: AttributeBuildState
     resonance: AttributeBuildState
+  }
+
+  gear: {
+    maxAvailability: number
+    sins: SinFormItem[]
+    licenses: LicenseFormItem[]
   }
 }
 
@@ -142,6 +162,12 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
         metatype,
         awakening,
       }),
+    },
+
+    gear: {
+      maxAvailability: 12,
+      sins: [],
+      licenses: [],
     },
   }
 
