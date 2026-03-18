@@ -86,17 +86,19 @@ The `/$characterId/skills` route is a placeholder stub. The creation-form skills
 
 ---
 
-## 8. Gear Management Page
+## 8. Gear (Creation Form)
 
-Route exists (`/$characterId/gear`) but is a placeholder stub. Types and factory helpers are fully defined.
+A gear section has been added to the character creation form in PR #5 ✅, with a nuyen/BP budget tracker and accordion-style category sections. SINs & Licenses are fully functional; Weapons, Armor, Vehicles, Cyberware, and Misc are accordion shells with "coming soon" placeholders. The `/$characterId/gear` view route is still a stub.
 
-- [ ] List all gear grouped by `GearType` (weapons, armor, implants, devices, etc.)
-- [ ] **Add weapon** — name, type (`WeaponType`/`FirearmType`), damage, reach/range, availability
+- [x] Gear budget tracker — nuyen progress bar (250 k¥ / 50 BP cap), over-budget error alert ✅ PR #5
+- [x] **SINs & Licenses** — add/edit/remove fake SINs (rating × 1 000¥) and one real SIN (free); attach named licenses with rating (rating × 100¥); delete-confirmation dialog when a SIN has attached licenses ✅ PR #5
+- [ ] **Add weapon** — name, type (`WeaponType`/`FirearmType`), damage, reach/range
 - [ ] **Add armor** — name, ballistic/impact ratings
 - [ ] **Add implant** — name, `ImplantType`, `ImplantGrade`, essence cost
 - [ ] **Add device** — commlink, RCC, or other device
 - [ ] **Remove any gear item**
 - [ ] Compute and display running **Essence cost** from implants (subtract from 6.0)
+- [ ] `/$characterId/gear` view page — list all gear grouped by type
 
 ---
 
