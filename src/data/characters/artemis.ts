@@ -1,11 +1,21 @@
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import type { ArmorData } from "#/lib/system/types/gear/armorData.ts"
-import { createFirearm, createGear, GearType } from "#/lib/system/types/gear/gearData.ts"
+import {
+  createFirearm,
+  createGear,
+  GearType,
+} from "#/lib/system/types/gear/gearData.ts"
 import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
-import type { LicenseData, SinData } from "#/lib/system/types/gear/licenseData.ts"
+import type {
+  LicenseData,
+  SinData,
+} from "#/lib/system/types/gear/licenseData.ts"
 import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts"
-import type { FirearmAccessoryData, FirearmData } from "#/lib/system/types/gear/weaponData.ts"
+import type {
+  FirearmAccessoryData,
+  FirearmData,
+} from "#/lib/system/types/gear/weaponData.ts"
 import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
@@ -18,7 +28,7 @@ export const artemis: PlayerCharacterData = {
 
   biology: {
     metatype: MetatypeKey.Elf,
-    awakening: AwakeningType.Mundane
+    awakening: AwakeningType.Mundane,
   },
 
   profile: {
@@ -30,18 +40,18 @@ export const artemis: PlayerCharacterData = {
     description: [
       "Legacy qualities: Exceptional (logic), Aptitude (engineering), Photographic Memory, Analytical Mind, Ambidextrous, Social Stress: Large Groups.",
       "Legacy contacts: James Serif (Drone Parts Dealer, C2/L2), Frank (Matrix Developer, C2/L2), George Crabtree (Lone Star officer, C2/L2).",
-      "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4 data; gear, weapons and augments migrated from legacy modules."
+      "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4 data; gear, weapons and augments migrated from legacy modules.",
     ].join("\n"),
     lifestyle: {
       quality: LifestyleType.Low,
       cost: 5000,
-      monthsPaid: 3
-    }
+      monthsPaid: 3,
+    },
   },
 
   karma: {
     total: 12,
-    current: 12
+    current: 12,
   },
 
   nuyen: {
@@ -50,9 +60,9 @@ export const artemis: PlayerCharacterData = {
       {
         lender: "Slicus",
         amount: 40000,
-        notes: "Migrated from nuyen log entry: Loan from Slicus."
-      }
-    ]
+        notes: "Migrated from nuyen log entry: Loan from Slicus.",
+      },
+    ],
   },
 
   attributes: {
@@ -67,17 +77,17 @@ export const artemis: PlayerCharacterData = {
     edge: 4,
     essence: 6,
     magic: 0,
-    resonance: 0
+    resonance: 0,
   },
 
   edge: {
-    current: 4
+    current: 4,
   },
 
   damage: {
     physical: { current: 0, max: 9 },
     stun: { current: 0, max: 9 },
-    matrix: { current: 0, max: 0 }
+    matrix: { current: 0, max: 0 },
   },
 
   gear: [
@@ -85,7 +95,7 @@ export const artemis: PlayerCharacterData = {
       name: "Sara McCabe",
       type: GearType.sin,
       notes: "General use SIN.",
-      verification: { kind: "fake", rating: 6 }
+      verification: { kind: "fake", rating: 6 },
     }),
     createGear<SinData>({
       name: "Jadzia Dax",
@@ -97,15 +107,15 @@ export const artemis: PlayerCharacterData = {
           name: "Driver License (Semi-Truck)",
           type: GearType.license,
           fixed: true,
-          verification: { kind: "fake", rating: 5 }
-        })
-      ]
+          verification: { kind: "fake", rating: 5 },
+        }),
+      ],
     }),
     createGear<SinData>({
       name: "Jane Smith",
       type: GearType.sin,
       notes: "Burner SIN.",
-      verification: { kind: "fake", rating: 2 }
+      verification: { kind: "fake", rating: 2 },
     }),
     createFirearm({
       name: "FN P93 Predator",
@@ -117,27 +127,27 @@ export const artemis: PlayerCharacterData = {
         extreme: 0,
         long: 0,
         medium: 0,
-        short: 0
+        short: 0,
       },
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {
         size: 50,
         remaining: 50,
-        type: "clip"
+        type: "clip",
       },
       attachments: {
         mounts: {
           top: createGear<FirearmAccessoryData>({
             name: "Laser sight",
             type: GearType.firearmAccessory,
-            mountPoints: ["top", "under"]
+            mountPoints: ["top", "under"],
           }),
           under: createGear<FirearmAccessoryData>({
             name: "Flashlight",
             type: GearType.firearmAccessory,
-            mountPoints: ["top", "under"]
-          })
+            mountPoints: ["top", "under"],
+          }),
         },
         internal: [
           createGear<FirearmAccessoryData>({
@@ -149,19 +159,19 @@ export const artemis: PlayerCharacterData = {
             effects: [
               {
                 type: GearEffectType.recoilReduction,
-                value: 1
-              }
-            ]
+                value: 1,
+              },
+            ],
           }),
           createGear<FirearmAccessoryData>({
             name: "Smart Gun Int.",
             type: GearType.firearmAccessory,
             fixed: true,
             notes: "Wireless bonus.",
-            mountPoints: ["internal"]
-          })
-        ]
-      }
+            mountPoints: ["internal"],
+          }),
+        ],
+      },
     }),
     createGear<FirearmData>({
       ammo: { remaining: 11, size: 11, type: "clip" },
@@ -182,17 +192,17 @@ export const artemis: PlayerCharacterData = {
             type: GearType.firearmAccessory,
             fixed: true,
             notes: "Wireless bonus.",
-            mountPoints: ["internal"]
-          })
-        ]
-      }
+            mountPoints: ["internal"],
+          }),
+        ],
+      },
     }),
     createGear<ArmorData>({
       name: "Armored Jacket",
       type: GearType.armor,
       equipped: true,
       ballistic: 8,
-      impact: 6
+      impact: 6,
     }),
     createGear<ArmorData>({
       name: "Form-Fitting Body Armor",
@@ -200,7 +210,7 @@ export const artemis: PlayerCharacterData = {
       equipped: true,
       ballistic: 2,
       impact: 1,
-      notes: "Worn under tailored outfits."
+      notes: "Worn under tailored outfits.",
     }),
     createGear<ImplantData>({
       name: "Control Rig",
@@ -210,7 +220,7 @@ export const artemis: PlayerCharacterData = {
       cost: 72000,
       rating: 2,
       essenceCost: 1.6,
-      notes: "Used for slaving drones/RCC."
+      notes: "Used for slaving drones/RCC.",
     }),
     createGear<ImplantData>({
       essenceCost: 0,
@@ -219,7 +229,7 @@ export const artemis: PlayerCharacterData = {
       implantType: "cyberware",
       location: "head",
       cost: 2000,
-      notes: "Capacity cost 3."
+      notes: "Capacity cost 3.",
     }),
     createGear<ImplantData>({
       essenceCost: 0,
@@ -235,25 +245,25 @@ export const artemis: PlayerCharacterData = {
           name: "Smartlink",
           type: "cyberware",
           cost: 4800,
-          notes: "Capacity cost 3."
+          notes: "Capacity cost 3.",
         }),
         createGear({ name: "Imagelink", type: "cyberware", cost: 960 }),
         createGear({
           name: "Low-Light Vision",
           type: "cyberware",
-          cost: 900
+          cost: 900,
         }),
         createGear({
           name: "Vision Enhancement",
           type: "cyberware",
-          cost: 4800
+          cost: 4800,
         }),
         createGear({
           name: "Vision Magnification",
           type: "cyberware",
-          cost: 2400
-        })
-      ]
+          cost: 2400,
+        }),
+      ],
     }),
     createGear<ImplantData>({
       name: "Cerebral Booster",
@@ -268,9 +278,9 @@ export const artemis: PlayerCharacterData = {
         {
           type: GearEffectType.attrBonus,
           target: AttributeKey.logic,
-          value: 3
-        }
-      ]
+          value: 3,
+        },
+      ],
     }),
     createGear<ImplantData>({
       name: "Sleep Regulator",
@@ -279,7 +289,7 @@ export const artemis: PlayerCharacterData = {
       cost: 6000,
       essenceCost: 0.11,
       location: "head",
-      notes: "Reduces sleep requirement."
+      notes: "Reduces sleep requirement.",
     }),
     createGear<ImplantData>({
       name: "Synaptic Booster",
@@ -294,13 +304,13 @@ export const artemis: PlayerCharacterData = {
         {
           type: GearEffectType.attrBonus,
           target: AttributeKey.reaction,
-          value: 2
+          value: 2,
         },
         {
           type: GearEffectType.initiativeBonus,
-          value: 2
-        }
-      ]
+          value: 2,
+        },
+      ],
     }),
     createGear({
       name: "Proteus Poseidon",
@@ -312,39 +322,39 @@ export const artemis: PlayerCharacterData = {
           name: "FN-HAR Targeting Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
+          rating: 8,
         }),
         createGear({
           name: "Clearsight Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
+          rating: 8,
         }),
         createGear({
           name: "Evasion Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
+          rating: 8,
         }),
         createGear({
           name: "Maneuvering Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
+          rating: 8,
         }),
         createGear({
           name: "Electronic Warfare Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
+          rating: 8,
         }),
         createGear({
           name: "Black Knight Targeting Autosoft",
           type: GearType.software,
           cost: 4000,
-          rating: 8
-        })
-      ]
+          rating: 8,
+        }),
+      ],
     }),
     createGear({
       name: "Commlink (headware)",
@@ -357,9 +367,9 @@ export const artemis: PlayerCharacterData = {
           cost: 5000,
           fixed: true,
           rating: 5,
-          notes: "device attributes 3/0; 2 program slots."
-        })
-      ]
+          notes: "device attributes 3/0; 2 program slots.",
+        }),
+      ],
     }),
     createGear<VehicleData>({
       name: "Yamaha Growler",
@@ -375,7 +385,7 @@ export const artemis: PlayerCharacterData = {
       body: 6,
       armor: 6,
       sensor: 1,
-      cost: 5500
+      cost: 5500,
     }),
     createGear<VehicleData>({
       name: "Russian Osprey 9",
@@ -388,13 +398,13 @@ export const artemis: PlayerCharacterData = {
       body: 16,
       armor: 8,
       sensor: 1,
-      availability: { rating: 16, restricted: true }
+      availability: { rating: 16, restricted: true },
     }),
     createGear({
       name: "Engineering Shop",
       type: GearType.other,
-      cost: 5000
-    })
+      cost: 5000,
+    }),
   ],
 
   skills: {
@@ -403,83 +413,83 @@ export const artemis: PlayerCharacterData = {
       category: "active",
       rating: 5,
       linkedAttribute: AttributeKey.agility,
-      specialization: "Submachine Guns"
+      specialization: "Submachine Guns",
     },
     Piloting: {
       name: "Piloting",
       category: "active",
       rating: 5,
       linkedAttribute: AttributeKey.agility,
-      specialization: "Aircraft"
+      specialization: "Aircraft",
     },
     Engineering: {
       name: "Engineering",
       category: "active",
       rating: 7,
       linkedAttribute: AttributeKey.logic,
-      specialization: "Automotive Mechanic"
+      specialization: "Automotive Mechanic",
     },
     Perception: {
       name: "Perception",
       category: "active",
       rating: 1,
-      linkedAttribute: AttributeKey.intuition
+      linkedAttribute: AttributeKey.intuition,
     },
     Athletics: {
       name: "Athletics",
       category: "active",
       rating: 1,
-      linkedAttribute: AttributeKey.agility
+      linkedAttribute: AttributeKey.agility,
     },
     English: {
       name: "English",
       category: "language",
       rating: 6,
-      linkedAttribute: AttributeKey.intuition
+      linkedAttribute: AttributeKey.intuition,
     },
     Elven: {
       name: "Elven",
       category: "language",
       rating: 1,
-      linkedAttribute: AttributeKey.intuition
+      linkedAttribute: AttributeKey.intuition,
     },
     "Drone Models": {
       name: "Drone Models",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
+      linkedAttribute: AttributeKey.logic,
     },
     "80/90s Pop Culture": {
       name: "80/90s Pop Culture",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
+      linkedAttribute: AttributeKey.logic,
     },
     "Trideo Series": {
       name: "Trideo Series",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
+      linkedAttribute: AttributeKey.logic,
     },
     "Security Systems": {
       name: "Security Systems",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
+      linkedAttribute: AttributeKey.logic,
     },
     "Virtual Nightclubs": {
       name: "Virtual Nightclubs",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
+      linkedAttribute: AttributeKey.logic,
     },
     "Tech Companies": {
       name: "Tech Companies",
       category: "knowledge",
       rating: 1,
-      linkedAttribute: AttributeKey.logic
-    }
+      linkedAttribute: AttributeKey.logic,
+    },
   },
 
-  qualities: []
+  qualities: [],
 }

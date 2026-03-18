@@ -1,9 +1,9 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/$characterId/")({
-	component: RouteComponent,
-});
+  component: RouteComponent,
+})
 
 function RouteComponent() {
-	return <Navigate from={Route.fullPath} to={"about"} replace />;
+  return <Navigate from={Route.fullPath} to={"about"} replace />
 }

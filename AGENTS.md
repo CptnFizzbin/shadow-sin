@@ -61,7 +61,7 @@ createFirearm({ name: "Ares Predator VI", ... })
 ## Conventions
 
 - **Path alias**: `#/` → `src/` (configured in `tsconfig.json` + `vite-tsconfig-paths`)
-- **Formatting**: Biome — tabs for indentation, double quotes for JS strings. Not Prettier/ESLint.
+- **Formatting**: Biome — 2 spaces for indentation, double quotes for JS strings. Not Prettier/ESLint.
 - **`src/routeTree.gen.ts`** is excluded from Biome linting; don't add it to format runs.
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as `import { env } from "#/env"`.
 - `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the case.

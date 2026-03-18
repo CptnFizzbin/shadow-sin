@@ -11,19 +11,19 @@ export enum MetatypeKey {
 }
 
 export interface MetatypeData {
-  name: MetatypeKey;
-  cost: number;
+  name: MetatypeKey
+  cost: number
   attributes: Record<
     AttributeKey,
     { min: number; max: number; augMax?: number }
-  >;
-  inateAbilites?: GearEffectData[];
+  >
+  inateAbilites?: GearEffectData[]
 }
 
 const commonAttributes = {
   essence: { min: 6, max: 6 },
   magic: { min: 0, max: 0 },
-  resonance: { min: 0, max: 0 }
+  resonance: { min: 0, max: 0 },
 } as const
 
 export const metatypes: Record<MetatypeKey, MetatypeData> = {
@@ -40,8 +40,8 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 2, max: 7 },
-      ...commonAttributes
-    }
+      ...commonAttributes,
+    },
   },
   Ork: {
     name: MetatypeKey.Ork,
@@ -56,8 +56,8 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes
-    }
+      ...commonAttributes,
+    },
   },
   Dwarf: {
     name: MetatypeKey.Dwarf,
@@ -72,8 +72,8 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 7, augMax: 10 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes
-    }
+      ...commonAttributes,
+    },
   },
   Elf: {
     name: MetatypeKey.Elf,
@@ -88,8 +88,8 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes
-    }
+      ...commonAttributes,
+    },
   },
   Troll: {
     name: MetatypeKey.Troll,
@@ -104,8 +104,8 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes
-    }
+      ...commonAttributes,
+    },
   },
   AI: {
     name: MetatypeKey.AI,
@@ -122,7 +122,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       edge: { min: 1, max: 6 },
       essence: { min: 0, max: 0 },
       magic: { min: 0, max: 0 },
-      resonance: { min: 0, max: 0 }
-    }
-  }
+      resonance: { min: 0, max: 0 },
+    },
+  },
 }

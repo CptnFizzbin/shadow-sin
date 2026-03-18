@@ -8,11 +8,11 @@ import {
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
-  SpecialAttributes
+  SpecialAttributes,
 } from "#/lib/system/types/attributeKey.ts"
 
 interface AttrListProps {
-  attrKeys: readonly AttributeKey[];
+  attrKeys: readonly AttributeKey[]
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
@@ -51,7 +51,9 @@ export const AttributesSection: FC = () => {
 
       <Stack gap={0.5}>
         <Label label={"Special"} />
-        <AttrList attrKeys={SpecialAttributes.filter(k => k !== AttributeKey.essence)} />
+        <AttrList
+          attrKeys={SpecialAttributes.filter((k) => k !== AttributeKey.essence)}
+        />
       </Stack>
     </Stack>
   )

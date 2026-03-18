@@ -1,49 +1,49 @@
 import {
-	FormControl,
-	type FormControlProps,
-	InputLabel,
-	Select,
-} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import type { FC, ReactNode } from "react";
-import { useFieldContext } from "../FieldContext.ts";
+  FormControl,
+  type FormControlProps,
+  InputLabel,
+  Select,
+} from "@mui/material"
+import MenuItem from "@mui/material/MenuItem"
+import type { FC, ReactNode } from "react"
+import { useFieldContext } from "../FieldContext.ts"
 
 export interface SelectOption {
-	label: ReactNode;
-	value: string;
+  label: ReactNode
+  value: string
 }
 
 export interface SelectFieldProps extends FormControlProps {
-	label: ReactNode;
-	options: SelectOption[];
+  label: ReactNode
+  options: SelectOption[]
 }
 
 export const SelectField: FC<SelectFieldProps> = ({
-	options,
-	label,
-	...props
+  options,
+  label,
+  ...props
 }) => {
-	const field = useFieldContext<string>();
+  const field = useFieldContext<string>()
 
-	return (
-		<FormControl {...props}>
-			<InputLabel>{label}</InputLabel>
-			<Select
-				value={field.state.value}
-				label={label}
-				onBlur={field.handleBlur}
-				onChange={(e) => field.handleChange(e.target.value)}
-			>
-				{options.map((option) => (
-					<MenuItem
-						value={option.value}
-						key={option.value}
-						sx={{ display: "flex" }}
-					>
-						{option.label}
-					</MenuItem>
-				))}
-			</Select>
-		</FormControl>
-	);
-};
+  return (
+    <FormControl {...props}>
+      <InputLabel>{label}</InputLabel>
+      <Select
+        value={field.state.value}
+        label={label}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+      >
+        {options.map((option) => (
+          <MenuItem
+            value={option.value}
+            key={option.value}
+            sx={{ display: "flex" }}
+          >
+            {option.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
+}
