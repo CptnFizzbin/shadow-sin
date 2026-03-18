@@ -110,36 +110,36 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
       )}
 
       <Grid container spacing={1} columns={3}>
-				<Grid size={3}>
-					<form.AppField
-						name={"gender"}
-						children={(field) => <field.TextField label="Gender" />}
-					/>
-				</Grid>
+        <Grid size={3}>
+          <form.AppField
+            name={"gender"}
+            children={(field) => <field.TextField label="Gender" />}
+          />
+        </Grid>
 
-				<Grid size={1}>
-					<form.AppField
-						name="age"
-						children={(field) => <field.TextField label="Age" type="number" />}
-					/>
-				</Grid>
+        <Grid size={1}>
+          <form.AppField
+            name="age"
+            children={(field) => <field.TextField label="Age" type="number" />}
+          />
+        </Grid>
 
-				<Grid size={1}>
-					<form.AppField
-						name={"weight"}
-						children={(field) => <field.TextField label="Weight" />}
-					/>
-				</Grid>
+        <Grid size={1}>
+          <form.AppField
+            name={"weight"}
+            children={(field) => <field.TextField label="Weight" />}
+          />
+        </Grid>
 
-				<Grid size={1}>
-					<form.AppField
-						name={"height"}
-						children={(field) => <field.TextField label="Height" />}
-					/>
-				</Grid>
-			</Grid>
+        <Grid size={1}>
+          <form.AppField
+            name={"height"}
+            children={(field) => <field.TextField label="Height" />}
+          />
+        </Grid>
+      </Grid>
 
-			<BiologyAttributes form={form} />
+      <BiologyAttributes form={form} />
     </>
   );
 };
