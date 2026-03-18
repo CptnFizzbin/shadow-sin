@@ -1,17 +1,17 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useStore } from "@tanstack/react-store";
-import { type FC, useState } from "react";
-import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm";
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import Button from "@mui/material/Button"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import { useStore } from "@tanstack/react-store"
+import { type FC, useState } from "react"
+import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface AddQualityDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onAdd: (quality: QualityData) => void;
+  open: boolean
+  onClose: () => void
+  onAdd: (quality: QualityData) => void
 }
 
 const createEmptyQuality = (): QualityData => ({
@@ -19,16 +19,16 @@ const createEmptyQuality = (): QualityData => ({
   name: "",
   type: "positive",
   description: "",
-});
+})
 
 function FormActions({
   form,
   onClose,
 }: {
-  form: QualityForm;
-  onClose: () => void;
+  form: QualityForm
+  onClose: () => void
 }) {
-  const canSubmit = useStore(form.store, (s) => s.canSubmit);
+  const canSubmit = useStore(form.store, (s) => s.canSubmit)
 
   return (
     <>
@@ -36,14 +36,14 @@ function FormActions({
       <Button
         variant="contained"
         onClick={() => {
-          form.handleSubmit();
+          form.handleSubmit()
         }}
         disabled={!canSubmit}
       >
         Add
       </Button>
     </>
-  );
+  )
 }
 
 export const AddQualityDialog: FC<AddQualityDialogProps> = ({
@@ -51,7 +51,7 @@ export const AddQualityDialog: FC<AddQualityDialogProps> = ({
   onClose,
   onAdd,
 }) => {
-  const [formInstance, setFormInstance] = useState<QualityForm | null>(null);
+  const [formInstance, setFormInstance] = useState<QualityForm | null>(null)
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -61,8 +61,8 @@ export const AddQualityDialog: FC<AddQualityDialogProps> = ({
           initialValues={createEmptyQuality()}
           onMount={(f) => setFormInstance(f)}
           onSubmit={(q) => {
-            onAdd(q);
-            onClose();
+            onAdd(q)
+            onClose()
           }}
         />
       </DialogContent>
@@ -79,5 +79,5 @@ export const AddQualityDialog: FC<AddQualityDialogProps> = ({
         )}
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}

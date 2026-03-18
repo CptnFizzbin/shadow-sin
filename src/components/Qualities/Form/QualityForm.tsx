@@ -1,11 +1,11 @@
-import Stack from "@mui/material/Stack";
-import ToggleButton from "@mui/material/ToggleButton";
-import type { FC } from "react";
-import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm";
-import { SourceField } from "#/components/Sources/SourceField.tsx";
+import Stack from "@mui/material/Stack"
+import ToggleButton from "@mui/material/ToggleButton"
+import type { FC } from "react"
+import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
+import { SourceField } from "#/components/Sources/SourceField.tsx"
 
 interface QualityFormFieldsProps {
-  form: QualityForm;
+  form: QualityForm
 }
 
 export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
@@ -59,8 +59,8 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
 
         <form.AppField name="source">
           {(field) => {
-            const book = field.state.value?.book ?? "";
-            const page = field.state.value?.page?.toString() ?? "";
+            const book = field.state.value?.book ?? ""
+            const page = field.state.value?.page?.toString() ?? ""
 
             return (
               <SourceField
@@ -79,10 +79,10 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
                   )
                 }
               />
-            );
+            )
           }}
         </form.AppField>
       </Stack>
     </form.AppForm>
-  );
-};
+  )
+}

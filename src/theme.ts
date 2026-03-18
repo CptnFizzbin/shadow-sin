@@ -1,7 +1,7 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles"
 
-const DISPLAY_FONT = '"Smooch Sans", sans-serif';
-const BODY_FONT = '"Monda", monospace, sans-serif';
+const DISPLAY_FONT = '"Smooch Sans", sans-serif'
+const BODY_FONT = '"Monda", monospace, sans-serif'
 
 export const theme = createTheme({
   cssVariables: true,
@@ -145,4 +145,4 @@ export const theme = createTheme({
       },
     },
   },
-});
+})

@@ -1,37 +1,37 @@
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import LinearProgress from "@mui/material/LinearProgress";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { RiAddLine } from "@remixicon/react";
-import { type FC, useState } from "react";
-import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts";
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts";
-import { AddQualityDialog } from "#/components/Qualities/Dialogs/AddQualityDialog.tsx";
-import { QualityDialog } from "#/components/Qualities/Dialogs/QualityDialog.tsx";
-import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx";
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import Alert from "@mui/material/Alert"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Divider from "@mui/material/Divider"
+import LinearProgress from "@mui/material/LinearProgress"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { RiAddLine } from "@remixicon/react"
+import { type FC, useState } from "react"
+import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { AddQualityDialog } from "#/components/Qualities/Dialogs/AddQualityDialog.tsx"
+import { QualityDialog } from "#/components/Qualities/Dialogs/QualityDialog.tsx"
+import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export const qualityBuildPoints = {
   allowance: {
     negative: 35,
     positive: 35,
   },
-};
+}
 
 export interface QualitiesFormGroupProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
   const { qualities, buildPoints, addQuality, updateQuality, removeQuality } =
-    useQualitiesFormGroup(form);
+    useQualitiesFormGroup(form)
 
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedEntry, setSelectedEntry] = useState<QualityData | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [selectedEntry, setSelectedEntry] = useState<QualityData | null>(null)
 
   return (
     <>
@@ -42,8 +42,8 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
           bpUsed={buildPoints.bpSpent}
           qualities={qualities.positive}
           onSelect={(quality) => {
-            setSelectedEntry(quality);
-            setIsEditDialogOpen(true);
+            setSelectedEntry(quality)
+            setIsEditDialogOpen(true)
           }}
         />
 
@@ -55,8 +55,8 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
           bpUsed={buildPoints.bpBonus}
           qualities={qualities.negative}
           onSelect={(quality) => {
-            setSelectedEntry(quality);
-            setIsEditDialogOpen(true);
+            setSelectedEntry(quality)
+            setIsEditDialogOpen(true)
           }}
         />
 
@@ -89,15 +89,15 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
 interface QualityGroupProps {
-  label: string;
-  bpAllowance: number;
-  bpUsed: number;
-  qualities: QualityData[];
-  onSelect: (quality: QualityData) => void;
+  label: string
+  bpAllowance: number
+  bpUsed: number
+  qualities: QualityData[]
+  onSelect: (quality: QualityData) => void
 }
 
 const QualityGroup: FC<QualityGroupProps> = ({
@@ -109,8 +109,8 @@ const QualityGroup: FC<QualityGroupProps> = ({
 }) => {
   const percentUsed = bpAllowance
     ? Math.min(100, Math.round((bpUsed / bpAllowance) * 100))
-    : 0;
-  const isOver = bpUsed > bpAllowance;
+    : 0
+  const isOver = bpUsed > bpAllowance
 
   return (
     <>
@@ -153,5 +153,5 @@ const QualityGroup: FC<QualityGroupProps> = ({
         </Stack>
       )}
     </>
-  );
-};
+  )
+}

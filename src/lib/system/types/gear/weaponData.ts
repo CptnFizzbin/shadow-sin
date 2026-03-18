@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import type { GearData, GearType } from "./gearData.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { GearData, GearType } from "./gearData.ts"
 
 export enum WeaponType {
   melee = "melee",
@@ -11,12 +11,12 @@ export enum WeaponType {
 }
 
 export interface WeaponData extends GearData {
-  dmg: string;
-  ap?: number;
-  type: GearType.weapon;
-  weaponType: WeaponType | string;
-  skill?: string;
-  attribute?: AttributeKey;
+  dmg: string
+  ap?: number
+  type: GearType.weapon
+  weaponType: WeaponType | string
+  skill?: string
+  attribute?: AttributeKey
 }
 
 export enum FirearmType {
@@ -40,14 +40,14 @@ export enum FirearmType {
 }
 
 export interface FirearmData extends WeaponData {
-  weaponType: WeaponType.firearm;
-  firearmType: FirearmType | string;
-  firemodes: string[];
-  recoil: number;
+  weaponType: WeaponType.firearm
+  firearmType: FirearmType | string
+  firemodes: string[]
+  recoil: number
 
   ammo: {
-    size: number;
-    remaining: number;
+    size: number
+    remaining: number
     type:
       | "break"
       | "clip"
@@ -55,43 +55,43 @@ export interface FirearmData extends WeaponData {
       | "muzzle"
       | "magazine"
       | "cylinder"
-      | "belt";
-  };
+      | "belt"
+  }
 
   ranges: {
-    short: number;
-    medium: number;
-    long: number;
-    extreme: number;
-  };
+    short: number
+    medium: number
+    long: number
+    extreme: number
+  }
 
   attachments?: {
     mounts?: {
-      top?: null | GearData;
-      under?: null | GearData;
-      barrel?: null | GearData;
-    };
-    internal: GearData[];
-  };
+      top?: null | GearData
+      under?: null | GearData
+      barrel?: null | GearData
+    }
+    internal: GearData[]
+  }
 }
 
 export interface MeleeWeaponData extends WeaponData {
-  weaponType: WeaponType.melee;
-  reach: number;
+  weaponType: WeaponType.melee
+  reach: number
 }
 
 export interface ThrownWeaponData extends WeaponData {
-  weaponType: WeaponType.thrown;
-  range: number;
+  weaponType: WeaponType.thrown
+  range: number
 }
 
 export interface ProjectileWeaponData extends WeaponData {
-  weaponType: WeaponType.projectile;
-  range: number;
+  weaponType: WeaponType.projectile
+  range: number
 }
 
 export interface FirearmAccessoryData extends GearData {
-  type: GearType.firearmAccessory;
-  enabled?: boolean;
-  mountPoints: Array<"top" | "under" | "barrel" | "internal">;
+  type: GearType.firearmAccessory
+  enabled?: boolean
+  mountPoints: Array<"top" | "under" | "barrel" | "internal">
 }

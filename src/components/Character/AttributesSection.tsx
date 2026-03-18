@@ -1,28 +1,28 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import type { FC } from "react";
-import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx";
-import { Label } from "#/components/UI/Text/Label.tsx";
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import type { FC } from "react"
+import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
+import { Label } from "#/components/UI/Text/Label.tsx"
 import {
   AttributeKey,
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/lib/system/types/attributeKey.ts";
+} from "#/lib/system/types/attributeKey.ts"
 
 interface AttrListProps {
-  attrKeys: readonly AttributeKey[];
+  attrKeys: readonly AttributeKey[]
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const attrs = useCharacterStore((s) => s.attributes);
+  const attrs = useCharacterStore((s) => s.attributes)
 
   const attributes = attrKeys
     .map((k) => ({ key: k, value: attrs[k] }))
-    .filter((it) => it.value !== 0);
+    .filter((it) => it.value !== 0)
 
-  if (attributes.length === 0) return null;
+  if (attributes.length === 0) return null
 
   return (
     <Stack direction={"row"} gap={0.5}>
@@ -33,8 +33,8 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
         </Stack>
       ))}
     </Stack>
-  );
-};
+  )
+}
 
 export const AttributesSection: FC = () => {
   return (
@@ -56,5 +56,5 @@ export const AttributesSection: FC = () => {
         />
       </Stack>
     </Stack>
-  );
-};
+  )
+}

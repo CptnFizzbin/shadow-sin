@@ -1,16 +1,16 @@
-import { z } from "zod";
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts";
-import type { SourceData } from "#/lib/system/types/sourceData.ts";
+import { z } from "zod"
+import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
+import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
 export interface QualityData {
-  id?: string;
-  name: string;
-  type: "positive" | "negative";
-  bpValue?: number;
-  description: string;
-  source?: SourceData;
-  effects?: GearEffectData[];
-  incompatibleWith?: string[];
+  id?: string
+  name: string
+  type: "positive" | "negative"
+  bpValue?: number
+  description: string
+  source?: SourceData
+  effects?: GearEffectData[]
+  incompatibleWith?: string[]
 }
 
 export const QualityDataSchema = z.object({
@@ -34,4 +34,4 @@ export const QualityDataSchema = z.object({
     .array()
     .optional(),
   incompatibleWith: z.string().array().optional(),
-}) satisfies z.ZodType<QualityData>;
+}) satisfies z.ZodType<QualityData>

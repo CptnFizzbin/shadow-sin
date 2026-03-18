@@ -1,56 +1,59 @@
 import {
   type AttributeBuildState,
   getAttrBuildState,
-} from "#/components/Character/Form/AttributeBuildState.ts";
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts";
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts";
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts";
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+} from "#/components/Character/Form/AttributeBuildState.ts"
+import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface CharacterFormState {
   buildPoints: {
-    total: number;
+    total: number
     spent: {
-      metatype: number;
-      qualities: number;
-      attributes: number;
-      skills: number;
-      gear: number;
-    };
-  };
+      metatype: number
+      qualities: number
+      attributes: number
+      skills: number
+      gear: number
+    }
+  }
 
-  name: string;
-  alias: string;
-  lifestyle: LifestyleType;
-  age: number;
-  metatype: MetatypeKey;
-  awakening: AwakeningType;
+  name: string
+  alias: string
+  lifestyle: LifestyleType
+  gender?: string
+  weight?: string
+  height?: string
+  age: number
+  metatype: MetatypeKey
+  awakening: AwakeningType
 
-  qualities: QualityData[];
+  qualities: QualityData[]
 
   attributes: {
-    body: AttributeBuildState;
-    agility: AttributeBuildState;
-    reaction: AttributeBuildState;
-    strength: AttributeBuildState;
-    charisma: AttributeBuildState;
-    intuition: AttributeBuildState;
-    logic: AttributeBuildState;
-    willpower: AttributeBuildState;
-    edge: AttributeBuildState;
-    magic: AttributeBuildState;
-    resonance: AttributeBuildState;
-  };
+    body: AttributeBuildState
+    agility: AttributeBuildState
+    reaction: AttributeBuildState
+    strength: AttributeBuildState
+    charisma: AttributeBuildState
+    intuition: AttributeBuildState
+    logic: AttributeBuildState
+    willpower: AttributeBuildState
+    edge: AttributeBuildState
+    magic: AttributeBuildState
+    resonance: AttributeBuildState
+  }
 }
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
-  const { profile, biology } = character || {};
+  const { profile, biology } = character || {}
 
-  const metatype = metatypes[biology?.metatype || MetatypeKey.Human];
-  const awakening = awakenings[biology?.awakening || AwakeningType.Mundane];
+  const metatype = metatypes[biology?.metatype || MetatypeKey.Human]
+  const awakening = awakenings[biology?.awakening || AwakeningType.Mundane]
 
   const defaultValues: CharacterFormState = {
     buildPoints: {
@@ -67,6 +70,9 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
     name: profile?.name || "",
     alias: profile?.alias || "",
     lifestyle: profile?.lifestyle?.quality || LifestyleType.Low,
+    gender: biology?.gender || "",
+    weight: biology?.weight || "",
+    height: biology?.height || "",
 
     age: biology?.age || 0,
     metatype: metatype.name,
@@ -142,9 +148,9 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
         awakening,
       }),
     },
-  };
+  }
 
-  return useAppForm({ defaultValues });
-};
+  return useAppForm({ defaultValues })
+}
 
-export type PlayerCharacterForm = ReturnType<typeof useCharacterForm>;
+export type PlayerCharacterForm = ReturnType<typeof useCharacterForm>

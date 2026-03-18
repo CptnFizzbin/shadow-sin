@@ -1,40 +1,41 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { useStore } from "@tanstack/react-store";
-import { type FC, useEffect, useRef } from "react";
-import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts";
-import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx";
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm";
-import { AttributeKey } from "#/lib/system/types/attributeKey";
-import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts";
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
+import Grid from "@mui/material/Grid"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
+import { type FC, useEffect, useRef } from "react"
+import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts"
+import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 
 export interface BiologyFormGroupProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
-  const metatypeKey = useStore(form.store, (s) => s.values.metatype);
-  const awakeningType = useStore(form.store, (s) => s.values.awakening);
+  const metatypeKey = useStore(form.store, (s) => s.values.metatype)
+  const awakeningType = useStore(form.store, (s) => s.values.awakening)
 
-  const prevAwakeningRef = useRef(awakeningType);
+  const prevAwakeningRef = useRef(awakeningType)
 
   useEffect(() => {
     if (metatypeKey === MetatypeKey.AI) {
-      form.setFieldValue("awakening", AwakeningType.Mundane);
+      form.setFieldValue("awakening", AwakeningType.Mundane)
     }
-  }, [metatypeKey, form]);
+  }, [metatypeKey, form])
 
   useEffect(() => {
-    form.setFieldValue("buildPoints.spent.attributes", 0);
+    form.setFieldValue("buildPoints.spent.attributes", 0)
     form.setFieldValue(`attributes`, (prev) => {
-      const metatype = metatypes[metatypeKey];
-      const awakening = awakenings[awakeningType];
-      const attrs = { ...prev };
+      const metatype = metatypes[metatypeKey]
+      const awakening = awakenings[awakeningType]
+      const attrs = { ...prev }
 
       const attrsToUpdate = Object.values(AttributeKey).filter(
         (attr) => attr !== AttributeKey.essence,
-      );
+      )
 
       for (const attr of attrsToUpdate) {
         attrs[attr] = getAttrBuildState({
@@ -42,13 +43,13 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
           attr: attr,
           metatype: metatype,
           awakening: awakening,
-        });
+        })
       }
 
-      prevAwakeningRef.current = awakeningType;
-      return attrs;
-    });
-  }, [metatypeKey, awakeningType, form]);
+      prevAwakeningRef.current = awakeningType
+      return attrs
+    })
+  }, [metatypeKey, awakeningType, form])
 
   return (
     <>
@@ -73,7 +74,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                     </Typography>
                   </Stack>
                 ),
-              };
+              }
             })}
           />
         )}
@@ -101,14 +102,44 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                       </Typography>
                     </Stack>
                   ),
-                };
+                }
               })}
             />
           )}
         />
       )}
 
+      <Grid container spacing={1} columns={3}>
+        <Grid size={3}>
+          <form.AppField
+            name={"gender"}
+            children={(field) => <field.TextField label="Gender" />}
+          />
+        </Grid>
+
+        <Grid size={1}>
+          <form.AppField
+            name="age"
+            children={(field) => <field.TextField label="Age" type="number" />}
+          />
+        </Grid>
+
+        <Grid size={1}>
+          <form.AppField
+            name={"weight"}
+            children={(field) => <field.TextField label="Weight" />}
+          />
+        </Grid>
+
+        <Grid size={1}>
+          <form.AppField
+            name={"height"}
+            children={(field) => <field.TextField label="Height" />}
+          />
+        </Grid>
+      </Grid>
+
       <BiologyAttributes form={form} />
     </>
-  );
-};
+  )
+}

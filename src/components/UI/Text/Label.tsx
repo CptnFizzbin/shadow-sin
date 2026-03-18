@@ -1,12 +1,12 @@
-import Typography from "@mui/material/Typography";
-import type { FC, ReactNode } from "react";
+import Typography from "@mui/material/Typography"
+import type { FC, ReactNode } from "react"
 
 interface LabelProps {
-  label: ReactNode;
-  variant?: "contained" | "outlined";
-  textAlign?: "center" | "left" | "right";
-  color?: string;
-  textColor?: string;
+  label: ReactNode
+  variant?: "contained" | "outlined"
+  textAlign?: "center" | "left" | "right"
+  color?: string
+  textColor?: string
 }
 
 export const Label: FC<LabelProps> = ({
@@ -26,7 +26,7 @@ export const Label: FC<LabelProps> = ({
           border: "1px solid",
           borderColor: color,
           color: color,
-        };
+        }
 
   return (
     <Typography
@@ -35,5 +35,5 @@ export const Label: FC<LabelProps> = ({
     >
       {label}
     </Typography>
-  );
-};
+  )
+}

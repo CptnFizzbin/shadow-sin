@@ -20,8 +20,7 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2
+    "useEditorconfig": true
   },
   "assist": {
     "actions": {
@@ -42,7 +41,12 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double"
+      "quoteStyle": "double",
+      "trailingCommas": "all",
+      "bracketSameLine": false,
+      "arrowParentheses": "always",
+      "trailingNewline": true,
+      "semicolons": "asNeeded"
     }
   }
 }

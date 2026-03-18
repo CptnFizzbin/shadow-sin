@@ -1,12 +1,12 @@
-import Stack from "@mui/material/Stack";
-import MuiTextField from "@mui/material/TextField";
-import type { FC } from "react";
+import Stack from "@mui/material/Stack"
+import MuiTextField from "@mui/material/TextField"
+import type { FC } from "react"
 
 export interface SourceFieldProps {
-  book: string;
-  page: string;
-  onBookChange: (value: string) => void;
-  onPageChange: (value: string) => void;
+  book: string
+  page: string
+  onBookChange: (value: string) => void
+  onPageChange: (value: string) => void
 }
 
 export const SourceField: FC<SourceFieldProps> = ({
@@ -35,5 +35,5 @@ export const SourceField: FC<SourceFieldProps> = ({
         slotProps={{ htmlInput: { min: 1 } }}
       />
     </Stack>
-  );
-};
+  )
+}

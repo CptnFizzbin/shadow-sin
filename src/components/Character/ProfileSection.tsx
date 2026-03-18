@@ -1,12 +1,12 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import type { FC } from "react";
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import type { FC } from "react"
 
-import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx";
+import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
 
 export const ProfileSection: FC = () => {
-  const profile = useCharacterStore((s) => s.profile);
-  const biology = useCharacterStore((s) => s.biology);
+  const profile = useCharacterStore((s) => s.profile)
+  const biology = useCharacterStore((s) => s.biology)
 
   return (
     <Box>
@@ -29,5 +29,5 @@ export const ProfileSection: FC = () => {
         </Typography>
       )}
     </Box>
-  );
-};
+  )
+}

@@ -1,18 +1,18 @@
-import ButtonBase from "@mui/material/ButtonBase";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import type { FC } from "react";
-import type { QualityData } from "#/lib/system/types/qualityData.ts";
+import ButtonBase from "@mui/material/ButtonBase"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import type { FC } from "react"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface QualityRowProps {
-  quality: QualityData;
-  onClick: () => void;
+  quality: QualityData
+  onClick: () => void
 }
 
 export const QualityRow: FC<QualityRowProps> = ({ quality, onClick }) => {
   const bpLabel =
-    quality.bpValue !== undefined ? `${quality.bpValue} BP` : "— BP";
+    quality.bpValue !== undefined ? `${quality.bpValue} BP` : "— BP"
 
   return (
     <Paper
@@ -42,5 +42,5 @@ export const QualityRow: FC<QualityRowProps> = ({ quality, onClick }) => {
         </Typography>
       </Stack>
     </Paper>
-  );
-};
+  )
+}
