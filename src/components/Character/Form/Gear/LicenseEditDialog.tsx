@@ -70,10 +70,12 @@ export const LicenseEditDialog: FC<LicenseEditDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogTitle>{isEditMode ? "Edit License" : "Add License"}</DialogTitle>
+      <DialogTitle sx={{ p: 1 }}>
+        {isEditMode ? "Edit License" : "Add License"}
+      </DialogTitle>
 
-      <DialogContent>
-        <Stack gap={2} sx={{ pt: 1 }}>
+      <DialogContent sx={{ p: 1 }}>
+        <Stack gap={1} sx={{ pt: 1 }}>
           <MuiTextField
             label="License Name"
             value={licenseName}
@@ -123,7 +125,7 @@ export const LicenseEditDialog: FC<LicenseEditDialogProps> = ({
         </Stack>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ p: 1 }}>
         <Button onClick={handleClose}>Cancel</Button>
         <Button
           onClick={handleSave}

@@ -1,19 +1,19 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Chip from "@mui/material/Chip"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
-import DialogTitle from "@mui/material/DialogTitle"
-import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
-import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import type { FC } from "react"
-import { useState } from "react"
-import { LicenseEditDialog } from "#/components/Character/Form/Gear/LicenseEditDialog.tsx"
-import { SinEditDialog } from "#/components/Character/Form/Gear/SinEditDialog.tsx"
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { RiAddLine, RiDeleteBin6Line } from '@remixicon/react';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { LicenseEditDialog } from '#/components/Character/Form/Gear/LicenseEditDialog.tsx';
+import { SinEditDialog } from '#/components/Character/Form/Gear/SinEditDialog.tsx';
 import {
   computeLicenseAvailability,
   computeLicenseNuyen,
@@ -21,23 +21,23 @@ import {
   computeSinNuyen,
   formatNuyen,
   useGearFormGroup,
-} from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
+} from '#/components/Character/Form/Gear/UseGearFormGroup.ts';
 import type {
   LicenseFormItem,
   PlayerCharacterForm,
   SinFormItem,
-} from "#/components/Character/Form/UseCharacterForm.ts"
+} from '#/components/Character/Form/UseCharacterForm.ts';
 
 interface SinsAndLicensesSectionProps {
-  form: PlayerCharacterForm
+  form: PlayerCharacterForm;
 }
 
 type DialogState =
-  | { type: "add-sin" }
-  | { type: "edit-sin"; sin: SinFormItem }
-  | { type: "add-license"; sinId: string }
-  | { type: "edit-license"; license: LicenseFormItem }
-  | { type: "confirm-remove-sin"; sin: SinFormItem; licenseCount: number }
+  | { type: 'add-sin' }
+  | { type: 'edit-sin'; sin: SinFormItem }
+  | { type: 'add-license'; sinId?: string }
+  | { type: 'edit-license'; license: LicenseFormItem }
+  | { type: 'confirm-remove-sin'; sin: SinFormItem; licenseCount: number }
   | null
 
 export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
@@ -53,46 +53,46 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
     addLicense,
     updateLicense,
     removeLicense,
-  } = useGearFormGroup(form)
+  } = useGearFormGroup(form);
 
-  const [dialogState, setDialogState] = useState<DialogState>(null)
+  const [dialogState, setDialogState] = useState<DialogState>(null);
 
   const licensesForSin = (sinId: string) =>
-    licenses.filter((lic) => lic.sinId === sinId)
+    licenses.filter((lic) => lic.sinId === sinId);
 
-  const handleSinSave = (sinData: Omit<SinFormItem, "id">) => {
-    if (dialogState?.type === "edit-sin") {
-      updateSin(dialogState.sin.id, sinData)
+  const handleSinSave = (sinData: Omit<SinFormItem, 'id'>) => {
+    if (dialogState?.type === 'edit-sin') {
+      updateSin(dialogState.sin.id, sinData);
     } else {
-      addSin(sinData)
+      addSin(sinData);
     }
-  }
+  };
 
-  const handleLicenseSave = (licenseData: Omit<LicenseFormItem, "id">) => {
-    if (dialogState?.type === "edit-license") {
-      updateLicense(dialogState.license.id, licenseData)
+  const handleLicenseSave = (licenseData: Omit<LicenseFormItem, 'id'>) => {
+    if (dialogState?.type === 'edit-license') {
+      updateLicense(dialogState.license.id, licenseData);
     } else {
-      addLicense(licenseData)
+      addLicense(licenseData);
     }
-  }
+  };
 
   const handleRemoveSinClick = (event: React.MouseEvent, sin: SinFormItem) => {
-    event.stopPropagation()
-    const attachedLicenses = licensesForSin(sin.id)
+    event.stopPropagation();
+    const attachedLicenses = licensesForSin(sin.id);
     if (attachedLicenses.length > 0) {
       setDialogState({
-        type: "confirm-remove-sin",
+        type: 'confirm-remove-sin',
         sin,
         licenseCount: attachedLicenses.length,
-      })
+      });
     } else {
-      removeSin(sin.id)
+      removeSin(sin.id);
     }
-  }
+  };
 
   const canAddRealSin =
     !hasRealSin ||
-    (dialogState?.type === "edit-sin" && dialogState.sin.kind === "real")
+    (dialogState?.type === 'edit-sin' && dialogState.sin.kind === 'real');
 
   return (
     <Stack gap={1}>
@@ -100,236 +100,254 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={16} />}
-        onClick={() => setDialogState({ type: "add-sin" })}
-        sx={{ alignSelf: "flex-start" }}
+        onClick={() => setDialogState({ type: 'add-sin' })}
+        fullWidth
       >
         Add SIN
       </Button>
 
       <Stack gap={0.5}>
         {sins.map((sin) => {
-          const sinAvailability = computeSinAvailability(sin)
-          const sinCost =
-            sin.kind === "real" ? "-" : formatNuyen(computeSinNuyen(sin))
+          const sinAvailability = computeSinAvailability(sin);
+          const sinCost = formatNuyen(computeSinNuyen(sin));
 
           return (
             <Box key={sin.id}>
               <Stack
-                direction="row"
-                alignItems="center"
-                gap={1}
+                direction="column"
                 sx={{
-                  px: 1,
-                  py: 0.75,
+                  p: 1,
                   borderRadius: 1,
-                  border: "1px solid",
-                  borderColor: "divider",
-                  cursor: "pointer",
-                  "&:hover": { bgcolor: "action.hover" },
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: 'action.hover' },
                 }}
-                onClick={() => setDialogState({ type: "edit-sin", sin })}
+                onClick={() => setDialogState({ type: 'edit-sin', sin })}
               >
-                <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
-                  {sin.name}
-                </Typography>
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <Typography sx={{ flexGrow: 1, fontSize: '0.875rem' }}>
+                    {sin.name}
+                  </Typography>
 
-                <Chip
-                  label={sin.kind === "real" ? "Real" : `Rating: ${sin.rating}`}
-                  size="small"
-                  variant="outlined"
-                  sx={{ height: 20, fontSize: "0.7rem" }}
-                />
+                  <Typography
+                    sx={{
+                      minWidth: 64,
+                      textAlign: 'right',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    {sinCost}
+                  </Typography>
 
-                {sinAvailability !== "-" && (
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveSinClick(e, sin);
+                    }}
+                    aria-label={`Remove ${sin.name}`}
+                  >
+                    <RiDeleteBin6Line size={16} />
+                  </IconButton>
+                </Stack>
+
+                <Stack direction="row" gap={1} sx={{ pt: 1 }}>
                   <Chip
-                    label={`Avail: ${sinAvailability}`}
+                    label={
+                      sin.kind === 'real' ? 'Real' : `Rating: ${sin.rating}`
+                    }
                     size="small"
                     variant="outlined"
-                    sx={{ height: 20, fontSize: "0.7rem" }}
+                    sx={{ height: 20, fontSize: '0.7rem' }}
                   />
-                )}
 
-                <Typography
-                  sx={{
-                    minWidth: 64,
-                    textAlign: "right",
-                    fontSize: "0.875rem",
-                  }}
-                >
-                  {sinCost}
-                </Typography>
-
-                <IconButton
-                  size="small"
-                  color="error"
-                  onClick={(e) => handleRemoveSinClick(e, sin)}
-                  aria-label={`Remove ${sin.name}`}
-                >
-                  <RiDeleteBin6Line size={16} />
-                </IconButton>
+                  {sinAvailability !== '-' && (
+                    <Chip
+                      label={`Avail: ${sinAvailability}`}
+                      size="small"
+                      variant="outlined"
+                      sx={{ height: 20, fontSize: '0.7rem' }}
+                    />
+                  )}
+                </Stack>
               </Stack>
 
-              <Stack gap={0.5} sx={{ pl: 3, pt: 0.5 }}>
-                {licensesForSin(sin.id).map((license) => {
-                  const licenseAvailability = computeLicenseAvailability(
-                    license,
-                    sins,
-                  )
-                  const licenseCost = formatNuyen(
-                    computeLicenseNuyen(license, sins),
-                  )
+              <Box
+                sx={{
+                  paddingLeft: 1,
+                  borderLeft: '4px solid',
+                  borderColor: 'divider',
+                }}
+              >
+                <Stack gap={1}>
+                  {licensesForSin(sin.id).map((license) => {
+                    const licenseAvailability = computeLicenseAvailability(
+                      license,
+                      sins,
+                    );
+                    const licenseCost = formatNuyen(
+                      computeLicenseNuyen(license, sins),
+                    );
 
-                  return (
-                    <Stack
-                      key={license.id}
-                      direction="row"
-                      alignItems="center"
-                      gap={1}
-                      sx={{
-                        px: 1,
-                        py: 0.75,
-                        borderRadius: 1,
-                        border: "1px solid",
-                        borderColor: "divider",
-                        cursor: "pointer",
-                        "&:hover": { bgcolor: "action.hover" },
-                      }}
-                      onClick={() =>
-                        setDialogState({ type: "edit-license", license })
-                      }
-                    >
-                      <Typography sx={{ flexGrow: 1, fontSize: "0.8125rem" }}>
-                        {license.name}
-                      </Typography>
+                    return (
+                      <Box key={license.id}>
+                        <Stack
+                          direction="column"
+                          gap={0}
+                          sx={{
+                            p: 1,
+                            borderRadius: 1,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            cursor: 'pointer',
+                            '&:hover': { bgcolor: 'action.hover' },
+                          }}
+                          onClick={() =>
+                            setDialogState({ type: 'edit-license', license })
+                          }
+                        >
+                          <Stack direction="row" alignItems="center" gap={1}>
+                            <Typography
+                              sx={{ flexGrow: 1, fontSize: '0.8125rem' }}
+                            >
+                              {license.name}
+                            </Typography>
 
-                      {sin.kind === "fake" && (
-                        <Chip
-                          label={`Rating: ${license.rating}`}
-                          size="small"
-                          variant="outlined"
-                          sx={{ height: 20, fontSize: "0.7rem" }}
-                        />
-                      )}
+                            <Typography
+                              sx={{
+                                minWidth: 64,
+                                textAlign: 'right',
+                                fontSize: '0.8125rem',
+                              }}
+                            >
+                              {licenseCost}
+                            </Typography>
 
-                      {licenseAvailability !== "-" && (
-                        <Chip
-                          label={`Avail: ${licenseAvailability}`}
-                          size="small"
-                          variant="outlined"
-                          sx={{ height: 20, fontSize: "0.7rem" }}
-                        />
-                      )}
+                            <IconButton
+                              size="small"
+                              color="error"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeLicense(license.id);
+                              }}
+                              aria-label={`Remove ${license.name}`}
+                            >
+                              <RiDeleteBin6Line size={16} />
+                            </IconButton>
+                          </Stack>
 
-                      <Typography
-                        sx={{
-                          minWidth: 64,
-                          textAlign: "right",
-                          fontSize: "0.8125rem",
-                        }}
-                      >
-                        {licenseCost}
-                      </Typography>
+                          <Stack direction="row" gap={1} sx={{ pt: 1 }}>
+                            {sin.kind === 'fake' && (
+                              <Chip
+                                label={`Rating: ${license.rating}`}
+                                size="small"
+                                variant="outlined"
+                                sx={{ height: 20, fontSize: '0.7rem' }}
+                              />
+                            )}
 
-                      <IconButton
-                        size="small"
-                        color="error"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          removeLicense(license.id)
-                        }}
-                        aria-label={`Remove ${license.name}`}
-                      >
-                        <RiDeleteBin6Line size={16} />
-                      </IconButton>
-                    </Stack>
-                  )
-                })}
+                            {licenseAvailability !== '-' && (
+                              <Chip
+                                label={`Avail: ${licenseAvailability}`}
+                                size="small"
+                                variant="outlined"
+                                sx={{ height: 20, fontSize: '0.7rem' }}
+                              />
+                            )}
+                          </Stack>
+                        </Stack>
+                      </Box>
+                    );
+                  })}
+                </Stack>
 
                 <Button
-                  variant="text"
+                  variant="outlined"
                   size="small"
                   startIcon={<RiAddLine size={14} />}
                   onClick={() =>
-                    setDialogState({ type: "add-license", sinId: sin.id })
+                    setDialogState({ type: 'add-license', sinId: sin.id })
                   }
-                  sx={{ alignSelf: "flex-start", fontSize: "0.8125rem" }}
+                  fullWidth
                 >
                   Add License
                 </Button>
-              </Stack>
+              </Box>
             </Box>
-          )
+          );
         })}
       </Stack>
 
       <SinEditDialog
         key={
-          dialogState?.type === "edit-sin"
+          dialogState?.type === 'edit-sin'
             ? `edit-sin-${dialogState.sin.id}`
-            : "add-sin"
+            : 'add-sin'
         }
         open={
-          dialogState?.type === "add-sin" || dialogState?.type === "edit-sin"
+          dialogState?.type === 'add-sin' || dialogState?.type === 'edit-sin'
         }
         onClose={() => setDialogState(null)}
         onSave={handleSinSave}
         initialValues={
-          dialogState?.type === "edit-sin" ? dialogState.sin : undefined
+          dialogState?.type === 'edit-sin' ? dialogState.sin : undefined
         }
         canAddRealSin={canAddRealSin}
       />
 
       <LicenseEditDialog
         key={
-          dialogState?.type === "edit-license"
+          dialogState?.type === 'edit-license'
             ? `edit-license-${dialogState.license.id}`
-            : dialogState?.type === "add-license"
+            : dialogState?.type === 'add-license'
               ? `add-license-${dialogState.sinId}`
-              : "add-license"
+              : 'add-license'
         }
         open={
-          dialogState?.type === "add-license" ||
-          dialogState?.type === "edit-license"
+          dialogState?.type === 'add-license' ||
+          dialogState?.type === 'edit-license'
         }
         onClose={() => setDialogState(null)}
         onSave={handleLicenseSave}
         initialValues={
-          dialogState?.type === "edit-license" ? dialogState.license : undefined
+          dialogState?.type === 'edit-license' ? dialogState.license : undefined
         }
         sins={sins}
         defaultSinId={
-          dialogState?.type === "add-license" ? dialogState.sinId : undefined
+          dialogState?.type === 'add-license' ? dialogState.sinId : undefined
         }
       />
 
       <Dialog
-        open={dialogState?.type === "confirm-remove-sin"}
+        open={dialogState?.type === 'confirm-remove-sin'}
         onClose={() => setDialogState(null)}
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>Remove SIN?</DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{ p: 1 }}>Remove SIN?</DialogTitle>
+        <DialogContent sx={{ p: 1 }}>
           <DialogContentText>
-            {dialogState?.type === "confirm-remove-sin" && (
+            {dialogState?.type === 'confirm-remove-sin' && (
               <>
-                <strong>{dialogState.sin.name}</strong> has{" "}
+                <strong>{dialogState.sin.name}</strong> has{' '}
                 {dialogState.licenseCount} attached license
-                {dialogState.licenseCount !== 1 ? "s" : ""}. Removing this SIN
+                {dialogState.licenseCount !== 1 ? 's' : ''}. Removing this SIN
                 will also remove all its licenses.
               </>
             )}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 1 }}>
           <Button onClick={() => setDialogState(null)}>Cancel</Button>
           <Button
             color="error"
             variant="contained"
             onClick={() => {
-              if (dialogState?.type === "confirm-remove-sin") {
-                removeSin(dialogState.sin.id)
-                setDialogState(null)
+              if (dialogState?.type === 'confirm-remove-sin') {
+                removeSin(dialogState.sin.id);
+                setDialogState(null);
               }
             }}
           >
@@ -338,5 +356,5 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         </DialogActions>
       </Dialog>
     </Stack>
-  )
-}
+  );
+};

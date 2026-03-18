@@ -58,10 +58,12 @@ export const SinEditDialog: FC<SinEditDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogTitle>{isEditMode ? "Edit SIN" : "Add SIN"}</DialogTitle>
+      <DialogTitle sx={{ p: 1 }}>
+        {isEditMode ? "Edit SIN" : "Add SIN"}
+      </DialogTitle>
 
-      <DialogContent>
-        <Stack gap={2} sx={{ pt: 1 }}>
+      <DialogContent sx={{ p: 1 }}>
+        <Stack gap={1} sx={{ pt: 1 }}>
           <MuiTextField
             label="Name"
             value={sinName}
@@ -104,7 +106,7 @@ export const SinEditDialog: FC<SinEditDialogProps> = ({
         </Stack>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ p: 1 }}>
         <Button onClick={handleClose}>Cancel</Button>
         <Button
           onClick={handleSave}

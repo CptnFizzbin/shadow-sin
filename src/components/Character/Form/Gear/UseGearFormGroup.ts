@@ -58,7 +58,7 @@ export function computeLicenseAvailability(
 }
 
 export function formatNuyen(amount: number): string {
-  if (amount === 0) return "-"
+  if (amount === 0) return `0¥`
   return `${amount.toLocaleString()}¥`
 }
 
