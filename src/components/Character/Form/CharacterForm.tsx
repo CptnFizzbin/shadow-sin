@@ -5,16 +5,17 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
-import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 import { useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
+import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 
 interface CharacterFormProps {
   character?: PlayerCharacterData
 }
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
-  const { form, clearAndReset } = useCharacterForm(character)
+  const form = useCharacterForm(character)
 
   return (
     <form
@@ -29,9 +30,12 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
             variant="outlined"
             color="warning"
             size="small"
-            onClick={clearAndReset}
+            onClick={() => {
+              form.reset()
+              FormPersister.clearState(form.state.values.characterId)
+            }}
           >
-            Reset Form
+            Reset
           </Button>
         </Stack>
 
@@ -61,7 +65,9 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
               Attributes
             </Typography>
 
-            <AttributesFormGroup form={form} />
+            <form.Subscribe selector={(form) => form.values.attributes}>
+              {() => <AttributesFormGroup form={form} />}
+            </form.Subscribe>
           </Stack>
         </Paper>
       </Stack>

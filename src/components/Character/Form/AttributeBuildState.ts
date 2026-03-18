@@ -10,12 +10,12 @@ export interface AttributeBuildState {
   value: number
 }
 
-export function getAttrBuildState({
+export function getAttributeFormState ({
   attr,
   metatype,
   awakening,
   character,
-  value,
+  value
 }: {
   attr: AttributeKey
   metatype: MetatypeData
@@ -27,7 +27,7 @@ export function getAttrBuildState({
     min: 0,
     max: 0,
     augMax: 0,
-    value: 0,
+    value: 0
   }
 
   if (attr === AttributeKey.resonance || attr === AttributeKey.magic) {
