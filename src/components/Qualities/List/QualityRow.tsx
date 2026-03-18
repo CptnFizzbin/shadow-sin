@@ -11,8 +11,8 @@ export interface QualityRowProps {
 }
 
 export const QualityRow: FC<QualityRowProps> = ({ quality, onClick }) => {
-  const bpLabel =
-    quality.bpValue !== undefined ? `${quality.bpValue} BP` : "— BP"
+  const { bpValue = 0 } = quality
+  const bpLabel = bpValue >= 1 ? `${quality.bpValue} BP` : "FREE"
 
   return (
     <Paper

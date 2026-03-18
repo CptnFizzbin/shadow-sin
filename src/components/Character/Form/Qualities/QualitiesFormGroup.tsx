@@ -10,7 +10,7 @@ import { type FC, useState } from "react"
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { AddQualityDialog } from "#/components/Qualities/Dialogs/AddQualityDialog.tsx"
-import { QualityDialog } from "#/components/Qualities/Dialogs/QualityDialog.tsx"
+import { EditQualityDialog } from "#/components/Qualities/Dialogs/EditQualityDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
@@ -79,7 +79,7 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
       />
 
       {selectedEntry !== null && (
-        <QualityDialog
+        <EditQualityDialog
           quality={selectedEntry}
           open={isEditDialogOpen}
           onClose={() => setIsEditDialogOpen(false)}

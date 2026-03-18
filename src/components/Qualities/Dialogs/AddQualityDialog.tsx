@@ -3,9 +3,11 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
-import { useStore } from "@tanstack/react-store"
-import { type FC, useState } from "react"
-import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
+import type { FC } from "react"
+import {
+  QualityFormFields,
+  useQualityForm,
+} from "#/components/Qualities/Form/index.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface AddQualityDialogProps {
@@ -14,69 +16,37 @@ export interface AddQualityDialogProps {
   onAdd: (quality: QualityData) => void
 }
 
-const createEmptyQuality = (): QualityData => ({
-  id: crypto.randomUUID(),
-  name: "",
-  type: "positive",
-  description: "",
-})
-
-function FormActions({
-  form,
-  onClose,
-}: {
-  form: QualityForm
-  onClose: () => void
-}) {
-  const canSubmit = useStore(form.store, (s) => s.canSubmit)
-
-  return (
-    <>
-      <Button onClick={onClose}>Cancel</Button>
-      <Button
-        variant="contained"
-        onClick={() => {
-          form.handleSubmit()
-        }}
-        disabled={!canSubmit}
-      >
-        Add
-      </Button>
-    </>
-  )
-}
-
 export const AddQualityDialog: FC<AddQualityDialogProps> = ({
   open,
   onClose,
   onAdd,
 }) => {
-  const [formInstance, setFormInstance] = useState<QualityForm | null>(null)
+  const form = useQualityForm({
+    mode: "create",
+    onSubmit: (quality) => {
+      onAdd(quality)
+      onClose()
+    },
+  })
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      onTransitionExited={() => form.reset()}
+    >
       <DialogTitle>Add Quality</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
-        <QualityForm
-          initialValues={createEmptyQuality()}
-          onMount={(f) => setFormInstance(f)}
-          onSubmit={(q) => {
-            onAdd(q)
-            onClose()
-          }}
-        />
+        <QualityFormFields form={form} />
       </DialogContent>
       <DialogActions>
-        {formInstance ? (
-          <FormActions form={formInstance} onClose={onClose} />
-        ) : (
-          <>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button variant="contained" disabled>
-              Add
-            </Button>
-          </>
-        )}
+        <Button onClick={onClose}>Cancel</Button>
+
+        <Button variant="contained" onClick={() => form.handleSubmit()}>
+          Add
+        </Button>
       </DialogActions>
     </Dialog>
   )

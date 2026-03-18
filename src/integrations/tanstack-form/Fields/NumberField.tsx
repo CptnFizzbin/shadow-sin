@@ -5,11 +5,11 @@ import type { FC } from "react"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 import { useFieldContext } from "../FieldContext.ts"
 
-interface TextFieldProps
-  extends Omit<MuiTextFieldProps, "value" | "onChange" | "onBlur"> {}
+interface NumberFieldProps
+  extends Omit<MuiTextFieldProps, "type" | "value" | "onChange" | "onBlur"> {}
 
-export const TextField: FC<TextFieldProps> = ({ ...props }) => {
-  const field = useFieldContext<string>()
+export const NumberField: FC<NumberFieldProps> = ({ ...props }) => {
+  const field = useFieldContext<number | undefined>()
   const errors = useFieldErrors()
 
   return (
@@ -20,9 +20,10 @@ export const TextField: FC<TextFieldProps> = ({ ...props }) => {
       error={errors !== null}
       helperText={errors ? errors.join(", ") : props.helperText}
       {...props}
-      value={field.state.value}
+      type="number"
+      value={field.state.value ?? ""}
       onBlur={field.handleBlur}
-      onChange={(e) => field.handleChange(e.target.value)}
+      onChange={(e) => field.handleChange(Number(e.target.value))}
     />
   )
 }

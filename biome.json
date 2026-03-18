@@ -41,6 +41,7 @@
   },
   "javascript": {
     "formatter": {
+      "enabled": true,
       "quoteStyle": "double",
       "trailingCommas": "all",
       "bracketSameLine": false,

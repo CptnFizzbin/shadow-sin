@@ -4,7 +4,7 @@ import type { FC } from "react"
 import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
 import { SourceField } from "#/components/Sources/SourceField.tsx"
 
-interface QualityFormFieldsProps {
+export interface QualityFormFieldsProps {
   form: QualityForm
 }
 
@@ -39,11 +39,9 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
             {(type) => (
               <form.AppField name="bpValue">
                 {(field) => (
-                  <field.TextField
+                  <field.NumberField
                     label={type === "positive" ? "BP Cost" : "BP Bonus"}
-                    type="number"
-                    slotProps={{ htmlInput: { min: 0 } }}
-                    sx={{ minWidth: 120, flex: 1 }}
+                    sx={{ width: 120 }}
                   />
                 )}
               </form.AppField>
