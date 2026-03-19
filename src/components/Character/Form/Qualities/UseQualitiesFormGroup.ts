@@ -1,5 +1,4 @@
 import { useStore } from "@tanstack/react-store"
-import { useMemo } from "react"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
@@ -36,13 +35,10 @@ export function useQualitiesFormGroup(form: PlayerCharacterForm) {
   }
 
   return {
-    qualities: useMemo(
-      () => ({
-        positive: qualities.filter((q) => q.type === "positive"),
-        negative: qualities.filter((q) => q.type === "negative"),
-      }),
-      [qualities],
-    ),
+    qualities: {
+      positive: qualities.filter((q) => q.type === "positive"),
+      negative: qualities.filter((q) => q.type === "negative"),
+    },
 
     buildPoints: {
       bpSpent: bpSpent,

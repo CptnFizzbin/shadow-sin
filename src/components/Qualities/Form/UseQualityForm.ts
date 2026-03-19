@@ -3,16 +3,6 @@ import {
   type QualityData,
   QualityDataSchema,
 } from "#/lib/system/types/qualityData.ts"
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
-
-export interface QualityFormState {
-  id?: string
-  name: string
-  type: "positive" | "negative"
-  bpValue?: number
-  description: string
-  source?: SourceData
-}
 
 export type QualityFormOptions = { onSubmit: (values: QualityData) => void } & (
   | { mode: "create" }
@@ -20,7 +10,7 @@ export type QualityFormOptions = { onSubmit: (values: QualityData) => void } & (
 )
 
 export function useQualityForm(props: QualityFormOptions) {
-  let defaultValues: QualityFormState
+  let defaultValues: QualityData
 
   if (props.mode === "edit") {
     const { quality } = props

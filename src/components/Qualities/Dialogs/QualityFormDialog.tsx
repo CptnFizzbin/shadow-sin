@@ -7,16 +7,12 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import type { FC } from "react"
 import { QualityFormFields } from "#/components/Qualities/Form/index.ts"
-import {
-  type QualityFormOptions,
-  useQualityForm,
-} from "#/components/Qualities/Form/UseQualityForm.ts"
+import { useQualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
 import { noop } from "#/lib/noop.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface QualityFormDialogProps {
   open: boolean
-  mode?: "create" | "edit"
   quality?: QualityData
   onSave: (quality: QualityData) => void
   onDelete?: () => void
@@ -26,21 +22,21 @@ export interface QualityFormDialogProps {
 
 export const QualityFormDialog: FC<QualityFormDialogProps> = ({
   open,
-  mode = "create",
   quality,
   onSave,
   onDelete,
   onClose,
   onClosed = noop,
 }) => {
-  const options: QualityFormOptions =
-    mode === "edit" && quality
+  const editMode = !!quality
+
+  const form = useQualityForm(
+    editMode
       ? { mode: "edit", quality, onSubmit: (q) => onSave(q) }
-      : { mode: "create", onSubmit: (q) => onSave(q) }
+      : { mode: "create", onSubmit: (q) => onSave(q) },
+  )
 
-  const form = useQualityForm(options)
-
-  const title = mode === "edit" ? "Edit Quality" : "Add Quality"
+  const title = editMode ? "Edit Quality" : "Add Quality"
 
   return (
     <Dialog
@@ -60,7 +56,13 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
         <Stack justifyContent={"space-between"} direction="row" width="100%">
           <Box>
             {onDelete && (
-              <Button color="error" onClick={onDelete}>
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
                 Delete
               </Button>
             )}
@@ -69,7 +71,7 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
           <Box>
             <Button onClick={onClose}>Cancel</Button>
             <Button variant="contained" onClick={() => form.handleSubmit()}>
-              {mode === "edit" ? "Save" : "Add"}
+              Save
             </Button>
           </Box>
         </Stack>

@@ -1,6 +1,4 @@
-import MuiTextField, {
-  type TextFieldProps as MuiTextFieldProps,
-} from "@mui/material/TextField"
+import MuiTextField, { type TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField"
 import type { FC } from "react"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 import { useFieldContext } from "../FieldContext.ts"
@@ -17,9 +15,9 @@ export const TextField: FC<TextFieldProps> = ({ ...props }) => {
       fullWidth
       variant="outlined"
       size="small"
-      error={errors !== null}
-      helperText={errors ? errors.join(", ") : props.helperText}
       {...props}
+      error={errors ? true : props.error}
+      helperText={errors ? errors.join(", ") : props.helperText}
       value={field.state.value}
       onBlur={field.handleBlur}
       onChange={(e) => field.handleChange(e.target.value)}

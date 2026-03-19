@@ -17,13 +17,20 @@ export const NumberField: FC<NumberFieldProps> = ({ ...props }) => {
       fullWidth
       variant="outlined"
       size="small"
-      error={errors !== null}
-      helperText={errors ? errors.join(", ") : props.helperText}
       {...props}
+      error={errors ? true : props.error}
+      helperText={errors ? errors.join(", ") : props.helperText}
       type="number"
       value={field.state.value ?? ""}
       onBlur={field.handleBlur}
-      onChange={(e) => field.handleChange(Number(e.target.value))}
+      onChange={(e) => {
+        const value = e.target.value
+        if (value === "") {
+          field.handleChange(undefined)
+        } else {
+          field.handleChange(Number(e.target.value))
+        }
+      }}
     />
   )
 }

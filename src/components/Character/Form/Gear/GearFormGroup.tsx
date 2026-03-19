@@ -9,7 +9,10 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
-import { GearBpAllowance, GearNuyenBudget } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import {
+  GearBpAllowance,
+  GearNuyenBudget,
+} from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
@@ -17,7 +20,7 @@ import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharact
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
 interface GearFormGroupProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {

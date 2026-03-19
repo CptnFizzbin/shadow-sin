@@ -5,7 +5,7 @@ interface ErrorLike {
   message: string
 }
 
-function isErrorLike(value: unknown): value is ErrorLike {
+function isErrorLike (value: unknown): value is ErrorLike {
   return (
     typeof value === "object" &&
     value !== null &&
@@ -25,7 +25,5 @@ const getErrorMessage = (error: unknown): string => {
   if (isErrorLike(error)) return error.message
   if (error instanceof Error) return error.message
   if (error instanceof z.ZodError) return error.message
-
-  console.error("Unknown error type:", error)
   return String(error)
 }

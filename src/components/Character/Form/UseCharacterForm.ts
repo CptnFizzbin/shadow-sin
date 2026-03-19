@@ -2,7 +2,7 @@ import { createAttrFormState } from "#/components/Character/Form/AttrFormState.t
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"

@@ -3,7 +3,7 @@ import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
 export interface QualityData {
-  id?: string
+  id: string
   name: string
   type: "positive" | "negative"
   bpValue?: number
@@ -14,15 +14,15 @@ export interface QualityData {
 }
 
 export const QualityDataSchema = z.object({
-  id: z.uuid().optional(),
+  id: z.uuid(),
   name: z.string().min(1, "Name is required"),
   type: z.enum(["positive", "negative"]),
   bpValue: z.number().min(0, "BP must be 0 or greater").optional(),
   description: z.string(),
   source: z
     .object({
-      book: z.string(),
-      page: z.number(),
+      book: z.string().min(1, "Source book is required"),
+      page: z.number().min(1, "Source page must be 1 or greater"),
     })
     .optional(),
   effects: z

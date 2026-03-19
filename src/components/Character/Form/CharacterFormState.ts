@@ -4,6 +4,7 @@ import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/For
 import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface CharacterFormState {
   buildPoints: {
@@ -40,6 +41,8 @@ export interface CharacterFormState {
     magic: AttrFormState
     resonance: AttrFormState
   }
+
+  qualities: QualityData[]
 
   gear: {
     sins: SinFormState[]
