@@ -1,0 +1,76 @@
+import { Stack } from "@mui/material"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import type { FC } from "react"
+import { QualityFormFields } from "#/components/Qualities/Form/index.ts"
+import { useQualityForm, type QualityFormOptions } from "#/components/Qualities/Form/UseQualityForm.ts"
+import { noop } from "#/lib/noop.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
+
+export interface QualityFormDialogProps {
+  open: boolean
+  mode?: "create" | "edit"
+  quality?: QualityData
+  onSave: (quality: QualityData) => void
+  onDelete?: () => void
+  onClose: () => void
+  onClosed?: () => void
+}
+
+export const QualityFormDialog: FC<QualityFormDialogProps> = ({
+  open,
+  mode = "create",
+  quality,
+  onSave,
+  onDelete,
+  onClose,
+  onClosed = noop,
+}) => {
+  const options: QualityFormOptions =
+    mode === "edit" && quality
+      ? { mode: "edit", quality, onSubmit: (q) => onSave(q) }
+      : { mode: "create", onSubmit: (q) => onSave(q) }
+
+  const form = useQualityForm(options)
+
+  const title = mode === "edit" ? "Edit Quality" : "Add Quality"
+
+  return (
+    <Dialog
+      open={open}
+      onTransitionExited={() => {
+        form.reset()
+        onClosed()
+      }}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent sx={{ p: 1 }}>
+        <QualityFormFields form={form} />
+      </DialogContent>
+      <DialogActions>
+        <Stack justifyContent={"space-between"} direction="row" width="100%">
+          <Box>
+            {onDelete && (
+              <Button color="error" onClick={onDelete}>
+                Delete
+              </Button>
+            )}
+          </Box>
+
+          <Box>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button variant="contained" onClick={() => form.handleSubmit()}>
+              {mode === "edit" ? "Save" : "Add"}
+            </Button>
+          </Box>
+        </Stack>
+      </DialogActions>
+    </Dialog>
+  )
+}
