@@ -12,7 +12,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
 }) => {
   return (
     <Stack gap={1}>
-      <SinsList form={form} fields={{ gear: "gear" }} />
+      <SinsList form={form} />
     </Stack>
   )
 }

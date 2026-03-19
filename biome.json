@@ -34,12 +34,14 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noChildrenProp": "off"
+        "noChildrenProp": "off",
+        "useImportExtensions": "error"
       }
     }
   },
   "javascript": {
     "formatter": {
+      "enabled": true,
       "quoteStyle": "double",
       "trailingCommas": "all",
       "bracketSameLine": false,

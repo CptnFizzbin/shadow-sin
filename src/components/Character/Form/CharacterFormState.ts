@@ -7,6 +7,8 @@ import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface CharacterFormState {
+  characterId: string
+
   buildPoints: {
     total: number
     spent: {
