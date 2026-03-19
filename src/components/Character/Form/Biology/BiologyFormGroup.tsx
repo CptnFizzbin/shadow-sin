@@ -1,4 +1,3 @@
-import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
@@ -19,6 +18,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
   const awakeningType = useStore(form.store, (s) => s.values.awakening)
 
   const prevAwakeningRef = useRef(awakeningType)
+  const isInitialMountRef = useRef(true)
 
   useEffect(() => {
     if (metatypeKey === MetatypeKey.AI) {
@@ -27,6 +27,11 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
   }, [metatypeKey, form])
 
   useEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false
+      return
+    }
+
     form.setFieldValue("buildPoints.spent.attributes", 0)
     form.setFieldValue(`attributes`, (prev) => {
       const metatype = metatypes[metatypeKey]
@@ -108,36 +113,6 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
           )}
         />
       )}
-
-      <Grid container spacing={1} columns={3}>
-        <Grid size={3}>
-          <form.AppField
-            name={"gender"}
-            children={(field) => <field.TextField label="Gender" />}
-          />
-        </Grid>
-
-        <Grid size={1}>
-          <form.AppField
-            name="age"
-            children={(field) => <field.TextField label="Age" type="number" />}
-          />
-        </Grid>
-
-        <Grid size={1}>
-          <form.AppField
-            name={"weight"}
-            children={(field) => <field.TextField label="Weight" />}
-          />
-        </Grid>
-
-        <Grid size={1}>
-          <form.AppField
-            name={"height"}
-            children={(field) => <field.TextField label="Height" />}
-          />
-        </Grid>
-      </Grid>
 
       <BiologyAttributes form={form} />
     </>

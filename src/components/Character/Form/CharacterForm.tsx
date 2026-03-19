@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -5,10 +6,11 @@ import { type FC, useState } from "react"
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
+import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
 import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import { type PlayerCharacterForm, useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -16,7 +18,7 @@ interface CharacterFormProps {
 }
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
-  const form: PlayerCharacterForm = useCharacterForm(character)
+  const form = useCharacterForm(character)
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
 
   return (
@@ -35,6 +37,20 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
             pointerEvents: isBpPanelExpanded ? "none" : "auto",
           }}
         >
+          <Stack direction="row" justifyContent="flex-end">
+            <Button
+              variant="outlined"
+              color="warning"
+              size="small"
+              onClick={() => {
+                form.reset()
+                FormPersister.clearState(form.state.values.characterId)
+              }}
+            >
+              Reset
+            </Button>
+          </Stack>
+
           <Paper sx={{ padding: 1 }}>
             <Stack gap={1}>
               <Typography variant="h6" sx={{ textAlign: "center" }}>
@@ -61,7 +77,9 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Attributes
               </Typography>
 
-              <AttributesFormGroup form={form} />
+              <form.Subscribe selector={(form) => form.values.attributes}>
+                {() => <AttributesFormGroup form={form} />}
+              </form.Subscribe>
             </Stack>
           </Paper>
 

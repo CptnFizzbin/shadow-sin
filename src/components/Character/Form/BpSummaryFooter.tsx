@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import Alert from "@mui/material/Alert"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
@@ -15,7 +16,6 @@ import { RiErrorWarningLine } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import { Button } from "@mui/material"
 
 export interface BpSummaryFooterProps {
   form: PlayerCharacterForm
@@ -115,7 +115,12 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
 
         <Button onClick={() => handleExpandedChange(!isExpanded)}>
           <Stack direction={"column"} gap={1} flexGrow={1}>
-            <Stack direction="row" gap={1} justifyContent={"space-between"} alignItems="center">
+            <Stack
+              direction="row"
+              gap={1}
+              justifyContent={"space-between"}
+              alignItems="center"
+            >
               {summary.warnings.length > 0 && (
                 <Box sx={{ color: warningIconColor, display: "flex" }}>
                   <RiErrorWarningLine size={16} aria-hidden />
@@ -125,7 +130,6 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
               <Typography color="secondary.main">
                 {summary.spent} / {summary.total} BP
               </Typography>
-
 
               <Typography color="secondary.main">
                 {summary.remaining >= 0
