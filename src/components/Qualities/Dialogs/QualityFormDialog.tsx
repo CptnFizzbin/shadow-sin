@@ -7,7 +7,10 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import type { FC } from "react"
 import { QualityFormFields } from "#/components/Qualities/Form/index.ts"
-import { useQualityForm, type QualityFormOptions } from "#/components/Qualities/Form/UseQualityForm.ts"
+import {
+  type QualityFormOptions,
+  useQualityForm,
+} from "#/components/Qualities/Form/UseQualityForm.ts"
 import { noop } from "#/lib/noop.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
