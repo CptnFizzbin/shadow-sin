@@ -3,10 +3,16 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
-import { attrPointCosts, useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import {
+  attrPointCosts,
+  useAttributeFormGroup,
+} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import { AttributeKey, AttributeOrder } from "#/lib/system/types/attributeKey.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
+import {
+  AttributeKey,
+  AttributeOrder,
+} from "#/lib/system/types/attributeKey.ts"
 
 export interface AttributesFormGroupProps {
   form: PlayerCharacterForm
