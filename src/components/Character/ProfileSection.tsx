@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
+import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
 export const ProfileSection: FC = () => {
   const profile = useCharacterStore((s) => s.profile)
@@ -24,8 +25,8 @@ export const ProfileSection: FC = () => {
 
       {profile?.lifestyle && (
         <Typography variant="body2">
-          Lifestyle: Q{profile.lifestyle.quality} — {profile.lifestyle.cost}¥ /
-          m
+          Lifestyle: Q{profile.lifestyle.quality} —{" "}
+          <Nuyen amount={profile.lifestyle.cost} /> / m
         </Typography>
       )}
     </Box>
