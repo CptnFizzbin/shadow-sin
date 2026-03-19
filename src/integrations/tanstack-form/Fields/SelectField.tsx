@@ -13,6 +13,7 @@ import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldErro
 export interface SelectOption {
   label: ReactNode
   value: string
+  disabled?: boolean
 }
 
 export interface SelectFieldProps extends FormControlProps {
@@ -41,6 +42,7 @@ export const SelectField: FC<SelectFieldProps> = ({
           <MenuItem
             value={option.value}
             key={option.value}
+            disabled={option.disabled}
             sx={{ display: "flex" }}
           >
             {option.label}

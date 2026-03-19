@@ -3,14 +3,14 @@ import type { AwakeningData } from "#/lib/system/types/awakeningType.ts"
 import type { MetatypeData } from "#/lib/system/types/MetatypeData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
-export interface AttributeBuildState {
+export interface AttrFormState {
   min: number
   max: number
   augMax?: number
   value: number
 }
 
-export function getAttrBuildState({
+export function createAttrFormState({
   attr,
   metatype,
   awakening,
@@ -22,8 +22,8 @@ export function getAttrBuildState({
   awakening: AwakeningData
   character?: PlayerCharacterData
   value?: number
-}): AttributeBuildState {
-  const state: AttributeBuildState = {
+}): AttrFormState {
+  const state: AttrFormState = {
     min: 0,
     max: 0,
     augMax: 0,
