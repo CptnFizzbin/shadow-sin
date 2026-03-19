@@ -8,18 +8,13 @@ import type { FC } from "react"
 import { LicenseFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormFields.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import type { LicenseFormOptions } from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
-import {
-  licenseFieldMap,
-  useLicenseForm,
-} from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
+import { licenseFieldMap, useLicenseForm } from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
 
 export interface LicenseFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
   onSave: (data: LicenseFormState) => void
-  mode?: "create" | "edit"
   license?: LicenseFormState
   sinId?: string
   sins?: SinFormState[]
@@ -30,32 +25,30 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  mode = "create",
   license,
   sinId,
   sins = [],
 }) => {
+  const editMode = !!license
+
   const selectedSin = sins.find(
     (sin) => sin.id === (license ? license.sinId : sinId),
   )
 
-  const options: LicenseFormOptions =
-    mode === "edit" && license
-      ? {
-          mode: "edit",
-          license: license,
-          onSubmit: onSave,
-        }
-      : {
-          mode: "create",
-          sinId: sinId ?? "",
-          sinReal: selectedSin ? selectedSin.rating === "real" : false,
-          onSubmit: onSave,
-        }
+  const form = useLicenseForm(editMode
+    ? {
+      mode: "edit",
+      license: license,
+      onSubmit: onSave,
+    }
+    : {
+      mode: "create",
+      sinId: sinId ?? "",
+      sinReal: selectedSin ? selectedSin.rating === "real" : false,
+      onSubmit: onSave,
+    })
 
-  const form = useLicenseForm(options)
-
-  const title = mode === "edit" ? "Edit License" : "Create License"
+  const title = editMode ? "Edit License" : "Create License"
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

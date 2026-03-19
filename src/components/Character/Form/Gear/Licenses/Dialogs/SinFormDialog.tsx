@@ -7,16 +7,13 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { SinFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormFields.tsx"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import {
-  sinFieldMap,
-  useSinForm,
-} from "#/components/Character/Form/Gear/Licenses/Forms/UseSinForm.tsx"
+import { sinFieldMap, useSinForm } from "#/components/Character/Form/Gear/Licenses/Forms/UseSinForm.tsx"
 
 interface SinEditDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave?: (sin: SinFormState) => void
+  onSave: (sin: SinFormState) => void
   sin?: SinFormState
   allowReal?: boolean
 }
@@ -29,15 +26,19 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
   onClosed,
   onSave,
 }) => {
+  const editMode = !!sin
+
   const form = useSinForm(
-    sin
-      ? { mode: "edit", sin, onSubmit: (s) => onSave?.(s) }
-      : { mode: "create", allowReal, onSubmit: (s) => onSave?.(s) },
+    editMode
+      ? { mode: "edit", sin, onSubmit: onSave }
+      : { mode: "create", allowReal, onSubmit: onSave },
   )
+
+  const title = editMode ? "Edit SIN" : "Create SIN"
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>Edit SIN</DialogTitle>
+      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>

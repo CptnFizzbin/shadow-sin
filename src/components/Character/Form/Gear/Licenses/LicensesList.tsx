@@ -8,7 +8,10 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import { useState } from "react"
 import { LicenseFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/LicenseFormDialog.tsx"
-import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import {
+  getLicenseAvailability,
+  type LicenseFormState,
+} from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
@@ -69,11 +72,7 @@ export const LicensesList = withFieldGroup({
     return (
       <>
         {licenses.map((license) => {
-          const licenseAvail = {
-            rating: license.rating !== "real" ? Number(license.rating) : 0,
-            forbidden: license.rating !== "real",
-          }
-          const licenseCost = licenseAvail.rating * 100
+          const licenseAvail = getLicenseAvailability(license.rating)
 
           return (
             <Box key={license.id}>
@@ -96,7 +95,7 @@ export const LicensesList = withFieldGroup({
                   <Typography flexGrow={1}>{license.name}</Typography>
 
                   <Typography>
-                    <Nuyen amount={licenseCost} />
+                    <Nuyen amount={license.cost} />
                   </Typography>
 
                   <IconButton
@@ -119,7 +118,7 @@ export const LicensesList = withFieldGroup({
                     sx={{ height: 20, fontSize: "0.7rem" }}
                   />
 
-                  <AvailabilityChip {...licenseAvail} />
+                  <AvailabilityChip availability={licenseAvail} />
                 </Stack>
               </Stack>
             </Box>
@@ -136,23 +135,23 @@ export const LicensesList = withFieldGroup({
           Add License
         </Button>
 
-        {dialogState?.mode === "edit" && (
-          <LicenseFormDialog
-            open={dialogState.open}
-            sins={sins}
-            license={dialogState.license}
-            onSave={saveLicense}
-            onClose={onDialogClose}
-            onClosed={onDialogClosed}
-          />
-        )}
-
         {dialogState?.mode === "create" && (
           <LicenseFormDialog
             open={dialogState.open}
             sins={sins}
             sinId={dialogState.sinId}
             onSave={addLicense}
+            onClose={onDialogClose}
+            onClosed={onDialogClosed}
+          />
+        )}
+
+        {dialogState?.mode === "edit" && (
+          <LicenseFormDialog
+            open={dialogState.open}
+            sins={sins}
+            license={dialogState.license}
+            onSave={saveLicense}
             onClose={onDialogClose}
             onClosed={onDialogClosed}
           />

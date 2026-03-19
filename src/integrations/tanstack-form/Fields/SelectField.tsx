@@ -39,6 +39,7 @@ export const SelectField: FC<SelectFieldProps> = ({
           <MenuItem
             value={option.value}
             key={option.value}
+            disabled={option.disabled}
             sx={{ display: "flex" }}
           >
             {option.label}

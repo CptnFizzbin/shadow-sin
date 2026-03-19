@@ -43,12 +43,14 @@ export const useLicenseForm = (options: LicenseFormOptions) => {
   if (mode === "edit") {
     defaultValues = options.license
   } else {
+    const rating = options.sinReal ? "real" : "1"
+
     defaultValues = {
       id: crypto.randomUUID(),
       name: "",
       sinId: options.sinId,
-      rating: options.sinReal ? "real" : "1",
-      cost: getLicenseCost("1"),
+      rating: rating,
+      cost: getLicenseCost(rating),
     }
   }
 

@@ -10,7 +10,7 @@ import { useState } from "react"
 import { SinFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import { getSinAvailability, type SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
@@ -41,6 +41,7 @@ export const SinsList = withFieldGroup({
     }
 
     const sins = useStore(group.store, ({ values }) => values.gear.sins)
+    const hasRealSin = sins.some((sin) => sin.rating === "real")
 
     const addSin = (sin: SinFormState) => {
       group.setFieldValue("gear.sins", (prev) => [...prev, sin])
@@ -77,11 +78,8 @@ export const SinsList = withFieldGroup({
         </Button>
 
         {sins.map((sin) => {
-          const sinAvail = {
-            rating: sin.rating !== "real" ? sin.rating : 0,
-            forbidden: sin.rating !== "real",
-          }
-          const sinCost = sinAvail.rating * 1_000
+          const sinAvail = getSinAvailability(sin.rating)
+
           const numLicenses = group
             .getFieldValue("gear.licenses")
             .filter((license) => license.sinId === sin.id).length
@@ -108,7 +106,7 @@ export const SinsList = withFieldGroup({
                   </Typography>
 
                   <Typography>
-                    <Nuyen amount={sinCost} />
+                    <Nuyen amount={sin.cost} />
                   </Typography>
 
                   <IconButton
@@ -137,7 +135,7 @@ export const SinsList = withFieldGroup({
                     sx={{ height: 20, fontSize: "0.7rem" }}
                   />
 
-                  <AvailabilityChip {...sinAvail} />
+                  <AvailabilityChip availability={sinAvail} />
                 </Stack>
               </Stack>
 
@@ -161,20 +159,21 @@ export const SinsList = withFieldGroup({
           )
         })}
 
-        {dialogState?.mode === "edit" && (
+        {dialogState?.mode === "create" && (
           <SinFormDialog
             open={dialogState.open}
-            sin={dialogState.sin}
-            onSave={saveSin}
+            allowReal={!hasRealSin}
+            onSave={addSin}
             onClose={onDialogClose}
             onClosed={onDialogClosed}
           />
         )}
 
-        {dialogState?.mode === "create" && (
+        {dialogState?.mode === "edit" && (
           <SinFormDialog
             open={dialogState.open}
-            onSave={addSin}
+            sin={dialogState.sin}
+            onSave={saveSin}
             onClose={onDialogClose}
             onClosed={onDialogClosed}
           />
