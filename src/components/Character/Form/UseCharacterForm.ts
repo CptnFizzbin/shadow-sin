@@ -1,15 +1,18 @@
+import { debounce } from "@tanstack/pacer"
+import { useEffect } from "react"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
-import { useEffect } from "react"
-import { debounce } from "@tanstack/pacer"
 
-const debouncedSaveState = debounce((characterId: string, values: CharacterFormState) => {
-  console.log("Saving form state...", { characterId, values })
-  FormPersister.saveState(characterId, values)
-}, { wait: 500 })
+const debouncedSaveState = debounce(
+  (characterId: string, values: CharacterFormState) => {
+    console.log("Saving form state...", { characterId, values })
+    FormPersister.saveState(characterId, values)
+  },
+  { wait: 500 },
+)
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
   const form = useAppForm({
