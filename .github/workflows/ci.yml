@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - shadowrun-4e
   pull_request:
 
 jobs:
