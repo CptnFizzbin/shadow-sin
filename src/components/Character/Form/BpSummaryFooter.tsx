@@ -23,11 +23,20 @@ import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharact
 
 export interface BpSummaryFooterProps {
   form: PlayerCharacterForm
+  onExpandedChange?: (expanded: boolean) => void
 }
 
-export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({ form }) => {
+export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
+  form,
+  onExpandedChange,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const summary = useBuildPointsSummary(form)
+
+  const handleExpandedChange = (expanded: boolean) => {
+    setIsExpanded(expanded)
+    onExpandedChange?.(expanded)
+  }
 
   const progressPercent = Math.min(
     100,
@@ -43,7 +52,12 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({ form }) => {
   const warningIconColor = summary.isOverBudget ? "error.main" : "warning.main"
 
   return (
-    <ClickAwayListener onClickAway={() => setIsExpanded(false)}>
+    <ClickAwayListener
+      onClickAway={(event) => {
+        event.stopPropagation()
+        handleExpandedChange(false)
+      }}
+    >
       <AppBar
         position="fixed"
         color="default"
@@ -106,7 +120,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({ form }) => {
         <Toolbar
           component="button"
           type="button"
-          onClick={() => setIsExpanded((prev) => !prev)}
+          onClick={() => handleExpandedChange(!isExpanded)}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? "Collapse BP summary" : "Expand BP summary"}
           sx={{

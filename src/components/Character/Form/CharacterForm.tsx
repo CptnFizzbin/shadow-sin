@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import type { FC } from "react"
+import { type FC, useState } from "react"
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
@@ -20,6 +20,7 @@ interface CharacterFormProps {
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
   const form: PlayerCharacterForm = useCharacterForm(character)
+  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
 
   return (
     <form
@@ -28,7 +29,15 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
         form.handleSubmit()
       }}
     >
-      <Stack gap={1} sx={{ paddingBottom: "56px" }}>
+      <Stack
+        gap={1}
+        sx={{
+          paddingBottom: "56px",
+          opacity: isBpPanelExpanded ? 0.6 : 1,
+          transition: "opacity 0.2s ease",
+          pointerEvents: isBpPanelExpanded ? "none" : "auto",
+        }}
+      >
         <Paper sx={{ padding: 1 }}>
           <Stack gap={1}>
             <Typography variant="h6" sx={{ textAlign: "center" }}>
@@ -80,7 +89,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
         </Paper>
       </Stack>
 
-      <BpSummaryFooter form={form} />
+      <BpSummaryFooter form={form} onExpandedChange={setIsBpPanelExpanded} />
     </form>
   )
 }
