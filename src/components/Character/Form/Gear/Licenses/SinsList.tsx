@@ -8,10 +8,7 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { SinFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
-import {
-  getSinAvailability,
-  type SinFormState,
-} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import { getSinAvailability, type SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { useSinsFormGroup } from "#/components/Character/Form/Gear/Licenses/UseSinsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
@@ -130,8 +127,11 @@ export const SinsList: FC<SinsListProps> = ({ form }) => {
             <Stack
               gap={1}
               sx={{
-                padding: 1,
+                paddingTop: 1,
+                paddingLeft: 1,
+                paddingBottom: 1,
                 borderLeft: "8px solid",
+                borderBottom: "1px solid",
                 borderColor: "divider",
               }}
             >
