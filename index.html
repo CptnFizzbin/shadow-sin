@@ -15,6 +15,15 @@
     href="https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&family=Monda:wght@400;700&display=swap"
     rel="stylesheet"
   />
+
+  <script>
+    // Handle GitHub Pages redirects from 404.html
+    if (sessionStorage.redirect) {
+      const redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      window.history.replaceState(null, null, redirect);
+    }
+  </script>
 </head>
 <body>
 <div id="root"></div>

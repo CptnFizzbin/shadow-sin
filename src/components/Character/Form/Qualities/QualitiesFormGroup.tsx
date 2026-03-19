@@ -11,8 +11,8 @@ import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/Use
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
-import type { QualityData } from "#/lib/system/types/qualityData.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export const qualityBuildPoints = {
   allowance: {

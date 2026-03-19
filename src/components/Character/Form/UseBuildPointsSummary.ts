@@ -22,7 +22,7 @@ export interface BpSummary {
   warnings: string[]
 }
 
-export function useBuildPointsSummary (form: PlayerCharacterForm): BpSummary {
+export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
   const metatypeKey = useStore(form.store, (s) => s.values.metatype)
   const awakeningType = useStore(form.store, (s) => s.values.awakening)
   const qualities = useStore(form.store, (s) => s.values.qualities)
