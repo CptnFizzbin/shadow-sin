@@ -2,6 +2,12 @@ import { useStore } from "@tanstack/react-store"
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
+import {
+  calculateActiveSkillsBp,
+  calculateExtraSpBp,
+  calculateKnowledgeAndLanguageSpUsed,
+  getFreeSkillPoints,
+} from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
@@ -22,7 +28,7 @@ export interface BpSummary {
   warnings: string[]
 }
 
-export function useBuildPointsSummary (form: PlayerCharacterForm): BpSummary {
+export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
   const metatypeKey = useStore(form.store, (s) => s.values.metatype)
   const awakeningType = useStore(form.store, (s) => s.values.awakening)
   const qualities = useStore(form.store, (s) => s.values.qualities)
@@ -30,9 +36,26 @@ export function useBuildPointsSummary (form: PlayerCharacterForm): BpSummary {
     form.store,
     (s) => s.values.buildPoints.spent.attributes,
   )
-  const skillsBpSpent = useStore(
+  const activeSkills = useStore(form.store, (s) => s.values.skills.activeSkills)
+  const activeSkillGroups = useStore(
     form.store,
-    (s) => s.values.buildPoints.spent.skills,
+    (s) => s.values.skills.activeSkillGroups,
+  )
+  const knowledgeSkills = useStore(
+    form.store,
+    (s) => s.values.skills.knowledgeSkills,
+  )
+  const languageSkills = useStore(
+    form.store,
+    (s) => s.values.skills.languageSkills,
+  )
+  const logicValue = useStore(
+    form.store,
+    (s) => s.values.attributes.logic.value,
+  )
+  const intuitionValue = useStore(
+    form.store,
+    (s) => s.values.attributes.intuition.value,
   )
   const gearBpSpent = useStore(
     form.store,
@@ -55,6 +78,19 @@ export function useBuildPointsSummary (form: PlayerCharacterForm): BpSummary {
   }
 
   const qualitiesNetBp = positiveQualitiesBp - negativeQualitiesBp
+
+  // Calculate skills BP dynamically from skills arrays
+  const activeSkillsBp = calculateActiveSkillsBp(
+    activeSkills,
+    activeSkillGroups,
+  )
+  const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
+    knowledgeSkills,
+    languageSkills,
+  )
+  const freeSkillPoints = getFreeSkillPoints(logicValue, intuitionValue)
+  const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
+  const skillsBpSpent = activeSkillsBp + extraSpBp
 
   const totalBuildPoints = useStore(
     form.store,
