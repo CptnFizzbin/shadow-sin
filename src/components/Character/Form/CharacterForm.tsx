@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
+import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
 import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
 import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
@@ -27,7 +28,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
         form.handleSubmit()
       }}
     >
-      <Stack gap={1}>
+      <Stack gap={1} sx={{ paddingBottom: "56px" }}>
         <Paper sx={{ padding: 1 }}>
           <Stack gap={1}>
             <Typography variant="h6" sx={{ textAlign: "center" }}>
@@ -78,6 +79,8 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
           </Stack>
         </Paper>
       </Stack>
+
+      <BpSummaryFooter form={form} />
     </form>
   )
 }
