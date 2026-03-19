@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
 export interface ProfileFormGroupProps {
   form: PlayerCharacterForm

@@ -8,7 +8,7 @@ import { TanStackQueryDevtools } from "#/integrations/tanstack-query/devtools.ts
 import TanStackQueryProvider from "#/integrations/tanstack-query/root-provider.tsx"
 import { TanStackRouterDevtools } from "#/integrations/tanstack-router/devtools.tsx"
 import { getRouter } from "./router.ts"
-import { theme } from "./theme"
+import { theme } from "./theme.ts"
 
 const router = getRouter()
 const rootElement = document.getElementById("root")

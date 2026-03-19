@@ -1,4 +1,4 @@
-import type { LifestyleType } from "#/lib/system/types/LifestyleType"
+import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
@@ -32,11 +32,11 @@ export interface PlayerCharacterData {
 
   biology: {
     metatype: MetatypeKey
+    awakening: AwakeningType
     gender?: string
     age?: number
     weight?: string
     height?: string
-    awakening: AwakeningType
   }
 
   karma: {

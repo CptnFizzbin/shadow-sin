@@ -1,50 +1,11 @@
-import {
-  type AttributeBuildState,
-  getAttrBuildState,
-} from "#/components/Character/Form/AttributeBuildState.ts"
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
+import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
-
-export interface CharacterFormState {
-  buildPoints: {
-    total: number
-    spent: {
-      metatype: number
-      qualities: number
-      attributes: number
-      skills: number
-      gear: number
-    }
-  }
-
-  name: string
-  alias: string
-  lifestyle: LifestyleType
-  gender?: string
-  weight?: string
-  height?: string
-  age: number
-  metatype: MetatypeKey
-  awakening: AwakeningType
-
-  attributes: {
-    body: AttributeBuildState
-    agility: AttributeBuildState
-    reaction: AttributeBuildState
-    strength: AttributeBuildState
-    charisma: AttributeBuildState
-    intuition: AttributeBuildState
-    logic: AttributeBuildState
-    willpower: AttributeBuildState
-    edge: AttributeBuildState
-    magic: AttributeBuildState
-    resonance: AttributeBuildState
-  }
-}
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
   const { profile, biology } = character || {}
@@ -76,72 +37,79 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
     awakening: biology?.awakening || AwakeningType.Mundane,
 
     attributes: {
-      body: getAttrBuildState({
+      body: createAttrFormState({
         attr: AttributeKey.body,
         character,
         metatype,
         awakening,
       }),
-      agility: getAttrBuildState({
+      agility: createAttrFormState({
         attr: AttributeKey.agility,
         character,
         metatype,
         awakening,
       }),
-      reaction: getAttrBuildState({
+      reaction: createAttrFormState({
         attr: AttributeKey.reaction,
         character,
         metatype,
         awakening,
       }),
-      strength: getAttrBuildState({
+      strength: createAttrFormState({
         attr: AttributeKey.strength,
         character,
         metatype,
         awakening,
       }),
-      charisma: getAttrBuildState({
+      charisma: createAttrFormState({
         attr: AttributeKey.charisma,
         character,
         metatype,
         awakening,
       }),
-      intuition: getAttrBuildState({
+      intuition: createAttrFormState({
         attr: AttributeKey.intuition,
         character,
         metatype,
         awakening,
       }),
-      logic: getAttrBuildState({
+      logic: createAttrFormState({
         attr: AttributeKey.logic,
         character,
         metatype,
         awakening,
       }),
-      willpower: getAttrBuildState({
+      willpower: createAttrFormState({
         attr: AttributeKey.willpower,
         character,
         metatype,
         awakening,
       }),
-      edge: getAttrBuildState({
+      edge: createAttrFormState({
         attr: AttributeKey.edge,
         character,
         metatype,
         awakening,
       }),
-      magic: getAttrBuildState({
+      magic: createAttrFormState({
         attr: AttributeKey.magic,
         character,
         metatype,
         awakening,
       }),
-      resonance: getAttrBuildState({
+      resonance: createAttrFormState({
         attr: AttributeKey.resonance,
         character,
         metatype,
         awakening,
       }),
+    },
+
+    qualities: character?.qualities ?? [],
+
+    gear: {
+      sins: [],
+      licenses: [],
     },
   }
 

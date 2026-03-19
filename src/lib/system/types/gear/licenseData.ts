@@ -1,17 +1,15 @@
 import type { GearData, GearType } from "./gearData.ts"
 
+export enum VerificationKind {
+  Real = "Real",
+  Fake = "Fake",
+}
+
 export type VerificationData =
-  | { kind: "real" }
-  | { kind: "fake"; rating: number }
+  | { kind: VerificationKind.Real }
+  | { kind: VerificationKind.Fake; rating: number }
 
 export interface LicenseData extends GearData {
   type: GearType.license
   verification: VerificationData
-}
-
-export interface SinData extends GearData {
-  type: GearType.sin
-  verification: VerificationData
-  cost?: number
-  licenses?: Array<{ id: string }>
 }
