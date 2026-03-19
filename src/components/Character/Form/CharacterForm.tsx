@@ -8,10 +8,7 @@ import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx
 import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
 import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import {
-  type PlayerCharacterForm,
-  useCharacterForm,
-} from "#/components/Character/Form/UseCharacterForm.ts"
+import { type PlayerCharacterForm, useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -29,67 +26,68 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
         form.handleSubmit()
       }}
     >
-      <Stack
-        gap={1}
-        sx={{
-          paddingBottom: "56px",
-          opacity: isBpPanelExpanded ? 0.6 : 1,
-          transition: "opacity 0.2s ease",
-          pointerEvents: isBpPanelExpanded ? "none" : "auto",
-        }}
-      >
-        <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
-            <Typography variant="h6" sx={{ textAlign: "center" }}>
-              Profile
-            </Typography>
+      <Stack gap={1}>
+        <Stack
+          gap={1}
+          sx={{
+            opacity: isBpPanelExpanded ? 0.6 : 1,
+            transition: "opacity 0.2s ease",
+            pointerEvents: isBpPanelExpanded ? "none" : "auto",
+          }}
+        >
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Profile
+              </Typography>
 
-            <ProfileFormGroup form={form} />
-          </Stack>
-        </Paper>
+              <ProfileFormGroup form={form} />
+            </Stack>
+          </Paper>
 
-        <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
-            <Typography variant="h6" sx={{ textAlign: "center" }}>
-              Biology
-            </Typography>
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Biology
+              </Typography>
 
-            <BiologyFormGroup form={form} />
-          </Stack>
-        </Paper>
+              <BiologyFormGroup form={form} />
+            </Stack>
+          </Paper>
 
-        <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
-            <Typography variant="h6" sx={{ textAlign: "center" }}>
-              Attributes
-            </Typography>
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Attributes
+              </Typography>
 
-            <AttributesFormGroup form={form} />
-          </Stack>
-        </Paper>
+              <AttributesFormGroup form={form} />
+            </Stack>
+          </Paper>
 
-        <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
-            <Typography variant="h6" sx={{ textAlign: "center" }}>
-              Qualities
-            </Typography>
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Qualities
+              </Typography>
 
-            <QualitiesFormGroup form={form} />
-          </Stack>
-        </Paper>
+              <QualitiesFormGroup form={form} />
+            </Stack>
+          </Paper>
 
-        <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
-            <Typography variant="h6" sx={{ textAlign: "center" }}>
-              Gear
-            </Typography>
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Gear
+              </Typography>
 
-            <GearFormGroup form={form} />
-          </Stack>
-        </Paper>
+              <GearFormGroup form={form} />
+            </Stack>
+          </Paper>
+        </Stack>
+
+        <BpSummaryFooter form={form} onExpandedChange={setIsBpPanelExpanded} />
       </Stack>
-
-      <BpSummaryFooter form={form} onExpandedChange={setIsBpPanelExpanded} />
     </form>
   )
 }

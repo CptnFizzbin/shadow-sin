@@ -10,16 +10,12 @@ import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
-import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import {
-  RiArrowDownSLine,
-  RiArrowUpSLine,
-  RiErrorWarningLine,
-} from "@remixicon/react"
+import { RiArrowDownSLine, RiArrowUpSLine, RiErrorWarningLine } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { Button } from "@mui/material"
 
 export interface BpSummaryFooterProps {
   form: PlayerCharacterForm
@@ -59,10 +55,10 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
       }}
     >
       <AppBar
-        position="fixed"
+        position="sticky"
         color="default"
         elevation={4}
-        sx={{ top: "auto", bottom: 0 }}
+        sx={{ top: "auto", bottom: 0, zIndex: 10 }}
       >
         <Collapse in={isExpanded} unmountOnExit>
           <Stack gap={1} sx={{ px: 2, pt: 2, pb: 1 }}>
@@ -117,32 +113,16 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
           </Stack>
         </Collapse>
 
-        <Toolbar
-          component="button"
-          type="button"
-          onClick={() => handleExpandedChange(!isExpanded)}
-          aria-expanded={isExpanded}
-          aria-label={isExpanded ? "Collapse BP summary" : "Expand BP summary"}
-          sx={{
-            cursor: "pointer",
-            gap: 1,
-            minHeight: "48px !important",
-            width: "100%",
-            border: "none",
-            background: "none",
-            textAlign: "left",
-          }}
-        >
-          <Stack direction="row" alignItems="center" gap={0.5} flexShrink={0}>
-            {summary.warnings.length > 0 && (
-              <Box sx={{ color: warningIconColor, display: "flex" }}>
-                <RiErrorWarningLine size={16} aria-hidden />
-              </Box>
-            )}
-            <Typography variant="body2" fontWeight="medium">
-              {summary.spent} / {summary.total} BP
-            </Typography>
-          </Stack>
+        <Button onClick={() => handleExpandedChange(!isExpanded)} sx={{ gap: 1 }}>
+          {summary.warnings.length > 0 && (
+            <Box sx={{ color: warningIconColor, display: "flex" }}>
+              <RiErrorWarningLine size={16} aria-hidden />
+            </Box>
+          )}
+          
+          <Typography variant="body2" fontWeight="medium">
+            {summary.spent} / {summary.total} BP
+          </Typography>
 
           <LinearProgress
             variant="determinate"
@@ -162,7 +142,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
           ) : (
             <RiArrowUpSLine size={18} aria-hidden />
           )}
-        </Toolbar>
+        </Button>
       </AppBar>
     </ClickAwayListener>
   )
