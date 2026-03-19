@@ -3,9 +3,16 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import { useEffect } from "react"
+import { debounce } from "@tanstack/pacer"
+
+const debouncedSaveState = debounce((characterId: string, values: CharacterFormState) => {
+  console.log("Saving form state...", { characterId, values })
+  FormPersister.saveState(characterId, values)
+}, { wait: 500 })
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
-  return useAppForm({
+  const form = useAppForm({
     defaultValues: useDefaultValues({ character }),
     listeners: {
       onMount: ({ formApi }) => {
@@ -17,14 +24,18 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
           formApi.setFieldValue(key as keyof CharacterFormState, value)
         }
       },
-
-      onChangeDebounceMs: 500,
-      onChange: ({ formApi }) => {
-        const characterId = formApi.state.values.characterId
-        FormPersister.saveState(characterId, formApi.state.values)
-      },
     },
   })
+
+  useEffect(() => {
+    const { unsubscribe } = form.store.subscribe(({ values }) => {
+      debouncedSaveState(values.characterId, values)
+    })
+
+    return () => unsubscribe()
+  }, [form])
+
+  return form
 }
 
 export type PlayerCharacterForm = ReturnType<typeof useCharacterForm>
