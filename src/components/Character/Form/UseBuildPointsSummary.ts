@@ -6,8 +6,6 @@ import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharact
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 
-export const totalBuildPoints = 400
-
 export interface BpLineItem {
   label: string
   spent: number
@@ -24,7 +22,7 @@ export interface BpSummary {
   warnings: string[]
 }
 
-export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
+export function useBuildPointsSummary (form: PlayerCharacterForm): BpSummary {
   const metatypeKey = useStore(form.store, (s) => s.values.metatype)
   const awakeningType = useStore(form.store, (s) => s.values.awakening)
   const qualities = useStore(form.store, (s) => s.values.qualities)
@@ -57,6 +55,11 @@ export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
   }
 
   const qualitiesNetBp = positiveQualitiesBp - negativeQualitiesBp
+
+  const totalBuildPoints = useStore(
+    form.store,
+    (s) => s.values.buildPoints.total,
+  )
 
   const totalSpent =
     biologyBpSpent +

@@ -16,6 +16,7 @@ import { RiErrorWarningLine } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 export interface BpSummaryFooterProps {
   form: PlayerCharacterForm
@@ -33,11 +34,6 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
     setIsExpanded(expanded)
     onExpandedChange?.(expanded)
   }
-
-  const progressPercent = Math.min(
-    100,
-    Math.round((summary.spent / summary.total) * 100),
-  )
 
   const progressColor = summary.isOverBudget
     ? "error"
@@ -140,7 +136,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
 
             <LinearProgress
               variant="determinate"
-              value={progressPercent}
+              value={getProgress(summary.spent, summary.total)}
               color={progressColor}
               sx={{ height: 8 }}
             />

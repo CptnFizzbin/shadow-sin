@@ -3,15 +3,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
-import {
-  attrPointCosts,
-  useAttributeFormGroup,
-} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { attrPointCosts, useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import {
-  AttributeKey,
-  AttributeOrder,
-} from "#/lib/system/types/attributeKey.ts"
+import { AttributeKey, AttributeOrder } from "#/lib/system/types/attributeKey.ts"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 export interface AttributesFormGroupProps {
   form: PlayerCharacterForm
@@ -33,10 +28,7 @@ export const AttributesFormGroup: FC<AttributesFormGroupProps> = ({ form }) => {
 
       <LinearProgress
         variant="determinate"
-        value={Math.min(
-          100,
-          Math.round((bpSpent / attrPointCosts.allowance) * 100),
-        )}
+        value={getProgress(bpSpent, attrPointCosts.allowance)}
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 

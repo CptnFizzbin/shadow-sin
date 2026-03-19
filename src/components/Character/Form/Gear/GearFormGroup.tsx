@@ -9,15 +9,13 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
-import {
-  GearBpAllowance,
-  GearNuyenBudget,
-} from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import { GearBpAllowance, GearNuyenBudget } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 interface GearFormGroupProps {
   form: PlayerCharacterForm
@@ -27,11 +25,6 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
   const { totalNuyen, totalBp, isOverBudget } = useGearFormGroup(form)
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(
     SectionHeader.Licenses,
-  )
-
-  const progressPercent = Math.min(
-    100,
-    Math.round((totalNuyen / GearNuyenBudget) * 100),
   )
 
   const onSectionChange = (section: SectionHeader) => {
@@ -58,7 +51,7 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
 
         <LinearProgress
           variant="determinate"
-          value={progressPercent}
+          value={getProgress(totalNuyen, GearNuyenBudget)}
           color={isOverBudget ? "error" : "primary"}
         />
       </Stack>
