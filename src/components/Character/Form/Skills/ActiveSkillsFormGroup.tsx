@@ -1,0 +1,361 @@
+import Alert from "@mui/material/Alert"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
+import IconButton from "@mui/material/IconButton"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
+import { type FC, useState } from "react"
+import { ActiveSkillDialog } from "#/components/Character/Form/Skills/Dialogs/ActiveSkillDialog.tsx"
+import { ActiveSkillGroupDialog } from "#/components/Character/Form/Skills/Dialogs/ActiveSkillGroupDialog.tsx"
+import type {
+  ActiveSkillFormState,
+  ActiveSkillGroupFormState,
+} from "#/components/Character/Form/Skills/SkillFormState.ts"
+import {
+  getSkillsInGroup,
+  SkillGroupDisplayNames,
+} from "#/components/Character/Form/Skills/SkillGroups.ts"
+import {
+  getActiveSkillBp,
+  getActiveSkillGroupBp,
+} from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { Label } from "#/components/UI/Text/Label.tsx"
+
+export interface ActiveSkillsFormGroupProps {
+  form: PlayerCharacterForm
+}
+
+type ActiveSkillDialogState =
+  | null
+  | { mode: "create"; open: boolean }
+  | { mode: "edit"; skill: ActiveSkillFormState; open: boolean }
+
+type ActiveSkillGroupDialogState =
+  | null
+  | { mode: "create"; open: boolean }
+  | { mode: "edit"; group: ActiveSkillGroupFormState; open: boolean }
+
+export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
+  form,
+}) => {
+  const {
+    activeSkills,
+    activeSkillGroups,
+    totalActiveSkillsBp,
+    activeSkillWarnings,
+    addActiveSkill,
+    updateActiveSkill,
+    removeActiveSkill,
+    addActiveSkillGroup,
+    updateActiveSkillGroup,
+    removeActiveSkillGroup,
+  } = useActiveSkillsFormGroup(form)
+
+  const [activeSkillDialog, setActiveSkillDialog] =
+    useState<ActiveSkillDialogState>(null)
+  const [activeSkillGroupDialog, setActiveSkillGroupDialog] =
+    useState<ActiveSkillGroupDialogState>(null)
+
+  const closeDialog = <TDialogState,>(
+    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+  ) => {
+    setter((prev) => prev && { ...prev, open: false })
+  }
+
+  const clearDialog = <TDialogState,>(
+    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+  ) => {
+    setter(null)
+  }
+
+  return (
+    <Stack gap={1}>
+      <Label
+        label={
+          <Stack direction="row" justifyContent="space-between">
+            <span>══ Active Skills ══</span>
+            <span>{totalActiveSkillsBp} BP</span>
+          </Stack>
+        }
+      />
+
+      {activeSkillWarnings.map((warning) => (
+        <Alert key={warning} severity="warning" sx={{ py: 0 }}>
+          {warning}
+        </Alert>
+      ))}
+
+      {activeSkills.length > 0 && (
+        <Stack gap={0.5}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ px: 0.5 }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              Active Skills
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              4 BP per Rating
+            </Typography>
+          </Stack>
+          {activeSkills.map((skill) => (
+            <ActiveSkillRow
+              key={skill.id}
+              skill={skill}
+              onEdit={() =>
+                setActiveSkillDialog({ mode: "edit", skill, open: true })
+              }
+              onDelete={() => removeActiveSkill(skill.id)}
+            />
+          ))}
+        </Stack>
+      )}
+
+      {activeSkillGroups.length > 0 && (
+        <Stack gap={0.5}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ px: 0.5 }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              Active Skill Groups
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              10 BP per Rating
+            </Typography>
+          </Stack>
+          {activeSkillGroups.map((group) => (
+            <ActiveSkillGroupRow
+              key={group.id}
+              group={group}
+              onEdit={() =>
+                setActiveSkillGroupDialog({ mode: "edit", group, open: true })
+              }
+              onDelete={() => removeActiveSkillGroup(group.id)}
+            />
+          ))}
+        </Stack>
+      )}
+
+      {activeSkills.length === 0 && activeSkillGroups.length === 0 && (
+        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+          No active skills added
+        </Typography>
+      )}
+
+      <Stack direction="row" gap={1}>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          onClick={() => setActiveSkillDialog({ mode: "create", open: true })}
+          sx={{ flexGrow: 1 }}
+        >
+          Add Skill
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          onClick={() =>
+            setActiveSkillGroupDialog({ mode: "create", open: true })
+          }
+          sx={{ flexGrow: 1 }}
+        >
+          Add Group
+        </Button>
+      </Stack>
+
+      {activeSkillDialog?.mode === "create" && (
+        <ActiveSkillDialog
+          open={activeSkillDialog.open}
+          onSave={(skill) => {
+            addActiveSkill(skill)
+            closeDialog(setActiveSkillDialog)
+          }}
+          onClose={() => closeDialog(setActiveSkillDialog)}
+          onClosed={() => clearDialog(setActiveSkillDialog)}
+        />
+      )}
+      {activeSkillDialog?.mode === "edit" && (
+        <ActiveSkillDialog
+          open={activeSkillDialog.open}
+          skill={activeSkillDialog.skill}
+          onSave={(skill) => {
+            updateActiveSkill(skill)
+            closeDialog(setActiveSkillDialog)
+          }}
+          onDelete={() => {
+            removeActiveSkill(activeSkillDialog.skill.id)
+            clearDialog(setActiveSkillDialog)
+          }}
+          onClose={() => closeDialog(setActiveSkillDialog)}
+          onClosed={() => clearDialog(setActiveSkillDialog)}
+        />
+      )}
+
+      {activeSkillGroupDialog?.mode === "create" && (
+        <ActiveSkillGroupDialog
+          open={activeSkillGroupDialog.open}
+          onSave={(group) => {
+            addActiveSkillGroup(group)
+            closeDialog(setActiveSkillGroupDialog)
+          }}
+          onClose={() => closeDialog(setActiveSkillGroupDialog)}
+          onClosed={() => clearDialog(setActiveSkillGroupDialog)}
+        />
+      )}
+      {activeSkillGroupDialog?.mode === "edit" && (
+        <ActiveSkillGroupDialog
+          open={activeSkillGroupDialog.open}
+          group={activeSkillGroupDialog.group}
+          onSave={(group) => {
+            updateActiveSkillGroup(group)
+            closeDialog(setActiveSkillGroupDialog)
+          }}
+          onDelete={() => {
+            removeActiveSkillGroup(activeSkillGroupDialog.group.id)
+            clearDialog(setActiveSkillGroupDialog)
+          }}
+          onClose={() => closeDialog(setActiveSkillGroupDialog)}
+          onClosed={() => clearDialog(setActiveSkillGroupDialog)}
+        />
+      )}
+    </Stack>
+  )
+}
+
+interface ActiveSkillRowProps {
+  skill: ActiveSkillFormState
+  onEdit: () => void
+  onDelete: () => void
+}
+
+const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
+  skill,
+  onEdit,
+  onDelete,
+}) => {
+  const bpCost = getActiveSkillBp(skill.rating, !!skill.specialization)
+
+  return (
+    <Box
+      sx={{
+        p: 1,
+        borderRadius: 1,
+        border: "1px solid",
+        borderColor: "divider",
+        cursor: "pointer",
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+      onClick={onEdit}
+    >
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+          {skill.name}
+        </Typography>
+        <Chip
+          label={skill.rating}
+          size="small"
+          variant="outlined"
+          sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
+        />
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ minWidth: 40, textAlign: "right" }}
+        >
+          {bpCost} BP
+        </Typography>
+        <IconButton
+          size="small"
+          color="error"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete()
+          }}
+        >
+          <RiDeleteBin6Line size={14} />
+        </IconButton>
+      </Stack>
+      {skill.specialization && (
+        <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
+          [{skill.specialization}]
+        </Typography>
+      )}
+    </Box>
+  )
+}
+
+interface ActiveSkillGroupRowProps {
+  group: ActiveSkillGroupFormState
+  onEdit: () => void
+  onDelete: () => void
+}
+
+const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
+  group,
+  onEdit,
+  onDelete,
+}) => {
+  const bpCost = getActiveSkillGroupBp(group.rating)
+  const memberSkills = getSkillsInGroup(group.groupName)
+  const displayName =
+    SkillGroupDisplayNames[
+      group.groupName as keyof typeof SkillGroupDisplayNames
+    ] ?? group.groupName
+
+  return (
+    <Box
+      sx={{
+        p: 1,
+        borderRadius: 1,
+        border: "1px solid",
+        borderColor: "divider",
+        cursor: "pointer",
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+      onClick={onEdit}
+    >
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+          {displayName}
+        </Typography>
+        <Chip
+          label={group.rating}
+          size="small"
+          variant="outlined"
+          sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
+        />
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ minWidth: 40, textAlign: "right" }}
+        >
+          {bpCost} BP
+        </Typography>
+        <IconButton
+          size="small"
+          color="error"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete()
+          }}
+        >
+          <RiDeleteBin6Line size={14} />
+        </IconButton>
+      </Stack>
+      {memberSkills.length > 0 && (
+        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+          [{memberSkills.join(", ")}]
+        </Typography>
+      )}
+    </Box>
+  )
+}
