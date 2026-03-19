@@ -5,7 +5,7 @@ interface ErrorLike {
   message: string
 }
 
-function isErrorLike (value: unknown): value is ErrorLike {
+function isErrorLike(value: unknown): value is ErrorLike {
   return (
     typeof value === "object" &&
     value !== null &&
