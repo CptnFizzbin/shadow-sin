@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <script>
       // Handle GitHub Pages redirects
-      sessionStorage.redirect = location.href.split("/").slice(3).join("/");
+      sessionStorage.setItem("redirect", location.pathname + location.search + location.hash);
       location.replace("/");
     </script>
     <title>ShadowSIN</title>
