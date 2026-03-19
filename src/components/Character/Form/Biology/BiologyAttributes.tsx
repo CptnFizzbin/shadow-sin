@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
-import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts"
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import {
@@ -47,7 +47,7 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, form }) => {
 
   const attributes = attrKeys
     .map((attr) => {
-      const state = getAttrBuildState({ attr, metatype, awakening })
+      const state = createAttrFormState({ attr, metatype, awakening })
       return { label: AttributeLabels[attr], ...state }
     })
     .filter((attr) => attr.min !== 0)

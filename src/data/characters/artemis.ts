@@ -7,10 +7,11 @@ import {
   GearType,
 } from "#/lib/system/types/gear/gearData.ts"
 import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
-import type {
-  LicenseData,
-  SinData,
+import {
+  type LicenseData,
+  VerificationKind,
 } from "#/lib/system/types/gear/licenseData.ts"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts"
 import type {
   FirearmAccessoryData,
@@ -95,19 +96,19 @@ export const artemis: PlayerCharacterData = {
       name: "Sara McCabe",
       type: GearType.sin,
       notes: "General use SIN.",
-      verification: { kind: "fake", rating: 6 },
+      verification: { kind: VerificationKind.Fake, rating: 6 },
     }),
     createGear<SinData>({
       name: "Jadzia Dax",
       type: GearType.sin,
       notes: "Runner SIN.",
-      verification: { kind: "fake", rating: 4 },
+      verification: { kind: VerificationKind.Fake, rating: 4 },
       licenses: [
         createGear<LicenseData>({
           name: "Driver License (Semi-Truck)",
           type: GearType.license,
           fixed: true,
-          verification: { kind: "fake", rating: 5 },
+          verification: { kind: VerificationKind.Fake, rating: 5 },
         }),
       ],
     }),
@@ -115,7 +116,7 @@ export const artemis: PlayerCharacterData = {
       name: "Jane Smith",
       type: GearType.sin,
       notes: "Burner SIN.",
-      verification: { kind: "fake", rating: 2 },
+      verification: { kind: VerificationKind.Fake, rating: 2 },
     }),
     createFirearm({
       name: "FN P93 Predator",

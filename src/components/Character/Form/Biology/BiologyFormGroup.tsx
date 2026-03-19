@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import { type FC, useEffect, useRef } from "react"
-import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts"
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm"
 import { AttributeKey } from "#/lib/system/types/attributeKey"
@@ -38,7 +38,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
       )
 
       for (const attr of attrsToUpdate) {
-        attrs[attr] = getAttrBuildState({
+        attrs[attr] = createAttrFormState({
           value: metatype.attributes[attr].min,
           attr: attr,
           metatype: metatype,

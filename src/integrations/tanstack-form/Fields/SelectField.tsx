@@ -11,6 +11,7 @@ import { useFieldContext } from "../FieldContext.ts"
 export interface SelectOption {
   label: ReactNode
   value: string
+  disabled?: boolean
 }
 
 export interface SelectFieldProps extends FormControlProps {
