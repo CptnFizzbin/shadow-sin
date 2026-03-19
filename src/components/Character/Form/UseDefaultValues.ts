@@ -1,17 +1,20 @@
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
-import { getAttributeFormState } from "#/components/Character/Form/AttributeBuildState.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { NULL_CHARACTER_ID } from "#/components/Character/Form/UseCharacterForm.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+
+export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
 
 export interface UseDefaultValuesOptions {
   character?: PlayerCharacterData
 }
 
-export const useDefaultValues = ({ character }: UseDefaultValuesOptions): CharacterFormState => {
+export const useDefaultValues = ({
+  character,
+}: UseDefaultValuesOptions): CharacterFormState => {
   const characterId = character?.id ?? NULL_CHARACTER_ID
   const { profile, biology } = character || {}
 
@@ -28,8 +31,8 @@ export const useDefaultValues = ({ character }: UseDefaultValuesOptions): Charac
         qualities: 0,
         attributes: 0,
         skills: 0,
-        gear: 0
-      }
+        gear: 0,
+      },
     },
 
     name: profile?.name || "",
@@ -41,72 +44,79 @@ export const useDefaultValues = ({ character }: UseDefaultValuesOptions): Charac
     awakening: biology?.awakening || AwakeningType.Mundane,
 
     attributes: {
-      body: getAttributeFormState({
+      body: createAttrFormState({
         attr: AttributeKey.body,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      agility: getAttributeFormState({
+      agility: createAttrFormState({
         attr: AttributeKey.agility,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      reaction: getAttributeFormState({
+      reaction: createAttrFormState({
         attr: AttributeKey.reaction,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      strength: getAttributeFormState({
+      strength: createAttrFormState({
         attr: AttributeKey.strength,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      charisma: getAttributeFormState({
+      charisma: createAttrFormState({
         attr: AttributeKey.charisma,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      intuition: getAttributeFormState({
+      intuition: createAttrFormState({
         attr: AttributeKey.intuition,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      logic: getAttributeFormState({
+      logic: createAttrFormState({
         attr: AttributeKey.logic,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      willpower: getAttributeFormState({
+      willpower: createAttrFormState({
         attr: AttributeKey.willpower,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      edge: getAttributeFormState({
+      edge: createAttrFormState({
         attr: AttributeKey.edge,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      magic: getAttributeFormState({
+      magic: createAttrFormState({
         attr: AttributeKey.magic,
         character,
         metatype,
-        awakening
+        awakening,
       }),
-      resonance: getAttributeFormState({
+      resonance: createAttrFormState({
         attr: AttributeKey.resonance,
         character,
         metatype,
-        awakening
-      })
-    }
+        awakening,
+      }),
+    },
+
+    qualities: [],
+
+    gear: {
+      sins: [],
+      licenses: [],
+    },
   }
 }

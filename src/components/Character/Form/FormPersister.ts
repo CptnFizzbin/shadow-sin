@@ -2,13 +2,14 @@ import type { CharacterFormState } from "./CharacterFormState.ts"
 
 const FORM_STORAGE_KEY_PREFIX = "shadow-sin:character-form:"
 
-function getFormStorageKey (characterId: string): string {
+function getFormStorageKey(characterId: string): string {
   return `${FORM_STORAGE_KEY_PREFIX}${characterId}`
 }
 
-function loadState (characterId: string): CharacterFormState | undefined {
+function loadState(characterId: string): CharacterFormState | undefined {
   const rawValue =
-    globalThis.localStorage?.getItem(getFormStorageKey(characterId)) ?? undefined
+    globalThis.localStorage?.getItem(getFormStorageKey(characterId)) ??
+    undefined
   if (!rawValue) return undefined
 
   try {
@@ -18,21 +19,18 @@ function loadState (characterId: string): CharacterFormState | undefined {
   }
 }
 
-function saveState (
-  characterId: string,
-  state: CharacterFormState
-): void {
+function saveState(characterId: string, state: CharacterFormState): void {
   try {
     globalThis.localStorage?.setItem(
       getFormStorageKey(characterId),
-      JSON.stringify(state)
+      JSON.stringify(state),
     )
   } catch {
     /* storage unavailable */
   }
 }
 
-function clearState (characterId: string): void {
+function clearState(characterId: string): void {
   try {
     globalThis.localStorage?.removeItem(getFormStorageKey(characterId))
   } catch {
@@ -43,5 +41,5 @@ function clearState (characterId: string): void {
 export const FormPersister = {
   loadState,
   saveState,
-  clearState
+  clearState,
 }

@@ -1,10 +1,8 @@
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
-import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
-
-export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
+import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const useCharacterForm = (character?: PlayerCharacterData) => {
   return useAppForm({
@@ -24,8 +22,8 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
       onChange: ({ formApi }) => {
         const characterId = formApi.state.values.characterId
         FormPersister.saveState(characterId, formApi.state.values)
-      }
-    }
+      },
+    },
   })
 }
 

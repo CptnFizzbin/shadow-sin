@@ -2,11 +2,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import { type FC, useEffect, useRef } from "react"
-import { getAttributeFormState } from "#/components/Character/Form/AttributeBuildState.ts"
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 
 export interface BiologyFormGroupProps {
@@ -39,15 +39,15 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
       const attrs = { ...prev }
 
       const attrsToUpdate = Object.values(AttributeKey).filter(
-        (attr) => attr !== AttributeKey.essence
+        (attr) => attr !== AttributeKey.essence,
       )
 
       for (const attr of attrsToUpdate) {
-        attrs[attr] = getAttributeFormState({
+        attrs[attr] = createAttrFormState({
           value: metatype.attributes[attr].min,
           attr: attr,
           metatype: metatype,
-          awakening: awakening
+          awakening: awakening,
         })
       }
 
@@ -78,7 +78,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                       {cost} BP
                     </Typography>
                   </Stack>
-                )
+                ),
               }
             })}
           />
@@ -106,7 +106,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                         {cost} BP
                       </Typography>
                     </Stack>
-                  )
+                  ),
                 }
               })}
             />

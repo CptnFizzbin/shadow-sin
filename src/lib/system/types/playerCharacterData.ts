@@ -32,11 +32,11 @@ export interface PlayerCharacterData {
 
   biology: {
     metatype: MetatypeKey
+    awakening: AwakeningType
     gender?: string
     age?: number
     weight?: string
     height?: string
-    awakening: AwakeningType
   }
 
   karma: {

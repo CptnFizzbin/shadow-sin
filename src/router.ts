@@ -3,7 +3,7 @@ import { getContext } from "./integrations/tanstack-query/root-provider.tsx"
 import { routeTree } from "./routeTree.gen.ts"
 
 export function getRouter() {
-  const router = createTanStackRouter({
+  return createTanStackRouter({
     routeTree,
 
     context: getContext(),
@@ -12,11 +12,10 @@ export function getRouter() {
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
   })
-
-  return router
 }
 
 declare module "@tanstack/react-router" {
+  // noinspection JSUnusedGlobalSymbols
   interface Register {
     router: ReturnType<typeof getRouter>
   }

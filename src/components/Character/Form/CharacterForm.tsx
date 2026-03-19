@@ -5,10 +5,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
+import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
+import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
+import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
+import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
 import { useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
-import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
-import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
 
 interface CharacterFormProps {
   character?: PlayerCharacterData
@@ -68,6 +70,26 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
             <form.Subscribe selector={(form) => form.values.attributes}>
               {() => <AttributesFormGroup form={form} />}
             </form.Subscribe>
+          </Stack>
+        </Paper>
+
+        <Paper sx={{ padding: 1 }}>
+          <Stack gap={1}>
+            <Typography variant="h6" sx={{ textAlign: "center" }}>
+              Qualities
+            </Typography>
+
+            <QualitiesFormGroup form={form} />
+          </Stack>
+        </Paper>
+
+        <Paper sx={{ padding: 1 }}>
+          <Stack gap={1}>
+            <Typography variant="h6" sx={{ textAlign: "center" }}>
+              Gear
+            </Typography>
+
+            <GearFormGroup form={form} />
           </Stack>
         </Paper>
       </Stack>

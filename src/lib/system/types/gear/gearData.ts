@@ -1,4 +1,4 @@
-import type { AvailablityData } from "#/lib/system/types/availablityData.ts"
+import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
 import type { FirearmData } from "#/lib/system/types/gear/weaponData.ts"
 import { WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
@@ -28,7 +28,7 @@ export interface GearData {
   equipped?: boolean
   fixed?: boolean
 
-  availability?: AvailablityData
+  availability?: AvailablityInfo
   source?: SourceData
   rating?: number
   cost?: number
