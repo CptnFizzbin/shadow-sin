@@ -22,6 +22,6 @@ export type GearEffectTarget =
 
 export interface GearEffectData {
   type: GearEffectType | string
-  target?: GearEffectTarget
+  target?: GearEffectTarget | string
   value: number
 }

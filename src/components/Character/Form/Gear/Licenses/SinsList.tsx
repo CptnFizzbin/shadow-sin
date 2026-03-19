@@ -10,7 +10,10 @@ import { useState } from "react"
 import { SinFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getSinAvailability, type SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import {
+  getSinAvailability,
+  type SinFormState,
+} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"

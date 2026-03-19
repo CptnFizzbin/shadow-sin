@@ -1,12 +1,17 @@
 import Chip from "@mui/material/Chip"
 import type { FC } from "react"
-import { availabilityToString, type AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
+import {
+  type AvailablityInfo,
+  availabilityToString,
+} from "#/lib/system/types/availablityInfo.ts"
 
 export interface AvailabilityChipProps {
   availability: AvailablityInfo
 }
 
-export const AvailabilityChip: FC<AvailabilityChipProps> = ({ availability }) => {
+export const AvailabilityChip: FC<AvailabilityChipProps> = ({
+  availability,
+}) => {
   const rating = availabilityToString(availability)
 
   if (availability.rating === 0) return null

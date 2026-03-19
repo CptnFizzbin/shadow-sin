@@ -8,7 +8,10 @@ import type { FC } from "react"
 import { LicenseFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormFields.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import { licenseFieldMap, useLicenseForm } from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
+import {
+  licenseFieldMap,
+  useLicenseForm,
+} from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
 
 export interface LicenseFormDialogProps {
   open: boolean
@@ -35,18 +38,20 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
     (sin) => sin.id === (license ? license.sinId : sinId),
   )
 
-  const form = useLicenseForm(editMode
-    ? {
-      mode: "edit",
-      license: license,
-      onSubmit: onSave,
-    }
-    : {
-      mode: "create",
-      sinId: sinId ?? "",
-      sinReal: selectedSin ? selectedSin.rating === "real" : false,
-      onSubmit: onSave,
-    })
+  const form = useLicenseForm(
+    editMode
+      ? {
+          mode: "edit",
+          license: license,
+          onSubmit: onSave,
+        }
+      : {
+          mode: "create",
+          sinId: sinId ?? "",
+          sinReal: selectedSin ? selectedSin.rating === "real" : false,
+          onSubmit: onSave,
+        },
+  )
 
   const title = editMode ? "Edit License" : "Create License"
 

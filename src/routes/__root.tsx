@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
-import Footer from "#/components/UI/Footer"
-import TanStackQueryProvider from "../integrations/tanstack-query/root-provider"
+import Footer from "#/components/UI/Footer.tsx"
+import TanStackQueryProvider from "../integrations/tanstack-query/root-provider.tsx"
 
 type RouterContext = object
 

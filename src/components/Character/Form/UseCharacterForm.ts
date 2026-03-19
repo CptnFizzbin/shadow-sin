@@ -105,6 +105,8 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
       }),
     },
 
+    qualities: character?.qualities ?? [],
+
     gear: {
       sins: [],
       licenses: [],
