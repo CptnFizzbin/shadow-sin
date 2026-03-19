@@ -9,8 +9,7 @@ import { RiAddLine } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import { AddQualityDialog } from "#/components/Qualities/Dialogs/AddQualityDialog.tsx"
-import { EditQualityDialog } from "#/components/Qualities/Dialogs/EditQualityDialog.tsx"
+import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
@@ -72,19 +71,25 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
         </Button>
       </Stack>
 
-      <AddQualityDialog
+      <QualityFormDialog
         open={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onAdd={addQuality}
+        onSave={(quality) => {
+          addQuality(quality)
+          setIsAddDialogOpen(false)
+        }}
       />
 
       {selectedEntry !== null && (
-        <EditQualityDialog
+        <QualityFormDialog
           quality={selectedEntry}
           open={isEditDialogOpen}
           onClose={() => setIsEditDialogOpen(false)}
           onClosed={() => setSelectedEntry(null)}
-          onSave={updateQuality}
+          onSave={(quality) => {
+            updateQuality(quality)
+            setIsEditDialogOpen(false)
+          }}
           onDelete={() => removeQuality(selectedEntry)}
         />
       )}
