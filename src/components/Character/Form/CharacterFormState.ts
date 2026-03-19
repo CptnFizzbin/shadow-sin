@@ -1,4 +1,5 @@
 import type { AttrFormState } from "#/components/Character/Form/AttrFormState.ts"
+import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
@@ -47,5 +48,10 @@ export interface CharacterFormState {
   gear: {
     sins: SinFormState[]
     licenses: LicenseFormState[]
+    weapons: GearItemFormState[]
+    armor: GearItemFormState[]
+    vehicles: GearItemFormState[]
+    cyberware: GearItemFormState[]
+    misc: GearItemFormState[]
   }
 }

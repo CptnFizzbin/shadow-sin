@@ -110,6 +110,11 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
     gear: {
       sins: [],
       licenses: [],
+      weapons: [],
+      armor: [],
+      vehicles: [],
+      cyberware: [],
+      misc: [],
     },
   }
 

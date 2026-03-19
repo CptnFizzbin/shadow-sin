@@ -9,13 +9,19 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
+import { ArmorSection } from "#/components/Character/Form/Gear/Armor/ArmorSection.tsx"
+import { CyberwareSection } from "#/components/Character/Form/Gear/Cyberware/CyberwareSection.tsx"
 import {
   GearBpAllowance,
   GearNuyenBudget,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import { getGearItemTotalCost } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
+import { MiscSection } from "#/components/Character/Form/Gear/Misc/MiscSection.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
+import { VehiclesSection } from "#/components/Character/Form/Gear/Vehicles/VehiclesSection.tsx"
+import { WeaponsSection } from "#/components/Character/Form/Gear/Weapons/WeaponsSection.tsx"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
@@ -120,14 +126,18 @@ const GearSectionContent: FC<{
   section: SectionHeader
 }> = ({ form, section }) => {
   switch (section) {
+    case SectionHeader.Weapons:
+      return <WeaponsSection form={form} />
+    case SectionHeader.Armor:
+      return <ArmorSection form={form} />
     case SectionHeader.Licenses:
       return <SinsAndLicensesSection form={form} />
-    default:
-      return (
-        <Typography variant="body2" color="text.secondary">
-          {section} content coming soon.
-        </Typography>
-      )
+    case SectionHeader.Vehicles:
+      return <VehiclesSection form={form} />
+    case SectionHeader.Cyberware:
+      return <CyberwareSection form={form} />
+    case SectionHeader.Misc:
+      return <MiscSection form={form} />
   }
 }
 
@@ -143,7 +153,35 @@ const GearSectionNuyen: FC<{
       nuyen += gear.sins.reduce((sum, sin) => sum + sin.cost, 0)
       nuyen += gear.licenses.reduce((sum, license) => sum + license.cost, 0)
       break
-    default:
+    case SectionHeader.Weapons:
+      nuyen += gear.weapons.reduce(
+        (sum, item) => sum + getGearItemTotalCost(item),
+        0,
+      )
+      break
+    case SectionHeader.Armor:
+      nuyen += gear.armor.reduce(
+        (sum, item) => sum + getGearItemTotalCost(item),
+        0,
+      )
+      break
+    case SectionHeader.Vehicles:
+      nuyen += gear.vehicles.reduce(
+        (sum, item) => sum + getGearItemTotalCost(item),
+        0,
+      )
+      break
+    case SectionHeader.Cyberware:
+      nuyen += gear.cyberware.reduce(
+        (sum, item) => sum + getGearItemTotalCost(item),
+        0,
+      )
+      break
+    case SectionHeader.Misc:
+      nuyen += gear.misc.reduce(
+        (sum, item) => sum + getGearItemTotalCost(item),
+        0,
+      )
       break
   }
 
