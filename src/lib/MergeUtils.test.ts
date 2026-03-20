@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+
 import { mergeArrays, mergeObjects } from "#/lib/MergeUtils.ts"
 
 describe("mergeArrays", () => {

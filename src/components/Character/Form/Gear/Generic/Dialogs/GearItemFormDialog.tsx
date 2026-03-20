@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+
 import { GearItemFormFields } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormFields.tsx"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import {

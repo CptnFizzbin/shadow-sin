@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
+
 import type { GearItemRestriction } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
 import { gearItemFormOpts } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"

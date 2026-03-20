@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
+
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemsList } from "#/components/Character/Form/Gear/Generic/GearItemsList.tsx"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"

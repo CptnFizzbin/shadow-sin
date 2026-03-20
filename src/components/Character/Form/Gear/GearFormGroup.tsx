@@ -4,12 +4,14 @@ import AccordionSummary from "@mui/material/AccordionSummary"
 import Alert from "@mui/material/Alert"
 import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
-import { useTheme } from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
+import { useTheme } from "@mui/material/styles"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
+
+import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import {
   GearBpAllowance,
   GearMaxAvailability,
@@ -23,7 +25,6 @@ import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/License
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -99,7 +100,9 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
           | "misc"
         const items = (gear as CharacterFormState["gear"])[sectionKey] || []
         const invalidItems = (items as GearItemFormState[]).filter(
-          (it) => (it.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability,
+          (it) =>
+            (it.availability?.rating ?? Number.NEGATIVE_INFINITY) >
+            GearMaxAvailability,
         )
         if (invalidItems.length > 0) {
           sectionInvalid.add(sectionName)

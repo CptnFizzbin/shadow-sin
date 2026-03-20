@@ -1,4 +1,5 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
+
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"

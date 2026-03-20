@@ -1,8 +1,6 @@
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import {
-  type QualityData,
-  QualityDataSchema,
-} from "#/lib/system/types/qualityData.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
+import { QualityDataSchema } from "#/lib/system/types/qualityData.ts"
 
 export type QualityFormOptions = { onSubmit: (values: QualityData) => void } & (
   | { mode: "create" }

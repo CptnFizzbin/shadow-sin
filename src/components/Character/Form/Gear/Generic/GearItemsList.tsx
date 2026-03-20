@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
+
 import { GearItemFormDialog } from "#/components/Character/Form/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemCard } from "#/components/Character/Form/Gear/Generic/GearItemCard.tsx"
