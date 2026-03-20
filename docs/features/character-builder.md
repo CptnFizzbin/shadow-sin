@@ -22,12 +22,12 @@ The creation form captures profile, biology, and attributes. Form state is persi
 
 ## 2. Build Point Budget Tracker
 
-The form state already tracks `buildPoints.spent` by category. Qualities BP spend is now wired (PR #1 ✅), but nothing is rendered and attribute costs are not tracked.
+Qualities BP spend is wired (PR #1 ✅). A sticky `BpSummaryFooter` with a full per-category breakdown and inline warnings was added in PR #7 ✅. Attribute BP costs are written reactively by the increment/decrement buttons.
 
 - [x] Track net BP spent on qualities (positive cost, negative grant, cap at −35 BP) ✅ PR #1
-- [ ] Display a persistent **BP summary bar** (total / spent / remaining) at the top of the creation form
-- [ ] Break down spending by category: Metatype, Attributes, Skills, Qualities, Gear
-- [ ] Apply real-time BP costs as attribute values change (wire to `buildPoints.spent.attributes`)
+- [x] Display a persistent **BP summary bar** (total / spent / remaining) — sticky footer at bottom of creation form ✅ PR #7
+- [x] Break down spending by category: Biology, Attributes, Skills, Qualities, Gear ✅ PR #7
+- [x] Apply real-time BP costs as attribute values change (wired via increment/decrement buttons) ✅ PR #7
 - [ ] Block form submission when the character is over budget
 - [ ] Show a warning when within 10 BP of the limit
 
@@ -35,12 +35,13 @@ The form state already tracks `buildPoints.spent` by category. Qualities BP spen
 
 ## 3. Skills (Creation Form)
 
-Skills are a major BP sink and need to be part of the creation form before a character can be saved in a legal state. For the prototype, manually typing the skill name is sufficient — no pre-built skill catalog needed.
+Full skills section implemented in PR #8 ✅ — Active skills (by name or skill group), Knowledge skills, and Language skills. Duplicate-skill prevention is handled via disabled menu items. BP costs are calculated dynamically in `UseBuildPointsSummary` from the skills arrays. Free SP = (Logic + Intuition) × 3 for knowledge/language skills.
 
-- [ ] **Add skill** section in the creation form — type skill name, set rating (1–6), optional specialization
-- [ ] **Edit / remove** added skills before saving
-- [ ] Separate display for Active, Knowledge, and Language skills
-- [ ] Reflect BP cost per skill (active: rating × 4; specialization: +2 BP) in the build budget
+- [x] **Add active skill** — free-text skill name, rating (1–6), optional specialization ✅ PR #8
+- [x] **Add skill group** — group name, rating ✅ PR #8
+- [x] **Edit / remove** added skills before saving ✅ PR #8
+- [x] Separate sections for Active, Knowledge, and Language skills ✅ PR #8
+- [x] Reflect BP cost per skill (active: rating × 4; group: rating × 10; specialization: +2 BP) in the build budget ✅ PR #8
 
 ---
 
@@ -88,15 +89,15 @@ The `/$characterId/skills` route is a placeholder stub. The creation-form skills
 
 ## 8. Gear (Creation Form)
 
-A gear section has been added to the character creation form in PR #5 ✅, with a nuyen/BP budget tracker and accordion-style category sections. SINs & Licenses are fully functional; Weapons, Armor, Vehicles, Cyberware, and Misc are accordion shells with "coming soon" placeholders. The `/$characterId/gear` view route is still a stub.
+A gear section is fully integrated into the creation form. SINs & Licenses (PR #5 ✅) and all other gear categories (Weapons, Armor, Vehicles, Cyberware, Misc — PR #6 ✅) support full add/edit/remove with a shared `GearItemFormState` (name, cost, optional availability, source, description). Nuyen totals from all sections are summed into the gear BP line in the budget footer. The `/$characterId/gear` view route is still a stub.
 
 - [x] Gear budget tracker — nuyen progress bar (250 k¥ / 50 BP cap), over-budget error alert ✅ PR #5
 - [x] **SINs & Licenses** — add/edit/remove fake SINs (rating × 1 000¥) and one real SIN (free); attach named licenses with rating (rating × 100¥); delete-confirmation dialog when a SIN has attached licenses ✅ PR #5
-- [ ] **Add weapon** — name, type (`WeaponType`/`FirearmType`), damage, reach/range
-- [ ] **Add armor** — name, ballistic/impact ratings
-- [ ] **Add implant** — name, `ImplantType`, `ImplantGrade`, essence cost
-- [ ] **Add device** — commlink, RCC, or other device
-- [ ] **Remove any gear item**
+- [x] **Weapons** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
+- [x] **Armor** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
+- [x] **Vehicles** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
+- [x] **Cyberware / Implants** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
+- [x] **Misc** — add/edit/remove generic gear items ✅ PR #6
 - [ ] Compute and display running **Essence cost** from implants (subtract from 6.0)
 - [ ] `/$characterId/gear` view page — list all gear grouped by type
 
