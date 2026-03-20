@@ -1,16 +1,17 @@
-import Chip from "@mui/material/Chip"
+import Chip, { type ChipProps } from "@mui/material/Chip"
 import type { FC } from "react"
 import {
   type AvailablityInfo,
   availabilityToString,
 } from "#/lib/system/types/availablityInfo.ts"
 
-export interface AvailabilityChipProps {
+export interface AvailabilityChipProps extends Omit<ChipProps, "label"> {
   availability: AvailablityInfo
 }
 
 export const AvailabilityChip: FC<AvailabilityChipProps> = ({
   availability,
+  ...props
 }) => {
   const rating = availabilityToString(availability)
 
@@ -18,10 +19,11 @@ export const AvailabilityChip: FC<AvailabilityChipProps> = ({
 
   return (
     <Chip
-      label={`Avail: ${rating}`}
       size="small"
       variant="outlined"
       sx={{ height: 20, fontSize: "0.7rem" }}
+      {...props}
+      label={`Avail: ${rating}`}
     />
   )
 }

@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
+import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
@@ -57,7 +58,16 @@ export const GearItemCard: FC<GearItemCardProps> = ({
 
       {(availability || source || description) && (
         <Stack direction="row" gap={1} sx={{ pt: 1 }} flexWrap="wrap">
-          {availability && <AvailabilityChip availability={availability} />}
+          {availability && (
+            <AvailabilityChip
+              availability={availability}
+              color={
+                availability.rating > GearMaxAvailability
+                  ? "warning"
+                  : undefined
+              }
+            />
+          )}
 
           {source && (
             <Chip
