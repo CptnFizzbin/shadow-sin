@@ -1,16 +1,11 @@
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
-import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
+import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 import { GearItemFormDialog } from "#/components/Character/Form/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
-import { getGearItemAvailability } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
-import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
-import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import { GearItemCard } from "#/components/Character/Form/Gear/Generic/GearItemCard.tsx"
 
 type DialogState =
   | null
@@ -54,74 +49,6 @@ export const GearItemsList: FC<GearItemsListProps> = ({
 
   return (
     <>
-      {items.map((item) => {
-        const availability = getGearItemAvailability(item)
-
-        return (
-          <Box key={item.id}>
-            <Stack
-              direction="column"
-              gap={0}
-              sx={{
-                p: 1,
-                borderRadius: 1,
-                border: "1px solid",
-                borderColor: "divider",
-                cursor: "pointer",
-                "&:hover": { bgcolor: "action.hover" },
-              }}
-              onClick={() => setDialogState({ mode: "edit", item, open: true })}
-            >
-              <Stack direction="row" alignItems="center" gap={1}>
-                <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
-                  {item.name}
-                </Typography>
-
-                <Typography variant="body2">
-                  <Nuyen amount={item.cost} />
-                </Typography>
-
-                <IconButton
-                  size="small"
-                  color="error"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onRemove(item.id)
-                  }}
-                >
-                  <RiDeleteBin6Line size={16} />
-                </IconButton>
-              </Stack>
-
-              {(availability || item.description || item.items.length > 0) && (
-                <Stack direction="row" gap={1} sx={{ pt: 0.5 }} flexWrap="wrap">
-                  {availability && (
-                    <AvailabilityChip availability={availability} />
-                  )}
-
-                  {item.description && (
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{ flexGrow: 1 }}
-                    >
-                      {item.description}
-                    </Typography>
-                  )}
-
-                  {item.items.length > 0 && (
-                    <Typography variant="caption" color="text.secondary">
-                      {item.items.length} sub-item
-                      {item.items.length !== 1 ? "s" : ""}
-                    </Typography>
-                  )}
-                </Stack>
-              )}
-            </Stack>
-          </Box>
-        )
-      })}
-
       <Button
         variant="outlined"
         size="small"
@@ -131,6 +58,17 @@ export const GearItemsList: FC<GearItemsListProps> = ({
       >
         Add {label}
       </Button>
+
+      <Stack gap={1}>
+        {items.map((item) => (
+          <GearItemCard
+            key={item.id}
+            item={item}
+            onEdit={() => setDialogState({ mode: "edit", item, open: true })}
+            onRemove={() => onRemove(item.id)}
+          />
+        ))}
+      </Stack>
 
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
