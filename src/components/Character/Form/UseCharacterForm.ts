@@ -1,5 +1,6 @@
 import { debounce } from "@tanstack/pacer"
 import { useEffect } from "react"
+
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"

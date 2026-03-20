@@ -1,4 +1,5 @@
 import { useStore } from "@tanstack/react-store"
+
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
@@ -9,8 +10,8 @@ import {
   getFreeSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
+import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export interface BpLineItem {
   label: string

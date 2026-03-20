@@ -3,7 +3,9 @@ import { useThrottler } from "@tanstack/react-pacer"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { createStore } from "@tanstack/store"
-import { type FC, useEffect, useMemo, useRef } from "react"
+import type { FC } from "react"
+import { useEffect, useMemo, useRef } from "react"
+
 import {
   CharacterStoreProvider,
   useCharacterStoreContext,

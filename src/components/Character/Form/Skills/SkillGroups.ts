@@ -1,4 +1,5 @@
-import { type SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
+import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
+import { Skills } from "#/lib/system/types/SkillKey.ts"
 
 export const SkillGroupNames = [
   "athletics",

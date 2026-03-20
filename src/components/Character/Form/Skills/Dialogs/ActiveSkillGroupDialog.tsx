@@ -9,7 +9,9 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { type FC, useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
+
 import type { ActiveSkillGroupFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import {
   getSkillsInGroup,

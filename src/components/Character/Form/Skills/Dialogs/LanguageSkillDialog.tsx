@@ -11,7 +11,9 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import { type FC, useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
+
 import type { LanguageSkillFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 

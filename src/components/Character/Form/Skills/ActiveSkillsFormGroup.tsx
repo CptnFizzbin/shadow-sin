@@ -6,7 +6,9 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { type FC, useState } from "react"
+import type { Dispatch, FC, SetStateAction } from "react"
+import { useState } from "react"
+
 import { ActiveSkillDialog } from "#/components/Character/Form/Skills/Dialogs/ActiveSkillDialog.tsx"
 import { ActiveSkillGroupDialog } from "#/components/Character/Form/Skills/Dialogs/ActiveSkillGroupDialog.tsx"
 import type {
@@ -24,7 +26,8 @@ import {
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import { type SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
+import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
+import { Skills } from "#/lib/system/types/SkillKey.ts"
 
 export interface ActiveSkillsFormGroupProps {
   form: PlayerCharacterForm
@@ -96,13 +99,13 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
   ])
 
   const closeDialog = <TDialogState,>(
-    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+    setter: Dispatch<SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
   const clearDialog = <TDialogState,>(
-    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+    setter: Dispatch<SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
   }

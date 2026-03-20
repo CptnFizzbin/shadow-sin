@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+
 import { SinFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormFields.tsx"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import {

@@ -9,6 +9,7 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
+
 import {
   GearBpAllowance,
   GearNuyenBudget,

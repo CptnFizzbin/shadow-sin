@@ -6,7 +6,9 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { type FC, useState } from "react"
+import type { Dispatch, FC, SetStateAction } from "react"
+import { useState } from "react"
+
 import { KnowledgeSkillDialog } from "#/components/Character/Form/Skills/Dialogs/KnowledgeSkillDialog.tsx"
 import { LanguageSkillDialog } from "#/components/Character/Form/Skills/Dialogs/LanguageSkillDialog.tsx"
 import type {
@@ -60,13 +62,13 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
     useState<LanguageSkillDialogState>(null)
 
   const closeDialog = <TDialogState,>(
-    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+    setter: Dispatch<SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
   const clearDialog = <TDialogState,>(
-    setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
+    setter: Dispatch<SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
   }

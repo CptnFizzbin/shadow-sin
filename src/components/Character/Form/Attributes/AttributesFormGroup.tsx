@@ -2,6 +2,7 @@ import { LinearProgress } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+
 import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
 import {
   attrPointCosts,
