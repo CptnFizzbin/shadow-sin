@@ -3,12 +3,14 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
+import eslint from "vite-plugin-eslint"
 
 const config = defineConfig({
   plugins: [
     devtools(),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackRouter({ autoCodeSplitting: true }),
+    eslint(),
     react({
       babel: {
         plugins: ["babel-plugin-react-compiler"],
