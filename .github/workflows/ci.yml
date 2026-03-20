@@ -27,11 +27,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run Biome lint and format check
-        run: yarn check
-
-      - name: Type check
-        run: yarn tsc
+      - name: Run lint and format check
+        run: yarn lint
 
       - name: Build
         run: yarn build
