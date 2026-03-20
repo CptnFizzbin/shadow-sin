@@ -10,14 +10,20 @@
   },
   "scripts": {
     "dev": "vite dev --port 3000",
-    "fix": "biome check --fix",
+    "fix": "FORCE_COLOR=1 npm-run-all -lsnc '*:fix'",
+    "lint": "FORCE_COLOR=1 npm-run-all -lsnc '*:lint'",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "tsc:lint": "yarn tsc",
+    "tsc:fix": "yarn tsc:lint",
+    "eslint": "eslint src",
+    "eslint:lint": "yarn eslint",
+    "eslint:fix": "yarn eslint:lint --fix",
+    "prettier": "prettier src",
+    "prettier:lint": "yarn prettier --check",
+    "prettier:fix": "yarn prettier:lint --write"
   },
   "dependencies": {
     "@emotion/react": "^11.0.0",
@@ -42,13 +48,12 @@
     "@tanstack/store": "latest",
     "fast-sort": "^3.4.1",
     "js-yaml": "^4.1.1",
-    "lucide-react": "^0.545.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.8",
+    "@eslint/js": "^9.0.0",
     "@tanstack/devtools-event-client": "latest",
     "@tanstack/devtools-vite": "latest",
     "@testing-library/dom": "^10.4.1",
@@ -59,17 +64,19 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.1.4",
     "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
     "jsdom": "^28.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.8.1",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.57.0",
     "vite": "^7.3.1",
+    "vite-plugin-biome": "^1.2.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.5"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lightningcss"
-    ]
   },
   "packageManager": "yarn@4.13.0+sha512.5c20ba010c99815433e5c8453112165e673f1c7948d8d2b267f4b5e52097538658388ebc9f9580656d9b75c5cc996f990f611f99304a2197d4c56d21eea370e7"
 }

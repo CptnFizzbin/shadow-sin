@@ -7,8 +7,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 
-interface SinRemoveDialogProps
-  extends Omit<DialogProps, "onClose" | "onTransitionExited"> {
+interface SinRemoveDialogProps extends Omit<
+  DialogProps,
+  "onClose" | "onTransitionExited"
+> {
   sin: SinFormState
   onConfirm: () => void
   onClose: () => void

@@ -5,8 +5,10 @@ import type { FC } from "react"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 import { useFieldContext } from "../FieldContext.ts"
 
-interface NumberFieldProps
-  extends Omit<MuiTextFieldProps, "type" | "value" | "onChange" | "onBlur"> {}
+interface NumberFieldProps extends Omit<
+  MuiTextFieldProps,
+  "type" | "value" | "onChange" | "onBlur"
+> {}
 
 export const NumberField: FC<NumberFieldProps> = ({ ...props }) => {
   const field = useFieldContext<number | undefined>()
