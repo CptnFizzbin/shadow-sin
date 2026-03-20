@@ -5,12 +5,12 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { type FC, useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
+
 import { LicenseFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/LicenseFormDialog.tsx"
-import {
-  getLicenseAvailability,
-  type LicenseFormState,
-} from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { useLicensesFormGroup } from "#/components/Character/Form/Gear/Licenses/UseLicensesFormGroup.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"

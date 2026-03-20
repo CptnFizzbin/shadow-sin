@@ -1,6 +1,6 @@
+import { StorageManager } from "#/lib/storage/StorageManager.ts"
 import { CharacterManager } from "#/lib/storage/characters/CharacterManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/local-storage/LocalStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/StorageManager.ts"
 
 export { CharacterManager } from "#/lib/storage/characters/CharacterManager.ts"
 export type {

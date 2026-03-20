@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+
 import { SinsList } from "#/components/Character/Form/Gear/Licenses/SinsList.tsx"
 
 export const SinsAndLicensesSection: FC = () => {

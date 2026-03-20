@@ -4,6 +4,7 @@ import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionReq
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
+import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export interface BpLineItem {
   label: string

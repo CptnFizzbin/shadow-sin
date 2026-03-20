@@ -1,18 +1,19 @@
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
+import { metatypes } from "#/lib/system/types/MetatypeData.ts"
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import {
-  type AttributeKey,
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
 } from "#/lib/system/types/attributeKey.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
-import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 
 export const BiologyAttributes: FC = () => {
   return (

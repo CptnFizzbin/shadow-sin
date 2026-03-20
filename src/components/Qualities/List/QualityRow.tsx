@@ -3,6 +3,7 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface QualityRowProps {
