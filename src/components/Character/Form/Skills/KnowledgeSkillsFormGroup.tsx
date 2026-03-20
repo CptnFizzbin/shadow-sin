@@ -13,10 +13,7 @@ import type {
   KnowledgeSkillFormState,
   LanguageSkillFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import {
-  getKnowledgeSkillSp,
-  getLanguageSkillSp,
-} from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useKnowledgeSkillsFormGroup } from "#/components/Character/Form/Skills/UseKnowledgeSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -44,7 +41,6 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
     freeSkillPoints,
     maxSkillPoints,
     totalSpUsed,
-    extraSpNeeded,
     extraSpBp,
     knowledgeSkillWarnings,
     addKnowledgeSkill,
@@ -60,45 +56,39 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
   const [languageSkillDialog, setLanguageSkillDialog] =
     useState<LanguageSkillDialogState>(null)
 
-  const closeDialog = <TDialogState,>(
+  const closeDialog = <TDialogState, > (
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
-  const clearDialog = <TDialogState,>(
+  const clearDialog = <TDialogState, > (
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
   }
 
+  const remainingFreeSp = Math.max(freeSkillPoints - totalSpUsed, 0)
+
   return (
     <Stack gap={1}>
-      <Label label="══ Knowledge & Languages ══" />
+      <Label label="Knowledge & Languages" variant={"outlined"} />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2">
-          {freeSkillPoints} free skill points
+        <Typography
+          variant="body2"
+          color={"warning.main"}
+        >
+          {totalSpUsed} SP
         </Typography>
-        <Stack direction="row" gap={1} alignItems="center">
-          <Typography
-            variant="body2"
-            color={
-              totalSpUsed > freeSkillPoints ? "warning.main" : "text.secondary"
-            }
-          >
-            {totalSpUsed} SP used
-          </Typography>
-          {extraSpNeeded > 0 && (
-            <Chip
-              label={`+${extraSpBp} BP`}
-              size="small"
-              color="warning"
-              variant="outlined"
-              sx={{ height: 20, fontSize: "0.7rem" }}
-            />
-          )}
-        </Stack>
+
+        <Typography variant="body2" color={"text.secondary"}>
+          {remainingFreeSp > 0 && `${remainingFreeSp} free SP remaining`}
+        </Typography>
+
+        <Typography variant="body2" color={"secondary.main"}>
+          {extraSpBp} BP
+        </Typography>
       </Stack>
 
       {totalSpUsed > maxSkillPoints && (
@@ -122,9 +112,6 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
           >
             <Typography variant="caption" color="text.secondary">
               Knowledge Skills
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              1 SP per Rating
             </Typography>
           </Stack>
           {knowledgeSkills.map((skill) => (
@@ -153,9 +140,6 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
           >
             <Typography variant="caption" color="text.secondary">
               Languages
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              1 SP per Rating
             </Typography>
           </Stack>
           {languageSkills.map((skill) => (
@@ -292,19 +276,29 @@ const KnowledgeSkillRow: FC<KnowledgeSkillRowProps> = ({
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
+
+
+        {skill.specialization && (
+          <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
+            {skill.specialization}
+          </Typography>
+        )}
+
         <Chip
           label={skill.rating}
           size="small"
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
+
         <Typography
           variant="caption"
-          color="text.secondary"
+          color="warning.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >
           {spCost} SP
         </Typography>
+
         <IconButton
           size="small"
           color="error"
@@ -316,11 +310,6 @@ const KnowledgeSkillRow: FC<KnowledgeSkillRowProps> = ({
           <RiDeleteBin6Line size={14} />
         </IconButton>
       </Stack>
-      {skill.specialization && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
-          [{skill.specialization}]
-        </Typography>
-      )}
     </Box>
   )
 }
@@ -351,9 +340,6 @@ const LanguageSkillRow: FC<LanguageSkillRowProps> = ({
         borderColor: "divider",
         cursor: "pointer",
         "&:hover": { bgcolor: "action.hover" },
-        ...(skill.isNative && {
-          bgcolor: "action.selected",
-        }),
       }}
       onClick={onEdit}
     >
@@ -361,6 +347,13 @@ const LanguageSkillRow: FC<LanguageSkillRowProps> = ({
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
+
+        {skill.specialization && (
+          <Typography variant="caption" color="text.secondary">
+            Lingo: {skill.specialization}
+          </Typography>
+        )}
+
         <Chip
           label={skill.isNative ? "N" : skill.rating}
           size="small"
@@ -370,7 +363,7 @@ const LanguageSkillRow: FC<LanguageSkillRowProps> = ({
         />
         <Typography
           variant="caption"
-          color="text.secondary"
+          color="warning.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >
           {spCost} SP
@@ -386,11 +379,6 @@ const LanguageSkillRow: FC<LanguageSkillRowProps> = ({
           <RiDeleteBin6Line size={14} />
         </IconButton>
       </Stack>
-      {skill.specialization && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
-          [{skill.specialization}]
-        </Typography>
-      )}
     </Box>
   )
 }

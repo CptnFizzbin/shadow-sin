@@ -13,6 +13,7 @@ import { type FC, useState } from "react"
 import type { ActiveSkillFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
+import Typography from "@mui/material/Typography"
 
 interface ActiveSkillDialogProps {
   open: boolean
@@ -92,10 +93,10 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
             >
               {skillOptions.map((skillKey) => (
                 <MenuItem key={skillKey} value={skillKey}>
-                  {skillKey}
-                  {Skills[skillKey]?.group
-                    ? ` (${Skills[skillKey].group})`
-                    : ""}
+                  <Stack direction={"row"} gap={1} alignItems="center" justifyContent={"space-between"} flexGrow={10}>
+                    <Typography>{skillKey}</Typography>
+                    <Typography color={"text.secondary"} fontSize={"small"}>{Skills[skillKey]?.group}</Typography>
+                  </Stack>
                 </MenuItem>
               ))}
             </Select>

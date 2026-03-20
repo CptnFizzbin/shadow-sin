@@ -11,7 +11,6 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import Typography from "@mui/material/Typography"
 import { type FC, useState } from "react"
 import type { LanguageSkillFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
@@ -96,36 +95,34 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
           />
 
           <Stack direction="row" alignItems="center" gap={2}>
-            <Typography variant="body2">Fluency:</Typography>
             <ToggleButtonGroup
               value={isNative ? "native" : "learned"}
               exclusive
-              onChange={(_, value) => {
-                if (value !== null) setIsNative(value === "native")
-              }}
+              onChange={() => setIsNative(!isNative)}
               size="small"
             >
-              <ToggleButton value="learned">Learned</ToggleButton>
-              <ToggleButton value="native">Native (N)</ToggleButton>
+              <ToggleButton value="native">
+                {isNative ? "Native" : "Learned"}
+              </ToggleButton>
             </ToggleButtonGroup>
-          </Stack>
 
-          {!isNative && (
-            <FormControl fullWidth size="small">
-              <InputLabel>Rating</InputLabel>
-              <Select
-                value={rating}
-                label="Rating"
-                onChange={(e) => setRating(Number(e.target.value))}
-              >
-                {ratingOptions.map((r) => (
-                  <MenuItem key={r} value={r}>
-                    {r}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+            {!isNative && (
+              <FormControl fullWidth size="small">
+                <InputLabel>Rating</InputLabel>
+                <Select
+                  value={rating}
+                  label="Rating"
+                  onChange={(e) => setRating(Number(e.target.value))}
+                >
+                  {ratingOptions.map((r) => (
+                    <MenuItem key={r} value={r}>
+                      {r}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </Stack>
 
           <TextField
             label="Lingo / Specialization (optional)"

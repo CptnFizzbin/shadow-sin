@@ -13,14 +13,8 @@ import type {
   ActiveSkillFormState,
   ActiveSkillGroupFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import {
-  getSkillsInGroup,
-  SkillGroupDisplayNames,
-} from "#/components/Character/Form/Skills/SkillGroups.ts"
-import {
-  getActiveSkillBp,
-  getActiveSkillGroupBp,
-} from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { getSkillsInGroup, SkillGroupDisplayNames } from "#/components/Character/Form/Skills/SkillGroups.ts"
+import { getActiveSkillBp, getActiveSkillGroupBp } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -60,13 +54,13 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
   const [activeSkillGroupDialog, setActiveSkillGroupDialog] =
     useState<ActiveSkillGroupDialogState>(null)
 
-  const closeDialog = <TDialogState,>(
+  const closeDialog = <TDialogState, > (
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
-  const clearDialog = <TDialogState,>(
+  const clearDialog = <TDialogState, > (
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
@@ -74,14 +68,14 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
 
   return (
     <Stack gap={1}>
-      <Label
-        label={
-          <Stack direction="row" justifyContent="space-between">
-            <span>══ Active Skills ══</span>
-            <span>{totalActiveSkillsBp} BP</span>
-          </Stack>
-        }
-      />
+      <Label label="Active Skills" variant={"outlined"} />
+
+      <Typography
+        variant="body2"
+        color={"secondary.main"}
+      >
+        {totalActiveSkillsBp} BP
+      </Typography>
 
       {activeSkillWarnings.map((warning) => (
         <Alert key={warning} severity="warning" sx={{ py: 0 }}>
@@ -94,13 +88,9 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
           <Stack
             direction="row"
             justifyContent="space-between"
-            sx={{ px: 0.5 }}
           >
             <Typography variant="caption" color="text.secondary">
               Active Skills
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              4 BP per Rating
             </Typography>
           </Stack>
           {activeSkills.map((skill) => (
@@ -121,15 +111,12 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
           <Stack
             direction="row"
             justifyContent="space-between"
-            sx={{ px: 0.5 }}
           >
             <Typography variant="caption" color="text.secondary">
               Active Skill Groups
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              10 BP per Rating
-            </Typography>
           </Stack>
+
           {activeSkillGroups.map((group) => (
             <ActiveSkillGroupRow
               key={group.id}
@@ -183,6 +170,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
           onClosed={() => clearDialog(setActiveSkillDialog)}
         />
       )}
+
       {activeSkillDialog?.mode === "edit" && (
         <ActiveSkillDialog
           open={activeSkillDialog.open}
@@ -260,6 +248,13 @@ const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
+
+        {skill.specialization && (
+          <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
+            {skill.specialization}
+          </Typography>
+        )}
+
         <Chip
           label={skill.rating}
           size="small"
@@ -268,7 +263,7 @@ const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
         />
         <Typography
           variant="caption"
-          color="text.secondary"
+          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >
           {bpCost} BP
@@ -284,11 +279,6 @@ const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
           <RiDeleteBin6Line size={14} />
         </IconButton>
       </Stack>
-      {skill.specialization && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
-          [{skill.specialization}]
-        </Typography>
-      )}
     </Box>
   )
 }
@@ -309,7 +299,7 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
   const displayName =
     SkillGroupDisplayNames[
       group.groupName as keyof typeof SkillGroupDisplayNames
-    ] ?? group.groupName
+      ] ?? group.groupName
 
   return (
     <Box
@@ -335,7 +325,7 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
         />
         <Typography
           variant="caption"
-          color="text.secondary"
+          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >
           {bpCost} BP
@@ -351,9 +341,10 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
           <RiDeleteBin6Line size={14} />
         </IconButton>
       </Stack>
+
       {memberSkills.length > 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-          [{memberSkills.join(", ")}]
+        <Typography variant="caption" color="text.secondary">
+          {memberSkills.join(", ")}
         </Typography>
       )}
     </Box>
