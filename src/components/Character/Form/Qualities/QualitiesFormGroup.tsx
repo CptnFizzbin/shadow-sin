@@ -11,6 +11,7 @@ import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/Use
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export const qualityBuildPoints = {
@@ -112,11 +113,6 @@ const QualityGroup: FC<QualityGroupProps> = ({
   qualities,
   onSelect,
 }) => {
-  const percentUsed = bpAllowance
-    ? Math.min(100, Math.round((bpUsed / bpAllowance) * 100))
-    : 0
-  const isOver = bpUsed > bpAllowance
-
   return (
     <>
       <Box sx={{ mt: 0.5 }}>
@@ -132,10 +128,10 @@ const QualityGroup: FC<QualityGroupProps> = ({
         </Stack>
         <LinearProgress
           variant="determinate"
-          value={percentUsed}
+          value={getProgress(bpUsed ?? 0, bpAllowance)}
           sx={{ height: 8, borderRadius: 1, mt: 0.5, width: "100%" }}
         />
-        {isOver && (
+        {bpUsed > bpAllowance && (
           <Alert severity="error" sx={{ mt: 1 }}>
             {label} is limited to {bpAllowance} BP
           </Alert>

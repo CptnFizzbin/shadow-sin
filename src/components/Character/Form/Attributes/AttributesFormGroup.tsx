@@ -8,6 +8,7 @@ import {
   useAttributeFormGroup,
 } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
   AttributeOrder,
@@ -33,10 +34,7 @@ export const AttributesFormGroup: FC<AttributesFormGroupProps> = ({ form }) => {
 
       <LinearProgress
         variant="determinate"
-        value={Math.min(
-          100,
-          Math.round((bpSpent / attrPointCosts.allowance) * 100),
-        )}
+        value={getProgress(bpSpent, attrPointCosts.allowance)}
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 

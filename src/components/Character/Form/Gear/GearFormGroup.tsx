@@ -19,6 +19,7 @@ import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.ts
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 interface GearFormGroupProps {
   form: PlayerCharacterForm
@@ -51,11 +52,6 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
     SectionHeader.Licenses,
   )
 
-  const progressPercent = Math.min(
-    100,
-    Math.round((totalNuyen / GearNuyenBudget) * 100),
-  )
-
   const onSectionChange = (section: SectionHeader) => {
     return (_: SyntheticEvent, isExpanded: boolean) => {
       setActiveSection(isExpanded ? section : null)
@@ -80,7 +76,7 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
 
         <LinearProgress
           variant="determinate"
-          value={progressPercent}
+          value={getProgress(totalNuyen, GearNuyenBudget)}
           color={isOverBudget ? "error" : "primary"}
         />
       </Stack>
