@@ -24,17 +24,12 @@ export const GearItemFormFields = withFieldGroup({
           name="cost"
           validators={{
             onChange: z
-              .number({ invalid_type_error: "Cost is required" })
+              .number("Cost is required")
               .min(0, "Cost must be 0 or more"),
           }}
         >
           {(field) => (
-            <field.NumberField
-              label="Cost (¥)"
-              fullWidth
-              size="small"
-              inputProps={{ min: 0 }}
-            />
+            <field.NumberField label="Cost (¥)" fullWidth size="small" />
           )}
         </group.AppField>
 
@@ -44,7 +39,6 @@ export const GearItemFormFields = withFieldGroup({
               <field.NumberField
                 label="Availability"
                 size="small"
-                inputProps={{ min: 0 }}
                 sx={{ flex: 1 }}
               />
             )}
@@ -84,12 +78,7 @@ export const GearItemFormFields = withFieldGroup({
 
           <group.AppField name="sourcePage">
             {(field) => (
-              <field.NumberField
-                label="Page"
-                size="small"
-                inputProps={{ min: 0 }}
-                sx={{ width: 90 }}
-              />
+              <field.NumberField label="Page" size="small" sx={{ width: 90 }} />
             )}
           </group.AppField>
         </Stack>

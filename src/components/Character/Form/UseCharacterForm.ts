@@ -1,5 +1,6 @@
 import { debounce } from "@tanstack/pacer"
 import { useEffect } from "react"
+import { merge } from "ts-deepmerge"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
@@ -23,7 +24,9 @@ export const useCharacterForm = (character?: PlayerCharacterData) => {
         const savedState = FormPersister.loadState(characterId)
         if (!savedState) return
 
-        for (const [key, value] of Object.entries(savedState)) {
+        const merged = merge(formApi.state.values, savedState)
+
+        for (const [key, value] of Object.entries(merged)) {
           formApi.setFieldValue(key as keyof CharacterFormState, value)
         }
       },
