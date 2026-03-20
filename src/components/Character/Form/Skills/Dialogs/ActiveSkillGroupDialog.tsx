@@ -21,6 +21,8 @@ import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirem
 interface ActiveSkillGroupDialogProps {
   open: boolean
   group?: ActiveSkillGroupFormState
+  /** Group names that must be disabled because they are already taken or a member skill is already individually selected. */
+  disabledGroups?: ReadonlySet<string>
   onSave: (group: ActiveSkillGroupFormState) => void
   onDelete?: () => void
   onClose: () => void
@@ -32,6 +34,7 @@ const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
 export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
   open,
   group,
+  disabledGroups,
   onSave,
   onDelete,
   onClose,
@@ -87,11 +90,14 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
                 setGroupNameError(false)
               }}
             >
-              {SkillGroupNames.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {SkillGroupDisplayNames[name]}
-                </MenuItem>
-              ))}
+              {SkillGroupNames.map((name) => {
+                const isDisabled = disabledGroups?.has(name) ?? false
+                return (
+                  <MenuItem key={name} value={name} disabled={isDisabled}>
+                    {SkillGroupDisplayNames[name]}
+                  </MenuItem>
+                )
+              })}
             </Select>
           </FormControl>
 

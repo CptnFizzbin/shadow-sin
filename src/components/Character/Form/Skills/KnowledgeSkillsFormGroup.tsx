@@ -13,7 +13,10 @@ import type {
   KnowledgeSkillFormState,
   LanguageSkillFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import {
+  getKnowledgeSkillSp,
+  getLanguageSkillSp,
+} from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useKnowledgeSkillsFormGroup } from "#/components/Character/Form/Skills/UseKnowledgeSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -56,13 +59,13 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
   const [languageSkillDialog, setLanguageSkillDialog] =
     useState<LanguageSkillDialogState>(null)
 
-  const closeDialog = <TDialogState, > (
+  const closeDialog = <TDialogState,>(
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
-  const clearDialog = <TDialogState, > (
+  const clearDialog = <TDialogState,>(
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
@@ -75,10 +78,7 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
       <Label label="Knowledge & Languages" variant={"outlined"} />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="body2"
-          color={"warning.main"}
-        >
+        <Typography variant="body2" color={"warning.main"}>
           {totalSpUsed} SP
         </Typography>
 
@@ -276,7 +276,6 @@ const KnowledgeSkillRow: FC<KnowledgeSkillRowProps> = ({
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
-
 
         {skill.specialization && (
           <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>

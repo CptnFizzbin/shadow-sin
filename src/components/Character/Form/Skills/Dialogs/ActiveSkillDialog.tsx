@@ -9,15 +9,17 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
 import { type FC, useState } from "react"
 import type { ActiveSkillFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
-import Typography from "@mui/material/Typography"
 
 interface ActiveSkillDialogProps {
   open: boolean
   skill?: ActiveSkillFormState
+  /** Skill names that must be disabled because they are already taken (individually or via a group). */
+  disabledSkills?: ReadonlySet<string>
   onSave: (skill: ActiveSkillFormState) => void
   onDelete?: () => void
   onClose: () => void
@@ -31,6 +33,7 @@ const skillOptions = Object.values(SkillKey).sort()
 export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   open,
   skill,
+  disabledSkills,
   onSave,
   onDelete,
   onClose,
@@ -91,14 +94,29 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
                 setNameError(false)
               }}
             >
-              {skillOptions.map((skillKey) => (
-                <MenuItem key={skillKey} value={skillKey}>
-                  <Stack direction={"row"} gap={1} alignItems="center" justifyContent={"space-between"} flexGrow={10}>
-                    <Typography>{skillKey}</Typography>
-                    <Typography color={"text.secondary"} fontSize={"small"}>{Skills[skillKey]?.group}</Typography>
-                  </Stack>
-                </MenuItem>
-              ))}
+              {skillOptions.map((skillKey) => {
+                const isDisabled = disabledSkills?.has(skillKey) ?? false
+                return (
+                  <MenuItem
+                    key={skillKey}
+                    value={skillKey}
+                    disabled={isDisabled}
+                  >
+                    <Stack
+                      direction={"row"}
+                      gap={1}
+                      alignItems="center"
+                      justifyContent={"space-between"}
+                      flexGrow={10}
+                    >
+                      <Typography>{skillKey}</Typography>
+                      <Typography color={"text.secondary"} fontSize={"small"}>
+                        {Skills[skillKey]?.group}
+                      </Typography>
+                    </Stack>
+                  </MenuItem>
+                )
+              })}
             </Select>
           </FormControl>
 

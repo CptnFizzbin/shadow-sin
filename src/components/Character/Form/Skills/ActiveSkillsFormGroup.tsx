@@ -13,11 +13,18 @@ import type {
   ActiveSkillFormState,
   ActiveSkillGroupFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import { getSkillsInGroup, SkillGroupDisplayNames } from "#/components/Character/Form/Skills/SkillGroups.ts"
-import { getActiveSkillBp, getActiveSkillGroupBp } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import {
+  getSkillsInGroup,
+  SkillGroupDisplayNames,
+} from "#/components/Character/Form/Skills/SkillGroups.ts"
+import {
+  getActiveSkillBp,
+  getActiveSkillGroupBp,
+} from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
+import { type SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
 
 export interface ActiveSkillsFormGroupProps {
   form: PlayerCharacterForm
@@ -54,13 +61,47 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
   const [activeSkillGroupDialog, setActiveSkillGroupDialog] =
     useState<ActiveSkillGroupDialogState>(null)
 
-  const closeDialog = <TDialogState, > (
+  // Skills covered by selected groups (every member skill of every selected group)
+  const skillsCoveredByGroups = new Set<string>(
+    activeSkillGroups.flatMap((group) => getSkillsInGroup(group.groupName)),
+  )
+
+  // For the skill dialog: disable skills that are already individually selected
+  // (excluding the one being edited) OR whose group is already selected.
+  const editingSkillName =
+    activeSkillDialog?.mode === "edit" ? activeSkillDialog.skill.name : null
+  const disabledSkills = new Set<string>([
+    ...activeSkills
+      .filter((s) => s.name !== editingSkillName)
+      .map((s) => s.name),
+    ...skillsCoveredByGroups,
+  ])
+
+  // For the group dialog: disable groups that are already selected (excluding
+  // the one being edited) OR that contain any individually-selected skill.
+  const editingGroupName =
+    activeSkillGroupDialog?.mode === "edit"
+      ? activeSkillGroupDialog.group.groupName
+      : null
+  const groupsWithIndividualSkill = new Set<string>(
+    activeSkills
+      .map((s) => Skills[s.name as SkillKey]?.group)
+      .filter((groupName): groupName is string => !!groupName),
+  )
+  const disabledGroups = new Set<string>([
+    ...activeSkillGroups
+      .filter((g) => g.groupName !== editingGroupName)
+      .map((g) => g.groupName),
+    ...groupsWithIndividualSkill,
+  ])
+
+  const closeDialog = <TDialogState,>(
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter((prev) => prev && { ...prev, open: false })
   }
 
-  const clearDialog = <TDialogState, > (
+  const clearDialog = <TDialogState,>(
     setter: React.Dispatch<React.SetStateAction<TDialogState | null>>,
   ) => {
     setter(null)
@@ -70,10 +111,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
     <Stack gap={1}>
       <Label label="Active Skills" variant={"outlined"} />
 
-      <Typography
-        variant="body2"
-        color={"secondary.main"}
-      >
+      <Typography variant="body2" color={"secondary.main"}>
         {totalActiveSkillsBp} BP
       </Typography>
 
@@ -85,10 +123,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
 
       {activeSkills.length > 0 && (
         <Stack gap={0.5}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-          >
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="caption" color="text.secondary">
               Active Skills
             </Typography>
@@ -108,10 +143,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
 
       {activeSkillGroups.length > 0 && (
         <Stack gap={0.5}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-          >
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="caption" color="text.secondary">
               Active Skill Groups
             </Typography>
@@ -162,6 +194,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
       {activeSkillDialog?.mode === "create" && (
         <ActiveSkillDialog
           open={activeSkillDialog.open}
+          disabledSkills={disabledSkills}
           onSave={(skill) => {
             addActiveSkill(skill)
             closeDialog(setActiveSkillDialog)
@@ -175,6 +208,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
         <ActiveSkillDialog
           open={activeSkillDialog.open}
           skill={activeSkillDialog.skill}
+          disabledSkills={disabledSkills}
           onSave={(skill) => {
             updateActiveSkill(skill)
             closeDialog(setActiveSkillDialog)
@@ -191,6 +225,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
       {activeSkillGroupDialog?.mode === "create" && (
         <ActiveSkillGroupDialog
           open={activeSkillGroupDialog.open}
+          disabledGroups={disabledGroups}
           onSave={(group) => {
             addActiveSkillGroup(group)
             closeDialog(setActiveSkillGroupDialog)
@@ -203,6 +238,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
         <ActiveSkillGroupDialog
           open={activeSkillGroupDialog.open}
           group={activeSkillGroupDialog.group}
+          disabledGroups={disabledGroups}
           onSave={(group) => {
             updateActiveSkillGroup(group)
             closeDialog(setActiveSkillGroupDialog)
@@ -299,7 +335,7 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
   const displayName =
     SkillGroupDisplayNames[
       group.groupName as keyof typeof SkillGroupDisplayNames
-      ] ?? group.groupName
+    ] ?? group.groupName
 
   return (
     <Box
