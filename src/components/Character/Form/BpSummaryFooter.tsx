@@ -15,20 +15,17 @@ import Typography from "@mui/material/Typography"
 import { RiErrorWarningLine } from "@remixicon/react"
 import { type FC, useState } from "react"
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
 export interface BpSummaryFooterProps {
-  form: PlayerCharacterForm
   onExpandedChange?: (expanded: boolean) => void
 }
 
 export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
-  form,
   onExpandedChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const summary = useBuildPointsSummary(form)
+  const summary = useBuildPointsSummary()
 
   const handleExpandedChange = (expanded: boolean) => {
     setIsExpanded(expanded)

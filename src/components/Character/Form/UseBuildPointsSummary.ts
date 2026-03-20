@@ -1,8 +1,7 @@
-import { useStore } from "@tanstack/react-store"
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 
@@ -22,21 +21,18 @@ export interface BpSummary {
   warnings: string[]
 }
 
-export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
-  const metatypeKey = useStore(form.store, (s) => s.values.metatype)
-  const awakeningType = useStore(form.store, (s) => s.values.awakening)
-  const qualities = useStore(form.store, (s) => s.values.qualities)
-  const attributesBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.attributes,
+export function useBuildPointsSummary(): BpSummary {
+  const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
+  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const qualities = useCharacterBuilderStore((state) => state.qualities)
+  const attributesBpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.attributes,
   )
-  const skillsBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.skills,
+  const skillsBpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.skills,
   )
-  const gearBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.gear,
+  const gearBpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.gear,
   )
 
   const metatypeCost = metatypes[metatypeKey].cost
@@ -56,9 +52,8 @@ export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
 
   const qualitiesNetBp = positiveQualitiesBp - negativeQualitiesBp
 
-  const totalBuildPoints = useStore(
-    form.store,
-    (s) => s.values.buildPoints.total,
+  const totalBuildPoints = useCharacterBuilderStore(
+    (state) => state.buildPoints.total,
   )
 
   const totalSpent =

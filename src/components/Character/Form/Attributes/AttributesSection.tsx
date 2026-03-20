@@ -7,19 +7,14 @@ import {
   attrPointCosts,
   useAttributeFormGroup,
 } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
   AttributeOrder,
 } from "#/lib/system/types/attributeKey.ts"
 
-export interface AttributesFormGroupProps {
-  form: PlayerCharacterForm
-}
-
-export const AttributesFormGroup: FC<AttributesFormGroupProps> = ({ form }) => {
-  const { bpSpent, attributes } = useAttributeFormGroup(form)
+export const AttributesSection: FC = () => {
+  const { bpSpent, attributes } = useAttributeFormGroup()
 
   const attrRows = AttributeOrder.filter((key) => key !== AttributeKey.essence)
     .map((attr) => ({ attr, ...attributes[attr] }))
@@ -40,7 +35,7 @@ export const AttributesFormGroup: FC<AttributesFormGroupProps> = ({ form }) => {
 
       <Stack gap={0.5}>
         {attrRows.map((attr) => (
-          <AttributeRow key={attr} form={form} attr={attr} />
+          <AttributeRow key={attr} attr={attr} />
         ))}
       </Stack>
     </Stack>

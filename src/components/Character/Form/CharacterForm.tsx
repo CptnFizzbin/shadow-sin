@@ -3,14 +3,16 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { type FC, useState } from "react"
-import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
-import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"
+import { AttributesSection } from "#/components/Character/Form/Attributes/AttributesSection.tsx"
+import { BiologySection } from "#/components/Character/Form/Biology/BiologySection.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
+import { CharacterBuilderStoreProvider } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
-import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
-import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
-import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import { useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
+import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
+import { QualitiesSection } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import { useCharacterBuilderStore } from "#/components/Character/Form/UseCharacterBuilderStore.ts"
+import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -18,16 +20,12 @@ interface CharacterFormProps {
 }
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
-  const form = useCharacterForm(character)
+  const store = useCharacterBuilderStore(character)
+  const defaultValues = useDefaultValues({ character })
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
-      }}
-    >
+    <CharacterBuilderStoreProvider store={store}>
       <Stack gap={1}>
         <Stack
           gap={1}
@@ -43,8 +41,9 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
               color="warning"
               size="small"
               onClick={() => {
-                form.reset()
-                FormPersister.clearState(form.state.values.characterId)
+                const characterId = store.state.characterId
+                store.setState(() => defaultValues)
+                FormPersister.clearState(characterId)
               }}
             >
               Reset
@@ -57,7 +56,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Profile
               </Typography>
 
-              <ProfileFormGroup form={form} />
+              <ProfileSection />
             </Stack>
           </Paper>
 
@@ -67,7 +66,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Biology
               </Typography>
 
-              <BiologyFormGroup form={form} />
+              <BiologySection />
             </Stack>
           </Paper>
 
@@ -77,9 +76,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Attributes
               </Typography>
 
-              <form.Subscribe selector={(form) => form.values.attributes}>
-                {() => <AttributesFormGroup form={form} />}
-              </form.Subscribe>
+              <AttributesSection />
             </Stack>
           </Paper>
 
@@ -89,7 +86,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Qualities
               </Typography>
 
-              <QualitiesFormGroup form={form} />
+              <QualitiesSection />
             </Stack>
           </Paper>
 
@@ -99,13 +96,13 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Gear
               </Typography>
 
-              <GearFormGroup form={form} />
+              <GearSection />
             </Stack>
           </Paper>
         </Stack>
 
-        <BpSummaryFooter form={form} onExpandedChange={setIsBpPanelExpanded} />
+        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
       </Stack>
-    </form>
+    </CharacterBuilderStoreProvider>
   )
 }

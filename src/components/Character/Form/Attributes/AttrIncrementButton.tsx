@@ -9,7 +9,8 @@ import {
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const IncrementButton: FC<AttributeRowProps> = (props) => {
-  const { bpRemaining, hasMaxxedAttr, attribute } = useAttributeRow(props)
+  const { bpRemaining, hasMaxxedAttr, attribute, store } =
+    useAttributeRow(props)
 
   let disabled = false
   let cost = attrPointCosts.base
@@ -40,13 +41,26 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    props.form.setFieldValue(`buildPoints.spent.attributes`, (prev) => {
-      return Math.min(prev + cost, attrPointCosts.allowance)
-    })
-
-    props.form.setFieldValue(`attributes.${props.attr}.value`, (prev) => {
-      return Math.min(prev + 1, attribute.max)
-    })
+    store.setState((prev) => ({
+      ...prev,
+      buildPoints: {
+        ...prev.buildPoints,
+        spent: {
+          ...prev.buildPoints.spent,
+          attributes: Math.min(
+            prev.buildPoints.spent.attributes + cost,
+            attrPointCosts.allowance,
+          ),
+        },
+      },
+      attributes: {
+        ...prev.attributes,
+        [props.attr]: {
+          ...prev.attributes[props.attr],
+          value: Math.min(prev.attributes[props.attr].value + 1, attribute.max),
+        },
+      },
+    }))
   }
 
   return (

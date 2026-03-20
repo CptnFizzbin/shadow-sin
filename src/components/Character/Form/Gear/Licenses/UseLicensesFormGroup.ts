@@ -1,25 +1,46 @@
-import { useStore } from "@tanstack/react-store"
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreContext,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
-export function useLicensesFormGroup(form: PlayerCharacterForm) {
-  const licenses = useStore(form.store, (s) => s.values.gear.licenses)
-  const sins = useStore(form.store, (s) => s.values.gear.sins)
+export function useLicensesFormGroup() {
+  const store = useCharacterBuilderStoreContext()
+  const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
+  const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) => [...prev, license])
+    store.setState((prev) => ({
+      ...prev,
+      gear: {
+        ...prev.gear,
+        licenses: [...prev.gear.licenses, license],
+      },
+    }))
   }
 
   const updateLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) =>
-      prev.map((l) => (l.id === license.id ? license : l)),
-    )
+    store.setState((prev) => ({
+      ...prev,
+      gear: {
+        ...prev.gear,
+        licenses: prev.gear.licenses.map((existingLicense) =>
+          existingLicense.id === license.id ? license : existingLicense,
+        ),
+      },
+    }))
   }
 
   const removeLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) =>
-      prev.filter((l) => l.id !== license.id),
-    )
+    store.setState((prev) => ({
+      ...prev,
+      gear: {
+        ...prev.gear,
+        licenses: prev.gear.licenses.filter(
+          (existingLicense) => existingLicense.id !== license.id,
+        ),
+      },
+    }))
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {

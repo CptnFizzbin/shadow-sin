@@ -1,9 +1,8 @@
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import {
   type AttributeKey,
@@ -15,34 +14,29 @@ import {
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 
-interface MetatypeAttributesProps {
-  form: PlayerCharacterForm
-}
-
-export const BiologyAttributes: FC<MetatypeAttributesProps> = ({ form }) => {
+export const BiologyAttributes: FC = () => {
   return (
     <Stack gap={1}>
       <Label label={"min / max (aug)"} variant="outlined" />
 
       <Stack gap={0.5}>
-        <AttrList attrKeys={PhysicalAttributes} form={form} />
-        <AttrList attrKeys={MentalAttributes} form={form} />
-        <AttrList attrKeys={SpecialAttributes} form={form} />
+        <AttrList attrKeys={PhysicalAttributes} />
+        <AttrList attrKeys={MentalAttributes} />
+        <AttrList attrKeys={SpecialAttributes} />
       </Stack>
     </Stack>
   )
 }
 
 interface AttrListProps {
-  form: PlayerCharacterForm
   attrKeys: readonly AttributeKey[]
 }
 
-const AttrList: FC<AttrListProps> = ({ attrKeys, form }) => {
-  const metatypeName = useStore(form.store, (state) => state.values.metatype)
+const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
+  const metatypeName = useCharacterBuilderStore((state) => state.metatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useStore(form.store, (state) => state.values.awakening)
+  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys
