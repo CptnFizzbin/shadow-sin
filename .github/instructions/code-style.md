@@ -4,13 +4,13 @@ applyTo: "**"
 
 # Code style — ShadowSIN
 
-## Formatting (Biome)
+## Formatting
 
-- 2-space indentation (enforced via `.editorconfig` + `biome.json`)
+- 2-space indentation (enforced via `.editorconfig` + Prettier)
 - Double quotes for all JS/TS strings
 - No trailing semicolons (`semicolons: "asNeeded"`)
 - Trailing commas everywhere (`trailingCommas: "all"`)
-- All local imports **must** include `.ts` / `.tsx` extensions — Biome enforces `useImportExtensions: "error"`
+- All local imports **must** include `.ts` / `.tsx` extensions
 
 ```ts
 // ✅
@@ -90,7 +90,7 @@ Null-initialize context, guard in the consuming hook, throw a descriptive error 
 ```ts
 const MyContext = createContext<Store<T> | null>(null)
 
-export function useMyContext(): Store<T> {
+export function useMyContext (): Store<T> {
   const value = useContext(MyContext)
   if (!value) throw new Error("useMyContext must be used within a MyProvider")
   return value
@@ -106,4 +106,3 @@ export function useMyContext(): Store<T> {
 
 `babel-plugin-react-compiler` is active. Do **not** add manual `useMemo` / `useCallback` unless the compiler provably
 cannot handle the case — annotate with a comment explaining why.
-

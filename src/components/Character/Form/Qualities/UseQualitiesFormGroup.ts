@@ -1,6 +1,9 @@
+
 import { useStore } from "@tanstack/react-store"
+
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
+
 
 export function useQualitiesFormGroup(form: PlayerCharacterForm) {
   const qualities = useStore(form.store, (s) => s.values.qualities)

@@ -4,6 +4,7 @@ import { WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
+
 export enum GearType {
   armor = "armor",
   implant = "implant",

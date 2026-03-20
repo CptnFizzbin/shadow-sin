@@ -1,6 +1,9 @@
+
 import { useStore } from "@tanstack/react-store"
+
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+
 
 export function useLicensesFormGroup(form: PlayerCharacterForm) {
   const licenses = useStore(form.store, (s) => s.values.gear.licenses)

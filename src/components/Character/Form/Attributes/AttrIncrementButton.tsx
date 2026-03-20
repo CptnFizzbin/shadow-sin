@@ -1,10 +1,14 @@
+
+
 import { Button } from "@mui/material"
 import { RiArrowRightBoxLine } from "@remixicon/react"
 import type { FC } from "react"
+
+import type {AttributeRowProps} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts";
 import {
-  type AttributeRowProps,
+  
   attrPointCosts,
-  useAttributeRow,
+  useAttributeRow
 } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 

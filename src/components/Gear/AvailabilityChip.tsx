@@ -1,8 +1,12 @@
 import Chip from "@mui/material/Chip"
 import type { FC } from "react"
+
+
+
+import type {AvailablityInfo} from "#/lib/system/types/availablityInfo.ts";
 import {
-  type AvailablityInfo,
-  availabilityToString,
+  
+  availabilityToString
 } from "#/lib/system/types/availablityInfo.ts"
 
 export interface AvailabilityChipProps {

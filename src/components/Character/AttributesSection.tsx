@@ -1,6 +1,9 @@
+
+
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+
 import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import {

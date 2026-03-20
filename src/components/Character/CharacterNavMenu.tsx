@@ -5,7 +5,9 @@ import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import { Link, linkOptions } from "@tanstack/react-router"
-import { type FC, useState } from "react"
+import type {FC} from "react";
+import {  useState } from "react"
+
 import { Route as CharacterRoute } from "#/routes/$characterId/index.tsx"
 
 const pages = linkOptions([

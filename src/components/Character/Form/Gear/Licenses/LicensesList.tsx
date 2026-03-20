@@ -1,3 +1,4 @@
+
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
@@ -5,11 +6,14 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { type FC, useState } from "react"
+import type {FC} from "react";
+import {  useState } from "react"
+
 import { LicenseFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/LicenseFormDialog.tsx"
+import type {LicenseFormState} from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts";
 import {
-  getLicenseAvailability,
-  type LicenseFormState,
+  getLicenseAvailability
+  
 } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { useLicensesFormGroup } from "#/components/Character/Form/Gear/Licenses/UseLicensesFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"

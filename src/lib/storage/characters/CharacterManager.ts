@@ -1,8 +1,12 @@
+
 import { sort } from "fast-sort"
-import { migrations } from "#/lib/storage/characters/migrations/index.ts"
+
 import type { StoredJsonFile } from "#/lib/storage/IStorageProvider.ts"
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
+import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+
+
 
 export class CharacterManager {
   private readonly characterDirectoryPath = "characters"

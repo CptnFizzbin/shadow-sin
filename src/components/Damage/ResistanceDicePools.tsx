@@ -1,12 +1,13 @@
 import type { FC } from "react"
+
 import { DicePool } from "#/components/DicePool/DicePool.tsx"
 import {
   useDiceAttributeGroup,
   useDiceSkillGroup,
   useWoundDiceGroup,
 } from "#/components/DicePool/UseDiceGroup.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { SkillKey } from "#/lib/system/types/SkillKey.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const ResistBodyDicePool = () => {
   return (

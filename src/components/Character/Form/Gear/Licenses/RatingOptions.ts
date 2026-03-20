@@ -1,6 +1,7 @@
 import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import type { SelectOption } from "#/integrations/tanstack-form/Fields/SelectField.tsx"
 
+
 const MaxRating = Math.floor(GearMaxAvailability / 3)
 
 export const RealRatingOptions = (disabled?: boolean): SelectOption[] => {

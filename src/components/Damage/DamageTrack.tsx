@@ -1,5 +1,9 @@
+
+
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
+import type { ReactNode } from "react"
+
 import { Label } from "#/components/UI/Text/Label.tsx"
 
 interface DamageTrackProps {
@@ -87,7 +91,7 @@ function DamageCell({
 }
 
 interface TrackCellProps {
-  children: React.ReactNode
+  children: ReactNode
   onClick: () => void
   filled?: boolean
   isOverflow?: boolean
