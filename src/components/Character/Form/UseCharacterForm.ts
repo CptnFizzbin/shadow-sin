@@ -1,4 +1,3 @@
-
 import { debounce } from "@tanstack/pacer"
 import { useEffect } from "react"
 
@@ -7,7 +6,6 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
-
 
 const debouncedSaveState = debounce(
   (characterId: string, values: CharacterFormState) => {

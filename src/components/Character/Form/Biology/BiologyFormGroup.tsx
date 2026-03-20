@@ -1,9 +1,8 @@
-
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
-import type {FC} from "react";
-import {  useEffect, useRef } from "react"
+import type { FC } from "react"
+import { useEffect, useRef } from "react"
 
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"

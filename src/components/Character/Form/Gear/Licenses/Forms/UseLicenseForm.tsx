@@ -1,10 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type {LicenseFormState} from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts";
-import {
-  getLicenseCost
-  
-} from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import { getLicenseCost } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 
 export type LicenseEditFormOptions = {

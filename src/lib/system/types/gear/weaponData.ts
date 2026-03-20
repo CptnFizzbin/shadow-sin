@@ -1,8 +1,6 @@
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import type { GearData, GearType } from "./gearData.ts"
 
-
-
 export enum WeaponType {
   melee = "melee",
   thrown = "thrown",

@@ -1,10 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type {SinFormState} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts";
-import {
-  getSinCost
-  
-} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import { getSinCost } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 
 export type SinEditFormOptions = {

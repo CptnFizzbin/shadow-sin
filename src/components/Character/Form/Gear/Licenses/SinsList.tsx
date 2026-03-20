@@ -1,4 +1,3 @@
-
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
@@ -6,16 +5,13 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import type {FC} from "react";
-import {  useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
 
 import { SinFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
-import type {SinFormState} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts";
-import {
-  getSinAvailability
-  
-} from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { useSinsFormGroup } from "#/components/Character/Form/Gear/Licenses/UseSinsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"

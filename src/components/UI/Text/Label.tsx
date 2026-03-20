@@ -1,8 +1,6 @@
 import Typography from "@mui/material/Typography"
 import type { FC, ReactNode } from "react"
 
-
-
 interface LabelProps {
   label: ReactNode
   variant?: "contained" | "outlined"

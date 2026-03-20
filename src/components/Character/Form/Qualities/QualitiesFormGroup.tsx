@@ -1,4 +1,3 @@
-
 import Alert from "@mui/material/Alert"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
@@ -7,8 +6,8 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import type {FC} from "react";
-import {  useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
 
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
@@ -16,7 +15,6 @@ import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDia
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
-
 
 export const qualityBuildPoints = {
   allowance: {

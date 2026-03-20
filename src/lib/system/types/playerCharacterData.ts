@@ -8,8 +8,6 @@ import type { SpellData } from "./magic/spellData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { SkillData } from "./skillData.ts"
 
-
-
 export interface PlayerCharacterData {
   id: string
   version: number

@@ -1,10 +1,9 @@
-
 import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import type {FC} from "react";
-import {  useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
 
 import { AttributesFormGroup } from "#/components/Character/Form/Attributes/AttributesFormGroup.tsx"
 import { BiologyFormGroup } from "#/components/Character/Form/Biology/BiologyFormGroup.tsx"

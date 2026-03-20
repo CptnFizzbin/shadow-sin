@@ -1,8 +1,5 @@
-
-
-
-import type {DialogProps} from "@mui/material";
-import { Button  } from "@mui/material"
+import type { DialogProps } from "@mui/material"
+import { Button } from "@mui/material"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
@@ -11,7 +8,6 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-
 
 interface SinRemoveDialogProps extends Omit<
   DialogProps,

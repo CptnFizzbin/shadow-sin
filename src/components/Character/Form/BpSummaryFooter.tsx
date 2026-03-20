@@ -1,4 +1,3 @@
-
 import { Button } from "@mui/material"
 import Alert from "@mui/material/Alert"
 import AppBar from "@mui/material/AppBar"
@@ -14,8 +13,8 @@ import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
 import { RiErrorWarningLine } from "@remixicon/react"
-import type {FC} from "react";
-import {  useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
 
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"

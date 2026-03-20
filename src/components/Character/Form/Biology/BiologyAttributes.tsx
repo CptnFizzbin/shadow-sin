@@ -1,6 +1,3 @@
-
-
-
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
@@ -10,13 +7,12 @@ import { createAttrFormState } from "#/components/Character/Form/AttrFormState.t
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
-import type {AttributeKey} from "#/lib/system/types/attributeKey.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import {
-  
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
-  SpecialAttributes
+  SpecialAttributes,
 } from "#/lib/system/types/attributeKey.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 

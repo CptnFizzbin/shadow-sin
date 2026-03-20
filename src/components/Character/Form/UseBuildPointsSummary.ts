@@ -1,4 +1,3 @@
-
 import { useStore } from "@tanstack/react-store"
 
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"

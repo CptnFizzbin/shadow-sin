@@ -1,10 +1,8 @@
-
 import { useStore } from "@tanstack/react-store"
 
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-
 
 export function useSinsFormGroup(form: PlayerCharacterForm) {
   const sins = useStore(form.store, (s) => s.values.gear.sins)

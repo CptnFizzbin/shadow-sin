@@ -1,16 +1,9 @@
 import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
-import type {FC, PropsWithChildren} from "react";
-import {
-  createContext,
-  
-  
-  useContext
-} from "react"
+import type { FC, PropsWithChildren } from "react"
+import { createContext, useContext } from "react"
 
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
-
-
 
 export const CharacterStoreContext =
   createContext<Store<PlayerCharacterData> | null>(null)
