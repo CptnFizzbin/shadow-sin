@@ -1,5 +1,8 @@
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 import type { ArmorData } from "#/lib/system/types/gear/armorData.ts"
 import {
   createFirearm,
@@ -7,11 +10,8 @@ import {
   GearType,
 } from "#/lib/system/types/gear/gearData.ts"
 import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
-import {
-  type LicenseData,
-  VerificationKind,
-} from "#/lib/system/types/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/types/gear/SinData.ts"
+import type { LicenseData } from "#/lib/system/types/gear/licenseData.ts"
+import { VerificationKind } from "#/lib/system/types/gear/licenseData.ts"
 import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts"
 import type {
   FirearmAccessoryData,
@@ -19,8 +19,6 @@ import type {
 } from "#/lib/system/types/gear/weaponData.ts"
 import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
-import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const artemis: PlayerCharacterData = {

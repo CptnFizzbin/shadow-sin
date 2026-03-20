@@ -1,12 +1,8 @@
-import {
-  FormControl,
-  type FormControlProps,
-  FormHelperText,
-  InputLabel,
-  Select,
-} from "@mui/material"
+import type { FormControlProps } from "@mui/material"
+import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material"
 import MenuItem from "@mui/material/MenuItem"
 import type { FC, ReactNode } from "react"
+
 import { useFieldContext } from "#/integrations/tanstack-form/FieldContext.ts"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 

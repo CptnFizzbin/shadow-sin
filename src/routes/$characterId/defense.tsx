@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
+
 import {
   useCharacterStore,
   useCharacterStoreContext,
