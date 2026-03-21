@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-store"
-import { createStore, ReadonlyStore, Store } from "@tanstack/store"
+import type { ReadonlyStore, Store } from "@tanstack/store"
+import { createStore } from "@tanstack/store"
 import type { Draft } from "immer"
 import { produce } from "immer"
 import { useMemo, useRef } from "react"

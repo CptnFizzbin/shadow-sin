@@ -26,7 +26,7 @@ Qualities BP spend is wired (PR #1 ✅). A sticky `BpSummaryFooter` with a full 
 
 - [x] Track net BP spent on qualities (positive cost, negative grant, cap at −35 BP) ✅ PR #1
 - [x] Display a persistent **BP summary bar** (total / spent / remaining) — sticky footer at bottom of creation form ✅ PR #7
-- [x] Break down spending by category: Biology, Attributes, Skills, Qualities, Gear ✅ PR #7
+- [x] Break down spending by category: Biology, Qualities, Attributes, Skills, Awakened (conditional), Gear, Contacts ✅ PR #7
 - [x] Apply real-time BP costs as attribute values change (wired via increment/decrement buttons) ✅ PR #7
 - [ ] Block form submission when the character is over budget
 - [ ] Show a warning when within 10 BP of the limit
@@ -56,7 +56,29 @@ The full add/edit/delete flow is implemented in PR #1 ✅. Manual entry of name,
 
 ---
 
-## 5. Edit Existing Character
+## 5. Awakened / Resources (Creation Form)
+
+Conditional sections are rendered in `AwakenedSection` based on the character's `awakening` type. Each section is fully wired into the builder store and the BP summary footer.
+
+- [x] **Magician** — add/edit/remove spells; BP cost per spell; warning when approaching free-spell cap
+- [x] **Adept** — add/edit/remove adept powers; Power Point tracker (used / max)
+- [x] **Technomancer** — add/edit/remove Complex Forms and Sprites; BP cost tracking
+
+---
+
+## 6. Contacts (Creation Form)
+
+A full contacts section is integrated into the creation form (`ContactsSection`). Contact BP (connection + loyalty per contact) is included in the budget summary footer.
+
+- [x] **Add contact** — name, connection (1–6), loyalty (1–6), optional notes
+- [x] **Edit contact** — tap a row to open a view/edit/delete dialog
+- [x] **Remove contact**
+- [x] BP cost per contact (connection + loyalty) reflected in build budget
+- [ ] Role field (field exists in `ContactData` but is not surfaced in the creation form)
+
+---
+
+## 7. Edit Existing Character
 
 Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's missing is a UI entry point to reach the form for an existing character.
 
@@ -67,7 +89,7 @@ Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's mi
 
 ---
 
-## 6. Character Deletion
+## 8. Character Deletion
 
 `CharacterManager.deleteCharacter` exists but has no UI.
 
@@ -77,7 +99,7 @@ Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's mi
 
 ---
 
-## 7. Skills (Character Sheet View)
+## 9. Skills (Character Sheet View)
 
 The `/$characterId/skills` route is a placeholder stub. The creation-form skills feed this view.
 
@@ -87,7 +109,7 @@ The `/$characterId/skills` route is a placeholder stub. The creation-form skills
 
 ---
 
-## 8. Gear (Creation Form)
+## 10. Gear (Creation Form)
 
 A gear section is fully integrated into the creation form. SINs & Licenses (PR #5 ✅) and all other gear categories (Weapons, Armor, Vehicles, Cyberware, Misc — PR #6 ✅) support full add/edit/remove with a shared `GearItemFormState` (name, cost, optional availability, source, description). Nuyen totals from all sections are summed into the gear BP line in the budget footer. The `/$characterId/gear` view route is still a stub.
 
@@ -103,7 +125,7 @@ A gear section is fully integrated into the creation form. SINs & Licenses (PR #
 
 ---
 
-## 9. Contacts Page
+## 11. Contacts Page
 
 Route exists (`/$characterId/contacts`) but shows only a heading.
 
@@ -114,7 +136,7 @@ Route exists (`/$characterId/contacts`) but shows only a heading.
 
 ---
 
-## 10. Character Notes / Background
+## 12. Character Notes / Background
 
 Route exists (`/$characterId/notes`) but is a placeholder stub.
 
@@ -124,7 +146,7 @@ Route exists (`/$characterId/notes`) but is a placeholder stub.
 
 ---
 
-## 11. Form Validation & UX Polish
+## 13. Form Validation & UX Polish
 
 - [ ] Validate required fields (alias, metatype, awakening) before allowing save
 - [ ] Show field-level error messages for out-of-range attribute values

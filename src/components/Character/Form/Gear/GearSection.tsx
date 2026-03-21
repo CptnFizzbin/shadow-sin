@@ -11,13 +11,11 @@ import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import {
   GearBpAllowance,
   GearMaxAvailability,
   GearNuyenBudget,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { PlaceholderGearSection } from "#/components/Character/Form/Gear/Generic/PlaceholderGearSection.tsx"
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
@@ -96,8 +94,8 @@ export const GearSection: FC = () => {
           | "vehicles"
           | "cyberware"
           | "misc"
-        const items = (gear as CharacterFormState["gear"])[sectionKey] || []
-        const invalidItems = (items as GearItemFormState[]).filter(
+        const items = gear[sectionKey] || []
+        const invalidItems = items.filter(
           (it) =>
             (it.availability?.rating ?? Number.NEGATIVE_INFINITY) >
             GearMaxAvailability,

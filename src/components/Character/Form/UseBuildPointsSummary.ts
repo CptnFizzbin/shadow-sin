@@ -123,7 +123,7 @@ export function useBuildPointsSummary(): BpSummary {
       ...technomancerBp,
     },
     {
-      label: "Gear",
+      label: "Cyberware",
       spent: gearBpSpent,
       allowance: GearBpAllowance,
     },

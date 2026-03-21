@@ -20,7 +20,7 @@ interface GearItemsListProps {
   label?: string
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({
+export const CyberwareList: FC<GearItemsListProps> = ({
   items,
   onAdd,
   onUpdate,

@@ -23,11 +23,9 @@ function IndexRoute() {
       <Header />
       <Button
         variant={"outlined"}
-        onClick={() =>
-          navigate({
-            to: "/new",
-          })
-        }
+        onClick={() => {
+          navigate({ to: "/new" })
+        }}
       >
         Create New
       </Button>

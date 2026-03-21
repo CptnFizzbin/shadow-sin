@@ -14,7 +14,7 @@ const pages = linkOptions([
   { label: "About", from: CharacterRoute.fullPath, to: "about" },
   { label: "Defense", from: CharacterRoute.fullPath, to: "defense" },
   { label: "Offense", from: CharacterRoute.fullPath, to: "offense" },
-  { label: "Gear", from: CharacterRoute.fullPath, to: "gear" },
+  { label: "Cyberware", from: CharacterRoute.fullPath, to: "gear" },
   { label: "Skills", from: CharacterRoute.fullPath, to: "skills" },
   { label: "Spells", from: CharacterRoute.fullPath, to: "spells" },
   { label: "Drones", from: CharacterRoute.fullPath, to: "drones" },

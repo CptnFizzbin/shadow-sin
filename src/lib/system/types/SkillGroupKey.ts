@@ -1,6 +1,6 @@
 import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import {
-  AwakeningType,
   MagicAwakeningTypes,
   TechAwakeningTypes,
 } from "#/lib/system/types/awakeningType.ts"

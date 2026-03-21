@@ -8,7 +8,8 @@ import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAt
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export const BiologySection: FC = () => {
   const storeSlice = useCharacterBuilderStoreSlice(
