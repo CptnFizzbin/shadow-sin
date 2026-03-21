@@ -6,6 +6,7 @@ import type { SkillsFormState } from "#/components/Character/Form/Skills/SkillFo
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { ContactData } from "#/lib/system/types/contactData.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export interface CharacterFormState {
@@ -59,4 +60,6 @@ export interface CharacterFormState {
     cyberware: GearItemFormState[]
     misc: GearItemFormState[]
   }
+
+  contacts: ContactData[]
 }

@@ -2,6 +2,7 @@ import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
+import type { ContactData } from "./contactData.ts"
 import type { GearData } from "./gear/gearData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { SpellData } from "./magic/spellData.ts"
@@ -79,6 +80,7 @@ export interface PlayerCharacterData {
   gear: GearData[]
   skills: Record<string, SkillData>
   qualities: QualityData[]
+  contacts: ContactData[]
 
   spellcasting?: {
     knownSpells: SpellData[]

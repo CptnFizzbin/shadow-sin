@@ -130,5 +130,7 @@ export const useDefaultValues = ({
       cyberware: [],
       misc: [],
     },
+
+    contacts: [],
   }
 }

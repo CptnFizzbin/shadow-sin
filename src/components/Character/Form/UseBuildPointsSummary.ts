@@ -1,5 +1,6 @@
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { contactBuildPoints } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
 import {
@@ -51,6 +52,9 @@ export function useBuildPointsSummary(): BpSummary {
   const gearBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.gear,
   )
+  const contacts = useCharacterBuilderStore((state) => state.contacts)
+
+  const contactsBpSpent = contactBuildPoints(contacts)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -91,7 +95,8 @@ export function useBuildPointsSummary(): BpSummary {
     qualitiesNetBp +
     attributesBpSpent +
     skillsBpSpent +
-    gearBpSpent
+    gearBpSpent +
+    contactsBpSpent
 
   const remaining = totalBuildPoints - totalSpent
 
@@ -152,6 +157,11 @@ export function useBuildPointsSummary(): BpSummary {
       spent: gearBpSpent,
       allowance: GearBpAllowance,
       isOver: gearBpSpent > GearBpAllowance,
+    },
+    {
+      label: "Contacts",
+      spent: contactsBpSpent,
+      isOver: false,
     },
   ]
 

@@ -491,4 +491,5 @@ export const artemis: PlayerCharacterData = {
   },
 
   qualities: [],
+  contacts: [],
 }
