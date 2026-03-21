@@ -1,3 +1,4 @@
+import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export enum SkillKey {
@@ -75,13 +76,16 @@ export enum SkillKey {
   unarmedCombat = "Unarmed Combat",
 }
 
-export const Skills: Record<
-  SkillKey,
-  { attr: AttributeKey; group?: string; defaultable?: boolean }
-> = {
+export interface SkillInfo {
+  attr: AttributeKey
+  group?: SkillGroupKey
+  defaultable?: boolean
+}
+
+export const Skills: Record<SkillKey, SkillInfo> = {
   [SkillKey.aronauticsMechanic]: {
     attr: AttributeKey.logic,
-    group: "mechanic",
+    group: SkillGroupKey.Mechanic,
     defaultable: false,
   },
   [SkillKey.arcana]: {
@@ -107,75 +111,75 @@ export const Skills: Record<
   },
   [SkillKey.autoMechanic]: {
     attr: AttributeKey.logic,
-    group: "mechanic",
+    group: SkillGroupKey.Mechanic,
     defaultable: false,
   },
   [SkillKey.automatics]: {
     attr: AttributeKey.agility,
-    group: "firearms",
+    group: SkillGroupKey.Firearms,
   },
   [SkillKey.banishing]: {
     attr: AttributeKey.magic,
-    group: "conjuring",
+    group: SkillGroupKey.Conjuring,
     defaultable: false,
   },
   [SkillKey.binding]: {
     attr: AttributeKey.magic,
-    group: "conjuring",
+    group: SkillGroupKey.Conjuring,
     defaultable: false,
   },
   [SkillKey.blades]: {
     attr: AttributeKey.agility,
-    group: "close combat",
+    group: SkillGroupKey.CloseCombat,
   },
   [SkillKey.chemistry]: {
     attr: AttributeKey.logic,
   },
   [SkillKey.climbing]: {
     attr: AttributeKey.strength,
-    group: "athletics",
+    group: SkillGroupKey.Athletics,
   },
   [SkillKey.clubs]: {
     attr: AttributeKey.agility,
-    group: "close combat",
+    group: SkillGroupKey.CloseCombat,
   },
   [SkillKey.compiling]: {
     attr: AttributeKey.resonance,
-    group: "tasking",
+    group: SkillGroupKey.Tasking,
     defaultable: false,
   },
   [SkillKey.computer]: {
     attr: AttributeKey.logic,
-    group: "electronics",
+    group: SkillGroupKey.Electronics,
   },
   [SkillKey.con]: {
     attr: AttributeKey.charisma,
-    group: "influence",
+    group: SkillGroupKey.Influence,
   },
   [SkillKey.counterspelling]: {
     attr: AttributeKey.magic,
-    group: "sorcery",
+    group: SkillGroupKey.Sorcery,
     defaultable: false,
   },
   [SkillKey.cybercombat]: {
     attr: AttributeKey.logic,
-    group: "cracking",
+    group: SkillGroupKey.Cracking,
   },
   [SkillKey.cybertechnology]: {
     attr: AttributeKey.logic,
-    group: "biotech",
+    group: SkillGroupKey.Biotech,
     defaultable: false,
   },
   [SkillKey.dataSearch]: {
     attr: AttributeKey.logic,
-    group: "electronics",
+    group: SkillGroupKey.Electronics,
   },
   [SkillKey.demolitions]: {
     attr: AttributeKey.logic,
   },
   [SkillKey.disguise]: {
     attr: AttributeKey.intuition,
-    group: "stealth",
+    group: SkillGroupKey.Stealth,
   },
   [SkillKey.diving]: {
     attr: AttributeKey.body,
@@ -185,7 +189,7 @@ export const Skills: Record<
   },
   [SkillKey.electronicWarfare]: {
     attr: AttributeKey.logic,
-    group: "cracking",
+    group: SkillGroupKey.Cracking,
     defaultable: false,
   },
   [SkillKey.enchanting]: {
@@ -196,7 +200,7 @@ export const Skills: Record<
   },
   [SkillKey.etiquette]: {
     attr: AttributeKey.charisma,
-    group: "influence",
+    group: SkillGroupKey.Influence,
   },
   [SkillKey.exoticMeleeWeapons]: {
     attr: AttributeKey.agility,
@@ -206,7 +210,7 @@ export const Skills: Record<
   },
   [SkillKey.firstAid]: {
     attr: AttributeKey.logic,
-    group: "biotech",
+    group: SkillGroupKey.Biotech,
   },
   [SkillKey.forgery]: {
     attr: AttributeKey.agility,
@@ -216,15 +220,15 @@ export const Skills: Record<
   },
   [SkillKey.gymnastics]: {
     attr: AttributeKey.agility,
-    group: "athletics",
+    group: SkillGroupKey.Athletics,
   },
   [SkillKey.hacking]: {
     attr: AttributeKey.logic,
-    group: "cracking",
+    group: SkillGroupKey.Cracking,
   },
   [SkillKey.hardware]: {
     attr: AttributeKey.logic,
-    group: "electronics",
+    group: SkillGroupKey.Electronics,
     defaultable: false,
   },
   [SkillKey.heavyWeapons]: {
@@ -232,12 +236,12 @@ export const Skills: Record<
   },
   [SkillKey.industrialMechanic]: {
     attr: AttributeKey.logic,
-    group: "mechanic",
+    group: SkillGroupKey.Mechanic,
     defaultable: false,
   },
   [SkillKey.infiltration]: {
     attr: AttributeKey.agility,
-    group: "stealth",
+    group: SkillGroupKey.Stealth,
   },
   [SkillKey.instruction]: {
     attr: AttributeKey.charisma,
@@ -247,36 +251,36 @@ export const Skills: Record<
   },
   [SkillKey.leadership]: {
     attr: AttributeKey.charisma,
-    group: "influence",
+    group: SkillGroupKey.Influence,
   },
   [SkillKey.locksmith]: {
     attr: AttributeKey.agility,
   },
   [SkillKey.longarms]: {
     attr: AttributeKey.agility,
-    group: "firearms",
+    group: SkillGroupKey.Firearms,
   },
   [SkillKey.medicine]: {
     attr: AttributeKey.logic,
-    group: "biotech",
+    group: SkillGroupKey.Biotech,
     defaultable: false,
   },
   [SkillKey.nauticalMechanic]: {
     attr: AttributeKey.logic,
-    group: "mechanic",
+    group: SkillGroupKey.Mechanic,
     defaultable: false,
   },
   [SkillKey.navigation]: {
     attr: AttributeKey.intuition,
-    group: "outdoors",
+    group: SkillGroupKey.Outdoors,
   },
   [SkillKey.negotiation]: {
     attr: AttributeKey.charisma,
-    group: "influence",
+    group: SkillGroupKey.Influence,
   },
   [SkillKey.palming]: {
     attr: AttributeKey.agility,
-    group: "stealth",
+    group: SkillGroupKey.Stealth,
   },
   [SkillKey.parachuting]: {
     attr: AttributeKey.body,
@@ -308,58 +312,58 @@ export const Skills: Record<
   },
   [SkillKey.pistols]: {
     attr: AttributeKey.agility,
-    group: "firearms",
+    group: SkillGroupKey.Firearms,
   },
   [SkillKey.registering]: {
     attr: AttributeKey.resonance,
-    group: "tasking",
+    group: SkillGroupKey.Tasking,
     defaultable: false,
   },
   [SkillKey.ritualSpellcasting]: {
     attr: AttributeKey.magic,
-    group: "sorcery",
+    group: SkillGroupKey.Sorcery,
     defaultable: false,
   },
   [SkillKey.running]: {
     attr: AttributeKey.strength,
-    group: "athletics",
+    group: SkillGroupKey.Athletics,
   },
   [SkillKey.shadowing]: {
     attr: AttributeKey.intuition,
-    group: "stealth",
+    group: SkillGroupKey.Stealth,
   },
   [SkillKey.software]: {
     attr: AttributeKey.logic,
-    group: "electronics",
+    group: SkillGroupKey.Electronics,
     defaultable: false,
   },
   [SkillKey.spellcasting]: {
     attr: AttributeKey.magic,
-    group: "sorcery",
+    group: SkillGroupKey.Sorcery,
     defaultable: false,
   },
   [SkillKey.summoning]: {
     attr: AttributeKey.magic,
-    group: "conjuring",
+    group: SkillGroupKey.Conjuring,
     defaultable: false,
   },
   [SkillKey.survival]: {
     attr: AttributeKey.willpower,
-    group: "outdoors",
+    group: SkillGroupKey.Outdoors,
   },
   [SkillKey.swimming]: {
     attr: AttributeKey.strength,
-    group: "athletics",
+    group: SkillGroupKey.Athletics,
   },
   [SkillKey.thrownWeapons]: {
     attr: AttributeKey.agility,
   },
   [SkillKey.tracking]: {
     attr: AttributeKey.intuition,
-    group: "outdoors",
+    group: SkillGroupKey.Outdoors,
   },
   [SkillKey.unarmedCombat]: {
     attr: AttributeKey.agility,
-    group: "close combat",
+    group: SkillGroupKey.CloseCombat,
   },
 }
