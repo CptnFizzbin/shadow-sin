@@ -1,46 +1,31 @@
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
+  useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 
 export function useLicensesFormGroup() {
-  const store = useCharacterBuilderStoreContext()
+  const gearSlice = useCharacterBuilderStoreSlice((state) => state.gear)
   const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
   const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addLicense = (license: LicenseFormState) => {
-    store.setState((prev) => ({
-      ...prev,
-      gear: {
-        ...prev.gear,
-        licenses: [...prev.gear.licenses, license],
-      },
-    }))
+    gearSlice.update((draft) => {
+      draft.licenses.push(license)
+    })
   }
 
   const updateLicense = (license: LicenseFormState) => {
-    store.setState((prev) => ({
-      ...prev,
-      gear: {
-        ...prev.gear,
-        licenses: prev.gear.licenses.map((existingLicense) =>
-          existingLicense.id === license.id ? license : existingLicense,
-        ),
-      },
-    }))
+    gearSlice.update((draft) => {
+      const index = draft.licenses.findIndex((l) => l.id === license.id)
+      if (index !== -1) draft.licenses[index] = license
+    })
   }
 
   const removeLicense = (license: LicenseFormState) => {
-    store.setState((prev) => ({
-      ...prev,
-      gear: {
-        ...prev.gear,
-        licenses: prev.gear.licenses.filter(
-          (existingLicense) => existingLicense.id !== license.id,
-        ),
-      },
-    }))
+    gearSlice.update((draft) => {
+      draft.licenses = draft.licenses.filter((l) => l.id !== license.id)
+    })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {

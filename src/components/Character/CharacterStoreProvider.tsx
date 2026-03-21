@@ -3,6 +3,8 @@ import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { createStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const CharacterStoreContext =
@@ -40,4 +42,11 @@ export function useCharacterStore<TData>(
 ): TData {
   const store = useCharacterStoreContext()
   return useStore(store, selector)
+}
+
+export function useCharacterStoreSlice<TData extends object>(
+  selector: CharacterDataSelector<TData>,
+): StoreSlice<TData> {
+  const store = useCharacterStoreContext()
+  return createStoreSlice(store, selector)
 }

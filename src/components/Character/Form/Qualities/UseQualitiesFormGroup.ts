@@ -1,11 +1,13 @@
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
+  useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export function useQualitiesFormGroup() {
-  const store = useCharacterBuilderStoreContext()
+  const qualitiesSlice = useCharacterBuilderStoreSlice(
+    (state) => state.qualities,
+  )
   const qualities = useCharacterBuilderStore((state) => state.qualities)
 
   let bpSpent = 0
@@ -20,28 +22,23 @@ export function useQualitiesFormGroup() {
   })
 
   const addQuality = (quality: QualityData) => {
-    store.setState((prev) => ({
-      ...prev,
-      qualities: [...prev.qualities, quality],
-    }))
+    qualitiesSlice.update((draft) => {
+      draft.push(quality)
+    })
   }
 
   const updateQuality = (quality: QualityData) => {
-    store.setState((prev) => ({
-      ...prev,
-      qualities: prev.qualities.map((prevQuality) =>
-        prevQuality.id === quality.id ? quality : prevQuality,
-      ),
-    }))
+    qualitiesSlice.update((draft) => {
+      const index = draft.findIndex((q) => q.id === quality.id)
+      if (index !== -1) draft[index] = quality
+    })
   }
 
   const removeQuality = (quality: QualityData) => {
-    store.setState((prev) => ({
-      ...prev,
-      qualities: prev.qualities.filter(
-        (prevQuality) => prevQuality.id !== quality.id,
-      ),
-    }))
+    qualitiesSlice.update((draft) => {
+      const index = draft.findIndex((q) => q.id === quality.id)
+      if (index !== -1) draft.splice(index, 1)
+    })
   }
 
   return {

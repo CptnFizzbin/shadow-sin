@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
+  useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   GearBpAllowance,
@@ -12,7 +12,9 @@ import { getLicenseCost } from "#/components/Character/Form/Gear/Licenses/Forms/
 import { getSinCost } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 
 export function useGearFormGroup() {
-  const store = useCharacterBuilderStoreContext()
+  const buildPointsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.buildPoints,
+  )
   const gear = useCharacterBuilderStore((state) => state.gear)
 
   const totalNuyen = [
@@ -25,17 +27,10 @@ export function useGearFormGroup() {
   const hasRealSin = gear.sins.some((sin) => sin.rating === "real")
 
   useEffect(() => {
-    store.setState((prev) => ({
-      ...prev,
-      buildPoints: {
-        ...prev.buildPoints,
-        spent: {
-          ...prev.buildPoints.spent,
-          gear: totalBp,
-        },
-      },
-    }))
-  }, [store, totalBp])
+    buildPointsSlice.update((draft) => {
+      draft.spent.gear = totalBp
+    })
+  }, [buildPointsSlice, totalBp])
 
   return {
     totalNuyen,

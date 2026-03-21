@@ -3,11 +3,11 @@ import type { FC } from "react"
 
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
+  useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 
 export const ProfileSection: FC = () => {
-  const store = useCharacterBuilderStoreContext()
+  const storeSlice = useCharacterBuilderStoreSlice((state) => state)
   const alias = useCharacterBuilderStore((state) => state.alias)
   const name = useCharacterBuilderStore((state) => state.name)
 
@@ -20,7 +20,9 @@ export const ProfileSection: FC = () => {
         size="small"
         value={alias}
         onChange={(event) =>
-          store.setState((prev) => ({ ...prev, alias: event.target.value }))
+          storeSlice.update((draft) => {
+            draft.alias = event.target.value
+          })
         }
       />
 
@@ -31,7 +33,9 @@ export const ProfileSection: FC = () => {
         size="small"
         value={name}
         onChange={(event) =>
-          store.setState((prev) => ({ ...prev, name: event.target.value }))
+          storeSlice.update((draft) => {
+            draft.name = event.target.value
+          })
         }
       />
     </>

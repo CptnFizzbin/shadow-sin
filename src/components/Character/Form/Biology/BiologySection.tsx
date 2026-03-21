@@ -8,14 +8,14 @@ import { createAttrFormState } from "#/components/Character/Form/AttrFormState.t
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
+  useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export const BiologySection: FC = () => {
-  const store = useCharacterBuilderStoreContext()
+  const storeSlice = useCharacterBuilderStoreSlice((state) => state)
   const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
   const awakeningType = useCharacterBuilderStore((state) => state.awakening)
 
@@ -24,9 +24,11 @@ export const BiologySection: FC = () => {
 
   useEffect(() => {
     if (metatypeKey === MetatypeKey.AI) {
-      store.setState((prev) => ({ ...prev, awakening: AwakeningType.Mundane }))
+      storeSlice.update((draft) => {
+        draft.awakening = AwakeningType.Mundane
+      })
     }
-  }, [metatypeKey, store])
+  }, [metatypeKey, storeSlice])
 
   useEffect(() => {
     if (isInitialMountRef.current) {
@@ -41,11 +43,11 @@ export const BiologySection: FC = () => {
       (attr) => attr !== AttributeKey.essence,
     )
 
-    store.setState((prev) => {
-      const updatedAttributes = { ...prev.attributes }
+    storeSlice.update((draft) => {
+      draft.buildPoints.spent.attributes = 0
 
       for (const attr of attrsToUpdate) {
-        updatedAttributes[attr] = createAttrFormState({
+        draft.attributes[attr] = createAttrFormState({
           value: metatype.attributes[attr].min,
           attr: attr,
           metatype: metatype,
@@ -54,20 +56,8 @@ export const BiologySection: FC = () => {
       }
 
       prevAwakeningRef.current = awakeningType
-
-      return {
-        ...prev,
-        buildPoints: {
-          ...prev.buildPoints,
-          spent: {
-            ...prev.buildPoints.spent,
-            attributes: 0,
-          },
-        },
-        attributes: updatedAttributes,
-      }
     })
-  }, [metatypeKey, awakeningType, store])
+  }, [metatypeKey, awakeningType, storeSlice])
 
   return (
     <>
@@ -77,10 +67,9 @@ export const BiologySection: FC = () => {
           value={metatypeKey}
           label="Metatype"
           onChange={(event) =>
-            store.setState((prev) => ({
-              ...prev,
-              metatype: event.target.value as MetatypeKey,
-            }))
+            storeSlice.update((draft) => {
+              draft.metatype = event.target.value as MetatypeKey
+            })
           }
         >
           {Object.values(metatypes).map(({ name, cost }) => (
@@ -107,10 +96,9 @@ export const BiologySection: FC = () => {
             value={awakeningType}
             label="Awakening"
             onChange={(event) =>
-              store.setState((prev) => ({
-                ...prev,
-                awakening: event.target.value as AwakeningType,
-              }))
+              storeSlice.update((draft) => {
+                draft.awakening = event.target.value as AwakeningType
+              })
             }
           >
             {Object.values(awakenings).map(({ name, cost }) => (

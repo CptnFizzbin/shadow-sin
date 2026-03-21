@@ -1,7 +1,4 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   AttributeKey,
   AttributeLabels,
@@ -19,7 +16,6 @@ export interface AttributeRowProps {
 }
 
 export function useAttributeFormGroup() {
-  const store = useCharacterBuilderStoreContext()
   const attributes = useCharacterBuilderStore((state) => state.attributes)
   const bpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.attributes,
@@ -33,7 +29,6 @@ export function useAttributeFormGroup() {
     .some(({ value, max }) => value >= max)
 
   return {
-    store,
     bpSpent: bpSpent,
     bpRemaining: attrPointCosts.allowance - bpSpent,
     hasMaxxedAttr: hasMaxxedAttr,
