@@ -117,6 +117,11 @@ export const useDefaultValues = ({
     gear: {
       sins: [],
       licenses: [],
+      weapons: [],
+      armor: [],
+      vehicles: [],
+      cyberware: [],
+      misc: [],
     },
   }
 }
