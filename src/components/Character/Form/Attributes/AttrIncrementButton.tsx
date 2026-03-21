@@ -7,16 +7,37 @@ import {
   attrPointCosts,
   useAttributeRow,
 } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const IncrementButton: FC<AttributeRowProps> = (props) => {
-  const { bpRemaining, hasMaxxedAttr, attribute } = useAttributeRow(props)
+  if (props.attr === AttributeKey.essence) {
+    throw new Error("Essence can not be incremented")
+  }
+
+  const { bpRemaining, hasMaxxedAttr } = useAttributeRow(props)
+
+  const attrKey = props.attr
+  const buildPointsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.buildPoints,
+    (state, buildPoints) => {
+      state.buildPoints = buildPoints
+      return state
+    },
+  )
+  const attrSlice = useCharacterBuilderStoreSlice(
+    (state) => state.attributes[attrKey],
+    (state, attr) => {
+      state.attributes[attrKey] = attr
+      return state
+    },
+  )
 
   let disabled = false
   let cost = attrPointCosts.base
   let label = `${cost} BP`
 
-  const willMaxAttr = attribute.value + 1 >= attribute.max
+  const willMaxAttr = attrSlice.state.value + 1 >= attrSlice.state.max
 
   if (willMaxAttr) {
     cost = attrPointCosts.maxOut
@@ -28,7 +49,7 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     label = "---"
   }
 
-  if (attribute.value >= attribute.max) {
+  if (attrSlice.state.value >= attrSlice.state.max) {
     disabled = true
     label = "MAX"
   }
@@ -41,12 +62,12 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    props.form.setFieldValue(`buildPoints.spent.attributes`, (prev) => {
-      return Math.min(prev + cost, attrPointCosts.allowance)
+    buildPointsSlice.update((buildPoints) => {
+      buildPoints.spent.attributes += cost
     })
 
-    props.form.setFieldValue(`attributes.${props.attr}.value`, (prev) => {
-      return Math.min(prev + 1, attribute.max)
+    attrSlice.update((attrState) => {
+      attrState.value += 1
     })
   }
 

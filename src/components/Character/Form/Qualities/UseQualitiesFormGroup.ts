@@ -1,10 +1,18 @@
-import { useStore } from "@tanstack/react-store"
-
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreSlice,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
-export function useQualitiesFormGroup(form: PlayerCharacterForm) {
-  const qualities = useStore(form.store, (s) => s.values.qualities)
+export function useQualitiesFormGroup() {
+  const qualitiesSlice = useCharacterBuilderStoreSlice(
+    (state) => state.qualities,
+    (state, qualities) => {
+      state.qualities = qualities
+      return state
+    },
+  )
+  const qualities = useCharacterBuilderStore((state) => state.qualities)
 
   let bpSpent = 0
   let bpBonus = 0
@@ -18,21 +26,23 @@ export function useQualitiesFormGroup(form: PlayerCharacterForm) {
   })
 
   const addQuality = (quality: QualityData) => {
-    form.setFieldValue("qualities", (prev) => [...prev, quality])
+    qualitiesSlice.update((draft) => {
+      draft.push(quality)
+    })
   }
 
   const updateQuality = (quality: QualityData) => {
-    form.setFieldValue("qualities", (prev) => {
-      return prev.map((prevQuality) => {
-        return prevQuality.id === quality.id ? quality : prevQuality
-      })
+    qualitiesSlice.update((draft) => {
+      const index = draft.findIndex((q) => q.id === quality.id)
+      if (index !== -1) draft[index] = quality
     })
   }
 
   const removeQuality = (quality: QualityData) => {
-    form.setFieldValue("qualities", (prev) =>
-      prev.filter((prevQuality) => prevQuality.id !== quality.id),
-    )
+    qualitiesSlice.update((draft) => {
+      const index = draft.findIndex((q) => q.id === quality.id)
+      if (index !== -1) draft.splice(index, 1)
+    })
   }
 
   return {

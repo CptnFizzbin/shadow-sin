@@ -1,8 +1,11 @@
 import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
+import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const CharacterStoreContext =
@@ -28,7 +31,7 @@ export const useCharacterStoreContext = (): Store<PlayerCharacterData> => {
 
   if (!store) {
     throw new Error(
-      "useActiveCharacterStore must be used within a CharacterStoreProvider",
+      "useCharacterStoreContext must be used within a CharacterStoreProvider",
     )
   }
 
@@ -40,4 +43,15 @@ export function useCharacterStore<TData>(
 ): TData {
   const store = useCharacterStoreContext()
   return useStore(store, selector)
+}
+
+export function useCharacterStoreSlice<TData extends object>(
+  selector: CharacterDataSelector<TData>,
+  setter: (
+    state: Draft<PlayerCharacterData>,
+    nextValue: Draft<TData>,
+  ) => Draft<PlayerCharacterData>,
+): StoreSlice<TData> {
+  const store = useCharacterStoreContext()
+  return useStoreSlice(store, selector, setter)
 }

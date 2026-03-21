@@ -1,26 +1,37 @@
-import { useStore } from "@tanstack/react-store"
-
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreSlice,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
-export function useLicensesFormGroup(form: PlayerCharacterForm) {
-  const licenses = useStore(form.store, (s) => s.values.gear.licenses)
-  const sins = useStore(form.store, (s) => s.values.gear.sins)
+export function useLicensesFormGroup() {
+  const gearSlice = useCharacterBuilderStoreSlice(
+    (state) => state.gear,
+    (state, gear) => {
+      state.gear = gear
+      return state
+    },
+  )
+  const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
+  const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) => [...prev, license])
+    gearSlice.update((draft) => {
+      draft.licenses.push(license)
+    })
   }
 
   const updateLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) =>
-      prev.map((l) => (l.id === license.id ? license : l)),
-    )
+    gearSlice.update((draft) => {
+      const index = draft.licenses.findIndex((l) => l.id === license.id)
+      if (index !== -1) draft.licenses[index] = license
+    })
   }
 
   const removeLicense = (license: LicenseFormState) => {
-    form.setFieldValue("gear.licenses", (prev) =>
-      prev.filter((l) => l.id !== license.id),
-    )
+    gearSlice.update((draft) => {
+      draft.licenses = draft.licenses.filter((l) => l.id !== license.id)
+    })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {

@@ -7,7 +7,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import {
   useCharacterStore,
-  useCharacterStoreContext,
+  useCharacterStoreSlice,
 } from "#/components/Character/CharacterStoreProvider.tsx"
 import DamageTrack from "#/components/Damage/DamageTrack.tsx"
 import {
@@ -33,7 +33,13 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const store = useCharacterStoreContext()
+  const damageSlice = useCharacterStoreSlice(
+    (state) => state.damage,
+    (state, damage) => {
+      state.damage = damage
+      return state
+    },
+  )
   const body = useCharacterStore((state) => state.attributes.body)
   const will = useCharacterStore((state) => state.attributes.willpower)
   const woundMod = useWoundModifier()
@@ -61,20 +67,8 @@ function RouteComponent() {
             current={damageTracks.physical.current}
             allowOverflow
             onChange={(value) => {
-              store.setState((state) => {
-                const damage = state.damage
-                const physical = damage.physical
-
-                return {
-                  ...state,
-                  damage: {
-                    ...damage,
-                    physical: {
-                      ...physical,
-                      current: value,
-                    },
-                  },
-                }
+              damageSlice.update((draft) => {
+                draft.physical.current = value
               })
             }}
           />
@@ -85,20 +79,8 @@ function RouteComponent() {
             max={maxStun}
             current={damageTracks.stun.current}
             onChange={(value) => {
-              store.setState((state) => {
-                const damage = state.damage
-                const stun = damage.stun
-
-                return {
-                  ...state,
-                  damage: {
-                    ...damage,
-                    stun: {
-                      ...stun,
-                      current: value,
-                    },
-                  },
-                }
+              damageSlice.update((draft) => {
+                draft.stun.current = value
               })
             }}
           />

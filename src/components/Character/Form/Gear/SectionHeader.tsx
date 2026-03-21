@@ -1,8 +1,8 @@
 export enum SectionHeader {
+  Cyberware = "Cyberware",
   Weapons = "Weapons",
   Armor = "Armor",
-  Licenses = "SINs & Licenses",
   Vehicles = "Vehicles",
-  Cyberware = "Cyberware",
+  Licenses = "SINs & Licenses",
   Misc = "Misc",
 }

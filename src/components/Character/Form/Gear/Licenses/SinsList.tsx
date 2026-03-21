@@ -14,13 +14,8 @@ import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/For
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { useSinsFormGroup } from "#/components/Character/Form/Gear/Licenses/UseSinsFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
-
-interface SinsListProps {
-  form: PlayerCharacterForm
-}
 
 type DialogState =
   | null
@@ -28,10 +23,10 @@ type DialogState =
   | { mode: "edit"; sin: SinFormState; open: boolean }
   | { mode: "remove"; sin: SinFormState; open: boolean }
 
-export const SinsList: FC<SinsListProps> = ({ form }) => {
+export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { sins, addSin, updateSin, removeSin, getLicensesForSin } =
-    useSinsFormGroup(form)
+    useSinsFormGroup()
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })
@@ -62,6 +57,7 @@ export const SinsList: FC<SinsListProps> = ({ form }) => {
     <>
       <Button
         variant="outlined"
+        color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", open: true })}
@@ -138,7 +134,7 @@ export const SinsList: FC<SinsListProps> = ({ form }) => {
                 borderColor: "divider",
               }}
             >
-              <LicensesList form={form} sinId={sin.id} />
+              <LicensesList sinId={sin.id} />
             </Stack>
           </Box>
         )

@@ -1,35 +1,42 @@
-import { useStore } from "@tanstack/react-store"
-
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreSlice,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
-export function useSinsFormGroup(form: PlayerCharacterForm) {
-  const sins = useStore(form.store, (s) => s.values.gear.sins)
+export function useSinsFormGroup() {
+  const gearSlice = useCharacterBuilderStoreSlice(
+    (state) => state.gear,
+    (state, gear) => {
+      state.gear = gear
+      return state
+    },
+  )
+  const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addSin = (sin: SinFormState) => {
-    form.setFieldValue("gear.sins", (prev) => [...prev, sin])
+    gearSlice.update((draft) => {
+      draft.sins.push(sin)
+    })
   }
 
   const updateSin = (sin: SinFormState) => {
-    form.setFieldValue("gear.sins", (prev) =>
-      prev.map((item) => (item.id === sin.id ? sin : item)),
-    )
+    gearSlice.update((draft) => {
+      const index = draft.sins.findIndex((item) => item.id === sin.id)
+      if (index !== -1) draft.sins[index] = sin
+    })
   }
 
   const removeSin = (sin: SinFormState) => {
-    form.setFieldValue("gear.sins", (prev) =>
-      prev.filter((item) => item.id !== sin.id),
-    )
-    // Also remove associated licenses
-    form.setFieldValue("gear.licenses", (prev) =>
-      prev.filter((item) => item.sinId !== sin.id),
-    )
+    gearSlice.update((draft) => {
+      draft.sins = draft.sins.filter((item) => item.id !== sin.id)
+      draft.licenses = draft.licenses.filter((item) => item.sinId !== sin.id)
+    })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {
-    const licenses = form.getFieldValue("gear.licenses")
-    return licenses.filter((license) => license.sinId === sinId)
+    return gearSlice.state.licenses.filter((license) => license.sinId === sinId)
   }
 
   return {

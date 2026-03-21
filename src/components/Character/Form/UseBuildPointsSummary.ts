@@ -1,9 +1,13 @@
-import { useStore } from "@tanstack/react-store"
-
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import {
+  calculateActiveSkillsBp,
+  calculateExtraSpBp,
+  calculateKnowledgeAndLanguageSpUsed,
+  getFreeSkillPoints,
+} from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
@@ -23,21 +27,29 @@ export interface BpSummary {
   warnings: string[]
 }
 
-export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
-  const metatypeKey = useStore(form.store, (s) => s.values.metatype)
-  const awakeningType = useStore(form.store, (s) => s.values.awakening)
-  const qualities = useStore(form.store, (s) => s.values.qualities)
-  const attributesBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.attributes,
+export function useBuildPointsSummary(): BpSummary {
+  const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
+  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const qualities = useCharacterBuilderStore((state) => state.qualities)
+  const attributesBpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.attributes,
   )
-  const skillsBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.skills,
+  const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
+  const activeSkillGroups = useCharacterBuilderStore(
+    (s) => s.skills.activeSkillGroups,
   )
-  const gearBpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.gear,
+  const knowledgeSkills = useCharacterBuilderStore(
+    (s) => s.skills.knowledgeSkills,
+  )
+  const languageSkills = useCharacterBuilderStore(
+    (state) => state.skills.languageSkills,
+  )
+  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
+  const intuitionValue = useCharacterBuilderStore(
+    (s) => s.attributes.intuition.value,
+  )
+  const gearBpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.gear,
   )
 
   const metatypeCost = metatypes[metatypeKey].cost
@@ -57,9 +69,21 @@ export function useBuildPointsSummary(form: PlayerCharacterForm): BpSummary {
 
   const qualitiesNetBp = positiveQualitiesBp - negativeQualitiesBp
 
-  const totalBuildPoints = useStore(
-    form.store,
-    (s) => s.values.buildPoints.total,
+  // Calculate skills BP dynamically from skills arrays
+  const activeSkillsBp = calculateActiveSkillsBp(
+    activeSkills,
+    activeSkillGroups,
+  )
+  const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
+    knowledgeSkills,
+    languageSkills,
+  )
+  const freeSkillPoints = getFreeSkillPoints(logicValue, intuitionValue)
+  const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
+  const skillsBpSpent = activeSkillsBp + extraSpBp
+
+  const totalBuildPoints = useCharacterBuilderStore(
+    (state) => state.buildPoints.total,
   )
 
   const totalSpent =
