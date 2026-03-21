@@ -10,7 +10,13 @@ import {
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 
 export function useActiveSkillsFormGroup() {
-  const skillsSlice = useCharacterBuilderStoreSlice((s) => s.skills)
+  const skillsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.skills,
+    (state, skills) => {
+      state.skills = skills
+      return state
+    },
+  )
 
   const totalActiveSkillsBp = calculateActiveSkillsBp(
     skillsSlice.state.activeSkills,

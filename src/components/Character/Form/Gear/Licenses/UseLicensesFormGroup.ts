@@ -5,7 +5,13 @@ import {
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 
 export function useLicensesFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice((state) => state.gear)
+  const gearSlice = useCharacterBuilderStoreSlice(
+    (state) => state.gear,
+    (state, gear) => {
+      state.gear = gear
+      return state
+    },
+  )
   const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
   const sins = useCharacterBuilderStore((state) => state.gear.sins)
 

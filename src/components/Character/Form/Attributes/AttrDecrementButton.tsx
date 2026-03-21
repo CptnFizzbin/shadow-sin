@@ -9,15 +9,23 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const DecrementButton: FC<AttributeRowProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
-    throw new Error("Essence can not be incremented")
+    throw new Error("Essence cannot be decremented")
   }
 
-  const attr = props.attr
+  const attrKey = props.attr
   const buildPointsSlice = useCharacterBuilderStoreSlice(
     (state) => state.buildPoints,
+    (state, buildPoints) => {
+      state.buildPoints = buildPoints
+      return state
+    },
   )
   const attrSlice = useCharacterBuilderStoreSlice(
-    (state) => state.attributes[attr],
+    (state) => state.attributes[attrKey],
+    (state, attr) => {
+      state.attributes[attrKey] = attr
+      return state
+    },
   )
 
   let disabled = false

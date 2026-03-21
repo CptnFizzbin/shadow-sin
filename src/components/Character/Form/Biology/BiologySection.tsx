@@ -11,7 +11,10 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
 
 export const BiologySection: FC = () => {
-  const storeSlice = useCharacterBuilderStoreSlice((state) => state)
+  const storeSlice = useCharacterBuilderStoreSlice(
+    (state) => state,
+    (_state, newState) => newState,
+  )
   const metatypeKey = storeSlice.state.metatype
   const awakeningType = storeSlice.state.awakening
 

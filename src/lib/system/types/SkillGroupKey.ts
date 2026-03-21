@@ -80,3 +80,5 @@ export const SkillGroups: Record<SkillGroupKey, SkillGroupInfo> = {
     },
   },
 }
+
+export const SkillGroupNames = Object.values(SkillGroupKey)

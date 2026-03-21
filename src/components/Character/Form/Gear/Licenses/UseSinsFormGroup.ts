@@ -6,7 +6,13 @@ import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 
 export function useSinsFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice((state) => state.gear)
+  const gearSlice = useCharacterBuilderStoreSlice(
+    (state) => state.gear,
+    (state, gear) => {
+      state.gear = gear
+      return state
+    },
+  )
   const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addSin = (sin: SinFormState) => {

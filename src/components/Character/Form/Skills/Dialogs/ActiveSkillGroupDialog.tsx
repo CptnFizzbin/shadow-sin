@@ -13,12 +13,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import type { ActiveSkillGroupFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import {
-  getSkillsInGroup,
-  SkillGroupDisplayNames,
-  SkillGroupNames,
-} from "#/components/Character/Form/Skills/SkillGroups.ts"
+import { getSkillsInGroup } from "#/components/Character/Form/Skills/SkillGroups.ts"
 import { SkillGroupRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean
@@ -47,7 +44,9 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
 }) => {
   const isEditMode = !!group
 
-  const [groupName, setGroupName] = useState<string>(group?.groupName ?? "")
+  const [groupName, setGroupName] = useState<SkillGroupKey | null>(
+    group?.groupName ?? null,
+  )
   const [rating, setRating] = useState<number>(group?.rating ?? 1)
   const [groupNameError, setGroupNameError] = useState(false)
 
@@ -64,7 +63,7 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
   }
 
   const handleClosed = () => {
-    setGroupName(group?.groupName ?? "")
+    setGroupName(group?.groupName ?? null)
     setRating(group?.rating ?? 1)
     setGroupNameError(false)
     onClosed?.()
@@ -91,15 +90,16 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
               value={groupName}
               label="Skill Group"
               onChange={(e) => {
-                setGroupName(e.target.value)
+                const groupName = e.target.value as SkillGroupKey | ""
+                setGroupName(groupName || null)
                 setGroupNameError(false)
               }}
             >
-              {SkillGroupNames.map((name) => {
+              {Object.values(SkillGroupKey).map((name) => {
                 const isDisabled = disabledGroups?.has(name) ?? false
                 return (
                   <MenuItem key={name} value={name} disabled={isDisabled}>
-                    {SkillGroupDisplayNames[name]}
+                    {name}
                   </MenuItem>
                 )
               })}

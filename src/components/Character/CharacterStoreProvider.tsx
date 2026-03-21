@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
+import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
@@ -46,7 +47,11 @@ export function useCharacterStore<TData>(
 
 export function useCharacterStoreSlice<TData extends object>(
   selector: CharacterDataSelector<TData>,
+  setter: (
+    state: Draft<PlayerCharacterData>,
+    nextValue: Draft<TData>,
+  ) => Draft<PlayerCharacterData>,
 ): StoreSlice<TData> {
   const store = useCharacterStoreContext()
-  return useStoreSlice(store, selector)
+  return useStoreSlice(store, selector, setter)
 }

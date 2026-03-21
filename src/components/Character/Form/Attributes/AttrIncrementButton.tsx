@@ -15,15 +15,22 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     throw new Error("Essence can not be incremented")
   }
 
-  const attr = props.attr
-
   const { bpRemaining, hasMaxxedAttr } = useAttributeRow(props)
 
+  const attrKey = props.attr
   const buildPointsSlice = useCharacterBuilderStoreSlice(
     (state) => state.buildPoints,
+    (state, buildPoints) => {
+      state.buildPoints = buildPoints
+      return state
+    },
   )
   const attrSlice = useCharacterBuilderStoreSlice(
-    (state) => state.attributes[attr],
+    (state) => state.attributes[attrKey],
+    (state, attr) => {
+      state.attributes[attrKey] = attr
+      return state
+    },
   )
 
   let disabled = false

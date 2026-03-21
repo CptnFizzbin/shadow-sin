@@ -4,10 +4,7 @@ import type {
   KnowledgeSkillFormState,
   LanguageSkillFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import {
-  getSkillsInGroup,
-  SkillGroupDisplayNames,
-} from "#/components/Character/Form/Skills/SkillGroups.ts"
+import { getSkillsInGroup } from "#/components/Character/Form/Skills/SkillGroups.ts"
 
 export const ActiveSkillBpPerRating = 4
 export const ActiveSkillGroupBpPerRating = 10
@@ -149,11 +146,7 @@ export const getActiveSkillSelectionWarnings = (
     const groupsContaining: string[] = []
     for (const [groupName, skillSet] of groupSkillSets.entries()) {
       if (skillSet.has(skill.name)) {
-        groupsContaining.push(
-          SkillGroupDisplayNames[
-            groupName as keyof typeof SkillGroupDisplayNames
-          ] ?? groupName,
-        )
+        groupsContaining.push(groupName)
       }
     }
 

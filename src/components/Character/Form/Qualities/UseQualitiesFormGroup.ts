@@ -7,6 +7,10 @@ import type { QualityData } from "#/lib/system/types/qualityData.ts"
 export function useQualitiesFormGroup() {
   const qualitiesSlice = useCharacterBuilderStoreSlice(
     (state) => state.qualities,
+    (state, qualities) => {
+      state.qualities = qualities
+      return state
+    },
   )
   const qualities = useCharacterBuilderStore((state) => state.qualities)
 

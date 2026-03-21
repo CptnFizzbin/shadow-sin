@@ -16,7 +16,13 @@ import {
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 
 export function useKnowledgeSkillsFormGroup() {
-  const skillsSlice = useCharacterBuilderStoreSlice((s) => s.skills)
+  const skillsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.skills,
+    (state, skills) => {
+      state.skills = skills
+      return state
+    },
+  )
   const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
   const intuitionValue = useCharacterBuilderStore(
     (s) => s.attributes.intuition.value,

@@ -1,3 +1,5 @@
+import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
+
 export interface ActiveSkillFormState {
   id: string
   name: string
@@ -7,7 +9,7 @@ export interface ActiveSkillFormState {
 
 export interface ActiveSkillGroupFormState {
   id: string
-  groupName: string
+  groupName: SkillGroupKey
   rating: number
 }
 

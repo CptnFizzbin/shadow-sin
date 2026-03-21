@@ -33,7 +33,13 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageSlice = useCharacterStoreSlice((state) => state.damage)
+  const damageSlice = useCharacterStoreSlice(
+    (state) => state.damage,
+    (state, damage) => {
+      state.damage = damage
+      return state
+    },
+  )
   const body = useCharacterStore((state) => state.attributes.body)
   const will = useCharacterStore((state) => state.attributes.willpower)
   const woundMod = useWoundModifier()

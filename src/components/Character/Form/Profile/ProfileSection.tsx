@@ -7,7 +7,11 @@ import {
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 
 export const ProfileSection: FC = () => {
-  const storeSlice = useCharacterBuilderStoreSlice((state) => state)
+  const storeSlice = useCharacterBuilderStoreSlice(
+    (state) => state,
+    (_state, newState) => newState,
+  )
+
   const alias = useCharacterBuilderStore((state) => state.alias)
   const name = useCharacterBuilderStore((state) => state.name)
 

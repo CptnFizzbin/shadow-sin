@@ -15,10 +15,7 @@ import type {
   ActiveSkillFormState,
   ActiveSkillGroupFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
-import {
-  getSkillsInGroup,
-  SkillGroupDisplayNames,
-} from "#/components/Character/Form/Skills/SkillGroups.ts"
+import { getSkillsInGroup } from "#/components/Character/Form/Skills/SkillGroups.ts"
 import {
   getActiveSkillBp,
   getActiveSkillGroupBp,
@@ -323,10 +320,6 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
 }) => {
   const bpCost = getActiveSkillGroupBp(group.rating)
   const memberSkills = getSkillsInGroup(group.groupName)
-  const displayName =
-    SkillGroupDisplayNames[
-      group.groupName as keyof typeof SkillGroupDisplayNames
-    ] ?? group.groupName
 
   return (
     <Box
@@ -342,7 +335,7 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
     >
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
-          {displayName}
+          {group.groupName}
         </Typography>
         <Chip
           label={group.rating}

@@ -12,7 +12,12 @@ import {
 export function useGearFormGroup() {
   const buildPointsSlice = useCharacterBuilderStoreSlice(
     (state) => state.buildPoints,
+    (state, buildPoints) => {
+      state.buildPoints = buildPoints
+      return state
+    },
   )
+
   const gear = useCharacterBuilderStore((state) => state.gear)
 
   const totalNuyen = (Object.values(gear) as Array<{ cost: number }[]>)
