@@ -9,6 +9,7 @@ import { AttributesSection } from "#/components/Character/Form/Attributes/Attrib
 import { BiologySection } from "#/components/Character/Form/Biology/BiologySection.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { ContactsSection } from "#/components/Character/Form/Contacts/ContactsSection.tsx"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
 import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
@@ -110,6 +111,16 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
               </Typography>
 
               <GearSection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Contacts
+              </Typography>
+
+              <ContactsSection />
             </Stack>
           </Paper>
         </Stack>
