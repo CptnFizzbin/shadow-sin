@@ -4,7 +4,7 @@ import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import { createStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const CharacterStoreContext =
@@ -30,7 +30,7 @@ export const useCharacterStoreContext = (): Store<PlayerCharacterData> => {
 
   if (!store) {
     throw new Error(
-      "useActiveCharacterStore must be used within a CharacterStoreProvider",
+      "useCharacterStoreContext must be used within a CharacterStoreProvider",
     )
   }
 
@@ -48,5 +48,5 @@ export function useCharacterStoreSlice<TData extends object>(
   selector: CharacterDataSelector<TData>,
 ): StoreSlice<TData> {
   const store = useCharacterStoreContext()
-  return createStoreSlice(store, selector)
+  return useStoreSlice(store, selector)
 }

@@ -5,7 +5,7 @@ import { createContext, useContext } from "react"
 
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import { createStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 
 export const CharacterBuilderContext =
   createContext<Store<CharacterFormState> | null>(null)
@@ -48,5 +48,5 @@ export function useCharacterBuilderStoreSlice<TData extends object>(
   selector: CharacterBuilderSelector<TData>,
 ): StoreSlice<TData> {
   const store = useCharacterBuilderStoreContext()
-  return createStoreSlice(store, selector)
+  return useStoreSlice(store, selector)
 }
