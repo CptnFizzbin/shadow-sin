@@ -1,17 +1,15 @@
-import type { GearData, GearType } from "./gearData.ts";
+import type { GearData, GearType } from "./gearData.ts"
 
-export type VerificationData =
-  | { kind: "real" }
-  | { kind: "fake"; rating: number };
-
-export interface LicenseData extends GearData {
-  type: GearType.license;
-  verification: VerificationData;
+export enum VerificationKind {
+  Real = "Real",
+  Fake = "Fake",
 }
 
-export interface SinData extends GearData {
-  type: GearType.sin;
-  verification: VerificationData;
-  cost?: number;
-  licenses?: Array<{ id: string }>;
+export type VerificationData =
+  | { kind: VerificationKind.Real }
+  | { kind: VerificationKind.Fake; rating: number }
+
+export interface LicenseData extends GearData {
+  type: GearType.license
+  verification: VerificationData
 }

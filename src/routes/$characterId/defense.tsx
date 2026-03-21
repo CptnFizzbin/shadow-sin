@@ -1,14 +1,15 @@
-import { Divider } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
+import { Divider } from "@mui/material"
+import Grid from "@mui/material/Grid"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { createFileRoute } from "@tanstack/react-router"
+
 import {
   useCharacterStore,
   useCharacterStoreContext,
-} from "#/components/Character/CharacterStoreProvider.tsx";
-import DamageTrack from "#/components/Damage/DamageTrack.tsx";
+} from "#/components/Character/CharacterStoreProvider.tsx"
+import DamageTrack from "#/components/Damage/DamageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
   MeleeBlockDicePool,
@@ -22,25 +23,25 @@ import {
   RangedFullDefenseDicePool,
   ResistBodyDicePool,
   ResistWillpowerDicePool,
-} from "#/components/Damage/ResistanceDicePools.tsx";
-import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts";
-import { Label } from "#/components/UI/Text/Label.tsx";
-import { SkillKey } from "#/lib/system/types/SkillKey.ts";
+} from "#/components/Damage/ResistanceDicePools.tsx"
+import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts"
+import { Label } from "#/components/UI/Text/Label.tsx"
+import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const store = useCharacterStoreContext();
-  const body = useCharacterStore((state) => state.attributes.body);
-  const will = useCharacterStore((state) => state.attributes.willpower);
-  const woundMod = useWoundModifier();
+  const store = useCharacterStoreContext()
+  const body = useCharacterStore((state) => state.attributes.body)
+  const will = useCharacterStore((state) => state.attributes.willpower)
+  const woundMod = useWoundModifier()
 
-  const damageTracks = useCharacterStore((state) => state.damage);
+  const damageTracks = useCharacterStore((state) => state.damage)
 
-  const maxPhysical = 8 + Math.ceil(body / 2);
-  const maxStun = 8 + Math.ceil(will / 2);
+  const maxPhysical = 8 + Math.ceil(body / 2)
+  const maxStun = 8 + Math.ceil(will / 2)
 
   return (
     <Stack gap={1}>
@@ -61,8 +62,8 @@ function RouteComponent() {
             allowOverflow
             onChange={(value) => {
               store.setState((state) => {
-                const damage = state.damage;
-                const physical = damage.physical;
+                const damage = state.damage
+                const physical = damage.physical
 
                 return {
                   ...state,
@@ -73,8 +74,8 @@ function RouteComponent() {
                       current: value,
                     },
                   },
-                };
-              });
+                }
+              })
             }}
           />
         </Grid>
@@ -85,8 +86,8 @@ function RouteComponent() {
             current={damageTracks.stun.current}
             onChange={(value) => {
               store.setState((state) => {
-                const damage = state.damage;
-                const stun = damage.stun;
+                const damage = state.damage
+                const stun = damage.stun
 
                 return {
                   ...state,
@@ -97,8 +98,8 @@ function RouteComponent() {
                       current: value,
                     },
                   },
-                };
-              });
+                }
+              })
             }}
           />
         </Grid>
@@ -205,5 +206,5 @@ function RouteComponent() {
         </Grid>
       </Grid>
     </Stack>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles"
 
-const DISPLAY_FONT = '"Smooch Sans", sans-serif';
-const BODY_FONT = '"Monda", monospace, sans-serif';
+const DISPLAY_FONT = '"Smooch Sans", sans-serif'
+const BODY_FONT = '"Monda", monospace, sans-serif'
 
 export const theme = createTheme({
   cssVariables: true,
@@ -9,43 +9,43 @@ export const theme = createTheme({
     light: {
       palette: {
         primary: {
-          main: "#7c3aed",
-          light: "#a78bfa",
-          dark: "#5b21b6",
+          main: "#7C3AED",
+          light: "#A78BFA",
+          dark: "#5B21B6",
         },
         secondary: {
-          main: "#06b6d4",
-          light: "#67e8f9",
-          dark: "#0891b2",
+          main: "#06B6D4",
+          light: "#67E8F9",
+          dark: "#0891B2",
         },
         background: {
-          default: "#f5f0ff",
-          paper: "#ede8ff",
+          default: "#F5F0FF",
+          paper: "#EDE8FF",
         },
-        divider: "rgba(124, 58, 237, 0.2)",
+        divider: "rgba(124, 58, 237, 0.5)",
       },
     },
     dark: {
       palette: {
         primary: {
-          main: "#c084fc",
-          light: "#e879f9",
-          dark: "#a855f7",
+          main: "#C084FC",
+          light: "#E879F9",
+          dark: "#A855F7",
         },
         secondary: {
-          main: "#22d3ee",
-          light: "#67e8f9",
-          dark: "#0891b2",
+          main: "#22D3EE",
+          light: "#67E8F9",
+          dark: "#0891B2",
         },
         background: {
-          default: "#07000f",
-          paper: "#0e0020",
+          default: "#07000F",
+          paper: "#0E0020",
         },
         text: {
-          primary: "#f3e8ff",
-          secondary: "#a78bfa",
+          primary: "#F3E8FF",
+          secondary: "#A78BFA",
         },
-        divider: "rgba(192, 132, 252, 0.2)",
+        divider: "rgba(192, 132, 252, 0.5)",
       },
     },
   },
@@ -97,15 +97,12 @@ export const theme = createTheme({
     },
 
     MuiPaper: {
+      defaultProps: {
+        variant: "outlined",
+      },
       styleOverrides: {
         root: {
           borderRadius: 0,
-          backgroundImage: "none",
-          border: "1px solid",
-          borderColor: "inherit",
-        },
-        outlined: {
-          border: "1px solid",
         },
       },
     },
@@ -114,9 +111,6 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          backgroundImage: "none",
-          boxShadow: "none",
-          borderBottom: "1px solid",
         },
       },
     },
@@ -145,4 +139,4 @@ export const theme = createTheme({
       },
     },
   },
-});
+})

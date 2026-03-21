@@ -1,54 +1,62 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { useStore } from "@tanstack/react-store";
-import { type FC, useEffect, useRef } from "react";
-import { getAttrBuildState } from "#/components/Character/Form/AttributeBuildState.ts";
-import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx";
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm";
-import { AttributeKey } from "#/lib/system/types/attributeKey";
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts";
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts";
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
+import type { FC } from "react"
+import { useEffect, useRef } from "react"
+
+import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
+import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
+import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export interface BiologyFormGroupProps {
-  form: PlayerCharacterForm;
+  form: PlayerCharacterForm
 }
 
 export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
-  const metatypeKey = useStore(form.store, (s) => s.values.metatype);
-  const awakeningType = useStore(form.store, (s) => s.values.awakening);
+  const metatypeKey = useStore(form.store, (s) => s.values.metatype)
+  const awakeningType = useStore(form.store, (s) => s.values.awakening)
 
-  const prevAwakeningRef = useRef(awakeningType);
+  const prevAwakeningRef = useRef(awakeningType)
+  const isInitialMountRef = useRef(true)
 
   useEffect(() => {
     if (metatypeKey === MetatypeKey.AI) {
-      form.setFieldValue("awakening", AwakeningType.Mundane);
+      form.setFieldValue("awakening", AwakeningType.Mundane)
     }
-  }, [metatypeKey, form]);
+  }, [metatypeKey, form])
 
   useEffect(() => {
-    form.setFieldValue("buildPoints.spent.attributes", 0);
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false
+      return
+    }
+
+    form.setFieldValue("buildPoints.spent.attributes", 0)
     form.setFieldValue(`attributes`, (prev) => {
-      const metatype = metatypes[metatypeKey];
-      const awakening = awakenings[awakeningType];
-      const attrs = { ...prev };
+      const metatype = metatypes[metatypeKey]
+      const awakening = awakenings[awakeningType]
+      const attrs = { ...prev }
 
       const attrsToUpdate = Object.values(AttributeKey).filter(
         (attr) => attr !== AttributeKey.essence,
-      );
+      )
 
       for (const attr of attrsToUpdate) {
-        attrs[attr] = getAttrBuildState({
+        attrs[attr] = createAttrFormState({
           value: metatype.attributes[attr].min,
           attr: attr,
           metatype: metatype,
           awakening: awakening,
-        });
+        })
       }
 
-      prevAwakeningRef.current = awakeningType;
-      return attrs;
-    });
-  }, [metatypeKey, awakeningType, form]);
+      prevAwakeningRef.current = awakeningType
+      return attrs
+    })
+  }, [metatypeKey, awakeningType, form])
 
   return (
     <>
@@ -73,7 +81,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                     </Typography>
                   </Stack>
                 ),
-              };
+              }
             })}
           />
         )}
@@ -101,7 +109,7 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
                       </Typography>
                     </Stack>
                   ),
-                };
+                }
               })}
             />
           )}
@@ -110,5 +118,5 @@ export const BiologyFormGroup: FC<BiologyFormGroupProps> = ({ form }) => {
 
       <BiologyAttributes form={form} />
     </>
-  );
-};
+  )
+}

@@ -1,14 +1,17 @@
-import { createFormHook } from "@tanstack/react-form";
-import { SelectField } from "#/integrations/tanstack-form/Fields/SelectField.tsx";
-import { TextField } from "#/integrations/tanstack-form/Fields/TextField.tsx";
-import { fieldContext, formContext } from "./FieldContext.ts";
+import { createFormHook } from "@tanstack/react-form"
 
-export const { useAppForm, withFieldGroup } = createFormHook({
+import { NumberField } from "#/integrations/tanstack-form/Fields/NumberField.tsx"
+import { SelectField } from "#/integrations/tanstack-form/Fields/SelectField.tsx"
+import { TextField } from "#/integrations/tanstack-form/Fields/TextField.tsx"
+import { fieldContext, formContext } from "./FieldContext.ts"
+
+export const { useAppForm, withForm, withFieldGroup } = createFormHook({
   fieldComponents: {
-    TextField,
+    NumberField,
     SelectField,
+    TextField,
   },
   formComponents: {},
   fieldContext,
   formContext,
-});
+})

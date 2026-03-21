@@ -1,21 +1,20 @@
-import {
-  FormControl,
-  type FormControlProps,
-  InputLabel,
-  Select,
-} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import type { FC, ReactNode } from "react";
-import { useFieldContext } from "../FieldContext.ts";
+import type { FormControlProps } from "@mui/material"
+import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material"
+import MenuItem from "@mui/material/MenuItem"
+import type { FC, ReactNode } from "react"
+
+import { useFieldContext } from "#/integrations/tanstack-form/FieldContext.ts"
+import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 
 export interface SelectOption {
-  label: ReactNode;
-  value: string;
+  label: ReactNode
+  value: string
+  disabled?: boolean
 }
 
 export interface SelectFieldProps extends FormControlProps {
-  label: ReactNode;
-  options: SelectOption[];
+  label: ReactNode
+  options: SelectOption[]
 }
 
 export const SelectField: FC<SelectFieldProps> = ({
@@ -23,10 +22,11 @@ export const SelectField: FC<SelectFieldProps> = ({
   label,
   ...props
 }) => {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string>()
+  const errors = useFieldErrors()
 
   return (
-    <FormControl {...props}>
+    <FormControl error={errors !== null} {...props}>
       <InputLabel>{label}</InputLabel>
       <Select
         value={field.state.value}
@@ -38,12 +38,15 @@ export const SelectField: FC<SelectFieldProps> = ({
           <MenuItem
             value={option.value}
             key={option.value}
+            disabled={option.disabled}
             sx={{ display: "flex" }}
           >
             {option.label}
           </MenuItem>
         ))}
       </Select>
+
+      {errors !== null && <FormHelperText>{errors.join(", ")}</FormHelperText>}
     </FormControl>
-  );
-};
+  )
+}

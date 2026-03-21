@@ -1,26 +1,25 @@
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts";
-import type { ArmorData } from "#/lib/system/types/gear/armorData.ts";
+import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
+import type { ArmorData } from "#/lib/system/types/gear/armorData.ts"
 import {
   createFirearm,
   createGear,
   GearType,
-} from "#/lib/system/types/gear/gearData.ts";
-import type { ImplantData } from "#/lib/system/types/gear/implantData.ts";
-import type {
-  LicenseData,
-  SinData,
-} from "#/lib/system/types/gear/licenseData.ts";
-import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts";
+} from "#/lib/system/types/gear/gearData.ts"
+import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
+import type { LicenseData } from "#/lib/system/types/gear/licenseData.ts"
+import { VerificationKind } from "#/lib/system/types/gear/licenseData.ts"
+import type { VehicleData } from "#/lib/system/types/gear/vehicleData.ts"
 import type {
   FirearmAccessoryData,
   FirearmData,
-} from "#/lib/system/types/gear/weaponData.ts";
-import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts";
-import { GearEffectType } from "#/lib/system/types/gearEffectData.ts";
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts";
-import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts";
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts";
+} from "#/lib/system/types/gear/weaponData.ts"
+import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
+import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
+import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const artemis: PlayerCharacterData = {
   id: "artemis",
@@ -95,19 +94,19 @@ export const artemis: PlayerCharacterData = {
       name: "Sara McCabe",
       type: GearType.sin,
       notes: "General use SIN.",
-      verification: { kind: "fake", rating: 6 },
+      verification: { kind: VerificationKind.Fake, rating: 6 },
     }),
     createGear<SinData>({
       name: "Jadzia Dax",
       type: GearType.sin,
       notes: "Runner SIN.",
-      verification: { kind: "fake", rating: 4 },
+      verification: { kind: VerificationKind.Fake, rating: 4 },
       licenses: [
         createGear<LicenseData>({
           name: "Driver License (Semi-Truck)",
           type: GearType.license,
           fixed: true,
-          verification: { kind: "fake", rating: 5 },
+          verification: { kind: VerificationKind.Fake, rating: 5 },
         }),
       ],
     }),
@@ -115,7 +114,7 @@ export const artemis: PlayerCharacterData = {
       name: "Jane Smith",
       type: GearType.sin,
       notes: "Burner SIN.",
-      verification: { kind: "fake", rating: 2 },
+      verification: { kind: VerificationKind.Fake, rating: 2 },
     }),
     createFirearm({
       name: "FN P93 Predator",
@@ -492,4 +491,4 @@ export const artemis: PlayerCharacterData = {
   },
 
   qualities: [],
-};
+}

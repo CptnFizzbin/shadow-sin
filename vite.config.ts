@@ -1,20 +1,19 @@
-import { devtools } from "@tanstack/devtools-vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { devtools } from "@tanstack/devtools-vite"
+import { tanstackRouter } from "@tanstack/router-plugin/vite"
+import react, { reactCompilerPreset } from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+import babel from "@rolldown/plugin-babel"
 
 const config = defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     devtools(),
-    tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackRouter({ autoCodeSplitting: true }),
-    react({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
+    react(),
+    babel({ presets: [reactCompilerPreset()] }),
   ],
-});
+})
 
-export default config;
+export default config

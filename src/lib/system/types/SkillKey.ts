@@ -1,4 +1,4 @@
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export enum SkillKey {
   aronauticsMechanic = "Aronautics Mechanic",
@@ -362,4 +362,4 @@ export const Skills: Record<
     attr: AttributeKey.agility,
     group: "close combat",
   },
-};
+}

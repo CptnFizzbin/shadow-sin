@@ -1,4 +1,4 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export enum GearEffectType {
   setModifier = "setModifier",
@@ -18,10 +18,10 @@ export type GearEffectTarget =
   | `damage.${string}.overflow`
   | `damage.resistance`
   | `damage.soak`
-  | `weapon.recoil`;
+  | `weapon.recoil`
 
 export interface GearEffectData {
-  type: GearEffectType | string;
-  target?: GearEffectTarget;
-  value: number;
+  type: GearEffectType | string
+  target?: GearEffectTarget | string
+  value: number
 }

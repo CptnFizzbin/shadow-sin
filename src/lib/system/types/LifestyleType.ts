@@ -8,12 +8,12 @@ export enum LifestyleType {
 }
 
 export interface LifestyleData {
-  name: LifestyleType;
-  upkeep: number;
+  name: LifestyleType
+  upkeep: number
   starting: {
-    numDice: number;
-    mult: number;
-  };
+    numDice: number
+    mult: number
+  }
 }
 
 export const Lifestyles: Record<LifestyleType, LifestyleData> = {
@@ -65,4 +65,4 @@ export const Lifestyles: Record<LifestyleType, LifestyleData> = {
       mult: 1_000,
     },
   },
-};
+}

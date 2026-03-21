@@ -1,53 +1,54 @@
-import { Button } from "@mui/material";
-import { RiArrowRightBoxLine } from "@remixicon/react";
-import type { FC } from "react";
+import { Button } from "@mui/material"
+import { RiArrowRightBoxLine } from "@remixicon/react"
+import type { FC } from "react"
+
+import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import {
-  type AttributeRowProps,
   attrPointCosts,
   useAttributeRow,
-} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts";
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts";
+} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const IncrementButton: FC<AttributeRowProps> = (props) => {
-  const { bpRemaining, hasMaxxedAttr, attribute } = useAttributeRow(props);
+  const { bpRemaining, hasMaxxedAttr, attribute } = useAttributeRow(props)
 
-  let disabled = false;
-  let cost = attrPointCosts.base;
-  let label = `${cost} BP`;
+  let disabled = false
+  let cost = attrPointCosts.base
+  let label = `${cost} BP`
 
-  const willMaxAttr = attribute.value + 1 >= attribute.max;
+  const willMaxAttr = attribute.value + 1 >= attribute.max
 
   if (willMaxAttr) {
-    cost = attrPointCosts.maxOut;
-    label = `${cost} BP`;
+    cost = attrPointCosts.maxOut
+    label = `${cost} BP`
   }
 
   if (willMaxAttr && hasMaxxedAttr) {
-    disabled = true;
-    label = "---";
+    disabled = true
+    label = "---"
   }
 
   if (attribute.value >= attribute.max) {
-    disabled = true;
-    label = "MAX";
+    disabled = true
+    label = "MAX"
   }
 
   if (bpRemaining < cost) {
-    disabled = true;
+    disabled = true
   }
 
   const onClick = () => {
-    if (disabled) return;
-    if (props.attr === AttributeKey.essence) return;
+    if (disabled) return
+    if (props.attr === AttributeKey.essence) return
 
     props.form.setFieldValue(`buildPoints.spent.attributes`, (prev) => {
-      return Math.min(prev + cost, attrPointCosts.allowance);
-    });
+      return Math.min(prev + cost, attrPointCosts.allowance)
+    })
 
     props.form.setFieldValue(`attributes.${props.attr}.value`, (prev) => {
-      return Math.min(prev + 1, attribute.max);
-    });
-  };
+      return Math.min(prev + 1, attribute.max)
+    })
+  }
 
   return (
     <Button
@@ -59,5 +60,5 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     >
       <span style={{ flexGrow: 1, textAlign: "center" }}>{label}</span>
     </Button>
-  );
-};
+  )
+}

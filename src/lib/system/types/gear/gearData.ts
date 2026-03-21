@@ -1,8 +1,8 @@
-import type { AvailablityData } from "#/lib/system/types/availablityData.ts";
-import type { FirearmData } from "#/lib/system/types/gear/weaponData.ts";
-import { WeaponType } from "#/lib/system/types/gear/weaponData.ts";
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts";
-import type { SourceData } from "#/lib/system/types/sourceData.ts";
+import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
+import type { FirearmData } from "#/lib/system/types/gear/weaponData.ts"
+import { WeaponType } from "#/lib/system/types/gear/weaponData.ts"
+import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
+import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
 export enum GearType {
   armor = "armor",
@@ -20,27 +20,27 @@ export enum GearType {
 }
 
 export interface GearData {
-  id: string;
-  name: string;
-  type: GearType | string;
+  id: string
+  name: string
+  type: GearType | string
 
-  notes?: string;
-  equipped?: boolean;
-  fixed?: boolean;
+  notes?: string
+  equipped?: boolean
+  fixed?: boolean
 
-  availability?: AvailablityData;
-  source?: SourceData;
-  rating?: number;
-  cost?: number;
+  availability?: AvailablityInfo
+  source?: SourceData
+  rating?: number
+  cost?: number
 
   wireless?: {
-    enabled?: boolean;
-    removed?: boolean;
-  };
+    enabled?: boolean
+    removed?: boolean
+  }
 
-  items?: GearData[];
+  items?: GearData[]
 
-  effects?: GearEffectData[];
+  effects?: GearEffectData[]
 }
 
 export function createGear<TGear extends GearData>(
@@ -49,7 +49,7 @@ export function createGear<TGear extends GearData>(
   return {
     id: crypto.randomUUID(),
     ...data,
-  } as TGear;
+  } as TGear
 }
 
 export function createFirearm(
@@ -59,5 +59,5 @@ export function createFirearm(
     ...data,
     type: GearType.weapon,
     weaponType: WeaponType.firearm,
-  });
+  })
 }

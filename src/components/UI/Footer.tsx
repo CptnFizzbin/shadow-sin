@@ -1,5 +1,5 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
 
 export default function Footer() {
   return (
@@ -15,5 +15,5 @@ export default function Footer() {
         All rights reserved.
       </Typography>
     </Box>
-  );
+  )
 }

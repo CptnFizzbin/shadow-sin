@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts";
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts";
+import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 
 export enum MetatypeKey {
   Human = "Human",
@@ -11,20 +11,20 @@ export enum MetatypeKey {
 }
 
 export interface MetatypeData {
-  name: MetatypeKey;
-  cost: number;
+  name: MetatypeKey
+  cost: number
   attributes: Record<
     AttributeKey,
     { min: number; max: number; augMax?: number }
-  >;
-  inateAbilites?: GearEffectData[];
+  >
+  inateAbilites?: GearEffectData[]
 }
 
 const commonAttributes = {
   essence: { min: 6, max: 6 },
   magic: { min: 0, max: 0 },
   resonance: { min: 0, max: 0 },
-} as const;
+} as const
 
 export const metatypes: Record<MetatypeKey, MetatypeData> = {
   Human: {
@@ -115,14 +115,14 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       agility: { min: 0, max: 0 },
       reaction: { min: 0, max: 0 },
       strength: { min: 0, max: 0 },
-      charisma: { min: 1, max: 4, augMax: 6 },
-      intuition: { min: 1, max: 5, augMax: 7 },
-      logic: { min: 1, max: 5, augMax: 7 },
-      willpower: { min: 1, max: 6, augMax: 9 },
+      charisma: { min: 1, max: 6 },
+      intuition: { min: 1, max: 6 },
+      logic: { min: 1, max: 6 },
+      willpower: { min: 1, max: 6 },
       edge: { min: 1, max: 6 },
       essence: { min: 0, max: 0 },
       magic: { min: 0, max: 0 },
       resonance: { min: 0, max: 0 },
     },
   },
-};
+}
