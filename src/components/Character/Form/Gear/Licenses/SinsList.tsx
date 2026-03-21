@@ -62,6 +62,7 @@ export const SinsList: FC<SinsListProps> = ({ form }) => {
     <>
       <Button
         variant="outlined"
+        color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", open: true })}

@@ -9,8 +9,6 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -39,8 +37,10 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   const isEditMode = !!skill
 
   const [name, setName] = useState<string>(skill?.name ?? "")
-  const [isNative, setIsNative] = useState<boolean>(skill?.isNative ?? false)
-  const [rating, setRating] = useState<number>(skill?.rating ?? 1)
+  // ratingValue is either a number (1..SkillRatingMax) or the string 'native'
+  const [ratingValue, setRatingValue] = useState<string | number>(
+    skill?.isNative ? "native" : (skill?.rating ?? 1),
+  )
   const [specialization, setSpecialization] = useState<string>(
     skill?.specialization ?? "",
   )
@@ -54,16 +54,15 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
     onSave({
       id: skill?.id ?? crypto.randomUUID(),
       name: name.trim(),
-      isNative,
-      rating: isNative ? 0 : rating,
+      isNative: ratingValue === "native",
+      rating: ratingValue === "native" ? 0 : Number(ratingValue),
       specialization: specialization.trim() || undefined,
     })
   }
 
   const handleClosed = () => {
     setName(skill?.name ?? "")
-    setIsNative(skill?.isNative ?? false)
-    setRating(skill?.rating ?? 1)
+    setRatingValue(skill?.isNative ? "native" : (skill?.rating ?? 1))
     setSpecialization(skill?.specialization ?? "")
     setNameError(false)
     onClosed?.()
@@ -96,35 +95,21 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
             autoFocus
           />
 
-          <Stack direction="row" alignItems="center" gap={2}>
-            <ToggleButtonGroup
-              value={isNative ? "native" : "learned"}
-              exclusive
-              onChange={() => setIsNative(!isNative)}
-              size="small"
+          <FormControl fullWidth size="small">
+            <InputLabel>Rating</InputLabel>
+            <Select
+              value={ratingValue}
+              label="Rating"
+              onChange={(e) => setRatingValue(e.target.value)}
             >
-              <ToggleButton value="native">
-                {isNative ? "Native" : "Learned"}
-              </ToggleButton>
-            </ToggleButtonGroup>
-
-            {!isNative && (
-              <FormControl fullWidth size="small">
-                <InputLabel>Rating</InputLabel>
-                <Select
-                  value={rating}
-                  label="Rating"
-                  onChange={(e) => setRating(Number(e.target.value))}
-                >
-                  {ratingOptions.map((r) => (
-                    <MenuItem key={r} value={r}>
-                      {r}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          </Stack>
+              <MenuItem value={"native"}>Native</MenuItem>
+              {ratingOptions.map((r) => (
+                <MenuItem key={r} value={r}>
+                  {r}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <TextField
             label="Lingo / Specialization (optional)"
@@ -152,8 +137,10 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
           )}
         </div>
         <div>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button color="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleSave}>
             Save
           </Button>
         </div>

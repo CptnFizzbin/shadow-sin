@@ -7,6 +7,7 @@ import type {
 import {
   calculateActiveSkillsBp,
   getActiveSkillRatingWarnings,
+  getActiveSkillSelectionWarnings,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
@@ -22,7 +23,13 @@ export function useActiveSkillsFormGroup(form: PlayerCharacterForm) {
     activeSkillGroups,
   )
 
-  const activeSkillWarnings = getActiveSkillRatingWarnings(activeSkills)
+  const ratingWarnings = getActiveSkillRatingWarnings(activeSkills)
+  const selectionWarnings = getActiveSkillSelectionWarnings(
+    activeSkills,
+    activeSkillGroups,
+  )
+
+  const activeSkillWarnings = [...ratingWarnings, ...selectionWarnings]
 
   const addActiveSkill = (skill: ActiveSkillFormState) => {
     form.setFieldValue("skills.activeSkills", (prev) => [...prev, skill])

@@ -18,7 +18,7 @@ import {
   SkillGroupDisplayNames,
   SkillGroupNames,
 } from "#/components/Character/Form/Skills/SkillGroups.ts"
-import { SkillRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { SkillGroupRatingMax } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean
@@ -31,7 +31,10 @@ interface ActiveSkillGroupDialogProps {
   onClosed?: () => void
 }
 
-const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
+const ratingOptions = Array.from(
+  { length: SkillGroupRatingMax },
+  (_, i) => i + 1,
+)
 
 export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
   open,
@@ -141,8 +144,10 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
           )}
         </div>
         <div>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button color="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleSave}>
             Save
           </Button>
         </div>

@@ -9,6 +9,7 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
   getKnowledgeSkillRatingWarnings,
+  getLanguageSelectionWarnings,
   getMaxSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
@@ -46,6 +47,11 @@ export function useKnowledgeSkillsFormGroup(form: PlayerCharacterForm) {
     knowledgeSkills,
     languageSkills,
   )
+  const languageSelectionWarnings = getLanguageSelectionWarnings(languageSkills)
+  const mergedKnowledgeWarnings = [
+    ...knowledgeSkillWarnings,
+    ...languageSelectionWarnings,
+  ]
 
   const addKnowledgeSkill = (skill: KnowledgeSkillFormState) => {
     form.setFieldValue("skills.knowledgeSkills", (prev) => [...prev, skill])
@@ -83,7 +89,7 @@ export function useKnowledgeSkillsFormGroup(form: PlayerCharacterForm) {
     totalSpUsed,
     extraSpNeeded,
     extraSpBp,
-    knowledgeSkillWarnings,
+    knowledgeSkillWarnings: mergedKnowledgeWarnings,
     addKnowledgeSkill,
     updateKnowledgeSkill,
     removeKnowledgeSkill,

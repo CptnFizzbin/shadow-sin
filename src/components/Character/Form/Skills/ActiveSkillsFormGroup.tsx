@@ -26,8 +26,6 @@ import {
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { Skills } from "#/lib/system/types/SkillKey.ts"
 
 export interface ActiveSkillsFormGroupProps {
   form: PlayerCharacterForm
@@ -81,21 +79,16 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
   ])
 
   // For the group dialog: disable groups that are already selected (excluding
-  // the one being edited) OR that contain any individually-selected skill.
+  // the one being edited)
   const editingGroupName =
     activeSkillGroupDialog?.mode === "edit"
       ? activeSkillGroupDialog.group.groupName
       : null
-  const groupsWithIndividualSkill = new Set<string>(
-    activeSkills
-      .map((s) => Skills[s.name as SkillKey]?.group)
-      .filter((groupName): groupName is string => !!groupName),
-  )
+
   const disabledGroups = new Set<string>([
     ...activeSkillGroups
       .filter((g) => g.groupName !== editingGroupName)
       .map((g) => g.groupName),
-    ...groupsWithIndividualSkill,
   ])
 
   const closeDialog = <TDialogState,>(
@@ -174,6 +167,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
       <Stack direction="row" gap={1}>
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() => setActiveSkillDialog({ mode: "create", open: true })}
@@ -183,6 +177,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
         </Button>
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() =>

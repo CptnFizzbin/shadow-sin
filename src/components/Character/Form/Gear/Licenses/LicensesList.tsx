@@ -114,6 +114,7 @@ export const LicensesList: FC<LicensesListProps> = ({ form, sinId }) => {
 
       <Button
         variant="outlined"
+        color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", sinId, open: true })}

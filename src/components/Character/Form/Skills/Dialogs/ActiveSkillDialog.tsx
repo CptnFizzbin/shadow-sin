@@ -173,8 +173,10 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
           )}
         </div>
         <div>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button color="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleSave}>
             Save
           </Button>
         </div>

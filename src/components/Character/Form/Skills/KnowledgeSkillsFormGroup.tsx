@@ -170,6 +170,7 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
       <Stack direction="row" gap={1}>
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() =>
@@ -181,6 +182,7 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
         </Button>
         <Button
           variant="outlined"
+          color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() => setLanguageSkillDialog({ mode: "create", open: true })}

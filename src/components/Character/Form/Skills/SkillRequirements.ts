@@ -3,8 +3,11 @@ import type {
   ActiveSkillGroupFormState,
   KnowledgeSkillFormState,
   LanguageSkillFormState,
-  SkillsFormState,
 } from "#/components/Character/Form/Skills/SkillFormState.ts"
+import {
+  getSkillsInGroup,
+  SkillGroupDisplayNames,
+} from "#/components/Character/Form/Skills/SkillGroups.ts"
 
 export const ActiveSkillBpPerRating = 4
 export const ActiveSkillGroupBpPerRating = 10
@@ -15,6 +18,7 @@ export const KnowledgeSpecializationSp = 1
 export const LanguageSpecializationSp = 1
 export const ExtraSkillPointBpCost = 2
 export const SkillRatingMax = 6
+export const SkillGroupRatingMax = 4
 
 export const getFreeSkillPoints = (
   logic: number,
@@ -100,24 +104,6 @@ export const calculateExtraSpBp = (
   return extraSp * ExtraSkillPointBpCost
 }
 
-export const calculateTotalSkillsBp = (
-  skills: SkillsFormState,
-  logic: number,
-  intuition: number,
-): number => {
-  const activeSkillsBp = calculateActiveSkillsBp(
-    skills.activeSkills,
-    skills.activeSkillGroups,
-  )
-  const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
-    skills.knowledgeSkills,
-    skills.languageSkills,
-  )
-  const freeSkillPoints = getFreeSkillPoints(logic, intuition)
-  const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
-  return activeSkillsBp + extraSpBp
-}
-
 /**
  * Validate active skill rating constraints:
  * - At most 1 skill at R6 with all others at R4
@@ -129,18 +115,57 @@ export const getActiveSkillRatingWarnings = (
   const warnings: string[] = []
   const r6Count = activeSkills.filter((s) => s.rating >= 6).length
   const r5Count = activeSkills.filter((s) => s.rating === 5).length
-  const aboveR4Count = activeSkills.filter((s) => s.rating > 4).length
 
-  if (r6Count > 1) {
-    warnings.push("Active skills: cannot have more than 1 skill at Rating 6")
-  }
-  if (r6Count === 1 && r5Count > 0) {
+  if (r6Count > 1 || r5Count > 2 || (r6Count === 1 && r5Count > 0)) {
     warnings.push(
-      "Active skills: cannot have a Rating 6 skill alongside any Rating 5 skills",
+      "Only allowed one Rating 6 skill OR two Rating 5 skills, with all other skills at Rating 4 or below.",
     )
   }
-  if (r6Count === 0 && aboveR4Count > 2) {
-    warnings.push("Active skills: cannot have more than 2 skills at Rating 5")
+
+  return warnings
+}
+
+/**
+ * Warn when an individual active skill is also covered by a selected skill group.
+ * Example: "Pistols" selected individually and the "Firearms" group is also selected.
+ */
+export const getActiveSkillSelectionWarnings = (
+  activeSkills: ActiveSkillFormState[],
+  activeSkillGroups: ActiveSkillGroupFormState[],
+): string[] => {
+  const warnings: string[] = []
+
+  if (activeSkills.length === 0 || activeSkillGroups.length === 0)
+    return warnings
+
+  // Precompute group -> member skill sets for faster lookup
+  const groupSkillSets = new Map<string, Set<string>>()
+  for (const group of activeSkillGroups) {
+    const members = getSkillsInGroup(group.groupName)
+    groupSkillSets.set(group.groupName, new Set(members as string[]))
+  }
+
+  for (const skill of activeSkills) {
+    const groupsContaining: string[] = []
+    for (const [groupName, skillSet] of groupSkillSets.entries()) {
+      if (skillSet.has(skill.name)) {
+        groupsContaining.push(
+          SkillGroupDisplayNames[
+            groupName as keyof typeof SkillGroupDisplayNames
+          ] ?? groupName,
+        )
+      }
+    }
+
+    if (groupsContaining.length > 0) {
+      const plural = groupsContaining.length > 1 ? "groups" : "group"
+      // Single-sentence SR40A warning
+      warnings.push(
+        `Active skills: "${skill.name}" is selected individually and also via selected ${plural}: ${groupsContaining.join(
+          ", ",
+        )}. A skill may be purchased either individually or as part of a skill group, but not both.`,
+      )
+    }
   }
 
   return warnings
@@ -179,5 +204,22 @@ export const getKnowledgeSkillRatingWarnings = (
     )
   }
 
+  return warnings
+}
+
+/**
+ * Warn when more than one native language is selected. This does not block the
+ * user, it only surfaces a warning per the project requirement.
+ */
+export const getLanguageSelectionWarnings = (
+  languageSkills: LanguageSkillFormState[],
+): string[] => {
+  const warnings: string[] = []
+  const nativeCount = languageSkills.filter((s) => s.isNative).length
+  if (nativeCount > 1) {
+    warnings.push(
+      `Languages: ${nativeCount} native languages selected — starting characters are limited to 1 native language.`,
+    )
+  }
   return warnings
 }

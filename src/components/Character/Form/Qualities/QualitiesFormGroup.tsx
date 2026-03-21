@@ -66,6 +66,7 @@ export const QualitiesFormGroup: FC<QualitiesFormGroupProps> = ({ form }) => {
 
         <Button
           variant="outlined"
+          color="secondary"
           startIcon={<RiAddLine />}
           onClick={() => setIsAddDialogOpen(true)}
           size="small"

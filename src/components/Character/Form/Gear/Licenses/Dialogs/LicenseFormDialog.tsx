@@ -67,8 +67,15 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={form.handleSubmit} variant="contained">
+        <Button color="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          color="secondary"
+          onClick={form.handleSubmit}
+          variant="contained"
+        >
           Save
         </Button>
       </DialogActions>
