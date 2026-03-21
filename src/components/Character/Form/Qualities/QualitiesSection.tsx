@@ -1,8 +1,5 @@
-import Alert from "@mui/material/Alert"
-import Box from "@mui/material/Box"
+import { Divider } from "@mui/material"
 import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
-import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
@@ -12,7 +9,7 @@ import { useState } from "react"
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
-import { getProgress } from "#/lib/ProgressUtils.ts"
+import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export const qualityBuildPoints = {
@@ -35,7 +32,7 @@ export const QualitiesSection: FC = () => {
       <Stack gap={0.5}>
         <QualityGroup
           label={"Positive"}
-          bpAllowance={qualityBuildPoints.allowance.positive}
+          positive={true}
           bpUsed={buildPoints.bpSpent}
           qualities={qualities.positive}
           onSelect={(quality) => {
@@ -44,11 +41,11 @@ export const QualitiesSection: FC = () => {
           }}
         />
 
-        <Divider sx={{ my: 1 }} />
+        <Divider sx={{ marginY: 1 }} />
 
         <QualityGroup
           label={"Negative"}
-          bpAllowance={qualityBuildPoints.allowance.negative}
+          positive={false}
           bpUsed={buildPoints.bpBonus}
           qualities={qualities.negative}
           onSelect={(quality) => {
@@ -57,7 +54,7 @@ export const QualitiesSection: FC = () => {
           }}
         />
 
-        <Divider sx={{ my: 1 }} />
+        <Divider sx={{ marginY: 1 }} />
 
         <Button
           variant="outlined"
@@ -98,7 +95,7 @@ export const QualitiesSection: FC = () => {
 
 interface QualityGroupProps {
   label: string
-  bpAllowance: number
+  positive: boolean
   bpUsed: number
   qualities: QualityData[]
   onSelect: (quality: QualityData) => void
@@ -106,35 +103,20 @@ interface QualityGroupProps {
 
 const QualityGroup: FC<QualityGroupProps> = ({
   label,
-  bpAllowance,
+  positive,
   bpUsed,
   qualities,
   onSelect,
 }) => {
   return (
     <>
-      <Box sx={{ mt: 0.5 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography variant="body2">{label}</Typography>
-          <Typography variant="caption">
-            {bpUsed} / {bpAllowance}
-          </Typography>
-        </Stack>
-        <LinearProgress
-          variant="determinate"
-          value={getProgress(bpUsed ?? 0, bpAllowance)}
-          sx={{ height: 8, borderRadius: 1, mt: 0.5, width: "100%" }}
-        />
-        {bpUsed > bpAllowance && (
-          <Alert severity="error" sx={{ mt: 1 }}>
-            {label} is limited to {bpAllowance} BP
-          </Alert>
-        )}
-      </Box>
+      <Label label={label} variant={"outlined"} />
+
+      <Stack direction={"row"} justifyContent={"flex-end"}>
+        <Typography color={"secondary.main"}>
+          {positive ? "Cost" : "Bonus"}: {bpUsed} BP
+        </Typography>
+      </Stack>
 
       {qualities.length === 0 ? (
         <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
