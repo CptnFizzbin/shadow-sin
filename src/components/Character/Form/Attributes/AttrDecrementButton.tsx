@@ -42,7 +42,9 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
       buildPoints.spent.attributes -= refund
     })
 
-    attrSlice.update((attrState) => (attrState.value -= 1))
+    attrSlice.update((attrState) => {
+      attrState.value -= 1
+    })
   }
   return (
     <Button

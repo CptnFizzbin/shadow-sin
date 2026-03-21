@@ -59,7 +59,9 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
       buildPoints.spent.attributes += cost
     })
 
-    attrSlice.update((attrState) => (attrState.value += 1))
+    attrSlice.update((attrState) => {
+      attrState.value += 1
+    })
   }
 
   return (
