@@ -9,10 +9,10 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { Dispatch, FC, SetStateAction } from "react"
 import { useState } from "react"
 
-import { SpriteDialog } from "#/components/Character/Form/Awakened/Technomancer/Dialogs/SpriteDialog.tsx"
-import type { SpriteFormState } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
-import { getSpriteTasksBp } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerRequirements.ts"
-import { useTechnomancerFormGroup } from "#/components/Character/Form/Awakened/Technomancer/UseTechnomancerFormGroup.ts"
+import { SpriteDialog } from "#/components/Character/Form/Resources/Technomancer/Dialogs/SpriteDialog.tsx"
+import type { SpriteFormState } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
+import { getSpriteTasksBp } from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
+import { useTechnomancerFormGroup } from "#/components/Character/Form/Resources/Technomancer/UseTechnomancerFormGroup.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 
 type SpriteDialogState =

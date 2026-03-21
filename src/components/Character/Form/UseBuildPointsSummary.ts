@@ -1,12 +1,12 @@
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
-import {
-  calculateComplexFormsBp,
-  calculateSpritesBp,
-} from "#/components/Character/Form/Awakened/Technomancer/TechnomancerRequirements.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { contactBuildPoints } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import {
+  calculateComplexFormsBp,
+  calculateSpritesBp,
+} from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,

@@ -1,17 +1,17 @@
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreSlice,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type {
   ComplexFormFormState,
   SpriteFormState,
-} from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
+} from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
 import {
   calculateComplexFormsBp,
   calculateSpritesBp,
   getMaxComplexForms,
   getMaxSprites,
-} from "#/components/Character/Form/Awakened/Technomancer/TechnomancerRequirements.ts"
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+} from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
 import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 
 export function useTechnomancerFormGroup() {

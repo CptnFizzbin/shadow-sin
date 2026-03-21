@@ -9,10 +9,10 @@ import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { Dispatch, FC, SetStateAction } from "react"
 import { useState } from "react"
 
-import { ComplexFormDialog } from "#/components/Character/Form/Awakened/Technomancer/Dialogs/ComplexFormDialog.tsx"
-import type { ComplexFormFormState } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
-import { getComplexFormBp } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerRequirements.ts"
-import { useTechnomancerFormGroup } from "#/components/Character/Form/Awakened/Technomancer/UseTechnomancerFormGroup.ts"
+import { ComplexFormDialog } from "#/components/Character/Form/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
+import type { ComplexFormFormState } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
+import { getComplexFormBp } from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
+import { useTechnomancerFormGroup } from "#/components/Character/Form/Resources/Technomancer/UseTechnomancerFormGroup.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 
 type ComplexFormDialogState =

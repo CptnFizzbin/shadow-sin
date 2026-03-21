@@ -9,42 +9,39 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { SpriteFormState } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
+import type { ComplexFormFormState } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
 
-interface SpriteDialogProps {
+interface ComplexFormDialogProps {
   open: boolean
-  sprite?: SpriteFormState
-  resonanceValue: number
-  maxTasks: number
-  onSave: (sprite: SpriteFormState) => void
+  form?: ComplexFormFormState
+  maxRating: number
+  onSave: (form: ComplexFormFormState) => void
   onDelete?: () => void
   onClose: () => void
   onClosed?: () => void
 }
 
-export const SpriteDialog: FC<SpriteDialogProps> = ({
+export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   open,
-  sprite,
-  resonanceValue,
-  maxTasks,
+  form,
+  maxRating,
   onSave,
   onDelete,
   onClose,
   onClosed,
 }) => {
-  const isEditMode = !!sprite
+  const isEditMode = !!form
 
-  const [name, setName] = useState<string>(sprite?.name ?? "")
-  const [tasks, setTasks] = useState<number>(sprite?.tasks ?? 1)
+  const [name, setName] = useState<string>(form?.name ?? "")
+  const [rating, setRating] = useState<number>(form?.rating ?? 1)
   const [nameError, setNameError] = useState(false)
 
-  const effectiveMaxTasks = Math.max(maxTasks, 1)
-  const taskOptions = Array.from(
-    { length: effectiveMaxTasks },
+  const effectiveMaxRating = Math.max(maxRating, 1)
+  const ratingOptions = Array.from(
+    { length: effectiveMaxRating },
     (_, index) => index + 1,
   )
 
@@ -54,15 +51,15 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
       return
     }
     onSave({
-      id: sprite?.id ?? crypto.randomUUID(),
+      id: form?.id ?? crypto.randomUUID(),
       name: name.trim(),
-      tasks: Math.min(tasks, effectiveMaxTasks),
+      rating: Math.min(rating, effectiveMaxRating),
     })
   }
 
   const handleClosed = () => {
-    setName(sprite?.name ?? "")
-    setTasks(sprite?.tasks ?? 1)
+    setName(form?.name ?? "")
+    setRating(form?.rating ?? 1)
     setNameError(false)
     onClosed?.()
   }
@@ -74,53 +71,40 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
       maxWidth="sm"
       onTransitionExited={handleClosed}
     >
-      <DialogTitle>{isEditMode ? "Edit Sprite" : "Add Sprite"}</DialogTitle>
+      <DialogTitle>
+        {isEditMode ? "Edit Complex Form" : "Add Complex Form"}
+      </DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
         <Stack gap={2} sx={{ pt: 1 }}>
           <TextField
-            label="Sprite Name"
+            label="Program Name"
             value={name}
             onChange={(e) => {
               setName(e.target.value)
               setNameError(false)
             }}
             error={nameError}
-            helperText={nameError ? "Sprite name is required" : undefined}
+            helperText={nameError ? "Program name is required" : undefined}
             size="small"
             fullWidth
             autoFocus
           />
 
-          <TextField
-            label="Rating"
-            value={resonanceValue}
-            size="small"
-            fullWidth
-            slotProps={{ input: { readOnly: true } }}
-            helperText="Sprite rating equals your Resonance"
-          />
-
           <FormControl fullWidth size="small">
-            <InputLabel>Tasks</InputLabel>
+            <InputLabel>Rating</InputLabel>
             <Select
-              value={Math.min(tasks, effectiveMaxTasks)}
-              label="Tasks"
-              onChange={(e) => setTasks(Number(e.target.value))}
+              value={Math.min(rating, effectiveMaxRating)}
+              label="Rating"
+              onChange={(e) => setRating(Number(e.target.value))}
             >
-              {taskOptions.map((taskOption) => (
-                <MenuItem key={taskOption} value={taskOption}>
-                  {taskOption}
+              {ratingOptions.map((ratingOption) => (
+                <MenuItem key={ratingOption} value={ratingOption}>
+                  {ratingOption}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-
-          {maxTasks === 0 && (
-            <Typography variant="caption" color="warning.main">
-              Add the Compiling skill to enable sprites with tasks
-            </Typography>
-          )}
         </Stack>
       </DialogContent>
 

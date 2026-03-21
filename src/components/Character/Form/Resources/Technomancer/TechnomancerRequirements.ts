@@ -1,7 +1,7 @@
 import type {
   ComplexFormFormState,
   SpriteFormState,
-} from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
+} from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
 
 /** Each rating point of a complex form costs 1 BP. */
 export const ComplexFormBpPerRating = 1
