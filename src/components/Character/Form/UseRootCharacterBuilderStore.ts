@@ -1,6 +1,7 @@
 import { debounce } from "@tanstack/pacer"
 import { Store } from "@tanstack/store"
 import { useEffect, useState } from "react"
+
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
@@ -14,7 +15,7 @@ const debouncedSaveState = debounce(
   { wait: 500 },
 )
 
-export const useCharacterBuilderStore = (
+export const useRootCharacterBuilderStore = (
   character?: PlayerCharacterData,
 ): Store<CharacterFormState> => {
   const defaultValues = useDefaultValues({ character })
@@ -25,11 +26,11 @@ export const useCharacterBuilderStore = (
   })
 
   useEffect(() => {
-    const unsub = store.subscribe(({ currentVal }) => {
-      debouncedSaveState(currentVal.characterId, currentVal)
+    const { unsubscribe } = store.subscribe((state) => {
+      debouncedSaveState(state.characterId, state)
     })
 
-    return () => unsub()
+    return () => unsubscribe()
   }, [store])
 
   return store

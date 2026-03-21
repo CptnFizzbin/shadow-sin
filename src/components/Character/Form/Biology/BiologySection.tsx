@@ -1,16 +1,18 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { type FC, useEffect, useRef } from "react"
+import type { FC } from "react"
+import { useEffect, useRef } from "react"
+
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreContext,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 
 export const BiologySection: FC = () => {
   const store = useCharacterBuilderStoreContext()

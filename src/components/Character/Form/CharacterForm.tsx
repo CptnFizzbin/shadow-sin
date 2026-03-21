@@ -2,7 +2,9 @@ import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { type FC, useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
+
 import { AttributesSection } from "#/components/Character/Form/Attributes/AttributesSection.tsx"
 import { BiologySection } from "#/components/Character/Form/Biology/BiologySection.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
@@ -11,8 +13,8 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
 import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
 import { QualitiesSection } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
-import { useCharacterBuilderStore } from "#/components/Character/Form/UseCharacterBuilderStore.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
+import { useRootCharacterBuilderStore } from "#/components/Character/Form/UseRootCharacterBuilderStore.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -20,7 +22,7 @@ interface CharacterFormProps {
 }
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
-  const store = useCharacterBuilderStore(character)
+  const store = useRootCharacterBuilderStore(character)
   const defaultValues = useDefaultValues({ character })
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
 

@@ -1,5 +1,6 @@
 import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
+
 import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreContext,

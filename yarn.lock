@@ -4073,6 +4073,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^11.1.4":
+  version: 11.1.4
+  resolution: "immer@npm:11.1.4"
+  checksum: 10c0/77beca6b0a4e361b30414189d63c64beb7df40ac1d8cbf524308fcbabe755e9aa49db3c6e95a6e412911416fec621f2c8470be5ec79feedc6abd6e4f7f18a9ce
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^3.2.1":
   version: 3.3.1
   resolution: "import-fresh@npm:3.3.1"
@@ -5834,6 +5841,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.5"
     fast-sort: "npm:^3.4.1"
     globals: "npm:^17.4.0"
+    immer: "npm:^11.1.4"
     jiti: "npm:^2.6.1"
     js-yaml: "npm:^4.1.1"
     jsdom: "npm:^29.0.1"

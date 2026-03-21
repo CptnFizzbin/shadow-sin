@@ -6,7 +6,9 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine } from "@remixicon/react"
-import { type FC, type SyntheticEvent, useState } from "react"
+import type { FC, SyntheticEvent } from "react"
+import { useState } from "react"
+
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   GearBpAllowance,

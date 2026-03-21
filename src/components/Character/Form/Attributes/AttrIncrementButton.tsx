@@ -7,17 +7,30 @@ import {
   attrPointCosts,
   useAttributeRow,
 } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const IncrementButton: FC<AttributeRowProps> = (props) => {
-  const { bpRemaining, hasMaxxedAttr, attribute, store } =
-    useAttributeRow(props)
+  if (props.attr === AttributeKey.essence) {
+    throw new Error("Essence can not be incremented")
+  }
+
+  const attr = props.attr
+
+  const { bpRemaining, hasMaxxedAttr } = useAttributeRow(props)
+
+  const buildPointsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.buildPoints,
+  )
+  const attrSlice = useCharacterBuilderStoreSlice(
+    (state) => state.attributes[attr],
+  )
 
   let disabled = false
   let cost = attrPointCosts.base
   let label = `${cost} BP`
 
-  const willMaxAttr = attribute.value + 1 >= attribute.max
+  const willMaxAttr = attrSlice.state.value + 1 >= attrSlice.state.max
 
   if (willMaxAttr) {
     cost = attrPointCosts.maxOut
@@ -29,7 +42,7 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     label = "---"
   }
 
-  if (attribute.value >= attribute.max) {
+  if (attrSlice.state.value >= attrSlice.state.max) {
     disabled = true
     label = "MAX"
   }
@@ -42,26 +55,11 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    store.setState((prev) => ({
-      ...prev,
-      buildPoints: {
-        ...prev.buildPoints,
-        spent: {
-          ...prev.buildPoints.spent,
-          attributes: Math.min(
-            prev.buildPoints.spent.attributes + cost,
-            attrPointCosts.allowance,
-          ),
-        },
-      },
-      attributes: {
-        ...prev.attributes,
-        [props.attr]: {
-          ...prev.attributes[props.attr],
-          value: Math.min(prev.attributes[props.attr].value + 1, attribute.max),
-        },
-      },
-    }))
+    buildPointsSlice.update((buildPoints) => {
+      buildPoints.spent.attributes += cost
+    })
+
+    attrSlice.update((attrState) => (attrState.value += 1))
   }
 
   return (
