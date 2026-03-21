@@ -6,6 +6,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { AttributesSection } from "#/components/Character/Form/Attributes/AttributesSection.tsx"
+import { AwakenedSection } from "#/components/Character/Form/Awakened/AwakenedSection.tsx"
 import { BiologySection } from "#/components/Character/Form/Biology/BiologySection.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
@@ -103,6 +104,8 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
               <SkillsFormGroup />
             </Stack>
           </Paper>
+
+          <AwakenedSection />
 
           <Paper sx={{ padding: 1 }}>
             <Stack gap={1}>

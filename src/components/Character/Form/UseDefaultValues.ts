@@ -121,6 +121,11 @@ export const useDefaultValues = ({
       languageSkills: [],
     },
 
+    awakened: {
+      complexForms: [],
+      sprites: [],
+    },
+
     gear: {
       sins: [],
       licenses: [],

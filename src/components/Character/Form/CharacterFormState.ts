@@ -1,4 +1,5 @@
 import type { AttrFormState } from "#/components/Character/Form/AttrFormState.ts"
+import type { AwakenedFormState } from "#/components/Character/Form/Awakened/Technomancer/TechnomancerFormState.ts"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
@@ -50,6 +51,8 @@ export interface CharacterFormState {
   qualities: QualityData[]
 
   skills: SkillsFormState
+
+  awakened: AwakenedFormState
 
   gear: {
     sins: SinFormState[]

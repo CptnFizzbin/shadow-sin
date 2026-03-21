@@ -1,4 +1,8 @@
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import {
+  calculateComplexFormsBp,
+  calculateSpritesBp,
+} from "#/components/Character/Form/Awakened/Technomancer/TechnomancerRequirements.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { contactBuildPoints } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
@@ -55,6 +59,10 @@ export function useBuildPointsSummary(): BpSummary {
   const contacts = useCharacterBuilderStore((state) => state.contacts)
 
   const contactsBpSpent = contactBuildPoints(contacts)
+  const complexForms = useCharacterBuilderStore(
+    (state) => state.awakened.complexForms,
+  )
+  const sprites = useCharacterBuilderStore((state) => state.awakened.sprites)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -86,6 +94,10 @@ export function useBuildPointsSummary(): BpSummary {
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
   const skillsBpSpent = activeSkillsBp + extraSpBp
 
+  const complexFormsBpSpent = calculateComplexFormsBp(complexForms)
+  const spritesBpSpent = calculateSpritesBp(sprites)
+  const awakenedBpSpent = complexFormsBpSpent + spritesBpSpent
+
   const totalBuildPoints = useCharacterBuilderStore(
     (state) => state.buildPoints.total,
   )
@@ -95,6 +107,7 @@ export function useBuildPointsSummary(): BpSummary {
     qualitiesNetBp +
     attributesBpSpent +
     skillsBpSpent +
+    awakenedBpSpent +
     gearBpSpent +
     contactsBpSpent
 
@@ -150,6 +163,11 @@ export function useBuildPointsSummary(): BpSummary {
     {
       label: "Skills",
       spent: skillsBpSpent,
+      isOver: false,
+    },
+    {
+      label: "Awakened",
+      spent: awakenedBpSpent,
       isOver: false,
     },
     {
