@@ -8,6 +8,14 @@ export enum AwakeningType {
   Technomancer = "Technomancer",
 }
 
+export const MagicAwakeningTypes: AwakeningType[] = [
+  AwakeningType.Adept,
+  AwakeningType.Magician,
+  AwakeningType.MysticAdept,
+]
+
+export const TechAwakeningTypes: AwakeningType[] = [AwakeningType.Technomancer]
+
 export const awakenings: Record<AwakeningType, AwakeningData> = {
   Mundane: {
     name: AwakeningType.Mundane,

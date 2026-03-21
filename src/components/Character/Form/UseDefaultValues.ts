@@ -114,6 +114,13 @@ export const useDefaultValues = ({
 
     qualities: [],
 
+    skills: {
+      activeSkills: [],
+      activeSkillGroups: [],
+      knowledgeSkills: [],
+      languageSkills: [],
+    },
+
     gear: {
       sins: [],
       licenses: [],
