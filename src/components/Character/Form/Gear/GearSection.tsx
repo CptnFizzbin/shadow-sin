@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material"
 import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
@@ -5,7 +6,6 @@ import Alert from "@mui/material/Alert"
 import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useTheme } from "@mui/material/styles"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
@@ -49,7 +49,9 @@ const sectionConfig: Partial<
 }
 
 export const GearSection: FC = () => {
-  const { totalNuyen, totalBp, isOverBudget } = useGearFormGroup()
+  const theme = useTheme()
+
+  const { totalNuyen, totalBp, isOverBudget, gear } = useGearFormGroup()
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(
     SectionHeader.Licenses,
   )
@@ -210,13 +212,7 @@ const GearSectionContent: FC<{
   }
   const config = sectionConfig[section]
   if (config) {
-    return (
-      <PlaceholderGearSection
-        form={form}
-        field={config.field}
-        label={config.label}
-      />
-    )
+    return <PlaceholderGearSection field={config.field} label={config.label} />
   }
   return null
 }

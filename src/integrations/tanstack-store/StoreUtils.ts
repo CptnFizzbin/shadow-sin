@@ -5,13 +5,16 @@ import type { Draft } from "immer"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-export interface StoreSlice<TData> extends ReadonlyStore<TData> {
-  update(updater: (prev: Draft<TData>) => void): void
+export type Recipe<TData> = (draft: Draft<TData>) => void | Draft<TData>
+
+export interface StoreSlice<TData extends object> extends ReadonlyStore<TData> {
+  update(updater: Recipe<TData>): void
 }
 
-export const useStoreSlice = <TRoot, TData>(
+export const useStoreSlice = <TRoot, TData extends object>(
   store: Store<TRoot>,
   selector: (state: TRoot) => TData,
+  setter?: (state: Draft<TRoot>, nextValue: Draft<TData>) => Draft<TRoot>,
 ): StoreSlice<TData> => {
   const value = useStore(store, selector)
 
@@ -22,10 +25,16 @@ export const useStoreSlice = <TRoot, TData>(
 
     slice.update = (updater) => {
       store.setState((prev) => {
-        return produce(prev, (draft) => {
+        const recipe: Recipe<TRoot> = (draft) => {
           const draftSlice = selector(draft as TRoot) as Draft<TData>
-          updater(draftSlice)
-        })
+          const nextSlice = updater(draftSlice)
+
+          if (nextSlice && setter) {
+            setter(draft, nextSlice)
+          }
+        }
+
+        return produce(prev, recipe)
       })
     }
 

@@ -20,12 +20,7 @@ import {
   getLanguageSkillSp,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useKnowledgeSkillsFormGroup } from "#/components/Character/Form/Skills/UseKnowledgeSkillsFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
-
-export interface KnowledgeSkillsFormGroupProps {
-  form: PlayerCharacterForm
-}
 
 type KnowledgeSkillDialogState =
   | null
@@ -37,9 +32,7 @@ type LanguageSkillDialogState =
   | { mode: "create"; open: boolean }
   | { mode: "edit"; skill: LanguageSkillFormState; open: boolean }
 
-export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
-  form,
-}) => {
+export const KnowledgeSkillsFormGroup: FC = () => {
   const {
     knowledgeSkills,
     languageSkills,
@@ -54,7 +47,7 @@ export const KnowledgeSkillsFormGroup: FC<KnowledgeSkillsFormGroupProps> = ({
     addLanguageSkill,
     updateLanguageSkill,
     removeLanguageSkill,
-  } = useKnowledgeSkillsFormGroup(form)
+  } = useKnowledgeSkillsFormGroup()
 
   const [knowledgeSkillDialog, setKnowledgeSkillDialog] =
     useState<KnowledgeSkillDialogState>(null)

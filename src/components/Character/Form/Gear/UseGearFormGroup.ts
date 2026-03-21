@@ -8,9 +8,6 @@ import {
   GearBpAllowance,
   getGearBpSpent,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { getLicenseCost } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getSinCost } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
 export function useGearFormGroup() {
   const buildPointsSlice = useCharacterBuilderStoreSlice(

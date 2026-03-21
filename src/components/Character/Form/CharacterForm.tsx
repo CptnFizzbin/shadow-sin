@@ -13,13 +13,9 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
 import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
 import { QualitiesSection } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import { SkillsFormGroup } from "#/components/Character/Form/Skills/SkillsFormGroup.tsx"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/Character/Form/UseRootCharacterBuilderStore.ts"
-import { GearFormGroup } from "#/components/Character/Form/Gear/GearFormGroup.tsx"
-import { ProfileFormGroup } from "#/components/Character/Form/Profile/ProfileFormGroup.tsx"
-import { QualitiesFormGroup } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
-import { SkillsFormGroup } from "#/components/Character/Form/Skills/SkillsFormGroup.tsx"
-import { useCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -103,7 +99,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Skills
               </Typography>
 
-              <SkillsFormGroup form={form} />
+              <SkillsFormGroup />
             </Stack>
           </Paper>
 

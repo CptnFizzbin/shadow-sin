@@ -24,12 +24,7 @@ import {
   getActiveSkillGroupBp,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
-
-export interface ActiveSkillsFormGroupProps {
-  form: PlayerCharacterForm
-}
 
 type ActiveSkillDialogState =
   | null
@@ -41,9 +36,7 @@ type ActiveSkillGroupDialogState =
   | { mode: "create"; open: boolean }
   | { mode: "edit"; group: ActiveSkillGroupFormState; open: boolean }
 
-export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
-  form,
-}) => {
+export const ActiveSkillsFormGroup: FC = () => {
   const {
     activeSkills,
     activeSkillGroups,
@@ -55,7 +48,7 @@ export const ActiveSkillsFormGroup: FC<ActiveSkillsFormGroupProps> = ({
     addActiveSkillGroup,
     updateActiveSkillGroup,
     removeActiveSkillGroup,
-  } = useActiveSkillsFormGroup(form)
+  } = useActiveSkillsFormGroup()
 
   const [activeSkillDialog, setActiveSkillDialog] =
     useState<ActiveSkillDialogState>(null)

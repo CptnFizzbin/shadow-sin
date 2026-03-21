@@ -1,15 +1,13 @@
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesFormGroup.tsx"
+import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
-import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
@@ -36,25 +34,19 @@ export function useBuildPointsSummary(): BpSummary {
   const attributesBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.attributes,
   )
-  const activeSkills = useStore(form.store, (s) => s.values.skills.activeSkills)
-  const activeSkillGroups = useStore(
-    form.store,
-    (s) => s.values.skills.activeSkillGroups,
+  const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
+  const activeSkillGroups = useCharacterBuilderStore(
+    (s) => s.skills.activeSkillGroups,
   )
-  const knowledgeSkills = useStore(
-    form.store,
-    (s) => s.values.skills.knowledgeSkills,
+  const knowledgeSkills = useCharacterBuilderStore(
+    (s) => s.skills.knowledgeSkills,
   )
   const languageSkills = useCharacterBuilderStore(
     (state) => state.skills.languageSkills,
   )
-  const logicValue = useStore(
-    form.store,
-    (s) => s.values.attributes.logic.value,
-  )
-  const intuitionValue = useStore(
-    form.store,
-    (s) => s.values.attributes.intuition.value,
+  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
+  const intuitionValue = useCharacterBuilderStore(
+    (s) => s.attributes.intuition.value,
   )
   const gearBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.gear,
