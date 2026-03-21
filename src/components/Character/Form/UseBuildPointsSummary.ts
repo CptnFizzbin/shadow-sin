@@ -3,10 +3,11 @@ import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterB
 import { contactBuildPoints } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
-import {
-  calculateComplexFormsBp,
-  calculateSpritesBp,
-} from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
+import { isAdept } from "#/components/Character/Form/Resources/Adept/AdeptPowerRequirements.ts"
+import { isMagician } from "#/components/Character/Form/Resources/Magician/SpellsRequirements.ts"
+import { useSpellsBuildPoints } from "#/components/Character/Form/Resources/Magician/SpellsSectionHooks.ts"
+import { isTechnomancer } from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
+import { useTechnomancerBuildPoints } from "#/components/Character/Form/Resources/Technomancer/TechnomancerSectionHooks.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
@@ -20,7 +21,7 @@ export interface BpLineItem {
   label: string
   spent: number
   allowance?: number
-  isOver: boolean
+  isOver?: boolean
 }
 
 export interface BpSummary {
@@ -35,6 +36,7 @@ export interface BpSummary {
 export function useBuildPointsSummary(): BpSummary {
   const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
   const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+
   const qualities = useCharacterBuilderStore((state) => state.qualities)
   const attributesBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.attributes,
@@ -59,10 +61,8 @@ export function useBuildPointsSummary(): BpSummary {
   const contacts = useCharacterBuilderStore((state) => state.contacts)
 
   const contactsBpSpent = contactBuildPoints(contacts)
-  const complexForms = useCharacterBuilderStore(
-    (state) => state.awakened.complexForms,
-  )
-  const sprites = useCharacterBuilderStore((state) => state.awakened.sprites)
+
+  const spellsBpSpent = useSpellsBuildPoints().used
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -94,9 +94,7 @@ export function useBuildPointsSummary(): BpSummary {
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
   const skillsBpSpent = activeSkillsBp + extraSpBp
 
-  const complexFormsBpSpent = calculateComplexFormsBp(complexForms)
-  const spritesBpSpent = calculateSpritesBp(sprites)
-  const awakenedBpSpent = complexFormsBpSpent + spritesBpSpent
+  const technomancerBp = useTechnomancerBuildPoints()
 
   const totalBuildPoints = useCharacterBuilderStore(
     (state) => state.buildPoints.total,
@@ -107,7 +105,8 @@ export function useBuildPointsSummary(): BpSummary {
     qualitiesNetBp +
     attributesBpSpent +
     skillsBpSpent +
-    awakenedBpSpent +
+    technomancerBp.spent +
+    spellsBpSpent +
     gearBpSpent +
     contactsBpSpent
 
@@ -143,16 +142,14 @@ export function useBuildPointsSummary(): BpSummary {
     )
   }
 
-  const lineItems: BpLineItem[] = [
+  const lineItems: (BpLineItem | boolean)[] = [
     {
       label: "Biology",
       spent: biologyBpSpent,
-      isOver: false,
     },
     {
       label: "Qualities",
       spent: qualitiesNetBp,
-      isOver: false,
     },
     {
       label: "Attributes",
@@ -163,12 +160,18 @@ export function useBuildPointsSummary(): BpSummary {
     {
       label: "Skills",
       spent: skillsBpSpent,
-      isOver: false,
     },
-    {
-      label: "Awakened",
-      spent: awakenedBpSpent,
-      isOver: false,
+    isAdept(awakeningType) && {
+      label: "Adept",
+      spent: 0,
+    },
+    isMagician(awakeningType) && {
+      label: "Magician",
+      spent: 0,
+    },
+    isTechnomancer(awakeningType) && {
+      label: "Technomancer",
+      spent: technomancerBp.spent,
     },
     {
       label: "Gear",
@@ -179,7 +182,6 @@ export function useBuildPointsSummary(): BpSummary {
     {
       label: "Contacts",
       spent: contactsBpSpent,
-      isOver: false,
     },
   ]
 
@@ -188,7 +190,7 @@ export function useBuildPointsSummary(): BpSummary {
     spent: totalSpent,
     remaining,
     isOverBudget: totalSpent > totalBuildPoints,
-    lineItems,
+    lineItems: lineItems.filter(Boolean) as BpLineItem[],
     warnings,
   }
 }

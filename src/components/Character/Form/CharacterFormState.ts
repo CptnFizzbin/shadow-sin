@@ -45,6 +45,7 @@ export interface CharacterFormState {
     willpower: AttrFormState
     edge: AttrFormState
     magic: AttrFormState
+    essence: AttrFormState
     resonance: AttrFormState
   }
 

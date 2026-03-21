@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
+import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
@@ -14,6 +15,7 @@ import type { SpriteFormState } from "#/components/Character/Form/Resources/Tech
 import { getSpriteTasksBp } from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
 import { useTechnomancerFormGroup } from "#/components/Character/Form/Resources/Technomancer/UseTechnomancerFormGroup.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 type SpriteDialogState =
   | null
@@ -52,13 +54,22 @@ export const SpritesFormGroup: FC = () => {
     <Stack gap={1}>
       <Label label="Sprites" variant="outlined" />
 
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2" color="secondary.main">
-          {totalSpritesBp} BP
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          {sprites.length} / {maxSprites} sprites (CHA)
-        </Typography>
+      <Stack gap={0.5}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography color="text.secondary">
+            {sprites.length} / {maxSprites} sprites
+          </Typography>
+          <Typography color="secondary.main">{totalSpritesBp} BP</Typography>
+        </Stack>
+
+        <LinearProgress
+          variant={"determinate"}
+          value={getProgress(sprites.length, maxSprites)}
+        />
       </Stack>
 
       {isAtMax && (

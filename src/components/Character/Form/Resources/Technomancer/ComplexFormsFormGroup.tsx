@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
+import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
@@ -14,6 +15,7 @@ import type { ComplexFormFormState } from "#/components/Character/Form/Resources
 import { getComplexFormBp } from "#/components/Character/Form/Resources/Technomancer/TechnomancerRequirements.ts"
 import { useTechnomancerFormGroup } from "#/components/Character/Form/Resources/Technomancer/UseTechnomancerFormGroup.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 type ComplexFormDialogState =
   | null
@@ -52,13 +54,24 @@ export const ComplexFormsFormGroup: FC = () => {
     <Stack gap={1}>
       <Label label="Complex Forms" variant="outlined" />
 
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2" color="secondary.main">
-          {totalComplexFormsBp} BP
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          {complexForms.length} / {maxComplexForms} forms (LOG×2)
-        </Typography>
+      <Stack gap={0.5}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography color="text.secondary">
+            {complexForms.length} / {maxComplexForms} forms
+          </Typography>
+          <Typography color="secondary.main">
+            {totalComplexFormsBp} BP
+          </Typography>
+        </Stack>
+
+        <LinearProgress
+          variant={"determinate"}
+          value={getProgress(complexForms.length, maxComplexForms)}
+        />
       </Stack>
 
       {isAtMax && (

@@ -3,7 +3,7 @@ import type { CharacterFormState } from "#/components/Character/Form/CharacterFo
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { AwakeningType, awakenings } from "#/lib/system/types/awakeningType.ts"
+import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
@@ -110,6 +110,12 @@ export const useDefaultValues = ({
         metatype,
         awakening,
       }),
+      essence: createAttrFormState({
+        attr: AttributeKey.essence,
+        character,
+        metatype,
+        awakening,
+      }),
     },
 
     qualities: [],
@@ -124,6 +130,8 @@ export const useDefaultValues = ({
     awakened: {
       complexForms: [],
       sprites: [],
+      spells: [],
+      adeptPowers: [],
     },
 
     gear: {

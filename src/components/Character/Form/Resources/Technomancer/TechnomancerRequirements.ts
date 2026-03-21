@@ -2,12 +2,14 @@ import type {
   ComplexFormFormState,
   SpriteFormState,
 } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
+import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 
-/** Each rating point of a complex form costs 1 BP. */
 export const ComplexFormBpPerRating = 1
-
-/** Each task for a sprite costs 1 BP. */
 export const SpriteBpPerTask = 1
+
+export const isTechnomancer = (awakeningType: AwakeningType): boolean => {
+  return awakeningType === AwakeningType.Technomancer
+}
 
 export const getComplexFormBp = (rating: number): number =>
   rating * ComplexFormBpPerRating
