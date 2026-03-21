@@ -7,10 +7,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useTheme } from "@mui/material/styles"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import {
   GearBpAllowance,
@@ -24,13 +24,8 @@ import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Fo
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-
-interface GearFormGroupProps {
-  form: PlayerCharacterForm
-}
 
 const sectionConfig: Partial<
   Record<
@@ -53,10 +48,11 @@ const sectionConfig: Partial<
   [SectionHeader.Misc]: { field: "gear.misc", label: "Item" },
 }
 
-export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
-  const theme = useTheme()
-  const { totalNuyen, totalBp, isOverBudget, gear } = useGearFormGroup(form)
-  const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
+export const GearSection: FC = () => {
+  const { totalNuyen, totalBp, isOverBudget } = useGearFormGroup()
+  const [activeSection, setActiveSection] = useState<SectionHeader | null>(
+    SectionHeader.Licenses,
+  )
 
   const onSectionChange = (section: SectionHeader) => {
     return (_: SyntheticEvent, isExpanded: boolean) => {
@@ -194,11 +190,11 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
                 )}
               </Stack>
 
-              <GearSectionNuyen form={form} section={sectionName} />
+              <GearSectionNuyen section={sectionName} />
             </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{ padding: 1 }}>
-            <GearSectionContent form={form} section={sectionName} />
+            <GearSectionContent section={sectionName} />
           </AccordionDetails>
         </Accordion>
       ))}
@@ -207,11 +203,10 @@ export const GearFormGroup: FC<GearFormGroupProps> = ({ form }) => {
 }
 
 const GearSectionContent: FC<{
-  form: PlayerCharacterForm
   section: SectionHeader
-}> = ({ form, section }) => {
+}> = ({ section }) => {
   if (section === SectionHeader.Licenses) {
-    return <SinsAndLicensesSection form={form} />
+    return <SinsAndLicensesSection />
   }
   const config = sectionConfig[section]
   if (config) {
@@ -227,10 +222,9 @@ const GearSectionContent: FC<{
 }
 
 const GearSectionNuyen: FC<{
-  form: PlayerCharacterForm
   section: SectionHeader
-}> = ({ form, section }) => {
-  const gear = useStore(form.store, ({ values }) => values.gear)
+}> = ({ section }) => {
+  const gear = useCharacterBuilderStore((state) => state.gear)
   let nuyen = 0
 
   if (section === SectionHeader.Licenses) {

@@ -12,12 +12,10 @@ import { LicenseFormDialog } from "#/components/Character/Form/Gear/Licenses/Dia
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { useLicensesFormGroup } from "#/components/Character/Form/Gear/Licenses/UseLicensesFormGroup.ts"
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
 interface LicensesListProps {
-  form: PlayerCharacterForm
   sinId: string
 }
 
@@ -26,10 +24,10 @@ type DialogState =
   | { mode: "edit"; license: LicenseFormState; open: boolean }
   | { mode: "create"; sinId: string; open: boolean }
 
-export const LicensesList: FC<LicensesListProps> = ({ form, sinId }) => {
+export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { sins, getLicensesForSin, addLicense, updateLicense, removeLicense } =
-    useLicensesFormGroup(form)
+    useLicensesFormGroup()
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

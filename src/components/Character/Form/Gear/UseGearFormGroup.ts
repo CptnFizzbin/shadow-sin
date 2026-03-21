@@ -1,14 +1,22 @@
-import { useStore } from "@tanstack/react-store"
 import { useEffect } from "react"
 
+import {
+  useCharacterBuilderStore,
+  useCharacterBuilderStoreSlice,
+} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   GearBpAllowance,
   getGearBpSpent,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import { getLicenseCost } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import { getSinCost } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
 
-export function useGearFormGroup(form: PlayerCharacterForm) {
-  const gear = useStore(form.store, (store) => store.values.gear)
+export function useGearFormGroup() {
+  const buildPointsSlice = useCharacterBuilderStoreSlice(
+    (state) => state.buildPoints,
+  )
+  const gear = useCharacterBuilderStore((state) => state.gear)
 
   const totalNuyen = (Object.values(gear) as Array<{ cost: number }[]>)
     .flat()
@@ -19,8 +27,10 @@ export function useGearFormGroup(form: PlayerCharacterForm) {
   const hasRealSin = gear.sins.some((sin) => sin.rating === "real")
 
   useEffect(() => {
-    form.setFieldValue("buildPoints.spent.gear", totalBp)
-  }, [form, totalBp])
+    buildPointsSlice.update((draft) => {
+      draft.spent.gear = totalBp
+    })
+  }, [buildPointsSlice, totalBp])
 
   return {
     totalNuyen,

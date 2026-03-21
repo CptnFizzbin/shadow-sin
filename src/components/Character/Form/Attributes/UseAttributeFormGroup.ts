@@ -1,6 +1,4 @@
-import { useStore } from "@tanstack/react-store"
-
-import type { PlayerCharacterForm } from "#/components/Character/Form/UseCharacterForm.ts"
+import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   AttributeKey,
   AttributeLabels,
@@ -14,23 +12,21 @@ export const attrPointCosts = {
 }
 
 export interface AttributeRowProps {
-  form: PlayerCharacterForm
   attr: AttributeKey
 }
 
-export function useAttributeFormGroup(form: PlayerCharacterForm) {
-  const attributes = useStore(form.store, (s) => s.values.attributes)
-  const bpSpent = useStore(
-    form.store,
-    (s) => s.values.buildPoints.spent.attributes,
+export function useAttributeFormGroup() {
+  const attributes = useCharacterBuilderStore((state) => state.attributes)
+  const bpSpent = useCharacterBuilderStore(
+    (state) => state.buildPoints.spent.attributes,
   )
 
-  const hasMaxxedAttr = useStore(form.store, (s) => {
-    return AttributeOrder.filter((key) => key !== AttributeKey.essence)
-      .map((key) => s.values.attributes[key])
-      .filter(({ max }) => max > 0)
-      .some(({ value, max }) => value >= max)
-  })
+  const hasMaxxedAttr = AttributeOrder.filter(
+    (key) => key !== AttributeKey.essence,
+  )
+    .map((key) => attributes[key])
+    .filter(({ max }) => max > 0)
+    .some(({ value, max }) => value >= max)
 
   return {
     bpSpent: bpSpent,
@@ -41,12 +37,12 @@ export function useAttributeFormGroup(form: PlayerCharacterForm) {
   }
 }
 
-export function useAttributeRow({ attr, form }: AttributeRowProps) {
+export function useAttributeRow({ attr }: AttributeRowProps) {
   if (attr === AttributeKey.essence) {
     throw new Error("Essence should not use useAttributeRow")
   }
 
-  const { attributes, ...formGroup } = useAttributeFormGroup(form)
+  const { attributes, ...formGroup } = useAttributeFormGroup()
 
   return {
     ...formGroup,
