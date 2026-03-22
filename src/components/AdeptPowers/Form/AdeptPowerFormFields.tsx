@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import type { AdeptPowerForm } from "#/components/AdeptPowers/Form/UseAdeptPowerForm.ts"
-import { SourceField } from "#/components/Sources/SourceField.tsx"
+import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
 
 export interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm
@@ -48,33 +48,7 @@ export const AdeptPowerFormFields: FC<AdeptPowerFormFieldsProps> = ({
           )}
         </form.AppField>
 
-        <form.AppField name="source">
-          {(field) => {
-            const book = field.state.value?.book ?? ""
-            const page = field.state.value?.page?.toString() ?? ""
-
-            return (
-              <SourceField
-                book={book}
-                page={page}
-                onBookChange={(newBook) =>
-                  field.handleChange(
-                    newBook
-                      ? { book: newBook, page: Number(page) || 0 }
-                      : undefined,
-                  )
-                }
-                onPageChange={(newPage) =>
-                  field.handleChange(
-                    book
-                      ? { book, page: Number(newPage) || 0 }
-                      : { book: "", page: Number(newPage) || 0 },
-                  )
-                }
-              />
-            )
-          }}
-        </form.AppField>
+        <SourceFieldGroup form={form} fields={{ source: "source" }} />
       </Stack>
     </form.AppForm>
   )

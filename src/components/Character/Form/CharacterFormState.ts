@@ -28,6 +28,7 @@ export interface CharacterFormState {
   name: string
   alias: string
   lifestyle: LifestyleType
+  lifestyleMonths: number
   gender?: string
   weight?: string
   height?: string
@@ -63,6 +64,7 @@ export interface CharacterFormState {
     armor: GearItemFormState[]
     vehicles: GearItemFormState[]
     cyberware: ImplantFormState[]
+    implantMods: GearItemFormState[]
     misc: GearItemFormState[]
   }
 

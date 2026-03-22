@@ -1,7 +1,11 @@
+import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
 import { contactFormOpts } from "#/components/Character/Form/Contacts/UseContactForm.tsx"
+import { createRatingOptions } from "#/components/Character/Form/General/RatingUtils.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+
+const ratingOptions = createRatingOptions({ min: 1, max: 6 })
 
 export const ContactFormFields = withFieldGroup({
   ...contactFormOpts,
@@ -19,37 +23,29 @@ export const ContactFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.AppField
-          name="connection"
-          validators={{
-            onChange: z.number().min(1, "Minimum is 1").max(6, "Maximum is 6"),
-          }}
-        >
-          {(field) => (
-            <field.NumberField
-              label="Connection (1–6)"
-              fullWidth
-              size="small"
-              inputProps={{ min: 1, max: 6 }}
-            />
-          )}
-        </group.AppField>
+        <Stack direction="row" gap={1}>
+          <group.AppField name="connection">
+            {(field) => (
+              <field.SelectField
+                label="Connection"
+                fullWidth
+                size="small"
+                options={ratingOptions}
+              />
+            )}
+          </group.AppField>
 
-        <group.AppField
-          name="loyalty"
-          validators={{
-            onChange: z.number().min(1, "Minimum is 1").max(6, "Maximum is 6"),
-          }}
-        >
-          {(field) => (
-            <field.NumberField
-              label="Loyalty (1–6)"
-              fullWidth
-              size="small"
-              inputProps={{ min: 1, max: 6 }}
-            />
-          )}
-        </group.AppField>
+          <group.AppField name="loyalty">
+            {(field) => (
+              <field.SelectField
+                label="Loyalty"
+                fullWidth
+                size="small"
+                options={ratingOptions}
+              />
+            )}
+          </group.AppField>
+        </Stack>
 
         <group.AppField name="notes">
           {(field) => (

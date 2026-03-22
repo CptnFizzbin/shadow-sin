@@ -38,6 +38,7 @@ export const useDefaultValues = ({
     name: profile?.name || "",
     alias: profile?.alias || "",
     lifestyle: profile?.lifestyle?.quality || LifestyleType.Low,
+    lifestyleMonths: 1,
 
     age: biology?.age || 0,
     metatype: metatype.name,
@@ -141,6 +142,7 @@ export const useDefaultValues = ({
       armor: [],
       vehicles: [],
       cyberware: [],
+      implantMods: [],
       misc: [],
     },
 

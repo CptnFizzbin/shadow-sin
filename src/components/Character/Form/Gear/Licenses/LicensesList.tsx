@@ -111,7 +111,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
       })}
 
       <Button
-        variant="outlined"
+        variant="text"
         color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}

@@ -1,4 +1,6 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
@@ -9,7 +11,7 @@ import { GearItemCard } from "#/components/Character/Form/Gear/Generic/GearItemC
 
 type DialogState =
   | null
-  | { mode: "create"; open: boolean }
+  | { mode: "create"; parentId?: string; open: boolean }
   | { mode: "edit"; item: GearItemFormState; open: boolean }
 
 interface GearItemsListProps {
@@ -29,6 +31,10 @@ export const GearItemsList: FC<GearItemsListProps> = ({
 }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
+  const topLevelItems = items.filter((item) => !item.parentId)
+  const getSubItems = (parentId: string) =>
+    items.filter((item) => item.parentId === parentId)
+
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })
   }
@@ -38,7 +44,9 @@ export const GearItemsList: FC<GearItemsListProps> = ({
   }
 
   const handleAdd = (item: GearItemFormState) => {
-    onAdd(item)
+    const parentId =
+      dialogState?.mode === "create" ? dialogState.parentId : undefined
+    onAdd(parentId ? { ...item, parentId } : item)
     onDialogClose()
   }
 
@@ -48,31 +56,76 @@ export const GearItemsList: FC<GearItemsListProps> = ({
   }
 
   return (
-    <>
+    <Stack gap={1}>
+      {topLevelItems.map((item) => {
+        const subItems = getSubItems(item.id)
+
+        return (
+          <Box key={item.id}>
+            <GearItemCard
+              item={item}
+              onEdit={() => setDialogState({ mode: "edit", item, open: true })}
+              onRemove={() => onRemove(item.id)}
+            />
+
+            <Stack
+              gap={1}
+              sx={{
+                paddingTop: 1,
+                paddingLeft: 1,
+                paddingBottom: subItems.length > 0 ? 1 : 0,
+                borderLeft: "4px solid",
+                borderBottom: subItems.length > 0 ? "1px solid" : "none",
+                borderColor: "divider",
+              }}
+            >
+              {subItems.map((subItem) => (
+                <GearItemCard
+                  key={subItem.id}
+                  item={subItem}
+                  onEdit={() =>
+                    setDialogState({ mode: "edit", item: subItem, open: true })
+                  }
+                  onRemove={() => onRemove(subItem.id)}
+                />
+              ))}
+
+              <Button
+                variant="text"
+                size="small"
+                startIcon={<RiAddLine size={12} />}
+                onClick={() =>
+                  setDialogState({
+                    mode: "create",
+                    parentId: item.id,
+                    open: true,
+                  })
+                }
+                color="secondary"
+                fullWidth
+              >
+                Add sub-item
+              </Button>
+            </Stack>
+          </Box>
+        )
+      })}
+
       <Button
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", open: true })}
-        color={"secondary"}
+        color="secondary"
         fullWidth
       >
         Add {label}
       </Button>
 
-      {items.map((item) => (
-        <GearItemCard
-          key={item.id}
-          item={item}
-          onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-          onRemove={() => onRemove(item.id)}
-        />
-      ))}
-
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
           open={dialogState.open}
-          label={label}
+          label={dialogState.parentId ? `${label} sub-item` : label}
           onSave={handleAdd}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
@@ -83,12 +136,12 @@ export const GearItemsList: FC<GearItemsListProps> = ({
         <GearItemFormDialog
           open={dialogState.open}
           item={dialogState.item}
-          label={label}
+          label={dialogState.item.parentId ? `${label} sub-item` : label}
           onSave={handleUpdate}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
         />
       )}
-    </>
+    </Stack>
   )
 }

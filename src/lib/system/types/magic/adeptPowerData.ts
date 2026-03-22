@@ -17,10 +17,4 @@ export const AdeptPowerDataSchema = z.object({
   rating: z.number().int().min(1, "Rating must be at least 1"),
   costPerRating: z.number().min(0, "Cost per rating must be 0 or greater"),
   description: z.string().optional(),
-  source: z
-    .object({
-      book: z.string().min(1, "Source book is required"),
-      page: z.number().min(1, "Source page must be 1 or greater"),
-    })
-    .optional(),
 }) satisfies z.ZodType<AdeptPowerData>
