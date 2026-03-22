@@ -65,6 +65,7 @@ export interface CharacterFormState {
     vehicles: GearItemFormState[]
     cyberware: ImplantFormState[]
     implantMods: GearItemFormState[]
+    devices: GearItemFormState[]
     misc: GearItemFormState[]
   }
 

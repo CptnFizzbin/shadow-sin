@@ -14,6 +14,7 @@ import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterB
 import { ArmorPanel } from "#/components/Character/Form/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/Character/Form/Gear/Cyberware/CyberwarePanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
+import { DevicesPanel } from "#/components/Character/Form/Gear/Devices/DevicesPanel.tsx"
 import {
   GearBpAllowance,
   GearMaxAvailability,
@@ -50,11 +51,12 @@ export const GearSection: FC = () => {
   let totalInvalidCount = 0
 
   const genericSectionKeys: Partial<
-    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "misc">
   > = {
     [SectionHeader.Weapons]: "weapons",
     [SectionHeader.Armor]: "armor",
     [SectionHeader.Vehicles]: "vehicles",
+    [SectionHeader.Devices]: "devices",
     [SectionHeader.Misc]: "misc",
   }
 
@@ -208,6 +210,7 @@ const GearSectionContent: FC<{
   if (section === SectionHeader.Weapons) return <WeaponsPanel />
   if (section === SectionHeader.Armor) return <ArmorPanel />
   if (section === SectionHeader.Vehicles) return <VehiclesPanel />
+  if (section === SectionHeader.Devices) return <DevicesPanel />
   if (section === SectionHeader.Misc) return <MiscPanel />
   if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
@@ -258,11 +261,12 @@ const GearSectionNuyen: FC<{
   }
 
   const genericSectionKeys: Partial<
-    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "misc">
   > = {
     [SectionHeader.Weapons]: "weapons",
     [SectionHeader.Armor]: "armor",
     [SectionHeader.Vehicles]: "vehicles",
+    [SectionHeader.Devices]: "devices",
     [SectionHeader.Misc]: "misc",
   }
   const sectionKey = genericSectionKeys[section]
