@@ -3,29 +3,29 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemFormDialog } from "#/components/Character/Form/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
-import { GearItemCard } from "#/components/Character/Form/Gear/Generic/GearItemCard.tsx"
+import { CyberwareListItem } from "#/components/Character/Form/Gear/Cyberware/CyberwareListItem.tsx"
+import { CyberwareFormDialog } from "#/components/Character/Form/Gear/Cyberware/Dialogs/CyberwareFormDialog.tsx"
+import type { ImplantFormState } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
 
 type DialogState =
   | null
   | { mode: "create"; open: boolean }
-  | { mode: "edit"; item: GearItemFormState; open: boolean }
+  | { mode: "edit"; implant: ImplantFormState; open: boolean }
 
-interface GearItemsListProps {
-  items: GearItemFormState[]
-  onAdd: (item: GearItemFormState) => void
-  onUpdate: (item: GearItemFormState) => void
-  onRemove: (itemId: string) => void
+interface CyberwareListProps {
+  implants: ImplantFormState[]
+  onAdd: (implant: ImplantFormState) => void
+  onUpdate: (implant: ImplantFormState) => void
+  onRemove: (implantId: string) => void
   label?: string
 }
 
-export const CyberwareList: FC<GearItemsListProps> = ({
-  items,
+export const CyberwareList: FC<CyberwareListProps> = ({
+  implants,
   onAdd,
   onUpdate,
   onRemove,
-  label = "Item",
+  label = "Implant",
 }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
@@ -37,13 +37,13 @@ export const CyberwareList: FC<GearItemsListProps> = ({
     setDialogState(null)
   }
 
-  const handleAdd = (item: GearItemFormState) => {
-    onAdd(item)
+  const handleAdd = (implant: ImplantFormState) => {
+    onAdd(implant)
     onDialogClose()
   }
 
-  const handleUpdate = (item: GearItemFormState) => {
-    onUpdate(item)
+  const handleUpdate = (implant: ImplantFormState) => {
+    onUpdate(implant)
     onDialogClose()
   }
 
@@ -54,23 +54,23 @@ export const CyberwareList: FC<GearItemsListProps> = ({
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", open: true })}
-        color={"secondary"}
+        color="secondary"
         fullWidth
       >
         Add {label}
       </Button>
 
-      {items.map((item) => (
-        <GearItemCard
-          key={item.id}
-          item={item}
-          onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-          onRemove={() => onRemove(item.id)}
+      {implants.map((implant) => (
+        <CyberwareListItem
+          key={implant.id}
+          implant={implant}
+          onEdit={() => setDialogState({ mode: "edit", implant, open: true })}
+          onRemove={() => onRemove(implant.id)}
         />
       ))}
 
       {dialogState?.mode === "create" && (
-        <GearItemFormDialog
+        <CyberwareFormDialog
           open={dialogState.open}
           label={label}
           onSave={handleAdd}
@@ -80,9 +80,9 @@ export const CyberwareList: FC<GearItemsListProps> = ({
       )}
 
       {dialogState?.mode === "edit" && (
-        <GearItemFormDialog
+        <CyberwareFormDialog
           open={dialogState.open}
-          item={dialogState.item}
+          implant={dialogState.implant}
           label={label}
           onSave={handleUpdate}
           onClose={onDialogClose}

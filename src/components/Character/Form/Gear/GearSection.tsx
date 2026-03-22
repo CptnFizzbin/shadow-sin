@@ -11,49 +11,31 @@ import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { ArmorPanel } from "#/components/Character/Form/Gear/Armor/ArmorPanel.tsx"
+import { CyberwarePanel } from "#/components/Character/Form/Gear/Cyberware/CyberwarePanel.tsx"
+import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
 import {
   GearBpAllowance,
   GearMaxAvailability,
   GearNuyenBudget,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { PlaceholderGearSection } from "#/components/Character/Form/Gear/Generic/PlaceholderGearSection.tsx"
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
+import { MiscPanel } from "#/components/Character/Form/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
+import { VehiclesPanel } from "#/components/Character/Form/Gear/Vehicles/VehiclesPanel.tsx"
+import { WeaponsPanel } from "#/components/Character/Form/Gear/Weapons/WeaponsPanel.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-
-const sectionConfig: Partial<
-  Record<
-    SectionHeader,
-    {
-      field:
-        | "gear.weapons"
-        | "gear.armor"
-        | "gear.vehicles"
-        | "gear.cyberware"
-        | "gear.misc"
-      label: string
-    }
-  >
-> = {
-  [SectionHeader.Weapons]: { field: "gear.weapons", label: "Weapon" },
-  [SectionHeader.Armor]: { field: "gear.armor", label: "Armor" },
-  [SectionHeader.Vehicles]: { field: "gear.vehicles", label: "Vehicle" },
-  [SectionHeader.Cyberware]: { field: "gear.cyberware", label: "Cyberware" },
-  [SectionHeader.Misc]: { field: "gear.misc", label: "Item" },
-}
 
 export const GearSection: FC = () => {
   const theme = useTheme()
 
   const { totalNuyen, totalBp, isOverBudget, gear } = useGearFormGroup()
-  const [activeSection, setActiveSection] = useState<SectionHeader | null>(
-    SectionHeader.Licenses,
-  )
+  const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
   const onSectionChange = (section: SectionHeader) => {
     return (_: SyntheticEvent, isExpanded: boolean) => {
@@ -64,6 +46,15 @@ export const GearSection: FC = () => {
   // determine availability issues per section
   const sectionInvalid = new Set<SectionHeader>()
   let totalInvalidCount = 0
+
+  const genericSectionKeys: Partial<
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+  > = {
+    [SectionHeader.Weapons]: "weapons",
+    [SectionHeader.Armor]: "armor",
+    [SectionHeader.Vehicles]: "vehicles",
+    [SectionHeader.Misc]: "misc",
+  }
 
   Object.values(SectionHeader).forEach((sectionName) => {
     if (sectionName === SectionHeader.Licenses) {
@@ -86,15 +77,19 @@ export const GearSection: FC = () => {
               getLicenseAvailability(l.rating).rating > GearMaxAvailability,
           ).length
       }
+    } else if (sectionName === SectionHeader.Cyberware) {
+      const invalidImplants = gear.cyberware.filter(
+        (implant) =>
+          (implant.availability?.rating ?? Number.NEGATIVE_INFINITY) >
+          GearMaxAvailability,
+      )
+      if (invalidImplants.length > 0) {
+        sectionInvalid.add(sectionName)
+        totalInvalidCount += invalidImplants.length
+      }
     } else {
-      const config = sectionConfig[sectionName]
-      if (config) {
-        const sectionKey = config.field.split(".")[1] as
-          | "weapons"
-          | "armor"
-          | "vehicles"
-          | "cyberware"
-          | "misc"
+      const sectionKey = genericSectionKeys[sectionName]
+      if (sectionKey) {
         const items = gear[sectionKey] || []
         const invalidItems = items.filter(
           (it) =>
@@ -204,13 +199,12 @@ export const GearSection: FC = () => {
 const GearSectionContent: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  if (section === SectionHeader.Licenses) {
-    return <SinsAndLicensesSection />
-  }
-  const config = sectionConfig[section]
-  if (config) {
-    return <PlaceholderGearSection field={config.field} label={config.label} />
-  }
+  if (section === SectionHeader.Licenses) return <SinsAndLicensesSection />
+  if (section === SectionHeader.Cyberware) return <CyberwarePanel />
+  if (section === SectionHeader.Weapons) return <WeaponsPanel />
+  if (section === SectionHeader.Armor) return <ArmorPanel />
+  if (section === SectionHeader.Vehicles) return <VehiclesPanel />
+  if (section === SectionHeader.Misc) return <MiscPanel />
   return null
 }
 
@@ -218,24 +212,44 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gear = useCharacterBuilderStore((state) => state.gear)
-  let nuyen = 0
 
   if (section === SectionHeader.Licenses) {
-    nuyen =
-      gear.sins.reduce((sum, sin) => sum + sin.cost, 0) +
-      gear.licenses.reduce((sum, license) => sum + license.cost, 0)
-  } else {
-    const config = sectionConfig[section]
-    if (config) {
-      const sectionKey = config.field.split(".")[1] as
-        | "weapons"
-        | "armor"
-        | "vehicles"
-        | "cyberware"
-        | "misc"
-      nuyen = gear[sectionKey].reduce((sum, item) => sum + item.cost, 0)
-    }
+    return (
+      <Typography variant="body2" color="text.secondary">
+        <Nuyen
+          amount={
+            gear.sins.reduce((sum, sin) => sum + sin.cost, 0) +
+            gear.licenses.reduce((sum, license) => sum + license.cost, 0)
+          }
+        />
+      </Typography>
+    )
   }
+  if (section === SectionHeader.Cyberware) {
+    return (
+      <Typography variant="body2" color="text.secondary">
+        <Nuyen
+          amount={gear.cyberware.reduce(
+            (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
+            0,
+          )}
+        />
+      </Typography>
+    )
+  }
+
+  const genericSectionKeys: Partial<
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+  > = {
+    [SectionHeader.Weapons]: "weapons",
+    [SectionHeader.Armor]: "armor",
+    [SectionHeader.Vehicles]: "vehicles",
+    [SectionHeader.Misc]: "misc",
+  }
+  const sectionKey = genericSectionKeys[section]
+  const nuyen = sectionKey
+    ? gear[sectionKey].reduce((sum, item) => sum + item.cost, 0)
+    : 0
 
   return (
     <Typography variant="body2" color="text.secondary">
