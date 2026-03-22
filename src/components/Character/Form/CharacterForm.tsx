@@ -14,6 +14,7 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
 import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
 import { QualitiesSection } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import { AwakenedSection } from "#/components/Character/Form/Resources/AwakenedSection.tsx"
 import { SkillsFormGroup } from "#/components/Character/Form/Skills/SkillsFormGroup.tsx"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/Character/Form/UseRootCharacterBuilderStore.ts"
@@ -103,6 +104,8 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
               <SkillsFormGroup />
             </Stack>
           </Paper>
+
+          <AwakenedSection />
 
           <Paper sx={{ padding: 1 }}>
             <Stack gap={1}>

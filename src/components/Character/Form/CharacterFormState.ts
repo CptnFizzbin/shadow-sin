@@ -2,6 +2,7 @@ import type { AttrFormState } from "#/components/Character/Form/AttrFormState.ts
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import type { AwakenedFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 import type { SkillsFormState } from "#/components/Character/Form/Skills/SkillFormState.ts"
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
@@ -44,12 +45,15 @@ export interface CharacterFormState {
     willpower: AttrFormState
     edge: AttrFormState
     magic: AttrFormState
+    essence: AttrFormState
     resonance: AttrFormState
   }
 
   qualities: QualityData[]
 
   skills: SkillsFormState
+
+  awakened: AwakenedFormState
 
   gear: {
     sins: SinFormState[]

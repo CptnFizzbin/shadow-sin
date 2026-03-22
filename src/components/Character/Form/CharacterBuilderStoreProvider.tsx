@@ -45,7 +45,7 @@ export function useCharacterBuilderStore<TData>(
   return useStore(store, selector)
 }
 
-export function useCharacterBuilderStoreSlice<TData extends object>(
+export function useCharacterBuilderStoreSlice<TData>(
   selector: CharacterBuilderSelector<TData>,
   setter: (
     state: Draft<CharacterFormState>,

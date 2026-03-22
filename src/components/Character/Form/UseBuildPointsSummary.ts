@@ -1,8 +1,13 @@
-import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useAttributesBuildPoints } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import { contactBuildPoints } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
+import { CharacterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
+import { useContactsBuildPoints } from "#/components/Character/Form/Contacts/ContactsHooks.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { qualityBuildPoints } from "#/components/Character/Form/Qualities/QualitiesSection.tsx"
+import { isAdept } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
+import { useSpellsBuildPoints } from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
+import { isMagician } from "#/components/Character/Form/Resources/Magician/SpellsUtils.ts"
+import { useTechnomancerBuildPoints } from "#/components/Character/Form/Resources/Technomancer/TechnomancerSectionHooks.ts"
+import { isTechnomancer } from "#/components/Character/Form/Resources/Technomancer/TechnomancerUtils.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
@@ -16,25 +21,21 @@ export interface BpLineItem {
   label: string
   spent: number
   allowance?: number
-  isOver: boolean
+  enabled?: boolean
 }
 
 export interface BpSummary {
   total: number
   spent: number
-  remaining: number
-  isOverBudget: boolean
   lineItems: BpLineItem[]
-  warnings: string[]
 }
 
 export function useBuildPointsSummary(): BpSummary {
   const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
   const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+
   const qualities = useCharacterBuilderStore((state) => state.qualities)
-  const attributesBpSpent = useCharacterBuilderStore(
-    (state) => state.buildPoints.spent.attributes,
-  )
+
   const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
   const activeSkillGroups = useCharacterBuilderStore(
     (s) => s.skills.activeSkillGroups,
@@ -52,9 +53,6 @@ export function useBuildPointsSummary(): BpSummary {
   const gearBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.gear,
   )
-  const contacts = useCharacterBuilderStore((state) => state.contacts)
-
-  const contactsBpSpent = contactBuildPoints(contacts)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -86,91 +84,63 @@ export function useBuildPointsSummary(): BpSummary {
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
   const skillsBpSpent = activeSkillsBp + extraSpBp
 
-  const totalBuildPoints = useCharacterBuilderStore(
-    (state) => state.buildPoints.total,
-  )
-
-  const totalSpent =
-    biologyBpSpent +
-    qualitiesNetBp +
-    attributesBpSpent +
-    skillsBpSpent +
-    gearBpSpent +
-    contactsBpSpent
-
-  const remaining = totalBuildPoints - totalSpent
-
-  const warnings: string[] = []
-
-  if (attributesBpSpent > attrPointCosts.allowance) {
-    warnings.push(
-      `Attributes exceed the ${attrPointCosts.allowance} BP allowance`,
-    )
-  }
-
-  if (positiveQualitiesBp > qualityBuildPoints.allowance.positive) {
-    warnings.push(
-      `Positive qualities exceed the ${qualityBuildPoints.allowance.positive} BP allowance`,
-    )
-  }
-
-  if (negativeQualitiesBp > qualityBuildPoints.allowance.negative) {
-    warnings.push(
-      `Negative qualities exceed the ${qualityBuildPoints.allowance.negative} BP allowance`,
-    )
-  }
-
-  if (gearBpSpent > GearBpAllowance) {
-    warnings.push(`Gear exceeds the ${GearBpAllowance} BP allowance`)
-  }
-
-  if (totalSpent > totalBuildPoints) {
-    warnings.push(
-      `Total BP spent (${totalSpent}) exceeds the ${totalBuildPoints} BP budget`,
-    )
-  }
+  const technomancerBp = useTechnomancerBuildPoints()
 
   const lineItems: BpLineItem[] = [
     {
+      label: "Profile",
+      spent: 0,
+    },
+    {
       label: "Biology",
       spent: biologyBpSpent,
-      isOver: false,
+    },
+    {
+      label: "Attributes",
+      ...useAttributesBuildPoints(),
     },
     {
       label: "Qualities",
       spent: qualitiesNetBp,
-      isOver: false,
-    },
-    {
-      label: "Attributes",
-      spent: attributesBpSpent,
-      allowance: attrPointCosts.allowance,
-      isOver: attributesBpSpent > attrPointCosts.allowance,
     },
     {
       label: "Skills",
       spent: skillsBpSpent,
-      isOver: false,
+    },
+    {
+      label: "Spells",
+      enabled: isMagician(awakeningType),
+      ...useSpellsBuildPoints(),
+    },
+    {
+      label: "Adept Powers",
+      enabled: isAdept(awakeningType),
+      spent: 0,
+    },
+    {
+      label: "Technomancer",
+      enabled: isTechnomancer(awakeningType),
+      ...technomancerBp,
     },
     {
       label: "Gear",
       spent: gearBpSpent,
       allowance: GearBpAllowance,
-      isOver: gearBpSpent > GearBpAllowance,
     },
     {
       label: "Contacts",
-      spent: contactsBpSpent,
-      isOver: false,
+      ...useContactsBuildPoints(),
     },
   ]
 
+  const enabledLineItems = lineItems.filter(
+    (item) => typeof item.enabled === "undefined" || item.enabled,
+  )
+  const totalSpent = enabledLineItems.reduce((sum, item) => sum + item.spent, 0)
+
   return {
-    total: totalBuildPoints,
+    total: CharacterBuilderMaxBp,
     spent: totalSpent,
-    remaining,
-    isOverBudget: totalSpent > totalBuildPoints,
-    lineItems,
-    warnings,
+    lineItems: enabledLineItems,
   }
 }
