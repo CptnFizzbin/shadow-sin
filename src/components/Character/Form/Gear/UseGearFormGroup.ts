@@ -32,6 +32,7 @@ export function useGearFormGroup() {
     gear.weapons.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.armor.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.vehicles.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.devices.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.misc.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.sins.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.licenses.reduce((sum, item) => sum + (item.cost ?? 0), 0)
