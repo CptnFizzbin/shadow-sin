@@ -9,6 +9,7 @@ import { SourceFormFields } from "#/components/Character/Form/Gear/Generic/Forms
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import {
   ImplantGrade,
+  ImplantLocation,
   ImplantType,
 } from "#/lib/system/types/gear/implantData.ts"
 
@@ -20,6 +21,20 @@ const implantTypeOptions = [
 const implantGradeOptions = [
   { label: "Standard (×1 ¥, ×1.0 Ess)", value: ImplantGrade.standard },
   { label: "Alpha (×2 ¥, ×0.8 Ess)", value: ImplantGrade.alpha },
+]
+
+const implantLocationOptions = [
+  { label: "Right Hand", value: ImplantLocation.rightHand },
+  { label: "Left Hand", value: ImplantLocation.leftHand },
+  { label: "Right Arm", value: ImplantLocation.rightArm },
+  { label: "Left Arm", value: ImplantLocation.leftArm },
+  { label: "Right Leg", value: ImplantLocation.rightLeg },
+  { label: "Left Leg", value: ImplantLocation.leftLeg },
+  { label: "Right Foot", value: ImplantLocation.rightFoot },
+  { label: "Left Foot", value: ImplantLocation.leftFoot },
+  { label: "Torso", value: ImplantLocation.torso },
+  { label: "Eyes", value: ImplantLocation.eyes },
+  { label: "Ears", value: ImplantLocation.ears },
 ]
 
 export const ImplantFormFields = withFieldGroup({
@@ -98,7 +113,12 @@ export const ImplantFormFields = withFieldGroup({
 
         <group.AppField name="location">
           {(field) => (
-            <field.TextField label="Location" fullWidth size="small" />
+            <field.SelectField
+              label="Location"
+              fullWidth
+              size="small"
+              options={implantLocationOptions}
+            />
           )}
         </group.AppField>
 

@@ -34,9 +34,7 @@ export const GearSection: FC = () => {
   const theme = useTheme()
 
   const { totalNuyen, totalBp, isOverBudget, gear } = useGearFormGroup()
-  const [activeSection, setActiveSection] = useState<SectionHeader | null>(
-    SectionHeader.Licenses,
-  )
+  const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
   const onSectionChange = (section: SectionHeader) => {
     return (_: SyntheticEvent, isExpanded: boolean) => {
