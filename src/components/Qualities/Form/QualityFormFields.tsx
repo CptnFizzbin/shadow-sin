@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
 
-import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
 import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
 
 export interface QualityFormFieldsProps {

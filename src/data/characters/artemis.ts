@@ -204,7 +204,7 @@ export const artemis: PlayerCharacterData = {
       impact: 6,
     }),
     createGear<ArmorData>({
-      name: "Form-Fitting Body Armor",
+      name: "CharacterBuilder-Fitting Body Armor",
       type: GearType.armor,
       equipped: true,
       ballistic: 2,
