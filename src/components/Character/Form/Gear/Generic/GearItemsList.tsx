@@ -57,59 +57,14 @@ export const GearItemsList: FC<GearItemsListProps> = ({
 
   return (
     <Stack gap={1}>
-      {topLevelItems.map((item) => {
-        const subItems = getSubItems(item.id)
-
-        return (
-          <Box key={item.id}>
-            <GearItemCard
-              item={item}
-              onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-              onRemove={() => onRemove(item.id)}
-            />
-
-            <Stack
-              gap={1}
-              sx={{
-                paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: subItems.length > 0 ? 1 : 0,
-                borderLeft: "4px solid",
-                borderBottom: subItems.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
-            >
-              {subItems.map((subItem) => (
-                <GearItemCard
-                  key={subItem.id}
-                  item={subItem}
-                  onEdit={() =>
-                    setDialogState({ mode: "edit", item: subItem, open: true })
-                  }
-                  onRemove={() => onRemove(subItem.id)}
-                />
-              ))}
-
-              <Button
-                variant="text"
-                size="small"
-                startIcon={<RiAddLine size={12} />}
-                onClick={() =>
-                  setDialogState({
-                    mode: "create",
-                    parentId: item.id,
-                    open: true,
-                  })
-                }
-                color="secondary"
-                fullWidth
-              >
-                Add sub-item
-              </Button>
-            </Stack>
-          </Box>
-        )
-      })}
+      {items.map((item) => (
+        <GearItemCard
+          key={item.id}
+          item={item}
+          onEdit={() => setDialogState({ mode: "edit", item, open: true })}
+          onRemove={() => onRemove(item.id)}
+        />
+      ))}
 
       <Button
         variant="outlined"
