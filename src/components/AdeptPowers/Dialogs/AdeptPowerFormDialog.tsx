@@ -32,10 +32,7 @@ export const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   const editMode = !!power
 
   const onSubmit = (power: AdeptPowerData) => {
-    onSave({
-      ...power,
-      totalCost: power.rating * power.costPerRating,
-    })
+    onSave(power)
     onClose()
   }
 

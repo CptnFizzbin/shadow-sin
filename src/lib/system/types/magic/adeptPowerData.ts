@@ -7,7 +7,6 @@ export interface AdeptPowerData {
   name: string
   rating: number
   costPerRating: number
-  totalCost?: number
   description?: string
   source?: SourceData
 }
@@ -17,7 +16,6 @@ export const AdeptPowerDataSchema = z.object({
   name: z.string().min(1, "Name is required"),
   rating: z.number().int().min(1, "Rating must be at least 1"),
   costPerRating: z.number().min(0, "Cost per rating must be 0 or greater"),
-  totalCost: z.number().min(0, "Totalcost must be 0 or greater").optional(),
   description: z.string().optional(),
   source: z
     .object({

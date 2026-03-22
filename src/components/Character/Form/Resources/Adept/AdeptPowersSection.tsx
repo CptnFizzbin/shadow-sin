@@ -12,6 +12,7 @@ import {
   useAdeptPowersSlice,
   usePowerPoints,
 } from "#/components/Character/Form/Resources/Adept/AdeptPowersHooks.ts"
+import { getAdeptPowerBpCost } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
 import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 type DialogState =
@@ -71,7 +72,7 @@ export const AdeptPowersSection: FC = () => {
                 size={"small"}
               />
               <Typography variant="body2" color="success.main">
-                {power.totalCost} PP
+                {getAdeptPowerBpCost(power)} PP
               </Typography>
             </Stack>
           </Paper>
