@@ -27,6 +27,7 @@ import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.ts
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import { VehiclesPanel } from "#/components/Character/Form/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/Character/Form/Gear/Weapons/WeaponsPanel.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -116,9 +117,7 @@ export const GearSection: FC = () => {
           <Typography variant="caption">
             <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenBudget} />
           </Typography>
-          <Typography variant="caption">
-            {totalBp} / {GearBpAllowance} BP
-          </Typography>
+          <BuildPoints value={totalBp} total={GearBpAllowance} />
         </Stack>
 
         <LinearProgress

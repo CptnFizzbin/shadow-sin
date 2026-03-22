@@ -12,6 +12,7 @@ import {
   usePowerPoints,
 } from "#/components/Character/Form/Resources/Adept/AdeptPowersHooks.ts"
 import { AdeptPowersListItem } from "#/components/Character/Form/Resources/Adept/AdeptPowersListItem.tsx"
+import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
 import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 type DialogState =
@@ -49,11 +50,7 @@ export const AdeptPowersList: FC = () => {
           Adept Powers
         </Typography>
 
-        <Stack>
-          <Typography variant="subtitle1" color={"success.main"}>
-            {powerPoints.used} / {powerPoints.max} PP
-          </Typography>
-        </Stack>
+        <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
         {powersSlice.state.length === 0 && (
           <Typography variant="body2" color="text.secondary">

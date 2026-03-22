@@ -6,6 +6,7 @@ import type { FC } from "react"
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
@@ -77,9 +78,7 @@ export const BiologySection: FC = () => {
                 width="100%"
               >
                 <Typography>{name}</Typography>
-                <Typography variant="subtitle2" color="secondary.main">
-                  {cost} BP
-                </Typography>
+                <BuildPoints value={cost} />
               </Stack>
             </MenuItem>
           ))}
@@ -102,9 +101,7 @@ export const BiologySection: FC = () => {
                   width="100%"
                 >
                   <Typography>{name}</Typography>
-                  <Typography variant="subtitle2" color="secondary.main">
-                    {cost} BP
-                  </Typography>
+                  <BuildPoints value={cost} />
                 </Stack>
               </MenuItem>
             ))}

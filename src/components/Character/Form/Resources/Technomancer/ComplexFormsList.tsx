@@ -16,6 +16,7 @@ import {
 } from "#/components/Character/Form/Resources/Technomancer/ComplexFormsHooks.ts"
 import { ComplexFormsListItem } from "#/components/Character/Form/Resources/Technomancer/ComplexFormsListItem.tsx"
 import { ComplexFormDialog } from "#/components/Character/Form/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
@@ -75,9 +76,7 @@ export const ComplexFormsList: FC = () => {
           <Typography color="text.secondary">
             {complexFormsSlice.state.length} / {maxComplexForms} forms
           </Typography>
-          <Typography color="secondary.main">
-            {complexFormsBp.spent} BP
-          </Typography>
+          <BuildPoints value={complexFormsBp.spent} />
         </Stack>
 
         <LinearProgress
