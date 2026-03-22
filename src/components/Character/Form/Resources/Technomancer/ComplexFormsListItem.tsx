@@ -8,6 +8,7 @@ import type { FC } from "react"
 
 import type { ComplexFormFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 import { getComplexFormBp } from "#/components/Character/Form/Resources/Technomancer/ComplexFormsUtils.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 
 interface ComplexFormRowProps {
   form: ComplexFormFormState
@@ -43,13 +44,11 @@ export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
 
-        <Typography
+        <BuildPoints
+          value={getComplexFormBp(form)}
           variant="caption"
-          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {getComplexFormBp(form)} BP
-        </Typography>
+        />
 
         <IconButton
           size="small"

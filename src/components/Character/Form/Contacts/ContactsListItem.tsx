@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { ContactData } from "#/lib/system/types/contactData.ts"
 
 interface ContactRowProps {
@@ -39,7 +40,7 @@ export const ContactRow: FC<ContactRowProps> = ({
         <Stack direction="row">
           <Typography flexGrow={1}>{contact.name}</Typography>
 
-          <Typography color={"secondary.main"}>{bpCost} BP</Typography>
+          <BuildPoints value={bpCost} />
 
           <IconButton
             size="small"

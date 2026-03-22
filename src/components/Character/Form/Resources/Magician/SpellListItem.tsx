@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { SpellsBpPerSpell } from "#/components/Character/Form/Resources/Magician/SpellsUtils.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
 
 interface SpellListItemProps {
@@ -25,9 +26,7 @@ export const SpellListItem: FC<SpellListItemProps> = ({ spell, onEdit }) => {
     >
       <Stack direction={"row"} gap={1} alignItems={"center"}>
         <Typography flexGrow={1}>{spell.name}</Typography>
-        <Typography variant="body2" color="secondary.main">
-          {SpellsBpPerSpell} BP
-        </Typography>
+        <BuildPoints value={SpellsBpPerSpell} variant="body2" />
       </Stack>
     </Paper>
   )

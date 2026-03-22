@@ -14,6 +14,7 @@ import {
   useSpellsWarnings,
 } from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
 
 type DialogState =
@@ -61,9 +62,11 @@ export const SpellsList: FC = () => {
         </Typography>
 
         <Stack>
-          <Typography variant="subtitle1" color={"secondary.main"}>
-            {buildPoints.spent} / {buildPoints.allowance} BP
-          </Typography>
+          <BuildPoints
+            value={buildPoints.spent}
+            total={buildPoints.allowance}
+            variant="subtitle1"
+          />
         </Stack>
 
         {warnings.map((warning) => (

@@ -21,6 +21,7 @@ import {
   getActiveSkillGroupBp,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useActiveSkillsFormGroup } from "#/components/Character/Form/Skills/UseActiveSkillsFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 
 type ActiveSkillDialogState =
@@ -97,9 +98,7 @@ export const ActiveSkillsFormGroup: FC = () => {
     <Stack gap={1}>
       <Label label="Active Skills" variant={"outlined"} />
 
-      <Typography variant="body2" color={"secondary.main"}>
-        {totalActiveSkillsBp} BP
-      </Typography>
+      <BuildPoints value={totalActiveSkillsBp} variant="body2" />
 
       {activeSkillWarnings.map((warning) => (
         <Alert key={warning} severity="warning" sx={{ py: 0 }}>
@@ -285,13 +284,11 @@ const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <Typography
+        <BuildPoints
+          value={bpCost}
           variant="caption"
-          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {bpCost} BP
-        </Typography>
+        />
         <IconButton
           size="small"
           color="error"
@@ -343,13 +340,11 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <Typography
+        <BuildPoints
+          value={bpCost}
           variant="caption"
-          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {bpCost} BP
-        </Typography>
+        />
         <IconButton
           size="small"
           color="error"

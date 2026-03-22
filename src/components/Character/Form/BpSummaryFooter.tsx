@@ -9,10 +9,12 @@ import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
+import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useBuildPointsSummary } from "#/components/Character/Form/UseBuildPointsSummary.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
 export interface BpSummaryFooterProps {
@@ -65,12 +67,11 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
                       </TableCell>
                       <TableCell align="right">
                         {spent !== 0 && (
-                          <Typography
+                          <BuildPoints
+                            value={spent}
                             variant="body2"
-                            color={isOver ? "error" : "secondary.main"}
-                          >
-                            {spent} BP
-                          </Typography>
+                            error={isOver}
+                          />
                         )}
                       </TableCell>
                     </TableRow>
@@ -89,11 +90,9 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
               justifyContent={"space-between"}
               alignItems="center"
             >
-              <Typography color="secondary.main">
-                {summary.spent} / {summary.total} BP
-              </Typography>
+              <BuildPoints value={summary.spent} total={summary.total} />
 
-              <Typography color="secondary.main">
+              <Typography sx={{ color: lightBlue[700] }}>
                 {remaining >= 0
                   ? `${remaining} remaining`
                   : `${Math.abs(remaining)} over`}

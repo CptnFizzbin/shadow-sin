@@ -8,6 +8,7 @@ import type { FC } from "react"
 
 import type { SpriteFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 import { getSpriteTasksBp } from "#/components/Character/Form/Resources/Technomancer/SpritesUtils.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 
 interface SpriteRowProps {
   sprite: SpriteFormState
@@ -50,13 +51,11 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
           sx={{ height: 20, fontSize: "0.75rem" }}
         />
 
-        <Typography
+        <BuildPoints
+          value={getSpriteTasksBp(sprite)}
           variant="caption"
-          color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {getSpriteTasksBp(sprite)} BP
-        </Typography>
+        />
 
         <IconButton
           size="small"

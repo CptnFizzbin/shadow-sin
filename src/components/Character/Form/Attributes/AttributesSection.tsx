@@ -1,11 +1,11 @@
 import { LinearProgress } from "@mui/material"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import { useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
@@ -22,9 +22,11 @@ export const AttributesSection: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Typography variant="caption">
-        {bpSpent} / {AttributeBpAllowance} BP
-      </Typography>
+      <BuildPoints
+        value={bpSpent}
+        total={AttributeBpAllowance}
+        variant="caption"
+      />
 
       <LinearProgress
         variant="determinate"
