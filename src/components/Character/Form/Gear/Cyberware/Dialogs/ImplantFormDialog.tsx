@@ -22,7 +22,7 @@ interface CyberwareFormDialogProps {
   label?: string
 }
 
-export const CyberwareFormDialog: FC<CyberwareFormDialogProps> = ({
+export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   open,
   implant,
   onClose,

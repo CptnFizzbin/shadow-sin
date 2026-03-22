@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SourceField } from "#/components/Sources/SourceField.tsx"
+import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
 
 export interface SpellFormFieldsProps {
@@ -66,33 +66,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
           )}
         </form.AppField>
 
-        <form.AppField name="source">
-          {(field) => {
-            const book = field.state.value?.book ?? ""
-            const page = field.state.value?.page?.toString() ?? ""
-
-            return (
-              <SourceField
-                book={book}
-                page={page}
-                onBookChange={(newBook) =>
-                  field.handleChange(
-                    newBook
-                      ? { book: newBook, page: Number(page) || 0 }
-                      : undefined,
-                  )
-                }
-                onPageChange={(newPage) =>
-                  field.handleChange(
-                    book
-                      ? { book, page: Number(newPage) || 0 }
-                      : { book: "", page: Number(newPage) || 0 },
-                  )
-                }
-              />
-            )
-          }}
-        </form.AppField>
+        <SourceFieldGroup form={form} fields={{ source: "source" }} />
       </Stack>
     </form.AppForm>
   )

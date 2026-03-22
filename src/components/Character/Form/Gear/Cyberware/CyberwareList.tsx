@@ -4,7 +4,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { CyberwareListItem } from "#/components/Character/Form/Gear/Cyberware/CyberwareListItem.tsx"
-import { CyberwareFormDialog } from "#/components/Character/Form/Gear/Cyberware/Dialogs/CyberwareFormDialog.tsx"
+import { ImplantFormDialog } from "#/components/Character/Form/Gear/Cyberware/Dialogs/ImplantFormDialog.tsx"
 import type { ImplantFormState } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
 
 type DialogState =
@@ -70,7 +70,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
       ))}
 
       {dialogState?.mode === "create" && (
-        <CyberwareFormDialog
+        <ImplantFormDialog
           open={dialogState.open}
           label={label}
           onSave={handleAdd}
@@ -80,7 +80,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
       )}
 
       {dialogState?.mode === "edit" && (
-        <CyberwareFormDialog
+        <ImplantFormDialog
           open={dialogState.open}
           implant={dialogState.implant}
           label={label}

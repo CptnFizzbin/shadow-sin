@@ -20,12 +20,6 @@ export const QualityDataSchema = z.object({
   type: z.enum(["positive", "negative"]),
   bpValue: z.number().min(0, "BP must be 0 or greater").optional(),
   description: z.string(),
-  source: z
-    .object({
-      book: z.string().min(1, "Source book is required"),
-      page: z.number().min(1, "Source page must be 1 or greater"),
-    })
-    .optional(),
   effects: z
     .object({
       type: z.string(),

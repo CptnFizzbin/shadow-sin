@@ -1,11 +1,13 @@
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import type { AvailabilityRestriction } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
-import { AvailabilityFormFields } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
-import { SourceFormFields } from "#/components/Character/Form/Gear/Generic/Forms/SourceFormFields.tsx"
-import { gearItemFormOpts } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
+import {
+  gearItemFieldMap,
+  gearItemFormOpts,
+} from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { AvailabilityFieldGroup } from "#/components/Character/Form/General/Form/AvailabilityFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
 
 export const GearItemFormFields = withFieldGroup({
   ...gearItemFormOpts,
@@ -34,35 +36,8 @@ export const GearItemFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.Subscribe selector={(state) => state.values}>
-          {(values) => (
-            <AvailabilityFormFields
-              availabilityRating={values.availabilityRating}
-              restriction={values.restriction as AvailabilityRestriction}
-              onAvailabilityRatingChange={(value) =>
-                group.setFieldValue("availabilityRating", value)
-              }
-              onRestrictionChange={(value) =>
-                group.setFieldValue("restriction", value)
-              }
-            />
-          )}
-        </group.Subscribe>
-
-        <group.Subscribe selector={(state) => state.values}>
-          {(values) => (
-            <SourceFormFields
-              sourceBook={values.sourceBook}
-              sourcePage={values.sourcePage}
-              onSourceBookChange={(value) =>
-                group.setFieldValue("sourceBook", value)
-              }
-              onSourcePageChange={(value) =>
-                group.setFieldValue("sourcePage", value)
-              }
-            />
-          )}
-        </group.Subscribe>
+        <AvailabilityFieldGroup form={group} fields={gearItemFieldMap} />
+        <SourceFieldGroup form={group} fields={gearItemFieldMap} />
 
         <group.AppField name="description">
           {(field) => (

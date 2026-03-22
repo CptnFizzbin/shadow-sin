@@ -1,11 +1,14 @@
+import { Box } from "@mui/material"
 import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import { z } from "zod"
 
-import type { ImplantFormRestriction } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
-import { implantFormOpts } from "#/components/Character/Form/Gear/Cyberware/Forms/UseImplantForm.tsx"
-import type { AvailabilityRestriction } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
-import { AvailabilityFormFields } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
-import { SourceFormFields } from "#/components/Character/Form/Gear/Generic/Forms/SourceFormFields.tsx"
+import {
+  implantFieldMap,
+  implantFormOpts,
+} from "#/components/Character/Form/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import { AvailabilityFieldGroup } from "#/components/Character/Form/General/Form/AvailabilityFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import {
   ImplantGrade,
@@ -19,8 +22,38 @@ const implantTypeOptions = [
 ]
 
 const implantGradeOptions = [
-  { label: "Standard (×1 ¥, ×1.0 Ess)", value: ImplantGrade.standard },
-  { label: "Alpha (×2 ¥, ×0.8 Ess)", value: ImplantGrade.alpha },
+  {
+    label: (
+      <Stack
+        direction="row"
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        flexGrow={1}
+      >
+        <Box>Standard</Box>{" "}
+        <Typography variant={"caption"} color={"text.secondary"}>
+          ×1 ¥ | ×1.0 Ess
+        </Typography>
+      </Stack>
+    ),
+    value: ImplantGrade.standard,
+  },
+  {
+    label: (
+      <Stack
+        direction="row"
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        flexGrow={1}
+      >
+        <Box>Alpha</Box>{" "}
+        <Typography variant={"caption"} color={"text.secondary"}>
+          ×2 ¥ | ×0.8 Ess
+        </Typography>
+      </Stack>
+    ),
+    value: ImplantGrade.alpha,
+  },
 ]
 
 const implantLocationOptions = [
@@ -51,29 +84,27 @@ export const ImplantFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
-          <group.AppField name="implantType">
-            {(field) => (
-              <field.SelectField
-                label="Type"
-                size="small"
-                sx={{ flex: 1 }}
-                options={implantTypeOptions}
-              />
-            )}
-          </group.AppField>
+        <group.AppField name="implantType">
+          {(field) => (
+            <field.SelectField
+              label="Type"
+              size="small"
+              sx={{ flex: 1 }}
+              options={implantTypeOptions}
+            />
+          )}
+        </group.AppField>
 
-          <group.AppField name="grade">
-            {(field) => (
-              <field.SelectField
-                label="Grade"
-                size="small"
-                sx={{ flex: 1 }}
-                options={implantGradeOptions}
-              />
-            )}
-          </group.AppField>
-        </Stack>
+        <group.AppField name="grade">
+          {(field) => (
+            <field.SelectField
+              label="Grade"
+              size="small"
+              sx={{ flex: 1 }}
+              options={implantGradeOptions}
+            />
+          )}
+        </group.AppField>
 
         <Stack direction="row" gap={1}>
           <group.AppField
@@ -122,38 +153,8 @@ export const ImplantFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.Subscribe selector={(state) => state.values}>
-          {(values) => (
-            <AvailabilityFormFields
-              availabilityRating={values.availabilityRating}
-              restriction={values.restriction as AvailabilityRestriction}
-              onAvailabilityRatingChange={(value) =>
-                group.setFieldValue("availabilityRating", value)
-              }
-              onRestrictionChange={(value) =>
-                group.setFieldValue(
-                  "restriction",
-                  value as ImplantFormRestriction,
-                )
-              }
-            />
-          )}
-        </group.Subscribe>
-
-        <group.Subscribe selector={(state) => state.values}>
-          {(values) => (
-            <SourceFormFields
-              sourceBook={values.sourceBook}
-              sourcePage={values.sourcePage}
-              onSourceBookChange={(value) =>
-                group.setFieldValue("sourceBook", value)
-              }
-              onSourcePageChange={(value) =>
-                group.setFieldValue("sourcePage", value)
-              }
-            />
-          )}
-        </group.Subscribe>
+        <AvailabilityFieldGroup form={group} fields={implantFieldMap} />
+        <SourceFieldGroup form={group} fields={implantFieldMap} />
 
         <group.AppField name="description">
           {(field) => (

@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
 
+import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
 import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
-import { SourceField } from "#/components/Sources/SourceField.tsx"
 
 export interface QualityFormFieldsProps {
   form: QualityForm
@@ -56,31 +56,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
           )}
         </form.AppField>
 
-        <form.AppField name="source">
-          {(field) => {
-            const book = field.state.value?.book ?? ""
-            const page = field.state.value?.page?.toString() ?? ""
-
-            return (
-              <SourceField
-                book={book}
-                page={page}
-                onBookChange={(b) =>
-                  field.handleChange(
-                    b ? { book: b, page: Number(page) || 0 } : undefined,
-                  )
-                }
-                onPageChange={(p) =>
-                  field.handleChange(
-                    book
-                      ? { book, page: Number(p) || 0 }
-                      : { book: "", page: Number(p) || 0 },
-                  )
-                }
-              />
-            )
-          }}
-        </form.AppField>
+        <SourceFieldGroup form={form} fields={{ source: "source" }} />
       </Stack>
     </form.AppForm>
   )
