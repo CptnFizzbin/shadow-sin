@@ -15,6 +15,9 @@ export default defineConfig([
   {
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+      },
     },
     settings: {
       "import-x/resolver-next": [createTypeScriptImportResolver()],
@@ -24,6 +27,8 @@ export default defineConfig([
     },
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
 
       "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
       "import-x/default": "off",

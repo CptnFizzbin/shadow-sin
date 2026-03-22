@@ -1,23 +1,14 @@
 import { Divider } from "@mui/material"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { QualitiesList } from "#/components/Character/Form/Qualities/QualitiesList.tsx"
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
-import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
-import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
-
-export const qualityBuildPoints = {
-  allowance: {
-    negative: 35,
-    positive: 35,
-  },
-}
 
 export const QualitiesSection: FC = () => {
   const { qualities, buildPoints, addQuality, updateQuality, removeQuality } =
@@ -30,7 +21,7 @@ export const QualitiesSection: FC = () => {
   return (
     <>
       <Stack gap={0.5}>
-        <QualityGroup
+        <QualitiesList
           label={"Positive"}
           positive={true}
           bpUsed={buildPoints.bpSpent}
@@ -43,7 +34,7 @@ export const QualitiesSection: FC = () => {
 
         <Divider sx={{ marginY: 1 }} />
 
-        <QualityGroup
+        <QualitiesList
           label={"Negative"}
           positive={false}
           bpUsed={buildPoints.bpBonus}
@@ -88,50 +79,6 @@ export const QualitiesSection: FC = () => {
           }}
           onDelete={() => removeQuality(selectedEntry)}
         />
-      )}
-    </>
-  )
-}
-
-interface QualityGroupProps {
-  label: string
-  positive: boolean
-  bpUsed: number
-  qualities: QualityData[]
-  onSelect: (quality: QualityData) => void
-}
-
-const QualityGroup: FC<QualityGroupProps> = ({
-  label,
-  positive,
-  bpUsed,
-  qualities,
-  onSelect,
-}) => {
-  return (
-    <>
-      <Label label={label} variant={"outlined"} />
-
-      <Stack direction={"row"} justifyContent={"flex-end"}>
-        <Typography color={"secondary.main"}>
-          {positive ? "Cost" : "Bonus"}: {bpUsed} BP
-        </Typography>
-      </Stack>
-
-      {qualities.length === 0 ? (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-          No {label} qualities added
-        </Typography>
-      ) : (
-        <Stack gap={0.5}>
-          {qualities.map((quality) => (
-            <QualityRow
-              key={quality.id}
-              quality={quality}
-              onClick={() => onSelect(quality)}
-            />
-          ))}
-        </Stack>
       )}
     </>
   )

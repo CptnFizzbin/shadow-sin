@@ -123,7 +123,12 @@ export function useBuildPointsSummary(): BpSummary {
       ...technomancerBp,
     },
     {
-      label: "Gear",
+      label: "Technomancer",
+      enabled: isTechnomancer(awakeningType),
+      ...technomancerBp,
+    },
+    {
+      label: "Cyberware",
       spent: gearBpSpent,
       allowance: GearBpAllowance,
     },

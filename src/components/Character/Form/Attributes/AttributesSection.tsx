@@ -1,11 +1,12 @@
 import { LinearProgress } from "@mui/material"
+import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
+import { AttributesList } from "#/components/Character/Form/Attributes/AttributesList.tsx"
 import { useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
@@ -22,9 +23,9 @@ export const AttributesSection: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Typography variant="caption">
-        {bpSpent} / {AttributeBpAllowance} BP
-      </Typography>
+      <Box alignSelf={"flex-end"}>
+        <BuildPoints value={bpSpent} total={AttributeBpAllowance} />
+      </Box>
 
       <LinearProgress
         variant="determinate"
@@ -32,11 +33,7 @@ export const AttributesSection: FC = () => {
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 
-      <Stack gap={0.5}>
-        {attrRows.map((attr) => (
-          <AttributeRow key={attr} attr={attr} />
-        ))}
-      </Stack>
+      <AttributesList attributeKeys={attrRows} />
     </Stack>
   )
 }

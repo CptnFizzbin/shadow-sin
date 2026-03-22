@@ -16,6 +16,7 @@ import {
   useSpritesSlice,
 } from "#/components/Character/Form/Resources/Technomancer/SpritesHooks.ts"
 import { SpritesListItem } from "#/components/Character/Form/Resources/Technomancer/SpritesListItem.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
@@ -74,7 +75,7 @@ export const SpritesList: FC = () => {
           <Typography color="text.secondary">
             {spritesSlice.state.length} / {maxSpritesRegistered} sprites
           </Typography>
-          <Typography color="secondary.main">{spritesBp.spent} BP</Typography>
+          <BuildPoints value={spritesBp.spent} />
         </Stack>
 
         <LinearProgress

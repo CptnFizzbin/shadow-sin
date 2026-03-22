@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
@@ -55,21 +54,20 @@ export const GearItemsList: FC<GearItemsListProps> = ({
         size="small"
         startIcon={<RiAddLine size={14} />}
         onClick={() => setDialogState({ mode: "create", open: true })}
+        color={"secondary"}
         fullWidth
       >
         Add {label}
       </Button>
 
-      <Stack gap={1}>
-        {items.map((item) => (
-          <GearItemCard
-            key={item.id}
-            item={item}
-            onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-            onRemove={() => onRemove(item.id)}
-          />
-        ))}
-      </Stack>
+      {items.map((item) => (
+        <GearItemCard
+          key={item.id}
+          item={item}
+          onEdit={() => setDialogState({ mode: "edit", item, open: true })}
+          onRemove={() => onRemove(item.id)}
+        />
+      ))}
 
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
