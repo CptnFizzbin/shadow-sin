@@ -9,7 +9,6 @@ type GearItemSectionField =
   | "gear.weapons"
   | "gear.armor"
   | "gear.vehicles"
-  | "gear.cyberware"
   | "gear.misc"
 
 interface PlaceholderGearSectionProps {
@@ -25,7 +24,6 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
     | "weapons"
     | "armor"
     | "vehicles"
-    | "cyberware"
     | "misc"
 
   const itemsSlice = useCharacterBuilderStoreSlice(

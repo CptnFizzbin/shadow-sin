@@ -4,6 +4,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
 import {
   GearBpAllowance,
   getGearBpSpent,
@@ -20,9 +21,20 @@ export function useGearFormGroup() {
 
   const gear = useCharacterBuilderStore((state) => state.gear)
 
-  const totalNuyen = (Object.values(gear) as Array<{ cost: number }[]>)
-    .flat()
-    .reduce((sum, item) => sum + (item.cost ?? 0), 0)
+  const genericNuyen =
+    gear.weapons.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.armor.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.vehicles.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.misc.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.sins.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
+    gear.licenses.reduce((sum, item) => sum + (item.cost ?? 0), 0)
+
+  const cyberwareNuyen = gear.cyberware.reduce(
+    (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
+    0,
+  )
+
+  const totalNuyen = genericNuyen + cyberwareNuyen
 
   const totalBp = getGearBpSpent(totalNuyen)
   const isOverBudget = totalBp > GearBpAllowance

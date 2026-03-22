@@ -6,36 +6,36 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { GearItemFormFields } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormFields.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
+import { ImplantFormFields } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormFields.tsx"
+import type { ImplantFormState } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
 import {
-  gearItemFieldMap,
-  useGearItemForm,
-} from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
+  implantFieldMap,
+  useImplantForm,
+} from "#/components/Character/Form/Gear/Cyberware/Forms/UseImplantForm.tsx"
 
-interface GearItemFormDialogProps {
+interface CyberwareFormDialogProps {
   open: boolean
-  item?: GearItemFormState
+  implant?: ImplantFormState
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: GearItemFormState) => void
+  onSave: (implant: ImplantFormState) => void
   label?: string
 }
 
-export const CyberwareFormDialog: FC<GearItemFormDialogProps> = ({
+export const CyberwareFormDialog: FC<CyberwareFormDialogProps> = ({
   open,
-  item,
+  implant,
   onClose,
   onClosed,
   onSave,
-  label = "Item",
+  label = "Implant",
 }) => {
-  const editMode = !!item
+  const editMode = !!implant
   const title = editMode ? `Edit ${label}` : `Add ${label}`
 
-  const form = useGearItemForm(
+  const form = useImplantForm(
     editMode
-      ? { mode: "edit", item, onSubmit: onSave }
+      ? { mode: "edit", implant, onSubmit: onSave }
       : { mode: "create", onSubmit: onSave },
   )
 
@@ -45,7 +45,7 @@ export const CyberwareFormDialog: FC<GearItemFormDialogProps> = ({
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>
-          <GearItemFormFields form={form} fields={gearItemFieldMap} />
+          <ImplantFormFields form={form} fields={implantFieldMap} />
         </Stack>
       </DialogContent>
 

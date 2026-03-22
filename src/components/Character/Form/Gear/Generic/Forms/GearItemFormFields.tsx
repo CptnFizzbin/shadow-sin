@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
-import type { GearItemRestriction } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
+import type { AvailabilityRestriction } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
+import { AvailabilityFormFields } from "#/components/Character/Form/Gear/Generic/Forms/AvailabilityFormFields.tsx"
+import { SourceFormFields } from "#/components/Character/Form/Gear/Generic/Forms/SourceFormFields.tsx"
 import { gearItemFormOpts } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 
@@ -34,55 +34,35 @@ export const GearItemFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
-          <group.AppField name="availabilityRating">
-            {(field) => (
-              <field.NumberField
-                label="Availability"
-                size="small"
-                sx={{ flex: 1 }}
-              />
-            )}
-          </group.AppField>
+        <group.Subscribe selector={(state) => state.values}>
+          {(values) => (
+            <AvailabilityFormFields
+              availabilityRating={values.availabilityRating}
+              restriction={values.restriction as AvailabilityRestriction}
+              onAvailabilityRatingChange={(value) =>
+                group.setFieldValue("availabilityRating", value)
+              }
+              onRestrictionChange={(value) =>
+                group.setFieldValue("restriction", value)
+              }
+            />
+          )}
+        </group.Subscribe>
 
-          <group.AppField name="restriction">
-            {(field) => (
-              <ToggleButtonGroup
-                value={field.state.value}
-                exclusive
-                onChange={(_, value: GearItemRestriction | null) => {
-                  if (value !== null) field.handleChange(value)
-                }}
-                size="small"
-                sx={{ height: 40, alignSelf: "center" }}
-              >
-                <ToggleButton value="none" sx={{ px: 1.5 }}>
-                  —
-                </ToggleButton>
-                <ToggleButton value="restricted" sx={{ px: 1.5 }}>
-                  R
-                </ToggleButton>
-                <ToggleButton value="forbidden" sx={{ px: 1.5 }}>
-                  F
-                </ToggleButton>
-              </ToggleButtonGroup>
-            )}
-          </group.AppField>
-        </Stack>
-
-        <Stack direction="row" gap={1}>
-          <group.AppField name="sourceBook">
-            {(field) => (
-              <field.TextField label="Book" size="small" sx={{ flex: 1 }} />
-            )}
-          </group.AppField>
-
-          <group.AppField name="sourcePage">
-            {(field) => (
-              <field.NumberField label="Page" size="small" sx={{ width: 90 }} />
-            )}
-          </group.AppField>
-        </Stack>
+        <group.Subscribe selector={(state) => state.values}>
+          {(values) => (
+            <SourceFormFields
+              sourceBook={values.sourceBook}
+              sourcePage={values.sourcePage}
+              onSourceBookChange={(value) =>
+                group.setFieldValue("sourceBook", value)
+              }
+              onSourcePageChange={(value) =>
+                group.setFieldValue("sourcePage", value)
+              }
+            />
+          )}
+        </group.Subscribe>
 
         <group.AppField name="description">
           {(field) => (
