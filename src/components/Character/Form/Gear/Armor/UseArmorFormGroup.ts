@@ -28,7 +28,9 @@ export function useArmorFormGroup() {
   }
 
   const removeArmor = (itemId: string) => {
-    itemsSlice.update((draft) => draft.filter((existing) => existing.id !== itemId))
+    itemsSlice.update((draft) =>
+      draft.filter((existing) => existing.id !== itemId),
+    )
   }
 
   return {

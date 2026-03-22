@@ -19,10 +19,10 @@ import {
   GearMaxAvailability,
   GearNuyenBudget,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { MiscPanel } from "#/components/Character/Form/Gear/Misc/MiscPanel.tsx"
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
+import { MiscPanel } from "#/components/Character/Form/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import { VehiclesPanel } from "#/components/Character/Form/Gear/Vehicles/VehiclesPanel.tsx"
@@ -48,7 +48,9 @@ export const GearSection: FC = () => {
   const sectionInvalid = new Set<SectionHeader>()
   let totalInvalidCount = 0
 
-  const genericSectionKeys: Partial<Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">> = {
+  const genericSectionKeys: Partial<
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+  > = {
     [SectionHeader.Weapons]: "weapons",
     [SectionHeader.Armor]: "armor",
     [SectionHeader.Vehicles]: "vehicles",
@@ -239,7 +241,9 @@ const GearSectionNuyen: FC<{
     )
   }
 
-  const genericSectionKeys: Partial<Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">> = {
+  const genericSectionKeys: Partial<
+    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "misc">
+  > = {
     [SectionHeader.Weapons]: "weapons",
     [SectionHeader.Armor]: "armor",
     [SectionHeader.Vehicles]: "vehicles",

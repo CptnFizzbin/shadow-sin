@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
+import { AttributesList } from "#/components/Character/Form/Attributes/AttributesList.tsx"
 import { useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
@@ -32,11 +32,7 @@ export const AttributesSection: FC = () => {
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 
-      <Stack gap={0.5}>
-        {attrRows.map((attr) => (
-          <AttributeRow key={attr} attr={attr} />
-        ))}
-      </Stack>
+      <AttributesList attributeKeys={attrRows} />
     </Stack>
   )
 }
