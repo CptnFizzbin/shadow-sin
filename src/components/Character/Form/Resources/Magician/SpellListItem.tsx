@@ -26,7 +26,7 @@ export const SpellListItem: FC<SpellListItemProps> = ({ spell, onEdit }) => {
     >
       <Stack direction={"row"} gap={1} alignItems={"center"}>
         <Typography flexGrow={1}>{spell.name}</Typography>
-        <BuildPoints value={SpellsBpPerSpell} variant="body2" />
+        <BuildPoints value={SpellsBpPerSpell} />
       </Stack>
     </Paper>
   )

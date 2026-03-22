@@ -122,11 +122,7 @@ export const GearSection: FC = () => {
           <Typography variant="caption">
             <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenBudget} />
           </Typography>
-          <BuildPoints
-            value={totalBp}
-            total={GearBpAllowance}
-            variant="caption"
-          />
+          <BuildPoints value={totalBp} total={GearBpAllowance} />
         </Stack>
 
         <LinearProgress

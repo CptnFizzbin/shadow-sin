@@ -46,7 +46,6 @@ export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
 
         <BuildPoints
           value={getComplexFormBp(form)}
-          variant="caption"
           sx={{ minWidth: 40, textAlign: "right" }}
         />
 

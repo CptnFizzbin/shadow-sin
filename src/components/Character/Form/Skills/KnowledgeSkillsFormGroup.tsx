@@ -75,13 +75,13 @@ export const KnowledgeSkillsFormGroup: FC = () => {
       <Label label="Knowledge & Languages" variant={"outlined"} />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <SkillPoints value={totalSpUsed} variant="body2" />
+        <SkillPoints value={totalSpUsed} />
 
-        <Typography variant="body2" color={"text.secondary"}>
+        <Typography color={"text.secondary"}>
           {remainingFreeSp > 0 && `${remainingFreeSp} free SP remaining`}
         </Typography>
 
-        <BuildPoints value={extraSpBp} variant="body2" />
+        <BuildPoints value={extraSpBp} />
       </Stack>
 
       {totalSpUsed > maxSkillPoints && (

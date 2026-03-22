@@ -1,4 +1,5 @@
 import { LinearProgress } from "@mui/material"
+import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
@@ -22,11 +23,9 @@ export const AttributesSection: FC = () => {
 
   return (
     <Stack gap={1}>
-      <BuildPoints
-        value={bpSpent}
-        total={AttributeBpAllowance}
-        variant="caption"
-      />
+      <Box alignSelf={"flex-end"}>
+        <BuildPoints value={bpSpent} total={AttributeBpAllowance} />
+      </Box>
 
       <LinearProgress
         variant="determinate"

@@ -50,13 +50,7 @@ export const AdeptPowersList: FC = () => {
           Adept Powers
         </Typography>
 
-        <Stack>
-          <PowerPoints
-            value={powerPoints.used}
-            total={powerPoints.max}
-            variant="subtitle1"
-          />
-        </Stack>
+        <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
         {powersSlice.state.length === 0 && (
           <Typography variant="body2" color="text.secondary">

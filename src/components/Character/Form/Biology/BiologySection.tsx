@@ -78,7 +78,7 @@ export const BiologySection: FC = () => {
                 width="100%"
               >
                 <Typography>{name}</Typography>
-                <BuildPoints value={cost} variant="subtitle2" />
+                <BuildPoints value={cost} />
               </Stack>
             </MenuItem>
           ))}
@@ -101,7 +101,7 @@ export const BiologySection: FC = () => {
                   width="100%"
                 >
                   <Typography>{name}</Typography>
-                  <BuildPoints value={cost} variant="subtitle2" />
+                  <BuildPoints value={cost} />
                 </Stack>
               </MenuItem>
             ))}

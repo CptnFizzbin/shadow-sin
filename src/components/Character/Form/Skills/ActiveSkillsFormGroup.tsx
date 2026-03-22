@@ -98,7 +98,9 @@ export const ActiveSkillsFormGroup: FC = () => {
     <Stack gap={1}>
       <Label label="Active Skills" variant={"outlined"} />
 
-      <BuildPoints value={totalActiveSkillsBp} variant="body2" />
+      <Stack direction={"row"} justifyContent="flex-end" alignItems="center">
+        <BuildPoints value={totalActiveSkillsBp} />
+      </Stack>
 
       {activeSkillWarnings.map((warning) => (
         <Alert key={warning} severity="warning" sx={{ py: 0 }}>
@@ -284,11 +286,7 @@ const ActiveSkillRow: FC<ActiveSkillRowProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <BuildPoints
-          value={bpCost}
-          variant="caption"
-          sx={{ minWidth: 40, textAlign: "right" }}
-        />
+        <BuildPoints value={bpCost} sx={{ minWidth: 40, textAlign: "right" }} />
         <IconButton
           size="small"
           color="error"
@@ -340,11 +338,7 @@ const ActiveSkillGroupRow: FC<ActiveSkillGroupRowProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <BuildPoints
-          value={bpCost}
-          variant="caption"
-          sx={{ minWidth: 40, textAlign: "right" }}
-        />
+        <BuildPoints value={bpCost} sx={{ minWidth: 40, textAlign: "right" }} />
         <IconButton
           size="small"
           color="error"

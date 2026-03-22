@@ -67,11 +67,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
                       </TableCell>
                       <TableCell align="right">
                         {spent !== 0 && (
-                          <BuildPoints
-                            value={spent}
-                            variant="body2"
-                            error={isOver}
-                          />
+                          <BuildPoints value={spent} error={isOver} />
                         )}
                       </TableCell>
                     </TableRow>

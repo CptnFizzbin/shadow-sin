@@ -65,7 +65,6 @@ export const SpellsList: FC = () => {
           <BuildPoints
             value={buildPoints.spent}
             total={buildPoints.allowance}
-            variant="subtitle1"
           />
         </Stack>
 
