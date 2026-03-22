@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
+import { mergeObjects } from "#/lib/MergeUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 const debouncedSaveState = debounce(
@@ -22,7 +23,10 @@ export const useRootCharacterBuilderStore = (
 
   const [store] = useState(() => {
     const savedState = FormPersister.loadState(defaultValues.characterId)
-    return new Store<CharacterFormState>(savedState ?? defaultValues)
+    const initialState = savedState
+      ? mergeObjects<CharacterFormState>(defaultValues, savedState)
+      : defaultValues
+    return new Store<CharacterFormState>(initialState)
   })
 
   useEffect(() => {

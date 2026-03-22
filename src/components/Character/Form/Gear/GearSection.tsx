@@ -246,10 +246,12 @@ const GearSectionNuyen: FC<{
     return (
       <Typography variant="body2" color="text.secondary">
         <Nuyen
-          amount={gear.cyberware.reduce(
-            (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
-            0,
-          )}
+          amount={
+            gear.cyberware.reduce(
+              (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
+              0,
+            ) + gear.implantMods.reduce((sum, mod) => sum + mod.cost, 0)
+          }
         />
       </Typography>
     )

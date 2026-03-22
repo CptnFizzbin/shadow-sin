@@ -142,6 +142,7 @@ export const useDefaultValues = ({
       armor: [],
       vehicles: [],
       cyberware: [],
+      implantMods: [],
       misc: [],
     },
 

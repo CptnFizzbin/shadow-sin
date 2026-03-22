@@ -36,10 +36,11 @@ export function useGearFormGroup() {
     gear.sins.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
     gear.licenses.reduce((sum, item) => sum + (item.cost ?? 0), 0)
 
-  const cyberwareNuyen = gear.cyberware.reduce(
-    (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
-    0,
-  )
+  const cyberwareNuyen =
+    gear.cyberware.reduce(
+      (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
+      0,
+    ) + gear.implantMods.reduce((sum, mod) => sum + (mod.cost ?? 0), 0)
 
   const totalNuyen = genericNuyen + cyberwareNuyen + lifestyleNuyen
 
