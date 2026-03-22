@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { ComplexFormsFormGroup } from "#/components/Character/Form/Resources/Technomancer/ComplexFormsFormGroup.tsx"
-import { SpritesFormGroup } from "#/components/Character/Form/Resources/Technomancer/SpritesFormGroup.tsx"
+import { ComplexFormsList } from "#/components/Character/Form/Resources/Technomancer/ComplexFormsList.tsx"
+import { SpritesList } from "#/components/Character/Form/Resources/Technomancer/SpritesList.tsx"
 
 export const TechnomancerSection: FC = () => {
   return (
@@ -15,9 +15,9 @@ export const TechnomancerSection: FC = () => {
           Technomancer
         </Typography>
 
-        <ComplexFormsFormGroup />
+        <ComplexFormsList />
         <Divider />
-        <SpritesFormGroup />
+        <SpritesList />
       </Stack>
     </Paper>
   )

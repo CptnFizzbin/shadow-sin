@@ -11,10 +11,10 @@ import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/Chara
 import {
   useSpellsBuildPoints,
   useSpellsWarnings,
-} from "#/components/Character/Form/Resources/Magician/SpellsSectionHooks.ts"
+} from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
-import { SpellsBpPerSpell } from "./SpellsRequirements.ts"
+import { SpellsBpPerSpell } from "./SpellsUtils.ts"
 
 type DialogState =
   | null
@@ -62,7 +62,7 @@ export const SpellsSection: FC = () => {
 
         <Stack>
           <Typography variant="subtitle1" color={"secondary.main"}>
-            {buildPoints.used} / {buildPoints.max} BP
+            {buildPoints.spent} / {buildPoints.allowance} BP
           </Typography>
         </Stack>
 

@@ -6,11 +6,11 @@ import { useMemo, useRef } from "react"
 
 export type Recipe<TData> = (draft: Draft<TData>) => void | Draft<TData>
 
-export interface StoreSlice<TData extends object> extends ReadonlyStore<TData> {
+export interface StoreSlice<TData> extends ReadonlyStore<TData> {
   update(updater: Recipe<TData>): void
 }
 
-export const useStoreSlice = <TRoot, TData extends object>(
+export const useStoreSlice = <TRoot, TData>(
   store: Store<TRoot>,
   selector: (state: TRoot) => TData,
   setter: (state: Draft<TRoot>, nextValue: Draft<TData>) => Draft<TRoot>,

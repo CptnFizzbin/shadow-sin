@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ComplexFormFormState } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
+import type { ComplexFormFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 
 interface ComplexFormDialogProps {
   open: boolean

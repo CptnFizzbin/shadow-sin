@@ -2,6 +2,7 @@ import { Button } from "@mui/material"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useAttributeSlice } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
 import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { attrPointCosts } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
@@ -20,13 +21,7 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
       return state
     },
   )
-  const attrSlice = useCharacterBuilderStoreSlice(
-    (state) => state.attributes[attrKey],
-    (state, attr) => {
-      state.attributes[attrKey] = attr
-      return state
-    },
-  )
+  const attrSlice = useAttributeSlice(attrKey)
 
   let disabled = false
   let refund = attrPointCosts.base

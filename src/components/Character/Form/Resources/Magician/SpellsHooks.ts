@@ -1,9 +1,13 @@
-import { CharacterBuilderHooks } from "#/components/Character/Form/CharacterBuilderHooks.ts"
+import {
+  useBuilderActiveSkillRating,
+  useBuilderAttrValue,
+  useBuilderAwakeningType,
+} from "#/components/Character/Form/CharacterBuilderHooks.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   isMagician,
   SpellsBpPerSpell,
-} from "#/components/Character/Form/Resources/Magician/SpellsRequirements.ts"
+} from "#/components/Character/Form/Resources/Magician/SpellsUtils.ts"
 import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
@@ -18,30 +22,26 @@ export const useSpellsSlice = () => {
 }
 
 export const useSpellsBuildPoints = () => {
-  const awakeningType = CharacterBuilderHooks.useAwakeningType()
+  const awakeningType = useBuilderAwakeningType()
   const spells = useSpellsSlice()
-  const spellcasting = CharacterBuilderHooks.useActiveSkillRating(
-    SkillKey.spellcasting,
-  )
-  const ritualSpellcasting = CharacterBuilderHooks.useActiveSkillRating(
+  const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
+  const ritualSpellcasting = useBuilderActiveSkillRating(
     SkillKey.ritualSpellcasting,
   )
 
   if (!isMagician(awakeningType)) {
-    return { max: 0, used: 0 }
+    return { allowance: 0, spent: 0 }
   }
 
-  const max = Math.max(spellcasting, ritualSpellcasting) * 2
-  const used = spells.state.length * SpellsBpPerSpell
-  return { max, used }
+  const allowance = Math.max(spellcasting, ritualSpellcasting) * 2
+  const spent = spells.state.length * SpellsBpPerSpell
+  return { allowance, spent }
 }
 
 export const useSpellsWarnings = () => {
-  const magicAttribute = CharacterBuilderHooks.useAttrValue(AttributeKey.magic)
-  const spellcasting = CharacterBuilderHooks.useActiveSkillRating(
-    SkillKey.spellcasting,
-  )
-  const ritualSpellcasting = CharacterBuilderHooks.useActiveSkillRating(
+  const magicAttribute = useBuilderAttrValue(AttributeKey.magic)
+  const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
+  const ritualSpellcasting = useBuilderActiveSkillRating(
     SkillKey.ritualSpellcasting,
   )
 
@@ -60,9 +60,9 @@ export const useSpellsWarnings = () => {
     warnings.push("Magic attribute is not set.")
   }
 
-  if (spellBp.used > spellBp.max) {
+  if (spellBp.spent > spellBp.allowance) {
     warnings.push(
-      `You have used ${spellBp.used} BP on spells, but you only have ${spellBp.max} BP available. Either reduce the number of spells or increase your Spellcasting/Ritual Spellcasting skill ratings.`,
+      `You have used ${spellBp.spent} BP on spells, but you only have ${spellBp.allowance} BP available. Either reduce the number of spells or increase your Spellcasting/Ritual Spellcasting skill ratings.`,
     )
   }
 

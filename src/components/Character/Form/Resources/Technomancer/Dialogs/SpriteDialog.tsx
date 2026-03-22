@@ -13,15 +13,15 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { SpriteFormState } from "#/components/Character/Form/Resources/Technomancer/TechnomancerFormState.ts"
+import { useBuilderAttrValue } from "#/components/Character/Form/CharacterBuilderHooks.ts"
+import type { SpriteFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
+import { useMaxSpriteTasks } from "#/components/Character/Form/Resources/Technomancer/SpritesHooks.ts"
+import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 interface SpriteDialogProps {
   open: boolean
   sprite?: SpriteFormState
-  resonanceValue: number
-  maxTasks: number
   onSave: (sprite: SpriteFormState) => void
-  onDelete?: () => void
   onClose: () => void
   onClosed?: () => void
 }
@@ -29,22 +29,20 @@ interface SpriteDialogProps {
 export const SpriteDialog: FC<SpriteDialogProps> = ({
   open,
   sprite,
-  resonanceValue,
-  maxTasks,
   onSave,
-  onDelete,
   onClose,
   onClosed,
 }) => {
+  const maxSpriteTasks = useMaxSpriteTasks()
+  const resonanceAttr = useBuilderAttrValue(AttributeKey.resonance)
   const isEditMode = !!sprite
 
   const [name, setName] = useState<string>(sprite?.name ?? "")
   const [tasks, setTasks] = useState<number>(sprite?.tasks ?? 1)
   const [nameError, setNameError] = useState(false)
 
-  const effectiveMaxTasks = Math.max(maxTasks, 1)
   const taskOptions = Array.from(
-    { length: effectiveMaxTasks },
+    { length: maxSpriteTasks },
     (_, index) => index + 1,
   )
 
@@ -56,7 +54,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
     onSave({
       id: sprite?.id ?? crypto.randomUUID(),
       name: name.trim(),
-      tasks: Math.min(tasks, effectiveMaxTasks),
+      tasks: Math.min(tasks, maxSpriteTasks),
     })
   }
 
@@ -68,12 +66,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
   }
 
   return (
-    <Dialog
-      open={open}
-      fullWidth
-      maxWidth="sm"
-      onTransitionExited={handleClosed}
-    >
+    <Dialog open={open} fullWidth onTransitionExited={handleClosed}>
       <DialogTitle>{isEditMode ? "Edit Sprite" : "Add Sprite"}</DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
@@ -94,7 +87,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
 
           <TextField
             label="Rating"
-            value={resonanceValue}
+            value={resonanceAttr}
             size="small"
             fullWidth
             slotProps={{ input: { readOnly: true } }}
@@ -104,7 +97,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
           <FormControl fullWidth size="small">
             <InputLabel>Tasks</InputLabel>
             <Select
-              value={Math.min(tasks, effectiveMaxTasks)}
+              value={Math.min(tasks, maxSpriteTasks)}
               label="Tasks"
               onChange={(e) => setTasks(Number(e.target.value))}
             >
@@ -116,7 +109,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
             </Select>
           </FormControl>
 
-          {maxTasks === 0 && (
+          {maxSpriteTasks === 0 && (
             <Typography variant="caption" color="warning.main">
               Add the Compiling skill to enable sprites with tasks
             </Typography>
@@ -124,28 +117,13 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
         </Stack>
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
-            </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleSave}>
-            Save
-          </Button>
-        </div>
+      <DialogActions>
+        <Button color="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" color="secondary" onClick={handleSave}>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   )

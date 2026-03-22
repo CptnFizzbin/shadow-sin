@@ -1,10 +1,7 @@
 import { Button } from "@mui/material"
-import Alert from "@mui/material/Alert"
 import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Collapse from "@mui/material/Collapse"
-import Divider from "@mui/material/Divider"
 import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Table from "@mui/material/Table"
@@ -12,7 +9,6 @@ import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
-import { RiErrorWarningLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -28,19 +24,15 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const summary = useBuildPointsSummary()
+  const isOverBudget = summary.spent > summary.total
+  const remainting = summary.total - summary.spent
 
   const handleExpandedChange = (expanded: boolean) => {
     setIsExpanded(expanded)
     onExpandedChange?.(expanded)
   }
 
-  const progressColor = summary.isOverBudget
-    ? "error"
-    : summary.warnings.length > 0
-      ? "warning"
-      : "primary"
-
-  const warningIconColor = summary.isOverBudget ? "error.main" : "warning.main"
+  const progressColor = isOverBudget ? "error" : "primary"
 
   return (
     <ClickAwayListener
@@ -52,59 +44,40 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
       <AppBar
         position="sticky"
         color="default"
-        elevation={4}
         sx={{ top: "auto", bottom: 0, zIndex: 10 }}
       >
         <Collapse in={isExpanded} unmountOnExit>
-          <Stack gap={1} sx={{ px: 2, pt: 2, pb: 1 }}>
+          <Stack gap={1}>
             <Table size="small">
               <TableBody>
-                {summary.lineItems.map((lineItem) => (
-                  <TableRow key={lineItem.label}>
-                    <TableCell sx={{ pl: 0, borderBottom: "none" }}>
-                      <Typography
-                        variant="body2"
-                        color={lineItem.isOver ? "error" : "text.primary"}
-                      >
-                        {lineItem.label}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ borderBottom: "none", pr: 0 }}
-                    >
-                      <Typography
-                        variant="body2"
-                        color={lineItem.isOver ? "error" : "text.secondary"}
-                      >
-                        {lineItem.spent}
-                        {lineItem.allowance !== undefined
-                          ? ` / ${lineItem.allowance}`
-                          : ""}{" "}
-                        BP
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {summary.lineItems.map(({ label, spent, allowance }) => {
+                  const isOver = spent > (allowance ?? Infinity)
+
+                  return (
+                    <TableRow key={label}>
+                      <TableCell>
+                        <Typography
+                          variant="body2"
+                          color={isOver ? "error" : "text.primary"}
+                        >
+                          {label}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        {spent !== 0 && (
+                          <Typography
+                            variant="body2"
+                            color={isOver ? "error" : "secondary.main"}
+                          >
+                            {spent} BP
+                          </Typography>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               </TableBody>
             </Table>
-
-            {summary.warnings.length > 0 && (
-              <>
-                <Divider />
-                <Stack gap={0.5} sx={{ pb: 1 }}>
-                  {summary.warnings.map((warning) => (
-                    <Alert
-                      key={warning}
-                      severity={summary.isOverBudget ? "error" : "warning"}
-                      sx={{ py: 0 }}
-                    >
-                      {warning}
-                    </Alert>
-                  ))}
-                </Stack>
-              </>
-            )}
           </Stack>
         </Collapse>
 
@@ -116,20 +89,14 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
               justifyContent={"space-between"}
               alignItems="center"
             >
-              {summary.warnings.length > 0 && (
-                <Box sx={{ color: warningIconColor, display: "flex" }}>
-                  <RiErrorWarningLine size={16} aria-hidden />
-                </Box>
-              )}
-
               <Typography color="secondary.main">
                 {summary.spent} / {summary.total} BP
               </Typography>
 
               <Typography color="secondary.main">
-                {summary.remaining >= 0
-                  ? `${summary.remaining} remaining`
-                  : `${Math.abs(summary.remaining)} over`}
+                {remainting >= 0
+                  ? `${remainting} remaining`
+                  : `${Math.abs(remainting)} over`}
               </Typography>
             </Stack>
 

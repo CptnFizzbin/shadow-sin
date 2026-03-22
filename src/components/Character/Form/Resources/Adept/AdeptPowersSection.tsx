@@ -11,7 +11,7 @@ import { AdeptPowerFormDialog } from "#/components/AdeptPowers/Dialogs/AdeptPowe
 import {
   useAdeptPowersSlice,
   usePowerPoints,
-} from "#/components/Character/Form/Resources/Adept/UseAdeptPowersSection.ts"
+} from "#/components/Character/Form/Resources/Adept/AdeptPowersHooks.ts"
 import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 type DialogState =
