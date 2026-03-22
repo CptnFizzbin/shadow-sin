@@ -4,6 +4,8 @@ import { lightBlue } from "@mui/material/colors"
 import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
+import { mergeSx } from "#/integrations/mui/MuiUtils.ts"
+
 interface BuildPointsProps {
   value: number
   total?: number
@@ -25,7 +27,7 @@ export const BuildPoints: FC<BuildPointsProps> = ({
   return (
     <Typography
       variant={variant}
-      sx={{ color: error ? "error.main" : lightBlue[700], ...sx }}
+      sx={mergeSx({ color: error ? "error.main" : lightBlue[700] }, sx)}
     >
       {displayText}
     </Typography>

@@ -4,6 +4,8 @@ import { green } from "@mui/material/colors"
 import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
+import { mergeSx } from "#/integrations/mui/MuiUtils.ts"
+
 interface PowerPointsProps {
   value: number
   total?: number
@@ -21,7 +23,7 @@ export const PowerPoints: FC<PowerPointsProps> = ({
     total !== undefined ? `${value} / ${total} PP` : `${value} PP`
 
   return (
-    <Typography variant={variant} sx={{ color: green[700], ...sx }}>
+    <Typography variant={variant} sx={mergeSx({ color: green[700] }, sx)}>
       {displayText}
     </Typography>
   )
