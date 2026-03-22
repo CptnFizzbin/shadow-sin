@@ -1,13 +1,12 @@
 import Button from "@mui/material/Button"
-import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
+import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { ContactFormDialog } from "#/components/Character/Form/Contacts/ContactFormDialog.tsx"
+import { ContactRow } from "#/components/Character/Form/Contacts/ContactsListItem.tsx"
 import { useContactsFormGroup } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
 import type { ContactData } from "#/lib/system/types/contactData.ts"
 
@@ -16,7 +15,7 @@ type DialogState =
   | { mode: "create"; open: boolean }
   | { mode: "edit"; contact: ContactData; open: boolean }
 
-export const ContactsSection: FC = () => {
+export const ContactsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { contacts, bpSpent, addContact, updateContact, removeContact } =
     useContactsFormGroup()
@@ -47,14 +46,8 @@ export const ContactsSection: FC = () => {
   return (
     <>
       <Stack gap={1}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography variant="caption" color="text.secondary">
-            BP spent on contacts: {bpSpent}
-          </Typography>
+        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+          <Typography color="secondary.main">{bpSpent} BP</Typography>
         </Stack>
 
         {contacts.length === 0 ? (
@@ -107,76 +100,5 @@ export const ContactsSection: FC = () => {
         />
       )}
     </>
-  )
-}
-
-interface ContactRowProps {
-  contact: ContactData
-  onClick: () => void
-  onRemove: () => void
-}
-
-const ContactRow: FC<ContactRowProps> = ({ contact, onClick, onRemove }) => {
-  const bpCost = contact.connection + contact.loyalty
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      gap={1}
-      sx={{
-        padding: 1,
-        borderRadius: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
-        "&:hover": { bgcolor: "action.hover" },
-      }}
-      onClick={onClick}
-    >
-      <Stack sx={{ flexGrow: 1 }} gap={0.5}>
-        <Typography sx={{ fontSize: "0.875rem" }}>{contact.name}</Typography>
-        <Stack direction="row" gap={0.5}>
-          <Chip
-            label={`Con: ${contact.connection}`}
-            size="small"
-            variant="outlined"
-            sx={{ height: 20, fontSize: "0.7rem" }}
-          />
-          <Chip
-            label={`Loy: ${contact.loyalty}`}
-            size="small"
-            variant="outlined"
-            sx={{ height: 20, fontSize: "0.7rem" }}
-          />
-          <Chip
-            label={`${bpCost} BP`}
-            size="small"
-            variant="outlined"
-            sx={{ height: 20, fontSize: "0.7rem" }}
-          />
-        </Stack>
-        {contact.notes && (
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ fontSize: "0.7rem" }}
-          >
-            {contact.notes}
-          </Typography>
-        )}
-      </Stack>
-
-      <IconButton
-        size="small"
-        color="error"
-        onClick={(e) => {
-          e.stopPropagation()
-          onRemove()
-        }}
-      >
-        <RiDeleteBin6Line size={16} />
-      </IconButton>
-    </Stack>
   )
 }

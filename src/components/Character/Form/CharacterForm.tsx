@@ -9,7 +9,7 @@ import { AttributesSection } from "#/components/Character/Form/Attributes/Attrib
 import { BiologySection } from "#/components/Character/Form/Biology/BiologySection.tsx"
 import { BpSummaryFooter } from "#/components/Character/Form/BpSummaryFooter.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import { ContactsSection } from "#/components/Character/Form/Contacts/ContactsSection.tsx"
+import { ContactsList } from "#/components/Character/Form/Contacts/ContactsList.tsx"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { GearSection } from "#/components/Character/Form/Gear/GearSection.tsx"
 import { ProfileSection } from "#/components/Character/Form/Profile/ProfileSection.tsx"
@@ -123,7 +123,7 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
                 Contacts
               </Typography>
 
-              <ContactsSection />
+              <ContactsList />
             </Stack>
           </Paper>
         </Stack>

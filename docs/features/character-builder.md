@@ -1,6 +1,7 @@
 # Character Builder — Feature Checklist
 
-Features still needed to finish the builder portion of the app. Ordered by priority, with a focus on a working prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
+Features still needed to finish the builder portion of the app. Ordered by priority, with a focus on a working
+prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
 
 > Items marked ✅ are covered by an open PR and pending merge.
 
@@ -8,9 +9,11 @@ Features still needed to finish the builder portion of the app. Ordered by prior
 
 ## 1. Character Creation — Form & Save (Blocker)
 
-The creation form captures profile, biology, and attributes. Form state is persisted to localStorage on every change (PR #2 ✅), but there is no path to actually save a finished character.
+The creation form captures profile, biology, and attributes. Form state is persisted to localStorage on every change (PR
+#2 ✅), but there is no path to actually save a finished character.
 
-- [x] Persist form state to localStorage on every field change — keyed by character id or `NULL_CHARACTER_ID` for new characters ✅ PR #2
+- [x] Persist form state to localStorage on every field change — keyed by character id or `NULL_CHARACTER_ID` for new
+  characters ✅ PR #2
 - [x] Add a **Reset Form** button that clears localStorage and resets fields to defaults ✅ PR #2
 - [ ] Add a **Save Character** submit button to `CharacterForm`
 - [ ] Wire `handleSubmit` in `UseCharacterForm` to `CharacterManager.saveCharacter`
@@ -22,11 +25,14 @@ The creation form captures profile, biology, and attributes. Form state is persi
 
 ## 2. Build Point Budget Tracker
 
-Qualities BP spend is wired (PR #1 ✅). A sticky `BpSummaryFooter` with a full per-category breakdown and inline warnings was added in PR #7 ✅. Attribute BP costs are written reactively by the increment/decrement buttons.
+Qualities BP spend is wired (PR #1 ✅). A sticky `BpSummaryFooter` with a full per-category breakdown and inline warnings
+was added in PR #7 ✅. Attribute BP costs are written reactively by the increment/decrement buttons.
 
 - [x] Track net BP spent on qualities (positive cost, negative grant, cap at −35 BP) ✅ PR #1
-- [x] Display a persistent **BP summary bar** (total / spent / remaining) — sticky footer at bottom of creation form ✅ PR #7
-- [x] Break down spending by category: Biology, Qualities, Attributes, Skills, Awakened (conditional), Gear, Contacts ✅ PR #7
+- [x] Display a persistent **BP summary bar** (total / spent / remaining) — sticky footer at bottom of creation form ✅
+  PR #7
+- [x] Break down spending by category: Biology, Qualities, Attributes, Skills, Awakened (conditional), Gear, Contacts ✅
+  PR #7
 - [x] Apply real-time BP costs as attribute values change (wired via increment/decrement buttons) ✅ PR #7
 - [ ] Block form submission when the character is over budget
 - [ ] Show a warning when within 10 BP of the limit
@@ -35,19 +41,23 @@ Qualities BP spend is wired (PR #1 ✅). A sticky `BpSummaryFooter` with a full 
 
 ## 3. Skills (Creation Form)
 
-Full skills section implemented in PR #8 ✅ — Active skills (by name or skill group), Knowledge skills, and Language skills. Duplicate-skill prevention is handled via disabled menu items. BP costs are calculated dynamically in `UseBuildPointsSummary` from the skills arrays. Free SP = (Logic + Intuition) × 3 for knowledge/language skills.
+Full skills section implemented in PR #8 ✅ — Active skills (by name or skill group), Knowledge skills, and Language
+skills. Duplicate-skill prevention is handled via disabled menu items. BP costs are calculated dynamically in
+`UseBuildPointsSummary` from the skills arrays. Free SP = (Logic + Intuition) × 3 for knowledge/language skills.
 
 - [x] **Add active skill** — free-text skill name, rating (1–6), optional specialization ✅ PR #8
 - [x] **Add skill group** — group name, rating ✅ PR #8
 - [x] **Edit / remove** added skills before saving ✅ PR #8
 - [x] Separate sections for Active, Knowledge, and Language skills ✅ PR #8
-- [x] Reflect BP cost per skill (active: rating × 4; group: rating × 10; specialization: +2 BP) in the build budget ✅ PR #8
+- [x] Reflect BP cost per skill (active: rating × 4; group: rating × 10; specialization: +2 BP) in the build budget ✅ PR
+  #8
 
 ---
 
 ## 4. Qualities (Creation Form)
 
-The full add/edit/delete flow is implemented in PR #1 ✅. Manual entry of name, source, and costs is sufficient for the prototype — no pre-built catalog needed.
+The full add/edit/delete flow is implemented in PR #1 ✅. Manual entry of name, source, and costs is sufficient for the
+prototype — no pre-built catalog needed.
 
 - [x] **Add quality** dialog — name, positive/negative toggle, BP cost, description, source (book + page) ✅ PR #1
 - [x] **Edit quality** — tap a row to open a view/edit/delete dialog ✅ PR #1
@@ -58,7 +68,8 @@ The full add/edit/delete flow is implemented in PR #1 ✅. Manual entry of name,
 
 ## 5. Awakened / Resources (Creation Form)
 
-Conditional sections are rendered in `AwakenedSection` based on the character's `awakening` type. Each section is fully wired into the builder store and the BP summary footer.
+Conditional sections are rendered in `AwakenedSection` based on the character's `awakening` type. Each section is fully
+wired into the builder store and the BP summary footer.
 
 - [x] **Magician** — add/edit/remove spells; BP cost per spell; warning when approaching free-spell cap
 - [x] **Adept** — add/edit/remove adept powers; Power Point tracker (used / max)
@@ -68,7 +79,8 @@ Conditional sections are rendered in `AwakenedSection` based on the character's 
 
 ## 6. Contacts (Creation Form)
 
-A full contacts section is integrated into the creation form (`ContactsSection`). Contact BP (connection + loyalty per contact) is included in the budget summary footer.
+A full contacts section is integrated into the creation form (`ContactsList`). Contact BP (connection + loyalty per
+contact) is included in the budget summary footer.
 
 - [x] **Add contact** — name, connection (1–6), loyalty (1–6), optional notes
 - [x] **Edit contact** — tap a row to open a view/edit/delete dialog
@@ -80,9 +92,11 @@ A full contacts section is integrated into the creation form (`ContactsSection`)
 
 ## 7. Edit Existing Character
 
-Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's missing is a UI entry point to reach the form for an existing character.
+Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's missing is a UI entry point to reach the
+form for an existing character.
 
-- [x] Pre-populate `CharacterForm` with existing character data; persist edits to localStorage under the character's own id ✅ PR #2
+- [x] Pre-populate `CharacterForm` with existing character data; persist edits to localStorage under the character's own
+  id ✅ PR #2
 - [ ] Add an **Edit** route reachable from the character sheet (e.g., `/$characterId/edit`)
 - [ ] On save, update the existing record via `CharacterManager.saveCharacter` (same `id`)
 - [ ] Add an **Edit Character** button/link from `/$characterId/about`
@@ -111,10 +125,14 @@ The `/$characterId/skills` route is a placeholder stub. The creation-form skills
 
 ## 10. Gear (Creation Form)
 
-A gear section is fully integrated into the creation form. SINs & Licenses (PR #5 ✅) and all other gear categories (Weapons, Armor, Vehicles, Cyberware, Misc — PR #6 ✅) support full add/edit/remove with a shared `GearItemFormState` (name, cost, optional availability, source, description). Nuyen totals from all sections are summed into the gear BP line in the budget footer. The `/$characterId/gear` view route is still a stub.
+A gear section is fully integrated into the creation form. SINs & Licenses (PR #5 ✅) and all other gear categories (
+Weapons, Armor, Vehicles, Cyberware, Misc — PR #6 ✅) support full add/edit/remove with a shared `GearItemFormState` (
+name, cost, optional availability, source, description). Nuyen totals from all sections are summed into the gear BP line
+in the budget footer. The `/$characterId/gear` view route is still a stub.
 
 - [x] Gear budget tracker — nuyen progress bar (250 k¥ / 50 BP cap), over-budget error alert ✅ PR #5
-- [x] **SINs & Licenses** — add/edit/remove fake SINs (rating × 1 000¥) and one real SIN (free); attach named licenses with rating (rating × 100¥); delete-confirmation dialog when a SIN has attached licenses ✅ PR #5
+- [x] **SINs & Licenses** — add/edit/remove fake SINs (rating × 1 000¥) and one real SIN (free); attach named licenses
+  with rating (rating × 100¥); delete-confirmation dialog when a SIN has attached licenses ✅ PR #5
 - [x] **Weapons** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
 - [x] **Armor** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
 - [x] **Vehicles** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
@@ -168,7 +186,8 @@ These features belong to the gameplay / session-play portion and can be tackled 
 
 ## Post-Prototype / Catalog & Data Quality
 
-Catalog data entry is sufficient as manual name + source + costs for the prototype. These enhancements can follow once the core builder ships.
+Catalog data entry is sufficient as manual name + source + costs for the prototype. These enhancements can follow once
+the core builder ships.
 
 - [ ] Pre-built catalog of common SR4e qualities to pick from
 - [ ] Skill picker backed by the `SkillKey` enum (replaces free-text name entry)
