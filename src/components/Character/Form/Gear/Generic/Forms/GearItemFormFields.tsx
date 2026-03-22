@@ -5,9 +5,9 @@ import {
   gearItemFieldMap,
   gearItemFormOpts,
 } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
-import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { AvailabilityFieldGroup } from "#/components/Character/Form/General/Form/AvailabilityFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
+import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 
 export const GearItemFormFields = withFieldGroup({
   ...gearItemFormOpts,

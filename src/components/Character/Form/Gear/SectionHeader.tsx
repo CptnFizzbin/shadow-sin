@@ -5,4 +5,5 @@ export enum SectionHeader {
   Vehicles = "Vehicles",
   Licenses = "SINs & Licenses",
   Misc = "Misc",
+  Lifestyle = "Lifestyle",
 }

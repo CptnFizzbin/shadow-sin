@@ -4,7 +4,7 @@ import type { FC } from "react"
 
 import { useAttributeSlice } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
 import {
-  AttributeBpAllowance,
+  AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
@@ -27,7 +27,7 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
   const attrSlice = useAttributeSlice(attrKey)
 
   let disabled = false
-  let refund = AttributeBpAllowance
+  let refund = AttributeBpCostBase
   let label = `${refund} BP`
 
   if (attrSlice.state.value >= attrSlice.state.max) {

@@ -22,6 +22,7 @@ import {
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
+import { LifestylePanel } from "#/components/Character/Form/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/Character/Form/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
@@ -30,6 +31,7 @@ import { WeaponsPanel } from "#/components/Character/Form/Gear/Weapons/WeaponsPa
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
+import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
@@ -87,6 +89,8 @@ export const GearSection: FC = () => {
         sectionInvalid.add(sectionName)
         totalInvalidCount += invalidImplants.length
       }
+    } else if (sectionName === SectionHeader.Lifestyle) {
+      // Lifestyle has no availability rating to check
     } else {
       const sectionKey = genericSectionKeys[sectionName]
       if (sectionKey) {
@@ -205,6 +209,7 @@ const GearSectionContent: FC<{
   if (section === SectionHeader.Armor) return <ArmorPanel />
   if (section === SectionHeader.Vehicles) return <VehiclesPanel />
   if (section === SectionHeader.Misc) return <MiscPanel />
+  if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
 }
 
@@ -212,6 +217,18 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gear = useCharacterBuilderStore((state) => state.gear)
+  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
+  const lifestyleMonths = useCharacterBuilderStore(
+    (state) => state.lifestyleMonths,
+  )
+
+  if (section === SectionHeader.Lifestyle) {
+    return (
+      <Typography variant="body2" color="text.secondary">
+        <Nuyen amount={Lifestyles[lifestyle].upkeep * lifestyleMonths} />
+      </Typography>
+    )
+  }
 
   if (section === SectionHeader.Licenses) {
     return (
