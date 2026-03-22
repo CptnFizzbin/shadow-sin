@@ -8,20 +8,20 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { SpellListItem } from "#/components/Character/Form/Resources/Magician/SpellListItem.tsx"
 import {
   useSpellsBuildPoints,
   useSpellsWarnings,
 } from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
-import { SpellsBpPerSpell } from "./SpellsUtils.ts"
 
 type DialogState =
   | null
   | { open: boolean; type: "add" }
   | { open: boolean; type: "edit"; spell: SpellData }
 
-export const SpellsSection: FC = () => {
+export const SpellsList: FC = () => {
   const spellsSlice = useCharacterBuilderStoreSlice(
     (state) => state.awakened.spells ?? [],
     (state, spells) => {
@@ -79,20 +79,18 @@ export const SpellsSection: FC = () => {
         )}
 
         {spellsSlice.state.map((spell) => (
-          <Paper key={spell.id} sx={{ padding: 1 }}>
-            <Stack direction={"row"} gap={1} alignItems={"center"}>
-              <Typography flexGrow={1}>{spell.name}</Typography>
-              <Typography variant="body2" color="secondary.main">
-                {SpellsBpPerSpell} BP
-              </Typography>
-            </Stack>
-          </Paper>
+          <SpellListItem
+            key={spell.id}
+            spell={spell}
+            onEdit={() => setDialogState({ type: "edit", open: true, spell })}
+          />
         ))}
+
         <Button
           startIcon={<RiAddLine />}
           color={"secondary"}
           variant={"outlined"}
-          onClick={() => setDialogState({ open: true, type: "add" })}
+          onClick={() => setDialogState({ type: "add", open: true })}
         >
           Add Spell
         </Button>

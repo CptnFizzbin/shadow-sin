@@ -2,11 +2,12 @@ import { Button } from "@mui/material"
 import { RiArrowRightBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import {
-  attrPointCosts,
-  useAttributeRow,
-} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+  AttributeBpCostBase,
+  AttributeBpCostMaxOut,
+} from "#/components/Character/Form/Attributes/AttributeUtils.ts"
+import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { useAttributeRow } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
@@ -34,13 +35,13 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
   )
 
   let disabled = false
-  let cost = attrPointCosts.base
+  let cost = AttributeBpCostBase
   let label = `${cost} BP`
 
   const willMaxAttr = attrSlice.state.value + 1 >= attrSlice.state.max
 
   if (willMaxAttr) {
-    cost = attrPointCosts.maxOut
+    cost = AttributeBpCostMaxOut
     label = `${cost} BP`
   }
 

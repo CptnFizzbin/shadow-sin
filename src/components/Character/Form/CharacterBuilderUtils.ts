@@ -1,1 +1,1 @@
-export const CaracterBuilderMaxBp = 400
+export const CharacterBuilderMaxBp = 400

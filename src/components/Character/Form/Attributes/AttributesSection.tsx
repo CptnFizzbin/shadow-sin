@@ -4,10 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { AttributeRow } from "#/components/Character/Form/Attributes/AttributeRow.tsx"
-import {
-  attrPointCosts,
-  useAttributeFormGroup,
-} from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
+import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
+import { useAttributeFormGroup } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
@@ -25,12 +23,12 @@ export const AttributesSection: FC = () => {
   return (
     <Stack gap={1}>
       <Typography variant="caption">
-        {bpSpent} / {attrPointCosts.allowance} BP
+        {bpSpent} / {AttributeBpAllowance} BP
       </Typography>
 
       <LinearProgress
         variant="determinate"
-        value={getProgress(bpSpent, attrPointCosts.allowance)}
+        value={getProgress(bpSpent, AttributeBpAllowance)}
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 

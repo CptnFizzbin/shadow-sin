@@ -1,9 +1,11 @@
 import {
+  useBuilderActiveSkillRating,
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/Character/Form/CharacterBuilderHooks.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { getSpriteTasksBp } from "#/components/Character/Form/Resources/Technomancer/SpritesUtils.ts"
+import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 
@@ -40,6 +42,15 @@ export const useSpritesBuildPoints = () => {
 
   return { spent: spritesBp }
 }
-export const useMaxSpriteTasks = () => {
+
+export const useMaxSpritesRegistered = () => {
   return useBuilderAttrValue(AttributeKey.charisma)
+}
+
+export const useSpriteRating = () => {
+  return useBuilderAttrValue(AttributeKey.resonance)
+}
+
+export const useMaxSpriteTasks = () => {
+  return useBuilderActiveSkillRating(SkillKey.compiling)
 }

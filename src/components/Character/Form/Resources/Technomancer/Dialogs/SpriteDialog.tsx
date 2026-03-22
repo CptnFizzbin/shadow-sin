@@ -13,10 +13,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderAttrValue } from "#/components/Character/Form/CharacterBuilderHooks.ts"
 import type { SpriteFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 import { useMaxSpriteTasks } from "#/components/Character/Form/Resources/Technomancer/SpritesHooks.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 interface SpriteDialogProps {
   open: boolean
@@ -34,7 +32,6 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
   onClosed,
 }) => {
   const maxSpriteTasks = useMaxSpriteTasks()
-  const resonanceAttr = useBuilderAttrValue(AttributeKey.resonance)
   const isEditMode = !!sprite
 
   const [name, setName] = useState<string>(sprite?.name ?? "")
@@ -85,34 +82,25 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
             autoFocus
           />
 
-          <TextField
-            label="Rating"
-            value={resonanceAttr}
-            size="small"
-            fullWidth
-            slotProps={{ input: { readOnly: true } }}
-            helperText="Sprite rating equals your Resonance"
-          />
-
-          <FormControl fullWidth size="small">
-            <InputLabel>Tasks</InputLabel>
-            <Select
-              value={Math.min(tasks, maxSpriteTasks)}
-              label="Tasks"
-              onChange={(e) => setTasks(Number(e.target.value))}
-            >
-              {taskOptions.map((taskOption) => (
-                <MenuItem key={taskOption} value={taskOption}>
-                  {taskOption}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          {maxSpriteTasks === 0 && (
+          {maxSpriteTasks === 0 ? (
             <Typography variant="caption" color="warning.main">
               Add the Compiling skill to enable sprites with tasks
             </Typography>
+          ) : (
+            <FormControl fullWidth size="small">
+              <InputLabel>Tasks</InputLabel>
+              <Select
+                value={Math.min(tasks, maxSpriteTasks)}
+                label="Tasks"
+                onChange={(e) => setTasks(Number(e.target.value))}
+              >
+                {taskOptions.map((taskOption) => (
+                  <MenuItem key={taskOption} value={taskOption}>
+                    {taskOption}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           )}
         </Stack>
       </DialogContent>

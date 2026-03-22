@@ -1,3 +1,3 @@
-export const AttributeMaxBp = 200
-export const AttributeBaseBpCost = 10
-export const AttributeMaxOutBpCost = 25
+export const AttributeBpAllowance = 200
+export const AttributeBpCostBase = 10
+export const AttributeBpCostMaxOut = 25

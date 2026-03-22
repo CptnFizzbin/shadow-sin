@@ -1,6 +1,6 @@
 import { useAttributesBuildPoints } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import { CaracterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
+import { CharacterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/Character/Form/Contacts/ContactsHooks.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { isAdept } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
@@ -139,7 +139,7 @@ export function useBuildPointsSummary(): BpSummary {
   const totalSpent = enabledLineItems.reduce((sum, item) => sum + item.spent, 0)
 
   return {
-    total: CaracterBuilderMaxBp,
+    total: CharacterBuilderMaxBp,
     spent: totalSpent,
     lineItems: enabledLineItems,
   }

@@ -11,7 +11,7 @@ import { useBuilderAttrValue } from "#/components/Character/Form/CharacterBuilde
 import type { SpriteFormState } from "#/components/Character/Form/Resources/AwakenedFormState.ts"
 import { SpriteDialog } from "#/components/Character/Form/Resources/Technomancer/Dialogs/SpriteDialog.tsx"
 import {
-  useMaxSpriteTasks,
+  useMaxSpritesRegistered,
   useSpritesBuildPoints,
   useSpritesSlice,
 } from "#/components/Character/Form/Resources/Technomancer/SpritesHooks.ts"
@@ -27,7 +27,7 @@ type SpriteDialogState =
 
 export const SpritesList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
-  const maxSpriteTasks = useMaxSpriteTasks()
+  const maxSpritesRegistered = useMaxSpritesRegistered()
   const spritesSlice = useSpritesSlice()
   const spritesBp = useSpritesBuildPoints()
 
@@ -59,7 +59,7 @@ export const SpritesList: FC = () => {
     setSpriteDialog(null)
   }
 
-  const isAtMax = spritesSlice.state.length >= maxSpriteTasks
+  const isAtMax = spritesSlice.state.length >= maxSpritesRegistered
 
   return (
     <Stack gap={1}>
@@ -72,20 +72,20 @@ export const SpritesList: FC = () => {
           alignItems="center"
         >
           <Typography color="text.secondary">
-            {spritesSlice.state.length} / {maxSpriteTasks} sprites
+            {spritesSlice.state.length} / {maxSpritesRegistered} sprites
           </Typography>
           <Typography color="secondary.main">{spritesBp.spent} BP</Typography>
         </Stack>
 
         <LinearProgress
           variant={"determinate"}
-          value={getProgress(spritesSlice.state.length, maxSpriteTasks)}
+          value={getProgress(spritesSlice.state.length, maxSpritesRegistered)}
         />
       </Stack>
 
       {isAtMax && (
         <Alert severity="warning" sx={{ py: 0 }}>
-          Maximum sprites reached ({maxSpriteTasks})
+          Maximum sprites reached ({maxSpritesRegistered})
         </Alert>
       )}
 

@@ -1,9 +1,9 @@
 import type { FC, ReactNode } from "react"
 
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import { AdeptPowersSection } from "#/components/Character/Form/Resources/Adept/AdeptPowersSection.tsx"
+import { AdeptPowersList } from "#/components/Character/Form/Resources/Adept/AdeptPowersList.tsx"
 import { isAdept } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
-import { SpellsSection } from "#/components/Character/Form/Resources/Magician/SpellsSection.tsx"
+import { SpellsList } from "#/components/Character/Form/Resources/Magician/SpellsList.tsx"
 import { isMagician } from "#/components/Character/Form/Resources/Magician/SpellsUtils.ts"
 import { TechnomancerSection } from "#/components/Character/Form/Resources/Technomancer/TechnomancerSection.tsx"
 import { isTechnomancer } from "#/components/Character/Form/Resources/Technomancer/TechnomancerUtils.ts"
@@ -14,11 +14,11 @@ export const AwakenedSection: FC = () => {
   const sections: ReactNode[] = []
 
   if (isMagician(awakeningType)) {
-    sections.push(<SpellsSection key={AwakeningType.Magician} />)
+    sections.push(<SpellsList key={AwakeningType.Magician} />)
   }
 
   if (isAdept(awakeningType)) {
-    sections.push(<AdeptPowersSection key={AwakeningType.Adept} />)
+    sections.push(<AdeptPowersList key={AwakeningType.Adept} />)
   }
 
   if (isTechnomancer(awakeningType)) {

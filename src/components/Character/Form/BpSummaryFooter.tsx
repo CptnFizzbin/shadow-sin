@@ -25,7 +25,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
   const [isExpanded, setIsExpanded] = useState(false)
   const summary = useBuildPointsSummary()
   const isOverBudget = summary.spent > summary.total
-  const remainting = summary.total - summary.spent
+  const remaining = summary.total - summary.spent
 
   const handleExpandedChange = (expanded: boolean) => {
     setIsExpanded(expanded)
@@ -94,9 +94,9 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
               </Typography>
 
               <Typography color="secondary.main">
-                {remainting >= 0
-                  ? `${remainting} remaining`
-                  : `${Math.abs(remainting)} over`}
+                {remaining >= 0
+                  ? `${remaining} remaining`
+                  : `${Math.abs(remaining)} over`}
               </Typography>
             </Stack>
 

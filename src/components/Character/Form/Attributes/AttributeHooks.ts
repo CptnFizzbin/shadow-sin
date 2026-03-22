@@ -1,4 +1,4 @@
-import { AttributeMaxBp } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
+import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
@@ -27,6 +27,6 @@ export const useAttributesBuildPoints = () => {
 
   return {
     spent: buildPointsSlice.state.attributes,
-    allowance: AttributeMaxBp,
+    allowance: AttributeBpAllowance,
   }
 }

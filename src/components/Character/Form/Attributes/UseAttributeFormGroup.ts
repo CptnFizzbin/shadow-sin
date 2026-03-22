@@ -1,15 +1,10 @@
+import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   AttributeKey,
   AttributeLabels,
   AttributeOrder,
 } from "#/lib/system/types/attributeKey.ts"
-
-export const attrPointCosts = {
-  base: 10,
-  maxOut: 25,
-  allowance: 200,
-}
 
 export interface AttributeRowProps {
   attr: AttributeKey
@@ -30,7 +25,7 @@ export function useAttributeFormGroup() {
 
   return {
     bpSpent: bpSpent,
-    bpRemaining: attrPointCosts.allowance - bpSpent,
+    bpRemaining: AttributeBpAllowance - bpSpent,
     hasMaxxedAttr: hasMaxxedAttr,
 
     attributes: attributes,
