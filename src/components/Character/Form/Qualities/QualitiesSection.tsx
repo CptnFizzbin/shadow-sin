@@ -9,6 +9,7 @@ import { useState } from "react"
 import { useQualitiesFormGroup } from "#/components/Character/Form/Qualities/UseQualitiesFormGroup.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { QualityRow } from "#/components/Qualities/List/QualityRow.tsx"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
@@ -112,10 +113,9 @@ const QualityGroup: FC<QualityGroupProps> = ({
     <>
       <Label label={label} variant={"outlined"} />
 
-      <Stack direction={"row"} justifyContent={"flex-end"}>
-        <Typography color={"secondary.main"}>
-          {positive ? "Cost" : "Bonus"}: {bpUsed} BP
-        </Typography>
+      <Stack direction={"row"} justifyContent={"flex-end"} gap={0.5}>
+        <Typography>{positive ? "Cost" : "Bonus"}:</Typography>
+        <BuildPoints value={bpUsed} />
       </Stack>
 
       {qualities.length === 0 ? (

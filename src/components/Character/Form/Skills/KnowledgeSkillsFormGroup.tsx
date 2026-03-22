@@ -20,6 +20,8 @@ import {
   getLanguageSkillSp,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 import { useKnowledgeSkillsFormGroup } from "#/components/Character/Form/Skills/UseKnowledgeSkillsFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
+import { SkillPoints } from "#/components/UI/SkillPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 
 type KnowledgeSkillDialogState =
@@ -73,17 +75,13 @@ export const KnowledgeSkillsFormGroup: FC = () => {
       <Label label="Knowledge & Languages" variant={"outlined"} />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2" color={"warning.main"}>
-          {totalSpUsed} SP
-        </Typography>
+        <SkillPoints value={totalSpUsed} />
 
-        <Typography variant="body2" color={"text.secondary"}>
+        <Typography color={"text.secondary"}>
           {remainingFreeSp > 0 && `${remainingFreeSp} free SP remaining`}
         </Typography>
 
-        <Typography variant="body2" color={"secondary.main"}>
-          {extraSpBp} BP
-        </Typography>
+        <BuildPoints value={extraSpBp} />
       </Stack>
 
       {totalSpUsed > maxSkillPoints && (
@@ -287,13 +285,11 @@ const KnowledgeSkillRow: FC<KnowledgeSkillRowProps> = ({
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
 
-        <Typography
+        <SkillPoints
+          value={spCost}
           variant="caption"
-          color="warning.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {spCost} SP
-        </Typography>
+        />
 
         <IconButton
           size="small"
@@ -357,13 +353,11 @@ const LanguageSkillRow: FC<LanguageSkillRowProps> = ({
           color={skill.isNative ? "success" : "default"}
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <Typography
+        <SkillPoints
+          value={spCost}
           variant="caption"
-          color="warning.main"
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {spCost} SP
-        </Typography>
+        />
         <IconButton
           size="small"
           color="error"

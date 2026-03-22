@@ -8,6 +8,7 @@ import { useState } from "react"
 import { ContactFormDialog } from "#/components/Character/Form/Contacts/ContactFormDialog.tsx"
 import { ContactRow } from "#/components/Character/Form/Contacts/ContactsListItem.tsx"
 import { useContactsFormGroup } from "#/components/Character/Form/Contacts/UseContactsFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { ContactData } from "#/lib/system/types/contactData.ts"
 
 type DialogState =
@@ -47,7 +48,7 @@ export const ContactsList: FC = () => {
     <>
       <Stack gap={1}>
         <Stack direction="row" justifyContent="flex-end" alignItems="center">
-          <Typography color="secondary.main">{bpSpent} BP</Typography>
+          <BuildPoints value={bpSpent} />
         </Stack>
 
         {contacts.length === 0 ? (

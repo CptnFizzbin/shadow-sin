@@ -22,6 +22,7 @@ import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Fo
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.tsx"
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -121,9 +122,7 @@ export const GearSection: FC = () => {
           <Typography variant="caption">
             <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenBudget} />
           </Typography>
-          <Typography variant="caption">
-            {totalBp} / {GearBpAllowance} BP
-          </Typography>
+          <BuildPoints value={totalBp} total={GearBpAllowance} />
         </Stack>
 
         <LinearProgress

@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { getAdeptPowerBpCost } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
+import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
 import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 interface AdeptPowerListItemProps {
@@ -34,9 +35,7 @@ export const AdeptPowersListItem: FC<AdeptPowerListItemProps> = ({
           variant={"outlined"}
           size={"small"}
         />
-        <Typography variant="body2" color="success.main">
-          {getAdeptPowerBpCost(power)} PP
-        </Typography>
+        <PowerPoints value={getAdeptPowerBpCost(power)} variant="body2" />
       </Stack>
     </Paper>
   )
