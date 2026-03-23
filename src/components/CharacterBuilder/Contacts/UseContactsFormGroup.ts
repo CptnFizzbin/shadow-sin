@@ -24,22 +24,20 @@ export function useContactsFormGroup() {
   const bpSpent = contactBuildPoints(contacts)
 
   const addContact = (contact: ContactData) => {
-    contactsSlice.update((draft) => {
-      draft.push(contact)
+    contactsSlice.update((prev) => {
+      return [...prev, { ...contact, id: crypto.randomUUID() }]
     })
   }
 
   const updateContact = (contact: ContactData) => {
     contactsSlice.update((draft) => {
-      const index = draft.findIndex((c) => c.id === contact.id)
-      if (index !== -1) draft[index] = contact
+      return draft.map((c) => (c.id === contact.id ? contact : c))
     })
   }
 
   const removeContact = (contact: ContactData) => {
     contactsSlice.update((draft) => {
-      const index = draft.findIndex((c) => c.id === contact.id)
-      if (index !== -1) draft.splice(index, 1)
+      return draft.filter((c) => c.id !== contact.id)
     })
   }
 

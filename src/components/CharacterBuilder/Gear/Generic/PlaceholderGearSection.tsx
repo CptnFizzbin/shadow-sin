@@ -35,19 +35,23 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
   )
 
   const addItem = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => [...prev, item])
+    itemsSlice.update((prev: GearItemFormState[]) => {
+      return [...prev, { ...item, id: crypto.randomUUID() }]
+    })
   }
 
   const updateItem = (item: GearItemFormState) => {
-    itemsSlice.update((draft) =>
-      draft.map((existing) => (existing.id === item.id ? item : existing)),
-    )
+    itemsSlice.update((draft) => {
+      return draft.map((existing) =>
+        existing.id === item.id ? item : existing,
+      )
+    })
   }
 
   const removeItem = (itemId: string) => {
-    itemsSlice.update((draft) =>
-      draft.filter((existing) => existing.id !== itemId),
-    )
+    itemsSlice.update((draft) => {
+      return draft.filter((existing) => existing.id !== itemId)
+    })
   }
 
   return (

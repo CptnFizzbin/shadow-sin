@@ -15,24 +15,26 @@ export function useVehiclesFormGroup() {
   const vehicles = useCharacterBuilderStore((state) => state.gear.vehicles)
 
   const addVehicle = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      draft.push(item)
-    })
+    itemsSlice.update((prev: GearItemFormState[]) => [
+      ...prev,
+      { ...item, id: crypto.randomUUID() },
+    ])
   }
 
   const updateVehicle = (item: GearItemFormState) => {
     itemsSlice.update((draft) => {
-      const index = draft.findIndex((existing) => existing.id === item.id)
-      if (index !== -1) draft[index] = item
+      return draft.map((existing) =>
+        existing.id === item.id ? item : existing,
+      )
     })
   }
 
   const removeVehicle = (itemId: string) => {
-    itemsSlice.update((draft) =>
-      draft.filter(
+    itemsSlice.update((draft) => {
+      return draft.filter(
         (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
-    )
+      )
+    })
   }
 
   return {

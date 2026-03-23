@@ -15,24 +15,26 @@ export function useWeaponsFormGroup() {
   const weapons = useCharacterBuilderStore((state) => state.gear.weapons)
 
   const addWeapon = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      draft.push(item)
-    })
+    itemsSlice.update((prev: GearItemFormState[]) => [
+      ...prev,
+      { ...item, id: crypto.randomUUID() },
+    ])
   }
 
   const updateWeapon = (item: GearItemFormState) => {
     itemsSlice.update((draft) => {
-      const index = draft.findIndex((existing) => existing.id === item.id)
-      if (index !== -1) draft[index] = item
+      return draft.map((existing) =>
+        existing.id === item.id ? item : existing,
+      )
     })
   }
 
   const removeWeapon = (itemId: string) => {
-    itemsSlice.update((draft) =>
-      draft.filter(
+    itemsSlice.update((draft) => {
+      return draft.filter(
         (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
-    )
+      )
+    })
   }
 
   return {

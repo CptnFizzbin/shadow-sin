@@ -26,8 +26,8 @@ export const AdeptPowersList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   const onPowerAdd = (power: AdeptPowerData) => {
-    powersSlice.update((draft) => {
-      draft.push(power)
+    powersSlice.update((prev) => {
+      return [...prev, { ...power, id: crypto.randomUUID() }]
     })
   }
 

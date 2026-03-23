@@ -15,24 +15,26 @@ export function useArmorFormGroup() {
   const armor = useCharacterBuilderStore((state) => state.gear.armor)
 
   const addArmor = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      draft.push(item)
-    })
+    itemsSlice.update((prev: GearItemFormState[]) => [
+      ...prev,
+      { ...item, id: crypto.randomUUID() },
+    ])
   }
 
   const updateArmor = (item: GearItemFormState) => {
     itemsSlice.update((draft) => {
-      const index = draft.findIndex((existing) => existing.id === item.id)
-      if (index !== -1) draft[index] = item
+      return draft.map((existing) =>
+        existing.id === item.id ? item : existing,
+      )
     })
   }
 
   const removeArmor = (itemId: string) => {
-    itemsSlice.update((draft) =>
-      draft.filter(
+    itemsSlice.update((draft) => {
+      return draft.filter(
         (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
-    )
+      )
+    })
   }
 
   return {

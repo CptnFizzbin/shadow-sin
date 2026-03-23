@@ -16,8 +16,11 @@ export function useLicensesFormGroup() {
   const sins = useCharacterBuilderStore((state) => state.gear.sins)
 
   const addLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      draft.licenses.push(license)
+    gearSlice.update((prev) => {
+      prev.licenses = [
+        ...prev.licenses,
+        { ...license, id: crypto.randomUUID() },
+      ]
     })
   }
 

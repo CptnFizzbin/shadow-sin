@@ -37,8 +37,8 @@ export const SpellsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   const onSpellAdd = (spell: SpellData) => {
-    spellsSlice.update((draft) => {
-      draft.push(spell)
+    spellsSlice.update((prev) => {
+      return [...prev, { ...spell, id: crypto.randomUUID() }]
     })
   }
 

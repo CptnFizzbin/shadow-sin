@@ -1,30 +1,33 @@
+import { useMemo } from "react"
+
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 import { QualityDataSchema } from "#/lib/system/types/qualityData.ts"
 
-export type QualityFormOptions = { onSubmit: (values: QualityData) => void } & (
-  | { mode: "create" }
-  | { mode: "edit"; quality: QualityData }
-)
+export interface QualityFormOptions {
+  quality?: QualityData
+  onSubmit: (values: QualityData) => void
+}
 
-export function useQualityForm(props: QualityFormOptions) {
-  let defaultValues: QualityData
+const defaultFormState: QualityData = {
+  id: "",
+  name: "",
+  type: "positive",
+  description: "",
+}
 
-  if (props.mode === "edit") {
-    const { quality } = props
-    defaultValues = quality
-  } else {
-    defaultValues = {
-      id: crypto.randomUUID(),
-      name: "",
-      type: "positive",
-      description: "",
-    }
-  }
+export function useQualityForm({ quality, onSubmit }: QualityFormOptions) {
+  const defaultValues = useMemo(
+    () => ({
+      ...defaultFormState,
+      ...quality,
+    }),
+    [quality],
+  )
 
   return useAppForm({
     defaultValues,
-    onSubmit: ({ value }) => props.onSubmit(value),
+    onSubmit: ({ value }) => onSubmit(value),
     validators: {
       onChange: QualityDataSchema,
     },
