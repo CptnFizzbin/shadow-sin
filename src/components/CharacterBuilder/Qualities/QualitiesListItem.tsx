@@ -29,12 +29,12 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
       elevation={1}
       aria-label={`Open quality ${quality.name}`}
       sx={{
-        display: "flex",
-        width: "100%",
-        textAlign: "left",
-        borderRadius: 1,
-        px: 1,
-        py: 0.5,
+        "display": "flex",
+        "width": "100%",
+        "textAlign": "left",
+        "borderRadius": 1,
+        "px": 1,
+        "py": 0.5,
         "&:hover": { bgcolor: "action.hover" },
       }}
     >
@@ -45,7 +45,7 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
         </Typography>
         {onRemove && (
           <IconButton
-            color={"error"}
+            color="error"
             onClick={(e) => {
               e.stopPropagation()
               onRemove()

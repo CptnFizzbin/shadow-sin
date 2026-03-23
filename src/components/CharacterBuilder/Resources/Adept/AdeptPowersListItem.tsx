@@ -20,20 +20,20 @@ export const AdeptPowersListItem: FC<AdeptPowerListItemProps> = ({
   return (
     <Paper
       sx={{
-        padding: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
+        "padding": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onEdit}
     >
-      <Stack direction={"row"} gap={1} alignItems={"center"}>
+      <Stack direction="row" gap={1} alignItems="center">
         <Typography flexGrow={1}>{power.name}</Typography>
         <Chip
           label={`Rating: ${power.rating}`}
-          variant={"outlined"}
-          size={"small"}
+          variant="outlined"
+          size="small"
         />
         <PowerPoints value={getAdeptPowerBpCost(power)} variant="body2" />
       </Stack>

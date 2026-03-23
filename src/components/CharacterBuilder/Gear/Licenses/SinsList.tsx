@@ -19,9 +19,9 @@ import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
 type DialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; sin: SinFormState; open: boolean }
-  | { mode: "remove"; sin: SinFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", sin: SinFormState, open: boolean }
+  | { mode: "remove", sin: SinFormState, open: boolean }
 
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
@@ -75,11 +75,11 @@ export const SinsList: FC = () => {
             <Stack
               direction="column"
               sx={{
-                padding: 1,
-                borderRadius: 1,
-                border: "1px solid",
-                borderColor: "divider",
-                cursor: "pointer",
+                "padding": 1,
+                "borderRadius": 1,
+                "border": "1px solid",
+                "borderColor": "divider",
+                "cursor": "pointer",
                 "&:hover": { bgcolor: "action.hover" },
               }}
               onClick={() => setDialogState({ mode: "edit", sin, open: true })}

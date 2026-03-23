@@ -3,8 +3,8 @@ import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 export const isAdept = (awakeningType: AwakeningType) => {
   return (
-    awakeningType === AwakeningType.Adept ||
-    awakeningType === AwakeningType.MysticAdept
+    awakeningType === AwakeningType.Adept
+    || awakeningType === AwakeningType.MysticAdept
   )
 }
 

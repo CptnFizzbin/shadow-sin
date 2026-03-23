@@ -23,8 +23,8 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 type ComplexFormDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; form: ComplexFormFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", form: ComplexFormFormState, open: boolean }
 
 export const ComplexFormsList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
@@ -80,7 +80,7 @@ export const ComplexFormsList: FC = () => {
         </Stack>
 
         <LinearProgress
-          variant={"determinate"}
+          variant="determinate"
           value={getProgress(complexFormsSlice.state.length, maxComplexForms)}
         />
       </Stack>
@@ -108,8 +108,7 @@ export const ComplexFormsList: FC = () => {
                   mode: "edit",
                   form: complexForm,
                   open: true,
-                })
-              }
+                })}
               onDelete={() => removeComplexForm(complexForm.id)}
             />
           ))}

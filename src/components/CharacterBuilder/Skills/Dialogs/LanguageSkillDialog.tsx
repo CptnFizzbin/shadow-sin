@@ -102,7 +102,7 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
               label="Rating"
               onChange={(e) => setRatingValue(e.target.value)}
             >
-              <MenuItem value={"native"}>Native</MenuItem>
+              <MenuItem value="native">Native</MenuItem>
               {ratingOptions.map((r) => (
                 <MenuItem key={r} value={r}>
                   {r}

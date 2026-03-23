@@ -23,8 +23,8 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 type SpriteDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; sprite: SpriteFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", sprite: SpriteFormState, open: boolean }
 
 export const SpritesList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
@@ -79,7 +79,7 @@ export const SpritesList: FC = () => {
         </Stack>
 
         <LinearProgress
-          variant={"determinate"}
+          variant="determinate"
           value={getProgress(spritesSlice.state.length, maxSpritesRegistered)}
         />
       </Stack>
@@ -104,8 +104,7 @@ export const SpritesList: FC = () => {
               sprite={sprite}
               resonanceValue={resonance}
               onEdit={() =>
-                setSpriteDialog({ mode: "edit", sprite, open: true })
-              }
+                setSpriteDialog({ mode: "edit", sprite, open: true })}
               onDelete={() => removeSprite(sprite.id)}
             />
           ))}

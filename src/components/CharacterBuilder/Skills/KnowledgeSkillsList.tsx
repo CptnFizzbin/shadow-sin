@@ -18,13 +18,13 @@ import { Label } from "#/components/UI/Text/Label.tsx"
 
 type KnowledgeSkillDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; skill: KnowledgeSkillFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", skill: KnowledgeSkillFormState, open: boolean }
 
 type LanguageSkillDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; skill: LanguageSkillFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", skill: LanguageSkillFormState, open: boolean }
 
 interface KnowledgeSkillsListProps {
   knowledgeSkills: KnowledgeSkillFormState[]
@@ -78,18 +78,18 @@ export const KnowledgeSkillsList: FC<KnowledgeSkillsListProps> = ({
 
   return (
     <Stack gap={1}>
-      <Label label="Knowledge & Languages" variant={"outlined"} />
+      <Label label="Knowledge & Languages" variant="outlined" />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2" color={"warning.main"}>
+        <Typography variant="body2" color="warning.main">
           {totalSpUsed} SP
         </Typography>
 
-        <Typography variant="body2" color={"text.secondary"}>
+        <Typography variant="body2" color="text.secondary">
           {remainingFreeSp > 0 && `${remainingFreeSp} free SP remaining`}
         </Typography>
 
-        <Typography variant="body2" color={"secondary.main"}>
+        <Typography variant="body2" color="secondary.main">
           {extraSpBp} BP
         </Typography>
       </Stack>
@@ -126,8 +126,7 @@ export const KnowledgeSkillsList: FC<KnowledgeSkillsListProps> = ({
                   mode: "edit",
                   skill,
                   open: true,
-                })
-              }
+                })}
               onDelete={() => onRemoveKnowledgeSkill(skill.id)}
             />
           ))}
@@ -154,8 +153,7 @@ export const KnowledgeSkillsList: FC<KnowledgeSkillsListProps> = ({
                   mode: "edit",
                   skill,
                   open: true,
-                })
-              }
+                })}
               onDelete={() => onRemoveLanguageSkill(skill.id)}
             />
           ))}
@@ -175,8 +173,7 @@ export const KnowledgeSkillsList: FC<KnowledgeSkillsListProps> = ({
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() =>
-            setKnowledgeSkillDialog({ mode: "create", open: true })
-          }
+            setKnowledgeSkillDialog({ mode: "create", open: true })}
           sx={{ flexGrow: 1 }}
         >
           Add Knowledge

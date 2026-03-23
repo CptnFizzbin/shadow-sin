@@ -12,7 +12,7 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 export const ResistBodyDicePool = () => {
   return (
     <DicePool
-      name={"Resist Damage"}
+      name="Resist Damage"
       groups={[useDiceAttributeGroup(AttributeKey.body)]}
     />
   )
@@ -21,7 +21,7 @@ export const ResistBodyDicePool = () => {
 export const ResistWillpowerDicePool = () => {
   return (
     <DicePool
-      name={"Resist Damage"}
+      name="Resist Damage"
       groups={[useDiceAttributeGroup(AttributeKey.willpower)]}
     />
   )
@@ -30,7 +30,7 @@ export const ResistWillpowerDicePool = () => {
 export const RangedDefenseDicePool = () => {
   return (
     <DicePool
-      name={"Ranged Defense"}
+      name="Ranged Defense"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useWoundDiceGroup(),
@@ -42,7 +42,7 @@ export const RangedDefenseDicePool = () => {
 export const RangedFullDefenseDicePool = () => {
   return (
     <DicePool
-      name={"Ranged Full Defense"}
+      name="Ranged Full Defense"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useDiceSkillGroup(SkillKey.dodge),
@@ -70,7 +70,7 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 export const MeleeBlockDicePool = () => {
   return (
     <DicePool
-      name={"Melee Block"}
+      name="Melee Block"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useDiceSkillGroup(SkillKey.unarmedCombat),
@@ -83,7 +83,7 @@ export const MeleeBlockDicePool = () => {
 export const MeleeDodgeDicePool = () => {
   return (
     <DicePool
-      name={"Melee Dodge"}
+      name="Melee Dodge"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useDiceSkillGroup(SkillKey.dodge),
@@ -112,7 +112,7 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
 export const MeleeFullBlockDicePool = () => {
   return (
     <DicePool
-      name={"Melee Full Block"}
+      name="Melee Full Block"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useDiceSkillGroup(SkillKey.unarmedCombat),
@@ -126,7 +126,7 @@ export const MeleeFullBlockDicePool = () => {
 export const MeleeFullDodgeDicePool = () => {
   return (
     <DicePool
-      name={"Melee Full Dodge"}
+      name="Melee Full Dodge"
       groups={[
         useDiceAttributeGroup(AttributeKey.reaction),
         useDiceSkillGroup(SkillKey.dodge),
@@ -140,7 +140,7 @@ export const MeleeFullDodgeDicePool = () => {
 export const PhysicalSpellDefenseDicePool = () => {
   return (
     <DicePool
-      name={"Physical Spell Defense"}
+      name="Physical Spell Defense"
       groups={[
         useDiceAttributeGroup(AttributeKey.body),
         useDiceSkillGroup(SkillKey.counterspelling),
@@ -153,7 +153,7 @@ export const PhysicalSpellDefenseDicePool = () => {
 export const ManaSpellDefenseDicePool = () => {
   return (
     <DicePool
-      name={"Mana Spell Defense"}
+      name="Mana Spell Defense"
       groups={[
         useDiceAttributeGroup(AttributeKey.willpower),
         useDiceSkillGroup(SkillKey.counterspelling),

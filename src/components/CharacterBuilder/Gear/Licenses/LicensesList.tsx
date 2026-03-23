@@ -21,8 +21,8 @@ interface LicensesListProps {
 
 type DialogState =
   | null
-  | { mode: "edit"; license: LicenseFormState; open: boolean }
-  | { mode: "create"; sinId: string; open: boolean }
+  | { mode: "edit", license: LicenseFormState, open: boolean }
+  | { mode: "create", sinId: string, open: boolean }
 
 export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
@@ -65,16 +65,15 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
               direction="column"
               gap={0}
               sx={{
-                p: 1,
-                borderRadius: 1,
-                border: "1px solid",
-                borderColor: "divider",
-                cursor: "pointer",
+                "p": 1,
+                "borderRadius": 1,
+                "border": "1px solid",
+                "borderColor": "divider",
+                "cursor": "pointer",
                 "&:hover": { bgcolor: "action.hover" },
               }}
               onClick={() =>
-                setDialogState({ mode: "edit", license, open: true })
-              }
+                setDialogState({ mode: "edit", license, open: true })}
             >
               <Stack direction="row" alignItems="center" gap={1}>
                 <Typography flexGrow={1}>{license.name}</Typography>

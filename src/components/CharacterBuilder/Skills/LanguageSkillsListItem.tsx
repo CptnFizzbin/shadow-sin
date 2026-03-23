@@ -29,11 +29,11 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
   return (
     <Box
       sx={{
-        p: 1,
-        borderRadius: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
+        "p": 1,
+        "borderRadius": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onEdit}

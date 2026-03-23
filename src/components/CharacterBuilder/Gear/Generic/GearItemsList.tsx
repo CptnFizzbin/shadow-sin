@@ -11,8 +11,8 @@ import { GearItemCard } from "#/components/CharacterBuilder/Gear/Generic/GearIte
 
 type DialogState =
   | null
-  | { mode: "create"; parentId?: string; open: boolean }
-  | { mode: "edit"; item: GearItemFormState; open: boolean }
+  | { mode: "create", parentId?: string, open: boolean }
+  | { mode: "edit", item: GearItemFormState, open: boolean }
 
 interface GearItemsListProps {
   items: GearItemFormState[]
@@ -84,8 +84,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
                   key={subItem.id}
                   item={subItem}
                   onEdit={() =>
-                    setDialogState({ mode: "edit", item: subItem, open: true })
-                  }
+                    setDialogState({ mode: "edit", item: subItem, open: true })}
                   onRemove={() => onRemove(subItem.id)}
                 />
               ))}
@@ -99,8 +98,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
                     mode: "create",
                     parentId: item.id,
                     open: true,
-                  })
-                }
+                  })}
                 color="secondary"
                 fullWidth
               >

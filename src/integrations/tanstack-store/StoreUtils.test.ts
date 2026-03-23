@@ -12,7 +12,7 @@ describe("useStoreSlice", () => {
   // ─── Fixtures for object slices ─────────────────────────────────────────────
 
   type RootState = {
-    player: { name: string; health: number }
+    player: { name: string, health: number }
     session: { score: number }
   }
 
@@ -120,7 +120,7 @@ describe("useStoreSlice", () => {
   describe("array slice", () => {
     // ─── Fixtures for array slice tests (scoped here) ──────────────────────────
 
-    type InventoryItem = { id: string; name: string; quantity: number }
+    type InventoryItem = { id: string, name: string, quantity: number }
 
     type GameState = {
       inventory: InventoryItem[]

@@ -18,7 +18,7 @@ import { awakenings } from "#/lib/system/types/awakeningType.ts"
 export const BiologyAttributes: FC = () => {
   return (
     <Stack gap={1}>
-      <Label label={"min / max (aug)"} variant="outlined" />
+      <Label label="min / max (aug)" variant="outlined" />
 
       <Stack gap={0.5}>
         <AttrList attrKeys={PhysicalAttributes} />
@@ -48,12 +48,15 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
     .filter((attr) => attr.min !== 0)
 
   return (
-    <Stack direction={"row"} gap={0.5}>
+    <Stack direction="row" gap={0.5}>
       {attributes.map((attr) => (
-        <Stack key={attr.label} flexGrow={1} alignItems={"center"}>
+        <Stack key={attr.label} flexGrow={1} alignItems="center">
           <Label label={attr.label} variant="outlined" />
           <Typography variant="body2">
-            {attr.min}/{attr.max}{" "}
+            {attr.min}
+            /
+            {attr.max}
+            {" "}
             {(attr.augMax || 0) >= 1 && <>({attr.augMax})</>}
           </Typography>
         </Stack>

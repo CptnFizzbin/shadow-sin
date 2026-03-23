@@ -15,13 +15,13 @@ import { GearItemCard } from "#/components/CharacterBuilder/Gear/Generic/GearIte
 
 type ImplantDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; implant: ImplantFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", implant: ImplantFormState, open: boolean }
 
 type ModDialogState =
   | null
-  | { mode: "create"; parentId: string; open: boolean }
-  | { mode: "edit"; mod: GearItemFormState; open: boolean }
+  | { mode: "create", parentId: string, open: boolean }
+  | { mode: "edit", mod: GearItemFormState, open: boolean }
 
 interface CyberwareListProps {
   implants: ImplantFormState[]
@@ -85,8 +85,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
             <CyberwareListItem
               implant={implant}
               onEdit={() =>
-                setImplantDialog({ mode: "edit", implant, open: true })
-              }
+                setImplantDialog({ mode: "edit", implant, open: true })}
               onRemove={() => onRemove(implant.id)}
             />
 
@@ -119,8 +118,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
                     mode: "create",
                     parentId: implant.id,
                     open: true,
-                  })
-                }
+                  })}
                 color="secondary"
                 fullWidth
               >

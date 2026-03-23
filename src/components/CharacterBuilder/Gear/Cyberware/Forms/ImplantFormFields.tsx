@@ -26,12 +26,13 @@ const implantGradeOptions = [
     label: (
       <Stack
         direction="row"
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        justifyContent="space-between"
+        alignItems="center"
         flexGrow={1}
       >
-        <Box>Standard</Box>{" "}
-        <Typography variant={"caption"} color={"text.secondary"}>
+        <Box>Standard</Box>
+        {" "}
+        <Typography variant="caption" color="text.secondary">
           ×1 ¥ | ×1.0 Ess
         </Typography>
       </Stack>
@@ -42,12 +43,13 @@ const implantGradeOptions = [
     label: (
       <Stack
         direction="row"
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        justifyContent="space-between"
+        alignItems="center"
         flexGrow={1}
       >
-        <Box>Alpha</Box>{" "}
-        <Typography variant={"caption"} color={"text.secondary"}>
+        <Box>Alpha</Box>
+        {" "}
+        <Typography variant="caption" color="text.secondary">
           ×2 ¥ | ×0.8 Ess
         </Typography>
       </Stack>

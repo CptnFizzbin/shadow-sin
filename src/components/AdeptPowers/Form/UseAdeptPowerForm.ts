@@ -3,12 +3,12 @@ import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 import { AdeptPowerDataSchema } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 export type AdeptPowerFormOptions =
-  | { mode: "create"; onSubmit: (values: AdeptPowerData) => void }
+  | { mode: "create", onSubmit: (values: AdeptPowerData) => void }
   | {
-      mode: "edit"
-      power: AdeptPowerData
-      onSubmit: (values: AdeptPowerData) => void
-    }
+    mode: "edit"
+    power: AdeptPowerData
+    onSubmit: (values: AdeptPowerData) => void
+  }
 
 const defualtValues: AdeptPowerData = {
   id: crypto.randomUUID(),

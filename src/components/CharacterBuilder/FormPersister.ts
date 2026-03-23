@@ -8,8 +8,8 @@ function getFormStorageKey(characterId: string): string {
 
 function loadState(characterId: string): CharacterFormState | undefined {
   const rawValue =
-    globalThis.localStorage?.getItem(getFormStorageKey(characterId)) ??
-    undefined
+    globalThis.localStorage?.getItem(getFormStorageKey(characterId))
+    ?? undefined
   if (!rawValue) return undefined
 
   try {

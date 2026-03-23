@@ -23,7 +23,7 @@ export const AttributesSection: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Box alignSelf={"flex-end"}>
+      <Box alignSelf="flex-end">
         <BuildPoints value={bpSpent} total={AttributeBpAllowance} />
       </Box>
 

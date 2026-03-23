@@ -5,5 +5,5 @@ export const Route = createFileRoute("/$characterId/")({
 })
 
 function RouteComponent() {
-  return <Navigate from={Route.fullPath} to={"about"} replace />
+  return <Navigate from={Route.fullPath} to="about" replace />
 }

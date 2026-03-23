@@ -28,14 +28,15 @@ export function useGearFormGroup() {
 
   const lifestyleNuyen = Lifestyles[lifestyle].upkeep * lifestyleMonths
 
-  const genericNuyen =
-    gear.weapons.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.armor.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.vehicles.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.devices.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.misc.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.sins.reduce((sum, item) => sum + (item.cost ?? 0), 0) +
-    gear.licenses.reduce((sum, item) => sum + (item.cost ?? 0), 0)
+  const genericNuyen = [
+    ...gear.weapons.map((i) => i.cost),
+    ...gear.armor.map((i) => i.cost),
+    ...gear.vehicles.map((i) => i.cost),
+    ...gear.devices.map((i) => i.cost),
+    ...gear.misc.map((i) => i.cost),
+    ...gear.sins.map((i) => i.cost),
+    ...gear.licenses.map((i) => i.cost),
+  ].reduce((sum, cost) => sum + cost, 0)
 
   const cyberwareNuyen =
     gear.cyberware.reduce(

@@ -22,15 +22,15 @@ export const ImplantGradeNuyenMultiplier: Record<ImplantGrade, number> = {
 
 export function getImplantEffectiveEssenceCost(item: ImplantFormState): number {
   const multiplier =
-    ImplantGradeEssenceMultiplier[item.grade as ImplantGrade] ??
-    ImplantGradeEssenceMultiplier[ImplantGrade.standard]
+    ImplantGradeEssenceMultiplier[item.grade as ImplantGrade]
+    ?? ImplantGradeEssenceMultiplier[ImplantGrade.standard]
   return item.essenceCost * multiplier
 }
 
 export function getImplantEffectiveNuyenCost(item: ImplantFormState): number {
   const multiplier =
-    ImplantGradeNuyenMultiplier[item.grade as ImplantGrade] ??
-    ImplantGradeNuyenMultiplier[ImplantGrade.standard]
+    ImplantGradeNuyenMultiplier[item.grade as ImplantGrade]
+    ?? ImplantGradeNuyenMultiplier[ImplantGrade.standard]
   return item.cost * multiplier
 }
 
@@ -48,16 +48,16 @@ export function calculateImplantEssence(
   const cyberwareTotal = implants
     .filter(
       (implant) =>
-        implant.implantType === ImplantType.cyberware ||
-        implant.implantType === "cyberware",
+        implant.implantType === ImplantType.cyberware
+        || implant.implantType === "cyberware",
     )
     .reduce((sum, implant) => sum + getImplantEffectiveEssenceCost(implant), 0)
 
   const biowareTotal = implants
     .filter(
       (implant) =>
-        implant.implantType === ImplantType.bioware ||
-        implant.implantType === "bioware",
+        implant.implantType === ImplantType.bioware
+        || implant.implantType === "bioware",
     )
     .reduce((sum, implant) => sum + getImplantEffectiveEssenceCost(implant), 0)
 

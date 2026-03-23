@@ -17,8 +17,8 @@ import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
 
 type DialogState =
   | null
-  | { open: boolean; type: "add" }
-  | { open: boolean; type: "edit"; power: AdeptPowerData }
+  | { open: boolean, type: "add" }
+  | { open: boolean, type: "edit", power: AdeptPowerData }
 
 export const AdeptPowersList: FC = () => {
   const powersSlice = useAdeptPowersSlice()
@@ -68,8 +68,8 @@ export const AdeptPowersList: FC = () => {
 
         <Button
           startIcon={<RiAddLine />}
-          color={"secondary"}
-          variant={"outlined"}
+          color="secondary"
+          variant="outlined"
           onClick={() => setDialogState({ type: "add", open: true })}
         >
           Add Power

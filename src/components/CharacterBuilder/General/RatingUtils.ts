@@ -1,4 +1,4 @@
-export const createRatingOptions = (options: { min: number; max: number }) => {
+export const createRatingOptions = (options: { min: number, max: number }) => {
   const { min, max } = options
   const ratingOptions = []
 

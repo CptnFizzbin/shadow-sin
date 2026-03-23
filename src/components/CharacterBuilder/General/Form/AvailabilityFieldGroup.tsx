@@ -22,7 +22,7 @@ export const AvailabilityFieldGroup = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack direction="row" gap={1}>
-        <group.AppField name={"availability.rating"}>
+        <group.AppField name="availability.rating">
           {(field) => (
             <field.NumberField
               label="Availability"

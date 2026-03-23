@@ -22,9 +22,9 @@ export const QualitiesSection: FC = () => {
 
   return (
     <Stack gap={0.5}>
-      <QualitiesList type={"positive"} />
+      <QualitiesList type="positive" />
       <Divider sx={{ marginY: 1 }} />
-      <QualitiesList type={"negative"} />
+      <QualitiesList type="negative" />
 
       <Divider sx={{ marginY: 1 }} />
 

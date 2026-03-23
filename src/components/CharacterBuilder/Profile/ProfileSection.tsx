@@ -26,8 +26,7 @@ export const ProfileSection: FC = () => {
         onChange={(event) =>
           storeSlice.update((draft) => {
             draft.alias = event.target.value
-          })
-        }
+          })}
       />
 
       <MuiTextField
@@ -39,8 +38,7 @@ export const ProfileSection: FC = () => {
         onChange={(event) =>
           storeSlice.update((draft) => {
             draft.name = event.target.value
-          })
-        }
+          })}
       />
     </>
   )

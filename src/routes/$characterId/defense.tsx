@@ -88,18 +88,18 @@ function RouteComponent() {
         <Grid size={2}>
           <Label
             label={`Wound Mod: ${woundMod}`}
-            variant={"outlined"}
+            variant="outlined"
             color={woundMod >= 1 ? "error.main" : "primary.dark"}
           />
         </Grid>
 
         <Grid size={2}>
-          <Divider flexItem color={"secondary.main"} />
+          <Divider flexItem color="secondary.main" />
         </Grid>
 
         <Grid container size={2}>
           <Grid size={2}>
-            <Label label={`Resist`} variant={"outlined"} />
+            <Label label="Resist" variant="outlined" />
           </Grid>
 
           <Grid size={1}>
@@ -112,12 +112,12 @@ function RouteComponent() {
         </Grid>
 
         <Grid size={2}>
-          <Divider flexItem color={"secondary.main"} />
+          <Divider flexItem color="secondary.main" />
         </Grid>
 
         <Grid container size={2}>
           <Grid size={2}>
-            <Label label={`Ranged Defense`} variant={"outlined"} />
+            <Label label="Ranged Defense" variant="outlined" />
           </Grid>
 
           <Grid size={1}>
@@ -131,7 +131,7 @@ function RouteComponent() {
 
         <Grid container size={2}>
           <Grid size={3}>
-            <Label label={`Melee Defense`} variant={"outlined"} />
+            <Label label="Melee Defense" variant="outlined" />
           </Grid>
 
           <Grid size={1}>
@@ -153,7 +153,7 @@ function RouteComponent() {
 
         <Grid container size={2}>
           <Grid size={3}>
-            <Label label={`Melee Parry`} variant={"outlined"} />
+            <Label label="Melee Parry" variant="outlined" />
           </Grid>
 
           {[
@@ -175,7 +175,7 @@ function RouteComponent() {
 
         <Grid container size={2}>
           <Grid size={2}>
-            <Label label={`Spell Defense`} variant={"outlined"} />
+            <Label label="Spell Defense" variant="outlined" />
           </Grid>
 
           <Grid size={1}>

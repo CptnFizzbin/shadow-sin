@@ -27,11 +27,11 @@ export const GearItemCard: FC<GearItemCardProps> = ({
     <Stack
       direction="column"
       sx={{
-        padding: 1,
-        borderRadius: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
+        "padding": 1,
+        "borderRadius": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onEdit}

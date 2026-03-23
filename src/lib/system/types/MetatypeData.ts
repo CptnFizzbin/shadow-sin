@@ -15,7 +15,7 @@ export interface MetatypeData {
   cost: number
   attributes: Record<
     AttributeKey,
-    { min: number; max: number; augMax?: number }
+    { min: number, max: number, augMax?: number }
   >
   inateAbilites?: GearEffectData[]
 }

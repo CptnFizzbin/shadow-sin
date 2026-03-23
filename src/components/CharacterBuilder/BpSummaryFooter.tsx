@@ -79,11 +79,11 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
         </Collapse>
 
         <Button onClick={() => handleExpandedChange(!isExpanded)}>
-          <Stack direction={"column"} gap={1} flexGrow={1}>
+          <Stack direction="column" gap={1} flexGrow={1}>
             <Stack
               direction="row"
               gap={1}
-              justifyContent={"space-between"}
+              justifyContent="space-between"
               alignItems="center"
             >
               <BuildPoints value={summary.spent} total={summary.total} />

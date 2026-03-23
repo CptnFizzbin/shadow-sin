@@ -22,13 +22,13 @@ import { Label } from "#/components/UI/Text/Label.tsx"
 
 type ActiveSkillDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; skill: ActiveSkillFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", skill: ActiveSkillFormState, open: boolean }
 
 type ActiveSkillGroupDialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; group: ActiveSkillGroupFormState; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", group: ActiveSkillGroupFormState, open: boolean }
 
 interface ActiveSkillsListProps {
   activeSkills: ActiveSkillFormState[]
@@ -88,9 +88,9 @@ export const ActiveSkillsList: FC<ActiveSkillsListProps> = ({
 
   return (
     <Stack gap={1}>
-      <Label label="Active Skills" variant={"outlined"} />
+      <Label label="Active Skills" variant="outlined" />
 
-      <Typography variant="body2" color={"secondary.main"}>
+      <Typography variant="body2" color="secondary.main">
         {totalActiveSkillsBp} BP
       </Typography>
 
@@ -112,8 +112,7 @@ export const ActiveSkillsList: FC<ActiveSkillsListProps> = ({
               key={skill.id}
               skill={skill}
               onEdit={() =>
-                setActiveSkillDialog({ mode: "edit", skill, open: true })
-              }
+                setActiveSkillDialog({ mode: "edit", skill, open: true })}
               onDelete={() => onRemoveSkill(skill.id)}
             />
           ))}
@@ -133,8 +132,7 @@ export const ActiveSkillsList: FC<ActiveSkillsListProps> = ({
               key={group.id}
               group={group}
               onEdit={() =>
-                setActiveSkillGroupDialog({ mode: "edit", group, open: true })
-              }
+                setActiveSkillGroupDialog({ mode: "edit", group, open: true })}
               onDelete={() => onRemoveGroup(group.id)}
             />
           ))}
@@ -164,8 +162,7 @@ export const ActiveSkillsList: FC<ActiveSkillsListProps> = ({
           size="small"
           startIcon={<RiAddLine size={14} />}
           onClick={() =>
-            setActiveSkillGroupDialog({ mode: "create", open: true })
-          }
+            setActiveSkillGroupDialog({ mode: "create", open: true })}
           sx={{ flexGrow: 1 }}
         >
           Add Group

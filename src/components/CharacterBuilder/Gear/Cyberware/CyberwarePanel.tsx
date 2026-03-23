@@ -24,7 +24,8 @@ export const CyberwarePanel: FC = () => {
         sx={{ px: 0.5 }}
       >
         <Typography variant="caption" color="text.secondary">
-          Essence Used:{" "}
+          Essence Used:
+          {" "}
           {essenceSummary.effectiveEssenceUsed.toFixed(2).replace(/\.?0+$/, "")}
         </Typography>
         <Typography
@@ -43,15 +44,24 @@ export const CyberwarePanel: FC = () => {
 
       {isEssenceError && (
         <Alert severity="error" sx={{ py: 0 }}>
-          Essence depleted! Implants exceed the maximum essence of{" "}
-          {BASE_ESSENCE}.
+          Essence depleted! Implants exceed the maximum essence of
+          {" "}
+          {BASE_ESSENCE}
+          .
         </Alert>
       )}
 
       {essenceSummary.cyberwareTotal > 0 && essenceSummary.biowareTotal > 0 && (
         <Typography variant="caption" color="text.secondary" sx={{ px: 0.5 }}>
-          Cyber: {essenceSummary.cyberwareTotal.toFixed(2)} | Bio:{" "}
-          {essenceSummary.biowareTotal.toFixed(2)} (higher applied full, other
+          Cyber:
+          {" "}
+          {essenceSummary.cyberwareTotal.toFixed(2)}
+          {" "}
+          | Bio:
+          {" "}
+          {essenceSummary.biowareTotal.toFixed(2)}
+          {" "}
+          (higher applied full, other
           at ½)
         </Typography>
       )}

@@ -22,7 +22,7 @@ function IndexRoute() {
     <Stack spacing={1}>
       <Header />
       <Button
-        variant={"outlined"}
+        variant="outlined"
         onClick={() => {
           navigate({ to: "/new" })
         }}

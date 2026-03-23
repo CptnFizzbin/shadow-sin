@@ -16,15 +16,15 @@ export const SpellListItem: FC<SpellListItemProps> = ({ spell, onEdit }) => {
   return (
     <Paper
       sx={{
-        padding: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
+        "padding": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onEdit}
     >
-      <Stack direction={"row"} gap={1} alignItems={"center"}>
+      <Stack direction="row" gap={1} alignItems="center">
         <Typography flexGrow={1}>{spell.name}</Typography>
         <BuildPoints value={SpellsBpPerSpell} />
       </Stack>

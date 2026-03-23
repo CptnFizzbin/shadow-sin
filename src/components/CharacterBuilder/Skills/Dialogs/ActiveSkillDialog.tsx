@@ -105,14 +105,14 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
                     disabled={isDisabled}
                   >
                     <Stack
-                      direction={"row"}
+                      direction="row"
                       gap={1}
                       alignItems="center"
-                      justifyContent={"space-between"}
+                      justifyContent="space-between"
                       flexGrow={10}
                     >
                       <Typography>{skillKey}</Typography>
-                      <Typography color={"text.secondary"} fontSize={"small"}>
+                      <Typography color="text.secondary" fontSize="small">
                         {Skills[skillKey]?.group}
                       </Typography>
                     </Stack>

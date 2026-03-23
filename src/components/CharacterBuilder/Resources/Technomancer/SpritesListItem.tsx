@@ -26,11 +26,11 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
   return (
     <Box
       sx={{
-        p: 1,
-        borderRadius: 1,
-        border: "1px solid",
-        borderColor: "divider",
-        cursor: "pointer",
+        "p": 1,
+        "borderRadius": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onEdit}
@@ -39,7 +39,15 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
         <Stack sx={{ flexGrow: 1 }}>
           <Typography variant="body2">{sprite.name}</Typography>
           <Typography variant="caption" color="text.secondary">
-            Rating {resonanceValue} · {sprite.tasks} task
+            Rating
+            {" "}
+            {resonanceValue}
+            {" "}
+            ·
+            {" "}
+            {sprite.tasks}
+            {" "}
+            task
             {sprite.tasks !== 1 ? "s" : ""}
           </Typography>
         </Stack>

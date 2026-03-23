@@ -82,26 +82,28 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
             autoFocus
           />
 
-          {maxSpriteTasks === 0 ? (
-            <Typography variant="caption" color="warning.main">
-              Add the Compiling skill to enable sprites with tasks
-            </Typography>
-          ) : (
-            <FormControl fullWidth size="small">
-              <InputLabel>Tasks</InputLabel>
-              <Select
-                value={Math.min(tasks, maxSpriteTasks)}
-                label="Tasks"
-                onChange={(e) => setTasks(Number(e.target.value))}
-              >
-                {taskOptions.map((taskOption) => (
-                  <MenuItem key={taskOption} value={taskOption}>
-                    {taskOption}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+          {maxSpriteTasks === 0
+            ? (
+                <Typography variant="caption" color="warning.main">
+                  Add the Compiling skill to enable sprites with tasks
+                </Typography>
+              )
+            : (
+                <FormControl fullWidth size="small">
+                  <InputLabel>Tasks</InputLabel>
+                  <Select
+                    value={Math.min(tasks, maxSpriteTasks)}
+                    label="Tasks"
+                    onChange={(e) => setTasks(Number(e.target.value))}
+                  >
+                    {taskOptions.map((taskOption) => (
+                      <MenuItem key={taskOption} value={taskOption}>
+                        {taskOption}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
         </Stack>
       </DialogContent>
 

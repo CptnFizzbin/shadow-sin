@@ -36,8 +36,7 @@ export const LifestylePanel: FC = () => {
           onChange={(event) =>
             storeSlice.update((draft) => {
               draft.lifestyle = event.target.value as LifestyleType
-            })
-          }
+            })}
         >
           {Object.values(LifestyleType).map((lifestyleType) => (
             <MenuItem key={lifestyleType} value={lifestyleType}>
@@ -63,11 +62,19 @@ export const LifestylePanel: FC = () => {
       />
 
       <Typography variant="body2" color="text.secondary">
-        Monthly upkeep: <Nuyen amount={upkeep} />
+        Monthly upkeep:
+        {" "}
+        <Nuyen amount={upkeep} />
         {lifestyleMonths > 1 && (
           <>
             {" "}
-            × {lifestyleMonths} months = <Nuyen amount={totalCost} />
+            ×
+            {" "}
+            {lifestyleMonths}
+            {" "}
+            months =
+            {" "}
+            <Nuyen amount={totalCost} />
           </>
         )}
       </Typography>

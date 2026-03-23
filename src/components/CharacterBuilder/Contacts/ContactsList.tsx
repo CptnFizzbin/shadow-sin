@@ -13,8 +13,8 @@ import type { ContactData } from "#/lib/system/types/contactData.ts"
 
 type DialogState =
   | null
-  | { mode: "create"; open: boolean }
-  | { mode: "edit"; contact: ContactData; open: boolean }
+  | { mode: "create", open: boolean }
+  | { mode: "edit", contact: ContactData, open: boolean }
 
 export const ContactsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
@@ -51,24 +51,25 @@ export const ContactsList: FC = () => {
           <BuildPoints value={bpSpent} />
         </Stack>
 
-        {contacts.length === 0 ? (
-          <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-            No contacts added
-          </Typography>
-        ) : (
-          <Stack gap={0.5}>
-            {contacts.map((contact) => (
-              <ContactRow
-                key={contact.id}
-                contact={contact}
-                onClick={() =>
-                  setDialogState({ mode: "edit", contact, open: true })
-                }
-                onRemove={() => handleRemoveContact(contact)}
-              />
-            ))}
-          </Stack>
-        )}
+        {contacts.length === 0
+          ? (
+              <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+                No contacts added
+              </Typography>
+            )
+          : (
+              <Stack gap={0.5}>
+                {contacts.map((contact) => (
+                  <ContactRow
+                    key={contact.id}
+                    contact={contact}
+                    onClick={() =>
+                      setDialogState({ mode: "edit", contact, open: true })}
+                    onRemove={() => handleRemoveContact(contact)}
+                  />
+                ))}
+              </Stack>
+            )}
 
         <Button
           variant="outlined"

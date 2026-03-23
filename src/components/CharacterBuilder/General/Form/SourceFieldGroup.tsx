@@ -20,7 +20,7 @@ export const SourceFieldGroup = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack direction="row" gap={1}>
-        <group.AppField name={"source.book"}>
+        <group.AppField name="source.book">
           {(field) => (
             <field.SelectField
               label="Book"
@@ -32,7 +32,7 @@ export const SourceFieldGroup = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.AppField name={"source.page"}>
+        <group.AppField name="source.page">
           {(field) => (
             <field.NumberField label="Page" size="small" sx={{ width: 150 }} />
           )}

@@ -75,8 +75,8 @@ export const GearSection: FC = () => {
         totalInvalidCount +=
           sins.filter(
             (s) => getSinAvailability(s.rating).rating > GearMaxAvailability,
-          ).length +
-          licenses.filter(
+          ).length
+          + licenses.filter(
             (l) =>
               getLicenseAvailability(l.rating).rating > GearMaxAvailability,
           ).length
@@ -84,8 +84,8 @@ export const GearSection: FC = () => {
     } else if (sectionName === SectionHeader.Cyberware) {
       const invalidImplants = gear.cyberware.filter(
         (implant) =>
-          (implant.availability?.rating ?? Number.NEGATIVE_INFINITY) >
-          GearMaxAvailability,
+          (implant.availability?.rating ?? Number.NEGATIVE_INFINITY)
+          > GearMaxAvailability,
       )
       if (invalidImplants.length > 0) {
         sectionInvalid.add(sectionName)
@@ -99,8 +99,8 @@ export const GearSection: FC = () => {
         const items = gear[sectionKey] || []
         const invalidItems = items.filter(
           (it) =>
-            (it.availability?.rating ?? Number.NEGATIVE_INFINITY) >
-            GearMaxAvailability,
+            (it.availability?.rating ?? Number.NEGATIVE_INFINITY)
+            > GearMaxAvailability,
         )
         if (invalidItems.length > 0) {
           sectionInvalid.add(sectionName)
@@ -135,15 +135,28 @@ export const GearSection: FC = () => {
 
       {isOverBudget && (
         <Alert severity="error">
-          Gear budget exceeded! Maximum is <Nuyen amount={GearNuyenBudget} /> (
-          {GearBpAllowance} BP).
+          Gear budget exceeded! Maximum is
+          {" "}
+          <Nuyen amount={GearNuyenBudget} />
+          {" "}
+          (
+          {GearBpAllowance}
+          {" "}
+          BP).
         </Alert>
       )}
 
       {hasAvailabilityWarnings && (
         <Alert severity="warning">
-          {totalInvalidCount} gear item{totalInvalidCount > 1 ? "s" : ""} exceed
-          the maximum availability ({GearMaxAvailability}). Check highlighted
+          {totalInvalidCount}
+          {" "}
+          gear item
+          {totalInvalidCount > 1 ? "s" : ""}
+          {" "}
+          exceed
+          the maximum availability (
+          {GearMaxAvailability}
+          ). Check highlighted
           items.
         </Alert>
       )}
@@ -156,10 +169,10 @@ export const GearSection: FC = () => {
           disableGutters
           elevation={0}
           sx={{
-            border: "1px solid",
-            borderColor: "divider",
-            padding: 0,
-            margin: 0,
+            "border": "1px solid",
+            "borderColor": "divider",
+            "padding": 0,
+            "margin": 0,
             "& .MuiAccordionSummary-content": {
               margin: 0,
             },
@@ -238,8 +251,8 @@ const GearSectionNuyen: FC<{
       <Typography variant="body2" color="text.secondary">
         <Nuyen
           amount={
-            gear.sins.reduce((sum, sin) => sum + sin.cost, 0) +
-            gear.licenses.reduce((sum, license) => sum + license.cost, 0)
+            gear.sins.reduce((sum, sin) => sum + sin.cost, 0)
+            + gear.licenses.reduce((sum, license) => sum + license.cost, 0)
           }
         />
       </Typography>

@@ -26,8 +26,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
                 onChange={() =>
                   field.handleChange(
                     field.state.value === "positive" ? "negative" : "positive",
-                  )
-                }
+                  )}
                 size="small"
                 sx={{ flexGrow: 1 }}
               >

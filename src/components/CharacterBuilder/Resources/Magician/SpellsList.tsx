@@ -19,8 +19,8 @@ import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
 
 type DialogState =
   | null
-  | { open: boolean; type: "add" }
-  | { open: boolean; type: "edit"; spell: SpellData }
+  | { open: boolean, type: "add" }
+  | { open: boolean, type: "edit", spell: SpellData }
 
 export const SpellsList: FC = () => {
   const spellsSlice = useCharacterBuilderStoreSlice(
@@ -90,8 +90,8 @@ export const SpellsList: FC = () => {
 
         <Button
           startIcon={<RiAddLine />}
-          color={"secondary"}
-          variant={"outlined"}
+          color="secondary"
+          variant="outlined"
           onClick={() => setDialogState({ type: "add", open: true })}
         >
           Add Spell

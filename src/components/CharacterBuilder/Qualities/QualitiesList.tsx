@@ -13,8 +13,8 @@ import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 type DialogState =
-  | { open: true; quality: QualityData }
-  | { open: false; quality?: QualityData }
+  | { open: true, quality: QualityData }
+  | { open: false, quality?: QualityData }
 
 interface QualitiesListProps {
   type?: "positive" | "negative" | "all"
@@ -73,30 +73,32 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
 
   return (
     <>
-      <Label label={label} variant={"outlined"} />
+      <Label label={label} variant="outlined" />
 
-      <Stack direction={"row"} justifyContent={"flex-end"}>
-        <Typography color={"secondary.main"}>
+      <Stack direction="row" justifyContent="flex-end">
+        <Typography color="secondary.main">
           {bpLabel}: {bpValue} BP
         </Typography>
       </Stack>
 
-      {qualities.length === 0 ? (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
-          No {label} qualities added
-        </Typography>
-      ) : (
-        <Stack gap={0.5}>
-          {qualities.map((quality) => (
-            <QualitiesListItem
-              key={quality.id}
-              quality={quality}
-              onClick={() => setEditDialogState({ open: true, quality })}
-              onRemove={() => onRemoveQuality(quality)}
-            />
-          ))}
-        </Stack>
-      )}
+      {qualities.length === 0
+        ? (
+            <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+              No {label} qualities added
+            </Typography>
+          )
+        : (
+            <Stack gap={0.5}>
+              {qualities.map((quality) => (
+                <QualitiesListItem
+                  key={quality.id}
+                  quality={quality}
+                  onClick={() => setEditDialogState({ open: true, quality })}
+                  onRemove={() => onRemoveQuality(quality)}
+                />
+              ))}
+            </Stack>
+          )}
 
       {editDialogState.quality && (
         <QualityFormDialog

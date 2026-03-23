@@ -407,46 +407,46 @@ export const artemis: PlayerCharacterData = {
   ],
 
   skills: {
-    Firearms: {
+    "Firearms": {
       name: "Firearms",
       category: "active",
       rating: 5,
       linkedAttribute: AttributeKey.agility,
       specialization: "Submachine Guns",
     },
-    Piloting: {
+    "Piloting": {
       name: "Piloting",
       category: "active",
       rating: 5,
       linkedAttribute: AttributeKey.agility,
       specialization: "Aircraft",
     },
-    Engineering: {
+    "Engineering": {
       name: "Engineering",
       category: "active",
       rating: 7,
       linkedAttribute: AttributeKey.logic,
       specialization: "Automotive Mechanic",
     },
-    Perception: {
+    "Perception": {
       name: "Perception",
       category: "active",
       rating: 1,
       linkedAttribute: AttributeKey.intuition,
     },
-    Athletics: {
+    "Athletics": {
       name: "Athletics",
       category: "active",
       rating: 1,
       linkedAttribute: AttributeKey.agility,
     },
-    English: {
+    "English": {
       name: "English",
       category: "language",
       rating: 6,
       linkedAttribute: AttributeKey.intuition,
     },
-    Elven: {
+    "Elven": {
       name: "Elven",
       category: "language",
       rating: 1,

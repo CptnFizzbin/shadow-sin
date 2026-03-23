@@ -31,7 +31,9 @@ export const SinRemoveDialog: FC<SinRemoveDialogProps> = ({
       <DialogTitle>Remove SIN</DialogTitle>
       <DialogContent>
         <Typography>
-          Are you sure you want to remove the SIN "{sin.name}"?
+          Are you sure you want to remove the SIN "
+          {sin.name}
+          "?
           <br />
           This will also remove all associated licenses.
         </Typography>

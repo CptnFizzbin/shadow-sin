@@ -33,8 +33,8 @@ export const getActiveSkillBp = (
   hasSpecialization: boolean,
 ): number => {
   return (
-    rating * ActiveSkillBpPerRating +
-    (hasSpecialization ? ActiveSkillSpecializationBp : 0)
+    rating * ActiveSkillBpPerRating
+    + (hasSpecialization ? ActiveSkillSpecializationBp : 0)
   )
 }
 
@@ -47,8 +47,8 @@ export const getKnowledgeSkillSp = (
   hasSpecialization: boolean,
 ): number => {
   return (
-    rating * KnowledgeSkillSpPerRating +
-    (hasSpecialization ? KnowledgeSpecializationSp : 0)
+    rating * KnowledgeSkillSpPerRating
+    + (hasSpecialization ? KnowledgeSpecializationSp : 0)
   )
 }
 
@@ -59,8 +59,8 @@ export const getLanguageSkillSp = (
 ): number => {
   if (isNative) return hasSpecialization ? LanguageSpecializationSp : 0
   return (
-    rating * LanguageSkillSpPerRating +
-    (hasSpecialization ? LanguageSpecializationSp : 0)
+    rating * LanguageSkillSpPerRating
+    + (hasSpecialization ? LanguageSpecializationSp : 0)
   )
 }
 
@@ -86,8 +86,8 @@ export const calculateKnowledgeAndLanguageSpUsed = (
   }, 0)
   const languageSp = languageSkills.reduce((total, skill) => {
     return (
-      total +
-      getLanguageSkillSp(skill.isNative, skill.rating, !!skill.specialization)
+      total
+      + getLanguageSkillSp(skill.isNative, skill.rating, !!skill.specialization)
     )
   }, 0)
   return knowledgeSp + languageSp
