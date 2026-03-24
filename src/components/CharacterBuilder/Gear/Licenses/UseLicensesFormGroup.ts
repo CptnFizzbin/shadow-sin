@@ -1,40 +1,22 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
+import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 export function useLicensesFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear,
-    (state, gear) => {
-      state.gear = gear
-      return state
-    },
-  )
-  const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
-  const sins = useCharacterBuilderStore((state) => state.gear.sins)
+  const gear = useBuilderGearSlice()
+  const licenses = gear.getItemsByType<LicenseFormState>("licenses")
+  const sins = gear.getItemsByType<SinFormState>("sins")
 
-  const addLicense = (license: LicenseFormState) => {
-    gearSlice.update((prev) => {
-      prev.licenses = [
-        ...prev.licenses,
-        { ...license, id: crypto.randomUUID() },
-      ]
-    })
+  const addLicense = (license: Omit<LicenseFormState, "id">) => {
+    gear.createItem({ ...license, type: "licenses" })
   }
 
   const updateLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      const index = draft.licenses.findIndex((l) => l.id === license.id)
-      if (index !== -1) draft.licenses[index] = license
-    })
+    gear.saveItem({ ...license, type: "licenses" })
   }
 
   const removeLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      draft.licenses = draft.licenses.filter((l) => l.id !== license.id)
-    })
+    gear.deleteItem({ id: license.id }, { removeChildren: true })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {

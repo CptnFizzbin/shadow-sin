@@ -1,5 +1,6 @@
 import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
-import type { CharacterFormState } from "#/components/CharacterBuilder/CharacterFormState.ts"
+import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
+import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
@@ -14,7 +15,7 @@ export interface UseDefaultValuesOptions {
 
 export const useDefaultValues = ({
   character,
-}: UseDefaultValuesOptions): CharacterFormState => {
+}: UseDefaultValuesOptions): CharacterBuilderState => {
   const characterId = character?.id ?? NULL_CHARACTER_ID
   const { profile, biology } = character || {}
 
@@ -135,17 +136,7 @@ export const useDefaultValues = ({
       adeptPowers: [],
     },
 
-    gear: {
-      sins: [],
-      licenses: [],
-      weapons: [],
-      armor: [],
-      vehicles: [],
-      cyberware: [],
-      implantMods: [],
-      devices: [],
-      misc: [],
-    },
+    gear: {} as Record<string, BuilderGearData>,
 
     contacts: [],
   }

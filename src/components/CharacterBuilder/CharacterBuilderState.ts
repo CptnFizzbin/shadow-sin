@@ -1,8 +1,5 @@
 import type { AttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
+import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
 import type { AwakenedFormState } from "#/components/CharacterBuilder/Resources/AwakenedFormState.ts"
 import type { SkillsFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
@@ -11,7 +8,7 @@ import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import type { ContactData } from "#/lib/system/types/contactData.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
-export interface CharacterFormState {
+export interface CharacterBuilderState {
   characterId: string
 
   buildPoints: {
@@ -57,17 +54,7 @@ export interface CharacterFormState {
 
   awakened: AwakenedFormState
 
-  gear: {
-    sins: SinFormState[]
-    licenses: LicenseFormState[]
-    weapons: GearItemFormState[]
-    armor: GearItemFormState[]
-    vehicles: GearItemFormState[]
-    cyberware: ImplantFormState[]
-    implantMods: GearItemFormState[]
-    devices: GearItemFormState[]
-    misc: GearItemFormState[]
-  }
+  gear: Record<string, BuilderGearData>
 
   contacts: ContactData[]
 }

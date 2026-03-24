@@ -13,6 +13,7 @@ import { useState } from "react"
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ArmorPanel } from "#/components/CharacterBuilder/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/CharacterBuilder/Gear/Cyberware/CyberwarePanel.tsx"
+import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
 import { DevicesPanel } from "#/components/CharacterBuilder/Gear/Devices/DevicesPanel.tsx"
 import {
@@ -20,12 +21,16 @@ import {
   GearMaxAvailability,
   GearNuyenBudget,
 } from "#/components/CharacterBuilder/Gear/GearSectionRequirements.ts"
+import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
+import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
 import { getSinAvailability } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/CharacterBuilder/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 import { useGearFormGroup } from "#/components/CharacterBuilder/Gear/UseGearFormGroup.ts"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
@@ -62,8 +67,8 @@ export const GearSection: FC = () => {
 
   Object.values(SectionHeader).forEach((sectionName) => {
     if (sectionName === SectionHeader.Licenses) {
-      const sins = gear.sins || []
-      const licenses = gear.licenses || []
+      const sins = gear.getItemsByType<SinFormState>("sins") || []
+      const licenses = gear.getItemsByType<LicenseFormState>("licenses") || []
       const sinInvalid = sins.some(
         (s) => getSinAvailability(s.rating).rating > GearMaxAvailability,
       )
@@ -82,11 +87,11 @@ export const GearSection: FC = () => {
           ).length
       }
     } else if (sectionName === SectionHeader.Cyberware) {
-      const invalidImplants = gear.cyberware.filter(
-        (implant) =>
+      const invalidImplants = gear.getItemsByType<ImplantFormState>("cyberware")
+        .filter((implant) =>
           (implant.availability?.rating ?? Number.NEGATIVE_INFINITY)
           > GearMaxAvailability,
-      )
+        )
       if (invalidImplants.length > 0) {
         sectionInvalid.add(sectionName)
         totalInvalidCount += invalidImplants.length
@@ -96,7 +101,7 @@ export const GearSection: FC = () => {
     } else {
       const sectionKey = genericSectionKeys[sectionName]
       if (sectionKey) {
-        const items = gear[sectionKey] || []
+        const items = gear.getItemsByType<GearItemFormState>(sectionKey) || []
         const invalidItems = items.filter(
           (it) =>
             (it.availability?.rating ?? Number.NEGATIVE_INFINITY)
@@ -232,7 +237,7 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gear = useCharacterBuilderStore((state) => state.gear)
+  const gearApi = useBuilderGearSlice()
   const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
   const lifestyleMonths = useCharacterBuilderStore(
     (state) => state.lifestyleMonths,
@@ -251,8 +256,8 @@ const GearSectionNuyen: FC<{
       <Typography variant="body2" color="text.secondary">
         <Nuyen
           amount={
-            gear.sins.reduce((sum, sin) => sum + sin.cost, 0)
-            + gear.licenses.reduce((sum, license) => sum + license.cost, 0)
+            gearApi.getItemsByType<SinFormState>("sins").reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
+            + gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
           }
         />
       </Typography>
@@ -263,10 +268,10 @@ const GearSectionNuyen: FC<{
       <Typography variant="body2" color="text.secondary">
         <Nuyen
           amount={
-            gear.cyberware.reduce(
+            gearApi.getItemsByType<ImplantFormState>("cyberware").reduce(
               (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
               0,
-            ) + gear.implantMods.reduce((sum, mod) => sum + mod.cost, 0)
+            ) + gearApi.getItemsByType<GearItemFormState>("implantMods").reduce((sum, mod) => sum + (mod.cost ?? 0), 0)
           }
         />
       </Typography>
@@ -284,7 +289,7 @@ const GearSectionNuyen: FC<{
   }
   const sectionKey = genericSectionKeys[section]
   const nuyen = sectionKey
-    ? gear[sectionKey].reduce((sum, item) => sum + item.cost, 0)
+    ? (gearApi.getItemsByType<GearItemFormState>(sectionKey).reduce((sum, item) => sum + (item.cost ?? 0), 0))
     : 0
 
   return (

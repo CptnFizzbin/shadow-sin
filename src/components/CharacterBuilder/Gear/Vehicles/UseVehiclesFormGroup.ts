@@ -1,40 +1,20 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 export function useVehiclesFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear.vehicles,
-    (state, vehicles) => {
-      state.gear.vehicles = vehicles
-      return state
-    },
-  )
-  const vehicles = useCharacterBuilderStore((state) => state.gear.vehicles)
+  const gear = useBuilderGearSlice()
+  const vehicles = gear.getItemsByType<GearItemFormState>("vehicles")
 
-  const addVehicle = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => [
-      ...prev,
-      { ...item, id: crypto.randomUUID() },
-    ])
+  const addVehicle = (item: Omit<GearItemFormState, "id">) => {
+    gear.createItem({ ...item, type: "vehicles" })
   }
 
   const updateVehicle = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      return draft.map((existing) =>
-        existing.id === item.id ? item : existing,
-      )
-    })
+    gear.saveItem({ ...item, type: "vehicles" })
   }
 
-  const removeVehicle = (itemId: string) => {
-    itemsSlice.update((draft) => {
-      return draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      )
-    })
+  const removeVehicle = (item: GearItemFormState) => {
+    gear.deleteItem({ id: item.id }, { removeChildren: true })
   }
 
   return {

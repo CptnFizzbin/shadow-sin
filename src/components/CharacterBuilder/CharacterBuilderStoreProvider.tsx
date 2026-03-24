@@ -4,15 +4,15 @@ import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-import type { CharacterFormState } from "#/components/CharacterBuilder/CharacterFormState.ts"
+import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 
 export const CharacterBuilderContext =
-  createContext<Store<CharacterFormState> | null>(null)
+  createContext<Store<CharacterBuilderState> | null>(null)
 
 export interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
-  store: Store<CharacterFormState>
+  store: Store<CharacterBuilderState>
 }
 
 export const CharacterBuilderStoreProvider: FC<
@@ -24,7 +24,7 @@ export const CharacterBuilderStoreProvider: FC<
 )
 
 export const useCharacterBuilderStoreContext =
-  (): Store<CharacterFormState> => {
+  (): Store<CharacterBuilderState> => {
     const store = useContext(CharacterBuilderContext)
 
     if (!store) {
@@ -36,7 +36,7 @@ export const useCharacterBuilderStoreContext =
     return store
   }
 
-type CharacterBuilderSelector<TData> = (state: CharacterFormState) => TData
+type CharacterBuilderSelector<TData> = (state: CharacterBuilderState) => TData
 
 export function useCharacterBuilderStore<TData>(
   selector: CharacterBuilderSelector<TData>,
@@ -48,9 +48,9 @@ export function useCharacterBuilderStore<TData>(
 export function useCharacterBuilderStoreSlice<TData>(
   selector: CharacterBuilderSelector<TData>,
   updater: (
-    state: Draft<CharacterFormState>,
+    state: Draft<CharacterBuilderState>,
     newValue: Draft<TData>,
-  ) => Draft<CharacterFormState>,
+  ) => Draft<CharacterBuilderState>,
 ): StoreSlice<TData> {
   const store = useCharacterBuilderStoreContext()
   return useStoreSlice(store, selector, updater)

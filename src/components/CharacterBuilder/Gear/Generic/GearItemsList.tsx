@@ -18,7 +18,7 @@ interface GearItemsListProps {
   items: GearItemFormState[]
   onAdd: (item: GearItemFormState) => void
   onUpdate: (item: GearItemFormState) => void
-  onRemove: (itemId: string) => void
+  onRemove: (item: GearItemFormState) => void
   label?: string
 }
 
@@ -65,7 +65,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
             <GearItemCard
               item={item}
               onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-              onRemove={() => onRemove(item.id)}
+              onRemove={() => onRemove(item)}
             />
 
             <Stack
@@ -85,7 +85,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
                   item={subItem}
                   onEdit={() =>
                     setDialogState({ mode: "edit", item: subItem, open: true })}
-                  onRemove={() => onRemove(subItem.id)}
+                  onRemove={() => onRemove(subItem)}
                 />
               ))}
 

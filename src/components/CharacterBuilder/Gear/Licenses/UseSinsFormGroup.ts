@@ -1,42 +1,28 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 export function useSinsFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear,
-    (state, gear) => {
-      state.gear = gear
-      return state
-    },
-  )
-  const sins = useCharacterBuilderStore((state) => state.gear.sins)
+  const gear = useBuilderGearSlice()
+  const sins = gear.getItemsByType<SinFormState>("sins")
 
-  const addSin = (sin: SinFormState) => {
-    gearSlice.update((draft) => {
-      draft.sins.push(sin)
-    })
+  const addSin = (sin: Omit<SinFormState, "id">) => {
+    gear.createItem({ ...sin, type: "sins" })
   }
 
   const updateSin = (sin: SinFormState) => {
-    gearSlice.update((draft) => {
-      const index = draft.sins.findIndex((item) => item.id === sin.id)
-      if (index !== -1) draft.sins[index] = sin
-    })
+    gear.saveItem({ ...sin, type: "sins" })
   }
 
   const removeSin = (sin: SinFormState) => {
-    gearSlice.update((draft) => {
-      draft.sins = draft.sins.filter((item) => item.id !== sin.id)
-      draft.licenses = draft.licenses.filter((item) => item.sinId !== sin.id)
-    })
+    // remove sin and associated licenses
+    const licenses = gear.getItemsByType<LicenseFormState>("licenses").filter((l) => l.sinId === sin.id)
+    licenses.forEach((l) => gear.deleteItem({ id: l.id }, { removeChildren: true }))
+    gear.deleteItem({ id: sin.id }, { removeChildren: true })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {
-    return gearSlice.state.licenses.filter((license) => license.sinId === sinId)
+    return gear.getItemsByType<LicenseFormState>("licenses").filter((license) => license.sinId === sinId)
   }
 
   return {

@@ -1,39 +1,20 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 export function useMiscFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear.misc,
-    (state, misc) => {
-      state.gear.misc = misc
-      return state
-    },
-  )
-  const misc = useCharacterBuilderStore((state) => state.gear.misc)
+  const gear = useBuilderGearSlice()
+  const misc = gear.getItemsByType<GearItemFormState>("misc")
 
-  const addMiscItem = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => {
-      return [...prev, { ...item, id: crypto.randomUUID() }]
-    })
+  const addMiscItem = (item: Omit<GearItemFormState, "id">) => {
+    gear.createItem({ ...item, type: "misc" })
   }
 
   const updateMiscItem = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      return draft.map((existing) =>
-        existing.id === item.id ? item : existing,
-      )
-    })
+    gear.saveItem({ ...item, type: "misc" })
   }
 
-  const removeMiscItem = (itemId: string) => {
-    itemsSlice.update((draft) => {
-      return draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      )
-    })
+  const removeMiscItem = (item: GearItemFormState) => {
+    gear.deleteItem({ id: item.id }, { removeChildren: true })
   }
 
   return {

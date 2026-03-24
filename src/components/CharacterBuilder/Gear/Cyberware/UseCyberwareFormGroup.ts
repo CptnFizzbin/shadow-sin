@@ -1,72 +1,35 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
-import { calculateImplantEssence } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import { useMemo } from "react"
+
+import { BASE_ESSENCE } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
+import { useImplantsStore } from "#/components/CharacterBuilder/Gear/Cyberware/UseImplantsStore.ts"
 
 export function useCyberwareFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear,
-    (state, gear) => {
-      state.gear = gear
-      return state
-    },
-  )
-  const implants = useCharacterBuilderStore((state) => state.gear.cyberware)
-  const implantMods = useCharacterBuilderStore(
-    (state) => state.gear.implantMods,
-  )
+  const {
+    implants,
+    implantMods,
+    addImplant,
+    updateImplant,
+    removeImplant,
+    addImplantMod,
+    updateImplantMod,
+    removeImplantMod,
+    getModsForImplant,
+  } = useImplantsStore()
 
-  const addImplant = (implant: ImplantFormState) => {
-    gearSlice.update((draft) => {
-      draft.cyberware.push(implant)
-    })
-  }
+  const essenceSummary = useMemo(() => {
+    const cyberwareTotal = implants.reduce(
+      (sum, i) => sum + (i.essenceCost ?? 0),
+      0,
+    )
+    const biowareTotal = 0 // placeholder if bioware tracked separately
+    const effectiveEssenceUsed = cyberwareTotal + biowareTotal
+    const remainingEssence = BASE_ESSENCE - effectiveEssenceUsed
 
-  const updateImplant = (implant: ImplantFormState) => {
-    gearSlice.update((draft) => {
-      const index = draft.cyberware.findIndex((item) => item.id === implant.id)
-      if (index !== -1) draft.cyberware[index] = implant
-    })
-  }
-
-  const removeImplant = (implantId: string) => {
-    gearSlice.update((draft) => {
-      draft.cyberware = draft.cyberware.filter((item) => item.id !== implantId)
-      draft.implantMods = draft.implantMods.filter(
-        (mod) => mod.parentId !== implantId,
-      )
-    })
-  }
-
-  const addImplantMod = (mod: GearItemFormState) => {
-    gearSlice.update((draft) => {
-      draft.implantMods.push(mod)
-    })
-  }
-
-  const updateImplantMod = (mod: GearItemFormState) => {
-    gearSlice.update((draft) => {
-      const index = draft.implantMods.findIndex((m) => m.id === mod.id)
-      if (index !== -1) draft.implantMods[index] = mod
-    })
-  }
-
-  const removeImplantMod = (modId: string) => {
-    gearSlice.update((draft) => {
-      draft.implantMods = draft.implantMods.filter((m) => m.id !== modId)
-    })
-  }
-
-  const getModsForImplant = (implantId: string): GearItemFormState[] =>
-    gearSlice.state.implantMods.filter((mod) => mod.parentId === implantId)
-
-  const essenceSummary = calculateImplantEssence(implants)
+    return { cyberwareTotal, biowareTotal, effectiveEssenceUsed, remainingEssence }
+  }, [implants, implantMods])
 
   return {
-    implants,
+    implants: implants,
     implantMods,
     addImplant,
     updateImplant,

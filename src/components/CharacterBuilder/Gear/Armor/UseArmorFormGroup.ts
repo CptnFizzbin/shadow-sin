@@ -1,40 +1,20 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 export function useArmorFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear.armor,
-    (state, armor) => {
-      state.gear.armor = armor
-      return state
-    },
-  )
-  const armor = useCharacterBuilderStore((state) => state.gear.armor)
+  const gear = useBuilderGearSlice()
+  const armor = gear.getItemsByType<GearItemFormState>("armor")
 
-  const addArmor = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => [
-      ...prev,
-      { ...item, id: crypto.randomUUID() },
-    ])
+  const addArmor = (item: Omit<GearItemFormState, "id">) => {
+    gear.createItem({ ...item, type: "armor" })
   }
 
   const updateArmor = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      return draft.map((existing) =>
-        existing.id === item.id ? item : existing,
-      )
-    })
+    gear.saveItem({ ...item, type: "armor" })
   }
 
-  const removeArmor = (itemId: string) => {
-    itemsSlice.update((draft) => {
-      return draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      )
-    })
+  const removeArmor = (item: GearItemFormState) => {
+    gear.deleteItem(item, { removeChildren: true })
   }
 
   return {

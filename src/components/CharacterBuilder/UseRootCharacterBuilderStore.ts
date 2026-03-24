@@ -2,14 +2,14 @@ import { debounce } from "@tanstack/pacer"
 import { Store } from "@tanstack/store"
 import { useEffect, useState } from "react"
 
-import type { CharacterFormState } from "#/components/CharacterBuilder/CharacterFormState.ts"
+import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
 import { useDefaultValues } from "#/components/CharacterBuilder/UseDefaultValues.ts"
 import { mergeObjects } from "#/lib/MergeUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 const debouncedSaveState = debounce(
-  (characterId: string, values: CharacterFormState) => {
+  (characterId: string, values: CharacterBuilderState) => {
     console.log("Saving form state...", { characterId, values })
     FormPersister.saveState(characterId, values)
   },
@@ -18,15 +18,15 @@ const debouncedSaveState = debounce(
 
 export const useRootCharacterBuilderStore = (
   character?: PlayerCharacterData,
-): Store<CharacterFormState> => {
+): Store<CharacterBuilderState> => {
   const defaultValues = useDefaultValues({ character })
 
   const [store] = useState(() => {
     const savedState = FormPersister.loadState(defaultValues.characterId)
     const initialState = savedState
-      ? mergeObjects<CharacterFormState>(defaultValues, savedState)
+      ? mergeObjects<CharacterBuilderState>(defaultValues, savedState)
       : defaultValues
-    return new Store<CharacterFormState>(initialState)
+    return new Store<CharacterBuilderState>(initialState)
   })
 
   useEffect(() => {

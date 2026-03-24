@@ -1,44 +1,31 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCallback } from "react"
+
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
-export function useDevicesFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear.devices,
-    (state, devices) => {
-      state.gear.devices = devices
-      return state
-    },
-  )
-  const devices = useCharacterBuilderStore((state) => state.gear.devices)
-
-  const addDeviceItem = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      draft.push(item)
-    })
-  }
-
-  const updateDeviceItem = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      const index = draft.findIndex((existing) => existing.id === item.id)
-      if (index !== -1) draft[index] = item
-    })
-  }
-
-  const removeDeviceItem = (itemId: string) => {
-    itemsSlice.update((draft) =>
-      draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
-    )
-  }
+export function useDeviceSet() {
+  const gear = useBuilderGearSlice()
 
   return {
+    devices: gear.getItemsByType<GearItemFormState>("devices"),
+    addDevice: useCallback((item: Omit<GearItemFormState, "id">) => {
+      gear.createItem({ ...item, type: "devices" })
+    }, [gear]),
+    updateDevice: useCallback((item: GearItemFormState) => {
+      gear.saveItem({ ...item, type: "devices" })
+    }, [gear]),
+    removeDevice: useCallback((item: GearItemFormState) => {
+      gear.deleteItem({ id: item.id }, { removeChildren: true })
+    }, [gear]),
+  }
+}
+
+export function useDevicesFormGroup() {
+  const { devices, addDevice, updateDevice, removeDevice } = useDeviceSet()
+  return {
     devices,
-    addDeviceItem,
-    updateDeviceItem,
-    removeDeviceItem,
+    addDeviceItem: addDevice,
+    updateDeviceItem: updateDevice,
+    removeDeviceItem: removeDevice,
   }
 }

@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
+import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
 
 type GearItemSectionField =
   | "gear.weapons"
@@ -26,38 +26,25 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
     | "vehicles"
     | "misc"
 
-  const itemsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear[sectionKey],
-    (state, newValue) => {
-      state.gear[sectionKey] = newValue
-      return state
-    },
-  )
+  const gear = useBuilderGearSlice()
+  const items = gear.getItemsByType<GearItemFormState>(sectionKey)
 
-  const addItem = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => {
-      return [...prev, { ...item, id: crypto.randomUUID() }]
-    })
+  const addItem = (item: Omit<GearItemFormState, "id">) => {
+    gear.createItem({ ...item, type: sectionKey })
   }
 
   const updateItem = (item: GearItemFormState) => {
-    itemsSlice.update((draft) => {
-      return draft.map((existing) =>
-        existing.id === item.id ? item : existing,
-      )
-    })
+    gear.saveItem({ ...item, type: sectionKey })
   }
 
-  const removeItem = (itemId: string) => {
-    itemsSlice.update((draft) => {
-      return draft.filter((existing) => existing.id !== itemId)
-    })
+  const removeItem = (item: GearItemFormState) => {
+    gear.deleteItem({ id: item.id }, { removeChildren: true })
   }
 
   return (
     <Stack gap={1}>
       <GearItemsList
-        items={itemsSlice.state}
+        items={items}
         onAdd={addItem}
         onUpdate={updateItem}
         onRemove={removeItem}

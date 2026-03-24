@@ -27,7 +27,7 @@ interface CyberwareListProps {
   implants: ImplantFormState[]
   onAdd: (implant: ImplantFormState) => void
   onUpdate: (implant: ImplantFormState) => void
-  onRemove: (implantId: string) => void
+  onRemove: (implant: ImplantFormState) => void
   label?: string
 }
 
@@ -86,7 +86,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
               implant={implant}
               onEdit={() =>
                 setImplantDialog({ mode: "edit", implant, open: true })}
-              onRemove={() => onRemove(implant.id)}
+              onRemove={() => onRemove(implant)}
             />
 
             <Stack
@@ -105,7 +105,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
                   key={mod.id}
                   item={mod}
                   onEdit={() => setModDialog({ mode: "edit", mod, open: true })}
-                  onRemove={() => removeImplantMod(mod.id)}
+                  onRemove={() => removeImplantMod(mod)}
                 />
               ))}
 
