@@ -13,7 +13,7 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuildPointsSummary } from "#/components/CharacterBuilder/UseBuildPointsSummary.ts"
+import { useBuildPointsSummary } from "#/components/CharacterBuilder/Summary/UseBuildPointsSummary.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 

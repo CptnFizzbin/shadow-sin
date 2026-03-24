@@ -1,4 +1,4 @@
-import { createAttrFormState } from "#/components/CharacterBuilder/AttrFormState.ts"
+import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import type { CharacterFormState } from "#/components/CharacterBuilder/CharacterFormState.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"

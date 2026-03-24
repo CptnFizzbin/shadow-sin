@@ -1,4 +1,4 @@
-import type { AttrFormState } from "#/components/CharacterBuilder/AttrFormState.ts"
+import type { AttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"

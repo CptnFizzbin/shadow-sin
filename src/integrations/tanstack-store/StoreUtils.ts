@@ -8,24 +8,26 @@ export type Recipe<TData> = (draft: Draft<TData>) => void | Draft<TData>
 
 export interface StoreSlice<TData> {
   state: TData
-  update(updater: Recipe<TData>): void
+
+  update (updater: Recipe<TData>): void
 }
-export const useStoreSlice = <TRoot, TData>(
+
+export const useStoreSlice = <TRoot, TData> (
   store: Store<TRoot>,
   selector: (state: TRoot) => TData,
-  setter: (state: Draft<TRoot>, nextValue: Draft<TData>) => Draft<TRoot>,
+  updater: (state: Draft<TRoot>, nextValue: Draft<TData>) => Draft<TRoot>,
 ): StoreSlice<TData> => {
   const value = useStore(store, selector)
   const selectorRef = useRef(selector)
-  const setterRef = useRef(setter)
+  const setterRef = useRef(updater)
 
   useEffect(() => {
     selectorRef.current = selector
   }, [selector])
 
   useEffect(() => {
-    setterRef.current = setter
-  }, [setter])
+    setterRef.current = updater
+  }, [updater])
 
   return useMemo(() => {
     return {

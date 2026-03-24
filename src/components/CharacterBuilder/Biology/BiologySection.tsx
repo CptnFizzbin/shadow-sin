@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { createAttrFormState } from "#/components/CharacterBuilder/AttrFormState.ts"
+import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/CharacterBuilder/Biology/BiologyAttributes.tsx"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"

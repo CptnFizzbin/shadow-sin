@@ -47,11 +47,11 @@ export function useCharacterBuilderStore<TData>(
 
 export function useCharacterBuilderStoreSlice<TData>(
   selector: CharacterBuilderSelector<TData>,
-  setter: (
+  updater: (
     state: Draft<CharacterFormState>,
     newValue: Draft<TData>,
   ) => Draft<CharacterFormState>,
 ): StoreSlice<TData> {
   const store = useCharacterBuilderStoreContext()
-  return useStoreSlice(store, selector, setter)
+  return useStoreSlice(store, selector, updater)
 }

@@ -1,4 +1,4 @@
-import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPointsUtils.ts"
+import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPoints/BuildPointsUtils.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 
 export interface QualityBuildPoints extends BuildPointsInfo {

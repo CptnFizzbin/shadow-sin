@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { createAttrFormState } from "#/components/CharacterBuilder/AttrFormState.ts"
+import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"

@@ -1,4 +1,3 @@
-import ButtonBase from "@mui/material/ButtonBase"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
@@ -24,17 +23,11 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
 
   return (
     <Paper
-      component={ButtonBase}
       onClick={onClick}
-      elevation={1}
-      aria-label={`Open quality ${quality.name}`}
       sx={{
-        "display": "flex",
-        "width": "100%",
         "textAlign": "left",
-        "borderRadius": 1,
-        "px": 1,
-        "py": 0.5,
+        "cursor": "pointer",
+        "paddingLeft": 1,
         "&:hover": { bgcolor: "action.hover" },
       }}
     >
