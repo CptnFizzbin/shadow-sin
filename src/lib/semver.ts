@@ -24,5 +24,5 @@ export function compareSemver(versionA: string, versionB: string): -1 | 0 | 1 {
 /** The current schema version for CharacterSheet. */
 export const CURRENT_CHARACTER_VERSION = "1.0.0"
 
-/** The current schema version for CharacterFormState (builder draft). */
+/** The current schema version for BuilderState (character builder draft). */
 export const CURRENT_FORM_STATE_VERSION = "1.0.0"

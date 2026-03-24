@@ -10,7 +10,6 @@ import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { ArmorPanel } from "#/components/Character/Form/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/Character/Form/Gear/Cyberware/CyberwarePanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
@@ -27,6 +26,7 @@ import { SectionHeader } from "#/components/Character/Form/Gear/SectionHeader.ts
 import { useGearFormGroup } from "#/components/Character/Form/Gear/UseGearFormGroup.ts"
 import { VehiclesPanel } from "#/components/Character/Form/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/Character/Form/Gear/Weapons/WeaponsPanel.tsx"
+import { useBuilderStore } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
@@ -231,9 +231,9 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gear = useCharacterSheet((state) => state.gear)
-  const lifestyle = useCharacterSheet((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterSheet((state) => state.lifestyleMonths)
+  const gear = useBuilderStore((state) => state.gear)
+  const lifestyle = useBuilderStore((state) => state.lifestyle)
+  const lifestyleMonths = useBuilderStore((state) => state.lifestyleMonths)
 
   if (section === SectionHeader.Lifestyle) {
     return (

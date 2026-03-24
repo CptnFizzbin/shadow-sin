@@ -1,5 +1,4 @@
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
-import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import type { BuilderState } from "#/components/CharacterBuilder/BuilderState.ts"
 import { CURRENT_FORM_STATE_VERSION } from "#/lib/semver.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
@@ -14,23 +13,18 @@ export interface UseDefaultValuesOptions {
   character?: CharacterSheet
 }
 
-export interface DefaultValues {
-  characterFormState: CharacterFormState
-  builderState: BuilderState
-}
-
 export const useDefaultValues = ({
   character,
-}: UseDefaultValuesOptions): DefaultValues => {
+}: UseDefaultValuesOptions): BuilderState => {
   const characterId = character?.id ?? NULL_CHARACTER_ID
   const { profile, biology } = character || {}
 
   const metatype = metatypes[biology?.metatype || MetatypeKey.Human]
   const awakening = awakenings[biology?.awakening || AwakeningType.Mundane]
 
-  const attrKeys = Object.values(AttributeKey)
+  const allAttributeKeys = Object.values(AttributeKey)
 
-  const attrEntries = attrKeys.map((attr) => {
+  const attrEntries = allAttributeKeys.map((attr) => {
     const { value, ...limits } = createAttrFormState({
       attr,
       character,
@@ -48,8 +42,8 @@ export const useDefaultValues = ({
     attrEntries.map(({ attr, limits }) => [attr, limits]),
   ) as BuilderState["attributeLimits"]
 
-  const characterFormState: CharacterFormState = {
-    characterId: characterId,
+  return {
+    characterId,
     version: CURRENT_FORM_STATE_VERSION,
 
     name: profile?.name || "",
@@ -62,8 +56,8 @@ export const useDefaultValues = ({
     awakening: biology?.awakening || AwakeningType.Mundane,
 
     attributes,
-
     qualities: [],
+    contacts: [],
 
     skills: {
       activeSkills: [],
@@ -89,10 +83,6 @@ export const useDefaultValues = ({
       misc: [],
     },
 
-    contacts: [],
-  }
-
-  const builderState: BuilderState = {
     buildPoints: {
       total: 400,
       spent: {
@@ -105,6 +95,4 @@ export const useDefaultValues = ({
     },
     attributeLimits,
   }
-
-  return { characterFormState, builderState }
 }

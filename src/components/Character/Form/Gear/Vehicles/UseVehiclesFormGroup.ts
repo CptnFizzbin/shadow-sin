@@ -1,18 +1,18 @@
 import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useVehiclesFormGroup() {
-  const itemsSlice = useCharacterSheetSlice(
+  const itemsSlice = useBuilderStoreSlice(
     (state) => state.gear.vehicles,
     (state, vehicles) => {
       state.gear.vehicles = vehicles
       return state
     },
   )
-  const vehicles = useCharacterSheet((state) => state.gear.vehicles)
+  const vehicles = useBuilderStore((state) => state.gear.vehicles)
 
   const addVehicle = (item: GearData) => {
     itemsSlice.update((draft) => {

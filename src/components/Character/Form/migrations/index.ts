@@ -11,7 +11,7 @@ import type { FormStateMigration } from "#/components/Character/Form/FormStateMi
  *
  * The `any` types are intentional: each migration may receive an input with
  * an unknown prior schema and must produce output that the next migration (or
- * the current CharacterFormState) can accept.
+ * the current BuilderState) can accept.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const formStateMigrations: FormStateMigration<any, any>[] = []

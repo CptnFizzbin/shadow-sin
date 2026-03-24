@@ -1,4 +1,3 @@
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type {
   ActiveSkillFormState,
   ActiveSkillGroupFormState,
@@ -8,9 +7,10 @@ import {
   getActiveSkillRatingWarnings,
   getActiveSkillSelectionWarnings,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 
 export function useActiveSkillsFormGroup() {
-  const skillsSlice = useCharacterSheetSlice(
+  const skillsSlice = useBuilderStoreSlice(
     (state) => state.skills,
     (state, skills) => {
       state.skills = skills

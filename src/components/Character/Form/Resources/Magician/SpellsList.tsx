@@ -7,12 +7,12 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { SpellListItem } from "#/components/Character/Form/Resources/Magician/SpellListItem.tsx"
 import {
   useSpellsBuildPoints,
   useSpellsWarnings,
 } from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
+import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
@@ -23,7 +23,7 @@ type DialogState =
   | { open: boolean; type: "edit"; spell: SpellData }
 
 export const SpellsList: FC = () => {
-  const spellsSlice = useCharacterSheetSlice(
+  const spellsSlice = useBuilderStoreSlice(
     (state) => state.awakened.spells ?? [],
     (state, spells) => {
       state.awakened.spells = spells

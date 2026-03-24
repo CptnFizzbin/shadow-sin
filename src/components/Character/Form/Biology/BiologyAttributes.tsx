@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
-import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useBuilderStore } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
@@ -34,10 +34,10 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const metatypeName = useCharacterSheet((state) => state.metatype)
+  const metatypeName = useBuilderStore((state) => state.metatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useCharacterSheet((state) => state.awakening)
+  const awakeningType = useBuilderStore((state) => state.awakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys

@@ -2,18 +2,18 @@ import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 
 import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 
 export const ProfileSection: FC = () => {
-  const storeSlice = useCharacterSheetSlice(
+  const storeSlice = useBuilderStoreSlice(
     (state) => state,
     (_state, newState) => newState,
   )
 
-  const alias = useCharacterSheet((state) => state.alias)
-  const name = useCharacterSheet((state) => state.name)
+  const alias = useBuilderStore((state) => state.alias)
+  const name = useBuilderStore((state) => state.name)
 
   return (
     <>

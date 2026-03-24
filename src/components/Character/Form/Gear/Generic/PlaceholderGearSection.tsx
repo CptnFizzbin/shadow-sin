@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { GearItemsList } from "#/components/Character/Form/Gear/Generic/GearItemsList.tsx"
+import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 type GearItemSectionField =
@@ -26,7 +26,7 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
     | "vehicles"
     | "misc"
 
-  const itemsSlice = useCharacterSheetSlice(
+  const itemsSlice = useBuilderStoreSlice(
     (state) => state.gear[sectionKey],
     (state, newValue) => {
       state.gear[sectionKey] = newValue

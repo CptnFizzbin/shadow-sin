@@ -8,19 +8,19 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { LifestyleType, Lifestyles } from "#/lib/system/types/LifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
-  const storeSlice = useCharacterSheetSlice(
+  const storeSlice = useBuilderStoreSlice(
     (state) => state,
     (_state, newState) => newState,
   )
-  const lifestyle = useCharacterSheet((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterSheet((state) => state.lifestyleMonths)
+  const lifestyle = useBuilderStore((state) => state.lifestyle)
+  const lifestyleMonths = useBuilderStore((state) => state.lifestyleMonths)
   const upkeep = Lifestyles[lifestyle].upkeep
   const totalCost = upkeep * lifestyleMonths
 

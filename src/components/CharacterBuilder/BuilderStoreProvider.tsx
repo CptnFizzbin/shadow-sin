@@ -44,7 +44,7 @@ export function useBuilderStore<TData>(
   return useStore(store, selector)
 }
 
-export function useBuilderStoreSlice<TData extends object>(
+export function useBuilderStoreSlice<TData>(
   selector: BuilderSelector<TData>,
   setter: (
     state: Draft<BuilderState>,

@@ -1,8 +1,8 @@
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { getContactBpCost } from "#/components/Character/Form/Contacts/ContactsUtils.ts"
+import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 
 export const useContactsSlice = () => {
-  return useCharacterSheetSlice(
+  return useBuilderStoreSlice(
     (state) => state.contacts,
     (state, contacts) => {
       state.contacts = contacts

@@ -1,5 +1,4 @@
 import { useAttributesBuildPoints } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
-import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { CharacterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/Character/Form/Contacts/ContactsHooks.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
@@ -32,19 +31,17 @@ export interface BpSummary {
 }
 
 export function useBuildPointsSummary(): BpSummary {
-  const metatypeKey = useCharacterSheet((state) => state.metatype)
-  const awakeningType = useCharacterSheet((state) => state.awakening)
+  const metatypeKey = useBuilderStore((state) => state.metatype)
+  const awakeningType = useBuilderStore((state) => state.awakening)
 
-  const qualities = useCharacterSheet((state) => state.qualities)
+  const qualities = useBuilderStore((state) => state.qualities)
 
-  const activeSkills = useCharacterSheet((s) => s.skills.activeSkills)
-  const activeSkillGroups = useCharacterSheet((s) => s.skills.activeSkillGroups)
-  const knowledgeSkills = useCharacterSheet((s) => s.skills.knowledgeSkills)
-  const languageSkills = useCharacterSheet(
-    (state) => state.skills.languageSkills,
-  )
-  const logicValue = useCharacterSheet((s) => s.attributes.logic)
-  const intuitionValue = useCharacterSheet((s) => s.attributes.intuition)
+  const activeSkills = useBuilderStore((s) => s.skills.activeSkills)
+  const activeSkillGroups = useBuilderStore((s) => s.skills.activeSkillGroups)
+  const knowledgeSkills = useBuilderStore((s) => s.skills.knowledgeSkills)
+  const languageSkills = useBuilderStore((state) => state.skills.languageSkills)
+  const logicValue = useBuilderStore((s) => s.attributes.logic)
+  const intuitionValue = useBuilderStore((s) => s.attributes.intuition)
   const gearBpSpent = useBuilderStore((state) => state.buildPoints.spent.gear)
 
   const metatypeCost = metatypes[metatypeKey].cost

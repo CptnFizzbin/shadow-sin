@@ -1,19 +1,19 @@
 import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 import type { LicenseData } from "#/lib/system/types/gear/licenseData.ts"
 
 export function useSinsFormGroup() {
-  const gearSlice = useCharacterSheetSlice(
+  const gearSlice = useBuilderStoreSlice(
     (state) => state.gear,
     (state, gear) => {
       state.gear = gear
       return state
     },
   )
-  const sins = useCharacterSheet((state) => state.gear.sins)
+  const sins = useBuilderStore((state) => state.gear.sins)
 
   const addSin = (sin: SinData) => {
     gearSlice.update((draft) => {

@@ -1,18 +1,18 @@
 import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 export function useQualitiesFormGroup() {
-  const qualitiesSlice = useCharacterSheetSlice(
+  const qualitiesSlice = useBuilderStoreSlice(
     (state) => state.qualities,
     (state, qualities) => {
       state.qualities = qualities
       return state
     },
   )
-  const qualities = useCharacterSheet((state) => state.qualities)
+  const qualities = useBuilderStore((state) => state.qualities)
 
   let bpSpent = 0
   let bpBonus = 0

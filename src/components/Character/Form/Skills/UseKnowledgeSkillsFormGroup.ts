@@ -1,7 +1,3 @@
-import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type {
   KnowledgeSkillFormState,
   LanguageSkillFormState,
@@ -14,17 +10,21 @@ import {
   getLanguageSelectionWarnings,
   getMaxSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import {
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 
 export function useKnowledgeSkillsFormGroup() {
-  const skillsSlice = useCharacterSheetSlice(
+  const skillsSlice = useBuilderStoreSlice(
     (state) => state.skills,
     (state, skills) => {
       state.skills = skills
       return state
     },
   )
-  const logicValue = useCharacterSheet((s) => s.attributes.logic)
-  const intuitionValue = useCharacterSheet((s) => s.attributes.intuition)
+  const logicValue = useBuilderStore((s) => s.attributes.logic)
+  const intuitionValue = useBuilderStore((s) => s.attributes.intuition)
 
   const freeSkillPoints = getFreeSkillPoints(logicValue, intuitionValue)
   const maxSkillPoints = getMaxSkillPoints(logicValue, intuitionValue)

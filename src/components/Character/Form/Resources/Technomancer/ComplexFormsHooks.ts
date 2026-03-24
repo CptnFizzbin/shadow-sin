@@ -2,13 +2,13 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/Character/Form/CharacterBuilderHooks.ts"
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { ComplexFormBpPerRating } from "#/components/Character/Form/Resources/Technomancer/TechnomancerUtils.ts"
+import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 
 export const useComplexFormsSlice = () => {
-  return useCharacterSheetSlice(
+  return useBuilderStoreSlice(
     (state) => state.awakened.complexForms,
     (state, complexForms) => {
       state.awakened.complexForms = complexForms

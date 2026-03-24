@@ -5,7 +5,6 @@ import type { FC } from "react"
 
 import { createAttrLimits } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
-import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
@@ -14,17 +13,13 @@ import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export const BiologySection: FC = () => {
-  const characterSlice = useCharacterSheetSlice(
-    (state) => state,
-    (_state, newState) => newState,
-  )
   const builderSlice = useBuilderStoreSlice(
     (state) => state,
     (_state, newState) => newState,
   )
 
-  const metatypeKey = characterSlice.state.metatype
-  const awakeningType = characterSlice.state.awakening
+  const metatypeKey = builderSlice.state.metatype
+  const awakeningType = builderSlice.state.awakening
 
   const updateAttributes = (
     newMetatypeKey: MetatypeKey,
@@ -37,31 +32,25 @@ export const BiologySection: FC = () => {
       (attr) => attr !== AttributeKey.essence,
     )
 
-    characterSlice.update((draft) => {
-      for (const attr of attrsToUpdate) {
-        const limits = createAttrLimits({ attr, metatype, awakening })
-        draft.attributes[attr] = limits.min
-      }
-    })
-
     builderSlice.update((draft) => {
       draft.buildPoints.spent.attributes = 0
       for (const attr of attrsToUpdate) {
         const limits = createAttrLimits({ attr, metatype, awakening })
+        draft.attributes[attr] = limits.min
         draft.attributeLimits[attr] = limits
       }
     })
   }
 
   const onMetatypeChange = (newMetatype: MetatypeKey) => {
-    characterSlice.update((draft) => {
+    builderSlice.update((draft) => {
       draft.metatype = newMetatype
     })
     updateAttributes(newMetatype, awakeningType)
   }
 
   const onAwakeningChange = (newAwakening: AwakeningType) => {
-    characterSlice.update((draft) => {
+    builderSlice.update((draft) => {
       draft.awakening = newAwakening
     })
     updateAttributes(metatypeKey, newAwakening)

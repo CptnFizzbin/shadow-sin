@@ -1,20 +1,20 @@
-import {
-  useCharacterSheet,
-  useCharacterSheetSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { calculateImplantEssence } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
+import {
+  useBuilderStore,
+  useBuilderStoreSlice,
+} from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
 
 export function useCyberwareFormGroup() {
-  const gearSlice = useCharacterSheetSlice(
+  const gearSlice = useBuilderStoreSlice(
     (state) => state.gear,
     (state, gear) => {
       state.gear = gear
       return state
     },
   )
-  const implants = useCharacterSheet((state) => state.gear.cyberware)
+  const implants = useBuilderStore((state) => state.gear.cyberware)
 
   const addImplant = (implant: ImplantData) => {
     gearSlice.update((draft) => {
