@@ -74,7 +74,7 @@ export interface PlayerCharacterData extends CharacterSheet {
     }
   }
 
-  gear: GearData[]
+  gear: Record<string, GearData>
   skills: Record<string, SkillData>
 
   spellcasting?: {
