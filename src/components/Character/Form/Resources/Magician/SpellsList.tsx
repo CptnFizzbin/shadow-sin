@@ -7,7 +7,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { SpellListItem } from "#/components/Character/Form/Resources/Magician/SpellListItem.tsx"
 import {
   useSpellsBuildPoints,
@@ -23,7 +23,7 @@ type DialogState =
   | { open: boolean; type: "edit"; spell: SpellData }
 
 export const SpellsList: FC = () => {
-  const spellsSlice = useCharacterBuilderStoreSlice(
+  const spellsSlice = useCharacterSheetSlice(
     (state) => state.awakened.spells ?? [],
     (state, spells) => {
       state.awakened.spells = spells

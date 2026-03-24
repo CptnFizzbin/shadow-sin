@@ -1,11 +1,11 @@
 import type { AttrLimits } from "#/components/Character/Form/AttrFormState.ts"
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const useAttributeValueSlice = (attrKey: AttributeKey) => {
-  return useCharacterBuilderStoreSlice(
+  return useCharacterSheetSlice(
     (state) => state.attributes[attrKey],
     (state, attrValue) => {
       state.attributes[attrKey] = attrValue

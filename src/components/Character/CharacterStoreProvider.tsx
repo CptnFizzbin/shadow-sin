@@ -6,13 +6,13 @@ import { createContext, useContext } from "react"
 
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 export const CharacterStoreContext =
-  createContext<Store<PlayerCharacterData> | null>(null)
+  createContext<Store<CharacterSheet> | null>(null)
 
 export interface CharacterStoreProviderProps extends PropsWithChildren {
-  store: Store<PlayerCharacterData>
+  store: Store<CharacterSheet>
 }
 
 export const CharacterStoreProvider: FC<CharacterStoreProviderProps> = ({
@@ -24,9 +24,9 @@ export const CharacterStoreProvider: FC<CharacterStoreProviderProps> = ({
   </CharacterStoreContext.Provider>
 )
 
-type CharacterDataSelector<TData> = (state: PlayerCharacterData) => TData
+type CharacterSheetSelector<TData> = (state: CharacterSheet) => TData
 
-export const useCharacterStoreContext = (): Store<PlayerCharacterData> => {
+export const useCharacterStoreContext = (): Store<CharacterSheet> => {
   const store = useContext(CharacterStoreContext)
 
   if (!store) {
@@ -38,20 +38,26 @@ export const useCharacterStoreContext = (): Store<PlayerCharacterData> => {
   return store
 }
 
-export function useCharacterStore<TData>(
-  selector: CharacterDataSelector<TData>,
+export function useCharacterSheet<TData>(
+  selector: CharacterSheetSelector<TData>,
 ): TData {
   const store = useCharacterStoreContext()
   return useStore(store, selector)
 }
 
-export function useCharacterStoreSlice<TData extends object>(
-  selector: CharacterDataSelector<TData>,
+/** @deprecated Use useCharacterSheet instead. */
+export const useCharacterStore = useCharacterSheet
+
+export function useCharacterSheetSlice<TData extends object>(
+  selector: CharacterSheetSelector<TData>,
   setter: (
-    state: Draft<PlayerCharacterData>,
+    state: Draft<CharacterSheet>,
     nextValue: Draft<TData>,
-  ) => Draft<PlayerCharacterData>,
+  ) => Draft<CharacterSheet>,
 ): StoreSlice<TData> {
   const store = useCharacterStoreContext()
   return useStoreSlice(store, selector, setter)
 }
+
+/** @deprecated Use useCharacterSheetSlice instead. */
+export const useCharacterStoreSlice = useCharacterSheetSlice

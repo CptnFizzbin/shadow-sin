@@ -3,14 +3,14 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/Character/Form/CharacterBuilderHooks.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { getSpriteTasksBp } from "#/components/Character/Form/Resources/Technomancer/SpritesUtils.ts"
 import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 
 export const useSpritesSlice = () => {
-  return useCharacterBuilderStoreSlice(
+  return useCharacterSheetSlice(
     (state) => state.awakened.sprites,
     (state, sprites) => {
       state.awakened.sprites = sprites

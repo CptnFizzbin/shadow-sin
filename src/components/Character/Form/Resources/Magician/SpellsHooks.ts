@@ -3,7 +3,7 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/Character/Form/CharacterBuilderHooks.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import {
   isMagician,
   SpellsBpPerSpell,
@@ -12,7 +12,7 @@ import { SkillKey } from "#/lib/system/types/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const useSpellsSlice = () => {
-  return useCharacterBuilderStoreSlice(
+  return useCharacterSheetSlice(
     (state) => state.awakened.spells ?? [],
     (state, spells) => {
       state.awakened.spells = spells

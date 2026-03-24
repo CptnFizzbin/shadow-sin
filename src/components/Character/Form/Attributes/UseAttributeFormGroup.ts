@@ -1,5 +1,5 @@
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
-import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { useBuilderStore } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import {
   AttributeKey,
@@ -12,7 +12,7 @@ export interface AttributeRowProps {
 }
 
 export function useAttributeFormGroup() {
-  const attributes = useCharacterBuilderStore((state) => state.attributes)
+  const attributes = useCharacterSheet((state) => state.attributes)
   const attributeLimits = useBuilderStore((state) => state.attributeLimits)
   const bpSpent = useBuilderStore((state) => state.buildPoints.spent.attributes)
 

@@ -29,24 +29,27 @@ export const useCharacterBuilderStoreContext =
 
     if (!store) {
       throw new Error(
-        "useCharacterBuilderStoreContext must be used within a CharacterBuilderStoreProvider",
+        "useCharacterSheet must be used within a CharacterBuilderStoreProvider",
       )
     }
 
     return store
   }
 
-type CharacterBuilderSelector<TData> = (state: CharacterFormState) => TData
+type CharacterSheetSelector<TData> = (state: CharacterFormState) => TData
 
-export function useCharacterBuilderStore<TData>(
-  selector: CharacterBuilderSelector<TData>,
+export function useCharacterSheet<TData>(
+  selector: CharacterSheetSelector<TData>,
 ): TData {
   const store = useCharacterBuilderStoreContext()
   return useStore(store, selector)
 }
 
-export function useCharacterBuilderStoreSlice<TData>(
-  selector: CharacterBuilderSelector<TData>,
+/** @deprecated Use useCharacterSheet instead. */
+export const useCharacterBuilderStore = useCharacterSheet
+
+export function useCharacterSheetSlice<TData>(
+  selector: CharacterSheetSelector<TData>,
   setter: (
     state: Draft<CharacterFormState>,
     newValue: Draft<TData>,
@@ -55,3 +58,6 @@ export function useCharacterBuilderStoreSlice<TData>(
   const store = useCharacterBuilderStoreContext()
   return useStoreSlice(store, selector, setter)
 }
+
+/** @deprecated Use useCharacterSheetSlice instead. */
+export const useCharacterBuilderStoreSlice = useCharacterSheetSlice

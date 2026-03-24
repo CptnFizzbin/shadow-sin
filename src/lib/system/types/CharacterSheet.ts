@@ -3,15 +3,12 @@ import type { ContactData } from "#/lib/system/types/contactData.ts"
 import type { QualityData } from "#/lib/system/types/qualityData.ts"
 
 /**
- * Unified interface that represents the core character data shared between
- * character display (PlayerCharacterData) and character building
- * (CharacterFormState).
- *
- * By sharing this base interface both contexts expose the same attribute,
- * quality, and contact shapes, enabling hooks and selectors to be written
- * once and reused in either a display or builder store context.
+ * Minimal shared base for both the stored character sheet (CharacterSheet)
+ * and the builder draft state (CharacterFormState). Provides the fields that
+ * are structurally identical in both contexts so selectors can be written once
+ * and reused across display and builder stores.
  */
-export interface CharacterSheet {
+export interface CharacterCore {
   /** Plain attribute values keyed by AttributeKey. */
   attributes: Record<AttributeKey, number>
   qualities: QualityData[]

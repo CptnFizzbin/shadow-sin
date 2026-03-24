@@ -1,11 +1,11 @@
 import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const useAdeptPowersSlice = () => {
-  return useCharacterBuilderStoreSlice(
+  return useCharacterSheetSlice(
     (state) => state.awakened.adeptPowers ?? [],
     (state, adeptPowers) => {
       state.awakened.adeptPowers = adeptPowers
@@ -17,7 +17,7 @@ export const useAdeptPowersSlice = () => {
 export const usePowerPoints = () => {
   const powers = useAdeptPowersSlice()
 
-  const magicAttrValue = useCharacterBuilderStore(
+  const magicAttrValue = useCharacterSheet(
     (state) => state.attributes[AttributeKey.magic],
   )
 
@@ -29,7 +29,7 @@ export const usePowerPoints = () => {
 }
 
 export const useAdeptPowerWarnings = () => {
-  const magicAttributeValue = useCharacterBuilderStore(
+  const magicAttributeValue = useCharacterSheet(
     (state) => state.attributes[AttributeKey.magic],
   )
   const powerPoints = usePowerPoints()

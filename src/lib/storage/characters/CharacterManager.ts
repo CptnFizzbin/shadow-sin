@@ -4,14 +4,14 @@ import { compareSemver, CURRENT_CHARACTER_VERSION } from "#/lib/semver.ts"
 import type { StoredJsonFile } from "#/lib/storage/IStorageProvider.ts"
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 export class CharacterManager {
   private readonly characterDirectoryPath = "characters"
 
   public constructor(private readonly storageManager: StorageManager) {}
 
-  public async listCharacters(): Promise<PlayerCharacterData[]> {
+  public async listCharacters(): Promise<CharacterSheet[]> {
     const characterFiles = await this.storageManager.listJsonFiles(
       this.characterDirectoryPath,
     )
@@ -21,9 +21,7 @@ export class CharacterManager {
     )
 
     return storedCharacters
-      .filter(
-        (character): character is PlayerCharacterData => character !== null,
-      )
+      .filter((character): character is CharacterSheet => character !== null)
       .sort((firstCharacter, secondCharacter) =>
         firstCharacter.profile.alias.localeCompare(
           secondCharacter.profile.alias,
@@ -33,13 +31,13 @@ export class CharacterManager {
 
   public async getCharacter(
     characterId: string,
-  ): Promise<PlayerCharacterData | null> {
+  ): Promise<CharacterSheet | null> {
     return this.loadCharacterByPath(this.getCharacterPath(characterId))
   }
 
   public async saveCharacter(
-    character: PlayerCharacterData,
-  ): Promise<StoredJsonFile<PlayerCharacterData>> {
+    character: CharacterSheet,
+  ): Promise<StoredJsonFile<CharacterSheet>> {
     return this.storageManager.saveJsonFile(
       this.getCharacterPath(character.id),
       character,
@@ -51,8 +49,8 @@ export class CharacterManager {
   }
 
   public async ensureCharacters(
-    characters: PlayerCharacterData[],
-  ): Promise<PlayerCharacterData[]> {
+    characters: CharacterSheet[],
+  ): Promise<CharacterSheet[]> {
     for (const character of characters) {
       const existingCharacter = await this.getCharacter(character.id)
 
@@ -68,9 +66,9 @@ export class CharacterManager {
 
   private async loadCharacterByPath(
     path: string,
-  ): Promise<PlayerCharacterData | null> {
+  ): Promise<CharacterSheet | null> {
     const storedCharacter =
-      await this.storageManager.loadJsonFile<PlayerCharacterData>(path)
+      await this.storageManager.loadJsonFile<CharacterSheet>(path)
 
     if (!storedCharacter) {
       return null
@@ -85,7 +83,7 @@ export class CharacterManager {
 
   private async migrateCharacter(character: {
     version: string | number
-  }): Promise<PlayerCharacterData> {
+  }): Promise<CharacterSheet> {
     // Normalise legacy numeric versions (e.g. 0, 1) to semver strings.
     const currentVersion =
       typeof character.version === "number"
@@ -118,7 +116,7 @@ export class CharacterManager {
       migrationPerformed = true
     }
 
-    const playerCharacter = characterData as PlayerCharacterData
+    const playerCharacter = characterData as CharacterSheet
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)

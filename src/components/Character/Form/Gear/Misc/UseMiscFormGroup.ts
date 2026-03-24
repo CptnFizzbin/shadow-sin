@@ -1,18 +1,18 @@
 import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useMiscFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
+  const itemsSlice = useCharacterSheetSlice(
     (state) => state.gear.misc,
     (state, misc) => {
       state.gear.misc = misc
       return state
     },
   )
-  const misc = useCharacterBuilderStore((state) => state.gear.misc)
+  const misc = useCharacterSheet((state) => state.gear.misc)
 
   const addMiscItem = (item: GearData) => {
     itemsSlice.update((draft) => {

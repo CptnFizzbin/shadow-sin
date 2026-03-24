@@ -1,13 +1,13 @@
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
-import type { CharacterSheet } from "./CharacterSheet.ts"
+import type { CharacterCore } from "./CharacterSheet.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { GearData } from "./gear/gearData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { SpellData } from "./magic/spellData.ts"
 import type { SkillData } from "./skillData.ts"
 
-export interface PlayerCharacterData extends CharacterSheet {
+export interface CharacterSheet extends CharacterCore {
   id: string
   /** Semantic version string (e.g. "1.0.0") for the character data schema. */
   version: string
@@ -90,3 +90,6 @@ export interface PlayerCharacterData extends CharacterSheet {
     powers: AdeptPowerData[]
   }
 }
+
+/** @deprecated Use CharacterSheet instead. */
+export type PlayerCharacterData = CharacterSheet

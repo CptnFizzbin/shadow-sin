@@ -19,10 +19,10 @@ import { SkillsFormGroup } from "#/components/Character/Form/Skills/SkillsFormGr
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/Character/Form/UseRootCharacterBuilderStore.ts"
 import { BuilderStoreProvider } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterFormProps {
-  character?: PlayerCharacterData
+  character?: CharacterSheet
 }
 
 export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {

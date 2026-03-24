@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
 import {
   GearBpAllowance,
@@ -22,11 +22,9 @@ export function useGearFormGroup() {
     },
   )
 
-  const gear = useCharacterBuilderStore((state) => state.gear)
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths,
-  )
+  const gear = useCharacterSheet((state) => state.gear)
+  const lifestyle = useCharacterSheet((state) => state.lifestyle)
+  const lifestyleMonths = useCharacterSheet((state) => state.lifestyleMonths)
 
   const lifestyleNuyen = Lifestyles[lifestyle].upkeep * lifestyleMonths
 

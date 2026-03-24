@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
 import {
-  useCharacterStore,
-  useCharacterStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/CharacterStoreProvider.tsx"
 import DamageTrack from "#/components/Damage/DamageTrack.tsx"
 import {
@@ -33,18 +33,18 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageSlice = useCharacterStoreSlice(
+  const damageSlice = useCharacterSheetSlice(
     (state) => state.damage,
     (state, damage) => {
       state.damage = damage
       return state
     },
   )
-  const body = useCharacterStore((state) => state.attributes.body)
-  const will = useCharacterStore((state) => state.attributes.willpower)
+  const body = useCharacterSheet((state) => state.attributes.body)
+  const will = useCharacterSheet((state) => state.attributes.willpower)
   const woundMod = useWoundModifier()
 
-  const damageTracks = useCharacterStore((state) => state.damage)
+  const damageTracks = useCharacterSheet((state) => state.damage)
 
   const maxPhysical = 8 + Math.ceil(body / 2)
   const maxStun = 8 + Math.ceil(will / 2)

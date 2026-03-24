@@ -10,7 +10,7 @@ import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { ArmorPanel } from "#/components/Character/Form/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/Character/Form/Gear/Cyberware/CyberwarePanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
@@ -231,11 +231,9 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gear = useCharacterBuilderStore((state) => state.gear)
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths,
-  )
+  const gear = useCharacterSheet((state) => state.gear)
+  const lifestyle = useCharacterSheet((state) => state.lifestyle)
+  const lifestyleMonths = useCharacterSheet((state) => state.lifestyleMonths)
 
   if (section === SectionHeader.Lifestyle) {
     return (

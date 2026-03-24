@@ -1,18 +1,18 @@
 import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useDevicesFormGroup() {
-  const itemsSlice = useCharacterBuilderStoreSlice(
+  const itemsSlice = useCharacterSheetSlice(
     (state) => state.gear.devices,
     (state, devices) => {
       state.gear.devices = devices
       return state
     },
   )
-  const devices = useCharacterBuilderStore((state) => state.gear.devices)
+  const devices = useCharacterSheet((state) => state.gear.devices)
 
   const addDeviceItem = (item: GearData) => {
     itemsSlice.update((draft) => {

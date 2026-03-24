@@ -13,11 +13,11 @@ import {
 import { Header } from "#/components/UI/Header.tsx"
 import { artemis } from "#/data/characters/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
-  loader: async ({ params }): Promise<PlayerCharacterData> => {
+  loader: async ({ params }): Promise<CharacterSheet> => {
     await characterManager.ensureCharacters([artemis])
     const character = await characterManager.getCharacter(params.characterId)
 
@@ -34,7 +34,7 @@ const CharacterStorePersistence: FC = () => {
   const character = useStore(characterStore, (state) => state)
   const hasMountedRef = useRef(false)
   const characterSaveThrottler = useThrottler(
-    (nextCharacter: PlayerCharacterData) => {
+    (nextCharacter: CharacterSheet) => {
       void characterManager.saveCharacter(nextCharacter)
     },
     {

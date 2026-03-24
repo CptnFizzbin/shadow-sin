@@ -1,5 +1,5 @@
 import { useAttributesBuildPoints } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
-import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { CharacterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/Character/Form/Contacts/ContactsHooks.ts"
 import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
@@ -32,23 +32,19 @@ export interface BpSummary {
 }
 
 export function useBuildPointsSummary(): BpSummary {
-  const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const metatypeKey = useCharacterSheet((state) => state.metatype)
+  const awakeningType = useCharacterSheet((state) => state.awakening)
 
-  const qualities = useCharacterBuilderStore((state) => state.qualities)
+  const qualities = useCharacterSheet((state) => state.qualities)
 
-  const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
-  const activeSkillGroups = useCharacterBuilderStore(
-    (s) => s.skills.activeSkillGroups,
-  )
-  const knowledgeSkills = useCharacterBuilderStore(
-    (s) => s.skills.knowledgeSkills,
-  )
-  const languageSkills = useCharacterBuilderStore(
+  const activeSkills = useCharacterSheet((s) => s.skills.activeSkills)
+  const activeSkillGroups = useCharacterSheet((s) => s.skills.activeSkillGroups)
+  const knowledgeSkills = useCharacterSheet((s) => s.skills.knowledgeSkills)
+  const languageSkills = useCharacterSheet(
     (state) => state.skills.languageSkills,
   )
-  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic)
-  const intuitionValue = useCharacterBuilderStore((s) => s.attributes.intuition)
+  const logicValue = useCharacterSheet((s) => s.attributes.logic)
+  const intuitionValue = useCharacterSheet((s) => s.attributes.intuition)
   const gearBpSpent = useBuilderStore((state) => state.buildPoints.spent.gear)
 
   const metatypeCost = metatypes[metatypeKey].cost

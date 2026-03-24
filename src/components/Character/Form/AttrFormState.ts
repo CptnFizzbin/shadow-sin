@@ -1,13 +1,13 @@
 import type { MetatypeData } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import type { AwakeningData } from "#/lib/system/types/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 /**
  * The min/max constraints for a single attribute, derived from the character's
  * metatype and awakening type. Stored separately from the attribute value so
  * that CharacterFormState can use `Record<AttributeKey, number>` for attribute
- * values (matching PlayerCharacterData) while still tracking limits for the
+ * values (matching CharacterSheet) while still tracking limits for the
  * character builder UI.
  */
 export interface AttrLimits {
@@ -58,7 +58,7 @@ export function createAttrFormState({
   attr: AttributeKey
   metatype: MetatypeData
   awakening: AwakeningData
-  character?: PlayerCharacterData
+  character?: CharacterSheet
   value?: number
 }): AttrFormState {
   const limits = createAttrLimits({ attr, metatype, awakening })

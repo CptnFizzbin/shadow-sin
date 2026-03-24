@@ -1,6 +1,6 @@
 import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type {
   KnowledgeSkillFormState,
@@ -16,15 +16,15 @@ import {
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
 
 export function useKnowledgeSkillsFormGroup() {
-  const skillsSlice = useCharacterBuilderStoreSlice(
+  const skillsSlice = useCharacterSheetSlice(
     (state) => state.skills,
     (state, skills) => {
       state.skills = skills
       return state
     },
   )
-  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic)
-  const intuitionValue = useCharacterBuilderStore((s) => s.attributes.intuition)
+  const logicValue = useCharacterSheet((s) => s.attributes.logic)
+  const intuitionValue = useCharacterSheet((s) => s.attributes.intuition)
 
   const freeSkillPoints = getFreeSkillPoints(logicValue, intuitionValue)
   const maxSkillPoints = getMaxSkillPoints(logicValue, intuitionValue)

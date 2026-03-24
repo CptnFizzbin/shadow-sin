@@ -1,6 +1,6 @@
 import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
+  useCharacterSheet,
+  useCharacterSheetSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import type { ContactData } from "#/lib/system/types/contactData.ts"
 
@@ -12,14 +12,14 @@ export function contactBuildPoints(contacts: ContactData[]): number {
 }
 
 export function useContactsFormGroup() {
-  const contactsSlice = useCharacterBuilderStoreSlice(
+  const contactsSlice = useCharacterSheetSlice(
     (state) => state.contacts,
     (state, contacts) => {
       state.contacts = contacts
       return state
     },
   )
-  const contacts = useCharacterBuilderStore((state) => state.contacts)
+  const contacts = useCharacterSheet((state) => state.contacts)
 
   const bpSpent = contactBuildPoints(contacts)
 

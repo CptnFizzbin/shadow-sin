@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { createAttrLimits } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { useBuilderStoreSlice } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
@@ -14,7 +14,7 @@ import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
 export const BiologySection: FC = () => {
-  const characterSlice = useCharacterBuilderStoreSlice(
+  const characterSlice = useCharacterSheetSlice(
     (state) => state,
     (_state, newState) => newState,
   )

@@ -7,7 +7,7 @@ import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
 import type { BuilderState } from "#/components/CharacterBuilder/BuilderState.ts"
 import { mergeObjects } from "#/lib/MergeUtils.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 const debouncedSaveState = debounce(
   (characterId: string, values: CharacterFormState) => {
@@ -23,7 +23,7 @@ export interface RootCharacterBuilderStores {
 }
 
 export const useRootCharacterBuilderStore = (
-  character?: PlayerCharacterData,
+  character?: CharacterSheet,
 ): RootCharacterBuilderStores => {
   const {
     characterFormState: defaultCharacterState,

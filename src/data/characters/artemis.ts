@@ -20,9 +20,9 @@ import type {
 } from "#/lib/system/types/gear/weaponData.ts"
 import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
-export const artemis: PlayerCharacterData = {
+export const artemis: CharacterSheet = {
   id: "artemis",
   version: "1.0.0",
 
@@ -361,7 +361,7 @@ export const artemis: PlayerCharacterData = {
           type: GearType.other,
           cost: 5000,
         }),
-      ] as GearData[]
+      ] satisfies GearData[]
     ).map((item) => [item.id, item]),
   ),
 
