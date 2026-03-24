@@ -31,8 +31,6 @@ export interface GearData extends ItemData {
     removed?: boolean
   }
 
-  items?: GearData[]
-
   effects?: GearEffectData[]
 }
 

@@ -1,7 +1,8 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { ImplantFormState } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { GearType } from "#/lib/system/types/gear/gearData.ts"
+import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
 import {
   ImplantGrade,
   ImplantType,
@@ -9,22 +10,23 @@ import {
 
 export type ImplantEditFormOptions = {
   mode: "edit"
-  implant: ImplantFormState
-  onSubmit: (implant: ImplantFormState) => void
+  implant: ImplantData
+  onSubmit: (implant: ImplantData) => void
 }
 
 export type ImplantCreateFormOptions = {
   mode: "create"
-  onSubmit: (implant: ImplantFormState) => void
+  onSubmit: (implant: ImplantData) => void
 }
 
 export type ImplantFormOptions =
   | ImplantEditFormOptions
   | ImplantCreateFormOptions
 
-const defaultFormValues: ImplantFormState = {
+const defaultFormValues: ImplantData = {
   id: "",
   name: "",
+  type: GearType.implant,
   cost: 0,
   essenceCost: 0,
   grade: ImplantGrade.standard,

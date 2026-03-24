@@ -7,18 +7,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { GearItemFormFields } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormFields.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import {
   gearItemFieldMap,
   useGearItemForm,
 } from "#/components/Character/Form/Gear/Generic/Forms/UseGearItemForm.tsx"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 interface GearItemFormDialogProps {
   open: boolean
-  item?: GearItemFormState
+  item?: GearData
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: GearItemFormState) => void
+  onSave: (item: GearData) => void
   label?: string
 }
 

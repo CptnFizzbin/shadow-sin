@@ -6,12 +6,12 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 interface GearItemCardProps {
-  item: GearItemFormState
+  item: GearData
   onEdit: () => void
   onRemove: () => void
 }
@@ -42,7 +42,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
         </Typography>
 
         <Typography>
-          <Nuyen amount={item.cost} />
+          <Nuyen amount={item.cost ?? 0} />
         </Typography>
 
         <IconButton

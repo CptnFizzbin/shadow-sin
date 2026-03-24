@@ -1,5 +1,6 @@
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
+import type { BuilderState } from "#/components/CharacterBuilder/BuilderState.ts"
 import { CURRENT_FORM_STATE_VERSION } from "#/lib/semver.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
@@ -13,9 +14,14 @@ export interface UseDefaultValuesOptions {
   character?: PlayerCharacterData
 }
 
+export interface DefaultValues {
+  characterFormState: CharacterFormState
+  builderState: BuilderState
+}
+
 export const useDefaultValues = ({
   character,
-}: UseDefaultValuesOptions): CharacterFormState => {
+}: UseDefaultValuesOptions): DefaultValues => {
   const characterId = character?.id ?? NULL_CHARACTER_ID
   const { profile, biology } = character || {}
 
@@ -24,8 +30,6 @@ export const useDefaultValues = ({
 
   const attrKeys = Object.values(AttributeKey)
 
-  // Build both attributes (plain values) and attributeLimits (min/max/augMax)
-  // from the same createAttrFormState computation to avoid duplicated work.
   const attrEntries = attrKeys.map((attr) => {
     const { value, ...limits } = createAttrFormState({
       attr,
@@ -42,22 +46,11 @@ export const useDefaultValues = ({
 
   const attributeLimits = Object.fromEntries(
     attrEntries.map(({ attr, limits }) => [attr, limits]),
-  ) as CharacterFormState["attributeLimits"]
+  ) as BuilderState["attributeLimits"]
 
-  return {
+  const characterFormState: CharacterFormState = {
     characterId: characterId,
     version: CURRENT_FORM_STATE_VERSION,
-
-    buildPoints: {
-      total: 400,
-      spent: {
-        metatype: 0,
-        qualities: 0,
-        attributes: 0,
-        skills: 0,
-        gear: 0,
-      },
-    },
 
     name: profile?.name || "",
     alias: profile?.alias || "",
@@ -69,7 +62,6 @@ export const useDefaultValues = ({
     awakening: biology?.awakening || AwakeningType.Mundane,
 
     attributes,
-    attributeLimits,
 
     qualities: [],
 
@@ -89,16 +81,30 @@ export const useDefaultValues = ({
 
     gear: {
       sins: [],
-      licenses: [],
       weapons: [],
       armor: [],
       vehicles: [],
       cyberware: [],
-      implantMods: [],
       devices: [],
       misc: [],
     },
 
     contacts: [],
   }
+
+  const builderState: BuilderState = {
+    buildPoints: {
+      total: 400,
+      spent: {
+        metatype: 0,
+        qualities: 0,
+        attributes: 0,
+        skills: 0,
+        gear: 0,
+      },
+    },
+    attributeLimits,
+  }
+
+  return { characterFormState, builderState }
 }

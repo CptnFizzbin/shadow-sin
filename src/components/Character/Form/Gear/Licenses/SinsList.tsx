@@ -10,18 +10,18 @@ import { useState } from "react"
 
 import { SinFormDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/Character/Form/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
-import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
-import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/Character/Form/Gear/Licenses/LicensesList.tsx"
 import { useSinsFormGroup } from "#/components/Character/Form/Gear/Licenses/UseSinsFormGroup.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
+import { VerificationKind } from "#/lib/system/types/gear/licenseData.ts"
 
 type DialogState =
   | null
   | { mode: "create"; open: boolean }
-  | { mode: "edit"; sin: SinFormState; open: boolean }
-  | { mode: "remove"; sin: SinFormState; open: boolean }
+  | { mode: "edit"; sin: SinData; open: boolean }
+  | { mode: "remove"; sin: SinData; open: boolean }
 
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
@@ -36,19 +36,21 @@ export const SinsList: FC = () => {
     setDialogState(null)
   }
 
-  const hasRealSin = sins.some((sin) => sin.rating === "real")
+  const hasRealSin = sins.some(
+    (sin) => sin.verification.kind === VerificationKind.Real,
+  )
 
-  const handleAddSin = (sin: SinFormState) => {
+  const handleAddSin = (sin: SinData) => {
     addSin(sin)
     onDialogClose()
   }
 
-  const handleSaveSin = (sin: SinFormState) => {
+  const handleSaveSin = (sin: SinData) => {
     updateSin(sin)
     onDialogClose()
   }
 
-  const handleRemoveSin = (sin: SinFormState) => {
+  const handleRemoveSin = (sin: SinData) => {
     removeSin(sin)
     onDialogClose()
   }
@@ -67,7 +69,7 @@ export const SinsList: FC = () => {
       </Button>
 
       {sins.map((sin) => {
-        const sinAvail = getSinAvailability(sin.rating)
+        const sinAvail = sin.availability ?? { rating: 0 }
         const numLicenses = getLicensesForSin(sin.id).length
 
         return (
@@ -90,7 +92,7 @@ export const SinsList: FC = () => {
                 </Typography>
 
                 <Typography>
-                  <Nuyen amount={sin.cost} />
+                  <Nuyen amount={sin.cost ?? 0} />
                 </Typography>
 
                 <IconButton
@@ -112,7 +114,9 @@ export const SinsList: FC = () => {
               <Stack direction="row" gap={1} sx={{ pt: 1 }}>
                 <Chip
                   label={
-                    sin.rating === "real" ? "Real" : `Rating: ${sin.rating}`
+                    sin.verification.kind === VerificationKind.Real
+                      ? "Real"
+                      : `Rating: ${sin.verification.kind === VerificationKind.Fake ? sin.verification.rating : ""}`
                   }
                   size="small"
                   variant="outlined"
@@ -134,7 +138,7 @@ export const SinsList: FC = () => {
                 borderColor: "divider",
               }}
             >
-              <LicensesList sinId={sin.id} />
+              <LicensesList sin={sin} />
             </Stack>
           </Box>
         )

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
 import { FormPersister } from "#/components/Character/Form/FormPersister.ts"
 import { useDefaultValues } from "#/components/Character/Form/UseDefaultValues.ts"
+import type { BuilderState } from "#/components/CharacterBuilder/BuilderState.ts"
 import { mergeObjects } from "#/lib/MergeUtils.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
@@ -16,26 +17,40 @@ const debouncedSaveState = debounce(
   { wait: 500 },
 )
 
+export interface RootCharacterBuilderStores {
+  characterStore: Store<CharacterFormState>
+  builderStore: Store<BuilderState>
+}
+
 export const useRootCharacterBuilderStore = (
   character?: PlayerCharacterData,
-): Store<CharacterFormState> => {
-  const defaultValues = useDefaultValues({ character })
+): RootCharacterBuilderStores => {
+  const {
+    characterFormState: defaultCharacterState,
+    builderState: defaultBuilderState,
+  } = useDefaultValues({ character })
 
-  const [store] = useState(() => {
-    const savedState = FormPersister.loadState(defaultValues.characterId)
+  const [characterStore] = useState(() => {
+    const savedState = FormPersister.loadState(
+      defaultCharacterState.characterId,
+    )
     const initialState = savedState
-      ? mergeObjects<CharacterFormState>(defaultValues, savedState)
-      : defaultValues
+      ? mergeObjects<CharacterFormState>(defaultCharacterState, savedState)
+      : defaultCharacterState
     return new Store<CharacterFormState>(initialState)
   })
 
+  const [builderStore] = useState(
+    () => new Store<BuilderState>(defaultBuilderState),
+  )
+
   useEffect(() => {
-    const { unsubscribe } = store.subscribe((state) => {
+    const { unsubscribe } = characterStore.subscribe((state) => {
       debouncedSaveState(state.characterId, state)
     })
 
     return () => unsubscribe()
-  }, [store])
+  }, [characterStore])
 
-  return store
+  return { characterStore, builderStore }
 }

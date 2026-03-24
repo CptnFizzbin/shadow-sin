@@ -1,8 +1,8 @@
+import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
 import {
   ImplantGrade,
   ImplantType,
 } from "#/lib/system/types/gear/implantData.ts"
-import type { ImplantFormState } from "./Forms/ImplantFormState.ts"
 
 export const BASE_ESSENCE = 6
 
@@ -20,18 +20,18 @@ export const ImplantGradeNuyenMultiplier: Record<ImplantGrade, number> = {
   [ImplantGrade.delta]: 10,
 }
 
-export function getImplantEffectiveEssenceCost(item: ImplantFormState): number {
+export function getImplantEffectiveEssenceCost(item: ImplantData): number {
   const multiplier =
     ImplantGradeEssenceMultiplier[item.grade as ImplantGrade] ??
     ImplantGradeEssenceMultiplier[ImplantGrade.standard]
   return item.essenceCost * multiplier
 }
 
-export function getImplantEffectiveNuyenCost(item: ImplantFormState): number {
+export function getImplantEffectiveNuyenCost(item: ImplantData): number {
   const multiplier =
     ImplantGradeNuyenMultiplier[item.grade as ImplantGrade] ??
     ImplantGradeNuyenMultiplier[ImplantGrade.standard]
-  return item.cost * multiplier
+  return (item.cost ?? 0) * multiplier
 }
 
 export interface ImplantEssenceSummary {
@@ -43,7 +43,7 @@ export interface ImplantEssenceSummary {
 }
 
 export function calculateImplantEssence(
-  implants: ImplantFormState[],
+  implants: ImplantData[],
 ): ImplantEssenceSummary {
   const cyberwareTotal = implants
     .filter(
@@ -87,8 +87,8 @@ export function calculateImplantEssence(
 }
 
 export function wouldExceedEssence(
-  currentImplants: ImplantFormState[],
-  newImplant: ImplantFormState,
+  currentImplants: ImplantData[],
+  newImplant: ImplantData,
 ): boolean {
   const withNew = [...currentImplants, newImplant]
   const { remainingEssence } = calculateImplantEssence(withNew)

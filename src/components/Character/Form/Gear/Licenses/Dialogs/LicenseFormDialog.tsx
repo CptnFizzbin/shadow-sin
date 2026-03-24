@@ -7,21 +7,19 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { LicenseFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormFields.tsx"
-import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import {
   licenseFieldMap,
   useLicenseForm,
 } from "#/components/Character/Form/Gear/Licenses/Forms/UseLicenseForm.tsx"
+import type { LicenseData } from "#/lib/system/types/gear/licenseData.ts"
 
 export interface LicenseFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave: (data: LicenseFormState) => void
-  license?: LicenseFormState
-  sinId?: string
-  sins?: SinFormState[]
+  onSave: (data: LicenseData) => void
+  license?: LicenseData
+  sinReal?: boolean
 }
 
 export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
@@ -30,28 +28,14 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onClosed,
   onSave,
   license,
-  sinId,
-  sins = [],
+  sinReal = false,
 }) => {
   const editMode = !!license
 
-  const selectedSin = sins.find(
-    (sin) => sin.id === (license ? license.sinId : sinId),
-  )
-
   const form = useLicenseForm(
     editMode
-      ? {
-          mode: "edit",
-          license: license,
-          onSubmit: onSave,
-        }
-      : {
-          mode: "create",
-          sinId: sinId ?? "",
-          sinReal: selectedSin ? selectedSin.rating === "real" : false,
-          onSubmit: onSave,
-        },
+      ? { mode: "edit", license, onSubmit: onSave }
+      : { mode: "create", sinReal, onSubmit: onSave },
   )
 
   const title = editMode ? "Edit License" : "Create License"
@@ -62,7 +46,11 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>
-          <LicenseFormFields form={form} sins={sins} fields={licenseFieldMap} />
+          <LicenseFormFields
+            form={form}
+            sinReal={sinReal}
+            fields={licenseFieldMap}
+          />
         </Stack>
       </DialogContent>
 

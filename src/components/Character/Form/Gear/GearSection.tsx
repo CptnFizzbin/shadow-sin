@@ -20,8 +20,6 @@ import {
   GearMaxAvailability,
   GearNuyenBudget,
 } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
-import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/Character/Form/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/Character/Form/Gear/Misc/MiscPanel.tsx"
@@ -33,6 +31,10 @@ import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
+import {
+  getLicenseAvailability,
+  getSinAvailability,
+} from "#/lib/system/types/gear/SinUtils.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
@@ -46,7 +48,6 @@ export const GearSection: FC = () => {
     }
   }
 
-  // determine availability issues per section
   const sectionInvalid = new Set<SectionHeader>()
   let totalInvalidCount = 0
 
@@ -63,23 +64,34 @@ export const GearSection: FC = () => {
   Object.values(SectionHeader).forEach((sectionName) => {
     if (sectionName === SectionHeader.Licenses) {
       const sins = gear.sins || []
-      const licenses = gear.licenses || []
       const sinInvalid = sins.some(
-        (s) => getSinAvailability(s.rating).rating > GearMaxAvailability,
+        (sin) =>
+          getSinAvailability(sin.verification).rating > GearMaxAvailability,
       )
-      const licInvalid = licenses.some(
-        (l) => getLicenseAvailability(l.rating).rating > GearMaxAvailability,
+      const licInvalid = sins.some((sin) =>
+        (sin.licenses ?? []).some(
+          (lic) =>
+            getLicenseAvailability(lic.verification).rating >
+            GearMaxAvailability,
+        ),
       )
       if (sinInvalid || licInvalid) {
         sectionInvalid.add(sectionName)
         totalInvalidCount +=
           sins.filter(
-            (s) => getSinAvailability(s.rating).rating > GearMaxAvailability,
+            (sin) =>
+              getSinAvailability(sin.verification).rating > GearMaxAvailability,
           ).length +
-          licenses.filter(
-            (l) =>
-              getLicenseAvailability(l.rating).rating > GearMaxAvailability,
-          ).length
+          sins.reduce(
+            (count, sin) =>
+              count +
+              (sin.licenses ?? []).filter(
+                (lic) =>
+                  getLicenseAvailability(lic.verification).rating >
+                  GearMaxAvailability,
+              ).length,
+            0,
+          )
       }
     } else if (sectionName === SectionHeader.Cyberware) {
       const invalidImplants = gear.cyberware.filter(
@@ -234,28 +246,31 @@ const GearSectionNuyen: FC<{
   }
 
   if (section === SectionHeader.Licenses) {
+    const sinAndLicenseNuyen = gear.sins.reduce((sum, sin) => {
+      const licenseCost = (sin.licenses ?? []).reduce(
+        (licSum, lic) => licSum + (lic.cost ?? 0),
+        0,
+      )
+      return sum + (sin.cost ?? 0) + licenseCost
+    }, 0)
     return (
       <Typography variant="body2" color="text.secondary">
-        <Nuyen
-          amount={
-            gear.sins.reduce((sum, sin) => sum + sin.cost, 0) +
-            gear.licenses.reduce((sum, license) => sum + license.cost, 0)
-          }
-        />
+        <Nuyen amount={sinAndLicenseNuyen} />
       </Typography>
     )
   }
+
   if (section === SectionHeader.Cyberware) {
+    const cyberwareNuyen = gear.cyberware.reduce((sum, implant) => {
+      const modCost = (implant.attachments ?? []).reduce(
+        (modSum, mod) => modSum + (mod.cost ?? 0),
+        0,
+      )
+      return sum + getImplantEffectiveNuyenCost(implant) + modCost
+    }, 0)
     return (
       <Typography variant="body2" color="text.secondary">
-        <Nuyen
-          amount={
-            gear.cyberware.reduce(
-              (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
-              0,
-            ) + gear.implantMods.reduce((sum, mod) => sum + mod.cost, 0)
-          }
-        />
+        <Nuyen amount={cyberwareNuyen} />
       </Typography>
     )
   }
@@ -271,7 +286,7 @@ const GearSectionNuyen: FC<{
   }
   const sectionKey = genericSectionKeys[section]
   const nuyen = sectionKey
-    ? gear[sectionKey].reduce((sum, item) => sum + item.cost, 0)
+    ? gear[sectionKey].reduce((sum, item) => sum + (item.cost ?? 0), 0)
     : 0
 
   return (

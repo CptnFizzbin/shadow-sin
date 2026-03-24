@@ -1,5 +1,6 @@
 import { AttributeBpAllowance } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useBuilderStore } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import {
   AttributeKey,
   AttributeLabels,
@@ -12,12 +13,8 @@ export interface AttributeRowProps {
 
 export function useAttributeFormGroup() {
   const attributes = useCharacterBuilderStore((state) => state.attributes)
-  const attributeLimits = useCharacterBuilderStore(
-    (state) => state.attributeLimits,
-  )
-  const bpSpent = useCharacterBuilderStore(
-    (state) => state.buildPoints.spent.attributes,
-  )
+  const attributeLimits = useBuilderStore((state) => state.attributeLimits)
+  const bpSpent = useBuilderStore((state) => state.buildPoints.spent.attributes)
 
   const hasMaxxedAttr = AttributeOrder.filter(
     (key) => key !== AttributeKey.essence,

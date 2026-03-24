@@ -239,7 +239,7 @@ export const artemis: PlayerCharacterData = {
       cost: 12000,
       location: "eyes",
       capacity: 12,
-      items: [
+      attachments: [
         createGear({
           name: "Smartlink",
           type: "cyberware",
@@ -315,60 +315,14 @@ export const artemis: PlayerCharacterData = {
       name: "Proteus Poseidon",
       type: GearType.device,
       cost: 68000,
-      notes: "RCC; deviceRating 5, dataProcessing 5, firewall 5.",
-      items: [
-        createGear({
-          name: "FN-HAR Targeting Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-        createGear({
-          name: "Clearsight Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-        createGear({
-          name: "Evasion Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-        createGear({
-          name: "Maneuvering Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-        createGear({
-          name: "Electronic Warfare Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-        createGear({
-          name: "Black Knight Targeting Autosoft",
-          type: GearType.software,
-          cost: 4000,
-          rating: 8,
-        }),
-      ],
+      notes:
+        "RCC; deviceRating 5, dataProcessing 5, firewall 5. Autosofts: FN-HAR Targeting r8, Clearsight r8, Evasion r8, Maneuvering r8, Electronic Warfare r8, Black Knight Targeting r8.",
     }),
     createGear({
       name: "Commlink (headware)",
       type: GearType.device,
       cost: 1000,
-      items: [
-        createGear({
-          name: "Hermes Ikon",
-          type: GearType.device,
-          cost: 5000,
-          fixed: true,
-          rating: 5,
-          notes: "device attributes 3/0; 2 program slots.",
-        }),
-      ],
+      notes: "Hermes Ikon (fixed); device attributes 3/0; 2 program slots.",
     }),
     createGear<VehicleData>({
       name: "Yamaha Growler",

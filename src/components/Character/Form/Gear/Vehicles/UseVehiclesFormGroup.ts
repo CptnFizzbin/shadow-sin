@@ -2,7 +2,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useVehiclesFormGroup() {
   const itemsSlice = useCharacterBuilderStoreSlice(
@@ -14,13 +14,13 @@ export function useVehiclesFormGroup() {
   )
   const vehicles = useCharacterBuilderStore((state) => state.gear.vehicles)
 
-  const addVehicle = (item: GearItemFormState) => {
+  const addVehicle = (item: GearData) => {
     itemsSlice.update((draft) => {
       draft.push(item)
     })
   }
 
-  const updateVehicle = (item: GearItemFormState) => {
+  const updateVehicle = (item: GearData) => {
     itemsSlice.update((draft) => {
       const index = draft.findIndex((existing) => existing.id === item.id)
       if (index !== -1) draft[index] = item
@@ -29,9 +29,7 @@ export function useVehiclesFormGroup() {
 
   const removeVehicle = (itemId: string) => {
     itemsSlice.update((draft) =>
-      draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
+      draft.filter((existing) => existing.id !== itemId),
     )
   }
 

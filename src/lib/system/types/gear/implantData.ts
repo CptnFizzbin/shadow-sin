@@ -41,7 +41,7 @@ export interface ImplantData extends GearData {
 
   capacity?: number
 
-  attachments?: ImplantAttachmentData[]
+  attachments?: GearData[]
 }
 
 export interface ImplantAttachmentData extends GearData {

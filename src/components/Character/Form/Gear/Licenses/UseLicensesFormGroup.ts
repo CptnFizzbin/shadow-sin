@@ -1,49 +1,32 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
+import { useSinsFormGroup } from "#/components/Character/Form/Gear/Licenses/UseSinsFormGroup.ts"
+import type { LicenseData } from "#/lib/system/types/gear/licenseData.ts"
 
-export function useLicensesFormGroup() {
-  const gearSlice = useCharacterBuilderStoreSlice(
-    (state) => state.gear,
-    (state, gear) => {
-      state.gear = gear
-      return state
-    },
-  )
-  const licenses = useCharacterBuilderStore((state) => state.gear.licenses)
-  const sins = useCharacterBuilderStore((state) => state.gear.sins)
+export function useLicensesFormGroup(sinId: string) {
+  const {
+    sins,
+    getLicensesForSin,
+    addLicenseToSin,
+    updateLicenseOnSin,
+    removeLicenseFromSin,
+  } = useSinsFormGroup()
 
-  const addLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      draft.licenses.push(license)
-    })
-  }
+  const sin = sins.find((s) => s.id === sinId)
+  const licenses = getLicensesForSin(sinId)
+  const sinReal = sin?.verification.kind === "Real"
 
-  const updateLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      const index = draft.licenses.findIndex((l) => l.id === license.id)
-      if (index !== -1) draft.licenses[index] = license
-    })
-  }
-
-  const removeLicense = (license: LicenseFormState) => {
-    gearSlice.update((draft) => {
-      draft.licenses = draft.licenses.filter((l) => l.id !== license.id)
-    })
-  }
-
-  const getLicensesForSin = (sinId: string): LicenseFormState[] => {
-    return licenses.filter((license) => license.sinId === sinId)
-  }
+  const addLicense = (license: LicenseData) => addLicenseToSin(sinId, license)
+  const updateLicense = (license: LicenseData) =>
+    updateLicenseOnSin(sinId, license)
+  const removeLicense = (license: LicenseData) =>
+    removeLicenseFromSin(sinId, license.id)
 
   return {
-    licenses,
+    sin,
     sins,
+    sinReal,
+    licenses,
     addLicense,
     updateLicense,
     removeLicense,
-    getLicensesForSin,
   }
 }

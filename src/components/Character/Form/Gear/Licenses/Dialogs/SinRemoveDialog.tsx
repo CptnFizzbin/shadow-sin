@@ -7,13 +7,13 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 
 interface SinRemoveDialogProps extends Omit<
   DialogProps,
   "onClose" | "onTransitionExited"
 > {
-  sin: SinFormState
+  sin: SinData
   onConfirm: () => void
   onClose: () => void
   onClosed?: () => void

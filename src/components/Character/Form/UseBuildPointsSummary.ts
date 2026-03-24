@@ -14,6 +14,7 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import { useBuilderStore } from "#/components/CharacterBuilder/BuilderStoreProvider.tsx"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
 
@@ -48,9 +49,7 @@ export function useBuildPointsSummary(): BpSummary {
   )
   const logicValue = useCharacterBuilderStore((s) => s.attributes.logic)
   const intuitionValue = useCharacterBuilderStore((s) => s.attributes.intuition)
-  const gearBpSpent = useCharacterBuilderStore(
-    (state) => state.buildPoints.spent.gear,
-  )
+  const gearBpSpent = useBuilderStore((state) => state.buildPoints.spent.gear)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -69,7 +68,6 @@ export function useBuildPointsSummary(): BpSummary {
 
   const qualitiesNetBp = positiveQualitiesBp - negativeQualitiesBp
 
-  // Calculate skills BP dynamically from skills arrays
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
     activeSkillGroups,

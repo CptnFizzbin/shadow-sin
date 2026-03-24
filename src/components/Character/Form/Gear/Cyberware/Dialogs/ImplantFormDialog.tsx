@@ -7,18 +7,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { ImplantFormFields } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormFields.tsx"
-import type { ImplantFormState } from "#/components/Character/Form/Gear/Cyberware/Forms/ImplantFormState.ts"
 import {
   implantFieldMap,
   useImplantForm,
 } from "#/components/Character/Form/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import type { ImplantData } from "#/lib/system/types/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
   open: boolean
-  implant?: ImplantFormState
+  implant?: ImplantData
   onClose: () => void
   onClosed?: () => void
-  onSave: (implant: ImplantFormState) => void
+  onSave: (implant: ImplantData) => void
   label?: string
 }
 

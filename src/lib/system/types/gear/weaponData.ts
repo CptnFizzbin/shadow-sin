@@ -67,11 +67,11 @@ export interface FirearmData extends WeaponData {
 
   attachments?: {
     mounts?: {
-      top?: null | GearData
-      under?: null | GearData
-      barrel?: null | GearData
+      top?: null | FirearmAccessoryData
+      under?: null | FirearmAccessoryData
+      barrel?: null | FirearmAccessoryData
     }
-    internal: GearData[]
+    internal: FirearmAccessoryData[]
   }
 }
 

@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemsList } from "#/components/Character/Form/Gear/Generic/GearItemsList.tsx"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 type GearItemSectionField =
   | "gear.weapons"
@@ -34,11 +34,11 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
     },
   )
 
-  const addItem = (item: GearItemFormState) => {
-    itemsSlice.update((prev: GearItemFormState[]) => [...prev, item])
+  const addItem = (item: GearData) => {
+    itemsSlice.update((prev: GearData[]) => [...prev, item])
   }
 
-  const updateItem = (item: GearItemFormState) => {
+  const updateItem = (item: GearData) => {
     itemsSlice.update((draft) =>
       draft.map((existing) => (existing.id === item.id ? item : existing)),
     )

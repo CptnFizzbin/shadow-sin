@@ -1,68 +1,74 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { LicenseFormState } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getLicenseCost } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import {
+  getLicenseAvailability,
+  getLicenseCost,
+} from "#/lib/system/types/gear/SinUtils.ts"
+import { GearType } from "#/lib/system/types/gear/gearData.ts"
+import type {
+  LicenseData,
+  VerificationData,
+} from "#/lib/system/types/gear/licenseData.ts"
+import { VerificationKind } from "#/lib/system/types/gear/licenseData.ts"
 
 export type LicenseEditFormOptions = {
   mode: "edit"
-  license: LicenseFormState
-  onSubmit: (data: LicenseFormState) => void
+  license: LicenseData
+  onSubmit: (data: LicenseData) => void
 }
 
 export type LicenseCreateFormOptions = {
   mode: "create"
-  sinId: string
   sinReal: boolean
-  onSubmit: (data: LicenseFormState) => void
+  onSubmit: (data: LicenseData) => void
 }
 
 export type LicenseFormOptions =
   | LicenseEditFormOptions
   | LicenseCreateFormOptions
 
-const defaultValues: LicenseFormState = {
+const defaultFormValues: LicenseData = {
   id: "",
   name: "",
-  sinId: "",
-  rating: "1",
-  cost: getLicenseCost("1"),
+  type: GearType.license,
+  verification: { kind: VerificationKind.Fake, rating: 1 },
+  cost: 0,
 }
 
-export const licenseFieldMap = createFieldMap(defaultValues)
+export const licenseFieldMap = createFieldMap(defaultFormValues)
 
 export const licenseFormOpts = formOptions({
-  defaultValues,
+  defaultValues: defaultFormValues,
 })
 
 export const useLicenseForm = (options: LicenseFormOptions) => {
   const { mode } = options
 
-  let defaultValues: LicenseFormState
-  if (mode === "edit") {
-    defaultValues = options.license
-  } else {
-    const rating = options.sinReal ? "real" : "1"
+  let initialValues: typeof defaultFormValues
 
-    defaultValues = {
+  if (mode === "edit") {
+    initialValues = { ...defaultFormValues, ...options.license }
+  } else {
+    const verification: VerificationData = options.sinReal
+      ? { kind: VerificationKind.Real }
+      : { kind: VerificationKind.Fake, rating: 1 }
+    initialValues = {
+      ...defaultFormValues,
       id: crypto.randomUUID(),
-      name: "",
-      sinId: options.sinId,
-      rating: rating,
-      cost: getLicenseCost(rating),
+      verification,
+      cost: getLicenseCost(verification),
     }
   }
 
   return useAppForm({
     ...licenseFormOpts,
-    defaultValues: defaultValues,
+    defaultValues: initialValues,
     onSubmit: ({ value }) => {
       options.onSubmit({
-        id: value.id,
-        name: value.name,
-        sinId: value.sinId,
-        rating: value.rating,
-        cost: getLicenseCost(value.rating),
+        ...value,
+        cost: getLicenseCost(value.verification),
+        availability: getLicenseAvailability(value.verification),
       })
     },
   })

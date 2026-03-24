@@ -2,7 +2,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useMiscFormGroup() {
   const itemsSlice = useCharacterBuilderStoreSlice(
@@ -14,13 +14,13 @@ export function useMiscFormGroup() {
   )
   const misc = useCharacterBuilderStore((state) => state.gear.misc)
 
-  const addMiscItem = (item: GearItemFormState) => {
+  const addMiscItem = (item: GearData) => {
     itemsSlice.update((draft) => {
       draft.push(item)
     })
   }
 
-  const updateMiscItem = (item: GearItemFormState) => {
+  const updateMiscItem = (item: GearData) => {
     itemsSlice.update((draft) => {
       const index = draft.findIndex((existing) => existing.id === item.id)
       if (index !== -1) draft[index] = item
@@ -29,9 +29,7 @@ export function useMiscFormGroup() {
 
   const removeMiscItem = (itemId: string) => {
     itemsSlice.update((draft) =>
-      draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
+      draft.filter((existing) => existing.id !== itemId),
     )
   }
 

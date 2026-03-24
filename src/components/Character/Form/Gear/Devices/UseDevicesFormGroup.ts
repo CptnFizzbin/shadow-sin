@@ -2,7 +2,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
+import type { GearData } from "#/lib/system/types/gear/gearData.ts"
 
 export function useDevicesFormGroup() {
   const itemsSlice = useCharacterBuilderStoreSlice(
@@ -14,13 +14,13 @@ export function useDevicesFormGroup() {
   )
   const devices = useCharacterBuilderStore((state) => state.gear.devices)
 
-  const addDeviceItem = (item: GearItemFormState) => {
+  const addDeviceItem = (item: GearData) => {
     itemsSlice.update((draft) => {
       draft.push(item)
     })
   }
 
-  const updateDeviceItem = (item: GearItemFormState) => {
+  const updateDeviceItem = (item: GearData) => {
     itemsSlice.update((draft) => {
       const index = draft.findIndex((existing) => existing.id === item.id)
       if (index !== -1) draft[index] = item
@@ -29,9 +29,7 @@ export function useDevicesFormGroup() {
 
   const removeDeviceItem = (itemId: string) => {
     itemsSlice.update((draft) =>
-      draft.filter(
-        (existing) => existing.id !== itemId && existing.parentId !== itemId,
-      ),
+      draft.filter((existing) => existing.id !== itemId),
     )
   }
 

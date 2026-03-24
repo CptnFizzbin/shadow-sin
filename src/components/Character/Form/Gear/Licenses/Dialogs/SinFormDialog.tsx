@@ -7,18 +7,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { SinFormFields } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormFields.tsx"
-import type { SinFormState } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import {
   sinFieldMap,
   useSinForm,
 } from "#/components/Character/Form/Gear/Licenses/Forms/UseSinForm.tsx"
+import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 
 interface SinEditDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave: (sin: SinFormState) => void
-  sin?: SinFormState
+  onSave: (sin: SinData) => void
+  sin?: SinData
   allowReal?: boolean
 }
 

@@ -1,11 +1,11 @@
 import { z } from "zod"
 
+import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
 import { sinFormOpts } from "#/components/Character/Form/Gear/Licenses/Forms/UseSinForm.tsx"
-import {
-  FakeRatingOptions,
-  RealRatingOptions,
-} from "#/components/Character/Form/Gear/Licenses/RatingOptions.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { VerificationKind } from "#/lib/system/types/gear/licenseData.ts"
+
+const MaxRating = Math.floor(GearMaxAvailability / 3)
 
 export const SinFormFields = withFieldGroup({
   ...sinFormOpts,
@@ -13,11 +13,6 @@ export const SinFormFields = withFieldGroup({
     allowReal: true as boolean | undefined,
   },
   render: ({ group, allowReal }) => {
-    const ratingOptions = [
-      ...RealRatingOptions(!allowReal),
-      ...FakeRatingOptions(),
-    ]
-
     return (
       <>
         <group.AppField
@@ -31,16 +26,41 @@ export const SinFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.AppField name="rating">
-          {(field) => (
-            <field.SelectField
-              label="Rating"
-              fullWidth
-              size="small"
-              options={ratingOptions}
-            />
-          )}
+        <group.AppField name="verification.kind">
+          {(field) => {
+            const kindOptions = [
+              ...(allowReal
+                ? [{ label: "Real", value: VerificationKind.Real }]
+                : []),
+              { label: "Fake", value: VerificationKind.Fake },
+            ]
+            return (
+              <field.SelectField
+                label="Type"
+                fullWidth
+                size="small"
+                options={kindOptions}
+              />
+            )
+          }}
         </group.AppField>
+
+        <group.Subscribe selector={(state) => state.values.verification.kind}>
+          {(kind) =>
+            kind === VerificationKind.Fake && (
+              <group.AppField name="verification.rating">
+                {(field) => (
+                  <field.NumberField
+                    label="Rating"
+                    fullWidth
+                    size="small"
+                    inputProps={{ min: 1, max: MaxRating }}
+                  />
+                )}
+              </group.AppField>
+            )
+          }
+        </group.Subscribe>
       </>
     )
   },
