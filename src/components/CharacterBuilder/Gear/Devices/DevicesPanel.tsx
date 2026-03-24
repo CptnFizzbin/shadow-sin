@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { useDevicesFormGroup } from "#/components/Character/Form/Gear/Devices/UseDevicesFormGroup.ts"
-import { GearItemsList } from "#/components/Character/Form/Gear/Generic/GearItemsList.tsx"
+import { useDevicesFormGroup } from "#/components/CharacterBuilder/Gear/Devices/UseDevicesFormGroup.ts"
+import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
 
 export const DevicesPanel: FC = () => {
   const { devices, addDeviceItem, updateDeviceItem, removeDeviceItem } =

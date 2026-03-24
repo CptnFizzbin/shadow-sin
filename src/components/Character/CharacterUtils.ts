@@ -3,7 +3,7 @@ import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
 import { Skills } from "#/lib/system/types/SkillKey.ts"
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
-export const useAttribute = (attribute: AttributeKey) => {
+export const useAttr = (attribute: AttributeKey) => {
   return useCharacterStore((state) => {
     return state.attributes[attribute]
   })
@@ -15,6 +15,6 @@ export const useSkill = (skill: SkillKey) => {
     return state.skills[skill]?.rating || 0
   })
 
-  const attribute = useAttribute(attr)
+  const attribute = useAttr(attr)
   return skillRating + attribute
 }

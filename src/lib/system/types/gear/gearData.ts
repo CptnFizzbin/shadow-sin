@@ -1,6 +1,4 @@
 import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
-import type { FirearmData } from "#/lib/system/types/gear/weaponData.ts"
-import { WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
 import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
@@ -21,6 +19,8 @@ export enum GearType {
 
 export interface GearData {
   id: string
+  parentId?: string
+
   name: string
   type: GearType | string
 
@@ -38,26 +38,11 @@ export interface GearData {
     removed?: boolean
   }
 
-  items?: GearData[]
-
   effects?: GearEffectData[]
 }
 
 export function createGear<TGear extends GearData>(
   data: Omit<TGear, "id">,
 ): TGear {
-  return {
-    id: crypto.randomUUID(),
-    ...data,
-  } as TGear
-}
-
-export function createFirearm(
-  data: Omit<FirearmData, "id" | "type" | "weaponType">,
-): FirearmData {
-  return createGear({
-    ...data,
-    type: GearType.weapon,
-    weaponType: WeaponType.firearm,
-  })
+  return { ...data, id: crypto.randomUUID() } as TGear
 }

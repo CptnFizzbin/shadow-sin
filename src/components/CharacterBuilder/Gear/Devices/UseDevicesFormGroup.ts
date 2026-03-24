@@ -1,8 +1,8 @@
 import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
-} from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
-import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
+} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 
 export function useDevicesFormGroup() {
   const itemsSlice = useCharacterBuilderStoreSlice(

@@ -14,7 +14,7 @@ import { useCharacterBuilderStore } from "#/components/CharacterBuilder/Characte
 import { ArmorPanel } from "#/components/CharacterBuilder/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/CharacterBuilder/Gear/Cyberware/CyberwarePanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
-import { DevicesPanel } from "#/components/Character/Form/Gear/Devices/DevicesPanel.tsx"
+import { DevicesPanel } from "#/components/CharacterBuilder/Gear/Devices/DevicesPanel.tsx"
 import {
   GearBpAllowance,
   GearMaxAvailability,
