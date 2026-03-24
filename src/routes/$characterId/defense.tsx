@@ -5,10 +5,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import {
-  useCharacterStore,
-  useCharacterStoreSlice,
-} from "#/components/Character/CharacterStoreProvider.tsx"
+import { useCharacterStore, useCharacterStoreSlice } from "#/components/Character/CharacterStoreProvider.tsx"
 import DamageTrack from "#/components/Damage/DamageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -64,11 +61,11 @@ function RouteComponent() {
           <DamageTrack
             label="Physical"
             max={maxPhysical}
-            current={damageTracks.physical.current}
+            current={damageTracks.physical}
             allowOverflow
             onChange={(value) => {
               damageSlice.update((draft) => {
-                draft.physical.current = value
+                draft.physical = value
               })
             }}
           />
@@ -77,10 +74,10 @@ function RouteComponent() {
           <DamageTrack
             label="Stun"
             max={maxStun}
-            current={damageTracks.stun.current}
+            current={damageTracks.stun}
             onChange={(value) => {
               damageSlice.update((draft) => {
-                draft.stun.current = value
+                draft.stun = value
               })
             }}
           />
