@@ -1,10 +1,10 @@
 import { useCallback } from "react"
 
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
+import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
 
 export function useDeviceSet() {
-  const gear = useBuilderGearSlice()
+  const gear = useBuilderGearApi()
 
   return {
     devices: gear.getItemsByType<GearItemFormState>("devices"),
@@ -20,7 +20,7 @@ export function useDeviceSet() {
   }
 }
 
-export function useDevicesFormGroup() {
+export function useDevicesState() {
   const { devices, addDevice, updateDevice, removeDevice } = useDeviceSet()
   return {
     devices,

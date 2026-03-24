@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { BASE_ESSENCE } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
 import { useImplantsStore } from "#/components/CharacterBuilder/Gear/Cyberware/UseImplantsStore.ts"
 
-export function useCyberwareFormGroup() {
+export function useCyberwareState() {
   const {
     implants,
     implantMods,

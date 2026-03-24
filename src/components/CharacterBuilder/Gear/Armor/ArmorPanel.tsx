@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { useArmorFormGroup } from "#/components/CharacterBuilder/Gear/Armor/UseArmorFormGroup.ts"
+import { useArmorState } from "#/components/CharacterBuilder/Gear/Armor/UseArmorState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
 
 export const ArmorPanel: FC = () => {
-  const { armor, addArmor, updateArmor, removeArmor } = useArmorFormGroup()
+  const { armor, addArmor, updateArmor, removeArmor } = useArmorState()
 
   return (
     <GearItemsList

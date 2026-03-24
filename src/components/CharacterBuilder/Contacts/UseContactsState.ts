@@ -11,7 +11,7 @@ export function contactBuildPoints(contacts: ContactData[]): number {
   )
 }
 
-export function useContactsFormGroup() {
+export function useContactsState() {
   const contactsSlice = useCharacterBuilderStoreSlice(
     (state) => state.contacts,
     (state, contacts) => {

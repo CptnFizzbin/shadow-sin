@@ -1,8 +1,8 @@
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
+import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
 
-export function useVehiclesFormGroup() {
-  const gear = useBuilderGearSlice()
+export function useVehiclesState() {
+  const gear = useBuilderGearApi()
   const vehicles = gear.getItemsByType<GearItemFormState>("vehicles")
 
   const addVehicle = (item: Omit<GearItemFormState, "id">) => {

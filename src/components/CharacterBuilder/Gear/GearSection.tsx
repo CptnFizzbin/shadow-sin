@@ -30,8 +30,8 @@ import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Gear/Licen
 import { LifestylePanel } from "#/components/CharacterBuilder/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
-import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
-import { useGearFormGroup } from "#/components/CharacterBuilder/Gear/UseGearFormGroup.ts"
+import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
+import { useGearState } from "#/components/CharacterBuilder/Gear/UseGearState.ts"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
@@ -42,7 +42,7 @@ import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
 export const GearSection: FC = () => {
   const theme = useTheme()
 
-  const { totalNuyen, totalBp, isOverBudget, gear } = useGearFormGroup()
+  const { totalNuyen, totalBp, isOverBudget, gear } = useGearState()
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
   const onSectionChange = (section: SectionHeader) => {
@@ -237,7 +237,7 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gearApi = useBuilderGearSlice()
+  const gearApi = useBuilderGearApi()
   const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
   const lifestyleMonths = useCharacterBuilderStore(
     (state) => state.lifestyleMonths,
@@ -257,7 +257,8 @@ const GearSectionNuyen: FC<{
         <Nuyen
           amount={
             gearApi.getItemsByType<SinFormState>("sins").reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
-            + gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
+            +
+            gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
           }
         />
       </Typography>

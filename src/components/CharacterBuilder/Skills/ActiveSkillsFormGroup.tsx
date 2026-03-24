@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { ActiveSkillsList } from "#/components/CharacterBuilder/Skills/ActiveSkillsList.tsx"
-import { useActiveSkillsFormGroup } from "#/components/CharacterBuilder/Skills/UseActiveSkillsFormGroup.ts"
+import { useActiveSkillsState } from "#/components/CharacterBuilder/Skills/UseActiveSkillsState.ts"
 
 export const ActiveSkillsFormGroup: FC = () => {
   const {
@@ -15,7 +15,7 @@ export const ActiveSkillsFormGroup: FC = () => {
     addActiveSkillGroup,
     updateActiveSkillGroup,
     removeActiveSkillGroup,
-  } = useActiveSkillsFormGroup()
+  } = useActiveSkillsState()
 
   return (
     <ActiveSkillsList

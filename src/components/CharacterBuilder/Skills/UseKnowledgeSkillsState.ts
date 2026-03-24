@@ -15,7 +15,7 @@ import {
   getMaxSkillPoints,
 } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
 
-export function useKnowledgeSkillsFormGroup() {
+export function useKnowledgeSkillsState() {
   const skillsSlice = useCharacterBuilderStoreSlice(
     (state) => state.skills,
     (state, skills) => {

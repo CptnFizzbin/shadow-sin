@@ -10,7 +10,7 @@ export interface AttributeRowProps {
   attr: AttributeKey
 }
 
-export function useAttributeFormGroup() {
+export function useAttributeState() {
   const attributes = useCharacterBuilderStore((state) => state.attributes)
   const bpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.attributes,
@@ -37,7 +37,7 @@ export function useAttributeRow({ attr }: AttributeRowProps) {
     throw new Error("Essence should not use useAttributeRow")
   }
 
-  const { attributes, ...formGroup } = useAttributeFormGroup()
+  const { attributes, ...formGroup } = useAttributeState()
 
   return {
     ...formGroup,

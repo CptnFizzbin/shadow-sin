@@ -13,7 +13,7 @@ import { SinRemoveDialog } from "#/components/CharacterBuilder/Gear/Licenses/Dia
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
 import { getSinAvailability } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/CharacterBuilder/Gear/Licenses/LicensesList.tsx"
-import { useSinsFormGroup } from "#/components/CharacterBuilder/Gear/Licenses/UseSinsFormGroup.ts"
+import { useSinsState } from "#/components/CharacterBuilder/Gear/Licenses/UseSinsState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
@@ -26,7 +26,7 @@ type DialogState =
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { sins, addSin, updateSin, removeSin, getLicensesForSin } =
-    useSinsFormGroup()
+    useSinsState()
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

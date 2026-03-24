@@ -5,8 +5,8 @@ import type { FC } from "react"
 
 import { DecrementButton } from "#/components/CharacterBuilder/Attributes/AttrDecrementButton.tsx"
 import { IncrementButton } from "#/components/CharacterBuilder/Attributes/AttrIncrementButton.tsx"
-import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeFormGroup.ts"
-import { useAttributeRow } from "#/components/CharacterBuilder/Attributes/UseAttributeFormGroup.ts"
+import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
+import { useAttributeRow } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
 
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const { attribute } = useAttributeRow(props)

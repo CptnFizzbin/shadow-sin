@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { KnowledgeSkillsList } from "#/components/CharacterBuilder/Skills/KnowledgeSkillsList.tsx"
-import { useKnowledgeSkillsFormGroup } from "#/components/CharacterBuilder/Skills/UseKnowledgeSkillsFormGroup.ts"
+import { useKnowledgeSkillsState } from "#/components/CharacterBuilder/Skills/UseKnowledgeSkillsState.ts"
 
 export const KnowledgeSkillsFormGroup: FC = () => {
   const {
@@ -18,7 +18,7 @@ export const KnowledgeSkillsFormGroup: FC = () => {
     addLanguageSkill,
     updateLanguageSkill,
     removeLanguageSkill,
-  } = useKnowledgeSkillsFormGroup()
+  } = useKnowledgeSkillsState()
 
   return (
     <KnowledgeSkillsList

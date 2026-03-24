@@ -1,9 +1,9 @@
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
-import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
+import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
 
-export function useLicensesFormGroup() {
-  const gear = useBuilderGearSlice()
+export function useLicensesState() {
+  const gear = useBuilderGearApi()
   const licenses = gear.getItemsByType<LicenseFormState>("licenses")
   const sins = gear.getItemsByType<SinFormState>("sins")
 

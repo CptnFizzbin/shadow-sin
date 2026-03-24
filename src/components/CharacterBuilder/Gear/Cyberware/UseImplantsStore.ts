@@ -1,9 +1,9 @@
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useBuilderGearSlice } from "#/components/CharacterBuilder/Gear/UseBuilderGearSlice.ts"
+import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
 
 export function useImplantsStore() {
-  const gear = useBuilderGearSlice()
+  const gear = useBuilderGearApi()
 
   const addImplant = (implant: Omit<ImplantFormState, "id">) => {
     gear.createItem({ ...implant, type: "cyberware" })

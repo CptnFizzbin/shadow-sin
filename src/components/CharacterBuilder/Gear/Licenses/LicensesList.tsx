@@ -11,7 +11,7 @@ import { useState } from "react"
 import { LicenseFormDialog } from "#/components/CharacterBuilder/Gear/Licenses/Dialogs/LicenseFormDialog.tsx"
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
-import { useLicensesFormGroup } from "#/components/CharacterBuilder/Gear/Licenses/UseLicensesFormGroup.ts"
+import { useLicensesState } from "#/components/CharacterBuilder/Gear/Licenses/UseLicensesState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
@@ -27,7 +27,7 @@ type DialogState =
 export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { sins, getLicensesForSin, addLicense, updateLicense, removeLicense } =
-    useLicensesFormGroup()
+    useLicensesState()
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

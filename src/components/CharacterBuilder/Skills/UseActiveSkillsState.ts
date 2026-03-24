@@ -9,7 +9,7 @@ import {
   getActiveSkillSelectionWarnings,
 } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
 
-export function useActiveSkillsFormGroup() {
+export function useActiveSkillsState() {
   const skillsSlice = useCharacterBuilderStoreSlice(
     (state) => state.skills,
     (state, skills) => {

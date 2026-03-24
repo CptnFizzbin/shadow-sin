@@ -1,11 +1,11 @@
 import type { FC } from "react"
 
 import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
-import { useVehiclesFormGroup } from "#/components/CharacterBuilder/Gear/Vehicles/UseVehiclesFormGroup.ts"
+import { useVehiclesState } from "#/components/CharacterBuilder/Gear/Vehicles/UseVehiclesState.ts"
 
 export const VehiclesPanel: FC = () => {
   const { vehicles, addVehicle, updateVehicle, removeVehicle } =
-    useVehiclesFormGroup()
+    useVehiclesState()
 
   return (
     <GearItemsList

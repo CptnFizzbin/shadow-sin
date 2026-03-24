@@ -1,7 +1,7 @@
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
 
-export function useBuilderGearSlice() {
+export function useBuilderGearApi() {
   const gearSlice = useCharacterBuilderStoreSlice(
     (state) => state.gear,
     (state, gear) => {
@@ -11,6 +11,9 @@ export function useBuilderGearSlice() {
   )
 
   return {
+    allItems() {
+      return Object.values(gearSlice.state)
+    },
     getItem(id: string) {
       return gearSlice.state[id] ?? undefined
     },

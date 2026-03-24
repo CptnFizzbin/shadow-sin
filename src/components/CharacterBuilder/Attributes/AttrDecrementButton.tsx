@@ -7,7 +7,7 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
-import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeFormGroup.ts"
+import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 

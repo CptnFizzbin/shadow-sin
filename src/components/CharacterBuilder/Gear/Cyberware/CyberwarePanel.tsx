@@ -5,11 +5,11 @@ import type { FC } from "react"
 
 import { CyberwareList } from "#/components/CharacterBuilder/Gear/Cyberware/CyberwareList.tsx"
 import { BASE_ESSENCE } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
-import { useCyberwareFormGroup } from "#/components/CharacterBuilder/Gear/Cyberware/UseCyberwareFormGroup.ts"
+import { useCyberwareState } from "#/components/CharacterBuilder/Gear/Cyberware/UseCyberwareState.ts"
 
 export const CyberwarePanel: FC = () => {
   const { implants, addImplant, updateImplant, removeImplant, essenceSummary } =
-    useCyberwareFormGroup()
+    useCyberwareState()
 
   const essenceRemainingDisplay = essenceSummary.remainingEssence.toFixed(2)
   const isEssenceWarning = essenceSummary.remainingEssence <= 1

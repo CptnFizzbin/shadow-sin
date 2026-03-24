@@ -8,7 +8,7 @@ import { useState } from "react"
 import { CyberwareListItem } from "#/components/CharacterBuilder/Gear/Cyberware/CyberwareListItem.tsx"
 import { ImplantFormDialog } from "#/components/CharacterBuilder/Gear/Cyberware/Dialogs/ImplantFormDialog.tsx"
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
-import { useCyberwareFormGroup } from "#/components/CharacterBuilder/Gear/Cyberware/UseCyberwareFormGroup.ts"
+import { useCyberwareState } from "#/components/CharacterBuilder/Gear/Cyberware/UseCyberwareState.ts"
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemCard } from "#/components/CharacterBuilder/Gear/Generic/GearItemCard.tsx"
@@ -46,7 +46,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
     updateImplantMod,
     removeImplantMod,
     getModsForImplant,
-  } = useCyberwareFormGroup()
+  } = useCyberwareState()
 
   const closeImplantDialog = () =>
     setImplantDialog((prev) => prev && { ...prev, open: false })
