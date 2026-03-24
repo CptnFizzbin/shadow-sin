@@ -99,7 +99,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
                   label={
                     license.verification.kind === VerificationKind.Real
                       ? "Real"
-                      : `Rating: ${license.verification.kind === VerificationKind.Fake ? license.verification.rating : ""}`
+                      : `Rating: ${license.verification.rating}`
                   }
                   size="small"
                   variant="outlined"

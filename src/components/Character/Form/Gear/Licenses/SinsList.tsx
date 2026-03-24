@@ -116,7 +116,7 @@ export const SinsList: FC = () => {
                   label={
                     sin.verification.kind === VerificationKind.Real
                       ? "Real"
-                      : `Rating: ${sin.verification.kind === VerificationKind.Fake ? sin.verification.rating : ""}`
+                      : `Rating: ${sin.verification.rating}`
                   }
                   size="small"
                   variant="outlined"
