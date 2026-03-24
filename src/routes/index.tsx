@@ -4,12 +4,11 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import CharacterRosterList from "#/components/Character/CharacterRosterList.tsx"
 import { Header } from "#/components/UI/Header.tsx"
-import { artemis } from "#/data/characters/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    return characterManager.ensureCharacters([artemis])
+    return characterManager.ensureCharacters([])
   },
   component: IndexRoute,
 })
@@ -22,7 +21,7 @@ function IndexRoute() {
     <Stack spacing={1}>
       <Header />
       <Button
-        variant={"outlined"}
+        variant="outlined"
         onClick={() => {
           navigate({ to: "/new" })
         }}

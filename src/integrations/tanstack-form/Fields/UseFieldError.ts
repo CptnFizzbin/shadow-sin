@@ -8,10 +8,10 @@ interface ErrorLike {
 
 function isErrorLike(value: unknown): value is ErrorLike {
   return (
-    typeof value === "object" &&
-    value !== null &&
-    "message" in value &&
-    typeof value.message === "string"
+    typeof value === "object"
+    && value !== null
+    && "message" in value
+    && typeof value.message === "string"
   )
 }
 

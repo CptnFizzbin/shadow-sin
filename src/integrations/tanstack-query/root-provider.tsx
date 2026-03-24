@@ -3,8 +3,8 @@ import type { ReactNode } from "react"
 
 let context:
   | {
-      queryClient: QueryClient
-    }
+    queryClient: QueryClient
+  }
   | undefined
 
 export function getContext() {

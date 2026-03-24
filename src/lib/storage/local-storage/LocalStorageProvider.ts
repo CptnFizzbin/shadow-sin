@@ -46,8 +46,8 @@ export class LocalStorageProvider implements IStorageProvider {
       const storedJsonFile = this.parseStoredJsonFile<unknown>(rawValue)
 
       if (
-        normalizedPathPrefix &&
-        !storedJsonFile.path.startsWith(normalizedPathPrefix)
+        normalizedPathPrefix
+        && !storedJsonFile.path.startsWith(normalizedPathPrefix)
       ) {
         continue
       }

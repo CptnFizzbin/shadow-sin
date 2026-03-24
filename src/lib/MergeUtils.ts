@@ -30,8 +30,8 @@ export function mergeArrays<TData>(...arrays: unknown[][]): TData[] {
         const itemKey = `array:${index}`
         const existingIndex = seenIndexes.get(itemKey)
         if (
-          existingIndex !== undefined &&
-          Array.isArray(outItems[existingIndex])
+          existingIndex !== undefined
+          && Array.isArray(outItems[existingIndex])
         ) {
           outItems[existingIndex] = mergeArrays(
             outItems[existingIndex] as unknown[],

@@ -49,7 +49,7 @@ interface HeaderProps {
   character?: PlayerCharacterData
 }
 
-export const Header: FC<HeaderProps> = ({ character }) => { ... }
+export const Header: FC<HeaderProps> = ({ character }) => { /* ... */ }
 ```
 
 - Export props interfaces when they may be consumed by callers (e.g. when a parent spreads them).
@@ -57,7 +57,7 @@ export const Header: FC<HeaderProps> = ({ character }) => { ... }
 
 ## Custom hooks
 
-- File name uses `Use` prefix with PascalCase (e.g. `UseCharacterForm.ts`, `UseAttribute.ts`).
+- File name uses `Use` prefix with PascalCase (e.g. `UseCharacterForm.ts`, `CharacterUtils.ts`).
 - Export a `ReturnType<typeof useXxx>` alias when callers need the hook's return type.
 
 ```ts

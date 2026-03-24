@@ -17,7 +17,7 @@ describe("mergeArrays", () => {
 
   it("merges objects with the same id (keeps a single merged item)", () => {
     // Arrange
-    type ObjectWithId = { id: string; [key: string]: unknown }
+    type ObjectWithId = { id: string, [key: string]: unknown }
     const o1: ObjectWithId = { id: "a", foo: 1 }
     const o2: ObjectWithId = { id: "a", bar: 2 }
 
@@ -31,7 +31,7 @@ describe("mergeArrays", () => {
 
   it("keeps distinct objects with different ids", () => {
     // Arrange
-    type ObjectWithId = { id: string; [key: string]: unknown }
+    type ObjectWithId = { id: string, [key: string]: unknown }
     const a: ObjectWithId = { id: "a", foo: 1 }
     const b: ObjectWithId = { id: "b", foo: 2 }
 
@@ -47,7 +47,7 @@ describe("mergeArrays", () => {
 describe("mergeObjects", () => {
   it("merges nested objects recursively", () => {
     // Arrange
-    type ObjectWithNested = { a: { x?: number; y?: number } }
+    type ObjectWithNested = { a: { x?: number, y?: number } }
     const o1: ObjectWithNested = { a: { x: 1 } }
     const o2: ObjectWithNested = { a: { y: 2 } }
 
@@ -60,7 +60,7 @@ describe("mergeObjects", () => {
 
   it("merges arrays inside objects using mergeArrays (by id)", () => {
     // Arrange
-    type Weapon = { id: string; dmg?: number; ap?: number }
+    type Weapon = { id: string, dmg?: number, ap?: number }
     type GearList = { weapons: Weapon[] }
     const obj1: GearList = {
       weapons: [{ id: "w1", dmg: 5 }],

@@ -12,6 +12,6 @@ export function useWoundModifier() {
   const stunDamage = useDamageTrack("stun")
 
   return (
-    Math.floor(physicalDamage.current / 3) + Math.floor(stunDamage.current / 3)
+    Math.floor(physicalDamage / 3) + Math.floor(stunDamage / 3)
   )
 }

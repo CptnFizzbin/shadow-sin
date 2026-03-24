@@ -14,7 +14,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   return (
     <TanStackQueryProvider>
-      <Stack sx={{ padding: 1 }} direction={"column"} minHeight={"100vh"}>
+      <Stack sx={{ padding: 1 }} direction="column" minHeight="100vh">
         <Box sx={{ flexGrow: 1 }}>
           <Outlet />
         </Box>

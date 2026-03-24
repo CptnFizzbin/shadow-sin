@@ -1,0 +1,60 @@
+import type { AttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
+import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
+import type { AwakenedFormState } from "#/components/CharacterBuilder/Resources/AwakenedFormState.ts"
+import type { SkillsFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
+import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { QualityData } from "#/lib/system/types/qualityData.ts"
+
+export interface CharacterBuilderState {
+  characterId: string
+
+  buildPoints: {
+    total: number
+    spent: {
+      metatype: number
+      qualities: number
+      attributes: number
+      skills: number
+      gear: number
+    }
+  }
+
+  name: string
+  alias: string
+  lifestyle: LifestyleType
+  lifestyleMonths: number
+  gender?: string
+  weight?: string
+  height?: string
+  age: number
+  metatype: MetatypeKey
+  awakening: AwakeningType
+
+  attributes: {
+    body: AttrFormState
+    agility: AttrFormState
+    reaction: AttrFormState
+    strength: AttrFormState
+    charisma: AttrFormState
+    intuition: AttrFormState
+    logic: AttrFormState
+    willpower: AttrFormState
+    edge: AttrFormState
+    magic: AttrFormState
+    essence: AttrFormState
+    resonance: AttrFormState
+  }
+
+  qualities: QualityData[]
+
+  skills: SkillsFormState
+
+  awakened: AwakenedFormState
+
+  gear: Record<string, BuilderGearData>
+
+  contacts: ContactData[]
+}

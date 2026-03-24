@@ -61,23 +61,12 @@ export interface PlayerCharacterData {
   }
 
   damage: {
-    physical: {
-      current: number
-      max: number
-    }
-
-    stun: {
-      current: number
-      max: number
-    }
-
-    matrix: {
-      current: number
-      max: number
-    }
+    physical: number
+    stun: number
+    matrix: number
   }
 
-  gear: GearData[]
+  gear: Record<string, GearData>
   skills: Record<string, SkillData>
   qualities: QualityData[]
   contacts: ContactData[]

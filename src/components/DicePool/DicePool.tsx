@@ -15,10 +15,10 @@ interface DicePoolProps {
 export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
   const diceGroups = groups.filter(
     (group): group is DiceGroup =>
-      typeof group === "object" &&
-      group !== null &&
-      "name" in group &&
-      "size" in group,
+      typeof group === "object"
+      && group !== null
+      && "name" in group
+      && "size" in group,
   )
 
   const total = Math.max(

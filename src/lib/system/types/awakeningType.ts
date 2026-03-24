@@ -17,7 +17,7 @@ export const MagicAwakeningTypes: AwakeningType[] = [
 export const TechAwakeningTypes: AwakeningType[] = [AwakeningType.Technomancer]
 
 export const awakenings: Record<AwakeningType, AwakeningData> = {
-  Mundane: {
+  "Mundane": {
     name: AwakeningType.Mundane,
     cost: 0,
     qualities: [],
@@ -26,7 +26,7 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
       resonance: { min: 0, max: 0 },
     },
   },
-  Adept: {
+  "Adept": {
     name: AwakeningType.Adept,
     cost: 5,
     qualities: [],
@@ -44,7 +44,7 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
       resonance: { min: 0, max: 0 },
     },
   },
-  Magician: {
+  "Magician": {
     name: AwakeningType.Magician,
     cost: 15,
     qualities: [],
@@ -53,7 +53,7 @@ export const awakenings: Record<AwakeningType, AwakeningData> = {
       resonance: { min: 0, max: 0 },
     },
   },
-  Technomancer: {
+  "Technomancer": {
     name: AwakeningType.Technomancer,
     cost: 10,
     qualities: [],
@@ -69,7 +69,7 @@ export interface AwakeningData {
   cost: number
   qualities: QualityData[]
   attributes: {
-    magic: { min: number; max: number }
-    resonance: { min: number; max: number }
+    magic: { min: number, max: number }
+    resonance: { min: number, max: number }
   }
 }
