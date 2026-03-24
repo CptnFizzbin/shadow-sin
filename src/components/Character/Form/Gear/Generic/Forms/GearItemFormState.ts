@@ -1,12 +1,6 @@
-import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
+import type { ItemData } from "#/lib/system/types/ItemData.ts"
 
-export interface GearItemFormState {
-  id: string
+export interface GearItemFormState extends ItemData {
   parentId?: string
-  name: string
   cost: number
-  description?: string
-  availability?: AvailablityInfo
-  source?: SourceData
 }

@@ -39,10 +39,10 @@ export const GearItemFormFields = withFieldGroup({
         <AvailabilityFieldGroup form={group} fields={gearItemFieldMap} />
         <SourceFieldGroup form={group} fields={gearItemFieldMap} />
 
-        <group.AppField name="description">
+        <group.AppField name="notes">
           {(field) => (
             <field.TextField
-              label="Description"
+              label="Notes"
               fullWidth
               size="small"
               multiline

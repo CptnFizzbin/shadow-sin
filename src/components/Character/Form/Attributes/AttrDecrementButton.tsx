@@ -2,13 +2,16 @@ import { Button } from "@mui/material"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useAttributeSlice } from "#/components/Character/Form/Attributes/AttributeHooks.ts"
+import {
+  useAttributeValueSlice,
+  useSpentBuildPointsSlice,
+} from "#/components/Character/Form/Attributes/AttributeHooks.ts"
 import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/Character/Form/Attributes/AttributeUtils.ts"
 import type { AttributeRowProps } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
+import { useAttributeRow } from "#/components/Character/Form/Attributes/UseAttributeFormGroup.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export const DecrementButton: FC<AttributeRowProps> = (props) => {
@@ -17,25 +20,20 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
   }
 
   const attrKey = props.attr
-  const buildPointsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.buildPoints,
-    (state, buildPoints) => {
-      state.buildPoints = buildPoints
-      return state
-    },
-  )
-  const attrSlice = useAttributeSlice(attrKey)
+  const buildPointsSlice = useSpentBuildPointsSlice()
+  const attrValueSlice = useAttributeValueSlice(attrKey)
+  const { attribute } = useAttributeRow(props)
 
   let disabled = false
   let refund = AttributeBpCostBase
   let label = `${refund} BP`
 
-  if (attrSlice.state.value >= attrSlice.state.max) {
+  if (attrValueSlice.state >= attribute.max) {
     refund = AttributeBpCostMaxOut
     label = `${refund} BP`
   }
 
-  if (attrSlice.state.value <= attrSlice.state.min) {
+  if (attrValueSlice.state <= attribute.min) {
     disabled = true
     label = "MIN"
   }
@@ -44,13 +42,13 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    buildPointsSlice.update((buildPoints) => {
-      buildPoints.spent.attributes -= refund
+    buildPointsSlice.update((spent) => {
+      spent.attributes -= refund
     })
 
-    attrSlice.update((attrState) => {
-      attrState.value -= 1
-    })
+    attrValueSlice.update((attrValue) =>
+      attrValue > attribute.min ? attrValue - 1 : attrValue,
+    )
   }
   return (
     <Button

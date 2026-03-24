@@ -3,11 +3,49 @@ import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import type { AwakeningData } from "#/lib/system/types/awakeningType.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
-export interface AttrFormState {
+/**
+ * The min/max constraints for a single attribute, derived from the character's
+ * metatype and awakening type. Stored separately from the attribute value so
+ * that CharacterFormState can use `Record<AttributeKey, number>` for attribute
+ * values (matching PlayerCharacterData) while still tracking limits for the
+ * character builder UI.
+ */
+export interface AttrLimits {
   min: number
   max: number
   augMax?: number
+}
+
+/**
+ * Combined attribute limits and value, used as an intermediate computation
+ * result. The `value` field is stored directly on `CharacterFormState.attributes`
+ * (as a plain number) while the limits are stored on `CharacterFormState.attributeLimits`.
+ */
+export interface AttrFormState extends AttrLimits {
   value: number
+}
+
+export function createAttrLimits({
+  attr,
+  metatype,
+  awakening,
+}: {
+  attr: AttributeKey
+  metatype: MetatypeData
+  awakening: AwakeningData
+}): AttrLimits {
+  if (attr === AttributeKey.resonance || attr === AttributeKey.magic) {
+    return {
+      min: awakening.attributes[attr].min,
+      max: awakening.attributes[attr].max,
+    }
+  }
+
+  return {
+    min: metatype.attributes[attr].min,
+    max: metatype.attributes[attr].max,
+    augMax: metatype.attributes[attr].augMax,
+  }
 }
 
 export function createAttrFormState({
@@ -23,23 +61,8 @@ export function createAttrFormState({
   character?: PlayerCharacterData
   value?: number
 }): AttrFormState {
-  const state: AttrFormState = {
-    min: 0,
-    max: 0,
-    augMax: 0,
-    value: 0,
-  }
+  const limits = createAttrLimits({ attr, metatype, awakening })
+  const attrValue = value ?? character?.attributes[attr] ?? limits.min
 
-  if (attr === AttributeKey.resonance || attr === AttributeKey.magic) {
-    state.min = awakening.attributes[attr].min
-    state.max = awakening.attributes[attr].max
-    state.value = value || character?.attributes[attr] || state.min
-  } else {
-    state.min = metatype.attributes[attr].min
-    state.max = metatype.attributes[attr].max
-    state.augMax = metatype.attributes[attr].augMax
-    state.value = value || character?.attributes[attr] || state.min
-  }
-
-  return state
+  return { ...limits, value: attrValue }
 }

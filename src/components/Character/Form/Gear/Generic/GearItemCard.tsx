@@ -21,7 +21,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
   onEdit,
   onRemove,
 }) => {
-  const { availability, source, description } = item
+  const { availability, source, notes } = item
 
   return (
     <Stack
@@ -57,7 +57,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
         </IconButton>
       </Stack>
 
-      {(availability || source || description) && (
+      {(availability || source || notes) && (
         <Stack direction="row" gap={1} sx={{ pt: 1 }} flexWrap="wrap">
           {availability && (
             <AvailabilityChip
@@ -79,13 +79,13 @@ export const GearItemCard: FC<GearItemCardProps> = ({
             />
           )}
 
-          {description && (
+          {notes && (
             <Typography
               variant="caption"
               color="text.secondary"
               sx={{ flexGrow: 1, alignSelf: "center" }}
             >
-              {description}
+              {notes}
             </Typography>
           )}
         </Stack>

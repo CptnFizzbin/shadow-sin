@@ -1,5 +1,6 @@
 import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
 import type { CharacterFormState } from "#/components/Character/Form/CharacterFormState.ts"
+import { CURRENT_FORM_STATE_VERSION } from "#/lib/semver.ts"
 import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
@@ -21,8 +22,31 @@ export const useDefaultValues = ({
   const metatype = metatypes[biology?.metatype || MetatypeKey.Human]
   const awakening = awakenings[biology?.awakening || AwakeningType.Mundane]
 
+  const attrKeys = Object.values(AttributeKey)
+
+  // Build both attributes (plain values) and attributeLimits (min/max/augMax)
+  // from the same createAttrFormState computation to avoid duplicated work.
+  const attrEntries = attrKeys.map((attr) => {
+    const { value, ...limits } = createAttrFormState({
+      attr,
+      character,
+      metatype,
+      awakening,
+    })
+    return { attr, value, limits }
+  })
+
+  const attributes = Object.fromEntries(
+    attrEntries.map(({ attr, value }) => [attr, value]),
+  ) as Record<AttributeKey, number>
+
+  const attributeLimits = Object.fromEntries(
+    attrEntries.map(({ attr, limits }) => [attr, limits]),
+  ) as CharacterFormState["attributeLimits"]
+
   return {
     characterId: characterId,
+    version: CURRENT_FORM_STATE_VERSION,
 
     buildPoints: {
       total: 400,
@@ -44,80 +68,8 @@ export const useDefaultValues = ({
     metatype: metatype.name,
     awakening: biology?.awakening || AwakeningType.Mundane,
 
-    attributes: {
-      body: createAttrFormState({
-        attr: AttributeKey.body,
-        character,
-        metatype,
-        awakening,
-      }),
-      agility: createAttrFormState({
-        attr: AttributeKey.agility,
-        character,
-        metatype,
-        awakening,
-      }),
-      reaction: createAttrFormState({
-        attr: AttributeKey.reaction,
-        character,
-        metatype,
-        awakening,
-      }),
-      strength: createAttrFormState({
-        attr: AttributeKey.strength,
-        character,
-        metatype,
-        awakening,
-      }),
-      charisma: createAttrFormState({
-        attr: AttributeKey.charisma,
-        character,
-        metatype,
-        awakening,
-      }),
-      intuition: createAttrFormState({
-        attr: AttributeKey.intuition,
-        character,
-        metatype,
-        awakening,
-      }),
-      logic: createAttrFormState({
-        attr: AttributeKey.logic,
-        character,
-        metatype,
-        awakening,
-      }),
-      willpower: createAttrFormState({
-        attr: AttributeKey.willpower,
-        character,
-        metatype,
-        awakening,
-      }),
-      edge: createAttrFormState({
-        attr: AttributeKey.edge,
-        character,
-        metatype,
-        awakening,
-      }),
-      magic: createAttrFormState({
-        attr: AttributeKey.magic,
-        character,
-        metatype,
-        awakening,
-      }),
-      resonance: createAttrFormState({
-        attr: AttributeKey.resonance,
-        character,
-        metatype,
-        awakening,
-      }),
-      essence: createAttrFormState({
-        attr: AttributeKey.essence,
-        character,
-        metatype,
-        awakening,
-      }),
-    },
+    attributes,
+    attributeLimits,
 
     qualities: [],
 

@@ -23,7 +23,7 @@ import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData
 
 export const artemis: PlayerCharacterData = {
   id: "artemis",
-  version: 1,
+  version: "1.0.0",
 
   biology: {
     metatype: MetatypeKey.Elf,

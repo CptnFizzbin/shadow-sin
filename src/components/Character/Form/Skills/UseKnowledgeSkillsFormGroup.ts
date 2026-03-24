@@ -23,10 +23,8 @@ export function useKnowledgeSkillsFormGroup() {
       return state
     },
   )
-  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
-  const intuitionValue = useCharacterBuilderStore(
-    (s) => s.attributes.intuition.value,
-  )
+  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic)
+  const intuitionValue = useCharacterBuilderStore((s) => s.attributes.intuition)
 
   const freeSkillPoints = getFreeSkillPoints(logicValue, intuitionValue)
   const maxSkillPoints = getMaxSkillPoints(logicValue, intuitionValue)

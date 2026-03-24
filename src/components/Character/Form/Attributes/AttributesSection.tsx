@@ -14,10 +14,14 @@ import {
 } from "#/lib/system/types/attributeKey.ts"
 
 export const AttributesSection: FC = () => {
-  const { bpSpent, attributes } = useAttributeFormGroup()
+  const { bpSpent, attributes, attributeLimits } = useAttributeFormGroup()
 
   const attrRows = AttributeOrder.filter((key) => key !== AttributeKey.essence)
-    .map((attr) => ({ attr, ...attributes[attr] }))
+    .map((attr) => ({
+      attr,
+      value: attributes[attr],
+      ...attributeLimits[attr],
+    }))
     .filter(({ min }) => min >= 1)
     .map(({ attr }) => attr)
 

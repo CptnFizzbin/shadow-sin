@@ -41,7 +41,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
   onEdit,
   onRemove,
 }) => {
-  const { availability, source, description } = implant
+  const { availability, source, notes } = implant
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
 
@@ -132,13 +132,13 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
           />
         )}
 
-        {description && (
+        {notes && (
           <Typography
             variant="caption"
             color="text.secondary"
             sx={{ flexGrow: 1, alignSelf: "center" }}
           >
-            {description}
+            {notes}
           </Typography>
         )}
       </Stack>

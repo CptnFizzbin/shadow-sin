@@ -1,5 +1,6 @@
 import { sort } from "fast-sort"
 
+import { compareSemver, CURRENT_CHARACTER_VERSION } from "#/lib/semver.ts"
 import type { StoredJsonFile } from "#/lib/storage/IStorageProvider.ts"
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
@@ -83,25 +84,41 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: {
-    version: number
+    version: string | number
   }): Promise<PlayerCharacterData> {
-    let characterData = character
+    // Normalise legacy numeric versions (e.g. 0, 1) to semver strings.
+    const currentVersion =
+      typeof character.version === "number"
+        ? `${character.version}.0.0`
+        : (character.version ?? "0.0.0")
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let characterData: any = { ...character, version: currentVersion }
     let migrationPerformed = false
 
     const migrationsToRun = sort(migrations)
       .asc((migration) => migration.version)
-      .filter((migration) => migration.version > character.version)
+      .filter(
+        (migration) => compareSemver(migration.version, currentVersion) > 0,
+      )
 
     for (const migration of migrationsToRun) {
-      if (migration.version > characterData.version) {
-        characterData = await migration.up(character)
+      if (
+        compareSemver(migration.version, characterData.version as string) > 0
+      ) {
+        characterData = await migration.up(characterData)
         characterData.version = migration.version
         migrationPerformed = true
       }
     }
 
-    const playerCharacter: PlayerCharacterData =
-      characterData as PlayerCharacterData
+    // Ensure the version is set to the current version after all migrations.
+    if (characterData.version !== CURRENT_CHARACTER_VERSION) {
+      characterData.version = CURRENT_CHARACTER_VERSION
+      migrationPerformed = true
+    }
+
+    const playerCharacter = characterData as PlayerCharacterData
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)

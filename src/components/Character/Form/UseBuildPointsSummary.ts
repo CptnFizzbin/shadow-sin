@@ -46,10 +46,8 @@ export function useBuildPointsSummary(): BpSummary {
   const languageSkills = useCharacterBuilderStore(
     (state) => state.skills.languageSkills,
   )
-  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
-  const intuitionValue = useCharacterBuilderStore(
-    (s) => s.attributes.intuition.value,
-  )
+  const logicValue = useCharacterBuilderStore((s) => s.attributes.logic)
+  const intuitionValue = useCharacterBuilderStore((s) => s.attributes.intuition)
   const gearBpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.gear,
   )

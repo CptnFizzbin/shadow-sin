@@ -12,6 +12,9 @@ export interface AttributeRowProps {
 
 export function useAttributeFormGroup() {
   const attributes = useCharacterBuilderStore((state) => state.attributes)
+  const attributeLimits = useCharacterBuilderStore(
+    (state) => state.attributeLimits,
+  )
   const bpSpent = useCharacterBuilderStore(
     (state) => state.buildPoints.spent.attributes,
   )
@@ -19,7 +22,7 @@ export function useAttributeFormGroup() {
   const hasMaxxedAttr = AttributeOrder.filter(
     (key) => key !== AttributeKey.essence,
   )
-    .map((key) => attributes[key])
+    .map((key) => ({ value: attributes[key], max: attributeLimits[key].max }))
     .filter(({ max }) => max > 0)
     .some(({ value, max }) => value >= max)
 
@@ -28,7 +31,8 @@ export function useAttributeFormGroup() {
     bpRemaining: AttributeBpAllowance - bpSpent,
     hasMaxxedAttr: hasMaxxedAttr,
 
-    attributes: attributes,
+    attributes,
+    attributeLimits,
   }
 }
 
@@ -37,14 +41,15 @@ export function useAttributeRow({ attr }: AttributeRowProps) {
     throw new Error("Essence should not use useAttributeRow")
   }
 
-  const { attributes, ...formGroup } = useAttributeFormGroup()
+  const { attributes, attributeLimits, ...formGroup } = useAttributeFormGroup()
 
   return {
     ...formGroup,
 
     attribute: {
       label: AttributeLabels[attr],
-      ...attributes[attr],
+      value: attributes[attr],
+      ...attributeLimits[attr],
     },
   }
 }

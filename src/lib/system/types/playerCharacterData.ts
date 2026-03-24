@@ -1,17 +1,16 @@
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
-import type { AttributeKey } from "./attributeKey.ts"
+import type { CharacterSheet } from "./CharacterSheet.ts"
 import type { AwakeningType } from "./awakeningType.ts"
-import type { ContactData } from "./contactData.ts"
 import type { GearData } from "./gear/gearData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { SpellData } from "./magic/spellData.ts"
-import type { QualityData } from "./qualityData.ts"
 import type { SkillData } from "./skillData.ts"
 
-export interface PlayerCharacterData {
+export interface PlayerCharacterData extends CharacterSheet {
   id: string
-  version: number
+  /** Semantic version string (e.g. "1.0.0") for the character data schema. */
+  version: string
 
   profile: {
     alias: string
@@ -54,8 +53,6 @@ export interface PlayerCharacterData {
     }>
   }
 
-  attributes: Record<AttributeKey, number>
-
   edge: {
     current: number
   }
@@ -79,8 +76,6 @@ export interface PlayerCharacterData {
 
   gear: GearData[]
   skills: Record<string, SkillData>
-  qualities: QualityData[]
-  contacts: ContactData[]
 
   spellcasting?: {
     knownSpells: SpellData[]

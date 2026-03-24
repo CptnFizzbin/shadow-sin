@@ -17,7 +17,7 @@ export const useAdeptPowersSlice = () => {
 export const usePowerPoints = () => {
   const powers = useAdeptPowersSlice()
 
-  const magicAttr = useCharacterBuilderStore(
+  const magicAttrValue = useCharacterBuilderStore(
     (state) => state.attributes[AttributeKey.magic],
   )
 
@@ -25,18 +25,18 @@ export const usePowerPoints = () => {
     .map((power) => power.costPerRating * power.rating)
     .reduce((total, cost) => total + cost, 0)
 
-  return { max: magicAttr.value, used }
+  return { max: magicAttrValue, used }
 }
 
 export const useAdeptPowerWarnings = () => {
-  const magicAttribute = useCharacterBuilderStore(
+  const magicAttributeValue = useCharacterBuilderStore(
     (state) => state.attributes[AttributeKey.magic],
   )
   const powerPoints = usePowerPoints()
 
   const warnings: string[] = []
 
-  if (magicAttribute === undefined) {
+  if (magicAttributeValue === undefined) {
     warnings.push("Magic attribute is not set.")
   }
 

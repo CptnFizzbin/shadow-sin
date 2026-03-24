@@ -1,8 +1,7 @@
-import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
+import type { ItemData } from "#/lib/system/types/ItemData.ts"
 import type { FirearmData } from "#/lib/system/types/gear/weaponData.ts"
 import { WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
 
 export enum GearType {
   armor = "armor",
@@ -19,19 +18,13 @@ export enum GearType {
   other = "other",
 }
 
-export interface GearData {
-  id: string
-  name: string
+export interface GearData extends ItemData {
   type: GearType | string
 
-  notes?: string
   equipped?: boolean
   fixed?: boolean
 
-  availability?: AvailablityInfo
-  source?: SourceData
   rating?: number
-  cost?: number
 
   wireless?: {
     enabled?: boolean

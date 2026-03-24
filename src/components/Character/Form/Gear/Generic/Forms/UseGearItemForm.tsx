@@ -22,7 +22,7 @@ const defaultFormValues: GearItemFormState = {
   id: "",
   name: "",
   cost: 0,
-  description: "",
+  notes: "",
   availability: {
     rating: 0,
     restricted: false,

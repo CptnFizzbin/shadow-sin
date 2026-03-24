@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { createAttrFormState } from "#/components/Character/Form/AttrFormState.ts"
+import { createAttrLimits } from "#/components/Character/Form/AttrFormState.ts"
 import { BiologyAttributes } from "#/components/Character/Form/Biology/BiologyAttributes.tsx"
 import { useCharacterBuilderStoreSlice } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
@@ -35,12 +35,9 @@ export const BiologySection: FC = () => {
       draft.buildPoints.spent.attributes = 0
 
       for (const attr of attrsToUpdate) {
-        draft.attributes[attr] = createAttrFormState({
-          value: metatype.attributes[attr].min,
-          attr: attr,
-          metatype: metatype,
-          awakening: awakening,
-        })
+        const limits = createAttrLimits({ attr, metatype, awakening })
+        draft.attributes[attr] = limits.min
+        draft.attributeLimits[attr] = limits
       }
     })
   }

@@ -4,7 +4,7 @@ import { Skills } from "#/lib/system/types/SkillKey.ts"
 import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 
 export function useBuilderAttrValue(attrKey: AttributeKey) {
-  return useCharacterBuilderStore((state) => state.attributes[attrKey]?.value)
+  return useCharacterBuilderStore((state) => state.attributes[attrKey])
 }
 
 export function useBuilderActiveSkillRating(skillKey: SkillKey) {

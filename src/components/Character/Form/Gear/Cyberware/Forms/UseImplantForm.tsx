@@ -30,7 +30,7 @@ const defaultFormValues: ImplantFormState = {
   grade: ImplantGrade.standard,
   implantType: ImplantType.cyberware,
   location: "",
-  description: "",
+  notes: "",
   availability: undefined,
   source: undefined,
 }

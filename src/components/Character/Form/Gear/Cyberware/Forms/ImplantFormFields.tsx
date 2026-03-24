@@ -156,10 +156,10 @@ export const ImplantFormFields = withFieldGroup({
         <AvailabilityFieldGroup form={group} fields={implantFieldMap} />
         <SourceFieldGroup form={group} fields={implantFieldMap} />
 
-        <group.AppField name="description">
+        <group.AppField name="notes">
           {(field) => (
             <field.TextField
-              label="Description / Notes"
+              label="Notes"
               fullWidth
               size="small"
               multiline
