@@ -21,6 +21,9 @@ export enum GearType {
 export interface GearData extends ItemData {
   type: GearType | string
 
+  /** ID of the parent gear item this is attached to, if any. */
+  parentId?: string
+
   equipped?: boolean
   fixed?: boolean
 

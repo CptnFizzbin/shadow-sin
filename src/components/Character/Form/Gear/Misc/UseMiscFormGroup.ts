@@ -29,7 +29,9 @@ export function useMiscFormGroup() {
 
   const removeMiscItem = (itemId: string) => {
     itemsSlice.update((draft) =>
-      draft.filter((existing) => existing.id !== itemId),
+      draft.filter(
+        (existing) => existing.id !== itemId && existing.parentId !== itemId,
+      ),
     )
   }
 
