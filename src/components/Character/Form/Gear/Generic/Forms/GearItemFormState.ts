@@ -6,6 +6,7 @@ export interface GearItemFormState {
   parentId?: string
   name: string
   cost: number
+  quantity: number
   description?: string
   availability?: AvailablityInfo
   source?: SourceData

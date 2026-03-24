@@ -22,6 +22,7 @@ const defaultFormValues: GearItemFormState = {
   id: "",
   name: "",
   cost: 0,
+  quantity: 1,
   description: "",
   availability: {
     rating: 0,
@@ -46,6 +47,7 @@ export const useGearItemForm = (options: GearItemFormOptions) => {
       ? {
           ...defaultFormValues,
           ...options.item,
+          quantity: options.item.quantity ?? 1,
         }
       : {
           ...defaultFormValues,

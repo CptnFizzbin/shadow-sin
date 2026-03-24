@@ -41,6 +41,16 @@ export const GearItemCard: FC<GearItemCardProps> = ({
           {item.name}
         </Typography>
 
+        {(item.quantity ?? 1) > 1 && (
+          <Chip
+            label={`×${item.quantity ?? 1}`}
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{ height: 20, fontSize: "0.7rem" }}
+          />
+        )}
+
         <Typography>
           <Nuyen amount={item.cost} />
         </Typography>
