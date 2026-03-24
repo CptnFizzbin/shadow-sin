@@ -2,7 +2,7 @@ import { useAttributesBuildPoints } from "#/components/Character/Form/Attributes
 import { useCharacterBuilderStore } from "#/components/Character/Form/CharacterBuilderStoreProvider.tsx"
 import { CharacterBuilderMaxBp } from "#/components/Character/Form/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/Character/Form/Contacts/ContactsHooks.ts"
-import { GearBpAllowance } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import { useGearBuildPoints } from "#/components/Character/Form/Gear/GearUtils.ts"
 import { isAdept } from "#/components/Character/Form/Resources/Adept/AdeptPowersUtils.ts"
 import { useSpellsBuildPoints } from "#/components/Character/Form/Resources/Magician/SpellsHooks.ts"
 import { isMagician } from "#/components/Character/Form/Resources/Magician/SpellsUtils.ts"
@@ -14,15 +14,9 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/Character/Form/Skills/SkillRequirements.ts"
+import type { BpLineItem } from "#/components/Character/Form/SummaryLineItem.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
-
-export interface BpLineItem {
-  label: string
-  spent: number
-  allowance?: number
-  enabled?: boolean
-}
 
 export interface BpSummary {
   total: number
@@ -49,9 +43,6 @@ export function useBuildPointsSummary(): BpSummary {
   const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
   const intuitionValue = useCharacterBuilderStore(
     (s) => s.attributes.intuition.value,
-  )
-  const gearBpSpent = useCharacterBuilderStore(
-    (state) => state.buildPoints.spent.gear,
   )
 
   const metatypeCost = metatypes[metatypeKey].cost
@@ -127,11 +118,7 @@ export function useBuildPointsSummary(): BpSummary {
       enabled: isTechnomancer(awakeningType),
       ...technomancerBp,
     },
-    {
-      label: "Cyberware",
-      spent: gearBpSpent,
-      allowance: GearBpAllowance,
-    },
+    useGearBuildPoints(),
     {
       label: "Contacts",
       ...useContactsBuildPoints(),

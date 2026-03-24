@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+import { GearMaxAvailability } from "#/components/Character/Form/Gear/GearUtils.ts"
 import type { GearItemFormState } from "#/components/Character/Form/Gear/Generic/Forms/GearItemFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"

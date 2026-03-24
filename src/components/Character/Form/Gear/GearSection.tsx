@@ -16,10 +16,10 @@ import { CyberwarePanel } from "#/components/Character/Form/Gear/Cyberware/Cyber
 import { getImplantEffectiveNuyenCost } from "#/components/Character/Form/Gear/Cyberware/ImplantUtils.ts"
 import { DevicesPanel } from "#/components/Character/Form/Gear/Devices/DevicesPanel.tsx"
 import {
-  GearBpAllowance,
+  GearBuildPointAllowance,
   GearMaxAvailability,
-  GearNuyenBudget,
-} from "#/components/Character/Form/Gear/GearSectionRequirements.ts"
+  GearNuyenAllowance,
+} from "#/components/Character/Form/Gear/GearUtils.ts"
 import { getLicenseAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getSinAvailability } from "#/components/Character/Form/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/Character/Form/Gear/Licenses/SinsAndLicensesSection.tsx"
@@ -121,22 +121,23 @@ export const GearSection: FC = () => {
           alignItems="center"
         >
           <Typography variant="caption">
-            <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenBudget} />
+            <Nuyen amount={totalNuyen} /> /{" "}
+            <Nuyen amount={GearNuyenAllowance} />
           </Typography>
-          <BuildPoints value={totalBp} total={GearBpAllowance} />
+          <BuildPoints value={totalBp} total={GearBuildPointAllowance} />
         </Stack>
 
         <LinearProgress
           variant="determinate"
-          value={getProgress(totalNuyen, GearNuyenBudget)}
+          value={getProgress(totalBp, GearBuildPointAllowance)}
           color={isOverBudget ? "error" : "primary"}
         />
       </Stack>
 
       {isOverBudget && (
         <Alert severity="error">
-          Gear budget exceeded! Maximum is <Nuyen amount={GearNuyenBudget} /> (
-          {GearBpAllowance} BP).
+          Gear budget exceeded! Maximum is <Nuyen amount={GearNuyenAllowance} />{" "}
+          ({GearBuildPointAllowance} BP).
         </Alert>
       )}
 
