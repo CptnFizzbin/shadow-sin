@@ -1,28 +1,28 @@
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
-import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
+import { useGearApi } from "#/lib/gear/UseGearApi.ts"
 
 export function useSinsState() {
-  const gear = useBuilderGearApi()
-  const sins = gear.getItemsByType<SinFormState>("sins")
+  const gear = useGearApi()
+  const sins = gear.getByType<SinFormState>("sins")
 
   const addSin = (sin: Omit<SinFormState, "id">) => {
-    gear.createItem({ ...sin, type: "sins" })
+    gear.create({ ...sin, itemType: "sins" })
   }
 
   const updateSin = (sin: SinFormState) => {
-    gear.saveItem({ ...sin, type: "sins" })
+    gear.set({ ...sin, itemType: "sins" })
   }
 
   const removeSin = (sin: SinFormState) => {
     // remove sin and associated licenses
-    const licenses = gear.getItemsByType<LicenseFormState>("licenses").filter((l) => l.sinId === sin.id)
-    licenses.forEach((l) => gear.deleteItem({ id: l.id }, { removeChildren: true }))
-    gear.deleteItem({ id: sin.id }, { removeChildren: true })
+    const licenses = gear.getByType<LicenseFormState>("licenses").filter((l) => l.sinId === sin.id)
+    licenses.forEach((l) => gear.remove(l.id, { removeChildren: true }))
+    gear.remove(sin.id, { removeChildren: true })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {
-    return gear.getItemsByType<LicenseFormState>("licenses").filter((license) => license.sinId === sinId)
+    return gear.getByType<LicenseFormState>("licenses").filter((license) => license.sinId === sinId)
   }
 
   return {

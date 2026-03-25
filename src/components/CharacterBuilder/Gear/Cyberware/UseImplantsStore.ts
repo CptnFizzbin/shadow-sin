@@ -1,40 +1,40 @@
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
+import { useGearApi } from "#/lib/gear/UseGearApi.ts"
 
 export function useImplantsStore() {
-  const gear = useBuilderGearApi()
+  const gear = useGearApi()
 
   const addImplant = (implant: Omit<ImplantFormState, "id">) => {
-    gear.createItem({ ...implant, type: "cyberware" })
+    gear.create({ ...implant, itemType: "cyberware" })
   }
 
   const updateImplant = (implant: ImplantFormState) => {
-    gear.saveItem({ ...implant, type: "cyberware" })
+    gear.set({ ...implant, itemType: "cyberware" })
   }
 
   const removeImplant = (implant: ImplantFormState) => {
-    gear.deleteItem(implant, { removeChildren: true })
+    gear.remove(implant.id, { removeChildren: true })
   }
 
   const addImplantMod = (mod: Omit<GearItemFormState, "id">) => {
-    gear.createItem({ ...mod, type: "implantMods" })
+    gear.create({ ...mod, itemType: "implantMods" })
   }
 
   const updateImplantMod = (mod: GearItemFormState) => {
-    gear.saveItem({ ...mod, type: "implantMods" })
+    gear.set({ ...mod, itemType: "implantMods" })
   }
 
   const removeImplantMod = (mod: GearItemFormState) => {
-    gear.deleteItem({ id: mod.id })
+    gear.remove(mod.id)
   }
 
   const getModsForImplant = (implantId: string): GearItemFormState[] =>
-    gear.getItemsByType<GearItemFormState>("implantMods").filter((mod) => mod.parentId === implantId)
+    gear.getByType<GearItemFormState>("implantMods").filter((mod) => mod.parentId === implantId)
 
   return {
-    implants: gear.getItemsByType<ImplantFormState>("cyberware"),
-    implantMods: gear.getItemsByType<GearItemFormState>("implantMods"),
+    implants: gear.getByType<ImplantFormState>("cyberware"),
+    implantMods: gear.getByType<GearItemFormState>("implantMods"),
     addImplant,
     updateImplant,
     removeImplant,

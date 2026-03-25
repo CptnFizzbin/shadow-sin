@@ -1,7 +1,7 @@
 import type { AttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
-import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
 import type { AwakenedFormState } from "#/components/CharacterBuilder/Resources/AwakenedFormState.ts"
 import type { SkillsFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
+import type { ItemData } from "#/lib/system/types/ItemData.ts"
 import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
@@ -54,7 +54,7 @@ export interface CharacterBuilderState {
 
   awakened: AwakenedFormState
 
-  gear: Record<string, BuilderGearData>
+  gear: Record<string, ItemData>
 
   contacts: ContactData[]
 }

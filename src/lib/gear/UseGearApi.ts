@@ -1,5 +1,18 @@
-import { useGearContext } from "#/lib/gear/GearProvider.tsx"
+import { useContext } from "react"
+
+import { BuilderGearContext } from "#/lib/gear/BuilderGearProvider.tsx"
+import { GearContext } from "#/lib/gear/GearProvider.tsx"
 
 export function useGearApi() {
-  return useGearContext()
+  const viewerApi = useContext(GearContext)
+  const builderApi = useContext(BuilderGearContext)
+  const api = viewerApi ?? builderApi
+
+  if (!api) {
+    throw new Error(
+      "useGearApi must be used within a GearProvider or BuilderGearProvider",
+    )
+  }
+
+  return api
 }

@@ -7,8 +7,10 @@ export interface GearApi {
   set(item: ItemData): void
   getParent(item: ItemData): ItemData | undefined
   getChildren(item: ItemData): ItemData[]
-  getByType<TItem extends ItemData>(itemType: string): TItem[]
+  getByType<TItem = ItemData>(itemType: string): TItem[]
   addChild(parent: ItemData, child: ItemData): void
+  create(item: Omit<ItemData, "id">): string
+  remove(id: string, options?: { removeChildren?: boolean }): void
 }
 
 export function createGearApi(
@@ -40,7 +42,7 @@ export function createGearApi(
         .filter((child): child is ItemData => child !== undefined)
     },
 
-    getByType<TItem extends ItemData>(itemType: string) {
+    getByType<TItem = ItemData>(itemType: string) {
       return Object.values(gearSlice.state).filter(
         (item) => item.itemType === itemType,
       ) as TItem[]
@@ -52,6 +54,32 @@ export function createGearApi(
         const draftParent = draft[parent.id]
         if (draftParent) {
           draftParent.childIds = [...(draftParent.childIds ?? []), child.id]
+        }
+      })
+    },
+
+    create(item) {
+      const id = crypto.randomUUID()
+      gearSlice.update((draft) => {
+        draft[id] = { ...item, id }
+      })
+      return id
+    },
+
+    remove(id, options) {
+      gearSlice.update((draft) => {
+        if (options?.removeChildren) {
+          const stack: string[] = [id]
+          while (stack.length) {
+            const current = stack.pop()
+            if (!current) continue
+            for (const [key, value] of Object.entries(draft)) {
+              if (value.parentId === current) stack.push(key)
+            }
+            delete draft[current]
+          }
+        } else {
+          delete draft[id]
         }
       })
     },
