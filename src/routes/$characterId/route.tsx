@@ -13,7 +13,7 @@ import {
 import { Header } from "#/components/UI/Header.tsx"
 import { artemis } from "#/data/characters/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
-import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,

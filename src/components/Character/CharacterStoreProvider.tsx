@@ -6,7 +6,7 @@ import { createContext, useContext } from "react"
 
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/characterSheet.ts"
 
 export const CharacterStoreContext =
   createContext<Store<CharacterSheet> | null>(null)

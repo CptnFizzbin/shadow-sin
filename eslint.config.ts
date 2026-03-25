@@ -63,6 +63,7 @@ export default defineConfig([
       ],
 
       "no-unused-vars": "off",
+      "no-redeclare": "off",
 
       "react/no-children-prop": "off",
       "react/no-unescaped-entities": "off",

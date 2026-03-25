@@ -2,6 +2,7 @@ import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
 import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import type { CharacterSheet } from "#/lib/system/types/characterSheet.ts"
 import type { SinData } from "#/lib/system/types/gear/SinData.ts"
 import type { ArmorData } from "#/lib/system/types/gear/armorData.ts"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
@@ -20,7 +21,6 @@ import type {
 } from "#/lib/system/types/gear/weaponData.ts"
 import { FirearmType, WeaponType } from "#/lib/system/types/gear/weaponData.ts"
 import { GearEffectType } from "#/lib/system/types/gearEffectData.ts"
-import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 export const artemis: CharacterSheet = {
   id: "artemis",

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { CharacterNavMenu } from "#/components/Character/CharacterNavMenu.tsx"
-import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/types/characterSheet.ts"
 
 interface HeaderProps {
   character?: CharacterSheet

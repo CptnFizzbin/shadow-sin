@@ -3,8 +3,8 @@ import { useMemo } from "react"
 import { useCharacterSheetSlice } from "#/components/Character/CharacterStoreProvider.tsx"
 import type { GearApi } from "#/lib/gear/GearApi.ts"
 import { createGearApi } from "#/lib/gear/GearApi.ts"
+import type { CharacterSheet } from "#/lib/system/types/characterSheet.ts"
 import type { GearData } from "#/lib/system/types/gear/gearData.ts"
-import type { CharacterSheet } from "#/lib/system/types/playerCharacterData.ts"
 
 const gearSelector = (state: CharacterSheet) => state.gear
 
