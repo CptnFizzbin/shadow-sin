@@ -17,10 +17,12 @@ import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberw
 import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
 import { DevicesPanel } from "#/components/CharacterBuilder/Gear/Devices/DevicesPanel.tsx"
 import {
-  GearBpAllowance,
+  GearBuildPointAllowance,
   GearMaxAvailability,
-  GearNuyenBudget,
-} from "#/components/CharacterBuilder/Gear/GearSectionRequirements.ts"
+  GearNuyenAllowance,
+  useGearBuildPoints,
+  useGearTotalCost,
+} from "#/components/CharacterBuilder/Gear/GearUtils.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
@@ -31,7 +33,6 @@ import { LifestylePanel } from "#/components/CharacterBuilder/Gear/Lifestyle/Lif
 import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
 import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
-import { useGearState } from "#/components/CharacterBuilder/Gear/UseGearState.ts"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
@@ -41,8 +42,11 @@ import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
+  const gear = useBuilderGearApi()
 
-  const { totalNuyen, totalBp, isOverBudget, gear } = useGearState()
+  const totalNuyen = useGearTotalCost()
+  const { spent: totalBp, isOverBudget } = useGearBuildPoints()
+
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
   const onSectionChange = (section: SectionHeader) => {
@@ -126,28 +130,23 @@ export const GearSection: FC = () => {
           alignItems="center"
         >
           <Typography variant="caption">
-            <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenBudget} />
+            <Nuyen amount={totalNuyen} /> /{" "}
+            <Nuyen amount={GearNuyenAllowance} />
           </Typography>
-          <BuildPoints value={totalBp} total={GearBpAllowance} />
+          <BuildPoints value={totalBp} total={GearBuildPointAllowance} />
         </Stack>
 
         <LinearProgress
           variant="determinate"
-          value={getProgress(totalNuyen, GearNuyenBudget)}
+          value={getProgress(totalBp, GearBuildPointAllowance)}
           color={isOverBudget ? "error" : "primary"}
         />
       </Stack>
 
       {isOverBudget && (
         <Alert severity="error">
-          Gear budget exceeded! Maximum is
-          {" "}
-          <Nuyen amount={GearNuyenBudget} />
-          {" "}
-          (
-          {GearBpAllowance}
-          {" "}
-          BP).
+          Gear budget exceeded! Maximum is <Nuyen amount={GearNuyenAllowance} />{" "}
+          ({GearBuildPointAllowance} BP).
         </Alert>
       )}
 

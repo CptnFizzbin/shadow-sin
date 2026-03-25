@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearMaxAvailability } from "#/components/CharacterBuilder/Gear/GearSectionRequirements.ts"
+import { GearMaxAvailability } from "#/components/CharacterBuilder/Gear/GearUtils.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
@@ -40,6 +40,16 @@ export const GearItemCard: FC<GearItemCardProps> = ({
         <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
           {item.name}
         </Typography>
+
+        {(item.quantity ?? 1) > 1 && (
+          <Chip
+            label={`×${item.quantity ?? 1}`}
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{ height: 20, fontSize: "0.7rem" }}
+          />
+        )}
 
         <Typography>
           <Nuyen amount={item.cost} />

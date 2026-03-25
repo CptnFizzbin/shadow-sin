@@ -10,7 +10,7 @@ import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
 } from "#/components/CharacterBuilder/Gear/Cyberware/ImplantUtils.ts"
-import { GearMaxAvailability } from "#/components/CharacterBuilder/Gear/GearSectionRequirements.ts"
+import { GearMaxAvailability } from "#/components/CharacterBuilder/Gear/GearUtils.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import {

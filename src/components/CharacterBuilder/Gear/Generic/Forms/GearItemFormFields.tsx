@@ -50,6 +50,25 @@ export const GearItemFormFields = withFieldGroup({
             />
           )}
         </group.AppField>
+
+        <group.AppField
+          name="quantity"
+          validators={{
+            onChange: z
+              .number("Quantity is required")
+              .int("Quantity must be a whole number")
+              .min(1, "Quantity must be at least 1"),
+          }}
+        >
+          {(field) => (
+            <field.NumberField
+              label="Quantity"
+              size="small"
+              sx={{ width: 120 }}
+              slotProps={{ htmlInput: { min: 1, step: 1 } }}
+            />
+          )}
+        </group.AppField>
       </Stack>
     )
   },

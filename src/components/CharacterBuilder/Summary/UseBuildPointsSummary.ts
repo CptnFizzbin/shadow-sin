@@ -2,11 +2,13 @@ import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Attribut
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/Contacts/ContactsHooks.ts"
-import { GearBpAllowance } from "#/components/CharacterBuilder/Gear/GearSectionRequirements.ts"
+import { useGearBuildPoints } from "#/components/CharacterBuilder/Gear/GearUtils.ts"
 import { isAdept } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersUtils.ts"
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/Resources/Magician/SpellsHooks.ts"
 import { isMagician } from "#/components/CharacterBuilder/Resources/Magician/SpellsUtils.ts"
-import { useTechnomancerBuildPoints } from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerSectionHooks.ts"
+import {
+  useTechnomancerBuildPoints,
+} from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerSectionHooks.ts"
 import { isTechnomancer } from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerUtils.ts"
 import {
   calculateActiveSkillsBp,
@@ -14,15 +16,9 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
+import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
 import { metatypes } from "#/lib/system/types/MetatypeData.ts"
 import { awakenings } from "#/lib/system/types/awakeningType.ts"
-
-export interface BpLineItem {
-  label: string
-  spent: number
-  allowance?: number
-  enabled?: boolean
-}
 
 export interface BpSummary {
   total: number
@@ -49,9 +45,6 @@ export function useBuildPointsSummary(): BpSummary {
   const logicValue = useCharacterBuilderStore((s) => s.attributes.logic.value)
   const intuitionValue = useCharacterBuilderStore(
     (s) => s.attributes.intuition.value,
-  )
-  const gearBpSpent = useCharacterBuilderStore(
-    (state) => state.buildPoints.spent.gear,
   )
 
   const metatypeCost = metatypes[metatypeKey].cost
@@ -127,11 +120,7 @@ export function useBuildPointsSummary(): BpSummary {
       enabled: isTechnomancer(awakeningType),
       ...technomancerBp,
     },
-    {
-      label: "Cyberware",
-      spent: gearBpSpent,
-      allowance: GearBpAllowance,
-    },
+    useGearBuildPoints(),
     {
       label: "Contacts",
       ...useContactsBuildPoints(),
