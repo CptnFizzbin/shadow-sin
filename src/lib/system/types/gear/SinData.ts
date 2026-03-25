@@ -5,7 +5,7 @@ import type {
 } from "#/lib/system/types/gear/licenseData.ts"
 
 export interface SinData extends GearData {
-  type: GearType.sin
+  itemType: GearType.sin
   verification: VerificationData
   cost?: number
   licenses?: LicenseData[]

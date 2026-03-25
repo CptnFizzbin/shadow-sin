@@ -1,7 +1,7 @@
 import type { GearData, GearType } from "#/lib/system/types/gear/gearData.ts"
 
 export interface DeviceData extends GearData {
-  type: GearType.device
+  itemType: GearType.device
   programs: SoftwareData[]
 
   operatingSystem?: string
@@ -13,6 +13,6 @@ export interface DeviceData extends GearData {
 }
 
 export interface SoftwareData extends GearData {
-  type: GearType.software
+  itemType: GearType.software
   rating: number
 }

@@ -1,7 +1,7 @@
 import type { GearData, GearType } from "./gearData.ts"
 
 export interface VehicleData extends GearData {
-  type: GearType.vehicle
+  itemType: GearType.vehicle
   vehicleType: string
   model?: string
 

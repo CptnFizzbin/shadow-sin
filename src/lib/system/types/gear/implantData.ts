@@ -31,7 +31,7 @@ export enum ImplantLocation {
 }
 
 export interface ImplantData extends GearData {
-  type: GearType.implant
+  itemType: GearType.implant
   implantType: ImplantType | string
   essenceCost: number
   rating?: number

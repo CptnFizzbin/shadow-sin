@@ -13,7 +13,7 @@ export enum WeaponType {
 export interface WeaponData extends GearData {
   dmg: string
   ap?: number
-  type: GearType.weapon
+  itemType: GearType.weapon
   weaponType: WeaponType | string
   skill?: string
   attribute?: AttributeKey
@@ -91,7 +91,7 @@ export interface ProjectileWeaponData extends WeaponData {
 }
 
 export interface FirearmAccessoryData extends GearData {
-  type: GearType.firearmAccessory
+  itemType: GearType.firearmAccessory
   enabled?: boolean
   mountPoints: Array<"top" | "under" | "barrel" | "internal">
 }

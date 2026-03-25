@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef } from "react"
 
 import { CharacterStoreProvider, useCharacterStoreContext } from "#/components/Character/CharacterStoreProvider.tsx"
 import { Header } from "#/components/UI/Header.tsx"
+import { GearProvider } from "#/lib/gear/GearProvider.tsx"
 import { characterManager } from "#/lib/storage/index.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
@@ -61,13 +62,15 @@ function CharacterRoute() {
 
   return (
     <CharacterStoreProvider store={store}>
-      <CharacterStorePersistence />
+      <GearProvider>
+        <CharacterStorePersistence />
 
-      <Stack spacing={2}>
-        <Header character={character} />
+        <Stack spacing={2}>
+          <Header character={character} />
 
-        <Outlet />
-      </Stack>
+          <Outlet />
+        </Stack>
+      </GearProvider>
     </CharacterStoreProvider>
   )
 }

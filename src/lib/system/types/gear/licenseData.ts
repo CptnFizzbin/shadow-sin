@@ -10,6 +10,6 @@ export type VerificationData =
   | { kind: VerificationKind.Fake, rating: number }
 
 export interface LicenseData extends GearData {
-  type: GearType.license
+  itemType: GearType.license
   verification: VerificationData
 }
