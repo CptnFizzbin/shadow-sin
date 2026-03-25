@@ -10,7 +10,7 @@ export class CharacterManager {
 
   public constructor(private readonly storageManager: StorageManager) {}
 
-  public async listCharacters(): Promise<PlayerCharacterData[]> {
+  public async listCharacters(): Promise<Record<string, PlayerCharacterData>> {
     const characterFiles = await this.storageManager.listJsonFiles(
       this.characterDirectoryPath,
     )
@@ -19,15 +19,11 @@ export class CharacterManager {
       characterFiles.map(async ({ path }) => this.loadCharacterByPath(path)),
     )
 
-    return storedCharacters
-      .filter(
-        (character): character is PlayerCharacterData => character !== null,
-      )
-      .sort((firstCharacter, secondCharacter) =>
-        firstCharacter.profile.alias.localeCompare(
-          secondCharacter.profile.alias,
-        ),
-      )
+    const characters = storedCharacters.filter(
+      (character): character is PlayerCharacterData => character !== null,
+    )
+
+    return Object.fromEntries(characters.map((character) => [character.id, character]))
   }
 
   public async getCharacter(
@@ -51,7 +47,7 @@ export class CharacterManager {
 
   public async ensureCharacters(
     characters: PlayerCharacterData[],
-  ): Promise<PlayerCharacterData[]> {
+  ): Promise<Record<string, PlayerCharacterData>> {
     for (const character of characters) {
       const existingCharacter = await this.getCharacter(character.id)
 

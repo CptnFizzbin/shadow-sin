@@ -8,7 +8,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 interface CharacterRosterListProps {
-  characters: PlayerCharacterData[]
+  characters: Record<string, PlayerCharacterData>
 }
 
 export default function CharacterRosterList({
@@ -16,13 +16,17 @@ export default function CharacterRosterList({
 }: CharacterRosterListProps) {
   const navigate = useNavigate()
 
+  const sortedCharacters = Object.values(characters).sort((a, b) =>
+    a.profile.alias.localeCompare(b.profile.alias),
+  )
+
   return (
     <Paper>
       <List disablePadding>
-        {characters.map((character, index) => (
+        {sortedCharacters.map((character, index) => (
           <ListItemButton
             key={character.id}
-            divider={index < characters.length - 1}
+            divider={index < sortedCharacters.length - 1}
             onClick={() =>
               navigate({
                 to: "/$characterId",
