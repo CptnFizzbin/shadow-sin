@@ -257,8 +257,7 @@ const GearSectionNuyen: FC<{
         <Nuyen
           amount={
             gearApi.getItemsByType<SinFormState>("sins").reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
-            +
-            gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
+            + gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
           }
         />
       </Typography>
