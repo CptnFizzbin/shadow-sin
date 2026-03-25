@@ -16,7 +16,7 @@ export class CharacterManager {
     )
 
     const storedCharacters = await Promise.all(
-      characterFiles.map(async ({ path }) => this.loadCharacterByPath(path)),
+      characterFiles.map(({ path }) => this.loadCharacterByPath(path)),
     )
 
     const characters = storedCharacters.filter(
@@ -26,13 +26,13 @@ export class CharacterManager {
     return Object.fromEntries(characters.map((character) => [character.id, character]))
   }
 
-  public async getCharacter(
+  public getCharacter(
     characterId: string,
   ): Promise<PlayerCharacterData | null> {
     return this.loadCharacterByPath(this.getCharacterPath(characterId))
   }
 
-  public async saveCharacter(
+  public saveCharacter(
     character: PlayerCharacterData,
   ): Promise<StoredJsonFile<PlayerCharacterData>> {
     return this.storageManager.saveJsonFile(

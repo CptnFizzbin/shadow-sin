@@ -35,7 +35,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
             )}
           </form.AppField>
 
-          <form.Subscribe selector={(form) => form.values.type}>
+          <form.Subscribe selector={(g) => g.values.type}>
             {(type) => (
               <form.AppField name="bpValue">
                 {(field) => (

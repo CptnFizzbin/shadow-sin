@@ -90,8 +90,8 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
               value={groupName}
               label="Skill Group"
               onChange={(e) => {
-                const groupName = e.target.value as SkillGroupKey | ""
-                setGroupName(groupName || null)
+                const selectedGroupName = e.target.value as SkillGroupKey | ""
+                setGroupName(selectedGroupName || null)
                 setGroupNameError(false)
               }}
             >

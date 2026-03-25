@@ -21,11 +21,11 @@ export const BiologySection: FC = () => {
   const awakeningType = storeSlice.state.awakening
 
   const updateAttributes = (
-    metatypeKey: MetatypeKey,
-    awakeningType: AwakeningType,
+    newMetatypeKey: MetatypeKey,
+    newAwakeningType: AwakeningType,
   ) => {
-    const metatype = metatypes[metatypeKey]
-    const awakening = awakenings[awakeningType]
+    const metatype = metatypes[newMetatypeKey]
+    const awakening = awakenings[newAwakeningType]
 
     const attrsToUpdate = Object.values(AttributeKey).filter(
       (attr) => attr !== AttributeKey.essence,
