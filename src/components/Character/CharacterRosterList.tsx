@@ -27,8 +27,7 @@ export default function CharacterRosterList({
               navigate({
                 to: "/$characterId",
                 params: { characterId: character.id },
-              })
-            }
+              })}
             sx={{
               transition: "background-color 0.15s ease",
             }}
@@ -37,13 +36,13 @@ export default function CharacterRosterList({
               primary={
                 <Typography variant="h6">{character.profile.alias}</Typography>
               }
-              secondary={
+              secondary={(
                 <Typography variant="body2" color="text.secondary">
                   {[character.biology.metatype, character.profile.archetype]
                     .filter(Boolean)
                     .join(" · ")}
                 </Typography>
-              }
+              )}
             />
           </ListItemButton>
         ))}

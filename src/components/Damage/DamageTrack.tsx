@@ -107,13 +107,13 @@ function TrackCell({
       type="button"
       onClick={onClick}
       sx={{
-        minHeight: 38,
-        border: "1px solid",
-        borderColor: isOverflow ? "error.main" : "primary.dark",
-        backgroundColor: filled ? "primary.main" : "background.paper",
-        color: filled ? "primary.contrastText" : "text.primary",
-        cursor: "pointer",
-        transition: "background-color 0.15s ease, border-color 0.15s ease",
+        "minHeight": 38,
+        "border": "1px solid",
+        "borderColor": isOverflow ? "error.main" : "primary.dark",
+        "backgroundColor": filled ? "primary.main" : "background.paper",
+        "color": filled ? "primary.contrastText" : "text.primary",
+        "cursor": "pointer",
+        "transition": "background-color 0.15s ease, border-color 0.15s ease",
         "&:hover": {
           backgroundColor: filled ? "primary.main" : "primary.light",
           color: filled ? "primary.contrastText" : "common.black",

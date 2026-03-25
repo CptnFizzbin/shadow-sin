@@ -6,19 +6,15 @@ import { createStore } from "@tanstack/store"
 import type { FC } from "react"
 import { useEffect, useMemo, useRef } from "react"
 
-import {
-  CharacterStoreProvider,
-  useCharacterStoreContext,
-} from "#/components/Character/CharacterStoreProvider.tsx"
+import { CharacterStoreProvider, useCharacterStoreContext } from "#/components/Character/CharacterStoreProvider.tsx"
 import { Header } from "#/components/UI/Header.tsx"
-import { artemis } from "#/data/characters/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
   loader: async ({ params }): Promise<PlayerCharacterData> => {
-    await characterManager.ensureCharacters([artemis])
+    await characterManager.ensureCharacters([])
     const character = await characterManager.getCharacter(params.characterId)
 
     if (!character) {

@@ -31,11 +31,10 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
 }) => {
   const editMode = !!quality
 
-  const form = useQualityForm(
-    editMode
-      ? { mode: "edit", quality, onSubmit: (q) => onSave(q) }
-      : { mode: "create", onSubmit: (q) => onSave(q) },
-  )
+  const form = useQualityForm({
+    quality,
+    onSubmit: (q) => onSave(q),
+  })
 
   const title = editMode ? "Edit Quality" : "Add Quality"
 
@@ -54,7 +53,7 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
         <QualityFormFields form={form} />
       </DialogContent>
       <DialogActions>
-        <Stack justifyContent={"space-between"} direction="row" width="100%">
+        <Stack justifyContent="space-between" direction="row" width="100%">
           <Box>
             {onDelete && (
               <Button

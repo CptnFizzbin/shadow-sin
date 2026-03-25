@@ -1,4 +1,5 @@
 import js from "@eslint/js"
+import stylistic from "@stylistic/eslint-plugin"
 import { defineConfig } from "eslint/config"
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript"
 import { importX } from "eslint-plugin-import-x"
@@ -12,6 +13,14 @@ export default defineConfig([
   js.configs.recommended,
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
+  stylistic.configs.customize({
+    indent: 2,
+    quotes: "double",
+    semi: false,
+    jsx: true,
+    arrowParens: true,
+    braceStyle: "1tbs",
+  }),
   {
     languageOptions: {
       globals: globals.browser,
@@ -21,11 +30,31 @@ export default defineConfig([
     },
     settings: {
       "import-x/resolver-next": [createTypeScriptImportResolver()],
-      react: {
+      "react": {
         version: "detect",
       },
     },
     rules: {
+      "@stylistic/jsx-one-expression-per-line": "off",
+      "@stylistic/operator-linebreak": [
+        "error", "before", {
+          overrides: {
+            "=": "after",
+            "+=": "after",
+            "-=": "after",
+            "*=": "after",
+            "/=": "after",
+            "%=": "after",
+            "**=": "after",
+            "<<=": "after",
+            ">>=": "after",
+            ">>>=": "after",
+            "&=": "after",
+            "^=": "after",
+            "|=": "after",
+          },
+        }],
+
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/consistent-type-exports": "error",
       "@typescript-eslint/consistent-type-imports": "error",
@@ -41,21 +70,21 @@ export default defineConfig([
       "import-x/order": [
         "error",
         {
-          pathGroups: [
+          "pathGroups": [
             {
               pattern: "#/**",
               group: "internal",
             },
           ],
-          groups: [
+          "groups": [
             "builtin",
             "external",
             ["internal", "parent", "sibling"],
             "index",
           ],
           "newlines-between": "always",
-          distinctGroup: true,
-          alphabetize: {
+          "distinctGroup": true,
+          "alphabetize": {
             order: "asc",
             orderImportKind: "asc",
           },

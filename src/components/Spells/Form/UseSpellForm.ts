@@ -4,7 +4,7 @@ import { SpellDataSchema } from "#/lib/system/types/magic/spellData.ts"
 
 export type SpellFormOptions = { onSubmit: (values: SpellData) => void } & (
   | { mode: "create" }
-  | { mode: "edit"; spell: SpellData }
+  | { mode: "edit", spell: SpellData }
 )
 
 export function useSpellForm(props: SpellFormOptions) {

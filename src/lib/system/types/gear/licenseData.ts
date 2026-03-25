@@ -7,7 +7,7 @@ export enum VerificationKind {
 
 export type VerificationData =
   | { kind: VerificationKind.Real }
-  | { kind: VerificationKind.Fake; rating: number }
+  | { kind: VerificationKind.Fake, rating: number }
 
 export interface LicenseData extends GearData {
   type: GearType.license

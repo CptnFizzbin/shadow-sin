@@ -26,9 +26,9 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
   if (attributes.length === 0) return null
 
   return (
-    <Stack direction={"row"} gap={0.5}>
+    <Stack direction="row" gap={0.5}>
       {attributes.map((attribute) => (
-        <Stack key={attribute.key} flexGrow={1} alignItems={"center"}>
+        <Stack key={attribute.key} flexGrow={1} alignItems="center">
           <Label label={AttributeLabels[attribute.key]} variant="outlined" />
           <Typography variant="body2">{attribute.value}</Typography>
         </Stack>
@@ -41,17 +41,17 @@ export const AttributesSection: FC = () => {
   return (
     <Stack gap={0.5}>
       <Stack gap={0.5}>
-        <Label label={"Physical"} />
+        <Label label="Physical" />
         <AttrList attrKeys={PhysicalAttributes} />
       </Stack>
 
       <Stack gap={0.5}>
-        <Label label={"Mental"} />
+        <Label label="Mental" />
         <AttrList attrKeys={MentalAttributes} />
       </Stack>
 
       <Stack gap={0.5}>
-        <Label label={"Special"} />
+        <Label label="Special" />
         <AttrList
           attrKeys={SpecialAttributes.filter((k) => k !== AttributeKey.essence)}
         />

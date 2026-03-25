@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import type { AdeptPowerForm } from "#/components/AdeptPowers/Form/UseAdeptPowerForm.ts"
-import { SourceFieldGroup } from "#/components/Character/Form/General/Form/SourceFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
 
 export interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm
