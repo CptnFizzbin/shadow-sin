@@ -2,10 +2,13 @@ import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
 import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useMemo } from "react"
 
 import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
 import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { createGearApi } from "#/lib/gear/GearApi.ts"
+import { GearContext } from "#/lib/gear/GearContext.tsx"
+import type { ItemData } from "#/lib/system/types/ItemData.ts"
 import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
 
 export const CharacterStoreContext =
@@ -18,11 +21,26 @@ export interface CharacterStoreProviderProps extends PropsWithChildren {
 export const CharacterStoreProvider: FC<CharacterStoreProviderProps> = ({
   store,
   children,
-}) => (
-  <CharacterStoreContext.Provider value={store}>
-    {children}
-  </CharacterStoreContext.Provider>
-)
+}) => {
+  const gearSlice = useStoreSlice<PlayerCharacterData, Record<string, ItemData>>(
+    store,
+    (state) => state.gear,
+    (state, gear) => {
+      state.gear = gear
+      return state
+    },
+  )
+
+  const gearApi = useMemo(() => createGearApi(gearSlice), [gearSlice])
+
+  return (
+    <CharacterStoreContext.Provider value={store}>
+      <GearContext.Provider value={gearApi}>
+        {children}
+      </GearContext.Provider>
+    </CharacterStoreContext.Provider>
+  )
+}
 
 type CharacterDataSelector<TData> = (state: PlayerCharacterData) => TData
 
@@ -49,9 +67,9 @@ export function useCharacterStoreSlice<TData extends object>(
   selector: CharacterDataSelector<TData>,
   setter: (
     state: Draft<PlayerCharacterData>,
-    nextValue: Draft<TData>,
+    nextValue: TData,
   ) => Draft<PlayerCharacterData>,
 ): StoreSlice<TData> {
   const store = useCharacterStoreContext()
-  return useStoreSlice(store, selector, setter)
+  return useStoreSlice<PlayerCharacterData, TData>(store, selector, setter)
 }

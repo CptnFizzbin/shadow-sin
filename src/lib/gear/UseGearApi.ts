@@ -1,7 +1,7 @@
 import { useContext } from "react"
 
 import { BuilderGearContext } from "#/lib/gear/BuilderGearProvider.tsx"
-import { GearContext } from "#/lib/gear/GearProvider.tsx"
+import { GearContext } from "#/lib/gear/GearContext.tsx"
 
 export function useGearApi() {
   const viewerApi = useContext(GearContext)
