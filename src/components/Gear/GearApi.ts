@@ -1,4 +1,4 @@
-import type { Store } from "@tanstack/store"
+import type { ReadonlyStore, Store } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
@@ -8,7 +8,7 @@ export interface RemoveItemOptions {
 }
 
 export interface GearApi {
-  get(id: string): ItemData | undefined
+  store: ReadonlyStore<Record<string, ItemData>>
 
   set(item: ItemData): void
 
@@ -19,16 +19,6 @@ export interface GearApi {
   remove(item: ItemData, options?: RemoveItemOptions): void
 
   remove(itemId: string, options?: RemoveItemOptions): void
-
-  getParent(item: ItemData): ItemData | undefined
-
-  getParent(itemID: string): ItemData | undefined
-
-  getChildren(item: ItemData): ItemData[]
-
-  getChildren(itemId: string): ItemData[]
-
-  getByType<TItem = ItemData>(itemType: string): TItem[]
 
   addChild(parent: ItemData, child: ItemData): void
 
@@ -43,10 +33,27 @@ export interface GearApi {
 export function createGearApi<TState extends { gear: Record<string, ItemData> }>(
   store: Store<TState>,
 ): GearApi {
-  const gearApi: GearApi = {
-    get(id) {
-      return store.state.gear[id]
+  // A live proxy that always reflects the current gear slice of the parent store.
+  // Subscribing to this store notifies on every parent state change; useStore's
+  // selector equality check prevents re-renders when the selected value is unchanged.
+  const gearStore = {
+    get state() {
+      return store.state.gear
     },
+    get() {
+      return store.state.gear
+    },
+    subscribe(observerOrFn: ((v: Record<string, ItemData>) => void) | { next?: (v: Record<string, ItemData>) => void }) {
+      const next = typeof observerOrFn === "function" ? observerOrFn : (v: Record<string, ItemData>) => observerOrFn.next?.(v)
+      return store.subscribe(() => next(store.state.gear))
+    },
+  } as unknown as ReadonlyStore<Record<string, ItemData>>
+
+  // Internal helper — not exposed on the interface so callers use the reactive hooks.
+  const getItem = (id: string) => store.state.gear[id]
+
+  const gearApi: GearApi = {
+    store: gearStore,
 
     add(item) {
       const newItem = { ...item, id: crypto.randomUUID() }
@@ -66,30 +73,9 @@ export function createGearApi<TState extends { gear: Record<string, ItemData> }>
       }))
     },
 
-    getParent(itemOrId) {
-      const item = gearApi.get(resolveItemId(itemOrId))
-      if (!item || !item.parentId) return undefined
-      return store.state.gear[item.parentId]
-    },
-
-    getChildren(itemOrId) {
-      const item = gearApi.get(resolveItemId(itemOrId))
-      if (!item) return []
-
-      return (item.childIds ?? [])
-        .map((id) => store.state.gear[id])
-        .filter((child): child is ItemData => child !== undefined)
-    },
-
-    getByType<TItem = ItemData>(itemType: string) {
-      return Object.values(store.state.gear).filter(
-        (item) => item.itemType === itemType,
-      ) as TItem[]
-    },
-
     addChild(parentOrId, childOrId) {
-      const parent = gearApi.get(resolveItemId(parentOrId))
-      const child = gearApi.get(resolveItemId(childOrId))
+      const parent = getItem(resolveItemId(parentOrId))
+      const child = getItem(resolveItemId(childOrId))
       if (!parent || !child) return
 
       store.setState(produce((prev) => {

@@ -1,9 +1,11 @@
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 
 export function useImplantsStore() {
   const gear = useGearApi()
+  const implants = useGearByType<ImplantFormState>("cyberware")
+  const implantMods = useGearByType<GearItemFormState>("implantMods")
 
   const addImplant = (implant: Omit<ImplantFormState, "id">) => {
     gear.add({ ...implant, itemType: "cyberware" })
@@ -29,12 +31,14 @@ export function useImplantsStore() {
     gear.remove(mod.id)
   }
 
+  // Reads live state so the result is always up-to-date when called imperatively.
   const getModsForImplant = (implantId: string): GearItemFormState[] =>
-    gear.getByType<GearItemFormState>("implantMods").filter((mod) => mod.parentId === implantId)
+    Object.values(gear.store.state)
+      .filter((item) => item.itemType === "implantMods" && item.parentId === implantId) as unknown as GearItemFormState[]
 
   return {
-    implants: gear.getByType<ImplantFormState>("cyberware"),
-    implantMods: gear.getByType<GearItemFormState>("implantMods"),
+    implants,
+    implantMods,
     addImplant,
     updateImplant,
     removeImplant,

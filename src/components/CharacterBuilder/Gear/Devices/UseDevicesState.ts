@@ -1,22 +1,21 @@
-import { useCallback } from "react"
-
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 
 export function useDeviceSet() {
   const gear = useGearApi()
+  const devices = useGearByType<GearItemFormState>("devices")
 
   return {
-    devices: gear.getByType<GearItemFormState>("devices"),
-    addDevice: useCallback((item: Omit<GearItemFormState, "id">) => {
+    devices,
+    addDevice(item: Omit<GearItemFormState, "id">) {
       gear.add({ ...item, itemType: "devices" })
-    }, [gear]),
-    updateDevice: useCallback((item: GearItemFormState) => {
+    },
+    updateDevice(item: GearItemFormState) {
       gear.set({ ...item, itemType: "devices" })
-    }, [gear]),
-    removeDevice: useCallback((item: GearItemFormState) => {
+    },
+    removeDevice(item: GearItemFormState) {
       gear.remove(item.id, { removeChildren: true })
-    }, [gear]),
+    },
   }
 }
 

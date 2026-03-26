@@ -1,9 +1,9 @@
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 
 export function useWeaponsState() {
   const gear = useGearApi()
-  const weapons = gear.getByType<GearItemFormState>("weapons")
+  const weapons = useGearByType<GearItemFormState>("weapons")
 
   const addWeapon = (item: Omit<GearItemFormState, "id">) => {
     gear.add({ ...item, itemType: "weapons" })

@@ -24,7 +24,11 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 }
 
 export const useGearTotalCost = () => {
-  const allGear = useCharacterBuilderStore((state) => Object.values(state.gear))
+  // Select the gear Record (stable reference, changes only when gear changes).
+  // Call Object.values outside the selector to avoid creating a new array on
+  // every state change, which would cause excess re-renders.
+  const gear = useCharacterBuilderStore((state) => state.gear)
+  const allGear = Object.values(gear)
 
   const lifestyle = useCharacterBuilderStore((state) => {
     const lifestyleType = state.lifestyle ?? LifestyleType.Street
