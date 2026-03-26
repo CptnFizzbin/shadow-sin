@@ -124,7 +124,7 @@ export const useBuilderSkillsBuildPoints = () => {
     activeSkills: {
       bpSpent: activeSkillsBp,
     },
-    knowledgeKills: {
+    knowledgeSkills: {
       bpSpent: extraSpBp,
     },
   }

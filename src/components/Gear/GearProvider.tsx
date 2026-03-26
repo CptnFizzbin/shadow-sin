@@ -8,11 +8,14 @@ import type { ItemData } from "#/lib/system/ItemData.ts"
 
 export const GearContext = createContext<GearApi | null>(null)
 
-interface GearProviderProps extends PropsWithChildren {
-  store: Store<{ gear: Record<string, ItemData> }>
+interface GearProviderProps<TState extends { gear: Record<string, ItemData> }> extends PropsWithChildren {
+  store: Store<TState>
 }
 
-export const GearProvider: FC<GearProviderProps> = ({ store, children }) => {
+export function GearProvider<TState extends { gear: Record<string, ItemData> }>({
+  store,
+  children,
+}: GearProviderProps<TState>): ReturnType<FC> {
   const gearApi = useMemo(() => createGearApi(store), [store])
   return <GearContext.Provider value={gearApi}>{children}</GearContext.Provider>
 }

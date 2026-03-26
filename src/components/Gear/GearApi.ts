@@ -1,5 +1,4 @@
-import type { ReadonlyStore, Store } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
+import type { Store } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
@@ -9,15 +8,13 @@ export interface RemoveItemOptions {
 }
 
 export interface GearApi {
-  store: ReadonlyStore<Record<string, ItemData>>
-
   get(id: string): ItemData | undefined
 
   set(item: ItemData): void
 
   set(itemId: string, item: ItemData): void
 
-  add(item: Omit<ItemData, "id">): void
+  add(item: Omit<ItemData, "id">): ItemData
 
   remove(item: ItemData, options?: RemoveItemOptions): void
 
@@ -43,17 +40,12 @@ export interface GearApi {
 
 }
 
-export function createGearApi(
-  store: Store<{ gear: Record<string, ItemData> }>,
+export function createGearApi<TState extends { gear: Record<string, ItemData> }>(
+  store: Store<TState>,
 ): GearApi {
-  const gearStore = createStore(() => store.state.gear)
-  const gear = gearStore.state
-
   const gearApi: GearApi = {
-    store: gearStore,
-
     get(id) {
-      return gear[id]
+      return store.state.gear[id]
     },
 
     add(item) {
@@ -77,7 +69,7 @@ export function createGearApi(
     getParent(itemOrId) {
       const item = gearApi.get(resolveItemId(itemOrId))
       if (!item || !item.parentId) return undefined
-      return gear[item.parentId]
+      return store.state.gear[item.parentId]
     },
 
     getChildren(itemOrId) {
@@ -85,12 +77,12 @@ export function createGearApi(
       if (!item) return []
 
       return (item.childIds ?? [])
-        .map(gearApi.get)
+        .map((id) => store.state.gear[id])
         .filter((child): child is ItemData => child !== undefined)
     },
 
     getByType<TItem = ItemData>(itemType: string) {
-      return Object.values(gear).filter(
+      return Object.values(store.state.gear).filter(
         (item) => item.itemType === itemType,
       ) as TItem[]
     },
@@ -116,19 +108,29 @@ export function createGearApi(
 
           if (targetItem.parentId) {
             const parentItem = prev.gear[targetItem.parentId]
-            parentItem.childIds = parentItem.childIds?.filter((id) => id !== targetItem.id)
+            if (parentItem) {
+              parentItem.childIds = parentItem.childIds?.filter((id) => id !== targetItem.id)
+            }
           }
         }
 
-        function rescursiveRemove(childItem: ItemData) {
-          gearApi.getChildren(childItem).forEach(rescursiveRemove)
-          removeItem(childItem)
+        function recursiveRemove(itemId: string) {
+          const targetItem = prev.gear[itemId]
+          if (!targetItem) return
+
+          for (const childId of targetItem.childIds ?? []) {
+            recursiveRemove(childId)
+          }
+
+          removeItem(targetItem)
         }
 
-        const targetItem = typeof item === "string" ? prev.gear[item] : prev.gear[item.id]
+        const targetId = typeof item === "string" ? item : item.id
+        const targetItem = prev.gear[targetId]
+        if (!targetItem) return
 
         if (options.removeChildren) {
-          rescursiveRemove(targetItem)
+          recursiveRemove(targetId)
         } else {
           removeItem(targetItem)
         }

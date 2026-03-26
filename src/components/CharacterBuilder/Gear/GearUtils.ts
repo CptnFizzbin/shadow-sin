@@ -1,6 +1,5 @@
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
-import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const GearBuildPointAllowance = 50
@@ -25,8 +24,7 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 }
 
 export const useGearTotalCost = () => {
-  const gearApi = useGearApi()
-  const allGear = Object.values(gearApi.store.state)
+  const allGear = useCharacterBuilderStore((state) => Object.values(state.gear))
 
   const lifestyle = useCharacterBuilderStore((state) => {
     const lifestyleType = state.lifestyle ?? LifestyleType.Street
