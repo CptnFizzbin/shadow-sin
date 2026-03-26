@@ -15,6 +15,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "tsc": "tsc --noEmit",
     "tsc:lint": "yarn tsc",
     "tsc:fix": "yarn tsc:lint",
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^9.0.0",
+    "@playwright/test": "1.58.2",
     "@rolldown/plugin-babel": "^0.2.2",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tanstack/devtools-event-client": "^0.4.3",
