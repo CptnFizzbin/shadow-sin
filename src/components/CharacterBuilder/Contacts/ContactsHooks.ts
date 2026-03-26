@@ -3,13 +3,10 @@ import { getContactBpCost } from "#/components/CharacterBuilder/Contacts/Contact
 
 export const useContactsBuildPoints = () => {
   const contacts = useCharacterBuilderStore((state) => state.contacts)
-
-  const spent = contacts
-    .map((contact) => getContactBpCost(contact))
-    .reduce((total, cost) => total + cost, 0)
-
   return {
     label: "Contacts",
-    spent,
+    spent: contacts
+      .map((contact) => getContactBpCost(contact))
+      .reduce((total, cost) => total + cost, 0),
   }
 }

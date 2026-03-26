@@ -30,7 +30,7 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
   const items = gear.getByType<GearItemFormState>(sectionKey)
 
   const addItem = (item: Omit<GearItemFormState, "id">) => {
-    gear.create({ ...item, itemType: sectionKey })
+    gear.add({ ...item, itemType: sectionKey })
   }
 
   const updateItem = (item: GearItemFormState) => {

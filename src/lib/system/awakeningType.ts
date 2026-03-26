@@ -1,3 +1,4 @@
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { QualityData } from "#/lib/system/qualityData.ts"
 
 export enum AwakeningType {
@@ -69,7 +70,7 @@ export interface AwakeningData {
   cost: number
   qualities: QualityData[]
   attributes: {
-    magic: { min: number, max: number }
-    resonance: { min: number, max: number }
+    [AttributeKey.magic]: { min: number, max: number }
+    [AttributeKey.resonance]: { min: number, max: number }
   }
 }

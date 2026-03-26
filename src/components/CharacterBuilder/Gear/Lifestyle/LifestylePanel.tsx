@@ -7,22 +7,14 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useBuilderLifestyleApi } from "#/components/CharacterBuilder/Gear/Lifestyle/UseLifestyleApi.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { LifestyleType, Lifestyles } from "#/lib/system/LifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
-  const storeSlice = useCharacterBuilderStoreSlice(
-    (state) => state,
-    (_state, newState) => newState,
-  )
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths,
-  )
+  const { lifestyle, lifestyleMonths, setLifestyle, setLifestyleMonths } =
+    useBuilderLifestyleApi()
+
   const upkeep = Lifestyles[lifestyle].upkeep
   const totalCost = upkeep * lifestyleMonths
 
@@ -34,9 +26,7 @@ export const LifestylePanel: FC = () => {
           value={lifestyle}
           label="Lifestyle"
           onChange={(event) =>
-            storeSlice.update((draft) => {
-              draft.lifestyle = event.target.value as LifestyleType
-            })}
+            setLifestyle(event.target.value as LifestyleType)}
         >
           {Object.values(LifestyleType).map((lifestyleType) => (
             <MenuItem key={lifestyleType} value={lifestyleType}>
@@ -55,9 +45,7 @@ export const LifestylePanel: FC = () => {
         slotProps={{ htmlInput: { min: 1 } }}
         onChange={(event) => {
           const months = Math.max(1, parseInt(event.target.value, 10) || 1)
-          storeSlice.update((draft) => {
-            draft.lifestyleMonths = months
-          })
+          setLifestyleMonths(months)
         }}
       />
 

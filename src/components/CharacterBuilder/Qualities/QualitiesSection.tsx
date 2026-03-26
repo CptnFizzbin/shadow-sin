@@ -6,19 +6,12 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { QualitiesList } from "#/components/CharacterBuilder/Qualities/QualitiesList.tsx"
-import { useQualitiesBuildSlice } from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
+import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Qualities/UseQualitiesApi.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
-import type { QualityData } from "#/lib/system/qualityData.ts"
 
 export const QualitiesSection: FC = () => {
-  const qualities = useQualitiesBuildSlice()
+  const { addQuality } = useBuilderQualitiesApi()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
-
-  const addQuality = (quality: QualityData) => {
-    qualities.update((prev) => {
-      return [...prev, { ...quality, id: crypto.randomUUID() }]
-    })
-  }
 
   return (
     <Stack gap={0.5}>

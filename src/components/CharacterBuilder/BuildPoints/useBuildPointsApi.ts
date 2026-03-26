@@ -4,6 +4,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreContext,
 } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/Contacts/ContactsHooks.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/Gear/GearUtils.ts"
 import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersHooks.ts"
@@ -22,13 +23,13 @@ import { metatypes } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 
-export const useBuildPointsApi = () => {
+export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
     { label: "Profile", spent: 0 },
-    useBiologyBuildPoints(),
+    useBuilderBiologyBuildPoints(),
     useAttributesBuildPoints(),
-    useQualitiesBuildPoints(),
-    useSkillsBuildPoints(),
+    useBuilderQualitiesBuildPoints(),
+    useBuilderSkillsBuildPoints(),
     useSpellsBuildPoints(),
     useAdeptPowersBuildPoints(),
     useTechnomancerBuildPoints(),
@@ -36,16 +37,21 @@ export const useBuildPointsApi = () => {
     useContactsBuildPoints(),
   ]
 
-  const used = lineItems.reduce((acc, item) => acc + item.spent, 0)
+  const enabledLineItems = lineItems
+    .filter((item) => typeof item.enabled === "undefined" || item.enabled)
+
+  const totalSpent = enabledLineItems.reduce((acc, item) => acc + item.spent, 0)
 
   return {
-    used: used,
-    remaining: 400 - used,
-    lineItems: lineItems,
+    total: CharacterBuilderMaxBp,
+    spent: totalSpent,
+    remaining: CharacterBuilderMaxBp - totalSpent,
+    isOverBudget: totalSpent > CharacterBuilderMaxBp,
+    lineItems: enabledLineItems,
   }
 }
 
-export const useBiologyBuildPoints = (): BpLineItem => {
+export const useBuilderBiologyBuildPoints = (): BpLineItem => {
   const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
   const awakeningType = useCharacterBuilderStore((state) => state.awakening)
 
@@ -58,7 +64,7 @@ export const useBiologyBuildPoints = (): BpLineItem => {
   }
 }
 
-export const useQualitiesBuildPoints = () => {
+export const useBuilderQualitiesBuildPoints = () => {
   const qualities = useCharacterBuilderStore((sheet) => sheet.qualities)
 
   const positiveQualities = qualities
@@ -83,7 +89,7 @@ export const useQualitiesBuildPoints = () => {
   }
 }
 
-export const useSkillsBuildPoints = (): BpLineItem => {
+export const useBuilderSkillsBuildPoints = () => {
   const store = useCharacterBuilderStoreContext()
   const logicAttr = useAttrApi(AttributeKey.logic, store)
   const intuitionAttr = useAttrApi(AttributeKey.intuition, store)
@@ -115,5 +121,11 @@ export const useSkillsBuildPoints = (): BpLineItem => {
   return {
     label: "Skills",
     spent: activeSkillsBp + extraSpBp,
+    activeSkills: {
+      bpSpent: activeSkillsBp,
+    },
+    knowledgeKills: {
+      bpSpent: extraSpBp,
+    },
   }
 }

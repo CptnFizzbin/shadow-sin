@@ -11,11 +11,4 @@ export interface SkillData {
   linkedAttribute: AttributeKey
 
   specialization?: string
-
-  notes?: string
-
-  source?: {
-    book: string
-    page: number
-  }
 }

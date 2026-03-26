@@ -23,9 +23,11 @@ export const useRootCharacterBuilderStore = (
 
   const [store] = useState(() => {
     const savedState = FormPersister.loadState(defaultValues.characterId)
+
     const initialState = savedState
       ? mergeObjects<CharacterBuilderState>(defaultValues, savedState)
       : defaultValues
+
     return new Store<CharacterBuilderState>(initialState)
   })
 

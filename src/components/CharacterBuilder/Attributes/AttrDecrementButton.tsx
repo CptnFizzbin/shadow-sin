@@ -4,11 +4,14 @@ import type { FC } from "react"
 
 import { AttributeBpCostBase, AttributeBpCostMaxOut } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
 import { useAttrApi } from "#/components/CharacterBuilder/Attributes/UseAttrApi.ts"
-import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
 import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const DecrementButton: FC<AttributeRowProps> = (props) => {
+interface AttrDecrementButtonProps {
+  attr: AttributeKey
+}
+
+export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
     throw new Error("Essence cannot be decremented")
   }
@@ -33,13 +36,9 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
   const onClick = () => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
-
-    buildPointsSlice.update((buildPoints) => {
-      buildPoints.spent.attributes -= refund
-    })
-
     attrApi.setValue(attrApi.value - 1)
   }
+
   return (
     <Button
       variant="outlined"

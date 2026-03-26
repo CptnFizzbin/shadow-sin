@@ -7,12 +7,12 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { SpellListItem } from "#/components/CharacterBuilder/Resources/Magician/SpellListItem.tsx"
 import {
   useSpellsBuildPoints,
   useSpellsWarnings,
 } from "#/components/CharacterBuilder/Resources/Magician/SpellsHooks.ts"
+import { useBuilderSpellsApi } from "#/components/CharacterBuilder/Resources/Magician/UseSpellsApi.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
@@ -23,36 +23,11 @@ type DialogState =
   | { open: boolean, type: "edit", spell: SpellData }
 
 export const SpellsList: FC = () => {
-  const spellsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.awakened.spells ?? [],
-    (state, spells) => {
-      state.awakened.spells = spells
-      return state
-    },
-  )
-
+  const { spells, addSpell, updateSpell, removeSpell } = useBuilderSpellsApi()
   const buildPoints = useSpellsBuildPoints()
   const warnings = useSpellsWarnings()
 
   const [dialogState, setDialogState] = useState<DialogState>(null)
-
-  const onSpellAdd = (spell: SpellData) => {
-    spellsSlice.update((prev) => {
-      return [...prev, { ...spell, id: crypto.randomUUID() }]
-    })
-  }
-
-  const onSpellUpdate = (spell: SpellData) => {
-    spellsSlice.update((draft) => {
-      return draft.map((s) => (s.id === spell.id ? spell : s))
-    })
-  }
-
-  const onSpellRemove = (spell: SpellData) => {
-    spellsSlice.update((draft) => {
-      return draft.filter((s) => s.id !== spell.id)
-    })
-  }
 
   return (
     <Paper sx={{ padding: 1 }}>
@@ -74,13 +49,13 @@ export const SpellsList: FC = () => {
           </Alert>
         ))}
 
-        {spellsSlice.state.length === 0 && (
+        {spells.length === 0 && (
           <Typography variant="body2" color="text.secondary">
             No spells added yet.
           </Typography>
         )}
 
-        {spellsSlice.state.map((spell) => (
+        {spells.map((spell) => (
           <SpellListItem
             key={spell.id}
             spell={spell}
@@ -101,7 +76,7 @@ export const SpellsList: FC = () => {
       {dialogState?.type === "add" && (
         <SpellFormDialog
           open={dialogState.open}
-          onSave={onSpellAdd}
+          onSave={addSpell}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -110,8 +85,8 @@ export const SpellsList: FC = () => {
         <SpellFormDialog
           open={dialogState.open}
           spell={dialogState.spell}
-          onSave={onSpellUpdate}
-          onDelete={() => onSpellRemove(dialogState.spell)}
+          onSave={updateSpell}
+          onDelete={() => removeSpell(dialogState.spell)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}

@@ -3,31 +3,19 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { isMagician, SpellsBpPerSpell } from "#/components/CharacterBuilder/Resources/Magician/SpellsUtils.ts"
+import { useBuilderSpellsApi } from "#/components/CharacterBuilder/Resources/Magician/UseSpellsApi.ts"
 import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const useSpellsSlice = () => {
-  return useCharacterBuilderStoreSlice(
-    (state) => state.awakened.spells ?? [],
-    (state, spells) => {
-      state.awakened.spells = spells
-      return state
-    },
-  )
-}
-
 export const useSpellsBuildPoints = () => {
   const awakeningType = useBuilderAwakeningType()
-  const spells = useSpellsSlice()
+  const { spells } = useBuilderSpellsApi()
   const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
-  const ritualSpellcasting = useBuilderActiveSkillRating(
-    SkillKey.ritualSpellcasting,
-  )
+  const ritualSpellcasting = useBuilderActiveSkillRating(SkillKey.ritualSpellcasting)
 
   const allowance = Math.max(spellcasting, ritualSpellcasting) * 2
-  const spent = spells.state.length * SpellsBpPerSpell
+  const spent = spells.length * SpellsBpPerSpell
 
   return {
     label: "Spells",
@@ -40,10 +28,7 @@ export const useSpellsBuildPoints = () => {
 export const useSpellsWarnings = () => {
   const magicAttribute = useBuilderAttrValue(AttributeKey.magic)
   const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
-  const ritualSpellcasting = useBuilderActiveSkillRating(
-    SkillKey.ritualSpellcasting,
-  )
-
+  const ritualSpellcasting = useBuilderActiveSkillRating(SkillKey.ritualSpellcasting)
   const spellBp = useSpellsBuildPoints()
 
   const warnings: string[] = []

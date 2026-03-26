@@ -1,28 +1,18 @@
 import {
   useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
 } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { isAdept } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersUtils.ts"
+import { useBuilderAdeptPowersApi } from "#/components/CharacterBuilder/Resources/Adept/UseAdeptPowersApi.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const useAdeptPowersSlice = () => {
-  return useCharacterBuilderStoreSlice(
-    (state) => state.awakened.adeptPowers ?? [],
-    (state, adeptPowers) => {
-      state.awakened.adeptPowers = adeptPowers
-      return state
-    },
-  )
-}
-
 export const usePowerPoints = () => {
-  const powers = useAdeptPowersSlice()
+  const { adeptPowers } = useBuilderAdeptPowersApi()
 
   const magicAttr = useCharacterBuilderStore(
     (state) => state.attributes[AttributeKey.magic],
   )
 
-  const used = powers.state
+  const used = adeptPowers
     .map((power) => power.costPerRating * power.rating)
     .reduce((total, cost) => total + cost, 0)
 
@@ -51,9 +41,7 @@ export const useAdeptPowerWarnings = () => {
 }
 
 export const useAdeptPowersBuildPoints = () => {
-  const awakeningType = useCharacterBuilderStore((state) => {
-    return state.awakening
-  })
+  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
 
   return {
     label: "Adept Powers",

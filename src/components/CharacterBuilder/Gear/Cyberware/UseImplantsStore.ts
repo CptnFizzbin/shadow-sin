@@ -6,7 +6,7 @@ export function useImplantsStore() {
   const gear = useGearApi()
 
   const addImplant = (implant: Omit<ImplantFormState, "id">) => {
-    gear.create({ ...implant, itemType: "cyberware" })
+    gear.add({ ...implant, itemType: "cyberware" })
   }
 
   const updateImplant = (implant: ImplantFormState) => {
@@ -18,7 +18,7 @@ export function useImplantsStore() {
   }
 
   const addImplantMod = (mod: Omit<GearItemFormState, "id">) => {
-    gear.create({ ...mod, itemType: "implantMods" })
+    gear.add({ ...mod, itemType: "implantMods" })
   }
 
   const updateImplantMod = (mod: GearItemFormState) => {

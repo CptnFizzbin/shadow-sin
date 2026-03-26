@@ -24,17 +24,6 @@ export const useDefaultValues = ({
   return {
     characterId: characterId,
 
-    buildPoints: {
-      total: 400,
-      spent: {
-        metatype: 0,
-        qualities: 0,
-        attributes: 0,
-        skills: 0,
-        gear: 0,
-      },
-    },
-
     name: profile?.name || "",
     alias: profile?.alias || "",
     lifestyle: profile?.lifestyle?.quality || LifestyleType.Low,

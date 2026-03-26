@@ -46,3 +46,14 @@ export function useCharacterStore<TData>(
   const store = useCharacterStoreContext()
   return useStore(store, selector)
 }
+
+export function useCharacterSheet() {
+  return useCharacterStoreContext()
+}
+
+export function useCharacterSheetStore<TData>(
+  selector: CharacterDataSelector<TData>,
+): TData {
+  const store = useCharacterSheet()
+  return useStore(store, selector)
+}

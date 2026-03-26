@@ -3,18 +3,17 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Attributes/AttributeHooks.ts"
 import { AttributeBpAllowance } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
 import { AttributesList } from "#/components/CharacterBuilder/Attributes/AttributesList.tsx"
-import { useAttributeState } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
+import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import {
-  AttributeKey,
-  AttributeOrder,
-} from "#/lib/system/attributeKey.ts"
+import { AttributeKey, AttributeOrder } from "#/lib/system/attributeKey.ts"
 
 export const AttributesSection: FC = () => {
-  const { bpSpent, attributes } = useAttributeState()
+  const { spent } = useAttributesBuildPoints()
+  const attributes = useCharacterBuilderStore((sheet) => sheet.attributes)
 
   const attrRows = AttributeOrder.filter((key) => key !== AttributeKey.essence)
     .map((attr) => ({ attr, ...attributes[attr] }))
@@ -24,12 +23,12 @@ export const AttributesSection: FC = () => {
   return (
     <Stack gap={1}>
       <Box alignSelf="flex-end">
-        <BuildPoints value={bpSpent} total={AttributeBpAllowance} />
+        <BuildPoints value={spent} total={AttributeBpAllowance} />
       </Box>
 
       <LinearProgress
         variant="determinate"
-        value={getProgress(bpSpent, AttributeBpAllowance)}
+        value={getProgress(spent, AttributeBpAllowance)}
         sx={{ height: 8, borderRadius: 1, width: "100%" }}
       />
 

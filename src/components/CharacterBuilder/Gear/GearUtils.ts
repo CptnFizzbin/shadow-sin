@@ -26,7 +26,7 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 
 export const useGearTotalCost = () => {
   const gearApi = useGearApi()
-  const allGear = gearApi.all()
+  const allGear = Object.values(gearApi.store.state)
 
   const lifestyle = useCharacterBuilderStore((state) => {
     const lifestyleType = state.lifestyle ?? LifestyleType.Street

@@ -6,7 +6,7 @@ export function useArmorState() {
   const armor = gear.getByType<GearItemFormState>("armor")
 
   const addArmor = (item: Omit<GearItemFormState, "id">) => {
-    gear.create({ ...item, itemType: "armor" })
+    gear.add({ ...item, itemType: "armor" })
   }
 
   const updateArmor = (item: GearItemFormState) => {

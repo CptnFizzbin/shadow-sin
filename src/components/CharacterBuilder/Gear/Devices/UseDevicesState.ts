@@ -9,7 +9,7 @@ export function useDeviceSet() {
   return {
     devices: gear.getByType<GearItemFormState>("devices"),
     addDevice: useCallback((item: Omit<GearItemFormState, "id">) => {
-      gear.create({ ...item, itemType: "devices" })
+      gear.add({ ...item, itemType: "devices" })
     }, [gear]),
     updateDevice: useCallback((item: GearItemFormState) => {
       gear.set({ ...item, itemType: "devices" })

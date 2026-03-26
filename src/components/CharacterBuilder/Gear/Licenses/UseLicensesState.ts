@@ -8,7 +8,7 @@ export function useLicensesState() {
   const sins = gear.getByType<SinFormState>("sins")
 
   const addLicense = (license: Omit<LicenseFormState, "id">) => {
-    gear.create({ ...license, itemType: "licenses" })
+    gear.add({ ...license, itemType: "licenses" })
   }
 
   const updateLicense = (license: LicenseFormState) => {

@@ -5,7 +5,6 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useCharacterStore, useCharacterStoreSlice } from "#/components/Character/CharacterStoreProvider.tsx"
 import DamageTrack from "#/components/Damage/DamageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -21,7 +20,7 @@ import {
   ResistBodyDicePool,
   ResistWillpowerDicePool,
 } from "#/components/Damage/ResistanceDicePools.tsx"
-import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts"
+import { useDamageApi } from "#/components/Damage/UseDamageApi.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { SkillKey } from "#/lib/system/SkillKey.ts"
 
@@ -30,21 +29,7 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageSlice = useCharacterStoreSlice(
-    (state) => state.damage,
-    (state, damage) => {
-      state.damage = damage
-      return state
-    },
-  )
-  const body = useCharacterStore((state) => state.attributes.body)
-  const will = useCharacterStore((state) => state.attributes.willpower)
-  const woundMod = useWoundModifier()
-
-  const damageTracks = useCharacterStore((state) => state.damage)
-
-  const maxPhysical = 8 + Math.ceil(body / 2)
-  const maxStun = 8 + Math.ceil(will / 2)
+  const damageApi = useDamageApi()
 
   return (
     <Stack gap={1}>
@@ -60,33 +45,27 @@ function RouteComponent() {
         <Grid size={1}>
           <DamageTrack
             label="Physical"
-            max={maxPhysical}
-            current={damageTracks.physical}
+            max={damageApi.physical.max}
+            current={damageApi.physical.current}
             allowOverflow
-            onChange={(value) => {
-              damageSlice.update((draft) => {
-                draft.physical = value
-              })
-            }}
+            onChange={damageApi.physical.setValue}
           />
         </Grid>
+
         <Grid size={1}>
           <DamageTrack
             label="Stun"
-            max={maxStun}
-            current={damageTracks.stun}
-            onChange={(value) => {
-              damageSlice.update((draft) => {
-                draft.stun = value
-              })
-            }}
+            max={damageApi.stun.max}
+            current={damageApi.stun.current}
+            onChange={damageApi.stun.setValue}
           />
         </Grid>
+
         <Grid size={2}>
           <Label
-            label={`Wound Mod: ${woundMod}`}
+            label={`Wound Mod: ${damageApi.woundMod}`}
             variant="outlined"
-            color={woundMod >= 1 ? "error.main" : "primary.dark"}
+            color={damageApi.woundMod >= 1 ? "error.main" : "primary.dark"}
           />
         </Grid>
 

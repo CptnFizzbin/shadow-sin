@@ -3,17 +3,23 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DecrementButton } from "#/components/CharacterBuilder/Attributes/AttrDecrementButton.tsx"
-import { IncrementButton } from "#/components/CharacterBuilder/Attributes/AttrIncrementButton.tsx"
-import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
-import { useAttributeRow } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
+import { AttrDecrementButton } from "#/components/CharacterBuilder/Attributes/AttrDecrementButton.tsx"
+import { AttrIncrementButton } from "#/components/CharacterBuilder/Attributes/AttrIncrementButton.tsx"
+import { useAttrApi } from "#/components/CharacterBuilder/Attributes/UseAttrApi.ts"
+import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
+
+interface AttributeRowProps {
+  attr: AttributeKey
+}
 
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
-  const { attribute } = useAttributeRow(props)
+  const store = useCharacterBuilderStoreContext()
+  const attribute = useAttrApi(props.attr, store)
 
   return (
     <Stack direction="row" gap={1} alignItems="center">
-      <DecrementButton {...props} />
+      <AttrDecrementButton {...props} />
 
       <Grid container columns={2} sx={{ flexGrow: 1 }}>
         <Grid size={1}>
@@ -29,7 +35,7 @@ export const AttributeRow: FC<AttributeRowProps> = (props) => {
         </Grid>
       </Grid>
 
-      <IncrementButton {...props} />
+      <AttrIncrementButton {...props} />
     </Stack>
   )
 }

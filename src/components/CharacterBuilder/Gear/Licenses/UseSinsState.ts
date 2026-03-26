@@ -7,7 +7,7 @@ export function useSinsState() {
   const sins = gear.getByType<SinFormState>("sins")
 
   const addSin = (sin: Omit<SinFormState, "id">) => {
-    gear.create({ ...sin, itemType: "sins" })
+    gear.add({ ...sin, itemType: "sins" })
   }
 
   const updateSin = (sin: SinFormState) => {

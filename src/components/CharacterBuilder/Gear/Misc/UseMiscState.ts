@@ -6,7 +6,7 @@ export function useMiscState() {
   const misc = gear.getByType<GearItemFormState>("misc")
 
   const addMiscItem = (item: Omit<GearItemFormState, "id">) => {
-    gear.create({ ...item, itemType: "misc" })
+    gear.add({ ...item, itemType: "misc" })
   }
 
   const updateMiscItem = (item: GearItemFormState) => {

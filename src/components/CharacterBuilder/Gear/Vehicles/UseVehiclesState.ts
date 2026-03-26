@@ -6,7 +6,7 @@ export function useVehiclesState() {
   const vehicles = gear.getByType<GearItemFormState>("vehicles")
 
   const addVehicle = (item: Omit<GearItemFormState, "id">) => {
-    gear.create({ ...item, itemType: "vehicles" })
+    gear.add({ ...item, itemType: "vehicles" })
   }
 
   const updateVehicle = (item: GearItemFormState) => {

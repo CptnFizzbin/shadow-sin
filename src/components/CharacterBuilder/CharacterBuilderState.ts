@@ -12,17 +12,6 @@ import type { QualityData } from "#/lib/system/qualityData.ts"
 export interface CharacterBuilderState {
   characterId: string
 
-  buildPoints: {
-    total: number
-    spent: {
-      metatype: number
-      qualities: number
-      attributes: number
-      skills: number
-      gear: number
-    }
-  }
-
   name: string
   alias: string
   lifestyle: LifestyleType
