@@ -10,7 +10,7 @@ import type { FC } from "react"
 import { AdeptPowerFormFields } from "#/components/AdeptPowers/Form/AdeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/AdeptPowers/Form/UseAdeptPowerForm.ts"
 import { noop } from "#/lib/noop.ts"
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
 export interface AdeptPowerFormDialogProps {
   open: boolean

@@ -34,11 +34,11 @@ import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
-import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
+import { Lifestyles } from "#/lib/system/LifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()

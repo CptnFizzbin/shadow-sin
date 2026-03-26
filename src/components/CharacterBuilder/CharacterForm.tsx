@@ -18,8 +18,7 @@ import { SkillsFormGroup } from "#/components/CharacterBuilder/Skills/SkillsForm
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Summary/BpSummaryFooter.tsx"
 import { useDefaultValues } from "#/components/CharacterBuilder/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/UseRootCharacterBuilderStore.ts"
-import { BuilderGearProvider } from "#/lib/gear/BuilderGearProvider.tsx"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 interface CharacterFormProps {
   character?: PlayerCharacterData
@@ -32,107 +31,105 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
 
   return (
     <CharacterBuilderStoreProvider store={store}>
-      <BuilderGearProvider>
-        <Stack gap={1}>
-          <Stack
-            gap={1}
-            sx={{
-              opacity: isBpPanelExpanded ? 0.6 : 1,
-              transition: "opacity 0.2s ease",
-              pointerEvents: isBpPanelExpanded ? "none" : "auto",
-            }}
-          >
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                variant="outlined"
-                color="warning"
-                size="small"
-                onClick={() => {
-                  const characterId = store.state.characterId
-                  store.setState(() => defaultValues)
-                  FormPersister.clearState(characterId)
-                }}
-              >
-                Reset
-              </Button>
-            </Stack>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Profile
-                </Typography>
-
-                <ProfileSection />
-              </Stack>
-            </Paper>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Biology
-                </Typography>
-
-                <BiologySection />
-              </Stack>
-            </Paper>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Attributes
-                </Typography>
-
-                <AttributesSection />
-              </Stack>
-            </Paper>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Qualities
-                </Typography>
-
-                <QualitiesSection />
-              </Stack>
-            </Paper>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Skills
-                </Typography>
-
-                <SkillsFormGroup />
-              </Stack>
-            </Paper>
-
-            <AwakenedSection />
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Gear
-                </Typography>
-
-                <GearSection />
-              </Stack>
-            </Paper>
-
-            <Paper sx={{ padding: 1 }}>
-              <Stack gap={1}>
-                <Typography variant="h6" sx={{ textAlign: "center" }}>
-                  Contacts
-                </Typography>
-
-                <ContactsList />
-              </Stack>
-            </Paper>
+      <Stack gap={1}>
+        <Stack
+          gap={1}
+          sx={{
+            opacity: isBpPanelExpanded ? 0.6 : 1,
+            transition: "opacity 0.2s ease",
+            pointerEvents: isBpPanelExpanded ? "none" : "auto",
+          }}
+        >
+          <Stack direction="row" justifyContent="flex-end">
+            <Button
+              variant="outlined"
+              color="warning"
+              size="small"
+              onClick={() => {
+                const characterId = store.state.characterId
+                store.setState(() => defaultValues)
+                FormPersister.clearState(characterId)
+              }}
+            >
+              Reset
+            </Button>
           </Stack>
 
-          <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Profile
+              </Typography>
+
+              <ProfileSection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Biology
+              </Typography>
+
+              <BiologySection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Attributes
+              </Typography>
+
+              <AttributesSection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Qualities
+              </Typography>
+
+              <QualitiesSection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Skills
+              </Typography>
+
+              <SkillsFormGroup />
+            </Stack>
+          </Paper>
+
+          <AwakenedSection />
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Gear
+              </Typography>
+
+              <GearSection />
+            </Stack>
+          </Paper>
+
+          <Paper sx={{ padding: 1 }}>
+            <Stack gap={1}>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Contacts
+              </Typography>
+
+              <ContactsList />
+            </Stack>
+          </Paper>
         </Stack>
-      </BuilderGearProvider>
+
+        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+      </Stack>
     </CharacterBuilderStoreProvider>
   )
 }

@@ -23,7 +23,7 @@ import {
 } from "#/components/Damage/ResistanceDicePools.tsx"
 import { useWoundModifier } from "#/components/Damage/UseWoundModifier.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
+import { SkillKey } from "#/lib/system/SkillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,

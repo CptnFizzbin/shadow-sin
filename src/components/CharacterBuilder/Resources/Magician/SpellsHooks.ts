@@ -4,12 +4,9 @@ import {
   useBuilderAwakeningType,
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import {
-  isMagician,
-  SpellsBpPerSpell,
-} from "#/components/CharacterBuilder/Resources/Magician/SpellsUtils.ts"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { isMagician, SpellsBpPerSpell } from "#/components/CharacterBuilder/Resources/Magician/SpellsUtils.ts"
+import { SkillKey } from "#/lib/system/SkillKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useSpellsSlice = () => {
   return useCharacterBuilderStoreSlice(
@@ -29,13 +26,15 @@ export const useSpellsBuildPoints = () => {
     SkillKey.ritualSpellcasting,
   )
 
-  if (!isMagician(awakeningType)) {
-    return { allowance: 0, spent: 0 }
-  }
-
   const allowance = Math.max(spellcasting, ritualSpellcasting) * 2
   const spent = spells.state.length * SpellsBpPerSpell
-  return { allowance, spent }
+
+  return {
+    label: "Spells",
+    allowance,
+    spent,
+    enabled: isMagician(awakeningType),
+  }
 }
 
 export const useSpellsWarnings = () => {

@@ -15,7 +15,7 @@ import { useState } from "react"
 import type { ActiveSkillGroupFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Skills/SkillGroups.ts"
 import { SkillGroupRatingMax } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
-import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
+import { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean

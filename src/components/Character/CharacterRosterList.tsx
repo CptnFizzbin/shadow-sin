@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { useNavigate } from "@tanstack/react-router"
 
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 interface CharacterRosterListProps {
   characters: Record<string, PlayerCharacterData>

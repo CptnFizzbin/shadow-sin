@@ -6,7 +6,7 @@ import type { CharacterBuilderState } from "#/components/CharacterBuilder/Charac
 import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
 import { useDefaultValues } from "#/components/CharacterBuilder/UseDefaultValues.ts"
 import { mergeObjects } from "#/lib/MergeUtils.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 const debouncedSaveState = debounce(
   (characterId: string, values: CharacterBuilderState) => {

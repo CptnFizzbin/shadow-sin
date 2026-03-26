@@ -15,7 +15,7 @@ import {
 } from "#/components/CharacterBuilder/Resources/Magician/SpellsHooks.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
+import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
 type DialogState =
   | null

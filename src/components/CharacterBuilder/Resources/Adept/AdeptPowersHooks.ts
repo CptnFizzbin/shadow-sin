@@ -2,7 +2,8 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { isAdept } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersUtils.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useAdeptPowersSlice = () => {
   return useCharacterBuilderStoreSlice(
@@ -47,4 +48,16 @@ export const useAdeptPowerWarnings = () => {
   }
 
   return warnings
+}
+
+export const useAdeptPowersBuildPoints = () => {
+  const awakeningType = useCharacterBuilderStore((state) => {
+    return state.awakening
+  })
+
+  return {
+    label: "Adept Powers",
+    spent: 0,
+    enabled: isAdept(awakeningType),
+  }
 }

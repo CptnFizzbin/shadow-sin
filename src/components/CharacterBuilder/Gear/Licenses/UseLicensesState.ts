@@ -1,6 +1,6 @@
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 
 export function useLicensesState() {
   const gear = useGearApi()

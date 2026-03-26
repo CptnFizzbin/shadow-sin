@@ -2,7 +2,7 @@ import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreSlice,
 } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 export function contactBuildPoints(contacts: ContactData[]): number {
   return contacts.reduce(

@@ -26,7 +26,7 @@ export function useCyberwareState() {
     const remainingEssence = BASE_ESSENCE - effectiveEssenceUsed
 
     return { cyberwareTotal, biowareTotal, effectiveEssenceUsed, remainingEssence }
-  }, [implants, implantMods])
+  }, [implants])
 
   return {
     implants: implants,

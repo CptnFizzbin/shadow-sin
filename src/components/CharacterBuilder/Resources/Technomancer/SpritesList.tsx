@@ -19,7 +19,7 @@ import { SpritesListItem } from "#/components/CharacterBuilder/Resources/Technom
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 type SpriteDialogState =
   | null

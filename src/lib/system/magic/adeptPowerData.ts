@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
+import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface AdeptPowerData {
   id: string

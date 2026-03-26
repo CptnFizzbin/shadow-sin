@@ -1,5 +1,5 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { GearEffectData } from "#/lib/system/gearEffectData.ts"
 
 export enum MetatypeKey {
   Human = "Human",

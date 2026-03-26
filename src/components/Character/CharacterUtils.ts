@@ -1,7 +1,7 @@
 import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
-import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { Skills } from "#/lib/system/types/SkillKey.ts"
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { SkillKey } from "#/lib/system/SkillKey.ts"
+import { Skills } from "#/lib/system/SkillKey.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useAttr = (attribute: AttributeKey) => {
   return useCharacterStore((state) => {

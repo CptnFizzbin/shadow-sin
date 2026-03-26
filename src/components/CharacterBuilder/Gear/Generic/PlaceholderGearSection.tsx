@@ -3,7 +3,7 @@ import type { FC } from "react"
 
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 
 type GearItemSectionField =
   | "gear.weapons"

@@ -1,6 +1,6 @@
 import { AttributeBpAllowance } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useAttributeSlice = (attrKey: AttributeKey) => {
   return useCharacterBuilderStoreSlice(
@@ -26,6 +26,7 @@ export const useAttributesBuildPoints = () => {
   const buildPointsSlice = useSpentBuildPointsSlice()
 
   return {
+    label: "Attributes",
     spent: buildPointsSlice.state.attributes,
     allowance: AttributeBpAllowance,
   }

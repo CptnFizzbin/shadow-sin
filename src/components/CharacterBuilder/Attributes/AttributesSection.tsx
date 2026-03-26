@@ -11,7 +11,7 @@ import { getProgress } from "#/lib/ProgressUtils.ts"
 import {
   AttributeKey,
   AttributeOrder,
-} from "#/lib/system/types/attributeKey.ts"
+} from "#/lib/system/attributeKey.ts"
 
 export const AttributesSection: FC = () => {
   const { bpSpent, attributes } = useAttributeState()

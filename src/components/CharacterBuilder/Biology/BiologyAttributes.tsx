@@ -5,15 +5,15 @@ import type { FC } from "react"
 import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import { metatypes } from "#/lib/system/types/MetatypeData.ts"
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { metatypes } from "#/lib/system/MetatypeData.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import {
   AttributeLabels,
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/lib/system/types/attributeKey.ts"
-import { awakenings } from "#/lib/system/types/awakeningType.ts"
+} from "#/lib/system/attributeKey.ts"
+import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const BiologyAttributes: FC = () => {
   return (

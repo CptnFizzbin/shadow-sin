@@ -9,7 +9,7 @@ import { ContactFormDialog } from "#/components/CharacterBuilder/Contacts/Contac
 import { ContactRow } from "#/components/CharacterBuilder/Contacts/ContactsListItem.tsx"
 import { useContactsState } from "#/components/CharacterBuilder/Contacts/UseContactsState.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 type DialogState =
   | null

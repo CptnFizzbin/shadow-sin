@@ -1,4 +1,4 @@
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export enum GearEffectType {
   setModifier = "setModifier",

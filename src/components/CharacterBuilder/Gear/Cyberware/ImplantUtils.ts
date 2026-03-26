@@ -1,7 +1,7 @@
 import {
   ImplantGrade,
   ImplantType,
-} from "#/lib/system/types/gear/implantData.ts"
+} from "#/lib/system/gear/implantData.ts"
 import type { ImplantFormState } from "./Forms/ImplantFormState.ts"
 
 export const BASE_ESSENCE = 6

@@ -5,9 +5,9 @@ import {
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { getSpriteTasksBp } from "#/components/CharacterBuilder/Resources/Technomancer/SpritesUtils.ts"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { SkillKey } from "#/lib/system/SkillKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const useSpritesSlice = () => {
   return useCharacterBuilderStoreSlice(

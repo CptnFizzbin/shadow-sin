@@ -1,5 +1,5 @@
-import type { ItemData } from "#/lib/system/types/ItemData.ts"
-import type { GearEffectData } from "#/lib/system/types/gearEffectData.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import type { GearEffectData } from "#/lib/system/gearEffectData.ts"
 
 export enum GearType {
   armor = "armor",

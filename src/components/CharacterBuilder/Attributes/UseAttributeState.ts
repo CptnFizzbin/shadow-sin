@@ -1,10 +1,6 @@
 import { AttributeBpAllowance } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import {
-  AttributeKey,
-  AttributeLabels,
-  AttributeOrder,
-} from "#/lib/system/types/attributeKey.ts"
+import { AttributeKey, AttributeLabels, AttributeOrder } from "#/lib/system/attributeKey.ts"
 
 export interface AttributeRowProps {
   attr: AttributeKey

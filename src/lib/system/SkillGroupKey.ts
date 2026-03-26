@@ -1,9 +1,9 @@
-import { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
-import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { MetatypeKey } from "#/lib/system/MetatypeData.ts"
+import type { AwakeningType } from "#/lib/system/awakeningType.ts"
 import {
   MagicAwakeningTypes,
   TechAwakeningTypes,
-} from "#/lib/system/types/awakeningType.ts"
+} from "#/lib/system/awakeningType.ts"
 
 export enum SkillGroupKey {
   Athletics = "Athletics",

@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 
 export function useDeviceSet() {
   const gear = useGearApi()

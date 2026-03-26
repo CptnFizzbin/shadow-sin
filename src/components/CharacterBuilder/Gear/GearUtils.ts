@@ -1,8 +1,7 @@
-import { useMemo } from "react"
-
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
-import { Lifestyles, LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const GearBuildPointAllowance = 50
 export const GearNuyenPerBuildPoint = 5_000
@@ -26,7 +25,9 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 }
 
 export const useGearTotalCost = () => {
-  const gear = useCharacterBuilderStore((state) => state.gear)
+  const gearApi = useGearApi()
+  const allGear = gearApi.all()
+
   const lifestyle = useCharacterBuilderStore((state) => {
     const lifestyleType = state.lifestyle ?? LifestyleType.Street
     return Lifestyles[lifestyleType]
@@ -35,10 +36,7 @@ export const useGearTotalCost = () => {
     (state) => state.lifestyleMonths ?? 1,
   )
 
-  const gearCost = useMemo(() => {
-    const allGear = Object.values(gear).flat()
-    return getTotalCost(...allGear)
-  }, [gear])
+  const gearCost = getTotalCost(...allGear)
 
   const lifestyleCost = lifestyle.upkeep * lifestyleMonths
   return gearCost + lifestyleCost

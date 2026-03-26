@@ -10,7 +10,7 @@ import {
 } from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import type { QualityData } from "#/lib/system/types/qualityData.ts"
+import type { QualityData } from "#/lib/system/qualityData.ts"
 
 type DialogState =
   | { open: true, quality: QualityData }

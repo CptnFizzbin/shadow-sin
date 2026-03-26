@@ -1,5 +1,5 @@
-import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export enum SkillKey {
   aronauticsMechanic = "Aronautics Mechanic",

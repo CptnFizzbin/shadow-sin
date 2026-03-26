@@ -12,7 +12,7 @@ import {
   useCharacterBuilderStoreSlice,
 } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
-import { LifestyleType, Lifestyles } from "#/lib/system/types/LifestyleType.ts"
+import { LifestyleType, Lifestyles } from "#/lib/system/LifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
   const storeSlice = useCharacterBuilderStoreSlice(

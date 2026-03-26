@@ -1,4 +1,4 @@
-import type { GearData, GearType } from "#/lib/system/types/gear/gearData.ts"
+import type { GearData, GearType } from "#/lib/system/gear/gearData.ts"
 
 export interface DeviceData extends GearData {
   itemType: GearType.device

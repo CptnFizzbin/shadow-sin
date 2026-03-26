@@ -1,7 +1,7 @@
-import type { MetatypeData } from "#/lib/system/types/MetatypeData.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import type { AwakeningData } from "#/lib/system/types/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { MetatypeData } from "#/lib/system/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { AwakeningData } from "#/lib/system/awakeningType.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 export interface AttrFormState {
   min: number

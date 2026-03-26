@@ -4,8 +4,8 @@ import {
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ComplexFormBpPerRating } from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerUtils.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const useComplexFormsSlice = () => {
   return useCharacterBuilderStoreSlice(

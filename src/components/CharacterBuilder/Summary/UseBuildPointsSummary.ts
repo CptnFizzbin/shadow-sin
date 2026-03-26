@@ -17,8 +17,8 @@ import {
   getFreeSkillPoints,
 } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
 import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
-import { metatypes } from "#/lib/system/types/MetatypeData.ts"
-import { awakenings } from "#/lib/system/types/awakeningType.ts"
+import { metatypes } from "#/lib/system/MetatypeData.ts"
+import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export interface BpSummary {
   total: number
@@ -109,11 +109,6 @@ export function useBuildPointsSummary(): BpSummary {
       label: "Adept Powers",
       enabled: isAdept(awakeningType),
       spent: 0,
-    },
-    {
-      label: "Technomancer",
-      enabled: isTechnomancer(awakeningType),
-      ...technomancerBp,
     },
     {
       label: "Technomancer",

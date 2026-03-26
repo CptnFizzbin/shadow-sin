@@ -1,5 +1,5 @@
-import type { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
-import type { MetatypeKey } from "#/lib/system/types/MetatypeData.ts"
+import type { LifestyleType } from "#/lib/system/LifestyleType.ts"
+import type { MetatypeKey } from "#/lib/system/MetatypeData.ts"
 import type { ItemData } from "./ItemData.ts"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"

@@ -1,4 +1,4 @@
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const SpellsBpPerSpell = 3
 

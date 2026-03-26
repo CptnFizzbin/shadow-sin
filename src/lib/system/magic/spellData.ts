@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
+import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export type SpellType = "Physical" | "Mana"
 export type SpellRange = "Touch" | "LoS" | "LoS (A)"

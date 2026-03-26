@@ -7,10 +7,10 @@ import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/At
 import { BiologyAttributes } from "#/components/CharacterBuilder/Biology/BiologyAttributes.tsx"
 import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import type { AwakeningType } from "#/lib/system/types/awakeningType.ts"
-import { awakenings } from "#/lib/system/types/awakeningType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const BiologySection: FC = () => {
   const storeSlice = useCharacterBuilderStoreSlice(

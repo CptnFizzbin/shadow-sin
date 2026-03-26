@@ -10,7 +10,7 @@ import type { FC } from "react"
 import { SpellFormFields } from "#/components/Spells/Form/SpellFormFields.tsx"
 import { useSpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
 import { noop } from "#/lib/noop.ts"
-import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
+import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
 export interface SpellFormDialogProps {
   open: boolean

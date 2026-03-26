@@ -1,5 +1,5 @@
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 
 export function useWeaponsState() {
   const gear = useGearApi()

@@ -4,12 +4,14 @@ import { defineConfig } from "eslint/config"
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript"
 import { importX } from "eslint-plugin-import-x"
 import pluginReact from "eslint-plugin-react"
+import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default defineConfig([
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  reactHooks.configs.flat.recommended,
   js.configs.recommended,
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,

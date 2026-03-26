@@ -1,4 +1,4 @@
-import type { QualityData } from "#/lib/system/types/qualityData.ts"
+import type { QualityData } from "#/lib/system/qualityData.ts"
 
 export enum AwakeningType {
   Mundane = "Mundane",

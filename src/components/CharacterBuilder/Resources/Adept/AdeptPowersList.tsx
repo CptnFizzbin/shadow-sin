@@ -13,7 +13,7 @@ import {
 } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersHooks.ts"
 import { AdeptPowersListItem } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersListItem.tsx"
 import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
 type DialogState =
   | null

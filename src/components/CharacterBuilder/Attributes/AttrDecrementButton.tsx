@@ -2,40 +2,30 @@ import { Button } from "@mui/material"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useAttributeSlice } from "#/components/CharacterBuilder/Attributes/AttributeHooks.ts"
-import {
-  AttributeBpCostBase,
-  AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
+import { AttributeBpCostBase, AttributeBpCostMaxOut } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
+import { useAttrApi } from "#/components/CharacterBuilder/Attributes/UseAttrApi.ts"
 import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const DecrementButton: FC<AttributeRowProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
     throw new Error("Essence cannot be decremented")
   }
 
-  const attrKey = props.attr
-  const buildPointsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.buildPoints,
-    (state, buildPoints) => {
-      state.buildPoints = buildPoints
-      return state
-    },
-  )
-  const attrSlice = useAttributeSlice(attrKey)
+  const store = useCharacterBuilderStoreContext()
+  const attrApi = useAttrApi(props.attr, store)
 
   let disabled = false
   let refund = AttributeBpCostBase
   let label = `${refund} BP`
 
-  if (attrSlice.state.value >= attrSlice.state.max) {
+  if (attrApi.value >= attrApi.max) {
     refund = AttributeBpCostMaxOut
     label = `${refund} BP`
   }
 
-  if (attrSlice.state.value <= attrSlice.state.min) {
+  if (attrApi.value <= attrApi.min) {
     disabled = true
     label = "MIN"
   }
@@ -48,9 +38,7 @@ export const DecrementButton: FC<AttributeRowProps> = (props) => {
       buildPoints.spent.attributes -= refund
     })
 
-    attrSlice.update((attrState) => {
-      attrState.value -= 1
-    })
+    attrApi.setValue(attrApi.value - 1)
   }
   return (
     <Button

@@ -1,6 +1,6 @@
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
-import { useGearApi } from "#/lib/gear/UseGearApi.ts"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 
 export function useImplantsStore() {
   const gear = useGearApi()

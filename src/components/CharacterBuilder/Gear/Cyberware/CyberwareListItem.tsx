@@ -16,7 +16,7 @@ import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import {
   ImplantGrade,
   ImplantType,
-} from "#/lib/system/types/gear/implantData.ts"
+} from "#/lib/system/gear/implantData.ts"
 
 interface CyberwareListItemProps {
   implant: ImplantFormState
