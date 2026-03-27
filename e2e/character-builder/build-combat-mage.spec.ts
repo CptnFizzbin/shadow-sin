@@ -1,16 +1,6 @@
 import { expect, test } from "@playwright/test"
 
-import {
-  addActiveSkill,
-  addContact,
-  addMiscGearItem,
-  addQuality,
-  addSkillGroup,
-  addSpell,
-  incAttr,
-  setupNewCharacter,
-  verifyBpSummary,
-} from "./helpers.ts"
+import { CharacterBuilderPage } from "../page-objects/CharacterBuilderPage.ts"
 
 /**
  * Full build test for a Combat Mage (Elf, Magician).
@@ -30,15 +20,13 @@ import {
 test("Combat Mage — full build uses all 400 BP with correct summary", async ({
   page,
 }) => {
-  await setupNewCharacter(page)
+  const builder = new CharacterBuilderPage(page)
+  await builder.setup()
 
   // ─── Biology ────────────────────────────────────────────────────────────
 
-  await page.getByRole("combobox", { name: "Metatype" }).click()
-  await page.getByRole("option", { name: "Elf" }).click()
-
-  await page.getByRole("combobox", { name: "Awakening" }).click()
-  await page.getByRole("option", { name: "Magician" }).click()
+  await builder.setMetatype("Elf")
+  await builder.setAwakening("Magician")
 
   // ─── Attributes ─────────────────────────────────────────────────────────
   // Elf minimums: BOD 1, AGI 2, REA 1, STR 1, CHA 3, INT 1, LOG 1, WIL 1
@@ -46,63 +34,63 @@ test("Combat Mage — full build uses all 400 BP with correct summary", async ({
   // Target: B3 A4 R4 S3 C4 I3 L4 W4 MAG5 EDG2
   // Normal-attr budget used: (2+2+3+2+1+2+3+3)×10 = 180 / 200 BP
 
-  await incAttr(page, "BOD", 2) // 1→3
-  await incAttr(page, "AGI", 2) // 2→4
-  await incAttr(page, "REA", 3) // 1→4
-  await incAttr(page, "STR", 2) // 1→3
-  await incAttr(page, "CHA", 1) // 3→4
-  await incAttr(page, "INT", 2) // 1→3
-  await incAttr(page, "LOG", 3) // 1→4
-  await incAttr(page, "WIL", 3) // 1→4
-  await incAttr(page, "MAG", 4) // 1→5  (special — not in 200 BP budget)
-  await incAttr(page, "EDG", 1) // 1→2  (special — not in 200 BP budget)
+  await builder.attributes.increment("BOD", 2) // 1→3
+  await builder.attributes.increment("AGI", 2) // 2→4
+  await builder.attributes.increment("REA", 3) // 1→4
+  await builder.attributes.increment("STR", 2) // 1→3
+  await builder.attributes.increment("CHA", 1) // 3→4
+  await builder.attributes.increment("INT", 2) // 1→3
+  await builder.attributes.increment("LOG", 3) // 1→4
+  await builder.attributes.increment("WIL", 3) // 1→4
+  await builder.attributes.increment("MAG", 4) // 1→5  (special — not in 200 BP budget)
+  await builder.attributes.increment("EDG", 1) // 1→2  (special — not in 200 BP budget)
 
   // ─── Active Skills ───────────────────────────────────────────────────────
   // 12 + 8 + 12 + 12 + 10 + 8 + 12 + 20 = 94 BP individual
   // Conjuring group 3 = 30 BP
   // Total skills = 124 BP
 
-  await addActiveSkill(page, "Astral Combat", 3)
-  await addActiveSkill(page, "Blades", 2)
-  await addActiveSkill(page, "Counterspelling", 3)
-  await addActiveSkill(page, "Dodge", 3)
-  await addActiveSkill(page, "Etiquette", 2, "Street") // +2 BP for spec
-  await addActiveSkill(page, "Perception", 2)
-  await addActiveSkill(page, "Pistols", 3)
-  await addActiveSkill(page, "Spellcasting", 5)
-  await addSkillGroup(page, "Conjuring", 3) // 30 BP
+  await builder.skills.addSkill("Astral Combat", 3)
+  await builder.skills.addSkill("Blades", 2)
+  await builder.skills.addSkill("Counterspelling", 3)
+  await builder.skills.addSkill("Dodge", 3)
+  await builder.skills.addSkill("Etiquette", 2, "Street") // +2 BP for spec
+  await builder.skills.addSkill("Perception", 2)
+  await builder.skills.addSkill("Pistols", 3)
+  await builder.skills.addSkill("Spellcasting", 5)
+  await builder.skills.addGroup("Conjuring", 3) // 30 BP
 
   // ─── Qualities (negatives only — Magician quality is in Biology) ──────
 
-  await addQuality(page, "Mild Allergy to Sunlight", "negative", 10)
-  await addQuality(page, "Addiction (Mild, Simsense)", "negative", 5)
-  await addQuality(page, "Addiction (Mild, Stimulants)", "negative", 5)
-  await addQuality(page, "Sensitive System", "negative", 15)
+  await builder.qualities.add("Mild Allergy to Sunlight", "negative", 10)
+  await builder.qualities.add("Addiction (Mild, Simsense)", "negative", 5)
+  await builder.qualities.add("Addiction (Mild, Stimulants)", "negative", 5)
+  await builder.qualities.add("Sensitive System", "negative", 15)
 
   // ─── Spells (8 × 3 BP = 24 BP) ──────────────────────────────────────────
 
-  await addSpell(page, "Armor", "Physical", "Stun", "Touch")
-  await addSpell(page, "Clout", "Physical", "Physical", "Line of Sight")
-  await addSpell(page, "Increase Initiative", "Physical", "Stun", "Touch")
-  await addSpell(page, "Levitate", "Physical", "Stun", "Line of Sight")
-  await addSpell(page, "Lightning Bolt", "Physical", "Physical", "Line of Sight")
-  await addSpell(page, "Manaball", "Mana", "Physical", "Line of Sight")
-  await addSpell(page, "Manabolt", "Mana", "Physical", "Line of Sight")
-  await addSpell(page, "Physical Barrier", "Physical", "Stun", "Touch")
+  await builder.spells.add("Armor", "Physical", "Stun", "Touch")
+  await builder.spells.add("Clout", "Physical", "Physical", "Line of Sight")
+  await builder.spells.add("Increase Initiative", "Physical", "Stun", "Touch")
+  await builder.spells.add("Levitate", "Physical", "Stun", "Line of Sight")
+  await builder.spells.add("Lightning Bolt", "Physical", "Physical", "Line of Sight")
+  await builder.spells.add("Manaball", "Mana", "Physical", "Line of Sight")
+  await builder.spells.add("Manabolt", "Mana", "Physical", "Line of Sight")
+  await builder.spells.add("Physical Barrier", "Physical", "Stun", "Touch")
 
   // ─── Gear ────────────────────────────────────────────────────────────────
   // 18,000 ¥ + 2,000 ¥ (Low lifestyle default) = 20,000 ¥ → 4 BP
 
-  await addMiscGearItem(page, "Magical Equipment", 18_000)
+  await builder.gear.addMiscItem("Magical Equipment", 18_000)
 
   // ─── Contacts ────────────────────────────────────────────────────────────
 
-  await addContact(page, "Fixer", 2, 2)
-  await addContact(page, "Talismonger", 2, 2)
+  await builder.contacts.add("Fixer", 2, 2)
+  await builder.contacts.add("Talismonger", 2, 2)
 
   // ─── Verify BP summary ───────────────────────────────────────────────────
 
-  await verifyBpSummary(page, [
+  await builder.bpSummary.verify([
     { label: "Biology", bp: 45 },
     { label: "Attributes", bp: 230 },
     { label: "Qualities", bp: -35 },

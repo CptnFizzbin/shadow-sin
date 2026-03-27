@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test"
 
+import { CharacterBuilderPage } from "./page-objects/CharacterBuilderPage.ts"
+
 /**
  * Character builder (/#/new) smoke tests.
  *
@@ -9,13 +11,11 @@ import { expect, test } from "@playwright/test"
  * dedicated integration suite.
  */
 test.describe("Character builder", () => {
+  let builder: CharacterBuilderPage
+
   test.beforeEach(async ({ page }) => {
-    // Clear any previously persisted form draft so state never leaks between tests.
-    await page.goto("/")
-    await page.evaluate(() => localStorage.clear())
-    await page.goto("/#/new")
-    // Wait for the character form to be present before each test runs.
-    await page.getByRole("button", { name: "Reset" }).waitFor()
+    builder = new CharacterBuilderPage(page)
+    await builder.setup()
   })
 
   // ─── Page-level elements ──────────────────────────────────────────────────
