@@ -19,7 +19,7 @@ const config = defineConfig({
 
   test: {
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
-    environment: "jsdom",
+    environment: "happy-dom",
   },
 })
 

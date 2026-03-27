@@ -1,10 +1,7 @@
-import type {
-  IStorageProvider,
-  StoredJsonFile,
-  StoredJsonFileMetadata,
-} from "#/lib/storage/IStorageProvider.ts"
+import type { IStorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/IStorageProvider.ts"
 
 interface LocalStorageProviderOptions {
+  storage?: Storage
   storagePrefix: string
 }
 
@@ -18,26 +15,30 @@ export class LocalStorageProvider implements IStorageProvider {
   public readonly providerId = "local-storage"
 
   private readonly storagePrefix: string
+  private readonly storage: Storage
 
-  public constructor({ storagePrefix }: LocalStorageProviderOptions) {
+  public constructor({
+    storage = globalThis.localStorage,
+    storagePrefix,
+  }: LocalStorageProviderOptions) {
+    this.storage = storage
     this.storagePrefix = storagePrefix
   }
 
   public listJsonFiles(
     pathPrefix?: string,
   ): Promise<StoredJsonFileMetadata[]> {
-    const storage = this.getStorage()
     const normalizedPathPrefix = this.normalizePathPrefix(pathPrefix)
     const files: StoredJsonFileMetadata[] = []
 
-    for (let index = 0; index < storage.length; index += 1) {
-      const storageKey = storage.key(index)
+    for (let index = 0; index < this.storage.length; index += 1) {
+      const storageKey = this.storage.key(index)
 
       if (!storageKey || !storageKey.startsWith(this.getKeyPrefix())) {
         continue
       }
 
-      const rawValue = storage.getItem(storageKey)
+      const rawValue = this.storage.getItem(storageKey)
 
       if (!rawValue) {
         continue
@@ -66,8 +67,7 @@ export class LocalStorageProvider implements IStorageProvider {
   public loadJsonFile<TValue>(
     path: string,
   ): Promise<StoredJsonFile<TValue> | null> {
-    const storage = this.getStorage()
-    const rawValue = storage.getItem(this.getStorageKey(path))
+    const rawValue = this.storage.getItem(this.getStorageKey(path))
 
     if (!rawValue) {
       return Promise.resolve(null)
@@ -80,14 +80,13 @@ export class LocalStorageProvider implements IStorageProvider {
     path: string,
     value: TValue,
   ): Promise<StoredJsonFile<TValue>> {
-    const storage = this.getStorage()
     const storedJsonFile: StoredJsonFile<TValue> = {
       path: this.normalizePath(path),
       updatedAt: new Date().toISOString(),
       value,
     }
 
-    storage.setItem(
+    this.storage.setItem(
       this.getStorageKey(path),
       JSON.stringify(storedJsonFile satisfies StoredJsonEnvelope<TValue>),
     )
@@ -96,19 +95,8 @@ export class LocalStorageProvider implements IStorageProvider {
   }
 
   public deleteJsonFile(path: string): Promise<void> {
-    const storage = this.getStorage()
-    storage.removeItem(this.getStorageKey(path))
+    this.storage.removeItem(this.getStorageKey(path))
     return Promise.resolve()
-  }
-
-  private getStorage(): Storage {
-    if (!("localStorage" in globalThis)) {
-      throw new Error(
-        "LocalStorageProvider requires browser localStorage support.",
-      )
-    }
-
-    return globalThis.localStorage
   }
 
   private getKeyPrefix(): string {

@@ -1,18 +1,16 @@
-// @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
 
 import { LocalStorageProvider } from "#/lib/storage/local-storage/LocalStorageProvider.ts"
-
-const makeProvider = (prefix = "test") =>
-  new LocalStorageProvider({ storagePrefix: prefix })
+import { MemoryStorage } from "#test-utils/storage/MemoryStorage.ts"
 
 describe("LocalStorageProvider", () => {
-  beforeEach(() => {
-    localStorage.clear()
-  })
+  let storage: Storage
 
-  afterEach(() => {
-    localStorage.clear()
+  const makeProvider = (prefix = "test") =>
+    new LocalStorageProvider({ storage, storagePrefix: prefix })
+
+  beforeEach(() => {
+    storage = new MemoryStorage()
   })
 
   describe("providerId", () => {

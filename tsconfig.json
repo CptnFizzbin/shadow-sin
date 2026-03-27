@@ -11,6 +11,9 @@
     "paths": {
       "#/*": [
         "./src/*"
+      ],
+      "#test-utils/*": [
+        "./test-utils/*"
       ]
     },
     "lib": [
