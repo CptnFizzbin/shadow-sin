@@ -20,7 +20,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
     throw new Error("Essence can not be incremented")
   }
-  const { bpRemaining } = useAttributesBuildPoints()
+  const { budget } = useAttributesBuildPoints()
 
   const store = useCharacterBuilderStoreContext()
   const attrKey = props.attr
@@ -49,7 +49,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = "MAX"
   }
 
-  if (bpRemaining < cost) {
+  if (budget.remaining < cost) {
     disabled = true
   }
 

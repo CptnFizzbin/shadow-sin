@@ -1,3 +1,5 @@
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -89,6 +91,38 @@ export const StartingNuyenSection: FC = () => {
             )
           </Typography>
         )}
+
+        {rolledTotal !== null && diceResult !== null
+          ? (
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography variant="body2">
+                  (
+                  {bonus > 0 ? `${diceResult} + ${bonus}` : diceResult}
+                  )
+                  {" "}
+                  ×
+                  {" "}
+                  {mult.toLocaleString("en")}
+                  ¥
+                  {" = "}
+                  <Box component="span" fontWeight="bold">
+                    {formatNuyen(rolledTotal)}
+                  </Box>
+                </Typography>
+                <Button size="small" variant="outlined" onClick={handleRoll}>
+                  Reroll
+                </Button>
+              </Stack>
+            )
+          : (
+              <Button size="small" variant="outlined" onClick={handleRoll}>
+                Roll
+              </Button>
+            )}
       </Stack>
     </Stack>
   )
