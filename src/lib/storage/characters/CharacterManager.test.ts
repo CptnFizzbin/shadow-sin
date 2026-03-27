@@ -237,11 +237,14 @@ describe("CharacterManager", () => {
         makeStoredFile(oldCharacter),
       )
 
-      const result = await manager.getCharacter("migrant")
-
-      // Cleanup: remove the injected migration
-      const idx = migrationsModule.migrations.indexOf(testMigration)
-      if (idx !== -1) migrationsModule.migrations.splice(idx, 1)
+      let result: Awaited<ReturnType<typeof manager.getCharacter>>
+      try {
+        result = await manager.getCharacter("migrant")
+      } finally {
+        // Always remove the injected migration so later tests are not polluted.
+        const idx = migrationsModule.migrations.indexOf(testMigration)
+        if (idx !== -1) migrationsModule.migrations.splice(idx, 1)
+      }
 
       expect(testMigration.up).toHaveBeenCalledOnce()
       expect((result as unknown as Record<string, unknown>)["migrated"]).toBe(
@@ -252,7 +255,19 @@ describe("CharacterManager", () => {
     })
 
     it("does not re-save a character that requires no migration", async () => {
-      const currentCharacter = makeCharacter({ id: "no-migrate", version: 0 })
+      const migrationsModule = await import(
+        "#/lib/storage/characters/migrations/index.ts",
+      )
+      // Use the highest version currently in the migrations array so this test
+      // remains correct as real migrations are added in future.
+      const currentVersion = migrationsModule.migrations.reduce(
+        (max, m) => Math.max(max, m.version),
+        0,
+      )
+      const currentCharacter = makeCharacter({
+        id: "no-migrate",
+        version: currentVersion,
+      })
 
       vi.mocked(provider.loadJsonFile).mockResolvedValueOnce(
         makeStoredFile(currentCharacter),

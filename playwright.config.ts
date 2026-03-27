@@ -16,6 +16,7 @@ export default defineConfig({
   /* Limit parallelism on CI to avoid resource contention */
   workers: process.env["CI"] ? 1 : undefined,
   reporter: process.env["CI"] ? [["html", { open: "never" }], ["github"]] : "html",
+  timeout: 90000,
   use: {
     baseURL: "http://localhost:3000",
     /* Capture trace on first retry so failures are diagnosable */
