@@ -6,29 +6,49 @@ import {
 } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/lib/system/attributeKey.ts"
 import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
 
 export const useAttributesBuildPoints = () => {
-  const totalBpSpent = useActiveAttributes()
-    .map(({ value, min, max }) => {
+  const activeAttributeCosts = useActiveAttributes()
+    .map((attrData) => {
       let spent = 0
-      spent += (value - min) * AttributeBpCostBase
+      spent += (attrData.value - attrData.min) * AttributeBpCostBase
 
-      const isMaxedOut = value >= max
+      const isMaxedOut = attrData.value >= attrData.max
       if (isMaxedOut) {
         spent += AttributeBpCostMaxOut - AttributeBpCostBase
       }
 
-      return spent
+      return { ...attrData, spent }
     })
-    .reduce((total, spent) => total + spent, 0)
+
+  const physicalBpSpent = activeAttributeCosts
+    .filter(({ attr }) => PhysicalAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const mentalBpSpent = activeAttributeCosts
+    .filter(({ attr }) => MentalAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const specialBpSpent = activeAttributeCosts
+    .filter(({ attr }) => SpecialAttributes.includes(attr))
+    .reduce((sum, attr) => sum + attr.spent, 0)
+
+  const totalBpSpent = physicalBpSpent + mentalBpSpent + specialBpSpent
+  const budgetedBpSpent = physicalBpSpent + mentalBpSpent
 
   return {
     label: "Attributes",
     spent: totalBpSpent,
-    allowance: AttributeBpAllowance,
-    bpRemaining: AttributeBpAllowance - totalBpSpent,
+    physicalBp: physicalBpSpent,
+    mentalBp: mentalBpSpent,
+    specialBp: specialBpSpent,
+    budget: {
+      spent: budgetedBpSpent,
+      remaining: AttributeBpAllowance - budgetedBpSpent,
+      limit: AttributeBpAllowance,
+    },
   }
 }
 

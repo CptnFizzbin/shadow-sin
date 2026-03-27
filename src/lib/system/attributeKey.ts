@@ -22,10 +22,10 @@ export const AttributeLabels: Record<AttributeKey, string> = {
   intuition: "INT",
   logic: "LOG",
   willpower: "WIL",
-  edge: "EDG",
-  essence: "ESS",
   magic: "MAG",
   resonance: "RES",
+  edge: "EDG",
+  essence: "ESS",
 }
 
 export const AttributeOrder: AttributeKey[] = [
@@ -43,23 +43,23 @@ export const AttributeOrder: AttributeKey[] = [
   AttributeKey.resonance,
 ]
 
-export const PhysicalAttributes = [
+export const PhysicalAttributes: AttributeKey[] = [
   AttributeKey.body,
   AttributeKey.agility,
   AttributeKey.reaction,
   AttributeKey.strength,
 ] as const
 
-export const MentalAttributes = [
+export const MentalAttributes: AttributeKey[] = [
   AttributeKey.charisma,
   AttributeKey.intuition,
   AttributeKey.logic,
   AttributeKey.willpower,
 ] as const
 
-export const SpecialAttributes = [
-  AttributeKey.edge,
-  AttributeKey.essence,
+export const SpecialAttributes: AttributeKey[] = [
   AttributeKey.magic,
   AttributeKey.resonance,
+  AttributeKey.edge,
+  AttributeKey.essence,
 ] as const

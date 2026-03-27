@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
+import { z } from "zod"
 
 import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
 import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
@@ -13,7 +14,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
   return (
     <form.AppForm>
       <Stack gap={2} sx={{ pt: 1 }}>
-        <form.AppField name="name">
+        <form.AppField name="name" validators={{ onChange: z.string().min(1, "Name is required") }}>
           {(field) => <field.TextField label="Name" required />}
         </form.AppField>
 

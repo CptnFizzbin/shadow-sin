@@ -1,4 +1,5 @@
 import type { ReadonlyStore, Store } from "@tanstack/store"
+import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
@@ -33,23 +34,7 @@ export interface GearApi {
 export function createGearApi<TState extends { gear: Record<string, ItemData> }>(
   store: Store<TState>,
 ): GearApi {
-  // A live proxy that always reflects the current gear slice of the parent store.
-  // Subscribing to this store notifies on every parent state change; useStore's
-  // selector equality check prevents re-renders when the selected value is unchanged.
-  const gearStore = {
-    get state() {
-      return store.state.gear
-    },
-    get() {
-      return store.state.gear
-    },
-    subscribe(observerOrFn: ((v: Record<string, ItemData>) => void) | { next?: (v: Record<string, ItemData>) => void }) {
-      const next = typeof observerOrFn === "function" ? observerOrFn : (v: Record<string, ItemData>) => observerOrFn.next?.(v)
-      return store.subscribe(() => next(store.state.gear))
-    },
-  } as unknown as ReadonlyStore<Record<string, ItemData>>
-
-  // Internal helper — not exposed on the interface so callers use the reactive hooks.
+  const gearStore = createStore(() => store.state.gear)
   const getItem = (id: string) => store.state.gear[id]
 
   const gearApi: GearApi = {

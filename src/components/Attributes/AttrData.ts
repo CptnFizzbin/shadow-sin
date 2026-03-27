@@ -3,6 +3,7 @@ import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { AwakeningData } from "#/lib/system/awakeningType.ts"
 
 export interface AttrData {
+  attr: AttributeKey
   value: number
   min: number
   max: number
@@ -16,10 +17,11 @@ export const getAttrData = (
   awakening: AwakeningData,
 ): AttrData => {
   if (attr === AttributeKey.essence) {
-    return { value, min: 0, max: 6, augMax: 6 }
+    return { attr, value, min: 0, max: 6, augMax: 6 }
   }
 
   const attrState = {
+    attr: attr,
     value: value,
     min: 0,
     max: 0,

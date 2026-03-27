@@ -14,7 +14,9 @@ export function useGearApi() {
   return api
 }
 
-/** Reactively read a single gear item by id. Re-renders only when that item changes. */
+/**
+ * Reactively read a single gear item by id. Re-renders only when that item changes.
+ */
 export function useGearItem(id: string): ItemData | undefined {
   const api = useGearApi()
   return useStore(api.store, (gear) => gear[id])
@@ -31,7 +33,9 @@ export function useGearByType<TItem = ItemData>(itemType: string): TItem[] {
   return Object.values(gear).filter((item) => item.itemType === itemType) as TItem[]
 }
 
-/** Reactively read the parent of a gear item. Re-renders only when that parent item reference changes. */
+/**
+ * Reactively read the parent of a gear item. Re-renders only when that parent item reference changes.
+ */
 export function useGearParent(itemOrId: ItemData | string): ItemData | undefined {
   const api = useGearApi()
   const id = resolveItemId(itemOrId)
@@ -42,10 +46,13 @@ export function useGearParent(itemOrId: ItemData | string): ItemData | undefined
   })
 }
 
-/** Reactively read the children of a gear item. Re-renders when the gear Record changes. */
+/**
+ * Reactively read the children of a gear item. Re-renders when the gear Record changes.
+ */
 export function useGearChildren(itemOrId: ItemData | string): ItemData[] {
   const api = useGearApi()
   const id = resolveItemId(itemOrId)
+
   return useStore(api.store, (gear) => {
     const item = gear[id]
     if (!item) return []
@@ -55,5 +62,6 @@ export function useGearChildren(itemOrId: ItemData | string): ItemData[] {
   })
 }
 
-const resolveItemId = (itemOrId: ItemData | string): string =>
-  typeof itemOrId === "string" ? itemOrId : itemOrId.id
+const resolveItemId = (itemOrId: ItemData | string): string => {
+  return typeof itemOrId === "string" ? itemOrId : itemOrId.id
+}

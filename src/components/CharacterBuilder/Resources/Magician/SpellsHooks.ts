@@ -14,7 +14,7 @@ export const useSpellsBuildPoints = () => {
   const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
   const ritualSpellcasting = useBuilderActiveSkillRating(SkillKey.ritualSpellcasting)
 
-  const allowance = Math.max(spellcasting, ritualSpellcasting) * 2
+  const allowance = (Math.max(spellcasting, ritualSpellcasting) * 2) * SpellsBpPerSpell
   const spent = spells.length * SpellsBpPerSpell
 
   return {
