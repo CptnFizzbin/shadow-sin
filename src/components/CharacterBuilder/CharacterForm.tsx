@@ -18,7 +18,7 @@ import { SkillsFormGroup } from "#/components/CharacterBuilder/Skills/SkillsForm
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Summary/BpSummaryFooter.tsx"
 import { useDefaultValues } from "#/components/CharacterBuilder/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/UseRootCharacterBuilderStore.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 interface CharacterFormProps {
   character?: PlayerCharacterData

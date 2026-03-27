@@ -1,12 +1,10 @@
 import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
-import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
-import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
+import { GearProvider } from "#/components/Gear/GearProvider.tsx"
 
 export const CharacterBuilderContext =
   createContext<Store<CharacterBuilderState> | null>(null)
@@ -19,7 +17,9 @@ export const CharacterBuilderStoreProvider: FC<
   CharacterBuilderStoreProviderProps
 > = ({ store, children }) => (
   <CharacterBuilderContext.Provider value={store}>
-    {children}
+    <GearProvider store={store}>
+      {children}
+    </GearProvider>
   </CharacterBuilderContext.Provider>
 )
 
@@ -43,15 +43,4 @@ export function useCharacterBuilderStore<TData>(
 ): TData {
   const store = useCharacterBuilderStoreContext()
   return useStore(store, selector)
-}
-
-export function useCharacterBuilderStoreSlice<TData>(
-  selector: CharacterBuilderSelector<TData>,
-  updater: (
-    state: Draft<CharacterBuilderState>,
-    newValue: Draft<TData>,
-  ) => Draft<CharacterBuilderState>,
-): StoreSlice<TData> {
-  const store = useCharacterBuilderStoreContext()
-  return useStoreSlice(store, selector, updater)
 }

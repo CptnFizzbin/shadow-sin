@@ -2,10 +2,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { ImplantFormState } from "#/components/CharacterBuilder/Gear/Cyberware/Forms/ImplantFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import {
-  ImplantGrade,
-  ImplantType,
-} from "#/lib/system/types/gear/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
 
 export type ImplantEditFormOptions = {
   mode: "edit"

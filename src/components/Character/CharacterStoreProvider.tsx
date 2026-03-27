@@ -1,12 +1,10 @@
 import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
-import type { Draft } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-import type { StoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import { useStoreSlice } from "#/integrations/tanstack-store/StoreUtils.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import { GearProvider } from "#/components/Gear/GearProvider.tsx"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 export const CharacterStoreContext =
   createContext<Store<PlayerCharacterData> | null>(null)
@@ -18,11 +16,15 @@ export interface CharacterStoreProviderProps extends PropsWithChildren {
 export const CharacterStoreProvider: FC<CharacterStoreProviderProps> = ({
   store,
   children,
-}) => (
-  <CharacterStoreContext.Provider value={store}>
-    {children}
-  </CharacterStoreContext.Provider>
-)
+}) => {
+  return (
+    <CharacterStoreContext.Provider value={store}>
+      <GearProvider store={store}>
+        {children}
+      </GearProvider>
+    </CharacterStoreContext.Provider>
+  )
+}
 
 type CharacterDataSelector<TData> = (state: PlayerCharacterData) => TData
 
@@ -45,13 +47,13 @@ export function useCharacterStore<TData>(
   return useStore(store, selector)
 }
 
-export function useCharacterStoreSlice<TData extends object>(
+export function useCharacterSheet() {
+  return useCharacterStoreContext()
+}
+
+export function useCharacterSheetStore<TData>(
   selector: CharacterDataSelector<TData>,
-  setter: (
-    state: Draft<PlayerCharacterData>,
-    nextValue: Draft<TData>,
-  ) => Draft<PlayerCharacterData>,
-): StoreSlice<TData> {
-  const store = useCharacterStoreContext()
-  return useStoreSlice(store, selector, setter)
+): TData {
+  const store = useCharacterSheet()
+  return useStore(store, selector)
 }

@@ -4,13 +4,11 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { QualitiesListItem } from "#/components/CharacterBuilder/Qualities/QualitiesListItem.tsx"
-import {
-  useQualitiesBuildPoints,
-  useQualitiesBuildSlice,
-} from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
+import { useBuilderQualitiesBuildPoints } from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
+import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Qualities/UseQualitiesApi.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
-import type { QualityData } from "#/lib/system/types/qualityData.ts"
+import type { QualityData } from "#/lib/system/qualityData.ts"
 
 type DialogState =
   | { open: true, quality: QualityData }
@@ -21,8 +19,8 @@ interface QualitiesListProps {
 }
 
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
-  const qualitiesSlice = useQualitiesBuildSlice()
-  const qualitiesBuildPoints = useQualitiesBuildPoints()
+  const { qualities, updateQuality, removeQuality } = useBuilderQualitiesApi()
+  const qualitiesBuildPoints = useBuilderQualitiesBuildPoints()
 
   const [editDialogState, setEditDialogState] = useState<DialogState>({
     open: false,
@@ -32,18 +30,6 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
     setEditDialogState((prev) => prev && { ...prev, open: false })
   const clearDialog = () =>
     setEditDialogState({ open: false, quality: undefined })
-
-  const onUpdateQuality = (quality: QualityData) => {
-    qualitiesSlice.update((prev) => {
-      return prev.map((q) => (q.id === quality.id ? quality : q))
-    })
-  }
-
-  const onRemoveQuality = (quality: QualityData) => {
-    qualitiesSlice.update((prev) => {
-      return prev.filter((q) => q.id !== quality.id)
-    })
-  }
 
   let label: string
   let bpLabel: string
@@ -67,7 +53,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
       break
   }
 
-  const qualities = qualitiesSlice.state.filter(
+  const filteredQualities = qualities.filter(
     (q) => type === "all" || q.type === type,
   )
 
@@ -81,7 +67,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
         </Typography>
       </Stack>
 
-      {qualities.length === 0
+      {filteredQualities.length === 0
         ? (
             <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
               No {label} qualities added
@@ -89,12 +75,12 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
           )
         : (
             <Stack gap={0.5}>
-              {qualities.map((quality) => (
+              {filteredQualities.map((quality) => (
                 <QualitiesListItem
                   key={quality.id}
                   quality={quality}
                   onClick={() => setEditDialogState({ open: true, quality })}
-                  onRemove={() => onRemoveQuality(quality)}
+                  onRemove={() => removeQuality(quality)}
                 />
               ))}
             </Stack>
@@ -107,7 +93,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
           onClose={closeDialog}
           onClosed={clearDialog}
           onSave={(quality) => {
-            onUpdateQuality(quality)
+            updateQuality(quality)
             closeDialog()
           }}
         />

@@ -14,7 +14,7 @@ import {
   useContactForm,
 } from "#/components/CharacterBuilder/Contacts/UseContactForm.tsx"
 import { noop } from "#/lib/noop.ts"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 export interface ContactFormDialogProps {
   open: boolean

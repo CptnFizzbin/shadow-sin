@@ -11,15 +11,15 @@ import { useBuilderAttrValue } from "#/components/CharacterBuilder/CharacterBuil
 import type { ComplexFormFormState } from "#/components/CharacterBuilder/Resources/AwakenedFormState.ts"
 import {
   useComplexFormsBuildPoints,
-  useComplexFormsSlice,
   useMaxComplexForms,
 } from "#/components/CharacterBuilder/Resources/Technomancer/ComplexFormsHooks.ts"
 import { ComplexFormsListItem } from "#/components/CharacterBuilder/Resources/Technomancer/ComplexFormsListItem.tsx"
 import { ComplexFormDialog } from "#/components/CharacterBuilder/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
+import { useBuilderComplexFormsApi } from "#/components/CharacterBuilder/Resources/Technomancer/UseComplexFormsApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 type ComplexFormDialogState =
   | null
@@ -28,30 +28,13 @@ type ComplexFormDialogState =
 
 export const ComplexFormsList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
-  const complexFormsSlice = useComplexFormsSlice()
+  const { complexForms, addComplexForm, updateComplexForm, removeComplexForm } =
+    useBuilderComplexFormsApi()
   const complexFormsBp = useComplexFormsBuildPoints()
   const maxComplexForms = useMaxComplexForms()
 
   const [complexFormDialog, setComplexFormDialog] =
     useState<ComplexFormDialogState>(null)
-
-  const addComplexForm = (form: ComplexFormFormState) => {
-    complexFormsSlice.update((complexForms) => {
-      complexForms.push(form)
-    })
-  }
-
-  const updateComplexForm = (form: ComplexFormFormState) => {
-    complexFormsSlice.update((complexForms) => {
-      return complexForms.map((f) => (f.id === form.id ? form : f))
-    })
-  }
-
-  const removeComplexForm = (formId: string) => {
-    complexFormsSlice.update((complexForms) => {
-      return complexForms.filter((f) => f.id !== formId)
-    })
-  }
 
   const closeDialog = () => {
     setComplexFormDialog((prev) => prev && { ...prev, open: false })
@@ -61,7 +44,7 @@ export const ComplexFormsList: FC = () => {
     setComplexFormDialog(null)
   }
 
-  const isAtMax = complexFormsSlice.state.length >= maxComplexForms
+  const isAtMax = complexForms.length >= maxComplexForms
 
   return (
     <Stack gap={1}>
@@ -74,14 +57,14 @@ export const ComplexFormsList: FC = () => {
           alignItems="center"
         >
           <Typography color="text.secondary">
-            {complexFormsSlice.state.length} / {maxComplexForms} forms
+            {complexForms.length} / {maxComplexForms} forms
           </Typography>
           <BuildPoints value={complexFormsBp.spent} />
         </Stack>
 
         <LinearProgress
           variant="determinate"
-          value={getProgress(complexFormsSlice.state.length, maxComplexForms)}
+          value={getProgress(complexForms.length, maxComplexForms)}
         />
       </Stack>
 
@@ -91,15 +74,15 @@ export const ComplexFormsList: FC = () => {
         </Alert>
       )}
 
-      {complexFormsSlice.state.length === 0 && (
+      {complexForms.length === 0 && (
         <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
           No complex forms added
         </Typography>
       )}
 
-      {complexFormsSlice.state.length > 0 && (
+      {complexForms.length > 0 && (
         <Stack gap={0.5}>
-          {complexFormsSlice.state.map((complexForm) => (
+          {complexForms.map((complexForm) => (
             <ComplexFormsListItem
               key={complexForm.id}
               form={complexForm}

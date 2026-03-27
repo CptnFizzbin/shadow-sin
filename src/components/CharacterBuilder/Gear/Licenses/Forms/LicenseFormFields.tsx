@@ -48,7 +48,7 @@ export const LicenseFormFields = withFieldGroup({
         </group.AppField>
 
         <group.Subscribe
-          selector={(group) => findSelectedSin(group.values.sinId)}
+          selector={(g) => findSelectedSin(g.values.sinId)}
         >
           {(selectedSin) => (
             <group.AppField name="rating">

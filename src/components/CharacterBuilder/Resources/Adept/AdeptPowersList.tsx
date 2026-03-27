@@ -8,12 +8,12 @@ import { useState } from "react"
 
 import { AdeptPowerFormDialog } from "#/components/AdeptPowers/Dialogs/AdeptPowerFormDialog.tsx"
 import {
-  useAdeptPowersSlice,
   usePowerPoints,
 } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersHooks.ts"
 import { AdeptPowersListItem } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersListItem.tsx"
+import { useBuilderAdeptPowersApi } from "#/components/CharacterBuilder/Resources/Adept/UseAdeptPowersApi.ts"
 import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
 type DialogState =
   | null
@@ -21,27 +21,10 @@ type DialogState =
   | { open: boolean, type: "edit", power: AdeptPowerData }
 
 export const AdeptPowersList: FC = () => {
-  const powersSlice = useAdeptPowersSlice()
+  const { adeptPowers, addPower, updatePower, removePower } =
+    useBuilderAdeptPowersApi()
   const powerPoints = usePowerPoints()
   const [dialogState, setDialogState] = useState<DialogState>(null)
-
-  const onPowerAdd = (power: AdeptPowerData) => {
-    powersSlice.update((prev) => {
-      return [...prev, { ...power, id: crypto.randomUUID() }]
-    })
-  }
-
-  const onPowerUpdate = (power: AdeptPowerData) => {
-    powersSlice.update((draft) => {
-      return draft.map((p) => (p.id === power.id ? power : p))
-    })
-  }
-
-  const onPowerRemove = (power: AdeptPowerData) => {
-    powersSlice.update((draft) => {
-      return draft.filter((p) => p.id !== power.id)
-    })
-  }
 
   return (
     <Paper sx={{ padding: 1 }}>
@@ -52,13 +35,13 @@ export const AdeptPowersList: FC = () => {
 
         <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
-        {powersSlice.state.length === 0 && (
+        {adeptPowers.length === 0 && (
           <Typography variant="body2" color="text.secondary">
             No adept powers added yet.
           </Typography>
         )}
 
-        {powersSlice.state.map((power) => (
+        {adeptPowers.map((power) => (
           <AdeptPowersListItem
             key={power.id}
             power={power}
@@ -79,7 +62,7 @@ export const AdeptPowersList: FC = () => {
       {dialogState?.type === "add" && (
         <AdeptPowerFormDialog
           open={dialogState.open}
-          onSave={onPowerAdd}
+          onSave={addPower}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -88,8 +71,8 @@ export const AdeptPowersList: FC = () => {
         <AdeptPowerFormDialog
           open={dialogState.open}
           power={dialogState.power}
-          onSave={onPowerUpdate}
-          onDelete={() => onPowerRemove(dialogState.power)}
+          onSave={updatePower}
+          onDelete={() => removePower(dialogState.power)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}

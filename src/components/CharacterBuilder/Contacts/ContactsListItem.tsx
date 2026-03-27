@@ -6,7 +6,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 interface ContactRowProps {
   contact: ContactData

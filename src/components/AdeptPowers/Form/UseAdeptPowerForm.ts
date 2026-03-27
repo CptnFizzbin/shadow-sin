@@ -1,6 +1,6 @@
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
-import { AdeptPowerDataSchema } from "#/lib/system/types/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
+import { AdeptPowerDataSchema } from "#/lib/system/magic/adeptPowerData.ts"
 
 export type AdeptPowerFormOptions =
   | { mode: "create", onSubmit: (values: AdeptPowerData) => void }

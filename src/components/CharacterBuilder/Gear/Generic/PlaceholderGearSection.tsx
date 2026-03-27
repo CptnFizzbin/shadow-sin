@@ -3,7 +3,7 @@ import type { FC } from "react"
 
 import type { GearItemFormState } from "#/components/CharacterBuilder/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Gear/Generic/GearItemsList.tsx"
-import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 
 type GearItemSectionField =
   | "gear.weapons"
@@ -26,19 +26,19 @@ export const PlaceholderGearSection: FC<PlaceholderGearSectionProps> = ({
     | "vehicles"
     | "misc"
 
-  const gear = useBuilderGearApi()
-  const items = gear.getItemsByType<GearItemFormState>(sectionKey)
+  const gear = useGearApi()
+  const items = useGearByType<GearItemFormState>(sectionKey)
 
   const addItem = (item: Omit<GearItemFormState, "id">) => {
-    gear.createItem({ ...item, type: sectionKey })
+    gear.add({ ...item, itemType: sectionKey })
   }
 
   const updateItem = (item: GearItemFormState) => {
-    gear.saveItem({ ...item, type: sectionKey })
+    gear.set({ ...item, itemType: sectionKey })
   }
 
   const removeItem = (item: GearItemFormState) => {
-    gear.deleteItem({ id: item.id }, { removeChildren: true })
+    gear.remove(item.id, { removeChildren: true })
   }
 
   return (

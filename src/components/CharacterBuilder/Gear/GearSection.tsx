@@ -7,6 +7,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
@@ -32,17 +33,20 @@ import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Gear/Licen
 import { LifestylePanel } from "#/components/CharacterBuilder/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
-import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import { Lifestyles } from "#/lib/system/types/LifestyleType.ts"
+import { Lifestyles } from "#/lib/system/LifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
-  const gear = useBuilderGearApi()
+  const gear = useGearApi()
+
+  // Subscribe to the gear Record; re-renders only when gear changes.
+  const allGearItems = useStore(gear.store, (g) => g)
 
   const totalNuyen = useGearTotalCost()
   const { spent: totalBp, isOverBudget } = useGearBuildPoints()
@@ -71,8 +75,8 @@ export const GearSection: FC = () => {
 
   Object.values(SectionHeader).forEach((sectionName) => {
     if (sectionName === SectionHeader.Licenses) {
-      const sins = gear.getItemsByType<SinFormState>("sins") || []
-      const licenses = gear.getItemsByType<LicenseFormState>("licenses") || []
+      const sins = Object.values(allGearItems).filter((i) => i.itemType === "sins") as unknown as SinFormState[]
+      const licenses = Object.values(allGearItems).filter((i) => i.itemType === "licenses") as unknown as LicenseFormState[]
       const sinInvalid = sins.some(
         (s) => getSinAvailability(s.rating).rating > GearMaxAvailability,
       )
@@ -91,7 +95,7 @@ export const GearSection: FC = () => {
           ).length
       }
     } else if (sectionName === SectionHeader.Cyberware) {
-      const invalidImplants = gear.getItemsByType<ImplantFormState>("cyberware")
+      const invalidImplants = (Object.values(allGearItems).filter((i) => i.itemType === "cyberware") as unknown as ImplantFormState[])
         .filter((implant) =>
           (implant.availability?.rating ?? Number.NEGATIVE_INFINITY)
           > GearMaxAvailability,
@@ -105,7 +109,7 @@ export const GearSection: FC = () => {
     } else {
       const sectionKey = genericSectionKeys[sectionName]
       if (sectionKey) {
-        const items = gear.getItemsByType<GearItemFormState>(sectionKey) || []
+        const items = Object.values(allGearItems).filter((i) => i.itemType === sectionKey) as unknown as GearItemFormState[]
         const invalidItems = items.filter(
           (it) =>
             (it.availability?.rating ?? Number.NEGATIVE_INFINITY)
@@ -236,7 +240,9 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gearApi = useBuilderGearApi()
+  const gearApi = useGearApi()
+  // Subscribe to the gear Record reactively; re-renders when any gear item changes.
+  const allGearItems = useStore(gearApi.store, (g) => g)
   const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
   const lifestyleMonths = useCharacterBuilderStore(
     (state) => state.lifestyleMonths,
@@ -251,26 +257,30 @@ const GearSectionNuyen: FC<{
   }
 
   if (section === SectionHeader.Licenses) {
+    const sins = Object.values(allGearItems).filter((i) => i.itemType === "sins") as unknown as SinFormState[]
+    const licenses = Object.values(allGearItems).filter((i) => i.itemType === "licenses") as unknown as LicenseFormState[]
     return (
       <Typography variant="body2" color="text.secondary">
         <Nuyen
           amount={
-            gearApi.getItemsByType<SinFormState>("sins").reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
-            + gearApi.getItemsByType<LicenseFormState>("licenses").reduce((sum, license) => sum + (license.cost ?? 0), 0)
+            sins.reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
+            + licenses.reduce((sum, license) => sum + (license.cost ?? 0), 0)
           }
         />
       </Typography>
     )
   }
   if (section === SectionHeader.Cyberware) {
+    const implants = Object.values(allGearItems).filter((i) => i.itemType === "cyberware") as unknown as ImplantFormState[]
+    const implantMods = Object.values(allGearItems).filter((i) => i.itemType === "implantMods") as unknown as GearItemFormState[]
     return (
       <Typography variant="body2" color="text.secondary">
         <Nuyen
           amount={
-            gearApi.getItemsByType<ImplantFormState>("cyberware").reduce(
+            implants.reduce(
               (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
               0,
-            ) + gearApi.getItemsByType<GearItemFormState>("implantMods").reduce((sum, mod) => sum + (mod.cost ?? 0), 0)
+            ) + implantMods.reduce((sum, mod) => sum + (mod.cost ?? 0), 0)
           }
         />
       </Typography>
@@ -288,7 +298,7 @@ const GearSectionNuyen: FC<{
   }
   const sectionKey = genericSectionKeys[section]
   const nuyen = sectionKey
-    ? (gearApi.getItemsByType<GearItemFormState>(sectionKey).reduce((sum, item) => sum + (item.cost ?? 0), 0))
+    ? (Object.values(allGearItems).filter((i) => i.itemType === sectionKey) as unknown as GearItemFormState[]).reduce((sum, item) => sum + (item.cost ?? 0), 0)
     : 0
 
   return (

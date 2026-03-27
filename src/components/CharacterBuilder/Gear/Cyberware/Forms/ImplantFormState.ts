@@ -1,9 +1,9 @@
-import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
+import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
 import type {
   ImplantGrade,
   ImplantType,
-} from "#/lib/system/types/gear/implantData.ts"
-import type { SourceData } from "#/lib/system/types/sourceData.ts"
+} from "#/lib/system/gear/implantData.ts"
+import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface ImplantFormState {
   id: string

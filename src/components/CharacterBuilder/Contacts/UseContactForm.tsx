@@ -1,7 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 const defaultValues = {
   id: "",

@@ -1,11 +1,10 @@
 import { createAttrFormState } from "#/components/CharacterBuilder/Attributes/AttrFormState.ts"
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
-import type { BuilderGearData } from "#/components/CharacterBuilder/Gear/Generic/BuilderGearData.ts"
-import { LifestyleType } from "#/lib/system/types/LifestyleType.ts"
-import { MetatypeKey, metatypes } from "#/lib/system/types/MetatypeData.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { awakenings, AwakeningType } from "#/lib/system/types/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import { LifestyleType } from "#/lib/system/LifestyleType.ts"
+import { MetatypeKey, metatypes } from "#/lib/system/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
 
@@ -24,17 +23,6 @@ export const useDefaultValues = ({
 
   return {
     characterId: characterId,
-
-    buildPoints: {
-      total: 400,
-      spent: {
-        metatype: 0,
-        qualities: 0,
-        attributes: 0,
-        skills: 0,
-        gear: 0,
-      },
-    },
 
     name: profile?.name || "",
     alias: profile?.alias || "",
@@ -136,7 +124,7 @@ export const useDefaultValues = ({
       adeptPowers: [],
     },
 
-    gear: {} as Record<string, BuilderGearData>,
+    gear: {},
 
     contacts: [],
   }

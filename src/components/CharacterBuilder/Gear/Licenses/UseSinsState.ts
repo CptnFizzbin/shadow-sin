@@ -1,28 +1,30 @@
 import type { LicenseFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/LicenseFormState.ts"
 import type { SinFormState } from "#/components/CharacterBuilder/Gear/Licenses/Forms/SinFormState.ts"
-import { useBuilderGearApi } from "#/components/CharacterBuilder/Gear/UseBuilderGearApi.ts"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 
 export function useSinsState() {
-  const gear = useBuilderGearApi()
-  const sins = gear.getItemsByType<SinFormState>("sins")
+  const gear = useGearApi()
+  const sins = useGearByType<SinFormState>("sins")
 
   const addSin = (sin: Omit<SinFormState, "id">) => {
-    gear.createItem({ ...sin, type: "sins" })
+    gear.add({ ...sin, itemType: "sins" })
   }
 
   const updateSin = (sin: SinFormState) => {
-    gear.saveItem({ ...sin, type: "sins" })
+    gear.set({ ...sin, itemType: "sins" })
   }
 
   const removeSin = (sin: SinFormState) => {
-    // remove sin and associated licenses
-    const licenses = gear.getItemsByType<LicenseFormState>("licenses").filter((l) => l.sinId === sin.id)
-    licenses.forEach((l) => gear.deleteItem({ id: l.id }, { removeChildren: true }))
-    gear.deleteItem({ id: sin.id }, { removeChildren: true })
+    // Read live state so we get the freshest license list when the handler fires.
+    const licenses = Object.values(gear.store.state)
+      .filter((item) => item.itemType === "licenses" && (item as unknown as LicenseFormState).sinId === sin.id) as unknown as LicenseFormState[]
+    licenses.forEach((l) => gear.remove(l.id, { removeChildren: true }))
+    gear.remove(sin.id, { removeChildren: true })
   }
 
   const getLicensesForSin = (sinId: string): LicenseFormState[] => {
-    return gear.getItemsByType<LicenseFormState>("licenses").filter((license) => license.sinId === sinId)
+    return Object.values(gear.store.state)
+      .filter((item) => item.itemType === "licenses" && (item as unknown as LicenseFormState).sinId === sinId) as unknown as LicenseFormState[]
   }
 
   return {

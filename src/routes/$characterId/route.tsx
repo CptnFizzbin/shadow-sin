@@ -9,7 +9,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { CharacterStoreProvider, useCharacterStoreContext } from "#/components/Character/CharacterStoreProvider.tsx"
 import { Header } from "#/components/UI/Header.tsx"
 import { characterManager } from "#/lib/storage/index.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,

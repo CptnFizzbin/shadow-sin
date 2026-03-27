@@ -6,8 +6,8 @@ import {
   useDiceSkillGroup,
   useWoundDiceGroup,
 } from "#/components/DicePool/UseDiceGroup.ts"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { SkillKey } from "#/lib/system/SkillKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const ResistBodyDicePool = () => {
   return (
