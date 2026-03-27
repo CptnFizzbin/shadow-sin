@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { ActiveSkillFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
@@ -42,6 +42,8 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!skill
+  const skillLabelId = useId()
+  const ratingLabelId = useId()
 
   const [name, setName] = useState<string>(skill?.name ?? "")
   const [rating, setRating] = useState<number>(skill?.rating ?? 1)
@@ -87,8 +89,9 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
       <DialogContent sx={{ p: 2 }}>
         <Stack gap={2} sx={{ pt: 1 }}>
           <FormControl fullWidth size="small" error={nameError}>
-            <InputLabel>Skill</InputLabel>
+            <InputLabel id={skillLabelId}>Skill</InputLabel>
             <Select
+              labelId={skillLabelId}
               value={name}
               label="Skill"
               onChange={(e) => {
@@ -133,8 +136,9 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
           )}
 
           <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
+            <InputLabel id={ratingLabelId}>Rating</InputLabel>
             <Select
+              labelId={ratingLabelId}
               value={rating}
               label="Rating"
               onChange={(e) => setRating(Number(e.target.value))}

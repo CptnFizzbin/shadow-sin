@@ -14,6 +14,10 @@ export interface AddImplantOptions {
 export class CyberwareSection {
   constructor(private readonly page: Page) {}
 
+  private dialog() {
+    return this.page.locator("[role=\"dialog\"]")
+  }
+
   /** Expand the Cyberware accordion and wait for the Add Implant button. */
   async open(): Promise<void> {
     await this.page.getByText("Cyberware").first().click()
@@ -22,25 +26,25 @@ export class CyberwareSection {
 
   async addImplant(opts: AddImplantOptions): Promise<void> {
     await this.page.getByRole("button", { name: "Add Implant" }).click()
-    await this.page.getByLabel("Name").fill(opts.name)
-    await this.page.getByLabel("Base Cost (¥)").fill(opts.cost)
-    await this.page.getByLabel("Base Essence Cost").fill(opts.essenceCost)
+    await this.dialog().getByLabel("Name").fill(opts.name)
+    await this.dialog().getByLabel("Base Cost (¥)").fill(opts.cost)
+    await this.dialog().getByLabel("Base Essence Cost").fill(opts.essenceCost)
     if (opts.grade) {
-      await this.page.getByRole("combobox", { name: "Grade" }).click()
+      await this.dialog().getByRole("combobox", { name: "Grade" }).click()
       await this.page.getByRole("option", { name: opts.grade }).click()
     }
     if (opts.implantType) {
-      await this.page.getByRole("combobox", { name: "Type" }).click()
+      await this.dialog().getByRole("combobox", { name: "Type" }).click()
       await this.page.getByRole("option", { name: opts.implantType }).click()
     }
-    await this.page.getByRole("button", { name: "Save" }).click()
+    await this.dialog().getByRole("button", { name: "Save" }).click()
   }
 
   async renameImplant(currentName: string, newName: string): Promise<void> {
     await this.page.getByText(currentName).click()
-    await this.page.getByLabel("Name").clear()
-    await this.page.getByLabel("Name").fill(newName)
-    await this.page.getByRole("button", { name: "Save" }).click()
+    await this.dialog().getByLabel("Name").clear()
+    await this.dialog().getByLabel("Name").fill(newName)
+    await this.dialog().getByRole("button", { name: "Save" }).click()
   }
 
   /** Remove an implant via the delete icon on its list row (not the edit dialog).

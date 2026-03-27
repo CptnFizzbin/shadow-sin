@@ -2,6 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useId } from "react"
 
 import { BiologyAttributes } from "#/components/CharacterBuilder/Biology/BiologyAttributes.tsx"
 import { useBuilderBiologyApi } from "#/components/CharacterBuilder/Biology/UseBiologyApi.ts"
@@ -12,12 +13,15 @@ import { awakenings } from "#/lib/system/awakeningType.ts"
 export const BiologySection: FC = () => {
   const { metatypeKey, awakeningType, setMetatype, setAwakening } =
     useBuilderBiologyApi()
+  const metatypeLabelId = useId()
+  const awakeningLabelId = useId()
 
   return (
     <>
       <FormControl fullWidth size="small">
-        <InputLabel>Metatype</InputLabel>
+        <InputLabel id={metatypeLabelId}>Metatype</InputLabel>
         <Select
+          labelId={metatypeLabelId}
           value={metatypeKey}
           label="Metatype"
           onChange={(event) => setMetatype(event.target.value as MetatypeKey)}
@@ -39,8 +43,9 @@ export const BiologySection: FC = () => {
 
       {metatypeKey !== MetatypeKey.AI && (
         <FormControl fullWidth size="small">
-          <InputLabel>Awakening</InputLabel>
+          <InputLabel id={awakeningLabelId}>Awakening</InputLabel>
           <Select
+            labelId={awakeningLabelId}
             value={awakeningType}
             label="Awakening"
             onChange={(event) => setAwakening(event.target.value)}

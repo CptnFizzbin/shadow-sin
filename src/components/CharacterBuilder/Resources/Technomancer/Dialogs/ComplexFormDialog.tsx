@@ -10,7 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { ComplexFormFormState } from "#/components/CharacterBuilder/Resources/AwakenedFormState.ts"
 
@@ -34,6 +34,7 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!form
+  const ratingLabelId = useId()
 
   const [name, setName] = useState<string>(form?.name ?? "")
   const [rating, setRating] = useState<number>(form?.rating ?? 1)
@@ -94,8 +95,9 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
           />
 
           <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
+            <InputLabel id={ratingLabelId}>Rating</InputLabel>
             <Select
+              labelId={ratingLabelId}
               value={Math.min(rating, effectiveMaxRating)}
               label="Rating"
               onChange={(e) => setRating(Number(e.target.value))}

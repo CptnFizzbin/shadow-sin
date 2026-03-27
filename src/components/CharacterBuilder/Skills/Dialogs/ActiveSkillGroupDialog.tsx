@@ -10,7 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { ActiveSkillGroupFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Skills/SkillGroups.ts"
@@ -43,6 +43,8 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!group
+  const skillGroupLabelId = useId()
+  const ratingLabelId = useId()
 
   const [groupName, setGroupName] = useState<SkillGroupKey | null>(
     group?.groupName ?? null,
@@ -85,8 +87,9 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
       <DialogContent sx={{ p: 2 }}>
         <Stack gap={2} sx={{ pt: 1 }}>
           <FormControl fullWidth size="small" error={groupNameError}>
-            <InputLabel>Skill Group</InputLabel>
+            <InputLabel id={skillGroupLabelId}>Skill Group</InputLabel>
             <Select
+              labelId={skillGroupLabelId}
               value={groupName}
               label="Skill Group"
               onChange={(e) => {
@@ -113,8 +116,9 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
           )}
 
           <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
+            <InputLabel id={ratingLabelId}>Rating</InputLabel>
             <Select
+              labelId={ratingLabelId}
               value={rating}
               label="Rating"
               onChange={(e) => setRating(Number(e.target.value))}

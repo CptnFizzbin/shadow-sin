@@ -13,6 +13,10 @@ export class GearSection {
     this.cyberware = new CyberwareSection(page)
   }
 
+  private dialog() {
+    return this.page.locator("[role=\"dialog\"]")
+  }
+
   /**
    * Open the Misc accordion and add a single generic gear item.
    *
@@ -23,8 +27,8 @@ export class GearSection {
     await this.page.getByRole("button", { name: "Misc" }).click()
     await this.page.getByRole("button", { name: "Add Item" }).waitFor()
     await this.page.getByRole("button", { name: "Add Item" }).click()
-    await this.page.getByLabel("Name").fill(name)
-    await this.page.getByLabel("Cost (¥)").fill(String(cost))
-    await this.page.getByRole("button", { name: "Save" }).click()
+    await this.dialog().getByLabel("Name").fill(name)
+    await this.dialog().getByLabel("Cost (¥)").fill(String(cost))
+    await this.dialog().getByRole("button", { name: "Save" }).click()
   }
 }
