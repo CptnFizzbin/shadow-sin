@@ -1,24 +1,18 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { GearNuyenPerBuildPoint, useGearTotalCost } from "#/components/CharacterBuilder/Gear/GearUtils.ts"
-import { formatNuyen } from "#/components/UI/Nuyen.tsx"
-import { Label } from "#/components/UI/Text/Label.tsx"
+import type { DiceResults } from "#/components/Dice/DiceResult.tsx"
+import { DiceResult } from "#/components/Dice/DiceResult.tsx"
+import { useDiceRoller } from "#/components/Dice/UseDiceRoller.ts"
+import { formatNuyen, Nuyen } from "#/components/UI/Nuyen.tsx"
 import { Lifestyles } from "#/lib/system/LifestyleType.ts"
-
-function rollDice(numDice: number): number {
-  let total = 0
-  for (let i = 0; i < numDice; i++) {
-    total += Math.ceil(Math.random() * 6)
-  }
-  return total
-}
 
 export const StartingNuyenSection: FC = () => {
   const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
@@ -33,96 +27,71 @@ export const StartingNuyenSection: FC = () => {
   const maxBonus = numDice * 3
   const bonus = Math.min(Math.floor(unspentNuyen / 100), maxBonus)
 
-  const [diceResult, setDiceResult] = useState<number | null>(null)
+  const [diceResult, rollDice] = useDiceRoller(numDice) as [DiceResults, () => void]
 
-  const handleRoll = () => setDiceResult(rollDice(numDice))
+  const hasRolled = diceResult.values.some((value) => value > 0)
+  const diceSum = diceResult.values.reduce((sum, value) => sum + value, 0)
+  const rolledTotal = hasRolled ? (diceSum + bonus) * mult : null
 
   const minResult = (numDice + bonus) * mult
-  const maxResult = numDice * 6 * mult + bonus * mult
-  const rolledTotal = diceResult !== null ? (diceResult + bonus) * mult : null
-
-  const diceLabel = bonus > 0 ? `${numDice}D6 + ${bonus}` : `${numDice}D6`
+  const maxResult = (numDice * 6 + bonus) * mult
 
   return (
     <Stack gap={1.5}>
       <Divider />
 
       <Stack gap={1}>
-        <Label label="Starting Nuyen" variant="outlined" />
-
-        <Label label={`Lifestyle: ${lifestyle}`} variant="text" color="text.default" />
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="subtitle2">Starting Nuyen</Typography>
+          <Chip label={`Lifestyle: ${lifestyle}`} size="small" variant="outlined" />
+        </Stack>
 
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="body2" color="text.secondary">
-            (
-            {diceLabel}
-            )
-            {" "}
-            ×
-            {" "}
-            {mult.toLocaleString("en")}
-            ¥
-          </Typography>
-
-          <Typography variant="body2" color="secondary.light">
-            {formatNuyen(minResult)}
-            {" – "}
-            {formatNuyen(maxResult)}
-          </Typography>
+          <Stack direction="row" alignItems="center" gap={0.5}>
+            <DiceResult
+              results={diceResult}
+              highlightHits={false}
+              highlightGlitches={false}
+            />
+            {bonus > 0 && (
+              <Typography variant="body2" color="text.secondary">
+                + {bonus}
+              </Typography>
+            )}
+            <Typography variant="body2" color="text.secondary">
+              × <Nuyen amount={mult} />
+            </Typography>
+          </Stack>
+          {hasRolled && rolledTotal !== null
+            ? (
+                <Box component="span" fontWeight="bold">
+                  {formatNuyen(rolledTotal)}
+                </Box>
+              )
+            : (
+                <Typography variant="body2" color="text.secondary">
+                  {formatNuyen(minResult)} – {formatNuyen(maxResult)}
+                </Typography>
+              )}
         </Stack>
+
+        <Button size="small" variant="outlined" onClick={rollDice}>
+          {hasRolled ? "Reroll" : "Roll"}
+        </Button>
 
         {bonus > 0 && (
           <Typography variant="caption" color="text.secondary">
-            +
-            {bonus}
-            {" "}
-            bonus from
-            {" "}
-            {formatNuyen(unspentNuyen)}
-            {" "}
-            unspent
-            {" "}
-            (max +
-            {maxBonus}
-            )
+            + {bonus} bonus from {formatNuyen(unspentNuyen)} unspent (max + {maxBonus})
           </Typography>
         )}
-
-        {rolledTotal !== null && diceResult !== null
-          ? (
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography variant="body2">
-                  (
-                  {bonus > 0 ? `${diceResult} + ${bonus}` : diceResult}
-                  )
-                  {" "}
-                  ×
-                  {" "}
-                  {mult.toLocaleString("en")}
-                  ¥
-                  {" = "}
-                  <Box component="span" fontWeight="bold">
-                    {formatNuyen(rolledTotal)}
-                  </Box>
-                </Typography>
-                <Button size="small" variant="outlined" onClick={handleRoll}>
-                  Reroll
-                </Button>
-              </Stack>
-            )
-          : (
-              <Button size="small" variant="outlined" onClick={handleRoll}>
-                Roll
-              </Button>
-            )}
       </Stack>
     </Stack>
   )
