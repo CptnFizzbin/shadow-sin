@@ -73,8 +73,8 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
     >
       <DialogTitle>
         {isEditMode
-          ? "Edit Complex CharacterBuilder"
-          : "Add Complex CharacterBuilder"}
+          ? "Edit Complex Form"
+          : "Add Complex Form"}
       </DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
