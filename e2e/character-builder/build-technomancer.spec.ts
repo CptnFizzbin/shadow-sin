@@ -35,17 +35,17 @@ test("Technomancer — full build uses all 400 BP with correct summary", async (
   // Resonance min 1 (Technomancer), max 6
   // Target: B2 A3 R4 S2 C3 I5 L5 W3 RES5 EDG2
   // Normal budget: (1+2+3+1+2+4+4+2)×10 = 190 / 200 BP
-  // Special: RES 4×10 = 40 BP; EDG stays at min (2), 0 clicks
+  // Special: RES 4×10 = 40 BP; EDG stays at min (2)
 
-  await builder.attributes.increment("BOD", 1) // 1→2
-  await builder.attributes.increment("AGI", 2) // 1→3
-  await builder.attributes.increment("REA", 3) // 1→4
-  await builder.attributes.increment("STR", 1) // 1→2
-  await builder.attributes.increment("CHA", 2) // 1→3
-  await builder.attributes.increment("INT", 4) // 1→5
-  await builder.attributes.increment("LOG", 4) // 1→5
-  await builder.attributes.increment("WIL", 2) // 1→3
-  await builder.attributes.increment("RES", 4) // 1→5  (special — not in 200 BP budget)
+  await builder.attributes.setValue("BOD", 2)
+  await builder.attributes.setValue("AGI", 3)
+  await builder.attributes.setValue("REA", 4)
+  await builder.attributes.setValue("STR", 2)
+  await builder.attributes.setValue("CHA", 3)
+  await builder.attributes.setValue("INT", 5)
+  await builder.attributes.setValue("LOG", 5)
+  await builder.attributes.setValue("WIL", 3)
+  await builder.attributes.setValue("RES", 5) // special — not in 200 BP budget
 
   // ─── Active Skills ───────────────────────────────────────────────────────
   // Cracking group 3 (30) + Electronics group 3 (30) + Tasking group 4 (40) +

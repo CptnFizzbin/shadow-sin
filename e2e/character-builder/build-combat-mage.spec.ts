@@ -34,16 +34,16 @@ test("Combat Mage — full build uses all 400 BP with correct summary", async ({
   // Target: B3 A4 R4 S3 C4 I3 L4 W4 MAG5 EDG2
   // Normal-attr budget used: (2+2+3+2+1+2+3+3)×10 = 180 / 200 BP
 
-  await builder.attributes.increment("BOD", 2) // 1→3
-  await builder.attributes.increment("AGI", 2) // 2→4
-  await builder.attributes.increment("REA", 3) // 1→4
-  await builder.attributes.increment("STR", 2) // 1→3
-  await builder.attributes.increment("CHA", 1) // 3→4
-  await builder.attributes.increment("INT", 2) // 1→3
-  await builder.attributes.increment("LOG", 3) // 1→4
-  await builder.attributes.increment("WIL", 3) // 1→4
-  await builder.attributes.increment("MAG", 4) // 1→5  (special — not in 200 BP budget)
-  await builder.attributes.increment("EDG", 1) // 1→2  (special — not in 200 BP budget)
+  await builder.attributes.setValue("BOD", 3)
+  await builder.attributes.setValue("AGI", 4)
+  await builder.attributes.setValue("REA", 4)
+  await builder.attributes.setValue("STR", 3)
+  await builder.attributes.setValue("CHA", 4)
+  await builder.attributes.setValue("INT", 3)
+  await builder.attributes.setValue("LOG", 4)
+  await builder.attributes.setValue("WIL", 4)
+  await builder.attributes.setValue("MAG", 5) // special — not in 200 BP budget
+  await builder.attributes.setValue("EDG", 2) // special — not in 200 BP budget
 
   // ─── Active Skills ───────────────────────────────────────────────────────
   // 12 + 8 + 12 + 12 + 10 + 8 + 12 + 20 = 94 BP individual

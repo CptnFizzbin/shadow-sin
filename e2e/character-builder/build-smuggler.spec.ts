@@ -29,15 +29,15 @@ test("Smuggler — full build uses all 400 BP with correct summary", async ({
   // Target: B3 A5 R5 S2 C2 I5 L3 W3 EDG3
   // Normal budget: (2+4+4+1+1+4+2+2)×10 = 200/200 BP (exactly at limit)
 
-  await builder.attributes.increment("BOD", 2) // 1→3
-  await builder.attributes.increment("AGI", 4) // 1→5
-  await builder.attributes.increment("REA", 4) // 1→5
-  await builder.attributes.increment("STR", 1) // 1→2
-  await builder.attributes.increment("CHA", 1) // 1→2
-  await builder.attributes.increment("INT", 4) // 1→5
-  await builder.attributes.increment("LOG", 2) // 1→3
-  await builder.attributes.increment("WIL", 2) // 1→3
-  await builder.attributes.increment("EDG", 1) // 2→3  (special — not in 200 BP budget)
+  await builder.attributes.setValue("BOD", 3)
+  await builder.attributes.setValue("AGI", 5)
+  await builder.attributes.setValue("REA", 5)
+  await builder.attributes.setValue("STR", 2)
+  await builder.attributes.setValue("CHA", 2)
+  await builder.attributes.setValue("INT", 5)
+  await builder.attributes.setValue("LOG", 3)
+  await builder.attributes.setValue("WIL", 3)
+  await builder.attributes.setValue("EDG", 3) // special — not in 200 BP budget
 
   // ─── Active Skills ───────────────────────────────────────────────────────
   // Dodge 3 (12) + Etiquette 2+spec (10) + Electronic Warfare 4 (16) +
