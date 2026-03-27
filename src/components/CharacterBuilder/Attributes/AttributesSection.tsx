@@ -20,7 +20,7 @@ export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()
   const attributes = useCharacterBuilderStore((sheet) => sheet.attributes)
 
-  const attrRows = AttributeOrder.filter((key) => key !== AttributeKey.essence)
+  const attrRows: AttributeKey[] = AttributeOrder.filter((key) => key !== AttributeKey.essence)
     .map((attr) => ({ attr, ...attributes[attr] }))
     .filter(({ min }) => min >= 1)
     .map(({ attr }) => attr)
