@@ -33,6 +33,7 @@ import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Gear/Licen
 import { LifestylePanel } from "#/components/CharacterBuilder/Gear/Lifestyle/LifestylePanel.tsx"
 import { MiscPanel } from "#/components/CharacterBuilder/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Gear/SectionHeader.tsx"
+import { StartingNuyenSection } from "#/components/CharacterBuilder/Gear/StartingNuyenSection.tsx"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Gear/Weapons/WeaponsPanel.tsx"
 import { useGearApi } from "#/components/Gear/UseGearApi.ts"
@@ -219,6 +220,8 @@ export const GearSection: FC = () => {
           </AccordionDetails>
         </Accordion>
       ))}
+
+      <StartingNuyenSection />
     </Stack>
   )
 }
