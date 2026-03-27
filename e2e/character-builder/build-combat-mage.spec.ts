@@ -1,190 +1,116 @@
 import { expect, test } from "@playwright/test"
 
+import {
+  addActiveSkill,
+  addContact,
+  addMiscGearItem,
+  addQuality,
+  addSkillGroup,
+  addSpell,
+  incAttr,
+  setupNewCharacter,
+  verifyBpSummary,
+} from "./helpers.ts"
+
 /**
- * E2E build test for a Combat Mage (Elf, Magician).
+ * Full build test for a Combat Mage (Elf, Magician).
  *
- * Covers: metatype + awakening selection, attribute increments, active skill
- * add/edit/remove, skill group add, quality add/edit/remove (positive &
- * negative), spell add/edit/delete, and contact add.
- * After the build the test verifies no warning alerts remain.
+ * BP accounting (total = 400):
+ *   Biology    45  — Elf (30) + Magician awakening (15)
+ *   Attributes 230 — see incAttr calls below
+ *   Qualities  -35 — 0 positive (Magician is in awakening) − 35 negative
+ *   Skills     124 — 8 individual skills + Conjuring group 3
+ *   Spells      24 — 8 spells × 3 BP each
+ *   Gear         4 — 18,000 ¥ items + 2,000 ¥ Low lifestyle = 20,000 ¥
+ *   Contacts     8 — Fixer C2/L2 (4) + Talismonger C2/L2 (4)
  *
- * Reference sheet:
- *   RACE: ELF (30 BP)
- *   ATTRIBUTES: B3 A4 R4 S3 C4 I3 L4 W4 M5 E2
- *   ACTIVE SKILLS (124 BP): Astral Combat 3, Blades 2, Conjuring Group 3,
- *     Counterspelling 3, Dodge 3, Etiquette 2, Perception 2, Pistols 3, Spellcasting 5
- *   QUALITIES: Magician 15 BP; Mild Allergy +10, Addiction×2 +10, Sensitive System +15
- *   SPELLS (24 BP): Armor, Clout, Increase Initiative, Levitate, Lightning Bolt,
- *     Manaball, Manabolt, Physical Barrier
- *   CONTACTS: Fixer C2/L2, Talismonger C2/L2
+ * The Magician quality (15 BP) is already included in the awakening cost that
+ * appears under Biology, so it is NOT added as a separate quality entry.
  */
-test.describe("Combat Mage character build", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/")
-    await page.evaluate(() => localStorage.clear())
-    await page.goto("/#/new")
-    await page.getByRole("button", { name: "Reset" }).waitFor()
-  })
+test("Combat Mage — full build uses all 400 BP with correct summary", async ({
+  page,
+}) => {
+  await setupNewCharacter(page)
 
-  // ─── Biology ──────────────────────────────────────────────────────────────
+  // ─── Biology ────────────────────────────────────────────────────────────
 
-  test("sets Elf metatype", async ({ page }) => {
-    await page.getByRole("combobox", { name: "Metatype" }).click()
-    await page.getByRole("option", { name: "Elf" }).click()
-    await expect(page.getByRole("combobox", { name: "Metatype" })).toContainText("Elf")
-  })
+  await page.getByRole("combobox", { name: "Metatype" }).click()
+  await page.getByRole("option", { name: "Elf" }).click()
 
-  test("sets Magician awakening and shows the Spells section", async ({
-    page,
-  }) => {
-    await page.getByRole("combobox", { name: "Awakening" }).click()
-    await page.getByRole("option", { name: "Magician" }).click()
-    await expect(page.getByRole("combobox", { name: "Awakening" })).toContainText("Magician")
-    await expect(page.getByText("Spells")).toBeVisible()
-  })
+  await page.getByRole("combobox", { name: "Awakening" }).click()
+  await page.getByRole("option", { name: "Magician" }).click()
 
-  // ─── Attributes ───────────────────────────────────────────────────────────
+  // ─── Attributes ─────────────────────────────────────────────────────────
+  // Elf minimums: BOD 1, AGI 2, REA 1, STR 1, CHA 3, INT 1, LOG 1, WIL 1
+  // Magic min 1 (Magician), EDG min 1
+  // Target: B3 A4 R4 S3 C4 I3 L4 W4 MAG5 EDG2
+  // Normal-attr budget used: (2+2+3+2+1+2+3+3)×10 = 180 / 200 BP
 
-  test("increments the Body attribute", async ({ page }) => {
-    // Locate the Body row by its label text and click the increment button
-    // that sits in the same row. The button text shows the BP cost (e.g. "10 BP").
-    const bodyRow = page.locator("text=Body:").locator("..")
-    const incrementButton = bodyRow.getByRole("button").last()
-    await incrementButton.click()
-    // The value display changes from the default. We just confirm the button
-    // is clickable and the section remains visible — exact value verification
-    // is covered by unit tests.
-    await expect(page.getByText("Attributes")).toBeVisible()
-  })
+  await incAttr(page, "BOD", 2) // 1→3
+  await incAttr(page, "AGI", 2) // 2→4
+  await incAttr(page, "REA", 3) // 1→4
+  await incAttr(page, "STR", 2) // 1→3
+  await incAttr(page, "CHA", 1) // 3→4
+  await incAttr(page, "INT", 2) // 1→3
+  await incAttr(page, "LOG", 3) // 1→4
+  await incAttr(page, "WIL", 3) // 1→4
+  await incAttr(page, "MAG", 4) // 1→5  (special — not in 200 BP budget)
+  await incAttr(page, "EDG", 1) // 1→2  (special — not in 200 BP budget)
 
-  // ─── Active Skills ────────────────────────────────────────────────────────
+  // ─── Active Skills ───────────────────────────────────────────────────────
+  // 12 + 8 + 12 + 12 + 10 + 8 + 12 + 20 = 94 BP individual
+  // Conjuring group 3 = 30 BP
+  // Total skills = 124 BP
 
-  test("adds, edits, and removes an active skill", async ({ page }) => {
-    // Add
-    await page.getByRole("button", { name: "Add Skill" }).click()
-    await page.getByRole("combobox", { name: "Skill" }).click()
-    await page.getByRole("option", { name: "Spellcasting" }).click()
-    await page.getByRole("combobox", { name: "Rating" }).click()
-    await page.getByRole("option", { name: "5" }).click()
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Spellcasting")).toBeVisible()
+  await addActiveSkill(page, "Astral Combat", 3)
+  await addActiveSkill(page, "Blades", 2)
+  await addActiveSkill(page, "Counterspelling", 3)
+  await addActiveSkill(page, "Dodge", 3)
+  await addActiveSkill(page, "Etiquette", 2, "Street") // +2 BP for spec
+  await addActiveSkill(page, "Perception", 2)
+  await addActiveSkill(page, "Pistols", 3)
+  await addActiveSkill(page, "Spellcasting", 5)
+  await addSkillGroup(page, "Conjuring", 3) // 30 BP
 
-    // Edit (click the row to open the edit dialog)
-    await page.getByText("Spellcasting").click()
-    await page.getByLabel("Specialization (optional)").fill("Combat Spells")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Combat Spells")).toBeVisible()
+  // ─── Qualities (negatives only — Magician quality is in Biology) ──────
 
-    // Remove via the edit dialog's Delete button
-    await page.getByText("Spellcasting").click()
-    await page.getByRole("button", { name: "Delete" }).click()
-    await expect(page.getByText("Spellcasting")).not.toBeVisible()
-  })
+  await addQuality(page, "Mild Allergy to Sunlight", "negative", 10)
+  await addQuality(page, "Addiction (Mild, Simsense)", "negative", 5)
+  await addQuality(page, "Addiction (Mild, Stimulants)", "negative", 5)
+  await addQuality(page, "Sensitive System", "negative", 15)
 
-  test("adds a Conjuring skill group", async ({ page }) => {
-    await page.getByRole("button", { name: "Add Group" }).click()
-    await page.getByRole("combobox", { name: "Skill Group" }).click()
-    await page.getByRole("option", { name: "Conjuring" }).click()
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Conjuring")).toBeVisible()
-  })
+  // ─── Spells (8 × 3 BP = 24 BP) ──────────────────────────────────────────
 
-  // ─── Qualities ────────────────────────────────────────────────────────────
+  await addSpell(page, "Armor", "Physical", "Stun", "Touch")
+  await addSpell(page, "Clout", "Physical", "Physical", "Line of Sight")
+  await addSpell(page, "Increase Initiative", "Physical", "Stun", "Touch")
+  await addSpell(page, "Levitate", "Physical", "Stun", "Line of Sight")
+  await addSpell(page, "Lightning Bolt", "Physical", "Physical", "Line of Sight")
+  await addSpell(page, "Manaball", "Mana", "Physical", "Line of Sight")
+  await addSpell(page, "Manabolt", "Mana", "Physical", "Line of Sight")
+  await addSpell(page, "Physical Barrier", "Physical", "Stun", "Touch")
 
-  test("adds a positive quality", async ({ page }) => {
-    await page.getByRole("button", { name: "Add Quality" }).click()
-    await page.getByLabel("Name").fill("Magician")
-    // Quality type defaults to positive; enter the BP cost
-    await page.getByLabel("BP Cost").fill("15")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Magician")).toBeVisible()
-  })
+  // ─── Gear ────────────────────────────────────────────────────────────────
+  // 18,000 ¥ + 2,000 ¥ (Low lifestyle default) = 20,000 ¥ → 4 BP
 
-  test("adds a negative quality, edits it, then removes it", async ({
-    page,
-  }) => {
-    // Add
-    await page.getByRole("button", { name: "Add Quality" }).click()
-    await page.getByLabel("Name").fill("Mild Allergy to Sunlight")
-    // Toggle to negative using the ToggleButton
-    await page.getByRole("button", { name: /positive|negative/i }).click()
-    await page.getByLabel("BP Bonus").fill("10")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Mild Allergy to Sunlight")).toBeVisible()
+  await addMiscGearItem(page, "Magical Equipment", 18_000)
 
-    // Edit
-    await page.getByText("Mild Allergy to Sunlight").click()
-    await page.getByLabel("Name").fill("Mild Allergy to Sunlight (edited)")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Mild Allergy to Sunlight (edited)")).toBeVisible()
+  // ─── Contacts ────────────────────────────────────────────────────────────
 
-    // Remove
-    await page.getByText("Mild Allergy to Sunlight (edited)").click()
-    await page.getByRole("button", { name: "Delete" }).click()
-    await expect(page.getByText("Mild Allergy to Sunlight")).not.toBeVisible()
-  })
+  await addContact(page, "Fixer", 2, 2)
+  await addContact(page, "Talismonger", 2, 2)
 
-  // ─── Spells ───────────────────────────────────────────────────────────────
+  // ─── Verify BP summary ───────────────────────────────────────────────────
 
-  test("adds spells (add/edit/delete)", async ({ page }) => {
-    // Enable Magician awakening first
-    await page.getByRole("combobox", { name: "Awakening" }).click()
-    await page.getByRole("option", { name: "Magician" }).click()
+  await verifyBpSummary(page, [
+    { label: "Biology", bp: 45 },
+    { label: "Attributes", bp: 230 },
+    { label: "Qualities", bp: -35 },
+    { label: "Skills", bp: 124 },
+    { label: "Spells", bp: 24 },
+    { label: "Gear", bp: 4 },
+    { label: "Contacts", bp: 8 },
+  ])
 
-    // Add Manabolt
-    await page.getByRole("button", { name: "Add Spell" }).click()
-    await page.getByLabel("Name").fill("Manabolt")
-    await page.getByRole("combobox", { name: "Type" }).click()
-    await page.getByRole("option", { name: "Mana" }).click()
-    await page.getByRole("combobox", { name: "Damage" }).click()
-    await page.getByRole("option", { name: "Physical" }).click()
-    await page.getByRole("combobox", { name: "Range" }).click()
-    await page.getByRole("option", { name: "Line of Sight" }).click()
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Manabolt")).toBeVisible()
-
-    // Edit — rename to Manaball
-    await page.getByText("Manabolt").click()
-    await page.getByLabel("Name").clear()
-    await page.getByLabel("Name").fill("Manaball")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Manaball")).toBeVisible()
-    await expect(page.getByText("Manabolt")).not.toBeVisible()
-
-    // Delete
-    await page.getByText("Manaball").click()
-    await page.getByRole("button", { name: "Delete" }).click()
-    await expect(page.getByText("Manaball")).not.toBeVisible()
-  })
-
-  // ─── Contacts ─────────────────────────────────────────────────────────────
-
-  test("adds two contacts", async ({ page }) => {
-    // Fixer C2/L2
-    await page.getByRole("button", { name: "Add Contact" }).click()
-    await page.getByLabel("Name").fill("Fixer")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Fixer")).toBeVisible()
-
-    // Talismonger C2/L2
-    await page.getByRole("button", { name: "Add Contact" }).click()
-    await page.getByLabel("Name").fill("Talismonger")
-    await page.getByRole("button", { name: "Save" }).click()
-    await expect(page.getByText("Talismonger")).toBeVisible()
-  })
-
-  // ─── No warnings after a valid partial build ──────────────────────────────
-
-  test("shows no skill warnings when only valid skills are added", async ({
-    page,
-  }) => {
-    await page.getByRole("button", { name: "Add Skill" }).click()
-    await page.getByRole("combobox", { name: "Skill" }).click()
-    await page.getByRole("option", { name: "Dodge" }).click()
-    await page.getByRole("button", { name: "Save" }).click()
-
-    // No warning alerts should be visible in the Skills section
-    const warnings = page.getByRole("alert")
-    await expect(warnings).toHaveCount(0)
-  })
+  await expect(page.getByRole("alert")).toHaveCount(0)
 })
