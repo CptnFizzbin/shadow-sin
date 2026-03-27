@@ -1,10 +1,11 @@
+import Alert from "@mui/material/Alert"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { QualitiesListItem } from "#/components/CharacterBuilder/Qualities/QualitiesListItem.tsx"
-import { useBuilderQualitiesBuildPoints } from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
+import { MAX_NEGATIVE_QUALITY_BP, useBuilderQualitiesBuildPoints } from "#/components/CharacterBuilder/Qualities/QualitiesUtils.ts"
 import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Qualities/UseQualitiesApi.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -66,6 +67,12 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
           {bpLabel}: {bpValue} BP
         </Typography>
       </Stack>
+
+      {type === "negative" && qualitiesBuildPoints.negative < -MAX_NEGATIVE_QUALITY_BP && (
+        <Alert severity="warning" sx={{ py: 0 }}>
+          Negative qualities exceed the {MAX_NEGATIVE_QUALITY_BP} BP bonus limit.
+        </Alert>
+      )}
 
       {filteredQualities.length === 0
         ? (
