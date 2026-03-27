@@ -1,6 +1,8 @@
 import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPoints/BuildPointsUtils.ts"
 import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Qualities/UseQualitiesApi.ts"
 
+export const MAX_NEGATIVE_QUALITY_BP = 35
+
 export interface QualityBuildPoints extends BuildPointsInfo {
   positive: number
   negative: number
