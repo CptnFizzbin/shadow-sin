@@ -24,6 +24,10 @@ export default defineConfig([
     braceStyle: "1tbs",
   }),
   {
+    files: [
+      "./src/**/*",
+      "./e2e/**/*",
+    ],
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
@@ -108,18 +112,20 @@ export default defineConfig([
               "+=": "after",
               "-=": "after",
               "*=": "after",
-              "/=": "after",
-              "%=": "after",
-              "**=": "after",
-              "<<=": "after",
-              ">>=": "after",
-              ">>>=": "after",
-              "&=": "after",
-              "^=": "after",
-              "|=": "after",
             },
           }],
       },
+    },
+  },
+  {
+    files: [
+      "./vite.config.ts",
+      "./vitest.config.ts",
+      "./eslint.config.ts",
+      "./playwright.config.ts",
+    ],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ])
