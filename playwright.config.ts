@@ -9,25 +9,32 @@ import { defineConfig, devices } from "@playwright/test"
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+
   /* Fail the build on CI if test.only is accidentally committed */
   forbidOnly: !!process.env["CI"],
+
   /* Retry flaky tests on CI */
   retries: process.env["CI"] ? 2 : 0,
+
   /* Limit parallelism on CI to avoid resource contention */
   workers: process.env["CI"] ? 1 : undefined,
   reporter: process.env["CI"] ? [["html", { open: "never" }], ["github"]] : "html",
   timeout: 90000,
+
   use: {
     baseURL: "http://localhost:3000",
     /* Capture trace on first retry so failures are diagnosable */
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
+
   projects: [
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
   ],
+
   webServer: {
     command: "yarn dev",
     url: "http://localhost:3000",

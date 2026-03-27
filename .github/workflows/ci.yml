@@ -7,7 +7,30 @@ on:
   pull_request:
 
 jobs:
-  lint-and-build:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "25"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn build
+
+  lint:
     name: Lint and Build
     runs-on: ubuntu-latest
     permissions:
@@ -29,9 +52,6 @@ jobs:
 
       - name: Run lint and format check
         run: yarn lint
-
-      - name: Build
-        run: yarn build
 
   unit-tests:
     name: Unit Tests
