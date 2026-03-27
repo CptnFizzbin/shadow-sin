@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import type { GearData } from "#/lib/system/types/gear/gearData.ts"
-import { GearType, createGear } from "#/lib/system/types/gear/gearData.ts"
+import type { GearData } from "#/lib/system/gear/gearData.ts"
+import { GearType, createGear } from "#/lib/system/gear/gearData.ts"
 
 describe("createGear", () => {
   it("assigns a non-empty string id to the created gear item", () => {

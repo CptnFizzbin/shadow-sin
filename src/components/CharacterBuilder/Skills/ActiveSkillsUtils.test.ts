@@ -8,7 +8,7 @@ import type {
   ActiveSkillFormState,
   ActiveSkillGroupFormState,
 } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
-import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
+import { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

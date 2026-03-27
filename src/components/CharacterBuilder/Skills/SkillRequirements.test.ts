@@ -31,7 +31,7 @@ import {
   getLanguageSkillSp,
   getMaxSkillPoints,
 } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
-import { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
+import { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

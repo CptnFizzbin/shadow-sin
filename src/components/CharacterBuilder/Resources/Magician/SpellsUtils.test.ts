@@ -4,7 +4,7 @@ import {
   SpellsBpPerSpell,
   isMagician,
 } from "#/components/CharacterBuilder/Resources/Magician/SpellsUtils.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 describe("SpellsBpPerSpell constant", () => {
   it("costs 3 BP per spell", () => {

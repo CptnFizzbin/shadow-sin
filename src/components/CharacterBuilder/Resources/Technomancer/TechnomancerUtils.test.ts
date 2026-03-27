@@ -5,7 +5,7 @@ import {
   SpriteBpPerTask,
   isTechnomancer,
 } from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerUtils.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 describe("TechnomancerUtils constants", () => {
   it("costs 1 BP per complex form rating", () => {

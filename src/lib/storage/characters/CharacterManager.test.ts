@@ -123,12 +123,12 @@ describe("CharacterManager", () => {
   // ─── listCharacters ────────────────────────────────────────────────────────
 
   describe("listCharacters", () => {
-    it("returns an empty array when no character files exist", async () => {
+    it("returns an empty record when no character files exist", async () => {
       const result = await manager.listCharacters()
-      expect(result).toEqual([])
+      expect(result).toEqual({})
     })
 
-    it("returns characters sorted alphabetically by alias", async () => {
+    it("returns all characters keyed by id", async () => {
       const zara = makeCharacter({ id: "zara", profile: { alias: "Zara", name: "Z", streetCred: 0, notoriety: 0 } })
       const anna = makeCharacter({ id: "anna", profile: { alias: "Anna", name: "A", streetCred: 0, notoriety: 0 } })
       const miri = makeCharacter({ id: "miri", profile: { alias: "Miri", name: "M", streetCred: 0, notoriety: 0 } })
@@ -146,11 +146,10 @@ describe("CharacterManager", () => {
 
       const result = await manager.listCharacters()
 
-      expect(result.map((c) => c.profile.alias)).toEqual([
-        "Anna",
-        "Miri",
-        "Zara",
-      ])
+      expect(Object.keys(result)).toHaveLength(3)
+      expect(result["zara"].profile.alias).toBe("Zara")
+      expect(result["anna"].profile.alias).toBe("Anna")
+      expect(result["miri"].profile.alias).toBe("Miri")
     })
 
     it("excludes characters that fail to load (null)", async () => {
@@ -166,8 +165,8 @@ describe("CharacterManager", () => {
 
       const result = await manager.listCharacters()
 
-      expect(result).toHaveLength(1)
-      expect(result[0].id).toBe("good")
+      expect(Object.keys(result)).toHaveLength(1)
+      expect(result["good"].id).toBe("good")
     })
   })
 
