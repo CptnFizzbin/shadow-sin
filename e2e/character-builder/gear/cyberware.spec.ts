@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import type { Page } from "@playwright/test"
 
 /**
  * E2E tests for the Cyberware section of the Gear panel.
@@ -24,10 +25,7 @@ test.describe("Cyberware gear panel", () => {
   // ─── Helper: opens the Add Implant dialog and fills basic fields ──────────
 
   async function addImplant(
-    page: Parameters<typeof test>[1] extends undefined
-      ? never
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      : any,
+    page: Page,
     opts: {
       name: string
       cost: string
