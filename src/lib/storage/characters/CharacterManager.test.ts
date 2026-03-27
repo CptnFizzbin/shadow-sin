@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { IStorageProvider } from "#/lib/storage/IStorageProvider.ts"
 import { StorageManager } from "#/lib/storage/StorageManager.ts"
 import { CharacterManager } from "#/lib/storage/characters/CharacterManager.ts"
-import type { PlayerCharacterData } from "#/lib/system/types/playerCharacterData.ts"
+import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -50,8 +50,8 @@ function makeProvider(
     providerId: "mock-provider",
     listJsonFiles: vi.fn().mockResolvedValue([]),
     loadJsonFile: vi.fn().mockResolvedValue(null),
-    saveJsonFile: vi.fn().mockImplementation(async (_path, value) =>
-      makeStoredFile(value),
+    saveJsonFile: vi.fn().mockImplementation((_path: string, value: unknown) =>
+      Promise.resolve(makeStoredFile(value)),
     ),
     deleteJsonFile: vi.fn().mockResolvedValue(undefined),
     ...overrides,
@@ -224,10 +224,12 @@ describe("CharacterManager", () => {
       )
       const testMigration = {
         version: 1,
-        up: vi.fn().mockImplementation(async (c: typeof oldCharacter) => ({
-          ...c,
-          migrated: true,
-        })),
+        up: vi.fn().mockImplementation((c: typeof oldCharacter) =>
+          Promise.resolve({
+            ...c,
+            migrated: true,
+          }),
+        ),
       }
       migrationsModule.migrations.push(testMigration)
 

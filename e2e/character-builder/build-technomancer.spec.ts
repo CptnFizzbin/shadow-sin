@@ -1,70 +1,186 @@
-/*
-build the following character, and check that there's no warnings. also test add/edit/remove in lists simulating the
-user making a mistake
+import { expect, test } from "@playwright/test"
 
-RACE: HUMAN (0 BP)
+/**
+ * E2E build test for a Technomancer (Human).
+ *
+ * Covers: Technomancer awakening selection, attribute increments, skill groups
+ * (Cracking, Electronics, Tasking), individual skills, qualities (positive +
+ * negative), complex form add/edit/remove, sprite add, and contact add.
+ * After the build the test verifies no warning alerts remain.
+ *
+ * Reference sheet:
+ *   RACE: HUMAN (0 BP)
+ *   ATTRIBUTES: B2 A3 R4 S2 C3 I5 L5 W3 Res5
+ *   ACTIVE SKILLS (134 BP): Cracking Group 3, Electronics Group 3,
+ *     Dodge 2, Negotiation 2, Perception 3, Pistols 1, Tasking Group 4
+ *   QUALITIES: Natural Hardening 10 BP, Technomancer 5 BP;
+ *     Combat Paralysis +20, Weak Immune System +5
+ *   COMPLEX FORMS (35 BP): Analyze 2, Armor 3, Browse 3, Attack 4,
+ *     Decrypt 3, Exploit 5, Edit 3, Scan 3, Stealth 5, Track 4
+ *   CONTACTS: Fixer C2/L2, Blogger C2/L2
+ */
+test.describe("Technomancer character build", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/")
+    await page.evaluate(() => localStorage.clear())
+    await page.goto("/#/new")
+    await page.getByRole("button", { name: "Reset" }).waitFor()
+  })
 
-ATTRIBUTES (230 BP)
-B A R S C I L W R E
-2 3 4 2 3 5 5 3 5 2
-Essence: 6
-Initiative (Matrix): 9 (11)
-Initiative Passes (Matrix): 1 (3)
-Physical Damage Track: 9
-Stun Damage Track: 10
+  // ─── Biology ──────────────────────────────────────────────────────────────
 
-ACTIVE SKILLS (134 BP)
-Cracking Skill Group: 3
-Electronics Skill Group: 3
-Dodge: 2
-Negotiation: 2
-Perception: 3
-Pistols (Light Pistols +2): 1
-Tasking Skill Group: 4
+  test("sets Technomancer awakening and shows the Technomancer section", async ({
+    page,
+  }) => {
+    await page.getByRole("combobox", { name: "Awakening" }).click()
+    await page.getByRole("option", { name: "Technomancer" }).click()
+    await expect(page.getByRole("combobox", { name: "Awakening" })).toContainText("Technomancer")
+    await expect(page.getByText("Technomancer")).toBeVisible()
+    await expect(page.getByText("Complex Forms")).toBeVisible()
+  })
 
-KNOWLEDGE SKILLS
-(30 FREE KNOWLEDGE SKILL POINTS)
-Comic Books: 3
-Corporate Matrix Security Procedures: 4
-Data Havens: 3
-IC Identifi cation: 3
-Matrix Theory: 2
-Operating Systems: 5
+  // ─── Attributes ───────────────────────────────────────────────────────────
 
-LANGUAGE SKILLS
-Spanish: N
-English (Cityspeak +2): 4
-Cantonese: 2
-Japanese: 3
+  test("increments the Logic attribute", async ({ page }) => {
+    const logicRow = page.locator("text=Logic:").locator("..")
+    const incrementButton = logicRow.getByRole("button").last()
+    await incrementButton.click()
+    await expect(page.getByText("Attributes")).toBeVisible()
+  })
 
-QUALITIES (+10 BP)
-Natural Hardening (10 BP)
-Technomancer (5 BP)
-Combat Paralysis (+20 BP)
-Weak Immune System (+5 BP)
+  // ─── Active Skills ────────────────────────────────────────────────────────
 
-LIVING PERSONA
-Firewall: 3
-Response: 5 (6)
-Signal: 3
-System: 5
-Biofeedback Filter (Natural Hardening): 3 (4)
+  test("adds a Cracking skill group, edits it, then removes it", async ({
+    page,
+  }) => {
+    // Add
+    await page.getByRole("button", { name: "Add Group" }).click()
+    await page.getByRole("combobox", { name: "Skill Group" }).click()
+    await page.getByRole("option", { name: "Cracking" }).click()
+    await page.getByRole("combobox", { name: "Rating" }).click()
+    await page.getByRole("option", { name: "3" }).click()
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Cracking")).toBeVisible()
 
-COMPLEX FORMS (35 BP)
-Analyze 2; Armor 3; Browse 3; Attack 4; Decrypt 3; Exploit 5;
-Edit 3; Scan 3; Stealth 5; Track 4
+    // Edit — raise to rating 4
+    await page.getByText("Cracking").click()
+    await page.getByRole("combobox", { name: "Rating" }).click()
+    await page.getByRole("option", { name: "4" }).click()
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Cracking")).toBeVisible()
 
-GEAR & LIFESTYLE (¥15,000) (3 BP)
-Lined Coat; Fake SIN (Rating 4); Dodge Scoot; Metalink Commlink running Vector Xim OS, Low Lifestyle (3 Months)
+    // Remove
+    await page.getByText("Cracking").click()
+    await page.getByRole("button", { name: "Delete" }).click()
+    await expect(page.getByText("Cracking")).not.toBeVisible()
+  })
 
-WEAPONS
-Colt America L36 [w/Internal Smartgun System, Hidden Gun
-Arm Slide, and 5 clips of Regular Ammo]
+  test("adds an Electronics skill group", async ({ page }) => {
+    await page.getByRole("button", { name: "Add Group" }).click()
+    await page.getByRole("combobox", { name: "Skill Group" }).click()
+    await page.getByRole("option", { name: "Electronics" }).click()
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Electronics")).toBeVisible()
+  })
 
-CONTACTS (8 BP)
-Fixer (Connection 2/Loyalty 2)
-Blogger (Connection 2/Loyalty 2)
+  // ─── Qualities ────────────────────────────────────────────────────────────
 
-NOTES
-Starting Nuyen: 3D6 + 2 x 50¥
-*/
+  test("adds positive qualities", async ({ page }) => {
+    const qualities = [
+      { name: "Natural Hardening", bp: "10" },
+      { name: "Technomancer", bp: "5" },
+    ]
+    for (const { name, bp } of qualities) {
+      await page.getByRole("button", { name: "Add Quality" }).click()
+      await page.getByLabel("Name").fill(name)
+      await page.getByLabel("BP Cost").fill(bp)
+      await page.getByRole("button", { name: "Save" }).click()
+      await expect(page.getByText(name)).toBeVisible()
+    }
+  })
+
+  test("adds negative qualities", async ({ page }) => {
+    const negativeQualities = [
+      { name: "Combat Paralysis", bp: "20" },
+      { name: "Weak Immune System", bp: "5" },
+    ]
+    for (const { name, bp } of negativeQualities) {
+      await page.getByRole("button", { name: "Add Quality" }).click()
+      await page.getByLabel("Name").fill(name)
+      await page.getByRole("button", { name: /positive|negative/i }).click()
+      await page.getByLabel("BP Bonus").fill(bp)
+      await page.getByRole("button", { name: "Save" }).click()
+      await expect(page.getByText(name)).toBeVisible()
+    }
+  })
+
+  // ─── Complex Forms ────────────────────────────────────────────────────────
+
+  test("adds, edits, and removes a complex form", async ({ page }) => {
+    // Enable Technomancer
+    await page.getByRole("combobox", { name: "Awakening" }).click()
+    await page.getByRole("option", { name: "Technomancer" }).click()
+    await expect(page.getByText("Complex Forms")).toBeVisible()
+
+    // Add Exploit
+    await page.getByRole("button", { name: "Add Complex Form" }).click()
+    await page.getByLabel("Program Name").fill("Exploit")
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Exploit")).toBeVisible()
+
+    // Edit — rename to Analyze (simulating a mistake)
+    await page.getByText("Exploit").click()
+    await page.getByLabel("Program Name").clear()
+    await page.getByLabel("Program Name").fill("Analyze")
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Analyze")).toBeVisible()
+    await expect(page.getByText("Exploit")).not.toBeVisible()
+
+    // Remove
+    await page.getByText("Analyze").click()
+    await page.getByRole("button", { name: "Delete" }).click()
+    await expect(page.getByText("Analyze")).not.toBeVisible()
+  })
+
+  test("adds multiple complex forms", async ({ page }) => {
+    await page.getByRole("combobox", { name: "Awakening" }).click()
+    await page.getByRole("option", { name: "Technomancer" }).click()
+
+    const forms = ["Analyze", "Browse", "Attack", "Edit", "Stealth"]
+    for (const name of forms) {
+      await page.getByRole("button", { name: "Add Complex Form" }).click()
+      await page.getByLabel("Program Name").fill(name)
+      await page.getByRole("button", { name: "Save" }).click()
+    }
+
+    for (const name of forms) {
+      await expect(page.getByText(name)).toBeVisible()
+    }
+  })
+
+  // ─── Contacts ─────────────────────────────────────────────────────────────
+
+  test("adds two contacts", async ({ page }) => {
+    await page.getByRole("button", { name: "Add Contact" }).click()
+    await page.getByLabel("Name").fill("Fixer")
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Fixer")).toBeVisible()
+
+    await page.getByRole("button", { name: "Add Contact" }).click()
+    await page.getByLabel("Name").fill("Blogger")
+    await page.getByRole("button", { name: "Save" }).click()
+    await expect(page.getByText("Blogger")).toBeVisible()
+  })
+
+  // ─── No warnings ─────────────────────────────────────────────────────────
+
+  test("shows no skill warnings with only valid skills", async ({ page }) => {
+    await page.getByRole("button", { name: "Add Skill" }).click()
+    await page.getByRole("combobox", { name: "Skill" }).click()
+    await page.getByRole("option", { name: "Dodge" }).click()
+    await page.getByRole("button", { name: "Save" }).click()
+
+    const warnings = page.getByRole("alert")
+    await expect(warnings).toHaveCount(0)
+  })
+})

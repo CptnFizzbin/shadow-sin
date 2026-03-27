@@ -5,7 +5,7 @@ import {
   ContactCostPerLoyalty,
   getContactBpCost,
 } from "#/components/CharacterBuilder/Contacts/ContactsUtils.ts"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 function makeContact(
   overrides: Partial<ContactData> & { connection: number, loyalty: number },

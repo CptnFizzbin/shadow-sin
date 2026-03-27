@@ -5,7 +5,7 @@ import {
   isAdept,
 } from "#/components/CharacterBuilder/Resources/Adept/AdeptPowersUtils.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
 function makePower(
   overrides: Partial<AdeptPowerData> & { rating: number, costPerRating: number },
