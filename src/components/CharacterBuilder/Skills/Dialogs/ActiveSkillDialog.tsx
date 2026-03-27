@@ -15,7 +15,7 @@ import { useState } from "react"
 
 import type { ActiveSkillFormState } from "#/components/CharacterBuilder/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Skills/SkillRequirements.ts"
-import { SkillKey, Skills } from "#/lib/system/types/SkillKey.ts"
+import { SkillKey, Skills } from "#/lib/system/SkillKey.ts"
 
 interface ActiveSkillDialogProps {
   open: boolean

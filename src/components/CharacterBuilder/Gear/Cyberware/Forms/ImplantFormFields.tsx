@@ -14,7 +14,7 @@ import {
   ImplantGrade,
   ImplantLocation,
   ImplantType,
-} from "#/lib/system/types/gear/implantData.ts"
+} from "#/lib/system/gear/implantData.ts"
 
 const implantTypeOptions = [
   { label: "Cyberware", value: ImplantType.cyberware },

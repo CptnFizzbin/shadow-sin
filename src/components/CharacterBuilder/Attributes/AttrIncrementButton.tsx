@@ -1,44 +1,38 @@
 import { Button } from "@mui/material"
 import { RiArrowRightBoxLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
+import { produce } from "immer"
 import type { FC } from "react"
 
 import {
-  AttributeBpCostBase,
-  AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
-import type { AttributeRowProps } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
-import { useAttributeRow } from "#/components/CharacterBuilder/Attributes/UseAttributeState.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+  useAttributesBuildPoints,
+  useHasMaxxedAttribute,
+} from "#/components/CharacterBuilder/Attributes/AttributeHooks.ts"
+import { AttributeBpCostBase, AttributeBpCostMaxOut } from "#/components/CharacterBuilder/Attributes/AttributeUtils.ts"
+import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const IncrementButton: FC<AttributeRowProps> = (props) => {
+interface AttrIncrementButtonProps {
+  attr: AttributeKey
+}
+
+export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   if (props.attr === AttributeKey.essence) {
     throw new Error("Essence can not be incremented")
   }
+  const { budget } = useAttributesBuildPoints()
 
-  const { bpRemaining, hasMaxxedAttr } = useAttributeRow(props)
-
+  const store = useCharacterBuilderStoreContext()
   const attrKey = props.attr
-  const buildPointsSlice = useCharacterBuilderStoreSlice(
-    (state) => state.buildPoints,
-    (state, buildPoints) => {
-      state.buildPoints = buildPoints
-      return state
-    },
-  )
-  const attrSlice = useCharacterBuilderStoreSlice(
-    (state) => state.attributes[attrKey],
-    (state, attr) => {
-      state.attributes[attrKey] = attr
-      return state
-    },
-  )
+  const attrValue = useStore(store, (state) => state.attributes[attrKey].value)
+  const attrMax = useStore(store, (state) => state.attributes[attrKey].max)
+  const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false
   let cost = AttributeBpCostBase
   let label = `${cost} BP`
 
-  const willMaxAttr = attrSlice.state.value + 1 >= attrSlice.state.max
+  const willMaxAttr = attrValue + 1 >= attrMax
 
   if (willMaxAttr) {
     cost = AttributeBpCostMaxOut
@@ -50,12 +44,12 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     label = "---"
   }
 
-  if (attrSlice.state.value >= attrSlice.state.max) {
+  if (attrValue >= attrMax) {
     disabled = true
     label = "MAX"
   }
 
-  if (bpRemaining < cost) {
+  if (budget.remaining < cost) {
     disabled = true
   }
 
@@ -63,13 +57,9 @@ export const IncrementButton: FC<AttributeRowProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
 
-    buildPointsSlice.update((buildPoints) => {
-      buildPoints.spent.attributes += cost
-    })
-
-    attrSlice.update((attrState) => {
-      attrState.value += 1
-    })
+    store.setState(produce((draft) => {
+      draft.attributes[attrKey].value += 1
+    }))
   }
 
   return (

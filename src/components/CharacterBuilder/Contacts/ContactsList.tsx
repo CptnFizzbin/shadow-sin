@@ -7,9 +7,9 @@ import { useState } from "react"
 
 import { ContactFormDialog } from "#/components/CharacterBuilder/Contacts/ContactFormDialog.tsx"
 import { ContactRow } from "#/components/CharacterBuilder/Contacts/ContactsListItem.tsx"
-import { useContactsState } from "#/components/CharacterBuilder/Contacts/UseContactsState.ts"
+import { useBuilderContactsApi } from "#/components/CharacterBuilder/Contacts/UseBuilderContactsApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 type DialogState =
   | null
@@ -19,7 +19,7 @@ type DialogState =
 export const ContactsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const { contacts, bpSpent, addContact, updateContact, removeContact } =
-    useContactsState()
+    useBuilderContactsApi()
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

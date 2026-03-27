@@ -1,5 +1,5 @@
 import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPoints/BuildPointsUtils.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Qualities/UseQualitiesApi.ts"
 
 export interface QualityBuildPoints extends BuildPointsInfo {
   positive: number
@@ -14,22 +14,15 @@ export const getQualityBpValue = (quality: {
   return quality.type === "positive" ? bpValue : -bpValue
 }
 
-export const useQualitiesBuildSlice = () => {
-  return useCharacterBuilderStoreSlice(
-    (state) => state.qualities,
-    (state, nextValue) => ({ ...state, qualities: nextValue }),
-  )
-}
+export const useBuilderQualitiesBuildPoints = (): QualityBuildPoints => {
+  const { qualities } = useBuilderQualitiesApi()
 
-export const useQualitiesBuildPoints = (): QualityBuildPoints => {
-  const qualities = useQualitiesBuildSlice()
-
-  const negativeBp = qualities.state
+  const negativeBp = qualities
     .filter((q) => q.type === "negative")
     .map(getQualityBpValue)
     .reduce((total, bpValue) => total + bpValue, 0)
 
-  const positiveBp = qualities.state
+  const positiveBp = qualities
     .filter((q) => q.type === "positive")
     .map(getQualityBpValue)
     .reduce((total, bpValue) => total + bpValue, 0)

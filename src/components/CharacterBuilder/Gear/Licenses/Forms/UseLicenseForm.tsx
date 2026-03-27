@@ -38,13 +38,13 @@ export const licenseFormOpts = formOptions({
 export const useLicenseForm = (options: LicenseFormOptions) => {
   const { mode } = options
 
-  let defaultValues: LicenseFormState
+  let initialValues: LicenseFormState
   if (mode === "edit") {
-    defaultValues = options.license
+    initialValues = options.license
   } else {
     const rating = options.sinReal ? "real" : "1"
 
-    defaultValues = {
+    initialValues = {
       id: crypto.randomUUID(),
       name: "",
       sinId: options.sinId,
@@ -55,7 +55,7 @@ export const useLicenseForm = (options: LicenseFormOptions) => {
 
   return useAppForm({
     ...licenseFormOpts,
-    defaultValues: defaultValues,
+    defaultValues: initialValues,
     onSubmit: ({ value }) => {
       options.onSubmit({
         id: value.id,

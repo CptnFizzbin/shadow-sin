@@ -13,13 +13,13 @@ import { SpriteDialog } from "#/components/CharacterBuilder/Resources/Technomanc
 import {
   useMaxSpritesRegistered,
   useSpritesBuildPoints,
-  useSpritesSlice,
 } from "#/components/CharacterBuilder/Resources/Technomancer/SpritesHooks.ts"
 import { SpritesListItem } from "#/components/CharacterBuilder/Resources/Technomancer/SpritesListItem.tsx"
+import { useBuilderSpritesApi } from "#/components/CharacterBuilder/Resources/Technomancer/UseSpritesApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 type SpriteDialogState =
   | null
@@ -29,28 +29,11 @@ type SpriteDialogState =
 export const SpritesList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
-  const spritesSlice = useSpritesSlice()
+  const { sprites, addSprite, updateSprite, removeSprite } =
+    useBuilderSpritesApi()
   const spritesBp = useSpritesBuildPoints()
 
   const [spriteDialog, setSpriteDialog] = useState<SpriteDialogState>(null)
-
-  const addSprite = (sprite: SpriteFormState) => {
-    spritesSlice.update((sprites) => {
-      sprites.push(sprite)
-    })
-  }
-
-  const updateSprite = (sprite: SpriteFormState) => {
-    spritesSlice.update((sprites) => {
-      return sprites.map((s) => (s.id === sprite.id ? sprite : s))
-    })
-  }
-
-  const removeSprite = (spriteId: string) => {
-    spritesSlice.update((sprites) => {
-      return sprites.filter((s) => s.id !== spriteId)
-    })
-  }
 
   const closeDialog = () => {
     setSpriteDialog((prev) => prev && { ...prev, open: false })
@@ -60,7 +43,7 @@ export const SpritesList: FC = () => {
     setSpriteDialog(null)
   }
 
-  const isAtMax = spritesSlice.state.length >= maxSpritesRegistered
+  const isAtMax = sprites.length >= maxSpritesRegistered
 
   return (
     <Stack gap={1}>
@@ -73,14 +56,14 @@ export const SpritesList: FC = () => {
           alignItems="center"
         >
           <Typography color="text.secondary">
-            {spritesSlice.state.length} / {maxSpritesRegistered} sprites
+            {sprites.length} / {maxSpritesRegistered} sprites
           </Typography>
           <BuildPoints value={spritesBp.spent} />
         </Stack>
 
         <LinearProgress
           variant="determinate"
-          value={getProgress(spritesSlice.state.length, maxSpritesRegistered)}
+          value={getProgress(sprites.length, maxSpritesRegistered)}
         />
       </Stack>
 
@@ -90,15 +73,15 @@ export const SpritesList: FC = () => {
         </Alert>
       )}
 
-      {spritesSlice.state.length === 0 && (
+      {sprites.length === 0 && (
         <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
           No sprites added
         </Typography>
       )}
 
-      {spritesSlice.state.length > 0 && (
+      {sprites.length > 0 && (
         <Stack gap={0.5}>
-          {spritesSlice.state.map((sprite) => (
+          {sprites.map((sprite) => (
             <SpritesListItem
               key={sprite.id}
               sprite={sprite}
@@ -129,8 +112,8 @@ export const SpritesList: FC = () => {
             addSprite(sprite)
             closeDialog()
           }}
-          onClose={() => closeDialog()}
-          onClosed={() => clearDialog()}
+          onClose={closeDialog}
+          onClosed={clearDialog}
         />
       )}
 
@@ -142,8 +125,8 @@ export const SpritesList: FC = () => {
             updateSprite(sprite)
             closeDialog()
           }}
-          onClose={() => closeDialog()}
-          onClosed={() => clearDialog()}
+          onClose={closeDialog}
+          onClosed={clearDialog}
         />
       )}
     </Stack>

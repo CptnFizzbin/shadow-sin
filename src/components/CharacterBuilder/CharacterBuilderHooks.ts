@@ -1,7 +1,7 @@
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import type { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { Skills } from "#/lib/system/types/SkillKey.ts"
-import type { AttributeKey } from "#/lib/system/types/attributeKey.ts"
+import type { SkillKey } from "#/lib/system/SkillKey.ts"
+import { Skills } from "#/lib/system/SkillKey.ts"
+import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export function useBuilderAttrValue(attrKey: AttributeKey) {
   return useCharacterBuilderStore((state) => state.attributes[attrKey]?.value)

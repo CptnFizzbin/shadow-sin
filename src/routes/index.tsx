@@ -7,7 +7,7 @@ import { Header } from "#/components/UI/Header.tsx"
 import { characterManager } from "#/lib/storage/index.ts"
 
 export const Route = createFileRoute("/")({
-  loader: async () => {
+  loader: () => {
     return characterManager.ensureCharacters([])
   },
   component: IndexRoute,

@@ -1,8 +1,6 @@
-import { useMemo } from "react"
-
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
-import { Lifestyles, LifestyleType } from "#/lib/system/types/LifestyleType.ts"
+import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const GearBuildPointAllowance = 50
 export const GearNuyenPerBuildPoint = 5_000
@@ -26,7 +24,12 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 }
 
 export const useGearTotalCost = () => {
+  // Select the gear Record (stable reference, changes only when gear changes).
+  // Call Object.values outside the selector to avoid creating a new array on
+  // every state change, which would cause excess re-renders.
   const gear = useCharacterBuilderStore((state) => state.gear)
+  const allGear = Object.values(gear)
+
   const lifestyle = useCharacterBuilderStore((state) => {
     const lifestyleType = state.lifestyle ?? LifestyleType.Street
     return Lifestyles[lifestyleType]
@@ -35,10 +38,7 @@ export const useGearTotalCost = () => {
     (state) => state.lifestyleMonths ?? 1,
   )
 
-  const gearCost = useMemo(() => {
-    const allGear = Object.values(gear).flat()
-    return getTotalCost(...allGear)
-  }, [gear])
+  const gearCost = getTotalCost(...allGear)
 
   const lifestyleCost = lifestyle.upkeep * lifestyleMonths
   return gearCost + lifestyleCost

@@ -13,7 +13,7 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuildPointsSummary } from "#/components/CharacterBuilder/Summary/UseBuildPointsSummary.ts"
+import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/useBuildPointsApi.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -25,16 +25,12 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
   onExpandedChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const summary = useBuildPointsSummary()
-  const isOverBudget = summary.spent > summary.total
-  const remaining = summary.total - summary.spent
+  const summary = useBuilderBuildPointsApi()
 
   const handleExpandedChange = (expanded: boolean) => {
     setIsExpanded(expanded)
     onExpandedChange?.(expanded)
   }
-
-  const progressColor = isOverBudget ? "error" : "primary"
 
   return (
     <ClickAwayListener
@@ -89,16 +85,16 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
               <BuildPoints value={summary.spent} total={summary.total} />
 
               <Typography sx={{ color: lightBlue[700] }}>
-                {remaining >= 0
-                  ? `${remaining} remaining`
-                  : `${Math.abs(remaining)} over`}
+                {summary.remaining >= 0
+                  ? `${summary.remaining} remaining`
+                  : `${Math.abs(summary.remaining)} over`}
               </Typography>
             </Stack>
 
             <LinearProgress
               variant="determinate"
               value={getProgress(summary.spent, summary.total)}
-              color={progressColor}
+              color={summary.isOverBudget ? "error" : "primary"}
               sx={{ height: 8 }}
             />
           </Stack>

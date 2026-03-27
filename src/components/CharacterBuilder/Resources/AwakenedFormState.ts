@@ -1,5 +1,5 @@
-import type { AdeptPowerData } from "#/lib/system/types/magic/adeptPowerData.ts"
-import type { SpellData } from "#/lib/system/types/magic/spellData.ts"
+import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
+import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
 export interface ComplexFormFormState {
   id: string

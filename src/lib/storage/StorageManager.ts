@@ -11,26 +11,26 @@ export class StorageManager {
     return this.storageProvider.providerId
   }
 
-  public async listJsonFiles(
+  public listJsonFiles(
     pathPrefix?: string,
   ): Promise<StoredJsonFileMetadata[]> {
     return this.storageProvider.listJsonFiles(pathPrefix)
   }
 
-  public async loadJsonFile<TValue>(
+  public loadJsonFile<TValue>(
     path: string,
   ): Promise<StoredJsonFile<TValue> | null> {
     return this.storageProvider.loadJsonFile<TValue>(path)
   }
 
-  public async saveJsonFile<TValue>(
+  public saveJsonFile<TValue>(
     path: string,
     value: TValue,
   ): Promise<StoredJsonFile<TValue>> {
     return this.storageProvider.saveJsonFile(path, value)
   }
 
-  public async deleteJsonFile(path: string): Promise<void> {
+  public deleteJsonFile(path: string): Promise<void> {
     return this.storageProvider.deleteJsonFile(path)
   }
 }

@@ -3,31 +3,23 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { getSpriteTasksBp } from "#/components/CharacterBuilder/Resources/Technomancer/SpritesUtils.ts"
-import { SkillKey } from "#/lib/system/types/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { useBuilderSpritesApi } from "#/components/CharacterBuilder/Resources/Technomancer/UseSpritesApi.ts"
+import { SkillKey } from "#/lib/system/SkillKey.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
-export const useSpritesSlice = () => {
-  return useCharacterBuilderStoreSlice(
-    (state) => state.awakened.sprites,
-    (state, sprites) => {
-      state.awakened.sprites = sprites
-      return state
-    },
-  )
-}
 export const useSprites = () => {
   const awakeningType = useBuilderAwakeningType()
-  const spritesSlice = useSpritesSlice()
+  const { sprites } = useBuilderSpritesApi()
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []
   }
 
-  return spritesSlice.state
+  return sprites
 }
+
 export const useSpritesBuildPoints = () => {
   const awakeningType = useBuilderAwakeningType()
   const sprites = useSprites()

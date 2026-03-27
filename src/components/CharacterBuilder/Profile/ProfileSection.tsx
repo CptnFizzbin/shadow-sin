@@ -1,19 +1,10 @@
 import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreSlice,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useBuilderProfileApi } from "#/components/CharacterBuilder/Profile/UseProfileApi.ts"
 
 export const ProfileSection: FC = () => {
-  const storeSlice = useCharacterBuilderStoreSlice(
-    (state) => state,
-    (_state, newState) => newState,
-  )
-
-  const alias = useCharacterBuilderStore((state) => state.alias)
-  const name = useCharacterBuilderStore((state) => state.name)
+  const { name, alias, setName, setAlias } = useBuilderProfileApi()
 
   return (
     <>
@@ -23,10 +14,7 @@ export const ProfileSection: FC = () => {
         variant="outlined"
         size="small"
         value={alias}
-        onChange={(event) =>
-          storeSlice.update((draft) => {
-            draft.alias = event.target.value
-          })}
+        onChange={(event) => setAlias(event.target.value)}
       />
 
       <MuiTextField
@@ -35,10 +23,7 @@ export const ProfileSection: FC = () => {
         variant="outlined"
         size="small"
         value={name}
-        onChange={(event) =>
-          storeSlice.update((draft) => {
-            draft.name = event.target.value
-          })}
+        onChange={(event) => setName(event.target.value)}
       />
     </>
   )

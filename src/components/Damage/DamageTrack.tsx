@@ -45,11 +45,11 @@ export default function DamageTrack({
               value={value}
               filled={value <= current}
               isOverflow={value > max}
-              toggleCell={(value) => {
-                if (value === current) {
-                  onChange(value - 1)
+              toggleCell={(newValue) => {
+                if (newValue === current) {
+                  onChange(newValue - 1)
                 } else {
-                  onChange(value)
+                  onChange(newValue)
                 }
               }}
             />

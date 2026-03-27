@@ -1,4 +1,4 @@
-import type { SkillGroupKey } from "#/lib/system/types/SkillGroupKey.ts"
+import type { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
 
 export interface ActiveSkillFormState {
   id: string

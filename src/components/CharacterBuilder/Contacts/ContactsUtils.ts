@@ -1,4 +1,4 @@
-import type { ContactData } from "#/lib/system/types/contactData.ts"
+import type { ContactData } from "#/lib/system/contactData.ts"
 
 export const ContactCostPerConnection = 1
 export const ContactCostPerLoyalty = 1

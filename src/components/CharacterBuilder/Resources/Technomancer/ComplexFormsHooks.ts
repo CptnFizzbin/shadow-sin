@@ -2,30 +2,22 @@ import {
   useBuilderAttrValue,
   useBuilderAwakeningType,
 } from "#/components/CharacterBuilder/CharacterBuilderHooks.ts"
-import { useCharacterBuilderStoreSlice } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ComplexFormBpPerRating } from "#/components/CharacterBuilder/Resources/Technomancer/TechnomancerUtils.ts"
-import { AttributeKey } from "#/lib/system/types/attributeKey.ts"
-import { AwakeningType } from "#/lib/system/types/awakeningType.ts"
+import { useBuilderComplexFormsApi } from "#/components/CharacterBuilder/Resources/Technomancer/UseComplexFormsApi.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
-export const useComplexFormsSlice = () => {
-  return useCharacterBuilderStoreSlice(
-    (state) => state.awakened.complexForms,
-    (state, complexForms) => {
-      state.awakened.complexForms = complexForms
-      return state
-    },
-  )
-}
 export const useComplexForms = () => {
   const awakeningType = useBuilderAwakeningType()
-  const complexFormsSlice = useComplexFormsSlice()
+  const { complexForms } = useBuilderComplexFormsApi()
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []
   }
 
-  return complexFormsSlice.state
+  return complexForms
 }
+
 export const useComplexFormsBuildPoints = () => {
   const awakeningType = useBuilderAwakeningType()
   const complexForms = useComplexForms()
@@ -40,6 +32,7 @@ export const useComplexFormsBuildPoints = () => {
 
   return { spent: complexFormsBp }
 }
+
 export const useMaxComplexForms = () => {
   return useBuilderAttrValue(AttributeKey.logic) * 2
 }

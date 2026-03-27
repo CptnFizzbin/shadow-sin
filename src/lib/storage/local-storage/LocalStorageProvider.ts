@@ -23,7 +23,7 @@ export class LocalStorageProvider implements IStorageProvider {
     this.storagePrefix = storagePrefix
   }
 
-  public async listJsonFiles(
+  public listJsonFiles(
     pathPrefix?: string,
   ): Promise<StoredJsonFileMetadata[]> {
     const storage = this.getStorage()
@@ -58,25 +58,25 @@ export class LocalStorageProvider implements IStorageProvider {
       })
     }
 
-    return files.sort((firstFile, secondFile) =>
+    return Promise.resolve(files.sort((firstFile, secondFile) =>
       firstFile.path.localeCompare(secondFile.path),
-    )
+    ))
   }
 
-  public async loadJsonFile<TValue>(
+  public loadJsonFile<TValue>(
     path: string,
   ): Promise<StoredJsonFile<TValue> | null> {
     const storage = this.getStorage()
     const rawValue = storage.getItem(this.getStorageKey(path))
 
     if (!rawValue) {
-      return null
+      return Promise.resolve(null)
     }
 
-    return this.parseStoredJsonFile<TValue>(rawValue)
+    return Promise.resolve(this.parseStoredJsonFile<TValue>(rawValue))
   }
 
-  public async saveJsonFile<TValue>(
+  public saveJsonFile<TValue>(
     path: string,
     value: TValue,
   ): Promise<StoredJsonFile<TValue>> {
@@ -92,12 +92,13 @@ export class LocalStorageProvider implements IStorageProvider {
       JSON.stringify(storedJsonFile satisfies StoredJsonEnvelope<TValue>),
     )
 
-    return storedJsonFile
+    return Promise.resolve(storedJsonFile)
   }
 
-  public async deleteJsonFile(path: string): Promise<void> {
+  public deleteJsonFile(path: string): Promise<void> {
     const storage = this.getStorage()
     storage.removeItem(this.getStorageKey(path))
+    return Promise.resolve()
   }
 
   private getStorage(): Storage {

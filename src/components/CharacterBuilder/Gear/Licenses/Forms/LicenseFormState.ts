@@ -1,4 +1,4 @@
-import type { AvailablityInfo } from "#/lib/system/types/availablityInfo.ts"
+import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
 
 export interface LicenseFormState {
   id: string
