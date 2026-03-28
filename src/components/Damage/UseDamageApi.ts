@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import { useCharacterSheet, useCharacterSheetStore } from "#/components/Character/CharacterStoreProvider.tsx"
-import { useAttrApi } from "#/components/CharacterBuilder/Attributes/UseAttrApi.ts"
+import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useDamageApi = () => {
