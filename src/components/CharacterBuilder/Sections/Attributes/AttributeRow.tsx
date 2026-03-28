@@ -8,9 +8,6 @@ import { AttrDecrementButton } from "#/components/CharacterBuilder/Sections/Attr
 import { AttrIncrementButton } from "#/components/CharacterBuilder/Sections/Attributes/AttrIncrementButton.tsx"
 import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { AttrDecrementButton } from "#/components/CharacterBuilder/Sections/Attributes/AttrDecrementButton.tsx"
-import { AttrIncrementButton } from "#/components/CharacterBuilder/Sections/Attributes/AttrIncrementButton.tsx"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 
 interface AttributeRowProps {
   attr: AttributeKey

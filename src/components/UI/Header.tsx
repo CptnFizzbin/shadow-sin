@@ -14,11 +14,11 @@ export const Header: FC<HeaderProps> = ({ character }) => {
   const characterAlias = character?.profile.alias
 
   return (
-    <AppBar position="sticky" color="default" elevation={0}>
+    <AppBar role="banner" position="sticky" color="default" elevation={0}>
       <Toolbar sx={{ gap: 2 }}>
         {character && <CharacterNavMenu />}
 
-        <Typography variant="h5" component="div">
+        <Typography variant="h5" component="h1">
           {characterAlias ?? "ShadowSIN 4e"}
         </Typography>
       </Toolbar>

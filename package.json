@@ -16,7 +16,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "yarn test:unit",
-    "test:all": "yarn test:unit && yarn test:e2e",
+    "test:all": "FORCE_COLOR=1 npm-run-all -lpn 'test:unit' 'test:e2e'",
     "test:unit": "vitest run",
     "test:unit:ui": "vitest --ui",
     "test:e2e": "playwright test",

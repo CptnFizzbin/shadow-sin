@@ -3,9 +3,9 @@ import { produce } from "immer"
 
 import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { MetatypeKey } from "#/lib/system/MetatypeData.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { AwakeningType } from "#/lib/system/awakeningType.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 

@@ -11,7 +11,7 @@ import {
 } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
 import {
   AttributeBpCostBase,
-  AttributeBpCostMaxOut
+  AttributeBpCostMaxOut,
 } from "#/components/CharacterBuilder/Sections/Attributes/AttributeUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
@@ -68,7 +68,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   return (
     <Button
       variant="outlined"
-      endIcon={<RiArrowRightBoxLine/>}
+      endIcon={<RiArrowRightBoxLine />}
       onClick={onClick}
       disabled={disabled}
       sx={{ width: 120 }}
