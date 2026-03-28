@@ -12,16 +12,14 @@ import {
   RiDice6Line,
   RiDiceLine,
 } from "@remixicon/react"
-import type { FC } from "react"
+import type { CSSProperties, FC } from "react"
+import { useEffect, useState } from "react"
 
-export interface DiceResults {
-  values: number[] // 1-6 or 0 for unrolled
-  hits?: number
-  isGlitch?: boolean | "crtical"
-}
+import type { DiceResultsInfo } from "#/components/Dice/DiceResultsInfo.tsx"
+import { rollD6 } from "#/components/Dice/UseDiceRoller.ts"
 
 interface DiceResultProps {
-  results: DiceResults
+  results: DiceResultsInfo
   highlightHits?: boolean
   highlightGlitches?: boolean
 }
@@ -32,6 +30,16 @@ export const DiceResult: FC<DiceResultProps> = ({
   highlightGlitches = true,
 }) => {
   const diceDefaultColor = (results.isGlitch === "crtical" && highlightGlitches) ? "error.main" : "secondary.main"
+  const [diceValues, setDiceValues] = useState<number[]>(results.values)
+
+  useEffect(() => {
+    if (!results.isRolling) return
+    const handle = setInterval(() => {
+      setDiceValues(results.values.map(() => rollD6()))
+    }, 100)
+
+    return () => clearInterval(handle)
+  }, [results])
 
   return (
     <Stack
@@ -40,14 +48,20 @@ export const DiceResult: FC<DiceResultProps> = ({
       gap={0.5}
       sx={{ color: diceDefaultColor }}
     >
-      {results.values.map((value, index) => (
-        <DieIcon
-          key={index}
-          value={value}
-          highlightHit={highlightHits}
-          highlightGlitch={highlightGlitches}
-        />
-      ))}
+      {diceValues.map((value, index) => {
+        // eslint-disable-next-line react-hooks/purity
+        const rotate = results.isRolling ? Math.random() * 360 : 0
+
+        return (
+          <DieIcon
+            key={index}
+            value={value}
+            highlightHit={highlightHits}
+            highlightGlitch={highlightGlitches}
+            style={{ rotate: `${rotate}deg` }}
+          />
+        )
+      })}
     </Stack>
   )
 }
@@ -56,12 +70,14 @@ interface DieIconProps {
   value: number // 1-6 or 0 for unrolled
   highlightHit?: boolean
   highlightGlitch?: boolean
+  style?: CSSProperties
 }
 
 export const DieIcon: FC<DieIconProps> = ({
   value,
   highlightHit = true,
   highlightGlitch = true,
+  style,
 }) => {
   const theme = useTheme()
   const glitchColor = theme.palette.error.main
@@ -69,18 +85,18 @@ export const DieIcon: FC<DieIconProps> = ({
 
   switch (value) {
     case 1:
-      return highlightGlitch ? <RiDice1Fill color={glitchColor} /> : <RiDice1Line />
+      return highlightGlitch ? <RiDice1Fill color={glitchColor} style={style} /> : <RiDice1Line style={style} />
     case 2:
-      return <RiDice2Line />
+      return <RiDice2Line style={style} />
     case 3:
-      return <RiDice3Line />
+      return <RiDice3Line style={style} />
     case 4:
-      return <RiDice4Line />
+      return <RiDice4Line style={style} />
     case 5:
-      return highlightHit ? <RiDice5Fill color={hitColor} /> : <RiDice5Line />
+      return highlightHit ? <RiDice5Fill color={hitColor} style={style} /> : <RiDice5Line style={style} />
     case 6:
-      return highlightHit ? <RiDice6Fill color={hitColor} /> : <RiDice6Line />
+      return highlightHit ? <RiDice6Fill color={hitColor} style={style} /> : <RiDice6Line style={style} />
     default:
-      return <RiDiceLine />
+      return <RiDiceLine style={style} />
   }
 }

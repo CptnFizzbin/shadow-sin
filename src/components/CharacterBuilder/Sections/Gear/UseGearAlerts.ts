@@ -1,0 +1,36 @@
+import pluralize from "pluralize"
+
+import {
+  GearBuildPointAllowance,
+  GearNuyenAllowance,
+  useGearAvailabilityIssues,
+  useGearBuildPoints,
+} from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
+import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
+
+export const useGearAlerts = (): AlertInfo[] => {
+  const { totalInvalidCount } = useGearAvailabilityIssues()
+  const { isOverBudget } = useGearBuildPoints()
+
+  const alerts: AlertInfo[] = []
+
+  if (isOverBudget) {
+    alerts.push({
+      section: "Gear",
+      severity: "error",
+      title: "Budget Exceeded",
+      message: `Gear budget exceeded! Maximum is ${GearNuyenAllowance.toLocaleString()} (${GearBuildPointAllowance} BP).`,
+    })
+  }
+
+  if (totalInvalidCount > 0) {
+    alerts.push({
+      section: "Gear",
+      severity: "warning",
+      title: "Availability",
+      message: `${totalInvalidCount} ${pluralize("gear item", totalInvalidCount)} exceed the maximum availability. Check highlighted items.`,
+    })
+  }
+
+  return alerts
+}

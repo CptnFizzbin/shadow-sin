@@ -24,10 +24,6 @@ export default defineConfig([
     braceStyle: "1tbs",
   }),
   {
-    files: [
-      "./src/**/*",
-      "./e2e/**/*",
-    ],
     languageOptions: {
       globals: globals.browser,
       parserOptions: {

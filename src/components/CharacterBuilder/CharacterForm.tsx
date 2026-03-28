@@ -1,23 +1,25 @@
 import Button from "@mui/material/Button"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { AttributesSection } from "#/components/CharacterBuilder/Attributes/AttributesSection.tsx"
-import { BiologySection } from "#/components/CharacterBuilder/Biology/BiologySection.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { ContactsList } from "#/components/CharacterBuilder/Contacts/ContactsList.tsx"
 import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
-import { GearSection } from "#/components/CharacterBuilder/Gear/GearSection.tsx"
-import { ProfileSection } from "#/components/CharacterBuilder/Profile/ProfileSection.tsx"
-import { QualitiesSection } from "#/components/CharacterBuilder/Qualities/QualitiesSection.tsx"
-import { AwakenedSection } from "#/components/CharacterBuilder/Resources/AwakenedSection.tsx"
-import { SkillsFormGroup } from "#/components/CharacterBuilder/Skills/SkillsFormGroup.tsx"
-import { BpSummaryFooter } from "#/components/CharacterBuilder/Summary/BpSummaryFooter.tsx"
-import { useDefaultValues } from "#/components/CharacterBuilder/UseDefaultValues.ts"
-import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/UseRootCharacterBuilderStore.ts"
+import { useDefaultValues } from "#/components/CharacterBuilder/Hooks/UseDefaultValues.ts"
+import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/Hooks/UseRootCharacterBuilderStore.ts"
+import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
+import {
+  AttributesBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Attributes/AttributesBuilderSection.tsx"
+import { BiologyBuilderSection } from "#/components/CharacterBuilder/Sections/Biology/BiologyBuilderSection.tsx"
+import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/Contacts/ContactsBuilderSection.tsx"
+import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/GearBuilderSection.tsx"
+import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
+import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
+import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
+import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
+import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
+import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
 
 interface CharacterFormProps {
@@ -55,80 +57,27 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
             </Button>
           </Stack>
 
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Profile
-              </Typography>
+          <ProfileBuilderSection />
 
-              <ProfileSection />
-            </Stack>
-          </Paper>
+          <BiologyBuilderSection />
 
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Biology
-              </Typography>
+          <AttributesBuilderSection />
 
-              <BiologySection />
-            </Stack>
-          </Paper>
+          <QualitiesBuilderSection />
 
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Attributes
-              </Typography>
-
-              <AttributesSection />
-            </Stack>
-          </Paper>
-
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Qualities
-              </Typography>
-
-              <QualitiesSection />
-            </Stack>
-          </Paper>
-
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Skills
-              </Typography>
-
-              <SkillsFormGroup />
-            </Stack>
-          </Paper>
+          <SkillsBuilderSection />
 
           <AwakenedSection />
 
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Gear
-              </Typography>
+          <GearBuilderSection />
 
-              <GearSection />
-            </Stack>
-          </Paper>
-
-          <Paper sx={{ padding: 1 }}>
-            <Stack gap={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                Contacts
-              </Typography>
-
-              <ContactsList />
-            </Stack>
-          </Paper>
+          <ContactsBuilderSection />
         </Stack>
 
         <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+
+        <AllBuilderAlerts />
+        <SaveCharacterButton />
       </Stack>
     </CharacterBuilderStoreProvider>
   )
