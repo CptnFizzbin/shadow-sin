@@ -42,9 +42,11 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "yarn dev --port 3100",
+    command: "yarn preview --port 3100",
     url: "http://localhost:3100",
     /* Reuse a running server in local dev; always start fresh on CI */
     reuseExistingServer: !process.env["CI"],
+    stdout: "pipe",
+    stderr: "pipe",
   },
 })
