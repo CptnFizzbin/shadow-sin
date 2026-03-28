@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { SpriteFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
 import { useMaxSpriteTasks } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
@@ -33,6 +33,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
 }) => {
   const maxSpriteTasks = useMaxSpriteTasks()
   const isEditMode = !!sprite
+  const tasksLabelId = useId()
 
   const [name, setName] = useState<string>(sprite?.name ?? "")
   const [tasks, setTasks] = useState<number>(sprite?.tasks ?? 1)
@@ -90,8 +91,9 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
               )
             : (
                 <FormControl fullWidth size="small">
-                  <InputLabel>Tasks</InputLabel>
+                  <InputLabel id={tasksLabelId}>Tasks</InputLabel>
                   <Select
+                    labelId={tasksLabelId}
                     value={Math.min(tasks, maxSpriteTasks)}
                     label="Tasks"
                     onChange={(e) => setTasks(Number(e.target.value))}

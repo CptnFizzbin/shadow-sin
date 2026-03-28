@@ -10,7 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { KnowledgeSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
@@ -35,6 +35,7 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!skill
+  const ratingLabelId = useId()
 
   const [name, setName] = useState<string>(skill?.name ?? "")
   const [rating, setRating] = useState<number>(skill?.rating ?? 1)
@@ -92,8 +93,9 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
           />
 
           <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
+            <InputLabel id={ratingLabelId}>Rating</InputLabel>
             <Select
+              labelId={ratingLabelId}
               value={rating}
               label="Rating"
               onChange={(e) => setRating(Number(e.target.value))}

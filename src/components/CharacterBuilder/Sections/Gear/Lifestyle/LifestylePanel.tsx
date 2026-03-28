@@ -6,14 +6,20 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useId } from "react"
 
 import { useBuilderLifestyleApi } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleApi.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
-  const { lifestyle, lifestyleMonths, setLifestyle, setLifestyleMonths } =
-    useBuilderLifestyleApi()
+  const {
+    lifestyle,
+    lifestyleMonths,
+    setLifestyle,
+    setLifestyleMonths,
+  } = useBuilderLifestyleApi()
+  const lifestyleLabelId = useId()
 
   const upkeep = Lifestyles[lifestyle].upkeep
   const totalCost = upkeep * lifestyleMonths
@@ -21,8 +27,9 @@ export const LifestylePanel: FC = () => {
   return (
     <Stack gap={1}>
       <FormControl fullWidth size="small">
-        <InputLabel>Lifestyle</InputLabel>
+        <InputLabel id={lifestyleLabelId}>Lifestyle</InputLabel>
         <Select
+          labelId={lifestyleLabelId}
           value={lifestyle}
           label="Lifestyle"
           onChange={(event) =>

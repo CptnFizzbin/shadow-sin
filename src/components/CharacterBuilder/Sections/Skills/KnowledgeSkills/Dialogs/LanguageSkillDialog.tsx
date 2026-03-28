@@ -10,7 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import type { FC } from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import type { LanguageSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
@@ -35,6 +35,7 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!skill
+  const ratingLabelId = useId()
 
   const [name, setName] = useState<string>(skill?.name ?? "")
   // ratingValue is either a number (1..SkillRatingMax) or the string 'native'
@@ -96,8 +97,9 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
           />
 
           <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
+            <InputLabel id={ratingLabelId}>Rating</InputLabel>
             <Select
+              labelId={ratingLabelId}
               value={ratingValue}
               label="Rating"
               onChange={(e) => setRatingValue(e.target.value)}

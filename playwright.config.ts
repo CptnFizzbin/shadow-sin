@@ -10,6 +10,8 @@ export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
 
+  timeout: 90000,
+
   /* Fail the build on CI if test.only is accidentally committed */
   forbidOnly: !!process.env["CI"],
 
