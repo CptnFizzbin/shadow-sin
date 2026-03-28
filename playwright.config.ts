@@ -16,13 +16,17 @@ export default defineConfig({
   /* Retry flaky tests on CI */
   retries: process.env["CI"] ? 2 : 0,
 
-  /* Limit parallelism on CI to avoid resource contention */
-  workers: process.env["CI"] ? 1 : undefined,
-  reporter: process.env["CI"] ? [["html", { open: "never" }], ["github"]] : "html",
-  timeout: 90000,
+  reporter: process.env["CI"]
+    ? [
+        ["html", { open: "never" }],
+        ["github"],
+      ]
+    : [
+        ["html"],
+      ],
 
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3100",
     /* Capture trace on first retry so failures are diagnosable */
     trace: "on-first-retry",
     screenshot: "only-on-failure",
@@ -36,11 +40,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "yarn dev",
-    url: "http://localhost:3000",
+    command: "yarn dev --port 3100",
+    url: "http://localhost:3100",
     /* Reuse a running server in local dev; always start fresh on CI */
     reuseExistingServer: !process.env["CI"],
-    stdout: "pipe",
-    stderr: "pipe",
   },
 })

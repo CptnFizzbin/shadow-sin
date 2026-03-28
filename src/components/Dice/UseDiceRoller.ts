@@ -1,11 +1,29 @@
+import { sort } from "fast-sort"
 import { useCallback, useState } from "react"
 
-export function useDiceRoller(numDice: number) {
+import type { DiceResultsInfo } from "#/components/Dice/DiceResultsInfo.tsx"
+
+export const rollD6 = (): number => {
+  return Math.ceil(Math.random() * 6)
+}
+
+export function useDiceRoller(numDice: number, rollingTime: number = 0): [results: DiceResultsInfo, rollDice: () => void] {
   const [diceValues, setDiceValues] = useState<number[]>(padArray([], numDice, 0))
+  const [isRolling, setIsRolling] = useState(false)
 
   const rollDice = useCallback(() => {
-    setDiceValues(Array.from({ length: numDice }, () => Math.ceil(Math.random() * 6)))
-  }, [numDice])
+    const nextValue = Array.from({ length: numDice }, () => rollD6())
+    if (rollingTime >= 1) {
+      setIsRolling(true)
+      setTimeout(() => {
+        setDiceValues(nextValue)
+        setIsRolling(false)
+      }, rollingTime)
+    } else {
+      setIsRolling(false)
+      setDiceValues(nextValue)
+    }
+  }, [numDice, rollingTime])
 
   const values = padArray(diceValues, numDice, 0)
   const hits = values.filter((value) => value >= 5).length
@@ -13,9 +31,10 @@ export function useDiceRoller(numDice: number) {
   const isGlitch = ones > numDice / 2
   const isCriticalGlitch = isGlitch && hits === 0
 
-  const diceResult = {
-    values: values,
-    hits,
+  const diceResult: DiceResultsInfo = {
+    values: sort(values).by({ asc: (value) => value }),
+    isRolling: isRolling,
+    hits: hits,
     isGlitch: isCriticalGlitch ? "crtical" : isGlitch,
   }
 
