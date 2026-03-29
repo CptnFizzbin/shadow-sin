@@ -4,6 +4,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
 import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
 import { useDefaultValues } from "#/components/CharacterBuilder/Hooks/UseDefaultValues.ts"
 import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/Hooks/UseRootCharacterBuilderStore.ts"
@@ -42,7 +43,8 @@ export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
             pointerEvents: isBpPanelExpanded ? "none" : "auto",
           }}
         >
-          <Stack direction="row" justifyContent="flex-end">
+          <Stack direction="row" justifyContent="flex-end" gap={1}>
+            <ExportCharacterButton />
             <Button
               variant="outlined"
               color="warning"
