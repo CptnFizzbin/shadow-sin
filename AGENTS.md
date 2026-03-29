@@ -21,17 +21,19 @@ yarn tsc          # TypeScript type check (no emit)
 ### Data flow
 
 ```
-src/data/characters/*.ts          ← static fixture data (PlayerCharacterData)
+src/lib/fixture/character/*.ts    ← static fixture data (CharacterSheet)
   → characterManager.ensureCharacters() ← seeds fixtures into storage on first load
     → characterManager.getCharacter()   ← reads from LocalStorageProvider
       → route loader ($characterId/route.tsx)
         → createStore(character)        ← @tanstack/store reactive store
-          → CharacterStoreProvider      ← context wrapper
-            → useCharacterStore(sel)    ← component consumption hook
+          → CharacterSheetProvider      ← context wrapper
+            → useCharacterSheet(sel)    ← component consumption hook
 ```
 
-Character state lives in a `@tanstack/store` `Store<PlayerCharacterData>` — not React state or Context values directly.
-Components subscribe via `useCharacterStore(selector)` from `src/components/Character/CharacterStoreProvider.tsx`.
+Character state lives in a `@tanstack/store` `Store<CharacterSheet>` — not React state or Context values directly.
+Components subscribe via `useCharacterSheet(selector)` from `src/components/Character/CharacterSheetProvider.tsx`.
+
+> `useCharacterStore` and `useCharacterSheetStore` are deprecated aliases for `useCharacterSheet`.
 
 The `CharacterStorePersistence` component (rendered inside `CharacterRoute`) auto-saves store changes back to
 `characterManager` — throttled to every 30 seconds with a flush on unmount.
@@ -40,14 +42,15 @@ The `CharacterStorePersistence` component (rendered inside `CharacterRoute`) aut
 
 | Path                                     | Purpose                                                                                                |
 |------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| `src/lib/system/types/`                  | All domain types (`PlayerCharacterData` is the root)                                                   |
-| `src/lib/system/types/gear/`             | Gear sub-types keyed by `GearType` enum                                                                |
-| `src/lib/system/types/attributeKey.ts`   | `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` grouping constants |
-| `src/data/characters/`                   | Static character fixtures; `artemis.ts` is the primary example                                         |
+| `src/lib/system/`                        | All domain types (`CharacterSheet` is the root, in `characterSheet.ts`)                                |
+| `src/lib/system/gear/`                   | Gear sub-types keyed by `GearType` enum                                                                |
+| `src/lib/system/attributeKey.ts`         | `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` grouping constants |
+| `src/lib/fixture/character/`             | Static character fixtures; `artemis.ts` is the primary example                                         |
 | `src/lib/storage/`                       | Pluggable persistence layer (`IStorageProvider` + `StorageManager` + `CharacterManager`)               |
 | `src/lib/storage/characters/migrations/` | Character schema migration steps (`CharacterMigration<TInput, TOutput>`)                               |
-| `src/components/Character/`              | Character UI components                                                                                |
-| `src/components/Character/Form/`         | Character creation/edit form (TanStack Form); `CharacterFormState.ts` is the form schema               |
+| `src/components/Character/`              | Character sheet UI components and `CharacterSheetProvider`                                             |
+| `src/components/CharacterBuilder/`       | Character creation/edit form (store-based); `StorePersister` for localStorage draft persistence        |
+| `src/components/Gear/`                   | Shared `GearApi`, `GearProvider`, `useGearApi`, `AvailabilityChip`                                     |
 | `src/routes/`                            | TanStack file-based routes                                                                             |
 | `src/integrations/`                      | TanStack Query/Form setup, Google Drive stub                                                           |
 
@@ -58,22 +61,26 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 
 ### Gear system
 
-All gear items must be created via the `createGear<T>()` factory (auto-assigns `crypto.randomUUID()` as `id`). Gear is
-stored on `PlayerCharacterData.gear` as a flat `GearData[]`. Filter by the `type` discriminant field when working with a
-specific gear category. Specialized types (firearms, implants, etc.) extend `GearData` with a discriminant
-`type: GearType`.
+All gear items must be created via the `createItem<T>()` factory in `src/lib/system/ItemData.ts` (auto-assigns
+`crypto.randomUUID()` as `id`). Gear is stored on `CharacterSheet.gear` as a flat `Record<string, ItemData>`. Filter by
+the `itemType` discriminant field (values from the `GearType` enum) when working with a specific gear category.
+Specialized types (implants, vehicles, etc.) extend `ItemData` with additional fields and a narrowed `itemType`.
 
 ```ts
 // ✅ correct — use factory
-createGear<ArmorData>({ name: "...", type: GearType.armor, ... })
-// ✅ shorthand for firearms
-createFirearm({ name: "Ares Predator VI", ... })
+import { createItem } from "#/lib/system/ItemData.ts"
+import type { ArmorData } from "#/lib/system/gear/armorData.ts"
+createItem<ArmorData>({ name: "...", itemType: GearType.armor, ... })
+
+// ✅ create multiple linked items (parent + children) at once
+import { createItemMap } from "#/lib/system/ItemData.ts"
+const gear = createItemMap(...createItem<SinData>({ ... }, [createItem<LicenseData>({ ... })]))
 ```
 
 ### Attribute visibility
 
 `magic` and `resonance` exist on every character but are only shown when their value is non-zero. Use the grouping
-constants from `src/lib/system/types/attributeKey.ts` — `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` —
+constants from `src/lib/system/attributeKey.ts` — `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` —
 and filter out entries where `value === 0`. See `AttributesSection.tsx` for the canonical example. Do not do a raw
 `Object.keys()` loop over `attributes`.
 
@@ -93,10 +100,10 @@ import { characterManager, storageManager } from "#/lib/storage/index.ts"
 
 ### Character creation form
 
-The `/new` route renders `CharacterForm`, which uses `@tanstack/react-form` via `useAppForm` from
-`src/integrations/tanstack-form/UseAppForm.ts`. The form schema is `CharacterFormState` (
-`src/components/Character/Form/CharacterFormState.ts`). Draft state is persisted to `localStorage` by `FormPersister` (
-`shadow-sin:character-form:{id}`) and restored on mount via the form `onMount` listener.
+The `/new` route renders `CharacterBuilder`, which manages two `@tanstack/store` stores — one for the `CharacterSheet`
+draft and one for transient builder state. Both stores are persisted to `localStorage` via `StorePersister` /
+`usePersistedStore` (`shadow-sin:character-form:builder:{id}:character`). Draft state is restored from storage on
+mount and cleared on reset. The builder accepts an optional `character?: CharacterSheet` prop for edit mode.
 
 ## Conventions
 
