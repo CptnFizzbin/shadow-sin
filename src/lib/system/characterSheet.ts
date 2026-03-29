@@ -5,6 +5,7 @@ import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
+import type { ComplexFormData } from "./magic/complexFormData.ts"
 import type { SpellData } from "./magic/spellData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { QualityData } from "./qualityData.ts"
@@ -78,6 +79,7 @@ export interface CharacterSheet {
   qualities: QualityData[]
   contacts: ContactData[]
   spells: SpellData[]
+  complexForms: ComplexFormData[]
   sprites: SpriteData[]
   adeptPowers: AdeptPowerData[]
 }
