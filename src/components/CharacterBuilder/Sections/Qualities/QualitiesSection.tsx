@@ -6,11 +6,11 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { QualitiesList } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesList.tsx"
-import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesApi.ts"
+import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 
 export const QualitiesSection: FC = () => {
-  const { addQuality } = useBuilderQualitiesApi()
+  const qualitiesStore = useQualitiesStore()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
 
   return (
@@ -35,7 +35,7 @@ export const QualitiesSection: FC = () => {
         open={addDialogOpen}
         onClose={() => setAddDialogOpen(false)}
         onSave={(quality) => {
-          addQuality(quality)
+          qualitiesStore.add(quality)
           setAddDialogOpen(false)
         }}
       />

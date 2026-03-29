@@ -1,5 +1,7 @@
+import { useStore } from "@tanstack/react-store"
+
 import type { BuildPointsInfo } from "#/components/CharacterBuilder/Sections/BuildPoints/BuildPointsUtils.ts"
-import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesApi.ts"
+import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
 
 export const MAX_NEGATIVE_QUALITY_BP = 35
 
@@ -17,7 +19,8 @@ export const getQualityBpValue = (quality: {
 }
 
 export const useBuilderQualitiesBuildPoints = (): QualityBuildPoints => {
-  const { qualities } = useBuilderQualitiesApi()
+  const qualitiesStore = useQualitiesStore()
+  const qualities = useStore(qualitiesStore, (state) => state)
 
   const negativeBp = qualities
     .filter((q) => q.type === "negative")

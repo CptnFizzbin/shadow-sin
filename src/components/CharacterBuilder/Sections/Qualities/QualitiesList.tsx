@@ -1,6 +1,7 @@
 import Alert from "@mui/material/Alert"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -9,7 +10,7 @@ import {
   MAX_NEGATIVE_QUALITY_BP,
   useBuilderQualitiesBuildPoints,
 } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesUtils.ts"
-import { useBuilderQualitiesApi } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesApi.ts"
+import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/qualityData.ts"
@@ -23,7 +24,8 @@ interface QualitiesListProps {
 }
 
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
-  const { qualities, updateQuality, removeQuality } = useBuilderQualitiesApi()
+  const qualitiesStore = useQualitiesStore()
+  const qualities = useStore(qualitiesStore, (state) => state)
   const qualitiesBuildPoints = useBuilderQualitiesBuildPoints()
 
   const [editDialogState, setEditDialogState] = useState<DialogState>({
@@ -90,7 +92,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
                   key={quality.id}
                   quality={quality}
                   onClick={() => setEditDialogState({ open: true, quality })}
-                  onRemove={() => removeQuality(quality)}
+                  onRemove={() => qualitiesStore.remove(quality.id)}
                 />
               ))}
             </Stack>
@@ -103,7 +105,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
           onClose={closeDialog}
           onClosed={clearDialog}
           onSave={(quality) => {
-            updateQuality(quality)
+            qualitiesStore.update(quality)
             closeDialog()
           }}
         />

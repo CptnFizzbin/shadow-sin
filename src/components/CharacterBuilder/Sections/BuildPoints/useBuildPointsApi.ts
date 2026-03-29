@@ -1,8 +1,5 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
 import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
 import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
@@ -66,7 +63,7 @@ export const useBuilderBiologyBuildPoints = (): BpLineItem => {
 }
 
 export const useBuilderQualitiesBuildPoints = () => {
-  const qualities = useCharacterBuilderStore((sheet) => sheet.qualities)
+  const qualities = useCharacterSheet((sheet) => sheet.qualities)
 
   const positiveQualities = qualities
     .filter((q) => q.type === "positive")
@@ -91,20 +88,14 @@ export const useBuilderQualitiesBuildPoints = () => {
 }
 
 export const useBuilderSkillsBuildPoints = () => {
-  const store = useCharacterBuilderStoreContext()
+  const store = useCharacterSheetContext()
   const logicAttr = useAttrApi(AttributeKey.logic, store)
   const intuitionAttr = useAttrApi(AttributeKey.intuition, store)
 
-  const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
-  const activeSkillGroups = useCharacterBuilderStore(
-    (s) => s.skills.activeSkillGroups,
-  )
-  const knowledgeSkills = useCharacterBuilderStore(
-    (s) => s.skills.knowledgeSkills,
-  )
-  const languageSkills = useCharacterBuilderStore(
-    (state) => state.skills.languageSkills,
-  )
+  const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
+  const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
+  const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)
+  const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
