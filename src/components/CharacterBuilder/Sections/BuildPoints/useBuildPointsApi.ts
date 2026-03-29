@@ -1,3 +1,4 @@
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import {
   useCharacterBuilderStore,
   useCharacterBuilderStoreContext,
@@ -52,8 +53,8 @@ export const useBuilderBuildPointsApi = () => {
 }
 
 export const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const metatypeKey = useCharacterSheet((sheet) => sheet.biology.metatype)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost

@@ -1,5 +1,5 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 
 export function useBuilderAwakeningType() {
-  return useCharacterBuilderStore((state) => state.awakening)
+  return useCharacterSheet((sheet) => sheet.biology.awakening)
 }

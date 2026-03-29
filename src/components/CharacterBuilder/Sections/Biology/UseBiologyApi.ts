@@ -1,7 +1,7 @@
 import { useStore } from "@tanstack/react-store"
 import { produce } from "immer"
 
-import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
 import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
 import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
@@ -10,9 +10,9 @@ import type { AwakeningType } from "#/lib/system/awakeningType.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const useBuilderBiologyApi = () => {
-  const store = useCharacterBuilderStoreContext()
-  const metatypeKey = useStore(store, (state) => state.metatype)
-  const awakeningType = useStore(store, (state) => state.awakening)
+  const store = useCharacterSheetContext()
+  const metatypeKey = useStore(store, (state) => state.biology.metatype)
+  const awakeningType = useStore(store, (state) => state.biology.awakening)
 
   const resetAttributes = (
     newMetatypeKey: MetatypeType,
@@ -26,12 +26,7 @@ export const useBuilderBiologyApi = () => {
 
     store.setState(produce((draft) => {
       for (const attr of attrsToUpdate) {
-        draft.attributes[attr] = createAttrFormState({
-          value: metatype.attributes[attr].min,
-          attr,
-          metatype,
-          awakening,
-        })
+        draft.attributes[attr] = createAttrFormState({ attr, metatype, awakening }).min
       }
     }))
   }
@@ -42,14 +37,14 @@ export const useBuilderBiologyApi = () => {
 
     setMetatype(newMetatypeKey: MetatypeType) {
       store.setState(produce((draft) => {
-        draft.metatype = newMetatypeKey
+        draft.biology.metatype = newMetatypeKey
       }))
       resetAttributes(newMetatypeKey, awakeningType)
     },
 
     setAwakening(newAwakeningType: AwakeningType) {
       store.setState(produce((draft) => {
-        draft.awakening = newAwakeningType
+        draft.biology.awakening = newAwakeningType
       }))
       resetAttributes(metatypeKey, newAwakeningType)
     },
