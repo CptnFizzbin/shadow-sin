@@ -1,4 +1,5 @@
-import type { GearData, GearType } from "./gearData.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import { GearType } from "../gearType.ts"
 
 export enum ImplantType {
   cyberware = "cyberware",
@@ -13,6 +14,12 @@ export enum ImplantGrade {
 }
 
 export enum ImplantLocation {
+  head = "head",
+  eyes = "eyes",
+  ears = "ears",
+
+  torso = "torso",
+
   rightHand = "right hand",
   leftHand = "left hand",
 
@@ -25,30 +32,21 @@ export enum ImplantLocation {
   rightFoot = "right foot",
   leftFoot = "left foot",
 
-  torso = "torso",
-  eyes = "eyes",
-  ears = "ears",
 }
 
-export interface ImplantData extends GearData {
+export interface ImplantData extends ItemData {
   itemType: GearType.implant
-  implantType: ImplantType | string
-  essenceCost: number
-  rating?: number
-  grade?: ImplantGrade | string
+  implantType?: ImplantType | string
 
-  location: ImplantLocation | string
+  grade?: ImplantGrade
+  essenceCost: number
+
+  location?: ImplantLocation
 
   capacity?: number
-
-  attachments?: ImplantAttachmentData[]
+  capacityCost?: number
 }
 
-export interface ImplantAttachmentData extends GearData {
-  type: string
-
-  essenceCost: number
-  capacityCost: number
-
-  rating?: number
+export function isImplant(item: ItemData): item is ImplantData {
+  return item.itemType === GearType.implant
 }

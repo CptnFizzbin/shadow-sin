@@ -1,75 +1,86 @@
-import type { ReadonlyStore, Store } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
+import type { UUID } from "node:crypto"
+
+import type { BaseAtom, Store } from "@tanstack/store"
+import { batch, createStore } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface RemoveItemOptions {
   removeChildren?: boolean
 }
 
-export interface GearApi {
-  store: ReadonlyStore<Record<string, ItemData>>
-
-  set(item: ItemData): void
-
-  set(itemId: string, item: ItemData): void
+export interface GearApi extends BaseAtom<Record<UUID, ItemData>> {
+  set(item: ItemData): ItemData
 
   add(item: Omit<ItemData, "id">): ItemData
 
   remove(item: ItemData, options?: RemoveItemOptions): void
 
-  remove(itemId: string, options?: RemoveItemOptions): void
+  setParent(child: ItemData, parent: ItemData): ItemData
 
-  addChild(parent: ItemData, child: ItemData): void
-
-  addChild(parentId: string, child: ItemData): void
-
-  addChild(parent: ItemData, childId: string): void
-
-  addChild(parentId: string, childId: string): void
-
+  addChild(parent: ItemData, child: ItemData): ItemData
 }
 
-export function createGearApi<TState extends { gear: Record<string, ItemData> }>(
-  store: Store<TState>,
-): GearApi {
+export function createGearApi(store: Store<CharacterSheet>): GearApi {
   const gearStore = createStore(() => store.state.gear)
-  const getItem = (id: string) => store.state.gear[id]
+
+  const updateListLinks = (updatedItem: ItemData) => {
+    store.setState(produce((prev) => {
+      for (const savedItem of Object.values(prev.gear)) {
+        savedItem.childIds ??= []
+        if (savedItem.id === updatedItem.parentId) {
+          if (!savedItem.childIds.includes(updatedItem.id)) {
+            savedItem.childIds.push(savedItem.id)
+          }
+        } else {
+          savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)
+        }
+
+        updatedItem.childIds ??= []
+        if (updatedItem.childIds.includes(savedItem.id)) {
+          savedItem.parentId = updatedItem.id
+        } else {
+          if (savedItem.parentId === updatedItem.id) {
+            savedItem.parentId = undefined
+          }
+        }
+      }
+    }))
+  }
 
   const gearApi: GearApi = {
-    store: gearStore,
+    get() {
+      return gearStore.get()
+    },
+
+    subscribe(listener) {
+      return gearStore.subscribe(listener)
+    },
 
     add(item) {
-      const newItem = { ...item, id: crypto.randomUUID() }
-      gearApi.set(newItem)
-      return newItem
+      return gearApi.set({ ...item, id: crypto.randomUUID() })
     },
 
-    set(...args: [ItemData] | [string, ItemData]) {
-      store.setState(produce((prev) => {
-        if (args.length === 1) {
-          const [item] = args
+    setParent(child, parent) {
+      return gearApi.set({ ...child, parentId: parent.id })
+    },
+
+    addChild(parent, child) {
+      return gearApi.set({ ...child, parentId: parent.id })
+    },
+
+    set(item) {
+      batch(() => {
+        store.setState(produce((prev) => {
           prev.gear[item.id] = item
-        } else {
-          const [itemId, item] = args
-          prev.gear[itemId] = item
-        }
-      }))
-    },
+        }))
 
-    addChild(parentOrId, childOrId) {
-      const parent = getItem(resolveItemId(parentOrId))
-      const child = getItem(resolveItemId(childOrId))
-      if (!parent || !child) return
+        updateListLinks(item)
+      })
 
-      store.setState(produce((prev) => {
-        const childItem = prev.gear[child.id]
-        childItem.parentId = parent.id
-
-        const childIds = prev.gear[parent.id].childIds ??= []
-        childIds.push(child.id)
-      }))
+      return item
     },
 
     remove(item, options = { removeChildren: false }) {
@@ -85,23 +96,20 @@ export function createGearApi<TState extends { gear: Record<string, ItemData> }>
           }
         }
 
-        function recursiveRemove(itemId: string) {
-          const targetItem = prev.gear[itemId]
-          if (!targetItem) return
-
+        function recursiveRemove(targetItem: ItemData) {
           for (const childId of targetItem.childIds ?? []) {
-            recursiveRemove(childId)
+            const childItem = prev.gear[childId]
+            recursiveRemove(childItem)
           }
 
           removeItem(targetItem)
         }
 
-        const targetId = typeof item === "string" ? item : item.id
-        const targetItem = prev.gear[targetId]
+        const targetItem = prev.gear[item.id]
         if (!targetItem) return
 
         if (options.removeChildren) {
-          recursiveRemove(targetId)
+          recursiveRemove(targetItem)
         } else {
           removeItem(targetItem)
         }
@@ -110,8 +118,4 @@ export function createGearApi<TState extends { gear: Record<string, ItemData> }>
   }
 
   return gearApi
-}
-
-const resolveItemId = (itemOrId: ItemData | string): string => {
-  return typeof itemOrId === "string" ? itemOrId : itemOrId.id
 }

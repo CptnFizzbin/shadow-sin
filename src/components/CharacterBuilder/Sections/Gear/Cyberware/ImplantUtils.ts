@@ -1,8 +1,5 @@
-import {
-  ImplantGrade,
-  ImplantType,
-} from "#/lib/system/gear/implantData.ts"
-import type { ImplantFormState } from "./Forms/ImplantFormState.ts"
+import type { ImplantData, ImplantType } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade } from "#/lib/system/gear/implantData.ts"
 
 export const BASE_ESSENCE = 6
 
@@ -20,18 +17,20 @@ export const ImplantGradeNuyenMultiplier: Record<ImplantGrade, number> = {
   [ImplantGrade.delta]: 10,
 }
 
-export function getImplantEffectiveEssenceCost(item: ImplantFormState): number {
+export function getImplantEffectiveEssenceCost(item: ImplantData): number {
+  const essenceCost = item.essenceCost ?? 0
   const multiplier =
     ImplantGradeEssenceMultiplier[item.grade as ImplantGrade]
     ?? ImplantGradeEssenceMultiplier[ImplantGrade.standard]
-  return item.essenceCost * multiplier
+  return essenceCost * multiplier
 }
 
-export function getImplantEffectiveNuyenCost(item: ImplantFormState): number {
+export function getImplantEffectiveNuyenCost(item: ImplantData): number {
+  const nuyenCost = item.cost ?? 0
   const multiplier =
     ImplantGradeNuyenMultiplier[item.grade as ImplantGrade]
     ?? ImplantGradeNuyenMultiplier[ImplantGrade.standard]
-  return item.cost * multiplier
+  return nuyenCost * multiplier
 }
 
 export interface ImplantEssenceSummary {
@@ -40,57 +39,4 @@ export interface ImplantEssenceSummary {
   higherType: ImplantType | null
   effectiveEssenceUsed: number
   remainingEssence: number
-}
-
-export function calculateImplantEssence(
-  implants: ImplantFormState[],
-): ImplantEssenceSummary {
-  const cyberwareTotal = implants
-    .filter(
-      (implant) =>
-        implant.implantType === ImplantType.cyberware
-        || implant.implantType === "cyberware",
-    )
-    .reduce((sum, implant) => sum + getImplantEffectiveEssenceCost(implant), 0)
-
-  const biowareTotal = implants
-    .filter(
-      (implant) =>
-        implant.implantType === ImplantType.bioware
-        || implant.implantType === "bioware",
-    )
-    .reduce((sum, implant) => sum + getImplantEffectiveEssenceCost(implant), 0)
-
-  const higherType: ImplantType | null =
-    cyberwareTotal === 0 && biowareTotal === 0
-      ? null
-      : cyberwareTotal >= biowareTotal
-        ? ImplantType.cyberware
-        : ImplantType.bioware
-
-  const effectiveEssenceUsed =
-    higherType === ImplantType.cyberware
-      ? cyberwareTotal + biowareTotal * 0.5
-      : higherType === ImplantType.bioware
-        ? biowareTotal + cyberwareTotal * 0.5
-        : 0
-
-  const remainingEssence = BASE_ESSENCE - effectiveEssenceUsed
-
-  return {
-    cyberwareTotal,
-    biowareTotal,
-    higherType,
-    effectiveEssenceUsed,
-    remainingEssence,
-  }
-}
-
-export function wouldExceedEssence(
-  currentImplants: ImplantFormState[],
-  newImplant: ImplantFormState,
-): boolean {
-  const withNew = [...currentImplants, newImplant]
-  const { remainingEssence } = calculateImplantEssence(withNew)
-  return remainingEssence <= 0
 }

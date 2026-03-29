@@ -3,7 +3,7 @@ import { produce } from "immer"
 
 import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
-import type { MetatypeKey } from "#/lib/system/MetatypeData.ts"
+import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { AwakeningType } from "#/lib/system/awakeningType.ts"
@@ -15,7 +15,7 @@ export const useBuilderBiologyApi = () => {
   const awakeningType = useStore(store, (state) => state.awakening)
 
   const resetAttributes = (
-    newMetatypeKey: MetatypeKey,
+    newMetatypeKey: MetatypeType,
     newAwakeningType: AwakeningType,
   ) => {
     const metatype = metatypes[newMetatypeKey]
@@ -40,7 +40,7 @@ export const useBuilderBiologyApi = () => {
     metatypeKey,
     awakeningType,
 
-    setMetatype(newMetatypeKey: MetatypeKey) {
+    setMetatype(newMetatypeKey: MetatypeType) {
       store.setState(produce((draft) => {
         draft.metatype = newMetatypeKey
       }))

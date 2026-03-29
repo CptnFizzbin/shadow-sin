@@ -1,9 +1,4 @@
-import type {
-  ActiveSkillFormState,
-  ActiveSkillGroupFormState,
-  KnowledgeSkillFormState,
-  LanguageSkillFormState,
-} from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
+import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
 
 export const ActiveSkillBpPerRating = 4
 export const ActiveSkillGroupBpPerRating = 10
@@ -28,65 +23,75 @@ export const getMaxSkillPoints = (logic: number, intuition: number): number => {
 }
 
 export const getActiveSkillBp = (
-  rating: number,
-  hasSpecialization: boolean,
+  skill: ActiveSkillData,
 ): number => {
-  return (
-    rating * ActiveSkillBpPerRating
-    + (hasSpecialization ? ActiveSkillSpecializationBp : 0)
-  )
+  const baseSp = skill.rating * ActiveSkillBpPerRating
+
+  const specializationSp =
+    skill.specialization
+      ? ActiveSkillSpecializationBp
+      : 0
+
+  return baseSp + specializationSp
 }
 
-export const getActiveSkillGroupBp = (rating: number): number => {
-  return rating * ActiveSkillGroupBpPerRating
+export const getActiveSkillGroupBp = (group: SkillGroupData): number => {
+  return group.rating * ActiveSkillGroupBpPerRating
 }
 
 export const getKnowledgeSkillSp = (
-  rating: number,
-  hasSpecialization: boolean,
+  skill: KnowledgeSkillData,
 ): number => {
-  return (
-    rating * KnowledgeSkillSpPerRating
-    + (hasSpecialization ? KnowledgeSpecializationSp : 0)
-  )
+  const baseSp = skill.rating * KnowledgeSkillSpPerRating
+
+  const specializationSp =
+    skill.specialization
+      ? KnowledgeSpecializationSp
+      : 0
+
+  return baseSp + specializationSp
 }
 
-export const getLanguageSkillSp = (
-  isNative: boolean,
-  rating: number,
-  hasSpecialization: boolean,
-): number => {
-  if (isNative) return hasSpecialization ? LanguageSpecializationSp : 0
-  return (
-    rating * LanguageSkillSpPerRating
-    + (hasSpecialization ? LanguageSpecializationSp : 0)
-  )
+export const getLanguageSkillSp = (skill: LanguageSkillData): number => {
+  const baseSp =
+    skill.rating === "native"
+      ? 0
+      : skill.rating * LanguageSkillSpPerRating
+
+  const specializationSp =
+    skill.lingo
+      ? LanguageSpecializationSp
+      : 0
+
+  return baseSp + specializationSp
 }
 
 export const calculateActiveSkillsBp = (
-  activeSkills: ActiveSkillFormState[],
-  activeSkillGroups: ActiveSkillGroupFormState[],
+  activeSkills: ActiveSkillData[],
+  activeSkillGroups: SkillGroupData[],
 ): number => {
   const skillsBp = activeSkills.reduce((total, skill) => {
-    return total + getActiveSkillBp(skill.rating, !!skill.specialization)
+    return total + getActiveSkillBp(skill)
   }, 0)
+
   const groupsBp = activeSkillGroups.reduce((total, group) => {
-    return total + getActiveSkillGroupBp(group.rating)
+    return total + getActiveSkillGroupBp(group)
   }, 0)
+
   return skillsBp + groupsBp
 }
 
 export const calculateKnowledgeAndLanguageSpUsed = (
-  knowledgeSkills: KnowledgeSkillFormState[],
-  languageSkills: LanguageSkillFormState[],
+  knowledgeSkills: KnowledgeSkillData[],
+  languageSkills: LanguageSkillData[],
 ): number => {
   const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
-    return total + getKnowledgeSkillSp(skill.rating, !!skill.specialization)
+    return total + getKnowledgeSkillSp(skill)
   }, 0)
   const languageSp = languageSkills.reduce((total, skill) => {
     return (
       total
-      + getLanguageSkillSp(skill.isNative, skill.rating, !!skill.specialization)
+      + getLanguageSkillSp(skill)
     )
   }, 0)
   return knowledgeSp + languageSp

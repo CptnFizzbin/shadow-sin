@@ -1,7 +1,7 @@
 import type { MetatypeData } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { AwakeningData } from "#/lib/system/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface AttrFormState {
   min: number
@@ -20,7 +20,7 @@ export function createAttrFormState({
   attr: AttributeKey
   metatype: MetatypeData
   awakening: AwakeningData
-  character?: PlayerCharacterData
+  character?: CharacterSheet
   value?: number
 }): AttrFormState {
   const state: AttrFormState = {

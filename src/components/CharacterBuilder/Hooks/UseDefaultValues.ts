@@ -1,15 +1,14 @@
+import { NULL_CHARACTER_ID } from "#/components/Character/CreateDefaultCharacterSheet.ts"
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType.ts"
-import { MetatypeKey, metatypes } from "#/lib/system/MetatypeData.ts"
+import { metatypes, MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
-
-export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface UseDefaultValuesOptions {
-  character?: PlayerCharacterData
+  character?: CharacterSheet
 }
 
 export const useDefaultValues = ({
@@ -18,7 +17,7 @@ export const useDefaultValues = ({
   const characterId = character?.id ?? NULL_CHARACTER_ID
   const { profile, biology } = character || {}
 
-  const metatype = metatypes[biology?.metatype || MetatypeKey.Human]
+  const metatype = metatypes[biology?.metatype || MetatypeType.Human]
   const awakening = awakenings[biology?.awakening || AwakeningType.Mundane]
 
   return {

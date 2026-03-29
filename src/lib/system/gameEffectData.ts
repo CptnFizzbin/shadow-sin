@@ -1,6 +1,6 @@
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export enum GearEffectType {
+export enum GameEffectType {
   setModifier = "setModifier",
   attrBonus = "attrBonus",
   skillBonus = "skillBonus",
@@ -20,8 +20,8 @@ export type GearEffectTarget =
   | `damage.soak`
   | `weapon.recoil`
 
-export interface GearEffectData {
-  type: GearEffectType | string
+export interface GameEffectData {
+  type: GameEffectType | string
   target?: GearEffectTarget
   value: number
 }

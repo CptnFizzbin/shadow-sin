@@ -7,19 +7,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { ImplantFormFields } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormFields.tsx"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
 import {
   implantFieldMap,
   useImplantForm,
 } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
   open: boolean
-  implant?: ImplantFormState
+  implant?: ImplantData
   onClose: () => void
   onClosed?: () => void
-  onSave: (implant: ImplantFormState) => void
-  label?: string
+  onSave: (implant: ImplantData) => void
 }
 
 export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
@@ -28,16 +27,11 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  label = "Implant",
 }) => {
   const editMode = !!implant
-  const title = editMode ? `Edit ${label}` : `Add ${label}`
+  const title = editMode ? `Edit Implant` : `Add Implant`
 
-  const form = useImplantForm(
-    editMode
-      ? { mode: "edit", implant, onSubmit: onSave }
-      : { mode: "create", onSubmit: onSave },
-  )
+  const form = useImplantForm({ implant, onSubmit: onSave })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

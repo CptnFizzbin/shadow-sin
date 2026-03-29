@@ -1,5 +1,5 @@
 import type { LifestyleType } from "#/lib/system/LifestyleType.ts"
-import type { MetatypeKey } from "#/lib/system/MetatypeData.ts"
+import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import type { ItemData } from "./ItemData.ts"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
@@ -7,11 +7,11 @@ import type { ContactData } from "./contactData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { SpellData } from "./magic/spellData.ts"
 import type { QualityData } from "./qualityData.ts"
-import type { SkillData } from "./skillData.ts"
+import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
-export interface PlayerCharacterData {
+export interface CharacterSheet {
   id: string
-  version: number
+  version: string
 
   profile: {
     alias: string
@@ -26,13 +26,12 @@ export interface PlayerCharacterData {
 
     lifestyle?: {
       quality: LifestyleType
-      cost: number
       monthsPaid: number
     }
   }
 
   biology: {
-    metatype: MetatypeKey
+    metatype: MetatypeType
     awakening: AwakeningType
     gender?: string
     age?: number
@@ -67,20 +66,16 @@ export interface PlayerCharacterData {
   }
 
   gear: Record<string, ItemData>
-  skills: Record<string, SkillData>
+
+  skills: {
+    activeSkills: ActiveSkillData[]
+    skillGroups: SkillGroupData[]
+    knowledgeSkills: KnowledgeSkillData[]
+    languageSkills: LanguageSkillData[]
+  }
+
   qualities: QualityData[]
   contacts: ContactData[]
-
-  spellcasting?: {
-    knownSpells: SpellData[]
-  }
-
-  adept?: {
-    powerPoints: {
-      spent: number
-      max: number
-    }
-
-    powers: AdeptPowerData[]
-  }
+  spells: SpellData[]
+  adeptPowers: AdeptPowerData[]
 }

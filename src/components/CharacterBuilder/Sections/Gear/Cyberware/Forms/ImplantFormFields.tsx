@@ -115,7 +115,7 @@ export const ImplantFormFields = withFieldGroup({
           >
             {(field) => (
               <field.NumberField
-                label="Base Cost (¥)"
+                label="Base Cost"
                 size="small"
                 sx={{ flex: 1 }}
               />
@@ -140,16 +140,64 @@ export const ImplantFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
-        <group.AppField name="location">
-          {(field) => (
-            <field.SelectField
-              label="Location"
-              fullWidth
-              size="small"
-              options={implantLocationOptions}
-            />
+        <group.Subscribe selector={({ values }) => values.parentId}>
+          {(parentId) => (
+            <>
+              <Stack direction="row" gap={1}>
+                {parentId
+                  ? (
+                      <group.AppField
+                        name="capacityCost"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity Cost"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )
+                  : (
+                      <group.AppField
+                        name="capacity"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )}
+              </Stack>
+
+              {!parentId && (
+                <group.AppField name="location">
+                  {(field) => (
+                    <field.SelectField
+                      label="Location"
+                      fullWidth
+                      size="small"
+                      options={implantLocationOptions}
+                    />
+                  )}
+                </group.AppField>
+              )}
+            </>
           )}
-        </group.AppField>
+        </group.Subscribe>
 
         <AvailabilityFieldGroup form={group} fields={implantFieldMap} />
         <SourceFieldGroup form={group} fields={implantFieldMap} />

@@ -6,15 +6,17 @@ import { createStore } from "@tanstack/store"
 import type { FC } from "react"
 import { useEffect, useMemo, useRef } from "react"
 
-import { CharacterStoreProvider, useCharacterStoreContext } from "#/components/Character/CharacterStoreProvider.tsx"
+import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
 import { Header } from "#/components/UI/Header.tsx"
+import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
-  loader: async ({ params }): Promise<PlayerCharacterData> => {
-    await characterManager.ensureCharacters([])
+  loader: async ({ params }): Promise<CharacterSheet> => {
+    await characterManager.ensureCharacters([Artemis])
     const character = await characterManager.getCharacter(params.characterId)
 
     if (!character) {
@@ -26,11 +28,11 @@ export const Route = createFileRoute("/$characterId")({
 })
 
 const CharacterStorePersistence: FC = () => {
-  const characterStore = useCharacterStoreContext()
+  const characterStore = useCharacterSheetContext()
   const character = useStore(characterStore, (state) => state)
   const hasMountedRef = useRef(false)
   const characterSaveThrottler = useThrottler(
-    (nextCharacter: PlayerCharacterData) => {
+    (nextCharacter: CharacterSheet) => {
       void characterManager.saveCharacter(nextCharacter)
     },
     {
@@ -60,7 +62,7 @@ function CharacterRoute() {
   const store = useMemo(() => createStore(character), [character])
 
   return (
-    <CharacterStoreProvider store={store}>
+    <CharacterSheetProvider store={store}>
       <CharacterStorePersistence />
 
       <Stack spacing={2}>
@@ -68,6 +70,6 @@ function CharacterRoute() {
 
         <Outlet />
       </Stack>
-    </CharacterStoreProvider>
+    </CharacterSheetProvider>
   )
 }

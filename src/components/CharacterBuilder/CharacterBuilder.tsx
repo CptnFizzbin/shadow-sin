@@ -1,8 +1,10 @@
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
+import { createStore } from "@tanstack/store"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
 import { useDefaultValues } from "#/components/CharacterBuilder/Hooks/UseDefaultValues.ts"
@@ -20,13 +22,15 @@ import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resource
 import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface CharacterFormProps {
-  character?: PlayerCharacterData
+  character?: CharacterSheet
 }
 
-export const CharacterForm: FC<CharacterFormProps> = ({ character }) => {
+export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
+  const characterStore = createStore(character || createDefaultCharacterSheet())
+
   const store = useRootCharacterBuilderStore(character)
   const defaultValues = useDefaultValues({ character })
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)

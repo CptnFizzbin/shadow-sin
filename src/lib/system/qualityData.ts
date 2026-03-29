@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { GearEffectData } from "#/lib/system/gearEffectData.ts"
+import type { GameEffectData } from "#/lib/system/gameEffectData.ts"
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface QualityData {
@@ -10,7 +10,7 @@ export interface QualityData {
   bpValue?: number
   description?: string
   source?: SourceData
-  effects?: GearEffectData[]
+  effects?: GameEffectData[]
   incompatibleWith?: string[]
 }
 

@@ -1,17 +1,20 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useStore } from "@tanstack/react-store"
+
+import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
-  const knowledgeSkills = useCharacterBuilderStore((state) => state.skills.knowledgeSkills)
-  const languageSkills = useCharacterBuilderStore((state) => state.skills.languageSkills)
+  const skillsStore = useSkillsStore()
+  const knowledgeSkills = useStore(skillsStore, (state) => state.knowledgeSkills)
+  const languageSkills = useStore(skillsStore, (state) => state.languageSkills)
 
   const statuses: AlertInfo[] = []
 
   // Rating constraints (same rules as active skills)
-  const allRatings = [
-    ...knowledgeSkills.map((s) => s.rating),
-    ...languageSkills.filter((s) => !s.isNative).map((s) => s.rating),
-  ]
+  const allRatings = [...knowledgeSkills, ...languageSkills]
+    .map((s) => s.rating)
+    .filter((r) => r !== "native")
+
   const r6Count = allRatings.filter((r) => r >= 6).length
   const r5Count = allRatings.filter((r) => r === 5).length
   const aboveR4Count = allRatings.filter((r) => r > 4).length
@@ -43,7 +46,7 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
     })
   }
 
-  const nativeCount = languageSkills.filter((s) => s.isNative).length
+  const nativeCount = languageSkills.filter((s) => s.rating === "native").length
   if (nativeCount > 1) {
     statuses.push({
       section: "Skills",

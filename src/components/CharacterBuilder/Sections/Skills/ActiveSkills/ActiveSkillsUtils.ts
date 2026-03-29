@@ -1,30 +1,29 @@
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/SkillGroupUtils.ts"
-import type {
-  ActiveSkillFormState,
-  ActiveSkillGroupFormState,
-} from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
+import type { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
+import type { SkillKey } from "#/lib/system/SkillKey.ts"
+import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
 
 export function getDisabledSkills(
-  activeSkills: ActiveSkillFormState[],
-  activeSkillGroups: ActiveSkillGroupFormState[],
-  editingSkillId: string | null,
+  activeSkills: ActiveSkillData[],
+  activeSkillGroups: SkillGroupData[],
+  editingSkillName: SkillKey | null,
 ): Set<string> {
   const skillsCoveredByGroups = new Set<string>(
-    activeSkillGroups.flatMap((group) => getSkillsInGroup(group.groupName)),
+    activeSkillGroups.flatMap((group) => getSkillsInGroup(group.name)),
   )
   return new Set<string>([
-    ...activeSkills.filter((s) => s.id !== editingSkillId).map((s) => s.name),
+    ...activeSkills.filter((s) => s.name !== editingSkillName).map((s) => s.name),
     ...skillsCoveredByGroups,
   ])
 }
 
 export function getDisabledGroups(
-  activeSkillGroups: ActiveSkillGroupFormState[],
-  editingGroupId: string | null,
+  activeSkillGroups: SkillGroupData[],
+  editingGroupName: SkillGroupKey | null,
 ): Set<string> {
   return new Set<string>(
     activeSkillGroups
-      .filter((g) => g.id !== editingGroupId)
-      .map((g) => g.groupName),
+      .filter((g) => g.name !== editingGroupName)
+      .map((g) => g.name),
   )
 }

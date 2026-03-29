@@ -6,7 +6,7 @@ import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/Sou
 import {
   gearItemFieldMap,
   gearItemFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseGearItemForm.tsx"
+} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 
 export const GearItemFormFields = withFieldGroup({

@@ -1,5 +1,13 @@
+import type { ItemData } from "#/lib/system/ItemData.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { GearData, GearType } from "./gearData.ts"
+import { GearType } from "../gearType.ts"
+
+export enum FirearmAttachmentPoint {
+  Internal = "Internal",
+  Top = "Top",
+  Under = "Under",
+  Barrel = "Barrel",
+}
 
 export enum WeaponType {
   melee = "melee",
@@ -10,7 +18,7 @@ export enum WeaponType {
   other = "other",
 }
 
-export interface WeaponData extends GearData {
+export interface WeaponData extends ItemData {
   dmg: string
   ap?: number
   itemType: GearType.weapon
@@ -64,15 +72,6 @@ export interface FirearmData extends WeaponData {
     long: number
     extreme: number
   }
-
-  attachments?: {
-    mounts?: {
-      top?: null | GearData
-      under?: null | GearData
-      barrel?: null | GearData
-    }
-    internal: GearData[]
-  }
 }
 
 export interface MeleeWeaponData extends WeaponData {
@@ -90,8 +89,37 @@ export interface ProjectileWeaponData extends WeaponData {
   range: number
 }
 
-export interface FirearmAccessoryData extends GearData {
+export interface FirearmAccessoryData extends ItemData {
   itemType: GearType.firearmAccessory
   enabled?: boolean
-  mountPoints: Array<"top" | "under" | "barrel" | "internal">
+  mountPoints: FirearmAttachmentPoint[]
+  parentSlot?: FirearmAttachmentPoint
+}
+
+export function isWeaponData(item: ItemData): item is WeaponData {
+  return item.itemType === GearType.weapon
+}
+
+export function isFirearmData(item: ItemData): item is FirearmData {
+  return isWeaponData(item) && item.weaponType === WeaponType.firearm
+}
+
+export function isMeleeWeaponData(item: ItemData): item is MeleeWeaponData {
+  return isWeaponData(item) && item.weaponType === WeaponType.melee
+}
+
+export function isThrownWeaponData(item: ItemData): item is ThrownWeaponData {
+  return isWeaponData(item) && item.weaponType === WeaponType.thrown
+}
+
+export function isProjectileWeaponData(
+  item: ItemData,
+): item is ProjectileWeaponData {
+  return isWeaponData(item) && item.weaponType === WeaponType.projectile
+}
+
+export function isFirearmAccessoryData(
+  item: ItemData,
+): item is FirearmAccessoryData {
+  return item.itemType === GearType.firearmAccessory
 }

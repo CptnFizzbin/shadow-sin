@@ -1,12 +1,11 @@
-import type { GearData, GearType } from "#/lib/system/gear/gearData.ts"
-import type {
-  LicenseData,
-  VerificationData,
-} from "#/lib/system/gear/licenseData.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
-export interface SinData extends GearData {
+export interface SinData extends ItemData {
   itemType: GearType.sin
-  verification: VerificationData
-  cost?: number
-  licenses?: LicenseData[]
+  rating: "real" | number
+}
+
+export function isSinData(item: ItemData): item is SinData {
+  return item.itemType === GearType.sin
 }

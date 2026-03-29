@@ -1,32 +1,28 @@
+import type { UUID } from "node:crypto"
+
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
+import { NullGearId } from "#/components/Gear/GearUtils.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
+import type { ImplantData } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
-export type ImplantEditFormOptions = {
-  mode: "edit"
-  implant: ImplantFormState
-  onSubmit: (implant: ImplantFormState) => void
+export interface ImplantFormOptions {
+  implant?: ImplantData
+  parentId?: UUID
+  onSubmit: (implant: ImplantData) => void
 }
 
-export type ImplantCreateFormOptions = {
-  mode: "create"
-  onSubmit: (implant: ImplantFormState) => void
-}
-
-export type ImplantFormOptions =
-  | ImplantEditFormOptions
-  | ImplantCreateFormOptions
-
-const defaultFormValues: ImplantFormState = {
-  id: "",
+const defaultFormValues: ImplantData = {
+  itemType: GearType.implant,
+  id: NullGearId,
   name: "",
   cost: 0,
   essenceCost: 0,
   grade: ImplantGrade.standard,
   implantType: ImplantType.cyberware,
-  location: "",
+  location: ImplantLocation.head,
   description: "",
   availability: undefined,
   source: undefined,
@@ -39,20 +35,14 @@ export const implantFormOpts = formOptions({
 })
 
 export const useImplantForm = (options: ImplantFormOptions) => {
-  const defaults =
-    options.mode === "edit"
-      ? {
-          ...defaultFormValues,
-          ...options.implant,
-        }
-      : {
-          ...defaultFormValues,
-          id: crypto.randomUUID(),
-        }
-
   return useAppForm({
     ...implantFormOpts,
-    defaultValues: defaults,
+    defaultValues: {
+      ...defaultFormValues,
+      id: crypto.randomUUID(),
+      parentId: options.parentId,
+      ...options.implant,
+    },
     onSubmit: ({ value }) => options.onSubmit(value),
   })
 }

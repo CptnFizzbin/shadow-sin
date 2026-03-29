@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
@@ -6,29 +8,22 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
 import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemCard.tsx"
+import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
 
 type DialogState =
   | null
-  | { mode: "create", parentId?: string, open: boolean }
-  | { mode: "edit", item: GearItemFormState, open: boolean }
+  | { mode: "create", parentId?: UUID, open: boolean }
+  | { mode: "edit", item: ItemData, open: boolean }
 
 interface GearItemsListProps {
-  items: GearItemFormState[]
-  onAdd: (item: GearItemFormState) => void
-  onUpdate: (item: GearItemFormState) => void
-  onRemove: (item: GearItemFormState) => void
-  label?: string
+  items: ItemData[]
+  itemType?: string
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({
-  items,
-  onAdd,
-  onUpdate,
-  onRemove,
-  label = "Item",
-}) => {
+export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items }) => {
+  const gearApi = useGearApi()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   const topLevelItems = items.filter((item) => !item.parentId)
@@ -43,15 +38,19 @@ export const GearItemsList: FC<GearItemsListProps> = ({
     setDialogState(null)
   }
 
-  const handleAdd = (item: GearItemFormState) => {
-    const parentId =
-      dialogState?.mode === "create" ? dialogState.parentId : undefined
-    onAdd(parentId ? { ...item, parentId } : item)
+  const handleAdd = (item: ItemData) => {
+    const parentId = dialogState?.mode === "create" ? dialogState.parentId : undefined
+
+    if (parentId)
+      gearApi.add({ ...item, parentId })
+    else
+      gearApi.add(item)
+
     onDialogClose()
   }
 
-  const handleUpdate = (item: GearItemFormState) => {
-    onUpdate(item)
+  const handleUpdate = (item: ItemData) => {
+    gearApi.set(item)
     onDialogClose()
   }
 
@@ -65,7 +64,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
             <GearItemCard
               item={item}
               onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-              onRemove={() => onRemove(item)}
+              onRemove={() => gearApi.remove(item)}
             />
 
             <Stack
@@ -85,7 +84,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
                   item={subItem}
                   onEdit={() =>
                     setDialogState({ mode: "edit", item: subItem, open: true })}
-                  onRemove={() => onRemove(subItem)}
+                  onRemove={() => gearApi.remove(subItem)}
                 />
               ))}
 
@@ -117,13 +116,13 @@ export const GearItemsList: FC<GearItemsListProps> = ({
         color="secondary"
         fullWidth
       >
-        Add {label}
+        Add {itemType}
       </Button>
 
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
           open={dialogState.open}
-          label={dialogState.parentId ? `${label} sub-item` : label}
+          label={dialogState.parentId ? `${itemType} sub-item` : itemType}
           onSave={handleAdd}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
@@ -134,7 +133,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({
         <GearItemFormDialog
           open={dialogState.open}
           item={dialogState.item}
-          label={dialogState.item.parentId ? `${label} sub-item` : label}
+          label={dialogState.item.parentId ? `${itemType} sub-item` : itemType}
           onSave={handleUpdate}
           onClose={onDialogClose}
           onClosed={onDialogClosed}

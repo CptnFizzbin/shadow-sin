@@ -1,25 +1,17 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
-export type GearItemEditFormOptions = {
-  mode: "edit"
-  item: GearItemFormState
-  onSubmit: (item: GearItemFormState) => void
+export interface ItemFormOptions {
+  item?: ItemData
+  onSubmit: (item: ItemData) => void
 }
 
-export type GearItemCreateFormOptions = {
-  mode: "create"
-  onSubmit: (item: GearItemFormState) => void
-}
-
-export type GearItemFormOptions =
-  | GearItemEditFormOptions
-  | GearItemCreateFormOptions
-
-const defaultFormValues: GearItemFormState = {
-  id: "",
+const defaultFormValues: ItemData = {
+  id: "00000000-0000-0000-0000-000000000000",
+  itemType: GearType.other,
   name: "",
   cost: 0,
   quantity: 1,
@@ -41,13 +33,13 @@ export const gearItemFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
 
-export const useGearItemForm = (options: GearItemFormOptions) => {
+export const useItemForm = ({ item, onSubmit }: ItemFormOptions) => {
   const defaults: typeof defaultFormValues =
-    options.mode === "edit"
+    typeof item !== "undefined"
       ? {
           ...defaultFormValues,
-          ...options.item,
-          quantity: options.item.quantity ?? 1,
+          ...item,
+          quantity: item.quantity ?? 1,
         }
       : {
           ...defaultFormValues,
@@ -57,6 +49,6 @@ export const useGearItemForm = (options: GearItemFormOptions) => {
   return useAppForm({
     ...gearItemFormOpts,
     defaultValues: defaults,
-    onSubmit: ({ value }) => options.onSubmit(value),
+    onSubmit: ({ value }) => onSubmit(value),
   })
 }

@@ -1,32 +1,26 @@
+import type { UUID } from "node:crypto"
+
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { LicenseFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getLicenseCost } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
+import { getLicenseCost } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseUtils.ts"
+import { NullGearId } from "#/components/Gear/GearUtils.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
-export type LicenseEditFormOptions = {
-  mode: "edit"
-  license: LicenseFormState
-  onSubmit: (data: LicenseFormState) => void
-}
-
-export type LicenseCreateFormOptions = {
-  mode: "create"
-  sinId: string
+export interface LicenseFormOptions {
+  parentId?: UUID
+  license?: LicenseData
   sinReal: boolean
-  onSubmit: (data: LicenseFormState) => void
+  onSubmit: (data: LicenseData) => void
 }
 
-export type LicenseFormOptions =
-  | LicenseEditFormOptions
-  | LicenseCreateFormOptions
-
-const defaultValues: LicenseFormState = {
-  id: "",
+const defaultValues: LicenseData = {
+  itemType: GearType.license,
+  id: NullGearId,
   name: "",
-  sinId: "",
-  rating: "1",
-  cost: getLicenseCost("1"),
+  rating: 1,
+  cost: 0,
 }
 
 export const licenseFieldMap = createFieldMap(defaultValues)
@@ -35,33 +29,18 @@ export const licenseFormOpts = formOptions({
   defaultValues,
 })
 
-export const useLicenseForm = (options: LicenseFormOptions) => {
-  const { mode } = options
-
-  let initialValues: LicenseFormState
-  if (mode === "edit") {
-    initialValues = options.license
-  } else {
-    const rating = options.sinReal ? "real" : "1"
-
-    initialValues = {
-      id: crypto.randomUUID(),
-      name: "",
-      sinId: options.sinId,
-      rating: rating,
-      cost: getLicenseCost(rating),
-    }
-  }
-
+export const useLicenseForm = ({ parentId, license, onSubmit }: LicenseFormOptions) => {
   return useAppForm({
     ...licenseFormOpts,
-    defaultValues: initialValues,
+    defaultValues: {
+      ...defaultValues,
+      id: crypto.randomUUID(),
+      parentId: parentId,
+      ...license,
+    },
     onSubmit: ({ value }) => {
-      options.onSubmit({
-        id: value.id,
-        name: value.name,
-        sinId: value.sinId,
-        rating: value.rating,
+      onSubmit({
+        ...value,
         cost: getLicenseCost(value.rating),
       })
     },

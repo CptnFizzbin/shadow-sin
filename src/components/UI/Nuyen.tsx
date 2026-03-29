@@ -5,7 +5,7 @@ export function formatNuyen(amount: number): string {
 }
 
 interface NuyenProps {
-  amount: number
+  amount: number | undefined
 }
 
-export const Nuyen: FC<NuyenProps> = ({ amount }) => formatNuyen(amount)
+export const Nuyen: FC<NuyenProps> = ({ amount }) => formatNuyen(amount ?? 0)

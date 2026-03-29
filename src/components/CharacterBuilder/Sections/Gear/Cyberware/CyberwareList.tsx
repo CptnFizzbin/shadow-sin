@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
@@ -7,78 +9,45 @@ import { useState } from "react"
 
 import { CyberwareListItem } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwareListItem.tsx"
 import { ImplantFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Dialogs/ImplantFormDialog.tsx"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
-import { useCyberwareState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/UseCyberwareState.ts"
-import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
-import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemCard.tsx"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import type { ImplantData } from "#/lib/system/gear/implantData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 type ImplantDialogState =
   | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", implant: ImplantFormState, open: boolean }
+  | { mode: "create", parentId?: UUID, open: boolean }
+  | { mode: "edit", implant: ImplantData, open: boolean }
 
-type ModDialogState =
-  | null
-  | { mode: "create", parentId: string, open: boolean }
-  | { mode: "edit", mod: GearItemFormState, open: boolean }
+export const CyberwareList: FC = () => {
+  const gearApi = useGearApi()
+  const implants = useGearByType<ImplantData>(GearType.implant)
+  const rootImplants = implants.filter((implant) => !implant.parentId)
 
-interface CyberwareListProps {
-  implants: ImplantFormState[]
-  onAdd: (implant: ImplantFormState) => void
-  onUpdate: (implant: ImplantFormState) => void
-  onRemove: (implant: ImplantFormState) => void
-  label?: string
-}
-
-export const CyberwareList: FC<CyberwareListProps> = ({
-  implants,
-  onAdd,
-  onUpdate,
-  onRemove,
-  label = "Implant",
-}) => {
   const [implantDialog, setImplantDialog] = useState<ImplantDialogState>(null)
-  const [modDialog, setModDialog] = useState<ModDialogState>(null)
-
-  const {
-    addImplantMod,
-    updateImplantMod,
-    removeImplantMod,
-    getModsForImplant,
-  } = useCyberwareState()
 
   const closeImplantDialog = () =>
     setImplantDialog((prev) => prev && { ...prev, open: false })
-  const closeModDialog = () =>
-    setModDialog((prev) => prev && { ...prev, open: false })
 
-  const handleAddImplant = (implant: ImplantFormState) => {
-    onAdd(implant)
+  const handleAddImplant = (implant: ItemData) => {
+    gearApi.add(implant)
     closeImplantDialog()
   }
 
-  const handleUpdateImplant = (implant: ImplantFormState) => {
-    onUpdate(implant)
+  const handleUpdateImplant = (implant: ItemData) => {
+    gearApi.set(implant)
     closeImplantDialog()
   }
 
-  const handleAddMod = (mod: GearItemFormState) => {
-    const parentId =
-      modDialog?.mode === "create" ? modDialog.parentId : undefined
-    if (parentId) addImplantMod({ ...mod, parentId })
-    closeModDialog()
-  }
-
-  const handleUpdateMod = (mod: GearItemFormState) => {
-    updateImplantMod(mod)
-    closeModDialog()
+  const handleRemoveImplant = (implant: ItemData) => {
+    gearApi.remove(implant)
+    closeImplantDialog()
   }
 
   return (
     <Stack gap={1}>
-      {implants.map((implant) => {
-        const mods = getModsForImplant(implant.id)
+      {rootImplants.map((implant) => {
+        const accessories = implants.filter((i) => i.parentId === implant.id)
 
         return (
           <Box key={implant.id}>
@@ -86,7 +55,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
               implant={implant}
               onEdit={() =>
                 setImplantDialog({ mode: "edit", implant, open: true })}
-              onRemove={() => onRemove(implant)}
+              onRemove={() => handleRemoveImplant(implant)}
             />
 
             <Stack
@@ -94,18 +63,19 @@ export const CyberwareList: FC<CyberwareListProps> = ({
               sx={{
                 paddingTop: 1,
                 paddingLeft: 1,
-                paddingBottom: mods.length > 0 ? 1 : 0,
+                paddingBottom: accessories.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
-                borderBottom: mods.length > 0 ? "1px solid" : "none",
+                borderBottom: accessories.length > 0 ? "1px solid" : "none",
                 borderColor: "divider",
               }}
             >
-              {mods.map((mod) => (
-                <GearItemCard
-                  key={mod.id}
-                  item={mod}
-                  onEdit={() => setModDialog({ mode: "edit", mod, open: true })}
-                  onRemove={() => removeImplantMod(mod)}
+              {accessories.map((accessory) => (
+                <CyberwareListItem
+                  key={accessory.id}
+                  implant={accessory}
+                  onEdit={() =>
+                    setImplantDialog({ mode: "edit", implant, open: true })}
+                  onRemove={() => handleRemoveImplant(implant)}
                 />
               ))}
 
@@ -114,7 +84,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
                 size="small"
                 startIcon={<RiAddLine size={12} />}
                 onClick={() =>
-                  setModDialog({
+                  setImplantDialog({
                     mode: "create",
                     parentId: implant.id,
                     open: true,
@@ -122,7 +92,7 @@ export const CyberwareList: FC<CyberwareListProps> = ({
                 color="secondary"
                 fullWidth
               >
-                Add mod
+                Add Component
               </Button>
             </Stack>
           </Box>
@@ -137,13 +107,12 @@ export const CyberwareList: FC<CyberwareListProps> = ({
         color="secondary"
         fullWidth
       >
-        Add {label}
+        Add Implant
       </Button>
 
       {implantDialog?.mode === "create" && (
         <ImplantFormDialog
           open={implantDialog.open}
-          label={label}
           onSave={handleAddImplant}
           onClose={closeImplantDialog}
           onClosed={() => setImplantDialog(null)}
@@ -154,31 +123,9 @@ export const CyberwareList: FC<CyberwareListProps> = ({
         <ImplantFormDialog
           open={implantDialog.open}
           implant={implantDialog.implant}
-          label={label}
           onSave={handleUpdateImplant}
           onClose={closeImplantDialog}
           onClosed={() => setImplantDialog(null)}
-        />
-      )}
-
-      {modDialog?.mode === "create" && (
-        <GearItemFormDialog
-          open={modDialog.open}
-          label="Mod"
-          onSave={handleAddMod}
-          onClose={closeModDialog}
-          onClosed={() => setModDialog(null)}
-        />
-      )}
-
-      {modDialog?.mode === "edit" && (
-        <GearItemFormDialog
-          open={modDialog.open}
-          item={modDialog.mod}
-          label="Mod"
-          onSave={handleUpdateMod}
-          onClose={closeModDialog}
-          onClosed={() => setModDialog(null)}
         />
       )}
     </Stack>

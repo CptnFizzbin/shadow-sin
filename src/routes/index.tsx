@@ -4,11 +4,12 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import CharacterRosterList from "#/components/Character/CharacterRosterList.tsx"
 import { Header } from "#/components/UI/Header.tsx"
+import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
 
 export const Route = createFileRoute("/")({
   loader: () => {
-    return characterManager.ensureCharacters([])
+    return characterManager.ensureCharacters([Artemis])
   },
   component: IndexRoute,
 })

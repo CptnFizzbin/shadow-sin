@@ -13,16 +13,16 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ActiveSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
 import { SkillKey, Skills } from "#/lib/system/SkillKey.ts"
+import type { ActiveSkillData } from "#/lib/system/skillData.ts"
 
 interface ActiveSkillDialogProps {
   open: boolean
-  skill?: ActiveSkillFormState
+  skill?: ActiveSkillData
   /** Skill names that must be disabled because they are already taken (individually or via a group). */
   disabledSkills?: ReadonlySet<string>
-  onSave: (skill: ActiveSkillFormState) => void
+  onSave: (skill: ActiveSkillData) => void
   onDelete?: () => void
   onClose: () => void
   onClosed?: () => void
@@ -56,8 +56,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
       return
     }
     onSave({
-      id: skill?.id ?? crypto.randomUUID(),
-      name,
+      name: name as SkillKey,
       rating,
       specialization: specialization.trim() || undefined,
     })

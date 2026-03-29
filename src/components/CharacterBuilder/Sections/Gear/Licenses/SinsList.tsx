@@ -10,23 +10,26 @@ import { useState } from "react"
 
 import { SinFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Dialogs/SinFormDialog.tsx"
 import { SinRemoveDialog } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Dialogs/SinRemoveDialog.tsx"
-import type { SinFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
-import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
 import { LicensesList } from "#/components/CharacterBuilder/Sections/Gear/Licenses/LicensesList.tsx"
-import { useSinsState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/UseSinsState.ts"
+import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinUtils.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { SinData } from "#/lib/system/gear/SinData.ts"
+import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 type DialogState =
   | null
   | { mode: "create", open: boolean }
-  | { mode: "edit", sin: SinFormState, open: boolean }
-  | { mode: "remove", sin: SinFormState, open: boolean }
+  | { mode: "edit", sin: SinData, open: boolean }
+  | { mode: "remove", sin: SinData, open: boolean }
 
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const { sins, addSin, updateSin, removeSin, getLicensesForSin } =
-    useSinsState()
+  const gear = useGearApi()
+  const sins = useGearByType<SinData>(GearType.sin)
+  const licenses = useGearByType<LicenseData>(GearType.license)
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })
@@ -38,18 +41,18 @@ export const SinsList: FC = () => {
 
   const hasRealSin = sins.some((sin) => sin.rating === "real")
 
-  const handleAddSin = (sin: SinFormState) => {
-    addSin(sin)
+  const handleAddSin = (sin: SinData) => {
+    gear.add(sin)
     onDialogClose()
   }
 
-  const handleSaveSin = (sin: SinFormState) => {
-    updateSin(sin)
+  const handleSaveSin = (sin: SinData) => {
+    gear.set(sin)
     onDialogClose()
   }
 
-  const handleRemoveSin = (sin: SinFormState) => {
-    removeSin(sin)
+  const handleRemoveSin = (sin: SinData) => {
+    gear.remove(sin, { removeChildren: true })
     onDialogClose()
   }
 
@@ -68,7 +71,9 @@ export const SinsList: FC = () => {
 
       {sins.map((sin) => {
         const sinAvail = getSinAvailability(sin.rating)
-        const numLicenses = getLicensesForSin(sin.id).length
+        const numLicenses = licenses
+          .filter((license) => license.parentId === sin.id)
+          .length
 
         return (
           <Box key={sin.id}>
@@ -134,7 +139,7 @@ export const SinsList: FC = () => {
                 borderColor: "divider",
               }}
             >
-              <LicensesList sinId={sin.id} />
+              <LicensesList sin={sin} />
             </Stack>
           </Box>
         )

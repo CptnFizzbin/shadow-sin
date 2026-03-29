@@ -6,11 +6,11 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { LanguageSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { getLanguageSkillSp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import type { LanguageSkillData } from "#/lib/system/skillData.ts"
 
 interface LanguageSkillsListItemProps {
-  skill: LanguageSkillFormState
+  skill: LanguageSkillData
   onEdit: () => void
   onDelete: () => void
 }
@@ -20,11 +20,8 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const spCost = getLanguageSkillSp(
-    skill.isNative,
-    skill.rating,
-    !!skill.specialization,
-  )
+  const spCost = getLanguageSkillSp(skill)
+  const isNative = skill.rating === "native"
 
   return (
     <Box
@@ -43,17 +40,17 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
           {skill.name}
         </Typography>
 
-        {skill.specialization && (
+        {skill.lingo && (
           <Typography variant="caption" color="text.secondary">
-            Lingo: {skill.specialization}
+            Lingo: {skill.lingo}
           </Typography>
         )}
 
         <Chip
-          label={skill.isNative ? "N" : skill.rating}
+          label={isNative ? "N" : skill.rating}
           size="small"
-          variant={skill.isNative ? "filled" : "outlined"}
-          color={skill.isNative ? "success" : "default"}
+          variant={isNative ? "filled" : "outlined"}
+          color={isNative ? "success" : "default"}
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
         <Typography

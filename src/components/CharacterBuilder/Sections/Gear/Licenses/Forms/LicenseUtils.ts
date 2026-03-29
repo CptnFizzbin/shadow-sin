@@ -1,15 +1,8 @@
 import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
-
-export interface LicenseFormState {
-  id: string
-  sinId: string
-  name: string
-  rating: "real" | `${number}`
-  cost: number
-}
+import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 
 export const getLicenseAvailability = (
-  rating: "real" | `${number}`,
+  rating: LicenseData["rating"],
 ): AvailablityInfo => {
   if (rating === "real") return { rating: 0 }
 
@@ -19,7 +12,7 @@ export const getLicenseAvailability = (
   }
 }
 
-export const getLicenseCost = (rating: "real" | `${number}`): number => {
+export const getLicenseCost = (rating: LicenseData["rating"]): number => {
   if (rating === "real") return 0
   return Number(rating) * 100
 }

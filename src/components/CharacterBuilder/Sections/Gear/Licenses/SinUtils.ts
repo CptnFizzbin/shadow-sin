@@ -1,16 +1,10 @@
+import type { ItemData } from "#/lib/system/ItemData.ts"
 import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
 
-export interface SinFormState {
-  id: string
-  name: string
-  rating: "real" | number
-  cost: number
-}
-
 export const getSinAvailability = (
-  rating: "real" | number,
+  rating: ItemData["rating"],
 ): AvailablityInfo => {
-  if (rating === "real") return { rating: 0 }
+  if (typeof rating !== "number") return { rating: 0 }
 
   return {
     rating: rating * 3,

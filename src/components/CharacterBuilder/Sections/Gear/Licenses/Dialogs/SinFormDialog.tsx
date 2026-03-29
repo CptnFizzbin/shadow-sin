@@ -7,18 +7,15 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { SinFormFields } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormFields.tsx"
-import type { SinFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
-import {
-  sinFieldMap,
-  useSinForm,
-} from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/UseSinForm.tsx"
+import { sinFieldMap, useSinForm } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/UseSinForm.tsx"
+import type { SinData } from "#/lib/system/gear/SinData.ts"
 
 interface SinEditDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave: (sin: SinFormState) => void
-  sin?: SinFormState
+  onSave: (sin: SinData) => void
+  sin?: SinData
   allowReal?: boolean
 }
 
@@ -30,15 +27,8 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
   onClosed,
   onSave,
 }) => {
-  const editMode = !!sin
-
-  const form = useSinForm(
-    editMode
-      ? { mode: "edit", sin, onSubmit: onSave }
-      : { mode: "create", allowReal, onSubmit: onSave },
-  )
-
-  const title = editMode ? "Edit SIN" : "Create SIN"
+  const title = sin ? "Edit SIN" : "Create SIN"
+  const form = useSinForm({ sin, onSubmit: onSave })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

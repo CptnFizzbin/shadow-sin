@@ -8,11 +8,11 @@ import { metatypes } from "#/lib/system/MetatypeData.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AttributeLabels } from "#/lib/system/attributeKey.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export function useAttrApi(
   attr: AttributeKey,
-  store: Store<PlayerCharacterData | CharacterBuilderState>,
+  store: Store<CharacterSheet | CharacterBuilderState>,
 ) {
   const value = useStore(store, () => {
     const attribute = store.state.attributes[attr]

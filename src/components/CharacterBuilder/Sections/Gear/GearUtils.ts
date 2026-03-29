@@ -1,13 +1,12 @@
 import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
-import type { LicenseFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { SinFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
-import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
+import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseUtils.ts"
+import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinUtils.ts"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
 import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
+import { isSinData } from "#/lib/system/gear/SinData.ts"
+import { isImplant } from "#/lib/system/gear/implantData.ts"
+import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 
 export const GearBuildPointAllowance = 50
 export const GearNuyenPerBuildPoint = 5_000
@@ -82,16 +81,18 @@ export const useGearAvailabilityIssues = () => {
 
   Object.values(SectionHeader).forEach((sectionName) => {
     if (sectionName === SectionHeader.Licenses) {
-      const sins = allGear.filter((i) => i.itemType === "sins") as unknown as SinFormState[]
-      const licenses = allGear.filter((i) => i.itemType === "licenses") as unknown as LicenseFormState[]
+      const sins = allGear.filter(isSinData)
+      const licenses = allGear.filter(isLicenseData)
+
       const sinInvalid = sins.some((s) => getSinAvailability(s.rating).rating > GearMaxAvailability)
       const licInvalid = licenses.some((l) => getLicenseAvailability(l.rating).rating > GearMaxAvailability)
+
       if (sinInvalid || licInvalid) {
         invalidSections.add(sectionName)
         totalInvalidCount += sins.filter((s) => getSinAvailability(s.rating).rating > GearMaxAvailability).length + licenses.filter((l) => getLicenseAvailability(l.rating).rating > GearMaxAvailability).length
       }
     } else if (sectionName === SectionHeader.Cyberware) {
-      const invalidImplants = (allGear.filter((i) => i.itemType === "cyberware") as unknown as ImplantFormState[])
+      const invalidImplants = allGear.filter(isImplant)
         .filter((implant) => (implant.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability)
       if (invalidImplants.length > 0) {
         invalidSections.add(sectionName)
@@ -102,7 +103,7 @@ export const useGearAvailabilityIssues = () => {
     } else {
       const sectionKey = genericSectionKeys[sectionName]
       if (sectionKey) {
-        const items = allGear.filter((i) => i.itemType === sectionKey) as unknown as GearItemFormState[]
+        const items = allGear.filter((i) => i.itemType === sectionKey)
         const invalidItems = items.filter((it) => (it.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability)
         if (invalidItems.length > 0) {
           invalidSections.add(sectionName)

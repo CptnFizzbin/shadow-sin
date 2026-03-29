@@ -3,23 +3,25 @@ import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
-import { GearProvider } from "#/components/Gear/GearProvider.tsx"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const CharacterBuilderContext =
   createContext<Store<CharacterBuilderState> | null>(null)
 
 export interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
-  store: Store<CharacterBuilderState>
+  builderStateStore: Store<CharacterBuilderState>
+  characterSheetStore: Store<CharacterSheet>
 }
 
 export const CharacterBuilderStoreProvider: FC<
   CharacterBuilderStoreProviderProps
-> = ({ store, children }) => (
-  <CharacterBuilderContext.Provider value={store}>
-    <GearProvider store={store}>
+> = ({ builderStateStore, characterSheetStore, children }) => (
+  <CharacterBuilderContext.Provider value={builderStateStore}>
+    <CharacterSheetProvider store={characterSheetStore}>
       {children}
-    </GearProvider>
+    </CharacterSheetProvider>
   </CharacterBuilderContext.Provider>
 )
 
