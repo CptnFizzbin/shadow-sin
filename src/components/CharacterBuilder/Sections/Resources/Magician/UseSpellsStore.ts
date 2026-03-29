@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
@@ -11,10 +11,13 @@ export type SpellsStoreState = CharacterSheet["spells"]
 
 export interface UseSpellsStore extends BaseAtom<SpellsStoreState> {
   add(spell: SpellData): void
+
   update(spell: SpellData): void
+
   remove(spellId: string): void
 
   setState(state: SpellsStoreState): void
+
   setState(updater: (prev: SpellsStoreState) => SpellsStoreState): void
 }
 

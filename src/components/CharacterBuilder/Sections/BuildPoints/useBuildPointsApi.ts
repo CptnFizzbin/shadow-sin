@@ -1,8 +1,7 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
 import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/Sections/Contacts/ContactsHooks.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersHooks.ts"
@@ -88,9 +87,8 @@ export const useBuilderQualitiesBuildPoints = () => {
 }
 
 export const useBuilderSkillsBuildPoints = () => {
-  const store = useCharacterSheetContext()
-  const logicAttr = useAttrApi(AttributeKey.logic, store)
-  const intuitionAttr = useAttrApi(AttributeKey.intuition, store)
+  const logicAttr = useAttr(AttributeKey.logic)
+  const intuitionAttr = useAttr(AttributeKey.intuition)
 
   const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
   const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
@@ -107,7 +105,7 @@ export const useBuilderSkillsBuildPoints = () => {
     languageSkills,
   )
 
-  const freeSkillPoints = getFreeSkillPoints(logicAttr.value, intuitionAttr.value)
+  const freeSkillPoints = getFreeSkillPoints(logicAttr, intuitionAttr)
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
 
   return {

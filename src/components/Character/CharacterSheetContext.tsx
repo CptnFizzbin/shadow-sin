@@ -1,8 +1,10 @@
 import type { Store } from "@tanstack/store"
-import { useContext } from "react"
+import { createContext, useContext } from "react"
 
-import { CharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+
+export const CharacterSheetContext =
+  createContext<Store<CharacterSheet> | null>(null)
 
 export const useCharacterSheetContext = (): Store<CharacterSheet> => {
   const store = useContext(CharacterSheetContext)

@@ -1,4 +1,4 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseUtils.ts"
 import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinUtils.ts"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
@@ -30,18 +30,15 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
 }
 
 export const useGearTotalCost = () => {
-  // Select the gear Record (stable reference, changes only when gear changes).
-  // Call Object.values outside the selector to avoid creating a new array on
-  // every state change, which would cause excess re-renders.
-  const gear = useCharacterBuilderStore((state) => state.gear)
+  const gear = useCharacterSheet((state) => state.gear)
   const allGear = Object.values(gear)
 
-  const lifestyle = useCharacterBuilderStore((state) => {
-    const lifestyleType = state.lifestyle ?? LifestyleType.Street
+  const lifestyle = useCharacterSheet((state) => {
+    const lifestyleType = state.profile.lifestyle?.quality ?? LifestyleType.Street
     return Lifestyles[lifestyleType]
   })
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths ?? 1,
+  const lifestyleMonths = useCharacterSheet(
+    (state) => state.profile.lifestyle?.monthsPaid ?? 1,
   )
 
   const gearCost = getTotalCost(...allGear)
@@ -63,7 +60,7 @@ export const useGearBuildPoints = (): BpLineItem => {
 }
 
 export const useGearAvailabilityIssues = () => {
-  const gear = useCharacterBuilderStore((state) => state.gear)
+  const gear = useCharacterSheet((state) => state.gear)
   const allGear = Object.values(gear)
 
   const invalidSections = new Set<SectionHeader>()

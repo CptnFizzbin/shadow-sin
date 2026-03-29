@@ -3,19 +3,20 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import { AttrDecrementButton } from "#/components/CharacterBuilder/Sections/Attributes/AttrDecrementButton.tsx"
 import { AttrIncrementButton } from "#/components/CharacterBuilder/Sections/Attributes/AttrIncrementButton.tsx"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeLabels } from "#/lib/system/attributeKey.ts"
 
 interface AttributeRowProps {
   attr: AttributeKey
 }
 
 export const AttributeRow: FC<AttributeRowProps> = (props) => {
-  const store = useCharacterBuilderStoreContext()
-  const attribute = useAttrApi(props.attr, store)
+  const attrLabel = AttributeLabels[props.attr]
+  const attrInfo = useAttrInfo(props.attr)
+  const attrValue = useAttr(props.attr)
 
   return (
     <Stack direction="row" gap={1} alignItems="center">
@@ -24,13 +25,13 @@ export const AttributeRow: FC<AttributeRowProps> = (props) => {
       <Grid container columns={2} sx={{ flexGrow: 1 }}>
         <Grid size={1}>
           <Typography sx={{ textAlign: "center" }}>
-            {attribute.label}:
+            {attrLabel}:
           </Typography>
         </Grid>
 
         <Grid size={1}>
           <Typography sx={{ textAlign: "center", flexGrow: 1 }}>
-            {attribute.value} / {attribute.max}
+            {attrValue} / {attrInfo.max}
           </Typography>
         </Grid>
       </Grid>

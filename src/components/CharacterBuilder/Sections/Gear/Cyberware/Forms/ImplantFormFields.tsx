@@ -5,10 +5,7 @@ import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/CharacterBuilder/General/Form/AvailabilityFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
-import {
-  implantFieldMap,
-  implantFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import { implantFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
 
@@ -54,19 +51,10 @@ const implantGradeOptions = [
   },
 ]
 
-const implantLocationOptions = [
-  { label: "Right Hand", value: ImplantLocation.rightHand },
-  { label: "Left Hand", value: ImplantLocation.leftHand },
-  { label: "Right Arm", value: ImplantLocation.rightArm },
-  { label: "Left Arm", value: ImplantLocation.leftArm },
-  { label: "Right Leg", value: ImplantLocation.rightLeg },
-  { label: "Left Leg", value: ImplantLocation.leftLeg },
-  { label: "Right Foot", value: ImplantLocation.rightFoot },
-  { label: "Left Foot", value: ImplantLocation.leftFoot },
-  { label: "Torso", value: ImplantLocation.torso },
-  { label: "Eyes", value: ImplantLocation.eyes },
-  { label: "Ears", value: ImplantLocation.ears },
-]
+const implantLocationOptions = Object.values(ImplantLocation).map((location) => ({
+  label: location,
+  value: location,
+}))
 
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
@@ -199,8 +187,8 @@ export const ImplantFormFields = withFieldGroup({
           )}
         </group.Subscribe>
 
-        <AvailabilityFieldGroup form={group} fields={implantFieldMap} />
-        <SourceFieldGroup form={group} fields={implantFieldMap} />
+        <AvailabilityFieldGroup form={group} fields={{ availability: "availability" }} />
+        <SourceFieldGroup form={group} fields={{ source: "source" }} />
 
         <group.AppField name="description">
           {(field) => (

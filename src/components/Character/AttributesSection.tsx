@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterStore } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import {
   AttributeKey,
@@ -17,7 +17,7 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const attrs = useCharacterStore((s) => s.attributes)
+  const attrs = useCharacterSheet((s) => s.attributes)
 
   const attributes = attrKeys
     .map((k) => ({ key: k, value: attrs[k] }))

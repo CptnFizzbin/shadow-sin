@@ -5,7 +5,6 @@ import { batch, createStore } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface RemoveItemOptions {
   removeChildren?: boolean
@@ -23,7 +22,7 @@ export interface GearApi extends BaseAtom<Record<UUID, ItemData>> {
   addChild(parent: ItemData, child: ItemData): ItemData
 }
 
-export function createGearApi(store: Store<CharacterSheet>): GearApi {
+export function createGearApi(store: Store<{ gear: Record<UUID, ItemData> }>): GearApi {
   const gearStore = createStore(() => store.state.gear)
 
   const updateListLinks = (updatedItem: ItemData) => {

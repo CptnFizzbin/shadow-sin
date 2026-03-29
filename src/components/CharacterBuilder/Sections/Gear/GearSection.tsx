@@ -10,7 +10,6 @@ import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ArmorPanel } from "#/components/CharacterBuilder/Sections/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwarePanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
@@ -24,6 +23,7 @@ import {
 } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/LifestylePanel.tsx"
+import { useLifestyleStore } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleStore.ts"
 import { MiscPanel } from "#/components/CharacterBuilder/Sections/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
 import { StartingNuyenSection } from "#/components/CharacterBuilder/Sections/Gear/StartingNuyenSection.tsx"
@@ -149,15 +149,15 @@ const GearSectionNuyen: FC<{
 }> = ({ section }) => {
   const gearApi = useGearApi()
   const allGearItems = useStore(gearApi, (g) => g)
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths,
-  )
+
+  const lifestyleStore = useLifestyleStore()
+  const lifestyleInfo = useStore(lifestyleStore, (lifestyle) => Lifestyles[lifestyle.quality])
+  const lifestyleMonths = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
 
   if (section === SectionHeader.Lifestyle) {
     return (
       <Typography variant="body2" color="text.secondary">
-        <Nuyen amount={Lifestyles[lifestyle].upkeep * lifestyleMonths} />
+        <Nuyen amount={lifestyleInfo.upkeep * lifestyleMonths} />
       </Typography>
     )
   }

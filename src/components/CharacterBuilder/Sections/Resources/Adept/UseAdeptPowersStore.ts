@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
@@ -11,10 +11,13 @@ export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
 
 export interface UseAdeptPowersStore extends BaseAtom<AdeptPowersStoreState> {
   add(power: AdeptPowerData): void
+
   update(power: AdeptPowerData): void
+
   remove(powerId: string): void
 
   setState(state: AdeptPowersStoreState): void
+
   setState(updater: (prev: AdeptPowersStoreState) => AdeptPowersStoreState): void
 }
 

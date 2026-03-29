@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { ContactFormFields } from "#/components/CharacterBuilder/Sections/Contacts/ContactFormFields.tsx"
-import type { ContactFormOptions } from "#/components/CharacterBuilder/Sections/Contacts/UseContactForm.tsx"
 import { contactFieldMap, useContactForm } from "#/components/CharacterBuilder/Sections/Contacts/UseContactForm.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { ContactData } from "#/lib/system/contactData.ts"
@@ -30,15 +29,8 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
   onClose,
   onClosed = noop,
 }) => {
-  const editMode = !!contact
-
-  const formOptions: ContactFormOptions = editMode
-    ? { mode: "edit", contact, onSubmit: (c) => onSave(c) }
-    : { mode: "create", onSubmit: (c) => onSave(c) }
-
-  const form = useContactForm(formOptions)
-
-  const title = editMode ? "Edit Contact" : "Add Contact"
+  const title = contact ? "Edit Contact" : "Add Contact"
+  const form = useContactForm({ contact, onSubmit: (c) => onSave(c) })
 
   return (
     <Dialog

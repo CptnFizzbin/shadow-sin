@@ -61,13 +61,20 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
     matrix: 0,
   },
 
-  skills: {},
+  skills: {
+    activeSkills: [],
+    skillGroups: [],
+    knowledgeSkills: [],
+    languageSkills: [],
+  },
 
   spells: [],
   adeptPowers: [],
+  complexForms: [],
+  sprites: [],
+  contacts: [],
 
   gear: {},
-  contacts: [],
 
   karma: {
     total: 0,

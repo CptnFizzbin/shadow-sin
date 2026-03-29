@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 
@@ -11,10 +11,13 @@ export type ComplexFormsStoreState = CharacterSheet["complexForms"]
 
 export interface UseComplexFormsStore extends BaseAtom<ComplexFormsStoreState> {
   add(form: ComplexFormData): void
+
   update(form: ComplexFormData): void
+
   remove(formId: string): void
 
   setState(state: ComplexFormsStoreState): void
+
   setState(updater: (prev: ComplexFormsStoreState) => ComplexFormsStoreState): void
 }
 

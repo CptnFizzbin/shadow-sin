@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
 import type { SkillKey } from "#/lib/system/SkillKey.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"

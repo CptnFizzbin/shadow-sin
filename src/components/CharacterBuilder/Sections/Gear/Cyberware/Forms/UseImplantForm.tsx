@@ -2,8 +2,8 @@ import type { UUID } from "node:crypto"
 
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { NullGearId } from "#/components/Gear/GearUtils.ts"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { NullUuid } from "#/lib/UuidUtils.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
@@ -16,7 +16,7 @@ export interface ImplantFormOptions {
 
 const defaultFormValues: ImplantData = {
   itemType: GearType.implant,
-  id: NullGearId,
+  id: NullUuid,
   name: "",
   cost: 0,
   essenceCost: 0,
@@ -24,8 +24,29 @@ const defaultFormValues: ImplantData = {
   implantType: ImplantType.cyberware,
   location: ImplantLocation.head,
   description: "",
-  availability: undefined,
-  source: undefined,
+  availability: {
+    rating: 1,
+    restricted: false,
+    forbidden: false,
+  },
+  source: {
+    book: "",
+    page: 0,
+  },
+  parentId: NullUuid,
+  capacity: 0,
+  capacityCost: 0,
+  quantity: 0,
+  rating: "",
+  childIds: [NullUuid],
+  notes: "",
+  equipped: false,
+  fixed: false,
+  wireless: {
+    enabled: false,
+    removed: false,
+  },
+  effects: [],
 }
 
 export const implantFieldMap = createFieldMap(defaultFormValues)

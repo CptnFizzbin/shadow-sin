@@ -1,7 +1,7 @@
 import { useStore } from "@tanstack/react-store"
 import { produce } from "immer"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
 import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"

@@ -2,12 +2,14 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { ContactFormDialog } from "#/components/CharacterBuilder/Sections/Contacts/ContactFormDialog.tsx"
 import { ContactRow } from "#/components/CharacterBuilder/Sections/Contacts/ContactsListItem.tsx"
-import { useBuilderContactsApi } from "#/components/CharacterBuilder/Sections/Contacts/UseBuilderContactsApi.ts"
+import { getContactBpCost } from "#/components/CharacterBuilder/Sections/Contacts/ContactsUtils.ts"
+import { useContactsStore } from "#/components/CharacterBuilder/Sections/Contacts/UseContactsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { ContactData } from "#/lib/system/contactData.ts"
 
@@ -18,8 +20,11 @@ type DialogState =
 
 export const ContactsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const { contacts, bpSpent, addContact, updateContact, removeContact } =
-    useBuilderContactsApi()
+  const contactsStore = useContactsStore()
+  const contacts = useStore(contactsStore, (state) => state)
+  const bpSpent = contacts
+    .map((contact) => getContactBpCost(contact))
+    .reduce((sum, cost) => sum + cost, 0)
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })
@@ -30,17 +35,17 @@ export const ContactsList: FC = () => {
   }
 
   const handleAddContact = (contact: ContactData) => {
-    addContact(contact)
+    contactsStore.add(contact)
     onDialogClose()
   }
 
   const handleUpdateContact = (contact: ContactData) => {
-    updateContact(contact)
+    contactsStore.update(contact.id, () => contact)
     onDialogClose()
   }
 
   const handleRemoveContact = (contact: ContactData) => {
-    removeContact(contact)
+    contactsStore.remove(contact)
     onDialogClose()
   }
 

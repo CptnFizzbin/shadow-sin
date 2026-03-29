@@ -113,6 +113,7 @@ export const CyberwareList: FC = () => {
       {implantDialog?.mode === "create" && (
         <ImplantFormDialog
           open={implantDialog.open}
+          parentId={implantDialog.parentId}
           onSave={handleAddImplant}
           onClose={closeImplantDialog}
           onClosed={() => setImplantDialog(null)}

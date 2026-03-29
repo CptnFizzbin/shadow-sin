@@ -11,16 +11,27 @@ import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantType } from "#/lib/system/gear/implantData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
-export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
+export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
   const awakening = useCharacterSheet((sheet) => awakenings[sheet.biology.awakening])
 
-  let attributeInfo = { ...metatype.attributes[attribute] }
+  return {
+    ...metatype.attributes,
+    ...awakening.attributes,
+  }
+}
+
+export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
+  const attributes = useAllAttrInfos()
+
+  let attributeInfo = {
+    ...attributes[attribute],
+  }
 
   if (attribute === AttributeKey.magic || attribute === AttributeKey.resonance) {
     attributeInfo = {
       ...attributeInfo,
-      ...awakening.attributes[attribute],
+      ...attributes[attribute],
     }
   }
 
@@ -37,14 +48,18 @@ export const useAttr = (attribute: AttributeKey) => {
   })
 }
 
-export const useSkill = (skill: SkillKey) => {
-  const attr = Skills[skill].attr
-  const skillRating = useCharacterSheet((state) => {
-    return state.skills[skill]?.rating || 0
+export const useActiveSkill = (skill: SkillKey) => {
+  const skillInfo = Skills[skill]
+
+  const skillRating = useCharacterSheet((sheet) => {
+    return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
+  })
+  const groupRating = useCharacterSheet((sheet) => {
+    return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
   })
 
-  const attribute = useAttr(attr)
-  return skillRating + attribute
+  const attribute = useAttr(skillInfo.attr)
+  return Math.max(skillRating, groupRating, 0) + attribute
 }
 
 export const useEssenseInfo = () => {

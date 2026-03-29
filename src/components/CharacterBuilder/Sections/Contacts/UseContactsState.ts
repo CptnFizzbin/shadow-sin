@@ -1,3 +1,3 @@
 export {
-  contactBuildPoints, useBuilderContactsApi,
-} from "#/components/CharacterBuilder/Sections/Contacts/UseBuilderContactsApi.ts"
+  contactBuildPoints, useContactsStore,
+} from "#/components/CharacterBuilder/Sections/Contacts/UseContactsStore.ts"

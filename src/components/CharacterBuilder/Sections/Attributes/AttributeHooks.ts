@@ -1,5 +1,5 @@
 import { getAttrData } from "#/components/Attributes/AttrData.ts"
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import {
   AttributeBpAllowance,
   AttributeBpCostBase,
@@ -53,9 +53,9 @@ export const useAttributesBuildPoints = () => {
 }
 
 export const useActiveAttributes = () => {
-  const attributes = useCharacterBuilderStore((sheet) => sheet.attributes)
-  const metatype = useCharacterBuilderStore((sheet) => metatypes[sheet.metatype])
-  const awakening = useCharacterBuilderStore((sheet) => awakenings[sheet.awakening])
+  const attributes = useCharacterSheet((sheet) => sheet.attributes)
+  const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
+  const awakening = useCharacterSheet((sheet) => awakenings[sheet.biology.awakening])
 
   return Object.values(AttributeKey)
     .filter((attr) => {
@@ -64,7 +64,7 @@ export const useActiveAttributes = () => {
       if (attr === AttributeKey.resonance) return TechAwakeningTypes.includes(awakening.name)
       return true
     })
-    .map((attr) => ({ attr, value: attributes[attr].value }))
+    .map((attr) => ({ attr, value: attributes[attr] }))
     .map(({ attr, value }) => getAttrData(attr, value, metatype, awakening))
 }
 

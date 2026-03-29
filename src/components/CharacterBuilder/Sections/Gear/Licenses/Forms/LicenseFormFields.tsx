@@ -12,7 +12,7 @@ import { GearType } from "#/lib/system/gearType.ts"
 
 export const LicenseFormFields = withFieldGroup({
   ...licenseFormOpts,
-  render: ({ group }) => {
+  render: function Render({ group }) {
     const sins = useGearByType<SinData>(GearType.sin)
     const sinOptions = sins.map((sin) => ({ label: sin.name, value: sin.id }))
 

@@ -1,14 +1,10 @@
-import Button from "@mui/material/Button"
+import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
-import { createStore } from "@tanstack/store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { FormPersister } from "#/components/CharacterBuilder/FormPersister.ts"
-import { useDefaultValues } from "#/components/CharacterBuilder/Hooks/UseDefaultValues.ts"
-import { useRootCharacterBuilderStore } from "#/components/CharacterBuilder/Hooks/UseRootCharacterBuilderStore.ts"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
 import {
   AttributesBuilderSection,
@@ -21,6 +17,7 @@ import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/
 import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
 import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
+import { StorePersister, usePersistedStore } from "#/components/CharacterBuilder/StorePersister.ts"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
@@ -29,14 +26,19 @@ interface CharacterFormProps {
 }
 
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
-  const characterStore = createStore(character || createDefaultCharacterSheet())
-
-  const store = useRootCharacterBuilderStore(character)
-  const defaultValues = useDefaultValues({ character })
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
+  const defaultCharacterValues = character || createDefaultCharacterSheet()
+  const defaultBuilderValues = {}
+
+  const storageKey = `builder:${character?.id ?? "new"}`
+  const characterStorageKey = `${storageKey}:character`
+  const builderStorageKey = `${storageKey}:builder`
+
+  const characterStore = usePersistedStore(characterStorageKey, defaultCharacterValues)
+  const builderStateStore = usePersistedStore(builderStorageKey, defaultBuilderValues)
 
   return (
-    <CharacterBuilderStoreProvider store={store}>
+    <CharacterBuilderStoreProvider characterSheetStore={characterStore} builderStateStore={builderStateStore}>
       <Stack gap={1}>
         <Stack
           gap={1}
@@ -52,9 +54,10 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
               color="warning"
               size="small"
               onClick={() => {
-                const characterId = store.state.characterId
-                store.setState(() => defaultValues)
-                FormPersister.clearState(characterId)
+                StorePersister.clearState(characterStorageKey)
+                characterStore.setState(() => defaultCharacterValues)
+                StorePersister.clearState(builderStorageKey)
+                builderStateStore.setState(() => defaultBuilderValues)
               }}
             >
               Reset
@@ -62,19 +65,12 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
           </Stack>
 
           <ProfileBuilderSection />
-
           <BiologyBuilderSection />
-
           <AttributesBuilderSection />
-
           <QualitiesBuilderSection />
-
           <SkillsBuilderSection />
-
           <AwakenedSection />
-
           <GearBuilderSection />
-
           <ContactsBuilderSection />
         </Stack>
 

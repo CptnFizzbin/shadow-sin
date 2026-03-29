@@ -5,28 +5,30 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useBuilderLifestyleApi } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleApi.ts"
+import { useLifestyleStore } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleStore.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
-  const { lifestyle, lifestyleMonths, setLifestyle, setLifestyleMonths } =
-    useBuilderLifestyleApi()
+  const lifestyleStore = useLifestyleStore()
 
-  const upkeep = Lifestyles[lifestyle].upkeep
-  const totalCost = upkeep * lifestyleMonths
+  const quality = useStore(lifestyleStore, (lifestyle) => lifestyle.quality)
+  const upkeep = Lifestyles[quality].upkeep
+  const monthsPaid = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
+
+  const totalCost = upkeep * monthsPaid
 
   return (
     <Stack gap={1}>
       <FormControl fullWidth size="small">
         <InputLabel>Lifestyle</InputLabel>
         <Select
-          value={lifestyle}
+          value={quality}
           label="Lifestyle"
-          onChange={(event) =>
-            setLifestyle(event.target.value as LifestyleType)}
+          onChange={(e) => lifestyleStore.setQuality(e.target.value)}
         >
           {Object.values(LifestyleType).map((lifestyleType) => (
             <MenuItem key={lifestyleType} value={lifestyleType}>
@@ -41,29 +43,18 @@ export const LifestylePanel: FC = () => {
         type="number"
         size="small"
         fullWidth
-        value={lifestyleMonths}
+        value={monthsPaid}
         slotProps={{ htmlInput: { min: 1 } }}
         onChange={(event) => {
           const months = Math.max(1, parseInt(event.target.value, 10) || 1)
-          setLifestyleMonths(months)
+          lifestyleStore.setMonthsPaid(months)
         }}
       />
 
       <Typography variant="body2" color="text.secondary">
-        Monthly upkeep:
-        {" "}
-        <Nuyen amount={upkeep} />
-        {lifestyleMonths > 1 && (
-          <>
-            {" "}
-            ×
-            {" "}
-            {lifestyleMonths}
-            {" "}
-            months =
-            {" "}
-            <Nuyen amount={totalCost} />
-          </>
+        Monthly upkeep: <Nuyen amount={upkeep} />
+        {monthsPaid > 1 && (
+          <>× {monthsPaid} months = <Nuyen amount={totalCost} /></>
         )}
       </Typography>
     </Stack>

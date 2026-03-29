@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -16,6 +18,7 @@ import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 interface CyberwareFormDialogProps {
   open: boolean
   implant?: ImplantData
+  parentId?: UUID
   onClose: () => void
   onClosed?: () => void
   onSave: (implant: ImplantData) => void
@@ -24,6 +27,7 @@ interface CyberwareFormDialogProps {
 export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   open,
   implant,
+  parentId,
   onClose,
   onClosed,
   onSave,
@@ -31,7 +35,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   const editMode = !!implant
   const title = editMode ? `Edit Implant` : `Add Implant`
 
-  const form = useImplantForm({ implant, onSubmit: onSave })
+  const form = useImplantForm({ implant, parentId, onSubmit: onSave })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
@@ -11,10 +11,13 @@ export type SpritesStoreState = CharacterSheet["sprites"]
 
 export interface UseSpritesStore extends BaseAtom<SpritesStoreState> {
   add(sprite: SpriteData): void
+
   update(sprite: SpriteData): void
+
   remove(spriteId: string): void
 
   setState(state: SpritesStoreState): void
+
   setState(updater: (prev: SpritesStoreState) => SpritesStoreState): void
 }
 

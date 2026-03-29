@@ -3,7 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/Hooks/UseCharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { QualityData } from "#/lib/system/qualityData.ts"
 
@@ -11,10 +11,13 @@ export type QualitiesStoreState = CharacterSheet["qualities"]
 
 export interface UseQualitiesStore extends BaseAtom<QualitiesStoreState> {
   add(quality: QualityData): void
+
   update(quality: QualityData): void
+
   remove(qualityId: string): void
 
   setState(state: QualitiesStoreState): void
+
   setState(updater: (prev: QualitiesStoreState) => QualitiesStoreState): void
 }
 
