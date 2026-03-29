@@ -1,15 +1,18 @@
+import { useStore } from "@tanstack/react-store"
+
 import { useBuilderActiveSkillRating } from "#/components/CharacterBuilder/Hooks/UseBuilderActiveSkillRating.ts"
 import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
 import { useBuilderAwakeningType } from "#/components/CharacterBuilder/Hooks/UseBuilderAwakeningType.ts"
 import { getSpriteTasksBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesUtils.ts"
-import { useBuilderSpritesApi } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesApi.ts"
+import { useSpritesStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesStore.ts"
 import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const useSprites = () => {
   const awakeningType = useBuilderAwakeningType()
-  const { sprites } = useBuilderSpritesApi()
+  const spritesStore = useSpritesStore()
+  const sprites = useStore(spritesStore, (state) => state)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

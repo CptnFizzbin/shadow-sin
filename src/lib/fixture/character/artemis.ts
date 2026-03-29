@@ -90,6 +90,7 @@ export const Artemis: CharacterSheet = {
   qualities: [],
   adeptPowers: [],
   spells: [],
+  sprites: [],
 
   gear: createItemMap(
     createItem<SinData>({

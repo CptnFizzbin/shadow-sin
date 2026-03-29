@@ -4,33 +4,34 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
-import type { SpriteFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
 import { SpriteDialog } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/SpriteDialog.tsx"
 import {
   useMaxSpritesRegistered,
   useSpritesBuildPoints,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
 import { SpritesListItem } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesListItem.tsx"
-import { useBuilderSpritesApi } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesApi.ts"
+import { useSpritesStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
 type SpriteDialogState =
   | null
   | { mode: "create", open: boolean }
-  | { mode: "edit", sprite: SpriteFormState, open: boolean }
+  | { mode: "edit", sprite: SpriteData, open: boolean }
 
 export const SpritesList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
-  const { sprites, addSprite, updateSprite, removeSprite } =
-    useBuilderSpritesApi()
+  const spritesStore = useSpritesStore()
+  const sprites = useStore(spritesStore, (state) => state)
   const spritesBp = useSpritesBuildPoints()
 
   const [spriteDialog, setSpriteDialog] = useState<SpriteDialogState>(null)
@@ -88,7 +89,7 @@ export const SpritesList: FC = () => {
               resonanceValue={resonance}
               onEdit={() =>
                 setSpriteDialog({ mode: "edit", sprite, open: true })}
-              onDelete={() => removeSprite(sprite.id)}
+              onDelete={() => spritesStore.remove(sprite.id)}
             />
           ))}
         </Stack>
@@ -109,7 +110,7 @@ export const SpritesList: FC = () => {
         <SpriteDialog
           open={spriteDialog.open}
           onSave={(sprite) => {
-            addSprite(sprite)
+            spritesStore.add(sprite)
             closeDialog()
           }}
           onClose={closeDialog}
@@ -122,7 +123,7 @@ export const SpritesList: FC = () => {
           open={spriteDialog.open}
           sprite={spriteDialog.sprite}
           onSave={(sprite) => {
-            updateSprite(sprite)
+            spritesStore.update(sprite)
             closeDialog()
           }}
           onClose={closeDialog}

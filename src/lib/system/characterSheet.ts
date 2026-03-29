@@ -6,6 +6,7 @@ import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { SpellData } from "./magic/spellData.ts"
+import type { SpriteData } from "./magic/spriteData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
@@ -77,5 +78,6 @@ export interface CharacterSheet {
   qualities: QualityData[]
   contacts: ContactData[]
   spells: SpellData[]
+  sprites: SpriteData[]
   adeptPowers: AdeptPowerData[]
 }
