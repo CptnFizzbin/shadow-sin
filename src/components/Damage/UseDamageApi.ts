@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
-import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useCharacterSheet, useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 

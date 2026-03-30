@@ -2,7 +2,7 @@ import DownloadIcon from "@mui/icons-material/Download"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/ExportUtils.ts"
 
 export const ExportCharacterButton: FC = () => {

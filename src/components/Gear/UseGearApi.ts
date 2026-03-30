@@ -6,7 +6,7 @@ import { batch, createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 
 export interface RemoveItemOptions {

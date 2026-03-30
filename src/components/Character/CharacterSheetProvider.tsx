@@ -1,9 +1,11 @@
 import { useStore } from "@tanstack/react-store"
 import type { FC, PropsWithChildren } from "react"
+import { createContext, useContext } from "react"
 
-import { CharacterSheetContext, useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+
+export const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 
 export interface CharacterSheetProviderProps extends PropsWithChildren {
   store: CharacterSheetStore
@@ -22,21 +24,19 @@ export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({
 
 type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
-/** @deprecated use {@link useCharacterSheet} instead. */
-export function useCharacterStore<TData>(
-  selector: CharacterDataSelector<TData>,
-): TData {
-  return useCharacterSheetStore(selector)
-}
-
 export function useCharacterSheet<TData>(selector: CharacterDataSelector<TData>) {
   const store = useCharacterSheetContext()
   return useStore(store, selector)
 }
 
-/** @deprecated use {@link useCharacterSheet} instead. */
-export function useCharacterSheetStore<TData>(
-  selector: CharacterDataSelector<TData>,
-): TData {
-  return useCharacterSheet(selector)
+export const useCharacterSheetContext = (): CharacterSheetStore => {
+  const store = useContext(CharacterSheetContext)
+
+  if (!store) {
+    throw new Error(
+      "useCharacterSheetContext must be used within a CharacterSheetProvider",
+    )
+  }
+
+  return store
 }

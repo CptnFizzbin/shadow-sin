@@ -6,7 +6,7 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { getAttributesValues } from "#/components/Attributes/GetAttributesValues.ts"
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { BiologyAttributes } from "#/components/CharacterBuilder/Sections/Biology/BiologyAttributes.tsx"
 import { useBiologyStore } from "#/components/CharacterBuilder/Sections/Biology/UseBiologyStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"

@@ -1,7 +1,7 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType.ts"
