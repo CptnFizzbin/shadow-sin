@@ -1,58 +1,48 @@
-import MenuIcon from "@mui/icons-material/Menu"
-import Dialog from "@mui/material/Dialog"
-import IconButton from "@mui/material/IconButton"
-import List from "@mui/material/List"
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemText from "@mui/material/ListItemText"
-import { Link, linkOptions } from "@tanstack/react-router"
+import MenuItem from "@mui/material/MenuItem"
+import type { SelectChangeEvent } from "@mui/material/Select"
+import Select from "@mui/material/Select"
+import { useNavigate, useRouterState } from "@tanstack/react-router"
 import type { FC } from "react"
-import { useState } from "react"
+import { useCallback } from "react"
 
-import { Route as CharacterRoute } from "#/routes/$characterId/index.tsx"
+import { characterSections } from "#/components/Character/characterSections.ts"
+import { Route as CharacterIndexRoute } from "#/routes/$characterId/index.tsx"
 
-const pages = linkOptions([
-  { label: "About", from: CharacterRoute.fullPath, to: "about" },
-  { label: "Defense", from: CharacterRoute.fullPath, to: "defense" },
-  { label: "Offense", from: CharacterRoute.fullPath, to: "offense" },
-  { label: "Cyberware", from: CharacterRoute.fullPath, to: "gear" },
-  { label: "Skills", from: CharacterRoute.fullPath, to: "skills" },
-  { label: "Spells", from: CharacterRoute.fullPath, to: "spells" },
-  { label: "Drones", from: CharacterRoute.fullPath, to: "drones" },
-  { label: "Vehicles", from: CharacterRoute.fullPath, to: "vehicles" },
-  { label: "Contacts", from: CharacterRoute.fullPath, to: "contacts" },
-  { label: "Qualities", from: CharacterRoute.fullPath, to: "qualities" },
-  { label: "Notes", from: CharacterRoute.fullPath, to: "notes" },
-])
+export const CharacterNavBar: FC = () => {
+  const navigate = useNavigate({ from: CharacterIndexRoute.fullPath })
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
 
-export const CharacterNavMenu: FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const pathSegments = pathname.split("/").filter(Boolean)
+  const currentSegment = pathSegments[pathSegments.length - 1] ?? "about"
+  const isKnownSection = characterSections.some((section) => section.to === currentSegment)
+  const currentSection = isKnownSection ? currentSegment : "about"
+
+  const handleChange = useCallback(
+    (event: SelectChangeEvent) => {
+      void navigate({ to: event.target.value })
+    },
+    [navigate],
+  )
 
   return (
-    <>
-      <IconButton
-        color="inherit"
-        size="small"
-        onClick={() => setMenuOpen(true)}
-        aria-label="Open pages"
+    <nav aria-label="Character sections">
+      <Select
+        value={currentSection}
+        onChange={handleChange}
+        variant="standard"
+        disableUnderline
+        inputProps={{ "aria-label": "Navigate to section" }}
+        sx={{
+          "color": "inherit",
+          "& .MuiSelect-icon": { color: "inherit" },
+        }}
       >
-        <MenuIcon />
-      </IconButton>
-
-      <Dialog onClose={() => setMenuOpen(false)} open={menuOpen} fullWidth>
-        <List>
-          {pages.map((option) => (
-            <Link
-              {...option}
-              key={option.to}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <ListItemButton onClick={() => setMenuOpen(false)}>
-                <ListItemText primary={option.label} />
-              </ListItemButton>
-            </Link>
-          ))}
-        </List>
-      </Dialog>
-    </>
+        {characterSections.map((section) => (
+          <MenuItem key={section.to} value={section.to}>
+            {section.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </nav>
   )
 }

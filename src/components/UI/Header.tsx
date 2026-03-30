@@ -3,7 +3,7 @@ import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { CharacterNavMenu } from "#/components/Character/CharacterNavMenu.tsx"
+import { CharacterNavBar } from "#/components/Character/CharacterNavMenu.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface HeaderProps {
@@ -16,7 +16,7 @@ export const Header: FC<HeaderProps> = ({ character }) => {
   return (
     <AppBar role="banner" position="sticky" color="default" elevation={0}>
       <Toolbar sx={{ gap: 2 }}>
-        {character && <CharacterNavMenu />}
+        {character && <CharacterNavBar />}
 
         <Typography variant="h5" component="h1">
           {characterAlias ?? "ShadowSIN 4e"}
