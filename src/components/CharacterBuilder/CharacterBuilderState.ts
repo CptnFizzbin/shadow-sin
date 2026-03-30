@@ -1,3 +1,5 @@
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+
 export interface CharacterBuilderState {
-  // Transient state for the character builder
+  characterSheet: CharacterSheet
 }

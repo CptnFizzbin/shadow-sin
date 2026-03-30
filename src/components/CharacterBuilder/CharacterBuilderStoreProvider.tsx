@@ -1,9 +1,11 @@
-import { useStore } from "@tanstack/react-store"
 import type { Store } from "@tanstack/store"
+import { createStore } from "@tanstack/store"
+import { produce } from "immer"
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
+import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
@@ -12,37 +14,45 @@ export const CharacterBuilderContext =
 
 export interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
   builderStateStore: Store<CharacterBuilderState>
-  characterSheetStore: Store<CharacterSheet>
 }
 
 export const CharacterBuilderStoreProvider: FC<
   CharacterBuilderStoreProviderProps
-> = ({ builderStateStore, characterSheetStore, children }) => (
-  <CharacterBuilderContext.Provider value={builderStateStore}>
-    <CharacterSheetProvider store={characterSheetStore}>
-      {children}
-    </CharacterSheetProvider>
-  </CharacterBuilderContext.Provider>
-)
+> = ({ builderStateStore, children }) => {
+  const characterSheetStore = useMemo((): CharacterSheetStore => {
+    const sheetStore = createStore<CharacterSheet>(() => builderStateStore.state.characterSheet)
 
-export const useCharacterBuilderStoreContext =
-  (): Store<CharacterBuilderState> => {
-    const store = useContext(CharacterBuilderContext)
+    return new CharacterSheetStore({
+      get: () => sheetStore.get(),
+      set: (valueOrUpdater) => {
+        builderStateStore.setState(produce((prev) => {
+          prev.characterSheet =
+            typeof valueOrUpdater === "function"
+              ? valueOrUpdater(prev.characterSheet)
+              : valueOrUpdater
+        }))
+      },
+      subscribe: (listener) => sheetStore.subscribe(listener),
+    })
+  }, [builderStateStore])
 
-    if (!store) {
-      throw new Error(
-        "useCharacterBuilderStoreContext must be used within a CharacterBuilderStoreProvider",
-      )
-    }
+  return (
+    <CharacterBuilderContext.Provider value={builderStateStore}>
+      <CharacterSheetProvider store={characterSheetStore}>
+        {children}
+      </CharacterSheetProvider>
+    </CharacterBuilderContext.Provider>
+  )
+}
 
-    return store
+export const useCharacterBuilderStoreContext = (): Store<CharacterBuilderState> => {
+  const store = useContext(CharacterBuilderContext)
+
+  if (!store) {
+    throw new Error(
+      "useCharacterBuilderStoreContext must be used within a CharacterBuilderStoreProvider",
+    )
   }
 
-type CharacterBuilderSelector<TData> = (state: CharacterBuilderState) => TData
-
-export function useCharacterBuilderStore<TData>(
-  selector: CharacterBuilderSelector<TData>,
-): TData {
-  const store = useCharacterBuilderStoreContext()
-  return useStore(store, selector)
+  return store
 }

@@ -1,12 +1,12 @@
 import { useStore } from "@tanstack/react-store"
-import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
 
 import { CharacterSheetContext, useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import type { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface CharacterSheetProviderProps extends PropsWithChildren {
-  store: Store<CharacterSheet>
+  store: CharacterSheetStore
 }
 
 export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({

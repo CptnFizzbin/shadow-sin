@@ -4,6 +4,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
+import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
 import {
@@ -27,18 +28,17 @@ interface CharacterFormProps {
 
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
+
   const defaultCharacterValues = character || createDefaultCharacterSheet()
-  const defaultBuilderValues = {}
+  const defaultBuilderValues: CharacterBuilderState = {
+    characterSheet: defaultCharacterValues,
+  }
 
   const storageKey = `builder:${character?.id ?? "new"}`
-  const characterStorageKey = `${storageKey}:character`
-  const builderStorageKey = `${storageKey}:builder`
-
-  const characterStore = usePersistedStore(characterStorageKey, defaultCharacterValues)
-  const builderStateStore = usePersistedStore(builderStorageKey, defaultBuilderValues)
+  const builderStateStore = usePersistedStore(storageKey, defaultBuilderValues)
 
   return (
-    <CharacterBuilderStoreProvider characterSheetStore={characterStore} builderStateStore={builderStateStore}>
+    <CharacterBuilderStoreProvider builderStateStore={builderStateStore}>
       <Stack gap={1}>
         <Stack
           gap={1}
@@ -54,9 +54,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
               color="warning"
               size="small"
               onClick={() => {
-                StorePersister.clearState(characterStorageKey)
-                characterStore.setState(() => defaultCharacterValues)
-                StorePersister.clearState(builderStorageKey)
+                StorePersister.clearState(storageKey)
                 builderStateStore.setState(() => defaultBuilderValues)
               }}
             >

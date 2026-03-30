@@ -1,17 +1,16 @@
-import type { Store } from "@tanstack/store"
 import { createContext, useContext } from "react"
 
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 
 export const CharacterSheetContext =
-  createContext<Store<CharacterSheet> | null>(null)
+  createContext<CharacterSheetStore | null>(null)
 
-export const useCharacterSheetContext = (): Store<CharacterSheet> => {
+export const useCharacterSheetContext = (): CharacterSheetStore => {
   const store = useContext(CharacterSheetContext)
 
   if (!store) {
     throw new Error(
-      "useCharacterStoreContext must be used within a CharacterStoreProvider",
+      "useCharacterSheetContext must be used within a CharacterSheetProvider",
     )
   }
 

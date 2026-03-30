@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack"
 import { useThrottler } from "@tanstack/react-pacer"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
-import { createStore } from "@tanstack/store"
 import type { FC } from "react"
 import { useEffect, useMemo, useRef } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
+import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import { Header } from "#/components/UI/Header.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { characterManager } from "#/lib/storage/index.ts"
@@ -59,7 +59,7 @@ const CharacterStorePersistence: FC = () => {
 
 function CharacterRoute() {
   const character = Route.useLoaderData()
-  const store = useMemo(() => createStore(character), [character])
+  const store = useMemo(() => new CharacterSheetStore(character), [character])
 
   return (
     <CharacterSheetProvider store={store}>

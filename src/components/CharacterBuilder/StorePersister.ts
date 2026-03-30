@@ -3,7 +3,6 @@ import { Store } from "@tanstack/store"
 import { useEffect, useState } from "react"
 
 import { mergeObjects } from "#/lib/MergeUtils.ts"
-import type { CharacterBuilderState } from "./CharacterBuilderState.ts"
 
 const FORM_STORAGE_KEY_PREFIX = "shadow-sin:character-form:"
 
@@ -50,7 +49,7 @@ export const StorePersister = {
 }
 
 const debouncedSaveState = debounce(
-  (characterId: string, values: CharacterBuilderState) => {
+  (characterId: string, values: object) => {
     console.log("Saving form state...", { characterId, values })
     StorePersister.saveState(characterId, values)
   },
