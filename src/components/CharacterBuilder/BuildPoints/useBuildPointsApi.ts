@@ -22,16 +22,16 @@ import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
-    { label: "Profile", spent: 0 },
-    useBuilderBiologyBuildPoints(),
-    useAttributesBuildPoints(),
-    useBuilderQualitiesBuildPoints(),
-    useBuilderSkillsBuildPoints(),
-    useSpellsBuildPoints(),
-    useAdeptPowersBuildPoints(),
-    useTechnomancerBuildPoints(),
-    useGearBuildPoints(),
-    useContactsBuildPoints(),
+    { label: "Profile", spent: 0, sectionId: "builder-section-profile" },
+    { ...useBuilderBiologyBuildPoints(), sectionId: "builder-section-biology" },
+    { ...useAttributesBuildPoints(), sectionId: "builder-section-attributes" },
+    { ...useBuilderQualitiesBuildPoints(), sectionId: "builder-section-qualities" },
+    { ...useBuilderSkillsBuildPoints(), sectionId: "builder-section-skills" },
+    { ...useSpellsBuildPoints(), sectionId: "builder-section-awakened" },
+    { ...useAdeptPowersBuildPoints(), sectionId: "builder-section-awakened" },
+    { ...useTechnomancerBuildPoints(), sectionId: "builder-section-awakened" },
+    { ...useGearBuildPoints(), sectionId: "builder-section-gear" },
+    { ...useContactsBuildPoints(), sectionId: "builder-section-contacts" },
   ]
 
   const enabledLineItems = lineItems

@@ -72,14 +72,30 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             </Stack>
           </Stack>
 
-          <ProfileBuilderSection />
-          <BiologyBuilderSection />
-          <AttributesBuilderSection />
-          <QualitiesBuilderSection />
-          <SkillsBuilderSection />
-          <AwakenedSection />
-          <GearBuilderSection />
-          <ContactsBuilderSection />
+          <div id="builder-section-profile" tabIndex={-1}>
+            <ProfileBuilderSection />
+          </div>
+          <div id="builder-section-biology" tabIndex={-1}>
+            <BiologyBuilderSection />
+          </div>
+          <div id="builder-section-attributes" tabIndex={-1}>
+            <AttributesBuilderSection />
+          </div>
+          <div id="builder-section-qualities" tabIndex={-1}>
+            <QualitiesBuilderSection />
+          </div>
+          <div id="builder-section-skills" tabIndex={-1}>
+            <SkillsBuilderSection />
+          </div>
+          <div id="builder-section-awakened" tabIndex={-1}>
+            <AwakenedSection />
+          </div>
+          <div id="builder-section-gear" tabIndex={-1}>
+            <GearBuilderSection />
+          </div>
+          <div id="builder-section-contacts" tabIndex={-1}>
+            <ContactsBuilderSection />
+          </div>
         </Stack>
 
         <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />

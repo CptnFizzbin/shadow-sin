@@ -32,6 +32,12 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
     onExpandedChange?.(expanded)
   }
 
+  const handleSectionClick = (sectionId: string | undefined) => {
+    if (!sectionId) return
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" })
+    handleExpandedChange(false)
+  }
+
   return (
     <ClickAwayListener
       onClickAway={(event) => {
@@ -48,11 +54,23 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
           <Stack gap={1}>
             <Table size="small">
               <TableBody>
-                {summary.lineItems.map(({ label, spent, allowance }) => {
+                {summary.lineItems.map(({ label, spent, allowance, sectionId }) => {
                   const isOver = spent > (allowance ?? Infinity)
 
                   return (
-                    <TableRow key={label}>
+                    <TableRow
+                      key={label}
+                      onClick={() => handleSectionClick(sectionId)}
+                      onKeyDown={(event) => {
+                        if (sectionId && (event.key === "Enter" || event.key === " ")) {
+                          event.preventDefault()
+                          handleSectionClick(sectionId)
+                        }
+                      }}
+                      role={sectionId ? "button" : undefined}
+                      tabIndex={sectionId ? 0 : undefined}
+                      sx={sectionId ? { "cursor": "pointer", "&:hover": { backgroundColor: "action.hover" } } : undefined}
+                    >
                       <TableCell>
                         <Typography
                           variant="body2"
