@@ -1,7 +1,7 @@
 import jsYaml from "js-yaml"
 
-import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import type { ItemData } from "#/lib/system/ItemData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface GearTreeNode extends Omit<ItemData, "parentId" | "childIds"> {
   children?: GearTreeNode[]
@@ -39,8 +39,8 @@ export function gearToTree(
  * Serialise a CharacterBuilderState to a YAML string.
  * The gear map is converted to a nested tree before serialisation.
  */
-export function characterBuilderStateToYaml(
-  state: CharacterBuilderState,
+export function characterSheetToYaml(
+  state: CharacterSheet,
 ): string {
   const { gear, ...rest } = state
 
