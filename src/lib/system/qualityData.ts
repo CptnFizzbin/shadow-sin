@@ -8,6 +8,7 @@ export interface QualityData {
   name: string
   type: "positive" | "negative"
   bpValue?: number
+  rating?: number
   description?: string
   source?: SourceData
   effects?: GearEffectData[]
@@ -19,6 +20,7 @@ export const QualityDataSchema = z.object({
   name: z.string().min(1, "Name is required"),
   type: z.enum(["positive", "negative"]),
   bpValue: z.number().min(0, "BP must be 0 or greater").optional(),
+  rating: z.number().int().min(1, "Rating must be at least 1").optional(),
   description: z.string().optional(),
   effects: z
     .object({

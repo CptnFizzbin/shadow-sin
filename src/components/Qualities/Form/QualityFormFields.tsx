@@ -38,16 +38,33 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
 
           <form.Subscribe selector={(g) => g.values.type}>
             {(type) => (
-              <form.AppField name="bpValue">
+              <form.AppField
+                name="bpValue"
+                validators={{ onChange: z.number().int().min(0, "BP must be 0 or greater").optional() }}
+              >
                 {(field) => (
                   <field.NumberField
                     label={type === "positive" ? "BP Cost" : "BP Bonus"}
                     sx={{ width: 120 }}
+                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
                   />
                 )}
               </form.AppField>
             )}
           </form.Subscribe>
+
+          <form.AppField
+            name="rating"
+            validators={{ onChange: z.number().int().min(1, "Rating must be at least 1").optional() }}
+          >
+            {(field) => (
+              <field.NumberField
+                label="Rating"
+                sx={{ width: 120 }}
+                slotProps={{ htmlInput: { min: 1, step: 1 } }}
+              />
+            )}
+          </form.AppField>
         </Stack>
 
         <form.AppField name="description">
