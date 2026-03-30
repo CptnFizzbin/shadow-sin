@@ -18,7 +18,7 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
   onClick,
   onRemove,
 }) => {
-  const { bpValue = 0 } = quality
+  const { bpValue = 0, rating } = quality
   const bpLabel = bpValue >= 1 ? `${quality.bpValue} BP` : "FREE"
 
   return (
@@ -32,7 +32,10 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
       }}
     >
       <Stack direction="row" alignItems="center" width="100%">
-        <Typography flexGrow={1}>{quality.name}</Typography>
+        <Typography flexGrow={1}>
+          {quality.name}
+          {rating !== undefined && ` (Rating ${rating})`}
+        </Typography>
         <Typography variant="caption" color="secondary.main">
           {bpLabel}
         </Typography>
