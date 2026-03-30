@@ -40,7 +40,7 @@ export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
 
 export const useAttr = (attribute: AttributeKey) => {
   if (attribute === AttributeKey.essence) {
-    throw new Error("Use useEssenceAttr hook for Essence attribute")
+    throw new Error("UseBuilderRootStateStore.ts useEssenceAttr hook for Essence attribute")
   }
 
   return useCharacterSheet((sheet) => {

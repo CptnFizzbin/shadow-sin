@@ -2,9 +2,6 @@ import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
-
-import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
-import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
@@ -19,9 +16,9 @@ import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/
 import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
 import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
-import { StorePersister, usePersistedStore } from "#/components/CharacterBuilder/StorePersister.ts"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
 
 interface CharacterFormProps {
   character?: CharacterSheet
@@ -29,17 +26,10 @@ interface CharacterFormProps {
 
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
-
-  const defaultCharacterValues = character || createDefaultCharacterSheet()
-  const defaultBuilderValues: CharacterBuilderState = {
-    characterSheet: defaultCharacterValues,
-  }
-
-  const storageKey = `builder:${character?.id ?? "new"}`
-  const builderStateStore = usePersistedStore(storageKey, defaultBuilderValues)
+  const [rootStore, resetRootStore] = useBuilderRootStateStore(character)
 
   return (
-    <CharacterBuilderStoreProvider builderStateStore={builderStateStore}>
+    <CharacterBuilderStoreProvider rootStore={rootStore}>
       <Stack gap={1}>
         <Stack
           gap={1}
@@ -55,10 +45,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
               variant="outlined"
               color="warning"
               size="small"
-              onClick={() => {
-                StorePersister.clearState(storageKey)
-                builderStateStore.setState(() => defaultBuilderValues)
-              }}
+              onClick={() => resetRootStore()}
             >
               Reset
             </Button>
