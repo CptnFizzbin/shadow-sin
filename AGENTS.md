@@ -8,10 +8,14 @@ A **Shadowrun 4th Edition character sheet** SPA: React 19 + TanStack Router + Ta
 yarn dev          # dev server on :3000
 yarn build        # production build
 yarn preview      # preview production build locally
-yarn test         # Vitest (run once)
+yarn test         # alias for yarn test:unit (Vitest, run once)
+yarn test:unit    # Vitest unit tests (run once)
+yarn test:unit:ui # Vitest with browser UI
+yarn test:all     # unit + e2e in parallel
+yarn test:e2e     # Playwright end-to-end tests
+yarn test:e2e:ui  # Playwright with browser UI
 yarn fix          # Runs all "*:fix" scripts (npm-run-all) — auto-fix lint/format steps
-yarn lint         # Runs lint tasks (eslint / prettier checks via npm-run-all)
-yarn prettier     # Run Prettier against src (check or write via :lint/:fix variants)
+yarn lint         # Runs all lint tasks (eslint checks via npm-run-all)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
 yarn tsc          # TypeScript type check (no emit)
 ```
@@ -25,7 +29,7 @@ src/lib/fixture/character/*.ts    ← static fixture data (CharacterSheet)
   → characterManager.ensureCharacters() ← seeds fixtures into storage on first load
     → characterManager.getCharacter()   ← reads from LocalStorageProvider
       → route loader ($characterId/route.tsx)
-        → createStore(character)        ← @tanstack/store reactive store
+        → new CharacterSheetStore(character)  ← class wrapping @tanstack/store Atom
           → CharacterSheetProvider      ← context wrapper
             → useCharacterSheet(sel)    ← component consumption hook
 ```
@@ -40,19 +44,19 @@ The `CharacterStorePersistence` component (rendered inside `CharacterRoute`) aut
 
 ### Key directories
 
-| Path                                     | Purpose                                                                                                |
-|------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| `src/lib/system/`                        | All domain types (`CharacterSheet` is the root, in `characterSheet.ts`)                                |
-| `src/lib/system/gear/`                   | Gear sub-types keyed by `GearType` enum                                                                |
-| `src/lib/system/attributeKey.ts`         | `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` grouping constants |
-| `src/lib/fixture/character/`             | Static character fixtures; `artemis.ts` is the primary example                                         |
-| `src/lib/storage/`                       | Pluggable persistence layer (`IStorageProvider` + `StorageManager` + `CharacterManager`)               |
-| `src/lib/storage/characters/migrations/` | Character schema migration steps (`CharacterMigration<TInput, TOutput>`)                               |
-| `src/components/Character/`              | Character sheet UI components and `CharacterSheetProvider`                                             |
-| `src/components/CharacterBuilder/`       | Character creation/edit form (store-based); `StorePersister` for localStorage draft persistence        |
-| `src/components/Gear/`                   | Shared `GearApi`, `GearProvider`, `useGearApi`, `AvailabilityChip`                                     |
-| `src/routes/`                            | TanStack file-based routes                                                                             |
-| `src/integrations/`                      | TanStack Query/Form setup, Google Drive stub                                                           |
+- `src/lib/system/` — All domain types (`CharacterSheet` is the root, in `characterSheet.ts`)
+- `src/lib/system/gear/` — Gear sub-types keyed by `GearType` enum
+- `src/lib/system/magic/` — Magic sub-types: `spellData.ts`, `adeptPowerData.ts`, `complexFormData.ts`, `spriteData.ts`, etc.
+- `src/lib/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` grouping constants
+- `src/lib/fixture/character/` — Static character fixtures; `artemis.ts` is the primary example
+- `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager` + `CharacterManager`)
+- `src/lib/storage/characters/migrations/` — Character schema migration steps (`CharacterMigration<TInput, TOutput>`)
+- `src/components/Character/` — Character sheet UI components and `CharacterSheetProvider`
+- `src/components/CharacterBuilder/` — Character creation/edit form (store-based); `StorePersister` for localStorage draft persistence
+- `src/components/Gear/` — Shared `GearUtils`, `UseGearApi`, `AvailabilityChip`
+- `src/routes/` — TanStack file-based routes
+- `src/integrations/` — TanStack Query/Form setup, Google Drive stub
+- `test-utils/` — Shared test helpers; `storage/MemoryStorage.ts` implements `Storage` for unit tests
 
 ### Routing
 
@@ -84,6 +88,22 @@ constants from `src/lib/system/attributeKey.ts` — `PhysicalAttributes`, `Menta
 and filter out entries where `value === 0`. See `AttributesSection.tsx` for the canonical example. Do not do a raw
 `Object.keys()` loop over `attributes`.
 
+### Magic system
+
+Magic/tech data types live under `src/lib/system/magic/`:
+
+- `spellData.ts` → `CharacterSheet.spells`
+- `adeptPowerData.ts` → `CharacterSheet.adeptPowers`
+- `complexFormData.ts` → `CharacterSheet.complexForms`
+- `spriteData.ts` → `CharacterSheet.sprites`
+- `spiritData.ts` — used by Magician NPCs
+- `fociData.ts` — gear items via `GearType`
+
+The character's `biology.awakening` field (`AwakeningType` enum: `Mundane`, `Adept`, `Magician`, `MysticAdept`,
+`Technomancer`) governs which magic/resonance sections are rendered. Gate UI sections on `awakening` rather than
+checking attribute values directly — see `src/lib/system/awakeningType.ts` for the `MagicAwakeningTypes` and
+`TechAwakeningTypes` grouping constants.
+
 ### Storage layer
 
 Pre-instantiated singletons are exported from `src/lib/storage/index.ts`:
@@ -110,11 +130,23 @@ mount and cleared on reset. The builder accepts an optional `character?: Charact
 > Full code style rules are in [`.github/instructions/code-style.md`](.github/instructions/code-style.md).
 
 - **Path alias**: `#/` → `src/` (configured in `tsconfig.json` + `vite-tsconfig-paths`)
--- **`src/routeTree.gen.ts`** is auto-generated by the Vite plugin and must not be edited. Exclude it from formatter/lint runs (it's regenerated on dev/build).
+- **Path alias**: `#test-utils/*` → `test-utils/` (configured in `package.json` `imports` field; use in unit tests)
+- **`src/routeTree.gen.ts`** is auto-generated by the Vite plugin and must not be edited. Exclude it from formatter/lint runs (it's regenerated on dev/build).
+- **All local imports must include the file extension** (`.ts` or `.tsx`):
+  ```ts
+  // ✅
+  import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+  // ❌
+  import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider"
+  ```
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env"`.
 - `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the
   case.
+- **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using `satisfies z.ZodType<Type>`:
+  ```ts
+  export const AdeptPowerDataSchema = z.object({ ... }) satisfies z.ZodType<AdeptPowerData>
+  ```
 
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
   `npm-run-all`) and then `yarn tsc` to ensure formatting, linting, and types are clean before pushing.

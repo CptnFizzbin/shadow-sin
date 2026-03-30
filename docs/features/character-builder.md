@@ -11,7 +11,13 @@ prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
 
 The character creation form is implemented as `CharacterBuilder` (not TanStack Form). State lives in two
 `@tanstack/store` stores — one for the `CharacterSheet` draft, one for transient builder state — both persisted to
-`localStorage` via `StorePersister` / `usePersistedStore`. The storage key format is `shadow-sin:character-form:builder:{id}:character` for new characters and `shadow-sin:character-form:builder:{characterId}:character` for edits.
+`localStorage` via `StorePersister` / `usePersistedStore`. The storage key format is
+`shadow-sin:character-form:builder:{id}:character` for new characters and
+`shadow-sin:character-form:builder:{characterId}:character` for edits.
+
+Gear mutations flow through `useGearApi()` (from `src/components/Gear/UseGearApi.ts`), which reads and writes
+`CharacterSheet.gear` via `CharacterSheetContext`. There is no separate `GearProvider` — `CharacterBuilderStoreProvider`
+bridges the builder store to `CharacterSheetProvider`, making all gear hooks available to builder components.
 
 ---
 
@@ -19,11 +25,12 @@ The character creation form is implemented as `CharacterBuilder` (not TanStack F
 
 `CharacterBuilder` captures profile, biology, attributes, skills, qualities, resources, gear, and contacts. Draft state
 is persisted to `localStorage` on every store change via `StorePersister`, but save to `characterManager` is not yet
-wired.
+wired. An **Export** button (YAML download) exists and is wired via `ExportCharacterButton` / `ExportUtils.ts`.
 
 - [x] Persist form state to localStorage on every field change — keyed by character id or `"new"` for new
   characters ✅ PR #2
 - [x] Add a **Reset Form** button that clears localStorage and resets fields to defaults ✅ PR #2
+- [x] Add an **Export** button that downloads the character sheet as a YAML file
 - [ ] Wire `SaveCharacterButton` to call `characterManager.saveCharacter` — button exists and gates on error alerts,
   but has no `onClick` save handler yet
 - [ ] Generate a stable `id` (`crypto.randomUUID()`) for new characters on save
