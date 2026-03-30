@@ -10,14 +10,14 @@ import { CharacterSheetProvider } from "#/components/Character/CharacterSheetPro
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import { Header } from "#/components/UI/Header.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
-import { characterManager } from "#/lib/storage/index.ts"
+import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
   loader: async ({ params }): Promise<CharacterSheet> => {
-    await characterManager.ensureCharacters([Artemis])
-    const character = await characterManager.getCharacter(params.characterId)
+    await localCharacterManager.ensureCharacters([Artemis])
+    const character = await localCharacterManager.getCharacter(params.characterId)
 
     if (!character) {
       throw new Error(`Character "${params.characterId}" was not found.`)
@@ -33,7 +33,7 @@ const CharacterStorePersistence: FC = () => {
   const hasMountedRef = useRef(false)
   const characterSaveThrottler = useThrottler(
     (nextCharacter: CharacterSheet) => {
-      void characterManager.saveCharacter(nextCharacter)
+      void localCharacterManager.saveCharacter(nextCharacter)
     },
     {
       wait: 30_000,

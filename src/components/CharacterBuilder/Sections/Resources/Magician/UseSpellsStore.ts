@@ -1,65 +1,42 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
 export type SpellsStoreState = CharacterSheet["spells"]
 
-export interface UseSpellsStore extends BaseAtom<SpellsStoreState> {
-  add(spell: SpellData): void
+export class SpellsStore extends StoreSlice<SpellsStoreState> {
+  setState(stateOrUpdater: SpellsStoreState | ((prev: SpellsStoreState) => SpellsStoreState)) {
+    this.set(stateOrUpdater)
+  }
 
-  update(spell: SpellData): void
+  add(spell: SpellData): void {
+    this.set((prev) => [...prev, spell])
+  }
 
-  remove(spellId: string): void
+  update(spell: SpellData): void {
+    this.set((prev) => prev.map((s) => s.id === spell.id ? spell : s))
+  }
 
-  setState(state: SpellsStoreState): void
-
-  setState(updater: (prev: SpellsStoreState) => SpellsStoreState): void
+  remove(spellId: string): void {
+    this.set((prev) => prev.filter((s) => s.id !== spellId))
+  }
 }
 
-export const useSpellsStore = (): UseSpellsStore => {
+export const useSpellsStore = (): SpellsStore => {
   const store = useCharacterSheetContext()
 
-  return useMemo((): UseSpellsStore => {
-    const spellsStore = createStore(() => store.state.spells)
+  return useMemo((): SpellsStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.spells,
+      (root, spells) => produce(root, (draft) => { draft.spells = spells }),
+    )
 
-    const toUpdater = <T>(valueOrUpdater: T | ((prev: T) => T)): ((prev: T) => T) =>
-      typeof valueOrUpdater === "function"
-        ? (valueOrUpdater as (prev: T) => T)
-        : () => valueOrUpdater
-
-    return {
-      get: () => spellsStore.get(),
-      subscribe: (listener) => spellsStore.subscribe(listener),
-
-      setState: (stateOrUpdater) => {
-        const updater = toUpdater(stateOrUpdater)
-        store.setState(produce((prev) => {
-          prev.spells = updater(prev.spells)
-        }))
-      },
-
-      add: (spell) => {
-        store.setState(produce((prev) => {
-          prev.spells.push(spell)
-        }))
-      },
-
-      update: (spell) => {
-        store.setState(produce((prev) => {
-          prev.spells = prev.spells.map((s) => s.id === spell.id ? spell : s)
-        }))
-      },
-
-      remove: (spellId) => {
-        store.setState(produce((prev) => {
-          prev.spells = prev.spells.filter((s) => s.id !== spellId)
-        }))
-      },
-    }
+    return new SpellsStore(atom)
   }, [store])
 }

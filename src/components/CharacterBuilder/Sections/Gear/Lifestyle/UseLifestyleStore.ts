@@ -1,54 +1,38 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
-export interface LifestyleStoreState {
-  quality: LifestyleType
-  monthsPaid: number
-}
+export type LifestyleStoreState = NonNullable<CharacterSheet["profile"]["lifestyle"]>
 
-const createDefaults = (): LifestyleStoreState => {
-  return {
-    quality: LifestyleType.Middle,
-    monthsPaid: 1,
+export class LifestyleStore extends StoreSlice<LifestyleStoreState> {
+  setState(stateOrUpdater: LifestyleStoreState | ((prev: LifestyleStoreState) => LifestyleStoreState)) {
+    this.set(stateOrUpdater)
+  }
+
+  setQuality(quality: LifestyleType): void {
+    this.set((prev) => ({ ...(prev ?? { quality, monthsPaid: 1 }), quality }))
+  }
+
+  setMonthsPaid(months: number): void {
+    this.set((prev) => ({ ...(prev ?? { quality: LifestyleType.Street, monthsPaid: months }), monthsPaid: months }))
   }
 }
 
-export interface LifestyleStore extends BaseAtom<LifestyleStoreState> {
-  setQuality(quality: LifestyleType): void
-
-  setMonthsPaid(monthsPaid: number): void
-}
-
-export const useLifestyleStore = () => {
+export const useLifestyleStore = (): LifestyleStore => {
   const store = useCharacterSheetContext()
 
   return useMemo((): LifestyleStore => {
-    const lifestyleStore = createStore(() => {
-      return store.state.profile.lifestyle ?? createDefaults()
-    })
+    const atom = createSliceAtom(
+      store,
+      (root) => root.profile.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: 1 },
+      (root, lifestyle) => produce(root, (draft) => { draft.profile.lifestyle = lifestyle }),
+    )
 
-    return {
-      get: () => lifestyleStore.get(),
-      subscribe: (listener) => lifestyleStore.subscribe(listener),
-
-      setQuality(newLifestyle: LifestyleType) {
-        store.setState(produce((sheet) => {
-          const lifestyleInfo = sheet.profile.lifestyle ??= createDefaults()
-          lifestyleInfo.quality = newLifestyle
-        }))
-      },
-
-      setMonthsPaid(months: number) {
-        store.setState(produce((sheet) => {
-          const lifestyleInfo = sheet.profile.lifestyle ??= createDefaults()
-          lifestyleInfo.monthsPaid = months
-        }))
-      },
-    }
+    return new LifestyleStore(atom)
   }, [store])
 }

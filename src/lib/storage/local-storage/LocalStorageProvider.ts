@@ -1,8 +1,4 @@
-import type {
-  IStorageProvider,
-  StoredJsonFile,
-  StoredJsonFileMetadata,
-} from "#/lib/storage/IStorageProvider.ts"
+import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/StorageProvider.ts"
 
 interface LocalStorageProviderOptions {
   storagePrefix: string
@@ -14,7 +10,7 @@ interface StoredJsonEnvelope<TValue> {
   value: TValue
 }
 
-export class LocalStorageProvider implements IStorageProvider {
+export class LocalStorageProvider implements StorageProvider {
   public readonly providerId = "local-storage"
 
   private readonly storagePrefix: string

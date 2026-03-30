@@ -7,7 +7,7 @@ export interface StoredJsonFile<TValue> extends StoredJsonFileMetadata {
   value: TValue
 }
 
-export interface IStorageProvider {
+export interface StorageProvider {
   readonly providerId: string
 
   listJsonFiles(pathPrefix?: string): Promise<StoredJsonFileMetadata[]>
