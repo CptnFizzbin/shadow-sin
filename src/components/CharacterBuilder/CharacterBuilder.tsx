@@ -6,6 +6,7 @@ import { useState } from "react"
 import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
 import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
 import {
   AttributesBuilderSection,
@@ -48,7 +49,8 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             pointerEvents: isBpPanelExpanded ? "none" : "auto",
           }}
         >
-          <Stack direction="row" justifyContent="flex-end">
+          <Stack direction="row" justifyContent="flex-end" gap={1}>
+            <ExportCharacterButton />
             <Button
               variant="outlined"
               color="warning"
