@@ -4,6 +4,8 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
+import type { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
+import type { SkillKey } from "#/lib/system/SkillKey.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
 
@@ -11,7 +13,7 @@ export type SkillsStoreState = CharacterSheet["skills"]
 
 export class SkillsStore extends StoreSlice<SkillsStoreState> {
   activeSkills = {
-    setState: (skillName: string, updater: (prev?: ActiveSkillData) => ActiveSkillData) => {
+    setState: (skillName: SkillKey, updater: (prev?: ActiveSkillData) => ActiveSkillData) => {
       this.set((prev) => {
         const idx = prev.activeSkills.findIndex((s) => s.name === skillName)
         const existing = idx >= 0 ? prev.activeSkills[idx] : undefined
@@ -22,13 +24,13 @@ export class SkillsStore extends StoreSlice<SkillsStoreState> {
         return { ...prev, activeSkills: copy }
       })
     },
-    remove: (skillName: string) => {
+    remove: (skillName: SkillKey) => {
       this.set((prev) => ({ ...prev, activeSkills: prev.activeSkills.filter((s) => s.name !== skillName) }))
     },
   }
 
   skillGroups = {
-    setState: (groupName: string, updater: (prev?: SkillGroupData) => SkillGroupData) => {
+    setState: (groupName: SkillGroupKey, updater: (prev?: SkillGroupData) => SkillGroupData) => {
       this.set((prev) => {
         const idx = prev.skillGroups.findIndex((g) => g.name === groupName)
         const existing = idx >= 0 ? prev.skillGroups[idx] : undefined
@@ -39,7 +41,7 @@ export class SkillsStore extends StoreSlice<SkillsStoreState> {
         return { ...prev, skillGroups: copy }
       })
     },
-    remove: (groupName: string) => {
+    remove: (groupName: SkillGroupKey) => {
       this.set((prev) => ({ ...prev, skillGroups: prev.skillGroups.filter((g) => g.name !== groupName) }))
     },
   }

@@ -1,4 +1,3 @@
-import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
@@ -30,7 +29,13 @@ export const useLifestyleStore = (): LifestyleStore => {
     const atom = createSliceAtom(
       store,
       (root) => root.profile.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: 1 },
-      (root, lifestyle) => produce(root, (draft) => { draft.profile.lifestyle = lifestyle }),
+      (root, lifestyle) => ({
+        ...root,
+        profile: {
+          ...root.profile,
+          lifestyle,
+        },
+      }),
     )
 
     return new LifestyleStore(atom)
