@@ -18,7 +18,16 @@ export interface MetatypeData {
   inateAbilites?: GameEffectData[]
 }
 
-const commonAttributes = {
+export const baseAttributes = {
+  body: { min: 1, max: 6, augMax: 9 },
+  agility: { min: 1, max: 6, augMax: 9 },
+  reaction: { min: 1, max: 6, augMax: 9 },
+  strength: { min: 1, max: 6, augMax: 9 },
+  charisma: { min: 1, max: 6, augMax: 9 },
+  intuition: { min: 1, max: 6, augMax: 9 },
+  logic: { min: 1, max: 6, augMax: 9 },
+  willpower: { min: 1, max: 6, augMax: 9 },
+  edge: { min: 1, max: 6 },
   essence: { min: 0, max: 6 },
   magic: { min: 0, max: 0 },
   resonance: { min: 0, max: 0 },
@@ -29,6 +38,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     name: MetatypeType.Human,
     cost: 0,
     attributes: {
+      ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
       agility: { min: 1, max: 6, augMax: 9 },
       reaction: { min: 1, max: 6, augMax: 9 },
@@ -38,13 +48,13 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 2, max: 7 },
-      ...commonAttributes,
     },
   },
   Ork: {
     name: MetatypeType.Ork,
     cost: 20,
     attributes: {
+      ...baseAttributes,
       body: { min: 4, max: 9, augMax: 13 },
       agility: { min: 1, max: 6, augMax: 9 },
       reaction: { min: 1, max: 6, augMax: 9 },
@@ -54,13 +64,13 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes,
     },
   },
   Dwarf: {
     name: MetatypeType.Dwarf,
     cost: 25,
     attributes: {
+      ...baseAttributes,
       body: { min: 2, max: 7, augMax: 10 },
       agility: { min: 1, max: 6, augMax: 9 },
       reaction: { min: 1, max: 5, augMax: 7 },
@@ -70,13 +80,13 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 7, augMax: 10 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes,
     },
   },
   Elf: {
     name: MetatypeType.Elf,
     cost: 30,
     attributes: {
+      ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
       agility: { min: 2, max: 7, augMax: 10 },
       reaction: { min: 1, max: 6, augMax: 9 },
@@ -86,13 +96,13 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 6, augMax: 9 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes,
     },
   },
   Troll: {
     name: MetatypeType.Troll,
     cost: 40,
     attributes: {
+      ...baseAttributes,
       body: { min: 5, max: 10, augMax: 15 },
       agility: { min: 1, max: 5, augMax: 7 },
       reaction: { min: 1, max: 6, augMax: 9 },
@@ -102,13 +112,13 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       logic: { min: 1, max: 5, augMax: 7 },
       willpower: { min: 1, max: 6, augMax: 9 },
       edge: { min: 1, max: 6 },
-      ...commonAttributes,
     },
   },
   AI: {
     name: MetatypeType.AI,
     cost: 110,
     attributes: {
+      ...baseAttributes,
       body: { min: 0, max: 0 },
       agility: { min: 0, max: 0 },
       reaction: { min: 0, max: 0 },
