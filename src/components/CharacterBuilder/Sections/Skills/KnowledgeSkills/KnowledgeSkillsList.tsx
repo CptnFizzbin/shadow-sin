@@ -57,15 +57,15 @@ export const KnowledgeSkillsList: FC = () => {
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="column">
           <Stack direction="row" gap={1} alignItems="baseline">
-            <SkillPoints type="Free" value={skillPoints.spent.free} max={skillPoints.free}/>
+            <SkillPoints type="Free" value={skillPoints.spent.free} max={skillPoints.free} />
             +
-            <SkillPoints value={skillPoints.spent.extra}/>
+            <SkillPoints value={skillPoints.spent.extra} />
           </Stack>
 
           <Typography variant="caption">Extra SP costs 2 BP each</Typography>
         </Stack>
 
-        <BuildPoints value={buildPoints.spent}/>
+        <BuildPoints value={buildPoints.spent} />
       </Stack>
 
       {knowledgeSkills.length > 0 && (
@@ -125,7 +125,7 @@ export const KnowledgeSkillsList: FC = () => {
           variant="outlined"
           color="secondary"
           size="small"
-          startIcon={<RiAddLine size={14}/>}
+          startIcon={<RiAddLine size={14} />}
           onClick={() => setDialogState({ type: "knowledge", open: true })}
           sx={{ flexGrow: 1 }}
         >
@@ -136,7 +136,7 @@ export const KnowledgeSkillsList: FC = () => {
           variant="outlined"
           color="secondary"
           size="small"
-          startIcon={<RiAddLine size={14}/>}
+          startIcon={<RiAddLine size={14} />}
           onClick={() => setDialogState({ type: "language", open: true })}
           sx={{ flexGrow: 1 }}
         >

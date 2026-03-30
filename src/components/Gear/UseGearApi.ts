@@ -1,19 +1,116 @@
 import type { UUID } from "node:crypto"
 
 import { useStore } from "@tanstack/react-store"
-import { useContext } from "react"
+import type { BaseAtom } from "@tanstack/store"
+import { batch, createStore } from "@tanstack/store"
+import { produce } from "immer"
+import { useMemo } from "react"
 
-import { GearContext } from "#/components/Gear/GearProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 
+export interface RemoveItemOptions {
+  removeChildren?: boolean
+}
+
+export interface GearApi extends BaseAtom<Record<UUID, ItemData>> {
+  set(item: ItemData): ItemData
+
+  add(item: Omit<ItemData, "id">): ItemData
+
+  remove(item: ItemData, options?: RemoveItemOptions): void
+
+  setParent(child: ItemData, parent: ItemData): ItemData
+
+  addChild(parent: ItemData, child: ItemData): ItemData
+}
+
 export function useGearApi() {
-  const api = useContext(GearContext)
+  const store = useCharacterSheetContext()
 
-  if (!api) {
-    throw new Error("useGearApi must be used within a GearProvider")
-  }
+  return useMemo(() => {
+    const gearStore = createStore(() => store.state.gear)
 
-  return api
+    const updateListLinks = (updatedItem: ItemData) => {
+      store.setState(produce((prev) => {
+        for (const savedItem of Object.values(prev.gear)) {
+          savedItem.childIds ??= []
+          if (savedItem.id === updatedItem.parentId) {
+            if (!savedItem.childIds.includes(updatedItem.id)) {
+              savedItem.childIds.push(savedItem.id)
+            }
+          } else {
+            savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)
+          }
+
+          updatedItem.childIds ??= []
+          if (updatedItem.childIds.includes(savedItem.id)) {
+            savedItem.parentId = updatedItem.id
+          } else {
+            if (savedItem.parentId === updatedItem.id) {
+              savedItem.parentId = undefined
+            }
+          }
+        }
+      }))
+    }
+
+    const gearApi: GearApi = {
+      get: () => gearStore.get(),
+      subscribe: (listener) => gearStore.subscribe(listener),
+
+      add: (item) => gearApi.set({ ...item, id: crypto.randomUUID() }),
+      setParent: (child, parent) => gearApi.set({ ...child, parentId: parent.id }),
+      addChild: (parent, child) => gearApi.set({ ...child, parentId: parent.id }),
+
+      set(item) {
+        batch(() => {
+          store.setState(produce((prev) => {
+            prev.gear[item.id] = item
+          }))
+
+          updateListLinks(item)
+        })
+
+        return item
+      },
+
+      remove(item, options = { removeChildren: false }) {
+        store.setState(produce((prev) => {
+          function removeItem(targetItem: ItemData) {
+            delete prev.gear[targetItem.id]
+
+            if (targetItem.parentId) {
+              const parentItem = prev.gear[targetItem.parentId]
+              if (parentItem) {
+                parentItem.childIds = parentItem.childIds?.filter((id) => id !== targetItem.id)
+              }
+            }
+          }
+
+          function recursiveRemove(targetItem: ItemData) {
+            for (const childId of targetItem.childIds ?? []) {
+              const childItem = prev.gear[childId]
+              recursiveRemove(childItem)
+            }
+
+            removeItem(targetItem)
+          }
+
+          const targetItem = prev.gear[item.id]
+          if (!targetItem) return
+
+          if (options.removeChildren) {
+            recursiveRemove(targetItem)
+          } else {
+            removeItem(targetItem)
+          }
+        }))
+      },
+    }
+
+    return gearApi
+  }, [store])
 }
 
 /**

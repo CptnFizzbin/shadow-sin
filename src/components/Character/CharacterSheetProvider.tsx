@@ -3,7 +3,6 @@ import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
 
 import { CharacterSheetContext, useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
-import { GearProvider } from "#/components/Gear/GearProvider.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export interface CharacterSheetProviderProps extends PropsWithChildren {
@@ -16,9 +15,7 @@ export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({
 }) => {
   return (
     <CharacterSheetContext.Provider value={store}>
-      <GearProvider store={store}>
-        {children}
-      </GearProvider>
+      {children}
     </CharacterSheetContext.Provider>
   )
 }
