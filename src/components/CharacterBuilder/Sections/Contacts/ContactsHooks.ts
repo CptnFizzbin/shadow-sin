@@ -1,8 +1,8 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { getContactBpCost } from "#/components/CharacterBuilder/Sections/Contacts/ContactsUtils.ts"
 
 export const useContactsBuildPoints = () => {
-  const contacts = useCharacterBuilderStore((state) => state.contacts)
+  const contacts = useCharacterSheet((state) => state.contacts)
   return {
     label: "Contacts",
     spent: contacts

@@ -1,9 +1,6 @@
-import { MetatypeKey } from "#/lib/system/MetatypeData.ts"
+import { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import type { AwakeningType } from "#/lib/system/awakeningType.ts"
-import {
-  MagicAwakeningTypes,
-  TechAwakeningTypes,
-} from "#/lib/system/awakeningType.ts"
+import { MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
 
 export enum SkillGroupKey {
   Athletics = "Athletics",
@@ -25,7 +22,7 @@ export interface SkillGroupInfo {
   name: string
   required?: {
     awakenings?: AwakeningType[]
-    metatypes?: MetatypeKey[]
+    metatypes?: MetatypeType[]
   }
 }
 
@@ -76,7 +73,7 @@ export const SkillGroups: Record<SkillGroupKey, SkillGroupInfo> = {
     name: SkillGroupKey.Tasking,
     required: {
       awakenings: TechAwakeningTypes,
-      metatypes: [MetatypeKey.AI],
+      metatypes: [MetatypeType.AI],
     },
   },
 }

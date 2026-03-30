@@ -6,7 +6,7 @@ import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/Sou
 import {
   gearItemFieldMap,
   gearItemFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseGearItemForm.tsx"
+} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 
 export const GearItemFormFields = withFieldGroup({
@@ -36,7 +36,7 @@ export const GearItemFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <AvailabilityFieldGroup form={group} fields={gearItemFieldMap} />
+        <AvailabilityFieldGroup form={group} fields="availability" />
         <SourceFieldGroup form={group} fields={gearItemFieldMap} />
 
         <group.AppField name="description">

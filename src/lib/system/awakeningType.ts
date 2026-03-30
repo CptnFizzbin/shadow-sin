@@ -1,3 +1,4 @@
+import type { AttributeInfo } from "#/lib/system/AttributeInfo.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { QualityData } from "#/lib/system/qualityData.ts"
 
@@ -70,7 +71,7 @@ export interface AwakeningData {
   cost: number
   qualities: QualityData[]
   attributes: {
-    [AttributeKey.magic]: { min: number, max: number }
-    [AttributeKey.resonance]: { min: number, max: number }
+    [AttributeKey.magic]: AttributeInfo
+    [AttributeKey.resonance]: AttributeInfo
   }
 }

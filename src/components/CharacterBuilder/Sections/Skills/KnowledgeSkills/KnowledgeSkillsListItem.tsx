@@ -6,11 +6,11 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { KnowledgeSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { getKnowledgeSkillSp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import type { KnowledgeSkillData } from "#/lib/system/skillData.ts"
 
 interface KnowledgeSkillsListItemProps {
-  skill: KnowledgeSkillFormState
+  skill: KnowledgeSkillData
   onEdit: () => void
   onDelete: () => void
 }
@@ -20,7 +20,7 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillsListItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const spCost = getKnowledgeSkillSp(skill.rating, !!skill.specialization)
+  const spCost = getKnowledgeSkillSp(skill)
 
   return (
     <Box

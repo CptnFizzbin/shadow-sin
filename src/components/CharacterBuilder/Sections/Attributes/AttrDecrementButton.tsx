@@ -1,13 +1,14 @@
 import { Button } from "@mui/material"
 import { RiArrowLeftBoxLine } from "@remixicon/react"
+import { produce } from "immer"
 import type { FC } from "react"
 
-import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeUtils.ts"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
+} from "#/components/CharacterBuilder/BuildPoints/AttributeUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
@@ -19,19 +20,20 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     throw new Error("Essence cannot be decremented")
   }
 
-  const store = useCharacterBuilderStoreContext()
-  const attrApi = useAttrApi(props.attr, store)
+  const store = useCharacterSheetContext()
+  const attrApi = useAttrInfo(props.attr)
+  const attrValue = useAttr(props.attr)
 
   let disabled = false
   let refund = AttributeBpCostBase
   let label = `${refund} BP`
 
-  if (attrApi.value >= attrApi.max) {
+  if (attrValue >= attrApi.max) {
     refund = AttributeBpCostMaxOut
     label = `${refund} BP`
   }
 
-  if (attrApi.value <= attrApi.min) {
+  if (attrValue <= attrApi.min) {
     disabled = true
     label = "MIN"
   }
@@ -39,7 +41,9 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   const onClick = () => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
-    attrApi.setValue(attrApi.value - 1)
+    store.setState(produce((sheet) => {
+      sheet.attributes[props.attr] -= 1
+    }))
   }
 
   return (

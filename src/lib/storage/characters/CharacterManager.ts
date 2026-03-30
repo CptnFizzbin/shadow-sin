@@ -1,16 +1,17 @@
 import { sort } from "fast-sort"
+import semver from "semver"
 
 import type { StoredJsonFile } from "#/lib/storage/IStorageProvider.ts"
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export class CharacterManager {
   private readonly characterDirectoryPath = "characters"
 
   public constructor(private readonly storageManager: StorageManager) {}
 
-  public async listCharacters(): Promise<Record<string, PlayerCharacterData>> {
+  public async listCharacters(): Promise<Record<string, CharacterSheet>> {
     const characterFiles = await this.storageManager.listJsonFiles(
       this.characterDirectoryPath,
     )
@@ -20,7 +21,7 @@ export class CharacterManager {
     )
 
     const characters = storedCharacters.filter(
-      (character): character is PlayerCharacterData => character !== null,
+      (character): character is CharacterSheet => character !== null,
     )
 
     return Object.fromEntries(characters.map((character) => [character.id, character]))
@@ -28,13 +29,13 @@ export class CharacterManager {
 
   public getCharacter(
     characterId: string,
-  ): Promise<PlayerCharacterData | null> {
+  ): Promise<CharacterSheet | null> {
     return this.loadCharacterByPath(this.getCharacterPath(characterId))
   }
 
   public saveCharacter(
-    character: PlayerCharacterData,
-  ): Promise<StoredJsonFile<PlayerCharacterData>> {
+    character: CharacterSheet,
+  ): Promise<StoredJsonFile<CharacterSheet>> {
     return this.storageManager.saveJsonFile(
       this.getCharacterPath(character.id),
       character,
@@ -46,8 +47,8 @@ export class CharacterManager {
   }
 
   public async ensureCharacters(
-    characters: PlayerCharacterData[],
-  ): Promise<Record<string, PlayerCharacterData>> {
+    characters: CharacterSheet[],
+  ): Promise<Record<string, CharacterSheet>> {
     for (const character of characters) {
       const existingCharacter = await this.getCharacter(character.id)
 
@@ -63,9 +64,9 @@ export class CharacterManager {
 
   private async loadCharacterByPath(
     path: string,
-  ): Promise<PlayerCharacterData | null> {
+  ): Promise<CharacterSheet | null> {
     const storedCharacter =
-      await this.storageManager.loadJsonFile<PlayerCharacterData>(path)
+      await this.storageManager.loadJsonFile<CharacterSheet>(path)
 
     if (!storedCharacter) {
       return null
@@ -79,25 +80,25 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: {
-    version: number
-  }): Promise<PlayerCharacterData> {
+    version: string
+  }): Promise<CharacterSheet> {
     let characterData = character
     let migrationPerformed = false
 
     const migrationsToRun = sort(migrations)
       .asc((migration) => migration.version)
-      .filter((migration) => migration.version > character.version)
+      .filter((migration) => semver.gt(migration.version, characterData.version))
 
     for (const migration of migrationsToRun) {
-      if (migration.version > characterData.version) {
+      if (semver.gt(migration.version, characterData.version)) {
         characterData = await migration.up(character)
         characterData.version = migration.version
         migrationPerformed = true
       }
     }
 
-    const playerCharacter: PlayerCharacterData =
-      characterData as PlayerCharacterData
+    const playerCharacter: CharacterSheet =
+      characterData as CharacterSheet
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)

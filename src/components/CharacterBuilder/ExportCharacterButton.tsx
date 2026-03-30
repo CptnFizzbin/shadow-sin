@@ -3,19 +3,16 @@ import Button from "@mui/material/Button"
 import type { FC } from "react"
 
 import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import {
-  characterBuilderStateToYaml,
-  downloadTextFile,
-} from "#/components/CharacterBuilder/ExportUtils.ts"
+import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/ExportUtils.ts"
 
 export const ExportCharacterButton: FC = () => {
   const store = useCharacterBuilderStoreContext()
 
   const handleExport = () => {
-    const state = store.state
-    const yamlContent = characterBuilderStateToYaml(state)
+    const { characterSheet } = store.get()
+    const yamlContent = characterSheetToYaml(characterSheet)
     const sanitizedName =
-      (state.alias || state.name || "character")
+      (characterSheet.profile.alias || characterSheet.profile.name || "character")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "")

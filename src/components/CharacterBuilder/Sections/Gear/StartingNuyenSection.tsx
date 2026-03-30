@@ -6,15 +6,15 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { GearNuyenPerBuildPoint, useGearTotalCost } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { DiceResult } from "#/components/Dice/DiceResult.tsx"
 import { useDiceRoller } from "#/components/Dice/UseDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/UI/Nuyen.tsx"
-import { Lifestyles } from "#/lib/system/LifestyleType.ts"
+import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
+  const lifestyle = useCharacterSheet((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)
   const { numDice, mult } = Lifestyles[lifestyle].starting
 
   const totalNuyen = useGearTotalCost()

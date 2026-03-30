@@ -12,13 +12,13 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { KnowledgeSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import type { KnowledgeSkillData } from "#/lib/system/skillData.ts"
 
 interface KnowledgeSkillDialogProps {
   open: boolean
-  skill?: KnowledgeSkillFormState
-  onSave: (skill: KnowledgeSkillFormState) => void
+  skill?: KnowledgeSkillData
+  onSave: (skill: KnowledgeSkillData) => void
   onDelete?: () => void
   onClose: () => void
   onClosed?: () => void
@@ -49,7 +49,6 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
       return
     }
     onSave({
-      id: skill?.id ?? crypto.randomUUID(),
       name: name.trim(),
       rating,
       specialization: specialization.trim() || undefined,

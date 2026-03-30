@@ -5,16 +5,10 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
 
-interface AvailabilityFormState {
-  availability?: AvailablityInfo
-}
-
-const defaultValues: AvailabilityFormState = {
-  availability: {
-    rating: 0,
-    restricted: false,
-    forbidden: false,
-  },
+const defaultValues: AvailablityInfo = {
+  rating: 0,
+  restricted: false,
+  forbidden: false,
 }
 
 export const AvailabilityFieldGroup = withFieldGroup({
@@ -22,7 +16,7 @@ export const AvailabilityFieldGroup = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack direction="row" gap={1}>
-        <group.AppField name="availability.rating">
+        <group.AppField name="rating">
           {(field) => (
             <field.NumberField
               label="Availability"
@@ -32,10 +26,8 @@ export const AvailabilityFieldGroup = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.Subscribe selector={(state) => state.values.availability}>
-          {(availablity) => {
-            const { restricted = false, forbidden = false } = availablity || {}
-
+        <group.Subscribe selector={(state) => state.values}>
+          {({ restricted, forbidden }) => {
             return (
               <ToggleButtonGroup
                 exclusive
@@ -47,8 +39,8 @@ export const AvailabilityFieldGroup = withFieldGroup({
                   sx={{ px: 1.5 }}
                   selected={!restricted && !forbidden}
                   onClick={() => {
-                    group.setFieldValue("availability.restricted", false)
-                    group.setFieldValue("availability.forbidden", false)
+                    group.setFieldValue("restricted", false)
+                    group.setFieldValue("forbidden", false)
                   }}
                 >
                   —
@@ -58,8 +50,8 @@ export const AvailabilityFieldGroup = withFieldGroup({
                   sx={{ px: 1.5 }}
                   selected={restricted}
                   onClick={() => {
-                    group.setFieldValue("availability.restricted", true)
-                    group.setFieldValue("availability.forbidden", false)
+                    group.setFieldValue("restricted", true)
+                    group.setFieldValue("forbidden", false)
                   }}
                 >
                   R
@@ -69,8 +61,8 @@ export const AvailabilityFieldGroup = withFieldGroup({
                   sx={{ px: 1.5 }}
                   selected={forbidden}
                   onClick={() => {
-                    group.setFieldValue("availability.restricted", false)
-                    group.setFieldValue("availability.forbidden", true)
+                    group.setFieldValue("restricted", false)
+                    group.setFieldValue("forbidden", true)
                   }}
                 >
                   F

@@ -9,25 +9,27 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { LicenseFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Dialogs/LicenseFormDialog.tsx"
-import type { LicenseFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import { useLicensesState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/UseLicensesState.ts"
+import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseUtils.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
+import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { SinData } from "#/lib/system/gear/SinData.ts"
+import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 interface LicensesListProps {
-  sinId: string
+  sin: SinData
 }
 
 type DialogState =
   | null
-  | { mode: "edit", license: LicenseFormState, open: boolean }
-  | { mode: "create", sinId: string, open: boolean }
+  | { mode: "edit", license: LicenseData, open: boolean }
+  | { mode: "create", open: boolean }
 
-export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
+export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const { sins, getLicensesForSin, addLicense, updateLicense, removeLicense } =
-    useLicensesState()
+  const gearApi = useGearApi()
+  const licenses = useGearByType<LicenseData>(GearType.license).filter((license) => license.parentId === sin.id)
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })
@@ -37,20 +39,18 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
     setDialogState(null)
   }
 
-  const licenses = getLicensesForSin(sinId)
-
-  const handleAddLicense = (license: LicenseFormState) => {
-    addLicense(license)
+  const handleAddLicense = (license: LicenseData) => {
+    gearApi.add(license)
     onDialogClose()
   }
 
-  const handleSaveLicense = (license: LicenseFormState) => {
-    updateLicense(license)
+  const handleSaveLicense = (license: LicenseData) => {
+    gearApi.set(license)
     onDialogClose()
   }
 
-  const handleRemoveLicense = (license: LicenseFormState) => {
-    removeLicense(license)
+  const handleRemoveLicense = (license: LicenseData) => {
+    gearApi.remove(license)
     onDialogClose()
   }
 
@@ -114,7 +114,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
         color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDialogState({ mode: "create", sinId, open: true })}
+        onClick={() => setDialogState({ mode: "create", open: true })}
         fullWidth
       >
         Add License
@@ -123,8 +123,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
       {dialogState?.mode === "create" && (
         <LicenseFormDialog
           open={dialogState.open}
-          sins={sins}
-          sinId={dialogState.sinId}
+          sin={sin}
           onSave={handleAddLicense}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
@@ -134,7 +133,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sinId }) => {
       {dialogState?.mode === "edit" && (
         <LicenseFormDialog
           open={dialogState.open}
-          sins={sins}
+          sin={sin}
           license={dialogState.license}
           onSave={handleSaveLicense}
           onClose={onDialogClose}

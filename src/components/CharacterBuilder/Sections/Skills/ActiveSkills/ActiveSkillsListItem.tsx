@@ -6,11 +6,11 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { ActiveSkillFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { getActiveSkillBp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import type { ActiveSkillData } from "#/lib/system/skillData.ts"
 
 interface ActiveSkillsListItemProps {
-  skill: ActiveSkillFormState
+  skill: ActiveSkillData
   onEdit: () => void
   onDelete: () => void
 }
@@ -20,7 +20,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const bpCost = getActiveSkillBp(skill.rating, !!skill.specialization)
+  const bpCost = getActiveSkillBp(skill)
 
   return (
     <Box

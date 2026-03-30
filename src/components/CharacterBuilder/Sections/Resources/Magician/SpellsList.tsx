@@ -3,12 +3,13 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellListItem.tsx"
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsHooks.ts"
-import { useBuilderSpellsApi } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsApi.ts"
+import { useSpellsStore } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsStore.ts"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
@@ -19,7 +20,8 @@ type DialogState =
   | { open: boolean, type: "edit", spell: SpellData }
 
 export const SpellsList: FC = () => {
-  const { spells, addSpell, updateSpell, removeSpell } = useBuilderSpellsApi()
+  const spellsStore = useSpellsStore()
+  const spells = useStore(spellsStore, (state) => state)
   const buildPoints = useSpellsBuildPoints()
 
   const [dialogState, setDialogState] = useState<DialogState>(null)
@@ -65,7 +67,7 @@ export const SpellsList: FC = () => {
       {dialogState?.type === "add" && (
         <SpellFormDialog
           open={dialogState.open}
-          onSave={addSpell}
+          onSave={(spell) => spellsStore.add(spell)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -74,8 +76,8 @@ export const SpellsList: FC = () => {
         <SpellFormDialog
           open={dialogState.open}
           spell={dialogState.spell}
-          onSave={updateSpell}
-          onDelete={() => removeSpell(dialogState.spell)}
+          onSave={(spell) => spellsStore.update(spell)}
+          onDelete={() => spellsStore.remove(dialogState.spell.id)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}

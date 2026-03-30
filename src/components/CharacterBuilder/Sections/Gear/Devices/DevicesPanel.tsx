@@ -1,19 +1,14 @@
 import type { FC } from "react"
 
-import { useDevicesState } from "#/components/CharacterBuilder/Sections/Gear/Devices/UseDevicesState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemsList.tsx"
+import { useGearByType } from "#/components/Gear/UseGearApi.ts"
+import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const DevicesPanel: FC = () => {
-  const { devices, addDeviceItem, updateDeviceItem, removeDeviceItem } =
-    useDevicesState()
+  const devices = useGearByType<DeviceData>(GearType.device)
 
   return (
-    <GearItemsList
-      items={devices}
-      onAdd={addDeviceItem}
-      onUpdate={updateDeviceItem}
-      onRemove={removeDeviceItem}
-      label="Device"
-    />
+    <GearItemsList items={devices} itemType="Device" />
   )
 }

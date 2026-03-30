@@ -2,8 +2,8 @@ import { LinearProgress } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
+import { useAllAttrInfos } from "#/components/Character/CharacterUtils.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { AttributesList } from "#/components/CharacterBuilder/Sections/Attributes/AttributesList.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -18,9 +18,10 @@ import {
 
 export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()
-  const attributes = useCharacterBuilderStore((sheet) => sheet.attributes)
+  const attributes = useAllAttrInfos()
 
-  const attrRows: AttributeKey[] = AttributeOrder.filter((key) => key !== AttributeKey.essence)
+  const attrRows: AttributeKey[] = AttributeOrder
+    .filter((key) => key !== AttributeKey.essence)
     .map((attr) => ({ attr, ...attributes[attr] }))
     .filter(({ min }) => min >= 1)
     .map(({ attr }) => attr)

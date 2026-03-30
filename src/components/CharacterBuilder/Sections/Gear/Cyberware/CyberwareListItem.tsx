@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
 import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
@@ -13,10 +12,11 @@ import {
 import { GearMaxAvailability } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
 
 interface CyberwareListItemProps {
-  implant: ImplantFormState
+  implant: ImplantData
   onEdit: () => void
   onRemove: () => void
 }

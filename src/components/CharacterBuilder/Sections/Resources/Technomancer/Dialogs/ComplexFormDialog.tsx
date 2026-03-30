@@ -12,13 +12,13 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ComplexFormFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
+import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 
 interface ComplexFormDialogProps {
   open: boolean
-  form?: ComplexFormFormState
+  form?: ComplexFormData
   maxRating: number
-  onSave: (form: ComplexFormFormState) => void
+  onSave: (form: ComplexFormData) => void
   onDelete?: () => void
   onClose: () => void
   onClosed?: () => void

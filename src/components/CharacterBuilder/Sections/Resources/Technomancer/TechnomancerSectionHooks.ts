@@ -1,4 +1,4 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import {
   useComplexFormsBuildPoints,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsHooks.ts"
@@ -6,7 +6,7 @@ import { useSpritesBuildPoints } from "#/components/CharacterBuilder/Sections/Re
 import { isTechnomancer } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
 
 export const useTechnomancerBuildPoints = () => {
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const complexFormsBuildPoints = useComplexFormsBuildPoints()
   const spritesBuildPoints = useSpritesBuildPoints()
 

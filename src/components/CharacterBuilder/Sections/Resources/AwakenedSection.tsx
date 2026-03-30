@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { AdeptPowersList } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersList.tsx"
 import { isAdept } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
 import { SpellsList } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsList.tsx"
@@ -12,7 +12,7 @@ import { isTechnomancer } from "#/components/CharacterBuilder/Sections/Resources
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const AwakenedSection: FC = () => {
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const sections: ReactNode[] = []
 
   if (isMagician(awakeningType)) {

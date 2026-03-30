@@ -6,12 +6,12 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { SpriteFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
 import { getSpriteTasksBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesUtils.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
+import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
 interface SpriteRowProps {
-  sprite: SpriteFormState
+  sprite: SpriteData
   resonanceValue: number
   onEdit: () => void
   onDelete: () => void
@@ -45,10 +45,10 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
             {" "}
             ·
             {" "}
-            {sprite.tasks}
+            {sprite.services.max}
             {" "}
             task
-            {sprite.tasks !== 1 ? "s" : ""}
+            {sprite.services.max !== 1 ? "s" : ""}
           </Typography>
         </Stack>
 

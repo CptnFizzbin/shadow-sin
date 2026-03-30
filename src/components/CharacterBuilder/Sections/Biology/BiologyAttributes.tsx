@@ -2,17 +2,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import { createAttrFormState } from "#/components/CharacterBuilder/Sections/Attributes/AttrFormState.ts"
+import { createAttrInfo } from "#/components/Attributes/AttributeInfo.ts"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import {
-  AttributeLabels,
-  MentalAttributes,
-  PhysicalAttributes,
-  SpecialAttributes,
-} from "#/lib/system/attributeKey.ts"
+import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/lib/system/attributeKey.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const BiologyAttributes: FC = () => {
@@ -34,15 +29,18 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const metatypeName = useCharacterBuilderStore((state) => state.metatype)
+  const attrValues = useCharacterSheet((sheet) => sheet.attributes)
+
+  const metatypeName = useCharacterSheet((sheet) => sheet.biology.metatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys
     .map((attr) => {
-      const state = createAttrFormState({ attr, metatype, awakening })
+      const value = attrValues[attr] || 0
+      const state = createAttrInfo({ attr, value, metatype, awakening })
       return { label: AttributeLabels[attr], ...state }
     })
     .filter((attr) => attr.min !== 0)

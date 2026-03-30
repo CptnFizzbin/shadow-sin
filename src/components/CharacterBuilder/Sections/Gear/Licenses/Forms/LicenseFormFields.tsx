@@ -1,27 +1,20 @@
 import { z } from "zod"
 
-import type { SinFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
 import { licenseFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/UseLicenseForm.tsx"
 import {
   FakeRatingOptions,
   RealRatingOptions,
 } from "#/components/CharacterBuilder/Sections/Gear/Licenses/RatingOptions.ts"
+import { useGearByType } from "#/components/Gear/UseGearApi.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+import type { SinData } from "#/lib/system/gear/SinData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const LicenseFormFields = withFieldGroup({
   ...licenseFormOpts,
-  props: {
-    sins: [] as SinFormState[],
-  },
-  render: ({ group, sins }) => {
-    const sinOptions = sins.map((sin) => ({
-      label: sin.name,
-      value: sin.id,
-    }))
-
-    const findSelectedSin = (sinId: string) => {
-      return sins.find((sin) => sin.id === sinId)
-    }
+  render: function Render({ group }) {
+    const sins = useGearByType<SinData>(GearType.sin)
+    const sinOptions = sins.map((sin) => ({ label: sin.name, value: sin.id }))
 
     return (
       <>
@@ -36,7 +29,7 @@ export const LicenseFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <group.AppField name="sinId">
+        <group.AppField name="parentId">
           {(field) => (
             <field.SelectField
               label="SIN"
@@ -48,7 +41,7 @@ export const LicenseFormFields = withFieldGroup({
         </group.AppField>
 
         <group.Subscribe
-          selector={(g) => findSelectedSin(g.values.sinId)}
+          selector={(g) => sins.find((sin) => sin.id === g.values.parentId)}
         >
           {(selectedSin) => (
             <group.AppField name="rating">

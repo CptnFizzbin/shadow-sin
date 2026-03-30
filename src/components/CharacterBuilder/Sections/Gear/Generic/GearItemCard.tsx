@@ -6,12 +6,12 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { GearMaxAvailability } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
 import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
+import type { ItemData } from "#/lib/system/ItemData.ts"
 
 interface GearItemCardProps {
-  item: GearItemFormState
+  item: ItemData
   onEdit: () => void
   onRemove: () => void
 }

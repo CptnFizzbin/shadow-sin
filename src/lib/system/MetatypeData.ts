@@ -1,7 +1,8 @@
+import type { AttributeInfo } from "#/lib/system/AttributeInfo.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { GearEffectData } from "#/lib/system/gearEffectData.ts"
+import type { GameEffectData } from "#/lib/system/gameEffectData.ts"
 
-export enum MetatypeKey {
+export enum MetatypeType {
   Human = "Human",
   Ork = "Ork",
   Dwarf = "Dwarf",
@@ -11,24 +12,21 @@ export enum MetatypeKey {
 }
 
 export interface MetatypeData {
-  name: MetatypeKey
+  name: MetatypeType
   cost: number
-  attributes: Record<
-    AttributeKey,
-    { min: number, max: number, augMax?: number }
-  >
-  inateAbilites?: GearEffectData[]
+  attributes: Record<AttributeKey, AttributeInfo>
+  inateAbilites?: GameEffectData[]
 }
 
 const commonAttributes = {
-  essence: { min: 6, max: 6 },
+  essence: { min: 0, max: 6 },
   magic: { min: 0, max: 0 },
   resonance: { min: 0, max: 0 },
 } as const
 
-export const metatypes: Record<MetatypeKey, MetatypeData> = {
+export const metatypes: Record<MetatypeType, MetatypeData> = {
   Human: {
-    name: MetatypeKey.Human,
+    name: MetatypeType.Human,
     cost: 0,
     attributes: {
       body: { min: 1, max: 6, augMax: 9 },
@@ -44,7 +42,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
     },
   },
   Ork: {
-    name: MetatypeKey.Ork,
+    name: MetatypeType.Ork,
     cost: 20,
     attributes: {
       body: { min: 4, max: 9, augMax: 13 },
@@ -60,7 +58,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
     },
   },
   Dwarf: {
-    name: MetatypeKey.Dwarf,
+    name: MetatypeType.Dwarf,
     cost: 25,
     attributes: {
       body: { min: 2, max: 7, augMax: 10 },
@@ -76,7 +74,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
     },
   },
   Elf: {
-    name: MetatypeKey.Elf,
+    name: MetatypeType.Elf,
     cost: 30,
     attributes: {
       body: { min: 1, max: 6, augMax: 9 },
@@ -92,7 +90,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
     },
   },
   Troll: {
-    name: MetatypeKey.Troll,
+    name: MetatypeType.Troll,
     cost: 40,
     attributes: {
       body: { min: 5, max: 10, augMax: 15 },
@@ -108,7 +106,7 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
     },
   },
   AI: {
-    name: MetatypeKey.AI,
+    name: MetatypeType.AI,
     cost: 110,
     attributes: {
       body: { min: 0, max: 0 },
@@ -125,4 +123,23 @@ export const metatypes: Record<MetatypeKey, MetatypeData> = {
       resonance: { min: 0, max: 0 },
     },
   },
+}
+
+export const getDefaultAttributes = ({ metatypeKey }: { metatypeKey: MetatypeType }): Record<AttributeKey, number> => {
+  const { attributes } = metatypes[metatypeKey]
+
+  return {
+    body: attributes.body.min,
+    agility: attributes.agility.min,
+    reaction: attributes.reaction.min,
+    strength: attributes.strength.min,
+    charisma: attributes.charisma.min,
+    intuition: attributes.intuition.min,
+    logic: attributes.logic.min,
+    willpower: attributes.willpower.min,
+    edge: attributes.edge.min,
+    essence: attributes.essence.min,
+    magic: attributes.magic.min,
+    resonance: attributes.resonance.min,
+  }
 }

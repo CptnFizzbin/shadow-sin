@@ -1,10 +1,7 @@
-import {
-  useCharacterBuilderStore,
-  useCharacterBuilderStoreContext,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
-import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/Sections/Contacts/ContactsHooks.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersHooks.ts"
@@ -52,8 +49,8 @@ export const useBuilderBuildPointsApi = () => {
 }
 
 export const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeKey = useCharacterBuilderStore((state) => state.metatype)
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const metatypeKey = useCharacterSheet((sheet) => sheet.biology.metatype)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
 
   const metatypeCost = metatypes[metatypeKey].cost
   const awakeningCost = awakenings[awakeningType].cost
@@ -65,7 +62,7 @@ export const useBuilderBiologyBuildPoints = (): BpLineItem => {
 }
 
 export const useBuilderQualitiesBuildPoints = () => {
-  const qualities = useCharacterBuilderStore((sheet) => sheet.qualities)
+  const qualities = useCharacterSheet((sheet) => sheet.qualities)
 
   const positiveQualities = qualities
     .filter((q) => q.type === "positive")
@@ -90,20 +87,13 @@ export const useBuilderQualitiesBuildPoints = () => {
 }
 
 export const useBuilderSkillsBuildPoints = () => {
-  const store = useCharacterBuilderStoreContext()
-  const logicAttr = useAttrApi(AttributeKey.logic, store)
-  const intuitionAttr = useAttrApi(AttributeKey.intuition, store)
+  const logicAttr = useAttr(AttributeKey.logic)
+  const intuitionAttr = useAttr(AttributeKey.intuition)
 
-  const activeSkills = useCharacterBuilderStore((s) => s.skills.activeSkills)
-  const activeSkillGroups = useCharacterBuilderStore(
-    (s) => s.skills.activeSkillGroups,
-  )
-  const knowledgeSkills = useCharacterBuilderStore(
-    (s) => s.skills.knowledgeSkills,
-  )
-  const languageSkills = useCharacterBuilderStore(
-    (state) => state.skills.languageSkills,
-  )
+  const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
+  const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
+  const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)
+  const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
@@ -115,7 +105,7 @@ export const useBuilderSkillsBuildPoints = () => {
     languageSkills,
   )
 
-  const freeSkillPoints = getFreeSkillPoints(logicAttr.value, intuitionAttr.value)
+  const freeSkillPoints = getFreeSkillPoints(logicAttr, intuitionAttr)
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
 
   return {

@@ -4,11 +4,11 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
-import type { ComplexFormFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
 import {
   useComplexFormsBuildPoints,
   useMaxComplexForms,
@@ -19,23 +19,22 @@ import {
 import {
   ComplexFormDialog,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
-import {
-  useBuilderComplexFormsApi,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsApi.ts"
+import { useComplexFormsStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 
 type ComplexFormDialogState =
   | null
   | { mode: "create", open: boolean }
-  | { mode: "edit", form: ComplexFormFormState, open: boolean }
+  | { mode: "edit", form: ComplexFormData, open: boolean }
 
 export const ComplexFormsList: FC = () => {
   const resonance = useBuilderAttrValue(AttributeKey.resonance)
-  const { complexForms, addComplexForm, updateComplexForm, removeComplexForm } =
-    useBuilderComplexFormsApi()
+  const complexFormsStore = useComplexFormsStore()
+  const complexForms = useStore(complexFormsStore, (state) => state)
   const complexFormsBp = useComplexFormsBuildPoints()
   const maxComplexForms = useMaxComplexForms()
 
@@ -98,7 +97,7 @@ export const ComplexFormsList: FC = () => {
                   form: complexForm,
                   open: true,
                 })}
-              onDelete={() => removeComplexForm(complexForm.id)}
+              onDelete={() => complexFormsStore.remove(complexForm.id)}
             />
           ))}
         </Stack>
@@ -120,7 +119,7 @@ export const ComplexFormsList: FC = () => {
           open={complexFormDialog.open}
           maxRating={resonance}
           onSave={(form) => {
-            addComplexForm(form)
+            complexFormsStore.add(form)
             closeDialog()
           }}
           onClose={closeDialog}
@@ -134,7 +133,7 @@ export const ComplexFormsList: FC = () => {
           form={complexFormDialog.form}
           maxRating={resonance}
           onSave={(form) => {
-            updateComplexForm(form)
+            complexFormsStore.update(form)
             closeDialog()
           }}
           onClose={closeDialog}

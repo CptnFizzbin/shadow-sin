@@ -2,10 +2,7 @@ import { sort } from "fast-sort"
 import { useCallback, useState } from "react"
 
 import type { DiceResultsInfo } from "#/components/Dice/DiceResultsInfo.tsx"
-
-export const rollD6 = (): number => {
-  return Math.ceil(Math.random() * 6)
-}
+import { rollD6 } from "#/components/Dice/DiceUtils.ts"
 
 export function useDiceRoller(numDice: number, rollingTime: number = 0): [results: DiceResultsInfo, rollDice: () => void] {
   const [diceValues, setDiceValues] = useState<number[]>(padArray([], numDice, 0))

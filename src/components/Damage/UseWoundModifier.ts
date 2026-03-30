@@ -1,4 +1,4 @@
-import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
+import { useCharacterStore } from "#/components/Character/CharacterSheetProvider.tsx"
 
 export function useDamageTrack(track: "physical" | "stun") {
   return useCharacterStore((state) => {

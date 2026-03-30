@@ -3,17 +3,16 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { useEssenseInfo } from "#/components/Character/CharacterUtils.ts"
 import { CyberwareList } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwareList.tsx"
 import { BASE_ESSENCE } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
-import { useCyberwareState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/UseCyberwareState.ts"
 
 export const CyberwarePanel: FC = () => {
-  const { implants, addImplant, updateImplant, removeImplant, essenceSummary } =
-    useCyberwareState()
+  const essenseInfo = useEssenseInfo()
 
-  const essenceRemainingDisplay = essenceSummary.remainingEssence.toFixed(2)
-  const isEssenceWarning = essenceSummary.remainingEssence <= 1
-  const isEssenceError = essenceSummary.remainingEssence <= 0
+  const essenceRemainingDisplay = essenseInfo.essenseRemaining.toFixed(2)
+  const isEssenceWarning = essenseInfo.essenseRemaining <= 1
+  const isEssenceError = essenseInfo.essenseRemaining <= 0
 
   return (
     <Stack gap={1}>
@@ -24,9 +23,7 @@ export const CyberwarePanel: FC = () => {
         sx={{ px: 0.5 }}
       >
         <Typography variant="caption" color="text.secondary">
-          Essence Used:
-          {" "}
-          {essenceSummary.effectiveEssenceUsed.toFixed(2).replace(/\.?0+$/, "")}
+          Essence Used: {essenseInfo.essenceUsed.toFixed(2).replace(/\.?0+$/, "")}
         </Typography>
         <Typography
           variant="caption"
@@ -44,35 +41,18 @@ export const CyberwarePanel: FC = () => {
 
       {isEssenceError && (
         <Alert severity="error" sx={{ py: 0 }}>
-          Essence depleted! Implants exceed the maximum essence of
-          {" "}
-          {BASE_ESSENCE}
-          .
+          Essence depleted! Implants exceed the maximum essence of {BASE_ESSENCE}.
         </Alert>
       )}
 
-      {essenceSummary.cyberwareTotal > 0 && essenceSummary.biowareTotal > 0 && (
+      {essenseInfo.cyberwareEssense > 0 && essenseInfo.biowareEssense > 0 && (
         <Typography variant="caption" color="text.secondary" sx={{ px: 0.5 }}>
-          Cyber:
-          {" "}
-          {essenceSummary.cyberwareTotal.toFixed(2)}
-          {" "}
-          | Bio:
-          {" "}
-          {essenceSummary.biowareTotal.toFixed(2)}
-          {" "}
-          (higher applied full, other
-          at ½)
+          Cyber: {essenseInfo.cyberwareEssense.toFixed(2)} | Bio: {essenseInfo.biowareEssense.toFixed(2)}
+          (higher applied full, other at ½)
         </Typography>
       )}
 
-      <CyberwareList
-        implants={implants}
-        onAdd={addImplant}
-        onUpdate={updateImplant}
-        onRemove={removeImplant}
-        label="Implant"
-      />
+      <CyberwareList />
     </Stack>
   )
 }

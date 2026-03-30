@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterStore } from "#/components/Character/CharacterStoreProvider.tsx"
+import { useCharacterStore } from "#/components/Character/CharacterSheetProvider.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 
 export const FinancesSection: FC = () => {

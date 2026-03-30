@@ -1,19 +1,14 @@
 import type { FC } from "react"
 
 import { GearItemsList } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemsList.tsx"
-import { useVehiclesState } from "#/components/CharacterBuilder/Sections/Gear/Vehicles/UseVehiclesState.ts"
+import { useGearByType } from "#/components/Gear/UseGearApi.ts"
+import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const VehiclesPanel: FC = () => {
-  const { vehicles, addVehicle, updateVehicle, removeVehicle } =
-    useVehiclesState()
+  const vehicles = useGearByType<VehicleData>(GearType.vehicle)
 
   return (
-    <GearItemsList
-      items={vehicles}
-      onAdd={addVehicle}
-      onUpdate={updateVehicle}
-      onRemove={removeVehicle}
-      label="Vehicle"
-    />
+    <GearItemsList items={vehicles} itemType="Vehicle" />
   )
 }

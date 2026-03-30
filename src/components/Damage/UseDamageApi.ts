@@ -1,18 +1,19 @@
 import { produce } from "immer"
 
-import { useCharacterSheet, useCharacterSheetStore } from "#/components/Character/CharacterStoreProvider.tsx"
-import { useAttrApi } from "#/components/CharacterBuilder/Sections/Attributes/UseAttrApi.ts"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useDamageApi = () => {
-  const sheetStore = useCharacterSheet()
-  const damageMonitors = useCharacterSheetStore((sheet) => sheet.damage)
-  const bodyAttr = useAttrApi(AttributeKey.body, sheetStore)
-  const willpowerAttr = useAttrApi(AttributeKey.willpower, sheetStore)
+  const sheetStore = useCharacterSheetContext()
+  const damageMonitors = useCharacterSheet((sheet) => sheet.damage)
+  const bodyAttr = useAttr(AttributeKey.body)
+  const willpowerAttr = useAttr(AttributeKey.willpower)
 
   return {
     physical: {
-      max: 8 + (Math.ceil(bodyAttr.value / 2)),
+      max: 8 + (Math.ceil(bodyAttr / 2)),
       current: damageMonitors.physical,
       setValue: (newValue: number) => {
         sheetStore.setState(produce((sheet) => {
@@ -22,7 +23,7 @@ export const useDamageApi = () => {
     },
 
     stun: {
-      max: 8 + (Math.ceil(willpowerAttr.value / 2)),
+      max: 8 + (Math.ceil(willpowerAttr / 2)),
       current: damageMonitors.stun,
       setValue: (newValue: number) => {
         sheetStore.setState(produce((sheet) => {

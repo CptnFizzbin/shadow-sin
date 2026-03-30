@@ -1,47 +1,25 @@
-import {
-  useCharacterBuilderStore,
-} from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useStore } from "@tanstack/react-store"
+
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useAttr } from "#/components/Character/CharacterUtils"
 import { isAdept } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
-import { useBuilderAdeptPowersApi } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersApi.ts"
+import { useAdeptPowersStore } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersStore.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const usePowerPoints = () => {
-  const { adeptPowers } = useBuilderAdeptPowersApi()
-
-  const magicAttr = useCharacterBuilderStore(
-    (state) => state.attributes[AttributeKey.magic],
-  )
+  const adeptPowersStore = useAdeptPowersStore()
+  const adeptPowers = useStore(adeptPowersStore, (state) => state)
+  const magicAttr = useAttr(AttributeKey.magic)
 
   const used = adeptPowers
     .map((power) => power.costPerRating * power.rating)
     .reduce((total, cost) => total + cost, 0)
 
-  return { max: magicAttr.value, used }
-}
-
-export const useAdeptPowerWarnings = () => {
-  const magicAttribute = useCharacterBuilderStore(
-    (state) => state.attributes[AttributeKey.magic],
-  )
-  const powerPoints = usePowerPoints()
-
-  const warnings: string[] = []
-
-  if (magicAttribute === undefined) {
-    warnings.push("Magic attribute is not set.")
-  }
-
-  if (powerPoints.used > powerPoints.max) {
-    warnings.push(
-      `Power points used (${powerPoints.used}) exceeds maximum (${powerPoints.max}).`,
-    )
-  }
-
-  return warnings
+  return { max: magicAttr, used }
 }
 
 export const useAdeptPowersBuildPoints = () => {
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
 
   return {
     label: "Adept Powers",

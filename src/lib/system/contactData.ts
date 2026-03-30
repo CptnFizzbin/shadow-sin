@@ -1,5 +1,7 @@
+import type { UUID } from "node:crypto"
+
 export interface ContactData {
-  id: string
+  id: UUID
   name: string
 
   connection: number

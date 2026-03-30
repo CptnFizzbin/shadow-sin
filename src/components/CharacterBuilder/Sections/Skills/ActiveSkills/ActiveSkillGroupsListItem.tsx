@@ -7,11 +7,11 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/SkillGroupUtils.ts"
-import type { ActiveSkillGroupFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { getActiveSkillGroupBp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import type { SkillGroupData } from "#/lib/system/skillData.ts"
 
 interface ActiveSkillGroupsListItemProps {
-  group: ActiveSkillGroupFormState
+  group: SkillGroupData
   onEdit: () => void
   onDelete: () => void
 }
@@ -21,8 +21,8 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const bpCost = getActiveSkillGroupBp(group.rating)
-  const memberSkills = getSkillsInGroup(group.groupName)
+  const bpCost = getActiveSkillGroupBp(group)
+  const memberSkills = getSkillsInGroup(group.name)
 
   return (
     <Box
@@ -38,7 +38,7 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
     >
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography variant="body2" sx={{ flexGrow: 1 }}>
-          {group.groupName}
+          {group.name}
         </Typography>
         <Chip
           label={group.rating}

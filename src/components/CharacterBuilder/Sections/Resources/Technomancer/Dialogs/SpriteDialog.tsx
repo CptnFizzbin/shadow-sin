@@ -13,13 +13,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { SpriteFormState } from "#/components/CharacterBuilder/Sections/Resources/AwakenedFormState.ts"
 import { useMaxSpriteTasks } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
+import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
 interface SpriteDialogProps {
   open: boolean
-  sprite?: SpriteFormState
-  onSave: (sprite: SpriteFormState) => void
+  sprite?: SpriteData
+  onSave: (sprite: SpriteData) => void
   onClose: () => void
   onClosed?: () => void
 }
@@ -35,7 +35,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
   const isEditMode = !!sprite
 
   const [name, setName] = useState<string>(sprite?.name ?? "")
-  const [tasks, setTasks] = useState<number>(sprite?.tasks ?? 1)
+  const [tasks, setTasks] = useState<number>(sprite?.services.max ?? 1)
   const [nameError, setNameError] = useState(false)
 
   const taskOptions = Array.from(
@@ -51,13 +51,17 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
     onSave({
       id: sprite?.id ?? crypto.randomUUID(),
       name: name.trim(),
-      tasks: Math.min(tasks, maxSpriteTasks),
+      force: sprite?.force ?? 0,
+      services: {
+        max: Math.min(tasks, maxSpriteTasks),
+        used: sprite?.services.used ?? 0,
+      },
     })
   }
 
   const handleClosed = () => {
     setName(sprite?.name ?? "")
-    setTasks(sprite?.tasks ?? 1)
+    setTasks(sprite?.services.max ?? 1)
     setNameError(false)
     onClosed?.()
   }

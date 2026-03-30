@@ -1,13 +1,17 @@
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useStore } from "@tanstack/react-store"
+
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { isAdept } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
-import { useBuilderAdeptPowersApi } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersApi.ts"
+import { useAdeptPowersStore } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
-  const awakeningType = useCharacterBuilderStore((state) => state.awakening)
-  const magicAttr = useCharacterBuilderStore((state) => state.attributes[AttributeKey.magic])
-  const { adeptPowers } = useBuilderAdeptPowersApi()
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const magicAttr = useAttr(AttributeKey.magic)
+  const adeptPowersStore = useAdeptPowersStore()
+  const adeptPowers = useStore(adeptPowersStore, (state) => state)
 
   const statuses: AlertInfo[] = []
 
@@ -16,7 +20,7 @@ export const useAdeptPowersAlerts = (): AlertInfo[] => {
   const powerPointsUsed = adeptPowers
     .map((power) => power.costPerRating * power.rating)
     .reduce((total, cost) => total + cost, 0)
-  const powerPointsMax = magicAttr.value
+  const powerPointsMax = magicAttr
 
   if (powerPointsUsed > powerPointsMax) {
     statuses.push({

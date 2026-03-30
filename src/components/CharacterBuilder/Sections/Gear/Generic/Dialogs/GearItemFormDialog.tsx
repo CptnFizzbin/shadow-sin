@@ -7,18 +7,18 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { GearItemFormFields } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormFields.tsx"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
 import {
   gearItemFieldMap,
-  useGearItemForm,
-} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseGearItemForm.tsx"
+  useItemForm,
+} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseItemForm.tsx"
+import type { ItemData } from "#/lib/system/ItemData.ts"
 
 interface GearItemFormDialogProps {
   open: boolean
-  item?: GearItemFormState
+  item?: ItemData
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: GearItemFormState) => void
+  onSave: (item: ItemData) => void
   label?: string
 }
 
@@ -30,14 +30,8 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   onSave,
   label = "Item",
 }) => {
-  const editMode = !!item
-  const title = editMode ? `Edit ${label}` : `Add ${label}`
-
-  const form = useGearItemForm(
-    editMode
-      ? { mode: "edit", item, onSubmit: onSave }
-      : { mode: "create", onSubmit: onSave },
-  )
+  const title = item ? `Edit ${label}` : `Add ${label}`
+  const form = useItemForm({ item, onSubmit: onSave })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

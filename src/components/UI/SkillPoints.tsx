@@ -7,15 +7,17 @@ import type { FC } from "react"
 import { mergeSx } from "#/integrations/mui/MuiUtils.ts"
 
 interface SkillPointsProps {
+  type?: string
   value: number
+  max?: number
   variant?: TypographyProps["variant"]
   sx?: SxProps<Theme>
 }
 
-export const SkillPoints: FC<SkillPointsProps> = ({ value, variant, sx }) => {
+export const SkillPoints: FC<SkillPointsProps> = ({ value, type, max, variant, sx }) => {
   return (
     <Typography variant={variant} sx={mergeSx({ color: yellow[700] }, sx)}>
-      {value} SP
+      {value} {max && `/ ${max}`} {type} SP
     </Typography>
   )
 }

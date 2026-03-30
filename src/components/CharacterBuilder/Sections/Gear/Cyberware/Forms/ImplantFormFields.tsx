@@ -5,10 +5,7 @@ import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/CharacterBuilder/General/Form/AvailabilityFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
-import {
-  implantFieldMap,
-  implantFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import { implantFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
 
@@ -54,19 +51,10 @@ const implantGradeOptions = [
   },
 ]
 
-const implantLocationOptions = [
-  { label: "Right Hand", value: ImplantLocation.rightHand },
-  { label: "Left Hand", value: ImplantLocation.leftHand },
-  { label: "Right Arm", value: ImplantLocation.rightArm },
-  { label: "Left Arm", value: ImplantLocation.leftArm },
-  { label: "Right Leg", value: ImplantLocation.rightLeg },
-  { label: "Left Leg", value: ImplantLocation.leftLeg },
-  { label: "Right Foot", value: ImplantLocation.rightFoot },
-  { label: "Left Foot", value: ImplantLocation.leftFoot },
-  { label: "Torso", value: ImplantLocation.torso },
-  { label: "Eyes", value: ImplantLocation.eyes },
-  { label: "Ears", value: ImplantLocation.ears },
-]
+const implantLocationOptions = Object.values(ImplantLocation).map((location) => ({
+  label: location,
+  value: location,
+}))
 
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
@@ -115,7 +103,7 @@ export const ImplantFormFields = withFieldGroup({
           >
             {(field) => (
               <field.NumberField
-                label="Base Cost (¥)"
+                label="Base Cost"
                 size="small"
                 sx={{ flex: 1 }}
               />
@@ -140,19 +128,70 @@ export const ImplantFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
-        <group.AppField name="location">
-          {(field) => (
-            <field.SelectField
-              label="Location"
-              fullWidth
-              size="small"
-              options={implantLocationOptions}
-            />
-          )}
-        </group.AppField>
+        <group.Subscribe selector={({ values }) => values.parentId}>
+          {(parentId) => (
+            <>
+              <Stack direction="row" gap={1}>
+                {parentId
+                  ? (
+                      <group.AppField
+                        name="capacityCost"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity Cost"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )
+                  : (
+                      <group.AppField
+                        name="capacity"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )}
+              </Stack>
 
-        <AvailabilityFieldGroup form={group} fields={implantFieldMap} />
-        <SourceFieldGroup form={group} fields={implantFieldMap} />
+              {!parentId && (
+                <group.AppField name="location">
+                  {(field) => (
+                    <field.SelectField
+                      label="Location"
+                      fullWidth
+                      size="small"
+                      options={implantLocationOptions}
+                    />
+                  )}
+                </group.AppField>
+              )}
+            </>
+          )}
+        </group.Subscribe>
+
+        <AvailabilityFieldGroup
+          form={group}
+          fields="availability"
+        />
+        <SourceFieldGroup form={group} fields={{ source: "source" }} />
 
         <group.AppField name="description">
           {(field) => (

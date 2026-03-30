@@ -1,18 +1,16 @@
 import { Button } from "@mui/material"
 import { RiArrowRightBoxLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
-import {
-  useAttributesBuildPoints,
-  useHasMaxxedAttribute,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
+import { useHasMaxxedAttribute } from "#/components/Attributes/Hooks/UseHasMaxxedAttribute.ts"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/AttributeUtils.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {
@@ -25,17 +23,17 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   }
   const { budget } = useAttributesBuildPoints()
 
-  const store = useCharacterBuilderStoreContext()
+  const store = useCharacterSheetContext()
   const attrKey = props.attr
-  const attrValue = useStore(store, (state) => state.attributes[attrKey].value)
-  const attrMax = useStore(store, (state) => state.attributes[attrKey].max)
+  const attrValue = useAttr(attrKey)
+  const attrInfo = useAttrInfo(attrKey)
   const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false
   let cost = AttributeBpCostBase
   let label = `${cost} BP`
 
-  const willMaxAttr = attrValue + 1 >= attrMax
+  const willMaxAttr = attrValue + 1 >= attrInfo.max
 
   if (willMaxAttr) {
     cost = AttributeBpCostMaxOut
@@ -47,7 +45,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = "---"
   }
 
-  if (attrValue >= attrMax) {
+  if (attrValue >= attrInfo.max) {
     disabled = true
     label = "MAX"
   }
@@ -61,7 +59,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     if (props.attr === AttributeKey.essence) return
 
     store.setState(produce((draft) => {
-      draft.attributes[attrKey].value += 1
+      draft.attributes[attrKey] += 1
     }))
   }
 

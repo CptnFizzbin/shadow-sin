@@ -1,18 +1,13 @@
 import type { FC } from "react"
 
-import { useArmorState } from "#/components/CharacterBuilder/Sections/Gear/Armor/UseArmorState.ts"
 import { GearItemsList } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemsList.tsx"
+import { useGearByType } from "#/components/Gear/UseGearApi.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const ArmorPanel: FC = () => {
-  const { armor, addArmor, updateArmor, removeArmor } = useArmorState()
+  const armor = useGearByType(GearType.armor)
 
   return (
-    <GearItemsList
-      items={armor}
-      onAdd={addArmor}
-      onUpdate={updateArmor}
-      onRemove={removeArmor}
-      label="Armor"
-    />
+    <GearItemsList items={armor} itemType="Armor" />
   )
 }

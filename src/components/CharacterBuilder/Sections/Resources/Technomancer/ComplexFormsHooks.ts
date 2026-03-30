@@ -1,17 +1,18 @@
+import { useStore } from "@tanstack/react-store"
+
 import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
 import { useBuilderAwakeningType } from "#/components/CharacterBuilder/Hooks/UseBuilderAwakeningType.ts"
 import {
   ComplexFormBpPerRating,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
-import {
-  useBuilderComplexFormsApi,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsApi.ts"
+import { useComplexFormsStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsStore.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const useComplexForms = () => {
   const awakeningType = useBuilderAwakeningType()
-  const { complexForms } = useBuilderComplexFormsApi()
+  const complexFormsStore = useComplexFormsStore()
+  const complexForms = useStore(complexFormsStore, (state) => state)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

@@ -1,8 +1,8 @@
-import type { GearData, GearType } from "#/lib/system/gear/gearData.ts"
+import type { ItemData } from "#/lib/system/ItemData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
-export interface DeviceData extends GearData {
+export interface DeviceData extends ItemData {
   itemType: GearType.device
-  programs: SoftwareData[]
 
   operatingSystem?: string
   response?: number
@@ -12,7 +12,6 @@ export interface DeviceData extends GearData {
   system?: number
 }
 
-export interface SoftwareData extends GearData {
-  itemType: GearType.software
-  rating: number
+export function isDeviceData(item: ItemData): item is DeviceData {
+  return item.itemType === GearType.device
 }

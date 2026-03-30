@@ -7,16 +7,32 @@ prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
 
 ---
 
+## Architecture note
+
+The character creation form is implemented as `CharacterBuilder` (not TanStack Form). State lives in two
+`@tanstack/store` stores — one for the `CharacterSheet` draft, one for transient builder state — both persisted to
+`localStorage` via `StorePersister` / `usePersistedStore`. The storage key format is
+`shadow-sin:character-form:builder:{id}:character` for new characters and
+`shadow-sin:character-form:builder:{characterId}:character` for edits.
+
+Gear mutations flow through `useGearApi()` (from `src/components/Gear/UseGearApi.ts`), which reads and writes
+`CharacterSheet.gear` via `CharacterSheetContext`. There is no separate `GearProvider` — `CharacterBuilderStoreProvider`
+bridges the builder store to `CharacterSheetProvider`, making all gear hooks available to builder components.
+
+---
+
 ## 1. Character Creation — Form & Save (Blocker)
 
-The creation form captures profile, biology, and attributes. Form state is persisted to localStorage on every change (PR
-#2 ✅), but there is no path to actually save a finished character.
+`CharacterBuilder` captures profile, biology, attributes, skills, qualities, resources, gear, and contacts. Draft state
+is persisted to `localStorage` on every store change via `StorePersister`, but save to `characterManager` is not yet
+wired. An **Export** button (YAML download) exists and is wired via `ExportCharacterButton` / `ExportUtils.ts`.
 
-- [x] Persist form state to localStorage on every field change — keyed by character id or `NULL_CHARACTER_ID` for new
+- [x] Persist form state to localStorage on every field change — keyed by character id or `"new"` for new
   characters ✅ PR #2
 - [x] Add a **Reset Form** button that clears localStorage and resets fields to defaults ✅ PR #2
-- [ ] Add a **Save Character** submit button to `CharacterForm`
-- [ ] Wire `handleSubmit` in `UseCharacterForm` to `CharacterManager.saveCharacter`
+- [x] Add an **Export** button that downloads the character sheet as a YAML file
+- [ ] Wire `SaveCharacterButton` to call `characterManager.saveCharacter` — button exists and gates on error alerts,
+  but has no `onClick` save handler yet
 - [ ] Generate a stable `id` (`crypto.randomUUID()`) for new characters on save
 - [ ] Redirect to `/$characterId/about` after a successful save
 - [ ] Show an inline error if the save fails
@@ -34,7 +50,8 @@ was added in PR #7 ✅. Attribute BP costs are written reactively by the increme
 - [x] Break down spending by category: Biology, Qualities, Attributes, Skills, Awakened (conditional), Gear, Contacts ✅
   PR #7
 - [x] Apply real-time BP costs as attribute values change (wired via increment/decrement buttons) ✅ PR #7
-- [ ] Block form submission when the character is over budget
+- [x] Block form submission when the character is over budget — `SaveCharacterButton` disables when any `"error"`
+  severity alert is active (includes over-budget)
 - [ ] Show a warning when within 10 BP of the limit
 
 ---
@@ -43,7 +60,7 @@ was added in PR #7 ✅. Attribute BP costs are written reactively by the increme
 
 Full skills section implemented in PR #8 ✅ — Active skills (by name or skill group), Knowledge skills, and Language
 skills. Duplicate-skill prevention is handled via disabled menu items. BP costs are calculated dynamically in
-`UseBuildPointsSummary` from the skills arrays. Free SP = (Logic + Intuition) × 3 for knowledge/language skills.
+`useBuildPointsApi` from the skills arrays. Free SP = (Logic + Intuition) × 3 for knowledge/language skills.
 
 - [x] **Add active skill** — free-text skill name, rating (1–6), optional specialization ✅ PR #8
 - [x] **Add skill group** — group name, rating ✅ PR #8
@@ -79,33 +96,33 @@ wired into the builder store and the BP summary footer.
 
 ## 6. Contacts (Creation Form)
 
-A full contacts section is integrated into the creation form (`ContactsList`). Contact BP (connection + loyalty per
-contact) is included in the budget summary footer.
+A full contacts section is integrated into the creation form (`ContactsBuilderSection` → `ContactsList`). Contact BP
+(connection + loyalty per contact) is included in the budget summary footer.
 
 - [x] **Add contact** — name, connection (1–6), loyalty (1–6), optional notes
 - [x] **Edit contact** — tap a row to open a view/edit/delete dialog
 - [x] **Remove contact**
 - [x] BP cost per contact (connection + loyalty) reflected in build budget
-- [ ] Role field (field exists in `ContactData` but is not surfaced in the creation form)
+- [ ] Role field (field exists in `ContactData` but is not surfaced in `ContactFormFields`)
 
 ---
 
 ## 7. Edit Existing Character
 
-Form-side persistence is in place (PR #2 ✅ keys off `character.id`). What's missing is a UI entry point to reach the
-form for an existing character.
+`CharacterBuilder` accepts an optional `character?: CharacterSheet` prop and pre-populates all stores from it. The
+storage key uses the character's own `id`. What's missing is a UI entry point.
 
-- [x] Pre-populate `CharacterForm` with existing character data; persist edits to localStorage under the character's own
-  id ✅ PR #2
+- [x] Pre-populate `CharacterBuilder` with existing character data; persist edits to localStorage under the character's
+  own id ✅ PR #2
 - [ ] Add an **Edit** route reachable from the character sheet (e.g., `/$characterId/edit`)
-- [ ] On save, update the existing record via `CharacterManager.saveCharacter` (same `id`)
+- [ ] On save, update the existing record via `characterManager.saveCharacter` (same `id`)
 - [ ] Add an **Edit Character** button/link from `/$characterId/about`
 
 ---
 
 ## 8. Character Deletion
 
-`CharacterManager.deleteCharacter` exists but has no UI.
+`characterManager.deleteCharacter` exists but has no UI.
 
 - [ ] Add a **Delete** button on the character roster card
 - [ ] Show a confirmation dialog before deletion
@@ -138,7 +155,8 @@ in the budget footer. The `/$characterId/gear` view route is still a stub.
 - [x] **Vehicles** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
 - [x] **Cyberware / Implants** — add/edit/remove; name, cost, availability, source, description ✅ PR #6
 - [x] **Misc** — add/edit/remove generic gear items ✅ PR #6
-- [ ] Compute and display running **Essence cost** from implants (subtract from 6.0)
+- [x] Compute and display running **Essence cost** from implants — `CyberwarePanel` shows used / remaining with
+  grade-adjusted multipliers; error alert when essence is depleted
 - [ ] `/$characterId/gear` view page — list all gear grouped by type
 
 ---

@@ -1,0 +1,14 @@
+export enum GearType {
+  armor = "armor",
+  implant = "implant",
+  firearm = "firearm",
+  lifestyle = "lifestyle",
+  software = "software",
+  vehicle = "vehicle",
+  weapon = "weapon",
+  device = "device",
+  license = "license",
+  firearmAccessory = "firearmAccessory",
+  sin = "sin",
+  other = "other",
+}

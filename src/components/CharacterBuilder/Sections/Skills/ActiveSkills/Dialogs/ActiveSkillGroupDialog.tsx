@@ -13,16 +13,16 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/SkillGroupUtils.ts"
-import type { ActiveSkillGroupFormState } from "#/components/CharacterBuilder/Sections/Skills/SkillFormState.ts"
 import { SkillGroupRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
 import { SkillGroupKey } from "#/lib/system/SkillGroupKey.ts"
+import type { SkillGroupData } from "#/lib/system/skillData.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean
-  group?: ActiveSkillGroupFormState
+  group?: SkillGroupData
   /** Group names that must be disabled because they are already taken or a member skill is already individually selected. */
   disabledGroups?: ReadonlySet<string>
-  onSave: (group: ActiveSkillGroupFormState) => void
+  onSave: (group: SkillGroupData) => void
   onDelete?: () => void
   onClose: () => void
   onClosed?: () => void
@@ -45,7 +45,7 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
   const isEditMode = !!group
 
   const [groupName, setGroupName] = useState<SkillGroupKey | null>(
-    group?.groupName ?? null,
+    group?.name ?? null,
   )
   const [rating, setRating] = useState<number>(group?.rating ?? 1)
   const [groupNameError, setGroupNameError] = useState(false)
@@ -56,14 +56,13 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
       return
     }
     onSave({
-      id: group?.id ?? crypto.randomUUID(),
-      groupName,
+      name: groupName,
       rating,
     })
   }
 
   const handleClosed = () => {
-    setGroupName(group?.groupName ?? null)
+    setGroupName(group?.name ?? null)
     setRating(group?.rating ?? 1)
     setGroupNameError(false)
     onClosed?.()

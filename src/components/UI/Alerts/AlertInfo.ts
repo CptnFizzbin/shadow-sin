@@ -3,6 +3,7 @@ export interface AlertInfo {
   severity: "error" | "warning"
   title: string
   message: string
+  summaryOnly?: boolean
 }
 
 const severityOrder = [

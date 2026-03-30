@@ -5,10 +5,10 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { useNavigate } from "@tanstack/react-router"
 
-import type { PlayerCharacterData } from "#/lib/system/playerCharacterData.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface CharacterRosterListProps {
-  characters: Record<string, PlayerCharacterData>
+  characters: Record<string, CharacterSheet>
 }
 
 export default function CharacterRosterList({

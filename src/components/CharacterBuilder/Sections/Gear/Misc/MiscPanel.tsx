@@ -1,19 +1,13 @@
 import type { FC } from "react"
 
 import { GearItemsList } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemsList.tsx"
-import { useMiscState } from "#/components/CharacterBuilder/Sections/Gear/Misc/UseMiscState.ts"
+import { useGearByType } from "#/components/Gear/UseGearApi.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const MiscPanel: FC = () => {
-  const { misc, addMiscItem, updateMiscItem, removeMiscItem } =
-    useMiscState()
+  const otherItems = useGearByType(GearType.other)
 
   return (
-    <GearItemsList
-      items={misc}
-      onAdd={addMiscItem}
-      onUpdate={updateMiscItem}
-      onRemove={removeMiscItem}
-      label="Item"
-    />
+    <GearItemsList items={otherItems} itemType="Item" />
   )
 }

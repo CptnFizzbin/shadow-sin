@@ -1,10 +1,12 @@
 import MuiTextField from "@mui/material/TextField"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useBuilderProfileApi } from "#/components/CharacterBuilder/Sections/Profile/UseProfileApi.ts"
+import { useProfileStore } from "#/components/CharacterBuilder/Sections/Profile/UseProfileStore.ts"
 
 export const ProfileSection: FC = () => {
-  const { name, alias, setName, setAlias } = useBuilderProfileApi()
+  const profileStore = useProfileStore()
+  const profile = useStore(profileStore, (state) => state)
 
   return (
     <>
@@ -13,8 +15,8 @@ export const ProfileSection: FC = () => {
         fullWidth
         variant="outlined"
         size="small"
-        value={alias}
-        onChange={(event) => setAlias(event.target.value)}
+        value={profile.alias}
+        onChange={(event) => profileStore.setAlias(event.target.value)}
       />
 
       <MuiTextField
@@ -22,8 +24,42 @@ export const ProfileSection: FC = () => {
         fullWidth
         variant="outlined"
         size="small"
-        value={name}
-        onChange={(event) => setName(event.target.value)}
+        value={profile.name}
+        onChange={(event) => profileStore.setName(event.target.value)}
+      />
+
+      <MuiTextField
+        label="Archetype"
+        fullWidth
+        variant="outlined"
+        size="small"
+        value={profile.archetype ?? ""}
+        onChange={(event) =>
+          profileStore.setArchetype(event.target.value || undefined)}
+      />
+
+      <MuiTextField
+        label="Description"
+        fullWidth
+        multiline
+        rows={3}
+        variant="outlined"
+        size="small"
+        value={profile.description ?? ""}
+        onChange={(event) =>
+          profileStore.setDescription(event.target.value || undefined)}
+      />
+
+      <MuiTextField
+        label="Personality"
+        fullWidth
+        multiline
+        rows={3}
+        variant="outlined"
+        size="small"
+        value={profile.personality ?? ""}
+        onChange={(event) =>
+          profileStore.setPersonality(event.target.value || undefined)}
       />
     </>
   )

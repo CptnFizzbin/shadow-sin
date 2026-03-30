@@ -1,8 +1,10 @@
+import { useStore } from "@tanstack/react-store"
+
 import { useBuilderActiveSkillRating } from "#/components/CharacterBuilder/Hooks/UseBuilderActiveSkillRating.ts"
 import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
 import { useBuilderAwakeningType } from "#/components/CharacterBuilder/Hooks/UseBuilderAwakeningType.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsUtils.ts"
-import { useBuilderSpellsApi } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsApi.ts"
+import { useSpellsStore } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
@@ -12,7 +14,8 @@ export const useSpellsAlerts = (): AlertInfo[] => {
   const magicAttribute = useBuilderAttrValue(AttributeKey.magic)
   const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
   const ritualSpellcasting = useBuilderActiveSkillRating(SkillKey.ritualSpellcasting)
-  const { spells } = useBuilderSpellsApi()
+  const spellsStore = useSpellsStore()
+  const spells = useStore(spellsStore, (state) => state)
 
   const statuses: AlertInfo[] = []
 

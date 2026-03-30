@@ -10,10 +10,8 @@ import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import { useCharacterBuilderStore } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ArmorPanel } from "#/components/CharacterBuilder/Sections/Gear/Armor/ArmorPanel.tsx"
 import { CyberwarePanel } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwarePanel.tsx"
-import type { ImplantFormState } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/ImplantFormState.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
 import { DevicesPanel } from "#/components/CharacterBuilder/Sections/Gear/Devices/DevicesPanel.tsx"
 import {
@@ -23,11 +21,9 @@ import {
   useGearBuildPoints,
   useGearTotalCost,
 } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
-import type { GearItemFormState } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/GearItemFormState.ts"
-import type { LicenseFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseFormState.ts"
-import type { SinFormState } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/SinFormState.ts"
 import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/LifestylePanel.tsx"
+import { useLifestyleStore } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleStore.ts"
 import { MiscPanel } from "#/components/CharacterBuilder/Sections/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
 import { StartingNuyenSection } from "#/components/CharacterBuilder/Sections/Gear/StartingNuyenSection.tsx"
@@ -38,6 +34,10 @@ import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { Lifestyles } from "#/lib/system/LifestyleType.ts"
+import { isSinData } from "#/lib/system/gear/SinData.ts"
+import { isImplant } from "#/lib/system/gear/implantData.ts"
+import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
+import { GearType } from "#/lib/system/gearType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
@@ -148,24 +148,23 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gearApi = useGearApi()
-  // Subscribe to the gear Record reactively; re-renders when any gear item changes.
-  const allGearItems = useStore(gearApi.store, (g) => g)
-  const lifestyle = useCharacterBuilderStore((state) => state.lifestyle)
-  const lifestyleMonths = useCharacterBuilderStore(
-    (state) => state.lifestyleMonths,
-  )
+  const allGearItems = useStore(gearApi, (g) => g)
+
+  const lifestyleStore = useLifestyleStore()
+  const lifestyleInfo = useStore(lifestyleStore, (lifestyle) => Lifestyles[lifestyle.quality])
+  const lifestyleMonths = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
 
   if (section === SectionHeader.Lifestyle) {
     return (
       <Typography variant="body2" color="text.secondary">
-        <Nuyen amount={Lifestyles[lifestyle].upkeep * lifestyleMonths} />
+        <Nuyen amount={lifestyleInfo.upkeep * lifestyleMonths} />
       </Typography>
     )
   }
 
   if (section === SectionHeader.Licenses) {
-    const sins = Object.values(allGearItems).filter((i) => i.itemType === "sins") as unknown as SinFormState[]
-    const licenses = Object.values(allGearItems).filter((i) => i.itemType === "licenses") as unknown as LicenseFormState[]
+    const sins = Object.values(allGearItems).filter(isSinData)
+    const licenses = Object.values(allGearItems).filter(isLicenseData)
     return (
       <Typography variant="body2" color="text.secondary">
         <Nuyen
@@ -178,8 +177,8 @@ const GearSectionNuyen: FC<{
     )
   }
   if (section === SectionHeader.Cyberware) {
-    const implants = Object.values(allGearItems).filter((i) => i.itemType === "cyberware") as unknown as ImplantFormState[]
-    const implantMods = Object.values(allGearItems).filter((i) => i.itemType === "implantMods") as unknown as GearItemFormState[]
+    const implants = Object.values(allGearItems).filter(isImplant)
+
     return (
       <Typography variant="body2" color="text.secondary">
         <Nuyen
@@ -187,26 +186,26 @@ const GearSectionNuyen: FC<{
             implants.reduce(
               (sum, implant) => sum + getImplantEffectiveNuyenCost(implant),
               0,
-            ) + implantMods.reduce((sum, mod) => sum + (mod.cost ?? 0), 0)
+            )
           }
         />
       </Typography>
     )
   }
 
-  const genericSectionKeys: Partial<
-    Record<SectionHeader, "weapons" | "armor" | "vehicles" | "devices" | "misc">
+  const genericSectionTypes: Partial<
+    Record<SectionHeader, GearType>
   > = {
-    [SectionHeader.Weapons]: "weapons",
-    [SectionHeader.Armor]: "armor",
-    [SectionHeader.Vehicles]: "vehicles",
-    [SectionHeader.Devices]: "devices",
-    [SectionHeader.Misc]: "misc",
+    [SectionHeader.Weapons]: GearType.weapon,
+    [SectionHeader.Armor]: GearType.armor,
+    [SectionHeader.Vehicles]: GearType.vehicle,
+    [SectionHeader.Devices]: GearType.device,
+    [SectionHeader.Misc]: GearType.other,
   }
-  const sectionKey = genericSectionKeys[section]
-  const nuyen = sectionKey
-    ? (Object.values(allGearItems).filter((i) => i.itemType === sectionKey) as unknown as GearItemFormState[]).reduce((sum, item) => sum + (item.cost ?? 0), 0)
-    : 0
+
+  const nuyen = Object.values(allGearItems)
+    .filter((i) => i.itemType === genericSectionTypes[section])
+    .reduce((sum, item) => sum + (item.cost ?? 0), 0)
 
   return (
     <Typography variant="body2" color="text.secondary">
