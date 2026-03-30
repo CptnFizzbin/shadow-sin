@@ -22,8 +22,8 @@ export class QualitiesStore extends StoreSlice<QualitiesStoreState> {
     this.set((prev) => prev.map((q) => q.name === quality.name ? quality : q))
   }
 
-  remove(qualityId: string): void {
-    this.set((prev) => prev.filter((q) => q.name !== qualityId))
+  remove(qualityName: string): void {
+    this.set((prev) => prev.filter((q) => q.name !== qualityName))
   }
 }
 
