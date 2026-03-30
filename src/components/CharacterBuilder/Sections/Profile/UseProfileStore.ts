@@ -1,80 +1,49 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export type ProfileStoreState = CharacterSheet["profile"]
 
-export interface UseProfileStore extends BaseAtom<ProfileStoreState> {
-  setName(name: string): void
+export class ProfileStore extends StoreSlice<ProfileStoreState> {
+  setState(stateOrUpdater: ProfileStoreState | ((prev: ProfileStoreState) => ProfileStoreState)) {
+    this.set(stateOrUpdater)
+  }
 
-  setAlias(alias: string): void
+  setName(name: string): void {
+    this.set((prev) => ({ ...prev, name }))
+  }
 
-  setArchetype(archetype: string | undefined): void
+  setAlias(alias: string): void {
+    this.set((prev) => ({ ...prev, alias }))
+  }
 
-  setDescription(description: string | undefined): void
+  setArchetype(archetype: string | undefined): void {
+    this.set((prev) => ({ ...prev, archetype }))
+  }
 
-  setPersonality(personality: string | undefined): void
+  setDescription(description: string | undefined): void {
+    this.set((prev) => ({ ...prev, description }))
+  }
 
-  setState(state: ProfileStoreState): void
-
-  setState(updater: (prev: ProfileStoreState) => ProfileStoreState): void
+  setPersonality(personality: string | undefined): void {
+    this.set((prev) => ({ ...prev, personality }))
+  }
 }
 
-export const useProfileStore = (): UseProfileStore => {
+export const useProfileStore = (): ProfileStore => {
   const store = useCharacterSheetContext()
 
-  return useMemo((): UseProfileStore => {
-    const profileStore = createStore(() => store.state.profile)
+  return useMemo((): ProfileStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.profile,
+      (root, profile) => produce(root, (draft) => { draft.profile = profile }),
+    )
 
-    const toUpdater = <T>(valueOrUpdater: T | ((prev: T) => T)): ((prev: T) => T) =>
-      typeof valueOrUpdater === "function"
-        ? (valueOrUpdater as (prev: T) => T)
-        : () => valueOrUpdater
-
-    return {
-      get: () => profileStore.get(),
-      subscribe: (listener) => profileStore.subscribe(listener),
-
-      setState: (stateOrUpdater) => {
-        const updater = toUpdater(stateOrUpdater)
-        store.setState(produce((prev) => {
-          prev.profile = updater(prev.profile)
-        }))
-      },
-
-      setName: (name) => {
-        store.setState(produce((prev) => {
-          prev.profile.name = name
-        }))
-      },
-
-      setAlias: (alias) => {
-        store.setState(produce((prev) => {
-          prev.profile.alias = alias
-        }))
-      },
-
-      setArchetype: (archetype) => {
-        store.setState(produce((prev) => {
-          prev.profile.archetype = archetype
-        }))
-      },
-
-      setDescription: (description) => {
-        store.setState(produce((prev) => {
-          prev.profile.description = description
-        }))
-      },
-
-      setPersonality: (personality) => {
-        store.setState(produce((prev) => {
-          prev.profile.personality = personality
-        }))
-      },
-    }
+    return new ProfileStore(atom)
   }, [store])
 }

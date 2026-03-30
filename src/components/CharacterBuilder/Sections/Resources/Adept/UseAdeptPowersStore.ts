@@ -1,65 +1,42 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 
 export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
 
-export interface UseAdeptPowersStore extends BaseAtom<AdeptPowersStoreState> {
-  add(power: AdeptPowerData): void
+export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
+  setState(stateOrUpdater: AdeptPowersStoreState | ((prev: AdeptPowersStoreState) => AdeptPowersStoreState)) {
+    this.set(stateOrUpdater)
+  }
 
-  update(power: AdeptPowerData): void
+  add(power: AdeptPowerData): void {
+    this.set((prev) => [...prev, power])
+  }
 
-  remove(powerId: string): void
+  update(power: AdeptPowerData): void {
+    this.set((prev) => prev.map((p) => p.id === power.id ? power : p))
+  }
 
-  setState(state: AdeptPowersStoreState): void
-
-  setState(updater: (prev: AdeptPowersStoreState) => AdeptPowersStoreState): void
+  remove(powerId: string): void {
+    this.set((prev) => prev.filter((p) => p.id !== powerId))
+  }
 }
 
-export const useAdeptPowersStore = (): UseAdeptPowersStore => {
+export const useAdeptPowersStore = (): AdeptPowersStore => {
   const store = useCharacterSheetContext()
 
-  return useMemo((): UseAdeptPowersStore => {
-    const adeptPowersStore = createStore(() => store.state.adeptPowers)
+  return useMemo((): AdeptPowersStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.adeptPowers,
+      (root, adeptPowers) => produce(root, (draft) => { draft.adeptPowers = adeptPowers }),
+    )
 
-    const toUpdater = <T>(valueOrUpdater: T | ((prev: T) => T)): ((prev: T) => T) =>
-      typeof valueOrUpdater === "function"
-        ? (valueOrUpdater as (prev: T) => T)
-        : () => valueOrUpdater
-
-    return {
-      get: () => adeptPowersStore.get(),
-      subscribe: (listener) => adeptPowersStore.subscribe(listener),
-
-      setState: (stateOrUpdater) => {
-        const updater = toUpdater(stateOrUpdater)
-        store.setState(produce((prev) => {
-          prev.adeptPowers = updater(prev.adeptPowers)
-        }))
-      },
-
-      add: (power) => {
-        store.setState(produce((prev) => {
-          prev.adeptPowers.push(power)
-        }))
-      },
-
-      update: (power) => {
-        store.setState(produce((prev) => {
-          prev.adeptPowers = prev.adeptPowers.map((p) => p.id === power.id ? power : p)
-        }))
-      },
-
-      remove: (powerId) => {
-        store.setState(produce((prev) => {
-          prev.adeptPowers = prev.adeptPowers.filter((p) => p.id !== powerId)
-        }))
-      },
-    }
+    return new AdeptPowersStore(atom)
   }, [store])
 }

@@ -1,11 +1,7 @@
-import type {
-  IStorageProvider,
-  StoredJsonFile,
-  StoredJsonFileMetadata,
-} from "#/lib/storage/IStorageProvider.ts"
+import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/StorageProvider.ts"
 
 export class StorageManager {
-  public constructor(private readonly storageProvider: IStorageProvider) {}
+  public constructor(private readonly storageProvider: StorageProvider) {}
 
   public get providerId(): string {
     return this.storageProvider.providerId

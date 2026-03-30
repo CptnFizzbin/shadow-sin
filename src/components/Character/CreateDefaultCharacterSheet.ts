@@ -1,7 +1,8 @@
+import { getAttributesValues } from "#/components/Attributes/GetAttributesValues.ts"
 import { CurrentCharacterSheetVersion } from "#/lib/storage/characters/CurrentCharacterSheetVersion.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType.ts"
-import { getDefaultAttributes, MetatypeType } from "#/lib/system/MetatypeData.ts"
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { metatypes, MetatypeType } from "#/lib/system/MetatypeData.ts"
+import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
@@ -35,7 +36,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
 
   qualities: [],
 
-  attributes: getDefaultAttributes({ metatypeKey: MetatypeType.Human }),
+  attributes: getAttributesValues(metatypes[MetatypeType.Human], awakenings[AwakeningType.Mundane]),
 
   edge: {
     current: 0,

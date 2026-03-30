@@ -1,65 +1,42 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
 export type SpritesStoreState = CharacterSheet["sprites"]
 
-export interface UseSpritesStore extends BaseAtom<SpritesStoreState> {
-  add(sprite: SpriteData): void
+export class SpritesStore extends StoreSlice<SpritesStoreState> {
+  setState(stateOrUpdater: SpritesStoreState | ((prev: SpritesStoreState) => SpritesStoreState)) {
+    this.set(stateOrUpdater)
+  }
 
-  update(sprite: SpriteData): void
+  add(sprite: SpriteData): void {
+    this.set((prev) => [...prev, sprite])
+  }
 
-  remove(spriteId: string): void
+  update(sprite: SpriteData): void {
+    this.set((prev) => prev.map((s) => s.id === sprite.id ? sprite : s))
+  }
 
-  setState(state: SpritesStoreState): void
-
-  setState(updater: (prev: SpritesStoreState) => SpritesStoreState): void
+  remove(spriteId: string): void {
+    this.set((prev) => prev.filter((s) => s.id !== spriteId))
+  }
 }
 
-export const useSpritesStore = (): UseSpritesStore => {
+export const useSpritesStore = (): SpritesStore => {
   const store = useCharacterSheetContext()
 
-  return useMemo((): UseSpritesStore => {
-    const spritesStore = createStore(() => store.state.sprites)
+  return useMemo((): SpritesStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.sprites,
+      (root, sprites) => produce(root, (draft) => { draft.sprites = sprites }),
+    )
 
-    const toUpdater = <T>(valueOrUpdater: T | ((prev: T) => T)): ((prev: T) => T) =>
-      typeof valueOrUpdater === "function"
-        ? (valueOrUpdater as (prev: T) => T)
-        : () => valueOrUpdater
-
-    return {
-      get: () => spritesStore.get(),
-      subscribe: (listener) => spritesStore.subscribe(listener),
-
-      setState: (stateOrUpdater) => {
-        const updater = toUpdater(stateOrUpdater)
-        store.setState(produce((prev) => {
-          prev.sprites = updater(prev.sprites)
-        }))
-      },
-
-      add: (sprite) => {
-        store.setState(produce((prev) => {
-          prev.sprites.push(sprite)
-        }))
-      },
-
-      update: (sprite) => {
-        store.setState(produce((prev) => {
-          prev.sprites = prev.sprites.map((s) => s.id === sprite.id ? sprite : s)
-        }))
-      },
-
-      remove: (spriteId) => {
-        store.setState(produce((prev) => {
-          prev.sprites = prev.sprites.filter((s) => s.id !== spriteId)
-        }))
-      },
-    }
+    return new SpritesStore(atom)
   }, [store])
 }

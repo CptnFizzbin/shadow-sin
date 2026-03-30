@@ -2,14 +2,14 @@ import DownloadIcon from "@mui/icons-material/Download"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useCharacterBuilderStoreContext } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/ExportUtils.ts"
 
 export const ExportCharacterButton: FC = () => {
-  const store = useCharacterBuilderStoreContext()
+  const store = useCharacterSheetContext()
 
   const handleExport = () => {
-    const { characterSheet } = store.get()
+    const characterSheet = store.get()
     const yamlContent = characterSheetToYaml(characterSheet)
     const sanitizedName =
       (characterSheet.profile.alias || characterSheet.profile.name || "character")

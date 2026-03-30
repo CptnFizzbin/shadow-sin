@@ -2,11 +2,11 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useCharacterStore } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 
 export const ProfileSection: FC = () => {
-  const profile = useCharacterStore((s) => s.profile)
-  const biology = useCharacterStore((s) => s.biology)
+  const profile = useCharacterSheet((s) => s.profile)
+  const biology = useCharacterSheet((s) => s.biology)
 
   return (
     <Box>

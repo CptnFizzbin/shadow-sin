@@ -1,8 +1,8 @@
 import { sort } from "fast-sort"
 import semver from "semver"
 
-import type { StoredJsonFile } from "#/lib/storage/IStorageProvider.ts"
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
+import type { StoredJsonFile } from "#/lib/storage/StorageProvider.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 

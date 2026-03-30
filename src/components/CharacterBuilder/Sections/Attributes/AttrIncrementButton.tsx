@@ -4,7 +4,7 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { useHasMaxxedAttribute } from "#/components/Attributes/Hooks/UseHasMaxxedAttribute.ts"
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import {
   AttributeBpCostBase,

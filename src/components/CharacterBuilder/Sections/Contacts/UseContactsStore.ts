@@ -1,58 +1,37 @@
 import type { UUID } from "node:crypto"
 
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { ContactData } from "#/lib/system/contactData.ts"
 
-export interface ContactsStore extends BaseAtom<ContactData[]> {
-  add(contact: ContactData): void
+export class ContactsStore extends StoreSlice<ContactData[]> {
+  add(contact: ContactData) {
+    this.set((prev) => [...prev, { ...contact, id: crypto.randomUUID() }])
+  }
 
-  update(contactId: UUID, recipe: (prev: ContactData) => ContactData): void
+  update(contactId: UUID, recipe: (prev: ContactData) => ContactData) {
+    this.set((prev) => prev.map((contact) => contact.id === contactId ? produce(contact, recipe) : contact))
+  }
 
-  remove(contact: ContactData): void
-}
-
-export function contactBuildPoints(contacts: ContactData[]): number {
-  return contacts.reduce(
-    (total, contact) => total + contact.connection + contact.loyalty,
-    0,
-  )
+  remove(contact: ContactData) {
+    this.set((prev) => prev.filter((c) => c.id !== contact.id))
+  }
 }
 
 export function useContactsStore() {
   const store = useCharacterSheetContext()
 
   return useMemo((): ContactsStore => {
-    const contactsStore = createStore(() => store.state.contacts)
+    const atom = createSliceAtom(
+      store,
+      (root) => root.contacts,
+      (root, contacts) => produce(root, (draft) => { draft.contacts = contacts }),
+    )
 
-    return {
-      get: () => contactsStore.get(),
-      subscribe: (listener) => contactsStore.subscribe(listener),
-
-      add(contact: ContactData) {
-        store.setState(produce((draft) => {
-          draft.contacts.push({ ...contact, id: crypto.randomUUID() })
-        }))
-      },
-
-      update(contactId, recipe) {
-        store.setState(produce((draft) => {
-          draft.contacts = draft.contacts.map((contact) => {
-            if (contact.id === contactId) return produce(contact, recipe)
-            return contact
-          })
-        }))
-      },
-
-      remove(contact: ContactData) {
-        store.setState(produce((draft) => {
-          draft.contacts = draft.contacts.filter((c) => c.id !== contact.id)
-        }))
-      },
-    }
+    return new ContactsStore(atom)
   }, [store])
 }

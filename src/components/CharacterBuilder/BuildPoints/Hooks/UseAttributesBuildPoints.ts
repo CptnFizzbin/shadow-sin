@@ -12,7 +12,7 @@ export const useAttributesBuildPoints = () => {
       let spent = 0
       spent += (attrData.value - attrData.min) * AttributeBpCostBase
 
-      const isMaxedOut = attrData.value >= attrData.max
+      const isMaxedOut = attrData.max >= 1 && attrData.value >= attrData.max
       if (isMaxedOut) {
         spent += AttributeBpCostMaxOut - AttributeBpCostBase
       }

@@ -1,40 +1,39 @@
 import type { Store } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
-import { produce } from "immer"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext, useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
-import type { CharacterBuilderState } from "#/components/CharacterBuilder/CharacterBuilderState.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { BuilderRootState } from "#/components/CharacterBuilder/BuilderRootState.ts"
+import { BuilderStateStore } from "#/components/CharacterBuilder/BuilderStateStore.ts"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
 
 export const CharacterBuilderContext =
-  createContext<Store<CharacterBuilderState> | null>(null)
+  createContext<BuilderStateStore | null>(null)
 
 export interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
-  builderStateStore: Store<CharacterBuilderState>
+  rootStore: Store<BuilderRootState>
 }
 
-export const CharacterBuilderStoreProvider: FC<
-  CharacterBuilderStoreProviderProps
-> = ({ builderStateStore, children }) => {
+export const CharacterBuilderStoreProvider: FC<CharacterBuilderStoreProviderProps> = ({
+  rootStore,
+  children,
+}) => {
   const characterSheetStore = useMemo((): CharacterSheetStore => {
-    const sheetStore = createStore<CharacterSheet>(() => builderStateStore.state.characterSheet)
+    return new CharacterSheetStore(createSliceAtom(
+      rootStore,
+      (root) => root.character,
+      (root, character) => ({ ...root, character }),
+    ))
+  }, [rootStore])
 
-    return new CharacterSheetStore({
-      get: () => sheetStore.get(),
-      set: (valueOrUpdater) => {
-        builderStateStore.setState(produce((prev) => {
-          prev.characterSheet =
-            typeof valueOrUpdater === "function"
-              ? valueOrUpdater(prev.characterSheet)
-              : valueOrUpdater
-        }))
-      },
-      subscribe: (listener) => sheetStore.subscribe(listener),
-    })
-  }, [builderStateStore])
+  const builderStateStore = useMemo((): BuilderStateStore => {
+    return new BuilderStateStore(createSliceAtom(
+      rootStore,
+      (root) => root.builder,
+      (root, builder) => ({ ...root, builder }),
+    ))
+  }, [rootStore])
 
   return (
     <CharacterBuilderContext.Provider value={builderStateStore}>
@@ -45,7 +44,7 @@ export const CharacterBuilderStoreProvider: FC<
   )
 }
 
-export const useCharacterBuilderStoreContext = (): Store<CharacterBuilderState> => {
+export const useCharacterBuilderStoreContext = (): BuilderStateStore => {
   const store = useContext(CharacterBuilderContext)
 
   if (!store) {

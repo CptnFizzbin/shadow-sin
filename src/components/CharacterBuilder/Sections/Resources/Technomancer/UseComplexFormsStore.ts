@@ -1,65 +1,42 @@
-import type { BaseAtom } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 
 export type ComplexFormsStoreState = CharacterSheet["complexForms"]
 
-export interface UseComplexFormsStore extends BaseAtom<ComplexFormsStoreState> {
-  add(form: ComplexFormData): void
+export class ComplexFormsStore extends StoreSlice<ComplexFormsStoreState> {
+  setState(stateOrUpdater: ComplexFormsStoreState | ((prev: ComplexFormsStoreState) => ComplexFormsStoreState)) {
+    this.set(stateOrUpdater)
+  }
 
-  update(form: ComplexFormData): void
+  add(form: ComplexFormData): void {
+    this.set((prev) => [...prev, form])
+  }
 
-  remove(formId: string): void
+  update(form: ComplexFormData): void {
+    this.set((prev) => prev.map((f) => f.id === form.id ? form : f))
+  }
 
-  setState(state: ComplexFormsStoreState): void
-
-  setState(updater: (prev: ComplexFormsStoreState) => ComplexFormsStoreState): void
+  remove(formId: string): void {
+    this.set((prev) => prev.filter((f) => f.id !== formId))
+  }
 }
 
-export const useComplexFormsStore = (): UseComplexFormsStore => {
+export const useComplexFormsStore = (): ComplexFormsStore => {
   const store = useCharacterSheetContext()
 
-  return useMemo((): UseComplexFormsStore => {
-    const complexFormsStore = createStore(() => store.state.complexForms)
+  return useMemo((): ComplexFormsStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.complexForms,
+      (root, complexForms) => produce(root, (draft) => { draft.complexForms = complexForms }),
+    )
 
-    const toUpdater = <T>(valueOrUpdater: T | ((prev: T) => T)): ((prev: T) => T) =>
-      typeof valueOrUpdater === "function"
-        ? (valueOrUpdater as (prev: T) => T)
-        : () => valueOrUpdater
-
-    return {
-      get: () => complexFormsStore.get(),
-      subscribe: (listener) => complexFormsStore.subscribe(listener),
-
-      setState: (stateOrUpdater) => {
-        const updater = toUpdater(stateOrUpdater)
-        store.setState(produce((prev) => {
-          prev.complexForms = updater(prev.complexForms)
-        }))
-      },
-
-      add: (form) => {
-        store.setState(produce((prev) => {
-          prev.complexForms.push(form)
-        }))
-      },
-
-      update: (form) => {
-        store.setState(produce((prev) => {
-          prev.complexForms = prev.complexForms.map((f) => f.id === form.id ? form : f)
-        }))
-      },
-
-      remove: (formId) => {
-        store.setState(produce((prev) => {
-          prev.complexForms = prev.complexForms.filter((f) => f.id !== formId)
-        }))
-      },
-    }
+    return new ComplexFormsStore(atom)
   }, [store])
 }

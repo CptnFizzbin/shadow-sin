@@ -1,7 +1,7 @@
-import { useCharacterStore } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 
 export function useDamageTrack(track: "physical" | "stun") {
-  return useCharacterStore((state) => {
+  return useCharacterSheet((state) => {
     const damage = state.damage
     return damage[track]
   })

@@ -5,6 +5,8 @@ import { useStore } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
+import { getAttributesValues } from "#/components/Attributes/GetAttributesValues.ts"
+import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { BiologyAttributes } from "#/components/CharacterBuilder/Sections/Biology/BiologyAttributes.tsx"
 import { useBiologyStore } from "#/components/CharacterBuilder/Sections/Biology/UseBiologyStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
@@ -12,6 +14,7 @@ import { metatypes, MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const BiologySection: FC = () => {
+  const sheet = useCharacterSheetContext()
   const biologyStore = useBiologyStore()
   const metatypeKey = useStore(biologyStore, (state) => state.metatype)
   const awakeningType = useStore(biologyStore, (state) => state.awakening)
@@ -24,8 +27,12 @@ export const BiologySection: FC = () => {
           value={metatypeKey}
           label="Metatype"
           onChange={(event) => {
-            biologyStore.setState(produce((prev) => {
-              prev.metatype = event.target.value
+            sheet.setState(produce((prev) => {
+              const metatype = metatypes[event.target.value]
+              const awakening = awakenings[prev.biology.awakening]
+
+              prev.biology.metatype = metatype.name
+              prev.attributes = getAttributesValues(metatype, awakening)
             }))
           }}
         >
@@ -51,8 +58,12 @@ export const BiologySection: FC = () => {
             value={awakeningType}
             label="Awakening"
             onChange={(event) => {
-              biologyStore.setState(produce((prev) => {
-                prev.awakening = event.target.value
+              sheet.setState(produce((prev) => {
+                const metatype = metatypes[prev.biology.metatype]
+                const awakening = awakenings[event.target.value]
+
+                prev.biology.awakening = awakening.name
+                prev.attributes = getAttributesValues(metatype, awakening)
               }))
             }}
           >
