@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useAllAttrInfos } from "#/components/Character/CharacterUtils.ts"
-import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { AttributesList } from "#/components/CharacterBuilder/Sections/Attributes/AttributesList.tsx"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"

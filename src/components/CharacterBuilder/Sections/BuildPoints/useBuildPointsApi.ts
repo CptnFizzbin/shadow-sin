@@ -1,7 +1,7 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
-import { useAttributesBuildPoints } from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/Sections/Contacts/ContactsHooks.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersHooks.ts"

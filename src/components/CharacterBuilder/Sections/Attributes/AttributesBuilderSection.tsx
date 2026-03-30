@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
+import { useAttributeAlerts } from "#/components/CharacterBuilder/Alerts/Hooks/UseAttributeAlerts.ts"
 import { AttributesSection } from "#/components/CharacterBuilder/Sections/Attributes/AttributesSection.tsx"
-import { useAttributeAlerts } from "#/components/CharacterBuilder/Sections/Attributes/UseAttributeAlerts.ts"
 import { BuilderSection } from "#/components/CharacterBuilder/Sections/BuilderSection.tsx"
 
 export const AttributesBuilderSection: FC = () => {

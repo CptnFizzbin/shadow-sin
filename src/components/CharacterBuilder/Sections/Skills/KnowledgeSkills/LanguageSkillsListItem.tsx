@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getLanguageSkillSp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { SkillPoints } from "#/components/UI/SkillPoints.tsx"
 import type { LanguageSkillData } from "#/lib/system/skillData.ts"
 
 interface LanguageSkillsListItemProps {
@@ -53,13 +54,11 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
           color={isNative ? "success" : "default"}
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <Typography
+        <SkillPoints
           variant="caption"
-          color="warning.main"
+          value={spCost}
           sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {spCost} SP
-        </Typography>
+        />
         <IconButton
           size="small"
           color="error"

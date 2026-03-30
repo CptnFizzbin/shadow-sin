@@ -3,10 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
-import type { Dispatch, FC, SetStateAction } from "react"
+import type { FC } from "react"
 import { useState } from "react"
 
-import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
 import {
   KnowledgeSkillDialog,
@@ -15,69 +14,58 @@ import {
   LanguageSkillDialog,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Dialogs/LanguageSkillDialog.tsx"
 import {
+  useKnowledgeSkillPoints,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillPoints.ts"
+import {
+  useKnowledgeSkillsBuildPoints,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillsBuildPoints.ts"
+import {
   KnowledgeSkillsListItem,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsListItem.tsx"
 import {
   LanguageSkillsListItem,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/LanguageSkillsListItem.tsx"
-import {
-  calculateExtraSpBp,
-  calculateKnowledgeAndLanguageSpUsed,
-  getFreeSkillPoints,
-} from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
+import { SkillPoints } from "#/components/UI/SkillPoints.tsx"
 import type { KnowledgeSkillData, LanguageSkillData } from "#/lib/system/skillData.ts"
 
-type KnowledgeSkillDialogState =
+type DialogState =
   | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", skill: KnowledgeSkillData, open: boolean }
-
-type LanguageSkillDialogState =
-  | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", skill: LanguageSkillData, open: boolean }
+  | { type: "language", skill?: LanguageSkillData, open: boolean }
+  | { type: "knowledge", skill?: KnowledgeSkillData, open: boolean }
 
 export const KnowledgeSkillsList: FC = () => {
   const skillsStore = useSkillsStore()
-
-  const logicAttr = useAttr(AttributeKey.logic)
-  const intuitionAttr = useAttr(AttributeKey.intuition)
+  const skillPoints = useKnowledgeSkillPoints()
+  const buildPoints = useKnowledgeSkillsBuildPoints()
 
   const knowledgeSkills = useStore(skillsStore, (state) => state.knowledgeSkills)
   const languageSkills = useStore(skillsStore, (state) => state.languageSkills)
 
-  const freeSkillPoints = getFreeSkillPoints(logicAttr, intuitionAttr)
-  const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(knowledgeSkills, languageSkills)
-  const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
+  const [dialogState, setDialogState] = useState<DialogState>(null)
 
-  const [knowledgeSkillDialog, setKnowledgeSkillDialog] =
-    useState<KnowledgeSkillDialogState>(null)
-  const [languageSkillDialog, setLanguageSkillDialog] =
-    useState<LanguageSkillDialogState>(null)
-
-  const closeDialog = <TDialogState, >(
-    setter: Dispatch<SetStateAction<TDialogState | null>>,
-  ) => {
-    setter((prev) => prev && { ...prev, open: false })
+  const closeDialog = () => {
+    setDialogState((prev) => prev && { ...prev, open: false })
   }
 
-  const clearDialog = <TDialogState, >(
-    setter: Dispatch<SetStateAction<TDialogState | null>>,
-  ) => {
-    setter(null)
+  const clearDialog = () => {
+    setDialogState(null)
   }
 
   return (
     <Stack gap={1}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="body2" color="warning.main">
-          {totalSpUsed} / {freeSkillPoints} Free SP
-        </Typography>
+      <Stack direction="row" justifyContent="space-between">
+        <Stack direction="column">
+          <Stack direction="row" gap={1} alignItems="baseline">
+            <SkillPoints type="Free" value={skillPoints.spent.free} max={skillPoints.free}/>
+            +
+            <SkillPoints value={skillPoints.spent.extra}/>
+          </Stack>
 
-        <Typography variant="body2" color="secondary.main">
-          {extraSpBp} BP
-        </Typography>
+          <Typography variant="caption">Extra SP costs 2 BP each</Typography>
+        </Stack>
+
+        <BuildPoints value={buildPoints.spent}/>
       </Stack>
 
       {knowledgeSkills.length > 0 && (
@@ -91,11 +79,12 @@ export const KnowledgeSkillsList: FC = () => {
               Knowledge Skills
             </Typography>
           </Stack>
+
           {knowledgeSkills.map((skill) => (
             <KnowledgeSkillsListItem
               key={skill.name}
               skill={skill}
-              onEdit={() => setKnowledgeSkillDialog({ mode: "edit", skill, open: true })}
+              onEdit={() => setDialogState({ type: "knowledge", skill, open: true })}
               onDelete={() => skillsStore.knowledgeSkills.remove(skill.name)}
             />
           ))}
@@ -113,11 +102,12 @@ export const KnowledgeSkillsList: FC = () => {
               Languages
             </Typography>
           </Stack>
+
           {languageSkills.map((skill) => (
             <LanguageSkillsListItem
               key={skill.name}
               skill={skill}
-              onEdit={() => setLanguageSkillDialog({ mode: "edit", skill, open: true })}
+              onEdit={() => setDialogState({ type: "language", skill, open: true })}
               onDelete={() => skillsStore.languageSkills.remove(skill.name)}
             />
           ))}
@@ -135,77 +125,50 @@ export const KnowledgeSkillsList: FC = () => {
           variant="outlined"
           color="secondary"
           size="small"
-          startIcon={<RiAddLine size={14} />}
-          onClick={() => setKnowledgeSkillDialog({ mode: "create", open: true })}
+          startIcon={<RiAddLine size={14}/>}
+          onClick={() => setDialogState({ type: "knowledge", open: true })}
           sx={{ flexGrow: 1 }}
         >
           Add Knowledge
         </Button>
+
         <Button
           variant="outlined"
           color="secondary"
           size="small"
-          startIcon={<RiAddLine size={14} />}
-          onClick={() => setLanguageSkillDialog({ mode: "create", open: true })}
+          startIcon={<RiAddLine size={14}/>}
+          onClick={() => setDialogState({ type: "language", open: true })}
           sx={{ flexGrow: 1 }}
         >
           Add Language
         </Button>
       </Stack>
 
-      {knowledgeSkillDialog?.mode === "create" && (
+      {dialogState?.type === "knowledge" && (
         <KnowledgeSkillDialog
-          open={knowledgeSkillDialog.open}
+          open={dialogState.open}
+          skill={dialogState.skill}
           onSave={(skill) => {
-            skillsStore.knowledgeSkills.setState(skill.name, skill)
-            closeDialog(setKnowledgeSkillDialog)
+            const skillName = dialogState.skill?.name || skill.name
+            skillsStore.knowledgeSkills.setState(skillName, () => skill)
+            closeDialog()
           }}
-          onClose={() => closeDialog(setKnowledgeSkillDialog)}
-          onClosed={() => clearDialog(setKnowledgeSkillDialog)}
-        />
-      )}
-      {knowledgeSkillDialog?.mode === "edit" && (
-        <KnowledgeSkillDialog
-          open={knowledgeSkillDialog.open}
-          skill={knowledgeSkillDialog.skill}
-          onSave={(skill) => {
-            skillsStore.knowledgeSkills.setState(skill.name, skill)
-            closeDialog(setKnowledgeSkillDialog)
-          }}
-          onDelete={() => {
-            skillsStore.knowledgeSkills.remove(knowledgeSkillDialog.skill.name)
-            clearDialog(setKnowledgeSkillDialog)
-          }}
-          onClose={() => closeDialog(setKnowledgeSkillDialog)}
-          onClosed={() => clearDialog(setKnowledgeSkillDialog)}
+          onClose={closeDialog}
+          onClosed={clearDialog}
         />
       )}
 
-      {languageSkillDialog?.mode === "create" && (
+      {dialogState?.type === "language" && (
         <LanguageSkillDialog
-          open={languageSkillDialog.open}
+          open={dialogState.open}
+          skill={dialogState.skill}
           onSave={(skill) => {
-            skillsStore.languageSkills.setState(skill.name, skill)
-            closeDialog(setLanguageSkillDialog)
+            const skillName = dialogState.skill?.name || skill.name
+            skillsStore.languageSkills.setState(skillName, () => skill)
+            closeDialog()
           }}
-          onClose={() => closeDialog(setLanguageSkillDialog)}
-          onClosed={() => clearDialog(setLanguageSkillDialog)}
-        />
-      )}
-      {languageSkillDialog?.mode === "edit" && (
-        <LanguageSkillDialog
-          open={languageSkillDialog.open}
-          skill={languageSkillDialog.skill}
-          onSave={(skill) => {
-            skillsStore.languageSkills.setState(skill.name, skill)
-            closeDialog(setLanguageSkillDialog)
-          }}
-          onDelete={() => {
-            skillsStore.languageSkills.remove(languageSkillDialog.skill.name)
-            closeDialog(setLanguageSkillDialog)
-          }}
-          onClose={() => closeDialog(setLanguageSkillDialog)}
-          onClosed={() => clearDialog(setLanguageSkillDialog)}
+          onClose={closeDialog}
+          onClosed={clearDialog}
         />
       )}
     </Stack>

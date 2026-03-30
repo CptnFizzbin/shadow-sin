@@ -1,19 +1,13 @@
 import Stack from "@mui/material/Stack"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import type {
   LanguageSkillForm,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseLanguageSkillForm.ts"
 import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
-
-const ratingOptions = [
-  { label: "Native", value: "native" },
-  ...Array.from({ length: SkillRatingMax }, (_, i) => ({
-    label: String(i + 1),
-    value: String(i + 1),
-  })),
-]
 
 interface LanguageSkillFormFieldsProps {
   form: LanguageSkillForm
@@ -22,9 +16,22 @@ interface LanguageSkillFormFieldsProps {
 export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
   form,
 }) => {
+  const skillName = useStore(form.store, (state) => state.values.name)
+  const nativeLanguage = useCharacterSheet((sheet) => {
+    return sheet.skills.languageSkills.find((skill) => skill.rating === "native")
+  })
+
+  const ratingOptions = [
+    { label: "Native", value: "native", disabled: nativeLanguage && nativeLanguage.name !== skillName },
+    ...Array.from({ length: SkillRatingMax }, (_, i) => ({
+      label: String(i + 1),
+      value: String(i + 1),
+    })),
+  ]
+
   return (
     <form.AppForm>
-      <Stack gap={2} sx={{ pt: 1 }}>
+      <Stack gap={1} sx={{ pt: 1 }}>
         <form.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Language name is required") }}

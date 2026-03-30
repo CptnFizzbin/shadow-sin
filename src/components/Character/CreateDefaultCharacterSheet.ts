@@ -1,7 +1,6 @@
 import { CurrentCharacterSheetVersion } from "#/lib/storage/characters/CurrentCharacterSheetVersion.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType.ts"
-import { MetatypeType } from "#/lib/system/MetatypeData.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { getDefaultAttributes, MetatypeType } from "#/lib/system/MetatypeData.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
@@ -21,7 +20,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
     personality: "",
     lifestyle: {
       quality: LifestyleType.Middle,
-      monthsPaid: 0,
+      monthsPaid: 1,
     },
   },
 
@@ -36,20 +35,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
 
   qualities: [],
 
-  attributes: {
-    [AttributeKey.body]: 1,
-    [AttributeKey.agility]: 1,
-    [AttributeKey.reaction]: 1,
-    [AttributeKey.strength]: 1,
-    [AttributeKey.charisma]: 1,
-    [AttributeKey.intuition]: 1,
-    [AttributeKey.logic]: 1,
-    [AttributeKey.willpower]: 1,
-    [AttributeKey.edge]: 1,
-    [AttributeKey.essence]: 6,
-    [AttributeKey.magic]: 0,
-    [AttributeKey.resonance]: 0,
-  },
+  attributes: getDefaultAttributes({ metatypeKey: MetatypeType.Human }),
 
   edge: {
     current: 0,

@@ -452,10 +452,12 @@ export const Artemis: CharacterSheet = {
       {
         name: "80/90s Pop Culture",
         rating: 1,
-      }, {
+      },
+      {
         name: "Trideo Series",
         rating: 1,
-      }, {
+      },
+      {
         name: "Security Systems",
         rating: 1,
       },

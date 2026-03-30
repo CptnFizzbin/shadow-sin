@@ -8,7 +8,7 @@ import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/AttributeUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
@@ -42,7 +42,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
     store.setState(produce((sheet) => {
-      sheet.attributes[props.attr] += 1
+      sheet.attributes[props.attr] -= 1
     }))
   }
 

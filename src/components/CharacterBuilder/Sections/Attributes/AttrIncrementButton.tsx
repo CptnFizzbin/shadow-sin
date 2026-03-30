@@ -3,16 +3,14 @@ import { RiArrowRightBoxLine } from "@remixicon/react"
 import { produce } from "immer"
 import type { FC } from "react"
 
+import { useHasMaxxedAttribute } from "#/components/Attributes/Hooks/UseHasMaxxedAttribute.ts"
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetContext.tsx"
 import { useAttr, useAttrInfo } from "#/components/Character/CharacterUtils.ts"
 import {
-  useAttributesBuildPoints,
-  useHasMaxxedAttribute,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeHooks.ts"
-import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
-} from "#/components/CharacterBuilder/Sections/Attributes/AttributeUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/AttributeUtils.ts"
+import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {

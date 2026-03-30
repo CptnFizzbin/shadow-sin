@@ -6,7 +6,7 @@ import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
 export function getDisabledSkills(
   activeSkills: ActiveSkillData[],
   activeSkillGroups: SkillGroupData[],
-  editingSkillName: SkillKey | null,
+  editingSkillName: SkillKey | undefined,
 ): Set<string> {
   const skillsCoveredByGroups = new Set<string>(
     activeSkillGroups.flatMap((group) => getSkillsInGroup(group.name)),
@@ -19,7 +19,7 @@ export function getDisabledSkills(
 
 export function getDisabledGroups(
   activeSkillGroups: SkillGroupData[],
-  editingGroupName: SkillGroupKey | null,
+  editingGroupName: SkillGroupKey | undefined,
 ): Set<string> {
   return new Set<string>(
     activeSkillGroups
