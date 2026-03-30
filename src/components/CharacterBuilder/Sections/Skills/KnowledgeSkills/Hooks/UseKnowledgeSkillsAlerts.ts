@@ -1,12 +1,16 @@
 import { useStore } from "@tanstack/react-store"
 
 import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
+import {
+  useKnowledgeSkillPoints,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillPoints.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()
   const knowledgeSkills = useStore(skillsStore, (state) => state.knowledgeSkills)
   const languageSkills = useStore(skillsStore, (state) => state.languageSkills)
+  const skillPoints = useKnowledgeSkillPoints()
 
   const statuses: AlertInfo[] = []
 
@@ -53,6 +57,17 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
       severity: "error",
       title: "Too many native languages",
       message: `${nativeCount} native languages selected. Starting characters are limited to 1 native language.`,
+    })
+  }
+
+  const unspentFreeSp = skillPoints.free - skillPoints.spent.free
+  if (unspentFreeSp > 0) {
+    statuses.push({
+      section: "Skills",
+      severity: "warning",
+      title: "Unspent Free SP",
+      message: `You have ${unspentFreeSp} unspent free Skill Point${unspentFreeSp !== 1 ? "s" : ""}. Free SP don't carry over — consider adding Knowledge or Language skills.`,
+      summaryOnly: true,
     })
   }
 

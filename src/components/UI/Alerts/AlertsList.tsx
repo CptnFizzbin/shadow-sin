@@ -9,12 +9,18 @@ import { orderBySeverity } from "#/components/UI/Alerts/AlertInfo.ts"
 
 interface AlertsListProps {
   alerts: AlertInfo[]
+  includeSummaryOnly?: boolean
 }
 
 export const AlertsList: FC<AlertsListProps> = ({
   alerts,
+  includeSummaryOnly = false,
 }) => {
-  const sortedAlerts = sort(alerts).by([
+  const visibleAlerts = includeSummaryOnly
+    ? alerts
+    : alerts.filter((alert) => !alert.summaryOnly)
+
+  const sortedAlerts = sort(visibleAlerts).by([
     { asc: orderBySeverity },
     { asc: (alert) => alert.section },
     { asc: (alert) => alert.title },
@@ -30,5 +36,5 @@ export const AlertsList: FC<AlertsListProps> = ({
 
 export const AllBuilderAlerts: FC = () => {
   const statuses = useAllAlerts()
-  return <AlertsList alerts={statuses} />
+  return <AlertsList alerts={statuses} includeSummaryOnly />
 }
