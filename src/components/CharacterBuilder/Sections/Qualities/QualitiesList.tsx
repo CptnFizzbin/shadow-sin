@@ -89,10 +89,10 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
             <Stack gap={0.5}>
               {filteredQualities.map((quality) => (
                 <QualitiesListItem
-                  key={quality.id}
+                  key={quality.name}
                   quality={quality}
                   onClick={() => setEditDialogState({ open: true, quality })}
-                  onRemove={() => qualitiesStore.remove(quality.id)}
+                  onRemove={() => qualitiesStore.remove(quality.name)}
                 />
               ))}
             </Stack>

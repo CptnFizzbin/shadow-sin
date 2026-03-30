@@ -4,7 +4,6 @@ import type { GameEffectData } from "#/lib/system/gameEffectData.ts"
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface QualityData {
-  id: string
   name: string
   type: "positive" | "negative"
   bpValue?: number

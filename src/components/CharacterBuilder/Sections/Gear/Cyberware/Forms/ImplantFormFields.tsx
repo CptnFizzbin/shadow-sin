@@ -187,7 +187,10 @@ export const ImplantFormFields = withFieldGroup({
           )}
         </group.Subscribe>
 
-        <AvailabilityFieldGroup form={group} fields={{ availability: "availability" }} />
+        <AvailabilityFieldGroup
+          form={group}
+          fields="availability"
+        />
         <SourceFieldGroup form={group} fields={{ source: "source" }} />
 
         <group.AppField name="description">

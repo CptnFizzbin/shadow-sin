@@ -36,7 +36,7 @@ export const GearItemFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <AvailabilityFieldGroup form={group} fields={gearItemFieldMap} />
+        <AvailabilityFieldGroup form={group} fields="availability" />
         <SourceFieldGroup form={group} fields={gearItemFieldMap} />
 
         <group.AppField name="description">

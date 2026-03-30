@@ -1,4 +1,4 @@
-import { getAttrData } from "#/components/Attributes/AttrData.ts"
+import { createAttrInfo } from "#/components/Attributes/AttributeInfo.ts"
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import {
   AttributeBpAllowance,
@@ -65,7 +65,7 @@ export const useActiveAttributes = () => {
       return true
     })
     .map((attr) => ({ attr, value: attributes[attr] }))
-    .map(({ attr, value }) => getAttrData(attr, value, metatype, awakening))
+    .map(({ attr, value }) => createAttrInfo({ attr, value, metatype, awakening }))
 }
 
 export const useHasMaxxedAttribute = (): boolean => {

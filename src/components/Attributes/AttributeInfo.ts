@@ -2,7 +2,7 @@ import type { MetatypeData } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { AwakeningData } from "#/lib/system/awakeningType.ts"
 
-export interface AttrData {
+export interface AttributeInfo {
   attr: AttributeKey
   value: number
   min: number
@@ -10,12 +10,19 @@ export interface AttrData {
   augMax: number
 }
 
-export const getAttrData = (
-  attr: AttributeKey,
-  value: number,
-  metatype: MetatypeData,
-  awakening: AwakeningData,
-): AttrData => {
+export interface AttributeInfoOptions {
+  attr: AttributeKey
+  value: number
+  metatype: MetatypeData
+  awakening: AwakeningData
+}
+
+export const createAttrInfo = ({
+  attr,
+  value,
+  metatype,
+  awakening,
+}: AttributeInfoOptions): AttributeInfo => {
   if (attr === AttributeKey.essence) {
     return { attr, value, min: 0, max: 6, augMax: 6 }
   }
