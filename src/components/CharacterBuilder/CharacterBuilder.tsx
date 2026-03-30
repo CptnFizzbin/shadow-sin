@@ -2,8 +2,10 @@ import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
+
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
+import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
 import {
   AttributesBuilderSection,
@@ -18,7 +20,6 @@ import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Ski
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
 
 interface CharacterFormProps {
   character?: CharacterSheet

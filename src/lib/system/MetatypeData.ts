@@ -134,22 +134,3 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     },
   },
 }
-
-export const getDefaultAttributes = ({ metatypeKey }: { metatypeKey: MetatypeType }): Record<AttributeKey, number> => {
-  const { attributes } = metatypes[metatypeKey]
-
-  return {
-    body: attributes.body.min,
-    agility: attributes.agility.min,
-    reaction: attributes.reaction.min,
-    strength: attributes.strength.min,
-    charisma: attributes.charisma.min,
-    intuition: attributes.intuition.min,
-    logic: attributes.logic.min,
-    willpower: attributes.willpower.min,
-    edge: attributes.edge.min,
-    essence: attributes.essence.min,
-    magic: attributes.magic.min,
-    resonance: attributes.resonance.min,
-  }
-}

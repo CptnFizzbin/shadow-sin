@@ -12,19 +12,19 @@ export interface AttributeInfo {
 
 export interface AttributeInfoOptions {
   attr: AttributeKey
-  value: number
+  value?: number
   metatype: MetatypeData
   awakening: AwakeningData
 }
 
 export const createAttrInfo = ({
   attr,
-  value,
+  value = 0,
   metatype,
   awakening,
 }: AttributeInfoOptions): AttributeInfo => {
   if (attr === AttributeKey.essence) {
-    return { attr, value, min: 0, max: 6, augMax: 6 }
+    return { attr, value: 6, min: 0, max: 6, augMax: 6 }
   }
 
   const attrState = {
@@ -41,13 +41,26 @@ export const createAttrInfo = ({
       attrState.min = awakening.attributes[attr].min
       attrState.max = awakening.attributes[attr].max
       attrState.augMax = awakening.attributes[attr].max
-      return attrState
+      break
     default:
       attrState.min = metatype.attributes[attr].min
       attrState.max = metatype.attributes[attr].max
       attrState.augMax =
         metatype.attributes[attr].augMax
         || metatype.attributes[attr].max
-      return attrState
+      break
   }
+
+  return {
+    ...attrState,
+    value: clampValue(
+      attrState.min,
+      value,
+      attrState.max,
+    ),
+  }
+}
+
+export function clampValue(min: number, value: number, max: number): number {
+  return Math.max(min, Math.min(value, max))
 }
