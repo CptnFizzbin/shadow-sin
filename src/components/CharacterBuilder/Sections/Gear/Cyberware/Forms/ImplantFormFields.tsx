@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/CharacterBuilder/General/Form/AvailabilityFieldGroup.tsx"
+import { EffectsFieldGroup } from "#/components/CharacterBuilder/General/Form/EffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
 import { implantFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
@@ -192,6 +193,7 @@ export const ImplantFormFields = withFieldGroup({
           fields="availability"
         />
         <SourceFieldGroup form={group} fields={{ source: "source" }} />
+        <EffectsFieldGroup form={group} fields={{ effects: "effects" }} />
 
         <group.AppField name="description">
           {(field) => (
