@@ -8,8 +8,8 @@ import { useState } from "react"
 
 import { ContactFormDialog } from "#/components/CharacterBuilder/Sections/Contacts/ContactFormDialog.tsx"
 import { ContactRow } from "#/components/CharacterBuilder/Sections/Contacts/ContactsListItem.tsx"
-import { getContactBpCost } from "#/components/CharacterBuilder/Sections/Contacts/ContactsUtils.ts"
-import { useContactsStore } from "#/components/CharacterBuilder/Sections/Contacts/UseContactsStore.ts"
+import { getContactBpCost } from "#/components/Contacts/ContactsUtils.ts"
+import { useContactsStore } from "#/components/Contacts/UseContactsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import type { ContactData } from "#/lib/system/contactData.ts"
 

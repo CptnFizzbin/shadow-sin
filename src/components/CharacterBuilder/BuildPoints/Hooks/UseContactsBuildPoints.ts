@@ -1,5 +1,5 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { getContactBpCost } from "#/components/CharacterBuilder/Sections/Contacts/ContactsUtils.ts"
+import { getContactBpCost } from "#/components/Contacts/ContactsUtils.ts"
 
 export const useContactsBuildPoints = () => {
   const contacts = useCharacterSheet((state) => state.contacts)

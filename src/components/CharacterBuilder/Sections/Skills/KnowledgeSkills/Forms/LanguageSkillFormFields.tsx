@@ -7,7 +7,7 @@ import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider
 import type {
   LanguageSkillForm,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseLanguageSkillForm.ts"
-import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { SkillRatingMax } from "#/components/Skills/SkillUtils.ts"
 
 interface LanguageSkillFormFieldsProps {
   form: LanguageSkillForm

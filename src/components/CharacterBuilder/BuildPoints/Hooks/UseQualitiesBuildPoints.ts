@@ -1,7 +1,7 @@
 import { useStore } from "@tanstack/react-store"
 
-import type { BuildPointsInfo } from "#/components/CharacterBuilder/Sections/BuildPoints/BuildPointsUtils.ts"
-import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
+import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPoints/BuildPointsUtils.ts"
+import { useQualitiesStore } from "#/components/Qualities/UseQualitiesStore.ts"
 
 export const MAX_NEGATIVE_QUALITY_BP = 35
 

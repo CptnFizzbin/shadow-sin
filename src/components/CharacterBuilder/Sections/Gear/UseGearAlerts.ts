@@ -3,9 +3,9 @@ import pluralize from "pluralize"
 import {
   GearBuildPointAllowance,
   GearNuyenAllowance,
-  useGearAvailabilityIssues,
   useGearBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
+import { useGearAvailabilityIssues } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {

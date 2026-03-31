@@ -5,12 +5,12 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { GearMaxAvailability } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
+import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
 import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
-} from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
-import { GearMaxAvailability } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
-import { AvailabilityChip } from "#/components/Gear/AvailabilityChip.tsx"
+} from "#/components/Gear/ImplantUtils.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
