@@ -19,6 +19,12 @@ export function useSpellForm(props: SpellFormOptions) {
       type: "Physical",
       range: "LoS",
       damage: "Physical",
+      category: "Combat",
+      drainValueMod: 0,
+      dealsDamage: false,
+      duration: "Instantaneous",
+      threshold: "",
+      voluntaryTargetsOnly: false,
       description: "",
     }
   }
