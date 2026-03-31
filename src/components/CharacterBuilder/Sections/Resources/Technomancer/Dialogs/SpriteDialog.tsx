@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useMaxSpriteTasks } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
+import { useMaxSpriteTasks } from "#/components/Technomancer/SpritesHooks.ts"
 import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
 interface SpriteDialogProps {

@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { SkillRatingMax } from "#/components/Skills/SkillUtils.ts"
 import type { KnowledgeSkillData } from "#/lib/system/skillData.ts"
 
 interface KnowledgeSkillDialogProps {

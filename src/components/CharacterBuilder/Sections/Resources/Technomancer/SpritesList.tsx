@@ -8,14 +8,12 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import { useSpritesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpritesBuildPoints.ts"
 import { SpriteDialog } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/SpriteDialog.tsx"
-import {
-  useMaxSpritesRegistered,
-  useSpritesBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
 import { SpritesListItem } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesListItem.tsx"
-import { useSpritesStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesStore.ts"
+import { useMaxSpritesRegistered } from "#/components/Technomancer/SpritesHooks.ts"
+import { useSpritesStore } from "#/components/Technomancer/UseSpritesStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
@@ -28,7 +26,7 @@ type SpriteDialogState =
   | { mode: "edit", sprite: SpriteData, open: boolean }
 
 export const SpritesList: FC = () => {
-  const resonance = useBuilderAttrValue(AttributeKey.resonance)
+  const resonance = useAttr(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
   const spritesStore = useSpritesStore()
   const sprites = useStore(spritesStore, (state) => state)

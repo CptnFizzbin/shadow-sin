@@ -7,10 +7,10 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { usePowerPoints } from "#/components/AdeptPowers/AdeptPowersHooks.ts"
 import { AdeptPowerFormDialog } from "#/components/AdeptPowers/Dialogs/AdeptPowerFormDialog.tsx"
-import { usePowerPoints } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersHooks.ts"
+import { useAdeptPowersStore } from "#/components/AdeptPowers/UseAdeptPowersStore.ts"
 import { AdeptPowersListItem } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersListItem.tsx"
-import { useAdeptPowersStore } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersStore.ts"
 import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
 import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 

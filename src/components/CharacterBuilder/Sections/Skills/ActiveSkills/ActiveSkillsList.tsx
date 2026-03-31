@@ -6,7 +6,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderSkillsBuildPoints } from "#/components/CharacterBuilder/Sections/BuildPoints/useBuildPointsApi.ts"
+import { useBuilderSkillsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/useBuildPointsApi.ts"
 import {
   ActiveSkillGroupsListItem,
 } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillGroupsListItem.tsx"
@@ -23,7 +23,7 @@ import {
 import {
   ActiveSkillGroupDialog,
 } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/Dialogs/ActiveSkillGroupDialog.tsx"
-import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
+import { useSkillsStore } from "#/components/Skills/UseSkillsStore.ts"
 import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
 
 type DialogState =

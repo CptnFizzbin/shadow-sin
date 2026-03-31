@@ -1,19 +1,18 @@
 import { useStore } from "@tanstack/react-store"
 
-import { useBuilderActiveSkillRating } from "#/components/CharacterBuilder/Hooks/UseBuilderActiveSkillRating.ts"
-import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
-import { useBuilderAwakeningType } from "#/components/CharacterBuilder/Hooks/UseBuilderAwakeningType.ts"
-import { isMagician, SpellsBpPerSpell } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsUtils.ts"
-import { useSpellsStore } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsStore.ts"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import { useActiveSkill, useAttr } from "#/components/Character/CharacterUtils.ts"
+import { isMagician, SpellsBpPerSpell } from "#/components/Spells/SpellsUtils.ts"
+import { useSpellsStore } from "#/components/Spells/UseSpellsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
-  const awakeningType = useBuilderAwakeningType()
-  const magicAttribute = useBuilderAttrValue(AttributeKey.magic)
-  const spellcasting = useBuilderActiveSkillRating(SkillKey.spellcasting)
-  const ritualSpellcasting = useBuilderActiveSkillRating(SkillKey.ritualSpellcasting)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const magicAttribute = useAttr(AttributeKey.magic)
+  const spellcasting = useActiveSkill(SkillKey.spellcasting)
+  const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spellsStore = useSpellsStore()
   const spells = useStore(spellsStore, (state) => state)
 

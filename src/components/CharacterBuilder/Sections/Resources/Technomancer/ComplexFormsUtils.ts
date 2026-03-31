@@ -1,4 +1,4 @@
-import { ComplexFormBpPerRating } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
+import { ComplexFormBpPerRating } from "#/components/Technomancer/TechnomancerUtils.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 
 export const getComplexFormBp = (complexForm: ComplexFormData): number => {

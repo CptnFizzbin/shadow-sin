@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getLanguageSkillSp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { getLanguageSkillSp } from "#/components/Skills/SkillUtils.ts"
 import { SkillPoints } from "#/components/UI/SkillPoints.tsx"
 import type { LanguageSkillData } from "#/lib/system/skillData.ts"
 

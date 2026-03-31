@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useLifestyleStore } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleStore.ts"
+import { useLifestyleStore } from "#/components/Profile/UseLifestyleStore.ts"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 

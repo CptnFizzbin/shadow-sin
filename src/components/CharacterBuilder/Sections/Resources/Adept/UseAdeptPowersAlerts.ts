@@ -1,9 +1,9 @@
 import { useStore } from "@tanstack/react-store"
 
+import { isAdept } from "#/components/AdeptPowers/AdeptPowersUtils.ts"
+import { useAdeptPowersStore } from "#/components/AdeptPowers/UseAdeptPowersStore.ts"
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
-import { isAdept } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
-import { useAdeptPowersStore } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 

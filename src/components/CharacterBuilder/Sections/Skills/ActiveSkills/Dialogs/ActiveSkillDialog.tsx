@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { SkillRatingMax } from "#/components/Skills/SkillUtils.ts"
 import { SkillKey, Skills } from "#/lib/system/SkillKey.ts"
 import type { ActiveSkillData } from "#/lib/system/skillData.ts"
 

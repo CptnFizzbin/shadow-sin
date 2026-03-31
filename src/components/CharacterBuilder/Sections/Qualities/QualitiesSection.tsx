@@ -6,8 +6,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { QualitiesList } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesList.tsx"
-import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
+import { useQualitiesStore } from "#/components/Qualities/UseQualitiesStore.ts"
 
 export const QualitiesSection: FC = () => {
   const qualitiesStore = useQualitiesStore()

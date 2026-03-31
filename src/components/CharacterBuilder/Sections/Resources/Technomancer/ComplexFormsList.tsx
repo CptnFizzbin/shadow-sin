@@ -8,18 +8,16 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderAttrValue } from "#/components/CharacterBuilder/Hooks/UseBuilderAttrValue.ts"
-import {
-  useComplexFormsBuildPoints,
-  useMaxComplexForms,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsHooks.ts"
+import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import { useComplexFormsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import {
   ComplexFormsListItem,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsListItem.tsx"
 import {
   ComplexFormDialog,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
-import { useComplexFormsStore } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsStore.ts"
+import { useMaxComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
+import { useComplexFormsStore } from "#/components/Technomancer/UseComplexFormsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
@@ -32,7 +30,7 @@ type ComplexFormDialogState =
   | { mode: "edit", form: ComplexFormData, open: boolean }
 
 export const ComplexFormsList: FC = () => {
-  const resonance = useBuilderAttrValue(AttributeKey.resonance)
+  const resonance = useAttr(AttributeKey.resonance)
   const complexFormsStore = useComplexFormsStore()
   const complexForms = useStore(complexFormsStore, (state) => state)
   const complexFormsBp = useComplexFormsBuildPoints()

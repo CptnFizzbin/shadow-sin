@@ -5,13 +5,13 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { QualitiesListItem } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesListItem.tsx"
 import {
   MAX_NEGATIVE_QUALITY_BP,
   useBuilderQualitiesBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Qualities/QualitiesUtils.ts"
-import { useQualitiesStore } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesStore.ts"
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseQualitiesBuildPoints.ts"
+import { QualitiesListItem } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesListItem.tsx"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
+import { useQualitiesStore } from "#/components/Qualities/UseQualitiesStore.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import type { QualityData } from "#/lib/system/qualityData.ts"
 
