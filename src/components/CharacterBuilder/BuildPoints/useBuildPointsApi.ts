@@ -1,11 +1,12 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
+import { useContactsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseContactsBuildPoints.ts"
+import { useGearBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
+import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
-import { useContactsBuildPoints } from "#/components/CharacterBuilder/Sections/Contacts/ContactsHooks.ts"
-import { useGearBuildPoints } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
-import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersHooks.ts"
-import { useSpellsBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsHooks.ts"
 import {
   useTechnomancerBuildPoints,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerSectionHooks.ts"
@@ -14,8 +15,7 @@ import {
   calculateExtraSpBp,
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
-} from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
-import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
+} from "#/components/Skills/SkillUtils.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"

@@ -1,6 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 
-import { useContactsStore } from "#/components/CharacterBuilder/Sections/Contacts/UseContactsStore.ts"
+import { useContactsStore } from "#/components/Contacts/UseContactsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {

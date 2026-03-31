@@ -1,10 +1,9 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { useBuilderAwakeningType } from "#/components/CharacterBuilder/Hooks/UseBuilderAwakeningType.ts"
-import { isTechnomancer } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
+import { isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useTechnomancerAlerts = (): AlertInfo[] => {
-  const awakeningType = useBuilderAwakeningType()
+  const awakeningType = useCharacterSheet((s) => s.biology.awakening)
   const complexForms = useCharacterSheet((s) => s.complexForms)
   const sprites = useCharacterSheet((s) => s.sprites)
 

@@ -1,14 +1,14 @@
 import type { FC, ReactNode } from "react"
 
+import { isAdept } from "#/components/AdeptPowers/AdeptPowersUtils.ts"
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import { AdeptPowersList } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersList.tsx"
-import { isAdept } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
 import { SpellsList } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsList.tsx"
-import { isMagician } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsUtils.ts"
 import {
   TechnomancerSection,
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerSection.tsx"
-import { isTechnomancer } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
+import { isMagician } from "#/components/Spells/SpellsUtils.ts"
+import { isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const AwakenedSection: FC = () => {

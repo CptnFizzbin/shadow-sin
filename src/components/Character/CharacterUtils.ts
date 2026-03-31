@@ -1,5 +1,5 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { getImplantEffectiveEssenceCost } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
+import { getImplantEffectiveEssenceCost } from "#/components/Gear/ImplantUtils.ts"
 import { useGearByType } from "#/components/Gear/UseGearApi.ts"
 import type { AttributeInfo } from "#/lib/system/AttributeInfo.ts"
 import { metatypes } from "#/lib/system/MetatypeData.ts"

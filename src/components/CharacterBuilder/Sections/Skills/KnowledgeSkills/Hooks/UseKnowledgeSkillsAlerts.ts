@@ -1,10 +1,10 @@
 import { useStore } from "@tanstack/react-store"
 import pluralize from "pluralize"
 
-import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
 import {
   useKnowledgeSkillPoints,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillPoints.ts"
+import { useSkillsStore } from "#/components/Skills/UseSkillsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {

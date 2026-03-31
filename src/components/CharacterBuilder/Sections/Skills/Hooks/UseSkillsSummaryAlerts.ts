@@ -1,6 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 
-import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
+import { useSkillsStore } from "#/components/Skills/UseSkillsStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {

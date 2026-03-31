@@ -1,6 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 
-import { useProfileStore } from "#/components/CharacterBuilder/Sections/Profile/UseProfileStore.ts"
+import { useProfileStore } from "#/components/Profile/UseProfileStore.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {

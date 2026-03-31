@@ -21,7 +21,7 @@ import { FirearmAttachmentPoint, FirearmType, WeaponType } from "#/lib/system/ge
 import { GearType } from "#/lib/system/gearType.ts"
 
 export const Artemis: CharacterSheet = {
-  id: "artemis",
+  id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   version: "0.1.0",
 
   biology: {
