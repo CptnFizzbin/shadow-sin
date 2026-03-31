@@ -52,6 +52,7 @@ export interface FirearmData extends WeaponData {
   firearmType: FirearmType | string
   firemodes: string[]
   recoil: number
+  attachmentPoints?: FirearmAttachmentPoint[]
 
   ammo: {
     size: number
