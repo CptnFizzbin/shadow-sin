@@ -68,31 +68,31 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
             <Stack gap={2}>
               <form.AppField name="spiritTypes.combat">
                 {(field) => (
-                  <field.TextField label="Combat spirit (e.g. Fire, Beast, Warrior)" required />
+                  <field.TextField label="Combat" placeholder="e.g. Fire, Beast, Warrior" required />
                 )}
               </form.AppField>
 
               <form.AppField name="spiritTypes.detection">
                 {(field) => (
-                  <field.TextField label="Detection spirit (e.g. Water, Bird, Sun)" required />
+                  <field.TextField label="Detection" placeholder="e.g. Water, Bird, Sun" required />
                 )}
               </form.AppField>
 
               <form.AppField name="spiritTypes.health">
                 {(field) => (
-                  <field.TextField label="Health spirit (e.g. Man, Forest)" required />
+                  <field.TextField label="Health" placeholder="e.g. Man, Forest" required />
                 )}
               </form.AppField>
 
               <form.AppField name="spiritTypes.illusion">
                 {(field) => (
-                  <field.TextField label="Illusion spirit (e.g. Air, Ghost, Wolf)" required />
+                  <field.TextField label="Illusion" placeholder="e.g. Air, Ghost, Wolf" required />
                 )}
               </form.AppField>
 
               <form.AppField name="spiritTypes.manipulation">
                 {(field) => (
-                  <field.TextField label="Manipulation spirit (e.g. Earth, Machine)" required />
+                  <field.TextField label="Manipulation" placeholder="e.g. Earth, Machine" required />
                 )}
               </form.AppField>
             </Stack>

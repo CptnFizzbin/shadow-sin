@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/lib/system/attributeKey.ts"
 
 export interface TraditionSpiritTypes {
   combat: string
@@ -30,13 +30,6 @@ export const TraditionDataSchema = z.object({
   concept: z.string().optional(),
 }) satisfies z.ZodType<TraditionData>
 
-export const drainAttributeSelectOptions = [
-  { label: "Body (BOD)", value: AttributeKey.body },
-  { label: "Agility (AGI)", value: AttributeKey.agility },
-  { label: "Reaction (REA)", value: AttributeKey.reaction },
-  { label: "Strength (STR)", value: AttributeKey.strength },
-  { label: "Charisma (CHA)", value: AttributeKey.charisma },
-  { label: "Intuition (INT)", value: AttributeKey.intuition },
-  { label: "Logic (LOG)", value: AttributeKey.logic },
-  { label: "Willpower (WIL)", value: AttributeKey.willpower },
-]
+export const drainAttributeSelectOptions = [...PhysicalAttributes, ...MentalAttributes].map(
+  (key) => ({ value: key, label: AttributeLabels[key] }),
+)
