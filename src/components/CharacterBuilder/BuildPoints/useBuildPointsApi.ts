@@ -6,6 +6,7 @@ import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoi
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseContactsBuildPoints.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
+import { BuilderSectionIds } from "#/components/CharacterBuilder/BuilderSectionIds.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
 import {
   useTechnomancerBuildPoints,
@@ -22,16 +23,16 @@ import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
-    { label: "Profile", spent: 0, sectionId: "builder-section-profile" },
-    { ...useBuilderBiologyBuildPoints(), sectionId: "builder-section-biology" },
-    { ...useAttributesBuildPoints(), sectionId: "builder-section-attributes" },
-    { ...useBuilderQualitiesBuildPoints(), sectionId: "builder-section-qualities" },
-    { ...useBuilderSkillsBuildPoints(), sectionId: "builder-section-skills" },
-    { ...useSpellsBuildPoints(), sectionId: "builder-section-awakened" },
-    { ...useAdeptPowersBuildPoints(), sectionId: "builder-section-awakened" },
-    { ...useTechnomancerBuildPoints(), sectionId: "builder-section-awakened" },
-    { ...useGearBuildPoints(), sectionId: "builder-section-gear" },
-    { ...useContactsBuildPoints(), sectionId: "builder-section-contacts" },
+    { label: "Profile", spent: 0, sectionId: BuilderSectionIds.profile },
+    { ...useBuilderBiologyBuildPoints(), sectionId: BuilderSectionIds.biology },
+    { ...useAttributesBuildPoints(), sectionId: BuilderSectionIds.attributes },
+    { ...useBuilderQualitiesBuildPoints(), sectionId: BuilderSectionIds.qualities },
+    { ...useBuilderSkillsBuildPoints(), sectionId: BuilderSectionIds.skills },
+    { ...useSpellsBuildPoints(), sectionId: BuilderSectionIds.awakened },
+    { ...useAdeptPowersBuildPoints(), sectionId: BuilderSectionIds.awakened },
+    { ...useTechnomancerBuildPoints(), sectionId: BuilderSectionIds.awakened },
+    { ...useGearBuildPoints(), sectionId: BuilderSectionIds.gear },
+    { ...useContactsBuildPoints(), sectionId: BuilderSectionIds.contacts },
   ]
 
   const enabledLineItems = lineItems

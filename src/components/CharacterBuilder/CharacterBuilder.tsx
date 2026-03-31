@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { BuilderSectionIds } from "#/components/CharacterBuilder/BuilderSectionIds.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
 import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
@@ -72,28 +73,28 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             </Stack>
           </Stack>
 
-          <div id="builder-section-profile" tabIndex={-1}>
+          <div id={BuilderSectionIds.profile} tabIndex={-1}>
             <ProfileBuilderSection />
           </div>
-          <div id="builder-section-biology" tabIndex={-1}>
+          <div id={BuilderSectionIds.biology} tabIndex={-1}>
             <BiologyBuilderSection />
           </div>
-          <div id="builder-section-attributes" tabIndex={-1}>
+          <div id={BuilderSectionIds.attributes} tabIndex={-1}>
             <AttributesBuilderSection />
           </div>
-          <div id="builder-section-qualities" tabIndex={-1}>
+          <div id={BuilderSectionIds.qualities} tabIndex={-1}>
             <QualitiesBuilderSection />
           </div>
-          <div id="builder-section-skills" tabIndex={-1}>
+          <div id={BuilderSectionIds.skills} tabIndex={-1}>
             <SkillsBuilderSection />
           </div>
-          <div id="builder-section-awakened" tabIndex={-1}>
+          <div id={BuilderSectionIds.awakened} tabIndex={-1}>
             <AwakenedSection />
           </div>
-          <div id="builder-section-gear" tabIndex={-1}>
+          <div id={BuilderSectionIds.gear} tabIndex={-1}>
             <GearBuilderSection />
           </div>
-          <div id="builder-section-contacts" tabIndex={-1}>
+          <div id={BuilderSectionIds.contacts} tabIndex={-1}>
             <ContactsBuilderSection />
           </div>
         </Stack>

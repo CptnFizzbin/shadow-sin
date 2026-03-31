@@ -1,5 +1,6 @@
 import { Button } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
+import ButtonBase from "@mui/material/ButtonBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Collapse from "@mui/material/Collapse"
 import LinearProgress from "@mui/material/LinearProgress"
@@ -34,7 +35,18 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
 
   const handleSectionClick = (sectionId: string | undefined) => {
     if (!sectionId) return
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" })
+
+    const targetElement = document.getElementById(sectionId)
+    if (!targetElement) {
+      handleExpandedChange(false)
+      return
+    }
+
+    targetElement.focus({ preventScroll: true })
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    targetElement.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" })
+
     handleExpandedChange(false)
   }
 
@@ -58,31 +70,31 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
                   const isOver = spent > (allowance ?? Infinity)
 
                   return (
-                    <TableRow
-                      key={label}
-                      onClick={() => handleSectionClick(sectionId)}
-                      onKeyDown={(event) => {
-                        if (sectionId && (event.key === "Enter" || event.key === " ")) {
-                          event.preventDefault()
-                          handleSectionClick(sectionId)
-                        }
-                      }}
-                      role={sectionId ? "button" : undefined}
-                      tabIndex={sectionId ? 0 : undefined}
-                      sx={sectionId ? { "cursor": "pointer", "&:hover": { backgroundColor: "action.hover" } } : undefined}
-                    >
-                      <TableCell>
-                        <Typography
-                          variant="body2"
-                          color={isOver ? "error" : "text.primary"}
+                    <TableRow key={label}>
+                      <TableCell colSpan={2} sx={{ padding: 0 }}>
+                        <ButtonBase
+                          onClick={() => handleSectionClick(sectionId)}
+                          disabled={!sectionId}
+                          sx={{
+                            "width": "100%",
+                            "display": "flex",
+                            "justifyContent": "space-between",
+                            "alignItems": "center",
+                            "px": 1,
+                            "py": 0.5,
+                            "&:hover": sectionId ? { backgroundColor: "action.hover" } : undefined,
+                          }}
                         >
-                          {label}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right">
-                        {spent !== 0 && (
-                          <BuildPoints value={spent} error={isOver} />
-                        )}
+                          <Typography
+                            variant="body2"
+                            color={isOver ? "error" : "text.primary"}
+                          >
+                            {label}
+                          </Typography>
+                          {spent !== 0 && (
+                            <BuildPoints value={spent} error={isOver} />
+                          )}
+                        </ButtonBase>
                       </TableCell>
                     </TableRow>
                   )
