@@ -1,6 +1,6 @@
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
-import { SpellDataSchema } from "#/lib/system/magic/spellData.ts"
+import { SpellCategory, SpellDamage, SpellDataSchema, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
 
 export type SpellFormOptions = { onSubmit: (values: SpellData) => void } & (
   | { mode: "create" }
@@ -16,13 +16,13 @@ export function useSpellForm(props: SpellFormOptions) {
     defaultValues = {
       id: crypto.randomUUID(),
       name: "",
-      type: "Physical",
-      range: "LoS",
-      damage: "Physical",
-      category: "Combat",
+      type: SpellType.Physical,
+      range: SpellRange.LoS,
+      damage: SpellDamage.Physical,
+      category: SpellCategory.Combat,
       drainValueMod: 0,
       dealsDamage: false,
-      duration: "Instantaneous",
+      duration: SpellDuration.Instantaneous,
       threshold: "",
       voluntaryTargetsOnly: false,
       description: "",

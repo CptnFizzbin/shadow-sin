@@ -2,11 +2,35 @@ import { z } from "zod"
 
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
-export type SpellType = "Physical" | "Mana"
-export type SpellRange = "Touch" | "LoS" | "LoS (A)"
-export type SpellDamage = "Physical" | "Stun"
-export type SpellCategory = "Combat" | "Detection" | "Health" | "Illusion" | "Manipulation"
-export type SpellDuration = "Instantaneous" | "Sustained" | "Permanent"
+export enum SpellType {
+  Physical = "Physical",
+  Mana = "Mana",
+}
+
+export enum SpellRange {
+  Touch = "Touch",
+  LoS = "LoS",
+  LoSArea = "LoS (A)",
+}
+
+export enum SpellDamage {
+  Physical = "Physical",
+  Stun = "Stun",
+}
+
+export enum SpellCategory {
+  Combat = "Combat",
+  Detection = "Detection",
+  Health = "Health",
+  Illusion = "Illusion",
+  Manipulation = "Manipulation",
+}
+
+export enum SpellDuration {
+  Instantaneous = "Instantaneous",
+  Sustained = "Sustained",
+  Permanent = "Permanent",
+}
 
 export interface SpellData {
   id: string
@@ -27,13 +51,13 @@ export interface SpellData {
 export const SpellDataSchema = z.object({
   id: z.uuid(),
   name: z.string().min(1, "Name is required"),
-  type: z.enum(["Physical", "Mana"]),
-  range: z.enum(["Touch", "LoS", "LoS (A)"]),
-  damage: z.enum(["Physical", "Stun"]),
-  category: z.enum(["Combat", "Detection", "Health", "Illusion", "Manipulation"]),
+  type: z.nativeEnum(SpellType),
+  range: z.nativeEnum(SpellRange),
+  damage: z.nativeEnum(SpellDamage),
+  category: z.nativeEnum(SpellCategory),
   drainValueMod: z.number().int().min(-4).max(4),
   dealsDamage: z.boolean(),
-  duration: z.enum(["Instantaneous", "Sustained", "Permanent"]),
+  duration: z.nativeEnum(SpellDuration),
   threshold: z.string().optional(),
   voluntaryTargetsOnly: z.boolean(),
   description: z.string().optional(),

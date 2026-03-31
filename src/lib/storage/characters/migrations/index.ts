@@ -1,4 +1,7 @@
+import { produce } from "immer"
+
 import type { CharacterMigration } from "#/lib/storage/characters/CharacterMigration.ts"
+import { SpellCategory, SpellDuration } from "#/lib/system/magic/spellData.ts"
 
 type SpellV1 = {
   id: string
@@ -26,18 +29,17 @@ type CharacterV2 = CharacterV1 & {
 
 const v0_2_0: CharacterMigration<CharacterV1, CharacterV2> = {
   version: "0.2.0",
-  up: (character) => ({
-    ...character,
-    version: "0.2.0",
-    spells: (character.spells ?? []).map((spell) => ({
-      category: "Combat",
-      drainValueMod: 0,
-      dealsDamage: false,
-      duration: "Instantaneous",
-      voluntaryTargetsOnly: false,
-      ...spell,
-    })),
-  }),
+  up: (character) =>
+    produce(character as CharacterV2, (draft) => {
+      draft.version = "0.2.0"
+      for (const spell of draft.spells ?? []) {
+        spell.category ??= SpellCategory.Combat
+        spell.drainValueMod ??= 0
+        spell.dealsDamage ??= false
+        spell.duration ??= SpellDuration.Instantaneous
+        spell.voluntaryTargetsOnly ??= false
+      }
+    }),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

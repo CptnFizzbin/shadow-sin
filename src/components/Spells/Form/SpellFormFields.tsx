@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
+import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
 
 export interface SpellFormFieldsProps {
   form: SpellForm
@@ -22,13 +23,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
             <field.SelectField
               label="Category"
               required
-              options={[
-                { label: "Combat", value: "Combat" },
-                { label: "Detection", value: "Detection" },
-                { label: "Health", value: "Health" },
-                { label: "Illusion", value: "Illusion" },
-                { label: "Manipulation", value: "Manipulation" },
-              ]}
+              options={Object.values(SpellCategory).map((value) => ({ label: value, value }))}
             />
           )}
         </form.AppField>
@@ -40,10 +35,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                 label="Type"
                 required
                 sx={{ flexGrow: 1 }}
-                options={[
-                  { label: "Physical", value: "Physical" },
-                  { label: "Mana", value: "Mana" },
-                ]}
+                options={Object.values(SpellType).map((value) => ({ label: value, value }))}
               />
             )}
           </form.AppField>
@@ -54,10 +46,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                 label="Damage"
                 required
                 sx={{ flexGrow: 1 }}
-                options={[
-                  { label: "Physical", value: "Physical" },
-                  { label: "Stun", value: "Stun" },
-                ]}
+                options={Object.values(SpellDamage).map((value) => ({ label: value, value }))}
               />
             )}
           </form.AppField>
@@ -69,9 +58,9 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
               label="Range"
               required
               options={[
-                { label: "Touch", value: "Touch" },
-                { label: "Line of Sight", value: "LoS" },
-                { label: "Line of Sight (Area)", value: "LoS (A)" },
+                { label: "Touch", value: SpellRange.Touch },
+                { label: "Line of Sight", value: SpellRange.LoS },
+                { label: "Line of Sight (Area)", value: SpellRange.LoSArea },
               ]}
             />
           )}
@@ -84,11 +73,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                 label="Duration"
                 required
                 sx={{ flexGrow: 1 }}
-                options={[
-                  { label: "Instantaneous", value: "Instantaneous" },
-                  { label: "Sustained", value: "Sustained" },
-                  { label: "Permanent", value: "Permanent" },
-                ]}
+                options={Object.values(SpellDuration).map((value) => ({ label: value, value }))}
               />
             )}
           </form.AppField>
