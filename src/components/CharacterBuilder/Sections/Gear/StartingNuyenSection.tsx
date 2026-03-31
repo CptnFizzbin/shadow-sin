@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { GearNuyenPerBuildPoint, useGearTotalCost } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
+import { GearNuyenPerBuildPoint, useGearTotalCost } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
 import { DiceResult } from "#/components/Dice/DiceResult.tsx"
 import { useDiceRoller } from "#/components/Dice/UseDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/UI/Nuyen.tsx"

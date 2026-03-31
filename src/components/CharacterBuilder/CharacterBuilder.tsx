@@ -1,5 +1,6 @@
 import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -28,6 +29,15 @@ interface CharacterFormProps {
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
   const [rootStore, resetRootStore] = useBuilderRootStateStore(character)
+  const navigate = useNavigate()
+
+  const handleCancel = () => {
+    if (character) {
+      navigate({ to: "/$characterId/about", params: { characterId: character.id } })
+    } else {
+      navigate({ to: "/" })
+    }
+  }
 
   return (
     <CharacterBuilderStoreProvider rootStore={rootStore}>
@@ -40,16 +50,26 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             pointerEvents: isBpPanelExpanded ? "none" : "auto",
           }}
         >
-          <Stack direction="row" justifyContent="flex-end" gap={1}>
-            <ExportCharacterButton />
+          <Stack direction="row" justifyContent="space-between" gap={1}>
             <Button
               variant="outlined"
-              color="warning"
+              color="inherit"
               size="small"
-              onClick={() => resetRootStore()}
+              onClick={handleCancel}
             >
-              Reset
+              Cancel
             </Button>
+            <Stack direction="row" gap={1}>
+              <ExportCharacterButton />
+              <Button
+                variant="outlined"
+                color="warning"
+                size="small"
+                onClick={() => resetRootStore()}
+              >
+                Reset
+              </Button>
+            </Stack>
           </Stack>
 
           <ProfileBuilderSection />

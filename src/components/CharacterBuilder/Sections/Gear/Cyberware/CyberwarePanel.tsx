@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { useEssenseInfo } from "#/components/Character/CharacterUtils.ts"
 import { CyberwareList } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwareList.tsx"
-import { BASE_ESSENCE } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
+import { BASE_ESSENCE } from "#/components/Gear/ImplantUtils.ts"
 
 export const CyberwarePanel: FC = () => {
   const essenseInfo = useEssenseInfo()

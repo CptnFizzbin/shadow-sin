@@ -10,26 +10,26 @@ import { useStore } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import { ArmorPanel } from "#/components/CharacterBuilder/Sections/Gear/Armor/ArmorPanel.tsx"
-import { CyberwarePanel } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwarePanel.tsx"
-import { getImplantEffectiveNuyenCost } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/ImplantUtils.ts"
-import { DevicesPanel } from "#/components/CharacterBuilder/Sections/Gear/Devices/DevicesPanel.tsx"
 import {
   GearBuildPointAllowance,
   GearNuyenAllowance,
-  useGearAvailabilityIssues,
   useGearBuildPoints,
   useGearTotalCost,
-} from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
+import { ArmorPanel } from "#/components/CharacterBuilder/Sections/Gear/Armor/ArmorPanel.tsx"
+import { CyberwarePanel } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/CyberwarePanel.tsx"
+import { DevicesPanel } from "#/components/CharacterBuilder/Sections/Gear/Devices/DevicesPanel.tsx"
+import { useGearAvailabilityIssues } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { SinsAndLicensesSection } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/LifestylePanel.tsx"
-import { useLifestyleStore } from "#/components/CharacterBuilder/Sections/Gear/Lifestyle/UseLifestyleStore.ts"
 import { MiscPanel } from "#/components/CharacterBuilder/Sections/Gear/Misc/MiscPanel.tsx"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
 import { StartingNuyenSection } from "#/components/CharacterBuilder/Sections/Gear/StartingNuyenSection.tsx"
 import { VehiclesPanel } from "#/components/CharacterBuilder/Sections/Gear/Vehicles/VehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/CharacterBuilder/Sections/Gear/Weapons/WeaponsPanel.tsx"
+import { getImplantEffectiveNuyenCost } from "#/components/Gear/ImplantUtils.ts"
 import { useGearApi } from "#/components/Gear/UseGearApi.ts"
+import { useLifestyleStore } from "#/components/Profile/UseLifestyleStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { Nuyen } from "#/components/UI/Nuyen.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
