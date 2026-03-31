@@ -1,4 +1,5 @@
 import { useStore } from "@tanstack/react-store"
+import pluralize from "pluralize"
 
 import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
 import {
@@ -66,7 +67,7 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
       section: "Skills",
       severity: "warning",
       title: "Unspent Free SP",
-      message: `You have ${unspentFreeSp} unspent free Skill Point${unspentFreeSp !== 1 ? "s" : ""}. Free SP don't carry over — consider adding Knowledge or Language skills.`,
+      message: `You have ${unspentFreeSp} unspent free ${pluralize("Skill Point", unspentFreeSp)} that won't be carried over. Consider adding or improving Knowledge or Language skills.`,
       summaryOnly: true,
     })
   }

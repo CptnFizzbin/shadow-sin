@@ -18,10 +18,12 @@ export const BuilderSection: FC<BuilderSectionProps> = ({
 }) => {
   let borderColor: string | undefined = undefined
 
-  const hasWarnings = alerts.some((alert) => alert.severity === "warning")
+  const activeAlerts = alerts.filter((alert) => !alert.summaryOnly)
+
+  const hasWarnings = activeAlerts.some((alert) => alert.severity === "warning")
   if (hasWarnings) borderColor = "warning.main"
 
-  const hasErrors = alerts.some((alert) => alert.severity === "error")
+  const hasErrors = activeAlerts.some((alert) => alert.severity === "error")
   if (hasErrors) borderColor = "error.main"
 
   return (
