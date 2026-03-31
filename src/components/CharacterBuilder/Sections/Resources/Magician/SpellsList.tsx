@@ -9,6 +9,7 @@ import { useState } from "react"
 
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
 import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellListItem.tsx"
+import { TraditionCard } from "#/components/CharacterBuilder/Sections/Resources/Magician/TraditionCard.tsx"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { useSpellsStore } from "#/components/Spells/UseSpellsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
@@ -39,6 +40,8 @@ export const SpellsList: FC = () => {
             total={buildPoints.allowance}
           />
         </Stack>
+
+        <TraditionCard />
 
         {spells.length === 0 && (
           <Typography variant="body2" color="text.secondary">
