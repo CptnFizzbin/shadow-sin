@@ -6,7 +6,9 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useSkillsStore } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsStore.ts"
+import {
+  useKnowledgeSkillsBuildPoints,
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseKnowledgeSkillsBuildPoints.ts"
 import {
   KnowledgeSkillDialog,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Dialogs/KnowledgeSkillDialog.tsx"
@@ -17,14 +19,12 @@ import {
   useKnowledgeSkillPoints,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillPoints.ts"
 import {
-  useKnowledgeSkillsBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/Hooks/UseKnowledgeSkillsBuildPoints.ts"
-import {
   KnowledgeSkillsListItem,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsListItem.tsx"
 import {
   LanguageSkillsListItem,
 } from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/LanguageSkillsListItem.tsx"
+import { useSkillsStore } from "#/components/Skills/UseSkillsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { SkillPoints } from "#/components/UI/SkillPoints.tsx"
 import type { KnowledgeSkillData, LanguageSkillData } from "#/lib/system/skillData.ts"

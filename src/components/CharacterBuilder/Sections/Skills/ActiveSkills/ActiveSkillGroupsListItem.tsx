@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/SkillGroupUtils.ts"
-import { getActiveSkillGroupBp } from "#/components/CharacterBuilder/Sections/Skills/SkillUtils.ts"
+import { getActiveSkillGroupBp } from "#/components/Skills/SkillUtils.ts"
 import type { SkillGroupData } from "#/lib/system/skillData.ts"
 
 interface ActiveSkillGroupsListItemProps {

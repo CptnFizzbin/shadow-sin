@@ -2,16 +2,10 @@ import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/LicenseUtils.ts"
 import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/SinUtils.ts"
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx"
-import type { BpLineItem } from "#/components/CharacterBuilder/SummaryLineItem.ts"
-import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 import { isSinData } from "#/lib/system/gear/SinData.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 
-export const GearBuildPointAllowance = 50
-export const GearNuyenPerBuildPoint = 5_000
-export const GearNuyenAllowance =
-  GearNuyenPerBuildPoint * GearBuildPointAllowance
 export const GearMaxAvailability = 12
 
 export type GearItemCostInfo = {
@@ -27,36 +21,6 @@ export const getTotalCost = (...items: GearItemCostInfo[]) => {
     }))
     .map(({ cost, quantity }) => cost * quantity)
     .reduce((sum, itemCost) => sum + itemCost, 0)
-}
-
-export const useGearTotalCost = () => {
-  const gear = useCharacterSheet((state) => state.gear)
-  const allGear = Object.values(gear)
-
-  const lifestyle = useCharacterSheet((state) => {
-    const lifestyleType = state.profile.lifestyle?.quality ?? LifestyleType.Street
-    return Lifestyles[lifestyleType]
-  })
-  const lifestyleMonths = useCharacterSheet(
-    (state) => state.profile.lifestyle?.monthsPaid ?? 1,
-  )
-
-  const gearCost = getTotalCost(...allGear)
-
-  const lifestyleCost = lifestyle.upkeep * lifestyleMonths
-  return gearCost + lifestyleCost
-}
-
-export const useGearBuildPoints = (): BpLineItem => {
-  const gearNuyenCost = useGearTotalCost()
-  const gearBuildPoints = Math.ceil(gearNuyenCost / GearNuyenPerBuildPoint)
-
-  return {
-    label: "Gear",
-    spent: gearBuildPoints,
-    allowance: GearBuildPointAllowance,
-    isOverBudget: gearBuildPoints > GearBuildPointAllowance,
-  }
 }
 
 export const useGearAvailabilityIssues = () => {

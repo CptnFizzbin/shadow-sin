@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { getAdeptPowerBpCost } from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersUtils.ts"
+import { getAdeptPowerBpCost } from "#/components/AdeptPowers/AdeptPowersUtils.ts"
 import { PowerPoints } from "#/components/UI/PowerPoints.tsx"
 import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 

@@ -1,9 +1,9 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import {
   useComplexFormsBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsHooks.ts"
-import { useSpritesBuildPoints } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesHooks.ts"
-import { isTechnomancer } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerUtils.ts"
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
+import { useSpritesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpritesBuildPoints.ts"
+import { isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 
 export const useTechnomancerBuildPoints = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

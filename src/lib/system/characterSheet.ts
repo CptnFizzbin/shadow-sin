@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import type { LifestyleType } from "#/lib/system/LifestyleType.ts"
 import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
 import type { ItemData } from "./ItemData.ts"
@@ -12,8 +14,8 @@ import type { QualityData } from "./qualityData.ts"
 import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
 export interface CharacterSheet {
-  id: string
-  version: string
+  id: UUID
+  version: `${number}.${number}.${number}`
 
   profile: {
     alias: string
