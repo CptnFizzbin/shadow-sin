@@ -44,7 +44,7 @@ export const CharacterBuilderStoreProvider: FC<CharacterBuilderStoreProviderProp
   )
 }
 
-export const useCharacterBuilderStoreContext = (): BuilderStateStore => {
+export const useBuilderStore = (): BuilderStateStore => {
   const store = useContext(CharacterBuilderContext)
 
   if (!store) {
