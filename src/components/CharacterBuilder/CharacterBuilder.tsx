@@ -1,5 +1,4 @@
 import { Button } from "@mui/material"
-import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { useNavigate } from "@tanstack/react-router"
@@ -19,7 +18,12 @@ import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/
 import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
 import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
-import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
+import {
+  ActiveSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsBuilderSection.tsx"
+import {
+  KnowledgeSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -43,26 +47,20 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
 
   return (
     <CharacterBuilderStoreProvider rootStore={rootStore}>
-      <Box sx={{ maxWidth: 1200, mx: "auto", width: "100%" }}>
-        <Stack gap={1}>
-          <Box
-            sx={{
-              opacity: isBpPanelExpanded ? 0.6 : 1,
-              transition: "opacity 0.2s ease",
-              pointerEvents: isBpPanelExpanded ? "none" : "auto",
-            }}
-          >
-            <Stack gap={1}>
-              <Stack direction="row" justifyContent="space-between" gap={1}>
-            <Button
-              variant="outlined"
-              color="inherit"
-              size="small"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Stack direction="row" gap={1}>
+      <Stack gap={1}>
+
+        <Grid container columns={{ xs: 1, md: 2, lg: 3 }} spacing={1}>
+          <Grid size={{ xs: 1, md: 2, lg: 3 }}>
+            <Stack direction="row" justifyContent="space-between" gap={1}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                size="small"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+              <Stack direction="row" gap={1}>
                 <ExportCharacterButton />
                 <Button
                   variant="outlined"
@@ -72,41 +70,53 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
                 >
                   Reset
                 </Button>
-              </Stack></Stack>
-
-              <Grid container spacing={1} alignItems="flex-start">
-                <Grid size={{ xs: 12, lg: 4 }}>
-                  <Stack gap={1}>
-                    <ProfileBuilderSection />
-                    <BiologyBuilderSection />
-                    <AttributesBuilderSection />
-                  </Stack>
-                </Grid>
-
-                <Grid size={{ xs: 12, lg: 4 }}>
-                  <Stack gap={1}>
-                    <QualitiesBuilderSection />
-                    <SkillsBuilderSection />
-                    <AwakenedSection />
-                  </Stack>
-                </Grid>
-
-                <Grid size={{ xs: 12, lg: 4 }}>
-                  <Stack gap={1}>
-                    <GearBuilderSection />
-                    <ContactsBuilderSection />
-                  </Stack>
-                </Grid>
-              </Grid>
+              </Stack>
             </Stack>
-          </Box>
+          </Grid>
 
-          <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+          <Grid size={{ xs: 1, md: 2, lg: 3 }}>
+            <ProfileBuilderSection />
+          </Grid>
 
-          <AllBuilderAlerts />
-          <SaveCharacterButton />
-        </Stack>
-      </Box>
+          <Grid size={1}>
+            <BiologyBuilderSection />
+          </Grid>
+
+          <Grid size={{ xs: 1, md: 2, lg: 3 }}>
+            <AttributesBuilderSection />
+          </Grid>
+
+          <Grid size={1}>
+            <QualitiesBuilderSection />
+          </Grid>
+
+          <Grid container>
+            <Grid size={1}>
+              <ActiveSkillsBuilderSection />
+            </Grid>
+
+            <Grid size={1}>
+              <KnowledgeSkillsBuilderSection />
+            </Grid>
+          </Grid>
+
+          <Grid size={1}>
+            <AwakenedSection />
+          </Grid>
+
+          <Grid size={1}>
+            <GearBuilderSection />
+          </Grid>
+          <Grid size={1}>
+            <ContactsBuilderSection />
+          </Grid>
+        </Grid>
+
+        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+
+        <AllBuilderAlerts />
+        <SaveCharacterButton />
+      </Stack>
     </CharacterBuilderStoreProvider>
   )
 }

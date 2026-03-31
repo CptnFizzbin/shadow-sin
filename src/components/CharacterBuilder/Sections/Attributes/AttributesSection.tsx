@@ -1,4 +1,5 @@
 import { LinearProgress } from "@mui/material"
+import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
@@ -31,27 +32,37 @@ export const AttributesSection: FC = () => {
   const specialAttrs = SpecialAttributes.filter((attr) => attrRows.includes(attr))
 
   return (
-    <Stack gap={1}>
-      <Stack direction="row" alignSelf="flex-end" gap={1}>
-        <BuildPoints value={budget.spent} total={budget.limit} /> + <BuildPoints value={specialBp} />
-      </Stack>
+    <Grid spacing={1} columns={{ xs: 1, md: 3 }} container>
+      <Grid size={3}>
+        <Stack gap={1}>
+          <Stack direction="row" alignSelf="flex-end" gap={1}>
+            <BuildPoints value={budget.spent} total={budget.limit} /> + <BuildPoints value={specialBp} />
+          </Stack>
 
-      <LinearProgress
-        variant="determinate"
-        value={getProgress(budget.spent, budget.limit)}
-        sx={{ height: 8, borderRadius: 1, width: "100%" }}
-      />
+          <LinearProgress
+            variant="determinate"
+            value={getProgress(budget.spent, budget.limit)}
+            sx={{ height: 8, borderRadius: 1, width: "100%" }}
+          />
+        </Stack>
+      </Grid>
 
-      <Label label="Pysical" variant="outlined" />
-      <AttributesList attributeKeys={physicalAttrs} />
+      <Grid size={1}>
+        <Label label="Pysical" variant="outlined" />
+        <AttributesList attributeKeys={physicalAttrs} />
+      </Grid>
 
-      <Label label="Mental" variant="outlined" />
-      <AttributesList attributeKeys={mentalAttrs} />
+      <Grid size={1}>
+        <Label label="Mental" variant="outlined" />
+        <AttributesList attributeKeys={mentalAttrs} />
+      </Grid>
 
-      <Label label="Special" variant="outlined" />
-      <Label label="Does not count towards BP limit" variant="text" />
-      <AttributesList attributeKeys={specialAttrs} />
+      <Grid size={1}>
+        <Label label="Special" variant="outlined" />
+        <AttributesList attributeKeys={specialAttrs} />
+        <Label label="Does not count towards BP limit" variant="text" />
+      </Grid>
 
-    </Stack>
+    </Grid>
   )
 }

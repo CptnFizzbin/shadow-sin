@@ -23,13 +23,13 @@ export const AttributeRow: FC<AttributeRowProps> = (props) => {
       <AttrDecrementButton {...props} />
 
       <Grid container columns={2} sx={{ flexGrow: 1 }}>
-        <Grid size={1}>
+        <Grid size={{ xs: 1, sm: 2, lg: 1 }}>
           <Typography sx={{ textAlign: "center" }}>
-            {attrLabel}:
+            {attrLabel}
           </Typography>
         </Grid>
 
-        <Grid size={1}>
+        <Grid size={{ xs: 1, sm: 2, lg: 1 }}>
           <Typography sx={{ textAlign: "center", flexGrow: 1 }}>
             {attrValue} / {attrInfo.max}
           </Typography>
