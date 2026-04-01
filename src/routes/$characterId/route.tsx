@@ -6,6 +6,7 @@ import { CharacterSheetProvider } from "#/components/Character/CharacterSheetPro
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
 import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
+import { usePersistStore } from "#/components/CharacterBuilder/StorePersister.ts"
 import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
@@ -30,6 +31,7 @@ function CharacterRoute() {
   const store = useMemo(() => new CharacterSheetStore(character), [character])
 
   const { nextPage, prevPage } = useCharacterNav()
+  usePersistStore(`character:${character.id}`, store)
 
   return (
     <CharacterSheetProvider store={store}>
