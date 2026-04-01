@@ -4,4 +4,5 @@ export interface BpLineItem {
   allowance?: number
   enabled?: boolean
   isOverBudget?: boolean
+  sectionId?: string
 }
