@@ -1,15 +1,16 @@
+import Box from "@mui/material/Box"
 import type { FC, ReactNode, TouchEvent as ReactTouchEvent } from "react"
 import { useCallback, useRef } from "react"
 
 const SWIPE_MIN_DISTANCE = 50
 
 interface SwipeSurfaceProps {
-  onSwipeLeft?: () => void
-  onSwipeRight?: () => void
+  onSwipeRightToLeft?: () => void
+  onSwipeLeftToRight?: () => void
   children: ReactNode
 }
 
-export const SwipeSurface: FC<SwipeSurfaceProps> = ({ onSwipeLeft, onSwipeRight, children }) => {
+export const SwipeSurface: FC<SwipeSurfaceProps> = ({ onSwipeRightToLeft, onSwipeLeftToRight, children }) => {
   const touchStartRef = useRef<{ x: number, y: number } | null>(null)
 
   const handleTouchStart = useCallback((event: ReactTouchEvent) => {
@@ -38,17 +39,21 @@ export const SwipeSurface: FC<SwipeSurfaceProps> = ({ onSwipeLeft, onSwipeRight,
       }
 
       if (deltaX < 0) {
-        onSwipeLeft?.()
+        onSwipeRightToLeft?.()
       } else {
-        onSwipeRight?.()
+        onSwipeLeftToRight?.()
       }
     },
-    [onSwipeLeft, onSwipeRight],
+    [onSwipeRightToLeft, onSwipeLeftToRight],
   )
 
   return (
-    <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <Box
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      sx={{ flexGrow: 1 }}
+    >
       {children}
-    </div>
+    </Box>
   )
 }

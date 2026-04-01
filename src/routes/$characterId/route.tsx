@@ -1,19 +1,15 @@
-import Stack from "@mui/material/Stack"
-import { useThrottler } from "@tanstack/react-pacer"
-import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router"
-import { useStore } from "@tanstack/react-store"
-import type { FC } from "react"
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import Box from "@mui/material/Box"
+import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { useMemo } from "react"
 
-import { CharacterSheetProvider, useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
-import { characterSections } from "#/components/Character/characterSections.ts"
-import { Header } from "#/components/UI/Header.tsx"
+import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
+import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
 import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { Route as CharacterIndexRoute } from "#/routes/$characterId/index.tsx"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
@@ -29,77 +25,21 @@ export const Route = createFileRoute("/$characterId")({
   },
 })
 
-const CharacterStorePersistence: FC = () => {
-  const characterStore = useCharacterSheetContext()
-  const character = useStore(characterStore, (state) => state)
-  const hasMountedRef = useRef(false)
-  const characterSaveThrottler = useThrottler(
-    (nextCharacter: CharacterSheet) => {
-      void localCharacterManager.saveCharacter(nextCharacter)
-    },
-    {
-      wait: 30_000,
-      leading: false,
-      trailing: true,
-      onUnmount: (throttler) => {
-        throttler.flush()
-      },
-    },
-  )
-
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true
-      return
-    }
-
-    characterSaveThrottler.maybeExecute(character)
-  }, [character, characterSaveThrottler])
-
-  return null
-}
-
-const sectionRoutes = characterSections.map((section) => section.to)
-
-function useSwipeNavigation() {
-  const navigate = useNavigate({ from: CharacterIndexRoute.fullPath })
-  const pathname = useRouterState({ select: (s) => s.location.pathname })
-
-  const pathSegments = pathname.split("/").filter(Boolean)
-  const currentSection = pathSegments[pathSegments.length - 1] ?? "about"
-  const currentIndex = sectionRoutes.indexOf(currentSection)
-
-  const handleSwipeLeft = useCallback(() => {
-    if (currentIndex !== -1 && currentIndex < sectionRoutes.length - 1) {
-      void navigate({ to: sectionRoutes[currentIndex + 1] })
-    }
-  }, [currentIndex, navigate])
-
-  const handleSwipeRight = useCallback(() => {
-    if (currentIndex !== -1 && currentIndex > 0) {
-      void navigate({ to: sectionRoutes[currentIndex - 1] })
-    }
-  }, [currentIndex, navigate])
-
-  return { handleSwipeLeft, handleSwipeRight }
-}
-
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
-  const { handleSwipeLeft, handleSwipeRight } = useSwipeNavigation()
+
+  const { nextPage, prevPage } = useCharacterNav()
 
   return (
     <CharacterSheetProvider store={store}>
-      <CharacterStorePersistence />
+      <CharacterSheetNav />
 
-      <Stack spacing={2}>
-        <Header character={character} />
-
-        <SwipeSurface onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight}>
+      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
+        <Box sx={{ padding: 1 }}>
           <Outlet />
-        </SwipeSurface>
-      </Stack>
+        </Box>
+      </SwipeSurface>
     </CharacterSheetProvider>
   )
 }
