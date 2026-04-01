@@ -80,9 +80,10 @@ export interface SkillInfo {
   attr: AttributeKey
   group?: SkillGroupKey
   defaultable?: boolean
+  specializations?: string[]
 }
 
-export const Skills: Record<SkillKey, SkillInfo> = {
+export const Skills: Readonly<Record<SkillKey, SkillInfo>> = {
   [SkillKey.aronauticsMechanic]: {
     attr: AttributeKey.logic,
     group: SkillGroupKey.Mechanic,

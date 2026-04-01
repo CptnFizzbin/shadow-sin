@@ -3,7 +3,7 @@ import Button from "@mui/material/Button"
 import type { FC } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
-import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/ExportUtils.ts"
+import { characterSheetToYaml, downloadTextFile } from "#/components/Character/ExportUtils.ts"
 
 export const ExportCharacterButton: FC = () => {
   const store = useCharacterSheetContext()

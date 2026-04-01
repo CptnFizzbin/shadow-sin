@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
 
 export interface SpellFormFieldsProps {
