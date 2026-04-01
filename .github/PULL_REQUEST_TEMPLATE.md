@@ -13,4 +13,4 @@
 - [ ] `yarn fix` passes (lint + format)
 - [ ] `yarn tsc` passes (type check)
 - [ ] Tests added or updated for changed behavior
-- [ ] UI changes include a screenshot or recording above
+- [ ] If this PR includes UI changes, screenshots or recordings are provided above
