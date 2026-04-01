@@ -20,6 +20,7 @@ const defualtValues: AdeptPowerData = {
     book: "",
     page: 0,
   },
+  effects: [],
 }
 
 export function useAdeptPowerForm(props: AdeptPowerFormOptions) {

@@ -20,6 +20,7 @@ export function useSpellForm(props: SpellFormOptions) {
       range: "LoS",
       damage: "Physical",
       description: "",
+      effects: [],
     }
   }
 

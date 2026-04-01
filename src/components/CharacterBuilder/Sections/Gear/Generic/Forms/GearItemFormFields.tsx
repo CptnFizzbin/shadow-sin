@@ -6,6 +6,7 @@ import {
   gearItemFieldMap,
   gearItemFormOpts,
 } from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseItemForm.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 
@@ -69,6 +70,8 @@ export const GearItemFormFields = withFieldGroup({
             />
           )}
         </group.AppField>
+
+        <GameEffectsFieldGroup form={group} fields={{ effects: "effects" }} />
       </Stack>
     )
   },

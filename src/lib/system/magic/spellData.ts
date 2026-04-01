@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export type SpellType = "Physical" | "Mana"
@@ -14,6 +15,7 @@ export interface SpellData {
   damage: SpellDamage
   description?: string
   source?: SourceData
+  effects?: GameEffectData[]
 }
 
 export const SpellDataSchema = z.object({
@@ -28,5 +30,13 @@ export const SpellDataSchema = z.object({
       book: z.string().min(1, "Source book is required"),
       page: z.number().min(1, "Source page must be 1 or greater"),
     })
+    .optional(),
+  effects: z
+    .object({
+      type: z.string(),
+      target: z.string().optional(),
+      value: z.number(),
+    })
+    .array()
     .optional(),
 }) satisfies z.ZodType<SpellData>

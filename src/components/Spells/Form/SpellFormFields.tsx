@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
 
@@ -67,6 +68,8 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
         </form.AppField>
 
         <SourceFieldGroup form={form} fields={{ source: "source" }} />
+
+        <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
       </Stack>
     </form.AppForm>
   )
