@@ -20,6 +20,9 @@ Formatting and tooling notes:
 - Respect the existing path alias `#/` → `src/` and other conventions in `AGENTS.md`.
 - After making changes, always verify with `yarn fix` (auto-fix lint/format) followed by `yarn tsc` (type check). Both
   must pass before considering a change complete.
+- When a task involves any UI change (new component, layout update, added controls, style adjustments), **always include
+  at least one screenshot** of the affected area. Start the dev server (`yarn dev`), capture the relevant region of the
+  browser, and attach the image to the PR or response so reviewers can verify the visual result without running the app.
 
 When you discover patterns or troubleshooting steps relevant to contributors, update this file with the problem, the
 solution, and minimal reproducible steps. Do not include machine-specific paths or shell preferences.

@@ -1,0 +1,12 @@
+{
+  "name": "ShadowSIN",
+  "postCreateCommand": "corepack enable && yarn install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "ms-playwright.playwright"
+      ]
+    }
+  }
+}
