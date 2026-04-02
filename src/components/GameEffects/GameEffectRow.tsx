@@ -8,7 +8,7 @@ import MuiTextField from "@mui/material/TextField"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getDefaultTarget, getTargetOptions } from "#/components/GameEffects/GameEffectUtils.tsx"
+import { getDefaultTarget, getTargetOptions } from "#/components/GameEffects/GameEffectUtils.ts"
 import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
 import { GameEffectTypeOptions } from "#/lib/system/GameEffects/GameEffectTypeOptions.ts"
 
@@ -64,11 +64,22 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
         size="small"
         sx={{ flex: "1 1 60px", minWidth: 60 }}
         value={effect.value}
-        onChange={(e) => onChange({ ...effect, value: Number(e.target.value) })}
+        onChange={(e) => {
+          const numVal = (e.target as HTMLInputElement).valueAsNumber
+          if (!Number.isNaN(numVal)) {
+            onChange({ ...effect, value: numVal })
+          }
+        }}
         slotProps={{ htmlInput: { step: 1 } }}
       />
 
-      <IconButton size="small" onClick={onRemove} sx={{ mt: 0.5 }}>
+      <IconButton
+        size="small"
+        onClick={onRemove}
+        sx={{ mt: 0.5 }}
+        aria-label="Remove effect"
+        title="Remove effect"
+      >
         <RiDeleteBin6Line size={16} />
       </IconButton>
     </Stack>

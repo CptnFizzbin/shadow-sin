@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 
 import { GameEffectRow } from "#/components/GameEffects/GameEffectRow.tsx"
+import { getDefaultTarget } from "#/components/GameEffects/GameEffectUtils.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
 import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
@@ -34,11 +35,12 @@ export const GameEffectsFieldGroup = withFieldGroup({
                   size="small"
                   startIcon={<RiAddLine size={14} />}
                   onClick={() => {
+                    const defaultTarget = getDefaultTarget(GameEffectType.attrMod) ?? AttributeKey.body
                     field.handleChange([
                       ...effects,
                       {
                         type: GameEffectType.attrMod,
-                        target: AttributeKey.body,
+                        target: defaultTarget,
                         value: 0,
                       },
                     ])

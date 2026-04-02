@@ -33,9 +33,12 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   const isEditMode = !!form
   const effectiveMaxRating = Math.max(maxRating, 1)
 
+  const recordId = form?.id ?? crypto.randomUUID()
+  const dialogKey = `${recordId}-${open ? "1" : "0"}`
+
   const appForm = useAppForm({
     defaultValues: {
-      id: form?.id ?? crypto.randomUUID(),
+      id: recordId,
       name: form?.name ?? "",
       rating: form?.rating ?? 1,
       effects: form?.effects ?? [],
@@ -48,6 +51,7 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
 
   return (
     <Dialog
+      key={dialogKey}
       open={open}
       fullWidth
       maxWidth="sm"

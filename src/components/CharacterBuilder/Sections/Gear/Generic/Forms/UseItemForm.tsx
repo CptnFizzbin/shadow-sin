@@ -1,6 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { NullUuid } from "#/lib/UuidUtils.ts"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
@@ -10,7 +11,7 @@ export interface ItemFormOptions {
 }
 
 const defaultFormValues: ItemData = {
-  id: "00000000-0000-0000-0000-000000000000",
+  id: NullUuid,
   itemType: GearType.other,
   name: "",
   cost: 0,
@@ -25,6 +26,7 @@ const defaultFormValues: ItemData = {
     book: "",
     page: 0,
   },
+  effects: [],
 }
 
 export const gearItemFieldMap = createFieldMap(defaultFormValues)

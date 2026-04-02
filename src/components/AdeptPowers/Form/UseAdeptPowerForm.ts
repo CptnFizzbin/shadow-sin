@@ -10,7 +10,7 @@ export type AdeptPowerFormOptions =
     onSubmit: (values: AdeptPowerData) => void
   }
 
-const defualtValues: AdeptPowerData = {
+const defaultAdeptPowerValues: AdeptPowerData = {
   id: crypto.randomUUID(),
   name: "",
   rating: 1,
@@ -33,11 +33,11 @@ export function useAdeptPowerForm(props: AdeptPowerFormOptions) {
   const defaultValues =
     props.mode === "edit"
       ? {
-          ...defualtValues,
+          ...defaultAdeptPowerValues,
           ...props.power,
         }
       : {
-          ...defualtValues,
+          ...defaultAdeptPowerValues,
           id: crypto.randomUUID(),
         }
 

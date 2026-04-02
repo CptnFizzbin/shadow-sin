@@ -10,6 +10,7 @@ const defaultValues: QualityData = {
   name: "",
   type: "positive",
   description: "",
+  effects: [],
 }
 
 export function useQualityForm({ quality, onSubmit }: QualityFormOptions) {
