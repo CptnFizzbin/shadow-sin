@@ -1,3 +1,4 @@
+import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
@@ -8,8 +9,14 @@ import {
   weaponFieldMap,
   weaponFormOpts,
 } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/UseWeaponForm.tsx"
+import {
+  WeaponDamageFormFields,
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponDamageFormFields.tsx"
+import {
+  WeaponSkillFormFields,
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponSkillFormFields.tsx"
+import { Label } from "#/components/UI/Text/Label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { WeaponType } from "#/lib/system/gear/weaponData.ts"
 
 const weaponTypeOptions = [
@@ -20,15 +27,6 @@ const weaponTypeOptions = [
   { label: "Exotic", value: WeaponType.exotic },
   { label: "Other", value: WeaponType.other },
 ]
-
-const attributeOptions = [
-  { label: "None", value: "" },
-  ...Object.values(AttributeKey).map((key) => ({
-    label: key.charAt(0).toUpperCase() + key.slice(1),
-    value: key,
-  })),
-]
-
 export const WeaponFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
@@ -54,97 +52,58 @@ export const WeaponFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
-          <group.AppField
-            name="dmg"
-            validators={{ onChange: z.string().min(1, "Damage is required") }}
-          >
-            {(field) => (
-              <field.TextField label="Damage" size="small" sx={{ flex: 1 }} />
-            )}
-          </group.AppField>
-
-          <group.AppField name="ap">
-            {(field) => (
-              <field.NumberField label="AP" size="small" sx={{ width: 80 }} />
-            )}
-          </group.AppField>
-        </Stack>
-
-        <Stack direction="row" gap={1}>
-          <group.AppField name="skill">
-            {(field) => (
-              <field.TextField label="Skill" size="small" sx={{ flex: 1 }} />
-            )}
-          </group.AppField>
-
-          <group.AppField name="attribute">
-            {(field) => (
-              <field.SelectField
-                label="Attribute"
-                size="small"
-                sx={{ flex: 1 }}
-                options={attributeOptions}
-              />
-            )}
-          </group.AppField>
-        </Stack>
-
-        {/* Weapon-type-specific fields */}
         <group.Subscribe selector={({ values }) => values.weaponType}>
           {(weaponType) => {
-            if (weaponType === WeaponType.melee) {
-              return (
-                <group.AppField
-                  name="reach"
-                  validators={{
-                    onChange: z
-                      .number("Reach is required")
-                      .int("Reach must be a whole number")
-                      .min(0, "Reach must be 0 or more"),
-                  }}
-                >
-                  {(field) => (
-                    <field.NumberField
-                      label="Reach"
-                      size="small"
-                      sx={{ width: 120 }}
-                      slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                    />
-                  )}
-                </group.AppField>
-              )
-            }
+            switch (weaponType) {
+              case WeaponType.melee:
+                return (
+                  <Paper sx={{ padding: 1 }}>
+                    <Stack>
+                      <Label label="Melee Weapon Traits" />
 
-            if (
-              weaponType === WeaponType.thrown
-              || weaponType === WeaponType.projectile
-            ) {
-              return (
-                <group.AppField
-                  name="range"
-                  validators={{
-                    onChange: z
-                      .number("Range is required")
-                      .min(0, "Range must be 0 or more"),
-                  }}
-                >
-                  {(field) => (
-                    <field.NumberField
-                      label="Range (m)"
-                      size="small"
-                      sx={{ width: 140 }}
-                    />
-                  )}
-                </group.AppField>
-              )
-            }
+                      <WeaponSkillFormFields form={group} fields={weaponFieldMap} />
+                      <WeaponDamageFormFields form={group} fields={weaponFieldMap} />
 
-            if (weaponType === WeaponType.firearm) {
-              return <FirearmFormFields form={group} fields={weaponFieldMap} />
+                      <group.AppField
+                        name="reach"
+                        validators={{
+                          onChange: z
+                            .number("Reach is required")
+                            .int("Reach must be a whole number")
+                            .min(0, "Reach must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Reach"
+                            size="small"
+                            slotProps={{ htmlInput: { min: 0, step: 1 } }}
+                          />
+                        )}
+                      </group.AppField>
+                    </Stack>
+                  </Paper>
+                )
+              case WeaponType.firearm:
+                return (
+                  <Paper sx={{ padding: 1 }}>
+                    <Stack>
+                      <Label label="Firearm Traits" />
+                      <FirearmFormFields form={group} fields={weaponFieldMap} />
+                    </Stack>
+                  </Paper>
+                )
+              default:
+                return (
+                  <Paper sx={{ padding: 1 }}>
+                    <Stack>
+                      <Label label="Weapon Traits" />
+                      <WeaponSkillFormFields form={group} fields={weaponFieldMap} />
+                      <WeaponDamageFormFields form={group} fields={weaponFieldMap} />
+                    </Stack>
+                  </Paper>
+                )
             }
-
-            return null
           }}
         </group.Subscribe>
 

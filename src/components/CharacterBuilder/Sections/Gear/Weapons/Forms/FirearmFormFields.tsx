@@ -3,15 +3,25 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
-import { weaponFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/UseWeaponForm.tsx"
+import {
+  weaponFieldMap,
+  weaponFormOpts,
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/UseWeaponForm.tsx"
+import {
+  WeaponDamageFormFields,
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponDamageFormFields.tsx"
+import {
+  WeaponSkillFormFields,
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponSkillFormFields.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { FirearmAttachmentPoint } from "#/lib/system/gear/weaponData.ts"
 import { firearmTypes } from "#/lib/system/gear/weapons/firearms/firearm-type-info.ts"
 
 const firearmTypeOptions = Object.entries(firearmTypes).map(([type, value]) => ({
   label: type,
   value: type,
-  group: value.weaponGroup
+  group: value.weaponGroup,
 }))
 
 const ammoTypeOptions = [
@@ -27,14 +37,14 @@ const ammoTypeOptions = [
 const firingModes = [
   { label: "Single Shot", value: "SS" },
   { label: "Semi Auto", value: "SA" },
-  { label: "Burst", value: "B" },
+  { label: "Burst Fire", value: "B" },
   { label: "Full Auto", value: "FA" },
 ]
 
 const attachmentSlots = [
-  { label: "Top", value: "Top" },
-  { label: "Barrel", value: "Barrel" },
-  { label: "Under", value: "Under" },
+  { label: "Top", value: FirearmAttachmentPoint.Top },
+  { label: "Barrel", value: FirearmAttachmentPoint.Barrel },
+  { label: "Under", value: FirearmAttachmentPoint.Under },
 ]
 
 export const FirearmFormFields = withFieldGroup({
@@ -67,8 +77,11 @@ export const FirearmFormFields = withFieldGroup({
         </group.AppField>
       </Stack>
 
+      <WeaponSkillFormFields form={group} fields={weaponFieldMap} />
+      <WeaponDamageFormFields form={group} fields={weaponFieldMap} />
+
       <Stack>
-        <Label label="Firing Modes" />
+        <Label label="Firing Modes" variant="text" />
 
         <group.Subscribe selector={({ values }) => values.firemodes}>
           {(firemodes) => {
@@ -98,11 +111,11 @@ export const FirearmFormFields = withFieldGroup({
       </Stack>
 
       <Stack>
-        <Label label="Accessory Slots" />
+        <Label label="Accessory Slots" variant="text" />
 
         <group.Subscribe selector={({ values }) => values.attachmentPoints}>
           {(attachmentPoints) => {
-            const toggleSlot = (slot: string) => {
+            const toggleSlot = (slot: FirearmAttachmentPoint) => {
               const updatedSlots = attachmentPoints.includes(slot)
                 ? attachmentPoints.filter((s) => s !== slot)
                 : [...attachmentPoints, slot]
@@ -128,7 +141,7 @@ export const FirearmFormFields = withFieldGroup({
       </Stack>
 
       <Stack>
-        <Label label="Ammo" />
+        <Label label="Ammo" variant="text" />
 
         <Stack direction="row" gap={1}>
           <group.AppField

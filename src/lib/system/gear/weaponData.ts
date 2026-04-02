@@ -23,14 +23,14 @@ export interface WeaponData extends ItemData {
   dmg: string
   ap?: number
   itemType: GearType.weapon
-  weaponType: WeaponType | string
+  weaponType: WeaponType
   skill?: string
   attribute?: AttributeKey
 }
 
 export interface FirearmData extends WeaponData {
   weaponType: WeaponType.firearm
-  firearmType: FirearmTypeKey | string
+  firearmType: FirearmTypeKey
   firemodes: string[]
   recoil: number
   attachmentPoints?: FirearmAttachmentPoint[]

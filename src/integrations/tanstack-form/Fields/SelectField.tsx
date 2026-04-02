@@ -1,21 +1,11 @@
-import {
-  FormControl,
-  type FormControlProps,
-  FormHelperText,
-  type FormHelperTextProps,
-  InputLabel,
-  type InputLabelProps,
-  ListSubheader,
-  type MenuItemProps,
-  Select,
-  type SelectProps
-} from "@mui/material"
+import type { FormControlProps, FormHelperTextProps, InputLabelProps, MenuItemProps, SelectProps } from "@mui/material"
+import { FormControl, FormHelperText, InputLabel, ListSubheader, Select } from "@mui/material"
 import MenuItem from "@mui/material/MenuItem"
+import { sort } from "fast-sort"
 import type { FC, ReactNode } from "react"
 
 import { useFieldContext } from "#/integrations/tanstack-form/FieldContext.ts"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
-import { sort } from "fast-sort"
 
 export interface SelectOption {
   group?: string
@@ -45,11 +35,11 @@ export const SelectField: FC<SelectFieldProps> = ({
   const field = useFieldContext<string>()
   const errors = useFieldErrors()
 
-  const noGroupSymbol = Symbol("ungrouped")
+  const noGroupSymbol = Symbol("ungrouped").toString()
   const optionsByGroup = Object.groupBy(options, (option) => option.group ?? noGroupSymbol)
 
   const groupKeys = sort(Object.keys(optionsByGroup)).by([
-    { asc: (key) => key === String(noGroupSymbol) ? 1 : -1 },
+    { asc: (key) => key === noGroupSymbol },
     { asc: (key) => key },
   ])
 
@@ -71,22 +61,40 @@ export const SelectField: FC<SelectFieldProps> = ({
         {groupKeys.map((groupKey) => {
           const items: ReactNode[] = []
 
-          if (groupKey !== String(noGroupSymbol)) {
-            items.push(<ListSubheader key={`group-${groupKey}`}>{groupKey}</ListSubheader>)
+          if (groupKey !== noGroupSymbol) {
+            items.push(
+              <ListSubheader
+                key={`group-${groupKey}`}
+                sx={{
+                  borderBottom: "1px solid",
+                  borderColor: "divider",
+                  lineHeight: "initial",
+                  padding: 0,
+                  marginX: 2,
+                }}
+              >
+                {groupKey}
+              </ListSubheader>,
+            )
           }
 
           const groupOptions = optionsByGroup[groupKey] ?? []
-          groupOptions.forEach((item) => (
-            <MenuItem
-              key={`option-${item.value}`}
-              sx={{ display: "flex" }}
-              {...slotProps?.menuItem}
-              value={item.value}
-              disabled={item.disabled}
-            >
-              {item.label}
-            </MenuItem>
-          ))
+          sort(groupOptions)
+            .by([
+              { asc: (option) => option.value !== "" },
+              { asc: (option) => option.label },
+            ])
+            .forEach((item) => items.push(
+              <MenuItem
+                key={`option-${item.value}`}
+                sx={{ display: "flex" }}
+                {...slotProps?.menuItem}
+                value={item.value}
+                disabled={item.disabled}
+              >
+                {item.label}
+              </MenuItem>,
+            ))
 
           return items
         })}

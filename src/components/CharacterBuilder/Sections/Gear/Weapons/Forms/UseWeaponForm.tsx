@@ -2,8 +2,8 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { NullUuid } from "#/lib/UuidUtils.ts"
-import type { FirearmAttachmentPoint, FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { WeaponType } from "#/lib/system/gear/weaponData.ts"
+import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
@@ -16,9 +16,9 @@ export interface WeaponFormOptions {
 // can handle melee, firearms, thrown, and projectile weapons.
 const defaultFormValues = {
   id: NullUuid,
-  itemType: GearType.weapon as typeof GearType.weapon,
+  itemType: GearType.weapon,
   name: "",
-  weaponType: WeaponType.melee as string,
+  weaponType: WeaponType.firearm,
   dmg: "",
   ap: 0,
   skill: "",
@@ -39,18 +39,19 @@ const defaultFormValues = {
   // MeleeWeaponData-specific
   reach: 0,
 
-  // ThrownWeaponData / ProjectileWeaponData-specific
-  range: 0,
-
   // FirearmData-specific
-  firearmType: FirearmTypeKey.lightPistol as string,
-  firemodes: [] as string[],
-  attachmentPoints: [] as string[],
+  firearmType: FirearmTypeKey.assaultRifle,
+  firemodes: ["SA", "B", "FA"],
+  attachmentPoints: [
+    FirearmAttachmentPoint.Top,
+    FirearmAttachmentPoint.Barrel,
+    FirearmAttachmentPoint.Under,
+  ],
   recoil: 0,
   ammo: {
     size: 0,
     remaining: 0,
-    type: "clip" as string,
+    type: "clip",
   },
 }
 
