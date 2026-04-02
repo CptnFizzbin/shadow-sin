@@ -7,7 +7,7 @@ import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { GameEffectType } from "#/lib/system/gameEffectData.ts"
+import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
 import type { SinData } from "#/lib/system/gear/SinData.ts"
 import type { ArmorData } from "#/lib/system/gear/armorData.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
@@ -289,7 +289,7 @@ export const Artemis: CharacterSheet = {
       location: ImplantLocation.head,
       effects: [
         {
-          type: GameEffectType.attrBonus,
+          type: GameEffectType.attrMod,
           target: AttributeKey.logic,
           value: 3,
         },
@@ -315,7 +315,7 @@ export const Artemis: CharacterSheet = {
       location: ImplantLocation.head,
       effects: [
         {
-          type: GameEffectType.attrBonus,
+          type: GameEffectType.attrMod,
           target: AttributeKey.reaction,
           value: 2,
         },
