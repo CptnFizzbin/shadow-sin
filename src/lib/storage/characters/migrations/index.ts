@@ -1,4 +1,6 @@
-import type { CharacterMigration } from "#/lib/storage/characters/CharacterMigration.ts"
+import type { AnyCharacterMigration } from "#/lib/storage/characters/CharacterMigration.ts"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const migrations: CharacterMigration<any, any>[] = []
+export const migrations: AnyCharacterMigration[] = [
+  await import("./v0_1_0.ts"),
+  await import("./v0_2_0.ts"),
+].map((module) => module.default)

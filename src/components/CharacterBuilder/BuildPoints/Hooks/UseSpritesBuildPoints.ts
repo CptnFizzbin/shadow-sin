@@ -1,19 +1,21 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
-import { getSpriteTasksBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesUtils.ts"
+import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
+import { getSpriteTasksBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesUtils.ts"
 import { useSprites } from "#/components/Technomancer/SpritesHooks.ts"
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 
-export const useSpritesBuildPoints = () => {
+export const useSpritesBuildPoints = (): BpLineItem => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const sprites = useSprites()
-
-  if (awakeningType !== AwakeningType.Technomancer) {
-    return { spent: 0 }
-  }
 
   const spritesBp = sprites
     .map(getSpriteTasksBp)
     .reduce((total, cost) => total + cost, 0)
 
-  return { spent: spritesBp }
+  return {
+    sectionId: BuilderSectionId.sprites,
+    spent: spritesBp,
+    enabled: isTechnomancer(awakeningType),
+  }
 }

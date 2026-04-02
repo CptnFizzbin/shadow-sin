@@ -6,18 +6,20 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getComplexFormBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsUtils.ts"
+import { getSpriteTasksBp } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesUtils.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
+import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 
-interface ComplexFormRowProps {
-  form: ComplexFormData
+interface SpriteRowProps {
+  sprite: SpriteData
+  resonanceValue: number
   onEdit: () => void
   onDelete: () => void
 }
 
-export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
-  form,
+export const SpritesListItem: FC<SpriteRowProps> = ({
+  sprite,
+  resonanceValue,
   onEdit,
   onDelete,
 }) => {
@@ -25,6 +27,7 @@ export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
     <Box
       sx={{
         "p": 1,
+        "borderRadius": 1,
         "border": "1px solid",
         "borderColor": "divider",
         "cursor": "pointer",
@@ -33,19 +36,32 @@ export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
-          {form.name}
-        </Typography>
+        <Stack sx={{ flexGrow: 1 }}>
+          <Typography variant="body2">{sprite.name}</Typography>
+          <Typography variant="caption" color="text.secondary">
+            Rating
+            {" "}
+            {resonanceValue}
+            {" "}
+            ·
+            {" "}
+            {sprite.services.max}
+            {" "}
+            task
+            {sprite.services.max !== 1 ? "s" : ""}
+          </Typography>
+        </Stack>
 
         <Chip
-          label={form.rating}
+          label={`R${resonanceValue}`}
           size="small"
           variant="outlined"
-          sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
+          sx={{ height: 20, fontSize: "0.75rem" }}
         />
 
         <BuildPoints
-          value={getComplexFormBp(form)}
+          value={getSpriteTasksBp(sprite)}
+          variant="caption"
           sx={{ minWidth: 40, textAlign: "right" }}
         />
 
