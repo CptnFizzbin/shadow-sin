@@ -45,11 +45,11 @@ export const SelectField: FC<SelectFieldProps> = ({
       >
         {options.map((option) => (
           <MenuItem
-            value={option.value}
             key={option.value}
-            disabled={option.disabled}
             sx={{ display: "flex" }}
             {...slotProps?.menuItem}
+            value={option.value}
+            disabled={option.disabled}
           >
             {option.label}
           </MenuItem>
