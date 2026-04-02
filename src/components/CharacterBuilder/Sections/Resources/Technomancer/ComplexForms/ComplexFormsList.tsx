@@ -21,7 +21,6 @@ import {
 import { useMaxComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
 import { useComplexFormsStore } from "#/components/Technomancer/UseComplexFormsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
@@ -53,8 +52,6 @@ export const ComplexFormsList: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Label label="Complex Forms" variant="outlined" />
-
       <Stack gap={0.5}>
         <Stack
           direction="row"

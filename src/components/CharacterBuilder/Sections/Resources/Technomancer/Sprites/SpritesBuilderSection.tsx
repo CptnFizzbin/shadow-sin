@@ -3,7 +3,9 @@ import type { FC } from "react"
 import { BuilderSection } from "#/components/CharacterBuilder/Sections/BuilderSection.tsx"
 import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { SpritesList } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesList.tsx"
-import { useSpritesAlerts } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesAlerts.ts"
+import {
+  useSpritesAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
 
 export const SpritesBuilderSection: FC = () => {
   return (

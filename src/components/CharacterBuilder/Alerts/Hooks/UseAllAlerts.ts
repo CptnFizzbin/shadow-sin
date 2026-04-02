@@ -9,8 +9,10 @@ import { useAdeptPowersAlerts } from "#/components/CharacterBuilder/Sections/Res
 import { useSpellsAlerts } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsAlerts.ts"
 import {
   useComplexFormsAlerts,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseComplexFormsAlerts.ts"
-import { useSpritesAlerts } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/UseSpritesAlerts.ts"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
+import {
+  useSpritesAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
 import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsAlerts.ts"
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsSummaryAlerts.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
