@@ -4,9 +4,22 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/CharacterBuilder/BuildPoints/AttributeUtils.ts"
+import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/lib/system/attributeKey.ts"
 
-export const useAttributesBuildPoints = () => {
+export interface AttributesBuildPoints extends BpLineItem {
+  physicalBp: number
+  mentalBp: number
+  specialBp: number
+  budget: {
+    spent: number
+    remaining: number
+    limit: number
+  }
+}
+
+export const useAttributesBuildPoints = (): AttributesBuildPoints => {
   const activeAttributeCosts = useActiveAttributes()
     .map((attrData) => {
       let spent = 0
@@ -36,7 +49,7 @@ export const useAttributesBuildPoints = () => {
   const budgetedBpSpent = physicalBpSpent + mentalBpSpent
 
   return {
-    label: "Attributes",
+    sectionId: BuilderSectionId.attributes,
     spent: totalBpSpent,
     physicalBp: physicalBpSpent,
     mentalBp: mentalBpSpent,

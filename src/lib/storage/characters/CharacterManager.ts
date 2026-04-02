@@ -92,7 +92,7 @@ export class CharacterManager {
     for (const migration of migrationsToRun) {
       if (semver.gt(migration.version, characterData.version)) {
         characterData = await migration.up(character)
-        characterData.version = migration.version
+        characterData = { ...characterData, version: migration.version }
         migrationPerformed = true
       }
     }
