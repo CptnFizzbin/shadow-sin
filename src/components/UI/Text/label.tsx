@@ -16,7 +16,7 @@ interface LabelProps {
 export const Label: FC<LabelProps> = ({
   label,
   textAlign = "center",
-  variant = "contained",
+  variant = "outlined",
   color = "secondary.dark",
   textColor,
   sx,

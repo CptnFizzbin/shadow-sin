@@ -12,6 +12,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 })
 
+/**
+ * Render the application shell: a TanStack Query provider wrapping a column layout with the header, routed content outlet, and footer.
+ *
+ * @returns The root layout element containing the header, routed content, and footer
+ */
 function RootLayout() {
   return (
     <TanStackQueryProvider>
@@ -32,7 +37,7 @@ function RootLayout() {
           <Outlet />
         </Container>
 
-        <Stack padding={1}>
+        <Stack padding={1} gap={1}>
           <Divider />
           <Footer />
         </Stack>

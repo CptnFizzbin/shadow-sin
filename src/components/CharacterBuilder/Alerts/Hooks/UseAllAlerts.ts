@@ -9,11 +9,21 @@ import { useAdeptPowersAlerts } from "#/components/CharacterBuilder/Sections/Res
 import { useSpellsAlerts } from "#/components/CharacterBuilder/Sections/Resources/Magician/use-spells-alerts.ts"
 import {
   useComplexFormsAlerts,
+<<<<<<<< HEAD:src/components/CharacterBuilder/Hooks/use-all-alerts.ts
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/use-complex-forms-alerts.ts"
 import { useSpritesAlerts } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/use-sprites-alerts.ts"
 import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/use-skills-alerts.ts"
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/use-skills-summary-alerts.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+========
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
+import {
+  useSpritesAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
+import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsAlerts.ts"
+import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsSummaryAlerts.ts"
+import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
+>>>>>>>> origin/shadowrun-4e:src/components/CharacterBuilder/Alerts/Hooks/UseAllAlerts.ts
 
 export function useAllAlerts(): AlertInfo[] {
   return [

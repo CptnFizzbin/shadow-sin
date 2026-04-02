@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
 
 function IndexRoute() {
   const navigate = Route.useNavigate()
-  const characters = Route.useLoaderData()
+  const { characters, errors } = Route.useLoaderData()
 
   return (
     <Stack gap={1} padding={1}>
@@ -27,7 +27,7 @@ function IndexRoute() {
       >
         Create New
       </Button>
-      <CharacterRosterList characters={characters} />
+      <CharacterRosterList characters={characters} errors={errors} />
     </Stack>
   )
 }

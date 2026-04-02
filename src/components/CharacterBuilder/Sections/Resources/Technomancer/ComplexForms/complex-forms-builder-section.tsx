@@ -1,9 +1,13 @@
 import type { FC } from "react"
 
-import { ComplexFormsList } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/complex-forms-list.tsx"
-import { useComplexFormsAlerts } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/use-complex-forms-alerts.ts"
-import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
-import { BuilderSection } from "#/components/CharacterBuilder/Sections/builder-section.tsx"
+import { BuilderSection } from "#/components/CharacterBuilder/Sections/BuilderSection.tsx"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
+import {
+  ComplexFormsList,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsList.tsx"
+import {
+  useComplexFormsAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
 
 export const ComplexFormsBuilderSection: FC = () => {
   return (

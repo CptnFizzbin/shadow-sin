@@ -14,10 +14,10 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-build-points-api.ts"
-import { builderSections } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
-import { BuildPoints } from "#/components/UI/build-points.tsx"
-import { getProgress } from "#/lib/progress-utils.ts"
+import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseBuildPointsApi.ts"
+import { builderSections } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
+import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
+import { getProgress } from "#/lib/ProgressUtils.ts"
 
 export interface BpSummaryFooterProps {
   onExpandedChange?: (expanded: boolean) => void

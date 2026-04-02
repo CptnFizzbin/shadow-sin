@@ -4,39 +4,39 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/use-builder-root-state-store.ts"
+import { ExportCharacterButton } from "#/components/Character/ExportCharacterButton.tsx"
+import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
+import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
+import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"
 import {
   AttributesBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Attributes/attributes-builder-section.tsx"
-import { BiologyBuilderSection } from "#/components/CharacterBuilder/Sections/Biology/biology-builder-section.tsx"
-import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/Contacts/contacts-builder-section.tsx"
-import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/gear-builder-section.tsx"
-import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/profile-builder-section.tsx"
-import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/qualities-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Attributes/AttributesBuilderSection.tsx"
+import { BiologyBuilderSection } from "#/components/CharacterBuilder/Sections/Biology/BiologyBuilderSection.tsx"
+import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/Contacts/ContactsBuilderSection.tsx"
+import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/GearBuilderSection.tsx"
+import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
+import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
 import {
   AdeptPowersBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Resources/Adept/adept-powers-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersBuilderSection.tsx"
 import {
   SpellsBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Resources/Magician/spells-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/complex-forms-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsBuilderSection.tsx"
 import {
   SpritesBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/sprites-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesBuilderSection.tsx"
 import {
   ActiveSkillsBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/active-skills-builder-section.tsx"
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsBuilderSection.tsx"
 import {
   KnowledgeSkillsBuilderSection,
-} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/knowledge-skills-builder-section.tsx"
-import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/bp-summary-footer.tsx"
-import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/character-builder-store-provider.tsx"
-import { ExportCharacterButton } from "#/components/CharacterBuilder/export-character-button.tsx"
-import { SaveCharacterButton } from "#/components/CharacterBuilder/save-character-button.tsx"
-import { AllBuilderAlerts } from "#/components/UI/Alerts/alerts-list.tsx"
-import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsBuilderSection.tsx"
+import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
+import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface CharacterFormProps {
   character?: CharacterSheet

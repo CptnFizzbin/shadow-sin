@@ -71,7 +71,12 @@ export default defineConfig([
         "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/consistent-type-exports": "error",
         "@typescript-eslint/consistent-type-imports": "error",
-        "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+        "@typescript-eslint/no-unused-vars": ["error", {
+          ignoreRestSiblings: true,
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        }],
 
         "no-redeclare": "off", // conflicts with TypeScript's function overloads
       },

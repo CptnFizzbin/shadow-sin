@@ -1,17 +1,18 @@
 import type { UUID } from "node:crypto"
 
-import type { LifestyleType } from "#/lib/system/lifestyle-type.ts"
-import type { MetatypeType } from "#/lib/system/metatype-data.ts"
-import type { AttributeKey } from "./attribute-key.ts"
-import type { AwakeningType } from "./awakening-type.ts"
-import type { ContactData } from "./contact-data.ts"
-import type { ItemData } from "./item-data.ts"
-import type { AdeptPowerData } from "./magic/adept-power-data.ts"
-import type { ComplexFormData } from "./magic/complex-form-data.ts"
-import type { SpellData } from "./magic/spell-data.ts"
-import type { SpriteData } from "./magic/sprite-data.ts"
-import type { QualityData } from "./quality-data.ts"
-import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skill-data.ts"
+import type { LifestyleType } from "#/lib/system/LifestyleType.ts"
+import type { MetatypeType } from "#/lib/system/MetatypeData.ts"
+import type { ItemData } from "./ItemData.ts"
+import type { AttributeKey } from "./attributeKey.ts"
+import type { AwakeningType } from "./awakeningType.ts"
+import type { ContactData } from "./contactData.ts"
+import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
+import type { ComplexFormData } from "./magic/complexFormData.ts"
+import type { SpellData } from "./magic/spellData.ts"
+import type { SpriteData } from "./magic/spriteData.ts"
+import type { TraditionData } from "./magic/traditionData.ts"
+import type { QualityData } from "./qualityData.ts"
+import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
 export interface CharacterSheet {
   id: UUID
@@ -80,6 +81,7 @@ export interface CharacterSheet {
 
   qualities: QualityData[]
   contacts: ContactData[]
+  tradition?: TraditionData
   spells: SpellData[]
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
