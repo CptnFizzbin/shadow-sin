@@ -21,13 +21,13 @@ export const dicePoolKeys = {
 
 export const dicePools = {
   [dicePoolKeys.ResistDamage.Body]: {
-    label: "Reist Damage",
+    label: "Resist Damage",
     items: [
       { attr: AttributeKey.body },
     ],
   },
   [dicePoolKeys.ResistDamage.Willpower]: {
-    label: "Reist Damage",
+    label: "Resist Damage",
     items: [
       { attr: AttributeKey.willpower },
     ],
