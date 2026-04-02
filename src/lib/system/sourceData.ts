@@ -23,4 +23,4 @@ export const bookOptions = [
   { value: "US", label: "Unfriendly Skies" },
   { value: "GH", label: "Gun Heaven" },
   { value: "GH2", label: "Gun Heaven 2" },
-]
+] as const

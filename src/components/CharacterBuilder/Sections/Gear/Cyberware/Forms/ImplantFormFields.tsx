@@ -3,9 +3,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/CharacterBuilder/General/Form/AvailabilityFieldGroup.tsx"
-import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
+import { AvailabilityFieldGroup } from "#/components/Availablity/AvailabilityFieldGroup.tsx"
 import { implantFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Forms/UseImplantForm.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
 
@@ -192,6 +193,7 @@ export const ImplantFormFields = withFieldGroup({
           fields="availability"
         />
         <SourceFieldGroup form={group} fields={{ source: "source" }} />
+        <GameEffectsFieldGroup form={group} fields={{ effects: "effects" }} />
 
         <group.AppField name="description">
           {(field) => (

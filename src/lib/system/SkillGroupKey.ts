@@ -26,7 +26,7 @@ export interface SkillGroupInfo {
   }
 }
 
-export const SkillGroups: Record<SkillGroupKey, SkillGroupInfo> = {
+export const SkillGroups: Readonly<Record<SkillGroupKey, SkillGroupInfo>> = {
   [SkillGroupKey.Athletics]: {
     name: SkillGroupKey.Athletics,
   },
