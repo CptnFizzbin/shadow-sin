@@ -10,7 +10,7 @@ export type AdeptPowerFormOptions =
     onSubmit: (values: AdeptPowerData) => void
   }
 
-const defualtValues: AdeptPowerData = {
+const defaultAdeptPowerValues: AdeptPowerData = {
   id: crypto.randomUUID(),
   name: "",
   rating: 1,
@@ -20,17 +20,24 @@ const defualtValues: AdeptPowerData = {
     book: "",
     page: 0,
   },
+  effects: [],
 }
 
+/**
+ * Create and configure a form controller for creating or editing an AdeptPowerData entry.
+ *
+ * @param props - Options controlling form mode and submit handler. When `mode` is `"edit"`, the form's default values are the file defaults merged with `props.power`; when `mode` is `"create"`, the form's default values use the file defaults with a newly generated `id`.
+ * @returns The form controller configured for `AdeptPowerData`, including default values, change-time validation, and an `onSubmit` handler that forwards the form value to the provided callback.
+ */
 export function useAdeptPowerForm(props: AdeptPowerFormOptions) {
   const defaultValues =
     props.mode === "edit"
       ? {
-          ...defualtValues,
+          ...defaultAdeptPowerValues,
           ...props.power,
         }
       : {
-          ...defualtValues,
+          ...defaultAdeptPowerValues,
           id: crypto.randomUUID(),
         }
 

@@ -14,7 +14,7 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/useBuildPointsApi.ts"
+import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseBuildPointsApi.ts"
 import { builderSections } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"

@@ -2,7 +2,8 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import type { AdeptPowerForm } from "#/components/AdeptPowers/Form/UseAdeptPowerForm.ts"
-import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 
 export interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm
@@ -49,6 +50,8 @@ export const AdeptPowerFormFields: FC<AdeptPowerFormFieldsProps> = ({
         </form.AppField>
 
         <SourceFieldGroup form={form} fields={{ source: "source" }} />
+
+        <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
       </Stack>
     </form.AppForm>
   )

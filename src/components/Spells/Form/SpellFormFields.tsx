@@ -3,7 +3,8 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
 
-import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
+import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/Spells/Form/UseSpellForm.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
@@ -166,6 +167,8 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
         </form.AppField>
 
         <SourceFieldGroup form={form} fields={{ source: "source" }} />
+
+        <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
       </Stack>
     </form.AppForm>
   )

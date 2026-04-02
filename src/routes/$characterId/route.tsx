@@ -6,9 +6,9 @@ import { CharacterSheetProvider } from "#/components/Character/CharacterSheetPro
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
 import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
-import { usePersistStore } from "#/components/CharacterBuilder/StorePersister.ts"
 import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
+import { usePersistStore } from "#/lib/storage/StorePersister.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
