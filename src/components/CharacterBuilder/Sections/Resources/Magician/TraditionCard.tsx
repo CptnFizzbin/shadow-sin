@@ -5,12 +5,8 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  TraditionFormDialog,
-} from "#/components/CharacterBuilder/Sections/Resources/Magician/TraditionFormDialog.tsx"
-import {
-  useTraditionStore,
-} from "#/components/CharacterBuilder/Sections/Resources/Magician/UseTraditionStore.ts"
+import { TraditionFormDialog } from "#/components/CharacterBuilder/Sections/Resources/Magician/TraditionFormDialog.tsx"
+import { useTraditionStore } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseTraditionStore.ts"
 import { AttributeLabels } from "#/lib/system/attributeKey.ts"
 import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
 

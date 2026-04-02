@@ -1,17 +1,15 @@
+import { InputAdornment, Paper } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
-import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import {
-  useTraditionForm,
-} from "#/components/CharacterBuilder/Sections/Resources/Magician/UseTraditionForm.ts"
+import { useTraditionForm } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseTraditionForm.ts"
+import { Label } from "#/components/UI/Text/Label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
 import { drainAttributeSelectOptions } from "#/lib/system/magic/traditionData.ts"
@@ -52,66 +50,67 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
       <DialogTitle>Tradition</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <form.AppForm>
-          <Stack gap={2} sx={{ pt: 1 }}>
+          <Stack>
             <form.AppField name="name">
               {(field) => (
                 <field.TextField label="Name" required autoFocus />
               )}
             </form.AppField>
 
-            <Divider>
-              <Typography variant="caption" color="text.secondary">
-                Spirit Types
-              </Typography>
-            </Divider>
-
-            <Stack gap={2}>
-              <form.AppField name="spiritTypes.combat">
-                {(field) => (
-                  <field.TextField label="Combat" placeholder="e.g. Fire, Beast, Warrior" required />
-                )}
-              </form.AppField>
-
-              <form.AppField name="spiritTypes.detection">
-                {(field) => (
-                  <field.TextField label="Detection" placeholder="e.g. Water, Bird, Sun" required />
-                )}
-              </form.AppField>
-
-              <form.AppField name="spiritTypes.health">
-                {(field) => (
-                  <field.TextField label="Health" placeholder="e.g. Man, Forest" required />
-                )}
-              </form.AppField>
-
-              <form.AppField name="spiritTypes.illusion">
-                {(field) => (
-                  <field.TextField label="Illusion" placeholder="e.g. Air, Ghost, Wolf" required />
-                )}
-              </form.AppField>
-
-              <form.AppField name="spiritTypes.manipulation">
-                {(field) => (
-                  <field.TextField label="Manipulation" placeholder="e.g. Earth, Machine" required />
-                )}
-              </form.AppField>
-            </Stack>
-
-            <Divider>
-              <Typography variant="caption" color="text.secondary">
-                Drain
-              </Typography>
-            </Divider>
-
             <form.AppField name="drainAttribute">
               {(field) => (
                 <field.SelectField
-                  label="Willpower + Attribute"
+                  label="Drain Resist"
                   required
                   options={drainAttributeSelectOptions}
+                  slotProps={{
+                    select: {
+                      startAdornment: (
+                        <InputAdornment position="start" sx={{ marginRight: 1 }}>
+                          Willpower +
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
                 />
               )}
             </form.AppField>
+
+            <Paper>
+              <Stack padding={1}>
+                <Label label="Spirit Types" variant="outlined" />
+
+                <form.AppField name="spiritTypes.combat">
+                  {(field) => (
+                    <field.TextField label="Combat" placeholder="e.g. Fire, Beast, Warrior" required />
+                  )}
+                </form.AppField>
+
+                <form.AppField name="spiritTypes.detection">
+                  {(field) => (
+                    <field.TextField label="Detection" placeholder="e.g. Water, Bird, Sun" required />
+                  )}
+                </form.AppField>
+
+                <form.AppField name="spiritTypes.health">
+                  {(field) => (
+                    <field.TextField label="Health" placeholder="e.g. Man, Forest" required />
+                  )}
+                </form.AppField>
+
+                <form.AppField name="spiritTypes.illusion">
+                  {(field) => (
+                    <field.TextField label="Illusion" placeholder="e.g. Air, Ghost, Wolf" required />
+                  )}
+                </form.AppField>
+
+                <form.AppField name="spiritTypes.manipulation">
+                  {(field) => (
+                    <field.TextField label="Manipulation" placeholder="e.g. Earth, Machine" required />
+                  )}
+                </form.AppField>
+              </Stack>
+            </Paper>
 
             <form.AppField name="concept">
               {(field) => (

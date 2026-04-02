@@ -1,3 +1,5 @@
+import { revalidateLogic } from "@tanstack/form-core"
+
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
@@ -28,8 +30,9 @@ export function useTraditionForm({ tradition, onSubmit }: TraditionFormOptions) 
       ...tradition,
     },
     onSubmit: ({ value }) => onSubmit(value),
+    validationLogic: revalidateLogic(),
     validators: {
-      onChange: TraditionDataSchema,
+      onDynamic: TraditionDataSchema,
     },
   })
 }
