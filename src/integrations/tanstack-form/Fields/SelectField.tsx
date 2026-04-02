@@ -29,7 +29,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     <FormControl error={errors !== null} {...props}>
       <InputLabel>{label}</InputLabel>
       <Select
-        value={field.state.value}
+        value={field.state.value ?? ""}
         label={label}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}

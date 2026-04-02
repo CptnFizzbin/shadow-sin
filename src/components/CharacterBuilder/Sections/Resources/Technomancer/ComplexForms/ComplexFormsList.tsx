@@ -9,13 +9,15 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
-import { useComplexFormsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import {
-  ComplexFormsListItem,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsListItem.tsx"
+  useComplexFormsBuildPoints,
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import {
   ComplexFormDialog,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormDialog.tsx"
+import {
+  ComplexFormsListItem,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsListItem.tsx"
 import { useMaxComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
 import { useComplexFormsStore } from "#/components/Technomancer/UseComplexFormsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"

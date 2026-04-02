@@ -5,11 +5,9 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  MAX_NEGATIVE_QUALITY_BP,
-  useBuilderQualitiesBuildPoints,
-} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseQualitiesBuildPoints.ts"
+import { useQualitiesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/useQualitiesBuildPoints.ts"
 import { QualitiesListItem } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesListItem.tsx"
+import { QualitiesMaxNegativeBpBonus } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesUtils.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/QualityFormDialog.tsx"
 import { useQualitiesStore } from "#/components/Qualities/UseQualitiesStore.ts"
 import { Label } from "#/components/UI/Text/Label.tsx"
@@ -26,7 +24,7 @@ interface QualitiesListProps {
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
   const qualitiesStore = useQualitiesStore()
   const qualities = useStore(qualitiesStore, (state) => state)
-  const qualitiesBuildPoints = useBuilderQualitiesBuildPoints()
+  const qualitiesBuildPoints = useQualitiesBuildPoints()
 
   const [editDialogState, setEditDialogState] = useState<DialogState>({
     open: false,
@@ -73,9 +71,9 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
         </Typography>
       </Stack>
 
-      {type === "negative" && qualitiesBuildPoints.negative < -MAX_NEGATIVE_QUALITY_BP && (
+      {type === "negative" && qualitiesBuildPoints.negative < -QualitiesMaxNegativeBpBonus && (
         <Alert severity="warning" sx={{ py: 0 }}>
-          Negative qualities exceed the {MAX_NEGATIVE_QUALITY_BP} BP bonus limit.
+          Negative qualities exceed the {QualitiesMaxNegativeBpBonus} BP bonus limit.
         </Alert>
       )}
 
