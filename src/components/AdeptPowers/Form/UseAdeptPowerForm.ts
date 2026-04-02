@@ -23,6 +23,12 @@ const defualtValues: AdeptPowerData = {
   effects: [],
 }
 
+/**
+ * Create form state and handlers for creating or editing an AdeptPowerData record.
+ *
+ * @param props - Configuration for the form. When `mode` is `"create"`, the form is initialized with default values and a newly generated `id`; when `mode` is `"edit"`, the form is initialized with the provided `power`. In both modes `onSubmit` is called with the `AdeptPowerData` value when the form is submitted.
+ * @returns The form controller object exposing current values, validation state, and a submit handler for an AdeptPowerData form.
+ */
 export function useAdeptPowerForm(props: AdeptPowerFormOptions) {
   const defaultValues =
     props.mode === "edit"

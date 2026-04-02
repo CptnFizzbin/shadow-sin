@@ -12,6 +12,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 })
 
+/**
+ * Application root layout that wraps the app with providers and renders the header, route outlet, and footer.
+ *
+ * @returns The root layout element containing the query provider, header, main content container (with the active route Outlet), and footer.
+ */
 function RootLayout() {
   return (
     <TanStackQueryProvider>
