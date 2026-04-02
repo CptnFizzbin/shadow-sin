@@ -2,21 +2,20 @@ import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider
 import { isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
 
-export const useTechnomancerAlerts = (): AlertInfo[] => {
+export const useComplexFormsAlerts = (): AlertInfo[] => {
   const awakeningType = useCharacterSheet((s) => s.biology.awakening)
   const complexForms = useCharacterSheet((s) => s.complexForms)
-  const sprites = useCharacterSheet((s) => s.sprites)
 
   const statuses: AlertInfo[] = []
 
   if (!isTechnomancer(awakeningType)) return statuses
 
-  if (complexForms.length === 0 && sprites.length === 0) {
+  if (complexForms.length === 0) {
     statuses.push({
-      section: "Technomancer",
+      section: "Complex Forms",
       severity: "warning",
-      title: "No technomancer resources",
-      message: "No complex forms or sprites added. Consider adding to make use of technomancer abilities.",
+      title: "No complex forms",
+      message: "No complex forms added. Add complex forms to enable technomancer abilities that rely on them.",
       summaryOnly: true,
     })
   }

@@ -1,5 +1,6 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
 import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { getTotalCost } from "#/components/CharacterBuilder/Sections/Gear/GearUtils.ts"
 import { Lifestyles, LifestyleType } from "#/lib/system/LifestyleType.ts"
 
@@ -29,7 +30,7 @@ export const useGearBuildPoints = (): BpLineItem => {
   const gearBuildPoints = Math.ceil(gearNuyenCost / GearNuyenPerBuildPoint)
 
   return {
-    label: "Gear",
+    sectionId: BuilderSectionId.gear,
     spent: gearBuildPoints,
     allowance: GearBuildPointAllowance,
     isOverBudget: gearBuildPoints > GearBuildPointAllowance,

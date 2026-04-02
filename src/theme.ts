@@ -75,6 +75,14 @@ export const theme = createTheme({
   },
 
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
+
     MuiButton: {
       styleOverrides: {
         root: {
@@ -96,6 +104,30 @@ export const theme = createTheme({
       },
     },
 
+    MuiChip: {
+      styleOverrides: {
+        root: { borderRadius: 0 },
+      },
+    },
+
+    MuiInput: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+
+    MuiMenu: {
+      styleOverrides: {
+        paper: { borderRadius: 0 },
+      },
+    },
+
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: { borderRadius: 0 },
+      },
+    },
+
     MuiPaper: {
       defaultProps: {
         variant: "outlined",
@@ -107,35 +139,27 @@ export const theme = createTheme({
       },
     },
 
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          borderRadius: 0,
-        },
+    MuiSelect: {
+      defaultProps: {
+        size: "small",
       },
     },
 
-    MuiChip: {
-      styleOverrides: {
-        root: { borderRadius: 0 },
+    MuiStack: {
+      defaultProps: {
+        gap: 1,
       },
     },
 
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: { borderRadius: 0 },
+    MuiTextField: {
+      defaultProps: {
+        size: "small",
       },
     },
 
     MuiTooltip: {
       styleOverrides: {
         tooltip: { borderRadius: 0 },
-      },
-    },
-
-    MuiMenu: {
-      styleOverrides: {
-        paper: { borderRadius: 0 },
       },
     },
   },
