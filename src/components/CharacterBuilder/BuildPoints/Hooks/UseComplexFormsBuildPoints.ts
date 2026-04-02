@@ -1,19 +1,20 @@
 import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { useComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
-import { ComplexFormBpPerRating } from "#/components/Technomancer/TechnomancerUtils.ts"
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { ComplexFormBpPerRating, isTechnomancer } from "#/components/Technomancer/TechnomancerUtils.ts"
 
-export const useComplexFormsBuildPoints = () => {
+export const useComplexFormsBuildPoints = (): BpLineItem => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const complexForms = useComplexForms()
-
-  if (awakeningType !== AwakeningType.Technomancer) {
-    return { spent: 0 }
-  }
 
   const complexFormsBp = complexForms
     .map((form) => form.rating * ComplexFormBpPerRating)
     .reduce((total, cost) => total + cost, 0)
 
-  return { spent: complexFormsBp }
+  return {
+    sectionId: BuilderSectionId.complexForms,
+    spent: complexFormsBp,
+    enabled: isTechnomancer(awakeningType),
+  }
 }

@@ -3,13 +3,16 @@ import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
 import { useAdeptPowersBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseAttributesBuildPoints.ts"
+import {
+  useComplexFormsBuildPoints,
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import { useContactsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseContactsBuildPoints.ts"
 import { useGearBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseGearBuildPoints.ts"
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
+import { useSpritesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpritesBuildPoints.ts"
+import { useQualitiesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/useQualitiesBuildPoints.ts"
 import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/CharacterBuilderUtils.ts"
-import {
-  useTechnomancerBuildPoints,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/TechnomancerSectionHooks.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
@@ -22,14 +25,16 @@ import { awakenings } from "#/lib/system/awakeningType.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
-    { label: "Profile", spent: 0 },
+    { sectionId: BuilderSectionId.profile, spent: 0 },
     useBuilderBiologyBuildPoints(),
     useAttributesBuildPoints(),
-    useBuilderQualitiesBuildPoints(),
-    useBuilderSkillsBuildPoints(),
+    useQualitiesBuildPoints(),
+    useActiveSkillsBuildPoints(),
+    useKnowledgeSkillsBuildPoints(),
     useSpellsBuildPoints(),
     useAdeptPowersBuildPoints(),
-    useTechnomancerBuildPoints(),
+    useComplexFormsBuildPoints(),
+    useSpritesBuildPoints(),
     useGearBuildPoints(),
     useContactsBuildPoints(),
   ]
@@ -56,49 +61,49 @@ export const useBuilderBiologyBuildPoints = (): BpLineItem => {
   const awakeningCost = awakenings[awakeningType].cost
 
   return {
-    label: "Biology",
+    sectionId: BuilderSectionId.biology,
     spent: metatypeCost + awakeningCost,
   }
 }
 
-export const useBuilderQualitiesBuildPoints = () => {
-  const qualities = useCharacterSheet((sheet) => sheet.qualities)
-
-  const positiveQualities = qualities
-    .filter((q) => q.type === "positive")
-
-  const positiveBP = positiveQualities
-    .reduce((acc, q) => acc + (q.bpValue ?? 0), 0)
-
-  const negativeQualities = qualities
-    .filter((q) => q.type === "negative")
-
-  const negativeBP = negativeQualities
-    .reduce((acc, q) => acc + (q.bpValue ?? 0), 0)
+export const useBuilderSkillsBuildPoints = () => {
+  const activeSkillsBp = useActiveSkillsBuildPoints().spent
+  const knowledgeSkillBp = useKnowledgeSkillsBuildPoints().spent
 
   return {
-    label: "Qualities",
-    spent: positiveBP - negativeBP,
-    qualities: {
-      positive: positiveQualities,
-      negative: negativeQualities,
+    label: "Skills",
+    spent: activeSkillsBp + knowledgeSkillBp,
+    activeSkills: {
+      bpSpent: activeSkillsBp,
+    },
+    knowledgeSkills: {
+      bpSpent: knowledgeSkillBp,
     },
   }
 }
 
-export const useBuilderSkillsBuildPoints = () => {
-  const logicAttr = useAttr(AttributeKey.logic)
-  const intuitionAttr = useAttr(AttributeKey.intuition)
-
+export const useActiveSkillsBuildPoints = () => {
   const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
   const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
-  const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)
-  const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
     activeSkillGroups,
   )
+
+  return {
+    sectionId: BuilderSectionId.activeSkills,
+    label: "Active Skills",
+    spent: activeSkillsBp,
+  }
+}
+
+export const useKnowledgeSkillsBuildPoints = () => {
+  const logicAttr = useAttr(AttributeKey.logic)
+  const intuitionAttr = useAttr(AttributeKey.intuition)
+
+  const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)
+  const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
 
   const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
     knowledgeSkills,
@@ -109,13 +114,8 @@ export const useBuilderSkillsBuildPoints = () => {
   const extraSpBp = calculateExtraSpBp(totalSpUsed, freeSkillPoints)
 
   return {
-    label: "Skills",
-    spent: activeSkillsBp + extraSpBp,
-    activeSkills: {
-      bpSpent: activeSkillsBp,
-    },
-    knowledgeSkills: {
-      bpSpent: extraSpBp,
-    },
+    sectionId: BuilderSectionId.knowledgeSkills,
+    label: "Knowledge Skills",
+    spent: extraSpBp,
   }
 }

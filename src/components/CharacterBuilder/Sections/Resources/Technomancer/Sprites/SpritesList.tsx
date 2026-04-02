@@ -10,8 +10,10 @@ import { useState } from "react"
 
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
 import { useSpritesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpritesBuildPoints.ts"
-import { SpriteDialog } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/SpriteDialog.tsx"
-import { SpritesListItem } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/SpritesListItem.tsx"
+import { SpriteDialog } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpriteDialog.tsx"
+import {
+  SpritesListItem,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesListItem.tsx"
 import { useMaxSpritesRegistered } from "#/components/Technomancer/SpritesHooks.ts"
 import { useSpritesStore } from "#/components/Technomancer/UseSpritesStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"

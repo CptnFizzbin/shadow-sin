@@ -1,5 +1,6 @@
 import { Button } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
+import ButtonBase from "@mui/material/ButtonBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Collapse from "@mui/material/Collapse"
 import LinearProgress from "@mui/material/LinearProgress"
@@ -13,7 +14,8 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/useBuildPointsApi.ts"
+import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/useBuildPointsApi.ts"
+import { builderSections } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -32,6 +34,26 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
     onExpandedChange?.(expanded)
   }
 
+  const handleSectionClick = (sectionId: string | undefined) => {
+    if (!sectionId) return
+
+    const targetElement = document.getElementById(sectionId)
+    if (!targetElement) {
+      handleExpandedChange(false)
+      return
+    }
+
+    targetElement.focus({ preventScroll: true })
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    targetElement.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "center",
+    })
+
+    handleExpandedChange(false)
+  }
+
   return (
     <ClickAwayListener
       onClickAway={(event) => {
@@ -48,23 +70,36 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
           <Stack gap={1}>
             <Table size="small">
               <TableBody>
-                {summary.lineItems.map(({ label, spent, allowance }) => {
+                {summary.lineItems.map(({ sectionId, spent, allowance }) => {
+                  const section = builderSections[sectionId]
                   const isOver = spent > (allowance ?? Infinity)
 
                   return (
-                    <TableRow key={label}>
-                      <TableCell>
-                        <Typography
-                          variant="body2"
-                          color={isOver ? "error" : "text.primary"}
+                    <TableRow key={sectionId}>
+                      <TableCell colSpan={2} sx={{ padding: 0 }}>
+                        <ButtonBase
+                          onClick={() => handleSectionClick(sectionId)}
+                          disabled={!sectionId}
+                          sx={{
+                            "width": "100%",
+                            "display": "flex",
+                            "justifyContent": "space-between",
+                            "alignItems": "center",
+                            "px": 1,
+                            "py": 0.5,
+                            "&:hover": sectionId ? { backgroundColor: "action.hover" } : undefined,
+                          }}
                         >
-                          {label}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right">
-                        {spent !== 0 && (
-                          <BuildPoints value={spent} error={isOver} />
-                        )}
+                          <Typography
+                            variant="body2"
+                            color={isOver ? "error" : "text.primary"}
+                          >
+                            {section.label}
+                          </Typography>
+                          {spent !== 0 && (
+                            <BuildPoints value={spent} error={isOver} />
+                          )}
+                        </ButtonBase>
                       </TableCell>
                     </TableRow>
                   )

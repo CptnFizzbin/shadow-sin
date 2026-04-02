@@ -1,13 +1,13 @@
-import Stack from "@mui/material/Stack"
-import { useThrottler } from "@tanstack/react-pacer"
+import Box from "@mui/material/Box"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
-import { useStore } from "@tanstack/react-store"
-import type { FC } from "react"
-import { useEffect, useMemo, useRef } from "react"
+import { useMemo } from "react"
 
-import { CharacterSheetProvider, useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
+import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
-import { Header } from "#/components/UI/Header.tsx"
+import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
+import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
+import { usePersistStore } from "#/components/CharacterBuilder/StorePersister.ts"
+import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -26,49 +26,22 @@ export const Route = createFileRoute("/$characterId")({
   },
 })
 
-const CharacterStorePersistence: FC = () => {
-  const characterStore = useCharacterSheetContext()
-  const character = useStore(characterStore, (state) => state)
-  const hasMountedRef = useRef(false)
-  const characterSaveThrottler = useThrottler(
-    (nextCharacter: CharacterSheet) => {
-      void localCharacterManager.saveCharacter(nextCharacter)
-    },
-    {
-      wait: 30_000,
-      leading: false,
-      trailing: true,
-      onUnmount: (throttler) => {
-        throttler.flush()
-      },
-    },
-  )
-
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true
-      return
-    }
-
-    characterSaveThrottler.maybeExecute(character)
-  }, [character, characterSaveThrottler])
-
-  return null
-}
-
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
 
+  const { nextPage, prevPage } = useCharacterNav()
+  usePersistStore(`character:${character.id}`, store)
+
   return (
     <CharacterSheetProvider store={store}>
-      <CharacterStorePersistence />
+      <CharacterSheetNav />
 
-      <Stack spacing={2}>
-        <Header character={character} />
-
-        <Outlet />
-      </Stack>
+      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
+        <Box sx={{ padding: 1 }}>
+          <Outlet />
+        </Box>
+      </SwipeSurface>
     </CharacterSheetProvider>
   )
 }

@@ -16,8 +16,24 @@ import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/C
 import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/GearBuilderSection.tsx"
 import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
-import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
-import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersBuilderSection.tsx"
+import {
+  SpellsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsBuilderSection.tsx"
+import {
+  ComplexFormsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesBuilderSection.tsx"
+import {
+  ActiveSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsBuilderSection.tsx"
+import {
+  KnowledgeSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -76,8 +92,12 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
           <BiologyBuilderSection />
           <AttributesBuilderSection />
           <QualitiesBuilderSection />
-          <SkillsBuilderSection />
-          <AwakenedSection />
+          <ActiveSkillsBuilderSection />
+          <KnowledgeSkillsBuilderSection />
+          <AdeptPowersBuilderSection />
+          <SpellsBuilderSection />
+          <ComplexFormsBuilderSection />
+          <SpritesBuilderSection />
           <GearBuilderSection />
           <ContactsBuilderSection />
         </Stack>
