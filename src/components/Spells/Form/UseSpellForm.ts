@@ -23,6 +23,7 @@ const defaultValues: SpellData = {
   threshold: "",
   voluntaryTargetsOnly: false,
   description: "",
+  effects: [],
 }
 
 export interface SpellFormOptions {

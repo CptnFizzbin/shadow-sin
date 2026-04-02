@@ -1,5 +1,6 @@
 import type { ItemData } from "#/lib/system/ItemData.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
+import type { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
 import { GearType } from "../gearType.ts"
 
 export enum FirearmAttachmentPoint {
@@ -22,36 +23,17 @@ export interface WeaponData extends ItemData {
   dmg: string
   ap?: number
   itemType: GearType.weapon
-  weaponType: WeaponType | string
+  weaponType: WeaponType
   skill?: string
   attribute?: AttributeKey
 }
 
-export enum FirearmType {
-  taser = "taser",
-  holdout = "holdout",
-  lightPistol = "light pistol",
-  heavyPistol = "heavy pistol",
-  machinePistol = "machine pistol",
-  smg = "submachine gun",
-  assaultRifle = "assault rifle",
-  sportRifle = "sport rifle",
-  sniperRifle = "sniper rifle",
-  shotgun = "shotgun",
-  special = "special",
-  lmg = "light machine gun",
-  mmg = "medium machine gun",
-  hmg = "heavy machine gun",
-  grenadeLauncher = "grenade launcher",
-  assultCannon = "assault cannon",
-  missleLauncher = "missile launcher",
-}
-
 export interface FirearmData extends WeaponData {
   weaponType: WeaponType.firearm
-  firearmType: FirearmType | string
+  firearmType: FirearmTypeKey
   firemodes: string[]
   recoil: number
+  attachmentPoints?: FirearmAttachmentPoint[]
 
   ammo: {
     size: number
@@ -64,13 +46,6 @@ export interface FirearmData extends WeaponData {
       | "magazine"
       | "cylinder"
       | "belt"
-  }
-
-  ranges: {
-    short: number
-    medium: number
-    long: number
-    extreme: number
   }
 }
 

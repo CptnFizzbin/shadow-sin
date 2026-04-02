@@ -79,10 +79,12 @@ export enum SkillKey {
 export interface SkillInfo {
   attr: AttributeKey
   group?: SkillGroupKey
+  isWeaponSkill?: boolean
   defaultable?: boolean
+  specializations?: string[]
 }
 
-export const Skills: Record<SkillKey, SkillInfo> = {
+export const Skills: Readonly<Record<SkillKey, SkillInfo>> = {
   [SkillKey.aronauticsMechanic]: {
     attr: AttributeKey.logic,
     group: SkillGroupKey.Mechanic,
@@ -115,6 +117,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     defaultable: false,
   },
   [SkillKey.automatics]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.Firearms,
   },
@@ -129,6 +132,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     defaultable: false,
   },
   [SkillKey.blades]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.CloseCombat,
   },
@@ -140,6 +144,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Athletics,
   },
   [SkillKey.clubs]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.CloseCombat,
   },
@@ -203,9 +208,11 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Influence,
   },
   [SkillKey.exoticMeleeWeapons]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
   },
   [SkillKey.exoticRangedWeapons]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
   },
   [SkillKey.firstAid]: {
@@ -216,6 +223,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.agility,
   },
   [SkillKey.gunnery]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
   },
   [SkillKey.gymnastics]: {
@@ -232,6 +240,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     defaultable: false,
   },
   [SkillKey.heavyWeapons]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
   },
   [SkillKey.industrialMechanic]: {
@@ -257,6 +266,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.agility,
   },
   [SkillKey.longarms]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.Firearms,
   },
@@ -311,6 +321,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.reaction,
   },
   [SkillKey.pistols]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.Firearms,
   },
@@ -356,6 +367,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Athletics,
   },
   [SkillKey.thrownWeapons]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
   },
   [SkillKey.tracking]: {
@@ -363,6 +375,7 @@ export const Skills: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Outdoors,
   },
   [SkillKey.unarmedCombat]: {
+    isWeaponSkill: true,
     attr: AttributeKey.agility,
     group: SkillGroupKey.CloseCombat,
   },

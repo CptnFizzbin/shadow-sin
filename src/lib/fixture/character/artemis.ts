@@ -1,3 +1,4 @@
+import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 import { createItem, createItemMap } from "#/lib/system/ItemData.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType"
@@ -7,7 +8,6 @@ import { SkillKey } from "#/lib/system/SkillKey.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { GameEffectType } from "#/lib/system/gameEffectData.ts"
 import type { SinData } from "#/lib/system/gear/SinData.ts"
 import type { ArmorData } from "#/lib/system/gear/armorData.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
@@ -17,7 +17,8 @@ import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SoftwareData } from "#/lib/system/gear/softwareData.ts"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
 import type { FirearmAccessoryData, FirearmData } from "#/lib/system/gear/weaponData.ts"
-import { FirearmAttachmentPoint, FirearmType, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
 export const Artemis: CharacterSheet = {
@@ -123,16 +124,10 @@ export const Artemis: CharacterSheet = {
       name: "FN P93 Predator",
       itemType: GearType.weapon,
       weaponType: WeaponType.firearm,
-      firearmType: FirearmType.lightPistol,
+      firearmType: FirearmTypeKey.lightPistol,
       attribute: AttributeKey.agility,
       skill: "Firearms",
       dmg: "4P",
-      ranges: {
-        extreme: 0,
-        long: 0,
-        medium: 0,
-        short: 0,
-      },
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {
@@ -180,12 +175,11 @@ export const Artemis: CharacterSheet = {
       ammo: { remaining: 11, size: 11, type: "clip" },
       dmg: "2P",
       firemodes: ["SA"],
-      ranges: { extreme: 0, long: 0, medium: 0, short: 0 },
       recoil: 0,
       name: "Colt America L36",
       itemType: GearType.weapon,
       weaponType: WeaponType.firearm,
-      firearmType: FirearmType.smg,
+      firearmType: FirearmTypeKey.smg,
       skill: "Firearms",
       attribute: AttributeKey.agility,
     }, [
@@ -289,9 +283,9 @@ export const Artemis: CharacterSheet = {
       location: ImplantLocation.head,
       effects: [
         {
-          type: GameEffectType.attrBonus,
+          type: GameEffectType.attrMod,
           target: AttributeKey.logic,
-          value: 3,
+          value: +3,
         },
       ],
     }),
@@ -315,13 +309,13 @@ export const Artemis: CharacterSheet = {
       location: ImplantLocation.head,
       effects: [
         {
-          type: GameEffectType.attrBonus,
+          type: GameEffectType.attrMod,
           target: AttributeKey.reaction,
-          value: 2,
+          value: +2,
         },
         {
           type: GameEffectType.initiativeBonus,
-          value: 2,
+          value: +2,
         },
       ],
     }),
