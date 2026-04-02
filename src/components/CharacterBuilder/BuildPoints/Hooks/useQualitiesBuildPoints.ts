@@ -1,39 +1,30 @@
-import { useStore } from "@tanstack/react-store"
+import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/BpLineItem.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 
-import type { BuildPointsInfo } from "#/components/CharacterBuilder/BuildPoints/BuildPointsUtils.ts"
-import { useQualitiesStore } from "#/components/Qualities/UseQualitiesStore.ts"
-
-export const MAX_NEGATIVE_QUALITY_BP = 35
-
-export interface QualityBuildPoints extends BuildPointsInfo {
+export interface QualitiesBuildPoints extends BpLineItem {
   positive: number
   negative: number
 }
 
-export const getQualityBpValue = (quality: {
-  bpValue?: number
-  type: "positive" | "negative"
-}) => {
-  const bpValue = quality.bpValue ?? 0
-  return quality.type === "positive" ? bpValue : -bpValue
-}
+export const useQualitiesBuildPoints = (): QualitiesBuildPoints => {
+  const qualities = useCharacterSheet((sheet) => sheet.qualities)
 
-export const useBuilderQualitiesBuildPoints = (): QualityBuildPoints => {
-  const qualitiesStore = useQualitiesStore()
-  const qualities = useStore(qualitiesStore, (state) => state)
-
-  const negativeBp = qualities
-    .filter((q) => q.type === "negative")
-    .map(getQualityBpValue)
-    .reduce((total, bpValue) => total + bpValue, 0)
-
-  const positiveBp = qualities
+  const positiveQualities = qualities
     .filter((q) => q.type === "positive")
-    .map(getQualityBpValue)
-    .reduce((total, bpValue) => total + bpValue, 0)
+
+  const positiveBp = positiveQualities
+    .reduce((acc, q) => acc + (q.bpValue ?? 0), 0)
+
+  const negativeQualities = qualities
+    .filter((q) => q.type === "negative")
+
+  const negativeBp = negativeQualities
+    .reduce((acc, q) => acc + (q.bpValue ?? 0), 0)
 
   return {
-    spent: positiveBp + negativeBp,
+    sectionId: BuilderSectionId.qualities,
+    spent: positiveBp - negativeBp,
     positive: positiveBp,
     negative: negativeBp,
   }

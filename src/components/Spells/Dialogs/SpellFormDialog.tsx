@@ -29,18 +29,15 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
   onClose,
   onClosed = noop,
 }) => {
-  const editMode = !!spell
+  const title = spell ? "Edit Spell" : "Add Spell"
 
-  const onSubmit = (nextSpell: SpellData) => {
-    onSave(nextSpell)
-    onClose()
-  }
-
-  const form = useSpellForm(
-    editMode ? { mode: "edit", spell, onSubmit } : { mode: "create", onSubmit },
-  )
-
-  const title = editMode ? "Edit Spell" : "Add Spell"
+  const form = useSpellForm({
+    spell,
+    onSubmit: (nextSpell: SpellData) => {
+      onSave(nextSpell)
+      onClose()
+    },
+  })
 
   return (
     <Dialog
