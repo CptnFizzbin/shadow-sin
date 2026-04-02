@@ -1,9 +1,9 @@
 import { revalidateLogic } from "@tanstack/form-core"
 
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { TraditionData } from '#/lib/system/magic/tradition-data.ts"
-import { TraditionDataSchema } from '#/lib/system/magic/tradition-data.ts"
+import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
+import { AttributeKey } from "#/lib/system/attribute-key.ts"
+import type { TraditionData } from "#/lib/system/magic/tradition-data.ts"
+import { TraditionDataSchema } from "#/lib/system/magic/tradition-data.ts"
 
 const defaultTraditionValues: TraditionData = {
   name: "",

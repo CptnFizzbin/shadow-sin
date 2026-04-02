@@ -1,11 +1,11 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import { NullUuid } from "#/lib/UuidUtils.ts"
-import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
+import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weapon-data.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weapon-data.ts"
 import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { GearType } from "#/lib/system/gear-type.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export interface WeaponFormOptions {
   weapon?: WeaponData

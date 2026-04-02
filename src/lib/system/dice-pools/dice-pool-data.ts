@@ -1,5 +1,5 @@
-import type { SkillKey } from "#/lib/system/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/lib/system/attribute-key.ts"
+import type { SkillKey } from "#/lib/system/skill-key.ts"
 
 export interface DicePoolItem {
   attr?: AttributeKey

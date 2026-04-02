@@ -2,13 +2,8 @@ import DownloadIcon from "@mui/icons-material/Download"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-<<<<<<<< HEAD:src/components/CharacterBuilder/export-character-button.tsx
 import { useCharacterSheetContext } from "#/components/Character/character-sheet-provider.tsx"
-import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/export-utils.ts"
-========
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
-import { characterSheetToYaml, downloadTextFile } from '#/components/Character/export-utils.ts"
->>>>>>>> origin/shadowrun-4e:src/components/Character/ExportCharacterButton.tsx
+import { characterSheetToYaml, downloadTextFile } from "#/components/Character/export-utils.ts"
 
 export const ExportCharacterButton: FC = () => {
   const store = useCharacterSheetContext()

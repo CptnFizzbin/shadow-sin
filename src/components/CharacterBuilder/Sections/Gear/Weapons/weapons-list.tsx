@@ -7,13 +7,13 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
-import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemCard.tsx"
-import { WeaponFormDialog } from '#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/weapon-form-dialog.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
-import type { ItemData } from "#/lib/system/ItemData.ts"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/gear-item-form-dialog.tsx"
+import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/gear-item-card.tsx"
+import { WeaponFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/weapon-form-dialog.tsx"
+import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import type { WeaponData } from "#/lib/system/gear/weapon-data.ts"
+import { GearType } from "#/lib/system/gear-type.ts"
+import type { ItemData } from "#/lib/system/item-data.ts"
 
 type WeaponDialogState =
   | null

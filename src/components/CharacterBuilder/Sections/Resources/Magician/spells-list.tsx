@@ -6,14 +6,14 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
-import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellListItem.tsx"
-import { TraditionCard } from '#/components/CharacterBuilder/Sections/Resources/Magician/tradition-card.tsx"
-import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
-import { useSpellsStore } from "#/components/Spells/UseSpellsStore.ts"
-import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import { Label } from "#/components/UI/Text/Label.tsx"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-spells-build-points.ts"
+import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/Magician/spell-list-item.tsx"
+import { TraditionCard } from "#/components/CharacterBuilder/Sections/Resources/Magician/tradition-card.tsx"
+import { SpellFormDialog } from "#/components/Spells/Dialogs/spell-form-dialog.tsx"
+import { useSpellsStore } from "#/components/Spells/use-spells-store.ts"
+import { Label } from "#/components/UI/Text/label.tsx"
+import { BuildPoints } from "#/components/UI/build-points.tsx"
+import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 
 type DialogState =
   | null

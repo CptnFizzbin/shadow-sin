@@ -4,8 +4,8 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
-import { downloadTextFile } from '#/components/Character/export-utils.ts"
-import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
+import { downloadTextFile } from "#/components/Character/export-utils.ts"
+import { localCharacterManager } from "#/lib/storage/local-storage/local-character-manager.ts"
 
 export const CharacterErrorRoute = () => {
   // Derive characterId from the current location as a robust way to get the

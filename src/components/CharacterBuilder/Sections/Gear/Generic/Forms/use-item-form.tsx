@@ -1,9 +1,9 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import { NullUuid } from "#/lib/UuidUtils.ts"
-import type { ItemData } from "#/lib/system/ItemData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
+import { GearType } from "#/lib/system/gear-type.ts"
+import type { ItemData } from "#/lib/system/item-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export interface ItemFormOptions {
   item?: ItemData

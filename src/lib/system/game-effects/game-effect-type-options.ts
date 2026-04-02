@@ -1,8 +1,8 @@
-import { DamageTrackKey } from '#/lib/system/damage-track-key.ts"
-import { dicePools } from '#/lib/system/dice-pools/dice-pool-data.ts"
-import { GameEffectType } from '#/lib/system/game-effects/game-effect-type.ts"
-import { SkillKey } from "#/lib/system/SkillKey.ts"
-import { AttributeKey, AttributeLabels } from "#/lib/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels } from "#/lib/system/attribute-key.ts"
+import { DamageTrackKey } from "#/lib/system/damage-track-key.ts"
+import { dicePools } from "#/lib/system/dice-pools/dice-pool-data.ts"
+import { GameEffectType } from "#/lib/system/game-effects/game-effect-type.ts"
+import { SkillKey } from "#/lib/system/skill-key.ts"
 
 export interface GameEffectOption {
   label: string

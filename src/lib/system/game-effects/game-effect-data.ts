@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { DamageTrackKey } from '#/lib/system/damage-track-key.ts"
-import type { DicePoolKey } from '#/lib/system/dice-pools/dice-pool-data.ts"
-import { GameEffectType } from '#/lib/system/game-effects/game-effect-type.ts"
-import { SkillKey } from "#/lib/system/SkillKey.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/lib/system/attribute-key.ts"
+import { DamageTrackKey } from "#/lib/system/damage-track-key.ts"
+import type { DicePoolKey } from "#/lib/system/dice-pools/dice-pool-data.ts"
+import { GameEffectType } from "#/lib/system/game-effects/game-effect-type.ts"
+import { SkillKey } from "#/lib/system/skill-key.ts"
 
 export interface GameEffectData {
   type: GameEffectType | string

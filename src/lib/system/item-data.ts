@@ -1,8 +1,8 @@
 import type { UUID } from "node:crypto"
 
-import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
-import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
-import type { SourceData } from "#/lib/system/sourceData.ts"
+import type { AvailablityInfo } from "#/lib/system/availablity-info.ts"
+import type { GameEffectData } from "#/lib/system/game-effects/game-effect-data.ts"
+import type { SourceData } from "#/lib/system/source-data.ts"
 
 export interface ItemData {
   id: UUID

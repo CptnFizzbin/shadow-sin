@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/lib/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/lib/system/attribute-key.ts"
 
 export interface TraditionSpiritTypes {
   combat: string

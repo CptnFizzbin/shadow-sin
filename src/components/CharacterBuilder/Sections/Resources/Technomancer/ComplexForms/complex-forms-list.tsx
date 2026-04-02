@@ -8,22 +8,22 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useAttr } from "#/components/Character/CharacterUtils.ts"
+import { useAttr } from "#/components/Character/character-utils.ts"
 import {
   useComplexFormsBuildPoints,
-} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/use-complex-forms-build-points.ts"
 import {
   ComplexFormDialog,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormDialog.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/complex-form-dialog.tsx"
 import {
   ComplexFormsListItem,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsListItem.tsx"
-import { useMaxComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
-import { useComplexFormsStore } from "#/components/Technomancer/UseComplexFormsStore.ts"
-import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import { getProgress } from "#/lib/ProgressUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/complex-forms-list-item.tsx"
+import { useMaxComplexForms } from "#/components/Technomancer/complex-forms-hooks.ts"
+import { useComplexFormsStore } from "#/components/Technomancer/use-complex-forms-store.ts"
+import { BuildPoints } from "#/components/UI/build-points.tsx"
+import { getProgress } from "#/lib/progress-utils.ts"
+import { AttributeKey } from "#/lib/system/attribute-key.ts"
+import type { ComplexFormData } from "#/lib/system/magic/complex-form-data.ts"
 
 type ComplexFormDialogState =
   | null

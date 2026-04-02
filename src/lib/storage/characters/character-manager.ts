@@ -1,11 +1,11 @@
 import { sort } from "fast-sort"
 import semver from "semver"
 
-import type { StorageManager } from "#/lib/storage/StorageManager.ts"
-import type { StoredJsonFile } from "#/lib/storage/StorageProvider.ts"
-import type { CharacterLoadError } from '#/lib/storage/characters/character-load-error.ts"
+import type { CharacterLoadError } from "#/lib/storage/characters/character-load-error.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { StorageManager } from "#/lib/storage/storage-manager.ts"
+import type { StoredJsonFile } from "#/lib/storage/storage-provider.ts"
+import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>

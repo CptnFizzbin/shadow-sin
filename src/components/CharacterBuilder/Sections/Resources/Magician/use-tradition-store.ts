@@ -1,10 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
-import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
-import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
-import type { TraditionData } from '#/lib/system/magic/tradition-data.ts"
+import { useCharacterSheetContext } from "#/components/Character/character-sheet-provider.tsx"
+import { createSliceAtom } from "#/integrations/tanstack-store/atom-utils.ts"
+import { StoreSlice } from "#/integrations/tanstack-store/store-slice.ts"
+import type { TraditionData } from "#/lib/system/magic/tradition-data.ts"
 
 export type TraditionStoreState = TraditionData | undefined
 

@@ -3,9 +3,9 @@ import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { GameEffectsFieldGroup } from '#/components/GameEffects/game-effects-field-group.tsx"
-import type { QualityForm } from "#/components/Qualities/Form/UseQualityForm.ts"
-import { SourceFieldGroup } from '#/components/Sources/source-field-group.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/game-effects-field-group.tsx"
+import type { QualityForm } from "#/components/Qualities/Form/use-quality-form.ts"
+import { SourceFieldGroup } from "#/components/Sources/source-field-group.tsx"
 
 export interface QualityFormFieldsProps {
   form: QualityForm

@@ -5,10 +5,10 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { TraditionFormDialog } from '#/components/CharacterBuilder/Sections/Resources/Magician/tradition-form-dialog.tsx"
-import { useTraditionStore } from '#/components/CharacterBuilder/Sections/Resources/Magician/use-tradition-store.ts"
-import { AttributeLabels } from "#/lib/system/attributeKey.ts"
-import type { TraditionData } from '#/lib/system/magic/tradition-data.ts"
+import { TraditionFormDialog } from "#/components/CharacterBuilder/Sections/Resources/Magician/tradition-form-dialog.tsx"
+import { useTraditionStore } from "#/components/CharacterBuilder/Sections/Resources/Magician/use-tradition-store.ts"
+import { AttributeLabels } from "#/lib/system/attribute-key.ts"
+import type { TraditionData } from "#/lib/system/magic/tradition-data.ts"
 
 export const TraditionCard: FC = () => {
   const traditionStore = useTraditionStore()

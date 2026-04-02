@@ -4,12 +4,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 
-import { GameEffectRow } from '#/components/GameEffects/game-effect-row.tsx"
-import { getDefaultTarget } from '#/components/GameEffects/game-effect-utils.ts"
-import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
-import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
-import { GameEffectType } from '#/lib/system/game-effects/game-effect-type.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { GameEffectRow } from "#/components/GameEffects/game-effect-row.tsx"
+import { getDefaultTarget } from "#/components/GameEffects/game-effect-utils.ts"
+import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
+import { AttributeKey } from "#/lib/system/attribute-key.ts"
+import type { GameEffectData } from "#/lib/system/game-effects/game-effect-data.ts"
+import { GameEffectType } from "#/lib/system/game-effects/game-effect-type.ts"
 
 interface FormFields {
   effects?: GameEffectData[]

@@ -6,25 +6,25 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderSkillsBuildPoints } from '#/components/CharacterBuilder/BuildPoints/Hooks/use-build-points-api.ts"
+import { useBuilderSkillsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-build-points-api.ts"
+import {
+  ActiveSkillDialog,
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/Dialogs/active-skill-dialog.tsx"
+import {
+  ActiveSkillGroupDialog,
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/Dialogs/active-skill-group-dialog.tsx"
 import {
   ActiveSkillGroupsListItem,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillGroupsListItem.tsx"
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/active-skill-groups-list-item.tsx"
 import {
   ActiveSkillsListItem,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsListItem.tsx"
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/active-skills-list-item.tsx"
 import {
   getDisabledGroups,
   getDisabledSkills,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsUtils.ts"
-import {
-  ActiveSkillDialog,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/Dialogs/ActiveSkillDialog.tsx"
-import {
-  ActiveSkillGroupDialog,
-} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/Dialogs/ActiveSkillGroupDialog.tsx"
-import { useSkillsStore } from "#/components/Skills/UseSkillsStore.ts"
-import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/active-skills-utils.ts"
+import { useSkillsStore } from "#/components/Skills/use-skills-store.ts"
+import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skill-data.ts"
 
 type DialogState =
   | null

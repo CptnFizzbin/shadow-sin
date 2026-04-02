@@ -7,9 +7,9 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { GameEffectsFieldGroup } from '#/components/GameEffects/game-effects-field-group.tsx"
-import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/game-effects-field-group.tsx"
+import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
+import type { ComplexFormData } from "#/lib/system/magic/complex-form-data.ts"
 
 interface ComplexFormDialogProps {
   open: boolean

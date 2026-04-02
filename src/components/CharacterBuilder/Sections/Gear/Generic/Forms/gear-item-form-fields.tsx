@@ -1,14 +1,14 @@
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from '#/components/Availablity/availability-field-group.tsx"
+import { AvailabilityFieldGroup } from "#/components/Availablity/availability-field-group.tsx"
 import {
   gearItemFieldMap,
   gearItemFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/UseItemForm.tsx"
-import { GameEffectsFieldGroup } from '#/components/GameEffects/game-effects-field-group.tsx"
-import { SourceFieldGroup } from '#/components/Sources/source-field-group.tsx"
-import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+} from "#/components/CharacterBuilder/Sections/Gear/Generic/Forms/use-item-form.tsx"
+import { GameEffectsFieldGroup } from "#/components/GameEffects/game-effects-field-group.tsx"
+import { SourceFieldGroup } from "#/components/Sources/source-field-group.tsx"
+import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 
 export const GearItemFormFields = withFieldGroup({
   ...gearItemFormOpts,

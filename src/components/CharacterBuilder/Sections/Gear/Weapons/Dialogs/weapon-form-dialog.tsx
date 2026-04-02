@@ -9,9 +9,9 @@ import type { FC } from "react"
 import {
   weaponFieldMap,
   useWeaponForm,
-} from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
-import { WeaponFormFields } from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-form-fields.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
+} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
+import { WeaponFormFields } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-form-fields.tsx"
+import type { WeaponData } from "#/lib/system/gear/weapon-data.ts"
 
 interface WeaponFormDialogProps {
   open: boolean

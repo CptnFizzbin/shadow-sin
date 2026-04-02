@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { weaponFormOpts } from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
-import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
+import { weaponFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
+import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 
 export const WeaponDamageFormFields = withFieldGroup({
   ...weaponFormOpts,

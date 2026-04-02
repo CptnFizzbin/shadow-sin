@@ -3,9 +3,9 @@ import Alert from "@mui/material/Alert"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import { useAllAlerts } from '#/components/CharacterBuilder/Alerts/Hooks/use-all-alerts.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
-import { orderBySeverity } from "#/components/UI/Alerts/AlertInfo.ts"
+import { useAllAlerts } from "#/components/CharacterBuilder/Alerts/Hooks/use-all-alerts.ts"
+import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import { orderBySeverity } from "#/components/UI/Alerts/alert-info.ts"
 
 interface AlertsListProps {
   alerts: AlertInfo[]
