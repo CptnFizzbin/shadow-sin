@@ -4,9 +4,9 @@
     "**/*.tsx"
   ],
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "es2024",
     "jsx": "react-jsx",
-    "module": "ESNext",
+    "module": "esNExt",
     "baseUrl": ".",
     "paths": {
       "#/*": [
@@ -17,9 +17,7 @@
       ]
     },
     "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
+      "esNext"
     ],
     "types": [
       "vite/client"

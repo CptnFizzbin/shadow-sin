@@ -2,12 +2,9 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { NullUuid } from "#/lib/UuidUtils.ts"
-import type { FirearmData, MeleeWeaponData, WeaponData,
-  FirearmAttachmentPoint } from "#/lib/system/gear/weaponData.ts"
-import {
-  FirearmType,
-  WeaponType,
-} from "#/lib/system/gear/weaponData.ts"
+import type { FirearmAttachmentPoint, FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
+import { WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
 export interface WeaponFormOptions {
@@ -16,7 +13,7 @@ export interface WeaponFormOptions {
 }
 
 // Unified form state that accommodates all weapon subtypes so a single form
-// can handle melee, firearm, thrown, and projectile weapons.
+// can handle melee, firearms, thrown, and projectile weapons.
 const defaultFormValues = {
   id: NullUuid,
   itemType: GearType.weapon as typeof GearType.weapon,
@@ -46,7 +43,7 @@ const defaultFormValues = {
   range: 0,
 
   // FirearmData-specific
-  firearmType: FirearmType.lightPistol as string,
+  firearmType: FirearmTypeKey.lightPistol as string,
   firemodes: [] as string[],
   attachmentPoints: [] as string[],
   recoil: 0,
@@ -54,12 +51,6 @@ const defaultFormValues = {
     size: 0,
     remaining: 0,
     type: "clip" as string,
-  },
-  ranges: {
-    short: 0,
-    medium: 0,
-    long: 0,
-    extreme: 0,
   },
 }
 
@@ -107,7 +98,6 @@ function toWeaponData(values: WeaponFormState): WeaponData {
         remaining: values.ammo.remaining,
         type: values.ammo.type as FirearmData["ammo"]["type"],
       },
-      ranges: values.ranges,
     } as FirearmData
   }
 
@@ -151,12 +141,11 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
         },
         quantity: weapon.quantity ?? 1,
         reach: meleeWeapon?.reach ?? 0,
-        firearmType: firearmWeapon?.firearmType ?? FirearmType.lightPistol,
+        firearmType: firearmWeapon?.firearmType ?? FirearmTypeKey.lightPistol,
         firemodes: firearmWeapon?.firemodes ?? [],
         attachmentPoints: firearmWeapon?.attachmentPoints ?? [],
         recoil: firearmWeapon?.recoil ?? 0,
         ammo: firearmWeapon?.ammo ?? defaultFormValues.ammo,
-        ranges: firearmWeapon?.ranges ?? defaultFormValues.ranges,
       }
     : {
         ...defaultFormValues,
