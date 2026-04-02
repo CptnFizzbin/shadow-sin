@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest"
 
 import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
-
 import { Artemis } from "./artemis.ts"
 
 describe("Artemis fixture", () => {

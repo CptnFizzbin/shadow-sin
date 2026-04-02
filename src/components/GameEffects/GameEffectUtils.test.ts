@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 import { DamageTrackKey } from "#/lib/system/DamageTrackKey.ts"
 import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
-
 import { getDefaultTarget, getTargetOptions } from "./GameEffectUtils.tsx"
 
 describe("getTargetOptions", () => {

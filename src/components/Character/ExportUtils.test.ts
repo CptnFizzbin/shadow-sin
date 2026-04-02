@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 
 import type { ItemData } from "#/lib/system/ItemData.ts"
-
 import { characterSheetToYaml, downloadTextFile, gearToTree } from "./ExportUtils.ts"
 
 // Minimal helper for creating ItemData in tests
@@ -160,7 +159,7 @@ describe("characterSheetToYaml", () => {
       id: "test-id",
       name: "Test Character",
       gear: {},
-    } as Parameters<typeof characterSheetToYaml>[0]
+    } as unknown as Parameters<typeof characterSheetToYaml>[0]
 
     // Act
     const yaml = characterSheetToYaml(sheet)
@@ -176,7 +175,7 @@ describe("characterSheetToYaml", () => {
       id: "abc-123",
       gear: {},
       profile: { alias: "Shadowrunner" },
-    } as Parameters<typeof characterSheetToYaml>[0]
+    } as unknown as Parameters<typeof characterSheetToYaml>[0]
 
     // Act
     const yaml = characterSheetToYaml(sheet)
@@ -191,7 +190,7 @@ describe("characterSheetToYaml", () => {
     const sheet = {
       id: "test-id",
       gear: { "item-1": item },
-    } as Parameters<typeof characterSheetToYaml>[0]
+    } as unknown as Parameters<typeof characterSheetToYaml>[0]
 
     // Act
     const yaml = characterSheetToYaml(sheet)
@@ -207,7 +206,7 @@ describe("characterSheetToYaml", () => {
     const sheet = {
       id: "test-id",
       gear: { "parent-1": parent, "child-1": child },
-    } as Parameters<typeof characterSheetToYaml>[0]
+    } as unknown as Parameters<typeof characterSheetToYaml>[0]
 
     // Act
     const yaml = characterSheetToYaml(sheet)
