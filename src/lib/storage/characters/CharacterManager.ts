@@ -105,11 +105,22 @@ export class CharacterManager {
 
     try {
       const rawData = storedCharacter.value
+      const characterId = this.extractCharacterIdFromPath(path)
+
+      if (typeof rawData !== "object" || rawData === null) {
+        return {
+          characterId,
+          path,
+          errorMessage: "Character data is not a valid object.",
+          rawData,
+        }
+      }
+
       const migrated = await this.migrateCharacter(rawData as { version: string })
 
       if (!migrated.id || !migrated.profile) {
         return {
-          characterId: this.extractCharacterIdFromPath(path),
+          characterId,
           path,
           errorMessage: "Character data is missing required fields (id or profile).",
           rawData,
