@@ -50,13 +50,13 @@ opening the builder.
 - [ ] List spells — name, type, range, duration, drain value, description
 - [ ] Show casting dice pool per spell (`Magic + Spellcasting skill`)
 - [ ] Show drain resistance pool (`Willpower + relevant resistance attribute`)
-- [ ] Gate spell list on `awakening` type (`Magician` or `MysticAdept` only)
+- [ ] Gate spell list on `CharacterSheet.biology.awakening` (`AwakeningType.Magician` or `AwakeningType.MysticAdept` — string values `"Magician"` / `"Mystic Adept"` only)
 - [ ] List adept powers — name, power point cost, description
 - [ ] Show total power points used vs. available (`Magic` rating)
-- [ ] Gate adept powers on `awakening` type (`Adept` or `MysticAdept` only)
+- [ ] Gate adept powers on `CharacterSheet.biology.awakening` (`AwakeningType.Adept` or `AwakeningType.MysticAdept` — string values `"Adept"` / `"Mystic Adept"` only)
 - [ ] List complex forms — name, target, duration, fade value
 - [ ] Show compiling/registering dice pool (`Resonance + relevant skill`)
-- [ ] Gate complex forms on `awakening` type (`Technomancer` only)
+- [ ] Gate complex forms on `CharacterSheet.biology.awakening` (`AwakeningType.Technomancer` — string value `"Technomancer"` only)
 - [ ] List sprites — type, tasks remaining; fade resistance pool
 - [ ] List foci — name, type, rating, force; show bonding status
 
@@ -89,7 +89,7 @@ The defense page has a working damage track, but several gameplay interactions a
 
 ### 2a. Physical & Stun Damage Monitors ✅ (core working, subtasks below pending)
 
-- [x] Display physical and stun damage tracks with correct box counts (`Body / 2 + 8` physical; `Willpower / 2 + 8` stun)
+- [x] Display physical and stun damage tracks with correct box counts (`8 + ceil(Body / 2)` physical; `8 + ceil(Willpower / 2)` stun — halves rounded up)
 - [x] Tap/click boxes to apply damage
 - [x] Display wound modifier (`−1 per 3 boxes filled` across both tracks)
 - [ ] **Overflow damage** — when stun track fills, excess converts to physical at 1:1 with a visual indicator
@@ -146,9 +146,9 @@ Initiative is central to every combat turn and is currently not implemented anyw
 
 Edge is a metacurrency spent during play to gain mechanical advantages; it needs to be tracked session-to-session.
 
-- [ ] Display current Edge on the about / defense page (`CharacterSheet.attributes.edge.value`)
-- [ ] **Spend Edge** button — decrement `edge.value` by 1 with a floor of 0
-- [ ] **Recover Edge** button — increment `edge.value` by 1 up to the character's Edge attribute rating
+- [ ] Display current Edge on the about / defense page (`CharacterSheet.edge.current`)
+- [ ] **Spend Edge** button — decrement `CharacterSheet.edge.current` by 1 with a floor of 0
+- [ ] **Recover Edge** button — increment `CharacterSheet.edge.current` by 1 up to the character's Edge attribute rating (`CharacterSheet.attributes.edge`)
 - [ ] Persist Edge changes immediately to storage so they survive a page refresh
 - [ ] Show a visual indicator when Edge is at max vs. depleted
 
@@ -169,7 +169,7 @@ Players with awakened or technomancer characters need quick access to their magi
 
 - [ ] **Summon spirit** action — `Magic + Summoning` roll vs. spirit's Force
 - [ ] Track summoned spirits — type, force, services remaining; remove when services are exhausted
-- [ ] Spirit condition monitor (linked from `CharacterSheet.sprites` / `spiritData.ts`)
+- [ ] Spirit condition monitor — track each summoned spirit's physical/stun damage and status (using a dedicated spirit model, separate from technomancer `sprites` / `spriteData.ts`)
 - [ ] Binding roll support (`Magic + Binding`) after a spirit is summoned
 
 ### 6c. Adept Powers in Play
@@ -211,7 +211,7 @@ Between runs runners spend karma to improve their characters. This is currently 
 These items are also in `character-builder.md` but block gameplay use because a character that can't be saved or edited
 is not usable at the table.
 
-- [ ] Wire `SaveCharacterButton` to call `characterManager.saveCharacter` and redirect to `/$characterId/about`
+- [x] `SaveCharacterButton` calls `localCharacterManager.saveCharacter` and redirects to `/$characterId` (which redirects to `/about`)
 - [ ] Add `/$characterId/edit` route that opens `CharacterBuilder` pre-populated with the existing character
 - [ ] Add **Edit** button/link on `/$characterId/about`
 - [ ] Add **Delete** button on the roster card with a confirmation dialog
