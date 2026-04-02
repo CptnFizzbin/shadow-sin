@@ -10,6 +10,7 @@ import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { ComplexFormData } from "./magic/complexFormData.ts"
 import type { SpellData } from "./magic/spellData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
+import type { TraditionData } from "./magic/traditionData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
@@ -80,6 +81,7 @@ export interface CharacterSheet {
 
   qualities: QualityData[]
   contacts: ContactData[]
+  tradition?: TraditionData
   spells: SpellData[]
   complexForms: ComplexFormData[]
   sprites: SpriteData[]

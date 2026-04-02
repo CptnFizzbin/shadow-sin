@@ -1,5 +1,4 @@
 import { Button } from "@mui/material"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
@@ -31,37 +30,31 @@ export const AdeptPowersList: FC = () => {
   const removePower = (power: AdeptPowerData) => adeptPowersStore.remove(power.id)
 
   return (
-    <Paper sx={{ padding: 1 }}>
-      <Stack gap={1}>
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          Adept Powers
+    <Stack gap={1}>
+      <PowerPoints value={powerPoints.used} total={powerPoints.max} />
+
+      {adeptPowers.length === 0 && (
+        <Typography variant="body2" color="text.secondary">
+          No adept powers added yet.
         </Typography>
+      )}
 
-        <PowerPoints value={powerPoints.used} total={powerPoints.max} />
+      {adeptPowers.map((power) => (
+        <AdeptPowersListItem
+          key={power.id}
+          power={power}
+          onEdit={() => setDialogState({ type: "edit", open: true, power })}
+        />
+      ))}
 
-        {adeptPowers.length === 0 && (
-          <Typography variant="body2" color="text.secondary">
-            No adept powers added yet.
-          </Typography>
-        )}
-
-        {adeptPowers.map((power) => (
-          <AdeptPowersListItem
-            key={power.id}
-            power={power}
-            onEdit={() => setDialogState({ type: "edit", open: true, power })}
-          />
-        ))}
-
-        <Button
-          startIcon={<RiAddLine />}
-          color="secondary"
-          variant="outlined"
-          onClick={() => setDialogState({ type: "add", open: true })}
-        >
-          Add Power
-        </Button>
-      </Stack>
+      <Button
+        startIcon={<RiAddLine />}
+        color="secondary"
+        variant="outlined"
+        onClick={() => setDialogState({ type: "add", open: true })}
+      >
+        Add Power
+      </Button>
 
       {dialogState?.type === "add" && (
         <AdeptPowerFormDialog
@@ -80,6 +73,6 @@ export const AdeptPowersList: FC = () => {
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
-    </Paper>
+    </Stack>
   )
 }

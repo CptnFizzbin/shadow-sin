@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { CharacterBuilder } from "#/components/CharacterBuilder/CharacterBuilder.tsx"
@@ -8,6 +9,8 @@ export const Route = createFileRoute("/new/")({
 
 function RouteComponent() {
   return (
-    <CharacterBuilder />
+    <Box sx={{ padding: 1 }}>
+      <CharacterBuilder />
+    </Box>
   )
 }

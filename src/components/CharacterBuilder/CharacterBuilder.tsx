@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
@@ -17,7 +16,18 @@ import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/C
 import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/GearBuilderSection.tsx"
 import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
-import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersBuilderSection.tsx"
+import {
+  SpellsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsBuilderSection.tsx"
+import {
+  ComplexFormsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesBuilderSection.tsx"
 import {
   ActiveSkillsBuilderSection,
 } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsBuilderSection.tsx"
@@ -33,7 +43,6 @@ interface CharacterFormProps {
 }
 
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
-  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
   const [rootStore, resetRootStore] = useBuilderRootStateStore(character)
   const navigate = useNavigate()
 
@@ -101,18 +110,33 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
           </Grid>
 
           <Grid size={1}>
-            <AwakenedSection />
+            <AdeptPowersBuilderSection />
+          </Grid>
+
+          <Grid size={1}>
+            <SpellsBuilderSection />
+          </Grid>
+
+          <Grid container>
+            <Grid size={1}>
+              <ComplexFormsBuilderSection />
+            </Grid>
+
+            <Grid size={1}>
+              <SpritesBuilderSection />
+            </Grid>
           </Grid>
 
           <Grid size={1}>
             <GearBuilderSection />
           </Grid>
+
           <Grid size={1}>
             <ContactsBuilderSection />
           </Grid>
         </Grid>
 
-        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
+        <BpSummaryFooter />
 
         <AllBuilderAlerts />
         <SaveCharacterButton />

@@ -1,8 +1,13 @@
+import Box from "@mui/material/Box"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
+import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
+import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
+import { usePersistStore } from "#/components/CharacterBuilder/StorePersister.ts"
+import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -25,9 +30,18 @@ function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
 
+  const { nextPage, prevPage } = useCharacterNav()
+  usePersistStore(`character:${character.id}`, store)
+
   return (
     <CharacterSheetProvider store={store}>
-      <Outlet />
+      <CharacterSheetNav />
+
+      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
+        <Box sx={{ padding: 1 }}>
+          <Outlet />
+        </Box>
+      </SwipeSurface>
     </CharacterSheetProvider>
   )
 }

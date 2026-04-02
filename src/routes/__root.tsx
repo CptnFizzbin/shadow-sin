@@ -1,5 +1,4 @@
-import { Container } from "@mui/material"
-import Box from "@mui/material/Box"
+import { Container, Divider } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
@@ -16,16 +15,27 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   return (
     <TanStackQueryProvider>
-      <Stack gap={1} direction="column" minHeight="100vh">
+      <Stack direction="column" minHeight="100vh" gap={0}>
         <Header />
 
-        <Container sx={{ maxWidth: 1200, mx: "auto", width: "100%", flexGrow: 1 }}>
+        <Container
+          disableGutters
+          sx={{
+            maxWidth: 1200,
+            mx: "auto",
+            width: "100%",
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Outlet />
         </Container>
 
-        <Box sx={{ padding: 1 }}>
+        <Stack padding={1}>
+          <Divider />
           <Footer />
-        </Box>
+        </Stack>
       </Stack>
     </TanStackQueryProvider>
   )

@@ -9,17 +9,18 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useAttr } from "#/components/Character/CharacterUtils.ts"
-import { useComplexFormsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import {
-  ComplexFormsListItem,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexFormsListItem.tsx"
+  useComplexFormsBuildPoints,
+} from "#/components/CharacterBuilder/BuildPoints/Hooks/UseComplexFormsBuildPoints.ts"
 import {
   ComplexFormDialog,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Dialogs/ComplexFormDialog.tsx"
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormDialog.tsx"
+import {
+  ComplexFormsListItem,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsListItem.tsx"
 import { useMaxComplexForms } from "#/components/Technomancer/ComplexFormsHooks.ts"
 import { useComplexFormsStore } from "#/components/Technomancer/UseComplexFormsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
-import { Label } from "#/components/UI/Text/Label.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
@@ -51,8 +52,6 @@ export const ComplexFormsList: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Label label="Complex Forms" variant="outlined" />
-
       <Stack gap={0.5}>
         <Stack
           direction="row"

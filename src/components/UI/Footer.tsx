@@ -1,9 +1,8 @@
-import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ mt: 2, py: 1 }}>
+    <footer>
       <Typography
         variant="caption"
         component="div"
@@ -14,6 +13,6 @@ export default function Footer() {
         related content are trademarks and/or copyrights of Catalyst Game Labs.
         All rights reserved.
       </Typography>
-    </Box>
+    </footer>
   )
 }
