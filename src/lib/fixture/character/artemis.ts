@@ -22,7 +22,7 @@ import { GearType } from "#/lib/system/gearType.ts"
 
 export const Artemis: CharacterSheet = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
-  version: "0.1.0",
+  version: "0.2.0",
 
   biology: {
     metatype: MetatypeType.Elf,

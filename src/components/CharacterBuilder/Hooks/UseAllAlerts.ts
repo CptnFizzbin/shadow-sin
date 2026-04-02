@@ -1,11 +1,18 @@
 import { useAttributeAlerts } from "#/components/CharacterBuilder/Alerts/Hooks/UseAttributeAlerts.ts"
-import { useBuildPointsAlerts } from "#/components/CharacterBuilder/BuildPoints/UseBuildPointsAlerts.ts"
+import { useBuildPointsAlerts } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseBuildPointsAlerts.ts"
 import { useBiologyAlerts } from "#/components/CharacterBuilder/Sections/Biology/UseBiologyAlerts.ts"
 import { useContactsAlerts } from "#/components/CharacterBuilder/Sections/Contacts/UseContactsAlerts.ts"
 import { useGearAlerts } from "#/components/CharacterBuilder/Sections/Gear/UseGearAlerts.ts"
 import { useProfileAlerts } from "#/components/CharacterBuilder/Sections/Profile/UseProfileAlerts.ts"
 import { useQualitiesAlerts } from "#/components/CharacterBuilder/Sections/Qualities/UseQualitiesAlerts.ts"
-import { useAwakenedAlerts } from "#/components/CharacterBuilder/Sections/Resources/UseAwakenedAlerts.ts"
+import { useAdeptPowersAlerts } from "#/components/CharacterBuilder/Sections/Resources/Adept/UseAdeptPowersAlerts.ts"
+import { useSpellsAlerts } from "#/components/CharacterBuilder/Sections/Resources/Magician/UseSpellsAlerts.ts"
+import {
+  useComplexFormsAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
+import {
+  useSpritesAlerts,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
 import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsAlerts.ts"
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsSummaryAlerts.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"
@@ -18,7 +25,10 @@ export function useAllAlerts(): AlertInfo[] {
     ...useQualitiesAlerts(),
     ...useSkillsSummaryAlerts(),
     ...useSkillsAlerts(),
-    ...useAwakenedAlerts(),
+    ...useSpellsAlerts(),
+    ...useAdeptPowersAlerts(),
+    ...useSpritesAlerts(),
+    ...useComplexFormsAlerts(),
     ...useGearAlerts(),
     ...useContactsAlerts(),
     ...useBuildPointsAlerts(),

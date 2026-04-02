@@ -3,7 +3,6 @@ import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
 import CharacterRosterList from "#/components/Character/CharacterRosterList.tsx"
-import { Header } from "#/components/UI/Header.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 
@@ -19,8 +18,7 @@ function IndexRoute() {
   const characters = Route.useLoaderData()
 
   return (
-    <Stack spacing={1}>
-      <Header />
+    <Stack gap={1} padding={1}>
       <Button
         variant="outlined"
         onClick={() => {
