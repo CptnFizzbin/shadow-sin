@@ -2,9 +2,9 @@ import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
-import CharacterRosterList from "#/components/Character/CharacterRosterList.tsx"
+import CharacterRosterList from "#/components/Character/character-roster-list.tsx"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
-import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
+import { localCharacterManager } from "#/lib/storage/local-storage/local-character-manager.ts"
 
 export const Route = createFileRoute("/")({
   loader: () => {

@@ -2,6 +2,7 @@ import js from "@eslint/js"
 import stylistic from "@stylistic/eslint-plugin"
 import { defineConfig } from "eslint/config"
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript"
+import checkFile from "eslint-plugin-check-file"
 import { importX } from "eslint-plugin-import-x"
 import pluginReact from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
@@ -24,6 +25,9 @@ export default defineConfig([
     braceStyle: "1tbs",
   }),
   {
+    plugins: {
+      "check-file": checkFile,
+    },
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
@@ -37,6 +41,18 @@ export default defineConfig([
       },
     },
     rules: {
+      ...{ // eslint-plugin-check-file rules
+        "check-file/filename-naming-convention": [
+          "error",
+          {
+            "**/*.{ts,tsx}": "KEBAB_CASE",
+          },
+          {
+            ignoreMiddleExtensions: true,
+          },
+        ],
+      },
+
       ...{ // builtin eslint rules
         "default-case": "error",
         "default-case-last": "error",
@@ -112,6 +128,13 @@ export default defineConfig([
             },
           }],
       },
+    },
+  },
+  {
+    // Exclude auto-generated and special TanStack Router files from filename check
+    files: ["**/routeTree.gen.ts", "**/__root.tsx"],
+    rules: {
+      "check-file/filename-naming-convention": "off",
     },
   },
   {

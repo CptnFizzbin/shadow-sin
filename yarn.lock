@@ -2603,7 +2603,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:~3.0.2":
+"braces@npm:^3.0.3, braces@npm:~3.0.2":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -3335,6 +3335,18 @@ __metadata:
     eslint-plugin-import-x:
       optional: true
   checksum: 10c0/3bf8ad77c21660f77a0e455555ab179420f68ae7a132906c85a217ccce51cb6680cf70027cab32a358d193e5b9e476f6ba2e595585242aa97d4f6435ca22104e
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-check-file@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "eslint-plugin-check-file@npm:3.3.1"
+  dependencies:
+    is-glob: "npm:^4.0.3"
+    micromatch: "npm:^4.0.8"
+  peerDependencies:
+    eslint: ">=9.0.0"
+  checksum: 10c0/1a6712a493f48b5c48a96f15b0a75f5d8f842f3cac122a57febd9349b6251d2ebb3e908cebc419be598e97df4d4f109d0c6d2bc0aafde16673328fc42d0ba308
   languageName: node
   linkType: hard
 
@@ -4751,6 +4763,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"micromatch@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "micromatch@npm:4.0.8"
+  dependencies:
+    braces: "npm:^3.0.3"
+    picomatch: "npm:^2.3.1"
+  checksum: 10c0/166fa6eb926b9553f32ef81f5f531d27b4ce7da60e5baf8c021d043b27a388fb95e46a8038d5045877881e673f8134122b59624d5cecbd16eb50a42e7a6b5ca8
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^10.2.2, minimatch@npm:^9.0.3 || ^10.1.2":
   version: 10.2.4
   resolution: "minimatch@npm:10.2.4"
@@ -5215,7 +5237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.3.1":
   version: 2.3.2
   resolution: "picomatch@npm:2.3.2"
   checksum: 10c0/a554d1709e59be97d1acb9eaedbbc700a5c03dbd4579807baed95100b00420bc729335440ef15004ae2378984e2487a7c1cebd743cfdb72b6fa9ab69223c0d61
@@ -5782,6 +5804,7 @@ __metadata:
     babel-plugin-react-compiler: "npm:^1.0.0"
     eslint: "npm:^9.39.4"
     eslint-import-resolver-typescript: "npm:^4.4.4"
+    eslint-plugin-check-file: "npm:^3.3.1"
     eslint-plugin-import-x: "npm:^4.16.2"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^7.0.1"
