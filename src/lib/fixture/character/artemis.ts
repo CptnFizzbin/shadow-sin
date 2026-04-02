@@ -17,7 +17,8 @@ import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SoftwareData } from "#/lib/system/gear/softwareData.ts"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
 import type { FirearmAccessoryData, FirearmData } from "#/lib/system/gear/weaponData.ts"
-import { FirearmAttachmentPoint, FirearmType, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearm-type-key.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 
 export const Artemis: CharacterSheet = {
@@ -123,16 +124,10 @@ export const Artemis: CharacterSheet = {
       name: "FN P93 Predator",
       itemType: GearType.weapon,
       weaponType: WeaponType.firearm,
-      firearmType: FirearmType.lightPistol,
+      firearmType: FirearmTypeKey.lightPistol,
       attribute: AttributeKey.agility,
       skill: "Firearms",
       dmg: "4P",
-      ranges: {
-        extreme: 0,
-        long: 0,
-        medium: 0,
-        short: 0,
-      },
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {
@@ -180,12 +175,11 @@ export const Artemis: CharacterSheet = {
       ammo: { remaining: 11, size: 11, type: "clip" },
       dmg: "2P",
       firemodes: ["SA"],
-      ranges: { extreme: 0, long: 0, medium: 0, short: 0 },
       recoil: 0,
       name: "Colt America L36",
       itemType: GearType.weapon,
       weaponType: WeaponType.firearm,
-      firearmType: FirearmType.smg,
+      firearmType: FirearmTypeKey.smg,
       skill: "Firearms",
       attribute: AttributeKey.agility,
     }, [
