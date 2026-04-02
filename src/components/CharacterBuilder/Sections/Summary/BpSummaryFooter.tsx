@@ -14,7 +14,8 @@ import { lightBlue } from "@mui/material/colors"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/useBuildPointsApi.ts"
+import { useBuilderBuildPointsApi } from "#/components/CharacterBuilder/BuildPoints/Hooks/useBuildPointsApi.ts"
+import { builderSections } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"
 import { getProgress } from "#/lib/ProgressUtils.ts"
 
@@ -45,7 +46,10 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
     targetElement.focus({ preventScroll: true })
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    targetElement.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" })
+    targetElement.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "center",
+    })
 
     handleExpandedChange(false)
   }
@@ -66,11 +70,12 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
           <Stack gap={1}>
             <Table size="small">
               <TableBody>
-                {summary.lineItems.map(({ label, spent, allowance, sectionId }) => {
+                {summary.lineItems.map(({ sectionId, spent, allowance }) => {
+                  const section = builderSections[sectionId]
                   const isOver = spent > (allowance ?? Infinity)
 
                   return (
-                    <TableRow key={label}>
+                    <TableRow key={sectionId}>
                       <TableCell colSpan={2} sx={{ padding: 0 }}>
                         <ButtonBase
                           onClick={() => handleSectionClick(sectionId)}
@@ -89,7 +94,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
                             variant="body2"
                             color={isOver ? "error" : "text.primary"}
                           >
-                            {label}
+                            {section.label}
                           </Typography>
                           {spent !== 0 && (
                             <BuildPoints value={spent} error={isOver} />

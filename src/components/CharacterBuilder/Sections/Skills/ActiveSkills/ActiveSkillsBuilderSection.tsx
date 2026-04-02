@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { BuilderSection } from "#/components/CharacterBuilder/Sections/BuilderSection.tsx"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/BuilderSectionId.ts"
 import { ActiveSkillsList } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsList.tsx"
 import {
   useActiveSkillsAlerts,
@@ -8,7 +9,7 @@ import {
 
 export const ActiveSkillsBuilderSection: FC = () => {
   return (
-    <BuilderSection title="Active Skills" alerts={useActiveSkillsAlerts()}>
+    <BuilderSection id={BuilderSectionId.activeSkills} alerts={useActiveSkillsAlerts()}>
       <ActiveSkillsList />
     </BuilderSection>
   )
