@@ -1,7 +1,7 @@
 import { z } from "zod"
 
-import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
-import { GameEffectDataSchema } from "#/lib/system/GameEffects/GameEffectData.ts"
+import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
+import { GameEffectDataSchema } from '#/lib/system/game-effects/game-effect-data.ts"
 
 export interface ComplexFormData {
   id: string

@@ -8,7 +8,7 @@ import { useState } from "react"
 
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseSpellsBuildPoints.ts"
 import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellListItem.tsx"
-import { TraditionCard } from "#/components/CharacterBuilder/Sections/Resources/Magician/TraditionCard.tsx"
+import { TraditionCard } from '#/components/CharacterBuilder/Sections/Resources/Magician/tradition-card.tsx"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/SpellFormDialog.tsx"
 import { useSpellsStore } from "#/components/Spells/UseSpellsStore.ts"
 import { BuildPoints } from "#/components/UI/BuildPoints.tsx"

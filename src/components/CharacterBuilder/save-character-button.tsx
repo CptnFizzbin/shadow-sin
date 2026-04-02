@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
-import { useAllAlerts } from "#/components/CharacterBuilder/Alerts/Hooks/UseAllAlerts.ts"
+import { useAllAlerts } from '#/components/CharacterBuilder/Alerts/Hooks/use-all-alerts.ts"
 import { NullUuid } from "#/lib/UuidUtils.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 

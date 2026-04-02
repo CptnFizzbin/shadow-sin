@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { ExportCharacterButton } from "#/components/Character/ExportCharacterButton.tsx"
+import { ExportCharacterButton } from '#/components/Character/export-character-button.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/SaveCharacterButton.tsx"

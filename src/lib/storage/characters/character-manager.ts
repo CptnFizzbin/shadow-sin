@@ -3,7 +3,7 @@ import semver from "semver"
 
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
 import type { StoredJsonFile } from "#/lib/storage/StorageProvider.ts"
-import type { CharacterLoadError } from "#/lib/storage/characters/CharacterLoadError.ts"
+import type { CharacterLoadError } from '#/lib/storage/characters/character-load-error.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 

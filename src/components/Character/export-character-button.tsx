@@ -7,7 +7,7 @@ import { useCharacterSheetContext } from "#/components/Character/character-sheet
 import { characterSheetToYaml, downloadTextFile } from "#/components/CharacterBuilder/export-utils.ts"
 ========
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
-import { characterSheetToYaml, downloadTextFile } from "#/components/Character/ExportUtils.ts"
+import { characterSheetToYaml, downloadTextFile } from '#/components/Character/export-utils.ts"
 >>>>>>>> origin/shadowrun-4e:src/components/Character/ExportCharacterButton.tsx
 
 export const ExportCharacterButton: FC = () => {

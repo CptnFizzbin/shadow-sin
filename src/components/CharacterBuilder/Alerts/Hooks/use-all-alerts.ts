@@ -16,10 +16,10 @@ import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/H
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/use-skills-summary-alerts.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
 ========
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
+} from '#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/use-complex-forms-alerts.ts"
 import {
   useSpritesAlerts,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
+} from '#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/use-sprites-alerts.ts"
 import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsAlerts.ts"
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/UseSkillsSummaryAlerts.ts"
 import type { AlertInfo } from "#/components/UI/Alerts/AlertInfo.ts"

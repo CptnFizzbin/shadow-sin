@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
-import { downloadTextFile } from "#/components/Character/ExportUtils.ts"
+import { downloadTextFile } from '#/components/Character/export-utils.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 
 export const CharacterErrorRoute = () => {

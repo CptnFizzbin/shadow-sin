@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { GameEffectsFieldGroup } from "#/components/GameEffects/GameEffectsFieldGroup.tsx"
+import { GameEffectsFieldGroup } from '#/components/GameEffects/game-effects-field-group.tsx"
 import { useAppForm } from "#/integrations/tanstack-form/UseAppForm.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 

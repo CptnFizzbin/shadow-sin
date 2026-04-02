@@ -5,7 +5,7 @@ import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/Builder
 import { SpritesList } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesList.tsx"
 import {
   useSpritesAlerts,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/UseSpritesAlerts.ts"
+} from '#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/use-sprites-alerts.ts"
 
 export const SpritesBuilderSection: FC = () => {
   return (

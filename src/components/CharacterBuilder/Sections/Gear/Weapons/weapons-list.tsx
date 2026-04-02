@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/GearItemFormDialog.tsx"
 import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/GearItemCard.tsx"
-import { WeaponFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/WeaponFormDialog.tsx"
+import { WeaponFormDialog } from '#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/weapon-form-dialog.tsx"
 import { useGearApi, useGearByType } from "#/components/Gear/UseGearApi.ts"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"

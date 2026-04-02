@@ -4,7 +4,7 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/Character/CharacterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstack-store/AtomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/StoreSlice.ts"
-import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
+import type { TraditionData } from '#/lib/system/magic/tradition-data.ts"
 
 export type TraditionStoreState = TraditionData | undefined
 

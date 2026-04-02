@@ -1,4 +1,4 @@
-import { GameEffectType } from "#/lib/system/GameEffects/GameEffectType.ts"
+import { GameEffectType } from '#/lib/system/game-effects/game-effect-type.ts"
 import type { ItemData } from "#/lib/system/ItemData.ts"
 import { createItem, createItemMap } from "#/lib/system/ItemData.ts"
 import { LifestyleType } from "#/lib/system/LifestyleType"

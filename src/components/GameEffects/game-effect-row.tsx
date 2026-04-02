@@ -8,9 +8,9 @@ import MuiTextField from "@mui/material/TextField"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getDefaultTarget, getTargetOptions } from "#/components/GameEffects/GameEffectUtils.ts"
-import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
-import { GameEffectTypeOptions } from "#/lib/system/GameEffects/GameEffectTypeOptions.ts"
+import { getDefaultTarget, getTargetOptions } from '#/components/GameEffects/game-effect-utils.ts"
+import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
+import { GameEffectTypeOptions } from '#/lib/system/game-effects/game-effect-typeOptions.ts"
 
 interface GameEffectRowProps {
   effect: GameEffectData

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
+import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface AdeptPowerData {

@@ -2,19 +2,19 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/Availablity/AvailabilityFieldGroup.tsx"
-import { FirearmFormFields } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/FirearmFormFields.tsx"
+import { AvailabilityFieldGroup } from '#/components/Availablity/availability-field-group.tsx"
+import { FirearmFormFields } from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/firearm-form-fields.tsx"
 import {
   weaponFieldMap,
   weaponFormOpts,
-} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/UseWeaponForm.tsx"
+} from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
 import {
   WeaponDamageFormFields,
-} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponDamageFormFields.tsx"
+} from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-damage-form-fields.tsx"
 import {
   WeaponSkillFormFields,
-} from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponSkillFormFields.tsx"
-import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
+} from '#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-skill-form-fields.tsx"
+import { SourceFieldGroup } from '#/components/Sources/source-field-group.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { WeaponType } from "#/lib/system/gear/weaponData.ts"

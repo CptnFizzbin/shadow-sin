@@ -7,7 +7,7 @@ import {
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsList.tsx"
 import {
   useComplexFormsAlerts,
-} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/UseComplexFormsAlerts.ts"
+} from '#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/use-complex-forms-alerts.ts"
 
 export const ComplexFormsBuilderSection: FC = () => {
   return (

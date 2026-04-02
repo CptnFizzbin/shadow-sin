@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react"
 
 import { createDefaultCharacterSheet } from "#/components/Character/CreateDefaultCharacterSheet.ts"
 import type { BuilderRootState } from "#/components/CharacterBuilder/BuilderRootState.ts"
-import { StorePersister, usePersistedStore } from "#/lib/storage/StorePersister.ts"
+import { StorePersister, usePersistedStore } from '#/lib/storage/store-persister.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export type UseBuilderRootStateStore = [

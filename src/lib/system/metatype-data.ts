@@ -1,5 +1,5 @@
 import type { AttributeInfo } from "#/lib/system/AttributeInfo.ts"
-import type { GameEffectData } from "#/lib/system/GameEffects/GameEffectData.ts"
+import type { GameEffectData } from '#/lib/system/game-effects/game-effect-data.ts"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 
 export enum MetatypeType {

@@ -12,8 +12,8 @@ import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
-import { downloadTextFile } from "#/components/Character/ExportUtils.ts"
-import type { CharacterLoadError } from "#/lib/storage/characters/CharacterLoadError.ts"
+import { downloadTextFile } from '#/components/Character/export-utils.ts"
+import type { CharacterLoadError } from '#/lib/storage/characters/character-load-error.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
