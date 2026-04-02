@@ -1,5 +1,5 @@
 import { useAttributeAlerts } from "#/components/CharacterBuilder/Alerts/Hooks/UseAttributeAlerts.ts"
-import { useBuildPointsAlerts } from "#/components/CharacterBuilder/BuildPoints/UseBuildPointsAlerts.ts"
+import { useBuildPointsAlerts } from "#/components/CharacterBuilder/BuildPoints/Hooks/UseBuildPointsAlerts.ts"
 import { useBiologyAlerts } from "#/components/CharacterBuilder/Sections/Biology/UseBiologyAlerts.ts"
 import { useContactsAlerts } from "#/components/CharacterBuilder/Sections/Contacts/UseContactsAlerts.ts"
 import { useGearAlerts } from "#/components/CharacterBuilder/Sections/Gear/UseGearAlerts.ts"

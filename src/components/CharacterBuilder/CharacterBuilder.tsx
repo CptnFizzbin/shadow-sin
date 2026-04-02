@@ -4,7 +4,6 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { BuilderSectionIds } from "#/components/CharacterBuilder/BuilderSectionIds.ts"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/CharacterBuilderStoreProvider.tsx"
 import { ExportCharacterButton } from "#/components/CharacterBuilder/ExportCharacterButton.tsx"
 import { useBuilderRootStateStore } from "#/components/CharacterBuilder/Hooks/UseBuilderRootStateStore.ts"
@@ -17,8 +16,24 @@ import { ContactsBuilderSection } from "#/components/CharacterBuilder/Sections/C
 import { GearBuilderSection } from "#/components/CharacterBuilder/Sections/Gear/GearBuilderSection.tsx"
 import { ProfileBuilderSection } from "#/components/CharacterBuilder/Sections/Profile/ProfileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "#/components/CharacterBuilder/Sections/Qualities/QualitiesBuilderSection.tsx"
-import { AwakenedSection } from "#/components/CharacterBuilder/Sections/Resources/AwakenedSection.tsx"
-import { SkillsBuilderSection } from "#/components/CharacterBuilder/Sections/Skills/SkillsBuilderSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Adept/AdeptPowersBuilderSection.tsx"
+import {
+  SpellsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Magician/SpellsBuilderSection.tsx"
+import {
+  ComplexFormsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/ComplexForms/ComplexFormsBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/SpritesBuilderSection.tsx"
+import {
+  ActiveSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/ActiveSkillsBuilderSection.tsx"
+import {
+  KnowledgeSkillsBuilderSection,
+} from "#/components/CharacterBuilder/Sections/Skills/KnowledgeSkills/KnowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/BpSummaryFooter.tsx"
 import { AllBuilderAlerts } from "#/components/UI/Alerts/AlertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -73,30 +88,18 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             </Stack>
           </Stack>
 
-          <div id={BuilderSectionIds.profile} tabIndex={-1}>
-            <ProfileBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.biology} tabIndex={-1}>
-            <BiologyBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.attributes} tabIndex={-1}>
-            <AttributesBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.qualities} tabIndex={-1}>
-            <QualitiesBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.skills} tabIndex={-1}>
-            <SkillsBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.awakened} tabIndex={-1}>
-            <AwakenedSection />
-          </div>
-          <div id={BuilderSectionIds.gear} tabIndex={-1}>
-            <GearBuilderSection />
-          </div>
-          <div id={BuilderSectionIds.contacts} tabIndex={-1}>
-            <ContactsBuilderSection />
-          </div>
+          <ProfileBuilderSection />
+          <BiologyBuilderSection />
+          <AttributesBuilderSection />
+          <QualitiesBuilderSection />
+          <ActiveSkillsBuilderSection />
+          <KnowledgeSkillsBuilderSection />
+          <AdeptPowersBuilderSection />
+          <SpellsBuilderSection />
+          <ComplexFormsBuilderSection />
+          <SpritesBuilderSection />
+          <GearBuilderSection />
+          <ContactsBuilderSection />
         </Stack>
 
         <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} />
