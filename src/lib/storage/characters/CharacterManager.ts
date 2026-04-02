@@ -52,6 +52,18 @@ export class CharacterManager {
     return this.loadCharacterByPath(this.getCharacterPath(characterId))
   }
 
+  /**
+   * Read the raw stored JSON for a character without running migrations or
+   * transformations. Returns the stored value or null if not present. This is
+   * non-mutating and safe to use for exports/debugging of potentially corrupted
+   * files.
+   */
+  public async getRawCharacter(characterId: string): Promise<unknown | null> {
+    const path = this.getCharacterPath(characterId)
+    const stored = await this.storageManager.loadJsonFile<unknown>(path)
+    return stored ? stored.value : null
+  }
+
   public saveCharacter(
     character: CharacterSheet,
   ): Promise<StoredJsonFile<CharacterSheet>> {
@@ -69,9 +81,9 @@ export class CharacterManager {
     characters: CharacterSheet[],
   ): Promise<CharactersWithErrors> {
     for (const character of characters) {
-      const existingCharacter = await this.getCharacter(character.id)
+      const stored = await this.storageManager.loadJsonFile(this.getCharacterPath(character.id)).catch(() => null)
 
-      if (existingCharacter) {
+      if (stored) {
         continue
       }
 
