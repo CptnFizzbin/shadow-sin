@@ -1,12 +1,14 @@
 import type { FormControlProps, FormHelperTextProps, InputLabelProps, MenuItemProps, SelectProps } from "@mui/material"
-import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material"
+import { FormControl, FormHelperText, InputLabel, ListSubheader, Select } from "@mui/material"
 import MenuItem from "@mui/material/MenuItem"
+import { sort } from "fast-sort"
 import type { FC, ReactNode } from "react"
 
 import { useFieldContext } from "#/integrations/tanstack-form/FieldContext.ts"
 import { useFieldErrors } from "#/integrations/tanstack-form/Fields/UseFieldError.ts"
 
 export interface SelectOption {
+  group?: string
   label: ReactNode
   value: string
   disabled?: boolean
@@ -33,6 +35,14 @@ export const SelectField: FC<SelectFieldProps> = ({
   const field = useFieldContext<string>()
   const errors = useFieldErrors()
 
+  const noGroupSymbol = Symbol("ungrouped").toString()
+  const optionsByGroup = Object.groupBy(options, (option) => option.group ?? noGroupSymbol)
+
+  const groupKeys = sort(Object.keys(optionsByGroup)).by([
+    { asc: (key) => key === noGroupSymbol },
+    { asc: (key) => key },
+  ])
+
   return (
     <FormControl error={errors !== null} {...props} {...slotProps?.formControl}>
       <InputLabel {...slotProps?.inputLabel}>{label}</InputLabel>
@@ -40,20 +50,54 @@ export const SelectField: FC<SelectFieldProps> = ({
         value={field.state.value ?? ""}
         label={label}
         onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value as string)}
+        onChange={(e) => {
+          if ("value" in e.target) {
+            const value = e.target.value as string
+            field.handleChange(value)
+          }
+        }}
         {...slotProps?.select}
       >
-        {options.map((option) => (
-          <MenuItem
-            key={option.value}
-            sx={{ display: "flex" }}
-            {...slotProps?.menuItem}
-            value={option.value}
-            disabled={option.disabled}
-          >
-            {option.label}
-          </MenuItem>
-        ))}
+        {groupKeys.map((groupKey) => {
+          const items: ReactNode[] = []
+
+          if (groupKey !== noGroupSymbol) {
+            items.push(
+              <ListSubheader
+                key={`group-${groupKey}`}
+                sx={{
+                  borderBottom: "1px solid",
+                  borderColor: "divider",
+                  lineHeight: "initial",
+                  padding: 0,
+                  marginX: 2,
+                }}
+              >
+                {groupKey}
+              </ListSubheader>,
+            )
+          }
+
+          const groupOptions = optionsByGroup[groupKey] ?? []
+          sort(groupOptions)
+            .by([
+              { asc: (option) => option.value !== "" },
+              { asc: (option) => option.label },
+            ])
+            .forEach((item) => items.push(
+              <MenuItem
+                key={`option-${item.value}`}
+                sx={{ display: "flex" }}
+                {...slotProps?.menuItem}
+                value={item.value}
+                disabled={item.disabled}
+              >
+                {item.label}
+              </MenuItem>,
+            ))
+
+          return items
+        })}
       </Select>
 
       {errors !== null && (
