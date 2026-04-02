@@ -2,20 +2,20 @@ import Box from "@mui/material/Box"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useMemo } from "react"
 
+import { CharacterErrorRoute } from "#/components/Character/CharacterErrorRoute.tsx"
 import { CharacterSheetProvider } from "#/components/Character/CharacterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/Character/CharacterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/Character/Nav/CharacterSheetNav.tsx"
 import { useCharacterNav } from "#/components/Character/Nav/UseCharacterNav.ts"
 import { SwipeSurface } from "#/components/UI/SwipeSurface.tsx"
-import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import { usePersistStore } from "#/lib/storage/StorePersister.ts"
 import { localCharacterManager } from "#/lib/storage/local-storage/LocalCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
+  errorComponent: CharacterErrorRoute,
   loader: async ({ params }): Promise<CharacterSheet> => {
-    await localCharacterManager.ensureCharacters([Artemis])
     const character = await localCharacterManager.getCharacter(params.characterId)
 
     if (!character) {

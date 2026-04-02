@@ -3,8 +3,14 @@ import semver from "semver"
 
 import type { StorageManager } from "#/lib/storage/StorageManager.ts"
 import type { StoredJsonFile } from "#/lib/storage/StorageProvider.ts"
+import type { CharacterLoadError } from "#/lib/storage/characters/CharacterLoadError.ts"
 import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+
+export interface CharactersWithErrors {
+  characters: Record<string, CharacterSheet>
+  errors: CharacterLoadError[]
+}
 
 export class CharacterManager {
   private readonly characterDirectoryPath = "characters"
@@ -12,25 +18,50 @@ export class CharacterManager {
   public constructor(private readonly storageManager: StorageManager) {}
 
   public async listCharacters(): Promise<Record<string, CharacterSheet>> {
+    const { characters } = await this.listCharactersWithErrors()
+    return characters
+  }
+
+  public async listCharactersWithErrors(): Promise<CharactersWithErrors> {
     const characterFiles = await this.storageManager.listJsonFiles(
       this.characterDirectoryPath,
     )
 
-    const storedCharacters = await Promise.all(
-      characterFiles.map(({ path }) => this.loadCharacterByPath(path)),
+    const results = await Promise.all(
+      characterFiles.map(({ path }) => this.loadCharacterByPathSafe(path)),
     )
 
-    const characters = storedCharacters.filter(
-      (character): character is CharacterSheet => character !== null,
-    )
+    const characters: Record<string, CharacterSheet> = {}
+    const errors: CharacterLoadError[] = []
 
-    return Object.fromEntries(characters.map((character) => [character.id, character]))
+    for (const result of results) {
+      if (!result) continue
+      if ("errorMessage" in result) {
+        errors.push(result)
+      } else {
+        characters[result.id] = result
+      }
+    }
+
+    return { characters, errors }
   }
 
   public getCharacter(
     characterId: string,
   ): Promise<CharacterSheet | null> {
     return this.loadCharacterByPath(this.getCharacterPath(characterId))
+  }
+
+  /**
+   * Read the raw stored JSON for a character without running migrations or
+   * transformations. Returns the stored value or null if not present. This is
+   * non-mutating and safe to use for exports/debugging of potentially corrupted
+   * files.
+   */
+  public async getRawCharacter(characterId: string): Promise<unknown | null> {
+    const path = this.getCharacterPath(characterId)
+    const stored = await this.storageManager.loadJsonFile<unknown>(path)
+    return stored ? stored.value : null
   }
 
   public saveCharacter(
@@ -48,18 +79,18 @@ export class CharacterManager {
 
   public async ensureCharacters(
     characters: CharacterSheet[],
-  ): Promise<Record<string, CharacterSheet>> {
+  ): Promise<CharactersWithErrors> {
     for (const character of characters) {
-      const existingCharacter = await this.getCharacter(character.id)
+      const stored = await this.storageManager.loadJsonFile(this.getCharacterPath(character.id)).catch(() => null)
 
-      if (existingCharacter) {
+      if (stored) {
         continue
       }
 
       await this.saveCharacter(character)
     }
 
-    return this.listCharacters()
+    return this.listCharactersWithErrors()
   }
 
   private async loadCharacterByPath(
@@ -75,8 +106,57 @@ export class CharacterManager {
     return this.migrateCharacter(storedCharacter.value)
   }
 
+  private async loadCharacterByPathSafe(
+    path: string,
+  ): Promise<CharacterSheet | CharacterLoadError | null> {
+    const storedCharacter = await this.storageManager.loadJsonFile<unknown>(path)
+
+    if (!storedCharacter) {
+      return null
+    }
+
+    try {
+      const rawData = storedCharacter.value
+      const characterId = this.extractCharacterIdFromPath(path)
+
+      if (typeof rawData !== "object" || rawData === null) {
+        return {
+          characterId,
+          path,
+          errorMessage: "Character data is not a valid object.",
+          rawData,
+        }
+      }
+
+      const migrated = await this.migrateCharacter(rawData as { version: string })
+
+      if (!migrated.id || !migrated.profile) {
+        return {
+          characterId,
+          path,
+          errorMessage: "Character data is missing required fields (id or profile).",
+          rawData,
+        }
+      }
+
+      return migrated
+    } catch (error) {
+      return {
+        characterId: this.extractCharacterIdFromPath(path),
+        path,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        rawData: storedCharacter.value,
+      }
+    }
+  }
+
   private getCharacterPath(characterId: string): string {
     return `${this.characterDirectoryPath}/${characterId}.json`
+  }
+
+  private extractCharacterIdFromPath(path: string): string {
+    const filename = path.split("/").pop() ?? path
+    return filename.replace(/\.json$/, "")
   }
 
   private async migrateCharacter(character: {
