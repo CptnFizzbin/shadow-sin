@@ -20,7 +20,16 @@ export const SourceFieldGroup = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack direction="row" gap={1}>
-        <group.AppField name="source.book">
+        <group.AppField
+          name="source.book"
+          listeners={{
+            onChange: ({ value }) => {
+              if (value === "") {
+                group.setFieldValue("source", undefined)
+              }
+            },
+          }}
+        >
           {(field) => (
             <field.SelectField
               label="Book"
