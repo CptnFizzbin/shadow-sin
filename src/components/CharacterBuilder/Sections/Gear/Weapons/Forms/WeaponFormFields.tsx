@@ -2,8 +2,7 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/CharacterBuilder/General/Form/AvailabilityFieldGroup.tsx"
-import { SourceFieldGroup } from "#/components/CharacterBuilder/General/Form/SourceFieldGroup.tsx"
+import { AvailabilityFieldGroup } from "#/components/Availablity/AvailabilityFieldGroup.tsx"
 import { FirearmFormFields } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/FirearmFormFields.tsx"
 import {
   weaponFieldMap,
@@ -15,6 +14,7 @@ import {
 import {
   WeaponSkillFormFields,
 } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/WeaponSkillFormFields.tsx"
+import { SourceFieldGroup } from "#/components/Sources/SourceFieldGroup.tsx"
 import { Label } from "#/components/UI/Text/Label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/UseAppForm.ts"
 import { WeaponType } from "#/lib/system/gear/weaponData.ts"
