@@ -11,16 +11,18 @@ import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export class ContactsStore extends StoreSlice<ContactData[]> {
   save(contact: ContactData) {
-    console.log("Contact store save", contact)
     if (!contact.id || contact.id === NullUuid) {
-      this.add(contact)
-    } else {
-      this.update(contact.id, () => contact)
+      return this.add(contact)
     }
+
+    this.update(contact.id, () => contact)
+    return contact
   }
 
   add(contact: ContactData) {
-    this.set((prev) => [...prev, { ...contact, id: crypto.randomUUID() }])
+    const persistedContact = { ...contact, id: crypto.randomUUID() }
+    this.set((prev) => [...prev, persistedContact])
+    return persistedContact
   }
 
   update(contactId: UUID, recipe: (prev: ContactData) => ContactData) {

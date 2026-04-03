@@ -11,6 +11,7 @@ interface SearchFieldProps extends Omit<TextFieldProps, "onChange"> {
 }
 
 export const SearchField: FC<SearchFieldProps> = ({
+  value,
   onChange,
   ...props
 }) => {
@@ -26,15 +27,18 @@ export const SearchField: FC<SearchFieldProps> = ({
               <RiSearchLine />
             </InputAdornment>
           ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={() => onChange("")} size="small">
-                <RiCloseLine />
-              </IconButton>
-            </InputAdornment>
-          ),
+          endAdornment: value
+            ? (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => onChange("")} size="small">
+                    <RiCloseLine />
+                  </IconButton>
+                </InputAdornment>
+              )
+            : null,
         },
       }}
+      value={value}
       {...props}
       onChange={(e) => onChange(e.target.value)}
     />
@@ -48,9 +52,18 @@ export const SearchField: FC<SearchFieldProps> = ({
  * @param searchTerms - Array of search terms to test as substrings against the joined searchable text. Each term is compared as-is against the lowercased searchable text (lowercase terms beforehand for case-insensitive matching).
  * @returns `true` if any term in `searchTerms` is a substring of the item's concatenated searchable text, `false` otherwise.
  */
-export function filterBySearch<TData>(getSearchTexts: (item: TData) => string[], searchTerms: string[]) {
+export function filterBySearch<TData>(
+  getSearchTexts: (item: TData) => string[],
+  searchTerms: string[],
+) {
   return (item: TData): boolean => {
+    if (searchTerms.length === 0) {
+      return false
+    }
+
     const searchText = getSearchTexts(item).join("|").toLowerCase()
-    return searchTerms.some((term) => searchText.includes(term))
+    const matchesTerm = (term: string) => searchText.includes(term.toLowerCase())
+
+    return searchTerms.every(matchesTerm)
   }
 }

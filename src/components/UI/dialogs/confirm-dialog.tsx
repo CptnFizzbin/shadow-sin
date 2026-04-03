@@ -27,9 +27,15 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(true)
 
+  const handleCancel = () => {
+    onCancel()
+    setOpen(false)
+  }
+
   return (
     <Dialog
       open={open}
+      onClose={handleCancel}
       onTransitionExited={onClosed}
       fullWidth
     >
@@ -38,10 +44,7 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
       <DialogActions sx={{ padding: 1 }}>
         <Button
           color="secondary"
-          onClick={() => {
-            onCancel()
-            setOpen(false)
-          }}
+          onClick={handleCancel}
         >
           {cancelLabel ?? "Cancel"}
         </Button>

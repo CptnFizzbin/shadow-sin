@@ -13,13 +13,14 @@ import { BuildPoints } from "#/components/UI/build-points.tsx"
 export const ContactsBuilderSection: FC = () => {
   const contactsStore = useContactsStore()
   const allContacts = useStore(contactsStore, (contacts) => contacts)
+  const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts
     .map((contact) => getContactBpCost(contact))
     .reduce((sum, cost) => sum + cost, 0)
 
   return (
-    <BuilderSection id={BuilderSectionId.contacts} alerts={useContactsAlerts()}>
+    <BuilderSection id={BuilderSectionId.contacts} alerts={contactsAlerts}>
       <Stack direction="row" justifyContent="flex-end" alignItems="center">
         <BuildPoints value={bpSpent} />
       </Stack>

@@ -34,8 +34,8 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
   const formId = useId()
 
   const handleSubmit = (savedContact: ContactData) => {
-    contactStore.save(savedContact)
-    onSaved?.(savedContact)
+    const persistedContact = contactStore.save(savedContact)
+    onSaved?.(persistedContact)
     onClose()
   }
 

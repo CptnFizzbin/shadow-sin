@@ -12,16 +12,31 @@ export const useConfirmDialog = ({ id }: UseConfirmDialogProps) => {
   return {
     confirm: (props: Omit<ConfirmDialogProps, "onCancel" | "onConfirm" | "onClosed">): Promise<boolean> => {
       return new Promise((resolve) => {
+        const localDialogId = `${id}-${crypto.randomUUID()}`
+        let isSettled = false
+
+        const settle = (value: boolean) => {
+          if (isSettled) {
+            return
+          }
+
+          isSettled = true
+          resolve(value)
+        }
+
         const dialog = (
           <ConfirmDialog
             {...props}
-            onCancel={() => resolve(false)}
-            onConfirm={() => resolve(true)}
-            onClosed={() => rootDialogs.remove(id)}
+            onCancel={() => settle(false)}
+            onConfirm={() => settle(true)}
+            onClosed={() => {
+              settle(false)
+              rootDialogs.remove(localDialogId)
+            }}
           />
         )
 
-        rootDialogs.add(id, dialog)
+        rootDialogs.add(localDialogId, dialog)
       })
     },
   }
