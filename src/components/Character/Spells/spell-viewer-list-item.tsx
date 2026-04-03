@@ -1,0 +1,36 @@
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import type { FC } from "react"
+
+import { formatDrainFormula } from "#/components/Character/Spells/spell-drain-formula.ts"
+import type { SpellData } from "#/lib/system/magic/spell-data.ts"
+
+interface SpellViewerListItemProps {
+  spell: SpellData
+  onClick: () => void
+}
+
+export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onClick }) => {
+  return (
+    <Paper
+      sx={{
+        "padding": 1,
+        "border": "1px solid",
+        "borderColor": "divider",
+        "cursor": "pointer",
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+      onClick={onClick}
+    >
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Typography flexGrow={1} variant="body2">
+          {spell.name}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          {formatDrainFormula(spell.drainValueMod)}
+        </Typography>
+      </Stack>
+    </Paper>
+  )
+}
