@@ -1,68 +1,87 @@
-import Chip from "@mui/material/Chip"
+import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/license-utils.ts"
+import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sin-utils.ts"
+import { AvailabilityChip } from "#/components/Gear/availability-chip.tsx"
 import { useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { RatingChip } from "#/components/UI/rating-chip.tsx"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
 
-interface SinLicensesProps {
+interface SinCardProps {
   sin: SinData
   licenses: LicenseData[]
 }
 
-const SinLicenses: FC<SinLicensesProps> = ({ sin, licenses }) => {
+const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
+  const sinAvail = getSinAvailability(sin.rating)
   const sinLicenses = licenses.filter((license) => license.parentId === sin.id)
 
   return (
-    <Stack
-      gap={0.5}
-      sx={{
-        padding: 1,
-        borderRadius: 1,
-        border: "1px solid",
-        borderColor: "divider",
-      }}
-    >
-      <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
-          {sin.name}
-        </Typography>
-        <Chip
-          label={sin.rating === "real" ? "Real" : `Rating ${sin.rating}`}
-          size="small"
-          variant="outlined"
-          sx={{ height: 20, fontSize: "0.7rem" }}
-        />
+    <Box>
+      <Stack
+        direction="column"
+        sx={{
+          padding: 1,
+          borderRadius: 1,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
+            {sin.name}
+          </Typography>
+        </Stack>
+
+        <Stack direction="row" gap={1} sx={{ pt: 1 }}>
+          <RatingChip rating={sin.rating} />
+          <AvailabilityChip availability={sinAvail} />
+        </Stack>
       </Stack>
 
       {sinLicenses.length > 0 && (
         <Stack
-          gap={0.5}
+          gap={1}
           sx={{
-            pl: 1,
-            borderLeft: "3px solid",
+            paddingTop: 1,
+            paddingLeft: 1,
+            paddingBottom: 1,
+            borderLeft: "8px solid",
+            borderBottom: "1px solid",
             borderColor: "divider",
           }}
         >
-          {sinLicenses.map((license) => (
-            <Stack key={license.id} direction="row" alignItems="center" gap={1}>
-              <Typography variant="caption" sx={{ flexGrow: 1 }}>
-                {license.name}
-              </Typography>
-              <Chip
-                label={`Rating ${license.rating}`}
-                size="small"
-                variant="outlined"
-                sx={{ height: 18, fontSize: "0.65rem" }}
-              />
-            </Stack>
-          ))}
+          {sinLicenses.map((license) => {
+            const licenseAvail = getLicenseAvailability(license.rating)
+
+            return (
+              <Stack
+                key={license.id}
+                direction="column"
+                gap={0}
+                sx={{
+                  p: 1,
+                  borderRadius: 1,
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
+              >
+                <Typography>{license.name}</Typography>
+                <Stack direction="row" gap={1} sx={{ pt: 1 }}>
+                  <RatingChip rating={license.rating} />
+                  <AvailabilityChip availability={licenseAvail} />
+                </Stack>
+              </Stack>
+            )
+          })}
         </Stack>
       )}
-    </Stack>
+    </Box>
   )
 }
 
@@ -76,7 +95,7 @@ export const SinsAndLicensesSection: FC = () => {
     <Stack gap={1}>
       <Typography variant="subtitle2">SINs & Licenses</Typography>
       {sins.map((sin) => (
-        <SinLicenses key={sin.id} sin={sin} licenses={licenses} />
+        <SinCard key={sin.id} sin={sin} licenses={licenses} />
       ))}
     </Stack>
   )

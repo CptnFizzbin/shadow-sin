@@ -25,6 +25,7 @@ export interface CharacterSheet {
 
     streetCred: number
     notoriety: number
+    publicAwarenessModifier?: number
 
     description?: string
     personality?: string
