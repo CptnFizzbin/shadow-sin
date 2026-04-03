@@ -13,7 +13,7 @@ import { SinRemoveDialog } from "#/components/CharacterBuilder/Sections/Gear/Lic
 import { LicensesList } from "#/components/CharacterBuilder/Sections/Gear/Licenses/licenses-list.tsx"
 import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sin-utils.ts"
 import { AvailabilityChip } from "#/components/Gear/availability-chip.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore, useGearByType } from "#/components/Gear/use-gear-api.ts"
 import { Nuyen } from "#/components/UI/nuyen.tsx"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
@@ -27,7 +27,7 @@ type DialogState =
 
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const gear = useGearApi()
+  const gear = useGearStore()
   const sins = useGearByType<SinData>(GearType.sin)
   const licenses = useGearByType<LicenseData>(GearType.license)
 
