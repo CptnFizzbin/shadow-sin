@@ -6,7 +6,7 @@ import type { FC } from "react"
 import { GameEffectsFieldGroup } from "#/components/GameEffects/game-effects-field-group.tsx"
 import { SourceFieldGroup } from "#/components/Sources/source-field-group.tsx"
 import type { SpellForm } from "#/components/Spells/Form/use-spell-form.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spell-data.ts"
 
 export interface SpellFormFieldsProps {

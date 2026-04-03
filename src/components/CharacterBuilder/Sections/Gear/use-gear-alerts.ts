@@ -7,7 +7,7 @@ import {
   useGearBuildPoints,
 } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-gear-build-points.ts"
 import { useGearAvailabilityIssues } from "#/components/CharacterBuilder/Sections/Gear/gear-utils.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()

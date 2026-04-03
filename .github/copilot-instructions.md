@@ -23,5 +23,3 @@ Formatting and tooling notes:
 
 When you discover patterns or troubleshooting steps relevant to contributors, update this file with the problem, the
 solution, and minimal reproducible steps. Do not include machine-specific paths or shell preferences.
-
-Project contact: Copilot
