@@ -60,7 +60,6 @@ export const useImplantForm = (options: ImplantFormOptions) => {
     ...implantFormOpts,
     defaultValues: {
       ...defaultFormValues,
-      id: crypto.randomUUID(),
       parentId: options.parentId,
       ...options.implant,
     },

@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstack-store/atom-utils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/store-slice.ts"
 import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 import type { AdeptPowerData } from "#/lib/system/magic/adept-power-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
 
@@ -24,6 +25,14 @@ export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
 
   remove(powerId: string): void {
     this.set((prev) => prev.filter((p) => p.id !== powerId))
+  }
+
+  save(power: AdeptPowerData): void {
+    if (!power.id || power.id === NullUuid) {
+      this.add({ ...power, id: crypto.randomUUID() })
+    } else {
+      this.update(power)
+    }
   }
 }
 

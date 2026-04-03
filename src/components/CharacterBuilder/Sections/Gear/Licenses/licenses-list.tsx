@@ -40,12 +40,12 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
   }
 
   const handleAddLicense = (license: LicenseData) => {
-    gearApi.add(license)
+    gearApi.save(license)
     onDialogClose()
   }
 
   const handleSaveLicense = (license: LicenseData) => {
-    gearApi.set(license)
+    gearApi.save(license)
     onDialogClose()
   }
 

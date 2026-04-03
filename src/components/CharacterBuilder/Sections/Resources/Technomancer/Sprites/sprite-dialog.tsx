@@ -15,6 +15,7 @@ import { useState } from "react"
 
 import { useMaxSpriteTasks } from "#/components/Technomancer/sprites-hooks.ts"
 import type { SpriteData } from "#/lib/system/magic/sprite-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 interface SpriteDialogProps {
   open: boolean
@@ -49,7 +50,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
       return
     }
     onSave({
-      id: sprite?.id ?? crypto.randomUUID(),
+      id: sprite?.id ?? NullUuid,
       name: name.trim(),
       force: sprite?.force ?? 0,
       services: {

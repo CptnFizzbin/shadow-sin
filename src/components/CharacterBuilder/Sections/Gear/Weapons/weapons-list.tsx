@@ -42,23 +42,23 @@ export const WeaponsList: FC = () => {
     setAccessoryDialog((prev) => prev && { ...prev, open: false })
 
   const handleAddWeapon = (weapon: WeaponData) => {
-    gearApi.add(weapon)
+    gearApi.save(weapon)
     closeWeaponDialog()
   }
 
   const handleUpdateWeapon = (weapon: WeaponData) => {
-    gearApi.set(weapon)
+    gearApi.save(weapon)
     closeWeaponDialog()
   }
 
   const handleAddAccessory = (item: ItemData) => {
     if (accessoryDialog?.mode !== "create") return
-    gearApi.add({ ...item, parentId: accessoryDialog.parentId })
+    gearApi.save({ ...item, parentId: accessoryDialog.parentId })
     closeAccessoryDialog()
   }
 
   const handleUpdateAccessory = (item: ItemData) => {
-    gearApi.set(item)
+    gearApi.save(item)
     closeAccessoryDialog()
   }
 

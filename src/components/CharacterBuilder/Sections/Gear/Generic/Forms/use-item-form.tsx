@@ -45,7 +45,6 @@ export const useItemForm = ({ item, onSubmit }: ItemFormOptions) => {
         }
       : {
           ...defaultFormValues,
-          id: crypto.randomUUID(),
         }
 
   return useAppForm({

@@ -42,15 +42,15 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items
     const parentId = dialogState?.mode === "create" ? dialogState.parentId : undefined
 
     if (parentId)
-      gearApi.add({ ...item, parentId })
+      gearApi.save({ ...item, parentId })
     else
-      gearApi.add(item)
+      gearApi.save(item)
 
     onDialogClose()
   }
 
   const handleUpdate = (item: ItemData) => {
-    gearApi.set(item)
+    gearApi.save(item)
     onDialogClose()
   }
 

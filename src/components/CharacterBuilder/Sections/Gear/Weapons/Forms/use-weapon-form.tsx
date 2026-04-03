@@ -150,7 +150,6 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
       }
     : {
         ...defaultFormValues,
-        id: crypto.randomUUID(),
       }
 
   return useAppForm({

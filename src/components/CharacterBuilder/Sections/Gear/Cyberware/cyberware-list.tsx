@@ -30,12 +30,12 @@ export const CyberwareList: FC = () => {
     setImplantDialog((prev) => prev && { ...prev, open: false })
 
   const handleAddImplant = (implant: ItemData) => {
-    gearApi.add(implant)
+    gearApi.save(implant)
     closeImplantDialog()
   }
 
   const handleUpdateImplant = (implant: ItemData) => {
-    gearApi.set(implant)
+    gearApi.save(implant)
     closeImplantDialog()
   }
 

@@ -35,12 +35,12 @@ export const ContactsList: FC = () => {
   }
 
   const handleAddContact = (contact: ContactData) => {
-    contactsStore.add(contact)
+    contactsStore.save(contact)
     onDialogClose()
   }
 
   const handleUpdateContact = (contact: ContactData) => {
-    contactsStore.update(contact.id, () => contact)
+    contactsStore.save(contact)
     onDialogClose()
   }
 
