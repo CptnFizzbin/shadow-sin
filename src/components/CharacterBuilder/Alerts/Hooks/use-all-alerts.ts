@@ -17,6 +17,11 @@ import { useSkillsAlerts } from "#/components/CharacterBuilder/Sections/Skills/H
 import { useSkillsSummaryAlerts } from "#/components/CharacterBuilder/Sections/Skills/Hooks/use-skills-summary-alerts.ts"
 import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
+/**
+ * Aggregates alert information from every character-builder section in a fixed order.
+ *
+ * @returns An array of `AlertInfo` objects containing alerts from profile, biology, attributes, qualities, skills summary, skills, spells, adept powers, sprites, complex forms, gear, contacts, and build points, in that order.
+ */
 export function useAllAlerts(): AlertInfo[] {
   return [
     ...useProfileAlerts(),

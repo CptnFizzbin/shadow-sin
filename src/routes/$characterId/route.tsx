@@ -25,6 +25,13 @@ export const Route = createFileRoute("/$characterId")({
   },
 })
 
+/**
+ * Renders the character sheet route for the currently loaded character.
+ *
+ * Creates and provides a character-sheet store, persists store updates to local storage, and cleans up the persistence subscription when the component unmounts or the store changes. Also supplies navigation controls and a swipe-enabled container that hosts nested route content.
+ *
+ * @returns A React element that provides character sheet context, top-level navigation, and a swipe-enabled content area containing nested route outlets.
+ */
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])

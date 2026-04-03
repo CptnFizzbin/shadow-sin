@@ -12,6 +12,14 @@ export const Route = createFileRoute("/$characterId/contacts")({
   component: RouteComponent,
 })
 
+/**
+ * Render the contacts route UI: a search field and a contacts list filtered by the current query.
+ *
+ * The list is filtered by whitespace-separated, case-insensitive terms typed into the search field.
+ * When a search is active and no contacts match, a caption "No matching contacts found" is shown as the list's empty state.
+ *
+ * @returns The route component's React elements containing the search control and the filtered contacts list.
+ */
 function RouteComponent() {
   const contactsStore = useContactsStore()
   const allContacts = useStore(contactsStore, (contacts) => contacts)
