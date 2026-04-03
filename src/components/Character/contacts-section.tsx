@@ -13,14 +13,11 @@ import { ContactRow } from "#/components/CharacterBuilder/Sections/Contacts/cont
 import { useContactsStore } from "#/components/Contacts/use-contacts-store.ts"
 import type { ContactData } from "#/lib/system/contact-data.ts"
 
-type DialogState =
-  | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", contact: ContactData, open: boolean }
+type DialogState = { open: boolean, contact?: ContactData }
 
 export const ContactsSection: FC = () => {
   const [searchQuery, setSearchQuery] = useState("")
-  const [dialogState, setDialogState] = useState<DialogState>(null)
+  const [dialogState, setDialogState] = useState<DialogState | null>(null)
   const contactsStore = useContactsStore()
   const contacts = useStore(contactsStore, (state) => state)
 
@@ -94,7 +91,7 @@ export const ContactsSection: FC = () => {
                     <ContactRow
                       key={contact.id}
                       contact={contact}
-                      onClick={() => setDialogState({ mode: "edit", contact, open: true })}
+                      onClick={() => setDialogState({ contact, open: true })}
                       onRemove={() => handleRemoveContact(contact)}
                     />
                   ))}
@@ -105,28 +102,19 @@ export const ContactsSection: FC = () => {
           variant="outlined"
           color="secondary"
           startIcon={<RiAddLine />}
-          onClick={() => setDialogState({ mode: "create", open: true })}
+          onClick={() => setDialogState({ open: true })}
           size="small"
         >
           Add Contact
         </Button>
       </Stack>
 
-      {dialogState?.mode === "create" && (
-        <ContactFormDialog
-          open={dialogState.open}
-          onSave={handleAddContact}
-          onClose={onDialogClose}
-          onClosed={onDialogClosed}
-        />
-      )}
-
-      {dialogState?.mode === "edit" && (
+      {dialogState !== null && (
         <ContactFormDialog
           open={dialogState.open}
           contact={dialogState.contact}
-          onSave={handleUpdateContact}
-          onDelete={() => handleRemoveContact(dialogState.contact)}
+          onSave={dialogState.contact ? handleUpdateContact : handleAddContact}
+          onDelete={dialogState.contact ? () => handleRemoveContact(dialogState.contact!) : undefined}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
         />
