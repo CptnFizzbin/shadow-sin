@@ -4,6 +4,7 @@ import { RouterProvider } from "@tanstack/react-router"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
+import { RootDialogOutlet } from "#/components/UI/dialogs/root-dialog-outlet.tsx"
 import TanStackQueryProvider from "#/integrations/tanstack-query/root-provider.tsx"
 import { getRouter } from "./router.ts"
 import { theme } from "./theme.ts"
@@ -21,6 +22,7 @@ createRoot(rootElement).render(
       <TanStackQueryProvider>
         <CssBaseline />
         <RouterProvider router={router} />
+        <RootDialogOutlet />
       </TanStackQueryProvider>
     </ThemeProvider>
   </React.StrictMode>,

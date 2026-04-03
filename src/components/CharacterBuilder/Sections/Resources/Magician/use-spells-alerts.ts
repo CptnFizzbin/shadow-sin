@@ -4,7 +4,7 @@ import { useCharacterSheet } from "#/components/Character/character-sheet-provid
 import { useActiveSkill, useAttr } from "#/components/Character/character-utils.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/Spells/spells-utils.ts"
 import { useSpellsStore } from "#/components/Spells/use-spells-store.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
 import { SkillKey } from "#/lib/system/skill-key.ts"
 

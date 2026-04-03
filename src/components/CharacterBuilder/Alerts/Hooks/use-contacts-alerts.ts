@@ -1,7 +1,7 @@
 import { useStore } from "@tanstack/react-store"
 
 import { useContactsStore } from "#/components/Contacts/use-contacts-store.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {
   const contactsStore = useContactsStore()

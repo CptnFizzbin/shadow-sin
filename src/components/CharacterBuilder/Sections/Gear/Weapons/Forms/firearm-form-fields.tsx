@@ -13,7 +13,7 @@ import {
 import {
   WeaponSkillFormFields,
 } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-skill-form-fields.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 import { FirearmAttachmentPoint } from "#/lib/system/gear/weapon-data.ts"
 import { firearmTypes } from "#/lib/system/gear/weapons/firearms/firearm-type-info.ts"

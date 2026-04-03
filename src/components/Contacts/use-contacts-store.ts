@@ -7,8 +7,18 @@ import { useCharacterSheetContext } from "#/components/Character/character-sheet
 import { createSliceAtom } from "#/integrations/tanstack-store/atom-utils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/store-slice.ts"
 import type { ContactData } from "#/lib/system/contact-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export class ContactsStore extends StoreSlice<ContactData[]> {
+  save(contact: ContactData) {
+    console.log("Contact store save", contact)
+    if (!contact.id || contact.id === NullUuid) {
+      this.add(contact)
+    } else {
+      this.update(contact.id, () => contact)
+    }
+  }
+
   add(contact: ContactData) {
     this.set((prev) => [...prev, { ...contact, id: crypto.randomUUID() }])
   }

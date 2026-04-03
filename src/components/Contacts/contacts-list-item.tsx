@@ -5,13 +5,12 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { BuildPoints } from "#/components/UI/build-points.tsx"
 import type { ContactData } from "#/lib/system/contact-data.ts"
 
 interface ContactRowProps {
   contact: ContactData
   onClick: () => void
-  onRemove: () => void
+  onRemove?: () => void
 }
 
 export const ContactRow: FC<ContactRowProps> = ({
@@ -19,8 +18,6 @@ export const ContactRow: FC<ContactRowProps> = ({
   onClick,
   onRemove,
 }) => {
-  const bpCost = contact.connection + contact.loyalty
-
   return (
     <Stack
       direction="row"
@@ -40,18 +37,18 @@ export const ContactRow: FC<ContactRowProps> = ({
         <Stack direction="row">
           <Typography flexGrow={1}>{contact.name}</Typography>
 
-          <BuildPoints value={bpCost} />
-
-          <IconButton
-            size="small"
-            color="error"
-            onClick={(e) => {
-              e.stopPropagation()
-              onRemove()
-            }}
-          >
-            <RiDeleteBin6Line size={16} />
-          </IconButton>
+          {onRemove && (
+            <IconButton
+              size="small"
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation()
+                onRemove()
+              }}
+            >
+              <RiDeleteBin6Line size={16} />
+            </IconButton>
+          )}
         </Stack>
         <Stack direction="row">
           <Chip

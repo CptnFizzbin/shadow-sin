@@ -21,7 +21,7 @@ import {
   ResistWillpowerDicePool,
 } from "#/components/Damage/resistance-dice-pools.tsx"
 import { useDamageApi } from "#/components/Damage/use-damage-api.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { SkillKey } from "#/lib/system/skill-key.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
