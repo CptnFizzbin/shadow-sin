@@ -53,7 +53,7 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
   },
   [SectionKey.gear]: {
     id: SectionKey.gear,
-    label: "Cyberware",
+    label: "Gear",
     route: GearRoute,
   },
   [SectionKey.skills]: {
