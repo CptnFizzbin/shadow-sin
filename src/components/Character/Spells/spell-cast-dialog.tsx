@@ -34,13 +34,13 @@ import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 import { SkillKey } from "#/lib/system/skill-key.ts"
 
 const SpellcastingDicePool: FC = () => {
+  const spellcastingGroup = useDiceSkillGroup(SkillKey.spellcasting)
+  const woundGroup = useWoundDiceGroup()
+
   return (
     <DicePool
       name="Spellcasting"
-      groups={[
-        useDiceSkillGroup(SkillKey.spellcasting),
-        useWoundDiceGroup(),
-      ]}
+      groups={[spellcastingGroup, woundGroup]}
     />
   )
 }
@@ -50,14 +50,14 @@ interface DrainResistanceDicePoolProps {
 }
 
 const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
+  const willpowerGroup = useDiceAttributeGroup(AttributeKey.willpower)
+  const drainAttrGroup = useDiceAttributeGroup(drainAttribute)
+  const woundGroup = useWoundDiceGroup()
+
   return (
     <DicePool
       name="Drain Resistance"
-      groups={[
-        useDiceAttributeGroup(AttributeKey.willpower),
-        useDiceAttributeGroup(drainAttribute),
-        useWoundDiceGroup(),
-      ]}
+      groups={[willpowerGroup, drainAttrGroup, woundGroup]}
     />
   )
 }
@@ -96,7 +96,7 @@ const SpellCastContent: FC<SpellCastContentProps> = ({
     onClose()
   }
 
-  const drainButtons = Array.from({ length: drainDv + 1 }, (_, i) => i)
+  const drainAmountOptions = Array.from({ length: drainDv + 1 }, (_, i) => i)
 
   return (
     <Stack gap={1.5}>
@@ -210,7 +210,7 @@ const SpellCastContent: FC<SpellCastContentProps> = ({
               color={drainIsPhysical ? "error.main" : "text.secondary"}
             />
             <ButtonGroup size="small" variant="outlined" fullWidth>
-              {drainButtons.map((amount) => (
+              {drainAmountOptions.map((amount) => (
                 <Button
                   key={amount}
                   color={drainIsPhysical ? "error" : "primary"}
