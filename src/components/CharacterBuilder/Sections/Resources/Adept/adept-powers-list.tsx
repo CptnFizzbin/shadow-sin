@@ -24,9 +24,7 @@ export const AdeptPowersList: FC = () => {
   const powerPoints = usePowerPoints()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
-  const addPower = (power: AdeptPowerData) =>
-    adeptPowersStore.add({ ...power, id: crypto.randomUUID() })
-  const updatePower = (power: AdeptPowerData) => adeptPowersStore.update(power)
+  const savePower = (power: AdeptPowerData) => adeptPowersStore.save(power)
   const removePower = (power: AdeptPowerData) => adeptPowersStore.remove(power.id)
 
   return (
@@ -59,7 +57,7 @@ export const AdeptPowersList: FC = () => {
       {dialogState?.type === "add" && (
         <AdeptPowerFormDialog
           open={dialogState.open}
-          onSave={addPower}
+          onSave={savePower}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -68,7 +66,7 @@ export const AdeptPowersList: FC = () => {
         <AdeptPowerFormDialog
           open={dialogState.open}
           power={dialogState.power}
-          onSave={updatePower}
+          onSave={savePower}
           onDelete={() => removePower(dialogState.power)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />

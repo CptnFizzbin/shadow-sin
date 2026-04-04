@@ -8,6 +8,7 @@ import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/Character/character-sheet-provider.tsx"
 import type { ItemData } from "#/lib/system/item-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export interface RemoveItemOptions {
   removeChildren?: boolean
@@ -17,6 +18,8 @@ export interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
   set(item: ItemData): ItemData
 
   add(item: Omit<ItemData, "id">): ItemData
+
+  save(item: ItemData): ItemData
 
   remove(item: ItemData, options?: RemoveItemOptions): void
 
@@ -72,6 +75,13 @@ export function useGearStore() {
       add: (item) => gearStore.set({ ...item, id: crypto.randomUUID() }),
       setParent: (child, parent) => gearStore.set({ ...child, parentId: parent.id }),
       addChild: (parent, child) => gearStore.set({ ...child, parentId: parent.id }),
+
+      save: (item) => {
+        if (!item.id || item.id === NullUuid) {
+          return gearStore.set({ ...item, id: crypto.randomUUID() as UUID })
+        }
+        return gearStore.set(item)
+      },
 
       set(item) {
         batch(() => {

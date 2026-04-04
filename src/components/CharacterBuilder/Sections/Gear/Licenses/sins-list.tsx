@@ -42,12 +42,12 @@ export const SinsList: FC = () => {
   const hasRealSin = sins.some((sin) => sin.rating === "real")
 
   const handleAddSin = (sin: SinData) => {
-    gear.add(sin)
+    gear.save(sin)
     onDialogClose()
   }
 
   const handleSaveSin = (sin: SinData) => {
-    gear.set(sin)
+    gear.save(sin)
     onDialogClose()
   }
 

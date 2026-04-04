@@ -35,7 +35,6 @@ export function useSpellForm(props: SpellFormOptions) {
   return useAppForm({
     defaultValues: {
       ...defaultValues,
-      id: crypto.randomUUID(),
       ...props.spell,
     },
     onSubmit: ({ value }) => props.onSubmit(value),

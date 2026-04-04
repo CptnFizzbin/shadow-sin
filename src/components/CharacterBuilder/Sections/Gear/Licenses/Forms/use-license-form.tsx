@@ -35,7 +35,6 @@ export const useLicenseForm = ({ parentId, license, onSubmit }: LicenseFormOptio
     ...licenseFormOpts,
     defaultValues: {
       ...defaultValues,
-      id: crypto.randomUUID(),
       parentId: parentId,
       ...license,
     },

@@ -66,7 +66,7 @@ export const SpellsList: FC = () => {
       {dialogState?.type === "add" && (
         <SpellFormDialog
           open={dialogState.open}
-          onSave={(spell) => spellsStore.add(spell)}
+          onSave={(spell) => spellsStore.save(spell)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -75,7 +75,7 @@ export const SpellsList: FC = () => {
         <SpellFormDialog
           open={dialogState.open}
           spell={dialogState.spell}
-          onSave={(spell) => spellsStore.update(spell)}
+          onSave={(spell) => spellsStore.save(spell)}
           onDelete={() => spellsStore.remove(dialogState.spell.id)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />

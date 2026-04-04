@@ -110,7 +110,7 @@ export const SpritesList: FC = () => {
         <SpriteDialog
           open={spriteDialog.open}
           onSave={(sprite) => {
-            spritesStore.add(sprite)
+            spritesStore.save(sprite)
             closeDialog()
           }}
           onClose={closeDialog}
@@ -123,7 +123,7 @@ export const SpritesList: FC = () => {
           open={spriteDialog.open}
           sprite={spriteDialog.sprite}
           onSave={(sprite) => {
-            spritesStore.update(sprite)
+            spritesStore.save(sprite)
             closeDialog()
           }}
           onClose={closeDialog}
