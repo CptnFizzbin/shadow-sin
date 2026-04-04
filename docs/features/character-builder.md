@@ -3,7 +3,7 @@
 Features still needed to finish the builder portion of the app. Ordered by priority, with a focus on a working
 prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
 
-> Items marked ✅ are covered by an open PR and pending merge.
+> Items marked ✅ are implemented; PR numbers are provided for reference.
 
 ---
 

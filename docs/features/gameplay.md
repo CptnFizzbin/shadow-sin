@@ -27,7 +27,7 @@ Features are listed roughly in descending priority for making the app _useful at
 The viewer routes exist but most are placeholder stubs. A runner needs to _see_ their character at a glance without
 opening the builder.
 
-### 1-intro. About Page (`/$characterId/about`) ⚠️ in progress — PR #65
+### 1-intro. About Page (`/$characterId/about`) ✅ implemented — PR #65
 
 - [x] Rich profile header — alias as heading (falls back to real name), real name + archetype/metatype subtitle ✅ PR #65
 - [x] Lifestyle, street cred, notoriety, and public awareness chips ✅ PR #65
@@ -35,7 +35,7 @@ opening the builder.
 - [x] SINs & Licenses overview — card list with nested licenses; hidden when empty ✅ PR #65
 - [x] Edit button → `ProfileEditDialog` for non-mechanical profile and biology details ✅ PR #65
 
-### 1a. Skills Page (`/$characterId/skills`) ⚠️ in progress — PR #63
+### 1a. Skills Page (`/$characterId/skills`) ⚠️ partially implemented — PR #63
 
 - [x] List all active skills — name, linked attribute, rating, optional specialization ✅ PR #63
 - [x] Show the full dice pool per skill (`rating + linked-attribute-value + wound-mod`) ✅ PR #63
@@ -44,7 +44,7 @@ opening the builder.
 - [ ] Group skills by skill group; highlight when a group rating is set
 - [ ] List knowledge skills and language skills in a separate section below active skills
 
-### 1b. Gear Page (`/$characterId/gear`) ⚠️ in progress — PR #67
+### 1b. Gear Page (`/$characterId/gear`) ✅ implemented — PR #67
 
 - [x] Show gear grouped by type: Weapons, Armor, Cyberware/Bioware, Devices, Vehicles, SINs & Licenses, Misc ✅ PR #67
 - [x] Display key stats per category inline (weapon DV/AP, armor ballistic/impact, implant essence cost) ✅ PR #67
@@ -54,7 +54,7 @@ opening the builder.
 - [x] Show running essence total in the Cyberware section header ✅ PR #67
 - [x] Search bar — AND-per-term substring match on name + description; matching sections auto-expand ✅ PR #67
 
-### 1c. Spells & Powers Page (`/$characterId/spells`) ⚠️ in progress — PR #64
+### 1c. Spells & Powers Page (`/$characterId/spells`) ⚠️ in progress — PR #64 _(Needs Changes)_
 
 - [x] List spells — name, type, range, duration, drain value, description ✅ PR #64
 - [x] Show casting dice pool per spell (`Magic + Spellcasting skill`) ✅ PR #64
@@ -71,7 +71,7 @@ opening the builder.
 - [ ] List sprites — type, tasks remaining; fade resistance pool
 - [ ] List foci — name, type, rating, force; show bonding status
 
-### 1d. Contacts Page (`/$characterId/contacts`) ⚠️ in progress — PR #66
+### 1d. Contacts Page (`/$characterId/contacts`) ✅ implemented — PR #66
 
 - [x] List contacts — name, connection rating, loyalty rating, role, notes ✅ PR #66
 - [x] Search bar to filter contacts by name ✅ PR #66
