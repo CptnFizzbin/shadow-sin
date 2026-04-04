@@ -3,20 +3,17 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sin-utils.ts"
-import { useGearByType } from "#/components/Gear/use-gear-api.ts"
 import { RatingChip } from "#/components/UI/rating-chip.tsx"
+import { LicenseCard } from "#/components/licenses/license-card.tsx"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
-import { GearType } from "#/lib/system/gear-type.ts"
 
 interface SinCardProps {
   sin: SinData
   licenses: LicenseData[]
 }
 
-const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
-  const sinAvail = getSinAvailability(sin.rating)
+export const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
   const sinLicenses = licenses.filter((license) => license.parentId === sin.id)
 
   return (
@@ -50,32 +47,9 @@ const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
             borderColor: "divider",
           }}
         >
-          {sinLicenses.map((license) => (
-            <Stack key={license.id} direction="row" alignItems="center">
-              <Typography sx={{ flexGrow: 1 }}>
-                {license.name}
-              </Typography>
-              <RatingChip rating={license.rating} />
-            </Stack>
-          ))}
+          {sinLicenses.map((license) => <LicenseCard key={license.id} license={license} />)}
         </Stack>
       )}
     </Box>
-  )
-}
-
-export const SinsAndLicensesSection: FC = () => {
-  const sins = useGearByType<SinData>(GearType.sin)
-  const licenses = useGearByType<LicenseData>(GearType.license)
-
-  if (sins.length === 0) return null
-
-  return (
-    <Stack gap={1}>
-      <Typography variant="subtitle2">SINs & Licenses</Typography>
-      {sins.map((sin) => (
-        <SinCard key={sin.id} sin={sin} licenses={licenses} />
-      ))}
-    </Stack>
   )
 }
