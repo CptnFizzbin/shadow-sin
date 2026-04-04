@@ -25,7 +25,7 @@ export const ActiveSkillsList: FC = () => {
         const skillSpecialization = skillsStore.activeSkills.getSpecialization(skillKey)
         return { key: skillKey, ...skillInfo, rating: skillRating, specialization: skillSpecialization }
       }).filter((skillInfo) => {
-        return skillInfo.rating >= 1 || !!skillInfo.defaultable
+        return skillInfo.rating >= 1 || (skillInfo.defaultable ?? true)
       })
   }, [skillsStore])
 
