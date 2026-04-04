@@ -16,15 +16,16 @@ export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drai
   const drainAttrGroup = useAttrDiceGroup(drainAttribute)
   const woundGroup = useWoundDiceGroup()
 
-  // Ensure unique group names to avoid duplicate keys when drainAttribute === willpower
-  if (drainAttrGroup.name === willpowerGroup.name) {
-    drainAttrGroup.name = `${drainAttrGroup.name} (Drain)`
-  }
+  // When drainAttribute is willpower, disambiguate group names to avoid duplicate React keys
+  const resolvedDrainAttrGroup =
+    drainAttrGroup.name === willpowerGroup.name
+      ? { ...drainAttrGroup, name: `${drainAttrGroup.name} (Drain)` }
+      : drainAttrGroup
 
   return (
     <DicePool
       name="Drain Resistance"
-      groups={[willpowerGroup, drainAttrGroup, woundGroup]}
+      groups={[willpowerGroup, resolvedDrainAttrGroup, woundGroup]}
     />
   )
 }
