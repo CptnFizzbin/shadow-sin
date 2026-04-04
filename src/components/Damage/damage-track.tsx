@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import type { ReactNode } from "react"
 
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 
 interface DamageTrackProps {
   label: string

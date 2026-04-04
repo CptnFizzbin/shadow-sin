@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { contactFormOpts } from "#/components/CharacterBuilder/Sections/Contacts/use-contact-form.tsx"
+import { contactFormOpts } from "#/components/Contacts/form/use-contact-form.tsx"
 import { createRatingOptions } from "#/components/UI/rating-utils.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 
@@ -19,7 +19,7 @@ export const ContactFormFields = withFieldGroup({
           }}
         >
           {(field) => (
-            <field.TextField label="Name" fullWidth size="small" autoFocus />
+            <field.TextField label="Name" fullWidth size="small" autoFocus autoComplete="off" />
           )}
         </group.AppField>
 

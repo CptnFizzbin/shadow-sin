@@ -35,7 +35,7 @@ import {
 import { BpSummaryFooter } from "#/components/CharacterBuilder/Sections/Summary/bp-summary-footer.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/CharacterBuilder/character-builder-store-provider.tsx"
 import { SaveCharacterButton } from "#/components/CharacterBuilder/save-character-button.tsx"
-import { AllBuilderAlerts } from "#/components/UI/Alerts/alerts-list.tsx"
+import { AllBuilderAlerts } from "#/components/UI/alerts/alerts-list.tsx"
 import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 
 interface CharacterFormProps {

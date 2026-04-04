@@ -7,7 +7,7 @@ import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { AttributesSection } from "#/components/Character/attributes-section.tsx"
+import { AttributesSection } from "#/components/Attributes/attributes-section.tsx"
 import { BiologySection } from "#/components/Character/biology-section.tsx"
 import { FinancesSection } from "#/components/Character/finances-section.tsx"
 import { ProfileEditDialog } from "#/components/Character/profile-edit-dialog.tsx"

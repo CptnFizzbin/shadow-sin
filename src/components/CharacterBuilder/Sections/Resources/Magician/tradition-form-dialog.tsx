@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useTraditionForm } from "#/components/CharacterBuilder/Sections/Resources/Magician/use-tradition-form.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/lib/system/magic/tradition-data.ts"
 import { drainAttributeSelectOptions } from "#/lib/system/magic/tradition-data.ts"

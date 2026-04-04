@@ -3,7 +3,6 @@ import { useCallback } from "react"
 
 import type { CharacterSection } from "#/components/Character/character-sections.ts"
 import { characterSectionOrder, characterSections } from "#/components/Character/character-sections.ts"
-import { Route as CharacterIndexRoute } from "#/routes/$characterId"
 
 export const useCurrentCharacterSection = (): CharacterSection => {
   const matches = useMatches()
@@ -15,7 +14,7 @@ export const useCurrentCharacterSection = (): CharacterSection => {
 }
 
 export function useCharacterNav() {
-  const navigate = useNavigate({ from: CharacterIndexRoute.fullPath })
+  const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
   const currentIndex = characterSectionOrder.indexOf(currentSection)
 

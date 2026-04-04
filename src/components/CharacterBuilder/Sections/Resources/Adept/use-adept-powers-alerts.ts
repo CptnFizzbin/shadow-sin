@@ -4,7 +4,7 @@ import { isAdept } from "#/components/AdeptPowers/adept-powers-utils.ts"
 import { useAdeptPowersStore } from "#/components/AdeptPowers/use-adept-powers-store.ts"
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
 import { useAttr } from "#/components/Character/character-utils.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {

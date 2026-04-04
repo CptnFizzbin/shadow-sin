@@ -1,6 +1,6 @@
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
 import { isTechnomancer } from "#/components/Technomancer/technomancer-utils.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useComplexFormsAlerts = (): AlertInfo[] => {
   const awakeningType = useCharacterSheet((s) => s.biology.awakening)
