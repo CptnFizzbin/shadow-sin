@@ -19,7 +19,7 @@ import { SpellcastingDicePool } from "#/components/Character/Spells/spellcasting
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
 import { useAttr } from "#/components/Character/character-utils.ts"
 import { useDamageApi } from "#/components/Damage/use-damage-api.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
 import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 
@@ -70,8 +70,8 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
       }}
     >
       <Stack gap={1}>
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Label label="Cast" variant="text" sx={{ flexShrink: 0 }} />
+        <Stack gap={0.5}>
+          <Label label="Cast" variant="text" />
           {isOvercasting && (
             <Typography variant="caption" color="error.main">
               Force exceeds Magic — drain is Physical

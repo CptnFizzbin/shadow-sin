@@ -5,7 +5,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import { SpellsViewerSection } from "#/components/Character/Spells/spells-viewer-section.tsx"
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { AwakeningType } from "#/lib/system/awakening-type.ts"
 
 export const Route = createFileRoute("/$characterId/spells")({

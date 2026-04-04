@@ -2,7 +2,7 @@ import type { FC } from "react"
 
 import { DicePool } from "#/components/DicePool/dice-pool.tsx"
 import {
-  useDiceAttributeGroup,
+  useAttrDiceGroup,
   useWoundDiceGroup,
 } from "#/components/DicePool/use-dice-group.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
@@ -12,8 +12,8 @@ interface DrainResistanceDicePoolProps {
 }
 
 export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
-  const willpowerGroup = useDiceAttributeGroup(AttributeKey.willpower)
-  const drainAttrGroup = useDiceAttributeGroup(drainAttribute)
+  const willpowerGroup = useAttrDiceGroup(AttributeKey.willpower)
+  const drainAttrGroup = useAttrDiceGroup(drainAttribute)
   const woundGroup = useWoundDiceGroup()
 
   return (

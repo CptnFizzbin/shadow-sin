@@ -10,7 +10,7 @@ import type { FC } from "react"
 
 import { SpellCastSection } from "#/components/Character/Spells/spell-cast-section.tsx"
 import { formatDrainFormula } from "#/components/Character/Spells/spell-drain-formula.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 
 interface SpellCastDialogProps {

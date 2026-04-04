@@ -7,7 +7,7 @@ import { useState } from "react"
 import { SpellCastDialog } from "#/components/Character/Spells/spell-cast-dialog.tsx"
 import { SpellViewerListItem } from "#/components/Character/Spells/spell-viewer-list-item.tsx"
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 import { SpellCategory } from "#/lib/system/magic/spell-data.ts"
 
