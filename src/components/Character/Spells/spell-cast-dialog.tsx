@@ -1,0 +1,87 @@
+import Button from "@mui/material/Button"
+import Dialog from "@mui/material/Dialog"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import Divider from "@mui/material/Divider"
+import Grid from "@mui/material/Grid"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import type { FC } from "react"
+
+import { SpellCastSection } from "#/components/Character/Spells/spell-cast-section.tsx"
+import { formatDrainFormula } from "#/components/Character/Spells/spell-drain-formula.ts"
+import { Label } from "#/components/UI/text/label.tsx"
+import type { SpellData } from "#/lib/system/magic/spell-data.ts"
+
+interface SpellCastDialogProps {
+  spell: SpellData
+  open: boolean
+  onClose: () => void
+  onClosed?: () => void
+}
+
+export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
+  return (
+    <Dialog open={open} onClose={onClose} onTransitionExited={onClosed} fullWidth maxWidth="sm">
+      <DialogTitle sx={{ pb: 0 }}>{spell.name}</DialogTitle>
+      <DialogContent sx={{ pt: 1 }}>
+        <Stack gap={1.5}>
+          <Grid container spacing={1} columns={3}>
+            <Grid size={1}>
+              <Label label="Category" variant="outlined" />
+              <Typography variant="body2" textAlign="center">
+                {spell.category}
+              </Typography>
+            </Grid>
+            <Grid size={1}>
+              <Label label="Type" variant="outlined" />
+              <Typography variant="body2" textAlign="center">
+                {spell.type}
+              </Typography>
+            </Grid>
+            <Grid size={1}>
+              <Label label="Range" variant="outlined" />
+              <Typography variant="body2" textAlign="center">
+                {spell.range}
+              </Typography>
+            </Grid>
+            <Grid size={1}>
+              <Label label="Duration" variant="outlined" />
+              <Typography variant="body2" textAlign="center">
+                {spell.duration}
+              </Typography>
+            </Grid>
+            {spell.dealsDamage && (
+              <Grid size={1}>
+                <Label label="Damage" variant="outlined" />
+                <Typography variant="body2" textAlign="center">
+                  {spell.damage}
+                </Typography>
+              </Grid>
+            )}
+            <Grid size={1}>
+              <Label label="Drain" variant="outlined" />
+              <Typography variant="body2" textAlign="center">
+                {formatDrainFormula(spell.drainValueMod)}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {spell.description && (
+            <Typography variant="body2" color="text.secondary">
+              {spell.description}
+            </Typography>
+          )}
+
+          <Divider />
+
+          <SpellCastSection key={`${spell.id}-${open}`} spell={spell} onClose={onClose} />
+
+          <Button onClick={onClose} color="secondary" size="small">
+            Close
+          </Button>
+        </Stack>
+      </DialogContent>
+    </Dialog>
+  )
+}
