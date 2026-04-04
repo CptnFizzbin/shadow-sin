@@ -44,6 +44,7 @@ export function useGearStore() {
       store.setState(produce((prev) => {
         for (const savedItem of Object.values(prev.gear)) {
           savedItem.childIds ??= []
+
           if (savedItem.id === updatedItem.parentId) {
             if (!savedItem.childIds.includes(updatedItem.id)) {
               savedItem.childIds.push(savedItem.id)
@@ -52,8 +53,8 @@ export function useGearStore() {
             savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)
           }
 
-          updatedItem.childIds ??= []
-          if (updatedItem.childIds.includes(savedItem.id)) {
+          const itemChildIds = updatedItem.childIds ?? []
+          if (itemChildIds.includes(savedItem.id)) {
             savedItem.parentId = updatedItem.id
           } else {
             if (savedItem.parentId === updatedItem.id) {

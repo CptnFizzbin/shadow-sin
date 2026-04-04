@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as CharacterIdRouteRouteImport } from './routes/$characterId/route'
+import { Route as CharacterIdRouteImport } from './routes/$characterId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewIndexRouteImport } from './routes/new/index'
 import { Route as CharacterIdIndexRouteImport } from './routes/$characterId/index'
@@ -25,7 +25,7 @@ import { Route as CharacterIdDefenseRouteImport } from './routes/$characterId/de
 import { Route as CharacterIdContactsRouteImport } from './routes/$characterId/contacts'
 import { Route as CharacterIdAboutRouteImport } from './routes/$characterId/about'
 
-const CharacterIdRouteRoute = CharacterIdRouteRouteImport.update({
+const CharacterIdRoute = CharacterIdRouteImport.update({
   id: '/$characterId',
   path: '/$characterId',
   getParentRoute: () => rootRouteImport,
@@ -43,67 +43,67 @@ const NewIndexRoute = NewIndexRouteImport.update({
 const CharacterIdIndexRoute = CharacterIdIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdVehiclesRoute = CharacterIdVehiclesRouteImport.update({
   id: '/vehicles',
   path: '/vehicles',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdSpellsRoute = CharacterIdSpellsRouteImport.update({
   id: '/spells',
   path: '/spells',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdSkillsRoute = CharacterIdSkillsRouteImport.update({
   id: '/skills',
   path: '/skills',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdQualitiesRoute = CharacterIdQualitiesRouteImport.update({
   id: '/qualities',
   path: '/qualities',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdOffenseRoute = CharacterIdOffenseRouteImport.update({
   id: '/offense',
   path: '/offense',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdNotesRoute = CharacterIdNotesRouteImport.update({
   id: '/notes',
   path: '/notes',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdGearRoute = CharacterIdGearRouteImport.update({
   id: '/gear',
   path: '/gear',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdDronesRoute = CharacterIdDronesRouteImport.update({
   id: '/drones',
   path: '/drones',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdDefenseRoute = CharacterIdDefenseRouteImport.update({
   id: '/defense',
   path: '/defense',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdContactsRoute = CharacterIdContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdAboutRoute = CharacterIdAboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => CharacterIdRouteRoute,
+  getParentRoute: () => CharacterIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$characterId': typeof CharacterIdRouteRouteWithChildren
+  '/$characterId': typeof CharacterIdRouteWithChildren
   '/$characterId/about': typeof CharacterIdAboutRoute
   '/$characterId/contacts': typeof CharacterIdContactsRoute
   '/$characterId/defense': typeof CharacterIdDefenseRoute
@@ -137,7 +137,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$characterId': typeof CharacterIdRouteRouteWithChildren
+  '/$characterId': typeof CharacterIdRouteWithChildren
   '/$characterId/about': typeof CharacterIdAboutRoute
   '/$characterId/contacts': typeof CharacterIdContactsRoute
   '/$characterId/defense': typeof CharacterIdDefenseRoute
@@ -207,7 +207,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CharacterIdRouteRoute: typeof CharacterIdRouteRouteWithChildren
+  CharacterIdRoute: typeof CharacterIdRouteWithChildren
   NewIndexRoute: typeof NewIndexRoute
 }
 
@@ -217,7 +217,7 @@ declare module '@tanstack/react-router' {
       id: '/$characterId'
       path: '/$characterId'
       fullPath: '/$characterId'
-      preLoaderRoute: typeof CharacterIdRouteRouteImport
+      preLoaderRoute: typeof CharacterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -239,89 +239,89 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/$characterId/'
       preLoaderRoute: typeof CharacterIdIndexRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/vehicles': {
       id: '/$characterId/vehicles'
       path: '/vehicles'
       fullPath: '/$characterId/vehicles'
       preLoaderRoute: typeof CharacterIdVehiclesRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/spells': {
       id: '/$characterId/spells'
       path: '/spells'
       fullPath: '/$characterId/spells'
       preLoaderRoute: typeof CharacterIdSpellsRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/skills': {
       id: '/$characterId/skills'
       path: '/skills'
       fullPath: '/$characterId/skills'
       preLoaderRoute: typeof CharacterIdSkillsRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/qualities': {
       id: '/$characterId/qualities'
       path: '/qualities'
       fullPath: '/$characterId/qualities'
       preLoaderRoute: typeof CharacterIdQualitiesRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/offense': {
       id: '/$characterId/offense'
       path: '/offense'
       fullPath: '/$characterId/offense'
       preLoaderRoute: typeof CharacterIdOffenseRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/notes': {
       id: '/$characterId/notes'
       path: '/notes'
       fullPath: '/$characterId/notes'
       preLoaderRoute: typeof CharacterIdNotesRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/gear': {
       id: '/$characterId/gear'
       path: '/gear'
       fullPath: '/$characterId/gear'
       preLoaderRoute: typeof CharacterIdGearRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/drones': {
       id: '/$characterId/drones'
       path: '/drones'
       fullPath: '/$characterId/drones'
       preLoaderRoute: typeof CharacterIdDronesRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/defense': {
       id: '/$characterId/defense'
       path: '/defense'
       fullPath: '/$characterId/defense'
       preLoaderRoute: typeof CharacterIdDefenseRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/contacts': {
       id: '/$characterId/contacts'
       path: '/contacts'
       fullPath: '/$characterId/contacts'
       preLoaderRoute: typeof CharacterIdContactsRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/about': {
       id: '/$characterId/about'
       path: '/about'
       fullPath: '/$characterId/about'
       preLoaderRoute: typeof CharacterIdAboutRouteImport
-      parentRoute: typeof CharacterIdRouteRoute
+      parentRoute: typeof CharacterIdRoute
     }
   }
 }
 
-interface CharacterIdRouteRouteChildren {
+interface CharacterIdRouteChildren {
   CharacterIdAboutRoute: typeof CharacterIdAboutRoute
   CharacterIdContactsRoute: typeof CharacterIdContactsRoute
   CharacterIdDefenseRoute: typeof CharacterIdDefenseRoute
@@ -336,7 +336,7 @@ interface CharacterIdRouteRouteChildren {
   CharacterIdIndexRoute: typeof CharacterIdIndexRoute
 }
 
-const CharacterIdRouteRouteChildren: CharacterIdRouteRouteChildren = {
+const CharacterIdRouteChildren: CharacterIdRouteChildren = {
   CharacterIdAboutRoute: CharacterIdAboutRoute,
   CharacterIdContactsRoute: CharacterIdContactsRoute,
   CharacterIdDefenseRoute: CharacterIdDefenseRoute,
@@ -351,12 +351,13 @@ const CharacterIdRouteRouteChildren: CharacterIdRouteRouteChildren = {
   CharacterIdIndexRoute: CharacterIdIndexRoute,
 }
 
-const CharacterIdRouteRouteWithChildren =
-  CharacterIdRouteRoute._addFileChildren(CharacterIdRouteRouteChildren)
+const CharacterIdRouteWithChildren = CharacterIdRoute._addFileChildren(
+  CharacterIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CharacterIdRouteRoute: CharacterIdRouteRouteWithChildren,
+  CharacterIdRoute: CharacterIdRouteWithChildren,
   NewIndexRoute: NewIndexRoute,
 }
 export const routeTree = rootRouteImport

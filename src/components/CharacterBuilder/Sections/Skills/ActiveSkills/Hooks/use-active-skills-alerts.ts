@@ -2,7 +2,7 @@ import { useStore } from "@tanstack/react-store"
 
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/skill-group-utils.ts"
 import { useSkillsStore } from "#/components/Skills/use-skills-store.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useActiveSkillsAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()

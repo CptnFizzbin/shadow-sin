@@ -32,6 +32,10 @@ export class ProfileStore extends StoreSlice<ProfileStoreState> {
   setPersonality(personality: string | undefined): void {
     this.set((prev) => ({ ...prev, personality }))
   }
+
+  setPublicAwarenessModifier(publicAwarenessModifier: number | undefined): void {
+    this.set((prev) => ({ ...prev, publicAwarenessModifier }))
+  }
 }
 
 export const useProfileStore = (): ProfileStore => {

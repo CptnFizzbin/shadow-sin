@@ -11,14 +11,14 @@ import { useQualitiesBuildPoints } from "#/components/CharacterBuilder/BuildPoin
 import { useSpellsBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-spells-build-points.ts"
 import { useSpritesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-sprites-build-points.ts"
 import type { BpLineItem } from "#/components/CharacterBuilder/BuildPoints/bp-line-item.ts"
-import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
-import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/character-builder-utils.ts"
 import {
   calculateActiveSkillsBp,
   calculateExtraSpBp,
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
-} from "#/components/Skills/skill-utils.ts"
+} from "#/components/CharacterBuilder/Sections/Skills/skills-builder-utils.ts"
+import { BuilderSectionId } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
+import { CharacterBuilderMaxBp } from "#/components/CharacterBuilder/character-builder-utils.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
 import { awakenings } from "#/lib/system/awakening-type.ts"
 import { metatypes } from "#/lib/system/metatype-data.ts"
