@@ -37,21 +37,27 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
   )
 }
 
-export const AttributesSection: FC = () => {
+export interface AttributesSectionProps {
+  showLabels?: boolean
+}
+
+export const AttributesSection: FC<AttributesSectionProps> = ({
+  showLabels = true,
+}) => {
   return (
-    <Stack gap={0.5}>
-      <Stack gap={0.5}>
-        <Label label="Physical" />
+    <Stack>
+      <Stack>
+        {showLabels && <Label label="Physical" />}
         <AttrList attrKeys={PhysicalAttributes} />
       </Stack>
 
-      <Stack gap={0.5}>
-        <Label label="Mental" />
+      <Stack>
+        {showLabels && <Label label="Mental" />}
         <AttrList attrKeys={MentalAttributes} />
       </Stack>
 
-      <Stack gap={0.5}>
-        <Label label="Special" />
+      <Stack>
+        {showLabels && <Label label="Special" />}
         <AttrList
           attrKeys={SpecialAttributes.filter((k) => k !== AttributeKey.essence)}
         />

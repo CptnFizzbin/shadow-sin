@@ -3,11 +3,11 @@ import Stack from "@mui/material/Stack"
 import { weaponFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/use-weapon-form.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
-import { Skills } from "#/lib/system/skill-key.ts"
+import { skills } from "#/lib/system/skill-key.ts"
 
 const skillOptions = [
   { label: "None", value: "" },
-  ...Object.entries(Skills)
+  ...Object.entries(skills)
     .filter(([_, skill]) => skill.isWeaponSkill)
     .map(([key, _]) => ({
       label: key,

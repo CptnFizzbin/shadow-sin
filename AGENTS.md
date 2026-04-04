@@ -28,7 +28,7 @@ yarn tsc          # TypeScript type check (no emit)
 src/lib/fixture/character/*.ts    ← static fixture data (CharacterSheet)
   → characterManager.ensureCharacters() ← seeds fixtures into storage on first load
     → characterManager.getCharacter()   ← reads from LocalStorageProvider
-      → route loader ($characterId/route.tsx)
+      → route loader ($characterId/$characterId.tsx)
         → new CharacterSheetStore(character)  ← class wrapping @tanstack/store Atom
           → CharacterSheetProvider      ← context wrapper
             → useCharacterSheet(sel)    ← component consumption hook
