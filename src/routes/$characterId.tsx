@@ -18,7 +18,7 @@ export const Route = createFileRoute("/$characterId")({
     const character = await localCharacterManager.getCharacter(params.characterId)
 
     if (!character) {
-      throw new Error(`Character "${params.characterId}" was not found.`)
+      throw new Error(`Character ${params.characterId} was not found.`)
     }
 
     return character

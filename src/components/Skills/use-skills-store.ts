@@ -8,6 +8,7 @@ import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "#/lib/system/skill-data.ts"
 import type { SkillGroupKey } from "#/lib/system/skill-group-key.ts"
 import type { SkillKey } from "#/lib/system/skill-key.ts"
+import { skills } from "#/lib/system/skill-key.ts"
 
 export type SkillsStoreState = CharacterSheet["skills"]
 
@@ -24,8 +25,21 @@ export class SkillsStore extends StoreSlice<SkillsStoreState> {
         return { ...prev, activeSkills: copy }
       })
     },
+
     remove: (skillName: SkillKey) => {
       this.set((prev) => ({ ...prev, activeSkills: prev.activeSkills.filter((s) => s.name !== skillName) }))
+    },
+
+    getSkillValue: (skillName: SkillKey) => {
+      const skillInfo = skills[skillName]
+
+      const skillRating = this.get().activeSkills.find((s) => s.name === skillName)?.rating ?? 0
+      const groupRating = this.get().skillGroups.find((s) => s.name === skillInfo.group)?.rating ?? 0
+
+      return Math.max(skillRating, groupRating, 0)
+    },
+    getSpecialization: (skillKey: string) => {
+      return this.get().activeSkills.find((s) => s.name === skillKey)?.specialization
     },
   }
 
@@ -92,7 +106,7 @@ export const useSkillsStore = (): SkillsStore => {
     const atom = createSliceAtom(
       store,
       (root) => root.skills,
-      (root, skills) => produce(root, (draft) => { draft.skills = skills }),
+      (root, newSkills) => produce(root, (draft) => { draft.skills = newSkills }),
     )
 
     return new SkillsStore(atom)

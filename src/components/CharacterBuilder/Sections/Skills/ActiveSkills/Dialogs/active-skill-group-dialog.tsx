@@ -13,7 +13,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/CharacterBuilder/Sections/Skills/ActiveSkills/skill-group-utils.ts"
-import { SkillGroupRatingMax } from "#/components/Skills/skill-utils.ts"
+import { SkillGroupRatingMax } from "#/components/CharacterBuilder/Sections/Skills/skills-builder-utils.ts"
 import type { SkillGroupData } from "#/lib/system/skill-data.ts"
 import { SkillGroupKey } from "#/lib/system/skill-group-key.ts"
 
