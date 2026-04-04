@@ -11,8 +11,8 @@ import { SpellListItem } from "#/components/CharacterBuilder/Sections/Resources/
 import { TraditionCard } from "#/components/CharacterBuilder/Sections/Resources/Magician/tradition-card.tsx"
 import { SpellFormDialog } from "#/components/Spells/Dialogs/spell-form-dialog.tsx"
 import { useSpellsStore } from "#/components/Spells/use-spells-store.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
 import { BuildPoints } from "#/components/UI/build-points.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import type { SpellData } from "#/lib/system/magic/spell-data.ts"
 
 type DialogState =
@@ -66,7 +66,7 @@ export const SpellsList: FC = () => {
       {dialogState?.type === "add" && (
         <SpellFormDialog
           open={dialogState.open}
-          onSave={(spell) => spellsStore.add(spell)}
+          onSave={(spell) => spellsStore.save(spell)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />
       )}
@@ -75,7 +75,7 @@ export const SpellsList: FC = () => {
         <SpellFormDialog
           open={dialogState.open}
           spell={dialogState.spell}
-          onSave={(spell) => spellsStore.update(spell)}
+          onSave={(spell) => spellsStore.save(spell)}
           onDelete={() => spellsStore.remove(dialogState.spell.id)}
           onClose={() => setDialogState({ ...dialogState, open: false })}
         />

@@ -16,8 +16,8 @@ import {
 } from "#/components/CharacterBuilder/Sections/Resources/Technomancer/Sprites/sprites-list-item.tsx"
 import { useMaxSpritesRegistered } from "#/components/Technomancer/sprites-hooks.ts"
 import { useSpritesStore } from "#/components/Technomancer/use-sprites-store.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
 import { BuildPoints } from "#/components/UI/build-points.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { getProgress } from "#/lib/progress-utils.ts"
 import { AttributeKey } from "#/lib/system/attribute-key.ts"
 import type { SpriteData } from "#/lib/system/magic/sprite-data.ts"
@@ -110,7 +110,7 @@ export const SpritesList: FC = () => {
         <SpriteDialog
           open={spriteDialog.open}
           onSave={(sprite) => {
-            spritesStore.add(sprite)
+            spritesStore.save(sprite)
             closeDialog()
           }}
           onClose={closeDialog}
@@ -123,7 +123,7 @@ export const SpritesList: FC = () => {
           open={spriteDialog.open}
           sprite={spriteDialog.sprite}
           onSave={(sprite) => {
-            spritesStore.update(sprite)
+            spritesStore.save(sprite)
             closeDialog()
           }}
           onClose={closeDialog}

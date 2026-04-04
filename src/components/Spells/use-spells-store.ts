@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstack-store/atom-utils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/store-slice.ts"
 import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 import type { SpellData } from "#/lib/system/magic/spell-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export type SpellsStoreState = CharacterSheet["spells"]
 
@@ -24,6 +25,14 @@ export class SpellsStore extends StoreSlice<SpellsStoreState> {
 
   remove(spellId: string): void {
     this.set((prev) => prev.filter((s) => s.id !== spellId))
+  }
+
+  save(spell: SpellData): void {
+    if (!spell.id || spell.id === NullUuid) {
+      this.add({ ...spell, id: crypto.randomUUID() })
+    } else {
+      this.update(spell)
+    }
   }
 }
 

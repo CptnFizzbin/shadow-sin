@@ -47,7 +47,6 @@ export const Label: FC<LabelProps> = ({
 
   return (
     <Typography
-      variant="caption"
       sx={mergeSx(sx, { display: "block", width: "100%" }, styles, { textAlign })}
     >
       {label}

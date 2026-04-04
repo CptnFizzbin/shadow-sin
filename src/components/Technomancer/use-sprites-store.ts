@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstack-store/atom-utils.ts"
 import { StoreSlice } from "#/integrations/tanstack-store/store-slice.ts"
 import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 import type { SpriteData } from "#/lib/system/magic/sprite-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export type SpritesStoreState = CharacterSheet["sprites"]
 
@@ -24,6 +25,14 @@ export class SpritesStore extends StoreSlice<SpritesStoreState> {
 
   remove(spriteId: string): void {
     this.set((prev) => prev.filter((s) => s.id !== spriteId))
+  }
+
+  save(sprite: SpriteData): void {
+    if (!sprite.id || sprite.id === NullUuid) {
+      this.add({ ...sprite, id: crypto.randomUUID() })
+    } else {
+      this.update(sprite)
+    }
   }
 }
 

@@ -116,7 +116,7 @@ export const ComplexFormsList: FC = () => {
           open={complexFormDialog.open}
           maxRating={resonance}
           onSave={(form) => {
-            complexFormsStore.add(form)
+            complexFormsStore.save(form)
             closeDialog()
           }}
           onClose={closeDialog}
@@ -130,7 +130,7 @@ export const ComplexFormsList: FC = () => {
           form={complexFormDialog.form}
           maxRating={resonance}
           onSave={(form) => {
-            complexFormsStore.update(form)
+            complexFormsStore.save(form)
             closeDialog()
           }}
           onClose={closeDialog}

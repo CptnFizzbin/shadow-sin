@@ -29,7 +29,6 @@ export const useSinForm = (options: SinFormOptions) => {
     ...sinFormOpts,
     defaultValues: {
       ...defaultValues,
-      id: crypto.randomUUID(),
       ...options.sin,
     },
     onSubmit: ({ value }) => {

@@ -1,6 +1,7 @@
 import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
 import type { AdeptPowerData } from "#/lib/system/magic/adept-power-data.ts"
 import { AdeptPowerDataSchema } from "#/lib/system/magic/adept-power-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 export type AdeptPowerFormOptions =
   | { mode: "create", onSubmit: (values: AdeptPowerData) => void }
@@ -11,7 +12,7 @@ export type AdeptPowerFormOptions =
   }
 
 const defaultAdeptPowerValues: AdeptPowerData = {
-  id: crypto.randomUUID(),
+  id: NullUuid,
   name: "",
   rating: 1,
   costPerRating: 0.5,
@@ -26,7 +27,7 @@ const defaultAdeptPowerValues: AdeptPowerData = {
 /**
  * Create and configure a form controller for creating or editing an AdeptPowerData entry.
  *
- * @param props - Options controlling form mode and submit handler. When `mode` is `"edit"`, the form's default values are the file defaults merged with `props.power`; when `mode` is `"create"`, the form's default values use the file defaults with a newly generated `id`.
+ * @param props - Options controlling form mode and submit handler. When `mode` is `"edit"`, the form's default values are the file defaults merged with `props.power`; when `mode` is `"create"`, the form's default values use the file defaults with id set to NullUuid.
  * @returns The form controller configured for `AdeptPowerData`, including default values, change-time validation, and an `onSubmit` handler that forwards the form value to the provided callback.
  */
 export function useAdeptPowerForm(props: AdeptPowerFormOptions) {
@@ -36,10 +37,7 @@ export function useAdeptPowerForm(props: AdeptPowerFormOptions) {
           ...defaultAdeptPowerValues,
           ...props.power,
         }
-      : {
-          ...defaultAdeptPowerValues,
-          id: crypto.randomUUID(),
-        }
+      : defaultAdeptPowerValues
 
   return useAppForm({
     defaultValues,

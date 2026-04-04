@@ -6,7 +6,6 @@ export const getDiceOffset = (isRolling: boolean): CSSProperties => {
   const translateY = isRolling ? randomIntInRange(-2, 2) : 1
 
   return {
-    transition: "rotate 100ms, transform 100ms",
     rotate: `${rotate}deg`,
     transform: `translate(${translateX}px, ${translateY}px)`,
   }

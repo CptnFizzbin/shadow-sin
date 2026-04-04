@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -11,8 +10,9 @@ import { useState } from "react"
 import { LicenseFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Dialogs/license-form-dialog.tsx"
 import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/license-utils.ts"
 import { AvailabilityChip } from "#/components/Gear/availability-chip.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore, useGearByType } from "#/components/Gear/use-gear-api.ts"
 import { Nuyen } from "#/components/UI/nuyen.tsx"
+import { RatingChip } from "#/components/UI/rating-chip.tsx"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
@@ -28,7 +28,7 @@ type DialogState =
 
 export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const licenses = useGearByType<LicenseData>(GearType.license).filter((license) => license.parentId === sin.id)
 
   const onDialogClose = () => {
@@ -40,12 +40,12 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
   }
 
   const handleAddLicense = (license: LicenseData) => {
-    gearApi.add(license)
+    gearApi.save(license)
     onDialogClose()
   }
 
   const handleSaveLicense = (license: LicenseData) => {
-    gearApi.set(license)
+    gearApi.save(license)
     onDialogClose()
   }
 
@@ -95,12 +95,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
               </Stack>
 
               <Stack direction="row" gap={1} sx={{ pt: 1 }}>
-                <Chip
-                  label={`Rating: ${license.rating}`}
-                  size="small"
-                  variant="outlined"
-                  sx={{ height: 20, fontSize: "0.7rem" }}
-                />
+                <RatingChip rating={license.rating} />
 
                 <AvailabilityChip availability={licenseAvail} />
               </Stack>

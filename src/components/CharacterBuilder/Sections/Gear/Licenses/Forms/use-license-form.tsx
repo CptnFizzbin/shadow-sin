@@ -21,6 +21,7 @@ const defaultValues: LicenseData = {
   name: "",
   rating: 1,
   cost: 0,
+  parentId: NullGearId,
 }
 
 export const licenseFieldMap = createFieldMap(defaultValues)
@@ -34,7 +35,6 @@ export const useLicenseForm = ({ parentId, license, onSubmit }: LicenseFormOptio
     ...licenseFormOpts,
     defaultValues: {
       ...defaultValues,
-      id: crypto.randomUUID(),
       parentId: parentId,
       ...license,
     },

@@ -10,7 +10,7 @@ import { QualitiesListItem } from "#/components/CharacterBuilder/Sections/Qualit
 import { QualitiesMaxNegativeBpBonus } from "#/components/CharacterBuilder/Sections/Qualities/qualities-utils.ts"
 import { QualityFormDialog } from "#/components/Qualities/Dialogs/quality-form-dialog.tsx"
 import { useQualitiesStore } from "#/components/Qualities/use-qualities-store.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import type { QualityData } from "#/lib/system/quality-data.ts"
 
 type DialogState =

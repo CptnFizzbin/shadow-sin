@@ -10,6 +10,7 @@ import { z } from "zod"
 import { GameEffectsFieldGroup } from "#/components/GameEffects/game-effects-field-group.tsx"
 import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
 import type { ComplexFormData } from "#/lib/system/magic/complex-form-data.ts"
+import { NullUuid } from "#/lib/uuid-utils.ts"
 
 interface ComplexFormDialogProps {
   open: boolean
@@ -33,7 +34,7 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   const isEditMode = !!form
   const effectiveMaxRating = Math.max(maxRating, 1)
 
-  const recordId = form?.id ?? crypto.randomUUID()
+  const recordId = form?.id ?? NullUuid
   const dialogKey = `${recordId}-${open ? "1" : "0"}`
 
   const appForm = useAppForm({

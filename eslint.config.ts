@@ -137,7 +137,10 @@ export default defineConfig([
   },
   {
     // Exclude auto-generated and special TanStack Router files from filename check
-    files: ["**/routeTree.gen.ts", "**/__root.tsx"],
+    files: [
+      "**/routeTree.gen.ts",
+      "src/routes/**",
+    ],
     rules: {
       "check-file/filename-naming-convention": "off",
     },

@@ -38,6 +38,7 @@ export const DiceResult: FC<DiceResultProps> = ({
       direction="row"
       flexWrap="wrap"
       sx={{ color: diceDefaultColor }}
+      gap={0}
     >
       {diceValues.map((value, index) => {
         return (

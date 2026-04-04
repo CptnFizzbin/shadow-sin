@@ -10,7 +10,7 @@ import { useState } from "react"
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/gear-item-form-dialog.tsx"
 import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/gear-item-card.tsx"
 import { WeaponFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/weapon-form-dialog.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore, useGearByType } from "#/components/Gear/use-gear-api.ts"
 import type { WeaponData } from "#/lib/system/gear/weapon-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
 import type { ItemData } from "#/lib/system/item-data.ts"
@@ -26,7 +26,7 @@ type AccessoryDialogState =
   | { mode: "edit", item: ItemData, open: boolean }
 
 export const WeaponsList: FC = () => {
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const weapons = useGearByType<WeaponData>(GearType.weapon)
   const [weaponDialog, setWeaponDialog] = useState<WeaponDialogState>(null)
   const [accessoryDialog, setAccessoryDialog] = useState<AccessoryDialogState>(null)
@@ -42,23 +42,23 @@ export const WeaponsList: FC = () => {
     setAccessoryDialog((prev) => prev && { ...prev, open: false })
 
   const handleAddWeapon = (weapon: WeaponData) => {
-    gearApi.add(weapon)
+    gearApi.save(weapon)
     closeWeaponDialog()
   }
 
   const handleUpdateWeapon = (weapon: WeaponData) => {
-    gearApi.set(weapon)
+    gearApi.save(weapon)
     closeWeaponDialog()
   }
 
   const handleAddAccessory = (item: ItemData) => {
     if (accessoryDialog?.mode !== "create") return
-    gearApi.add({ ...item, parentId: accessoryDialog.parentId })
+    gearApi.save({ ...item, parentId: accessoryDialog.parentId })
     closeAccessoryDialog()
   }
 
   const handleUpdateAccessory = (item: ItemData) => {
-    gearApi.set(item)
+    gearApi.save(item)
     closeAccessoryDialog()
   }
 
