@@ -22,41 +22,33 @@ yarn tsc          # TypeScript type check (no emit)
 
 ## Architecture
 
-### Data flow
+Character state lives in a `CharacterSheetStore extends StoreSlice<CharacterSheet>` (wrapping a `@tanstack/store`
+`Atom`) — not React state or Context values directly. Components subscribe via `useCharacterSheet(selector)` from
+`src/components/Character/character-sheet-provider.tsx`.
 
-```
-src/lib/fixture/character/*.ts    ← static fixture data (CharacterSheet)
-  → characterManager.ensureCharacters() ← seeds fixtures into storage on first load
-    → characterManager.getCharacter()   ← reads from LocalStorageProvider
-      → route loader ($characterId/$characterId.tsx)
-        → new CharacterSheetStore(character)  ← class wrapping @tanstack/store Atom
-          → CharacterSheetProvider      ← context wrapper
-            → useCharacterSheet(sel)    ← component consumption hook
-```
-
-Character state lives in a `@tanstack/store` `Store<CharacterSheet>` — not React state or Context values directly.
-Components subscribe via `useCharacterSheet(selector)` from `src/components/Character/CharacterSheetProvider.tsx`.
-
-> `useCharacterStore` and `useCharacterSheetStore` are deprecated aliases for `useCharacterSheet`.
-
-The `CharacterStorePersistence` component (rendered inside `CharacterRoute`) auto-saves store changes back to
-`characterManager` — throttled to every 30 seconds with a flush on unmount.
+The `$characterId.tsx` route subscribes to store changes via `store.subscribe()` and immediately persists to
+`localCharacterManager.saveCharacter()` on every update (no dedicated persistence component).
 
 ### Key directories
 
-- `src/lib/system/` — All domain types (`CharacterSheet` is the root, in `characterSheet.ts`)
+- `src/lib/system/` — All domain types (`CharacterSheet` is the root, in `character-sheet.ts`)
 - `src/lib/system/gear/` — Gear sub-types keyed by `GearType` enum
-- `src/lib/system/magic/` — Magic sub-types: `spellData.ts`, `adeptPowerData.ts`, `complexFormData.ts`, `spriteData.ts`, etc.
-- `src/lib/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` grouping constants
+- `src/lib/system/magic/` — Magic sub-types: `spell-data.ts`, `adept-power-data.ts`, `complex-form-data.ts`,
+  `sprite-data.ts`, `tradition-data.ts`, etc.
+- `src/lib/system/game-effects/` — `GameEffectData` and related types; effects attach to gear items via
+  `ItemData.effects`
+- `src/lib/system/attribute-key.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`,
+  `SpecialAttributes` grouping constants
 - `src/lib/fixture/character/` — Static character fixtures; `artemis.ts` is the primary example
 - `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager` + `CharacterManager`)
 - `src/lib/storage/characters/migrations/` — Character schema migration steps (`CharacterMigration<TInput, TOutput>`)
 - `src/components/Character/` — Character sheet UI components and `CharacterSheetProvider`
-- `src/components/CharacterBuilder/` — Character creation/edit form (store-based); `StorePersister` for localStorage draft persistence
+- `src/components/CharacterBuilder/` — Character creation/edit form (store-based); `StorePersister` for localStorage
+  draft persistence
 - `src/components/Gear/` — Shared `GearUtils`, `UseGearApi`, `AvailabilityChip`
 - `src/routes/` — TanStack file-based routes
 - `src/integrations/` — TanStack Query/Form setup, Google Drive stub
-- `test-utils/` — Shared test helpers; `storage/MemoryStorage.ts` implements `Storage` for unit tests
+- `test-utils/` — Shared test helpers; `storage/memory-storage.ts` implements `Storage` for unit tests
 
 ### Routing
 
@@ -65,65 +57,71 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 
 ### Gear system
 
-All gear items must be created via the `createItem<T>()` factory in `src/lib/system/ItemData.ts` (auto-assigns
+All gear items must be created via the `createItem<T>()` factory in `src/lib/system/item-data.ts` (auto-assigns
 `crypto.randomUUID()` as `id`). Gear is stored on `CharacterSheet.gear` as a flat `Record<string, ItemData>`. Filter by
 the `itemType` discriminant field (values from the `GearType` enum) when working with a specific gear category.
 Specialized types (implants, vehicles, etc.) extend `ItemData` with additional fields and a narrowed `itemType`.
+`ItemData` also carries an optional `effects?: GameEffectData[]` array for attached game effects.
 
 ```ts
 // ✅ correct — use factory
-import { createItem } from "#/lib/system/ItemData.ts"
-import type { ArmorData } from "#/lib/system/gear/armorData.ts"
+import { createItem } from "#/lib/system/item-data.ts"
+import type { ArmorData } from "#/lib/system/gear/armor-data.ts"
+
 createItem<ArmorData>({ name: "...", itemType: GearType.armor, ... })
 
 // ✅ create multiple linked items (parent + children) at once
-import { createItemMap } from "#/lib/system/ItemData.ts"
+import { createItemMap } from "#/lib/system/item-data.ts"
+
 const gear = createItemMap(...createItem<SinData>({ ... }, [createItem<LicenseData>({ ... })]))
 ```
 
 ### Attribute visibility
 
 `magic` and `resonance` exist on every character but are only shown when their value is non-zero. Use the grouping
-constants from `src/lib/system/attributeKey.ts` — `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` —
-and filter out entries where `value === 0`. See `AttributesSection.tsx` for the canonical example. Do not do a raw
+constants from `src/lib/system/attribute-key.ts` — `PhysicalAttributes`, `MentalAttributes`, `SpecialAttributes` —
+and filter out entries where `value === 0`. See `attributes-section.tsx` for the canonical example. Do not do a raw
 `Object.keys()` loop over `attributes`.
 
 ### Magic system
 
 Magic/tech data types live under `src/lib/system/magic/`:
 
-- `spellData.ts` → `CharacterSheet.spells`
-- `adeptPowerData.ts` → `CharacterSheet.adeptPowers`
-- `complexFormData.ts` → `CharacterSheet.complexForms`
-- `spriteData.ts` → `CharacterSheet.sprites`
-- `spiritData.ts` — used by Magician NPCs
-- `fociData.ts` — gear items via `GearType`
+- `spell-data.ts` → `CharacterSheet.spells`
+- `adept-power-data.ts` → `CharacterSheet.adeptPowers`
+- `complex-form-data.ts` → `CharacterSheet.complexForms`
+- `sprite-data.ts` → `CharacterSheet.sprites`
+- `spirit-data.ts` — used by Magician NPCs
+- `foci-data.ts` — gear items via `GearType`
+- `tradition-data.ts` → `CharacterSheet.tradition` (optional; Magician/MysticAdept only)
 
 The character's `biology.awakening` field (`AwakeningType` enum: `Mundane`, `Adept`, `Magician`, `MysticAdept`,
 `Technomancer`) governs which magic/resonance sections are rendered. Gate UI sections on `awakening` rather than
-checking attribute values directly — see `src/lib/system/awakeningType.ts` for the `MagicAwakeningTypes` and
+checking attribute values directly — see `src/lib/system/awakening-type.ts` for the `MagicAwakeningTypes` and
 `TechAwakeningTypes` grouping constants.
 
 ### Storage layer
 
-Pre-instantiated singletons are exported from `src/lib/storage/index.ts`:
+Pre-instantiated singletons live in `src/lib/storage/local-storage/`:
 
 ```ts
-import { characterManager, storageManager } from "#/lib/storage/index.ts"
+import { localCharacterManager } from "#/lib/storage/local-storage/local-character-manager.ts"
+import { localStorageManager } from "#/lib/storage/local-storage/local-storage-manager.ts"
 ```
 
-- `storageManager` wraps a `LocalStorageProvider` (key prefix `shadow-sin`).
-- `characterManager` provides `getCharacter`, `listCharacters`, `saveCharacter`, `deleteCharacter`, and
-  `ensureCharacters`.
+- `localStorageManager` wraps a `LocalStorageProvider` (key prefix `shadow-sin`).
+- `localCharacterManager` provides `getCharacter`, `listCharacters`, `listCharactersWithErrors`, `saveCharacter`,
+  `deleteCharacter`, `getRawCharacter`, and `ensureCharacters`.
 - Character schema migrations go in `src/lib/storage/characters/migrations/index.ts` as
   `CharacterMigration<TInput, TOutput>` objects added to the `migrations` array.
 
 ### Character creation form
 
-The `/new` route renders `CharacterBuilder`, which manages two `@tanstack/store` stores — one for the `CharacterSheet`
-draft and one for transient builder state. Both stores are persisted to `localStorage` via `StorePersister` /
-`usePersistedStore` (`shadow-sin:character-form:builder:{id}:character`). Draft state is restored from storage on
-mount and cleared on reset. The builder accepts an optional `character?: CharacterSheet` prop for edit mode.
+The `/new` route renders `CharacterBuilder`, which manages a single `Store<BuilderRootState>` (holding
+`{ character: CharacterSheet, builder: BuilderState }`) via `useBuilderRootStateStore`. Slice atoms expose each
+sub-store to `CharacterSheetProvider` and `CharacterBuilderStoreProvider`. The root store is persisted to
+`localStorage` via `usePersistedStore` (key `shadow-sin:character-form:builder:{id}`). Draft state is restored from
+storage on mount and cleared on reset. The builder accepts an optional `character?: CharacterSheet` prop for edit mode.
 
 ## Conventions
 
@@ -131,19 +129,21 @@ mount and cleared on reset. The builder accepts an optional `character?: Charact
 
 - **Path alias**: `#/` → `src/` (configured in `tsconfig.json` + `vite-tsconfig-paths`)
 - **Path alias**: `#test-utils/*` → `test-utils/` (configured in `package.json` `imports` field; use in unit tests)
-- **`src/routeTree.gen.ts`** is auto-generated by the Vite plugin and must not be edited. Exclude it from formatter/lint runs (it's regenerated on dev/build).
+- **`src/routeTree.gen.ts`** is auto-generated by the Vite plugin and must not be edited. Exclude it from formatter/lint
+  runs (it's regenerated on dev/build).
 - **All local imports must include the file extension** (`.ts` or `.tsx`):
   ```ts
   // ✅
-  import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider.tsx"
+  import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
   // ❌
-  import { useCharacterSheet } from "#/components/Character/CharacterSheetProvider"
+  import { useCharacterSheet } from "#/components/Character/character-sheet-provider"
   ```
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env"`.
 - `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the
   case.
-- **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using `satisfies z.ZodType<Type>`:
+- **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using
+  `satisfies z.ZodType<Type>`:
   ```ts
   export const AdeptPowerDataSchema = z.object({ ... }) satisfies z.ZodType<AdeptPowerData>
   ```

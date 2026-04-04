@@ -22,8 +22,8 @@ export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
 }) => {
   return (
     <Dialog {...props}>
-      <DialogTitle>{name}</DialogTitle>
-      <DialogContent>
+      <DialogTitle sx={{ padding: 1 }}>{name}</DialogTitle>
+      <DialogContent sx={{ padding: 1 }}>
         <Stack direction="row">
           {body}
 

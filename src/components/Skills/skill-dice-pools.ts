@@ -7,22 +7,22 @@ import { skills } from "#/lib/system/skill-key.ts"
 
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey
-  specializtion?: string
+  specialization?: string
 }): DicePoolData => {
-  const { skillKey, specializtion } = props
+  const { skillKey, specialization } = props
   const { attr } = skills[skillKey]
 
   let id = `skill.active.${skillKey}`
   let name = skillKey.toString()
-  if (specializtion) {
-    id += `.${specializtion}`
-    name += ` (${specializtion})`
+  if (specialization) {
+    id += `.${specialization}`
+    name += ` (${specialization})`
   }
 
   return createDicePool(id, name, [
     useActiveSkillDiceGroup(skillKey),
     useAttrDiceGroup(attr),
-    specializtion ? { name: specializtion, size: 2 } : null,
+    specialization ? { name: specialization, size: 2 } : null,
     useWoundDiceGroup(),
   ])
 }
@@ -30,21 +30,21 @@ export const useActiveSkillDicePool = (props: {
 export const useKnowledgeSkillDicePool = (props: {
   knowledge: string
   rating: number
-  specializtion?: string
+  specialization?: string
 }): DicePoolData => {
-  const { knowledge, rating, specializtion } = props
+  const { knowledge, rating, specialization } = props
 
   let id = `skill.knowledge.${knowledge}`
   let name = knowledge
-  if (specializtion) {
-    id += `.${specializtion}`
-    name += ` (${specializtion})`
+  if (specialization) {
+    id += `.${specialization}`
+    name += ` (${specialization})`
   }
 
   return createDicePool(id, name, [
     { name: knowledge, size: rating },
     useAttrDiceGroup(AttributeKey.logic),
-    specializtion ? { name: specializtion, size: 2 } : null,
+    specialization ? { name: specialization, size: 2 } : null,
     useWoundDiceGroup(),
   ])
 }

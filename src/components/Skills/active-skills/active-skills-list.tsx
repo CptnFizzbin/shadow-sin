@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiSearchLine } from "@remixicon/react"
 import { sort } from "fast-sort"
 import type { FC } from "react"
-import { useMemo, useState } from "react"
+import { Fragment, useMemo, useState } from "react"
 
 import { ActiveSkillsListItem } from "#/components/Skills/active-skills/active-skills-list-item.tsx"
 import { useSkillsStore } from "#/components/Skills/use-skills-store.ts"
@@ -25,7 +25,7 @@ export const ActiveSkillsList: FC = () => {
         const skillSpecialization = skillsStore.activeSkills.getSpecialization(skillKey)
         return { key: skillKey, ...skillInfo, rating: skillRating, specialization: skillSpecialization }
       }).filter((skillInfo) => {
-        return skillInfo.rating >= 0 || !!skillInfo.defaultable
+        return skillInfo.rating >= 1 || !!skillInfo.defaultable
       })
   }, [skillsStore])
 
@@ -72,7 +72,7 @@ export const ActiveSkillsList: FC = () => {
         )}
 
         {Object.entries(groupedSkills).map(([group, groupSkills]) => (
-          <>
+          <Fragment key={group}>
             <Label label={group} />
             {groupSkills.map((skill) => (
               <ActiveSkillsListItem
@@ -81,7 +81,7 @@ export const ActiveSkillsList: FC = () => {
                 rating={skill.rating}
               />
             ))}
-          </>
+          </Fragment>
         ))}
       </Stack>
     </>

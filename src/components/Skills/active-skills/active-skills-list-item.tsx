@@ -18,21 +18,21 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
   const skillInfo = skills[skillKey]
   const skillDicePool = useActiveSkillDicePool({ skillKey })
 
-  const specializtion = useCharacterSheet((sheet) => {
+  const specialization = useCharacterSheet((sheet) => {
     return sheet.skills
       .activeSkills
       .find((s) => s.name === skillKey)
       ?.specialization
   })
 
-  const specializationDicePool = useActiveSkillDicePool({ skillKey, specializtion })
+  const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization })
 
   return (
     <>
       <SkillListItem
         name={skillKey}
         rating={rating}
-        specialization={specializtion}
+        specialization={specialization}
         attr={skillInfo.attr}
         onClick={() => setDialogOpen(true)}
       />
@@ -41,7 +41,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
         name={skillKey}
         dicePools={[
           skillDicePool,
-          specializtion ? specializationDicePool : false,
+          specialization ? specializationDicePool : false,
         ]}
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}

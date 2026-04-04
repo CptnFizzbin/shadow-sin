@@ -22,7 +22,7 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillListItemProps> = ({ skill
   const specializationDicePool = useKnowledgeSkillDicePool({
     knowledge: skill.name,
     rating: skill.rating,
-    specializtion: skill.specialization,
+    specialization: skill.specialization,
   })
 
   return (
