@@ -28,7 +28,7 @@ import { useGearAvailabilityIssues } from "#/components/CharacterBuilder/Section
 import { SectionHeader } from "#/components/CharacterBuilder/Sections/Gear/section-header.tsx"
 import { StartingNuyenSection } from "#/components/CharacterBuilder/Sections/Gear/starting-nuyen-section.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/Gear/implant-utils.ts"
-import { useGearApi } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore } from "#/components/Gear/use-gear-api.ts"
 import { useLifestyleStore } from "#/components/Profile/use-lifestyle-store.ts"
 import { BuildPoints } from "#/components/UI/build-points.tsx"
 import { Nuyen } from "#/components/UI/nuyen.tsx"
@@ -147,7 +147,7 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const allGearItems = useStore(gearApi, (g) => g)
 
   const lifestyleStore = useLifestyleStore()
