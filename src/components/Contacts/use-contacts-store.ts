@@ -32,14 +32,6 @@ export class ContactsStore extends StoreSlice<ContactData[]> {
   remove(contact: ContactData) {
     this.set((prev) => prev.filter((c) => c.id !== contact.id))
   }
-
-  save(contact: ContactData) {
-    if (!contact.id || contact.id === NullUuid) {
-      this.add(contact)
-    } else {
-      this.update(contact.id, () => contact)
-    }
-  }
 }
 
 export function useContactsStore() {

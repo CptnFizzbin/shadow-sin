@@ -78,9 +78,9 @@ export function useGearStore() {
 
       save: (item) => {
         if (!item.id || item.id === NullUuid) {
-          return gearApi.set({ ...item, id: crypto.randomUUID() as UUID })
+          return gearStore.set({ ...item, id: crypto.randomUUID() as UUID })
         }
-        return gearApi.set(item)
+        return gearStore.set(item)
       },
 
       set(item) {
