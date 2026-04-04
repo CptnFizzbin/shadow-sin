@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 
 export const ProfileSection: FC = () => {
   const profile = useCharacterSheet((s) => s.profile)

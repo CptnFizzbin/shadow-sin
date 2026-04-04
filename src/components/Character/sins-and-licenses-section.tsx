@@ -3,9 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { getLicenseAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/license-utils.ts"
 import { getSinAvailability } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sin-utils.ts"
-import { AvailabilityChip } from "#/components/Gear/availability-chip.tsx"
 import { useGearByType } from "#/components/Gear/use-gear-api.ts"
 import { RatingChip } from "#/components/UI/rating-chip.tsx"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
@@ -32,15 +30,11 @@ const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
           borderColor: "divider",
         }}
       >
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
+        <Stack direction="row" alignItems="center">
+          <Typography sx={{ flexGrow: 1 }}>
             {sin.name}
           </Typography>
-        </Stack>
-
-        <Stack direction="row" gap={1} sx={{ pt: 1 }}>
           <RatingChip rating={sin.rating} />
-          <AvailabilityChip availability={sinAvail} />
         </Stack>
       </Stack>
 
@@ -56,29 +50,14 @@ const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
             borderColor: "divider",
           }}
         >
-          {sinLicenses.map((license) => {
-            const licenseAvail = getLicenseAvailability(license.rating)
-
-            return (
-              <Stack
-                key={license.id}
-                direction="column"
-                gap={0}
-                sx={{
-                  p: 1,
-                  borderRadius: 1,
-                  border: "1px solid",
-                  borderColor: "divider",
-                }}
-              >
-                <Typography>{license.name}</Typography>
-                <Stack direction="row" gap={1} sx={{ pt: 1 }}>
-                  <RatingChip rating={license.rating} />
-                  <AvailabilityChip availability={licenseAvail} />
-                </Stack>
-              </Stack>
-            )
-          })}
+          {sinLicenses.map((license) => (
+            <Stack key={license.id} direction="row" alignItems="center">
+              <Typography sx={{ flexGrow: 1 }}>
+                {license.name}
+              </Typography>
+              <RatingChip rating={license.rating} />
+            </Stack>
+          ))}
         </Stack>
       )}
     </Box>

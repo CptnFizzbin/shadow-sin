@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box"
 import Divider from "@mui/material/Divider"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
@@ -7,7 +6,6 @@ import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { AttributesSection } from "#/components/Attributes/attributes-section.tsx"
 import { BiologySection } from "#/components/Character/biology-section.tsx"
 import { FinancesSection } from "#/components/Character/finances-section.tsx"
 import { ProfileEditDialog } from "#/components/Character/profile-edit-dialog.tsx"
@@ -25,30 +23,29 @@ function RouteComponent() {
 
   return (
     <Stack gap={1}>
-      <Paper sx={{ padding: 1 }}>
-        <Stack gap={1.5} divider={<Divider />}>
-          <Stack direction="row" alignItems="flex-start" gap={1}>
-            <Box sx={{ flexGrow: 1 }}>
-              <ProfileSection />
-            </Box>
-            <IconButton
-              size="small"
-              onClick={() => setProfileEditDialog({ open: true })}
-              aria-label="Edit profile"
-            >
-              <RiEditLine size={16} />
-            </IconButton>
-          </Stack>
+      <Paper sx={{ padding: 1, position: "relative" }}>
+        <IconButton
+          size="small"
+          onClick={() => setProfileEditDialog({ open: true })}
+          aria-label="Edit profile"
+          sx={{ position: "absolute", top: 8, right: 8 }}
+        >
+          <RiEditLine size={16} />
+        </IconButton>
+
+        <Stack divider={<Divider />}>
+          <ProfileSection />
           <BiologySection />
-          <SinsAndLicensesSection />
         </Stack>
+      </Paper>
+
+      <Paper sx={{ padding: 1 }}>
+        <SinsAndLicensesSection />
       </Paper>
 
       <Paper sx={{ padding: 1 }}>
         <FinancesSection />
       </Paper>
-
-      <AttributesSection />
 
       {profileEditDialog !== null && (
         <ProfileEditDialog
