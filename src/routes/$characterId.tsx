@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 import { CharacterSheetNav } from "#/components/Character/Nav/character-sheet-nav.tsx"
 import { useCharacterNav } from "#/components/Character/Nav/use-character-nav.ts"
@@ -9,7 +9,6 @@ import { CharacterSheetProvider } from "#/components/Character/character-sheet-p
 import { CharacterSheetStore } from "#/components/Character/character-sheet-store.ts"
 import { SwipeSurface } from "#/components/UI/swipe-surface.tsx"
 import { localCharacterManager } from "#/lib/storage/local-storage/local-character-manager.ts"
-import { usePersistStore } from "#/lib/storage/store-persister.ts"
 import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
@@ -30,8 +29,19 @@ function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
 
+  useEffect(() => {
+    const { unsubscribe } = store.subscribe(async (sheet) => {
+      try {
+        await localCharacterManager.saveCharacter(sheet)
+      } catch (error) {
+        console.error("Failed to save character sheet.", error)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [store])
+
   const { nextPage, prevPage } = useCharacterNav()
-  usePersistStore(`character:${character.id}`, store)
 
   return (
     <CharacterSheetProvider store={store}>

@@ -4,7 +4,7 @@ import type { FC } from "react"
 
 import { createAttrInfo } from "#/components/Attributes/attribute-info.ts"
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import type { AttributeKey } from "#/lib/system/attribute-key.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/lib/system/attribute-key.ts"
 import { awakenings } from "#/lib/system/awakening-type.ts"

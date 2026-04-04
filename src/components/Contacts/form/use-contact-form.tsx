@@ -28,7 +28,6 @@ export const useContactForm = (options: ContactFormOptions) => {
     ...contactFormOpts,
     defaultValues: {
       ...defaultValues,
-      id: crypto.randomUUID(),
       ...options.contact,
     },
     onSubmit: ({ value }) => options.onSubmit(value),

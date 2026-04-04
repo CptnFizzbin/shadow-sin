@@ -9,7 +9,7 @@ import { useMemo, useState } from "react"
 
 import { ActiveSkillsListItem } from "#/components/Skills/active-skills/active-skills-list-item.tsx"
 import { useSkillsStore } from "#/components/Skills/use-skills-store.ts"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { SkillKey, skills } from "#/lib/system/skill-key.ts"
 
 export const ActiveSkillsList: FC = () => {

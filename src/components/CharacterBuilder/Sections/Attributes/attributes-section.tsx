@@ -5,8 +5,8 @@ import type { FC } from "react"
 import { useAllAttrInfos } from "#/components/Character/character-utils.ts"
 import { useAttributesBuildPoints } from "#/components/CharacterBuilder/BuildPoints/Hooks/use-attributes-build-points.ts"
 import { AttributesList } from "#/components/CharacterBuilder/Sections/Attributes/attributes-list.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
 import { BuildPoints } from "#/components/UI/build-points.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { getProgress } from "#/lib/progress-utils.ts"
 import {
   AttributeKey,

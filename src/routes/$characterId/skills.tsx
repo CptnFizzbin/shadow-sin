@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { AttributesSection } from "#/components/Character/attributes-section.tsx"
+import { AttributesSection } from "#/components/Attributes/attributes-section.tsx"
 import { ActiveSkillsList } from "#/components/Skills/active-skills/active-skills-list.tsx"
 import { KnowledgeSkillsList } from "#/components/Skills/knowledge-skills/knowledge-skills-list.tsx"
 import { LanguageSkillsList } from "#/components/Skills/language-skills/language-skills-list.tsx"

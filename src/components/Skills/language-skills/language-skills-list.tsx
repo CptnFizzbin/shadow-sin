@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
 import { LanguageSkillListItem } from "#/components/Skills/language-skills/language-skills-list-item.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 
 export const LanguageSkillsList: FC = () => {
   const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
