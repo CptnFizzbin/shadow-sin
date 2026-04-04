@@ -151,3 +151,11 @@ storage on mount and cleared on reset. The builder accepts an optional `characte
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
   `npm-run-all`) and then `yarn tsc` to ensure formatting, linting, and types are clean before pushing.
 - Google Drive integration (`src/integrations/google-drive/api.ts`) is a placeholder stub — not implemented.
+
+## UI changes
+
+Whenever a task involves changes to the visual appearance or layout of a component (new UI, updated styles, added
+controls, rearranged sections), **always include at least one screenshot** of the affected area in your PR or summary.
+Take the screenshot after the dev server is running (`yarn dev`) and the change is visible in the browser. Capture the
+smallest region that clearly shows the new state. Attach the image as part of your response or PR description so
+reviewers can quickly verify the visual result without running the app locally.
