@@ -14,14 +14,20 @@ interface SpellViewerListItemProps {
 export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onClick }) => {
   return (
     <Paper
+      component="button"
+      type="button"
       sx={{
         "padding": 1,
         "border": "1px solid",
         "borderColor": "divider",
         "cursor": "pointer",
+        "width": "100%",
+        "textAlign": "left",
+        "background": "inherit",
         "&:hover": { bgcolor: "action.hover" },
       }}
       onClick={onClick}
+      aria-label={`Cast ${spell.name}`}
     >
       <Stack direction="row" alignItems="center" gap={1}>
         <Typography flexGrow={1} variant="body2">
