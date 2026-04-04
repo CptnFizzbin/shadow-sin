@@ -1,5 +1,5 @@
 import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
   const qualities = useCharacterSheet((sheet) => sheet.qualities)

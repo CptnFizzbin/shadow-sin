@@ -21,6 +21,7 @@ const defaultValues: LicenseData = {
   name: "",
   rating: 1,
   cost: 0,
+  parentId: NullGearId,
 }
 
 export const licenseFieldMap = createFieldMap(defaultValues)

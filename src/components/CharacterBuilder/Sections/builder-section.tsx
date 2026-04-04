@@ -5,8 +5,8 @@ import type { FC, PropsWithChildren } from "react"
 
 import type { BuilderSectionId } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
 import { builderSections } from "#/components/CharacterBuilder/Sections/builder-section-id.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
-import { AlertsList } from "#/components/UI/Alerts/alerts-list.tsx"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
+import { AlertsList } from "#/components/UI/alerts/alerts-list.tsx"
 
 interface BuilderSectionProps extends PropsWithChildren {
   id: BuilderSectionId

@@ -13,9 +13,9 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillRatingMax } from "#/components/Skills/skill-utils.ts"
+import { SkillRatingMax } from "#/components/CharacterBuilder/Sections/Skills/skills-builder-utils.ts"
 import type { ActiveSkillData } from "#/lib/system/skill-data.ts"
-import { SkillKey, Skills } from "#/lib/system/skill-key.ts"
+import { SkillKey, skills } from "#/lib/system/skill-key.ts"
 
 interface ActiveSkillDialogProps {
   open: boolean
@@ -70,7 +70,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
     onClosed?.()
   }
 
-  const linkedAttr = name ? Skills[name as SkillKey]?.attr : undefined
+  const linkedAttr = name ? skills[name as SkillKey]?.attr : undefined
 
   return (
     <Dialog
@@ -112,7 +112,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
                     >
                       <Typography>{skillKey}</Typography>
                       <Typography color="text.secondary" fontSize="small">
-                        {Skills[skillKey]?.group}
+                        {skills[skillKey]?.group}
                       </Typography>
                     </Stack>
                   </MenuItem>

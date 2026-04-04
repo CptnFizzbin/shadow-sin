@@ -1,7 +1,7 @@
 import { useStore } from "@tanstack/react-store"
 
 import { useSkillsStore } from "#/components/Skills/use-skills-store.ts"
-import type { AlertInfo } from "#/components/UI/Alerts/alert-info.ts"
+import type { AlertInfo } from "#/components/UI/alerts/alert-info.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()

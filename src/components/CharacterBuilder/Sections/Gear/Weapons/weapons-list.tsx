@@ -10,7 +10,7 @@ import { useState } from "react"
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/gear-item-form-dialog.tsx"
 import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/gear-item-card.tsx"
 import { WeaponFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Dialogs/weapon-form-dialog.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore, useGearByType } from "#/components/Gear/use-gear-api.ts"
 import type { WeaponData } from "#/lib/system/gear/weapon-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
 import type { ItemData } from "#/lib/system/item-data.ts"
@@ -26,7 +26,7 @@ type AccessoryDialogState =
   | { mode: "edit", item: ItemData, open: boolean }
 
 export const WeaponsList: FC = () => {
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const weapons = useGearByType<WeaponData>(GearType.weapon)
   const [weaponDialog, setWeaponDialog] = useState<WeaponDialogState>(null)
   const [accessoryDialog, setAccessoryDialog] = useState<AccessoryDialogState>(null)

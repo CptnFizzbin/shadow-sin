@@ -14,7 +14,7 @@ export interface RemoveItemOptions {
   removeChildren?: boolean
 }
 
-export interface GearApi extends BaseAtom<Record<UUID, ItemData>> {
+export interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
   set(item: ItemData): ItemData
 
   add(item: Omit<ItemData, "id">): ItemData
@@ -26,18 +26,28 @@ export interface GearApi extends BaseAtom<Record<UUID, ItemData>> {
   setParent(child: ItemData, parent: ItemData): ItemData
 
   addChild(parent: ItemData, child: ItemData): ItemData
+
+  /**
+   * Search all gear items by name and description.
+   * Each term must appear (case-insensitive substring) in the item's name or description.
+   * When a child matches, its parent is also included. When a parent matches, all its
+   * children are also included.
+   * Returns all items if `terms` is empty.
+   */
+  search(terms: string[]): ItemData[]
 }
 
-export function useGearApi() {
+export function useGearStore() {
   const store = useCharacterSheetContext()
 
   return useMemo(() => {
-    const gearStore = createStore(() => store.state.gear)
+    const gearAtom = createStore(() => store.state.gear)
 
     const updateListLinks = (updatedItem: ItemData) => {
       store.setState(produce((prev) => {
         for (const savedItem of Object.values(prev.gear)) {
           savedItem.childIds ??= []
+
           if (savedItem.id === updatedItem.parentId) {
             if (!savedItem.childIds.includes(updatedItem.id)) {
               savedItem.childIds.push(savedItem.id)
@@ -46,8 +56,8 @@ export function useGearApi() {
             savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)
           }
 
-          updatedItem.childIds ??= []
-          if (updatedItem.childIds.includes(savedItem.id)) {
+          const itemChildIds = updatedItem.childIds ?? []
+          if (itemChildIds.includes(savedItem.id)) {
             savedItem.parentId = updatedItem.id
           } else {
             if (savedItem.parentId === updatedItem.id) {
@@ -58,13 +68,13 @@ export function useGearApi() {
       }))
     }
 
-    const gearApi: GearApi = {
-      get: () => gearStore.get(),
-      subscribe: (listener) => gearStore.subscribe(listener),
+    const gearStore: GearStore = {
+      get: () => gearAtom.get(),
+      subscribe: (listener) => gearAtom.subscribe(listener),
 
-      add: (item) => gearApi.set({ ...item, id: crypto.randomUUID() }),
-      setParent: (child, parent) => gearApi.set({ ...child, parentId: parent.id }),
-      addChild: (parent, child) => gearApi.set({ ...child, parentId: parent.id }),
+      add: (item) => gearStore.set({ ...item, id: crypto.randomUUID() }),
+      setParent: (child, parent) => gearStore.set({ ...child, parentId: parent.id }),
+      addChild: (parent, child) => gearStore.set({ ...child, parentId: parent.id }),
 
       save: (item) => {
         if (!item.id || item.id === NullUuid) {
@@ -117,9 +127,39 @@ export function useGearApi() {
           }
         }))
       },
+
+      search(terms) {
+        if (terms.length === 0) return Object.values(gearStore.get())
+
+        const allItems = Object.values(gearStore.get())
+        const includedIds = new Set<string>()
+
+        const itemMatchesTerms = (item: ItemData): boolean =>
+          terms.every((term) => {
+            const lowerTerm = term.toLowerCase()
+            return (
+              item.name.toLowerCase().includes(lowerTerm)
+              || (item.description?.toLowerCase().includes(lowerTerm) ?? false)
+            )
+          })
+
+        for (const item of allItems) {
+          if (itemMatchesTerms(item)) {
+            includedIds.add(item.id)
+            // Include parent so it is visible as context
+            if (item.parentId) includedIds.add(item.parentId)
+            // Include all children of a directly-matching parent
+            for (const childId of item.childIds ?? []) {
+              includedIds.add(childId)
+            }
+          }
+        }
+
+        return allItems.filter((item) => includedIds.has(item.id))
+      },
     }
 
-    return gearApi
+    return gearStore
   }, [store])
 }
 
@@ -127,8 +167,8 @@ export function useGearApi() {
  * Reactively read a single gear item by id. Re-renders only when that item changes.
  */
 export function useGearById<TItem extends ItemData>(id: UUID): TItem | undefined {
-  const api = useGearApi()
-  return useStore(api, (gear) => gear[id] as TItem | undefined)
+  const store = useGearStore()
+  return useStore(store, (gear) => gear[id] as TItem | undefined)
 }
 
 /**
@@ -144,8 +184,8 @@ export function useGearByType<TItem extends ItemData>(itemType: string): TItem[]
  * Reactively read the parent of a gear item. Re-renders only when that parent item reference changes.
  */
 export function useGearParent(item: ItemData): ItemData | undefined {
-  const api = useGearApi()
-  return useStore(api, (gear) => {
+  const store = useGearStore()
+  return useStore(store, (gear) => {
     if (!item || !item.parentId) return undefined
     return gear[item.parentId]
   })
@@ -155,14 +195,14 @@ export function useGearParent(item: ItemData): ItemData | undefined {
  * Reactively read the children of a gear item. Re-renders when the gear Record changes.
  */
 export function useGearChildren(item: ItemData): ItemData[] {
-  const api = useGearApi()
-  const gear = useStore(api, (items) => items)
+  const store = useGearStore()
+  const gear = useStore(store, (items) => items)
   const childIds = item.childIds ?? []
   return childIds.map((itemId) => gear[itemId])
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
-  const api = useGearApi()
-  const gear = useStore(api, (g) => g)
+  const store = useGearStore()
+  const gear = useStore(store, (g) => g)
   return Object.values(gear).filter(filter)
 }

@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { GearItemFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Generic/Dialogs/gear-item-form-dialog.tsx"
 import { GearItemCard } from "#/components/CharacterBuilder/Sections/Gear/Generic/gear-item-card.tsx"
-import { useGearApi } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore } from "#/components/Gear/use-gear-api.ts"
 import type { ItemData } from "#/lib/system/item-data.ts"
 
 type DialogState =
@@ -23,7 +23,7 @@ interface GearItemsListProps {
 }
 
 export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items }) => {
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   const topLevelItems = items.filter((item) => !item.parentId)
