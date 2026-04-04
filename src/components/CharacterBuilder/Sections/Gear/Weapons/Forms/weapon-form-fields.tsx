@@ -15,7 +15,7 @@ import {
   WeaponSkillFormFields,
 } from "#/components/CharacterBuilder/Sections/Gear/Weapons/Forms/weapon-skill-form-fields.tsx"
 import { SourceFieldGroup } from "#/components/Sources/source-field-group.tsx"
-import { Label } from "#/components/UI/Text/label.tsx"
+import { Label } from "#/components/UI/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 import { WeaponType } from "#/lib/system/gear/weapon-data.ts"
 

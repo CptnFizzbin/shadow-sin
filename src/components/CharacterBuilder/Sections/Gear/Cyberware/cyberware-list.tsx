@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { ImplantFormDialog } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/Dialogs/implant-form-dialog.tsx"
 import { CyberwareListItem } from "#/components/CharacterBuilder/Sections/Gear/Cyberware/cyberware-list-item.tsx"
-import { useGearApi, useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { useGearStore, useGearByType } from "#/components/Gear/use-gear-api.ts"
 import type { ImplantData } from "#/lib/system/gear/implant-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
 import type { ItemData } from "#/lib/system/item-data.ts"
@@ -20,7 +20,7 @@ type ImplantDialogState =
   | { mode: "edit", implant: ImplantData, open: boolean }
 
 export const CyberwareList: FC = () => {
-  const gearApi = useGearApi()
+  const gearApi = useGearStore()
   const implants = useGearByType<ImplantData>(GearType.implant)
   const rootImplants = implants.filter((implant) => !implant.parentId)
 
@@ -30,12 +30,12 @@ export const CyberwareList: FC = () => {
     setImplantDialog((prev) => prev && { ...prev, open: false })
 
   const handleAddImplant = (implant: ItemData) => {
-    gearApi.add(implant)
+    gearApi.save(implant)
     closeImplantDialog()
   }
 
   const handleUpdateImplant = (implant: ItemData) => {
-    gearApi.set(implant)
+    gearApi.save(implant)
     closeImplantDialog()
   }
 
