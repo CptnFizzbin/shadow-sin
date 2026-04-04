@@ -2,8 +2,8 @@ import { Container, Divider } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
-import Footer from "#/components/UI/Footer.tsx"
-import { Header } from "#/components/UI/Header.tsx"
+import Footer from "#/components/UI/footer.tsx"
+import { Header } from "#/components/UI/header.tsx"
 import TanStackQueryProvider from "../integrations/tanstack-query/root-provider.tsx"
 
 type RouterContext = object
@@ -12,6 +12,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 })
 
+/**
+ * Render the application shell: a TanStack Query provider wrapping a column layout with the header, routed content outlet, and footer.
+ *
+ * @returns The root layout element containing the header, routed content, and footer
+ */
 function RootLayout() {
   return (
     <TanStackQueryProvider>
@@ -32,7 +37,7 @@ function RootLayout() {
           <Outlet />
         </Container>
 
-        <Stack padding={1}>
+        <Stack padding={1} gap={1}>
           <Divider />
           <Footer />
         </Stack>

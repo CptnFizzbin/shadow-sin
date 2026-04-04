@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { CharacterBuilder } from "#/components/CharacterBuilder/CharacterBuilder.tsx"
+import { CharacterBuilder } from "#/components/CharacterBuilder/character-builder.tsx"
 
 export const Route = createFileRoute("/new/")({
   component: RouteComponent,
