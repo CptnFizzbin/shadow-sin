@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box"
+import Stack from "@mui/material/Stack"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
@@ -7,6 +8,7 @@ import { CharacterSheetProvider } from "#/components/character/characterSheetPro
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
 import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
+import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -46,12 +48,14 @@ function CharacterRoute() {
   return (
     <CharacterSheetProvider store={store}>
       <CharacterSheetNav />
-
-      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
-        <Box sx={{ padding: 1 }}>
-          <Outlet />
-        </Box>
-      </SwipeSurface>
+      <Stack sx={{ padding: 1 }} gap={1}>
+        <QuickAccessPanel />
+        <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
+          <Box>
+            <Outlet />
+          </Box>
+        </SwipeSurface>
+      </Stack>
     </CharacterSheetProvider>
   )
 }
