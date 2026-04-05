@@ -7,7 +7,7 @@
   },
   "imports": {
     "#/*": "./src/*",
-    "#test-utils/*": "./test-utils/*"
+    "#testUtils/*": "./testUtils/*"
   },
   "scripts": {
     "dev": "vite dev --port 3000",

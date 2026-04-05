@@ -12,8 +12,8 @@
       "#/*": [
         "./src/*"
       ],
-      "#test-utils/*": [
-        "./test-utils/*"
+      "#testUtils/*": [
+        "./testUtils/*"
       ]
     },
     "lib": [

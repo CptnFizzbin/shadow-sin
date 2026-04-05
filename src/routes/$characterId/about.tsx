@@ -6,11 +6,11 @@ import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { BiologySection } from "#/components/Character/biology-section.tsx"
-import { FinancesSection } from "#/components/Character/finances-section.tsx"
-import { ProfileEditDialog } from "#/components/Character/profile-edit-dialog.tsx"
-import { ProfileSection } from "#/components/Character/profile-section.tsx"
-import { SinsAndLicensesSection } from "#/components/licenses/sins-and-licenses-section.tsx"
+import { BiologySection } from "#/components/character/biologySection.tsx"
+import { FinancesSection } from "#/components/character/financesSection.tsx"
+import { ProfileEditDialog } from "#/components/character/profileEditDialog.tsx"
+import { ProfileSection } from "#/components/character/profileSection.tsx"
+import { SinsAndLicensesSection } from "#/components/licenses/sinsAndLicensesSection.tsx"
 
 export const Route = createFileRoute("/$characterId/about")({
   component: RouteComponent,

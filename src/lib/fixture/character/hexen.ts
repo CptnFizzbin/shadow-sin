@@ -1,9 +1,9 @@
-import { AttributeKey } from "#/lib/system/attribute-key.ts"
-import { AwakeningType } from "#/lib/system/awakening-type.ts"
-import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
-import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spell-data.ts"
-import { MetatypeType } from "#/lib/system/metatype-data.ts"
-import { SkillKey } from "#/lib/system/skill-key.ts"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
+import { MetatypeType } from "#/lib/system/metatypeData.ts"
+import { SkillKey } from "#/lib/system/skillKey.ts"
 
 export const Hexen: CharacterSheet = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
