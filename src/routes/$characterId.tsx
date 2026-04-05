@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box"
-import Stack from "@mui/material/Stack"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
@@ -48,14 +47,24 @@ function CharacterRoute() {
   return (
     <CharacterSheetProvider store={store}>
       <CharacterSheetNav />
-      <Stack sx={{ padding: 1 }} gap={1}>
+
+      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
+        <Box sx={{ padding: 1, paddingBottom: "56px" }}>
+          <Outlet />
+        </Box>
+      </SwipeSurface>
+
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: "appBar",
+        }}
+      >
         <QuickAccessPanel />
-        <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
-          <Box>
-            <Outlet />
-          </Box>
-        </SwipeSurface>
-      </Stack>
+      </Box>
     </CharacterSheetProvider>
   )
 }
