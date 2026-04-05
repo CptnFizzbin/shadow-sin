@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import DamageTrack from "#/components/Damage/damage-track.tsx"
+import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
   MeleeBlockDicePool,
@@ -19,10 +19,10 @@ import {
   RangedFullDefenseDicePool,
   ResistBodyDicePool,
   ResistWillpowerDicePool,
-} from "#/components/Damage/resistance-dice-pools.tsx"
-import { useDamageApi } from "#/components/Damage/use-damage-api.ts"
-import { Label } from "#/components/UI/text/label.tsx"
-import { SkillKey } from "#/lib/system/skill-key.ts"
+} from "#/components/damage/resistanceDicePools.tsx"
+import { useDamageApi } from "#/components/damage/useDamageApi.ts"
+import { Label } from "#/components/ui/text/label.tsx"
+import { SkillKey } from "#/lib/system/skillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,

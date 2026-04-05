@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { GearViewPage } from "#/components/Character/GearPage/gear-view-page.tsx"
+import { GearViewPage } from "#/components/character/gearPage/gearViewPage.tsx"
 
 export const Route = createFileRoute("/$characterId/gear")({
   component: RouteComponent,

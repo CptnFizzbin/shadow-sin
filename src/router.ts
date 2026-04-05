@@ -3,7 +3,7 @@ import {
   createRouter as createTanStackRouter,
 } from "@tanstack/react-router"
 
-import { getContext } from "./integrations/tanstack-query/root-provider.tsx"
+import { getContext } from "./integrations/tanstackQuery/rootProvider.tsx"
 import { routeTree } from "./routeTree.gen.ts"
 
 export function getRouter() {

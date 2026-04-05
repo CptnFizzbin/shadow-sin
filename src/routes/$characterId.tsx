@@ -2,14 +2,14 @@ import Box from "@mui/material/Box"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
-import { CharacterSheetNav } from "#/components/Character/Nav/character-sheet-nav.tsx"
-import { useCharacterNav } from "#/components/Character/Nav/use-character-nav.ts"
-import { CharacterErrorRoute } from "#/components/Character/character-error-route.tsx"
-import { CharacterSheetProvider } from "#/components/Character/character-sheet-provider.tsx"
-import { CharacterSheetStore } from "#/components/Character/character-sheet-store.ts"
-import { SwipeSurface } from "#/components/UI/swipe-surface.tsx"
-import { localCharacterManager } from "#/lib/storage/local-storage/local-character-manager.ts"
-import type { CharacterSheet } from "#/lib/system/character-sheet.ts"
+import { CharacterErrorRoute } from "#/components/character/characterErrorRoute.tsx"
+import { CharacterSheetProvider } from "#/components/character/characterSheetProvider.tsx"
+import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
+import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
+import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
+import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
+import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
+import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,

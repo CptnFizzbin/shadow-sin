@@ -1,0 +1,106 @@
+import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
+
+export const ActiveSkillBpPerRating = 4
+export const ActiveSkillGroupBpPerRating = 10
+export const ActiveSkillSpecializationBp = 2
+export const KnowledgeSkillSpPerRating = 1
+export const LanguageSkillSpPerRating = 1
+export const KnowledgeSpecializationSp = 1
+export const LanguageSpecializationSp = 1
+export const ExtraSkillPointBpCost = 2
+export const SkillRatingMax = 6
+export const SkillGroupRatingMax = 4
+
+export const getFreeSkillPoints = (
+  logic: number,
+  intuition: number,
+): number => {
+  return (logic + intuition) * 3
+}
+
+export const getMaxSkillPoints = (logic: number, intuition: number): number => {
+  return (logic + intuition) * 6
+}
+
+export const getActiveSkillBp = (
+  skill: ActiveSkillData,
+): number => {
+  const baseSp = skill.rating * ActiveSkillBpPerRating
+
+  const specializationSp =
+    skill.specialization
+      ? ActiveSkillSpecializationBp
+      : 0
+
+  return baseSp + specializationSp
+}
+
+export const getActiveSkillGroupBp = (group: SkillGroupData): number => {
+  return group.rating * ActiveSkillGroupBpPerRating
+}
+
+export const getKnowledgeSkillSp = (
+  skill: KnowledgeSkillData,
+): number => {
+  const baseSp = skill.rating * KnowledgeSkillSpPerRating
+
+  const specializationSp =
+    skill.specialization
+      ? KnowledgeSpecializationSp
+      : 0
+
+  return baseSp + specializationSp
+}
+
+export const getLanguageSkillSp = (skill: LanguageSkillData): number => {
+  const baseSp =
+    skill.rating === "native"
+      ? 0
+      : skill.rating * LanguageSkillSpPerRating
+
+  const specializationSp =
+    skill.lingo
+      ? LanguageSpecializationSp
+      : 0
+
+  return baseSp + specializationSp
+}
+
+export const calculateActiveSkillsBp = (
+  activeSkills: ActiveSkillData[],
+  activeSkillGroups: SkillGroupData[],
+): number => {
+  const skillsBp = activeSkills.reduce((total, skill) => {
+    return total + getActiveSkillBp(skill)
+  }, 0)
+
+  const groupsBp = activeSkillGroups.reduce((total, group) => {
+    return total + getActiveSkillGroupBp(group)
+  }, 0)
+
+  return skillsBp + groupsBp
+}
+
+export const calculateKnowledgeAndLanguageSpUsed = (
+  knowledgeSkills: KnowledgeSkillData[],
+  languageSkills: LanguageSkillData[],
+): number => {
+  const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
+    return total + getKnowledgeSkillSp(skill)
+  }, 0)
+  const languageSp = languageSkills.reduce((total, skill) => {
+    return (
+      total
+      + getLanguageSkillSp(skill)
+    )
+  }, 0)
+  return knowledgeSp + languageSp
+}
+
+export const calculateExtraSpBp = (
+  totalSpUsed: number,
+  freeSkillPoints: number,
+): number => {
+  const extraSp = Math.max(0, totalSpUsed - freeSkillPoints)
+  return extraSp * ExtraSkillPointBpCost
+}
