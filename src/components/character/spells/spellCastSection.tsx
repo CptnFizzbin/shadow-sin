@@ -18,7 +18,7 @@ import { useAttr } from "#/components/character/characterUtils.ts"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
-import { useDamageApi } from "#/components/damage/useDamageApi.ts"
+import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
@@ -40,14 +40,14 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
 
-  const damageApi = useDamageApi()
+  const damageStore = useDamageStore()
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return
     if (drainIsPhysical) {
-      damageApi.physical.setValue(Math.min(damageApi.physical.max, damageApi.physical.current + amount))
+      damageStore.physical.setValue(Math.min(damageStore.physical.max, damageStore.physical.current + amount))
     } else {
-      damageApi.stun.setValue(Math.min(damageApi.stun.max, damageApi.stun.current + amount))
+      damageStore.stun.setValue(Math.min(damageStore.stun.max, damageStore.stun.current + amount))
     }
     onClose()
   }

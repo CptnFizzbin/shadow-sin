@@ -4,7 +4,7 @@ import { useCharacterSheet, useCharacterSheetContext } from "#/components/charac
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const useDamageApi = () => {
+export const useDamageStore = () => {
   const sheetStore = useCharacterSheetContext()
   const damageMonitors = useCharacterSheet((sheet) => sheet.damage)
   const bodyAttr = useAttr(AttributeKey.body)
