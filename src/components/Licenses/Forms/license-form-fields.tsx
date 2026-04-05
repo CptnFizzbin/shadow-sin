@@ -1,11 +1,11 @@
 import { z } from "zod"
 
-import { licenseFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/use-license-form.tsx"
+import { useGearByType } from "#/components/Gear/use-gear-api.ts"
+import { licenseFormOpts } from "#/components/Licenses/Forms/use-license-form.tsx"
 import {
   FakeRatingOptions,
   RealRatingOptions,
-} from "#/components/CharacterBuilder/Sections/Gear/Licenses/rating-options.ts"
-import { useGearByType } from "#/components/Gear/use-gear-api.ts"
+} from "#/components/Licenses/rating-options.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"

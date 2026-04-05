@@ -9,10 +9,8 @@ import type { FC } from "react"
 
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 
-interface SinRemoveDialogProps extends Omit<
-  DialogProps,
-  "onClose" | "onTransitionExited"
-> {
+interface SinRemoveDialogProps
+  extends Omit<DialogProps, "onClose" | "onTransitionExited"> {
   sin: SinData
   onConfirm: () => void
   onClose: () => void

@@ -1,7 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { getSinCost } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sin-utils.ts"
 import { NullGearId } from "#/components/Gear/gear-utils.ts"
+import { getSinCost } from "#/components/Licenses/sin-utils.ts"
 import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"

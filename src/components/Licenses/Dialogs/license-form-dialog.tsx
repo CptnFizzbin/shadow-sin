@@ -1,4 +1,6 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
@@ -6,11 +8,13 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { LicenseFormFields } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/license-form-fields.tsx"
+import { AvailabilityChip } from "#/components/Gear/availability-chip.tsx"
+import { LicenseFormFields } from "#/components/Licenses/Forms/license-form-fields.tsx"
 import {
   licenseFieldMap,
   useLicenseForm,
-} from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/use-license-form.tsx"
+} from "#/components/Licenses/Forms/use-license-form.tsx"
+import { getLicenseAvailability } from "#/components/Licenses/license-utils.ts"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import type { SinData } from "#/lib/system/gear/sin-data.ts"
 
@@ -19,6 +23,7 @@ export interface LicenseFormDialogProps {
   onClose: () => void
   onClosed?: () => void
   onSave: (data: LicenseData) => void
+  onDelete?: () => void
   license?: LicenseData
   sin?: SinData
 }
@@ -28,6 +33,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onDelete,
   license,
   sin,
 }) => {
@@ -47,10 +53,36 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>
           <LicenseFormFields form={form} fields={licenseFieldMap} />
+
+          <form.Subscribe selector={(state) => state.values.rating}>
+            {(rating) => {
+              const availability = getLicenseAvailability(rating)
+              return (
+                <Stack direction="row" gap={1} flexWrap="wrap">
+                  <AvailabilityChip availability={availability} />
+                  {license?.source && (
+                    <Chip
+                      size="small"
+                      variant="outlined"
+                      sx={{ height: 20, fontSize: "0.7rem" }}
+                      label={`${license.source.book} p.${license.source.page}`}
+                    />
+                  )}
+                </Stack>
+              )
+            }}
+          </form.Subscribe>
         </Stack>
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
+        <Box sx={{ flexGrow: 1 }}>
+          {onDelete && (
+            <Button color="error" onClick={onDelete}>
+              Delete
+            </Button>
+          )}
+        </Box>
         <Button color="secondary" onClick={onClose}>
           Cancel
         </Button>

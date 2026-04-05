@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { sinFormOpts } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/use-sin-form.tsx"
+import { sinFormOpts } from "#/components/Licenses/Forms/use-sin-form.tsx"
 import {
   FakeRatingOptions,
   RealRatingOptions,
-} from "#/components/CharacterBuilder/Sections/Gear/Licenses/rating-options.ts"
+} from "#/components/Licenses/rating-options.ts"
 import { withFieldGroup } from "#/integrations/tanstack-form/use-app-form.ts"
 
 export const SinFormFields = withFieldGroup({

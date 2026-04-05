@@ -1,12 +1,24 @@
-import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { SinsList } from "#/components/CharacterBuilder/Sections/Gear/Licenses/sins-list.tsx"
+import { SinsAndLicensesSection as SharedSinsAndLicensesSection } from "#/components/Licenses/sins-and-licenses-section.tsx"
+import { Nuyen } from "#/components/UI/nuyen.tsx"
 
 export const SinsAndLicensesSection: FC = () => {
   return (
-    <Stack gap={1}>
-      <SinsList />
-    </Stack>
+    <SharedSinsAndLicensesSection
+      slots={{
+        sinTrailingContent: (sin) => (
+          <Typography variant="body2" color="text.secondary">
+            <Nuyen amount={sin.cost} />
+          </Typography>
+        ),
+        licenseTrailingContent: (license) => (
+          <Typography variant="body2" color="text.secondary">
+            <Nuyen amount={license.cost} />
+          </Typography>
+        ),
+      }}
+    />
   )
 }

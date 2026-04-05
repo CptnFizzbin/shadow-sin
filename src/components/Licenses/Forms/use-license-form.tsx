@@ -2,8 +2,8 @@ import type { UUID } from "node:crypto"
 
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { getLicenseCost } from "#/components/CharacterBuilder/Sections/Gear/Licenses/Forms/license-utils.ts"
 import { NullGearId } from "#/components/Gear/gear-utils.ts"
+import { getLicenseCost } from "#/components/Licenses/license-utils.ts"
 import { useAppForm } from "#/integrations/tanstack-form/use-app-form.ts"
 import type { LicenseData } from "#/lib/system/gear/license-data.ts"
 import { GearType } from "#/lib/system/gear-type.ts"
