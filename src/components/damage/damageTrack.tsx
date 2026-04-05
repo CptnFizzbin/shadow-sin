@@ -105,7 +105,10 @@ function TrackCell({
     <Box
       component="button"
       type="button"
-      onClick={onClick}
+      onClick={(e) => {
+        onClick()
+        e.currentTarget.blur()
+      }}
       sx={{
         "minHeight": 38,
         "border": "1px solid",
