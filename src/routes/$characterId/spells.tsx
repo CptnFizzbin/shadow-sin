@@ -3,10 +3,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { SpellsViewerSection } from "#/components/Character/Spells/spells-viewer-section.tsx"
-import { useCharacterSheet } from "#/components/Character/character-sheet-provider.tsx"
-import { Label } from "#/components/UI/text/label.tsx"
-import { AwakeningType } from "#/lib/system/awakening-type.ts"
+import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { SpellsViewerSection } from "#/components/character/spells/spellsViewerSection.tsx"
+import { Label } from "#/components/ui/text/label.tsx"
+import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$characterId/spells")({
   component: RouteComponent,
