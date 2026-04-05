@@ -24,17 +24,17 @@ export interface SinsAndLicensesSectionProps {
 
 type DialogState =
   | null
-  | { mode: "createSin", open: boolean }
-  | { mode: "editSin", sin: SinData, open: boolean }
-  | { mode: "removeSin", sin: SinData, open: boolean }
-  | { mode: "createLicense", sin: SinData, open: boolean }
-  | { mode: "editLicense", license: LicenseData, sin: SinData, open: boolean }
+  | { type: "sin", sin?: SinData, open: boolean }
+  | { type: "license", sin?: SinData, license?: LicenseData, open: boolean }
+
+type RemoveDialogState = null | { sin: SinData, open: boolean }
 
 export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   slots,
 }) => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
-  const gearApi = useGearStore()
+  const [removeDialog, setRemoveDialog] = useState<RemoveDialogState>(null)
+  const gearStore = useGearStore()
   const sins = useGearByType<SinData>(GearType.sin)
   const licenses = useGearByType<LicenseData>(GearType.license)
 
@@ -46,26 +46,40 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
     setDialogState(null)
   }
 
+  const onRemoveDialogClose = () => {
+    setRemoveDialog((prev) => prev && { ...prev, open: false })
+  }
+
+  const onRemoveDialogClosed = () => {
+    setRemoveDialog(null)
+  }
+
   const hasRealSin = sins.some((sin) => sin.rating === "real")
 
   const handleSaveSin = (sin: SinData) => {
-    gearApi.save(sin)
+    gearStore.save(sin)
     onDialogClose()
   }
 
   const handleRemoveSin = (sin: SinData) => {
-    gearApi.remove(sin, { removeChildren: true })
+    gearStore.remove(sin, { removeChildren: true })
     onDialogClose()
+    onRemoveDialogClose()
   }
 
   const handleSaveLicense = (license: LicenseData) => {
-    gearApi.save(license)
+    gearStore.save(license)
     onDialogClose()
   }
 
   const handleRemoveLicense = (license: LicenseData) => {
-    gearApi.remove(license)
+    gearStore.remove(license)
     onDialogClose()
+  }
+
+  const openRemoveDialog = (sin: SinData) => {
+    onDialogClose()
+    setRemoveDialog({ sin, open: true })
   }
 
   return (
@@ -75,7 +89,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDialogState({ mode: "createSin", open: true })}
+        onClick={() => setDialogState({ type: "sin", open: true })}
         fullWidth
       >
         Add SIN
@@ -94,11 +108,10 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
             slots={{
               trailingContent: slots?.sinTrailingContent?.(sin),
             }}
-            onClick={() =>
-              setDialogState({ mode: "editSin", sin, open: true })}
+            onClick={() => setDialogState({ type: "sin", sin, open: true })}
             onDelete={() => {
               if (hasLicenses) {
-                setDialogState({ mode: "removeSin", sin, open: true })
+                setRemoveDialog({ sin, open: true })
               } else {
                 handleRemoveSin(sin)
               }
@@ -111,14 +124,8 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
                 slots={{
                   trailingContent: slots?.licenseTrailingContent?.(license),
                 }}
-                onClick={() => {
-                  setDialogState({
-                    mode: "editLicense",
-                    license,
-                    sin,
-                    open: true,
-                  })
-                }}
+                onClick={() =>
+                  setDialogState({ type: "license", license, sin, open: true })}
                 onDelete={() => handleRemoveLicense(license)}
               />
             ))}
@@ -130,7 +137,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
               startIcon={<RiAddLine size={14} />}
               onClick={(e) => {
                 e.stopPropagation()
-                setDialogState({ mode: "createLicense", sin, open: true })
+                setDialogState({ type: "license", sin, open: true })
               }}
               fullWidth
             >
@@ -140,71 +147,51 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         )
       })}
 
-      {dialogState?.mode === "createSin" && (
-        <SinFormDialog
-          open={dialogState.open}
-          allowReal={!hasRealSin}
-          onSave={handleSaveSin}
-          onClose={onDialogClose}
-          onClosed={onDialogClosed}
-        />
-      )}
-
-      {dialogState?.mode === "editSin" && (
+      {dialogState?.type === "sin" && (
         <SinFormDialog
           open={dialogState.open}
           sin={dialogState.sin}
-          allowReal={!hasRealSin || dialogState.sin.rating === "real"}
+          allowReal={!hasRealSin || dialogState.sin?.rating === "real"}
           onSave={handleSaveSin}
-          onDelete={() => {
-            if (
-              licenses.some(
-                (license) => license.parentId === dialogState.sin.id,
-              )
-            ) {
-              setDialogState({
-                mode: "removeSin",
-                sin: dialogState.sin,
-                open: true,
-              })
-            } else {
-              handleRemoveSin(dialogState.sin)
-            }
-          }}
+          onDelete={
+            dialogState.sin
+              ? () => {
+                  if (licenses.some((l) => l.parentId === dialogState.sin!.id)) {
+                    openRemoveDialog(dialogState.sin!)
+                  } else {
+                    handleRemoveSin(dialogState.sin!)
+                  }
+                }
+              : undefined
+          }
           onClose={onDialogClose}
           onClosed={onDialogClosed}
         />
       )}
 
-      {dialogState?.mode === "removeSin" && (
-        <SinRemoveDialog
-          open={dialogState.open}
-          sin={dialogState.sin}
-          onConfirm={() => handleRemoveSin(dialogState.sin)}
-          onClose={onDialogClose}
-          onClosed={onDialogClosed}
-        />
-      )}
-
-      {dialogState?.mode === "createLicense" && (
-        <LicenseFormDialog
-          open={dialogState.open}
-          sin={dialogState.sin}
-          onSave={handleSaveLicense}
-          onClose={onDialogClose}
-          onClosed={onDialogClosed}
-        />
-      )}
-
-      {dialogState?.mode === "editLicense" && (
+      {dialogState?.type === "license" && (
         <LicenseFormDialog
           open={dialogState.open}
           sin={dialogState.sin}
           license={dialogState.license}
           onSave={handleSaveLicense}
-          onDelete={() => handleRemoveLicense(dialogState.license)}
+          onDelete={
+            dialogState.license
+              ? () => handleRemoveLicense(dialogState.license!)
+              : undefined
+          }
           onClose={onDialogClose}
           onClosed={onDialogClosed}
+        />
+      )}
+
+      {removeDialog && (
+        <SinRemoveDialog
+          open={removeDialog.open}
+          sin={removeDialog.sin}
+          onConfirm={() => handleRemoveSin(removeDialog.sin)}
+          onClose={onRemoveDialogClose}
+          onClosed={onRemoveDialogClosed}
         />
       )}
     </>

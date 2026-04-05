@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -28,9 +27,11 @@ export const SinCard: FC<SinCardProps> = ({
   children,
 }) => {
   return (
-    <Box>
+    <>
       <Stack
-        direction="column"
+        direction="row"
+        alignItems="center"
+        gap={1}
         sx={{
           padding: 1,
           borderRadius: 1,
@@ -43,28 +44,26 @@ export const SinCard: FC<SinCardProps> = ({
         }}
         onClick={onClick}
       >
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
-            {sin.name}
-          </Typography>
+        <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
+          {sin.name}
+        </Typography>
 
-          {slots?.trailingContent}
+        {slots?.trailingContent}
 
-          <RatingChip rating={sin.rating} />
+        <RatingChip rating={sin.rating} />
 
-          {onDelete && (
-            <IconButton
-              size="small"
-              color="error"
-              onClick={(e) => {
-                e.stopPropagation()
-                onDelete()
-              }}
-            >
-              <RiDeleteBin6Line size={16} />
-            </IconButton>
-          )}
-        </Stack>
+        {onDelete && (
+          <IconButton
+            size="small"
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}
+          >
+            <RiDeleteBin6Line size={16} />
+          </IconButton>
+        )}
       </Stack>
 
       {children && (
@@ -82,6 +81,6 @@ export const SinCard: FC<SinCardProps> = ({
           {children}
         </Stack>
       )}
-    </Box>
+    </>
   )
 }
