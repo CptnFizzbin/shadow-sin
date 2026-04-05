@@ -18,6 +18,31 @@ import { useEdgeApi } from "#/components/character/quickPanel/useEdgeApi.ts"
 import { useDamageApi } from "#/components/damage/useDamageApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
+export const QUICK_ACCESS_PANEL_HEIGHT = "56px"
+
+const counterButtonSx = {
+  "width": 32,
+  "height": 32,
+  "border": "1px solid",
+  "borderColor": "primary.dark",
+  "backgroundColor": "background.paper",
+  "color": "text.primary",
+  "cursor": "pointer",
+  "fontSize": "1.25rem",
+  "display": "flex",
+  "alignItems": "center",
+  "justifyContent": "center",
+  "&:disabled": {
+    borderColor: "action.disabled",
+    color: "action.disabled",
+    cursor: "not-allowed",
+  },
+  "&:hover:not(:disabled)": {
+    backgroundColor: "primary.light",
+    color: "common.black",
+  },
+} as const
+
 interface DamageCounterProps {
   label: string
   current: number
@@ -42,28 +67,7 @@ const DamageCounter: FC<DamageCounterProps> = ({
           type="button"
           onClick={onDecrement}
           disabled={current <= 0}
-          sx={{
-            "width": 32,
-            "height": 32,
-            "border": "1px solid",
-            "borderColor": "primary.dark",
-            "backgroundColor": "background.paper",
-            "color": "text.primary",
-            "cursor": "pointer",
-            "fontSize": "1.25rem",
-            "display": "flex",
-            "alignItems": "center",
-            "justifyContent": "center",
-            "&:disabled": {
-              borderColor: "action.disabled",
-              color: "action.disabled",
-              cursor: "not-allowed",
-            },
-            "&:hover:not(:disabled)": {
-              backgroundColor: "primary.light",
-              color: "common.black",
-            },
-          }}
+          sx={counterButtonSx}
         >
           −
         </Box>
@@ -75,28 +79,7 @@ const DamageCounter: FC<DamageCounterProps> = ({
           type="button"
           onClick={onIncrement}
           disabled={current >= max}
-          sx={{
-            "width": 32,
-            "height": 32,
-            "border": "1px solid",
-            "borderColor": "primary.dark",
-            "backgroundColor": "background.paper",
-            "color": "text.primary",
-            "cursor": "pointer",
-            "fontSize": "1.25rem",
-            "display": "flex",
-            "alignItems": "center",
-            "justifyContent": "center",
-            "&:disabled": {
-              borderColor: "action.disabled",
-              color: "action.disabled",
-              cursor: "not-allowed",
-            },
-            "&:hover:not(:disabled)": {
-              backgroundColor: "primary.light",
-              color: "common.black",
-            },
-          }}
+          sx={counterButtonSx}
         >
           +
         </Box>

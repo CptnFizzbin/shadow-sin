@@ -7,7 +7,7 @@ import { CharacterSheetProvider } from "#/components/character/characterSheetPro
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
 import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
-import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
+import { QuickAccessPanel, QUICK_ACCESS_PANEL_HEIGHT } from "#/components/character/quickPanel/quickAccessPanel.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -49,7 +49,7 @@ function CharacterRoute() {
       <CharacterSheetNav />
 
       <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
-        <Box sx={{ padding: 1, paddingBottom: "56px" }}>
+        <Box sx={{ padding: 1, paddingBottom: QUICK_ACCESS_PANEL_HEIGHT }}>
           <Outlet />
         </Box>
       </SwipeSurface>
