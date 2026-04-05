@@ -1,41 +1,72 @@
-import Box from "@mui/material/Box"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import type { FC } from "react"
+import { RiDeleteBin6Line } from "@remixicon/react"
+import type { FC, ReactNode } from "react"
 
-import { LicenseCard } from "#/components/licenses/licenseCard.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
 
-interface SinCardProps {
-  sin: SinData
-  licenses: LicenseData[]
+export interface SinCardSlots {
+  trailingContent?: ReactNode
 }
 
-export const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
-  const sinLicenses = licenses.filter((license) => license.parentId === sin.id)
+export interface SinCardProps {
+  sin: SinData
+  slots?: SinCardSlots
+  onClick?: () => void
+  onDelete?: () => void
+  children?: ReactNode
+}
 
+export const SinCard: FC<SinCardProps> = ({
+  sin,
+  slots,
+  onClick,
+  onDelete,
+  children,
+}) => {
   return (
-    <Box>
+    <>
       <Stack
-        direction="column"
+        direction="row"
+        alignItems="center"
+        gap={1}
         sx={{
           padding: 1,
           borderRadius: 1,
           border: "1px solid",
           borderColor: "divider",
+          ...(onClick && {
+            "cursor": "pointer",
+            "&:hover": { bgcolor: "action.hover" },
+          }),
         }}
+        onClick={onClick}
       >
-        <Stack direction="row" alignItems="center">
-          <Typography sx={{ flexGrow: 1 }}>
-            {sin.name}
-          </Typography>
-          <RatingChip rating={sin.rating} />
-        </Stack>
+        <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
+          {sin.name}
+        </Typography>
+
+        {slots?.trailingContent}
+
+        <RatingChip rating={sin.rating} />
+
+        {onDelete && (
+          <IconButton
+            size="small"
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}
+          >
+            <RiDeleteBin6Line size={16} />
+          </IconButton>
+        )}
       </Stack>
 
-      {sinLicenses.length > 0 && (
+      {children && (
         <Stack
           gap={1}
           sx={{
@@ -47,9 +78,9 @@ export const SinCard: FC<SinCardProps> = ({ sin, licenses }) => {
             borderColor: "divider",
           }}
         >
-          {sinLicenses.map((license) => <LicenseCard key={license.id} license={license} />)}
+          {children}
         </Stack>
       )}
-    </Box>
+    </>
   )
 }

@@ -20,7 +20,6 @@ import { ArmorPanel } from "#/components/characterBuilder/sections/gear/armor/ar
 import { CyberwarePanel } from "#/components/characterBuilder/sections/gear/cyberware/cyberwarePanel.tsx"
 import { DevicesPanel } from "#/components/characterBuilder/sections/gear/devices/devicesPanel.tsx"
 import { useGearAvailabilityIssues } from "#/components/characterBuilder/sections/gear/gearUtils.ts"
-import { SinsAndLicensesSection } from "#/components/characterBuilder/sections/gear/licenses/sinsAndLicensesSection.tsx"
 import { LifestylePanel } from "#/components/characterBuilder/sections/gear/lifestyle/lifestylePanel.tsx"
 import { MiscPanel } from "#/components/characterBuilder/sections/gear/misc/miscPanel.tsx"
 import { SectionHeader } from "#/components/characterBuilder/sections/gear/sectionHeader.tsx"
@@ -29,6 +28,7 @@ import { VehiclesPanel } from "#/components/characterBuilder/sections/gear/vehic
 import { WeaponsPanel } from "#/components/characterBuilder/sections/gear/weapons/weaponsPanel.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { SinsAndLicensesSection } from "#/components/licenses/sinsAndLicensesSection.tsx"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -133,7 +133,24 @@ export const GearSection: FC = () => {
 const GearSectionContent: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  if (section === SectionHeader.Licenses) return <SinsAndLicensesSection />
+  if (section === SectionHeader.Licenses) {
+    return (
+      <SinsAndLicensesSection
+        slots={{
+          sinTrailingContent: (sin) => (
+            <Typography variant="body2" color="text.secondary">
+              <Nuyen amount={sin.cost} />
+            </Typography>
+          ),
+          licenseTrailingContent: (license) => (
+            <Typography variant="body2" color="text.secondary">
+              <Nuyen amount={license.cost} />
+            </Typography>
+          ),
+        }}
+      />
+    )
+  }
   if (section === SectionHeader.Cyberware) return <CyberwarePanel />
   if (section === SectionHeader.Weapons) return <WeaponsPanel />
   if (section === SectionHeader.Armor) return <ArmorPanel />

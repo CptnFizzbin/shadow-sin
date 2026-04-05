@@ -2,6 +2,7 @@ import Divider from "@mui/material/Divider"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
@@ -40,7 +41,10 @@ function RouteComponent() {
       </Paper>
 
       <Paper sx={{ padding: 1 }}>
-        <SinsAndLicensesSection />
+        <Stack gap={1}>
+          <Typography variant="subtitle2">SINs & Licenses</Typography>
+          <SinsAndLicensesSection />
+        </Stack>
       </Paper>
 
       <Paper sx={{ padding: 1 }}>
