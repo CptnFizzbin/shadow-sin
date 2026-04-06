@@ -3,7 +3,7 @@
 Features still needed to finish the builder portion of the app. Ordered by priority, with a focus on a working
 prototype. Gameplay features (combat, dice rolling, etc.) are out of scope here.
 
-> Items marked ✅ are covered by an open PR and pending merge.
+> Items marked ✅ are implemented; PR numbers are provided for reference.
 
 ---
 
@@ -132,11 +132,14 @@ storage key uses the character's own `id`. What's missing is a UI entry point.
 
 ## 9. Skills (Character Sheet View)
 
-The `/$characterId/skills` route is a placeholder stub. The creation-form skills feed this view.
+The `/$characterId/skills` route was a placeholder stub. PR #63 ✅ implements the active skills list with search and tap-to-dice-pool dialog.
 
-- [ ] List all character skills with name, linked attribute, rating, and specialization
-- [ ] Show whether a skill is defaultable (for unlearned skills used at rating 0)
+- [x] List all character skills with name, linked attribute, rating, and specialization ✅ PR #63
+- [x] Show whether a skill is defaultable (for unlearned skills used at rating 0) ✅ PR #63
+- [x] Filter/search bar to quickly find a skill by name ✅ PR #63
+- [x] Show full dice pool per skill (rating + linked-attribute-value + wound modifier) with tap-to-dialog breakdown ✅ PR #63
 - [ ] Show skill groups; allow editing group-level rating
+- [ ] List knowledge skills and language skills in a separate section
 
 ---
 
@@ -145,7 +148,7 @@ The `/$characterId/skills` route is a placeholder stub. The creation-form skills
 A gear section is fully integrated into the creation form. SINs & Licenses (PR #5 ✅) and all other gear categories (
 Weapons, Armor, Vehicles, Cyberware, Misc — PR #6 ✅) support full add/edit/remove with a shared `GearItemFormState` (
 name, cost, optional availability, source, description). Nuyen totals from all sections are summed into the gear BP line
-in the budget footer. The `/$characterId/gear` view route is still a stub.
+in the budget footer. The `/$characterId/gear` view route is implemented in PR #67 ✅.
 
 - [x] Gear budget tracker — nuyen progress bar (250 k¥ / 50 BP cap), over-budget error alert ✅ PR #5
 - [x] **SINs & Licenses** — add/edit/remove fake SINs (rating × 1 000¥) and one real SIN (free); attach named licenses
@@ -157,18 +160,19 @@ in the budget footer. The `/$characterId/gear` view route is still a stub.
 - [x] **Misc** — add/edit/remove generic gear items ✅ PR #6
 - [x] Compute and display running **Essence cost** from implants — `CyberwarePanel` shows used / remaining with
   grade-adjusted multipliers; error alert when essence is depleted
-- [ ] `/$characterId/gear` view page — list all gear grouped by type
+- [x] `/$characterId/gear` view page — list all gear grouped by type, with search bar and inline stats ✅ PR #67
 
 ---
 
 ## 11. Contacts Page
 
-Route exists (`/$characterId/contacts`) but shows only a heading.
+Route exists (`/$characterId/contacts`) but showed only a heading. PR #66 ✅ implements the full page.
 
-- [ ] List current contacts with name, connection rating, loyalty rating, role, and notes
-- [ ] **Add contact** — name, connection (1–6), loyalty (1–6), optional role/notes
-- [ ] **Edit contact** — update any field inline or via a form
-- [ ] **Remove contact**
+- [x] List current contacts with name, connection rating, loyalty rating, role, and notes ✅ PR #66
+- [x] **Add contact** — name, connection (1–6), loyalty (1–6), optional role/notes ✅ PR #66
+- [x] **Edit contact** — tap a row to open a view/edit/delete dialog ✅ PR #66
+- [x] **Remove contact** with confirmation dialog ✅ PR #66
+- [x] Search bar to filter contacts by name ✅ PR #66
 
 ---
 
