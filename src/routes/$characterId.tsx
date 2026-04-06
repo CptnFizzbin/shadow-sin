@@ -7,6 +7,7 @@ import { CharacterSheetProvider } from "#/components/character/characterSheetPro
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
 import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
+import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -52,6 +53,17 @@ function CharacterRoute() {
           <Outlet />
         </Box>
       </SwipeSurface>
+
+      <Box
+        sx={{
+          paddingX: 1,
+          position: "sticky",
+          bottom: 0,
+          zIndex: "appBar",
+        }}
+      >
+        <QuickAccessPanel />
+      </Box>
     </CharacterSheetProvider>
   )
 }

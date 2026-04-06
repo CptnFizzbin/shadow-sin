@@ -24,5 +24,32 @@ Formatting and tooling notes:
   at least one screenshot** of the affected area. Start the dev server (`yarn dev`), capture the relevant region of the
   browser, and attach the image to the PR or response so reviewers can verify the visual result without running the app.
 
+## TanStack Store patterns
+
+- **The store object itself is stable** — a `Store` / `StoreSlice` instance does not change identity
+  between renders. Do not re-create store instances on every render (use `useMemo` or module-level
+  singletons to keep them stable).
+- **Reactivity comes exclusively from `useStore`** — reading a value directly off a store instance
+  (e.g. `store.state.foo`) gives you a snapshot at that moment and will **not** cause a re-render when
+  the store changes. Always use `useStore(store, selector)` when you need the component to update
+  reactively:
+  ```ts
+  // ✅ reactive — re-renders when max changes
+  const max = useStore(edgeStore, (state) => state.max)
+
+  // ❌ snapshot only — stale after first render
+  const max = edgeStore.state.max
+  ```
+- `StoreSlice` instances work with `useStore` in the same way. Pass the `StoreSlice` instance as the
+  first argument and a selector as the second.
+ - **Derived stores**: `createStore(() => selector(root.get()))` can produce a derived store that
+   tracks dependencies read inside the selector. When the selector reads reactive values from the root
+   store (or other atoms), the derived store will update automatically and its `get()`/`state`
+   reflect the current derived value. This is useful for creating lightweight slice-atoms, but be
+   explicit about whether you rely on automatic derivation or prefer explicit selectors via
+   `useCharacterSheet` / `useStore` to avoid subtle sync issues.
+
+## Final Notes
+
 When you discover patterns or troubleshooting steps relevant to contributors, update this file with the problem, the
 solution, and minimal reproducible steps. Do not include machine-specific paths or shell preferences.

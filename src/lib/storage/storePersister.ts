@@ -51,7 +51,6 @@ export const StorePersister = {
 
 const debouncedSaveState = debounce(
   (characterId: string, values: object) => {
-    console.log("Saving form state...", { characterId, values })
     StorePersister.saveState(characterId, values)
   },
   { wait: 500 },

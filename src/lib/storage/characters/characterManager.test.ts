@@ -36,7 +36,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
     const storageManager = new StorageManager(provider)
-    await storageManager.saveJsonFile("characters/bad-id.json", {})
+    await provider.saveJsonFile("characters/bad-id.json", {})
 
     const localManager = new CharacterManager(storageManager)
     const result = await localManager.listCharactersWithErrors()
@@ -53,7 +53,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
     const storageManager = new StorageManager(provider)
-    await storageManager.saveJsonFile("characters/bad-version.json", { version: "foobar" })
+    await provider.saveJsonFile("characters/bad-version.json", { version: "foobar" })
 
     const localManager = new CharacterManager(storageManager)
     const result = await localManager.listCharactersWithErrors()
@@ -68,7 +68,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
     const storageManager = new StorageManager(provider)
-    await storageManager.saveJsonFile("characters/bad.json", {})
+    await provider.saveJsonFile("characters/bad.json", {})
 
     const localManager = new CharacterManager(storageManager)
     const characters = await localManager.listCharacters()

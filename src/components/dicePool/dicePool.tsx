@@ -22,7 +22,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
 
       {diceGroups.map((group) => (
         <DiceGroupDisplay
-          key={`${name}-${group.name}`}
+          key={`${name}-${group.id ?? group.name}`}
           name={group.name}
           size={group.size}
           color={group.color}
