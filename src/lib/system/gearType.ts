@@ -10,5 +10,6 @@ export enum GearType {
   license = "license",
   firearmAccessory = "firearmAccessory",
   sin = "sin",
+  credstick = "credstick",
   other = "other",
 }

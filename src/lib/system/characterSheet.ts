@@ -6,6 +6,7 @@ import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type { ItemData } from "./itemData.ts"
+import type { LoanData } from "./loanData.ts"
 import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { ComplexFormData } from "./magic/complexFormData.ts"
 import type { SpellData } from "./magic/spellData.ts"
@@ -52,11 +53,7 @@ export interface CharacterSheet {
 
   nuyen: {
     current: number
-    loans: Array<{
-      lender: string
-      amount: number
-      notes?: string
-    }>
+    loans: LoanData[]
   }
 
   attributes: Record<AttributeKey, number>
