@@ -2,6 +2,7 @@ import { Divider } from "@mui/material"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
+import { Fragment } from "react"
 
 import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
@@ -22,7 +23,6 @@ import { useDamageState } from "#/components/damage/useDamageState.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SkillKey } from "#/lib/system/skillKey.ts"
-import { Fragment } from "react"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,

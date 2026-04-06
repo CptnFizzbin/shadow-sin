@@ -10,8 +10,8 @@ export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   return { name: label, size: useAttr(attrKey) }
 }
 
-export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
-  return { name: skillKey, size: useActiveSkillRating(skillKey) }
+export function useActiveSkillDiceGroup(skillKey: SkillKey, id?: string): DiceGroup {
+  return { id: id ?? skillKey, name: skillKey, size: useActiveSkillRating(skillKey) }
 }
 
 export function useWoundDiceGroup(): DiceGroup | null {

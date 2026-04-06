@@ -1,4 +1,5 @@
 export interface DiceGroup {
+  id?: string
   name: string
   size: number
   color?: string
