@@ -7,7 +7,6 @@
     "target": "es2024",
     "jsx": "react-jsx",
     "module": "esNExt",
-    "baseUrl": ".",
     "paths": {
       "#/*": [
         "./src/*"
