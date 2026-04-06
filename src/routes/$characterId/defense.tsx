@@ -41,7 +41,7 @@ function RouteComponent() {
             max={damageStore.physical.max}
             current={damageStore.physical.current}
             allowOverflow
-            onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
+            onChange={(newValue) => damageStore.physical.setValue(() => newValue)}
           />
         </Grid>
 

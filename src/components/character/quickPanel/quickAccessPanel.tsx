@@ -12,8 +12,6 @@ import { QuickAttributesSection } from "#/components/character/quickPanel/quickA
 import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
 import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
 
-export const QUICK_ACCESS_PANEL_HEIGHT = "56px"
-
 export const QuickAccessPanel: FC = () => {
   const [isExpanded, setIsExpanded] = useState(false)
 
