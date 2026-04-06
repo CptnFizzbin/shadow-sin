@@ -22,6 +22,7 @@ import { useDamageState } from "#/components/damage/useDamageState.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SkillKey } from "#/lib/system/skillKey.ts"
+import { Fragment } from "react"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,
@@ -126,7 +127,7 @@ function RouteComponent() {
             { skill: SkillKey.clubs },
             { skill: SkillKey.unarmedCombat },
           ].map(({ skill }) => (
-            <>
+            <Fragment key={skill}>
               <Grid size={1}>
                 <MeleeParryDicePool weaponSkill={skill} />
               </Grid>
@@ -134,7 +135,7 @@ function RouteComponent() {
               <Grid size={1}>
                 <MeleeFullParryDicePool weaponSkill={skill} />
               </Grid>
-            </>
+            </Fragment>
           ))}
         </Grid>
 
