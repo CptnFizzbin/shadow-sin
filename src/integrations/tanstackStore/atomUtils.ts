@@ -12,7 +12,8 @@ export function isAnyAtom(obj: unknown): obj is AnyAtom {
     && typeof obj.subscribe === "function"
 }
 
-export type SliceUpdater<TData> = (prev: TData) => TData
+export type Recipe<TData> = (prev: TData) => TData
+export type SliceUpdater<TData> = Recipe<TData>
 export type RootUpdater<TRoot, TData> = (prevRoot: TRoot, slice: TData) => TRoot
 
 export function createSliceAtom<TRoot, TData>(

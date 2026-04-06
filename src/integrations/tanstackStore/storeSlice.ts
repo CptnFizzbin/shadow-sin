@@ -24,12 +24,18 @@ export class StoreSlice<TData> implements Omit<Store<TData>, "atom">, Atom<TData
   public set(
     valueOrUpdater: TData | SliceUpdater<TData>,
   ) {
-    if (typeof valueOrUpdater === "function") {
-      const sliceUpdater = valueOrUpdater as SliceUpdater<TData>
-      this.atom.set(sliceUpdater)
-    } else {
-      this.atom.set(valueOrUpdater as TData)
-    }
+    this.atom.set((prev) => {
+      let next: TData
+
+      if (typeof valueOrUpdater === "function") {
+        const updater = valueOrUpdater as SliceUpdater<TData>
+        next = updater(prev)
+      } else {
+        next = valueOrUpdater as TData
+      }
+
+      return next
+    })
   }
 
   public setState(

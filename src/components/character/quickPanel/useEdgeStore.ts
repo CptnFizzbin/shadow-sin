@@ -2,6 +2,7 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
+import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
@@ -12,10 +13,11 @@ interface EdgeStoreState {
 }
 
 export class EdgeStore extends StoreSlice<EdgeStoreState> {
-  setCurrent(value: number): void {
+  setCurrent(valueOrUpdater: number | Recipe<number>): void {
     this.set(
       produce((state) => {
-        state.current = Math.max(0, Math.min(value, state.max))
+        const next = valueOrUpdater instanceof Function ? valueOrUpdater(state.current) : valueOrUpdater
+        state.current = Math.max(0, Math.min(next, state.max))
       }),
     )
   }

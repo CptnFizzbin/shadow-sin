@@ -18,7 +18,8 @@ import {
   ResistBodyDicePool,
   ResistWillpowerDicePool,
 } from "#/components/damage/resistanceDicePools.tsx"
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
+import { useDamageState } from "#/components/damage/useDamageState.ts"
+import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SkillKey } from "#/lib/system/skillKey.ts"
 
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageStore = useDamageStore()
+  const damageStore = useDamageState()
 
   return (
     <Stack gap={1}>
@@ -40,7 +41,7 @@ function RouteComponent() {
             max={damageStore.physical.max}
             current={damageStore.physical.current}
             allowOverflow
-            onChange={damageStore.physical.setValue}
+            onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
           />
         </Grid>
 
@@ -49,16 +50,12 @@ function RouteComponent() {
             label="Stun"
             max={damageStore.stun.max}
             current={damageStore.stun.current}
-            onChange={damageStore.stun.setValue}
+            onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
           />
         </Grid>
 
         <Grid size={2}>
-          <Label
-            label={`Wound Mod: ${damageStore.woundMod}`}
-            variant="outlined"
-            color={damageStore.woundMod >= 1 ? "error.main" : "primary.dark"}
-          />
+          <WoundModLabel />
         </Grid>
 
         <Grid size={2}>

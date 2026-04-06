@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
+import { useDamageState } from "#/components/damage/useDamageState.ts"
 import { Counter } from "#/components/ui/counter/counter.tsx"
 
 export type DamageTrackKey = "physical" | "stun"
@@ -11,7 +11,7 @@ interface DamageCounterProps {
 }
 
 export const DamageCounter: FC<DamageCounterProps> = ({ trackKey, label }) => {
-  const damageStore = useDamageStore()
+  const damageStore = useDamageState()
   const track = damageStore[trackKey]
 
   return (

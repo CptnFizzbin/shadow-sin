@@ -1,5 +1,3 @@
-import { debounce } from "@tanstack/pacer"
-
 import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/storageProvider.ts"
 
 interface LocalStorageProviderOptions {
@@ -16,15 +14,6 @@ export class LocalStorageProvider implements StorageProvider {
   public readonly providerId = "local-storage"
 
   private readonly storagePrefix: string
-
-  private readonly debouncedSetItem = debounce(
-    (key: string, value: string) => {
-      const storage = this.getStorage()
-      console.debug("set", key, value)
-      storage.setItem(key, value)
-    },
-    { wait: 1_000 },
-  )
 
   public constructor({ storagePrefix }: LocalStorageProviderOptions) {
     this.storagePrefix = storagePrefix
@@ -87,13 +76,14 @@ export class LocalStorageProvider implements StorageProvider {
     path: string,
     value: TValue,
   ): Promise<StoredJsonFile<TValue>> {
+    const storage = this.getStorage()
     const storedJsonFile: StoredJsonFile<TValue> = {
       path: this.normalizePath(path),
       updatedAt: new Date().toISOString(),
       value,
     }
 
-    this.debouncedSetItem(
+    storage.setItem(
       this.getStorageKey(path),
       JSON.stringify(storedJsonFile satisfies StoredJsonEnvelope<TValue>),
     )
