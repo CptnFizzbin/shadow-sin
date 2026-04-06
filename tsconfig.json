@@ -7,13 +7,12 @@
     "target": "es2024",
     "jsx": "react-jsx",
     "module": "esNExt",
-    "baseUrl": ".",
     "paths": {
       "#/*": [
         "./src/*"
       ],
-      "#test-utils/*": [
-        "./test-utils/*"
+      "#testUtils/*": [
+        "./testUtils/*"
       ]
     },
     "lib": [
