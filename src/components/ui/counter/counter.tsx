@@ -1,32 +1,10 @@
-import Box from "@mui/material/Box"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiAddLine, RiSubtractLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-
-const counterButtonSx = {
-  "width": 32,
-  "height": 32,
-  "border": "1px solid",
-  "borderColor": "primary.dark",
-  "backgroundColor": "background.paper",
-  "color": "text.primary",
-  "cursor": "pointer",
-  "fontSize": "1.25rem",
-  "display": "flex",
-  "alignItems": "center",
-  "justifyContent": "center",
-  "&:disabled": {
-    borderColor: "action.disabled",
-    color: "action.disabled",
-    cursor: "not-allowed",
-  },
-  "&:hover:not(:disabled)": {
-    backgroundColor: "primary.light",
-    color: "common.black",
-  },
-} as const
 
 export interface CounterProps {
   value: number
@@ -38,30 +16,25 @@ export interface CounterProps {
 
 export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label }) => {
   return (
-    <Stack alignItems="center" gap={0.5}>
+    <Stack alignItems="center" gap={0} flexGrow={1}>
       {label && <Label label={label} />}
-      <Stack direction="row" alignItems="center" gap={0.5}>
-        <Box
-          component="button"
-          type="button"
+
+      <Stack direction="row" alignItems="center">
+        <IconButton
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
-          sx={counterButtonSx}
         >
-          −
-        </Box>
-        <Typography variant="body1" sx={{ minWidth: 48, textAlign: "center" }}>
+          <RiSubtractLine />
+        </IconButton>
+        <Typography variant="body1" sx={{ width: 50, textAlign: "center" }}>
           {value} / {max}
         </Typography>
-        <Box
-          component="button"
-          type="button"
+        <IconButton
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}
-          sx={counterButtonSx}
         >
-          +
-        </Box>
+          <RiAddLine />
+        </IconButton>
       </Stack>
     </Stack>
   )

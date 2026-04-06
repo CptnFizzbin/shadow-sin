@@ -5,7 +5,6 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { SpellsViewerSection } from "#/components/character/spells/spellsViewerSection.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$characterId/spells")({
@@ -29,13 +28,6 @@ function RouteComponent() {
 
   return (
     <Stack gap={1}>
-      <Paper>
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          Spells
-        </Typography>
-      </Paper>
-
-      <Label label="Spell List" variant="outlined" />
       <SpellsViewerSection />
     </Stack>
   )

@@ -5,7 +5,6 @@ import Tabs from "@mui/material/Tabs"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { AttributesSection } from "#/components/attributes/attributesSection.tsx"
 import { ActiveSkillsList } from "#/components/skills/activeSkills/activeSkillsList.tsx"
 import { KnowledgeSkillsList } from "#/components/skills/knowledgeSkills/knowledgeSkillsList.tsx"
 import { LanguageSkillsList } from "#/components/skills/languageSkills/languageSkillsList.tsx"
@@ -21,15 +20,13 @@ function RouteComponent() {
 
   return (
     <Stack gap={1}>
-      <Paper sx={{ padding: 1 }}>
-        <AttributesSection showLabels={false} />
+      <Paper sx={{ margin: -1, marginBottom: 0 }}>
+        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as SkillsTabValue)}>
+          <Tab value="active" label="Active" sx={{ flexGrow: 1 }} />
+          <Tab value="knowledge" label="Knowledge" sx={{ flexGrow: 1 }} />
+          <Tab value="languages" label="Languages" sx={{ flexGrow: 1 }} />
+        </Tabs>
       </Paper>
-
-      <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as SkillsTabValue)}>
-        <Tab value="active" label="Active" sx={{ flexGrow: 1 }} />
-        <Tab value="knowledge" label="Knowledge" sx={{ flexGrow: 1 }} />
-        <Tab value="languages" label="Languages" sx={{ flexGrow: 1 }} />
-      </Tabs>
 
       {activeTab === "active" && <ActiveSkillsList />}
       {activeTab === "knowledge" && <KnowledgeSkillsList />}

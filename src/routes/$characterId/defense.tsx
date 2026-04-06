@@ -1,8 +1,6 @@
 import { Divider } from "@mui/material"
 import Grid from "@mui/material/Grid"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
 import DamageTrack from "#/components/damage/damageTrack.tsx"
@@ -33,12 +31,6 @@ function RouteComponent() {
 
   return (
     <Stack gap={1}>
-      <Paper>
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          Defense
-        </Typography>
-      </Paper>
-
       {/* TODO: Tabs for meatspace, astrial, and matrix */}
 
       <Grid container columns={2} spacing={1}>

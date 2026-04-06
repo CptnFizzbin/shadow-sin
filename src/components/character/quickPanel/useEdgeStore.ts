@@ -1,27 +1,38 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
+import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
-export class EdgeStore extends StoreSlice<CharacterSheet> {
+interface EdgeStoreState {
+  max: number
+  current: number
+}
+
+export class EdgeStore extends StoreSlice<EdgeStoreState> {
   setCurrent(value: number): void {
     this.set(
-      produce((sheet) => {
-        const edgeMax = sheet.attributes[AttributeKey.edge]
-        sheet.edge.current = Math.max(0, Math.min(value, edgeMax))
+      produce((state) => {
+        state.current = Math.max(0, Math.min(value, state.max))
+      }),
+    )
+  }
+
+  restore(): void {
+    this.set(
+      produce((state) => {
+        state.current = state.max
       }),
     )
   }
 
   burn(): void {
     this.set(
-      produce((sheet) => {
-        const newMax = Math.max(1, sheet.attributes[AttributeKey.edge] - 1)
-        sheet.attributes[AttributeKey.edge] = newMax
-        sheet.edge.current = 0
+      produce((state) => {
+        state.max = Math.max(1, state.max - 1)
+        state.current = 0
       }),
     )
   }
@@ -29,15 +40,20 @@ export class EdgeStore extends StoreSlice<CharacterSheet> {
 
 export const useEdgeStore = () => {
   const sheetStore = useCharacterSheetContext()
-  const store = useMemo(() => new EdgeStore(sheetStore), [sheetStore])
 
-  const current = useCharacterSheet((sheet) => sheet.edge.current)
-  const max = useCharacterSheet((sheet) => sheet.attributes[AttributeKey.edge])
+  return useMemo(() => {
+    const sliceAtom = createSliceAtom(
+      sheetStore,
+      (sheet) => ({
+        max: sheet.attributes[AttributeKey.edge],
+        current: sheet.edge.current,
+      }),
+      (sheet, state) => produce(sheet, (draft) => {
+        draft.attributes[AttributeKey.edge] = state.max
+        draft.edge.current = state.current
+      }),
+    )
 
-  return {
-    current,
-    max,
-    setCurrent: (value: number) => store.setCurrent(value),
-    burn: () => store.burn(),
-  }
+    return new EdgeStore(sliceAtom)
+  }, [sheetStore])
 }
