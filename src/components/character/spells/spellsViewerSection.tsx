@@ -9,7 +9,6 @@ import { SpellCastDialog } from "#/components/character/spells/spellCastDialog.t
 import { SpellViewerListItem } from "#/components/character/spells/spellViewerListItem.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
-import { SpellCategory } from "#/lib/system/magic/spellData.ts"
 
 type DialogState = { spell: SpellData, open: boolean } | null
 
@@ -29,16 +28,7 @@ export const SpellsViewerSection: FC = () => {
     setDialogState(null)
   }
 
-  const spellsByCategory = Object.values(SpellCategory).reduce<Record<string, SpellData[]>>(
-    (acc, category) => {
-      const categorySpells = spells.filter((spell) => spell.category === category)
-      if (categorySpells.length > 0) {
-        acc[category] = categorySpells
-      }
-      return acc
-    },
-    {},
-  )
+  const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)
 
   if (spells.length === 0) {
     return (

@@ -1,9 +1,8 @@
 import { Divider } from "@mui/material"
 import Grid from "@mui/material/Grid"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
+import { Fragment } from "react"
 
 import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
@@ -20,7 +19,8 @@ import {
   ResistBodyDicePool,
   ResistWillpowerDicePool,
 } from "#/components/damage/resistanceDicePools.tsx"
-import { useDamageApi } from "#/components/damage/useDamageApi.ts"
+import { useDamageState } from "#/components/damage/useDamageState.ts"
+import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SkillKey } from "#/lib/system/skillKey.ts"
 
@@ -29,44 +29,34 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageApi = useDamageApi()
+  const damageStore = useDamageState()
 
   return (
     <Stack gap={1}>
-      <Paper>
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          Defense
-        </Typography>
-      </Paper>
-
       {/* TODO: Tabs for meatspace, astrial, and matrix */}
 
       <Grid container columns={2} spacing={1}>
         <Grid size={1}>
           <DamageTrack
             label="Physical"
-            max={damageApi.physical.max}
-            current={damageApi.physical.current}
+            max={damageStore.physical.max}
+            current={damageStore.physical.current}
             allowOverflow
-            onChange={damageApi.physical.setValue}
+            onChange={(newValue) => damageStore.physical.setValue(() => newValue)}
           />
         </Grid>
 
         <Grid size={1}>
           <DamageTrack
             label="Stun"
-            max={damageApi.stun.max}
-            current={damageApi.stun.current}
-            onChange={damageApi.stun.setValue}
+            max={damageStore.stun.max}
+            current={damageStore.stun.current}
+            onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
           />
         </Grid>
 
         <Grid size={2}>
-          <Label
-            label={`Wound Mod: ${damageApi.woundMod}`}
-            variant="outlined"
-            color={damageApi.woundMod >= 1 ? "error.main" : "primary.dark"}
-          />
+          <WoundModLabel />
         </Grid>
 
         <Grid size={2}>
@@ -137,7 +127,7 @@ function RouteComponent() {
             { skill: SkillKey.clubs },
             { skill: SkillKey.unarmedCombat },
           ].map(({ skill }) => (
-            <>
+            <Fragment key={skill}>
               <Grid size={1}>
                 <MeleeParryDicePool weaponSkill={skill} />
               </Grid>
@@ -145,7 +135,7 @@ function RouteComponent() {
               <Grid size={1}>
                 <MeleeFullParryDicePool weaponSkill={skill} />
               </Grid>
-            </>
+            </Fragment>
           ))}
         </Grid>
 

@@ -2,9 +2,10 @@ import { produce } from "immer"
 
 import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
+import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 
-export const useDamageApi = () => {
+export const useDamageState = () => {
   const sheetStore = useCharacterSheetContext()
   const damageMonitors = useCharacterSheet((sheet) => sheet.damage)
   const bodyAttr = useAttr(AttributeKey.body)
@@ -14,9 +15,11 @@ export const useDamageApi = () => {
     physical: {
       max: 8 + (Math.ceil(bodyAttr / 2)),
       current: damageMonitors.physical,
-      setValue: (newValue: number) => {
+      setValue: (valueOrUpdater: number | Recipe<number>) => {
         sheetStore.setState(produce((sheet) => {
-          sheet.damage.physical = newValue
+          sheet.damage.physical = typeof valueOrUpdater === "function"
+            ? valueOrUpdater(sheet.damage.physical)
+            : valueOrUpdater
         }))
       },
     },
@@ -24,9 +27,11 @@ export const useDamageApi = () => {
     stun: {
       max: 8 + (Math.ceil(willpowerAttr / 2)),
       current: damageMonitors.stun,
-      setValue: (newValue: number) => {
+      setValue: (valueOrUpdater: number | Recipe<number>) => {
         sheetStore.setState(produce((sheet) => {
-          sheet.damage.stun = newValue
+          sheet.damage.stun = typeof valueOrUpdater === "function"
+            ? valueOrUpdater(sheet.damage.stun)
+            : valueOrUpdater
         }))
       },
     },
@@ -35,16 +40,13 @@ export const useDamageApi = () => {
       // TODO: add in a Matrix update
       max: 0, // 8 + (Math.ceil(systemAttr.value / 2))
       current: damageMonitors.matrix,
-      setValue: (newValue: number) => {
+      setValue: (valueOrUpdater: number | Recipe<number>) => {
         sheetStore.setState(produce((sheet) => {
-          sheet.damage.matrix = newValue
+          sheet.damage.matrix = typeof valueOrUpdater === "function"
+            ? valueOrUpdater(sheet.damage.matrix)
+            : valueOrUpdater
         }))
       },
     },
-
-    woundMod: [
-      Math.floor(damageMonitors.physical / 3),
-      Math.floor(damageMonitors.stun / 3),
-    ].reduce((a, b) => a + b, 0),
   }
 }

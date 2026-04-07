@@ -1,11 +1,7 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/dicePool/dicePool.tsx"
-import {
-  useAttrDiceGroup,
-  useActiveSkillDiceGroup,
-  useWoundDiceGroup,
-} from "#/components/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { SkillKey } from "#/lib/system/skillKey.ts"
 
@@ -129,8 +125,8 @@ export const MeleeFullDodgeDicePool = () => {
       name="Melee Full Dodge"
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useActiveSkillDiceGroup(SkillKey.dodge),
+        useActiveSkillDiceGroup(SkillKey.dodge, "dodge-1"),
+        useActiveSkillDiceGroup(SkillKey.dodge, "dodge-2"),
         useWoundDiceGroup(),
       ]}
     />
