@@ -1,10 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import {
-  defaultGearSubmitMeta,
-
-} from "#/components/gear/gearSubmitMeta.ts"
+import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullGearId } from "#/components/gear/gearUtils.ts"
 import { getSinCost } from "#/components/licenses/sinUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"

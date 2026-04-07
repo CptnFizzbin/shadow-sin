@@ -3,10 +3,7 @@ import type { UUID } from "node:crypto"
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import {
-  defaultGearSubmitMeta,
-
-} from "#/components/gear/gearSubmitMeta.ts"
+import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullGearId } from "#/components/gear/gearUtils.ts"
 import { getLicenseCost } from "#/components/licenses/licenseUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
