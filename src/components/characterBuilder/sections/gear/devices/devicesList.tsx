@@ -16,18 +16,12 @@ import type { ProgramData } from "#/lib/system/gear/programData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
-type DeviceDialogState =
-  | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", device: DeviceData, open: boolean }
+type DeviceDialogState = null | { device?: DeviceData, open: boolean }
 
-type ProgramDialogState =
-  | null
-  | { mode: "create", parentId: UUID, open: boolean }
-  | { mode: "edit", program: ProgramData, open: boolean }
+type ProgramDialogState = null | { program?: ProgramData, parentId?: UUID, open: boolean }
 
 export const DevicesList: FC = () => {
-  const gearApi = useGearStore()
+  const gearStore = useGearStore()
   const devices = useGearByType<DeviceData>(GearType.device)
   const programs = useGearByType<ProgramData>(GearType.program)
 
@@ -45,17 +39,17 @@ export const DevicesList: FC = () => {
     setProgramDialog((prev) => prev && { ...prev, open: false })
 
   const handleSaveDevice = (device: ItemData) => {
-    gearApi.save(device)
+    gearStore.save(device)
     closeDeviceDialog()
   }
 
   const handleSaveProgram = (program: ItemData) => {
-    gearApi.save(program)
+    gearStore.save(program)
     closeProgramDialog()
   }
 
   const handleRemoveDevice = (device: ItemData) => {
-    gearApi.remove(device, { removeChildren: true })
+    gearStore.remove(device, { removeChildren: true })
   }
 
   return (
@@ -67,7 +61,7 @@ export const DevicesList: FC = () => {
           <Box key={device.id}>
             <GearItemCard
               item={device}
-              onEdit={() => setDeviceDialog({ mode: "edit", device, open: true })}
+              onEdit={() => setDeviceDialog({ device, open: true })}
               onRemove={() => handleRemoveDevice(device)}
             />
 
@@ -86,9 +80,8 @@ export const DevicesList: FC = () => {
                 <GearItemCard
                   key={program.id}
                   item={program}
-                  onEdit={() =>
-                    setProgramDialog({ mode: "edit", program, open: true })}
-                  onRemove={() => gearApi.remove(program)}
+                  onEdit={() => setProgramDialog({ program, open: true })}
+                  onRemove={() => gearStore.remove(program)}
                 />
               ))}
 
@@ -96,8 +89,7 @@ export const DevicesList: FC = () => {
                 variant="text"
                 size="small"
                 startIcon={<RiAddLine size={12} />}
-                onClick={() =>
-                  setProgramDialog({ mode: "create", parentId: device.id, open: true })}
+                onClick={() => setProgramDialog({ parentId: device.id, open: true })}
                 color="secondary"
                 fullWidth
               >
@@ -112,23 +104,14 @@ export const DevicesList: FC = () => {
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDeviceDialog({ mode: "create", open: true })}
+        onClick={() => setDeviceDialog({ open: true })}
         color="secondary"
         fullWidth
       >
         Add Device
       </Button>
 
-      {deviceDialog?.mode === "create" && (
-        <DeviceFormDialog
-          open={deviceDialog.open}
-          onSave={handleSaveDevice}
-          onClose={closeDeviceDialog}
-          onClosed={() => setDeviceDialog(null)}
-        />
-      )}
-
-      {deviceDialog?.mode === "edit" && (
+      {deviceDialog !== null && (
         <DeviceFormDialog
           open={deviceDialog.open}
           device={deviceDialog.device}
@@ -138,20 +121,11 @@ export const DevicesList: FC = () => {
         />
       )}
 
-      {programDialog?.mode === "create" && (
-        <ProgramFormDialog
-          open={programDialog.open}
-          parentId={programDialog.parentId}
-          onSave={handleSaveProgram}
-          onClose={closeProgramDialog}
-          onClosed={() => setProgramDialog(null)}
-        />
-      )}
-
-      {programDialog?.mode === "edit" && (
+      {programDialog !== null && (
         <ProgramFormDialog
           open={programDialog.open}
           program={programDialog.program}
+          parentId={programDialog.parentId}
           onSave={handleSaveProgram}
           onClose={closeProgramDialog}
           onClosed={() => setProgramDialog(null)}
