@@ -1,0 +1,102 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link [ref=e264] [cursor=pointer]:
+        - /url: /#/
+        - text: ShadowSIN
+    - generic [ref=e7]:
+      - generic [ref=e24]:
+        - img [ref=e131] [cursor=pointer]
+        - tablist [ref=e27]:
+          - tab [ref=e265] [cursor=pointer]: About
+          - tab [ref=e266] [cursor=pointer]: Defense
+          - tab [ref=e267] [cursor=pointer]: Offense
+          - tab [ref=e268] [cursor=pointer]: Gear
+          - tab [ref=e269] [cursor=pointer]: Skills
+          - tab [ref=e270] [cursor=pointer]: Spells
+          - tab [ref=e271] [cursor=pointer]: Drones
+          - tab [ref=e272] [cursor=pointer]: Vehicles
+          - tab [ref=e273] [cursor=pointer]: Contacts
+          - tab [ref=e274] [cursor=pointer]: Qualities
+          - tab [selected] [ref=e275] [cursor=pointer]: Finances
+          - tab [ref=e276] [cursor=pointer]: Notes
+        - img [ref=e42] [cursor=pointer]
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]: Net Worth
+            - heading [level=4] [ref=e277]: 302,075¥
+          - button [ref=e278] [cursor=pointer]: End of Month
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - heading [level=6] [ref=e279]: Nuyen Balance
+            - button [ref=e280] [cursor=pointer]: Set
+          - heading [level=5] [ref=e281]: "-14,535¥"
+          - generic [ref=e146]:
+            - generic [ref=e147]:
+              - generic [ref=e148]: Amount
+              - generic [ref=e149]:
+                - paragraph [ref=e151]: ¥
+                - spinbutton [ref=e282]
+                - group:
+                  - generic: Amount
+            - button [disabled]: Deposit
+            - button [disabled]: Withdraw
+        - generic [ref=e154]:
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - heading [level=6] [ref=e283]: Credsticks
+              - generic [ref=e158]:
+                - button [ref=e284] [cursor=pointer]:
+                  - img [ref=e161]
+                  - text: Add
+                - button [ref=e285] [cursor=pointer]:
+                  - img [ref=e165]
+                  - text: Certify (25¥)
+            - paragraph [ref=e167]: No credsticks
+          - separator [ref=e168]
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - generic [ref=e171]:
+                - heading [level=6] [ref=e286]: Loans
+                - generic [ref=e173]: "Total owed: 40,000¥"
+              - button [ref=e287] [cursor=pointer]:
+                - img [ref=e176]
+                - text: Add Loan
+            - generic [ref=e180] [cursor=pointer]:
+              - generic [ref=e181]:
+                - paragraph [ref=e182]: Slicus
+                - generic [ref=e288]: "Migrated from nuyen log entry: Loan from Slicus."
+              - paragraph [ref=e185]: "-40,000¥"
+    - generic [ref=e20]:
+      - separator [ref=e21]
+      - contentinfo [ref=e22]:
+        - generic [ref=e23]: ShadowSIN is an independent fan project and is not affiliated with, endorsed by, or connected to Catalyst Game Labs. Shadowrun and all related content are trademarks and/or copyrights of Catalyst Game Labs. All rights reserved.
+  - dialog "Add Credstick" [ref=e291]:
+    - heading "Add Credstick" [level=2] [ref=e292]
+    - generic [ref=e294]:
+      - generic [ref=e295]:
+        - generic: Name
+        - generic [ref=e296]:
+          - textbox "Name" [ref=e297]:
+            - /placeholder: e.g. Paid by Fixer
+          - group:
+            - generic: Name
+      - generic [ref=e298]:
+        - generic [ref=e299]: Type
+        - generic [ref=e300]:
+          - combobox [ref=e301] [cursor=pointer]: Standard (max 5,000¥)
+          - textbox: standard
+          - img
+          - group:
+            - generic: Type
+      - generic [ref=e302]:
+        - generic [ref=e303]: Balance
+        - generic [ref=e304]:
+          - spinbutton "Balance" [ref=e305]: "5000"
+          - group:
+            - generic: Balance
+        - paragraph [ref=e306]: "Max: 5,000¥"
+    - generic [ref=e307]:
+      - button "Cancel" [ref=e308] [cursor=pointer]
+      - button "Save" [ref=e309] [cursor=pointer]
