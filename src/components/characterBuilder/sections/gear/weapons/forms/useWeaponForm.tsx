@@ -1,5 +1,10 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
+import {
+  defaultGearSubmitMeta,
+
+} from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
@@ -9,7 +14,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface WeaponFormOptions {
   weapon?: WeaponData
-  onSubmit: (weapon: WeaponData) => void
+  onSubmit: (weapon: WeaponData, meta: GearSubmitMeta) => void
 }
 
 // Unified form state that accommodates all weapon subtypes so a single form
@@ -155,6 +160,7 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
   return useAppForm({
     ...weaponFormOpts,
     defaultValues: defaults,
-    onSubmit: ({ value }) => onSubmit(toWeaponData(value)),
+    onSubmitMeta: defaultGearSubmitMeta,
+    onSubmit: ({ value, meta }) => onSubmit(toWeaponData(value), meta),
   })
 }

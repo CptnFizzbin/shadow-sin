@@ -5,7 +5,6 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useRef } from "react"
 
 import {
   weaponFieldMap,
@@ -35,13 +34,13 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
   onPurchase,
 }) => {
   const title = weapon ? "Edit Weapon" : "Add Weapon"
-  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   const form = useWeaponForm({
     weapon,
-    onSubmit: (submittedWeapon) => {
-      if (onAcquire && onPurchase) {
-        if (submitModeRef.current === "purchase") {
+    onSubmit: (submittedWeapon, meta) => {
+      if (useAcquireMode) {
+        if (meta.submitAction === "purchase") {
           onPurchase(submittedWeapon)
         } else {
           onAcquire(submittedWeapon)
@@ -51,8 +50,6 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
       }
     },
   })
-
-  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -72,14 +69,8 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
                   <GearAcquireActions
                     cost={cost ?? 0}
                     onClose={onClose}
-                    onAcquire={() => {
-                      submitModeRef.current = "acquire"
-                      form.handleSubmit()
-                    }}
-                    onPurchase={() => {
-                      submitModeRef.current = "purchase"
-                      form.handleSubmit()
-                    }}
+                    onAcquire={() => form.handleSubmit({ submitAction: "acquire" })}
+                    onPurchase={() => form.handleSubmit({ submitAction: "purchase" })}
                   />
                 )}
               </form.Subscribe>
@@ -89,10 +80,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
                 <Button onClick={onClose}>Cancel</Button>
                 <Button
                   type="submit"
-                  onClick={() => {
-                    submitModeRef.current = "save"
-                    form.handleSubmit()
-                  }}
+                  onClick={() => form.handleSubmit()}
                   variant="contained"
                 >
                   Save

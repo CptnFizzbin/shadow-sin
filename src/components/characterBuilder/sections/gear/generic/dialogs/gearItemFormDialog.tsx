@@ -5,7 +5,6 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useRef } from "react"
 
 import { GearItemFormFields } from "#/components/characterBuilder/sections/gear/generic/forms/gearItemFormFields.tsx"
 import {
@@ -37,13 +36,13 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
-  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   const form = useItemForm({
     item,
-    onSubmit: (submittedItem) => {
-      if (onAcquire && onPurchase) {
-        if (submitModeRef.current === "purchase") {
+    onSubmit: (submittedItem, meta) => {
+      if (useAcquireMode) {
+        if (meta.submitAction === "purchase") {
           onPurchase(submittedItem)
         } else {
           onAcquire(submittedItem)
@@ -53,8 +52,6 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       }
     },
   })
-
-  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -74,14 +71,8 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
                   <GearAcquireActions
                     cost={cost ?? 0}
                     onClose={onClose}
-                    onAcquire={() => {
-                      submitModeRef.current = "acquire"
-                      form.handleSubmit()
-                    }}
-                    onPurchase={() => {
-                      submitModeRef.current = "purchase"
-                      form.handleSubmit()
-                    }}
+                    onAcquire={() => form.handleSubmit({ submitAction: "acquire" })}
+                    onPurchase={() => form.handleSubmit({ submitAction: "purchase" })}
                   />
                 )}
               </form.Subscribe>
@@ -91,10 +82,7 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
                 <Button onClick={onClose}>Cancel</Button>
                 <Button
                   type="submit"
-                  onClick={() => {
-                    submitModeRef.current = "save"
-                    form.handleSubmit()
-                  }}
+                  onClick={() => form.handleSubmit()}
                   variant="contained"
                 >
                   Save

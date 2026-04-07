@@ -7,7 +7,6 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useRef } from "react"
 
 import { ImplantFormFields } from "#/components/characterBuilder/sections/gear/cyberware/forms/implantFormFields.tsx"
 import {
@@ -44,14 +43,14 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
 }) => {
   const editMode = !!implant
   const title = editMode ? `Edit Implant` : `Add Implant`
-  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   const form = useImplantForm({
     implant,
     parentId,
-    onSubmit: (submittedImplant) => {
-      if (onAcquire && onPurchase) {
-        if (submitModeRef.current === "purchase") {
+    onSubmit: (submittedImplant, meta) => {
+      if (useAcquireMode) {
+        if (meta.submitAction === "purchase") {
           onPurchase(submittedImplant)
         } else {
           onAcquire(submittedImplant)
@@ -61,8 +60,6 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       }
     },
   })
-
-  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -87,14 +84,8 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
                     <GearAcquireActions
                       cost={effectiveCost}
                       onClose={onClose}
-                      onAcquire={() => {
-                        submitModeRef.current = "acquire"
-                        form.handleSubmit()
-                      }}
-                      onPurchase={() => {
-                        submitModeRef.current = "purchase"
-                        form.handleSubmit()
-                      }}
+                      onAcquire={() => form.handleSubmit({ submitAction: "acquire" })}
+                      onPurchase={() => form.handleSubmit({ submitAction: "purchase" })}
                     />
                   )
                 }}
@@ -105,10 +96,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
                 <Button onClick={onClose}>Cancel</Button>
                 <Button
                   type="submit"
-                  onClick={() => {
-                    submitModeRef.current = "save"
-                    form.handleSubmit()
-                  }}
+                  onClick={() => form.handleSubmit()}
                   variant="contained"
                 >
                   Save
