@@ -1,4 +1,5 @@
 import InputAdornment from "@mui/material/InputAdornment"
+import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import { RiSearchLine } from "@remixicon/react"
@@ -6,6 +7,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearSection, GearViewSection } from "#/components/character/gearPage/gearViewSection.tsx"
+import { QuickNuyenSection } from "#/components/finances/nuyen/quickNuyenSection.tsx"
 
 export const GearViewPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -13,6 +15,10 @@ export const GearViewPage: FC = () => {
 
   return (
     <Stack gap={1}>
+      <Paper sx={{ padding: 1 }}>
+        <QuickNuyenSection />
+      </Paper>
+
       <TextField
         size="small"
         placeholder="Search gear…"
