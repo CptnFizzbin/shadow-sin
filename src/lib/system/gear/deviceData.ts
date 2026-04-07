@@ -4,12 +4,13 @@ import type { ItemData } from "#/lib/system/itemData.ts"
 export interface DeviceData extends ItemData {
   itemType: GearType.device
 
-  operatingSystem?: string
+  deviceRating?: number
   response?: number
   signal?: number
-  eccm?: number
-  firewall?: number
   system?: number
+  firewall?: number
+  dataProcessing?: number
+  programSlots?: number
 }
 
 export function isDeviceData(item: ItemData): item is DeviceData {
