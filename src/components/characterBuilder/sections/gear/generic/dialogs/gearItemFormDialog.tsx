@@ -5,12 +5,14 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+import { useRef } from "react"
 
 import { GearItemFormFields } from "#/components/characterBuilder/sections/gear/generic/forms/gearItemFormFields.tsx"
 import {
   gearItemFieldMap,
   useItemForm,
 } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
 interface GearItemFormDialogProps {
@@ -18,7 +20,9 @@ interface GearItemFormDialogProps {
   item?: ItemData
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: ItemData) => void
+  onSave?: (item: ItemData) => void
+  onAcquire?: (item: ItemData) => void
+  onPurchase?: (item: ItemData) => void
   label?: string
 }
 
@@ -28,10 +32,29 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onAcquire,
+  onPurchase,
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
-  const form = useItemForm({ item, onSubmit: onSave })
+  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+
+  const form = useItemForm({
+    item,
+    onSubmit: (submittedItem) => {
+      if (onAcquire && onPurchase) {
+        if (submitModeRef.current === "purchase") {
+          onPurchase(submittedItem)
+        } else {
+          onAcquire(submittedItem)
+        }
+      } else {
+        onSave?.(submittedItem)
+      }
+    },
+  })
+
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -44,10 +67,40 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={form.handleSubmit} variant="contained">
-          Save
-        </Button>
+        {useAcquireMode
+          ? (
+              <form.Subscribe selector={(state) => state.values.cost}>
+                {(cost) => (
+                  <GearAcquireActions
+                    cost={cost ?? 0}
+                    onClose={onClose}
+                    onAcquire={() => {
+                      submitModeRef.current = "acquire"
+                      form.handleSubmit()
+                    }}
+                    onPurchase={() => {
+                      submitModeRef.current = "purchase"
+                      form.handleSubmit()
+                    }}
+                  />
+                )}
+              </form.Subscribe>
+            )
+          : (
+              <>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    submitModeRef.current = "save"
+                    form.handleSubmit()
+                  }}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </>
+            )}
       </DialogActions>
     </Dialog>
   )

@@ -7,18 +7,22 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+import { useRef } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
 import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
-import { getSinAvailability } from "#/components/licenses/sinUtils.ts"
+import { getSinAvailability, getSinCost } from "#/components/licenses/sinUtils.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
 
 interface SinFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave: (sin: SinData) => void
+  onSave?: (sin: SinData) => void
+  onAcquire?: (sin: SinData) => void
+  onPurchase?: (sin: SinData) => void
   onDelete?: () => void
   sin?: SinData
   allowReal?: boolean
@@ -31,10 +35,29 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onAcquire,
+  onPurchase,
   onDelete,
 }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
-  const form = useSinForm({ sin, onSubmit: onSave })
+  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+
+  const form = useSinForm({
+    sin,
+    onSubmit: (submittedSin) => {
+      if (onAcquire && onPurchase) {
+        if (submitModeRef.current === "purchase") {
+          onPurchase(submittedSin)
+        } else {
+          onAcquire(submittedSin)
+        }
+      } else {
+        onSave?.(submittedSin)
+      }
+    },
+  })
+
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -77,17 +100,47 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        <Button color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          color="secondary"
-          onClick={form.handleSubmit}
-          variant="contained"
-        >
-          Save
-        </Button>
+        {useAcquireMode
+          ? (
+              <form.Subscribe selector={(state) => state.values.rating}>
+                {(rating) => {
+                  const numericRating = rating === "real" ? ("real" as const) : Number(rating)
+                  const cost = getSinCost(numericRating)
+                  return (
+                    <GearAcquireActions
+                      cost={cost}
+                      onClose={onClose}
+                      onAcquire={() => {
+                        submitModeRef.current = "acquire"
+                        form.handleSubmit()
+                      }}
+                      onPurchase={() => {
+                        submitModeRef.current = "purchase"
+                        form.handleSubmit()
+                      }}
+                    />
+                  )
+                }}
+              </form.Subscribe>
+            )
+          : (
+              <>
+                <Button color="secondary" onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  color="secondary"
+                  onClick={() => {
+                    submitModeRef.current = "save"
+                    form.handleSubmit()
+                  }}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </>
+            )}
       </DialogActions>
     </Dialog>
   )

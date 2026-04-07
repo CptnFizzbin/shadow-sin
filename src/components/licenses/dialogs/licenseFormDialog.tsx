@@ -7,14 +7,16 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
+import { useRef } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { LicenseFormFields } from "#/components/licenses/forms/licenseFormFields.tsx"
 import {
   licenseFieldMap,
   useLicenseForm,
 } from "#/components/licenses/forms/useLicenseForm.tsx"
-import { getLicenseAvailability } from "#/components/licenses/licenseUtils.ts"
+import { getLicenseAvailability, getLicenseCost } from "#/components/licenses/licenseUtils.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
 
@@ -22,7 +24,9 @@ export interface LicenseFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave: (data: LicenseData) => void
+  onSave?: (data: LicenseData) => void
+  onAcquire?: (data: LicenseData) => void
+  onPurchase?: (data: LicenseData) => void
   onDelete?: () => void
   license?: LicenseData
   sin?: SinData
@@ -33,18 +37,33 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onAcquire,
+  onPurchase,
   onDelete,
   license,
   sin,
 }) => {
+  const title = license ? "Edit License" : "Create License"
+  const submitModeRef = useRef<"acquire" | "purchase" | "save">("save")
+
   const form = useLicenseForm({
     license: license,
     parentId: sin?.id,
     sinReal: sin?.rating === "real" || false,
-    onSubmit: onSave,
+    onSubmit: (submittedLicense) => {
+      if (onAcquire && onPurchase) {
+        if (submitModeRef.current === "purchase") {
+          onPurchase(submittedLicense)
+        } else {
+          onAcquire(submittedLicense)
+        }
+      } else {
+        onSave?.(submittedLicense)
+      }
+    },
   })
 
-  const title = license ? "Edit License" : "Create License"
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -83,17 +102,46 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        <Button color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          color="secondary"
-          onClick={form.handleSubmit}
-          variant="contained"
-        >
-          Save
-        </Button>
+        {useAcquireMode
+          ? (
+              <form.Subscribe selector={(state) => state.values.rating}>
+                {(rating) => {
+                  const cost = getLicenseCost(rating)
+                  return (
+                    <GearAcquireActions
+                      cost={cost}
+                      onClose={onClose}
+                      onAcquire={() => {
+                        submitModeRef.current = "acquire"
+                        form.handleSubmit()
+                      }}
+                      onPurchase={() => {
+                        submitModeRef.current = "purchase"
+                        form.handleSubmit()
+                      }}
+                    />
+                  )
+                }}
+              </form.Subscribe>
+            )
+          : (
+              <>
+                <Button color="secondary" onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  color="secondary"
+                  onClick={() => {
+                    submitModeRef.current = "save"
+                    form.handleSubmit()
+                  }}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </>
+            )}
       </DialogActions>
     </Dialog>
   )
