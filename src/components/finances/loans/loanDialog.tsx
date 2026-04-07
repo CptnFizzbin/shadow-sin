@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useNuyenStore } from "#/components/finances/useNuyenStore.ts"
+import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { LoanData } from "#/lib/system/loanData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"

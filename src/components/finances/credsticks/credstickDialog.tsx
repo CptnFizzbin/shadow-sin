@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useNuyenStore } from "#/components/finances/useNuyenStore.ts"
+import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
@@ -57,8 +57,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
   const [balance, setBalance] = useState<number>(
     credstick?.balance ?? CredstickMaxBalance[CredstickType.standard],
   )
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(0)
-  const [showWithdraw, setShowWithdraw] = useState(false)
+  const [showWithdrawConfirm, setShowWithdrawConfirm] = useState(false)
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
 
   const maxBalance = CredstickMaxBalance[credstickType]
@@ -87,20 +86,20 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
       const [newCredstick] = createItem<CredstickData>(credstickItemData)
       gearStore.save(newCredstick)
       if (isCertified) {
-        nuyenStore.withdraw(CredstickPurchaseCost)
+        // Deduct purchase cost + loaded balance from nuyen
+        nuyenStore.withdraw(CredstickPurchaseCost + clampedBalance)
       }
     }
 
     onClose()
   }
 
+  /** Withdraws the full balance from the credstick and deletes it. */
   const handleWithdraw = () => {
     if (!credstick) return
-    const amount = Math.min(Math.max(0, withdrawAmount), credstick.balance)
-    nuyenStore.deposit(amount)
-    const updatedCredstick: CredstickData = { ...credstick, balance: credstick.balance - amount }
-    gearStore.save(updatedCredstick)
-    setShowWithdraw(false)
+    nuyenStore.deposit(credstick.balance)
+    gearStore.remove(credstick)
+    setShowWithdrawConfirm(false)
     onClose()
   }
 
@@ -115,8 +114,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
     setCredstickName(credstick?.name ?? "")
     setCredstickType(credstick?.credstickType ?? CredstickType.standard)
     setBalance(credstick?.balance ?? CredstickMaxBalance[CredstickType.standard])
-    setWithdrawAmount(0)
-    setShowWithdraw(false)
+    setShowWithdrawConfirm(false)
     setShowRemoveConfirm(false)
     onClosed?.()
   }
@@ -134,7 +132,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
         <Stack gap={2} sx={{ padding: 1 }}>
           {isCertified && (
             <Typography variant="body2" color="text.secondary">
-              Cost: {formatNuyen(CredstickPurchaseCost)} (deducted from your nuyen)
+              Cost: {formatNuyen(CredstickPurchaseCost)} + loaded balance (deducted from your nuyen)
             </Typography>
           )}
 
@@ -187,23 +185,14 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
                 </Typography>
               </Stack>
 
-              {showWithdraw && (
+              {showWithdrawConfirm && (
                 <>
                   <Divider />
-                  <Typography variant="subtitle2">Withdraw funds</Typography>
-                  <TextField
-                    label="Amount to withdraw"
-                    size="small"
-                    fullWidth
-                    type="number"
-                    value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(Number(e.target.value))}
-                    slotProps={{ htmlInput: { min: 0, max: credstick.balance } }}
-                    helperText={`Available: ${formatNuyen(credstick.balance)}`}
-                    autoFocus
-                  />
+                  <Typography variant="body2" color="text.secondary">
+                    Withdraw {formatNuyen(credstick.balance)} to your nuyen and delete this credstick?
+                  </Typography>
                   <Stack direction="row" gap={1} justifyContent="flex-end">
-                    <Button size="small" onClick={() => setShowWithdraw(false)}>
+                    <Button size="small" onClick={() => setShowWithdrawConfirm(false)}>
                       Cancel
                     </Button>
                     <Button
@@ -211,7 +200,6 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
                       variant="contained"
                       color="secondary"
                       onClick={handleWithdraw}
-                      disabled={withdrawAmount <= 0 || withdrawAmount > credstick.balance}
                     >
                       Confirm Withdrawal
                     </Button>
@@ -240,7 +228,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions sx={{ padding: 1, flexWrap: "wrap", gap: 1 }}>
-        {isEditMode && !showWithdraw && !showRemoveConfirm && (
+        {isEditMode && !showWithdrawConfirm && !showRemoveConfirm && (
           <>
             <Button
               color="error"
@@ -252,10 +240,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
             <Button
               color="secondary"
               size="small"
-              onClick={() => {
-                setWithdrawAmount(0)
-                setShowWithdraw(true)
-              }}
+              onClick={() => setShowWithdrawConfirm(true)}
               disabled={!credstick || credstick.balance <= 0}
             >
               Withdraw
@@ -263,7 +248,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
           </>
         )}
 
-        {!showWithdraw && !showRemoveConfirm && (
+        {!showWithdrawConfirm && !showRemoveConfirm && (
           <>
             <Button color="secondary" onClick={onClose}>
               Cancel
