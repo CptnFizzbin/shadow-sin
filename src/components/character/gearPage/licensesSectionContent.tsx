@@ -34,11 +34,22 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   return (
     <Stack gap={1}>
       {sins.map((sin) => (
-        <GearViewItem
-          key={sin.id}
-          item={sin}
-          subItems={getLicenses(sin.id)}
-        />
+        <Stack key={sin.id} gap={1}>
+          <GearViewItem
+            item={sin}
+            subItems={getLicenses(sin.id)}
+          />
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<RiAddLine size={14} />}
+            onClick={() => setDialogState({ type: "license", sin, open: true })}
+            color="secondary"
+            fullWidth
+          >
+            Add License to {sin.name}
+          </Button>
+        </Stack>
       ))}
 
       <Button
