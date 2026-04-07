@@ -7,6 +7,7 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -41,6 +42,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
 }) => {
   const nuyenStore = useNuyenStore()
   const isEditMode = mode === "edit"
+  const currentNuyen = useStore(nuyenStore, (state) => state.current)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
   const [amount, setAmount] = useState<number>(loan?.amount ?? 0)
@@ -48,6 +50,8 @@ export const LoanDialog: FC<LoanDialogProps> = ({
   const [notes, setNotes] = useState(loan?.notes ?? "")
   const [showPayoffConfirm, setShowPayoffConfirm] = useState(false)
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
+
+  const hasInsufficientNuyenForPayoff = loan !== undefined && currentNuyen < loan.amount
 
   const handleSave = () => {
     const loanData: LoanData = {
@@ -133,15 +137,29 @@ export const LoanDialog: FC<LoanDialogProps> = ({
           {showPayoffConfirm && (
             <>
               <Divider />
-              <Typography variant="body2" color="warning.main">
-                Pay off {formatNuyen(amount)} to {lender}? This will deduct {formatNuyen(amount)} from
-                your nuyen and remove the loan.
-              </Typography>
+              {hasInsufficientNuyenForPayoff
+                ? (
+                    <Typography variant="body2" color="error.main">
+                      Insufficient nuyen — need {formatNuyen(loan?.amount ?? 0)} to pay off, have {formatNuyen(currentNuyen)}.
+                    </Typography>
+                  )
+                : (
+                    <Typography variant="body2" color="warning.main">
+                      Pay off {formatNuyen(amount)} to {lender}? This will deduct {formatNuyen(amount)} from
+                      your nuyen and remove the loan.
+                    </Typography>
+                  )}
               <Stack direction="row" gap={1} justifyContent="flex-end">
                 <Button size="small" onClick={() => setShowPayoffConfirm(false)}>
                   Cancel
                 </Button>
-                <Button size="small" color="warning" variant="contained" onClick={handlePayoff}>
+                <Button
+                  size="small"
+                  color="warning"
+                  variant="contained"
+                  onClick={handlePayoff}
+                  disabled={hasInsufficientNuyenForPayoff}
+                >
                   Confirm Payoff
                 </Button>
               </Stack>
@@ -180,6 +198,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
               color="warning"
               size="small"
               onClick={() => setShowPayoffConfirm(true)}
+              disabled={hasInsufficientNuyenForPayoff}
             >
               Pay Off
             </Button>

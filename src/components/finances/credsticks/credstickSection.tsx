@@ -63,7 +63,7 @@ export const CredstickSection: FC = () => {
           onClick={() => setDialogState({ open: true, mode: "add" })}
           fullWidth
         >
-          Recieve
+          Receive
         </Button>
       </Stack>
 

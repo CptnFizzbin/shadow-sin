@@ -11,6 +11,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -46,6 +47,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
 }) => {
   const gearStore = useGearStore()
   const nuyenStore = useNuyenStore()
+  const currentNuyen = useStore(nuyenStore, (state) => state.current)
 
   const isEditMode = mode === "edit"
   const isCertified = mode === "add-certified"
@@ -61,6 +63,9 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
 
   const maxBalance = CredstickMaxBalance[credstickType]
+  const clampedBalance = Math.min(Math.max(0, balance), maxBalance)
+  const certifiedTotalCost = CredstickPurchaseCost + clampedBalance
+  const hasInsufficientNuyen = isCertified && currentNuyen < certifiedTotalCost
 
   const handleTypeChange = (newType: CredstickType) => {
     setCredstickType(newType)
@@ -71,7 +76,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
   }
 
   const handleSave = () => {
-    const clampedBalance = Math.min(Math.max(0, balance), maxBalance)
+    if (hasInsufficientNuyen) return
 
     if (isEditMode && credstick) {
       const updatedCredstick: CredstickData = { ...credstick, name: credstickName, balance: clampedBalance }
@@ -131,9 +136,16 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
       <DialogContent sx={{ p: 1 }}>
         <Stack gap={2} sx={{ padding: 1 }}>
           {isCertified && (
-            <Typography variant="body2" color="text.secondary">
-              Cost: {formatNuyen(CredstickPurchaseCost)} + loaded balance (deducted from your nuyen)
-            </Typography>
+            <>
+              <Typography variant="body2" color="text.secondary">
+                Cost: {formatNuyen(CredstickPurchaseCost)} + loaded balance (deducted from your nuyen)
+              </Typography>
+              {hasInsufficientNuyen && (
+                <Typography variant="body2" color="error.main">
+                  Insufficient nuyen — need {formatNuyen(certifiedTotalCost)}, have {formatNuyen(currentNuyen)}.
+                </Typography>
+              )}
+            </>
           )}
 
           <TextField
@@ -253,7 +265,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
             <Button color="secondary" onClick={onClose}>
               Cancel
             </Button>
-            <Button color="secondary" variant="contained" onClick={handleSave}>
+            <Button color="secondary" variant="contained" onClick={handleSave} disabled={hasInsufficientNuyen}>
               Save
             </Button>
           </>
