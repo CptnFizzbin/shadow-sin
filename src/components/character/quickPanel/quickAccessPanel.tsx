@@ -11,6 +11,7 @@ import { useState } from "react"
 import { QuickAttributesSection } from "#/components/character/quickPanel/quickAttributesSection.tsx"
 import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
 import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
+import { QuickNuyenSection } from "#/components/finances/nuyen/quickNuyenSection.tsx"
 
 export const QuickAccessPanel: FC = () => {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -41,6 +42,7 @@ export const QuickAccessPanel: FC = () => {
           <QuickAttributesSection />
           <QuickDamageSection />
           <QuickEdgeSection />
+          <QuickNuyenSection />
         </Stack>
       </AccordionDetails>
     </Accordion>

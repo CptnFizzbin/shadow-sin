@@ -4,6 +4,7 @@ import { Route as AboutRoute } from "#/routes/$characterId/about.tsx"
 import { Route as ContactsRoute } from "#/routes/$characterId/contacts.tsx"
 import { Route as DefenseRoute } from "#/routes/$characterId/defense.tsx"
 import { Route as DronesRoute } from "#/routes/$characterId/drones.tsx"
+import { Route as FinancesRoute } from "#/routes/$characterId/finances.tsx"
 import { Route as GearRoute } from "#/routes/$characterId/gear.tsx"
 import { Route as NotesRoute } from "#/routes/$characterId/notes.tsx"
 import { Route as OffenseRoute } from "#/routes/$characterId/offense.tsx"
@@ -23,6 +24,7 @@ export enum SectionKey {
   vehicles = "vehicles",
   contacts = "contacts",
   qualities = "qualities",
+  finances = "finances",
   notes = "notes",
 }
 
@@ -85,6 +87,11 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
     id: SectionKey.qualities,
     label: "Qualities",
     route: QualitiesRoute,
+  },
+  [SectionKey.finances]: {
+    id: SectionKey.finances,
+    label: "Finances",
+    route: FinancesRoute,
   },
   [SectionKey.notes]: {
     id: SectionKey.notes,

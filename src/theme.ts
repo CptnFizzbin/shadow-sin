@@ -64,12 +64,10 @@ export const theme = createTheme({
     h6: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
     overline: {
       fontFamily: BODY_FONT,
-      letterSpacing: "0.2em",
       fontWeight: 700,
     },
     button: {
       fontFamily: BODY_FONT,
-      letterSpacing: "0.1em",
       fontWeight: 700,
     },
   },
@@ -87,8 +85,6 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
         },
         contained: {
           "boxShadow": "none",
@@ -107,6 +103,30 @@ export const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: { borderRadius: 0 },
+      },
+    },
+
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: 8,
+        },
+      },
+    },
+
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: 8,
+        },
+      },
+    },
+
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: 8,
+        },
       },
     },
 

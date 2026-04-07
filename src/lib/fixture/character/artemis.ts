@@ -56,8 +56,10 @@ export const Artemis: CharacterSheet = {
     current: -14535,
     loans: [
       {
+        id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
         lender: "Slicus",
         amount: 40000,
+        interestRate: 0,
         notes: "Migrated from nuyen log entry: Loan from Slicus.",
       },
     ],

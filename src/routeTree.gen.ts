@@ -20,6 +20,7 @@ import { Route as CharacterIdQualitiesRouteImport } from './routes/$characterId/
 import { Route as CharacterIdOffenseRouteImport } from './routes/$characterId/offense'
 import { Route as CharacterIdNotesRouteImport } from './routes/$characterId/notes'
 import { Route as CharacterIdGearRouteImport } from './routes/$characterId/gear'
+import { Route as CharacterIdFinancesRouteImport } from './routes/$characterId/finances'
 import { Route as CharacterIdDronesRouteImport } from './routes/$characterId/drones'
 import { Route as CharacterIdDefenseRouteImport } from './routes/$characterId/defense'
 import { Route as CharacterIdContactsRouteImport } from './routes/$characterId/contacts'
@@ -80,6 +81,11 @@ const CharacterIdGearRoute = CharacterIdGearRouteImport.update({
   path: '/gear',
   getParentRoute: () => CharacterIdRoute,
 } as any)
+const CharacterIdFinancesRoute = CharacterIdFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => CharacterIdRoute,
+} as any)
 const CharacterIdDronesRoute = CharacterIdDronesRouteImport.update({
   id: '/drones',
   path: '/drones',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/$characterId/contacts': typeof CharacterIdContactsRoute
   '/$characterId/defense': typeof CharacterIdDefenseRoute
   '/$characterId/drones': typeof CharacterIdDronesRoute
+  '/$characterId/finances': typeof CharacterIdFinancesRoute
   '/$characterId/gear': typeof CharacterIdGearRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/$characterId/contacts': typeof CharacterIdContactsRoute
   '/$characterId/defense': typeof CharacterIdDefenseRoute
   '/$characterId/drones': typeof CharacterIdDronesRoute
+  '/$characterId/finances': typeof CharacterIdFinancesRoute
   '/$characterId/gear': typeof CharacterIdGearRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/$characterId/contacts': typeof CharacterIdContactsRoute
   '/$characterId/defense': typeof CharacterIdDefenseRoute
   '/$characterId/drones': typeof CharacterIdDronesRoute
+  '/$characterId/finances': typeof CharacterIdFinancesRoute
   '/$characterId/gear': typeof CharacterIdGearRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/$characterId/contacts'
     | '/$characterId/defense'
     | '/$characterId/drones'
+    | '/$characterId/finances'
     | '/$characterId/gear'
     | '/$characterId/notes'
     | '/$characterId/offense'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/$characterId/contacts'
     | '/$characterId/defense'
     | '/$characterId/drones'
+    | '/$characterId/finances'
     | '/$characterId/gear'
     | '/$characterId/notes'
     | '/$characterId/offense'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/$characterId/contacts'
     | '/$characterId/defense'
     | '/$characterId/drones'
+    | '/$characterId/finances'
     | '/$characterId/gear'
     | '/$characterId/notes'
     | '/$characterId/offense'
@@ -290,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CharacterIdGearRouteImport
       parentRoute: typeof CharacterIdRoute
     }
+    '/$characterId/finances': {
+      id: '/$characterId/finances'
+      path: '/finances'
+      fullPath: '/$characterId/finances'
+      preLoaderRoute: typeof CharacterIdFinancesRouteImport
+      parentRoute: typeof CharacterIdRoute
+    }
     '/$characterId/drones': {
       id: '/$characterId/drones'
       path: '/drones'
@@ -326,6 +345,7 @@ interface CharacterIdRouteChildren {
   CharacterIdContactsRoute: typeof CharacterIdContactsRoute
   CharacterIdDefenseRoute: typeof CharacterIdDefenseRoute
   CharacterIdDronesRoute: typeof CharacterIdDronesRoute
+  CharacterIdFinancesRoute: typeof CharacterIdFinancesRoute
   CharacterIdGearRoute: typeof CharacterIdGearRoute
   CharacterIdNotesRoute: typeof CharacterIdNotesRoute
   CharacterIdOffenseRoute: typeof CharacterIdOffenseRoute
@@ -341,6 +361,7 @@ const CharacterIdRouteChildren: CharacterIdRouteChildren = {
   CharacterIdContactsRoute: CharacterIdContactsRoute,
   CharacterIdDefenseRoute: CharacterIdDefenseRoute,
   CharacterIdDronesRoute: CharacterIdDronesRoute,
+  CharacterIdFinancesRoute: CharacterIdFinancesRoute,
   CharacterIdGearRoute: CharacterIdGearRoute,
   CharacterIdNotesRoute: CharacterIdNotesRoute,
   CharacterIdOffenseRoute: CharacterIdOffenseRoute,
