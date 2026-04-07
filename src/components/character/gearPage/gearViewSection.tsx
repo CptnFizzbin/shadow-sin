@@ -8,51 +8,17 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useEssenseInfo } from "#/components/character/characterUtils.ts"
-import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { BASE_ESSENCE } from "#/components/gear/implantUtils.ts"
+import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwareSectionHeader.tsx"
+import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
+import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
-import { isSinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import type { GearType } from "#/lib/system/gearType.ts"
 
-export enum GearSection {
-  Cyberware = "Cyberware",
-  Weapons = "Weapons",
-  Armor = "Armor",
-  Vehicles = "Vehicles",
-  Devices = "Devices",
-  Licenses = "SINs & Licenses",
-  Misc = "Misc",
-}
-
-export const sectionGearTypes: Record<GearSection, GearType[]> = {
-  [GearSection.Cyberware]: [GearType.implant],
-  [GearSection.Weapons]: [GearType.weapon, GearType.firearm, GearType.firearmAccessory],
-  [GearSection.Armor]: [GearType.armor],
-  [GearSection.Vehicles]: [GearType.vehicle],
-  [GearSection.Devices]: [GearType.device, GearType.software],
-  [GearSection.Licenses]: [GearType.sin, GearType.license],
-  [GearSection.Misc]: [GearType.other],
-}
+export { GearSection, sectionGearTypes }
 
 interface GearViewSectionProps {
   section: GearSection
   searchTerms: string[]
-}
-
-const CyberwareSectionHeader: FC = () => {
-  const essenceInfo = useEssenseInfo()
-  const isEssenceError = essenceInfo.essenseRemaining <= 0
-
-  return (
-    <Typography
-      variant="body2"
-      color={isEssenceError ? "error" : "text.secondary"}
-    >
-      {essenceInfo.essenceUsed.toFixed(2).replace(/\.?0+$/, "")} / {BASE_ESSENCE} Ess
-    </Typography>
-  )
 }
 
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
@@ -109,15 +75,11 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
         </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 1 }}>
-        <Stack gap={1}>
-          {section === GearSection.Licenses
-            ? rootItems.filter(isSinData).map((sin) => (
-                <GearViewItem key={sin.id} item={sin} subItems={getChildItems(sin.id).filter(isLicenseData)} />
-              ))
-            : rootItems.map((item) => (
-                <GearViewItem key={item.id} item={item} subItems={getChildItems(item.id)} />
-              ))}
-        </Stack>
+        <GearViewSectionContent
+          section={section}
+          rootItems={rootItems}
+          getChildItems={getChildItems}
+        />
       </AccordionDetails>
     </Accordion>
   )

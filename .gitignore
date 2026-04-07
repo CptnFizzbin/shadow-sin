@@ -51,3 +51,4 @@ todos.json
 .DS_Store
 Thumbs.db
 *.local
+.playwright-mcp/

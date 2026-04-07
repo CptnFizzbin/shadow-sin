@@ -52,7 +52,6 @@ export const LoanDialog: FC<LoanDialogProps> = ({
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
 
   const hasInsufficientNuyenForPayoff = loan !== undefined && currentNuyen < loan.amount
-
   const handleSave = () => {
     const loanData: LoanData = {
       id: loan?.id ?? NullUuid,

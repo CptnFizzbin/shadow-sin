@@ -13,7 +13,12 @@ import {
   implantFieldMap,
   useImplantForm,
 } from "#/components/characterBuilder/sections/gear/cyberware/forms/useImplantForm.tsx"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import {
+  ImplantGradeNuyenMultiplier,
+} from "#/components/gear/implantUtils.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade } from "#/lib/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
   open: boolean
@@ -21,7 +26,9 @@ interface CyberwareFormDialogProps {
   parentId?: UUID
   onClose: () => void
   onClosed?: () => void
-  onSave: (implant: ImplantData) => void
+  onSave?: (implant: ImplantData) => void
+  onAcquire?: (implant: ImplantData) => void
+  onPurchase?: (implant: ImplantData) => void
 }
 
 export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
@@ -31,11 +38,28 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onAcquire,
+  onPurchase,
 }) => {
   const editMode = !!implant
   const title = editMode ? `Edit Implant` : `Add Implant`
+  const useAcquireMode = !!onAcquire && !!onPurchase
 
-  const form = useImplantForm({ implant, parentId, onSubmit: onSave })
+  const form = useImplantForm({
+    implant,
+    parentId,
+    onSubmit: (submittedImplant, meta) => {
+      if (useAcquireMode) {
+        if (meta.submitAction === "purchase") {
+          onPurchase(submittedImplant)
+        } else {
+          onAcquire(submittedImplant)
+        }
+      } else {
+        onSave?.(submittedImplant)
+      }
+    },
+  })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -48,10 +72,37 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={form.handleSubmit} variant="contained">
-          Save
-        </Button>
+        {useAcquireMode
+          ? (
+              <form.Subscribe selector={(state) => ({ cost: state.values.cost, grade: state.values.grade })}>
+                {({ cost, grade }) => {
+                  const multiplier =
+                    ImplantGradeNuyenMultiplier[grade as ImplantGrade]
+                    ?? ImplantGradeNuyenMultiplier[ImplantGrade.standard]
+                  const effectiveCost = (cost ?? 0) * multiplier
+                  return (
+                    <GearAcquireActions
+                      cost={effectiveCost}
+                      onClose={onClose}
+                      onAcquire={() => form.handleSubmit({ submitAction: "acquire" })}
+                      onPurchase={() => form.handleSubmit({ submitAction: "purchase" })}
+                    />
+                  )
+                }}
+              </form.Subscribe>
+            )
+          : (
+              <>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button
+                  type="submit"
+                  onClick={() => form.handleSubmit()}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </>
+            )}
       </DialogActions>
     </Dialog>
   )

@@ -11,6 +11,7 @@ import {
   gearItemFieldMap,
   useItemForm,
 } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
 interface GearItemFormDialogProps {
@@ -18,7 +19,9 @@ interface GearItemFormDialogProps {
   item?: ItemData
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: ItemData) => void
+  onSave?: (item: ItemData) => void
+  onAcquire?: (item: ItemData) => void
+  onPurchase?: (item: ItemData) => void
   label?: string
 }
 
@@ -28,10 +31,27 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
+  onAcquire,
+  onPurchase,
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
-  const form = useItemForm({ item, onSubmit: onSave })
+  const useAcquireMode = !!onAcquire && !!onPurchase
+
+  const form = useItemForm({
+    item,
+    onSubmit: (submittedItem, meta) => {
+      if (useAcquireMode) {
+        if (meta.submitAction === "purchase") {
+          onPurchase(submittedItem)
+        } else {
+          onAcquire(submittedItem)
+        }
+      } else {
+        onSave?.(submittedItem)
+      }
+    },
+  })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
@@ -44,10 +64,31 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={form.handleSubmit} variant="contained">
-          Save
-        </Button>
+        {useAcquireMode
+          ? (
+              <form.Subscribe selector={(state) => state.values.cost}>
+                {(cost) => (
+                  <GearAcquireActions
+                    cost={cost ?? 0}
+                    onClose={onClose}
+                    onAcquire={() => form.handleSubmit({ submitAction: "acquire" })}
+                    onPurchase={() => form.handleSubmit({ submitAction: "purchase" })}
+                  />
+                )}
+              </form.Subscribe>
+            )
+          : (
+              <>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button
+                  type="submit"
+                  onClick={() => form.handleSubmit()}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </>
+            )}
       </DialogActions>
     </Dialog>
   )
