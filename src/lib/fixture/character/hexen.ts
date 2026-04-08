@@ -2,6 +2,7 @@ import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
+import { SpiritType } from "#/lib/system/magic/traditionData.ts"
 import { MetatypeType } from "#/lib/system/metatypeData.ts"
 import { SkillKey } from "#/lib/system/skillKey.ts"
 
@@ -62,11 +63,11 @@ export const Hexen: CharacterSheet = {
     name: "Hermetic",
     drainAttribute: AttributeKey.logic,
     spiritTypes: {
-      combat: "Fire",
-      detection: "Air",
-      health: "Man",
-      illusion: "Water",
-      manipulation: "Earth",
+      combat: SpiritType.fire,
+      detection: SpiritType.wind,
+      health: SpiritType.man,
+      illusion: SpiritType.water,
+      manipulation: SpiritType.earth,
     },
   },
 
