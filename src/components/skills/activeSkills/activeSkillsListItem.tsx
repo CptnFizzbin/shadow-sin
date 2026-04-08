@@ -16,6 +16,8 @@ export interface ActiveSkillsListItemProps {
 export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const skillInfo = skills[skillKey]
+  const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
+
   const skillDicePool = useActiveSkillDicePool({ skillKey })
 
   const specialization = useCharacterSheet((sheet) => {
@@ -34,6 +36,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
         rating={rating}
         specialization={specialization}
         attr={skillInfo.attr}
+        isDefaulted={isDefaulted}
         onClick={() => setDialogOpen(true)}
       />
 

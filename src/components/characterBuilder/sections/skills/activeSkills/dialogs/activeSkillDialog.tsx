@@ -16,6 +16,7 @@ import { useState } from "react"
 import { SkillRatingMax } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
 import type { ActiveSkillData } from "#/lib/system/skillData.ts"
 import { SkillKey, skills } from "#/lib/system/skillKey.ts"
+import type { SpecializationKey } from "#/lib/system/specializationKey.ts"
 
 interface ActiveSkillDialogProps {
   open: boolean
@@ -45,7 +46,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
 
   const [name, setName] = useState<string>(skill?.name ?? "")
   const [rating, setRating] = useState<number>(skill?.rating ?? 1)
-  const [specialization, setSpecialization] = useState<string>(
+  const [specialization, setSpecialization] = useState<SpecializationKey | "">(
     skill?.specialization ?? "",
   )
   const [nameError, setNameError] = useState(false)
@@ -58,7 +59,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
     onSave({
       name: name as SkillKey,
       rating,
-      specialization: specialization.trim() || undefined,
+      specialization: specialization || undefined,
     })
   }
 
@@ -70,7 +71,20 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
     onClosed?.()
   }
 
-  const linkedAttr = name ? skills[name as SkillKey]?.attr : undefined
+  const selectedSkillInfo = name ? skills[name as SkillKey] : undefined
+  const linkedAttr = selectedSkillInfo?.attr
+  const availableSpecializations = selectedSkillInfo?.specializations ?? []
+
+  const handleNameChange = (newName: string) => {
+    setName(newName)
+    setNameError(false)
+    // Clear specialization if it's not valid for the newly selected skill
+    const newSkillInfo = skills[newName as SkillKey]
+    const newSpecializations = newSkillInfo?.specializations ?? []
+    if (specialization && !newSpecializations.includes(specialization as SpecializationKey)) {
+      setSpecialization("")
+    }
+  }
 
   return (
     <Dialog
@@ -90,10 +104,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
             <Select
               value={name}
               label="Skill"
-              onChange={(e) => {
-                setName(e.target.value)
-                setNameError(false)
-              }}
+              onChange={(e) => handleNameChange(e.target.value)}
             >
               {skillOptions.map((skillKey) => {
                 const isDisabled = disabledSkills?.has(skillKey) ?? false
@@ -146,14 +157,23 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
             </Select>
           </FormControl>
 
-          <TextField
-            label="Specialization (optional)"
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            size="small"
-            fullWidth
-            helperText="Costs 2 BP"
-          />
+          <FormControl fullWidth size="small" disabled={availableSpecializations.length === 0}>
+            <InputLabel>Specialization (optional)</InputLabel>
+            <Select
+              value={specialization}
+              label="Specialization (optional)"
+              onChange={(e) => setSpecialization(e.target.value as SpecializationKey | "")}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {availableSpecializations.map((spec) => (
+                <MenuItem key={spec} value={spec}>
+                  {spec}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Stack>
       </DialogContent>
 
