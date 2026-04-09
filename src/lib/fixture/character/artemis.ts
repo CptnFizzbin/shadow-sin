@@ -130,6 +130,7 @@ export const Artemis: CharacterSheet = {
       attribute: AttributeKey.agility,
       skill: "Firearms",
       dmg: "4P",
+      equipped: true,
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {

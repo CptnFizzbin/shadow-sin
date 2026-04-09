@@ -27,6 +27,7 @@ const defaultFormValues = {
   attribute: "",
   cost: 0,
   description: "",
+  equipped: false,
   availability: {
     rating: 0,
     restricted: false,
@@ -78,6 +79,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     name: values.name,
     weaponType: values.weaponType,
     dmg: values.dmg,
+    equipped: values.equipped,
     ...(values.ap !== 0 && { ap: values.ap }),
     ...(values.skill && { skill: values.skill }),
     ...(values.attribute && { attribute: values.attribute as WeaponData["attribute"] }),
@@ -133,6 +135,7 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
         attribute: weapon.attribute ?? "",
         cost: weapon.cost ?? 0,
         description: weapon.description ?? "",
+        equipped: weapon.equipped ?? false,
         availability: {
           rating: weapon.availability?.rating ?? 0,
           restricted: weapon.availability?.restricted ?? false,
