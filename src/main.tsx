@@ -18,7 +18,7 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} defaultMode="dark">
       <TanStackQueryProvider>
         <CssBaseline />
         <RouterProvider router={router} />
