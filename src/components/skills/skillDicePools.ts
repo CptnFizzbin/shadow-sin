@@ -4,7 +4,7 @@ import { createDicePool } from "#/components/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey

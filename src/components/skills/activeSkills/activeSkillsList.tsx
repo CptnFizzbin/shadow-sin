@@ -15,7 +15,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeLabels } from "#/lib/system/attributeKey.ts"
 import { SkillCategory } from "#/lib/system/skills/skillCategory.ts"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 type GroupingMode = "type" | "attribute" | "group" | "category"
 

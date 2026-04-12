@@ -20,7 +20,7 @@ import type { SelectOption } from "#/integrations/tanstackForm/fields/selectFiel
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 const CUSTOM_SENTINEL = "__custom__"
 
@@ -86,11 +86,11 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   const linkedAttr = selectedSkillInfo?.attr
   const allSpecs = selectedSkillInfo?.specializations ?? []
   const fixedSpecs = allSpecs.filter((s): s is string => typeof s === "string")
-  const customEntry = allSpecs.find(
+  const customEntries = allSpecs.filter(
     (s): s is { custom: true, placeholder: string } => typeof s === "object" && s !== null,
   )
   const hasFixed = fixedSpecs.length > 0
-  const hasCustom = customEntry !== undefined
+  const hasCustom = customEntries.length > 0
 
   const skillSelectOptions: SelectOption[] = Object.values(SkillKey).sort().map((skillKey) => {
     const info = skillList[skillKey]
@@ -214,17 +214,23 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
                     )}
 
                     {/* Free-text input: shown for custom-only skills or after "Custom..." */}
-                    {showCustomTextField && customEntry && (
-                      <MuiTextField
-                        label={hasFixed ? "Custom Specialization" : "Specialization (optional)"}
-                        placeholder={customEntry.placeholder}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        size="small"
-                        fullWidth
-                        autoFocus={customModeActive && hasFixed}
-                      />
+                    {showCustomTextField && customEntries.length > 0 && (
+                      <>
+                        {customEntries.map((entry, idx) => (
+                          <MuiTextField
+                            key={`${entry.placeholder}-${idx}`}
+                            label={hasFixed ? "Custom Specialization" : `Specialization (optional)`}
+                            placeholder={entry.placeholder}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            size="small"
+                            fullWidth
+                            autoFocus={customModeActive && hasFixed && idx === 0}
+                            sx={{ mt: idx === 0 ? 0 : 1 }}
+                          />
+                        ))}
+                      </>
                     )}
 
                     {/* Disabled placeholder for skills with no specializations at all */}

@@ -11,7 +11,7 @@ import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
 import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
 import type { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
 import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 export type SkillsStoreState = CharacterSheet["skills"]
 

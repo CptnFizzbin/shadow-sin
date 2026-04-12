@@ -9,7 +9,7 @@ import { ImplantType } from "#/lib/system/gear/implantData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 import { metatypes } from "#/lib/system/metatypeData.ts"
 import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])

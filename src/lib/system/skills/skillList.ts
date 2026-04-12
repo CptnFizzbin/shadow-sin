@@ -1,9 +1,14 @@
-import { AttributeKey } from "#/lib/system/attributeKey"
+import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
-import { SkillCategory } from "#/lib/system/skills/skillCategory"
-import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey"
-import type { SkillInfo } from "#/lib/system/skills/skillInfo"
-import { SkillKey } from "#/lib/system/skills/skillKey"
+import { SpiritType, SpiritTypeLabels } from "#/lib/system/magic/traditionData.ts"
+import { SkillCategory } from "#/lib/system/skills/skillCategory.ts"
+import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
+import type { SkillInfo } from "#/lib/system/skills/skillInfo.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+
+const spiritTypeSpecializations = Object.values(SpiritType).map(
+  (spiritType) => `Spirits of ${SpiritTypeLabels[spiritType]}`,
+)
 
 export const skillList: Record<SkillKey, SkillInfo> = {
   // == Combat Skills ==========================================================
@@ -131,7 +136,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     ],
   },
 
-  // == Combat Skills ==========================================================
+  // == Magical Skills ==========================================================
   [SkillKey.arcana]: {
     attr: AttributeKey.logic,
     category: SkillCategory.Magic,
@@ -158,7 +163,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     awakening: MagicAwakeningTypes,
     specializations: [
       "Aura Reading",
-      "AstralSignatures",
+      "Astral Signatures",
       "Psychometry",
       "Metahuman Auras",
       "Spirit Auras",
@@ -182,14 +187,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Conjuring,
     defaultable: false,
     awakening: MagicAwakeningTypes,
-    specializations: [
-      "Spirits of Fire",
-      "Spirits of Earth",
-      "Spirits of Air",
-      "Spirits of Water",
-      "Spirits of Man",
-      "Spirits of Beast",
-    ],
+    specializations: spiritTypeSpecializations,
   },
   [SkillKey.binding]: {
     attr: AttributeKey.magic,
@@ -197,14 +195,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Conjuring,
     defaultable: false,
     awakening: MagicAwakeningTypes,
-    specializations: [
-      "Spirits of Fire",
-      "Spirits of Earth",
-      "Spirits of Air",
-      "Spirits of Water",
-      "Spirits of Man",
-      "Spirits of Beast",
-    ],
+    specializations: spiritTypeSpecializations,
   },
   [SkillKey.counterspelling]: {
     attr: AttributeKey.magic,
@@ -224,6 +215,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.magic,
     category: SkillCategory.Magic,
     defaultable: false,
+    awakening: MagicAwakeningTypes,
     specializations: [
       "Artificing",
       "Alchemy",
@@ -264,14 +256,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     group: SkillGroupKey.Conjuring,
     defaultable: false,
     awakening: MagicAwakeningTypes,
-    specializations: [
-      "Spirits of Fire",
-      "Spirits of Earth",
-      "Spirits of Air",
-      "Spirits of Water",
-      "Spirits of Man",
-      "Spirits of Beast",
-    ],
+    specializations: spiritTypeSpecializations,
   },
 
   // == Physical Skills ========================================================
@@ -452,7 +437,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     defaultable: false,
     awakening: TechAwakeningTypes,
     specializations: [
-      "Courior Sprites",
+      "Courier Sprites",
       "Crack Sprites",
       "Data Sprites",
       "Fault Sprites",
@@ -476,7 +461,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     defaultable: false,
     awakening: TechAwakeningTypes,
     specializations: [
-      "Courior Sprites",
+      "Courier Sprites",
       "Crack Sprites",
       "Data Sprites",
       "Fault Sprites",
@@ -508,7 +493,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.charisma,
     category: SkillCategory.Social,
     specializations: [
-      "Interrorgation",
+      "Interrogation",
       "Mental",
       "Physical",
       "Torture",
@@ -523,7 +508,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
       "Morale",
       "Persuasion",
       "Strategy",
-      "Tatics",
+      "Tactics",
     ],
   },
   [SkillKey.negotiation]: {
@@ -549,7 +534,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
       "Lighter than Air",
       "Rotary Wing",
       "Tilt Wing",
-      "Vector thrust",
+      "Vector Thrust",
     ],
   },
   [SkillKey.armorer]: {
@@ -660,7 +645,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
     attr: AttributeKey.agility,
     category: SkillCategory.Technical,
     specializations: [
-      "Counterfiting",
+      "Counterfeiting",
       "Credstick Forgery",
       "False ID",
       "Image Doctoring",
@@ -759,7 +744,7 @@ export const skillList: Record<SkillKey, SkillInfo> = {
       "Remote Operation",
       "Rotary Wing",
       "Tilt Wing",
-      "Vector thrust",
+      "Vector Thrust",
     ],
   },
   [SkillKey.pilotAnthroform]: {
