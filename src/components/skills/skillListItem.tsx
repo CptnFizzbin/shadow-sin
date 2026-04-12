@@ -14,6 +14,7 @@ interface SkillListItemProps {
   specialization?: string
   rating: number | "native"
   attr: AttributeKey
+  isDefaulted?: boolean
   onClick: () => void
 }
 
@@ -22,6 +23,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   specialization,
   rating,
   attr,
+  isDefaulted,
   onClick,
 }) => {
   const woundMod = useWoundModifier()
@@ -29,7 +31,8 @@ export const SkillListItem: FC<SkillListItemProps> = ({
 
   const isNative = rating === "native"
   const ratingDice = isNative ? 0 : rating
-  const totalDice = Math.max(0, ratingDice + attrValue - woundMod)
+  const defaultingPenalty = isDefaulted ? 1 : 0
+  const totalDice = Math.max(0, ratingDice + attrValue - defaultingPenalty - woundMod)
 
   return (
     <Stack

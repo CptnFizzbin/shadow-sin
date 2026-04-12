@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getActiveSkillBp } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
-import type { ActiveSkillData } from "#/lib/system/skillData.ts"
+import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
 
 interface ActiveSkillsListItemProps {
   skill: ActiveSkillData

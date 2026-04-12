@@ -8,7 +8,7 @@ import type { FC } from "react"
 
 import { getLanguageSkillSp } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
-import type { LanguageSkillData } from "#/lib/system/skillData.ts"
+import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
 
 interface LanguageSkillsListItemProps {
   skill: LanguageSkillData
