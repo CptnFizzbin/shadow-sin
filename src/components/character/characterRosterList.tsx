@@ -47,7 +47,7 @@ export default function CharacterRosterList({
     await router.invalidate()
   }
 
-  const handleDeleteCharacter = async (character: CharacterSheet) => {
+  const confirmAndDeleteCharacter = async (character: CharacterSheet) => {
     const confirmed = await confirmDialog.confirm({
       title: "Delete character?",
       body: (
@@ -84,7 +84,7 @@ export default function CharacterRosterList({
                   color="error"
                   onClick={(event) => {
                     event.stopPropagation()
-                    void handleDeleteCharacter(character)
+                    void confirmAndDeleteCharacter(character)
                   }}
                 >
                   <DeleteIcon />
