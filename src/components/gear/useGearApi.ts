@@ -50,7 +50,7 @@ export function useGearStore() {
 
           if (savedItem.id === updatedItem.parentId) {
             if (!savedItem.childIds.includes(updatedItem.id)) {
-              savedItem.childIds.push(savedItem.id)
+              savedItem.childIds.push(updatedItem.id)
             }
           } else {
             savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)

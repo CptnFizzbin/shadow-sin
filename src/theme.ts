@@ -5,6 +5,7 @@ const BODY_FONT = "\"Monda\", monospace, sans-serif"
 
 export const theme = createTheme({
   cssVariables: true,
+  defaultColorScheme: "dark",
   colorSchemes: {
     light: {
       palette: {
