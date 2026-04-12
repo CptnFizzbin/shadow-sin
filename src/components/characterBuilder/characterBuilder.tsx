@@ -7,6 +7,7 @@ import { useState } from "react"
 import { ExportCharacterButton } from "#/components/character/exportCharacterButton.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { useBuilderRootStateStore } from "#/components/characterBuilder/hooks/useBuilderRootStateStore.ts"
+import { ImportYamlBuilderButton } from "#/components/characterBuilder/importYamlBuilderButton.tsx"
 import { SaveCharacterButton } from "#/components/characterBuilder/saveCharacterButton.tsx"
 import {
   AttributesBuilderSection,
@@ -44,7 +45,7 @@ interface CharacterFormProps {
 
 export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
-  const [rootStore, resetRootStore] = useBuilderRootStateStore(character)
+  const [rootStore, resetRootStore, loadCharacter] = useBuilderRootStateStore(character)
   const navigate = useNavigate()
 
   const handleCancel = () => {
@@ -76,6 +77,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
               Cancel
             </Button>
             <Stack direction="row" gap={1}>
+              <ImportYamlBuilderButton onImport={loadCharacter} />
               <ExportCharacterButton />
               <Button
                 variant="outlined"
