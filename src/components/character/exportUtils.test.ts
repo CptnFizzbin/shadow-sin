@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
+import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import { createItem, createItemMap } from "#/lib/system/itemData.ts"
 import type { GearTreeNode } from "./exportUtils.ts"
-import { gearToTree } from "./exportUtils.ts"
+import { characterSheetToYaml, gearFromTree, gearToTree, yamlToCharacterSheet } from "./exportUtils.ts"
 
 describe("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
@@ -192,5 +193,156 @@ describe("gearToTree", () => {
     expect(result[0].name).toBe("Handcrafted SIN")
     expect(result[0].children).toHaveLength(1)
     expect(result[0].children![0].name).toBe("Handcrafted License")
+  })
+})
+
+describe("gearFromTree", () => {
+  it("returns an empty object for an empty array", () => {
+    expect(gearFromTree([])).toEqual({})
+  })
+
+  it("round-trips a flat list of root items", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
+    )
+    const tree = gearToTree(gear)
+    const restored = gearFromTree(tree)
+
+    const original = Object.values(gear)[0]
+    const result = Object.values(restored)[0]
+
+    expect(result.id).toBe(original.id)
+    expect(result.name).toBe(original.name)
+    expect(result.itemType).toBe(original.itemType)
+    expect(result.parentId).toBeUndefined()
+  })
+
+  it("round-trips parent/child relationships", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+      ]),
+    )
+
+    const tree = gearToTree(gear)
+    const restored = gearFromTree(tree)
+
+    // Flat map should have both items
+    expect(Object.keys(restored)).toHaveLength(2)
+
+    const sinEntry = Object.values(restored).find((item) => item.itemType === GearType.sin)
+    const licenseEntry = Object.values(restored).find((item) => item.itemType === GearType.license)
+
+    expect(sinEntry).toBeDefined()
+    expect(licenseEntry).toBeDefined()
+    expect(licenseEntry!.parentId).toBe(sinEntry!.id)
+    expect(sinEntry!.childIds).toContain(licenseEntry!.id)
+  })
+
+  it("restores items without parentId for root nodes", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Clean SIN", itemType: GearType.sin, rating: 6 }),
+    )
+    const tree = gearToTree(gear)
+    const restored = gearFromTree(tree)
+
+    const item = Object.values(restored)[0]
+    expect(item.parentId).toBeUndefined()
+  })
+})
+
+describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
+  it("round-trips a simple character sheet", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
+    )
+    const original = {
+      ...Artemis,
+      gear,
+    }
+
+    const yaml = characterSheetToYaml(original)
+    const restored = yamlToCharacterSheet(yaml)
+
+    expect(restored.id).toBe(original.id)
+    expect(restored.version).toBe(original.version)
+    expect(restored.profile.alias).toBe(original.profile.alias)
+    expect(restored.profile.name).toBe(original.profile.name)
+    expect(restored.biology.metatype).toBe(original.biology.metatype)
+    expect(Object.keys(restored.gear)).toHaveLength(1)
+    expect(Object.values(restored.gear)[0].name).toBe("Sara McCabe")
+  })
+
+  it("round-trips a character with nested gear (SIN + licenses)", () => {
+    const gear = createItemMap(
+      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+        createItem<LicenseData>({ name: "Firearms License", itemType: GearType.license, rating: 4 }),
+      ]),
+    )
+    const original = { ...Artemis, gear }
+
+    const yaml = characterSheetToYaml(original)
+    const restored = yamlToCharacterSheet(yaml)
+
+    expect(Object.keys(restored.gear)).toHaveLength(3)
+
+    const sinItem = Object.values(restored.gear).find((item) => item.itemType === GearType.sin)
+    const licenseItems = Object.values(restored.gear).filter((item) => item.itemType === GearType.license)
+
+    expect(sinItem).toBeDefined()
+    expect(licenseItems).toHaveLength(2)
+    expect(licenseItems.every((lic) => lic.parentId === sinItem!.id)).toBe(true)
+    expect(sinItem!.childIds).toHaveLength(2)
+  })
+
+  it("round-trips a character with no gear", () => {
+    const original = { ...Artemis, gear: {} }
+
+    const yaml = characterSheetToYaml(original)
+    const restored = yamlToCharacterSheet(yaml)
+
+    expect(restored.gear).toEqual({})
+  })
+
+  it("preserves all scalar fields through a round-trip", () => {
+    const yaml = characterSheetToYaml(Artemis)
+    const restored = yamlToCharacterSheet(yaml)
+
+    expect(restored.id).toBe(Artemis.id)
+    expect(restored.version).toBe(Artemis.version)
+    expect(restored.karma).toEqual(Artemis.karma)
+    expect(restored.nuyen).toEqual(Artemis.nuyen)
+    expect(restored.attributes).toEqual(Artemis.attributes)
+    expect(restored.skills).toEqual(Artemis.skills)
+    expect(restored.qualities).toEqual(Artemis.qualities)
+    expect(restored.contacts).toEqual(Artemis.contacts)
+    expect(restored.spells).toEqual(Artemis.spells)
+    expect(restored.adeptPowers).toEqual(Artemis.adeptPowers)
+  })
+
+  it("preserves parent/child IDs exactly through a round-trip", () => {
+    const [sinItem, ...licenses] = createItem<SinData>(
+      { name: "Runner SIN", itemType: GearType.sin, rating: 4 },
+      [createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 })],
+    )
+    const gear = createItemMap([sinItem, ...licenses])
+    const original = { ...Artemis, gear }
+
+    const yaml = characterSheetToYaml(original)
+    const restored = yamlToCharacterSheet(yaml)
+
+    // Retrieve original items by ID
+    const originalSin = gear[sinItem.id]
+    const originalLicense = licenses[0]
+
+    // Retrieve restored items by the same IDs
+    const restoredSin = restored.gear[sinItem.id]
+    const restoredLicense = restored.gear[originalLicense.id]
+
+    expect(restoredSin).toBeDefined()
+    expect(restoredLicense).toBeDefined()
+    expect(restoredSin.childIds).toEqual(originalSin.childIds)
+    expect(restoredLicense.parentId).toBe(originalLicense.parentId)
   })
 })
