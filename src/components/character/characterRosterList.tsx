@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import { downloadTextFile } from "#/components/character/exportUtils.ts"
+import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -28,6 +29,7 @@ export default function CharacterRosterList({
 }: CharacterRosterListProps) {
   const navigate = useNavigate()
   const router = useRouter()
+  const confirmDialog = useConfirmDialog({ id: "character-roster-delete" })
 
   const sortedCharacters = Object.values(characters).sort((a, b) =>
     a.profile.alias.localeCompare(b.profile.alias),
@@ -45,35 +47,77 @@ export default function CharacterRosterList({
     await router.invalidate()
   }
 
+  const handleDeleteCharacter = async (character: CharacterSheet) => {
+    const confirmed = await confirmDialog.confirm({
+      title: "Delete character?",
+      body: (
+        <Typography>
+          Are you sure you want to{" "}
+          <Typography component="span" color="error">permanently delete</Typography>
+          {" "}<Typography component="span" fontWeight="bold">{character.profile.alias}</Typography>?
+          {" "}This cannot be undone.
+        </Typography>
+      ),
+      slotProps: {
+        confirmButton: { label: "Delete" },
+      },
+    })
+
+    if (confirmed) {
+      await localCharacterManager.deleteCharacter(character.id)
+      await router.invalidate()
+    }
+  }
+
   return (
     <Paper>
       <List disablePadding>
         {sortedCharacters.map((character, index) => (
-          <ListItemButton
+          <ListItem
             key={character.id}
             divider={index < totalItems - 1}
-            onClick={() =>
-              navigate({
-                to: "/$characterId",
-                params: { characterId: character.id },
-              })}
-            sx={{
-              transition: "background-color 0.15s ease",
-            }}
+            secondaryAction={(
+              <Tooltip title="Delete character">
+                <IconButton
+                  edge="end"
+                  aria-label="delete character"
+                  color="error"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    void handleDeleteCharacter(character)
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            disablePadding
           >
-            <ListItemText
-              primary={
-                <Typography variant="h6">{character.profile.alias}</Typography>
-              }
-              secondary={(
-                <Typography variant="body2" color="text.secondary">
-                  {[character.biology.metatype, character.profile.archetype]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </Typography>
-              )}
-            />
-          </ListItemButton>
+            <ListItemButton
+              onClick={() =>
+                navigate({
+                  to: "/$characterId",
+                  params: { characterId: character.id },
+                })}
+              sx={{
+                transition: "background-color 0.15s ease",
+                pr: 7,
+              }}
+            >
+              <ListItemText
+                primary={
+                  <Typography variant="h6">{character.profile.alias}</Typography>
+                }
+                secondary={(
+                  <Typography variant="body2" color="text.secondary">
+                    {[character.biology.metatype, character.profile.archetype]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </Typography>
+                )}
+              />
+            </ListItemButton>
+          </ListItem>
         ))}
 
         {errors.map((loadError, index) => (
