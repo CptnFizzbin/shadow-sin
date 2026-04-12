@@ -15,7 +15,7 @@ export const sectionGearTypes: Record<GearSection, GearType[]> = {
   [GearSection.Weapons]: [GearType.weapon, GearType.firearm, GearType.firearmAccessory],
   [GearSection.Armor]: [GearType.armor],
   [GearSection.Vehicles]: [GearType.vehicle],
-  [GearSection.Devices]: [GearType.device, GearType.program],
+  [GearSection.Devices]: [GearType.device, GearType.program, GearType.software],
   [GearSection.Licenses]: [GearType.sin, GearType.license],
   [GearSection.Misc]: [GearType.other],
 }

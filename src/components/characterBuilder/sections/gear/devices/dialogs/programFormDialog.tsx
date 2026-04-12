@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { ProgramFormFields } from "#/components/characterBuilder/sections/gear/devices/forms/programFormFields.tsx"
 import {
@@ -60,8 +60,27 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
     },
   })
 
+  // Reset selection and form values when props change so the dialog can be reused
+  useEffect(() => {
+    const next = program?.parentId ?? parentId ?? STORAGE_SENTINEL
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (next !== selectedDeviceId) setSelectedDeviceId(next)
+    // reset form to incoming values when props change (if available)
+    if (typeof form.reset === "function") {
+      form.reset()
+    }
+  }, [program, parentId, form, selectedDeviceId])
+
   return (
-    <Dialog open={open} fullWidth onTransitionExited={onClosed}>
+    <Dialog
+      open={open}
+      fullWidth
+      onClose={onClose}
+      onTransitionExited={() => {
+        form.reset()
+        onClosed?.()
+      }}
+    >
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>

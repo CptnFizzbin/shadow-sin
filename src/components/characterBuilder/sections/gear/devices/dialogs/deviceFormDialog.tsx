@@ -38,7 +38,15 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
   })
 
   return (
-    <Dialog open={open} fullWidth onTransitionExited={onClosed}>
+    <Dialog
+      open={open}
+      fullWidth
+      onClose={onClose}
+      onTransitionExited={() => {
+        form.reset()
+        onClosed?.()
+      }}
+    >
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>

@@ -7,8 +7,11 @@ import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { ProgramType } from "#/lib/system/gear/programData.ts"
 
+const splitCamelCase = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+const titleCase = (s: string) => s.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
+
 const programTypeOptions = Object.values(ProgramType).map((programType) => ({
-  label: programType.charAt(0).toUpperCase() + programType.slice(1),
+  label: titleCase(splitCamelCase(programType)),
   value: programType,
 }))
 
@@ -57,7 +60,7 @@ export const ProgramFormFields = withFieldGroup({
           <group.AppField
             name="cost"
             validators={{
-              onChange: z.number("Cost is required").min(0, "Cost must be 0 or more"),
+              onChange: z.number().min(0, "Cost must be 0 or more"),
             }}
           >
             {(field) => (
