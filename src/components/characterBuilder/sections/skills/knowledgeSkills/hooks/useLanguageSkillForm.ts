@@ -1,6 +1,6 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { LanguageSkillData } from "#/lib/system/skillData.ts"
+import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
 
 export interface LanguageSkillFormOptions {
   skill?: LanguageSkillData

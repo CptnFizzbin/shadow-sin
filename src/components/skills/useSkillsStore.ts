@@ -5,10 +5,13 @@ import { useCharacterSheetContext } from "#/components/character/characterSheetP
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
-import type { SkillGroupKey } from "#/lib/system/skillGroupKey.ts"
-import type { SkillKey } from "#/lib/system/skillKey.ts"
-import { skills } from "#/lib/system/skillKey.ts"
+import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
+import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
+import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
+import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
+import type { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
+import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { skillList } from "#/lib/system/skills/skillList.ts"
 
 export type SkillsStoreState = CharacterSheet["skills"]
 
@@ -31,7 +34,7 @@ export class SkillsStore extends StoreSlice<SkillsStoreState> {
     },
 
     getSkillValue: (skillName: SkillKey) => {
-      const skillInfo = skills[skillName]
+      const skillInfo = skillList[skillName]
 
       const skillRating = this.get().activeSkills.find((s) => s.name === skillName)?.rating ?? 0
       const groupRating = this.get().skillGroups.find((s) => s.name === skillInfo.group)?.rating ?? 0

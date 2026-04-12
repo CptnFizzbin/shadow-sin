@@ -1,30 +1,7 @@
-import type { AwakeningType } from "#/lib/system/awakeningType.ts"
-import { MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
-import { MetatypeType } from "#/lib/system/metatypeData.ts"
-
-export enum SkillGroupKey {
-  Athletics = "Athletics",
-  Biotech = "Biotech",
-  CloseCombat = "Close Combat",
-  Conjuring = "Conjuring",
-  Cracking = "Cracking",
-  Electronics = "Electronics",
-  Firearms = "Firearms",
-  Influence = "Influence",
-  Mechanic = "Mechanic",
-  Outdoors = "Outdoors",
-  Sorcery = "Sorcery",
-  Stealth = "Stealth",
-  Tasking = "Tasking",
-}
-
-export interface SkillGroupInfo {
-  name: string
-  required?: {
-    awakenings?: AwakeningType[]
-    metatypes?: MetatypeType[]
-  }
-}
+import { MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType"
+import { MetatypeType } from "#/lib/system/metatypeData"
+import type { SkillGroupInfo } from "#/lib/system/skills/skillGroupInfo"
+import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey"
 
 export const SkillGroups: Readonly<Record<SkillGroupKey, SkillGroupInfo>> = {
   [SkillGroupKey.Athletics]: {
@@ -77,5 +54,3 @@ export const SkillGroups: Readonly<Record<SkillGroupKey, SkillGroupInfo>> = {
     },
   },
 }
-
-export const SkillGroupNames = Object.values(SkillGroupKey)

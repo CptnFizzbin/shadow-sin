@@ -12,7 +12,7 @@ import { useTraditionForm } from "#/components/characterBuilder/sections/resourc
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
-import { drainAttributeSelectOptions } from "#/lib/system/magic/traditionData.ts"
+import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/lib/system/magic/traditionData.ts"
 
 export interface TraditionFormDialogProps {
   open: boolean
@@ -82,31 +82,31 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
 
                 <form.AppField name="spiritTypes.combat">
                   {(field) => (
-                    <field.TextField label="Combat" placeholder="e.g. Fire, Beast, Warrior" required />
+                    <field.SelectField label="Combat" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.detection">
                   {(field) => (
-                    <field.TextField label="Detection" placeholder="e.g. Water, Bird, Sun" required />
+                    <field.SelectField label="Detection" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.health">
                   {(field) => (
-                    <field.TextField label="Health" placeholder="e.g. Man, Forest" required />
+                    <field.SelectField label="Health" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.illusion">
                   {(field) => (
-                    <field.TextField label="Illusion" placeholder="e.g. Air, Ghost, Wolf" required />
+                    <field.SelectField label="Illusion" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
 
                 <form.AppField name="spiritTypes.manipulation">
                   {(field) => (
-                    <field.TextField label="Manipulation" placeholder="e.g. Earth, Machine" required />
+                    <field.SelectField label="Manipulation" required options={spiritTypeSelectOptions} />
                   )}
                 </form.AppField>
               </Stack>

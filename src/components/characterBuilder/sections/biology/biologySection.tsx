@@ -36,7 +36,7 @@ export const BiologySection: FC = () => {
             }))
           }}
         >
-          {Object.values(metatypes).map(({ name, cost }) => (
+          {Object.values(metatypes).filter(({ name }) => name !== MetatypeType.AI).map(({ name, cost }) => (
             <MenuItem value={name} key={name} sx={{ display: "flex" }}>
               <Stack
                 direction="row"

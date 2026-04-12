@@ -1,7 +1,8 @@
 import { getSkillsInGroup } from "#/components/characterBuilder/sections/skills/activeSkills/skillGroupUtils.ts"
-import type { ActiveSkillData, SkillGroupData } from "#/lib/system/skillData.ts"
-import type { SkillGroupKey } from "#/lib/system/skillGroupKey.ts"
-import type { SkillKey } from "#/lib/system/skillKey.ts"
+import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
+import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
+import type { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
+import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export function getDisabledSkills(
   activeSkills: ActiveSkillData[],

@@ -8,7 +8,7 @@ import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/characterBuilder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { getActiveSkillGroupBp } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
-import type { SkillGroupData } from "#/lib/system/skillData.ts"
+import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
 
 interface ActiveSkillGroupsListItemProps {
   group: SkillGroupData
