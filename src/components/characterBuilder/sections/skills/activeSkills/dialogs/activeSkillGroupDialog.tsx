@@ -14,8 +14,8 @@ import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/characterBuilder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { SkillGroupRatingMax } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
-import type { SkillGroupData } from "#/lib/system/skillData.ts"
-import { SkillGroupKey } from "#/lib/system/skillGroupKey.ts"
+import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
+import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean

@@ -27,6 +27,13 @@ export enum SpellCategory {
   Manipulation = "Manipulation",
 }
 
+export enum FocusType {
+  Spell = "Spell",
+  Spirit = "Spirit",
+  Power = "Power",
+  Weapon = "Weapon",
+}
+
 export enum SpellDuration {
   Instantaneous = "Instantaneous",
   Sustained = "Sustained",

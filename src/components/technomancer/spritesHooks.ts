@@ -5,7 +5,7 @@ import { useActiveSkill, useAttr } from "#/components/character/characterUtils.t
 import { useSpritesStore } from "#/components/technomancer/useSpritesStore.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AwakeningType } from "#/lib/system/awakeningType.ts"
-import { SkillKey } from "#/lib/system/skillKey.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export const useSprites = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
