@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import jsYaml from "js-yaml"
 
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
@@ -50,6 +52,55 @@ export function characterSheetToYaml(
   }
 
   return jsYaml.dump(exportPayload, { lineWidth: 120 })
+}
+
+/**
+ * Flatten a tree of GearTreeNodes back into a Record<id, ItemData> suitable
+ * for storing on CharacterSheet.gear.  parentId and childIds are reconstructed
+ * from the tree structure.
+ */
+export function gearFromTree(
+  nodes: GearTreeNode[],
+  parentId?: UUID,
+): Record<string, ItemData> {
+  const result: Record<string, ItemData> = {}
+
+  for (const node of nodes) {
+    const { children, ...rest } = node
+    const childIds = children ? children.map((child) => child.id) : []
+
+    const item: ItemData = {
+      ...rest,
+      childIds: childIds.length > 0 ? childIds : undefined,
+      parentId,
+    }
+
+    result[item.id] = item
+
+    if (children && children.length > 0) {
+      Object.assign(result, gearFromTree(children, item.id))
+    }
+  }
+
+  return result
+}
+
+/**
+ * Parse a YAML string (previously created by characterSheetToYaml) back into
+ * a CharacterSheet.  The nested gear tree is flattened back to a flat map.
+ */
+export function yamlToCharacterSheet(
+  yamlContent: string,
+): CharacterSheet {
+  const parsed = jsYaml.load(yamlContent) as Record<string, unknown>
+
+  const gearTree = Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : []
+  const gear = gearFromTree(gearTree)
+
+  return {
+    ...parsed,
+    gear,
+  } as CharacterSheet
 }
 
 /**
