@@ -45,12 +45,13 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   const editMode = !!implant
   const title = editMode ? `Edit Implant` : `Add Implant`
   const isBuilder = useIsBuilder()
+  const isAcquireMode = !editMode && !isBuilder
 
   const form = useImplantForm({
     implant,
     parentId,
     onSubmit: (submittedImplant, meta) => {
-      if (!isBuilder) {
+      if (isAcquireMode) {
         if (meta.submitAction === "purchase") {
           onPurchase?.(submittedImplant)
         } else {
@@ -73,7 +74,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {!isBuilder
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => ({ cost: state.values.cost, grade: state.values.grade })}>
                 {({ cost, grade }) => {
