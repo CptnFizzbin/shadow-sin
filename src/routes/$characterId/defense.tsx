@@ -22,7 +22,7 @@ import {
 import { useDamageState } from "#/components/damage/useDamageState.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { SkillKey } from "#/lib/system/skillKey.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,

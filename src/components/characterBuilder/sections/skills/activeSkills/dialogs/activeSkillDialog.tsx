@@ -18,14 +18,14 @@ import { z } from "zod"
 import { SkillRatingMax } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ActiveSkillData } from "#/lib/system/skillData.ts"
-import { SkillKey } from "#/lib/system/skillKey.ts"
-import { skillsList } from "#/lib/system/skillsList"
+import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { skillList } from "#/lib/system/skills/skillList"
 
 const CUSTOM_SENTINEL = "__custom__"
 
 function isCustomSpec(skillName: string, specialization: string): boolean {
-  const info = skillsList[skillName as SkillKey]
+  const info = skillList[skillName as SkillKey]
   const fixedSpecs = (info?.specializations ?? []).filter((s): s is string => typeof s === "string")
   return specialization !== "" && !fixedSpecs.includes(specialization)
 }
@@ -82,7 +82,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
 
   // Reactively subscribe to the selected skill name so the specialization section updates
   const selectedSkillName = useStore(form.baseStore, (state) => state.values.name)
-  const selectedSkillInfo = selectedSkillName ? skillsList[selectedSkillName as SkillKey] : undefined
+  const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName as SkillKey] : undefined
   const linkedAttr = selectedSkillInfo?.attr
   const allSpecs = selectedSkillInfo?.specializations ?? []
   const fixedSpecs = allSpecs.filter((s): s is string => typeof s === "string")
@@ -93,7 +93,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   const hasCustom = customEntry !== undefined
 
   const skillSelectOptions: SelectOption[] = Object.values(SkillKey).sort().map((skillKey) => {
-    const info = skillsList[skillKey]
+    const info = skillList[skillKey]
     return {
       value: skillKey,
       label: (

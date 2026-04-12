@@ -8,8 +8,8 @@ import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantType } from "#/lib/system/gear/implantData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
 import { metatypes } from "#/lib/system/metatypeData.ts"
-import type { SkillKey } from "#/lib/system/skillKey.ts"
-import { skillsList } from "#/lib/system/skillsList"
+import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { skillList } from "#/lib/system/skills/skillList"
 
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
@@ -49,7 +49,7 @@ export const useAttr = (attribute: AttributeKey) => {
 }
 
 export const useActiveSkillRating = (skill: SkillKey) => {
-  const skillInfo = skillsList[skill]
+  const skillInfo = skillList[skill]
 
   const skillRating = useCharacterSheet((sheet) => {
     return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
@@ -62,7 +62,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
 }
 
 export const useActiveSkill = (skill: SkillKey) => {
-  const skillInfo = skillsList[skill]
+  const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
   const attribute = useAttr(skillInfo.attr)
   return rating + attribute

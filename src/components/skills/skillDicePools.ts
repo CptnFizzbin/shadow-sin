@@ -3,15 +3,15 @@ import type { DicePoolData } from "#/components/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { SkillKey } from "#/lib/system/skillKey.ts"
-import { skillsList } from "#/lib/system/skillsList"
+import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { skillList } from "#/lib/system/skills/skillList"
 
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey
   specialization?: string
 }): DicePoolData => {
   const { skillKey, specialization } = props
-  const { attr, defaultable } = skillsList[skillKey]
+  const { attr, defaultable } = skillList[skillKey]
 
   const skillRating = useActiveSkillRating(skillKey)
   const isDefaulted = skillRating === 0 && (defaultable ?? true)

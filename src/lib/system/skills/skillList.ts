@@ -1,11 +1,11 @@
 import { AttributeKey } from "#/lib/system/attributeKey"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
-import { SkillCategory } from "#/lib/system/skillCategory"
-import { SkillGroupKey } from "#/lib/system/skillGroupKey"
-import type { SkillInfo } from "#/lib/system/skillKey"
-import { SkillKey } from "#/lib/system/skillKey"
+import { SkillCategory } from "#/lib/system/skills/skillCategory"
+import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey"
+import type { SkillInfo } from "#/lib/system/skills/skillInfo"
+import { SkillKey } from "#/lib/system/skills/skillKey"
 
-export const skillsList: Record<SkillKey, SkillInfo> = {
+export const skillList: Record<SkillKey, SkillInfo> = {
   // == Combat Skills ==========================================================
   [SkillKey.archery]: {
     attr: AttributeKey.agility,

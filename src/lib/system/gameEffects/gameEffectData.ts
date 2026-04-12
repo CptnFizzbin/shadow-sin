@@ -3,7 +3,7 @@ import { z } from "zod"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
-import { SkillKey } from "#/lib/system/skillKey.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export interface GameEffectData {
   type: GameEffectType | string

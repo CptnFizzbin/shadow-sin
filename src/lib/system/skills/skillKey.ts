@@ -1,8 +1,3 @@
-import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { AwakeningType } from "#/lib/system/awakeningType.ts"
-import type { SkillCategory } from "#/lib/system/skillCategory.ts"
-import type { SkillGroupKey } from "#/lib/system/skillGroupKey.ts"
-
 export enum SkillKey {
   aronauticsMechanic = "Aronautics Mechanic",
   arcana = "Arcana",
@@ -76,19 +71,4 @@ export enum SkillKey {
   thrownWeapons = "Thrown Weapons",
   tracking = "Tracking",
   unarmedCombat = "Unarmed Combat",
-}
-
-export interface SkillInfo {
-  attr: AttributeKey
-  category: SkillCategory
-  group?: SkillGroupKey
-  isWeaponSkill?: boolean
-  defaultable?: boolean
-  awakening?: AwakeningType[]
-
-  /**
-   * A list of available specializations for the skill.
-   * Not the character's selected specialization
-   */
-  specializations?: (string | { custom: true, placeholder: string })[]
 }

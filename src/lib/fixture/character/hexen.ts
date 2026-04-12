@@ -4,7 +4,7 @@ import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
 import { SpiritType } from "#/lib/system/magic/traditionData.ts"
 import { MetatypeType } from "#/lib/system/metatypeData.ts"
-import { SkillKey } from "#/lib/system/skillKey.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export const Hexen: CharacterSheet = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",

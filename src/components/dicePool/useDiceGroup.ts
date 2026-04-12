@@ -3,7 +3,7 @@ import { useWoundModifier } from "#/components/damage/useWoundModifier.ts"
 import type { DiceGroup } from "#/components/dicePool/diceGroup.tsx"
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { AttributeLabels } from "#/lib/system/attributeKey.ts"
-import type { SkillKey } from "#/lib/system/skillKey.ts"
+import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]

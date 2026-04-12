@@ -2,6 +2,10 @@ import type { UUID } from "node:crypto"
 
 import type { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import type { MetatypeType } from "#/lib/system/metatypeData.ts"
+import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
+import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
+import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
+import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
@@ -13,7 +17,6 @@ import type { SpellData } from "./magic/spellData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
 import type { QualityData } from "./qualityData.ts"
-import type { ActiveSkillData, KnowledgeSkillData, LanguageSkillData, SkillGroupData } from "./skillData.ts"
 
 export interface CharacterSheet {
   id: UUID
