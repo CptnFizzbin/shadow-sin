@@ -9,6 +9,7 @@ import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 export type UseBuilderRootStateStore = [
   store: Store<BuilderRootState>,
   reset: () => void,
+  loadCharacter: (importedCharacter: CharacterSheet) => void,
 ]
 
 export const useBuilderRootStateStore = (
@@ -29,5 +30,13 @@ export const useBuilderRootStateStore = (
     store.setState(() => defaultBuilderValues)
   }, [store, storageKey, defaultBuilderValues])
 
-  return [store, onReset]
+  const loadCharacter = useCallback((importedCharacter: CharacterSheet) => {
+    StorePersister.clearState(storageKey)
+    store.setState(() => ({
+      character: importedCharacter,
+      builder: { startingNuyen: undefined },
+    }))
+  }, [store, storageKey])
+
+  return [store, onReset, loadCharacter]
 }
