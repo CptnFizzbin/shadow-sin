@@ -67,11 +67,10 @@ export function gearFromTree(
 
   for (const node of nodes) {
     const { children, ...rest } = node
-    const childIds = children ? children.map((child) => child.id as UUID) : []
+    const childIds = children ? children.map((child) => child.id) : []
 
     const item: ItemData = {
       ...rest,
-      id: rest.id as UUID,
       childIds: childIds.length > 0 ? childIds : undefined,
       parentId,
     }
@@ -79,7 +78,7 @@ export function gearFromTree(
     result[item.id] = item
 
     if (children && children.length > 0) {
-      Object.assign(result, gearFromTree(children, item.id as UUID))
+      Object.assign(result, gearFromTree(children, item.id))
     }
   }
 

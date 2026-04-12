@@ -48,8 +48,8 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
 
     try {
       character = yamlToCharacterSheet(yamlContent)
-    } catch {
-      console.error("Failed to parse YAML file")
+    } catch (error) {
+      console.error("Failed to parse YAML file:", error)
       return
     }
 
@@ -92,10 +92,6 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
     setExistingCharacter(null)
   }
 
-  const handleConflictClosed = () => {
-    // Dialog animation has finished; state is already cleared by handleConflictChoice/cancel
-  }
-
   return (
     <>
       <input
@@ -118,7 +114,6 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
           incomingCharacter={pendingCharacter}
           existingCharacter={existingCharacter}
           onChoice={(choice) => { void handleConflictChoice(choice) }}
-          onClosed={handleConflictClosed}
         />
       )}
     </>
