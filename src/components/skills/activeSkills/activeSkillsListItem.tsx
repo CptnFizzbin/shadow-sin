@@ -6,7 +6,7 @@ import { useActiveSkillDicePool } from "#/components/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/skills/skillListItem.tsx"
 import { ViewSkillDialog } from "#/components/skills/viewSkillDialog.tsx"
 import type { SkillKey } from "#/lib/system/skillKey.ts"
-import { skills } from "#/lib/system/skillKey.ts"
+import { skillsList } from "#/lib/system/skillsList"
 
 export interface ActiveSkillsListItemProps {
   skillKey: SkillKey
@@ -15,7 +15,7 @@ export interface ActiveSkillsListItemProps {
 
 export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
   const [dialogOpen, setDialogOpen] = useState(false)
-  const skillInfo = skills[skillKey]
+  const skillInfo = skillsList[skillKey]
   const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
 
   const skillDicePool = useActiveSkillDicePool({ skillKey })

@@ -14,7 +14,8 @@ import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeLabels } from "#/lib/system/attributeKey.ts"
 import { SkillCategory } from "#/lib/system/skillCategory.ts"
-import { SkillKey, skills } from "#/lib/system/skillKey.ts"
+import { SkillKey } from "#/lib/system/skillKey.ts"
+import { skillsList } from "#/lib/system/skillsList"
 
 type GroupingMode = "type" | "attribute" | "group" | "category"
 
@@ -36,7 +37,7 @@ export const ActiveSkillsList: FC = () => {
   const skillEntries = useMemo(() => {
     return Object.values(SkillKey)
       .map((skillKey) => {
-        const skillInfo = skills[skillKey]
+        const skillInfo = skillsList[skillKey]
         const skillRating = skillsStore.activeSkills.getSkillValue(skillKey)
         const skillSpecialization = skillsStore.activeSkills.getSpecialization(skillKey)
         return { key: skillKey, ...skillInfo, rating: skillRating, specialization: skillSpecialization }

@@ -6,17 +6,29 @@ import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
+import MuiSelect from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
-import TextField from "@mui/material/TextField"
+import MuiTextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
+import { z } from "zod"
 
 import { SkillRatingMax } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
+import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
+import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/lib/system/skillData.ts"
-import { SkillKey, skills } from "#/lib/system/skillKey.ts"
-import type { SpecializationKey } from "#/lib/system/specializationKey.ts"
+import { SkillKey } from "#/lib/system/skillKey.ts"
+import { skillsList } from "#/lib/system/skillsList"
+
+const CUSTOM_SENTINEL = "__custom__"
+
+function isCustomSpec(skillName: string, specialization: string): boolean {
+  const info = skillsList[skillName as SkillKey]
+  const fixedSpecs = (info?.specializations ?? []).filter((s): s is string => typeof s === "string")
+  return specialization !== "" && !fixedSpecs.includes(specialization)
+}
 
 interface ActiveSkillDialogProps {
   open: boolean
@@ -29,9 +41,10 @@ interface ActiveSkillDialogProps {
   onClosed?: () => void
 }
 
-const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
-
-const skillOptions = Object.values(SkillKey).sort()
+const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax }, (_, i) => ({
+  value: String(i + 1),
+  label: String(i + 1),
+}))
 
 export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   open,
@@ -43,138 +56,195 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
   onClosed,
 }) => {
   const isEditMode = !!skill
+  const dialogKey = `${skill?.name ?? "new"}-${open ? "1" : "0"}`
 
-  const [name, setName] = useState<string>(skill?.name ?? "")
-  const [rating, setRating] = useState<number>(skill?.rating ?? 1)
-  const [specialization, setSpecialization] = useState<SpecializationKey | "">(
-    skill?.specialization ?? "",
+  // UI-only state: tracks whether the user has activated the free-text custom input
+  const [customModeActive, setCustomModeActive] = useState<boolean>(
+    () => !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
   )
-  const [nameError, setNameError] = useState(false)
 
-  const handleSave = () => {
-    if (!name) {
-      setNameError(true)
-      return
-    }
-    onSave({
-      name: name as SkillKey,
-      rating,
-      specialization: specialization || undefined,
-    })
-  }
+  const form = useAppForm({
+    defaultValues: {
+      name: skill?.name ?? "",
+      // Stored as string to match SelectField's string value contract; converted to number on submit
+      rating: String(skill?.rating ?? 1),
+      specialization: skill?.specialization ?? "",
+    },
+    onSubmit: ({ value }) => {
+      onSave({
+        name: value.name as SkillKey,
+        rating: Number(value.rating),
+        specialization: value.specialization || undefined,
+      })
+      onClose()
+    },
+  })
 
-  const handleClosed = () => {
-    setName(skill?.name ?? "")
-    setRating(skill?.rating ?? 1)
-    setSpecialization(skill?.specialization ?? "")
-    setNameError(false)
-    onClosed?.()
-  }
-
-  const selectedSkillInfo = name ? skills[name as SkillKey] : undefined
+  // Reactively subscribe to the selected skill name so the specialization section updates
+  const selectedSkillName = useStore(form.baseStore, (state) => state.values.name)
+  const selectedSkillInfo = selectedSkillName ? skillsList[selectedSkillName as SkillKey] : undefined
   const linkedAttr = selectedSkillInfo?.attr
-  const availableSpecializations = selectedSkillInfo?.specializations ?? []
+  const allSpecs = selectedSkillInfo?.specializations ?? []
+  const fixedSpecs = allSpecs.filter((s): s is string => typeof s === "string")
+  const customEntry = allSpecs.find(
+    (s): s is { custom: true, placeholder: string } => typeof s === "object" && s !== null,
+  )
+  const hasFixed = fixedSpecs.length > 0
+  const hasCustom = customEntry !== undefined
 
-  const handleNameChange = (newName: string) => {
-    setName(newName)
-    setNameError(false)
-    // Clear specialization if it's not valid for the newly selected skill
-    const newSkillInfo = skills[newName as SkillKey]
-    const newSpecializations = newSkillInfo?.specializations ?? []
-    if (specialization && !newSpecializations.includes(specialization as SpecializationKey)) {
-      setSpecialization("")
+  const skillSelectOptions: SelectOption[] = Object.values(SkillKey).sort().map((skillKey) => {
+    const info = skillsList[skillKey]
+    return {
+      value: skillKey,
+      label: (
+        <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between" flexGrow={10}>
+          <Typography>{skillKey}</Typography>
+          <Typography color="text.secondary" fontSize="small">{info?.group}</Typography>
+        </Stack>
+      ),
+      disabled: disabledSkills?.has(skillKey) ?? false,
     }
-  }
+  })
 
   return (
     <Dialog
+      key={dialogKey}
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={handleClosed}
+      onTransitionExited={() => {
+        form.reset()
+        setCustomModeActive(
+          !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
+        )
+        onClosed?.()
+      }}
     >
-      <DialogTitle>
-        {isEditMode ? "Edit Active Skill" : "Add Active Skill"}
-      </DialogTitle>
+      <DialogTitle>{isEditMode ? "Edit Active Skill" : "Add Active Skill"}</DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
-        <Stack gap={2} sx={{ pt: 1 }}>
-          <FormControl fullWidth size="small" error={nameError}>
-            <InputLabel>Skill</InputLabel>
-            <Select
-              value={name}
-              label="Skill"
-              onChange={(e) => handleNameChange(e.target.value)}
+        <form.AppForm>
+          <Stack gap={2} sx={{ pt: 1 }}>
+
+            <form.AppField
+              name="name"
+              validators={{ onChange: z.string().min(1, "Skill is required") }}
+              listeners={{
+                onChange: () => {
+                  form.setFieldValue("specialization", "")
+                  setCustomModeActive(false)
+                },
+              }}
             >
-              {skillOptions.map((skillKey) => {
-                const isDisabled = disabledSkills?.has(skillKey) ?? false
+              {(field) => (
+                <field.SelectField
+                  label="Skill"
+                  options={skillSelectOptions}
+                  size="small"
+                />
+              )}
+            </form.AppField>
+
+            {/* Linked attribute (read-only display) */}
+            {linkedAttr && (
+              <MuiTextField
+                label="Linked Attribute"
+                value={linkedAttr}
+                size="small"
+                fullWidth
+                slotProps={{ input: { readOnly: true } }}
+              />
+            )}
+
+            <form.AppField
+              name="rating"
+              validators={{ onChange: z.string().refine((v) => Number(v) >= 1 && Number(v) <= SkillRatingMax) }}
+            >
+              {(field) => (
+                <field.SelectField
+                  label="Rating"
+                  options={ratingSelectOptions}
+                  size="small"
+                />
+              )}
+            </form.AppField>
+
+            {/* Specialization — custom render due to dynamic dropdown + optional free-text input */}
+            <form.AppField name="specialization">
+              {(field) => {
+                const dropdownValue = customModeActive ? CUSTOM_SENTINEL : field.state.value
+                const showCustomTextField = hasCustom && (customModeActive || !hasFixed)
+
                 return (
-                  <MenuItem
-                    key={skillKey}
-                    value={skillKey}
-                    disabled={isDisabled}
-                  >
-                    <Stack
-                      direction="row"
-                      gap={1}
-                      alignItems="center"
-                      justifyContent="space-between"
-                      flexGrow={10}
-                    >
-                      <Typography>{skillKey}</Typography>
-                      <Typography color="text.secondary" fontSize="small">
-                        {skills[skillKey]?.group}
-                      </Typography>
-                    </Stack>
-                  </MenuItem>
+                  <>
+                    {/* Dropdown for fixed specializations (hidden when custom-only) */}
+                    {hasFixed && (
+                      <FormControl fullWidth size="small">
+                        <InputLabel>Specialization (optional)</InputLabel>
+                        <MuiSelect
+                          value={dropdownValue}
+                          label="Specialization (optional)"
+                          onBlur={field.handleBlur}
+                          onChange={(e) => {
+                            const value = e.target.value as string
+                            if (value === CUSTOM_SENTINEL) {
+                              setCustomModeActive(true)
+                              field.handleChange("")
+                            } else {
+                              setCustomModeActive(false)
+                              field.handleChange(value)
+                            }
+                          }}
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          {fixedSpecs.map((spec) => (
+                            <MenuItem key={spec} value={spec}>
+                              {spec}
+                            </MenuItem>
+                          ))}
+                          {hasCustom && (
+                            <MenuItem value={CUSTOM_SENTINEL}>
+                              <em>Custom...</em>
+                            </MenuItem>
+                          )}
+                        </MuiSelect>
+                      </FormControl>
+                    )}
+
+                    {/* Free-text input: shown for custom-only skills or after "Custom..." */}
+                    {showCustomTextField && customEntry && (
+                      <MuiTextField
+                        label={hasFixed ? "Custom Specialization" : "Specialization (optional)"}
+                        placeholder={customEntry.placeholder}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        size="small"
+                        fullWidth
+                        autoFocus={customModeActive && hasFixed}
+                      />
+                    )}
+
+                    {/* Disabled placeholder for skills with no specializations at all */}
+                    {!hasFixed && !hasCustom && (
+                      <FormControl fullWidth size="small" disabled>
+                        <InputLabel>Specialization (optional)</InputLabel>
+                        <MuiSelect value="" label="Specialization (optional)">
+                          <MenuItem value="">
+                            <em>None available</em>
+                          </MenuItem>
+                        </MuiSelect>
+                      </FormControl>
+                    )}
+                  </>
                 )
-              })}
-            </Select>
-          </FormControl>
+              }}
+            </form.AppField>
 
-          {linkedAttr && (
-            <TextField
-              label="Linked Attribute"
-              value={linkedAttr}
-              size="small"
-              fullWidth
-              slotProps={{ input: { readOnly: true } }}
-            />
-          )}
-
-          <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
-            <Select
-              value={rating}
-              label="Rating"
-              onChange={(e) => setRating(Number(e.target.value))}
-            >
-              {ratingOptions.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth size="small" disabled={availableSpecializations.length === 0}>
-            <InputLabel>Specialization (optional)</InputLabel>
-            <Select
-              value={specialization}
-              label="Specialization (optional)"
-              onChange={(e) => setSpecialization(e.target.value as SpecializationKey | "")}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {availableSpecializations.map((spec) => (
-                <MenuItem key={spec} value={spec}>
-                  {spec}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
+          </Stack>
+        </form.AppForm>
       </DialogContent>
 
       <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
@@ -195,7 +265,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
           <Button color="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleSave}>
+          <Button variant="contained" color="secondary" onClick={() => form.handleSubmit()}>
             Save
           </Button>
         </div>

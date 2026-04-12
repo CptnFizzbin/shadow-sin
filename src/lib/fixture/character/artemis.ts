@@ -20,7 +20,6 @@ import { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import { MetatypeType } from "#/lib/system/metatypeData.ts"
 import { SkillGroupKey } from "#/lib/system/skillGroupKey.ts"
 import { SkillKey } from "#/lib/system/skillKey.ts"
-import { SpecializationKey } from "#/lib/system/specializationKey.ts"
 
 export const Artemis: CharacterSheet = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
@@ -420,7 +419,7 @@ export const Artemis: CharacterSheet = {
       {
         name: SkillKey.automatics,
         rating: 5,
-        specialization: SpecializationKey.SubmachineGuns,
+        specialization: "Submachine Guns",
       },
       {
         name: SkillKey.pilotAircraft,
