@@ -141,9 +141,9 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           open={dialogState.open}
           sin={dialogState.sin}
           allowReal={!hasRealSin || dialogState.sin?.rating === "real"}
-          onSave={isBuilder ? handleSaveSin : undefined}
-          onAcquire={!isBuilder ? (sin) => acquire(sin, onDialogClose) : undefined}
-          onPurchase={!isBuilder ? (sin) => purchase(sin, sin.cost ?? 0, onDialogClose) : undefined}
+          onSave={isBuilder || dialogState.sin ? handleSaveSin : undefined}
+          onAcquire={!isBuilder && !dialogState.sin ? (sin) => acquire(sin, onDialogClose) : undefined}
+          onPurchase={!isBuilder && !dialogState.sin ? (sin) => purchase(sin, sin.cost ?? 0, onDialogClose) : undefined}
           onDelete={
             dialogState.sin
               ? () => {
@@ -164,10 +164,10 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           open={dialogState.open}
           sin={dialogState.sin}
           license={dialogState.license}
-          onSave={isBuilder ? handleSaveLicense : undefined}
-          onAcquire={!isBuilder ? (license) => acquire(license, onDialogClose) : undefined}
+          onSave={isBuilder || dialogState.license ? handleSaveLicense : undefined}
+          onAcquire={!isBuilder && !dialogState.license ? (license) => acquire(license, onDialogClose) : undefined}
           onPurchase={
-            !isBuilder
+            !isBuilder && !dialogState.license
               ? (license) => purchase(license, license.cost ?? 0, onDialogClose)
               : undefined
           }
