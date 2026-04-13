@@ -57,7 +57,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Armor"
-        gearType={ItemType.armor}
+        itemType={ItemType.armor}
       />
     )
   }
@@ -68,7 +68,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Vehicle"
-        gearType={ItemType.vehicle}
+        itemType={ItemType.vehicle}
       />
     )
   }
@@ -79,7 +79,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Device"
-        gearType={ItemType.device}
+        itemType={ItemType.device}
       />
     )
   }
@@ -90,7 +90,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
       items={rootItems}
       getChildren={getChildItems}
       itemLabel="Item"
-      gearType={ItemType.other}
+      itemType={ItemType.other}
     />
   )
 }

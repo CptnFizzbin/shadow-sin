@@ -9,7 +9,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface ItemFormOptions {
   item?: ItemData
-  gearType?: ItemType
+  itemType?: ItemType
   onSubmit: (item: ItemData, meta: GearSubmitMeta) => void
 }
 
@@ -38,7 +38,7 @@ export const gearItemFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
 
-export const useItemForm = ({ item, gearType, onSubmit }: ItemFormOptions) => {
+export const useItemForm = ({ item, itemType, onSubmit }: ItemFormOptions) => {
   const defaults: typeof defaultFormValues =
     typeof item !== "undefined"
       ? {
@@ -48,7 +48,7 @@ export const useItemForm = ({ item, gearType, onSubmit }: ItemFormOptions) => {
         }
       : {
           ...defaultFormValues,
-          itemType: gearType ?? ItemType.other,
+          itemType: itemType ?? ItemType.other,
         }
 
   return useAppForm({

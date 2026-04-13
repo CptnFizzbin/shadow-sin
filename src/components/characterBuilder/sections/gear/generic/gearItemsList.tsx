@@ -20,11 +20,11 @@ type DialogState =
 
 interface GearItemsListProps {
   items: ItemData[]
-  itemType?: string
-  gearType?: ItemType
+  itemLabel?: string
+  itemType?: ItemType
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", gearType, items }) => {
+export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", itemType, items }) => {
   const gearApi = useGearStore()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
@@ -118,14 +118,14 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", gearT
         color="secondary"
         fullWidth
       >
-        Add {itemType}
+        Add {itemLabel}
       </Button>
 
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
           open={dialogState.open}
-          gearType={gearType}
-          label={dialogState.parentId ? `${itemType} sub-item` : itemType}
+          itemType={itemType}
+          label={dialogState.parentId ? `${itemLabel} sub-item` : itemLabel}
           onSave={handleAdd}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
@@ -135,9 +135,9 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", gearT
       {dialogState?.mode === "edit" && (
         <GearItemFormDialog
           open={dialogState.open}
-          gearType={gearType}
+          itemType={itemType}
           item={dialogState.item}
-          label={dialogState.item.parentId ? `${itemType} sub-item` : itemType}
+          label={dialogState.item.parentId ? `${itemLabel} sub-item` : itemLabel}
           onSave={handleUpdate}
           onClose={onDialogClose}
           onClosed={onDialogClosed}

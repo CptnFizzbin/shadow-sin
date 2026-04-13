@@ -18,7 +18,7 @@ import type { ItemType } from "#/lib/system/itemType.ts"
 interface GearItemFormDialogProps {
   open: boolean
   item?: ItemData
-  gearType?: ItemType
+  itemType?: ItemType
   onClose: () => void
   onClosed?: () => void
   onSave?: (item: ItemData) => void
@@ -30,7 +30,7 @@ interface GearItemFormDialogProps {
 export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   open,
   item,
-  gearType,
+  itemType,
   onClose,
   onClosed,
   onSave,
@@ -43,7 +43,7 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
 
   const form = useItemForm({
     item,
-    gearType,
+    itemType,
     onSubmit: (submittedItem, meta) => {
       if (useAcquireMode) {
         if (meta.submitAction === "purchase") {

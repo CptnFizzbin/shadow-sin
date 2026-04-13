@@ -16,14 +16,14 @@ interface GenericSectionContentProps {
   items: ItemData[]
   getChildren: (id: string) => ItemData[]
   itemLabel: string
-  gearType?: ItemType
+  itemType?: ItemType
 }
 
 export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   items,
   getChildren,
   itemLabel,
-  gearType,
+  itemType,
 }) => {
   const { acquire, purchase } = useGearPurchase()
   const [dialogState, setDialogState] = useState<GenericDialogState>(null)
@@ -50,7 +50,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
       {dialogState && (
         <GearItemFormDialog
           open={dialogState.open}
-          gearType={gearType}
+          itemType={itemType}
           label={itemLabel}
           onAcquire={(item: ItemData) => acquire(item, closeDialog)}
           onPurchase={(item: ItemData) => purchase(item, item.cost ?? 0, closeDialog)}
