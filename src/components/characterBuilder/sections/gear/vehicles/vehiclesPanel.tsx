@@ -9,6 +9,6 @@ export const VehiclesPanel: FC = () => {
   const vehicles = useGearByType<VehicleData>(GearType.vehicle)
 
   return (
-    <GearItemsList items={vehicles} itemType="Vehicle" />
+    <GearItemsList items={vehicles} itemType="Vehicle" gearType={GearType.vehicle} />
   )
 }

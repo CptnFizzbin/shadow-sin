@@ -7,6 +7,7 @@ import { useState } from "react"
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
 import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
+import type { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
 type GenericDialogState = null | { open: boolean }
@@ -15,12 +16,14 @@ interface GenericSectionContentProps {
   items: ItemData[]
   getChildren: (id: string) => ItemData[]
   itemLabel: string
+  gearType?: GearType
 }
 
 export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   items,
   getChildren,
   itemLabel,
+  gearType,
 }) => {
   const { acquire, purchase } = useGearPurchase()
   const [dialogState, setDialogState] = useState<GenericDialogState>(null)
@@ -47,6 +50,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
       {dialogState && (
         <GearItemFormDialog
           open={dialogState.open}
+          gearType={gearType}
           label={itemLabel}
           onAcquire={(item: ItemData) => acquire(item, closeDialog)}
           onPurchase={(item: ItemData) => purchase(item, item.cost ?? 0, closeDialog)}

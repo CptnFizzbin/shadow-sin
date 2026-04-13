@@ -10,6 +10,7 @@ import { useState } from "react"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
 import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
+import type { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
 type DialogState =
@@ -20,9 +21,10 @@ type DialogState =
 interface GearItemsListProps {
   items: ItemData[]
   itemType?: string
+  gearType?: GearType
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items }) => {
+export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", gearType, items }) => {
   const gearApi = useGearStore()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
@@ -122,6 +124,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
           open={dialogState.open}
+          gearType={gearType}
           label={dialogState.parentId ? `${itemType} sub-item` : itemType}
           onSave={handleAdd}
           onClose={onDialogClose}
@@ -132,6 +135,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items
       {dialogState?.mode === "edit" && (
         <GearItemFormDialog
           open={dialogState.open}
+          gearType={gearType}
           item={dialogState.item}
           label={dialogState.item.parentId ? `${itemType} sub-item` : itemType}
           onSave={handleUpdate}

@@ -8,6 +8,6 @@ export const ArmorPanel: FC = () => {
   const armor = useGearByType(GearType.armor)
 
   return (
-    <GearItemsList items={armor} itemType="Armor" />
+    <GearItemsList items={armor} itemType="Armor" gearType={GearType.armor} />
   )
 }

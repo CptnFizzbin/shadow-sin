@@ -8,6 +8,6 @@ export const MiscPanel: FC = () => {
   const otherItems = useGearByType(GearType.other)
 
   return (
-    <GearItemsList items={otherItems} itemType="Item" />
+    <GearItemsList items={otherItems} itemType="Item" gearType={GearType.other} />
   )
 }
