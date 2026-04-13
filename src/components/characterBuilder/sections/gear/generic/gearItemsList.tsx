@@ -10,8 +10,8 @@ import { useState } from "react"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
 import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 type DialogState =
   | null
@@ -21,7 +21,7 @@ type DialogState =
 interface GearItemsListProps {
   items: ItemData[]
   itemType?: string
-  gearType?: GearType
+  gearType?: ItemType
 }
 
 export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", gearType, items }) => {

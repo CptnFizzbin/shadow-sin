@@ -11,12 +11,12 @@ import { CredstickDialog } from "#/components/finances/credsticks/credstickDialo
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 type DialogState = { open: boolean, mode: CredstickDialogMode, credstick?: CredstickData } | null
 
 export const CredstickSection: FC = () => {
-  const credsticks = useGearByType<CredstickData>(GearType.credstick)
+  const credsticks = useGearByType<CredstickData>(ItemType.credstick)
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   const handleCardClick = (credstick: CredstickData) => {

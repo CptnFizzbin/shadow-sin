@@ -6,7 +6,7 @@ import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearmTypeKey.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface WeaponFormOptions {
@@ -18,7 +18,7 @@ export interface WeaponFormOptions {
 // can handle melee, firearms, thrown, and projectile weapons.
 const defaultFormValues = {
   id: NullUuid,
-  itemType: GearType.weapon,
+  itemType: ItemType.weapon,
   name: "",
   weaponType: WeaponType.firearm,
   dmg: "",
@@ -74,7 +74,7 @@ export const weaponFormOpts = formOptions({
 function toWeaponData(values: WeaponFormState): WeaponData {
   const base = {
     id: values.id,
-    itemType: GearType.weapon as typeof GearType.weapon,
+    itemType: ItemType.weapon as typeof ItemType.weapon,
     name: values.name,
     weaponType: values.weaponType,
     dmg: values.dmg,

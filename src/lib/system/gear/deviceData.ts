@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export interface DeviceData extends ItemData {
-  itemType: GearType.device
+  itemType: ItemType.device
 
   deviceRating?: number
   response?: number
@@ -16,13 +16,13 @@ export interface DeviceData extends ItemData {
 }
 
 export function isDeviceData(item: ItemData): item is DeviceData {
-  return item.itemType === GearType.device
+  return item.itemType === ItemType.device
 }
 
 export const DeviceDataSchema = z.object({
   id: z.uuid(),
   name: z.string(),
-  itemType: z.literal(GearType.device),
+  itemType: z.literal(ItemType.device),
 
   description: z.string().optional(),
   cost: z.number().optional(),

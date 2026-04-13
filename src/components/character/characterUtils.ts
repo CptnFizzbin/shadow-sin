@@ -6,7 +6,7 @@ import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { awakenings } from "#/lib/system/awakeningType.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantType } from "#/lib/system/gear/implantData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { metatypes } from "#/lib/system/metatypeData.ts"
 import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
 import { skillList } from "#/lib/system/skills/skillList.ts"
@@ -70,7 +70,7 @@ export const useActiveSkill = (skill: SkillKey) => {
 
 export const useEssenseInfo = () => {
   const essenseInfo = useAttrInfo(AttributeKey.essence)
-  const implants = useGearByType<ImplantData>(GearType.implant)
+  const implants = useGearByType<ImplantData>(ItemType.implant)
 
   const implantEssense = implants
     .filter((implant) => !implant.parentId) // implant accessories cost Capacity, not Essense

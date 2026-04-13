@@ -7,7 +7,7 @@ import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ProgramData } from "#/lib/system/gear/programData.ts"
 import { ProgramType } from "#/lib/system/gear/programData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface ProgramFormOptions {
@@ -18,7 +18,7 @@ export interface ProgramFormOptions {
 
 const defaultFormValues: ProgramData = {
   id: NullUuid,
-  itemType: GearType.program,
+  itemType: ItemType.program,
   name: "",
   cost: 0,
   quantity: 1,

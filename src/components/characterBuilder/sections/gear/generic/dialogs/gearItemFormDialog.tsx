@@ -12,13 +12,13 @@ import {
   useItemForm,
 } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
-import type { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 interface GearItemFormDialogProps {
   open: boolean
   item?: ItemData
-  gearType?: GearType
+  gearType?: ItemType
   onClose: () => void
   onClosed?: () => void
   onSave?: (item: ItemData) => void

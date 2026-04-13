@@ -7,8 +7,8 @@ import { useState } from "react"
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
 import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
-import type { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 type GenericDialogState = null | { open: boolean }
 
@@ -16,7 +16,7 @@ interface GenericSectionContentProps {
   items: ItemData[]
   getChildren: (id: string) => ItemData[]
   itemLabel: string
-  gearType?: GearType
+  gearType?: ItemType
 }
 
 export const GenericSectionContent: FC<GenericSectionContentProps> = ({

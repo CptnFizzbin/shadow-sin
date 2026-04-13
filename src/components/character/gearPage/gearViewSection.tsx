@@ -12,7 +12,7 @@ import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwar
 import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { GearType } from "#/lib/system/gearType.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 export { GearSection, sectionGearTypes }
 
@@ -30,8 +30,8 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
   const isSearching = searchTerms.length > 0
 
   const sectionItems = isSearching
-    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as GearType))
-    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as GearType))
+    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
 
   if (isSearching && sectionItems.length === 0) return null
 

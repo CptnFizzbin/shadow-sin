@@ -4,7 +4,7 @@ import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface DeviceFormOptions {
@@ -14,7 +14,7 @@ export interface DeviceFormOptions {
 
 const defaultFormValues: DeviceData = {
   id: NullUuid,
-  itemType: GearType.device,
+  itemType: ItemType.device,
   name: "",
   cost: 0,
   quantity: 1,

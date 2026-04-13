@@ -25,8 +25,8 @@ import {
   CredstickType,
   CredstickTypeLabel,
 } from "#/lib/system/gear/credstickData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import { createItem } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export type CredstickDialogMode = "add" | "add-certified" | "edit"
 
@@ -84,7 +84,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
     } else {
       const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
         name: credstickName,
-        itemType: GearType.credstick,
+        itemType: ItemType.credstick,
         credstickType,
         balance: clampedBalance,
       }

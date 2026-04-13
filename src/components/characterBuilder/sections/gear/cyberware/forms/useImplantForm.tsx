@@ -7,7 +7,7 @@ import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface ImplantFormOptions {
@@ -17,7 +17,7 @@ export interface ImplantFormOptions {
 }
 
 const defaultFormValues: ImplantData = {
-  itemType: GearType.implant,
+  itemType: ItemType.implant,
   id: NullUuid,
   name: "",
   cost: 0,

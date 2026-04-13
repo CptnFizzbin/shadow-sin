@@ -21,7 +21,7 @@ import {
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
 import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 const STORAGE_SENTINEL = "__storage__"
 
@@ -43,7 +43,7 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
   onSave,
 }) => {
   const title = program ? "Edit Program" : "Add Program"
-  const devices = useGearByType<DeviceData>(GearType.device)
+  const devices = useGearByType<DeviceData>(ItemType.device)
 
   const initialDeviceId = program?.parentId ?? parentId ?? STORAGE_SENTINEL
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>(initialDeviceId)

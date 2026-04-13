@@ -3,19 +3,19 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface ItemFormOptions {
   item?: ItemData
-  gearType?: GearType
+  gearType?: ItemType
   onSubmit: (item: ItemData, meta: GearSubmitMeta) => void
 }
 
 const defaultFormValues: ItemData = {
   id: NullUuid,
-  itemType: GearType.other,
+  itemType: ItemType.other,
   name: "",
   cost: 0,
   quantity: 1,
@@ -48,7 +48,7 @@ export const useItemForm = ({ item, gearType, onSubmit }: ItemFormOptions) => {
         }
       : {
           ...defaultFormValues,
-          itemType: gearType ?? GearType.other,
+          itemType: gearType ?? ItemType.other,
         }
 
   return useAppForm({

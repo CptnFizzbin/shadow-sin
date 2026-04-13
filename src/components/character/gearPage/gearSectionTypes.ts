@@ -1,4 +1,4 @@
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export enum GearSection {
   Cyberware = "Cyberware",
@@ -10,12 +10,12 @@ export enum GearSection {
   Misc = "Misc",
 }
 
-export const sectionGearTypes: Record<GearSection, GearType[]> = {
-  [GearSection.Cyberware]: [GearType.implant],
-  [GearSection.Weapons]: [GearType.weapon, GearType.firearm, GearType.firearmAccessory],
-  [GearSection.Armor]: [GearType.armor],
-  [GearSection.Vehicles]: [GearType.vehicle],
-  [GearSection.Devices]: [GearType.device, GearType.program, GearType.software],
-  [GearSection.Licenses]: [GearType.sin, GearType.license],
-  [GearSection.Misc]: [GearType.other],
+export const sectionGearTypes: Record<GearSection, ItemType[]> = {
+  [GearSection.Cyberware]: [ItemType.implant],
+  [GearSection.Weapons]: [ItemType.weapon, ItemType.firearm, ItemType.firearmAccessory],
+  [GearSection.Armor]: [ItemType.armor],
+  [GearSection.Vehicles]: [ItemType.vehicle],
+  [GearSection.Devices]: [ItemType.device, ItemType.program, ItemType.software],
+  [GearSection.Licenses]: [ItemType.sin, ItemType.license],
+  [GearSection.Misc]: [ItemType.other],
 }

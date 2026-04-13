@@ -1,8 +1,8 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { GearType } from "../gearType.ts"
+import { ItemType } from "../itemType.ts"
 
 export interface VehicleData extends ItemData {
-  itemType: GearType.vehicle
+  itemType: ItemType.vehicle
   vehicleType: string
   model?: string
 
@@ -25,5 +25,5 @@ export interface VehicleData extends ItemData {
 }
 
 export function isVehicleData(item: ItemData): item is VehicleData {
-  return item.itemType === GearType.vehicle
+  return item.itemType === ItemType.vehicle
 }

@@ -13,8 +13,8 @@ import { GearItemCard } from "#/components/characterBuilder/sections/gear/generi
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
 import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 type DeviceDialogState = null | { device?: DeviceData, open: boolean }
 
@@ -22,8 +22,8 @@ type ProgramDialogState = null | { program?: ProgramData, parentId?: UUID, open:
 
 export const DevicesList: FC = () => {
   const gearStore = useGearStore()
-  const devices = useGearByType<DeviceData>(GearType.device)
-  const programs = useGearByType<ProgramData>(GearType.program)
+  const devices = useGearByType<DeviceData>(ItemType.device)
+  const programs = useGearByType<ProgramData>(ItemType.program)
 
   const rootDevices = devices.filter((device) => !device.parentId)
   const getProgramsForDevice = (deviceId: string) =>

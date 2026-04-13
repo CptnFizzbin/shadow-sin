@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest"
 import { Artemis } from "#/lib/fixture/character/artemis.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import { createItem, createItemMap } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import type { GearTreeNode } from "./exportUtils.ts"
 import { characterSheetToYaml, gearFromTree, gearToTree, yamlToCharacterSheet } from "./exportUtils.ts"
 
@@ -21,7 +21,7 @@ describe("gearToTree", () => {
   it("includes a root-level SIN with no children", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
     )
 
     // Act
@@ -30,16 +30,16 @@ describe("gearToTree", () => {
     // Assert
     expect(result).toHaveLength(1)
     expect(result[0].name).toBe("Sara McCabe")
-    expect(result[0].itemType).toBe(GearType.sin)
+    expect(result[0].itemType).toBe(ItemType.sin)
     expect(result[0].children).toBeUndefined()
   })
 
   it("includes multiple root-level SINs with no children", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
-      createItem<SinData>({ name: "Jadzia Dax", itemType: GearType.sin, rating: 4 }),
-      createItem<SinData>({ name: "Jane Smith", itemType: GearType.sin, rating: 2 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, rating: 4 }),
+      createItem<SinData>({ name: "Jane Smith", itemType: ItemType.sin, rating: 2 }),
     )
 
     // Act
@@ -56,10 +56,10 @@ describe("gearToTree", () => {
   it("nests licenses under their parent SIN", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Jadzia Dax", itemType: GearType.sin, rating: 4 }, [
+      createItem<SinData>({ name: "Jadzia Dax", itemType: ItemType.sin, rating: 4 }, [
         createItem<LicenseData>({
           name: "Driver License",
-          itemType: GearType.license,
+          itemType: ItemType.license,
           rating: 4,
         }),
       ]),
@@ -74,17 +74,17 @@ describe("gearToTree", () => {
     expect(sin.name).toBe("Jadzia Dax")
     expect(sin.children).toHaveLength(1)
     expect(sin.children![0].name).toBe("Driver License")
-    expect(sin.children![0].itemType).toBe(GearType.license)
+    expect(sin.children![0].itemType).toBe(ItemType.license)
     expect(sin.children![0].children).toBeUndefined()
   })
 
   it("nests multiple licenses under a single SIN", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: GearType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Cyberware License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
+        createItem<LicenseData>({ name: "Cyberware License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
 
@@ -104,11 +104,11 @@ describe("gearToTree", () => {
   it("includes SINs without licenses alongside SINs with licenses", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Clean SIN", itemType: GearType.sin, rating: 6 }),
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
       ]),
-      createItem<SinData>({ name: "Burner SIN", itemType: GearType.sin, rating: 2 }),
+      createItem<SinData>({ name: "Burner SIN", itemType: ItemType.sin, rating: 2 }),
     )
 
     // Act
@@ -134,8 +134,8 @@ describe("gearToTree", () => {
   it("omits parentId and childIds from every exported node", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
 
@@ -161,8 +161,8 @@ describe("gearToTree", () => {
   it("does not include child items at the root level", () => {
     // Arrange
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
 
@@ -181,8 +181,8 @@ describe("gearToTree", () => {
     const licenseId = crypto.randomUUID()
 
     const gear: Record<string, ItemData> = {
-      [sinId]: { id: sinId, name: "Handcrafted SIN", itemType: GearType.sin, rating: 4, childIds: [licenseId] },
-      [licenseId]: { id: licenseId, name: "Handcrafted License", itemType: GearType.license, rating: 4, parentId: sinId },
+      [sinId]: { id: sinId, name: "Handcrafted SIN", itemType: ItemType.sin, rating: 4, childIds: [licenseId] },
+      [licenseId]: { id: licenseId, name: "Handcrafted License", itemType: ItemType.license, rating: 4, parentId: sinId },
     }
 
     // Act
@@ -203,7 +203,7 @@ describe("gearFromTree", () => {
 
   it("round-trips a flat list of root items", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
     )
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
@@ -219,8 +219,8 @@ describe("gearFromTree", () => {
 
   it("round-trips parent/child relationships", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
 
@@ -230,8 +230,8 @@ describe("gearFromTree", () => {
     // Flat map should have both items
     expect(Object.keys(restored)).toHaveLength(2)
 
-    const sinEntry = Object.values(restored).find((item) => item.itemType === GearType.sin)
-    const licenseEntry = Object.values(restored).find((item) => item.itemType === GearType.license)
+    const sinEntry = Object.values(restored).find((item) => item.itemType === ItemType.sin)
+    const licenseEntry = Object.values(restored).find((item) => item.itemType === ItemType.license)
 
     expect(sinEntry).toBeDefined()
     expect(licenseEntry).toBeDefined()
@@ -241,7 +241,7 @@ describe("gearFromTree", () => {
 
   it("restores items without parentId for root nodes", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Clean SIN", itemType: GearType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, rating: 6 }),
     )
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
@@ -254,7 +254,7 @@ describe("gearFromTree", () => {
 describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
   it("round-trips a simple character sheet", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Sara McCabe", itemType: GearType.sin, rating: 6 }),
+      createItem<SinData>({ name: "Sara McCabe", itemType: ItemType.sin, rating: 6 }),
     )
     const original = {
       ...Artemis,
@@ -275,9 +275,9 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
 
   it("round-trips a character with nested gear (SIN + licenses)", () => {
     const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: GearType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: GearType.license, rating: 4 }),
+      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
+        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
       ]),
     )
     const original = { ...Artemis, gear }
@@ -287,8 +287,8 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
 
     expect(Object.keys(restored.gear)).toHaveLength(3)
 
-    const sinItem = Object.values(restored.gear).find((item) => item.itemType === GearType.sin)
-    const licenseItems = Object.values(restored.gear).filter((item) => item.itemType === GearType.license)
+    const sinItem = Object.values(restored.gear).find((item) => item.itemType === ItemType.sin)
+    const licenseItems = Object.values(restored.gear).filter((item) => item.itemType === ItemType.license)
 
     expect(sinItem).toBeDefined()
     expect(licenseItems).toHaveLength(2)
@@ -323,8 +323,8 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
 
   it("preserves parent/child IDs exactly through a round-trip", () => {
     const [sinItem, ...licenses] = createItem<SinData>(
-      { name: "Runner SIN", itemType: GearType.sin, rating: 4 },
-      [createItem<LicenseData>({ name: "Driver License", itemType: GearType.license, rating: 4 })],
+      { name: "Runner SIN", itemType: ItemType.sin, rating: 4 },
+      [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 })],
     )
     const gear = createItemMap([sinItem, ...licenses])
     const original = { ...Artemis, gear }

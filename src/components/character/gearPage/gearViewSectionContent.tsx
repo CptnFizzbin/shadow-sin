@@ -7,8 +7,8 @@ import { LicensesSectionContent } from "#/components/character/gearPage/licenses
 import { WeaponsSectionContent } from "#/components/character/gearPage/weaponsSectionContent.tsx"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 import { isSinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 interface GearViewSectionContentProps {
   section: GearSection
@@ -57,7 +57,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Armor"
-        gearType={GearType.armor}
+        gearType={ItemType.armor}
       />
     )
   }
@@ -68,7 +68,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Vehicle"
-        gearType={GearType.vehicle}
+        gearType={ItemType.vehicle}
       />
     )
   }
@@ -79,7 +79,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
         items={rootItems}
         getChildren={getChildItems}
         itemLabel="Device"
-        gearType={GearType.device}
+        gearType={ItemType.device}
       />
     )
   }
@@ -90,7 +90,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
       items={rootItems}
       getChildren={getChildItems}
       itemLabel="Item"
-      gearType={GearType.other}
+      gearType={ItemType.other}
     />
   )
 }

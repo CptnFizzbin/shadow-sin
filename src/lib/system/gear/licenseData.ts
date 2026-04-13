@@ -1,11 +1,11 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { GearType } from "../gearType.ts"
+import { ItemType } from "../itemType.ts"
 
 export interface LicenseData extends ItemData {
-  itemType: GearType.license
+  itemType: ItemType.license
   rating: "real" | number
 }
 
 export function isLicenseData(item: ItemData): item is LicenseData {
-  return item.itemType === GearType.license
+  return item.itemType === ItemType.license
 }

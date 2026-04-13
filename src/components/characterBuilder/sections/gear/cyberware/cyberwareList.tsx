@@ -11,8 +11,8 @@ import { CyberwareListItem } from "#/components/characterBuilder/sections/gear/c
 import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
 import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 type ImplantDialogState =
   | null
@@ -21,7 +21,7 @@ type ImplantDialogState =
 
 export const CyberwareList: FC = () => {
   const gearApi = useGearStore()
-  const implants = useGearByType<ImplantData>(GearType.implant)
+  const implants = useGearByType<ImplantData>(ItemType.implant)
   const rootImplants = implants.filter((implant) => !implant.parentId)
 
   const [implantDialog, setImplantDialog] = useState<ImplantDialogState>(null)

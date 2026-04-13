@@ -36,7 +36,7 @@ import { getProgress } from "#/lib/progressUtils.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 import { isSinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 import { Lifestyles } from "#/lib/system/lifestyleType.ts"
 
 export const GearSection: FC = () => {
@@ -211,13 +211,13 @@ const GearSectionNuyen: FC<{
   }
 
   const genericSectionTypes: Partial<
-    Record<SectionHeader, GearType>
+    Record<SectionHeader, ItemType>
   > = {
-    [SectionHeader.Weapons]: GearType.weapon,
-    [SectionHeader.Armor]: GearType.armor,
-    [SectionHeader.Vehicles]: GearType.vehicle,
-    [SectionHeader.Devices]: GearType.device,
-    [SectionHeader.Misc]: GearType.other,
+    [SectionHeader.Weapons]: ItemType.weapon,
+    [SectionHeader.Armor]: ItemType.armor,
+    [SectionHeader.Vehicles]: ItemType.vehicle,
+    [SectionHeader.Devices]: ItemType.device,
+    [SectionHeader.Misc]: ItemType.other,
   }
 
   const nuyen = Object.values(allGearItems)

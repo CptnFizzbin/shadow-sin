@@ -1,5 +1,5 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { GearType } from "../gearType.ts"
+import { ItemType } from "../itemType.ts"
 
 export enum ImplantType {
   cyberware = "cyberware",
@@ -35,7 +35,7 @@ export enum ImplantLocation {
 }
 
 export interface ImplantData extends ItemData {
-  itemType: GearType.implant
+  itemType: ItemType.implant
   implantType?: ImplantType | string
 
   grade?: ImplantGrade
@@ -48,5 +48,5 @@ export interface ImplantData extends ItemData {
 }
 
 export function isImplant(item: ItemData): item is ImplantData {
-  return item.itemType === GearType.implant
+  return item.itemType === ItemType.implant
 }

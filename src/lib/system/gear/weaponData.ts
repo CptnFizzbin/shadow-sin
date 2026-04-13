@@ -1,7 +1,7 @@
 import type { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearmTypeKey.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { GearType } from "../gearType.ts"
+import { ItemType } from "../itemType.ts"
 
 export enum FirearmAttachmentPoint {
   Internal = "Internal",
@@ -22,7 +22,7 @@ export enum WeaponType {
 export interface WeaponData extends ItemData {
   dmg: string
   ap?: number
-  itemType: GearType.weapon
+  itemType: ItemType.weapon
   weaponType: WeaponType
   skill?: string
   attribute?: AttributeKey
@@ -65,14 +65,14 @@ export interface ProjectileWeaponData extends WeaponData {
 }
 
 export interface FirearmAccessoryData extends ItemData {
-  itemType: GearType.firearmAccessory
+  itemType: ItemType.firearmAccessory
   enabled?: boolean
   mountPoints: FirearmAttachmentPoint[]
   parentSlot?: FirearmAttachmentPoint
 }
 
 export function isWeaponData(item: ItemData): item is WeaponData {
-  return item.itemType === GearType.weapon
+  return item.itemType === ItemType.weapon
 }
 
 export function isFirearmData(item: ItemData): item is FirearmData {
@@ -96,5 +96,5 @@ export function isProjectileWeaponData(
 export function isFirearmAccessoryData(
   item: ItemData,
 ): item is FirearmAccessoryData {
-  return item.itemType === GearType.firearmAccessory
+  return item.itemType === ItemType.firearmAccessory
 }

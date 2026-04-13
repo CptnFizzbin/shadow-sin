@@ -8,7 +8,7 @@ import { NullGearId } from "#/components/gear/gearUtils.ts"
 import { getLicenseCost } from "#/components/licenses/licenseUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export interface LicenseFormOptions {
   parentId?: UUID
@@ -18,7 +18,7 @@ export interface LicenseFormOptions {
 }
 
 const defaultValues: LicenseData = {
-  itemType: GearType.license,
+  itemType: ItemType.license,
   id: NullGearId,
   name: "",
   rating: 1,

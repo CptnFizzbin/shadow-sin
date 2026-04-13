@@ -12,8 +12,8 @@ import { GearItemCard } from "#/components/characterBuilder/sections/gear/generi
 import { WeaponFormDialog } from "#/components/characterBuilder/sections/gear/weapons/dialogs/weaponFormDialog.tsx"
 import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 type WeaponDialogState =
   | null
@@ -27,7 +27,7 @@ type AccessoryDialogState =
 
 export const WeaponsList: FC = () => {
   const gearApi = useGearStore()
-  const weapons = useGearByType<WeaponData>(GearType.weapon)
+  const weapons = useGearByType<WeaponData>(ItemType.weapon)
   const [weaponDialog, setWeaponDialog] = useState<WeaponDialogState>(null)
   const [accessoryDialog, setAccessoryDialog] = useState<AccessoryDialogState>(null)
 
