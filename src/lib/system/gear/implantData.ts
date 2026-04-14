@@ -1,5 +1,5 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "../itemType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export enum ImplantType {
   cyberware = "cyberware",

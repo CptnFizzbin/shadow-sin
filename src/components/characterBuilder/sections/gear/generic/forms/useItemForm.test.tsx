@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { useItemForm } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import { createItem } from "#/lib/system/itemData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
 
 describe("useItemForm", () => {
@@ -26,12 +26,11 @@ describe("useItemForm", () => {
   })
 
   it("preserves the existing item's itemType when editing", () => {
-    const existingItem: ItemData = {
-      id: crypto.randomUUID(),
+    const [existingItem] = createItem({
       itemType: ItemType.vehicle,
       name: "Eurocar Westwind 2000",
       cost: 65000,
-    }
+    })
     const { result } = renderHook(() =>
       useItemForm({ item: existingItem, onSubmit: vi.fn() }),
     )

@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@mui/material/styles"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
+import { useRef } from "react"
 import { afterEach } from "vitest"
 
 import { CharacterSheetProvider } from "#/components/character/characterSheetProvider.tsx"
@@ -13,10 +14,13 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
-  const store = new CharacterSheetStore(createDefaultCharacterSheet())
+  const storeRef = useRef<CharacterSheetStore>(null)
+  if (storeRef.current === null) {
+    storeRef.current = new CharacterSheetStore(createDefaultCharacterSheet())
+  }
   return (
     <ThemeProvider theme={theme}>
-      <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      <CharacterSheetProvider store={storeRef.current}>{children}</CharacterSheetProvider>
     </ThemeProvider>
   )
 }
