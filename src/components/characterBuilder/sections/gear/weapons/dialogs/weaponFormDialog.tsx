@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import {
   weaponFieldMap,
   useWeaponForm,
@@ -34,16 +35,16 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
   onPurchase,
 }) => {
   const title = weapon ? "Edit Weapon" : "Add Weapon"
-  const useAcquireMode = !!onAcquire && !!onPurchase
+  const isBuilder = useIsBuilder()
 
   const form = useWeaponForm({
     weapon,
     onSubmit: (submittedWeapon, meta) => {
-      if (useAcquireMode) {
+      if (!isBuilder) {
         if (meta.submitAction === "purchase") {
-          onPurchase(submittedWeapon)
+          onPurchase?.(submittedWeapon)
         } else {
-          onAcquire(submittedWeapon)
+          onAcquire?.(submittedWeapon)
         }
       } else {
         onSave?.(submittedWeapon)
@@ -62,7 +63,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {useAcquireMode
+        {!isBuilder
           ? (
               <form.Subscribe selector={(state) => state.values.cost}>
                 {(cost) => (

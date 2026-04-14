@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
@@ -39,16 +40,16 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
   onDelete,
 }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
-  const useAcquireMode = !!onAcquire && !!onPurchase
+  const isBuilder = useIsBuilder()
 
   const form = useSinForm({
     sin,
     onSubmit: (submittedSin, meta) => {
-      if (useAcquireMode) {
+      if (!isBuilder) {
         if (meta.submitAction === "purchase") {
-          onPurchase(submittedSin)
+          onPurchase?.(submittedSin)
         } else {
-          onAcquire(submittedSin)
+          onAcquire?.(submittedSin)
         }
       } else {
         onSave?.(submittedSin)
@@ -97,7 +98,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        {useAcquireMode
+        {!isBuilder
           ? (
               <form.Subscribe selector={(state) => state.values.rating}>
                 {(rating) => {
