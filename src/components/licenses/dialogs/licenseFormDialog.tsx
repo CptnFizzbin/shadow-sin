@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { LicenseFormFields } from "#/components/licenses/forms/licenseFormFields.tsx"
@@ -43,18 +44,18 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   sin,
 }) => {
   const title = license ? "Edit License" : "Create License"
-  const useAcquireMode = !!onAcquire && !!onPurchase
+  const isBuilder = useIsBuilder()
 
   const form = useLicenseForm({
     license: license,
     parentId: sin?.id,
     sinReal: sin?.rating === "real" || false,
     onSubmit: (submittedLicense, meta) => {
-      if (useAcquireMode) {
+      if (!isBuilder) {
         if (meta.submitAction === "purchase") {
-          onPurchase(submittedLicense)
+          onPurchase?.(submittedLicense)
         } else {
-          onAcquire(submittedLicense)
+          onAcquire?.(submittedLicense)
         }
       } else {
         onSave?.(submittedLicense)
@@ -99,7 +100,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        {useAcquireMode
+        {!isBuilder
           ? (
               <form.Subscribe selector={(state) => state.values.rating}>
                 {(rating) => {

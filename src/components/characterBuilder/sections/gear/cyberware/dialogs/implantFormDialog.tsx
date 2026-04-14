@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { ImplantFormFields } from "#/components/characterBuilder/sections/gear/cyberware/forms/implantFormFields.tsx"
 import {
   implantFieldMap,
@@ -43,17 +44,18 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
 }) => {
   const editMode = !!implant
   const title = editMode ? `Edit Implant` : `Add Implant`
-  const useAcquireMode = !!onAcquire && !!onPurchase
+  const isBuilder = useIsBuilder()
+  const isAcquireMode = !editMode && !isBuilder
 
   const form = useImplantForm({
     implant,
     parentId,
     onSubmit: (submittedImplant, meta) => {
-      if (useAcquireMode) {
+      if (isAcquireMode) {
         if (meta.submitAction === "purchase") {
-          onPurchase(submittedImplant)
+          onPurchase?.(submittedImplant)
         } else {
-          onAcquire(submittedImplant)
+          onAcquire?.(submittedImplant)
         }
       } else {
         onSave?.(submittedImplant)
@@ -72,7 +74,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {useAcquireMode
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => ({ cost: state.values.cost, grade: state.values.grade })}>
                 {({ cost, grade }) => {

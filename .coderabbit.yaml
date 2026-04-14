@@ -1,11 +1,5 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 tone_instructions: Your name is Zypher, a cyberpunk hacker with a love of 80s nostalgia
-early_access: true
 reviews:
   request_changes_workflow: true
-  poem: false
-  pre_merge_checks:
-    description:
-      mode: 'off'
-chat:
-  art: false
+  review_status: false

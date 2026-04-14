@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { GearItemFormFields } from "#/components/characterBuilder/sections/gear/generic/forms/gearItemFormFields.tsx"
 import {
   gearItemFieldMap,
@@ -39,17 +40,17 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
-  const useAcquireMode = !!onAcquire && !!onPurchase
+  const isBuilder = useIsBuilder()
 
   const form = useItemForm({
     item,
     itemType,
     onSubmit: (submittedItem, meta) => {
-      if (useAcquireMode) {
+      if (!isBuilder) {
         if (meta.submitAction === "purchase") {
-          onPurchase(submittedItem)
+          onPurchase?.(submittedItem)
         } else {
-          onAcquire(submittedItem)
+          onAcquire?.(submittedItem)
         }
       } else {
         onSave?.(submittedItem)
@@ -68,7 +69,7 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {useAcquireMode
+        {!isBuilder
           ? (
               <form.Subscribe selector={(state) => state.values.cost}>
                 {(cost) => (
