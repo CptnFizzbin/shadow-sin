@@ -4,12 +4,12 @@ import { describe, expect, it, vi } from "vitest"
 import { WeaponFormDialog } from "#/components/characterBuilder/sections/gear/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
-import { renderWithTheme } from "#testUtils/renderUtils.tsx"
+import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 describe("WeaponFormDialog", () => {
   it("submits an item with ItemType.weapon", async () => {
     const onSave = vi.fn()
-    renderWithTheme(<WeaponFormDialog open onSave={onSave} onClose={vi.fn()} />)
+    renderInBuilder(<WeaponFormDialog open onSave={onSave} onClose={vi.fn()} />)
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]

@@ -1,12 +1,15 @@
+import { Store } from "@tanstack/store"
 import { ThemeProvider } from "@mui/material/styles"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
-import { useRef } from "react"
+import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import { CharacterSheetProvider } from "#/components/character/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/createDefaultCharacterSheet.ts"
+import type { BuilderRootState } from "#/components/characterBuilder/builderRootState.ts"
+import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { theme } from "#/theme.ts"
 
 export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
@@ -14,13 +17,28 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
-  const storeRef = useRef<CharacterSheetStore>(null)
-  if (storeRef.current === null) {
-    storeRef.current = new CharacterSheetStore(createDefaultCharacterSheet())
-  }
+  const store = useMemo(() => new CharacterSheetStore(createDefaultCharacterSheet()), [])
   return (
     <ThemeProvider theme={theme}>
-      <CharacterSheetProvider store={storeRef.current}>{children}</CharacterSheetProvider>
+      <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+    </ThemeProvider>
+  )
+}
+
+export const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
+  const rootStore = useMemo(
+    () =>
+      new Store<BuilderRootState>({
+        character: createDefaultCharacterSheet(),
+        builder: { startingNuyen: undefined },
+      }),
+    [],
+  )
+  return (
+    <ThemeProvider theme={theme}>
+      <CharacterBuilderStoreProvider rootStore={rootStore}>
+        {children}
+      </CharacterBuilderStoreProvider>
     </ThemeProvider>
   )
 }
@@ -31,6 +49,10 @@ export function renderWithTheme(element: ReactElement) {
 
 export function renderWithProviders(element: ReactElement) {
   return render(element, { wrapper: FullWrapper })
+}
+
+export function renderInBuilder(element: ReactElement) {
+  return render(element, { wrapper: BuilderWrapper })
 }
 
 /**

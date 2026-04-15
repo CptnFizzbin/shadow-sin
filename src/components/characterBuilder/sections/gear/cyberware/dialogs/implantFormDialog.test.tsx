@@ -4,12 +4,12 @@ import { describe, expect, it, vi } from "vitest"
 import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
-import { fillNameAndClickSave, renderWithTheme } from "#testUtils/renderUtils.tsx"
+import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 describe("ImplantFormDialog", () => {
   it("submits an item with ItemType.implant", async () => {
     const onSave = vi.fn()
-    renderWithTheme(<ImplantFormDialog open onSave={onSave} onClose={vi.fn()} />)
+    renderInBuilder(<ImplantFormDialog open onSave={onSave} onClose={vi.fn()} />)
 
     fillNameAndClickSave("Wired Reflexes 1")
 

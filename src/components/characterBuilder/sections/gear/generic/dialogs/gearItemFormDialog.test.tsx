@@ -4,12 +4,12 @@ import { describe, expect, it, vi } from "vitest"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
-import { fillNameAndClickSave, renderWithTheme } from "#testUtils/renderUtils.tsx"
+import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 describe("GearItemFormDialog", () => {
   it("submits a vehicle item when itemType=vehicle", async () => {
     const onSave = vi.fn()
-    renderWithTheme(
+    renderInBuilder(
       <GearItemFormDialog
         open
         itemType={ItemType.vehicle}
@@ -31,7 +31,7 @@ describe("GearItemFormDialog", () => {
 
   it("submits an armor item when itemType=armor", async () => {
     const onSave = vi.fn()
-    renderWithTheme(
+    renderInBuilder(
       <GearItemFormDialog
         open
         itemType={ItemType.armor}
@@ -52,7 +52,7 @@ describe("GearItemFormDialog", () => {
 
   it("submits a misc (other) item when no itemType is provided", async () => {
     const onSave = vi.fn()
-    renderWithTheme(
+    renderInBuilder(
       <GearItemFormDialog open label="Item" onSave={onSave} onClose={vi.fn()} />,
     )
 
@@ -67,7 +67,7 @@ describe("GearItemFormDialog", () => {
 
   it("submits an explicit misc item when itemType=other", async () => {
     const onSave = vi.fn()
-    renderWithTheme(
+    renderInBuilder(
       <GearItemFormDialog
         open
         itemType={ItemType.other}

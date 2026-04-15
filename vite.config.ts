@@ -1,9 +1,9 @@
 /// <reference types="vitest/config" />
+import babel from "@rolldown/plugin-babel"
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react, { reactCompilerPreset } from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-import babel from "@rolldown/plugin-babel"
 
 const config = defineConfig({
   resolve: {
@@ -20,6 +20,9 @@ const config = defineConfig({
   test: {
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     environment: "happy-dom",
+    sequence: {
+      concurrent: true,
+    },
   },
 })
 
