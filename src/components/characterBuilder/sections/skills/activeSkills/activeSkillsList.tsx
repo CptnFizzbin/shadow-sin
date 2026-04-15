@@ -51,14 +51,14 @@ export const ActiveSkillsList: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Typography variant="body2" color="secondary.main">
+      <Typography color="secondary.main">
         {skillsBuildPoints.activeSkills.bpSpent} BP
       </Typography>
 
       {activeSkills.length > 0 && (
         <Stack gap={0.5}>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               Active Skills
             </Typography>
           </Stack>
@@ -76,7 +76,7 @@ export const ActiveSkillsList: FC = () => {
       {skillGroups.length > 0 && (
         <Stack gap={0.5}>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               Active Skill Groups
             </Typography>
           </Stack>
@@ -93,7 +93,7 @@ export const ActiveSkillsList: FC = () => {
       )}
 
       {activeSkills.length === 0 && skillGroups.length === 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+        <Typography color="text.secondary" sx={{ pl: 1 }}>
           No active skills added
         </Typography>
       )}

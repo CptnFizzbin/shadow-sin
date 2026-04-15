@@ -63,9 +63,9 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         padding: 1,
         bgcolor: isOvercasting
           ? (theme) => {
-              const fn = theme.palette.mode === "light" ? lighten : darken
-              return fn(theme.palette.error.light, 0.9)
-            }
+            const fn = theme.palette.mode === "light" ? lighten : darken
+            return fn(theme.palette.error.light, 0.9)
+          }
           : undefined,
       }}
     >
@@ -73,7 +73,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         <Stack gap={0.5}>
           <Label label="Cast" variant="text" />
           {isOvercasting && (
-            <Typography variant="caption" color="error.main">
+            <Typography color="error.main">
               Force exceeds Magic — drain is Physical
             </Typography>
           )}

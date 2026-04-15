@@ -33,7 +33,7 @@ export const SpellsViewerSection: FC = () => {
   if (spells.length === 0) {
     return (
       <Paper sx={{ padding: 1 }}>
-        <Typography variant="body2" color="text.secondary" textAlign="center">
+        <Typography color="text.secondary" textAlign="center">
           No spells learned
         </Typography>
       </Paper>

@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { Label } from "#/components/ui/text/label.tsx"
 
 interface BiologyRowProps {
   label: string
@@ -11,10 +12,12 @@ interface BiologyRowProps {
 
 const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
   <Stack direction="row" gap={1} alignItems="baseline">
-    <Typography variant="caption" color="text.secondary" sx={{ minWidth: 72 }}>
+    <Typography color="text.secondary" sx={{ minWidth: 100 }}>
       {label}
     </Typography>
-    <Typography variant="body2">{value}</Typography>
+    <Typography>
+      {value}
+    </Typography>
   </Stack>
 )
 
@@ -23,7 +26,8 @@ export const BiologySection: FC = () => {
 
   return (
     <Stack gap={1}>
-      <Typography variant="subtitle2">Biology</Typography>
+      <Label label="Biology" />
+
       <Stack gap={0.5}>
         <BiologyRow label="Metatype" value={biology.metatype} />
         <BiologyRow label="Awakening" value={biology.awakening} />

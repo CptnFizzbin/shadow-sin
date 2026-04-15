@@ -91,7 +91,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
 
           {description && (
             <Typography
-              variant="caption"
+
               color="text.secondary"
               sx={{ flexGrow: 1, alignSelf: "center" }}
             >

@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer>
       <Typography
-        variant="caption"
+
         component="div"
         sx={{ fontSize: "8pt", opacity: 0.5 }}
       >

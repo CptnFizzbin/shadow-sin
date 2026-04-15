@@ -2,7 +2,6 @@ import Divider from "@mui/material/Divider"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
@@ -12,6 +11,7 @@ import { FinancesSection } from "#/components/character/financesSection.tsx"
 import { ProfileEditDialog } from "#/components/character/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/character/profileSection.tsx"
 import { SinsAndLicensesSection } from "#/components/licenses/sinsAndLicensesSection.tsx"
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/about")({
   component: RouteComponent,
@@ -41,14 +41,14 @@ function RouteComponent() {
       </Paper>
 
       <Paper sx={{ padding: 1 }}>
-        <Stack gap={1}>
-          <Typography variant="subtitle2">SINs & Licenses</Typography>
-          <SinsAndLicensesSection />
-        </Stack>
+        <FinancesSection />
       </Paper>
 
       <Paper sx={{ padding: 1 }}>
-        <FinancesSection />
+        <Stack gap={1}>
+          <SectionHeader>SINs & Licenses</SectionHeader>
+          <SinsAndLicensesSection />
+        </Stack>
       </Paper>
 
       {profileEditDialog !== null && (

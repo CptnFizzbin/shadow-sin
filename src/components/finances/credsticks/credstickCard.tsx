@@ -6,10 +6,7 @@ import type { FC } from "react"
 
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
-import {
-  CredstickMaxBalance,
-  CredstickTypeLabel,
-} from "#/lib/system/gear/credstickData.ts"
+import { CredstickMaxBalance, CredstickTypeLabel } from "#/lib/system/gear/credstickData.ts"
 
 export interface CredstickCardProps {
   credstick: CredstickData
@@ -35,7 +32,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
       <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
         <Stack gap={0.5} flex={1} minWidth={0}>
           <Typography
-            variant="body2"
+
             fontWeight="medium"
             noWrap
             title={credstick.name || CredstickTypeLabel[credstick.credstickType]}
@@ -48,7 +45,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
               size="small"
               variant="outlined"
             />
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               {fillPercent.toFixed(0)}% full
             </Typography>
           </Stack>

@@ -1,12 +1,12 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC, PropsWithChildren } from "react"
 
 import type { BuilderSectionId } from "#/components/characterBuilder/sections/builderSectionId.ts"
 import { builderSections } from "#/components/characterBuilder/sections/builderSectionId.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 interface BuilderSectionProps extends PropsWithChildren {
   id: BuilderSectionId
@@ -32,10 +32,7 @@ export const BuilderSection: FC<BuilderSectionProps> = ({
   return (
     <Paper sx={{ padding: 1, borderColor }} id={id}>
       <Stack gap={1}>
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          {title}
-        </Typography>
-
+        <SectionHeader>{title}</SectionHeader>
         <AlertsList alerts={alerts} />
 
         {children}

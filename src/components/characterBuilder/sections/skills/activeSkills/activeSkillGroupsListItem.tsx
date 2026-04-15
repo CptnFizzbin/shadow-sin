@@ -37,7 +37,7 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {group.name}
         </Typography>
         <Chip
@@ -47,7 +47,7 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
         <Typography
-          variant="caption"
+
           color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >
@@ -66,7 +66,7 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
       </Stack>
 
       {memberSkills.length > 0 && (
-        <Typography variant="caption" color="text.secondary">
+        <Typography color="text.secondary">
           {memberSkills.join(", ")}
         </Typography>
       )}

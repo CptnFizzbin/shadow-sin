@@ -37,8 +37,8 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
     >
       <Stack direction="row" alignItems="center" gap={1}>
         <Stack sx={{ flexGrow: 1 }}>
-          <Typography variant="body2">{sprite.name}</Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography>{sprite.name}</Typography>
+          <Typography color="text.secondary">
             Rating
             {" "}
             {resonanceValue}
@@ -61,7 +61,7 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
 
         <BuildPoints
           value={getSpriteTasksBp(sprite)}
-          variant="caption"
+
           sx={{ minWidth: 40, textAlign: "right" }}
         />
 

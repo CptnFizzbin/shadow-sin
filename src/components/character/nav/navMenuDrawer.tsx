@@ -30,10 +30,9 @@ export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
 
   return (
     <Drawer
-      anchor="left"
+      anchor="right"
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { width: "100vw" } }}
     >
       <Toolbar sx={{ justifyContent: "space-between", paddingX: 1 }}>
         <Typography variant="h6">Go to page</Typography>

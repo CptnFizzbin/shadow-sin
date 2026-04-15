@@ -51,7 +51,7 @@ export const LifestylePanel: FC = () => {
         }}
       />
 
-      <Typography variant="body2" color="text.secondary">
+      <Typography color="text.secondary">
         Monthly upkeep: <Nuyen amount={upkeep} />
         {monthsPaid > 1 && (
           <>× {monthsPaid} months = <Nuyen amount={totalCost} /></>

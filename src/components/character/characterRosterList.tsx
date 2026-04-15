@@ -109,7 +109,7 @@ export default function CharacterRosterList({
                   <Typography variant="h6">{character.profile.alias}</Typography>
                 }
                 secondary={(
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     {[character.biology.metatype, character.profile.archetype]
                       .filter(Boolean)
                       .join(" · ")}
@@ -159,7 +159,7 @@ export default function CharacterRosterList({
                 </Typography>
               )}
               secondary={(
-                <Typography variant="body2" color="text.secondary">
+                <Typography color="text.secondary">
                   ID: {loadError.characterId} · {loadError.errorMessage}
                 </Typography>
               )}

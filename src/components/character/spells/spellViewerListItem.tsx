@@ -30,10 +30,10 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
       aria-label={`Cast ${spell.name}`}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography flexGrow={1} variant="body2">
+        <Typography flexGrow={1}>
           {spell.name}
         </Typography>
-        <Typography variant="caption" color="text.secondary">
+        <Typography color="text.secondary">
           {formatDrainFormula(spell.drainValueMod)}
         </Typography>
       </Stack>

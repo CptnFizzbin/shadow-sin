@@ -61,7 +61,7 @@ export const GearSection: FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="caption">
+          <Typography>
             <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenAllowance} />
           </Typography>
           <BuildPoints value={buildPoints.spent} total={buildPoints.allowance} />
@@ -138,12 +138,12 @@ const GearSectionContent: FC<{
       <SinsAndLicensesSection
         slots={{
           sinTrailingContent: (sin) => (
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary">
               <Nuyen amount={sin.cost} />
             </Typography>
           ),
           licenseTrailingContent: (license) => (
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary">
               <Nuyen amount={license.cost} />
             </Typography>
           ),
@@ -173,7 +173,7 @@ const GearSectionNuyen: FC<{
 
   if (section === SectionHeader.Lifestyle) {
     return (
-      <Typography variant="body2" color="text.secondary">
+      <Typography color="text.secondary">
         <Nuyen amount={lifestyleInfo.upkeep * lifestyleMonths} />
       </Typography>
     )
@@ -183,7 +183,7 @@ const GearSectionNuyen: FC<{
     const sins = Object.values(allGearItems).filter(isSinData)
     const licenses = Object.values(allGearItems).filter(isLicenseData)
     return (
-      <Typography variant="body2" color="text.secondary">
+      <Typography color="text.secondary">
         <Nuyen
           amount={
             sins.reduce((sum, sin) => sum + (sin.cost ?? 0), 0)
@@ -197,7 +197,7 @@ const GearSectionNuyen: FC<{
     const implants = Object.values(allGearItems).filter(isImplant)
 
     return (
-      <Typography variant="body2" color="text.secondary">
+      <Typography color="text.secondary">
         <Nuyen
           amount={
             implants.reduce(
@@ -225,7 +225,7 @@ const GearSectionNuyen: FC<{
     .reduce((sum, item) => sum + (item.cost ?? 0), 0)
 
   return (
-    <Typography variant="body2" color="text.secondary">
+    <Typography color="text.secondary">
       <Nuyen amount={nuyen} />
     </Typography>
   )

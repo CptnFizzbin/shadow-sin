@@ -32,7 +32,7 @@ export const AdeptPowersList: FC = () => {
       <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
       {adeptPowers.length === 0 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography color="text.secondary">
           No adept powers added yet.
         </Typography>
       )}
