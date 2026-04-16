@@ -6,7 +6,7 @@ import { Counter } from "#/components/ui/counter/counter.tsx"
 import type { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 
 interface DamageCounterProps {
-  trackKey: DamageTrackKey.physical | DamageTrackKey.stun
+  trackKey: DamageTrackKey
   label: string
 }
 
