@@ -1,26 +1,27 @@
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Counter } from "#/components/ui/counter/counter.tsx"
-
-export type DamageTrackKey = "physical" | "stun"
+import type { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 
 interface DamageCounterProps {
-  trackKey: DamageTrackKey
+  trackKey: DamageTrackKey.physical | DamageTrackKey.stun
   label: string
 }
 
 export const DamageCounter: FC<DamageCounterProps> = ({ trackKey, label }) => {
   const damageStore = useDamageStore()
-  const track = damageStore[trackKey]
+  const current = useStore(damageStore, (state) => state[trackKey].current)
+  const max = useStore(damageStore, (state) => state[trackKey].max)
 
   return (
     <Counter
       label={label}
-      value={track.current}
+      value={current}
       min={0}
-      max={track.max}
-      onChange={(newValue) => track.setValue(newValue)}
+      max={max}
+      onChange={(newValue) => damageStore.setDamage(trackKey, newValue)}
     />
   )
 }

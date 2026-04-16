@@ -5,6 +5,7 @@ import type { FC } from "react"
 import { DamageCounter } from "#/components/character/quickPanel/damageCounter.tsx"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
   return (
@@ -13,10 +14,10 @@ export const QuickDamageSection: FC = () => {
 
       <Grid container columns={2} spacing={1}>
         <Grid size={1}>
-          <DamageCounter trackKey="physical" label="Physical" />
+          <DamageCounter trackKey={DamageTrackKey.physical} label="Physical" />
         </Grid>
         <Grid size={1}>
-          <DamageCounter trackKey="stun" label="Stun" />
+          <DamageCounter trackKey={DamageTrackKey.stun} label="Stun" />
         </Grid>
       </Grid>
 

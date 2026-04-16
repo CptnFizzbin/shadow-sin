@@ -2,6 +2,7 @@ import { Divider } from "@mui/material"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
+import { useStore } from "@tanstack/react-store"
 import { Fragment } from "react"
 
 import DamageTrack from "#/components/damage/damageTrack.tsx"
@@ -22,6 +23,7 @@ import {
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
@@ -30,6 +32,8 @@ export const Route = createFileRoute("/$characterId/defense")({
 
 function RouteComponent() {
   const damageStore = useDamageStore()
+  const physical = useStore(damageStore, (state) => state.physical)
+  const stun = useStore(damageStore, (state) => state.stun)
 
   return (
     <Stack gap={1}>
@@ -39,21 +43,21 @@ function RouteComponent() {
         <Grid size={1}>
           <DamageTrack
             label="Physical"
-            max={damageStore.physical.max}
-            current={damageStore.physical.current}
-            woundInterval={damageStore.physical.woundInterval}
+            max={physical.max}
+            current={physical.current}
+            woundInterval={physical.woundInterval}
             allowOverflow
-            onChange={(newValue) => damageStore.physical.setValue(() => newValue)}
+            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.physical, newValue)}
           />
         </Grid>
 
         <Grid size={1}>
           <DamageTrack
             label="Stun"
-            max={damageStore.stun.max}
-            current={damageStore.stun.current}
-            woundInterval={damageStore.stun.woundInterval}
-            onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
+            max={stun.max}
+            current={stun.current}
+            woundInterval={stun.woundInterval}
+            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.stun, newValue)}
           />
         </Grid>
 
