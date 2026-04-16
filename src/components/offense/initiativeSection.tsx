@@ -8,14 +8,17 @@ import { InitiativePassTracker } from "#/components/offense/initiativePassTracke
 import { InitiativeScoreDisplay } from "#/components/offense/initiativeScoreDisplay.tsx"
 import { MovementSection } from "#/components/offense/movementSection.tsx"
 import { useInitiative } from "#/components/offense/useInitiative.ts"
+import { useInitiativePassStore } from "#/components/offense/useInitiativePassStore.ts"
 import { useMovementStore } from "#/components/offense/useMovementStore.ts"
 
 export const InitiativeSection: FC = () => {
   const initiative = useInitiative()
   const movement = useMovementStore(initiative.initiativePasses)
+  const initiativePassStore = useInitiativePassStore()
 
   const handleResetRound = () => {
     movement.store.reset()
+    initiativePassStore.resetPasses()
   }
 
   return (
@@ -26,7 +29,10 @@ export const InitiativeSection: FC = () => {
         </Grid>
 
         <Grid size={1}>
-          <InitiativePassTracker numPasses={initiative.initiativePasses} />
+          <InitiativePassTracker
+            numPasses={initiative.initiativePasses}
+            store={initiativePassStore}
+          />
         </Grid>
 
         <Grid size={2}>

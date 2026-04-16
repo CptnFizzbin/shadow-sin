@@ -1,6 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 import { produce } from "immer"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
@@ -57,6 +57,20 @@ export class MovementStore extends StoreSlice<MovementState> {
   reset(): void {
     this.set({ sprintBonus: 0, used: {}, modes: {} })
   }
+
+  /** Remove stored entries for passes that no longer exist. */
+  trim(numPasses: number): void {
+    this.set(
+      produce((state) => {
+        for (const key of Object.keys(state.used).map(Number)) {
+          if (key >= numPasses) delete state.used[key]
+        }
+        for (const key of Object.keys(state.modes).map(Number)) {
+          if (key >= numPasses) delete state.modes[key]
+        }
+      }),
+    )
+  }
 }
 
 /** Distribute `total` meters across `numPasses`, rounding the remainder up into the first pass. */
@@ -96,6 +110,12 @@ export const useMovementStore = (numPasses: number): MovementInfo => {
   const used = useStore(store, (state) => state.used)
   const modes = useStore(store, (state) => state.modes)
 
+  // Remove orphaned entries whenever the pass count shrinks so they cannot
+  // rehydrate if the count later increases again.
+  useEffect(() => {
+    store.trim(numPasses)
+  }, [store, numPasses])
+
   return useMemo(() => {
     const rates = metatypeMovementRates[metatype] ?? { walk: 10, run: 25 }
     const totalRun = rates.run + sprintBonus
@@ -104,9 +124,8 @@ export const useMovementStore = (numPasses: number): MovementInfo => {
     const walkPerPass = distributeMovement(totalWalk, numPasses)
     const runPerPass = distributeMovement(totalRun, numPasses)
 
-    // `perPass` length is always exactly numPasses — any entries in `used`/`modes`
-    // beyond that index are simply not rendered and are harmlessly orphaned.
-    // If numPasses later increases they will be gone (the store resets on Reset Round).
+    // `perPass` length is always exactly numPasses. Out-of-bounds entries in
+    // `used`/`modes` are trimmed by the useEffect above whenever numPasses changes.
     const perPass = Array.from({ length: numPasses }, (_, index) => ({
       walk: walkPerPass[index] ?? 0,
       run: runPerPass[index] ?? 0,
