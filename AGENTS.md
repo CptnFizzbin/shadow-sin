@@ -84,6 +84,26 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
   `npm-run-all`) and then `yarn tsc` to ensure formatting, linting, and types are clean before pushing.
 - Google Drive integration (`src/integrations/googleDrive/api.ts`) is a placeholder stub — not implemented.
 
+## MUI style props
+
+Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**.
+Do not pass props that merely repeat a default — if the theme already sets `gap`, `padding`, `fontSize`, `variant`,
+`size`, `color`, etc., omitting the prop produces the same result and keeps the code easier to read.
+
+```tsx
+// ✅ — no padding/gap props; theme defaults apply
+<Stack>…</Stack>
+
+// ✅ — intentionally overrides the default gap for a tighter list
+<Stack gap={0.5}>…</Stack>
+
+// ❌ — just repeats the theme default, adds noise
+<Stack gap={2} variant="outlined">…</Stack>
+```
+
+This rule applies to every MUI component: `Stack`, `Paper`, `Typography`, `Button`, `TextField`, `Chip`, etc.
+When in doubt, omit the prop and let the theme do the work.
+
 ## UI changes
 
 Whenever a task involves changes to the visual appearance or layout of a component (new UI, updated styles, added
