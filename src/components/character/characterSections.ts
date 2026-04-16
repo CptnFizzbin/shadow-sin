@@ -6,15 +6,16 @@ import { Route as DefenseRoute } from "#/routes/$characterId/defense.tsx"
 import { Route as DronesRoute } from "#/routes/$characterId/drones.tsx"
 import { Route as FinancesRoute } from "#/routes/$characterId/finances.tsx"
 import { Route as GearRoute } from "#/routes/$characterId/gear.tsx"
+import { Route as LicensesRoute } from "#/routes/$characterId/licenses.tsx"
 import { Route as NotesRoute } from "#/routes/$characterId/notes.tsx"
 import { Route as OffenseRoute } from "#/routes/$characterId/offense.tsx"
-import { Route as QualitiesRoute } from "#/routes/$characterId/qualities.tsx"
 import { Route as SkillsRoute } from "#/routes/$characterId/skills.tsx"
 import { Route as SpellsRoute } from "#/routes/$characterId/spells.tsx"
 import { Route as VehiclesRoute } from "#/routes/$characterId/vehicles.tsx"
 
 export enum SectionKey {
   about = "about",
+  licenses = "licenses",
   defense = "defense",
   offense = "offense",
   gear = "gear",
@@ -23,7 +24,6 @@ export enum SectionKey {
   drones = "drones",
   vehicles = "vehicles",
   contacts = "contacts",
-  qualities = "qualities",
   finances = "finances",
   notes = "notes",
 }
@@ -42,6 +42,11 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
     id: SectionKey.about,
     label: "About",
     route: AboutRoute,
+  },
+  [SectionKey.licenses]: {
+    id: SectionKey.licenses,
+    label: "Licenses",
+    route: LicensesRoute,
   },
   [SectionKey.defense]: {
     id: SectionKey.defense,
@@ -82,11 +87,6 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
     id: SectionKey.contacts,
     label: "Contacts",
     route: ContactsRoute,
-  },
-  [SectionKey.qualities]: {
-    id: SectionKey.qualities,
-    label: "Qualities",
-    route: QualitiesRoute,
   },
   [SectionKey.finances]: {
     id: SectionKey.finances,
