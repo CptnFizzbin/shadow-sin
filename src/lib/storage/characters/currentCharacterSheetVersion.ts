@@ -1,1 +1,1 @@
-export const CurrentCharacterSheetVersion = "0.3.0"
+export const CurrentCharacterSheetVersion = "0.4.0"
