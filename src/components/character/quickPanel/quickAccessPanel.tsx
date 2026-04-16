@@ -1,54 +1,55 @@
-import Accordion from "@mui/material/Accordion"
-import AccordionDetails from "@mui/material/AccordionDetails"
-import AccordionSummary from "@mui/material/AccordionSummary"
+import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
+import Drawer from "@mui/material/Drawer"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
+import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import { RiArrowDownSLine } from "@remixicon/react"
+import { RiCloseLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { QuickAttributesSection } from "#/components/character/quickPanel/quickAttributesSection.tsx"
 import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
 import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
-import { QuickNuyenSection } from "#/components/finances/nuyen/quickNuyenSection.tsx"
+import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
 
 export const QuickAccessPanel: FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Accordion
-      disableGutters
-      elevation={0}
-      expanded={isExpanded}
-      onChange={(_, expanded) => setIsExpanded(expanded)}
-      sx={{
-        "& .MuiAccordionSummary-content": { margin: 0 },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<RiArrowDownSLine />}
-        sx={{
-          padding: 1,
-          margin: 0,
-          minHeight: "unset",
-          backgroundColor: "secondary.dark",
-          color: "secondary.contrastText",
-        }}
+    <>
+      <Button
+        variant="contained"
+        color="secondary"
+        startIcon={<RiFlashlightLine size={18} />}
+        onClick={() => setIsOpen(true)}
+        fullWidth
+        sx={{ borderRadius: 2 }}
       >
-        <Typography>
-          Quick Access
-        </Typography>
-      </AccordionSummary>
+        Quick Access
+      </Button>
 
-      <AccordionDetails sx={{ padding: 1 }}>
-        <Stack gap={1.5} divider={<Divider />}>
+      <Drawer
+        anchor="bottom"
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        slotProps={{ paper: { sx: { borderRadius: "12px 12px 0 0", maxHeight: "80vh" } } }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between", paddingX: 1 }}>
+          <Typography variant="h2">Quick Access</Typography>
+          <IconButton onClick={() => setIsOpen(false)} aria-label="Close quick access">
+            <RiCloseLine />
+          </IconButton>
+        </Toolbar>
+
+        <Stack gap={1.5} divider={<Divider />} sx={{ padding: 1, overflowY: "auto" }}>
           <QuickAttributesSection />
           <QuickDamageSection />
           <QuickEdgeSection />
-          <QuickNuyenSection />
+          <NuyenSection />
         </Stack>
-      </AccordionDetails>
-    </Accordion>
+      </Drawer>
+    </>
   )
 }
