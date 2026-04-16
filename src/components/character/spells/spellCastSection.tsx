@@ -18,7 +18,7 @@ import { useAttr } from "#/components/character/characterUtils.ts"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
-import { useDamageState } from "#/components/damage/useDamageState.ts"
+import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
@@ -40,7 +40,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
 
-  const damageStore = useDamageState()
+  const damageStore = useDamageStore()
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return

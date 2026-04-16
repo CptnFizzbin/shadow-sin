@@ -19,7 +19,7 @@ import {
   ResistBodyDicePool,
   ResistWillpowerDicePool,
 } from "#/components/damage/resistanceDicePools.tsx"
-import { useDamageState } from "#/components/damage/useDamageState.ts"
+import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/$characterId/defense")({
 })
 
 function RouteComponent() {
-  const damageStore = useDamageState()
+  const damageStore = useDamageStore()
 
   return (
     <Stack gap={1}>
@@ -41,6 +41,7 @@ function RouteComponent() {
             label="Physical"
             max={damageStore.physical.max}
             current={damageStore.physical.current}
+            woundInterval={damageStore.physical.woundInterval}
             allowOverflow
             onChange={(newValue) => damageStore.physical.setValue(() => newValue)}
           />
@@ -51,6 +52,7 @@ function RouteComponent() {
             label="Stun"
             max={damageStore.stun.max}
             current={damageStore.stun.current}
+            woundInterval={damageStore.stun.woundInterval}
             onChange={(newValue) => damageStore.stun.setValue(() => newValue)}
           />
         </Grid>

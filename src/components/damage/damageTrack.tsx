@@ -11,6 +11,7 @@ interface DamageTrackProps {
   current: number
   onChange: (value: number) => void
   allowOverflow?: boolean
+  woundInterval?: number
 }
 
 export default function DamageTrack({
@@ -19,6 +20,7 @@ export default function DamageTrack({
   current,
   onChange,
   allowOverflow,
+  woundInterval = 3,
 }: DamageTrackProps) {
   let numCells = Math.max(max, current)
   if (allowOverflow && current >= max) {
@@ -46,6 +48,7 @@ export default function DamageTrack({
               value={value}
               filled={value <= current}
               isOverflow={value > max}
+              woundInterval={woundInterval}
               toggleCell={(newValue) => {
                 if (newValue === current) {
                   onChange(newValue - 1)
@@ -65,6 +68,7 @@ interface DamageCellProps {
   value: number
   filled: boolean
   isOverflow: boolean
+  woundInterval: number
   toggleCell: (newValue: number) => void
 }
 
@@ -72,9 +76,11 @@ function DamageCell({
   value,
   filled,
   isOverflow,
+  woundInterval,
   toggleCell,
 }: DamageCellProps) {
-  const penalty = Math.floor((value + 1) / 3)
+  const isWoundMarker = value % woundInterval === 0
+  const penalty = Math.floor(value / woundInterval)
 
   return (
     <TrackCell
@@ -82,7 +88,7 @@ function DamageCell({
       isOverflow={isOverflow}
       onClick={() => toggleCell(value)}
     >
-      {value % 3 === 0 ? penalty * -1 : "\u00A0"}
+      {isWoundMarker ? penalty * -1 : "\u00A0"}
     </TrackCell>
   )
 }
