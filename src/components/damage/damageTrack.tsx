@@ -88,7 +88,8 @@ function DamageCell({
       isOverflow={isOverflow}
       onClick={() => toggleCell(value)}
     >
-      {isWoundMarker ? penalty * -1 : ""}
+      {/* Use non-breaking space to keep cells uniform size when empty */}
+      {isWoundMarker ? penalty * -1 : <>&nbsp;</>}
     </TrackCell>
   )
 }

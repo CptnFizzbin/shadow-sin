@@ -1,6 +1,4 @@
-import { Divider } from "@mui/material"
 import Grid from "@mui/material/Grid"
-import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { Fragment } from "react"
@@ -36,10 +34,10 @@ function RouteComponent() {
   const stun = useStore(damageStore, (state) => state.stun)
 
   return (
-    <Stack gap={1}>
-      {/* TODO: Tabs for meatspace, astrial, and matrix */}
+    <Grid container columns={{ sm: 1, md: 2 }} spacing={1}>
+      {/* TODO: Tabs for meatspace, astral, and matrix */}
 
-      <Grid container columns={2} spacing={1}>
+      <Grid container columns={2} size={2} spacing={1} width={{ sm: "100%", md: "50%" }} margin="auto">
         <Grid size={1}>
           <DamageTrack
             label="Physical"
@@ -64,12 +62,10 @@ function RouteComponent() {
         <Grid size={2}>
           <WoundModLabel />
         </Grid>
+      </Grid>
 
-        <Grid size={2}>
-          <Divider flexItem color="secondary.main" />
-        </Grid>
-
-        <Grid container size={2}>
+      <Grid container columns={{ sm: 1, md: 3 }} size={2} spacing={1}>
+        <Grid container columns={2} size={1}>
           <Grid size={2}>
             <Label label="Resist" variant="outlined" />
           </Grid>
@@ -83,11 +79,7 @@ function RouteComponent() {
           </Grid>
         </Grid>
 
-        <Grid size={2}>
-          <Divider flexItem color="secondary.main" />
-        </Grid>
-
-        <Grid container size={2}>
+        <Grid container columns={2} size={1}>
           <Grid size={2}>
             <Label label="Ranged Defense" variant="outlined" />
           </Grid>
@@ -101,7 +93,23 @@ function RouteComponent() {
           </Grid>
         </Grid>
 
-        <Grid container size={2}>
+        <Grid container columns={2} size={1}>
+          <Grid size={2}>
+            <Label label="Spell Defense" variant="outlined" />
+          </Grid>
+
+          <Grid size={1}>
+            <PhysicalSpellDefenseDicePool />
+          </Grid>
+
+          <Grid size={1}>
+            <ManaSpellDefenseDicePool />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
+        <Grid container columns={2} size={1}>
           <Grid size={3}>
             <Label label="Melee Defense" variant="outlined" />
           </Grid>
@@ -123,8 +131,8 @@ function RouteComponent() {
           </Grid>
         </Grid>
 
-        <Grid container size={2}>
-          <Grid size={3}>
+        <Grid container columns={2} size={1}>
+          <Grid size={2}>
             <Label label="Melee Parry" variant="outlined" />
           </Grid>
 
@@ -144,21 +152,7 @@ function RouteComponent() {
             </Fragment>
           ))}
         </Grid>
-
-        <Grid container size={2}>
-          <Grid size={2}>
-            <Label label="Spell Defense" variant="outlined" />
-          </Grid>
-
-          <Grid size={1}>
-            <PhysicalSpellDefenseDicePool />
-          </Grid>
-
-          <Grid size={1}>
-            <ManaSpellDefenseDicePool />
-          </Grid>
-        </Grid>
       </Grid>
-    </Stack>
+    </Grid>
   )
 }

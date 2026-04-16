@@ -1,4 +1,5 @@
-import Box from "@mui/material/Box"
+import { Typography } from "@mui/material"
+import Stack from "@mui/material/Stack"
 
 interface DiceGroupDisplayProps {
   name: string
@@ -11,32 +12,36 @@ export function DiceGroupDisplay({
   name,
   size,
   total = false,
-  color = "text.primary",
+  color,
 }: DiceGroupDisplayProps) {
-  const sizeStyles = {
-    display: "inline-block",
-    padding: 0.5,
-    width: 30,
-    textAlign: "center",
-  } as const
-
-  const nameStyles = {
-    display: "inline-block",
-    padding: 0.5,
-    marginRight: 1,
-  } as const
-
   return (
-    <Box
+    <Stack
+      direction="row"
+      alignItems="flex-start"
       sx={{
-        display: "flex",
-        fontSize: total ? 14 : 12,
-        backgroundColor: total ? "grey.900" : undefined,
-        color: color,
+        gap: 1,
+        paddingX: 1,
+        backgroundColor: total ? "primary.dark" : undefined,
+        color: color ?? (total ? "primary.contrastText" : undefined),
+        fontWeight: total ? "bold" : "normal",
       }}
     >
-      <Box sx={sizeStyles}>{size}</Box>
-      <Box sx={nameStyles}>{name}</Box>
-    </Box>
+      <Typography
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        {name}
+      </Typography>
+      <Typography
+        sx={{
+          display: "flex",
+          width: "2em",
+          justifyContent: "flex-end",
+        }}
+      >
+        {size}
+      </Typography>
+    </Stack>
   )
 }
