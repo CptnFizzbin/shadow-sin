@@ -53,3 +53,4 @@ Thumbs.db
 todos.json
 diff.txt
 screenshots/
+e2e/seed.spec.ts
