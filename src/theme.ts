@@ -12,20 +12,20 @@ export const theme = createTheme({
     light: {
       palette: {
         primary: {
+          main: "#2563EB",
+          light: "#60A5FA",
+          dark: "#1D4ED8",
+        },
+        secondary: {
           main: "#7C3AED",
           light: "#A78BFA",
           dark: "#5B21B6",
         },
-        secondary: {
-          main: "#06B6D4",
-          light: "#67E8F9",
-          dark: "#0891B2",
-        },
         background: {
-          default: "#F5F0FF",
-          paper: "#EDE8FF",
+          default: "#EFF6FF",
+          paper: "#DBEAFE",
         },
-        divider: "rgba(124, 58, 237, 0.5)",
+        divider: "rgba(37, 99, 235, 0.5)",
       },
     },
     dark: {
@@ -194,7 +194,7 @@ export const theme = createTheme({
 
     MuiStack: {
       defaultProps: {
-        gap: 1,
+        gap: 2,
       },
     },
 
