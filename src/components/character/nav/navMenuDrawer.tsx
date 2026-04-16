@@ -35,7 +35,7 @@ export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
       onClose={onClose}
     >
       <Toolbar sx={{ justifyContent: "space-between", paddingX: 1 }}>
-        <Typography variant="h6">Go to page</Typography>
+        <Typography variant="h2">Go to page</Typography>
         <IconButton onClick={onClose} aria-label="Close menu">
           <RiCloseLine />
         </IconButton>

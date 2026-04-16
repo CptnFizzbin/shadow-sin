@@ -50,7 +50,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
             </Typography>
           </Stack>
         </Stack>
-        <Typography variant="body1" fontWeight="medium" sx={{ whiteSpace: "nowrap" }}>
+        <Typography fontWeight="medium" sx={{ whiteSpace: "nowrap" }}>
           {formatNuyen(credstick.balance)}
         </Typography>
       </Stack>

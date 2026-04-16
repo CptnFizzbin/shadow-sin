@@ -106,7 +106,7 @@ export default function CharacterRosterList({
             >
               <ListItemText
                 primary={
-                  <Typography variant="h6">{character.profile.alias}</Typography>
+                  <Typography variant="h2">{character.profile.alias}</Typography>
                 }
                 secondary={(
                   <Typography color="text.secondary">
@@ -154,7 +154,7 @@ export default function CharacterRosterList({
             </ListItemIcon>
             <ListItemText
               primary={(
-                <Typography variant="h6" color="error">
+                <Typography variant="h2" color="error">
                   Invalid character
                 </Typography>
               )}

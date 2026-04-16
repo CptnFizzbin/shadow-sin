@@ -87,7 +87,7 @@ function TypographyTestPage() {
               <Typography variant="subtitle2">{SAMPLE_BODY}</Typography>
             </VariantRow>
             <VariantRow label="body1">
-              <Typography variant="body1">{SAMPLE_LONG}</Typography>
+              <Typography>{SAMPLE_LONG}</Typography>
             </VariantRow>
             <VariantRow label="body2">
               <Typography>{SAMPLE_LONG}</Typography>
@@ -118,42 +118,42 @@ function TypographyTestPage() {
         <Stack gap={2} padding={2}>
           <Section title="Color Roles">
             <VariantRow label="text.primary">
-              <Typography variant="body1" color="text.primary">
+              <Typography color="text.primary">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="text.secondary">
-              <Typography variant="body1" color="text.secondary">
+              <Typography color="text.secondary">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="text.disabled">
-              <Typography variant="body1" color="text.disabled">
+              <Typography color="text.disabled">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="primary">
-              <Typography variant="body1" color="primary">
+              <Typography color="primary">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="secondary">
-              <Typography variant="body1" color="secondary">
+              <Typography color="secondary">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="error">
-              <Typography variant="body1" color="error">
+              <Typography color="error">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="warning">
-              <Typography variant="body1" color="warning">
+              <Typography color="warning">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>
             <VariantRow label="success">
-              <Typography variant="body1" color="success">
+              <Typography color="success">
                 {SAMPLE_BODY}
               </Typography>
             </VariantRow>

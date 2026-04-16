@@ -192,7 +192,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
                 <Typography color="text.secondary">
                   Balance
                 </Typography>
-                <Typography variant="body1" fontWeight="medium">
+                <Typography fontWeight="medium">
                   {formatNuyen(credstick.balance)}
                 </Typography>
               </Stack>
