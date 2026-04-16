@@ -37,7 +37,7 @@ export default function DamageTrack({
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: `repeat(${woundInterval}, 1fr)`,
           gap: 0.5,
         }}
       >
