@@ -98,7 +98,7 @@ Do not pass props that merely repeat a default — if the theme already sets `ga
 <Stack gap={0.5}>…</Stack>
 
 // ❌ — just repeats the theme default, adds noise
-<Stack gap={1} padding={2} variant="outlined">…</Stack>
+<Stack gap={2} variant="outlined">…</Stack>
 ```
 
 This rule applies to every MUI component: `Stack`, `Paper`, `Typography`, `Button`, `TextField`, `Chip`, etc.

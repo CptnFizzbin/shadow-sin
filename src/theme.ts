@@ -194,8 +194,7 @@ export const theme = createTheme({
 
     MuiStack: {
       defaultProps: {
-        gap: 1,
-        padding: 2,
+        gap: 2,
       },
     },
 
