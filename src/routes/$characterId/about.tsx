@@ -10,7 +10,7 @@ import { BiologySection } from "#/components/character/biologySection.tsx"
 import { FinancesSection } from "#/components/character/financesSection.tsx"
 import { ProfileEditDialog } from "#/components/character/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/character/profileSection.tsx"
-import { SinsAndLicensesSection } from "#/components/licenses/sinsAndLicensesSection.tsx"
+import { QualitiesViewerSection } from "#/components/qualities/qualitiesViewerSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/about")({
@@ -46,8 +46,8 @@ function RouteComponent() {
 
       <Paper sx={{ padding: 1 }}>
         <Stack gap={1}>
-          <SectionHeader>SINs & Licenses</SectionHeader>
-          <SinsAndLicensesSection />
+          <SectionHeader>Qualities</SectionHeader>
+          <QualitiesViewerSection />
         </Stack>
       </Paper>
 
