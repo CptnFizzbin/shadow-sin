@@ -79,7 +79,7 @@ function DamageCell({
   woundInterval,
   toggleCell,
 }: DamageCellProps) {
-  const isWoundMarker = value % woundInterval === 0
+  const isWoundMarker = value > 0 && value % woundInterval === 0
   const penalty = Math.floor(value / woundInterval)
 
   return (
