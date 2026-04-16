@@ -30,7 +30,7 @@ export const CredstickSection: FC = () => {
 
       {credsticks.length === 0
         ? (
-            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>
+            <Typography color="text.secondary" sx={{ fontStyle: "italic" }}>
               No credsticks
             </Typography>
           )

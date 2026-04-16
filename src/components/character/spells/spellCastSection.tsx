@@ -73,7 +73,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         <Stack gap={0.5}>
           <Label label="Cast" variant="text" />
           {isOvercasting && (
-            <Typography variant="caption" color="error.main">
+            <Typography color="error.main">
               Force exceeds Magic — drain is Physical
             </Typography>
           )}

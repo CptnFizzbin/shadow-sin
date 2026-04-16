@@ -112,7 +112,7 @@ export const ActiveSkillsList: FC = () => {
       />
 
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+        <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
           Group by:
         </Typography>
         <ToggleButtonGroup
@@ -133,7 +133,7 @@ export const ActiveSkillsList: FC = () => {
       <Stack>
         {visibleSkills.length === 0 && (
           <Typography
-            variant="body2"
+
             color="text.secondary"
             sx={{ textAlign: "center", py: 2 }}
           >

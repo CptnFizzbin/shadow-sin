@@ -36,7 +36,7 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
           {quality.name}
           {rating !== undefined && ` (Rating ${rating})`}
         </Typography>
-        <Typography variant="caption" color="secondary.main">
+        <Typography color="secondary.main">
           {bpLabel}
         </Typography>
         {onRemove && (

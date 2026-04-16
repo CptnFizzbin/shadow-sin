@@ -26,7 +26,7 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label }) 
         >
           <RiSubtractLine />
         </IconButton>
-        <Typography variant="body1" sx={{ width: 50, textAlign: "center" }}>
+        <Typography sx={{ width: 50, textAlign: "center" }}>
           {value} / {max}
         </Typography>
         <IconButton

@@ -5,10 +5,6 @@
   "engines": {
     "node": ">=25.0.0"
   },
-  "imports": {
-    "#/*": "./src/*",
-    "#testUtils/*": "./testUtils/*"
-  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "fix": "FORCE_COLOR=1 npm-run-all -lsnc '*:fix'",

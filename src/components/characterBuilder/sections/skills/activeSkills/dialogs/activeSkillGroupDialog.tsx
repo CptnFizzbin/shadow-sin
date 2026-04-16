@@ -106,7 +106,7 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
           </FormControl>
 
           {memberSkills.length > 0 && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               Includes: {memberSkills.join(", ")}
             </Typography>
           )}

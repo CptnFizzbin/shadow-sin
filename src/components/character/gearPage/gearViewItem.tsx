@@ -4,13 +4,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import {
-  getImplantEffectiveEssenceCost,
-  getImplantEffectiveNuyenCost,
-} from "#/components/gear/implantUtils.ts"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { isArmorData } from "#/lib/system/gear/armorData.ts"
-import { isImplant, ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade, ImplantType, isImplant } from "#/lib/system/gear/implantData.ts"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 import { isSinData } from "#/lib/system/gear/sinData.ts"
 import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
@@ -86,7 +83,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
             />
           )}
 
-          <Typography variant="body2">
+          <Typography>
             <Nuyen amount={displayCost} />
           </Typography>
         </Stack>
@@ -188,7 +185,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
 
           {description && (
             <Typography
-              variant="caption"
+
               color="text.secondary"
               sx={{ flexGrow: 1, alignSelf: "center" }}
             >

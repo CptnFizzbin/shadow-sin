@@ -77,7 +77,7 @@ export const ComplexFormsList: FC = () => {
       )}
 
       {complexForms.length === 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+        <Typography color="text.secondary" sx={{ pl: 1 }}>
           No complex forms added
         </Typography>
       )}

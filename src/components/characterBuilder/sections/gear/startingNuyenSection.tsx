@@ -7,7 +7,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-import { GearNuyenPerBuildPoint, useGearTotalCost } from "#/components/characterBuilder/buildPoints/hooks/useGearBuildPoints.ts"
+import {
+  GearNuyenPerBuildPoint,
+  useGearTotalCost,
+} from "#/components/characterBuilder/buildPoints/hooks/useGearBuildPoints.ts"
 import { DiceResult } from "#/components/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
@@ -61,11 +64,11 @@ export const StartingNuyenSection: FC = () => {
               highlightGlitches={false}
             />
             {bonus > 0 && (
-              <Typography variant="body2" color="text.secondary">
+              <Typography color="text.secondary">
                 + {bonus}
               </Typography>
             )}
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary">
               × <Nuyen amount={mult} />
             </Typography>
           </Stack>
@@ -76,7 +79,7 @@ export const StartingNuyenSection: FC = () => {
                 </Box>
               )
             : (
-                <Typography variant="body2" color="text.secondary">
+                <Typography color="text.secondary">
                   {formatNuyen(minResult)} – {formatNuyen(maxResult)}
                 </Typography>
               )}
@@ -87,7 +90,7 @@ export const StartingNuyenSection: FC = () => {
         </Button>
 
         {bonus > 0 && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography color="text.secondary">
             + {bonus} bonus from {formatNuyen(unspentNuyen)} unspent (max + {maxBonus})
           </Typography>
         )}

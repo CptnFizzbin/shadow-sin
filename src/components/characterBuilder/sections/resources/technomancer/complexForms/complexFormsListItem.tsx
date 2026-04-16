@@ -35,7 +35,7 @@ export const ComplexFormsListItem: FC<ComplexFormRowProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {form.name}
         </Typography>
 

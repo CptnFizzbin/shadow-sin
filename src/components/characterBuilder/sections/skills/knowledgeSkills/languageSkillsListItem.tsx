@@ -37,12 +37,12 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
 
         {skill.lingo && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography color="text.secondary">
             Lingo: {skill.lingo}
           </Typography>
         )}
@@ -55,7 +55,7 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
         <SkillPoints
-          variant="caption"
+
           value={spCost}
           sx={{ minWidth: 40, textAlign: "right" }}
         />

@@ -35,12 +35,12 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillsListItemProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
 
         {skill.specialization && (
-          <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
+          <Typography color="text.secondary" sx={{ pl: 0.5 }}>
             {skill.specialization}
           </Typography>
         )}
@@ -53,7 +53,7 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillsListItemProps> = ({
         />
 
         <Typography
-          variant="caption"
+
           color="warning.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >

@@ -137,11 +137,11 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
         <Stack gap={2} sx={{ padding: 1 }}>
           {isCertified && (
             <>
-              <Typography variant="body2" color="text.secondary">
+              <Typography color="text.secondary">
                 Cost: {formatNuyen(CredstickPurchaseCost)} + loaded balance (deducted from your nuyen)
               </Typography>
               {hasInsufficientNuyen && (
-                <Typography variant="body2" color="error.main">
+                <Typography color="error.main">
                   Insufficient nuyen — need {formatNuyen(certifiedTotalCost)}, have {formatNuyen(currentNuyen)}.
                 </Typography>
               )}
@@ -189,10 +189,10 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
           {isEditMode && credstick && (
             <>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
+                <Typography color="text.secondary">
                   Balance
                 </Typography>
-                <Typography variant="body1" fontWeight="medium">
+                <Typography fontWeight="medium">
                   {formatNuyen(credstick.balance)}
                 </Typography>
               </Stack>
@@ -200,7 +200,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
               {showWithdrawConfirm && (
                 <>
                   <Divider />
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     Withdraw {formatNuyen(credstick.balance)} to your nuyen and delete this credstick?
                   </Typography>
                   <Stack direction="row" gap={1} justifyContent="flex-end">
@@ -222,7 +222,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
               {showRemoveConfirm && (
                 <>
                   <Divider />
-                  <Typography variant="body2" color="error">
+                  <Typography color="error">
                     Remove this credstick? Any remaining balance will be lost.
                   </Typography>
                   <Stack direction="row" gap={1} justifyContent="flex-end">

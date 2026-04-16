@@ -52,7 +52,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
 
       <Stack sx={{ flexGrow: 1 }} gap={0}>
         <Typography>{name}</Typography>
-        {specialization && <Typography variant="caption" color="text.secondary">{specialization}</Typography>}
+        {specialization && <Typography color="text.secondary">{specialization}</Typography>}
       </Stack>
 
       <Typography color="text.secondary">

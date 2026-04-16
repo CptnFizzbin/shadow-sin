@@ -4,8 +4,10 @@ const DISPLAY_FONT = "\"Smooch Sans\", sans-serif"
 const BODY_FONT = "\"Monda\", monospace, sans-serif"
 
 export const theme = createTheme({
-  cssVariables: true,
-  defaultColorScheme: "dark",
+  cssVariables: {
+    colorSchemeSelector: "data",
+  },
+
   colorSchemes: {
     light: {
       palette: {
@@ -57,12 +59,36 @@ export const theme = createTheme({
 
   typography: {
     fontFamily: BODY_FONT,
-    h1: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
-    h2: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
-    h3: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
-    h4: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
-    h5: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
-    h6: { fontFamily: DISPLAY_FONT, fontWeight: 700 },
+    h1: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 48,
+    },
+    h2: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 32,
+    },
+    h3: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 24,
+    },
+    h4: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 20,
+    },
+    h5: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 18,
+    },
+    h6: {
+      fontFamily: DISPLAY_FONT,
+      fontWeight: 700,
+      fontSize: 14,
+    },
     overline: {
       fontFamily: BODY_FONT,
       fontWeight: 700,

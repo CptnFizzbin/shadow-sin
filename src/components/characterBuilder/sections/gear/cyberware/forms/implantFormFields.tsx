@@ -26,7 +26,7 @@ const implantGradeOptions = [
       >
         <Box>Standard</Box>
         {" "}
-        <Typography variant="caption" color="text.secondary">
+        <Typography color="text.secondary">
           ×1 ¥ | ×1.0 Ess
         </Typography>
       </Stack>
@@ -43,7 +43,7 @@ const implantGradeOptions = [
       >
         <Box>Alpha</Box>
         {" "}
-        <Typography variant="caption" color="text.secondary">
+        <Typography color="text.secondary">
           ×2 ¥ | ×0.8 Ess
         </Typography>
       </Stack>

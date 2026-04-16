@@ -91,7 +91,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
                           }}
                         >
                           <Typography
-                            variant="body2"
+
                             color={isOver ? "error" : "text.primary"}
                           >
                             {section.label}

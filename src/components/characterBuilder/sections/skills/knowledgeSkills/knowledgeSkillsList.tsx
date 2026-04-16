@@ -63,7 +63,7 @@ export const KnowledgeSkillsList: FC = () => {
             <SkillPoints value={skillPoints.spent.extra} />
           </Stack>
 
-          <Typography variant="caption">Extra SP costs 2 BP each</Typography>
+          <Typography>Extra SP costs 2 BP each</Typography>
         </Stack>
 
         <BuildPoints value={buildPoints.spent} />
@@ -76,7 +76,7 @@ export const KnowledgeSkillsList: FC = () => {
             justifyContent="space-between"
             sx={{ px: 0.5 }}
           >
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               Knowledge Skills
             </Typography>
           </Stack>
@@ -99,7 +99,7 @@ export const KnowledgeSkillsList: FC = () => {
             justifyContent="space-between"
             sx={{ px: 0.5 }}
           >
-            <Typography variant="caption" color="text.secondary">
+            <Typography color="text.secondary">
               Languages
             </Typography>
           </Stack>
@@ -116,7 +116,7 @@ export const KnowledgeSkillsList: FC = () => {
       )}
 
       {knowledgeSkills.length === 0 && languageSkills.length === 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+        <Typography color="text.secondary" sx={{ pl: 1 }}>
           No knowledge or language skills added
         </Typography>
       )}

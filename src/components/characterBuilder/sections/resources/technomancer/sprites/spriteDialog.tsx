@@ -89,7 +89,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
 
           {maxSpriteTasks === 0
             ? (
-                <Typography variant="caption" color="warning.main">
+                <Typography color="warning.main">
                   Add the Compiling skill to enable sprites with tasks
                 </Typography>
               )

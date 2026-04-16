@@ -35,7 +35,7 @@ export const AdeptPowerListItem: FC<AdeptPowerListItemProps> = ({
           variant="outlined"
           size="small"
         />
-        <PowerPoints value={getAdeptPowerBpCost(power)} variant="body2" />
+        <PowerPoints value={getAdeptPowerBpCost(power)} />
       </Stack>
     </Paper>
   )

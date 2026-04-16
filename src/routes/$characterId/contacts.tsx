@@ -42,7 +42,7 @@ function RouteComponent() {
       <ContactsList
         contacts={filteredContacts}
         emptyState={searchQuery && (
-          <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+          <Typography color="text.secondary" sx={{ pl: 1 }}>
             No matching contacts found
           </Typography>
         )}
