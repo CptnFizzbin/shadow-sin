@@ -135,41 +135,41 @@ export const ImplantFormFields = withFieldGroup({
               <Stack direction="row" gap={1}>
                 {parentId
                   ? (
-                    <group.AppField
-                      name="capacityCost"
-                      validators={{
-                        onChange: z
-                          .number("Essence cost is required")
-                          .min(0, "Essence cost must be 0 or more"),
-                      }}
-                    >
-                      {(field) => (
-                        <field.NumberField
-                          label="Capacity Cost"
-                          size="small"
-                          sx={{ flex: 1 }}
-                        />
-                      )}
-                    </group.AppField>
-                  )
+                      <group.AppField
+                        name="capacityCost"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity Cost"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )
                   : (
-                    <group.AppField
-                      name="capacity"
-                      validators={{
-                        onChange: z
-                          .number("Essence cost is required")
-                          .min(0, "Essence cost must be 0 or more"),
-                      }}
-                    >
-                      {(field) => (
-                        <field.NumberField
-                          label="Capacity"
-                          size="small"
-                          sx={{ flex: 1 }}
-                        />
-                      )}
-                    </group.AppField>
-                  )}
+                      <group.AppField
+                        name="capacity"
+                        validators={{
+                          onChange: z
+                            .number("Essence cost is required")
+                            .min(0, "Essence cost must be 0 or more"),
+                        }}
+                      >
+                        {(field) => (
+                          <field.NumberField
+                            label="Capacity"
+                            size="small"
+                            sx={{ flex: 1 }}
+                          />
+                        )}
+                      </group.AppField>
+                    )}
               </Stack>
 
               {!parentId && (

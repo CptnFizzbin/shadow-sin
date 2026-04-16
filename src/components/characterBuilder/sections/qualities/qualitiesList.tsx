@@ -79,22 +79,22 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
 
       {filteredQualities.length === 0
         ? (
-          <Typography color="text.secondary" sx={{ pl: 1 }}>
-            No {label} qualities added
-          </Typography>
-        )
+            <Typography color="text.secondary" sx={{ pl: 1 }}>
+              No {label} qualities added
+            </Typography>
+          )
         : (
-          <Stack gap={0.5}>
-            {filteredQualities.map((quality) => (
-              <QualitiesListItem
-                key={quality.name}
-                quality={quality}
-                onClick={() => setEditDialogState({ open: true, quality })}
-                onRemove={() => qualitiesStore.remove(quality.name)}
-              />
-            ))}
-          </Stack>
-        )}
+            <Stack gap={0.5}>
+              {filteredQualities.map((quality) => (
+                <QualitiesListItem
+                  key={quality.name}
+                  quality={quality}
+                  onClick={() => setEditDialogState({ open: true, quality })}
+                  onRemove={() => qualitiesStore.remove(quality.name)}
+                />
+              ))}
+            </Stack>
+          )}
 
       {editDialogState.quality && (
         <QualityFormDialog

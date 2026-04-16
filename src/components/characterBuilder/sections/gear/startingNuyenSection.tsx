@@ -9,7 +9,7 @@ import type { FC } from "react"
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import {
   GearNuyenPerBuildPoint,
-  useGearTotalCost
+  useGearTotalCost,
 } from "#/components/characterBuilder/buildPoints/hooks/useGearBuildPoints.ts"
 import { DiceResult } from "#/components/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/dice/useDiceRoller.ts"
@@ -74,15 +74,15 @@ export const StartingNuyenSection: FC = () => {
           </Stack>
           {hasRolled && rolledTotal !== null
             ? (
-              <Box component="span" fontWeight="bold">
-                {formatNuyen(rolledTotal)}
-              </Box>
-            )
+                <Box component="span" fontWeight="bold">
+                  {formatNuyen(rolledTotal)}
+                </Box>
+              )
             : (
-              <Typography color="text.secondary">
-                {formatNuyen(minResult)} – {formatNuyen(maxResult)}
-              </Typography>
-            )}
+                <Typography color="text.secondary">
+                  {formatNuyen(minResult)} – {formatNuyen(maxResult)}
+                </Typography>
+              )}
         </Stack>
 
         <Button size="small" variant="outlined" onClick={rollDice}>

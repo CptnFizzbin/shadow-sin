@@ -2,6 +2,7 @@ import { Box, Divider, Paper } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
+import type { FC, ReactNode } from "react"
 
 export const Route = createFileRoute("/test/theme/typography")({
   component: TypographyTestPage,
@@ -9,10 +10,10 @@ export const Route = createFileRoute("/test/theme/typography")({
 
 interface SectionProps {
   title: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const Section: React.FC<SectionProps> = ({ title, children }) => (
+const Section: FC<SectionProps> = ({ title, children }) => (
   <Stack gap={1}>
     <Typography variant="overline" color="text.secondary">
       {title}
@@ -24,10 +25,10 @@ const Section: React.FC<SectionProps> = ({ title, children }) => (
 
 interface VariantRowProps {
   label: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const VariantRow: React.FC<VariantRowProps> = ({ label, children }) => (
+const VariantRow: FC<VariantRowProps> = ({ label, children }) => (
   <Stack direction="row" gap={2} alignItems="baseline">
     <Box sx={{ minWidth: 120, flexShrink: 0 }}>
       <Typography color="text.secondary">

@@ -63,9 +63,9 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         padding: 1,
         bgcolor: isOvercasting
           ? (theme) => {
-            const fn = theme.palette.mode === "light" ? lighten : darken
-            return fn(theme.palette.error.light, 0.9)
-          }
+              const fn = theme.palette.mode === "light" ? lighten : darken
+              return fn(theme.palette.error.light, 0.9)
+            }
           : undefined,
       }}
     >
