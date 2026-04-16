@@ -16,12 +16,17 @@ export const Header: FC = () => {
   }
 
   return (
-    <AppBar role="banner" position="sticky" color="default" elevation={0}>
-      <Toolbar sx={{ gap: 2 }}>
-        <Typography variant="h5" component={Link} to="/" sx={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}>
+    <AppBar role="banner" position="sticky" sx={{ backgroundColor: "background.paper" }}>
+      <Toolbar>
+        <Typography
+          variant="h1"
+          component={Link}
+          to="/"
+          sx={{ textDecoration: "none", color: "text.primary", flexGrow: 1, fontSize: 32 }}
+        >
           ShadowSIN
         </Typography>
-        <IconButton onClick={handleToggleColorMode} color="inherit" aria-label="toggle color mode">
+        <IconButton onClick={handleToggleColorMode} color="primary" aria-label="toggle color mode">
           {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
         </IconButton>
       </Toolbar>

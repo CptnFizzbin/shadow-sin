@@ -23,16 +23,20 @@ export const QuickAccessPanel: FC = () => {
       expanded={isExpanded}
       onChange={(_, expanded) => setIsExpanded(expanded)}
       sx={{
-        "border": "1px solid",
-        "borderColor": "divider",
         "& .MuiAccordionSummary-content": { margin: 0 },
       }}
     >
       <AccordionSummary
         expandIcon={<RiArrowDownSLine />}
-        sx={{ padding: 1, margin: 0, minHeight: "unset" }}
+        sx={{
+          padding: 1,
+          margin: 0,
+          minHeight: "unset",
+          backgroundColor: "secondary.dark",
+          color: "secondary.contrastText",
+        }}
       >
-        <Typography variant="body2" color="text.secondary">
+        <Typography>
           Quick Access
         </Typography>
       </AccordionSummary>

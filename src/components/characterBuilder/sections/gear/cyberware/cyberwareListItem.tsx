@@ -7,10 +7,7 @@ import type { FC } from "react"
 
 import { GearMaxAvailability } from "#/components/characterBuilder/sections/gear/gearUtils.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import {
-  getImplantEffectiveEssenceCost,
-  getImplantEffectiveNuyenCost,
-} from "#/components/gear/implantUtils.ts"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
@@ -60,7 +57,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
           {implant.name}
         </Typography>
 
-        <Typography variant="body2" color="text.secondary">
+        <Typography color="text.secondary">
           {effectiveEssence > 0
             ? `${effectiveEssence.toFixed(2).replace(/\.?0+$/, "")} Ess`
             : "0 Ess"}
@@ -131,7 +128,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
 
         {description && (
           <Typography
-            variant="caption"
+
             color="text.secondary"
             sx={{ flexGrow: 1, alignSelf: "center" }}
           >

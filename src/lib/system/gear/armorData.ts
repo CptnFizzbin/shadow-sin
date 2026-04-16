@@ -1,12 +1,12 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
-import { GearType } from "../gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export interface ArmorData extends ItemData {
-  itemType: GearType.armor
+  itemType: ItemType.armor
   ballistic: number
   impact: number
 }
 
 export function isArmorData(item: ItemData): item is ArmorData {
-  return item.itemType === GearType.armor
+  return item.itemType === ItemType.armor
 }

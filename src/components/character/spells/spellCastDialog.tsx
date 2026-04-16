@@ -29,46 +29,46 @@ export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose
           <Grid container spacing={1} columns={3}>
             <Grid size={1}>
               <Label label="Category" variant="outlined" />
-              <Typography variant="body2" textAlign="center">
+              <Typography textAlign="center">
                 {spell.category}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Type" variant="outlined" />
-              <Typography variant="body2" textAlign="center">
+              <Typography textAlign="center">
                 {spell.type}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Range" variant="outlined" />
-              <Typography variant="body2" textAlign="center">
+              <Typography textAlign="center">
                 {spell.range}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Duration" variant="outlined" />
-              <Typography variant="body2" textAlign="center">
+              <Typography textAlign="center">
                 {spell.duration}
               </Typography>
             </Grid>
             {spell.dealsDamage && (
               <Grid size={1}>
                 <Label label="Damage" variant="outlined" />
-                <Typography variant="body2" textAlign="center">
+                <Typography textAlign="center">
                   {spell.damage}
                 </Typography>
               </Grid>
             )}
             <Grid size={1}>
               <Label label="Drain" variant="outlined" />
-              <Typography variant="body2" textAlign="center">
+              <Typography textAlign="center">
                 {formatDrainFormula(spell.drainValueMod)}
               </Typography>
             </Grid>
           </Grid>
 
           {spell.description && (
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary">
               {spell.description}
             </Typography>
           )}

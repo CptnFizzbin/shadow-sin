@@ -55,7 +55,7 @@ Refactoring the gear system to use a unified `ItemData`-backed flat map (`Record
 - **`src/components/CharacterBuilder/Sections/Gear/GearUtils.ts`** — `GearBuildPointAllowance` (50 BP),
   `GearNuyenAllowance` (250,000¥), `GearMaxAvailability` (12), `useGearTotalCost`, `useGearBuildPoints`,
   `useGearAvailabilityIssues` hooks
-- **`src/components/CharacterBuilder/Sections/Gear/SectionHeader.tsx`** — `SectionHeader` enum (Cyberware, Weapons,
+- **`src/components/CharacterBuilder/Sections/Gear/sectionHeader.tsx`** — `SectionHeader` enum (Cyberware, Weapons,
   Armor, Vehicles, Devices, SINs & Licenses, Misc, Lifestyle)
 
 ### Builder Gear Panels
@@ -102,19 +102,24 @@ Refactoring the gear system to use a unified `ItemData`-backed flat map (`Record
 - [x] Define `ItemData` base interface (`src/lib/system/ItemData.ts`) — includes all gear-specific fields
 - [x] `GearType` enum in `gearType.ts` — discriminant values for `ItemData.itemType`
 - [x] Define all typed gear sub-interfaces (armor, weapon, implant, device, vehicle, license, sin, program)
-- [x] `createItem<T>()` factory in `ItemData.ts` — auto-assigns `crypto.randomUUID()` as `id`, handles parent/child linking
+- [x] `createItem<T>()` factory in `ItemData.ts` — auto-assigns `crypto.randomUUID()` as `id`, handles parent/child
+  linking
 - [x] `createItemMap()` utility in `ItemData.ts` — builds a `Record<string, ItemData>` from items/arrays
 - [x] `CharacterSheet.gear` typed as `Record<string, ItemData>` (flat map, UUID-keyed)
 - [x] `GearApi` interface with `set`, `add`, `remove`, `setParent`, `addChild`
-- [x] `useGearApi()` hook in `UseGearApi.ts` — reads `store.state.gear` via `CharacterSheetContext`; also exports `useGearById`, `useGearByType`, `useGearParent`, `useGearChildren`, `useGearFilter`
+- [x] `useGearApi()` hook in `UseGearApi.ts` — reads `store.state.gear` via `CharacterSheetContext`; also exports
+  `useGearById`, `useGearByType`, `useGearParent`, `useGearChildren`, `useGearFilter`
 - [x] `CharacterSheetProvider` exposes `CharacterSheetContext` used by `useGearApi()` (no separate GearProvider needed)
 - [x] `CharacterBuilderStoreProvider` wraps `CharacterSheetProvider` so builder gear components can call `useGearApi()`
 - [x] `GearSection.tsx` — accordion UI with all 8 category panels in the builder
-- [x] `GearUtils.ts` (builder) — budget constants and reactive `useGearBuildPoints` / `useGearTotalCost` / `useGearAvailabilityIssues` hooks
+- [x] `GearUtils.ts` (builder) — budget constants and reactive `useGearBuildPoints` / `useGearTotalCost` /
+  `useGearAvailabilityIssues` hooks
 - [x] All builder gear panels: Armor, Cyberware, Devices, Lifestyle, Misc, Vehicles, Weapons, SINs & Licenses
-- [x] Generic builder forms: `UseItemForm` (form state inline as `ItemData`), `GearItemFormFields`, `GearItemCard`, `GearItemsList`, `GearItemFormDialog`
+- [x] Generic builder forms: `UseItemForm` (form state inline as `ItemData`), `GearItemFormFields`, `GearItemCard`,
+  `GearItemsList`, `GearItemFormDialog`
 - [x] Cyberware-specific forms: `UseImplantForm` (form state inline as `ImplantData`), `ImplantFormFields`
-- [x] SINs & Licenses forms: `UseSinForm`, `UseLicenseForm`, `SinFormFields`, `LicenseFormFields`, `SinUtils`, `LicenseUtils`
+- [x] SINs & Licenses forms: `UseSinForm`, `UseLicenseForm`, `SinFormFields`, `LicenseFormFields`, `SinUtils`,
+  `LicenseUtils`
 - [x] Availability warnings and BP/nuyen budget progress in `GearSection.tsx`
 - [x] `AvailabilityChip` shared component
 - [x] Essence tracking in `CyberwarePanel` — grade-adjusted cost, error alert on depletion, cyber/bio split display

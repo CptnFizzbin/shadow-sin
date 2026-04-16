@@ -13,7 +13,7 @@ import { SinCard } from "#/components/licenses/sinCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export interface SinsAndLicensesSectionSlots {
   sinTrailingContent?: (sin: SinData) => ReactNode
@@ -36,8 +36,8 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   const gearStore = useGearStore()
   const { acquire, purchase } = useGearPurchase()
   const isBuilder = useIsBuilder()
-  const sins = useGearByType<SinData>(GearType.sin)
-  const licenses = useGearByType<LicenseData>(GearType.license)
+  const sins = useGearByType<SinData>(ItemType.sin)
+  const licenses = useGearByType<LicenseData>(ItemType.license)
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

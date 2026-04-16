@@ -37,7 +37,7 @@ export const LoanCard: FC<LoanCardProps> = ({ loan, onClick }) => (
 
       <Stack direction="row" gap={0.5} alignItems="center" flexWrap="wrap">
         {loan.notes && (
-          <Typography variant="caption" color="text.secondary" noWrap title={loan.notes}>
+          <Typography color="text.secondary" noWrap title={loan.notes}>
             {loan.notes}
           </Typography>
         )}

@@ -106,10 +106,10 @@ export default function CharacterRosterList({
             >
               <ListItemText
                 primary={
-                  <Typography variant="h6">{character.profile.alias}</Typography>
+                  <Typography variant="h2">{character.profile.alias}</Typography>
                 }
                 secondary={(
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     {[character.biology.metatype, character.profile.archetype]
                       .filter(Boolean)
                       .join(" · ")}
@@ -154,12 +154,12 @@ export default function CharacterRosterList({
             </ListItemIcon>
             <ListItemText
               primary={(
-                <Typography variant="h6" color="error">
+                <Typography variant="h2" color="error">
                   Invalid character
                 </Typography>
               )}
               secondary={(
-                <Typography variant="body2" color="text.secondary">
+                <Typography color="text.secondary">
                   ID: {loadError.characterId} · {loadError.errorMessage}
                 </Typography>
               )}

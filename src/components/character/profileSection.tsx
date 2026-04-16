@@ -18,10 +18,12 @@ export const ProfileSection: FC = () => {
 
   return (
     <Stack gap={1} divider={<Divider />}>
-      <Stack gap={1}>
-        <Stack gap={0.25}>
-          <Typography variant="h5">{profile.alias || profile.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
+      <Typography variant="h1" textAlign="center">{profile.alias || profile.name}</Typography>
+
+      <Stack direction="row">
+
+        <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
+          <Typography color="text.secondary">
             {profile.name}
           </Typography>
           {(profile.archetype || biology.metatype) && (
@@ -31,31 +33,17 @@ export const ProfileSection: FC = () => {
           )}
         </Stack>
 
-        <Stack direction="row" gap={1} flexWrap="wrap">
-          {profile.streetCred > 0 && (
-            <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" />
-          )}
-          {profile.notoriety > 0 && (
-            <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" color="warning" />
-          )}
-          {publicAwareness > 0 && (
-            <Chip label={`Public Awareness: ${publicAwareness}`} size="small" variant="outlined" color="error" />
-          )}
-          {profile.lifestyle && (
-            <Chip
-              label={`${profile.lifestyle.quality} · ${profile.lifestyle.monthsPaid}mo`}
-              size="small"
-              variant="outlined"
-              color="secondary"
-            />
-          )}
+        <Stack direction="row" gap={0.5} alignItems="center" marginLeft="auto">
+          <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" />
+          <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" color="warning" />
+          <Chip label={`Public Awareness: ${publicAwareness}`} size="small" variant="outlined" color="error" />
         </Stack>
       </Stack>
 
       {profile.description && (
         <Stack gap={0.5}>
-          <Label label="Description" variant="text" textAlign="left" />
-          <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+          <Label label="Description" />
+          <Typography sx={{ whiteSpace: "pre-wrap" }}>
             {profile.description}
           </Typography>
         </Stack>
@@ -63,8 +51,8 @@ export const ProfileSection: FC = () => {
 
       {profile.personality && (
         <Stack gap={0.5}>
-          <Label label="Personality" variant="text" textAlign="left" />
-          <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+          <Label label="Personality" />
+          <Typography sx={{ whiteSpace: "pre-wrap" }}>
             {profile.personality}
           </Typography>
         </Stack>

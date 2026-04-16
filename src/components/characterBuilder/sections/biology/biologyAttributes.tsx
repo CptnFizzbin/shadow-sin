@@ -50,7 +50,7 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
       {attributes.map((attr) => (
         <Stack key={attr.label} flexGrow={1} alignItems="center">
           <Label label={attr.label} variant="outlined" />
-          <Typography variant="body2">
+          <Typography>
             {attr.min}
             /
             {attr.max}

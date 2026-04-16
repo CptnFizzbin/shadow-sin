@@ -2,12 +2,13 @@ import type { UUID } from "node:crypto"
 
 import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
 import type { GameEffectData } from "#/lib/system/gameEffects/gameEffectData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 import type { SourceData } from "#/lib/system/sourceData.ts"
 
 export interface ItemData {
   id: UUID
   name: string
-  itemType: string
+  itemType: ItemType
 
   description?: string
   cost?: number

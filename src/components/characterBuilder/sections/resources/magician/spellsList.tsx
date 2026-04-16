@@ -41,7 +41,7 @@ export const SpellsList: FC = () => {
 
       <Label label="Spells" variant="outlined" />
       {spells.length === 0 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography color="text.secondary">
           No spells added yet.
         </Typography>
       )}

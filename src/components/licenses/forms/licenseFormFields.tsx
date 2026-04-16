@@ -8,12 +8,12 @@ import {
 } from "#/components/licenses/ratingOptions.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export const LicenseFormFields = withFieldGroup({
   ...licenseFormOpts,
   render: function Render({ group }) {
-    const sins = useGearByType<SinData>(GearType.sin)
+    const sins = useGearByType<SinData>(ItemType.sin)
     const sinOptions = sins.map((sin) => ({ label: sin.name, value: sin.id }))
 
     return (

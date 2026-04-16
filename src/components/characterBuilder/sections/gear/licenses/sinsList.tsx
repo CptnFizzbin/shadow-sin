@@ -17,7 +17,7 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 type DialogState =
   | null
@@ -28,8 +28,8 @@ type DialogState =
 export const SinsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
   const gear = useGearStore()
-  const sins = useGearByType<SinData>(GearType.sin)
-  const licenses = useGearByType<LicenseData>(GearType.license)
+  const sins = useGearByType<SinData>(ItemType.sin)
+  const licenses = useGearByType<LicenseData>(ItemType.license)
 
   const onDialogClose = () => {
     setDialogState((prev) => prev && { ...prev, open: false })

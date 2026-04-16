@@ -14,10 +14,12 @@ import {
 } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 interface GearItemFormDialogProps {
   open: boolean
   item?: ItemData
+  itemType?: ItemType
   onClose: () => void
   onClosed?: () => void
   onSave?: (item: ItemData) => void
@@ -29,6 +31,7 @@ interface GearItemFormDialogProps {
 export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   open,
   item,
+  itemType,
   onClose,
   onClosed,
   onSave,
@@ -41,6 +44,7 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
 
   const form = useItemForm({
     item,
+    itemType,
     onSubmit: (submittedItem, meta) => {
       if (!isBuilder) {
         if (meta.submitAction === "purchase") {

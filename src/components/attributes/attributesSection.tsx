@@ -30,7 +30,7 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
       {attributes.map((attribute) => (
         <Stack key={attribute.key} flexGrow={1} alignItems="center">
           <Label label={AttributeLabels[attribute.key]} variant="outlined" />
-          <Typography variant="body2">{attribute.value}</Typography>
+          <Typography>{attribute.value}</Typography>
         </Stack>
       ))}
     </Stack>

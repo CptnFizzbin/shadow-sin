@@ -75,7 +75,7 @@ export const SpritesList: FC = () => {
       )}
 
       {sprites.length === 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+        <Typography color="text.secondary" sx={{ pl: 1 }}>
           No sprites added
         </Typography>
       )}

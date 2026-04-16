@@ -11,7 +11,7 @@ function RouteComponent() {
   return (
     <Stack gap={1}>
       <Paper sx={{ padding: 1 }}>
-        <Typography variant="h6">Vehicles</Typography>
+        <Typography variant="h2">Vehicles</Typography>
       </Paper>
     </Stack>
   )

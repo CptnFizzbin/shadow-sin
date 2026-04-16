@@ -1,5 +1,5 @@
-import { GearType } from "#/lib/system/gearType.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import { ItemType } from "#/lib/system/itemType.ts"
 
 export enum CredstickType {
   standard = "standard",
@@ -29,11 +29,11 @@ export const CredstickTypeLabel: Record<CredstickType, string> = {
 export const CredstickPurchaseCost = 25
 
 export interface CredstickData extends ItemData {
-  itemType: GearType.credstick
+  itemType: ItemType.credstick
   credstickType: CredstickType
   balance: number
 }
 
 export function isCredstickData(item: ItemData): item is CredstickData {
-  return item.itemType === GearType.credstick
+  return item.itemType === ItemType.credstick
 }

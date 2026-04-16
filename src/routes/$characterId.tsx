@@ -58,7 +58,7 @@ function CharacterRoute() {
         sx={{
           paddingX: 1,
           position: "sticky",
-          bottom: 0,
+          bottom: 12,
           zIndex: "appBar",
         }}
       >

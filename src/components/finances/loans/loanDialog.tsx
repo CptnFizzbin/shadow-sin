@@ -138,12 +138,13 @@ export const LoanDialog: FC<LoanDialogProps> = ({
               <Divider />
               {hasInsufficientNuyenForPayoff
                 ? (
-                    <Typography variant="body2" color="error.main">
-                      Insufficient nuyen — need {formatNuyen(loan?.amount ?? 0)} to pay off, have {formatNuyen(currentNuyen)}.
+                    <Typography color="error.main">
+                      Insufficient nuyen — need {formatNuyen(loan?.amount ?? 0)} to pay off,
+                      have {formatNuyen(currentNuyen)}.
                     </Typography>
                   )
                 : (
-                    <Typography variant="body2" color="warning.main">
+                    <Typography color="warning.main">
                       Pay off {formatNuyen(amount)} to {lender}? This will deduct {formatNuyen(amount)} from
                       your nuyen and remove the loan.
                     </Typography>
@@ -168,7 +169,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
           {showRemoveConfirm && (
             <>
               <Divider />
-              <Typography variant="body2" color="error">
+              <Typography color="error">
                 Remove this loan record? The loan balance will not be paid.
               </Typography>
               <Stack direction="row" gap={1} justifyContent="flex-end">

@@ -35,12 +35,12 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" alignItems="center" gap={1}>
-        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>
 
         {skill.specialization && (
-          <Typography variant="caption" color="text.secondary" sx={{ pl: 0.5 }}>
+          <Typography color="text.secondary" sx={{ pl: 0.5 }}>
             {skill.specialization}
           </Typography>
         )}
@@ -52,7 +52,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
         <Typography
-          variant="caption"
+
           color="secondary.main"
           sx={{ minWidth: 40, textAlign: "right" }}
         >

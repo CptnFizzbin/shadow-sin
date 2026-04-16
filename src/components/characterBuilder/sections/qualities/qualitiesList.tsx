@@ -79,7 +79,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
 
       {filteredQualities.length === 0
         ? (
-            <Typography variant="caption" color="text.secondary" sx={{ pl: 1 }}>
+            <Typography color="text.secondary" sx={{ pl: 1 }}>
               No {label} qualities added
             </Typography>
           )

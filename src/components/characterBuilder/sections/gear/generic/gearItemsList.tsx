@@ -11,6 +11,7 @@ import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/
 import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemType } from "#/lib/system/itemType.ts"
 
 type DialogState =
   | null
@@ -19,10 +20,11 @@ type DialogState =
 
 interface GearItemsListProps {
   items: ItemData[]
-  itemType?: string
+  itemLabel?: string
+  itemType?: ItemType
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items }) => {
+export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", itemType, items }) => {
   const gearApi = useGearStore()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
@@ -116,13 +118,14 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items
         color="secondary"
         fullWidth
       >
-        Add {itemType}
+        Add {itemLabel}
       </Button>
 
       {dialogState?.mode === "create" && (
         <GearItemFormDialog
           open={dialogState.open}
-          label={dialogState.parentId ? `${itemType} sub-item` : itemType}
+          itemType={itemType}
+          label={dialogState.parentId ? `${itemLabel} sub-item` : itemLabel}
           onSave={handleAdd}
           onClose={onDialogClose}
           onClosed={onDialogClosed}
@@ -132,8 +135,9 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemType = "Item", items
       {dialogState?.mode === "edit" && (
         <GearItemFormDialog
           open={dialogState.open}
+          itemType={itemType}
           item={dialogState.item}
-          label={dialogState.item.parentId ? `${itemType} sub-item` : itemType}
+          label={dialogState.item.parentId ? `${itemLabel} sub-item` : itemLabel}
           onSave={handleUpdate}
           onClose={onDialogClose}
           onClosed={onDialogClosed}

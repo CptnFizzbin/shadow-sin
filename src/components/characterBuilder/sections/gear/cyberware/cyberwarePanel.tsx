@@ -22,11 +22,11 @@ export const CyberwarePanel: FC = () => {
         alignItems="center"
         sx={{ px: 0.5 }}
       >
-        <Typography variant="caption" color="text.secondary">
+        <Typography color="text.secondary">
           Essence Used: {essenseInfo.essenceUsed.toFixed(2).replace(/\.?0+$/, "")}
         </Typography>
         <Typography
-          variant="caption"
+
           color={
             isEssenceError
               ? "error"
@@ -46,7 +46,7 @@ export const CyberwarePanel: FC = () => {
       )}
 
       {essenseInfo.cyberwareEssense > 0 && essenseInfo.biowareEssense > 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ px: 0.5 }}>
+        <Typography color="text.secondary" sx={{ px: 0.5 }}>
           Cyber: {essenseInfo.cyberwareEssense.toFixed(2)} | Bio: {essenseInfo.biowareEssense.toFixed(2)}
           (higher applied full, other at ½)
         </Typography>

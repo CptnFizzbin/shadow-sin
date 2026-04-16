@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const FinancesSection: FC = () => {
   const nuyen = useCharacterSheet((s) => s.nuyen)
@@ -11,11 +12,11 @@ export const FinancesSection: FC = () => {
 
   return (
     <Box>
-      <Typography variant="subtitle2">Finances & Karma</Typography>
-      <Typography variant="body2">
+      <SectionHeader>Finances & Karma</SectionHeader>
+      <Typography>
         Nuyen: {nuyen ? <Nuyen amount={nuyen.current} /> : "—"}
       </Typography>
-      <Typography variant="body2">
+      <Typography>
         Karma: {karma ? karma.current : "—"} / {karma ? karma.total : "—"}
       </Typography>
     </Box>
