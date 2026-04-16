@@ -14,6 +14,7 @@ import { useActiveSkillRating } from "#/components/character/characterUtils.ts"
 import { DicePool } from "#/components/dicePool/dicePool.tsx"
 import { useAttrDiceGroup, useWoundDiceGroup } from "#/components/dicePool/useDiceGroup.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { FirearmData, WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { isFirearmData } from "#/lib/system/gear/weaponData.ts"
@@ -91,6 +92,12 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
                   </Button>
                 ))}
               </ButtonGroup>
+              {selectedFiremode && (
+                <UnderConstruction
+                  title="Fire Mode Effects"
+                  description="Fire mode modifiers (recoil, burst fire DV bonus, suppressive fire) are not yet implemented."
+                />
+              )}
             </Stack>
           )}
 
