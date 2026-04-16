@@ -32,12 +32,6 @@ coverage
 .vite
 .tanstack
 
-# Project-specific
-.plans
-.code-reviews
-__unconfig*
-todos.json
-
 # Editors
 .idea
 .vscode
@@ -51,4 +45,9 @@ todos.json
 .DS_Store
 Thumbs.db
 *.local
+
+# Agent Artifacts
+.plans/
+.code-reviews/
 .playwright-mcp/
+todos.json
