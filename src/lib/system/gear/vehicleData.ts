@@ -1,8 +1,14 @@
 import type { ItemData } from "#/lib/system/itemData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
 
+export enum VehicleCategory {
+  vehicle = "vehicle",
+  drone = "drone",
+}
+
 export interface VehicleData extends ItemData {
   itemType: ItemType.vehicle
+  vehicleCategory: VehicleCategory
   vehicleType: string
   model?: string
 
