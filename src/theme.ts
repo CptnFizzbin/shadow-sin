@@ -157,6 +157,12 @@ export const theme = createTheme({
       },
     },
 
+    MuiGrid: {
+      defaultProps: {
+        height: "min-content",
+      },
+    },
+
     MuiInput: {
       defaultProps: {
         size: "small",

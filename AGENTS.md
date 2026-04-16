@@ -84,6 +84,23 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
   `npm-run-all`) and then `yarn tsc` to ensure formatting, linting, and types are clean before pushing.
 - Google Drive integration (`src/integrations/googleDrive/api.ts`) is a placeholder stub — not implemented.
 
+## Testing conventions
+
+Unit tests use the **Arrange / Act / Assert** (AAA) pattern. Each test body must have three labelled comment blocks:
+
+```ts
+it("does something", () => {
+  // Arrange
+  const sheet = makeSheet(...)
+
+  // Act
+  const { result } = renderHook(() => useMyHook(), { wrapper: makeWrapper(sheet) })
+
+  // Assert
+  expect(result.current).toBe(expected)
+})
+```
+
 ## MUI style props
 
 Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**.
