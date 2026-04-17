@@ -23,7 +23,8 @@ const migration: CharacterMigration<Character_V0_3_0, Character_V0_4_0> = {
   version: "0.4.0",
   up: (character) =>
     produce(character as unknown as Character_V0_4_0, (draft) => {
-      const gear = draft.gear ?? {}
+      if (!draft.gear) draft.gear = {}
+      const gear = draft.gear
 
       const weapons = Object.values(gear).filter(
         (item) => item.itemType === "weapon" && !item.parentId,

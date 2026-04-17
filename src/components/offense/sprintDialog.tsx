@@ -64,7 +64,8 @@ export const SprintDialog: FC<SprintDialogProps> = ({
               </Typography>
               <Button
                 variant="outlined"
-                onClick={() => setHits(hits + 1)}
+                onClick={() => setHits(Math.min(dicePool, hits + 1))}
+                disabled={hits >= dicePool}
                 sx={{ minWidth: 40, width: 40, height: 40 }}
               >
                 +

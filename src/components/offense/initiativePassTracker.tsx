@@ -1,48 +1,34 @@
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useState } from "react"
 
+import type { InitiativePassStore } from "#/components/offense/useInitiativePassStore.ts"
+import { useInitiativePassesCompleted } from "#/components/offense/useInitiativePassStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
 interface InitiativePassTrackerProps {
   numPasses: number
-  onPassesChange?: (completed: ReadonlySet<number>) => void
+  store: InitiativePassStore
 }
 
 export const InitiativePassTracker: FC<InitiativePassTrackerProps> = ({
   numPasses,
-  onPassesChange,
+  store,
 }) => {
-  const [passesCompleted, setPassesCompleted] = useState<ReadonlySet<number>>(
-    new Set(),
-  )
-
-  const handleToggle = (passIndex: number) => {
-    setPassesCompleted((prev) => {
-      const next = new Set(prev)
-      if (next.has(passIndex)) {
-        next.delete(passIndex)
-      } else {
-        next.add(passIndex)
-      }
-      onPassesChange?.(next)
-      return next
-    })
-  }
+  const completedSet = useInitiativePassesCompleted(store)
 
   return (
     <Stack alignItems="center" gap={0.5}>
       <Label label="Passes" />
       <Stack direction="row" gap={0.5} justifyContent="center">
         {Array.from({ length: numPasses }, (_, passIndex) => {
-          const completed = passesCompleted.has(passIndex)
+          const completed = completedSet.has(passIndex)
           return (
             <Button
               key={passIndex}
               variant={completed ? "contained" : "outlined"}
               color={completed ? "secondary" : "primary"}
-              onClick={() => handleToggle(passIndex)}
+              onClick={() => store.togglePass(passIndex)}
               sx={{ minWidth: 40, width: 40, height: 40, padding: 0 }}
             >
               {passIndex + 1}

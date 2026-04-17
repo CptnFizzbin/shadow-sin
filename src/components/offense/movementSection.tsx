@@ -16,7 +16,14 @@ interface MovementSectionProps {
 
 export const MovementSection: FC<MovementSectionProps> = ({ movement }) => {
   const [sprintOpen, setSprintOpen] = useState(false)
+  // Increment on each open so SprintDialog remounts with fresh state every time.
+  const [sprintDialogKey, setSprintDialogKey] = useState(0)
   const { store, total, perPass, sprintBonus, used, modes } = movement
+
+  const handleOpenSprint = () => {
+    setSprintDialogKey((k) => k + 1)
+    setSprintOpen(true)
+  }
 
   return (
     <Stack gap={1}>
@@ -38,7 +45,7 @@ export const MovementSection: FC<MovementSectionProps> = ({ movement }) => {
       <Button
         variant="outlined"
         size="small"
-        onClick={() => setSprintOpen(true)}
+        onClick={handleOpenSprint}
       >
         Sprint
       </Button>
@@ -77,14 +84,26 @@ export const MovementSection: FC<MovementSectionProps> = ({ movement }) => {
               <ButtonGroup size="small" variant="outlined">
                 <Button
                   variant={mode === "walk" ? "contained" : "outlined"}
-                  onClick={() => store.setMode(passIndex, "walk")}
+                  onClick={() => {
+                    store.setMode(passIndex, "walk")
+                    store.setMovement(
+                      passIndex,
+                      Math.min(distanceUsed, passAllowance.walk),
+                    )
+                  }}
                   sx={{ px: 1 }}
                 >
                   Walk
                 </Button>
                 <Button
                   variant={mode === "run" ? "contained" : "outlined"}
-                  onClick={() => store.setMode(passIndex, "run")}
+                  onClick={() => {
+                    store.setMode(passIndex, "run")
+                    store.setMovement(
+                      passIndex,
+                      Math.min(distanceUsed, passAllowance.run),
+                    )
+                  }}
                   sx={{ px: 1 }}
                 >
                   Run
@@ -96,6 +115,7 @@ export const MovementSection: FC<MovementSectionProps> = ({ movement }) => {
       </Stack>
 
       <SprintDialog
+        key={sprintDialogKey}
         open={sprintOpen}
         sprintBonus={sprintBonus}
         strength={movement.strength}
