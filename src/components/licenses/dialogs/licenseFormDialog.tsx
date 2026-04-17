@@ -8,9 +8,9 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import { LicenseFormFields } from "#/components/licenses/forms/licenseFormFields.tsx"
 import {
   licenseFieldMap,
@@ -24,9 +24,7 @@ export interface LicenseFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave?: (data: LicenseData) => void
-  onAcquire?: (data: LicenseData) => void
-  onPurchase?: (data: LicenseData) => void
+  onSave: (data: LicenseData) => void
   onDelete?: () => void
   license?: LicenseData
   sin?: SinData
@@ -37,30 +35,23 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  onAcquire,
-  onPurchase,
   onDelete,
   license,
   sin,
 }) => {
   const title = license ? "Edit License" : "Create License"
-  const isBuilder = useIsBuilder()
+
+  const { handleSubmit, isAcquireMode } = useItemFormSubmit({
+    mode: license ? "edit" : "create",
+    onSave,
+    getItemCost: (l) => getLicenseCost(l.rating),
+  })
 
   const form = useLicenseForm({
     license: license,
     parentId: sin?.id,
     sinReal: sin?.rating === "real" || false,
-    onSubmit: (submittedLicense, meta) => {
-      if (!isBuilder) {
-        if (meta.submitAction === "purchase") {
-          onPurchase?.(submittedLicense)
-        } else {
-          onAcquire?.(submittedLicense)
-        }
-      } else {
-        onSave?.(submittedLicense)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -100,7 +91,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        {!isBuilder
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => state.values.rating}>
                 {(rating) => {

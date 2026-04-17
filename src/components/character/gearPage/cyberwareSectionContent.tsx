@@ -6,8 +6,7 @@ import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
-import { getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
-import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
+import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
@@ -23,11 +22,16 @@ export const CyberwareSectionContent: FC<CyberwareSectionContentProps> = ({
   items,
   getChildren,
 }) => {
-  const { acquire, purchase } = useGearPurchase()
+  const gearStore = useGearStore()
   const [dialogState, setDialogState] = useState<CyberwareDialogState>(null)
   const implants = items.filter(isImplant)
 
   const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
+
+  const handleSave = (implant: ImplantData) => {
+    gearStore.save(implant)
+    closeDialog()
+  }
 
   return (
     <Stack gap={1}>
@@ -49,9 +53,7 @@ export const CyberwareSectionContent: FC<CyberwareSectionContentProps> = ({
       {dialogState && (
         <ImplantFormDialog
           open={dialogState.open}
-          onAcquire={(implant: ImplantData) => acquire(implant, closeDialog)}
-          onPurchase={(implant: ImplantData) =>
-            purchase(implant, getImplantEffectiveNuyenCost(implant), closeDialog)}
+          onSave={handleSave}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />

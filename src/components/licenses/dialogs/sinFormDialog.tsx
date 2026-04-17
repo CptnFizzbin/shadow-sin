@@ -8,9 +8,9 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
 import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
 import { getSinAvailability, getSinCost } from "#/components/licenses/sinUtils.ts"
@@ -20,9 +20,7 @@ interface SinFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onSave?: (sin: SinData) => void
-  onAcquire?: (sin: SinData) => void
-  onPurchase?: (sin: SinData) => void
+  onSave: (sin: SinData) => void
   onDelete?: () => void
   sin?: SinData
   allowReal?: boolean
@@ -35,26 +33,19 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  onAcquire,
-  onPurchase,
   onDelete,
 }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
-  const isBuilder = useIsBuilder()
+
+  const { handleSubmit, isAcquireMode } = useItemFormSubmit({
+    mode: sin ? "edit" : "create",
+    onSave,
+    getItemCost: (s) => getSinCost(s.rating === "real" ? "real" : Number(s.rating)),
+  })
 
   const form = useSinForm({
     sin,
-    onSubmit: (submittedSin, meta) => {
-      if (!isBuilder) {
-        if (meta.submitAction === "purchase") {
-          onPurchase?.(submittedSin)
-        } else {
-          onAcquire?.(submittedSin)
-        }
-      } else {
-        onSave?.(submittedSin)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -98,7 +89,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
             </Button>
           )}
         </Box>
-        {!isBuilder
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => state.values.rating}>
                 {(rating) => {

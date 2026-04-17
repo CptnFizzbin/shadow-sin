@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
+import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
@@ -25,11 +25,21 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   sins,
   getLicenses,
 }) => {
-  const { acquire, purchase } = useGearPurchase()
+  const gearStore = useGearStore()
   const [dialogState, setDialogState] = useState<LicensesDialogState>(null)
 
   const hasRealSin = sins.some((sin) => sin.rating === "real")
   const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
+
+  const handleSaveSin = (sin: SinData) => {
+    gearStore.save(sin)
+    closeDialog()
+  }
+
+  const handleSaveLicense = (license: LicenseData) => {
+    gearStore.save(license)
+    closeDialog()
+  }
 
   return (
     <Stack gap={1}>
@@ -67,8 +77,7 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
         <SinFormDialog
           open={dialogState.open}
           allowReal={!hasRealSin}
-          onAcquire={(sin: SinData) => acquire(sin, closeDialog)}
-          onPurchase={(sin: SinData) => purchase(sin, sin.cost ?? 0, closeDialog)}
+          onSave={handleSaveSin}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />
@@ -78,8 +87,7 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
         <LicenseFormDialog
           open={dialogState.open}
           sin={dialogState.sin}
-          onAcquire={(license: LicenseData) => acquire(license, closeDialog)}
-          onPurchase={(license: LicenseData) => purchase(license, license.cost ?? 0, closeDialog)}
+          onSave={handleSaveLicense}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />

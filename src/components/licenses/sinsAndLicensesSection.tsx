@@ -3,9 +3,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
-import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
 import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
 import { LicenseCard } from "#/components/licenses/licenseCard.tsx"
@@ -34,8 +32,6 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   const [dialogState, setDialogState] = useState<DialogState | null>(null)
   const confirmDialog = useConfirmDialog({ id: "remove-sin-confirm" })
   const gearStore = useGearStore()
-  const { acquire, purchase } = useGearPurchase()
-  const isBuilder = useIsBuilder()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
 
@@ -141,9 +137,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           open={dialogState.open}
           sin={dialogState.sin}
           allowReal={!hasRealSin || dialogState.sin?.rating === "real"}
-          onSave={isBuilder || dialogState.sin ? handleSaveSin : undefined}
-          onAcquire={!isBuilder && !dialogState.sin ? (sin) => acquire(sin, onDialogClose) : undefined}
-          onPurchase={!isBuilder && !dialogState.sin ? (sin) => purchase(sin, sin.cost ?? 0, onDialogClose) : undefined}
+          onSave={handleSaveSin}
           onDelete={
             dialogState.sin
               ? () => {
@@ -164,13 +158,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           open={dialogState.open}
           sin={dialogState.sin}
           license={dialogState.license}
-          onSave={isBuilder || dialogState.license ? handleSaveLicense : undefined}
-          onAcquire={!isBuilder && !dialogState.license ? (license) => acquire(license, onDialogClose) : undefined}
-          onPurchase={
-            !isBuilder && !dialogState.license
-              ? (license) => purchase(license, license.cost ?? 0, onDialogClose)
-              : undefined
-          }
+          onSave={handleSaveLicense}
           onDelete={
             dialogState.license
               ? () => handleRemoveLicense(dialogState.license!)

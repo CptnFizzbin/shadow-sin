@@ -10,6 +10,7 @@ import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import type { SinData } from "#/lib/system/gear/sinData.ts"
 import type { SoftwareData } from "#/lib/system/gear/softwareData.ts"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 import type { FirearmAccessoryData, FirearmData } from "#/lib/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearmTypeKey.ts"
@@ -381,6 +382,7 @@ export const Artemis: CharacterSheet = {
     createItem<VehicleData>({
       name: "Yamaha Growler",
       itemType: ItemType.vehicle,
+      vehicleCategory: VehicleCategory.vehicle,
       damage: { physical: { current: 0, max: 0 } },
       model: "",
       seats: 0,
@@ -397,6 +399,7 @@ export const Artemis: CharacterSheet = {
     createItem<VehicleData>({
       name: "Russian Osprey 9",
       itemType: ItemType.vehicle,
+      vehicleCategory: VehicleCategory.vehicle,
       vehicleType: "vtol",
       handling: 3,
       accel: "10/30",
