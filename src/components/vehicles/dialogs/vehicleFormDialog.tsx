@@ -6,8 +6,8 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import {
   vehicleFieldMap,
   useVehicleForm,
@@ -22,9 +22,7 @@ interface VehicleFormDialogProps {
   vehicleCategory?: VehicleCategory
   onClose: () => void
   onClosed?: () => void
-  onSave?: (vehicle: VehicleData) => void
-  onAcquire?: (vehicle: VehicleData) => void
-  onPurchase?: (vehicle: VehicleData) => void
+  onSave: (vehicle: VehicleData) => void
 }
 
 export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
@@ -34,26 +32,17 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  onAcquire,
-  onPurchase,
 }) => {
-  const isBuilder = useIsBuilder()
-  const isEditing = vehicle !== undefined
+  const { handleSubmit, isAcquireMode } = useItemFormSubmit({
+    mode: vehicle ? "edit" : "create",
+    onSave,
+    getItemCost: (v) => v.cost ?? 0,
+  })
 
   const form = useVehicleForm({
     vehicle,
     vehicleCategory,
-    onSubmit: (submittedVehicle, meta) => {
-      if (!isBuilder) {
-        if (meta.submitAction === "purchase") {
-          onPurchase?.(submittedVehicle)
-        } else {
-          onAcquire?.(submittedVehicle)
-        }
-      } else {
-        onSave?.(submittedVehicle)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -63,7 +52,7 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
           const categoryLabel = currentCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
           return (
             <DialogTitle sx={{ padding: 1 }}>
-              {isEditing ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`}
+              {vehicle ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`}
             </DialogTitle>
           )
         }}
@@ -76,7 +65,7 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {!isBuilder
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => state.values.cost}>
                 {(cost) => (

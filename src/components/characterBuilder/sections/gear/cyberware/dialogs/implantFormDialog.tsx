@@ -8,7 +8,6 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { ImplantFormFields } from "#/components/characterBuilder/sections/gear/cyberware/forms/implantFormFields.tsx"
 import {
   implantFieldMap,
@@ -16,8 +15,9 @@ import {
 } from "#/components/characterBuilder/sections/gear/cyberware/forms/useImplantForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import {
-  ImplantGradeNuyenMultiplier,
+  getImplantEffectiveNuyenCost, ImplantGradeNuyenMultiplier,
 } from "#/components/gear/implantUtils.ts"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ImplantGrade } from "#/lib/system/gear/implantData.ts"
 
@@ -27,9 +27,7 @@ interface CyberwareFormDialogProps {
   parentId?: UUID
   onClose: () => void
   onClosed?: () => void
-  onSave?: (implant: ImplantData) => void
-  onAcquire?: (implant: ImplantData) => void
-  onPurchase?: (implant: ImplantData) => void
+  onSave: (implant: ImplantData) => void
 }
 
 export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
@@ -39,28 +37,19 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  onAcquire,
-  onPurchase,
 }) => {
-  const editMode = !!implant
-  const title = editMode ? `Edit Implant` : `Add Implant`
-  const isBuilder = useIsBuilder()
-  const isAcquireMode = !editMode && !isBuilder
+  const title = implant ? `Edit Implant` : `Add Implant`
+
+  const { handleSubmit, isAcquireMode } = useItemFormSubmit({
+    mode: implant ? "edit" : "create",
+    onSave,
+    getItemCost: getImplantEffectiveNuyenCost,
+  })
 
   const form = useImplantForm({
     implant,
     parentId,
-    onSubmit: (submittedImplant, meta) => {
-      if (isAcquireMode) {
-        if (meta.submitAction === "purchase") {
-          onPurchase?.(submittedImplant)
-        } else {
-          onAcquire?.(submittedImplant)
-        }
-      } else {
-        onSave?.(submittedImplant)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (

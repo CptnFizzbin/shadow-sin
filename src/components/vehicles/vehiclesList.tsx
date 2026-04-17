@@ -6,7 +6,6 @@ import { useState } from "react"
 
 import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
-import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
 import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
 import { VehicleCategory, isVehicleData } from "#/lib/system/gear/vehicleData.ts"
@@ -22,7 +21,6 @@ interface VehiclesListProps {
 
 export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   const gearApi = useGearStore()
-  const { acquire, purchase } = useGearPurchase()
   const [dialogState, setDialogState] = useState<VehicleDialogState>(null)
 
   const vehicles = useGearFilter(
@@ -67,8 +65,6 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
           open={dialogState.open}
           vehicleCategory={vehicleCategory}
           onSave={handleSave}
-          onAcquire={(vehicle) => acquire(vehicle, closeDialog)}
-          onPurchase={(vehicle) => purchase(vehicle, vehicle.cost ?? 0, closeDialog)}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />
@@ -79,8 +75,6 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
           open={dialogState.open}
           vehicle={dialogState.vehicle}
           onSave={handleSave}
-          onAcquire={(vehicle) => acquire(vehicle, closeDialog)}
-          onPurchase={(vehicle) => purchase(vehicle, vehicle.cost ?? 0, closeDialog)}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />

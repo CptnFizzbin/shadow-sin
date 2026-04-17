@@ -6,13 +6,13 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { GearItemFormFields } from "#/components/characterBuilder/sections/gear/generic/forms/gearItemFormFields.tsx"
 import {
   gearItemFieldMap,
   useItemForm,
 } from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import type { ItemType } from "#/lib/system/itemType.ts"
 
@@ -22,9 +22,7 @@ interface GearItemFormDialogProps {
   itemType?: ItemType
   onClose: () => void
   onClosed?: () => void
-  onSave?: (item: ItemData) => void
-  onAcquire?: (item: ItemData) => void
-  onPurchase?: (item: ItemData) => void
+  onSave: (item: ItemData) => void
   label?: string
 }
 
@@ -35,27 +33,20 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
   onClose,
   onClosed,
   onSave,
-  onAcquire,
-  onPurchase,
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
-  const isBuilder = useIsBuilder()
+
+  const { handleSubmit, isAcquireMode } = useItemFormSubmit({
+    mode: item ? "edit" : "create",
+    onSave,
+    getItemCost: (i) => i.cost ?? 0,
+  })
 
   const form = useItemForm({
     item,
     itemType,
-    onSubmit: (submittedItem, meta) => {
-      if (!isBuilder) {
-        if (meta.submitAction === "purchase") {
-          onPurchase?.(submittedItem)
-        } else {
-          onAcquire?.(submittedItem)
-        }
-      } else {
-        onSave?.(submittedItem)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (
@@ -69,7 +60,7 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 1 }}>
-        {!isBuilder
+        {isAcquireMode
           ? (
               <form.Subscribe selector={(state) => state.values.cost}>
                 {(cost) => (
