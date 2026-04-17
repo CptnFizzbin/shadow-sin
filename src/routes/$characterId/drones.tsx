@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { VehiclesList } from "#/components/characterBuilder/sections/gear/vehicles/vehiclesList.tsx"
+import { VehiclesList } from "#/components/vehicles/vehiclesList.tsx"
 import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 
 export const Route = createFileRoute("/$characterId/drones")({

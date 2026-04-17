@@ -5,13 +5,15 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
-import {
-  vehicleFormOpts,
-} from "#/components/characterBuilder/sections/gear/vehicles/forms/useVehicleForm.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import {
+  vehicleFormOpts,
+} from "#/components/vehicles/forms/useVehicleForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
+
+const accelPattern = /^\d+\/\d+$/
 
 export const VehicleFormFields = withFieldGroup({
   ...vehicleFormOpts,
@@ -46,6 +48,12 @@ export const VehicleFormFields = withFieldGroup({
           )}
         </group.AppField>
 
+        <group.AppField name="vehicleType">
+          {(field) => (
+            <field.TextField label="Vehicle Type" fullWidth size="small" placeholder="e.g. bike, car, drone" />
+          )}
+        </group.AppField>
+
         <group.AppField name="model">
           {(field) => (
             <field.TextField label="Model" fullWidth size="small" />
@@ -76,7 +84,14 @@ export const VehicleFormFields = withFieldGroup({
                 )}
               </group.AppField>
 
-              <group.AppField name="accel">
+              <group.AppField
+                name="accel"
+                validators={{
+                  onChange: z
+                    .string()
+                    .regex(accelPattern, "Format must be N/N (e.g. 10/25)"),
+                }}
+              >
                 {(field) => (
                   <field.TextField
                     label="Accel"

@@ -5,9 +5,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
-import { VehicleFormDialog } from "#/components/characterBuilder/sections/gear/vehicles/dialogs/vehicleFormDialog.tsx"
 import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
 import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
+import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
 import { VehicleCategory, isVehicleData } from "#/lib/system/gear/vehicleData.ts"
 

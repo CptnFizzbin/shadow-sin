@@ -7,12 +7,12 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import {
   vehicleFieldMap,
   useVehicleForm,
-} from "#/components/characterBuilder/sections/gear/vehicles/forms/useVehicleForm.tsx"
-import { VehicleFormFields } from "#/components/characterBuilder/sections/gear/vehicles/forms/vehicleFormFields.tsx"
-import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+} from "#/components/vehicles/forms/useVehicleForm.tsx"
+import { VehicleFormFields } from "#/components/vehicles/forms/vehicleFormFields.tsx"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 
@@ -38,12 +38,7 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
   onPurchase,
 }) => {
   const isBuilder = useIsBuilder()
-
-  const categoryLabel =
-    (vehicle?.vehicleCategory ?? vehicleCategory) === VehicleCategory.drone
-      ? "Drone"
-      : "Vehicle"
-  const title = vehicle ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`
+  const isEditing = vehicle !== undefined
 
   const form = useVehicleForm({
     vehicle,
@@ -63,7 +58,16 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
+      <form.Subscribe selector={(state) => state.values.vehicleCategory}>
+        {(currentCategory) => {
+          const categoryLabel = currentCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
+          return (
+            <DialogTitle sx={{ padding: 1 }}>
+              {isEditing ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`}
+            </DialogTitle>
+          )
+        }}
+      </form.Subscribe>
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>

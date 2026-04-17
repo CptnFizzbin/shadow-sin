@@ -36,7 +36,7 @@ const defaultFormValues = {
   effects: [] as VehicleData["effects"],
 
   handling: 0,
-  accel: "0/0" as `${number}/${number}`,
+  accel: "0/0" as string,
   pilot: 0,
   speed: 0,
   body: 0,
@@ -68,7 +68,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     source: values.source,
     effects: values.effects,
     handling: values.handling,
-    accel: values.accel,
+    accel: values.accel as VehicleData["accel"],
     pilot: values.pilot,
     speed: values.speed,
     body: values.body,
