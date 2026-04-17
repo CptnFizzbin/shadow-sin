@@ -10,6 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { darken, lighten } from "@mui/material/styles"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -18,9 +19,10 @@ import { useAttr } from "#/components/character/characterUtils.ts"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
-import { useDamageState } from "#/components/damage/useDamageState.ts"
+import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 import type { SpellData } from "#/lib/system/magic/spellData.ts"
 
 interface SpellCastSectionProps {
@@ -40,14 +42,18 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
 
-  const damageStore = useDamageState()
+  const damageStore = useDamageStore()
+  const physicalMax = useStore(damageStore, (state) => state.physical.max)
+  const physicalCurrent = useStore(damageStore, (state) => state.physical.current)
+  const stunMax = useStore(damageStore, (state) => state.stun.max)
+  const stunCurrent = useStore(damageStore, (state) => state.stun.current)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return
     if (drainIsPhysical) {
-      damageStore.physical.setValue(Math.min(damageStore.physical.max, damageStore.physical.current + amount))
+      damageStore.setDamage(DamageTrackKey.physical, Math.min(physicalMax, physicalCurrent + amount))
     } else {
-      damageStore.stun.setValue(Math.min(damageStore.stun.max, damageStore.stun.current + amount))
+      damageStore.setDamage(DamageTrackKey.stun, Math.min(stunMax, stunCurrent + amount))
     }
     onClose()
   }

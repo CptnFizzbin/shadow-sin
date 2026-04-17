@@ -2,9 +2,9 @@ export interface BaseCharacterMetadata {
   version: string
 }
 
-export interface CharacterMigration<TInput extends BaseCharacterMetadata, TOutput extends BaseCharacterMetadata> {
+export interface CharacterMigration<TInput extends object, TOutput extends object = TInput> {
   version: string
-  up: (character: TInput & Partial<TOutput>) => TOutput
+  up: (character: BaseCharacterMetadata & TInput & Partial<TOutput>) => TOutput
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

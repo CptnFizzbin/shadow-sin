@@ -1,14 +1,14 @@
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { GearItemsList } from "#/components/characterBuilder/sections/gear/generic/gearItemsList.tsx"
-import { useGearByType } from "#/components/gear/useGearApi.ts"
-import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import { VehiclesList } from "#/components/vehicles/vehiclesList.tsx"
+import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 
 export const VehiclesPanel: FC = () => {
-  const vehicles = useGearByType<VehicleData>(ItemType.vehicle)
-
   return (
-    <GearItemsList items={vehicles} itemLabel="Vehicle" itemType={ItemType.vehicle} />
+    <Stack gap={1}>
+      <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
+      <VehiclesList vehicleCategory={VehicleCategory.drone} />
+    </Stack>
   )
 }

@@ -1,17 +1,14 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-
-export function useDamageTrack(track: "physical" | "stun") {
-  return useCharacterSheet((state) => {
-    const damage = state.damage
-    return damage[track]
-  })
-}
+import { selectWoundInterval } from "#/components/damage/damageUtils.ts"
+import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 
 export function useWoundModifier() {
-  const physicalDamage = useDamageTrack("physical")
-  const stunDamage = useDamageTrack("stun")
-
-  return (
-    Math.floor(physicalDamage / 3) + Math.floor(stunDamage / 3)
-  )
+  return useCharacterSheet((sheet) => {
+    const physicalInterval = selectWoundInterval(DamageTrackKey.physical)(sheet)
+    const stunInterval = selectWoundInterval(DamageTrackKey.stun)(sheet)
+    return (
+      Math.floor(sheet.damage.physical / physicalInterval)
+      + Math.floor(sheet.damage.stun / stunInterval)
+    )
+  })
 }

@@ -1,3 +1,4 @@
+import { Container } from "@mui/material"
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import Drawer from "@mui/material/Drawer"
@@ -34,21 +35,23 @@ export const QuickAccessPanel: FC = () => {
         anchor="bottom"
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        slotProps={{ paper: { sx: { borderRadius: "12px 12px 0 0", maxHeight: "80vh" } } }}
+        slotProps={{ paper: { sx: { height: "100vh" } } }}
       >
-        <Toolbar sx={{ justifyContent: "space-between", paddingX: 1 }}>
+        <Toolbar sx={{ justifyContent: "space-between", paddingX: 1, backgroundColor: "primary.main" }}>
           <Typography variant="h2">Quick Access</Typography>
           <IconButton onClick={() => setIsOpen(false)} aria-label="Close quick access">
             <RiCloseLine />
           </IconButton>
         </Toolbar>
 
-        <Stack gap={1.5} divider={<Divider />} sx={{ padding: 1, overflowY: "auto" }}>
-          <QuickAttributesSection />
-          <QuickDamageSection />
-          <QuickEdgeSection />
-          <NuyenSection />
-        </Stack>
+        <Container>
+          <Stack gap={1.5} divider={<Divider />} sx={{ padding: 1, overflowY: "auto" }}>
+            <QuickAttributesSection />
+            <QuickDamageSection />
+            <QuickEdgeSection />
+            <NuyenSection />
+          </Stack>
+        </Container>
       </Drawer>
     </>
   )

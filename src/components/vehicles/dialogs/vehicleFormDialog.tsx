@@ -6,56 +6,61 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { GearItemFormFields } from "#/components/characterBuilder/sections/gear/generic/forms/gearItemFormFields.tsx"
-import {
-  gearItemFieldMap,
-  useItemForm,
-} from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import type { ItemType } from "#/lib/system/itemType.ts"
+import {
+  vehicleFieldMap,
+  useVehicleForm,
+} from "#/components/vehicles/forms/useVehicleForm.tsx"
+import { VehicleFormFields } from "#/components/vehicles/forms/vehicleFormFields.tsx"
+import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 
-interface GearItemFormDialogProps {
+interface VehicleFormDialogProps {
   open: boolean
-  item?: ItemData
-  itemType?: ItemType
+  vehicle?: VehicleData
+  vehicleCategory?: VehicleCategory
   onClose: () => void
   onClosed?: () => void
-  onSave: (item: ItemData) => void
-  label?: string
+  onSave: (vehicle: VehicleData) => void
 }
 
-export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
+export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
   open,
-  item,
-  itemType,
+  vehicle,
+  vehicleCategory,
   onClose,
   onClosed,
   onSave,
-  label = "Item",
 }) => {
-  const title = item ? `Edit ${label}` : `Add ${label}`
-
   const { handleSubmit, isAcquireMode } = useItemFormSubmit({
-    mode: item ? "edit" : "create",
+    mode: vehicle ? "edit" : "create",
     onSave,
-    getItemCost: (i) => i.cost ?? 0,
+    getItemCost: (v) => v.cost ?? 0,
   })
 
-  const form = useItemForm({
-    item,
-    itemType,
+  const form = useVehicleForm({
+    vehicle,
+    vehicleCategory,
     onSubmit: handleSubmit,
   })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
+      <form.Subscribe selector={(state) => state.values.vehicleCategory}>
+        {(currentCategory) => {
+          const categoryLabel = currentCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
+          return (
+            <DialogTitle sx={{ padding: 1 }}>
+              {vehicle ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`}
+            </DialogTitle>
+          )
+        }}
+      </form.Subscribe>
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack gap={1} sx={{ padding: 1 }}>
-          <GearItemFormFields form={form} fields={gearItemFieldMap} />
+          <VehicleFormFields form={form} fields={vehicleFieldMap} />
         </Stack>
       </DialogContent>
 

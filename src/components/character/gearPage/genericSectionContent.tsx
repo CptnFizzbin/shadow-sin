@@ -6,7 +6,7 @@ import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
-import { useGearPurchase } from "#/components/gear/useGearPurchase.ts"
+import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import type { ItemType } from "#/lib/system/itemType.ts"
 
@@ -25,10 +25,15 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   itemLabel,
   itemType,
 }) => {
-  const { acquire, purchase } = useGearPurchase()
+  const gearStore = useGearStore()
   const [dialogState, setDialogState] = useState<GenericDialogState>(null)
 
   const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
+
+  const handleSave = (item: ItemData) => {
+    gearStore.save(item)
+    closeDialog()
+  }
 
   return (
     <Stack gap={1}>
@@ -52,8 +57,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
           open={dialogState.open}
           itemType={itemType}
           label={itemLabel}
-          onAcquire={(item: ItemData) => acquire(item, closeDialog)}
-          onPurchase={(item: ItemData) => purchase(item, item.cost ?? 0, closeDialog)}
+          onSave={handleSave}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
         />
