@@ -10,55 +10,16 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useActiveSkillRating } from "#/components/character/characterUtils.ts"
-import { DicePool } from "#/components/dicePool/dicePool.tsx"
-import { useAttrDiceGroup, useWoundDiceGroup } from "#/components/dicePool/useDiceGroup.ts"
+import { AttackDicePool } from "#/components/offense/attackDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import type { FirearmData, WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { isFirearmData } from "#/lib/system/gear/weaponData.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 
 interface WeaponAttackDialogProps {
   weapon: WeaponData
   open: boolean
   onClose: () => void
-}
-
-/** Derive a relevant SkillKey from the weapon skill string. Returns null if unrecognised. */
-function getWeaponSkillKey(weapon: WeaponData): SkillKey | null {
-  const skill = weapon.skill?.toLowerCase() ?? ""
-  if (skill.includes("pistol")) return SkillKey.pistols
-  if (skill.includes("automatics")) return SkillKey.automatics
-  if (skill.includes("heavy")) return SkillKey.heavyWeapons
-  if (skill.includes("blade")) return SkillKey.blades
-  if (skill.includes("unarmed")) return SkillKey.unarmedCombat
-  if (skill.includes("exotic melee")) return SkillKey.exoticMeleeWeapons
-  if (skill.includes("exotic ranged")) return SkillKey.exoticRangedWeapons
-  return null
-}
-
-interface AttackDicePoolProps {
-  weapon: WeaponData
-}
-
-const AttackDicePool: FC<AttackDicePoolProps> = ({ weapon }) => {
-  const attrKey = weapon.attribute ?? AttributeKey.agility
-  const skillKey = getWeaponSkillKey(weapon)
-  const attrGroup = useAttrDiceGroup(attrKey)
-  const skillRating = useActiveSkillRating(skillKey ?? SkillKey.unarmedCombat)
-  const woundGroup = useWoundDiceGroup()
-
-  const skillLabel = weapon.skill ?? (skillKey === null ? "No Skill" : "Combat Skill")
-  const skillGroup = { name: skillLabel, size: skillRating }
-
-  return (
-    <DicePool
-      name="Attack"
-      groups={[attrGroup, skillGroup, woundGroup]}
-    />
-  )
 }
 
 export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({

@@ -6,17 +6,7 @@ import { useCharacterSheet } from "#/components/character/characterSheetProvider
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { MetatypeType } from "#/lib/system/metatypeData.ts"
-
-/** Walk and run speeds in meters per full round, keyed by metatype. */
-const metatypeMovementRates: Record<MetatypeType, { walk: number, run: number }> = {
-  [MetatypeType.Human]: { walk: 10, run: 25 },
-  [MetatypeType.Elf]: { walk: 10, run: 25 },
-  [MetatypeType.Ork]: { walk: 10, run: 25 },
-  [MetatypeType.Dwarf]: { walk: 8, run: 20 },
-  [MetatypeType.Troll]: { walk: 15, run: 35 },
-  [MetatypeType.AI]: { walk: 0, run: 0 },
-}
+import { metatypes } from "#/lib/system/metatypeData.ts"
 
 export type MovementMode = "walk" | "run"
 
@@ -117,7 +107,7 @@ export const useMovementStore = (numPasses: number): MovementInfo => {
   }, [store, numPasses])
 
   return useMemo(() => {
-    const rates = metatypeMovementRates[metatype] ?? { walk: 10, run: 25 }
+    const rates = metatypes[metatype]?.movement ?? { walk: 10, run: 25 }
     const totalRun = rates.run + sprintBonus
     const totalWalk = rates.walk
 

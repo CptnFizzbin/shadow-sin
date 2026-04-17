@@ -1,7 +1,6 @@
-import { produce } from "immer"
-
 import type { BaseCharacterMetadata, CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 import type { Character_V0_3_0 } from "#/lib/storage/characters/migrations/v030.ts"
+import { meleeWeaponTypes, rangedWeaponTypes } from "#/lib/system/gear/weapons/weaponTypeGroups.ts"
 
 interface GearItem_V0_4_0 {
   id: string
@@ -16,35 +15,50 @@ export interface Character_V0_4_0 extends BaseCharacterMetadata {
   gear: Record<string, GearItem_V0_4_0>
 }
 
-const meleeTypes = ["melee", "thrown"]
-const rangedTypes = ["firearm", "projectile", "exotic", "other"]
+/** Input type: Character_V0_3_0 potentially carrying an untyped `gear` map. */
+type CharacterV040Input = Character_V0_3_0 & {
+  gear?: Record<string, GearItem_V0_4_0>
+}
 
 const migration: CharacterMigration<Character_V0_3_0, Character_V0_4_0> = {
   version: "0.4.0",
-  up: (character) =>
-    produce(character as unknown as Character_V0_4_0, (draft) => {
-      if (!draft.gear) draft.gear = {}
-      const gear = draft.gear
+  up: (rawCharacter) => {
+    const character = rawCharacter as CharacterV040Input
+    const gear: Record<string, GearItem_V0_4_0> = character.gear ? { ...character.gear } : {}
 
-      const weapons = Object.values(gear).filter(
-        (item) => item.itemType === "weapon" && !item.parentId,
-      )
+    const weapons = Object.values(gear).filter(
+      (item) => item.itemType === "weapon" && !item.parentId,
+    )
 
+    const meleeTypeStrings = meleeWeaponTypes.map(String)
+    const rangedTypeStrings = rangedWeaponTypes.map(String)
+
+    const anyMeleeEquipped = weapons.some(
+      (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && w.equipped,
+    )
+    if (!anyMeleeEquipped) {
       const firstMelee = weapons.find(
-        (weapon) => weapon.weaponType && meleeTypes.includes(weapon.weaponType),
+        (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType),
       )
+      if (firstMelee) {
+        gear[firstMelee.id] = { ...gear[firstMelee.id], equipped: true }
+      }
+    }
+
+    const anyRangedEquipped = weapons.some(
+      (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && w.equipped,
+    )
+    if (!anyRangedEquipped) {
       const firstRanged = weapons.find(
-        (weapon) => weapon.weaponType && rangedTypes.includes(weapon.weaponType),
+        (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType),
       )
-
-      if (firstMelee && !firstMelee.equipped) {
-        gear[firstMelee.id].equipped = true
+      if (firstRanged) {
+        gear[firstRanged.id] = { ...gear[firstRanged.id], equipped: true }
       }
+    }
 
-      if (firstRanged && !firstRanged.equipped) {
-        gear[firstRanged.id].equipped = true
-      }
-    }),
+    return { ...character, gear } as Character_V0_4_0
+  },
 }
 
 export default migration

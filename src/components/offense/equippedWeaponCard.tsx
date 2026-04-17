@@ -63,7 +63,7 @@ export const EquippedWeaponCard: FC<EquippedWeaponCardProps> = ({ weapon }) => {
           {weapon.ap !== undefined && weapon.ap !== 0 && (
             <WeaponStatChip label={`AP: ${weapon.ap}`} />
           )}
-          {weapon.skill && <WeaponStatChip label={weapon.skill} />}
+          <WeaponStatChip label={weapon.skill} />
           {weapon.weaponType === WeaponType.melee && (
             <WeaponStatChip label="Melee" />
           )}
