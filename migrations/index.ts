@@ -1,6 +1,7 @@
 import type { AnyCharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
 export const migrations: AnyCharacterMigration[] = [
+  await import("./20250101_normalizeOldFormatCharacter.ts"),
   await import("./20250801_addSpellThreshold.ts"),
   await import("./20251001_addLoanIdAndInterestRate.ts"),
   await import("./20260416_addVehicleCategory.ts"),
