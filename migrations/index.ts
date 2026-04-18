@@ -1,9 +1,8 @@
 import type { AnyCharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
 export const migrations: AnyCharacterMigration[] = [
-  await import("./20250601.ts"),
-  await import("./20250801.ts"),
-  await import("./20251001.ts"),
-  await import("./20260416.ts"),
-  await import("./20260417.ts"),
+  await import("./20250801_addSpellThreshold.ts"),
+  await import("./20251001_addLoanIdAndInterestRate.ts"),
+  await import("./20260416_addVehicleCategory.ts"),
+  await import("./20260417_setDefaultEquippedWeapons.ts"),
 ].map((module) => module.default)
