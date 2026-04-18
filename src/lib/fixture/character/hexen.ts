@@ -9,6 +9,7 @@ import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 export const Hexen: CharacterSheet = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
   version: "0.2.0",
+  _meta_: { version: 1 },
 
   biology: {
     metatype: MetatypeType.Human,

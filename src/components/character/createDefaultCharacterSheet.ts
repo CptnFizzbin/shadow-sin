@@ -10,6 +10,7 @@ export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
 export const createDefaultCharacterSheet = (): CharacterSheet => ({
   id: NULL_CHARACTER_ID,
   version: CurrentCharacterSheetVersion,
+  _meta_: { version: 1 },
 
   profile: {
     alias: "",

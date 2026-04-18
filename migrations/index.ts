@@ -5,4 +5,5 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./20251001_addLoanIdAndInterestRate.ts"),
   await import("./20260416_addVehicleCategory.ts"),
   await import("./20260417_setDefaultEquippedWeapons.ts"),
+  await import("./20260418_addMeta.ts"),
 ].map((module) => module.default)

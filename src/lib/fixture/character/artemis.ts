@@ -25,6 +25,7 @@ import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 export const Artemis: CharacterSheet = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   version: "0.2.0",
+  _meta_: { version: 1 },
 
   biology: {
     metatype: MetatypeType.Elf,
