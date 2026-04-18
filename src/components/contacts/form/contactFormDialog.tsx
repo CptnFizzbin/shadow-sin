@@ -68,7 +68,7 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
             form.handleSubmit()
           }}
         >
-          <Stack gap={1} sx={{ padding: 1 }}>
+          <Stack sx={{ gap: 1, padding: 1 }}>
             <ContactFormFields form={form} fields={contactFieldMap} />
           </Stack>
         </form>

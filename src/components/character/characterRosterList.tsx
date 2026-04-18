@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete"
 import DownloadIcon from "@mui/icons-material/Download"
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutlined"
 import IconButton from "@mui/material/IconButton"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
@@ -54,7 +54,7 @@ export default function CharacterRosterList({
         <Typography>
           Are you sure you want to{" "}
           <Typography component="span" color="error">permanently delete</Typography>
-          {" "}<Typography component="span" fontWeight="bold">{character.profile.alias}</Typography>?
+          {" "}<Typography component="span" sx={{ fontWeight: "bold" }}>{character.profile.alias}</Typography>?
           {" "}This cannot be undone.
         </Typography>
       ),

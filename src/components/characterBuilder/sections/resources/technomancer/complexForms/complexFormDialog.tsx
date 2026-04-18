@@ -67,7 +67,7 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
 
       <DialogContent sx={{ p: 2 }}>
         <appForm.AppForm>
-          <Stack gap={2} sx={{ pt: 1 }}>
+          <Stack sx={{ gap: 2, pt: 1 }}>
             <appForm.AppField
               name="name"
               validators={{ onChange: z.string().min(1, "Name is required") }}

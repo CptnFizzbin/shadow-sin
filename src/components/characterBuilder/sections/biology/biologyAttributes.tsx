@@ -12,10 +12,10 @@ import { metatypes } from "#/lib/system/metatypeData.ts"
 
 export const BiologyAttributes: FC = () => {
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Label label="min / max (aug)" variant="outlined" />
 
-      <Stack gap={0}>
+      <Stack sx={{ gap: 0 }}>
         <AttrList attrKeys={PhysicalAttributes} />
         <AttrList attrKeys={MentalAttributes} />
         <AttrList attrKeys={SpecialAttributes} />
@@ -46,9 +46,9 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
     .filter((attr) => attr.min !== 0)
 
   return (
-    <Stack direction="row" gap={0.5}>
+    <Stack direction="row" sx={{ gap: 0.5 }}>
       {attributes.map((attr) => (
-        <Stack key={attr.label} flexGrow={1} alignItems="center" gap={0.5}>
+        <Stack key={attr.label} sx={{ flexGrow: 1, alignItems: "center", gap: 0.5 }}>
           <Label label={attr.label} variant="outlined" />
           <Typography>
             {attr.min}

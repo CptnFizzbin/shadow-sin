@@ -14,12 +14,12 @@ export interface QualityFormFieldsProps {
 export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
   return (
     <form.AppForm>
-      <Stack gap={2} sx={{ pt: 1 }}>
+      <Stack sx={{ gap: 2, pt: 1 }}>
         <form.AppField name="name" validators={{ onChange: z.string().min(1, "Name is required") }}>
           {(field) => <field.TextField label="Name" required />}
         </form.AppField>
 
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
           <form.AppField name="type">
             {(field) => (
               <ToggleButton

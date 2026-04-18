@@ -10,7 +10,7 @@ interface AttributesListProps {
 
 export const AttributesList: FC<AttributesListProps> = ({ attributeKeys }) => {
   return (
-    <Stack gap={0.5}>
+    <Stack sx={{ gap: 0.5 }}>
       {attributeKeys.map((attr) => (
         <AttributeRow key={attr} attr={attr} />
       ))}

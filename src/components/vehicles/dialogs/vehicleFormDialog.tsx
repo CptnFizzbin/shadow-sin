@@ -59,7 +59,7 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
       </form.Subscribe>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <VehicleFormFields form={form} fields={vehicleFieldMap} />
         </Stack>
       </DialogContent>

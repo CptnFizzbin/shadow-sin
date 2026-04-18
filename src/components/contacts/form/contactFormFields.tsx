@@ -23,7 +23,7 @@ export const ContactFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" sx={{ gap: 1 }}>
           <group.AppField name="connection">
             {(field) => (
               <field.SelectField

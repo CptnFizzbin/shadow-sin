@@ -5,7 +5,7 @@ import { SinsList } from "#/components/characterBuilder/sections/gear/licenses/s
 
 export const SinsAndLicensesSection: FC = () => {
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <SinsList />
     </Stack>
   )

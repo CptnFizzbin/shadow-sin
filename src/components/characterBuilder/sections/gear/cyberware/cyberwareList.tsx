@@ -45,7 +45,7 @@ export const CyberwareList: FC = () => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {rootImplants.map((implant) => {
         const accessories = implants.filter((i) => i.parentId === implant.id)
 
@@ -59,15 +59,12 @@ export const CyberwareList: FC = () => {
             />
 
             <Stack
-              gap={1}
-              sx={{
-                paddingTop: 1,
+              sx={{ gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: accessories.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: accessories.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
+                borderColor: "divider" }}
             >
               {accessories.map((accessory) => (
                 <CyberwareListItem

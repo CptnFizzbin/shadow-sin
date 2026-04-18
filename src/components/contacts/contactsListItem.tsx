@@ -21,21 +21,17 @@ export const ContactRow: FC<ContactRowProps> = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      gap={1}
-      sx={{
-        "padding": 1,
+      onClick={onClick}
+      sx={{ "alignItems": "center", "gap": 1, "padding": 1,
         "borderRadius": 1,
         "border": "1px solid",
         "borderColor": "divider",
         "cursor": "pointer",
-        "&:hover": { bgcolor: "action.hover" },
-      }}
-      onClick={onClick}
+        "&:hover": { bgcolor: "action.hover" } }}
     >
-      <Stack sx={{ flexGrow: 1 }} gap={0.5}>
+      <Stack sx={{ gap: 0.5, flexGrow: 1 }}>
         <Stack direction="row">
-          <Typography flexGrow={1}>{contact.name}</Typography>
+          <Typography sx={{ flexGrow: 1 }}>{contact.name}</Typography>
 
           {onRemove && (
             <IconButton

@@ -54,12 +54,11 @@ export const GearSection: FC = () => {
   }
 
   return (
-    <Stack gap={1}>
-      <Stack gap={0.5}>
+    <Stack sx={{ gap: 1 }}>
+      <Stack sx={{ gap: 0.5 }}>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography>
             <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenAllowance} />
@@ -97,16 +96,13 @@ export const GearSection: FC = () => {
           >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              sx={{
-                flexGrow: 1,
+              sx={{ justifyContent: "space-between", flexGrow: 1,
                 paddingRight: 1,
                 marginRight: 1,
                 borderRight: "1px solid",
-                borderColor: "divider",
-              }}
+                borderColor: "divider" }}
             >
-              <Stack direction="row" alignItems="center" gap={1}>
+              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
                 <Typography>{sectionName}</Typography>
                 {invalidSections.has(sectionName) && (
                   <RiErrorWarningLine

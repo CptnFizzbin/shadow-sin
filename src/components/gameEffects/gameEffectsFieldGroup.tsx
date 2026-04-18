@@ -26,10 +26,10 @@ export const GameEffectsFieldGroup = withFieldGroup({
           const effects = (field.state.value as GameEffectData[]) ?? []
 
           return (
-            <Stack gap={1}>
+            <Stack sx={{ gap: 1 }}>
               <Divider />
 
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
                 <Typography variant="subtitle2">Effects</Typography>
                 <Button
                   size="small"

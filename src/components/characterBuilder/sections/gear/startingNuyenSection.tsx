@@ -39,14 +39,13 @@ export const StartingNuyenSection: FC = () => {
   const maxResult = (numDice * 6 + bonus) * mult
 
   return (
-    <Stack gap={1.5}>
+    <Stack sx={{ gap: 1.5 }}>
       <Divider />
 
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography variant="subtitle2">Starting Nuyen</Typography>
           <Chip label={`Lifestyle: ${lifestyle}`} size="small" variant="outlined" />
@@ -54,10 +53,9 @@ export const StartingNuyenSection: FC = () => {
 
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
-          <Stack direction="row" alignItems="center" gap={0.5}>
+          <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
             <DiceResult
               results={diceResult}
               highlightHits={false}
@@ -74,7 +72,7 @@ export const StartingNuyenSection: FC = () => {
           </Stack>
           {hasRolled && rolledTotal !== null
             ? (
-                <Box component="span" fontWeight="bold">
+                <Box component="span" sx={{ fontWeight: "bold" }}>
                   {formatNuyen(rolledTotal)}
                 </Box>
               )

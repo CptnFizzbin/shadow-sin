@@ -24,7 +24,7 @@ export const WeaponSkillFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
     return (
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <group.AppField name="skill">
           {(field) => (
             <field.SelectField

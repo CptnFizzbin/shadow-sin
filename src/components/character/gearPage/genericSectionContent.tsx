@@ -36,7 +36,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {items.map((item) => (
         <GearViewItem key={item.id} item={item} subItems={getChildren(item.id)} />
       ))}

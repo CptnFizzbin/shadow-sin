@@ -152,18 +152,20 @@ export const theme = createTheme({
     MuiDialogTitle: {
       defaultProps: {
         variant: "h3",
-        textAlign: "center",
       },
       styleOverrides: {
         root: {
           padding: 8,
+          textAlign: "center",
         },
       },
     },
 
     MuiGrid: {
-      defaultProps: {
-        height: "min-content",
+      styleOverrides: {
+        root: {
+          height: "min-content",
+        },
       },
     },
 
@@ -203,8 +205,10 @@ export const theme = createTheme({
     },
 
     MuiStack: {
-      defaultProps: {
-        gap: 2,
+      styleOverrides: {
+        root: {
+          gap: 16,
+        },
       },
     },
 

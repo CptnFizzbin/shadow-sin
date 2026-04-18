@@ -58,16 +58,13 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
 
   return (
     <CharacterBuilderStoreProvider rootStore={rootStore}>
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <Stack
-          gap={1}
-          sx={{
-            opacity: isBpPanelExpanded ? 0.6 : 1,
+          sx={{ gap: 1, opacity: isBpPanelExpanded ? 0.6 : 1,
             transition: "opacity 0.2s ease",
-            pointerEvents: isBpPanelExpanded ? "none" : "auto",
-          }}
+            pointerEvents: isBpPanelExpanded ? "none" : "auto" }}
         >
-          <Stack direction="row" justifyContent="space-between" gap={1}>
+          <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
             <Button
               variant="outlined"
               color="inherit"
@@ -76,7 +73,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             >
               Cancel
             </Button>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
               <ImportYamlBuilderButton onImport={loadCharacter} />
               <ExportCharacterButton />
               <Button

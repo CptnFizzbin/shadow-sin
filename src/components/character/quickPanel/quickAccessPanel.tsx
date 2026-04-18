@@ -44,7 +44,7 @@ export const QuickAccessPanel: FC = () => {
         </Toolbar>
 
         <Container disableGutters>
-          <Stack padding={1} sx={{ overflowY: "auto" }}>
+          <Stack sx={{ padding: 1, overflowY: "auto" }}>
             <QuickAttributesSection />
             <QuickDamageSection />
             <QuickEdgeSection />

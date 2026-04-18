@@ -51,12 +51,11 @@ export const ComplexFormsList: FC = () => {
   const isAtMax = complexForms.length >= maxComplexForms
 
   return (
-    <Stack gap={1}>
-      <Stack gap={0.5}>
+    <Stack sx={{ gap: 1 }}>
+      <Stack sx={{ gap: 0.5 }}>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography color="text.secondary">
             {complexForms.length} / {maxComplexForms} forms
@@ -83,7 +82,7 @@ export const ComplexFormsList: FC = () => {
       )}
 
       {complexForms.length > 0 && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           {complexForms.map((complexForm) => (
             <ComplexFormsListItem
               key={complexForm.id}

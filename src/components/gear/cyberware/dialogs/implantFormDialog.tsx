@@ -57,7 +57,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <ImplantFormFields form={form} fields={implantFieldMap} />
         </Stack>
       </DialogContent>

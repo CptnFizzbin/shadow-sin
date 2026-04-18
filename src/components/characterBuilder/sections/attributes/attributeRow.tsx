@@ -19,7 +19,7 @@ export const AttributeRow: FC<AttributeRowProps> = (props) => {
   const attrValue = useAttr(props.attr)
 
   return (
-    <Stack direction="row" gap={1} alignItems="center">
+    <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
       <AttrDecrementButton {...props} />
 
       <Grid container columns={2} sx={{ flexGrow: 1 }}>

@@ -37,11 +37,9 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
       onClick={onClick}
       component={ButtonBase}
-      textAlign="left"
-      padding={0}
+      sx={{ alignItems: "center", textAlign: "left", padding: 0 }}
     >
       <Chip
         label={isNative ? "N" : rating}
@@ -50,7 +48,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
         sx={{ height: 52, width: 52 }}
       />
 
-      <Stack sx={{ flexGrow: 1 }} gap={0}>
+      <Stack sx={{ gap: 0, flexGrow: 1 }}>
         <Typography>{name}</Typography>
         {specialization && <Typography color="text.secondary">{specialization}</Typography>}
       </Stack>

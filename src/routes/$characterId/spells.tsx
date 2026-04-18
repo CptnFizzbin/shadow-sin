@@ -19,7 +19,7 @@ function RouteComponent() {
   if (!canCastSpells) {
     return (
       <Paper sx={{ padding: 2 }}>
-        <Typography color="text.secondary" textAlign="center">
+        <Typography color="text.secondary" sx={{ textAlign: "center" }}>
           This character is not awakened as a spellcaster.
         </Typography>
       </Paper>
@@ -27,7 +27,7 @@ function RouteComponent() {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <SpellsViewerSection />
     </Stack>
   )

@@ -29,7 +29,7 @@ export default function DamageTrack({
   }
 
   return (
-    <Stack gap={0.5}>
+    <Stack sx={{ gap: 0.5 }}>
       <Label label={label} />
 
       <TrackCell onClick={() => onChange(0)}>0</TrackCell>

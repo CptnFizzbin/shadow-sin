@@ -34,7 +34,7 @@ export const QuickEdgeSection: FC = () => {
   }
 
   return (
-    <Stack gap={0.5}>
+    <Stack sx={{ gap: 0.5 }}>
       <Label label="Edge" />
 
       <Counter
@@ -44,7 +44,7 @@ export const QuickEdgeSection: FC = () => {
         onChange={(value) => edgeStore.setCurrent(value)}
       />
 
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
         <Button
           variant="outlined"
           color="error"

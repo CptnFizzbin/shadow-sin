@@ -17,14 +17,11 @@ export function DiceGroupDisplay({
   return (
     <Stack
       direction="row"
-      alignItems="flex-start"
-      sx={{
-        gap: 1,
+      sx={{ alignItems: "flex-start", gap: 1,
         paddingX: 1,
         backgroundColor: total ? "primary.dark" : undefined,
         color: color ?? (total ? "primary.contrastText" : undefined),
-        fontWeight: total ? "bold" : "normal",
-      }}
+        fontWeight: total ? "bold" : "normal" }}
     >
       <Typography
         sx={{

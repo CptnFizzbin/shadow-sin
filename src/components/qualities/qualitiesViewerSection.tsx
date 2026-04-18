@@ -34,9 +34,9 @@ export const QualitiesViewerSection: FC = () => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {positiveQualities.length > 0 && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label label="Positive Qualities" variant="outlined" />
           {positiveQualities.map((quality) => (
             <QualityViewerRow key={quality.name} quality={quality} />
@@ -45,7 +45,7 @@ export const QualitiesViewerSection: FC = () => {
       )}
 
       {negativeQualities.length > 0 && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label label="Negative Qualities" variant="outlined" />
           {negativeQualities.map((quality) => (
             <QualityViewerRow key={quality.name} quality={quality} />

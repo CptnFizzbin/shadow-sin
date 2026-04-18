@@ -82,7 +82,7 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
       </DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
-        <Stack gap={2} sx={{ pt: 1 }}>
+        <Stack sx={{ gap: 2, pt: 1 }}>
           <FormControl fullWidth size="small" error={groupNameError}>
             <InputLabel>Skill Group</InputLabel>
             <Select

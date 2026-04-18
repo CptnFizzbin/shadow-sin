@@ -49,7 +49,7 @@ export const ContactsList: FC<ContactsListProps> = ({
 
   return (
     <>
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         {contacts.length === 0 && (emptyState || (
           <Typography color="text.secondary" sx={{ pl: 1 }}>
             No contacts added

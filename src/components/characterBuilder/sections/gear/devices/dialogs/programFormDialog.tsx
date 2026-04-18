@@ -84,7 +84,7 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <FormControl fullWidth size="small">
             <InputLabel id="program-device-label">Device</InputLabel>
             <Select

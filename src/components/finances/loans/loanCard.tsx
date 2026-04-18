@@ -16,7 +16,7 @@ export const LoanCard: FC<LoanCardProps> = ({ loan, onClick }) => (
   <Paper onClick={() => onClick(loan)} sx={{ padding: 1 }}>
     <Stack>
 
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" gap={1}>
+      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "flex-start", gap: 1 }}>
         <Typography sx={{ flexGrow: 1 }}>
           {loan.lender}
         </Typography>
@@ -35,7 +35,7 @@ export const LoanCard: FC<LoanCardProps> = ({ loan, onClick }) => (
         </Typography>
       </Stack>
 
-      <Stack direction="row" gap={0.5} alignItems="center" flexWrap="wrap">
+      <Stack direction="row" sx={{ gap: 0.5, alignItems: "center", flexWrap: "wrap" }}>
         {loan.notes && (
           <Typography color="text.secondary" noWrap title={loan.notes}>
             {loan.notes}

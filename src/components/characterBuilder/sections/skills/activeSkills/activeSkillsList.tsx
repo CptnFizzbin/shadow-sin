@@ -50,14 +50,14 @@ export const ActiveSkillsList: FC = () => {
   const clearDialog = () => setDialogState(null)
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Typography color="secondary.main">
         {skillsBuildPoints.activeSkills.bpSpent} BP
       </Typography>
 
       {activeSkills.length > 0 && (
-        <Stack gap={0.5}>
-          <Stack direction="row" justifyContent="space-between">
+        <Stack sx={{ gap: 0.5 }}>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Typography color="text.secondary">
               Active Skills
             </Typography>
@@ -74,8 +74,8 @@ export const ActiveSkillsList: FC = () => {
       )}
 
       {skillGroups.length > 0 && (
-        <Stack gap={0.5}>
-          <Stack direction="row" justifyContent="space-between">
+        <Stack sx={{ gap: 0.5 }}>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Typography color="text.secondary">
               Active Skill Groups
             </Typography>
@@ -98,7 +98,7 @@ export const ActiveSkillsList: FC = () => {
         </Typography>
       )}
 
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <Button
           variant="outlined"
           color="secondary"

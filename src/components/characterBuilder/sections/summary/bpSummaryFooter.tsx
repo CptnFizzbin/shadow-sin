@@ -67,7 +67,7 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
         sx={{ top: "auto", bottom: 0, zIndex: 10 }}
       >
         <Collapse in={isExpanded} unmountOnExit>
-          <Stack gap={1}>
+          <Stack sx={{ gap: 1 }}>
             <Table size="small">
               <TableBody>
                 {summary.lineItems.map(({ sectionId, spent, allowance }) => {
@@ -110,12 +110,10 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
         </Collapse>
 
         <Button onClick={() => handleExpandedChange(!isExpanded)}>
-          <Stack direction="column" gap={1} flexGrow={1}>
+          <Stack direction="column" sx={{ gap: 1, flexGrow: 1 }}>
             <Stack
               direction="row"
-              gap={1}
-              justifyContent="space-between"
-              alignItems="center"
+              sx={{ gap: 1, justifyContent: "space-between", alignItems: "center" }}
             >
               <BuildPoints value={summary.spent} total={summary.total} />
 

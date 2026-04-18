@@ -20,9 +20,7 @@ const implantGradeOptions = [
     label: (
       <Stack
         direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        flexGrow={1}
+        sx={{ justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}
       >
         <Box>Standard</Box>
         {" "}
@@ -37,9 +35,7 @@ const implantGradeOptions = [
     label: (
       <Stack
         direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        flexGrow={1}
+        sx={{ justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}
       >
         <Box>Alpha</Box>
         {" "}
@@ -61,7 +57,7 @@ export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
   render: ({ group }) => {
     return (
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <group.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Name is required") }}
@@ -93,7 +89,7 @@ export const ImplantFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" sx={{ gap: 1 }}>
           <group.AppField
             name="cost"
             validators={{
@@ -132,7 +128,7 @@ export const ImplantFormFields = withFieldGroup({
         <group.Subscribe selector={({ values }) => values.parentId}>
           {(parentId) => (
             <>
-              <Stack direction="row" gap={1}>
+              <Stack direction="row" sx={{ gap: 1 }}>
                 {parentId
                   ? (
                       <group.AppField

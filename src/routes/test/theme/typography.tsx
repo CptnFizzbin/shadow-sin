@@ -14,7 +14,7 @@ interface SectionProps {
 }
 
 const Section: FC<SectionProps> = ({ title, children }) => (
-  <Stack gap={1}>
+  <Stack sx={{ gap: 1 }}>
     <Typography variant="overline" color="text.secondary">
       {title}
     </Typography>
@@ -29,7 +29,7 @@ interface VariantRowProps {
 }
 
 const VariantRow: FC<VariantRowProps> = ({ label, children }) => (
-  <Stack direction="row" gap={2} alignItems="baseline">
+  <Stack direction="row" sx={{ gap: 2, alignItems: "baseline" }}>
     <Box sx={{ minWidth: 120, flexShrink: 0 }}>
       <Typography color="text.secondary">
         {label}
@@ -48,12 +48,12 @@ their weight in nuyen.`
 
 function TypographyTestPage() {
   return (
-    <Stack gap={3} padding={2}>
+    <Stack sx={{ gap: 3, padding: 2 }}>
       <Typography variant="h2">Typography Test Page</Typography>
 
       {/* Headings */}
       <Paper>
-        <Stack gap={2} padding={2}>
+        <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Headings — Display Font (Smooch Sans)">
             <VariantRow label="h1">
               <Typography variant="h1">{SAMPLE_HEADING}</Typography>
@@ -79,7 +79,7 @@ function TypographyTestPage() {
 
       {/* Body & Subtitles */}
       <Paper>
-        <Stack gap={2} padding={2}>
+        <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Body & Subtitles — Body Font (Monda)">
             <VariantRow label="subtitle1">
               <Typography variant="subtitle1">{SAMPLE_BODY}</Typography>
@@ -99,7 +99,7 @@ function TypographyTestPage() {
 
       {/* Utility variants */}
       <Paper>
-        <Stack gap={2} padding={2}>
+        <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Utility Variants">
             <VariantRow label="button">
               <Typography variant="button">{SAMPLE_BODY}</Typography>
@@ -116,7 +116,7 @@ function TypographyTestPage() {
 
       {/* Color roles */}
       <Paper>
-        <Stack gap={2} padding={2}>
+        <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Color Roles">
             <VariantRow label="text.primary">
               <Typography color="text.primary">

@@ -33,7 +33,7 @@ export const SpellsViewerSection: FC = () => {
   if (spells.length === 0) {
     return (
       <Paper sx={{ padding: 1 }}>
-        <Typography color="text.secondary" textAlign="center">
+        <Typography color="text.secondary" sx={{ textAlign: "center" }}>
           No spells learned
         </Typography>
       </Paper>
@@ -42,9 +42,9 @@ export const SpellsViewerSection: FC = () => {
 
   return (
     <>
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         {Object.entries(spellsByCategory).map(([category, categorySpells]) => (
-          <Stack key={category} gap={0.5}>
+          <Stack key={category} sx={{ gap: 0.5 }}>
             <Label label={category} variant="outlined" />
             {categorySpells.map((spell) => (
               <SpellViewerListItem

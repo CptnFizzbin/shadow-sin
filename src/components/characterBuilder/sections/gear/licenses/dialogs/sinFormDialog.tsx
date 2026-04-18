@@ -35,7 +35,7 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <SinFormFields
             form={form}
             allowReal={allowReal}

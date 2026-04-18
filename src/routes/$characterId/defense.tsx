@@ -40,7 +40,7 @@ function RouteComponent() {
       <SectionHeader>Defense</SectionHeader>
 
       <Grid container columns={{ sm: 1, md: 2 }} spacing={1}>
-        <Grid container columns={2} size={2} spacing={1} width={{ sm: "100%", md: "50%" }} margin="auto">
+        <Grid container columns={2} size={2} spacing={1} sx={{ width: { sm: "100%", md: "50%" }, margin: "auto" }}>
           <Grid size={1}>
             <DamageTrack
               label="Physical"

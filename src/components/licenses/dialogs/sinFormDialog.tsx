@@ -53,7 +53,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <SinFormFields
             form={form}
             allowReal={allowReal}
@@ -64,7 +64,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({
             {(rating) => {
               const availability = getSinAvailability(rating)
               return (
-                <Stack direction="row" gap={1} flexWrap="wrap">
+                <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
                   <AvailabilityChip availability={availability} />
                   {sin?.source && (
                     <Chip

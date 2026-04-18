@@ -13,7 +13,7 @@ export const DeviceFormFields = withFieldGroup({
   ...deviceFormOpts,
   render: ({ group }) => {
     return (
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <group.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Name is required") }}
@@ -23,7 +23,7 @@ export const DeviceFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
           <group.AppField
             name="cost"
             validators={{
@@ -50,7 +50,7 @@ export const DeviceFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
           <group.AppField name="response" validators={{ onChange: positiveInt }}>
             {(field) => (
               <field.NumberField
@@ -96,7 +96,7 @@ export const DeviceFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
           <group.AppField name="dataProcessing" validators={{ onChange: positiveInt }}>
             {(field) => (
               <field.NumberField

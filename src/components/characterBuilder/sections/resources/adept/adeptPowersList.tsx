@@ -28,7 +28,7 @@ export const AdeptPowersList: FC = () => {
   const removePower = (power: AdeptPowerData) => adeptPowersStore.remove(power.id)
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
       {adeptPowers.length === 0 && (

@@ -19,7 +19,7 @@ export const ProgramFormFields = withFieldGroup({
   ...programFormOpts,
   render: ({ group }) => {
     return (
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <group.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Name is required") }}
@@ -40,7 +40,7 @@ export const ProgramFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" sx={{ gap: 1 }}>
           <group.AppField
             name="rating"
             validators={{

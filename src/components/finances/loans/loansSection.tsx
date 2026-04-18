@@ -29,7 +29,7 @@ export const LoansSection: FC = () => {
       <Label label="Loans" />
 
       {loans.length > 0 && (
-        <Typography color="error.main" textAlign="right" paddingRight={1}>
+        <Typography color="error.main" sx={{ textAlign: "right", paddingRight: 1 }}>
           Total owed: {totalOwed.toLocaleString("en")}¥
         </Typography>
       )}

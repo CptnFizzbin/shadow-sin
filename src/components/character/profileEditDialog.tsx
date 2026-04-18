@@ -63,8 +63,8 @@ export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>Edit Profile</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={2} sx={{ padding: 1 }} divider={<Divider />}>
-          <Stack gap={1}>
+        <Stack divider={<Divider />} sx={{ gap: 2, padding: 1 }}>
+          <Stack sx={{ gap: 1 }}>
             <Typography variant="subtitle2">Profile</Typography>
             <MuiTextField
               label="Alias"
@@ -113,9 +113,9 @@ export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
             />
           </Stack>
 
-          <Stack gap={1}>
+          <Stack sx={{ gap: 1 }}>
             <Typography variant="subtitle2">Biology</Typography>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
               <MuiTextField
                 label="Gender"
                 fullWidth
@@ -134,7 +134,7 @@ export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
                 onChange={(e) => setAge(e.target.value)}
               />
             </Stack>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
               <MuiTextField
                 label="Height"
                 fullWidth

@@ -27,17 +27,12 @@ export const LicenseCard: FC<LicenseCardProps> = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      gap={1}
-      paddingRight={1}
-      sx={{
-        ...(onClick && {
-          "cursor": "pointer",
-          "borderRadius": 1,
-          "&:hover": { bgcolor: "action.hover" },
-        }),
-      }}
       onClick={onClick}
+      sx={{ alignItems: "center", gap: 1, paddingRight: 1, ...(onClick && {
+        "cursor": "pointer",
+        "borderRadius": 1,
+        "&:hover": { bgcolor: "action.hover" },
+      }) }}
     >
       <Typography sx={{ flexGrow: 1 }}>
         {license.name}

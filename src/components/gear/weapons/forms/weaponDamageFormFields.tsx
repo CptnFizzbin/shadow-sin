@@ -8,7 +8,7 @@ export const WeaponDamageFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
     return (
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <group.AppField
           name="dmg"
           validators={{ onChange: z.string().min(1, "Damage is required") }}

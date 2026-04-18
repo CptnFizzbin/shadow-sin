@@ -18,13 +18,12 @@ export const EquippedWeaponsSection: FC = () => {
 
   if (equippedWeapons.length === 0) {
     return (
-      <Stack gap={0.5}>
+      <Stack sx={{ gap: 0.5 }}>
         <Label label="Weapons" />
         <Typography
           variant="body2"
           color="text.secondary"
-          textAlign="center"
-          sx={{ py: 2 }}
+          sx={{ textAlign: "center", py: 2 }}
         >
           No weapons equipped. Equip weapons from the Gear page.
         </Typography>
@@ -33,7 +32,7 @@ export const EquippedWeaponsSection: FC = () => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Label label="Weapons" />
       {equippedWeapons.map((weapon) => (
         <EquippedWeaponCard key={weapon.id} weapon={weapon} />
