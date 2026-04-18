@@ -4,6 +4,7 @@ import { createContext, useContext, useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/character/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
+import { IsBuilderContext } from "#/components/character/isBuilderContext.ts"
 import type { BuilderRootState } from "#/components/characterBuilder/builderRootState.ts"
 import { BuilderStateStore } from "#/components/characterBuilder/builderStateStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
@@ -36,11 +37,13 @@ export const CharacterBuilderStoreProvider: FC<CharacterBuilderStoreProviderProp
   }, [rootStore])
 
   return (
-    <CharacterBuilderContext.Provider value={builderStateStore}>
-      <CharacterSheetProvider store={characterSheetStore}>
-        {children}
-      </CharacterSheetProvider>
-    </CharacterBuilderContext.Provider>
+    <IsBuilderContext.Provider value={true}>
+      <CharacterBuilderContext.Provider value={builderStateStore}>
+        <CharacterSheetProvider store={characterSheetStore}>
+          {children}
+        </CharacterSheetProvider>
+      </CharacterBuilderContext.Provider>
+    </IsBuilderContext.Provider>
   )
 }
 

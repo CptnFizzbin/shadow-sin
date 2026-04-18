@@ -4,7 +4,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
+import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
 import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
 import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"

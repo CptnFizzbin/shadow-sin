@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
+import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"

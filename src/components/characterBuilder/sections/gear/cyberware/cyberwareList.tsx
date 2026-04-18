@@ -8,7 +8,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { CyberwareListItem } from "#/components/characterBuilder/sections/gear/cyberware/cyberwareListItem.tsx"
-import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
+import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
 import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"

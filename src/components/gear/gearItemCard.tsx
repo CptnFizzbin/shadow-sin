@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearMaxAvailability } from "#/components/characterBuilder/sections/gear/gearUtils.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
+import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
@@ -91,7 +91,6 @@ export const GearItemCard: FC<GearItemCardProps> = ({
 
           {description && (
             <Typography
-
               color="text.secondary"
               sx={{ flexGrow: 1, alignSelf: "center" }}
             >

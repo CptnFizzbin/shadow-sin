@@ -8,11 +8,11 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { ImplantFormFields } from "#/components/characterBuilder/sections/gear/cyberware/forms/implantFormFields.tsx"
+import { ImplantFormFields } from "#/components/gear/cyberware/forms/implantFormFields.tsx"
 import {
   implantFieldMap,
   useImplantForm,
-} from "#/components/characterBuilder/sections/gear/cyberware/forms/useImplantForm.tsx"
+} from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import {
   getImplantEffectiveNuyenCost, ImplantGradeNuyenMultiplier,

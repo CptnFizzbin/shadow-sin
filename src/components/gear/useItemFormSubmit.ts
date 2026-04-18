@@ -1,7 +1,7 @@
-import { useIsBuilder } from "#/components/characterBuilder/hooks/useIsBuilder.ts"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
+import { useIsBuilder } from "#/components/gear/useIsBuilder.ts"
 
 export interface UseItemFormSubmitOptions<TItem> {
   mode: "edit" | "create"

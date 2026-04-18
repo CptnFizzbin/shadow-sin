@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { DeviceFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/deviceFormDialog.tsx"
 import { ProgramFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/programFormDialog.tsx"
-import { GearItemCard } from "#/components/characterBuilder/sections/gear/generic/gearItemCard.tsx"
+import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
 import type { ProgramData } from "#/lib/system/gear/programData.ts"
