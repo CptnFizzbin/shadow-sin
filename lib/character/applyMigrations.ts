@@ -16,7 +16,9 @@ export function applyMigrations(character: object): object {
     | undefined
 
   const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
-    ? [...(existingMeta.appliedMigrations as string[])]
+    ? (existingMeta.appliedMigrations as unknown[]).filter(
+        (id): id is string => typeof id === "string",
+      )
     : []
 
   characterData = {

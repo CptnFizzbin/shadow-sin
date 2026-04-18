@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs"
-import { resolve } from "node:path"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 
 import { beforeEach, describe, expect, it } from "vitest"
 
@@ -188,8 +189,9 @@ describe("character migrations + yaml round-trip", () => {
 
   it("imports blur.yaml (v0 export) via yamlToCharacterSheet into a valid CharacterSheet", () => {
     // Arrange
+    const testDir = dirname(fileURLToPath(import.meta.url))
     const blurYaml = readFileSync(
-      resolve(__dirname, "../../testUtils/fixtures/characters/blur.yaml"),
+      resolve(testDir, "../../testUtils/fixtures/characters/blur.yaml"),
       "utf-8",
     )
 

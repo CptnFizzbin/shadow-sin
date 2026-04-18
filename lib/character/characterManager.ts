@@ -157,14 +157,9 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: object): Promise<CharacterSheet> {
-    const existingAppliedCount = Array.isArray(
-      (character as { _meta_?: { appliedMigrations?: unknown } })._meta_?.appliedMigrations,
-    )
-      ? (
-          (character as { _meta_: { appliedMigrations: unknown[] } })._meta_
-            .appliedMigrations
-        ).length
-      : 0
+    const existingMigrations = (character as { _meta_?: { appliedMigrations?: unknown } })._meta_
+      ?.appliedMigrations
+    const existingAppliedCount = Array.isArray(existingMigrations) ? existingMigrations.length : 0
 
     const playerCharacter = applyMigrations(character) as CharacterSheet
 
