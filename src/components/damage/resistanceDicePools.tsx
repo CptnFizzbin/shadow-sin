@@ -125,8 +125,8 @@ export const MeleeFullDodgeDicePool = () => {
       name="Melee Full Dodge"
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge, "dodge-1"),
-        useActiveSkillDiceGroup(SkillKey.dodge, "dodge-2"),
+        useActiveSkillDiceGroup(SkillKey.dodge),
+        useActiveSkillDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
       ]}
     />

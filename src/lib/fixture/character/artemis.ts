@@ -129,8 +129,9 @@ export const Artemis: CharacterSheet = {
       weaponType: WeaponType.firearm,
       firearmType: FirearmTypeKey.lightPistol,
       attribute: AttributeKey.agility,
-      skill: "Firearms",
+      skill: SkillKey.pistols,
       dmg: "4P",
+      equipped: true,
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {
@@ -183,7 +184,7 @@ export const Artemis: CharacterSheet = {
       itemType: ItemType.weapon,
       weaponType: WeaponType.firearm,
       firearmType: FirearmTypeKey.smg,
-      skill: "Firearms",
+      skill: SkillKey.automatics,
       attribute: AttributeKey.agility,
     }, [
       createItem<FirearmAccessoryData>({

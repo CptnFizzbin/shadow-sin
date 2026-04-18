@@ -1,4 +1,3 @@
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC, PropsWithChildren } from "react"
 
@@ -19,24 +18,13 @@ export const BuilderSection: FC<BuilderSectionProps> = ({
   alerts = [],
 }) => {
   const title = builderSections[id].label
-  let borderColor: string | undefined = undefined
-
-  const activeAlerts = alerts.filter((alert) => !alert.summaryOnly)
-
-  const hasWarnings = activeAlerts.some((alert) => alert.severity === "warning")
-  if (hasWarnings) borderColor = "warning.main"
-
-  const hasErrors = activeAlerts.some((alert) => alert.severity === "error")
-  if (hasErrors) borderColor = "error.main"
 
   return (
-    <Paper sx={{ padding: 1, borderColor }} id={id}>
-      <Stack gap={1}>
-        <SectionHeader>{title}</SectionHeader>
-        <AlertsList alerts={alerts} />
+    <Stack gap={1}>
+      <SectionHeader>{title}</SectionHeader>
+      <AlertsList alerts={alerts} />
 
-        {children}
-      </Stack>
-    </Paper>
+      {children}
+    </Stack>
   )
 }

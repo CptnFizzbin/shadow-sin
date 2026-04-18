@@ -5,4 +5,5 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./v020.ts"),
   await import("./v030.ts"),
   await import("./v040.ts"),
+  await import("./v050.ts"),
 ].map((module) => module.default)

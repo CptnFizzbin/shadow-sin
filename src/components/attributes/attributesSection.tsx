@@ -28,8 +28,8 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
   return (
     <Stack direction="row" gap={0.5}>
       {attributes.map((attribute) => (
-        <Stack key={attribute.key} flexGrow={1} alignItems="center">
-          <Label label={AttributeLabels[attribute.key]} variant="outlined" />
+        <Stack key={attribute.key} flexGrow={1} alignItems="center" gap={0}>
+          <Label label={AttributeLabels[attribute.key]} variant="text" />
           <Typography>{attribute.value}</Typography>
         </Stack>
       ))}

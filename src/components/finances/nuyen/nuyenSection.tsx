@@ -1,4 +1,3 @@
-import { Divider } from "@mui/material"
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import InputAdornment from "@mui/material/InputAdornment"
@@ -44,16 +43,14 @@ export const NuyenSection: FC = () => {
     <Stack>
       <Label label="Current Nuyen" />
 
-      <Typography color={currentNuyen < 0 ? "error.main" : "text.primary"}>
+      <Typography color={currentNuyen < 0 ? "error.main" : "text.primary"} textAlign="center" fontWeight="bold">
         <Nuyen amount={currentNuyen} />
       </Typography>
-
-      <Divider sx={{ marginBottom: 1 }} />
 
       <Grid container columns={3} spacing={1}>
         <Grid size={3}>
           <TextField
-            label="Amount"
+            label="Adjust"
             type="number"
             value={adjustAmount}
             onChange={(e) => setAdjustAmount(e.target.value)}

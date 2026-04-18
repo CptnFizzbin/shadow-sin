@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiSubtractLine } from "@remixicon/react"
-import type { FC } from "react"
+import type { FC, ReactNode } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 
@@ -12,9 +12,10 @@ export interface CounterProps {
   max: number
   onChange: (newValue: number) => void
   label?: string
+  unit?: ReactNode
 }
 
-export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label }) => {
+export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, unit }) => {
   return (
     <Stack alignItems="center" gap={0} flexGrow={1}>
       {label && <Label label={label} />}
@@ -26,9 +27,10 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label }) 
         >
           <RiSubtractLine />
         </IconButton>
-        <Typography sx={{ width: 50, textAlign: "center" }}>
-          {value} / {max}
-        </Typography>
+        <Stack direction="row" alignItems="center" gap={0.5} minWidth={50} justifyContent="center">
+          <Typography>{value} {max >= 1 && <>/ {max}</>}</Typography>
+          {unit}
+        </Stack>
         <IconButton
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}

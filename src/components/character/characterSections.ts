@@ -73,15 +73,15 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
     label: "Spells",
     route: SpellsRoute,
   },
-  [SectionKey.drones]: {
-    id: SectionKey.drones,
-    label: "Drones",
-    route: DronesRoute,
-  },
   [SectionKey.vehicles]: {
     id: SectionKey.vehicles,
     label: "Vehicles",
     route: VehiclesRoute,
+  },
+  [SectionKey.drones]: {
+    id: SectionKey.drones,
+    label: "Drones",
+    route: DronesRoute,
   },
   [SectionKey.contacts]: {
     id: SectionKey.contacts,

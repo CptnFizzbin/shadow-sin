@@ -15,7 +15,7 @@ export const BiologyAttributes: FC = () => {
     <Stack gap={1}>
       <Label label="min / max (aug)" variant="outlined" />
 
-      <Stack gap={0.5}>
+      <Stack gap={0}>
         <AttrList attrKeys={PhysicalAttributes} />
         <AttrList attrKeys={MentalAttributes} />
         <AttrList attrKeys={SpecialAttributes} />
@@ -48,7 +48,7 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
   return (
     <Stack direction="row" gap={0.5}>
       {attributes.map((attr) => (
-        <Stack key={attr.label} flexGrow={1} alignItems="center">
+        <Stack key={attr.label} flexGrow={1} alignItems="center" gap={0.5}>
           <Label label={attr.label} variant="outlined" />
           <Typography>
             {attr.min}

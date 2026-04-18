@@ -7,6 +7,7 @@ import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear
 import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearmTypeKey.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
+import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface WeaponFormOptions {
@@ -23,10 +24,11 @@ const defaultFormValues = {
   weaponType: WeaponType.firearm,
   dmg: "",
   ap: 0,
-  skill: "",
+  skill: SkillKey.unarmedCombat as SkillKey,
   attribute: "",
   cost: 0,
   description: "",
+  equipped: false,
   availability: {
     rating: 0,
     restricted: false,
@@ -78,8 +80,9 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     name: values.name,
     weaponType: values.weaponType,
     dmg: values.dmg,
+    equipped: values.equipped,
     ...(values.ap !== 0 && { ap: values.ap }),
-    ...(values.skill && { skill: values.skill }),
+    skill: values.skill as SkillKey,
     ...(values.attribute && { attribute: values.attribute as WeaponData["attribute"] }),
     cost: values.cost,
     description: values.description,
@@ -129,10 +132,11 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
         weaponType: weapon.weaponType,
         dmg: weapon.dmg,
         ap: weapon.ap ?? 0,
-        skill: weapon.skill ?? "",
+        skill: weapon.skill,
         attribute: weapon.attribute ?? "",
         cost: weapon.cost ?? 0,
         description: weapon.description ?? "",
+        equipped: weapon.equipped ?? false,
         availability: {
           rating: weapon.availability?.rating ?? 0,
           restricted: weapon.availability?.restricted ?? false,

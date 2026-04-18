@@ -1,5 +1,7 @@
+import FormControlLabel from "@mui/material/FormControlLabel"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
+import Switch from "@mui/material/Switch"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
@@ -120,6 +122,20 @@ export const WeaponFormFields = withFieldGroup({
 
         <AvailabilityFieldGroup form={group} fields="availability" />
         <SourceFieldGroup form={group} fields={{ source: "source" }} />
+
+        <group.AppField name="equipped">
+          {(field) => (
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={field.state.value}
+                  onChange={(event) => field.handleChange(event.target.checked)}
+                />
+              )}
+              label="Equipped"
+            />
+          )}
+        </group.AppField>
 
         <group.AppField name="description">
           {(field) => (

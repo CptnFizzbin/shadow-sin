@@ -12,7 +12,7 @@ interface DicePoolProps {
 }
 
 export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
-  const diceGroups = groups.filter(isDiceGroup)
+  const diceGroups = groups.flat().filter(isDiceGroup)
 
   const total = getPoolSize(diceGroups)
 

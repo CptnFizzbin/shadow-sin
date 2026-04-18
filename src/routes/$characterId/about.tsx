@@ -1,16 +1,17 @@
-import Divider from "@mui/material/Divider"
+import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import { RiEditLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { BiologySection } from "#/components/character/biologySection.tsx"
-import { FinancesSection } from "#/components/character/financesSection.tsx"
+import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { ProfileEditDialog } from "#/components/character/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/character/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/qualities/qualitiesViewerSection.tsx"
+import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/about")({
@@ -21,35 +22,41 @@ type ProfileEditDialogState = null | { open: boolean }
 
 function RouteComponent() {
   const [profileEditDialog, setProfileEditDialog] = useState<ProfileEditDialogState>(null)
+  const profile = useCharacterSheet((s) => s.profile)
+
+  const publicAwareness = Math.max(
+    0,
+    Math.floor((profile.streetCred + profile.notoriety) / 3) + (profile.publicAwarenessModifier ?? 0),
+  )
 
   return (
-    <Stack gap={1}>
-      <Paper sx={{ padding: 1, position: "relative" }}>
-        <IconButton
-          size="small"
-          onClick={() => setProfileEditDialog({ open: true })}
-          aria-label="Edit profile"
-          sx={{ position: "absolute", top: 8, right: 8 }}
-        >
-          <RiEditLine size={16} />
-        </IconButton>
+    <Stack>
+      <IconButton
+        size="small"
+        onClick={() => setProfileEditDialog({ open: true })}
+        aria-label="Edit profile"
+        sx={{ position: "absolute", top: 8, right: 8 }}
+      >
+        <RiEditLine size={16} />
+      </IconButton>
 
-        <Stack divider={<Divider />}>
-          <ProfileSection />
-          <BiologySection />
+      <Typography variant="h1" textAlign="center">{profile.alias || profile.name}</Typography>
+
+      <SectionHeader>Profile</SectionHeader>
+      <ProfileSection />
+      <BiologySection />
+
+      <Stack gap={1}>
+        <Label label="Reputation" />
+        <Stack direction="row" gap={1} alignItems="center">
+          <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
+          <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
+          <Chip label={`Awareness: ${publicAwareness}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
         </Stack>
-      </Paper>
+      </Stack>
 
-      <Paper sx={{ padding: 1 }}>
-        <FinancesSection />
-      </Paper>
-
-      <Paper sx={{ padding: 1 }}>
-        <Stack gap={1}>
-          <SectionHeader>Qualities</SectionHeader>
-          <QualitiesViewerSection />
-        </Stack>
-      </Paper>
+      <SectionHeader>Qualities</SectionHeader>
+      <QualitiesViewerSection />
 
       {profileEditDialog !== null && (
         <ProfileEditDialog

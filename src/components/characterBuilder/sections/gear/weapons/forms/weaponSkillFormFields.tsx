@@ -5,15 +5,12 @@ import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { skillList } from "#/lib/system/skills/skillList.ts"
 
-const skillOptions = [
-  { label: "None", value: "" },
-  ...Object.entries(skillList)
-    .filter(([_, skill]) => skill.isWeaponSkill)
-    .map(([key, _]) => ({
-      label: key,
-      value: key,
-    })),
-]
+const skillOptions = Object.entries(skillList)
+  .filter(([_, skill]) => skill.isWeaponSkill)
+  .map(([key, _]) => ({
+    label: key,
+    value: key,
+  }))
 
 const attributeOptions = [
   { label: "None", value: "" },

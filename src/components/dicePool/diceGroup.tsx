@@ -5,7 +5,7 @@ export interface DiceGroup {
   color?: string
 }
 
-export type DiceGroupList = (DiceGroup | null | boolean)[]
+export type DiceGroupList = (DiceGroupList | DiceGroup | null | boolean)[]
 
 export function isDiceGroup(group: unknown): group is DiceGroup {
   return typeof group === "object"

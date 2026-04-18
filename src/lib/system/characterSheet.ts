@@ -80,6 +80,10 @@ export interface CharacterSheet {
     languageSkills: LanguageSkillData[]
   }
 
+  initiative?: {
+    passesCompleted: number[]
+  }
+
   qualities: QualityData[]
   contacts: ContactData[]
   tradition?: TraditionData

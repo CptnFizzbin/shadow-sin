@@ -9,7 +9,7 @@ export const WoundModLabel: FC = () => {
   return (
     <Label
       label={`Wound Mod: ${woundMod}`}
-      variant="outlined"
+      variant="text"
       color={woundMod >= 1 ? "error.main" : "primary.dark"}
     />
   )

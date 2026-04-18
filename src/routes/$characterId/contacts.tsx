@@ -7,6 +7,7 @@ import { useState } from "react"
 import { ContactsList } from "#/components/contacts/contactsList.tsx"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/contacts")({
   component: RouteComponent,
@@ -36,7 +37,9 @@ function RouteComponent() {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack>
+      <SectionHeader>Contacts</SectionHeader>
+
       <SearchField value={searchQuery} onChange={setSearchQuery} placeholder="Search contacts..." />
 
       <ContactsList

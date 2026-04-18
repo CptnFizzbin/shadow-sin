@@ -1,7 +1,8 @@
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
+
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 
 export const Route = createFileRoute("/$characterId/notes")({
   component: RouteComponent,
@@ -10,9 +11,9 @@ export const Route = createFileRoute("/$characterId/notes")({
 function RouteComponent() {
   return (
     <Stack gap={1}>
-      <Paper sx={{ padding: 1 }}>
-        <Typography variant="h2">Notes</Typography>
-      </Paper>
+      <SectionHeader>Notes</SectionHeader>
+
+      <UnderConstruction />
     </Stack>
   )
 }

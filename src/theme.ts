@@ -150,6 +150,10 @@ export const theme = createTheme({
     },
 
     MuiDialogTitle: {
+      defaultProps: {
+        variant: "h3",
+        textAlign: "center",
+      },
       styleOverrides: {
         root: {
           padding: 8,

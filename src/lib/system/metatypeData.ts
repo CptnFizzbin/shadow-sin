@@ -16,6 +16,7 @@ export interface MetatypeData {
   cost: number
   attributes: Record<AttributeKey, AttributeInfo>
   inateAbilites?: GameEffectData[]
+  movement: { walk: number, run: number }
 }
 
 export const baseAttributes = {
@@ -37,6 +38,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   Human: {
     name: MetatypeType.Human,
     cost: 0,
+    movement: { walk: 10, run: 25 },
     attributes: {
       ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
@@ -53,6 +55,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   Ork: {
     name: MetatypeType.Ork,
     cost: 20,
+    movement: { walk: 10, run: 25 },
     attributes: {
       ...baseAttributes,
       body: { min: 4, max: 9, augMax: 13 },
@@ -69,6 +72,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   Dwarf: {
     name: MetatypeType.Dwarf,
     cost: 25,
+    movement: { walk: 8, run: 20 },
     attributes: {
       ...baseAttributes,
       body: { min: 2, max: 7, augMax: 10 },
@@ -85,6 +89,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   Elf: {
     name: MetatypeType.Elf,
     cost: 30,
+    movement: { walk: 10, run: 25 },
     attributes: {
       ...baseAttributes,
       body: { min: 1, max: 6, augMax: 9 },
@@ -101,6 +106,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   Troll: {
     name: MetatypeType.Troll,
     cost: 40,
+    movement: { walk: 15, run: 35 },
     attributes: {
       ...baseAttributes,
       body: { min: 5, max: 10, augMax: 15 },
@@ -117,6 +123,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   AI: {
     name: MetatypeType.AI,
     cost: 110,
+    movement: { walk: 0, run: 0 },
     attributes: {
       ...baseAttributes,
       body: { min: 0, max: 0 },
