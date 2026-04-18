@@ -8,3 +8,5 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./20260418_addMeta.ts"),
   await import("./20260419_removeVersionField.ts"),
 ].map((module) => module.default)
+
+export const migrationIds: readonly string[] = migrations.map((m) => m.id)

@@ -1,6 +1,8 @@
+import { produce } from "immer"
+
 import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
-interface LoanBefore {
+interface LoanData {
   id?: string
   lender: string
   amount: number
@@ -8,43 +10,28 @@ interface LoanBefore {
   notes?: string
 }
 
-interface LoanAfter {
-  id: string
-  lender: string
-  amount: number
-  interestRate: number
-  notes?: string
-}
-
-interface Input {
+interface InputCharacterState {
   nuyen?: {
     current?: number
-    loans?: LoanBefore[]
+    loans?: LoanData[]
   }
 }
 
-interface Output {
-  nuyen: {
-    current: number
-    loans: LoanAfter[]
-  }
-}
-
-const migration: CharacterMigration<Input, Output> = {
+const migration: CharacterMigration<InputCharacterState> = {
   id: "20251001",
-  up: (character) => ({
-    ...character,
-    nuyen: {
-      current: character.nuyen?.current ?? 0,
-      loans: (character.nuyen?.loans ?? []).map((loan) => ({
-        id: loan.id ?? crypto.randomUUID(),
-        lender: loan.lender,
-        amount: loan.amount,
-        interestRate: loan.interestRate ?? 0,
-        notes: loan.notes,
-      })),
-    },
-  }),
+  up: (character) =>
+    produce(character, (draft) => {
+      draft.nuyen = {
+        current: draft.nuyen?.current ?? 0,
+        loans: (draft.nuyen?.loans ?? []).map((loan) => ({
+          id: loan.id ?? crypto.randomUUID(),
+          lender: loan.lender,
+          amount: loan.amount,
+          interestRate: loan.interestRate ?? 0,
+          notes: loan.notes,
+        })),
+      }
+    }),
 }
 
 export default migration

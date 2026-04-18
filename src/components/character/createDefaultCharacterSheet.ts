@@ -3,12 +3,11 @@ import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import { metatypes, MetatypeType } from "#/lib/system/metatypeData.ts"
-import { migrationIds } from "../../../migrations/migrationIds.ts"
-
-export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
+import { NullUuid } from "#/lib/uuidUtils.ts"
+import { migrationIds } from "../../../migrations/index.ts"
 
 export const createDefaultCharacterSheet = (): CharacterSheet => ({
-  id: NULL_CHARACTER_ID,
+  id: NullUuid,
   _meta_: { version: 1, appliedMigrations: [...migrationIds] },
 
   profile: {

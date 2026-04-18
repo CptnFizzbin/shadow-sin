@@ -159,9 +159,9 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: unknown): Promise<CharacterSheet> {
-    let characterData = character as Record<string, unknown>
+    let characterData: unknown = character
 
-    const existingMeta = characterData._meta_ as
+    const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
       | { version?: number, appliedMigrations?: unknown }
       | undefined
 
@@ -170,8 +170,8 @@ export class CharacterManager {
       : []
 
     characterData = {
-      ...characterData,
-      _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: appliedMigrationIds },
+      ...(characterData as Record<string, unknown>),
+      _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: [...appliedMigrationIds] },
     }
 
     const migrationsToRun = sort(migrations)
@@ -181,15 +181,16 @@ export class CharacterManager {
     let migrationPerformed = false
 
     for (const migration of migrationsToRun) {
-      characterData = migration.up(characterData) as Record<string, unknown>
+      characterData = migration.up(characterData)
       appliedMigrationIds.push(migration.id)
       // Always preserve appliedMigrations regardless of what the migration did to _meta_
+      const metaAfterMigration = (characterData as { _meta_?: unknown })._meta_
       characterData = {
-        ...characterData,
+        ...(characterData as Record<string, unknown>),
         _meta_: {
           version: 1,
-          ...(typeof characterData._meta_ === "object" && characterData._meta_ !== null
-            ? characterData._meta_
+          ...(typeof metaAfterMigration === "object" && metaAfterMigration !== null
+            ? (metaAfterMigration as Record<string, unknown>)
             : {}),
           appliedMigrations: [...appliedMigrationIds],
         },
@@ -197,8 +198,7 @@ export class CharacterManager {
       migrationPerformed = true
     }
 
-    const playerCharacter: CharacterSheet =
-      characterData as unknown as CharacterSheet
+    const playerCharacter = characterData as CharacterSheet
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)
