@@ -11,8 +11,8 @@ const migration: CharacterMigration<{
 }> = {
   id: "20250801",
   checkApplied: (character) => {
-    const chars = character as { spells?: Array<Record<string, unknown>> }
-    return (chars.spells ?? []).every((spell) => "theshold" in spell)
+    const characterData = character as { spells?: Array<Record<string, unknown>> }
+    return (characterData.spells ?? []).every((spell) => "theshold" in spell)
   },
   up: (character) =>
     produce(character, (draft) => {

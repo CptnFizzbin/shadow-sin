@@ -16,8 +16,8 @@ const migration: CharacterMigration<{
 }> = {
   id: "20260417",
   checkApplied: (character) => {
-    const chars = character as { gear?: Record<string, GearItem> }
-    const gear = chars.gear ?? {}
+    const characterData = character as { gear?: Record<string, GearItem> }
+    const gear = characterData.gear ?? {}
     const weapons = Object.values(gear).filter(
       (item) => item.itemType === "weapon" && !item.parentId,
     )

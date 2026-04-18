@@ -13,9 +13,9 @@ const migration: CharacterMigration<{
 }> = {
   id: "20260416",
   checkApplied: (character) => {
-    const chars = character as { gear?: Record<string, GearItem> }
-    return Object.values(chars.gear ?? {}).every(
-      (item) => item.itemType !== "vehicle" || item.vehicleCategory != null,
+    const characterData = character as { gear?: Record<string, GearItem> }
+    return Object.values(characterData.gear ?? {}).every(
+      (item) => item.itemType !== "vehicle" || item.vehicleCategory !== undefined,
     )
   },
   up: (character) =>

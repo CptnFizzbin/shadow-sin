@@ -24,8 +24,8 @@ const migration: CharacterMigration<{
 }> = {
   id: "20251001",
   checkApplied: (character) => {
-    const chars = character as { nuyen?: { loans?: Array<Record<string, unknown>> } }
-    return (chars.nuyen?.loans ?? []).every((loan) => "id" in loan)
+    const characterData = character as { nuyen?: { loans?: Array<Record<string, unknown>> } }
+    return (characterData.nuyen?.loans ?? []).every((loan) => "id" in loan)
   },
   up: (character) =>
     produce(character as unknown as { nuyen: { current: number; loans: LoanAfter[] } }, (draft) => {

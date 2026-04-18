@@ -1,6 +1,6 @@
 import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
-interface GearItem {
+interface Spell_V0_1_0 {
   id: string
   name: string
   type: string
@@ -10,7 +10,7 @@ interface GearItem {
 }
 
 const migration: CharacterMigration<{
-  spells?: GearItem[]
+  spells?: Spell_V0_1_0[]
 }> = {
   id: "20250601",
   checkApplied: () => true,
