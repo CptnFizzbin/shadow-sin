@@ -60,6 +60,17 @@ export class NuyenStore extends StoreSlice<NuyenState> {
     }))
   }
 
+  applyInterestToLoan(loanId: UUID) {
+    this.set((prev) =>
+      produce(prev, (draft) => {
+        const loan = draft.loans.find((l) => l.id === loanId)
+        if (loan && loan.interestRate > 0) {
+          loan.amount = Math.ceil(loan.amount * (1 + loan.interestRate / 100))
+        }
+      }),
+    )
+  }
+
   endOfMonth() {
     this.set((prev) =>
       produce(prev, (draft) => {

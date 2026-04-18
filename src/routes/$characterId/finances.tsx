@@ -4,8 +4,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
+import { useState } from "react"
 
 import { CredstickSection } from "#/components/finances/credsticks/credstickSection.tsx"
+import { EndOfMonthDialog } from "#/components/finances/endOfMonth/endOfMonthDialog.tsx"
 import { LifestyleSection } from "#/components/finances/lifestyle/lifestyleSection.tsx"
 import { LoansSection } from "#/components/finances/loans/loansSection.tsx"
 import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
@@ -15,6 +17,7 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Lifestyles } from "#/lib/system/lifestyleType.ts"
+import { calculateMonthlyInterest } from "#/lib/system/loanData.ts"
 import { useNetWorth } from "../../components/finances/nuyen/useNetWorth.tsx"
 
 export const Route = createFileRoute("/$characterId/finances")({
@@ -24,28 +27,36 @@ export const Route = createFileRoute("/$characterId/finances")({
 function RouteComponent() {
   const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
+  const [endOfMonthOpen, setEndOfMonthOpen] = useState(false)
 
   const netWorth = useNetWorth()
   const nuyenBalance = useStore(nuyenStore, (state) => state.current)
-  const loansBalance = useStore(nuyenStore, (state) => state.loans.reduce((sum, loan) => sum + loan.amount, 0))
+  const loans = useStore(nuyenStore, (state) => state.loans)
+  const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  const handleEndOfMonth = () => {
-    nuyenStore.endOfMonth()
+  const lifestyleQuality = useStore(lifestyleStore, (s) => s.quality)
+  const lifestyleMonthsPaid = useStore(lifestyleStore, (s) => s.monthsPaid)
+  const lifestyleUpkeep = Lifestyles[lifestyleQuality].upkeep
 
-    const lifestyle = lifestyleStore.state
-    const upkeep = Lifestyles[lifestyle.quality].upkeep
-    if (upkeep > 0) {
-      if (lifestyle.monthsPaid > 0) {
-        lifestyleStore.setMonthsPaid(lifestyle.monthsPaid - 1)
-      } else {
-        nuyenStore.withdraw(upkeep)
-      }
-    }
-  }
+  const monthlyNuyenCost = lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0
+  const monthlyInterest = loans
+    .filter((l) => l.interestRate > 0)
+    .reduce((sum, l) => sum + calculateMonthlyInterest(l), 0)
+  const totalMonthlyExpenses = monthlyNuyenCost + monthlyInterest
 
   return (
     <Stack>
       <SectionHeader>Finances</SectionHeader>
+
+      <Button
+        size="small"
+        variant="outlined"
+        color="warning"
+        fullWidth
+        onClick={() => setEndOfMonthOpen(true)}
+      >
+        End of Month{totalMonthlyExpenses > 0 && <> — <Nuyen amount={totalMonthlyExpenses} /></>}
+      </Button>
 
       <Grid container columns={3} spacing={1}>
         <Grid size={1}>
@@ -84,17 +95,11 @@ function RouteComponent() {
 
       <LifestyleSection nuyenStore={nuyenStore} />
 
-      <Stack direction="row" alignContent="center">
-        <Button
-          size="small"
-          variant="outlined"
-          color="warning"
-          fullWidth
-          onClick={handleEndOfMonth}
-        >
-          End of Month
-        </Button>
-      </Stack>
+      <EndOfMonthDialog
+        open={endOfMonthOpen}
+        nuyenStore={nuyenStore}
+        onClose={() => setEndOfMonthOpen(false)}
+      />
     </Stack>
   )
 }
