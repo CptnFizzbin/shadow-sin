@@ -10,8 +10,9 @@ import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 export const QuickDamageSection: FC = () => {
   return (
     <Stack gap={0.5}>
-      <Label label="Damage" variant="text" />
+      <Label label="Damage" />
 
+      <WoundModLabel />
       <Grid container columns={2} spacing={1}>
         <Grid size={1}>
           <DamageCounter trackKey={DamageTrackKey.physical} label="Physical" />
@@ -21,7 +22,6 @@ export const QuickDamageSection: FC = () => {
         </Grid>
       </Grid>
 
-      <WoundModLabel />
     </Stack>
   )
 }

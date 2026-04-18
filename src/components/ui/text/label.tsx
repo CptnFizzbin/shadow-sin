@@ -32,7 +32,7 @@ export const Label: FC<LabelProps> = ({
       break
     case "outlined":
       styles = {
-        border: "1px solid",
+        borderBottom: "1px solid",
         borderColor: color,
         color: color,
       }

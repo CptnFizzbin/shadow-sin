@@ -35,22 +35,16 @@ export const QuickEdgeSection: FC = () => {
 
   return (
     <Stack gap={0.5}>
-      <Label label="Edge" variant="text" />
+      <Label label="Edge" />
+
+      <Counter
+        value={current}
+        min={0}
+        max={max}
+        onChange={(value) => edgeStore.setCurrent(value)}
+      />
+
       <Stack direction="row" alignItems="center" gap={1}>
-        <Button
-          variant="outlined"
-          disabled={max <= 1}
-          onClick={() => edgeStore.restore()}
-          fullWidth
-        >
-          Restore
-        </Button>
-        <Counter
-          value={current}
-          min={0}
-          max={max}
-          onChange={(value) => edgeStore.setCurrent(value)}
-        />
         <Button
           variant="outlined"
           color="error"
@@ -59,6 +53,14 @@ export const QuickEdgeSection: FC = () => {
           fullWidth
         >
           Burn
+        </Button>
+        <Button
+          variant="outlined"
+          disabled={max <= 1}
+          onClick={() => edgeStore.restore()}
+          fullWidth
+        >
+          Restore
         </Button>
       </Stack>
     </Stack>

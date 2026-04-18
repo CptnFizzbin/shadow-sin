@@ -1,8 +1,7 @@
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { VehiclesList } from "#/components/vehicles/vehiclesList.tsx"
 import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
 
@@ -12,10 +11,8 @@ export const Route = createFileRoute("/$characterId/vehicles")({
 
 function RouteComponent() {
   return (
-    <Stack gap={1}>
-      <Paper sx={{ padding: 1 }}>
-        <Typography variant="h2">Vehicles</Typography>
-      </Paper>
+    <Stack>
+      <SectionHeader>Vehicles</SectionHeader>
 
       <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
     </Stack>

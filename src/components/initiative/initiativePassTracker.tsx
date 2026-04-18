@@ -2,8 +2,8 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import type { InitiativePassStore } from "#/components/offense/useInitiativePassStore.ts"
-import { useInitiativePassesCompleted } from "#/components/offense/useInitiativePassStore.ts"
+import type { InitiativePassStore } from "#/components/initiative/useInitiativePassStore.ts"
+import { useInitiativePassesCompleted } from "#/components/initiative/useInitiativePassStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
 interface InitiativePassTrackerProps {

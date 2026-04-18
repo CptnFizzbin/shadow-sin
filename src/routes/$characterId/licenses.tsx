@@ -1,4 +1,3 @@
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
@@ -12,12 +11,8 @@ export const Route = createFileRoute("/$characterId/licenses")({
 function RouteComponent() {
   return (
     <Stack gap={1}>
-      <Paper sx={{ padding: 1 }}>
-        <Stack gap={1}>
-          <SectionHeader>SINs & Licenses</SectionHeader>
-          <SinsAndLicensesSection />
-        </Stack>
-      </Paper>
+      <SectionHeader>SINs & Licenses</SectionHeader>
+      <SinsAndLicensesSection />
     </Stack>
   )
 }

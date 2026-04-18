@@ -1,6 +1,5 @@
 import { Container } from "@mui/material"
 import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
 import Drawer from "@mui/material/Drawer"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
@@ -44,8 +43,8 @@ export const QuickAccessPanel: FC = () => {
           </IconButton>
         </Toolbar>
 
-        <Container>
-          <Stack gap={1.5} divider={<Divider />} sx={{ padding: 1, overflowY: "auto" }}>
+        <Container disableGutters>
+          <Stack padding={1} sx={{ overflowY: "auto" }}>
             <QuickAttributesSection />
             <QuickDamageSection />
             <QuickEdgeSection />

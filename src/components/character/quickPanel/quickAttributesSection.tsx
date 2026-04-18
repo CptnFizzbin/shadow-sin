@@ -6,8 +6,8 @@ import { Label } from "#/components/ui/text/label.tsx"
 
 export const QuickAttributesSection: FC = () => {
   return (
-    <Stack gap={0.5}>
-      <Label label="Attributes" variant="text" />
+    <Stack>
+      <Label label="Attributes" />
       <AttributesSection showLabels={false} />
     </Stack>
   )

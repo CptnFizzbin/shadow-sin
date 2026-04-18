@@ -10,11 +10,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { AttackDicePool } from "#/components/offense/attackDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import type { FirearmData, WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { isFirearmData } from "#/lib/system/gear/weaponData.ts"
+import { AttackDicePool } from "./attackDicePool.tsx"
 
 interface WeaponAttackDialogProps {
   weapon: WeaponData
@@ -36,7 +36,7 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ pb: 0 }}>{weapon.name}</DialogTitle>
+      <DialogTitle variant="h3">{weapon.name}</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
         <Stack gap={1.5}>
           {isFirearm && firearm && firearm.firemodes.length > 0 && (

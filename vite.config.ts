@@ -18,7 +18,7 @@ const config = defineConfig({
   ],
 
   test: {
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    include: ["#/**/*.{test,spec}.{ts,tsx}"],
     environment: "happy-dom",
     sequence: {
       concurrent: true,

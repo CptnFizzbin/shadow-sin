@@ -54,6 +54,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
   const skillRating = useCharacterSheet((sheet) => {
     return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
   })
+
   const groupRating = useCharacterSheet((sheet) => {
     return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
   })

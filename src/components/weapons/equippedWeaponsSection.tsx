@@ -3,11 +3,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useGearByType } from "#/components/gear/useGearApi.ts"
-import { EquippedWeaponCard } from "#/components/offense/equippedWeaponCard.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
 import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
 import { GearType } from "#/lib/system/gearType.ts"
+import { EquippedWeaponCard } from "./equippedWeaponCard.tsx"
 
 export const EquippedWeaponsSection: FC = () => {
   const allWeapons = useGearByType<WeaponData>(GearType.weapon)

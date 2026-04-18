@@ -8,6 +8,7 @@ import { useState } from "react"
 import { ActiveSkillsList } from "#/components/skills/activeSkills/activeSkillsList.tsx"
 import { KnowledgeSkillsList } from "#/components/skills/knowledgeSkills/knowledgeSkillsList.tsx"
 import { LanguageSkillsList } from "#/components/skills/languageSkills/languageSkillsList.tsx"
+import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 type SkillsTabValue = "active" | "knowledge" | "languages"
 
@@ -19,8 +20,10 @@ function RouteComponent() {
   const [activeTab, setActiveTab] = useState<SkillsTabValue>("active")
 
   return (
-    <Stack gap={1}>
-      <Paper sx={{ margin: -1, marginBottom: 0 }}>
+    <Stack>
+      <SectionHeader>Skills</SectionHeader>
+
+      <Paper sx={{ margin: -1, marginBottom: 0 }} variant="elevation">
         <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value as SkillsTabValue)}>
           <Tab value="active" label="Active" sx={{ flexGrow: 1 }} />
           <Tab value="knowledge" label="Knowledge" sx={{ flexGrow: 1 }} />

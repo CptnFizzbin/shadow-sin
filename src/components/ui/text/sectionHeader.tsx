@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material"
 import type { TypographyProps } from "@mui/material/Typography"
 import Typography from "@mui/material/Typography"
 import type { FC, PropsWithChildren } from "react"
@@ -11,24 +12,19 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
   ...props
 }) => {
   return (
-
-    <Typography
-      variant="h2"
-      {...props}
-      sx={
-        mergeSx(
-          {
-            textAlign: "center",
-            borderBottom: "1px solid",
-            borderColor: "secondary.light",
-            paddingBottom: 0.5,
-          },
-          props.sx,
-        )
-      }
-    >
-      {children}
-    </Typography>
-
+    <Paper sx={{ marginX: -1, padding: 2 }} variant="elevation">
+      <Typography
+        variant="h2"
+        {...props}
+        sx={
+          mergeSx(
+            { textAlign: "center" },
+            props.sx,
+          )
+        }
+      >
+        {children}
+      </Typography>
+    </Paper>
   )
 }
