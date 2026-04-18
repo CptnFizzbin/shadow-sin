@@ -6,13 +6,13 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
+import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import {
   weaponFieldMap,
   useWeaponForm,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/useWeaponForm.tsx"
-import { WeaponFormFields } from "#/components/characterBuilder/sections/gear/weapons/forms/weaponFormFields.tsx"
-import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
-import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
+} from "#/components/gear/weapons/forms/useWeaponForm.tsx"
+import { WeaponFormFields } from "#/components/gear/weapons/forms/weaponFormFields.tsx"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {

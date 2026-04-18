@@ -6,13 +6,13 @@ import { z } from "zod"
 import {
   weaponFieldMap,
   weaponFormOpts,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/useWeaponForm.tsx"
+} from "#/components/gear/weapons/forms/useWeaponForm.tsx"
 import {
   WeaponDamageFormFields,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/weaponDamageFormFields.tsx"
+} from "#/components/gear/weapons/forms/weaponDamageFormFields.tsx"
 import {
   WeaponSkillFormFields,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/weaponSkillFormFields.tsx"
+} from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { FirearmAttachmentPoint } from "#/lib/system/gear/weaponData.ts"

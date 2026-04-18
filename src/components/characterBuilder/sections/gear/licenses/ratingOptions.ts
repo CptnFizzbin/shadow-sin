@@ -1,4 +1,4 @@
-import { GearMaxAvailability } from "#/components/characterBuilder/sections/gear/gearUtils.ts"
+import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 
 const MaxRating = Math.floor(GearMaxAvailability / 3)

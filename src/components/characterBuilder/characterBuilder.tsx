@@ -5,6 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ExportCharacterButton } from "#/components/character/exportCharacterButton.tsx"
+import { AllBuilderAlerts } from "#/components/characterBuilder/alerts/allBuilderAlerts.tsx"
 import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { useBuilderRootStateStore } from "#/components/characterBuilder/hooks/useBuilderRootStateStore.ts"
 import { ImportYamlBuilderButton } from "#/components/characterBuilder/importYamlBuilderButton.tsx"
@@ -36,7 +37,6 @@ import {
   KnowledgeSkillsBuilderSection,
 } from "#/components/characterBuilder/sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/characterBuilder/sections/summary/bpSummaryFooter.tsx"
-import { AllBuilderAlerts } from "#/components/ui/alerts/alertsList.tsx"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface CharacterFormProps {

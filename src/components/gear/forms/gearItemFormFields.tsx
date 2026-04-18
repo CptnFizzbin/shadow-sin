@@ -2,11 +2,11 @@ import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
+import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
 import {
   gearItemFieldMap,
   gearItemFormOpts,
-} from "#/components/characterBuilder/sections/gear/generic/forms/useItemForm.tsx"
-import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
+} from "#/components/gear/forms/useItemForm.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
