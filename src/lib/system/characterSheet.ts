@@ -18,9 +18,15 @@ import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
 import type { QualityData } from "./qualityData.ts"
 
+export interface CharacterMeta {
+  version: number
+  /** IDs of all migrations that have already been applied to this character. */
+  appliedMigrations: string[]
+}
+
 export interface CharacterSheet {
   id: UUID
-  version: `${number}.${number}.${number}`
+  _meta_: CharacterMeta
 
   profile: {
     alias: string

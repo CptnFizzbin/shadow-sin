@@ -265,7 +265,6 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
     const restored = yamlToCharacterSheet(yaml)
 
     expect(restored.id).toBe(original.id)
-    expect(restored.version).toBe(original.version)
     expect(restored.profile.alias).toBe(original.profile.alias)
     expect(restored.profile.name).toBe(original.profile.name)
     expect(restored.biology.metatype).toBe(original.biology.metatype)
@@ -310,7 +309,6 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
     const restored = yamlToCharacterSheet(yaml)
 
     expect(restored.id).toBe(Artemis.id)
-    expect(restored.version).toBe(Artemis.version)
     expect(restored.karma).toEqual(Artemis.karma)
     expect(restored.nuyen).toEqual(Artemis.nuyen)
     expect(restored.attributes).toEqual(Artemis.attributes)

@@ -1,11 +1,10 @@
 import { sort } from "fast-sort"
-import semver from "semver"
 
 import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
-import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { StorageManager } from "#/lib/storage/storageManager.ts"
 import type { StoredJsonFile } from "#/lib/storage/storageProvider.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import { migrations } from "../../../../migrations/index.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -128,7 +127,7 @@ export class CharacterManager {
         }
       }
 
-      const migrated = await this.migrateCharacter(rawData as { version: string })
+      const migrated = await this.migrateCharacter(rawData)
 
       if (!migrated.id || !migrated.profile) {
         return {
@@ -159,26 +158,47 @@ export class CharacterManager {
     return filename.replace(/\.json$/, "")
   }
 
-  private async migrateCharacter(character: {
-    version: string
-  }): Promise<CharacterSheet> {
-    let characterData = character
-    let migrationPerformed = false
+  private async migrateCharacter(character: unknown): Promise<CharacterSheet> {
+    let characterData: unknown = character
 
-    const migrationsToRun = sort(migrations)
-      .asc((migration) => migration.version)
-      .filter((migration) => semver.gt(migration.version, characterData.version))
+    const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
+      | { version?: number, appliedMigrations?: unknown }
+      | undefined
 
-    for (const migration of migrationsToRun) {
-      if (semver.gt(migration.version, characterData.version)) {
-        characterData = await migration.up(character)
-        characterData = { ...characterData, version: migration.version }
-        migrationPerformed = true
-      }
+    const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
+      ? [...existingMeta.appliedMigrations]
+      : []
+
+    characterData = {
+      ...(characterData as Record<string, unknown>),
+      _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: [...appliedMigrationIds] },
     }
 
-    const playerCharacter: CharacterSheet =
-      characterData as CharacterSheet
+    const migrationsToRun = sort(migrations)
+      .asc((migration) => migration.id)
+      .filter((migration) => !appliedMigrationIds.includes(migration.id))
+
+    let migrationPerformed = false
+
+    for (const migration of migrationsToRun) {
+      characterData = migration.up(characterData)
+      appliedMigrationIds.push(migration.id)
+      // Always preserve appliedMigrations regardless of what the migration did to _meta_
+      const metaAfterMigration = (characterData as { _meta_?: unknown })._meta_
+      characterData = {
+        ...(characterData as Record<string, unknown>),
+        _meta_: {
+          version: 1,
+          ...(typeof metaAfterMigration === "object" && metaAfterMigration !== null
+            ? (metaAfterMigration as Record<string, unknown>)
+            : {}),
+          appliedMigrations: [...appliedMigrationIds],
+        },
+      }
+      migrationPerformed = true
+    }
+
+    const playerCharacter = characterData as CharacterSheet
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)

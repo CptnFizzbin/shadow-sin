@@ -14,10 +14,10 @@ interface GearItem {
 const migration: CharacterMigration<{
   gear?: Record<string, GearItem>
 }> = {
-  version: "0.5.0",
+  id: "20260417",
   up: (prev) =>
     produce(prev, (draft) => {
-      const gear = draft.gear ??= {}
+      const gear = (draft.gear ??= {})
 
       const weapons = Object.values(gear).filter(
         (item) => item.itemType === "weapon" && !item.parentId,
