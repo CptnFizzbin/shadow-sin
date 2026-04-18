@@ -14,10 +14,28 @@ interface GearItem {
 const migration: CharacterMigration<{
   gear?: Record<string, GearItem>
 }> = {
-  version: "0.5.0",
+  id: "20260417",
+  checkApplied: (character) => {
+    const chars = character as { gear?: Record<string, GearItem> }
+    const gear = chars.gear ?? {}
+    const weapons = Object.values(gear).filter(
+      (item) => item.itemType === "weapon" && !item.parentId,
+    )
+
+    const meleeTypeStrings = meleeWeaponTypes.map(String)
+    const rangedTypeStrings = rangedWeaponTypes.map(String)
+
+    const meleeWeapons = weapons.filter((w) => w.weaponType && meleeTypeStrings.includes(w.weaponType))
+    const rangedWeapons = weapons.filter((w) => w.weaponType && rangedTypeStrings.includes(w.weaponType))
+
+    const hasEquippedMelee = meleeWeapons.length === 0 || meleeWeapons.some((w) => w.equipped)
+    const hasEquippedRanged = rangedWeapons.length === 0 || rangedWeapons.some((w) => w.equipped)
+
+    return hasEquippedMelee && hasEquippedRanged
+  },
   up: (prev) =>
     produce(prev, (draft) => {
-      const gear = draft.gear ??= {}
+      const gear = (draft.gear ??= {})
 
       const weapons = Object.values(gear).filter(
         (item) => item.itemType === "weapon" && !item.parentId,

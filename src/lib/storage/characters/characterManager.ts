@@ -1,11 +1,10 @@
 import { sort } from "fast-sort"
-import semver from "semver"
 
 import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
-import { migrations } from "#/lib/storage/characters/migrations/index.ts"
 import type { StorageManager } from "#/lib/storage/storageManager.ts"
 import type { StoredJsonFile } from "#/lib/storage/storageProvider.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import { migrations } from "../../../../migrations/index.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -128,7 +127,7 @@ export class CharacterManager {
         }
       }
 
-      const migrated = await this.migrateCharacter(rawData as { version: string })
+      const migrated = await this.migrateCharacter(rawData)
 
       if (!migrated.id || !migrated.profile) {
         return {
@@ -159,26 +158,21 @@ export class CharacterManager {
     return filename.replace(/\.json$/, "")
   }
 
-  private async migrateCharacter(character: {
-    version: string
-  }): Promise<CharacterSheet> {
-    let characterData = character
+  private async migrateCharacter(character: unknown): Promise<CharacterSheet> {
+    let characterData = character as Record<string, unknown>
     let migrationPerformed = false
 
     const migrationsToRun = sort(migrations)
-      .asc((migration) => migration.version)
-      .filter((migration) => semver.gt(migration.version, characterData.version))
+      .asc((migration) => migration.id)
+      .filter((migration) => !migration.checkApplied(characterData))
 
     for (const migration of migrationsToRun) {
-      if (semver.gt(migration.version, characterData.version)) {
-        characterData = await migration.up(character)
-        characterData = { ...characterData, version: migration.version }
-        migrationPerformed = true
-      }
+      characterData = migration.up(characterData) as Record<string, unknown>
+      migrationPerformed = true
     }
 
     const playerCharacter: CharacterSheet =
-      characterData as CharacterSheet
+      characterData as unknown as CharacterSheet
 
     if (migrationPerformed) {
       await this.saveCharacter(playerCharacter)

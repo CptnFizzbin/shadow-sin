@@ -9,10 +9,15 @@ interface GearItem {
 }
 
 const migration: CharacterMigration<{
-  version: string
   gear?: Record<string, GearItem>
 }> = {
-  version: "0.4.0",
+  id: "20260416",
+  checkApplied: (character) => {
+    const chars = character as { gear?: Record<string, GearItem> }
+    return Object.values(chars.gear ?? {}).every(
+      (item) => item.itemType !== "vehicle" || item.vehicleCategory != null,
+    )
+  },
   up: (character) =>
     produce(character, (draft) => {
       if (!draft.gear) return
