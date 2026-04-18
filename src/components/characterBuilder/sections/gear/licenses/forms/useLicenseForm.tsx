@@ -3,10 +3,10 @@ import type { UUID } from "node:crypto"
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { getLicenseCost } from "#/components/characterBuilder/sections/gear/licenses/forms/licenseUtils.ts"
-import { NullGearId } from "#/components/gear/gearUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface LicenseFormOptions {
   parentId?: UUID
@@ -17,11 +17,11 @@ export interface LicenseFormOptions {
 
 const defaultValues: LicenseData = {
   itemType: ItemType.license,
-  id: NullGearId,
+  id: NullUuid,
   name: "",
   rating: 1,
   cost: 0,
-  parentId: NullGearId,
+  parentId: NullUuid,
 }
 
 export const licenseFieldMap = createFieldMap(defaultValues)

@@ -7,8 +7,6 @@ import { isImplant } from "#/lib/system/gear/implantData.ts"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 import { isSinData } from "#/lib/system/gear/sinData.ts"
 
-export { GearMaxAvailability }
-
 export type GearItemCostInfo = {
   cost?: number
   quantity?: number
