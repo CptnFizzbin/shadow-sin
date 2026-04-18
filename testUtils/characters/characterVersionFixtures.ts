@@ -267,7 +267,7 @@ export const characterPost20260418: Record<string, unknown> = {
 // • All migrations in `appliedMigrations`
 // • `version` field removed by 20260419
 // ---------------------------------------------------------------------------
-const { version: _removedVersion, ...characterPost20260418WithoutVersion } = characterPost20260418
+const { version: _version, ...characterPost20260418WithoutVersion } = characterPost20260418
 export const characterV1: Record<string, unknown> = {
   ...characterPost20260418WithoutVersion,
   _meta_: {

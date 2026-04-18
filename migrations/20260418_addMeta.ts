@@ -6,6 +6,8 @@ interface Output {
 
 const migration: CharacterMigration<Record<string, unknown>, Output & Record<string, unknown>> = {
   id: "20260418",
+  // Merge into any existing _meta_ so that appliedMigrations (or other fields
+  // set by the manager before this migration runs) are not lost.
   up: (character) => ({
     ...character,
     _meta_: {
