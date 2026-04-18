@@ -3,21 +3,17 @@ import { produce } from "immer"
 import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
 interface Spell {
-  theshold?: string
+  threshold?: string
 }
 
 const migration: CharacterMigration<{
   spells?: Spell[]
 }> = {
   id: "20250801",
-  checkApplied: (character) => {
-    const characterData = character as { spells?: Array<Record<string, unknown>> }
-    return (characterData.spells ?? []).every((spell) => "theshold" in spell)
-  },
   up: (character) =>
     produce(character, (draft) => {
       draft.spells = (draft.spells ?? []).map((spell) => {
-        spell.theshold ??= ""
+        spell.threshold ??= ""
         return spell
       })
     }),

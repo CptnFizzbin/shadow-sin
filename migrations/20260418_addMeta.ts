@@ -6,13 +6,14 @@ interface Output {
 
 const migration: CharacterMigration<Record<string, unknown>, Output & Record<string, unknown>> = {
   id: "20260418",
-  checkApplied: (character) => {
-    const characterData = character as { _meta_?: unknown }
-    return characterData._meta_ !== undefined
-  },
   up: (character) => ({
     ...character,
-    _meta_: { version: 1 },
+    _meta_: {
+      ...((typeof character._meta_ === "object" && character._meta_ !== null)
+        ? character._meta_
+        : {}),
+      version: 1,
+    },
   }),
 }
 

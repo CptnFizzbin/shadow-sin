@@ -160,14 +160,40 @@ export class CharacterManager {
 
   private async migrateCharacter(character: unknown): Promise<CharacterSheet> {
     let characterData = character as Record<string, unknown>
-    let migrationPerformed = false
+
+    const existingMeta = characterData._meta_ as
+      | { version?: number, appliedMigrations?: unknown }
+      | undefined
+
+    const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
+      ? [...existingMeta.appliedMigrations]
+      : []
+
+    characterData = {
+      ...characterData,
+      _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: appliedMigrationIds },
+    }
 
     const migrationsToRun = sort(migrations)
       .asc((migration) => migration.id)
-      .filter((migration) => !migration.checkApplied(characterData))
+      .filter((migration) => !appliedMigrationIds.includes(migration.id))
+
+    let migrationPerformed = false
 
     for (const migration of migrationsToRun) {
       characterData = migration.up(characterData) as Record<string, unknown>
+      appliedMigrationIds.push(migration.id)
+      // Always preserve appliedMigrations regardless of what the migration did to _meta_
+      characterData = {
+        ...characterData,
+        _meta_: {
+          version: 1,
+          ...(typeof characterData._meta_ === "object" && characterData._meta_ !== null
+            ? characterData._meta_
+            : {}),
+          appliedMigrations: [...appliedMigrationIds],
+        },
+      }
       migrationPerformed = true
     }
 

@@ -6,4 +6,5 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./20260416_addVehicleCategory.ts"),
   await import("./20260417_setDefaultEquippedWeapons.ts"),
   await import("./20260418_addMeta.ts"),
+  await import("./20260419_removeVersionField.ts"),
 ].map((module) => module.default)

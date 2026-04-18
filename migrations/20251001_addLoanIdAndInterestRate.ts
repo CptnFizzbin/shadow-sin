@@ -1,8 +1,10 @@
 import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
 
 interface LoanBefore {
+  id?: string
   lender: string
   amount: number
+  interestRate?: number
   notes?: string
 }
 
@@ -30,19 +32,15 @@ interface Output {
 
 const migration: CharacterMigration<Input, Output> = {
   id: "20251001",
-  checkApplied: (character) => {
-    const characterData = character as { nuyen?: { loans?: Array<Record<string, unknown>> } }
-    return (characterData.nuyen?.loans ?? []).every((loan) => "id" in loan)
-  },
   up: (character) => ({
     ...character,
     nuyen: {
       current: character.nuyen?.current ?? 0,
       loans: (character.nuyen?.loans ?? []).map((loan) => ({
-        id: crypto.randomUUID(),
+        id: loan.id ?? crypto.randomUUID(),
         lender: loan.lender,
         amount: loan.amount,
-        interestRate: 0,
+        interestRate: loan.interestRate ?? 0,
         notes: loan.notes,
       })),
     },

@@ -1,16 +1,15 @@
 import { getAttributesValues } from "#/components/attributes/getAttributesValues.ts"
-import { CurrentCharacterSheetVersion } from "#/lib/storage/characters/currentCharacterSheetVersion.ts"
 import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import { metatypes, MetatypeType } from "#/lib/system/metatypeData.ts"
+import { migrationIds } from "../../../migrations/migrationIds.ts"
 
 export const NULL_CHARACTER_ID = "00000000-0000-0000-0000-000000000000"
 
 export const createDefaultCharacterSheet = (): CharacterSheet => ({
   id: NULL_CHARACTER_ID,
-  version: CurrentCharacterSheetVersion,
-  _meta_: { version: 1 },
+  _meta_: { version: 1, appliedMigrations: [...migrationIds] },
 
   profile: {
     alias: "",

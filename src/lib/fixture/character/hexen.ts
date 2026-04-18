@@ -5,11 +5,11 @@ import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from
 import { SpiritType } from "#/lib/system/magic/traditionData.ts"
 import { MetatypeType } from "#/lib/system/metatypeData.ts"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { migrationIds } from "../../../../migrations/migrationIds.ts"
 
 export const Hexen: CharacterSheet = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
-  version: "0.2.0",
-  _meta_: { version: 1 },
+  _meta_: { version: 1, appliedMigrations: [...migrationIds] },
 
   biology: {
     metatype: MetatypeType.Human,

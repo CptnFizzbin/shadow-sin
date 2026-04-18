@@ -21,11 +21,12 @@ import type { QualityData } from "./qualityData.ts"
 export interface CharacterMeta {
   /** Schema version — increment when making breaking changes to the character JSON structure. */
   version: number
+  /** IDs of all migrations that have already been applied to this character. */
+  appliedMigrations: string[]
 }
 
 export interface CharacterSheet {
   id: UUID
-  version: `${number}.${number}.${number}`
   _meta_: CharacterMeta
 
   profile: {
