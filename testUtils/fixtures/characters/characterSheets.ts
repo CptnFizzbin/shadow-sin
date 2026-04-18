@@ -47,7 +47,7 @@ export const TEST_OLD_FORMAT_LICENSE_ID = "89f99b5a-b065-4827-9bfd-50d7396f07ed"
 // • Licenses link to parent SIN via `sinId` instead of `parentId`
 // • Language skills use `isNative: true` flag instead of `rating: "native"`
 // ---------------------------------------------------------------------------
-export const characterOldFormat: Record<string, unknown> = {
+export const characterV0 = {
   characterId: TEST_OLD_FORMAT_CHARACTER_ID,
   name: "Long",
   alias: "Blur",
@@ -73,9 +73,27 @@ export const characterOldFormat: Record<string, unknown> = {
   },
 
   qualities: [
-    { id: "78b60d44-68da-4b26-936c-45128e156750", name: "Pain Tolerance 2", type: "positive", description: "", bpValue: 10 },
-    { id: "3fe412a9-094c-4e66-8e1c-cab7a24cdb6b", name: "Restricted Item", type: "positive", description: "", bpValue: 10 },
-    { id: "19a46cb9-2206-4f52-9c6d-8b84c32bc0dc", name: "Sensitive System", type: "negative", description: "", bpValue: 15 },
+    {
+      id: "78b60d44-68da-4b26-936c-45128e156750",
+      name: "Pain Tolerance 2",
+      type: "positive",
+      description: "",
+      bpValue: 10,
+    },
+    {
+      id: "3fe412a9-094c-4e66-8e1c-cab7a24cdb6b",
+      name: "Restricted Item",
+      type: "positive",
+      description: "",
+      bpValue: 10,
+    },
+    {
+      id: "19a46cb9-2206-4f52-9c6d-8b84c32bc0dc",
+      name: "Sensitive System",
+      type: "negative",
+      description: "",
+      bpValue: 15,
+    },
   ],
 
   skills: {
@@ -104,14 +122,56 @@ export const characterOldFormat: Record<string, unknown> = {
     complexForms: [],
     sprites: [],
     spells: [
-      { id: "10f6ca56-2501-4ca5-9dfd-4a53e545fc84", name: "IMPROVED INVISIBILITY", type: "Physical", range: "LoS", damage: "Physical", description: "" },
-      { id: "9950ccef-03a7-4869-ad82-b500b963951c", name: "Oxygenate", type: "Physical", range: "LoS", damage: "Physical", description: "" },
+      {
+        id: "10f6ca56-2501-4ca5-9dfd-4a53e545fc84",
+        name: "IMPROVED INVISIBILITY",
+        type: "Physical",
+        range: "LoS",
+        damage: "Physical",
+        description: "",
+      },
+      {
+        id: "9950ccef-03a7-4869-ad82-b500b963951c",
+        name: "Oxygenate",
+        type: "Physical",
+        range: "LoS",
+        damage: "Physical",
+        description: "",
+      },
     ],
     adeptPowers: [
-      { id: "45b87148-3839-4313-ad44-c3889da2473e", name: "Astral Perception", rating: 1, costPerRating: 1, description: "", source: { book: "", page: 0 } },
-      { id: "e12c4658-00ac-4871-a591-2ee5901a73ac", name: "Improved Senses", rating: 4, costPerRating: 0.25, description: "Direction, Scent, Flare, Sound", source: { book: "", page: 0 } },
-      { id: "02d7954e-df06-4b71-9f7b-b01b4d548e94", name: "Improved Reflexes 2", rating: 1, costPerRating: 2.5, description: "", source: { book: "", page: 0 } },
-      { id: "d9aaf66f-bec7-45bb-822f-c967f6658752", name: "Kinesics", rating: 1, costPerRating: 0.5, description: "", source: { book: "", page: 0 } },
+      {
+        id: "45b87148-3839-4313-ad44-c3889da2473e",
+        name: "Astral Perception",
+        rating: 1,
+        costPerRating: 1,
+        description: "",
+        source: { book: "", page: 0 },
+      },
+      {
+        id: "e12c4658-00ac-4871-a591-2ee5901a73ac",
+        name: "Improved Senses",
+        rating: 4,
+        costPerRating: 0.25,
+        description: "Direction, Scent, Flare, Sound",
+        source: { book: "", page: 0 },
+      },
+      {
+        id: "02d7954e-df06-4b71-9f7b-b01b4d548e94",
+        name: "Improved Reflexes 2",
+        rating: 1,
+        costPerRating: 2.5,
+        description: "",
+        source: { book: "", page: 0 },
+      },
+      {
+        id: "d9aaf66f-bec7-45bb-822f-c967f6658752",
+        name: "Kinesics",
+        rating: 1,
+        costPerRating: 0.5,
+        description: "",
+        source: { book: "", page: 0 },
+      },
     ],
   },
 
@@ -130,15 +190,85 @@ export const characterOldFormat: Record<string, unknown> = {
     {},
     {},
     {},
-    { id: "18f65514-6d3a-4667-8513-baad8751765b", name: "Power Foci 2", cost: 50000, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "misc" },
-    { id: "d93581d1-b323-4fcb-b572-c4a95c7f9ce5", name: "SM-4", cost: 6200, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "weapons" },
-    { id: "14912365-ddc2-4800-9bed-c373db404c5c", name: "Monofilament Sword", cost: 750, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "weapons" },
-    { id: "97a8a21d-e495-49d5-8f55-c04ee4477a5d", name: "Armor Jacket", cost: 900, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "armor" },
-    { id: "c34eee95-bee7-46b1-b1d5-29f7ee188c1a", name: "Contact Lenses 3", cost: 150, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "devices" },
-    { id: "88c039ae-4555-4a23-ae1e-90ba178017e6", name: "CMT Clip Commlink (1/3)", cost: 300, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "devices" },
+    {
+      id: "18f65514-6d3a-4667-8513-baad8751765b",
+      name: "Power Foci 2",
+      cost: 50000,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "misc",
+    },
+    {
+      id: "d93581d1-b323-4fcb-b572-c4a95c7f9ce5",
+      name: "SM-4",
+      cost: 6200,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "weapons",
+    },
+    {
+      id: "14912365-ddc2-4800-9bed-c373db404c5c",
+      name: "Monofilament Sword",
+      cost: 750,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "weapons",
+    },
+    {
+      id: "97a8a21d-e495-49d5-8f55-c04ee4477a5d",
+      name: "Armor Jacket",
+      cost: 900,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "armor",
+    },
+    {
+      id: "c34eee95-bee7-46b1-b1d5-29f7ee188c1a",
+      name: "Contact Lenses 3",
+      cost: 150,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "devices",
+    },
+    {
+      id: "88c039ae-4555-4a23-ae1e-90ba178017e6",
+      name: "CMT Clip Commlink (1/3)",
+      cost: 300,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "devices",
+    },
     { id: TEST_OLD_FORMAT_SIN_ID, name: "Long Xiang", rating: 3, cost: 3000, itemType: "sins" },
-    { id: TEST_OLD_FORMAT_LICENSE_ID, name: "Monofilament Sword", sinId: TEST_OLD_FORMAT_SIN_ID, rating: "3", cost: 300, itemType: "licenses" },
-    { id: "4a9ee940-94ad-42a2-9411-5ce67cc85ed3", name: "Indian Pathfinder", cost: 6000, quantity: 1, description: "", availability: { rating: 0, restricted: false, forbidden: false }, source: { book: "", page: 0 }, itemType: "vehicles" },
+    {
+      id: TEST_OLD_FORMAT_LICENSE_ID,
+      name: "Monofilament Sword",
+      sinId: TEST_OLD_FORMAT_SIN_ID,
+      rating: "3",
+      cost: 300,
+      itemType: "licenses",
+    },
+    {
+      id: "4a9ee940-94ad-42a2-9411-5ce67cc85ed3",
+      name: "Indian Pathfinder",
+      cost: 6000,
+      quantity: 1,
+      description: "",
+      availability: { rating: 0, restricted: false, forbidden: false },
+      source: { book: "", page: 0 },
+      itemType: "vehicles",
+    },
   ],
 }
 
@@ -150,7 +280,7 @@ export const characterOldFormat: Record<string, unknown> = {
 // • weapon:  no `equipped`
 // • sheet:   no `_meta_`, has old `version` string
 // ---------------------------------------------------------------------------
-export const characterPreAllMigrations: Record<string, unknown> = {
+export const characterV1_0 = {
   id: TEST_CHARACTER_ID,
   version: "0.1.0",
 
@@ -251,8 +381,8 @@ export const characterPreAllMigrations: Record<string, unknown> = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterPost20250801: Record<string, unknown> = {
-  ...characterPreAllMigrations,
+export const characterV1_20250801 = {
+  ...characterV1_0,
   _meta_: { version: 1, appliedMigrations: ["20250801"] },
   spells: [
     {
@@ -275,8 +405,8 @@ export const characterPost20250801: Record<string, unknown> = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterPost20251001: Record<string, unknown> = {
-  ...characterPost20250801,
+export const characterV1_20251001 = {
+  ...characterV1_20250801,
   _meta_: { version: 1, appliedMigrations: ["20250801", "20251001"] },
   nuyen: {
     current: 1000,
@@ -300,8 +430,8 @@ export const characterPost20251001: Record<string, unknown> = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterPost20260416: Record<string, unknown> = {
-  ...characterPost20251001,
+export const characterV1_20260416 = {
+  ...characterV1_20251001,
   _meta_: { version: 1, appliedMigrations: ["20250801", "20251001", "20260416"] },
   gear: {
     [TEST_WEAPON_ID]: {
@@ -335,8 +465,8 @@ export const characterPost20260416: Record<string, unknown> = {
 // • weapon:  `equipped: true` set on the first melee weapon
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterPost20260417: Record<string, unknown> = {
-  ...characterPost20260416,
+export const characterV1_20260417 = {
+  ...characterV1_20260416,
   _meta_: {
     version: 1,
     appliedMigrations: ["20250801", "20251001", "20260416", "20260417"],
@@ -369,8 +499,8 @@ export const characterPost20260417: Record<string, unknown> = {
 // After 20260418_addMeta
 // All previous migrations applied; `_meta_` updated; old `version` still present.
 // ---------------------------------------------------------------------------
-export const characterPost20260418: Record<string, unknown> = {
-  ...characterPost20260417,
+export const characterV1_20260418 = {
+  ...characterV1_20260417,
   version: "0.1.0",
   _meta_: {
     version: 1,
@@ -383,9 +513,9 @@ export const characterPost20260418: Record<string, unknown> = {
 // • All migrations in `appliedMigrations`
 // • `version` field removed by 20260419
 // ---------------------------------------------------------------------------
-const { version: _version, ...characterPost20260418WithoutVersion } = characterPost20260418
-export const characterV1: Record<string, unknown> = {
-  ...characterPost20260418WithoutVersion,
+const { version, ...rest } = characterV1_20260418
+export const characterV1 = {
+  ...rest,
   _meta_: {
     version: 1,
     appliedMigrations: [

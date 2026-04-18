@@ -9,7 +9,11 @@
     "module": "esNExt",
     "paths": {
       "#/*": [
-        "./src/*"
+        "./src/*",
+        "./src/integrations/*",
+        "./lib/*",
+        "./src/lib/*",
+        "./migrations/*"
       ],
       "#testUtils/*": [
         "./testUtils/*"

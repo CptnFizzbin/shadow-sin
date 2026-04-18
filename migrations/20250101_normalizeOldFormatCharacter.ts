@@ -1,4 +1,4 @@
-import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
+import type { CharacterMigration } from "#/character/characterMigration.ts"
 
 /**
  * Migrates characters saved in the old flat YAML export format to the current
@@ -37,6 +37,7 @@ interface OldGearItem {
   id?: string
   itemType?: string
   sinId?: string
+
   [key: string]: unknown
 }
 
@@ -75,6 +76,7 @@ interface OldFormatCharacter {
   nuyen?: unknown
   edge?: unknown
   damage?: unknown
+
   [key: string]: unknown
 }
 
@@ -148,10 +150,10 @@ const migration: CharacterMigration<Record<string, unknown>> = {
       // First pass: build the flat record, normalising itemType
       for (const rawItem of old.gear) {
         if (
-          !rawItem ||
-          typeof rawItem !== "object" ||
-          !("id" in rawItem) ||
-          !(rawItem as Record<string, unknown>).id
+          !rawItem
+          || typeof rawItem !== "object"
+          || !("id" in rawItem)
+          || !(rawItem as Record<string, unknown>).id
         ) {
           continue
         }

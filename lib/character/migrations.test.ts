@@ -1,22 +1,18 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
+import { CharacterManager } from "#/character/characterManager.ts"
+import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
+import { LocalStorageProvider } from "#/storage/localStorage/localStorageProvider.ts"
+import { StorageManager } from "#/storage/storageManager.ts"
 import {
-  characterSheetToYaml,
-  yamlToCharacterSheet,
-} from "#/components/character/exportUtils.ts"
-import { CharacterManager } from "#/lib/storage/characters/characterManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
-import {
+  characterV0,
+  characterV1,
   TEST_CHARACTER_ID,
   TEST_LOAN_ID,
   TEST_OLD_FORMAT_CHARACTER_ID,
   TEST_OLD_FORMAT_LICENSE_ID,
   TEST_OLD_FORMAT_SIN_ID,
-  characterOldFormat,
-  characterPost20260418,
-  characterPreAllMigrations,
-} from "#testUtils/characters/characterVersionFixtures.ts"
+} from "#testUtils/fixtures/characters/characterSheets.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
 function makeManager(): {
@@ -41,7 +37,7 @@ describe("character migrations + yaml round-trip", () => {
     provider = result.provider
     await provider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
-      characterPreAllMigrations,
+      characterV1,
     )
   })
 
@@ -69,7 +65,7 @@ describe("character migrations + yaml round-trip", () => {
     const { manager: freshManager, provider: freshProvider } = makeManager()
     await freshProvider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
-      characterPost20260418,
+      characterV1,
     )
 
     // Act
@@ -120,7 +116,7 @@ describe("character migrations + yaml round-trip", () => {
     const { manager: freshManager, provider: freshProvider } = makeManager()
     await freshProvider.saveJsonFile(
       `characters/${TEST_OLD_FORMAT_CHARACTER_ID}.json`,
-      characterOldFormat,
+      characterV0,
     )
 
     // Act

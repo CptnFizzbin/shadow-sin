@@ -140,6 +140,7 @@ export default defineConfig([
     files: [
       "src/routeTree.gen.ts",
       "src/routes/**",
+      "migrations/**",
     ],
     rules: {
       "check-file/filename-naming-convention": "off",

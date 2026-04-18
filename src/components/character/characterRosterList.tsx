@@ -14,9 +14,9 @@ import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import { downloadTextFile } from "#/components/character/exportUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
-import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 
 interface CharacterRosterListProps {
   characters: Record<string, CharacterSheet>

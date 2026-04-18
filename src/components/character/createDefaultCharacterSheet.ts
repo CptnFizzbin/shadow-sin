@@ -4,7 +4,7 @@ import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import { metatypes, MetatypeType } from "#/lib/system/metatypeData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import { migrationIds } from "../../../migrations/index.ts"
+import { migrationIds } from "#/migrations.ts"
 
 export const createDefaultCharacterSheet = (): CharacterSheet => ({
   id: NullUuid,
