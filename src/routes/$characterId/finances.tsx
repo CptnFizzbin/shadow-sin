@@ -35,7 +35,7 @@ function RouteComponent() {
     const lifestyle = lifestyleStore.state
     const upkeep = Lifestyles[lifestyle.quality].upkeep
     if (upkeep > 0) {
-      if (lifestyle.monthsPaid > 1) {
+      if (lifestyle.monthsPaid > 0) {
         lifestyleStore.setMonthsPaid(lifestyle.monthsPaid - 1)
       } else {
         nuyenStore.withdraw(upkeep)

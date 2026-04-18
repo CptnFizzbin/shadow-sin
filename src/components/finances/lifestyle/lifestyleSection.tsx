@@ -61,7 +61,7 @@ export const LifestyleSection: FC<Props> = ({ nuyenStore }) => {
 
       <Stack direction="row" justifyContent="space-between">
         <Typography color="text.secondary">Months prepaid</Typography>
-        <Typography color={monthsPaid <= 1 ? "warning.main" : "text.primary"}>
+        <Typography color={monthsPaid === 0 ? "error.main" : monthsPaid === 1 ? "warning.main" : "text.primary"}>
           {monthsPaid}
         </Typography>
       </Stack>
