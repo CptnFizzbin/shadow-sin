@@ -4,11 +4,11 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { NullGearId } from "#/components/gear/gearUtils.ts"
 import { getLicenseCost } from "#/components/licenses/licenseUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 
 export interface LicenseFormOptions {
   parentId?: UUID
@@ -19,11 +19,11 @@ export interface LicenseFormOptions {
 
 const defaultValues: LicenseData = {
   itemType: ItemType.license,
-  id: NullGearId,
+  id: NullUuid,
   name: "",
   rating: 1,
   cost: 0,
-  parentId: NullGearId,
+  parentId: NullUuid,
 }
 
 export const licenseFieldMap = createFieldMap(defaultValues)

@@ -7,9 +7,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { GearItemFormDialog } from "#/components/characterBuilder/sections/gear/generic/dialogs/gearItemFormDialog.tsx"
-import { WeaponFormDialog } from "#/components/characterBuilder/sections/gear/weapons/dialogs/weaponFormDialog.tsx"
+import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 

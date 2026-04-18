@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ImplantFormDialog } from "#/components/characterBuilder/sections/gear/cyberware/dialogs/implantFormDialog.tsx"
+import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
 import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { ItemType } from "#/lib/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"

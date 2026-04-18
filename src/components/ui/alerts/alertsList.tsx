@@ -3,7 +3,6 @@ import Alert from "@mui/material/Alert"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import { useAllAlerts } from "#/components/characterBuilder/alerts/hooks/useAllAlerts.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { orderBySeverity } from "#/components/ui/alerts/alertInfo.ts"
 
@@ -32,9 +31,4 @@ export const AlertsList: FC<AlertsListProps> = ({
       {status.message}
     </Alert>
   ))
-}
-
-export const AllBuilderAlerts: FC = () => {
-  const statuses = useAllAlerts()
-  return <AlertsList alerts={statuses} includeSummaryOnly />
 }

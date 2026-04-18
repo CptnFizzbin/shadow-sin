@@ -5,17 +5,17 @@ import Switch from "@mui/material/Switch"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
-import { FirearmFormFields } from "#/components/characterBuilder/sections/gear/weapons/forms/firearmFormFields.tsx"
+import { FirearmFormFields } from "#/components/gear/weapons/forms/firearmFormFields.tsx"
 import {
   weaponFieldMap,
   weaponFormOpts,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/useWeaponForm.tsx"
+} from "#/components/gear/weapons/forms/useWeaponForm.tsx"
 import {
   WeaponDamageFormFields,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/weaponDamageFormFields.tsx"
+} from "#/components/gear/weapons/forms/weaponDamageFormFields.tsx"
 import {
   WeaponSkillFormFields,
-} from "#/components/characterBuilder/sections/gear/weapons/forms/weaponSkillFormFields.tsx"
+} from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
