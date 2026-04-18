@@ -1,10 +1,10 @@
 import { sort } from "fast-sort"
 
-import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
-import type { StorageManager } from "#/lib/storage/storageManager.ts"
-import type { StoredJsonFile } from "#/lib/storage/storageProvider.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { migrations } from "../../../../migrations/index.ts"
+import type { CharacterLoadError } from "#/character/characterLoadError.ts"
+import { migrations } from "#/migrations.ts"
+import type { StorageManager } from "#/storage/storageManager.ts"
+import type { StoredJsonFile } from "#/storage/storageProvider.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -158,8 +158,8 @@ export class CharacterManager {
     return filename.replace(/\.json$/, "")
   }
 
-  private async migrateCharacter(character: unknown): Promise<CharacterSheet> {
-    let characterData: unknown = character
+  private async migrateCharacter(character: object): Promise<CharacterSheet> {
+    let characterData: object = character
 
     const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
       | { version?: number, appliedMigrations?: unknown }

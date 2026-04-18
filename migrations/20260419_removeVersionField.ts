@@ -1,12 +1,14 @@
-import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
+import { produce } from "immer"
 
-interface Input {
-  version?: string
-}
+import type { CharacterMigration } from "#/character/characterMigration.ts"
 
-const migration: CharacterMigration<Input & Record<string, unknown>> = {
+const migration: CharacterMigration<{
+  version?: number
+}> = {
   id: "20260419",
-  up: ({ version: _version, ...rest }) => rest,
+  up: produce((draft) => {
+    delete draft.version
+  }),
 }
 
 export default migration

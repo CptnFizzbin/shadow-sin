@@ -137,6 +137,6 @@ Refactoring the gear system to use a unified `ItemData`-backed flat map (`Record
 - [ ] **`SectionHeader` enum coverage** — `GearType.software` and `GearType.firearmAccessory` have no corresponding
   `SectionHeader` panel; decide if they belong under Misc or get dedicated panels
 - [ ] **Character schema migration** — if any field renames land (e.g. `description` → `notes`, or `itemType` string
-  normalisation), a `CharacterMigration` entry must be added to `src/lib/storage/characters/migrations/index.ts`
-- [ ] **Barrel / index export** for `src/components/Gear/` — add an `index.ts` so consumers import from
+  normalisation), a `CharacterMigration` entry must be added to `src/lib/storage/characters/migrations/migrations.ts`
+- [ ] **Barrel / index export** for `src/components/Gear/` — add an `migrations.ts` so consumers import from
   `#/components/Gear` rather than individual file paths

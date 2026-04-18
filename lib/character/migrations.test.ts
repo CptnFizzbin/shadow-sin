@@ -1,18 +1,18 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
+import { CharacterManager } from "#/character/characterManager.ts"
+import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
+import { LocalStorageProvider } from "#/storage/localStorage/localStorageProvider.ts"
+import { StorageManager } from "#/storage/storageManager.ts"
 import {
-  characterSheetToYaml,
-  yamlToCharacterSheet,
-} from "#/components/character/exportUtils.ts"
-import { CharacterManager } from "#/lib/storage/characters/characterManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
-import {
+  characterV0,
+  characterV1,
   TEST_CHARACTER_ID,
   TEST_LOAN_ID,
-  characterPost20260418,
-  characterPreAllMigrations,
-} from "#testUtils/characters/characterVersionFixtures.ts"
+  TEST_OLD_FORMAT_CHARACTER_ID,
+  TEST_OLD_FORMAT_LICENSE_ID,
+  TEST_OLD_FORMAT_SIN_ID,
+} from "#testUtils/fixtures/characters/characterSheets.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
 function makeManager(): {
@@ -37,7 +37,7 @@ describe("character migrations + yaml round-trip", () => {
     provider = result.provider
     await provider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
-      characterPreAllMigrations,
+      characterV1,
     )
   })
 
@@ -49,6 +49,7 @@ describe("character migrations + yaml round-trip", () => {
 
     // Assert
     expect(migrated).not.toBeNull()
+    expect(migrated!._meta_.appliedMigrations).toContain("20250101")
     expect(migrated!._meta_.appliedMigrations).toContain("20250801")
     expect(migrated!._meta_.appliedMigrations).toContain("20251001")
     expect(migrated!._meta_.appliedMigrations).toContain("20260416")
@@ -64,7 +65,7 @@ describe("character migrations + yaml round-trip", () => {
     const { manager: freshManager, provider: freshProvider } = makeManager()
     await freshProvider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
-      characterPost20260418,
+      characterV1,
     )
 
     // Act
@@ -108,5 +109,77 @@ describe("character migrations + yaml round-trip", () => {
     // Assert
     expect(reloaded).not.toBeNull()
     expect(reloaded!._meta_.appliedMigrations).toEqual(migrated!._meta_.appliedMigrations)
+  })
+
+  it("normalises an old-format character into the current CharacterSheet shape", async () => {
+    // Arrange — save the old-format character into fresh storage
+    const { manager: freshManager, provider: freshProvider } = makeManager()
+    await freshProvider.saveJsonFile(
+      `characters/${TEST_OLD_FORMAT_CHARACTER_ID}.json`,
+      characterV0,
+    )
+
+    // Act
+    const migrated = await freshManager.getCharacter(TEST_OLD_FORMAT_CHARACTER_ID)
+
+    // Assert — character loaded without error
+    expect(migrated).not.toBeNull()
+
+    // id migrated from characterId
+    expect(migrated!.id).toBe(TEST_OLD_FORMAT_CHARACTER_ID)
+
+    // profile/biology populated from flat fields
+    expect(migrated!.profile.alias).toBe("Blur")
+    expect(migrated!.profile.name).toBe("Long")
+    expect(migrated!.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
+    expect(migrated!.biology.metatype).toBe("Human")
+    expect(migrated!.biology.awakening).toBe("Mystic Adept")
+    expect(migrated!.biology.age).toBe(0)
+
+    // attributes are flat numbers
+    expect(migrated!.attributes.body).toBe(4)
+    expect(migrated!.attributes.agility).toBe(5)
+    expect(migrated!.attributes.magic).toBe(5)
+    expect(migrated!.attributes.essence).toBe(6)
+
+    // skill groups use `name` instead of `groupName`
+    expect(migrated!.skills.skillGroups).toHaveLength(1)
+    expect(migrated!.skills.skillGroups[0].name).toBe("Athletics")
+    expect(migrated!.skills.skillGroups[0].rating).toBe(2)
+
+    // native language skill uses `"native"` rating
+    const english = migrated!.skills.languageSkills.find((s) => s.name === "English")
+    expect(english?.rating).toBe("native")
+    const sylvan = migrated!.skills.languageSkills.find((s) => s.name === "Sylvan")
+    expect(sylvan?.rating).toBe(4)
+
+    // spells promoted from awakened to top-level
+    expect(migrated!.spells).toHaveLength(2)
+    expect(migrated!.adeptPowers).toHaveLength(4)
+    expect(migrated!.complexForms).toHaveLength(0)
+
+    // gear is a Record, empty items stripped, itemTypes normalised
+    const gearValues = Object.values(migrated!.gear)
+    const weapon = gearValues.find((item) => item.name === "SM-4")
+    expect(weapon?.itemType).toBe("weapon")
+    const device = gearValues.find((item) => item.name === "Contact Lenses 3")
+    expect(device?.itemType).toBe("device")
+    const other = gearValues.find((item) => item.name === "Power Foci 2")
+    expect(other?.itemType).toBe("other")
+    const vehicle = gearValues.find((item) => item.name === "Indian Pathfinder")
+    expect(vehicle?.itemType).toBe("vehicle")
+
+    // license linked to SIN via parentId
+    const sin = migrated!.gear[TEST_OLD_FORMAT_SIN_ID]
+    expect(sin).toBeDefined()
+    expect(sin.itemType).toBe("sin")
+    const license = migrated!.gear[TEST_OLD_FORMAT_LICENSE_ID]
+    expect(license).toBeDefined()
+    expect(license.itemType).toBe("license")
+    expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
+    expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
+
+    // migration ID recorded
+    expect(migrated!._meta_.appliedMigrations).toContain("20250101")
   })
 })

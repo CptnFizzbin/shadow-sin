@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
+import type { CharacterMigration } from "#/character/characterMigration.ts"
 
 interface Spell {
   threshold?: string

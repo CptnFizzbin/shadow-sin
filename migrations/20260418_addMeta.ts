@@ -1,21 +1,18 @@
-import type { CharacterMigration } from "#/lib/storage/characters/characterMigration.ts"
+import { produce } from "immer"
 
-interface Output {
-  _meta_: { version: number }
-}
+import type { CharacterMigration } from "#/character/characterMigration.ts"
 
-const migration: CharacterMigration<Record<string, unknown>, Output & Record<string, unknown>> = {
+const migration: CharacterMigration<{
+  _meta_: {
+    version?: number
+  }
+}> = {
   id: "20260418",
   // Merge into any existing _meta_ so that appliedMigrations (or other fields
   // set by the manager before this migration runs) are not lost.
-  up: (character) => ({
-    ...character,
-    _meta_: {
-      ...((typeof character._meta_ === "object" && character._meta_ !== null)
-        ? character._meta_
-        : {}),
-      version: 1,
-    },
+  up: produce((character) => {
+    character._meta_ ??= {}
+    character._meta_.version ??= 1
   }),
 }
 
