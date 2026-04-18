@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack"
 
-import { weaponFormOpts } from "#/components/characterBuilder/sections/gear/weapons/forms/useWeaponForm.tsx"
+import { weaponFormOpts } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { AttributeKey } from "#/lib/system/attributeKey.ts"
 import { skillList } from "#/lib/system/skills/skillList.ts"

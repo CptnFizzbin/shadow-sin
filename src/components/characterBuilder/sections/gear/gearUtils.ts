@@ -1,12 +1,11 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { SectionHeader } from "#/components/characterBuilder/sections/gear/sectionHeader.tsx"
+import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/licenses/licenseUtils.ts"
 import { getSinAvailability } from "#/components/licenses/sinUtils.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"
 import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
 import { isSinData } from "#/lib/system/gear/sinData.ts"
-
-export const GearMaxAvailability = 12
 
 export type GearItemCostInfo = {
   cost?: number
