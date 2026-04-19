@@ -58,9 +58,8 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
 
   return (
     <CharacterBuilderStoreProvider rootStore={rootStore}>
-      <Stack gap={1}>
+      <Stack>
         <Stack
-          gap={1}
           sx={{
             opacity: isBpPanelExpanded ? 0.6 : 1,
             transition: "opacity 0.2s ease",
