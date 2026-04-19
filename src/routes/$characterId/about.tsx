@@ -8,6 +8,8 @@ import { useState } from "react"
 
 import { BiologySection } from "#/components/character/biologySection.tsx"
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { ExportCharacterButton } from "#/components/character/exportCharacterButton.tsx"
+import { ImportCurrentCharacterButton } from "#/components/character/importCurrentCharacterButton.tsx"
 import { ProfileEditDialog } from "#/components/character/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/character/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/qualities/qualitiesViewerSection.tsx"
@@ -41,6 +43,11 @@ function RouteComponent() {
       </IconButton>
 
       <Typography variant="h1" sx={{ textAlign: "center" }}>{profile.alias || profile.name}</Typography>
+
+      <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
+        <ExportCharacterButton />
+        <ImportCurrentCharacterButton />
+      </Stack>
 
       <SectionHeader>Profile</SectionHeader>
       <ProfileSection />
