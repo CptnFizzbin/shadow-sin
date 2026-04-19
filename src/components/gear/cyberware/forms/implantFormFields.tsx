@@ -125,6 +125,26 @@ export const ImplantFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
+        <group.AppField
+          name="rating"
+          validators={{
+            onChange: z
+              .number()
+              .int("Rating must be a whole number")
+              .min(1, "Rating must be at least 1")
+              .optional(),
+          }}
+        >
+          {(field) => (
+            <field.NumberField
+              label="Rating"
+              size="small"
+              sx={{ width: 120 }}
+              slotProps={{ htmlInput: { min: 1, step: 1 } }}
+            />
+          )}
+        </group.AppField>
+
         <group.Subscribe selector={({ values }) => values.parentId}>
           {(parentId) => (
             <>

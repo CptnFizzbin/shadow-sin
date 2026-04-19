@@ -51,6 +51,15 @@ export const GearItemCard: FC<GearItemCardProps> = ({
           />
         )}
 
+        {item.rating !== undefined && (
+          <Chip
+            label={`Rating: ${item.rating}`}
+            size="small"
+            variant="outlined"
+            sx={{ height: 20, fontSize: "0.7rem" }}
+          />
+        )}
+
         <Typography>
           <Nuyen amount={item.cost} />
         </Typography>

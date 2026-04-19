@@ -39,6 +39,7 @@ const defaultFormValues = {
     page: 0,
   },
   quantity: 1,
+  rating: undefined as number | undefined,
 
   // MeleeWeaponData-specific
   reach: 0,
@@ -89,6 +90,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     availability: values.availability,
     source: values.source,
     quantity: values.quantity,
+    ...(values.rating !== undefined && { rating: values.rating }),
   }
 
   if (values.weaponType === WeaponType.firearm) {
@@ -147,6 +149,7 @@ export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
           page: weapon.source?.page ?? 0,
         },
         quantity: weapon.quantity ?? 1,
+        rating: typeof weapon.rating === "number" ? weapon.rating : undefined,
         reach: meleeWeapon?.reach ?? 0,
         firearmType: firearmWeapon?.firearmType ?? FirearmTypeKey.lightPistol,
         firemodes: firearmWeapon?.firemodes ?? [],
