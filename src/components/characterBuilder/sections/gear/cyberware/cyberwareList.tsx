@@ -71,8 +71,8 @@ export const CyberwareList: FC = () => {
                   key={accessory.id}
                   implant={accessory}
                   onEdit={() =>
-                    setImplantDialog({ mode: "edit", implant, open: true })}
-                  onRemove={() => handleRemoveImplant(implant)}
+                    setImplantDialog({ mode: "edit", implant: accessory, open: true })}
+                  onRemove={() => handleRemoveImplant(accessory)}
                 />
               ))}
 
