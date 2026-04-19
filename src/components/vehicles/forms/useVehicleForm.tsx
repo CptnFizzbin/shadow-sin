@@ -43,6 +43,7 @@ const defaultFormValues = {
   armor: 0,
   sensor: 0,
   seats: undefined as number | undefined,
+  rating: undefined as number | undefined,
 }
 
 export type VehicleFormState = typeof defaultFormValues
@@ -75,6 +76,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     armor: values.armor,
     sensor: values.sensor,
     ...(values.seats !== undefined && { seats: values.seats }),
+    ...(values.rating !== undefined && { rating: values.rating }),
   }
 }
 
@@ -112,6 +114,7 @@ export const useVehicleForm = ({
         armor: vehicle.armor,
         sensor: vehicle.sensor,
         seats: vehicle.seats,
+        rating: typeof vehicle.rating === "number" ? vehicle.rating : undefined,
       }
     : {
         ...defaultFormValues,
