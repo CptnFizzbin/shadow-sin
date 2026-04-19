@@ -58,10 +58,10 @@ export const GearViewItem: FC<GearViewItemProps> = ({
       <Stack
         direction="column"
         sx={{
-          "padding": 1,
-          "borderRadius": 1,
-          "border": "1px solid",
-          "borderColor": "divider",
+          padding: 1,
+          borderRadius: 1,
+          border: "1px solid",
+          borderColor: "divider",
           ...(onEdit && {
             "cursor": "pointer",
             "&:hover": { bgcolor: "action.hover" },
@@ -237,9 +237,17 @@ export const GearViewItem: FC<GearViewItemProps> = ({
             borderBottom: "1px solid",
             borderColor: "divider" }}
         >
-          {subItems.map((subItem) => (
-            <GearViewItem key={subItem.id} item={subItem} />
-          ))}
+          {subItems.map((subItem) => {
+            const subItemCallbacks = getSubItemCallbacks?.(subItem.id) ?? {}
+            return (
+              <GearViewItem
+                key={subItem.id}
+                item={subItem}
+                onEdit={subItemCallbacks.onEdit}
+                onRemove={subItemCallbacks.onRemove}
+              />
+            )
+          })}
         </Stack>
       )}
     </Stack>

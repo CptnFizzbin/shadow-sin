@@ -10,7 +10,7 @@ import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 import type { ItemType } from "#/lib/system/itemType.ts"
 
-type GenericDialogState = null | { open: boolean }
+type GenericDialogState = null | { open: boolean, item?: ItemData }
 
 interface GenericSectionContentProps {
   items: ItemData[]
@@ -38,7 +38,20 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   return (
     <Stack sx={{ gap: 1 }}>
       {items.map((item) => (
-        <GearViewItem key={item.id} item={item} subItems={getChildren(item.id)} />
+        <GearViewItem
+          key={item.id}
+          item={item}
+          subItems={getChildren(item.id)}
+          onEdit={() => setDialogState({ open: true, item })}
+          onRemove={() => gearStore.remove(item, { removeChildren: true })}
+          getSubItemCallbacks={(subItemId) => {
+            const subItem = getChildren(item.id).find((child) => child.id === subItemId)
+            return {
+              onEdit: subItem ? () => setDialogState({ open: true, item: subItem }) : undefined,
+              onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
+            }
+          }}
+        />
       ))}
 
       <Button
@@ -55,6 +68,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
       {dialogState && (
         <GearItemFormDialog
           open={dialogState.open}
+          item={dialogState.item}
           itemType={itemType}
           label={itemLabel}
           onSave={handleSave}
