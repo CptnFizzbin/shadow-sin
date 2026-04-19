@@ -14,6 +14,7 @@ export const ImportCurrentCharacterButton: FC = () => {
   const characterName = useCharacterSheet((s) => s.profile.alias || s.profile.name)
   const inputRef = useRef<HTMLInputElement>(null)
   const [pendingCharacter, setPendingCharacter] = useState<CharacterSheet | null>(null)
+  const [parseError, setParseError] = useState<string | null>(null)
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -28,7 +29,8 @@ export const ImportCurrentCharacterButton: FC = () => {
     try {
       character = yamlToCharacterSheet(yamlContent)
     } catch (error) {
-      console.error("Failed to parse YAML file:", error)
+      const message = error instanceof Error ? error.message : "Unknown error"
+      setParseError(message)
       return
     }
 
@@ -82,6 +84,24 @@ export const ImportCurrentCharacterButton: FC = () => {
           onConfirm={handleConfirm}
           onCancel={handleCancel}
           onClosed={handleCancel}
+        />
+      )}
+
+      {parseError !== null && (
+        <ConfirmDialog
+          title="Import failed"
+          body={(
+            <Typography>
+              The selected file could not be imported: {parseError}
+            </Typography>
+          )}
+          slotProps={{
+            confirmButton: { label: "OK", color: "primary" },
+            cancelButton: { sx: { display: "none" } },
+          }}
+          onConfirm={() => setParseError(null)}
+          onCancel={() => setParseError(null)}
+          onClosed={() => setParseError(null)}
         />
       )}
     </>
