@@ -123,6 +123,7 @@ export const ActiveSkillsList: FC = () => {
 
       {dialogState?.type === "activeSkill" && (
         <ActiveSkillDialog
+          key={dialogState.skill?.name ?? "new"}
           open={dialogState.open}
           disabledSkills={disabledSkills}
           skill={dialogState.skill}
