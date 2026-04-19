@@ -1,10 +1,9 @@
-import { sort } from "fast-sort"
-
+import { applyMigrations } from "#/character/applyMigrations.ts"
 import type { CharacterLoadError } from "#/character/characterLoadError.ts"
-import { migrations } from "#/migrations.ts"
 import type { StorageManager } from "#/storage/storageManager.ts"
 import type { StoredJsonFile } from "#/storage/storageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -159,48 +158,11 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: object): Promise<CharacterSheet> {
-    let characterData: object = character
+    const preMeta = CharacterMetaSchema.parse("_meta_" in character ? character._meta_ : {})
+    const playerCharacter = applyMigrations(character)
+    const postMeta = playerCharacter._meta_
 
-    const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
-      | { version?: number, appliedMigrations?: unknown }
-      | undefined
-
-    const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
-      ? [...existingMeta.appliedMigrations]
-      : []
-
-    characterData = {
-      ...(characterData as Record<string, unknown>),
-      _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: [...appliedMigrationIds] },
-    }
-
-    const migrationsToRun = sort(migrations)
-      .asc((migration) => migration.id)
-      .filter((migration) => !appliedMigrationIds.includes(migration.id))
-
-    let migrationPerformed = false
-
-    for (const migration of migrationsToRun) {
-      characterData = migration.up(characterData)
-      appliedMigrationIds.push(migration.id)
-      // Always preserve appliedMigrations regardless of what the migration did to _meta_
-      const metaAfterMigration = (characterData as { _meta_?: unknown })._meta_
-      characterData = {
-        ...(characterData as Record<string, unknown>),
-        _meta_: {
-          version: 1,
-          ...(typeof metaAfterMigration === "object" && metaAfterMigration !== null
-            ? (metaAfterMigration as Record<string, unknown>)
-            : {}),
-          appliedMigrations: [...appliedMigrationIds],
-        },
-      }
-      migrationPerformed = true
-    }
-
-    const playerCharacter = characterData as CharacterSheet
-
-    if (migrationPerformed) {
+    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
       await this.saveCharacter(playerCharacter)
     }
 
