@@ -11,7 +11,7 @@ import type { ImplantData } from "#/lib/system/gear/implantData.ts"
 import { isImplant } from "#/lib/system/gear/implantData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
-type CyberwareDialogState = null | { open: boolean }
+type CyberwareDialogState = null | { open: boolean, implant?: ImplantData }
 
 interface CyberwareSectionContentProps {
   items: ItemData[]
@@ -36,7 +36,13 @@ export const CyberwareSectionContent: FC<CyberwareSectionContentProps> = ({
   return (
     <Stack sx={{ gap: 1 }}>
       {implants.map((item) => (
-        <GearViewItem key={item.id} item={item} subItems={getChildren(item.id)} />
+        <GearViewItem
+          key={item.id}
+          item={item}
+          subItems={getChildren(item.id)}
+          onEdit={() => setDialogState({ open: true, implant: item })}
+          onRemove={() => gearStore.remove(item, { removeChildren: true })}
+        />
       ))}
 
       <Button
@@ -53,6 +59,7 @@ export const CyberwareSectionContent: FC<CyberwareSectionContentProps> = ({
       {dialogState && (
         <ImplantFormDialog
           open={dialogState.open}
+          implant={dialogState.implant}
           onSave={handleSave}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}

@@ -1,6 +1,8 @@
 import Chip from "@mui/material/Chip"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
@@ -13,9 +15,17 @@ import { isSinData } from "#/lib/system/gear/sinData.ts"
 import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
+interface SubItemCallbacks {
+  onEdit?: () => void
+  onRemove?: () => void
+}
+
 interface GearViewItemProps {
   item: ItemData
   subItems?: ItemData[]
+  onEdit?: () => void
+  onRemove?: () => void
+  getSubItemCallbacks?: (subItemId: string) => SubItemCallbacks
 }
 
 const gradeLabel: Partial<Record<string, string>> = {
@@ -30,7 +40,13 @@ const implantTypeLabel: Partial<Record<string, string>> = {
   [ImplantType.bioware]: "Bio",
 }
 
-export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => {
+export const GearViewItem: FC<GearViewItemProps> = ({
+  item,
+  subItems = [],
+  onEdit,
+  onRemove,
+  getSubItemCallbacks,
+}) => {
   const { availability, source, description } = item
 
   const displayCost = isImplant(item)
@@ -46,7 +62,12 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           borderRadius: 1,
           border: "1px solid",
           borderColor: "divider",
+          ...(onEdit && {
+            "cursor": "pointer",
+            "&:hover": { bgcolor: "action.hover" },
+          }),
         }}
+        onClick={onEdit}
       >
         <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
           <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
@@ -86,6 +107,19 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           <Typography>
             <Nuyen amount={displayCost} />
           </Typography>
+
+          {onRemove && (
+            <IconButton
+              size="small"
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation()
+                onRemove()
+              }}
+            >
+              <RiDeleteBin6Line size={16} />
+            </IconButton>
+          )}
         </Stack>
 
         <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
@@ -203,9 +237,17 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
             borderBottom: "1px solid",
             borderColor: "divider" }}
         >
-          {subItems.map((subItem) => (
-            <GearViewItem key={subItem.id} item={subItem} />
-          ))}
+          {subItems.map((subItem) => {
+            const subItemCallbacks = getSubItemCallbacks?.(subItem.id) ?? {}
+            return (
+              <GearViewItem
+                key={subItem.id}
+                item={subItem}
+                onEdit={subItemCallbacks.onEdit}
+                onRemove={subItemCallbacks.onRemove}
+              />
+            )
+          })}
         </Stack>
       )}
     </Stack>

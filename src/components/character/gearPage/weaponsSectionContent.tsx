@@ -11,12 +11,13 @@ import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
+import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
 type WeaponDialogState =
   | null
-  | { open: boolean }
-  | { open: boolean, parentId: UUID }
+  | { open: boolean, weapon?: WeaponData }
+  | { open: boolean, accessory?: ItemData, parentId: UUID }
 
 interface WeaponsSectionContentProps {
   items: ItemData[]
@@ -49,7 +50,22 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
   return (
     <Stack sx={{ gap: 1 }}>
       {items.map((item) => (
-        <GearViewItem key={item.id} item={item} subItems={getChildren(item.id)} />
+        <GearViewItem
+          key={item.id}
+          item={item}
+          subItems={getChildren(item.id)}
+          onEdit={() => isWeaponData(item) && setDialogState({ open: true, weapon: item })}
+          onRemove={() => gearStore.remove(item, { removeChildren: true })}
+          getSubItemCallbacks={(subItemId) => {
+            const accessory = getChildren(item.id).find((child) => child.id === subItemId)
+            return {
+              onEdit: accessory
+                ? () => setDialogState({ open: true, accessory, parentId: item.id as UUID })
+                : undefined,
+              onRemove: accessory ? () => gearStore.remove(accessory) : undefined,
+            }
+          }}
+        />
       ))}
 
       <Button
@@ -66,6 +82,7 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
       {dialogState && !isAccessoryMode && (
         <WeaponFormDialog
           open={dialogState.open}
+          weapon={"weapon" in dialogState ? dialogState.weapon : undefined}
           onSave={handleSaveWeapon}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
@@ -75,6 +92,7 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
       {dialogState && isAccessoryMode && (
         <GearItemFormDialog
           open={dialogState.open}
+          item={"accessory" in dialogState ? dialogState.accessory : undefined}
           label="Weapon Accessory"
           onSave={handleSaveAccessory}
           onClose={closeDialog}
