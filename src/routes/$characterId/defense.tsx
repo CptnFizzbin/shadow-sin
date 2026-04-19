@@ -21,6 +21,7 @@ import {
 } from "#/components/damage/resistanceDicePools.tsx"
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
+import { EquippedArmorSection } from "#/components/gear/armor/equippedArmorSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
@@ -155,6 +156,10 @@ function RouteComponent() {
               </Fragment>
             ))}
           </Grid>
+        </Grid>
+
+        <Grid size={2}>
+          <EquippedArmorSection />
         </Grid>
       </Grid>
     </Stack>
