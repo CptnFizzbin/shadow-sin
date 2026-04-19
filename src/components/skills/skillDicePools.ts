@@ -9,9 +9,11 @@ import { skillList } from "#/lib/system/skills/skillList.ts"
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey
   specialization?: string
+  attrOverride?: AttributeKey
 }): DicePoolData => {
-  const { skillKey, specialization } = props
-  const { attr, defaultable } = skillList[skillKey]
+  const { skillKey, specialization, attrOverride } = props
+  const { attr: defaultAttr, defaultable } = skillList[skillKey]
+  const attr = attrOverride ?? defaultAttr
 
   const skillRating = useActiveSkillRating(skillKey)
   const isDefaulted = skillRating === 0 && (defaultable ?? true)
