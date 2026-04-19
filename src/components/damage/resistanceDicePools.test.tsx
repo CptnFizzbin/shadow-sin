@@ -170,4 +170,3 @@ describe("MeleeFullBlockDicePool", () => {
     expect(view.queryByText("Defaulting")).toBeNull()
   })
 })
-
