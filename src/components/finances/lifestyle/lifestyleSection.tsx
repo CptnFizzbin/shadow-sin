@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button"
 import FormControl from "@mui/material/FormControl"
-import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiInfinityLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
@@ -34,50 +34,59 @@ export const LifestyleSection: FC<Props> = ({ nuyenStore }) => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack>
       <Label label="Lifestyle" />
 
-      <FormControl fullWidth size="small">
-        <InputLabel>Quality</InputLabel>
-        <Select
-          value={quality}
-          label="Quality"
-          onChange={(e) => lifestyleStore.setQuality(e.target.value as LifestyleType)}
-        >
-          {Object.values(LifestyleType).map((lifestyleType) => (
-            <MenuItem key={lifestyleType} value={lifestyleType}>
-              {lifestyleType}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <Stack direction="row" justifyContent="space-between">
-        <Typography color="text.secondary">Monthly upkeep</Typography>
-        <Typography>
-          {upkeep > 0 ? <Nuyen amount={upkeep} /> : "Free"}
-        </Typography>
+      <Stack direction="row">
+        <FormControl fullWidth size="small">
+          <Select
+            value={quality}
+            onChange={(e) => lifestyleStore.setQuality(e.target.value)}
+          >
+            {Object.values(LifestyleType).map((type) => (
+              <MenuItem
+                key={type}
+                value={type}
+                sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
+              >
+                <Typography>{type}</Typography>
+                <Typography variant="caption" color="secondary">
+                  <Nuyen amount={Lifestyles[type].upkeep} />/m
+                </Typography>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Stack>
 
-      <Stack direction="row" justifyContent="space-between">
-        <Typography color="text.secondary">Months prepaid</Typography>
-        <Typography color={monthsPaid === 0 ? "error.main" : monthsPaid === 1 ? "warning.main" : "text.primary"}>
-          {monthsPaid}
-        </Typography>
-      </Stack>
+      <Stack direction="row" gap={1}>
+        <Stack sx={{ flexGrow: 1 }} alignItems="center" gap={1}>
+          <Label label="Monthly Upkeep" />
+          <Typography>
+            {upkeep > 0 ? <Nuyen amount={upkeep} /> : "Free"}
+          </Typography>
+        </Stack>
 
-      {upkeep > 0 && (
-        <Button
-          size="small"
-          variant="outlined"
-          color="success"
-          disabled={!canPrepay}
-          onClick={handlePrepay}
-          fullWidth
-        >
-          Prepay Month (<Nuyen amount={upkeep} />)
-        </Button>
-      )}
+        <Stack sx={{ flexGrow: 1 }} alignItems="center" gap={1}>
+          <Label label="Months Prepaid" />
+          <Typography>
+            {upkeep > 0 ? monthsPaid : <RiInfinityLine />}
+          </Typography>
+
+          {upkeep > 0 && (
+            <Button
+              size="small"
+              variant="outlined"
+              color="success"
+              disabled={!canPrepay}
+              onClick={handlePrepay}
+              fullWidth
+            >
+              Prepay Month
+            </Button>
+          )}
+        </Stack>
+      </Stack>
     </Stack>
   )
 }

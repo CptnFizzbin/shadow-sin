@@ -48,15 +48,16 @@ function RouteComponent() {
     <Stack>
       <SectionHeader>Finances</SectionHeader>
 
-      <Button
-        size="small"
-        variant="outlined"
-        color="warning"
-        fullWidth
-        onClick={() => setEndOfMonthOpen(true)}
-      >
-        End of Month{totalMonthlyExpenses > 0 && <> — <Nuyen amount={totalMonthlyExpenses} /></>}
-      </Button>
+      <Stack direction="row" alignItems="center" gap={1} justifyContent="flex-end">
+        <Button
+          size="small"
+          variant="outlined"
+          color="warning"
+          onClick={() => setEndOfMonthOpen(true)}
+        >
+          End of Month{totalMonthlyExpenses > 0 && <> — <Nuyen amount={totalMonthlyExpenses} /></>}
+        </Button>
+      </Stack>
 
       <Grid container columns={3} spacing={1}>
         <Grid size={1}>
