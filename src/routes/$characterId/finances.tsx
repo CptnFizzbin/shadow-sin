@@ -48,7 +48,7 @@ function RouteComponent() {
     <Stack>
       <SectionHeader>Finances</SectionHeader>
 
-      <Stack direction="row" gap={1} sx={{ alignItems: "center", justifyContent: "flex-end" }}>
+      <Stack direction="row" sx={{ alignItems: "center", justifyContent: "flex-end", gap: 1 }}>
         <Button
           size="small"
           variant="outlined"
