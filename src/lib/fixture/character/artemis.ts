@@ -21,10 +21,11 @@ import { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import { MetatypeType } from "#/lib/system/metatypeData.ts"
 import { SkillGroupKey } from "#/lib/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { migrationIds } from "#/migrations.ts"
 
 export const Artemis: CharacterSheet = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
-  version: "0.2.0",
+  _meta_: { version: 1, appliedMigrations: [...migrationIds] },
 
   biology: {
     metatype: MetatypeType.Elf,

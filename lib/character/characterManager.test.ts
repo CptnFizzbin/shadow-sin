@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
-import { CharacterManager } from "#/lib/storage/characters/characterManager.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
+import { CharacterManager } from "#/character/characterManager.ts"
+import { LocalStorageProvider } from "#/storage/localStorage/localStorageProvider.ts"
+import { StorageManager } from "#/storage/storageManager.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
 function makeManager(): CharacterManager {

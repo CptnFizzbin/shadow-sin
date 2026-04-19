@@ -1,4 +1,4 @@
-import { CharacterManager } from "#/lib/storage/characters/characterManager.ts"
+import { CharacterManager } from "#/character/characterManager.ts"
 import { localStorageManager } from "#/lib/storage/localStorage/localStorageManager.ts"
 
 export const localCharacterManager = new CharacterManager(localStorageManager)
