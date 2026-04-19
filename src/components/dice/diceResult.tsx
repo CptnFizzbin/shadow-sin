@@ -36,9 +36,7 @@ export const DiceResult: FC<DiceResultProps> = ({
   return (
     <Stack
       direction="row"
-      flexWrap="wrap"
-      sx={{ color: diceDefaultColor }}
-      gap={0}
+      sx={{ flexWrap: "wrap", gap: 0, color: diceDefaultColor }}
     >
       {diceValues.map((value, index) => {
         return (

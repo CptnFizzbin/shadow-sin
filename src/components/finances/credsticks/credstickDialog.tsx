@@ -134,7 +134,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
     <Dialog open={open} onTransitionExited={handleClosed} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
-        <Stack gap={2} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 2, padding: 1 }}>
           {isCertified && (
             <>
               <Typography color="text.secondary">
@@ -188,11 +188,11 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
 
           {isEditMode && credstick && (
             <>
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
                 <Typography color="text.secondary">
                   Balance
                 </Typography>
-                <Typography fontWeight="medium">
+                <Typography sx={{ fontWeight: "medium" }}>
                   {formatNuyen(credstick.balance)}
                 </Typography>
               </Stack>
@@ -203,7 +203,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
                   <Typography color="text.secondary">
                     Withdraw {formatNuyen(credstick.balance)} to your nuyen and delete this credstick?
                   </Typography>
-                  <Stack direction="row" gap={1} justifyContent="flex-end">
+                  <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
                     <Button size="small" onClick={() => setShowWithdrawConfirm(false)}>
                       Cancel
                     </Button>
@@ -225,7 +225,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
                   <Typography color="error">
                     Remove this credstick? Any remaining balance will be lost.
                   </Typography>
-                  <Stack direction="row" gap={1} justifyContent="flex-end">
+                  <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
                     <Button size="small" onClick={() => setShowRemoveConfirm(false)}>
                       Cancel
                     </Button>

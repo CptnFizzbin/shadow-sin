@@ -20,7 +20,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   return (
     <TanStackQueryProvider>
-      <Stack direction="column" minHeight="100vh" gap={0}>
+      <Stack direction="column" sx={{ minHeight: "100vh", gap: 0 }}>
         <Header />
 
         <Container
@@ -37,7 +37,7 @@ function RootLayout() {
           <Outlet />
         </Container>
 
-        <Stack padding={1} gap={1}>
+        <Stack sx={{ padding: 1, gap: 1 }}>
           <Divider />
           <Footer />
         </Stack>

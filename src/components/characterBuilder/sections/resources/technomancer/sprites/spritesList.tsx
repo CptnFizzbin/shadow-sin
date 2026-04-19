@@ -47,14 +47,13 @@ export const SpritesList: FC = () => {
   const isAtMax = sprites.length >= maxSpritesRegistered
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Label label="Sprites" variant="outlined" />
 
-      <Stack gap={0.5}>
+      <Stack sx={{ gap: 0.5 }}>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography color="text.secondary">
             {sprites.length} / {maxSpritesRegistered} sprites
@@ -81,7 +80,7 @@ export const SpritesList: FC = () => {
       )}
 
       {sprites.length > 0 && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           {sprites.map((sprite) => (
             <SpritesListItem
               key={sprite.id}

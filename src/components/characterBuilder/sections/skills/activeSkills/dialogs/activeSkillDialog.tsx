@@ -97,9 +97,9 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
     return {
       value: skillKey,
       label: (
-        <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between" flexGrow={10}>
+        <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 10 }}>
           <Typography>{skillKey}</Typography>
-          <Typography color="text.secondary" fontSize="small">{info?.group}</Typography>
+          <Typography color="text.secondary" sx={{ fontSize: "small" }}>{info?.group}</Typography>
         </Stack>
       ),
       disabled: disabledSkills?.has(skillKey) ?? false,
@@ -124,7 +124,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
 
       <DialogContent sx={{ p: 2 }}>
         <form.AppForm>
-          <Stack gap={2} sx={{ pt: 1 }}>
+          <Stack sx={{ gap: 2, pt: 1 }}>
 
             <form.AppField
               name="name"

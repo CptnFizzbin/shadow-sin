@@ -63,20 +63,17 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
           <Box key={license.id}>
             <Stack
               direction="column"
-              gap={0}
-              sx={{
-                "p": 1,
+              onClick={() =>
+                setDialogState({ mode: "edit", license, open: true })}
+              sx={{ "gap": 0, "p": 1,
                 "borderRadius": 1,
                 "border": "1px solid",
                 "borderColor": "divider",
                 "cursor": "pointer",
-                "&:hover": { bgcolor: "action.hover" },
-              }}
-              onClick={() =>
-                setDialogState({ mode: "edit", license, open: true })}
+                "&:hover": { bgcolor: "action.hover" } }}
             >
-              <Stack direction="row" alignItems="center" gap={1}>
-                <Typography flexGrow={1}>{license.name}</Typography>
+              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                <Typography sx={{ flexGrow: 1 }}>{license.name}</Typography>
 
                 <Typography>
                   <Nuyen amount={license.cost} />
@@ -94,7 +91,7 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
                 </IconButton>
               </Stack>
 
-              <Stack direction="row" gap={1} sx={{ pt: 1 }}>
+              <Stack direction="row" sx={{ gap: 1, pt: 1 }}>
                 <RatingChip rating={license.rating} />
 
                 <AvailabilityChip availability={licenseAvail} />

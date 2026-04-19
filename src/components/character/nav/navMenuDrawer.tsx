@@ -48,13 +48,13 @@ export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
               selected={section.id === currentSection.id}
               onClick={() => handleSectionClick(section.route.path)}
             >
-              <Stack direction="row" alignItems="center" gap={1} sx={{ width: "100%" }}>
+              <Stack direction="row" sx={{ alignItems: "center", gap: 1, width: "100%" }}>
                 <ListItemText
                   primary={section.label}
                   slotProps={{
                     primary: {
                       variant: "body1",
-                      fontWeight: section.id === currentSection.id ? "bold" : undefined,
+                      sx: { fontWeight: section.id === currentSection.id ? "bold" : undefined },
                     },
                   }}
                 />

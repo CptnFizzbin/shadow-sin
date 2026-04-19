@@ -89,7 +89,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
 
         <form.AppField name="dealsDamage">
           {(dealsDmgfield) => (
-            <Stack flexGrow={1}>
+            <Stack sx={{ flexGrow: 1 }}>
               <Label label="Deals Damage?" variant="text" />
               <Stack direction="row">
                 <ButtonGroup>
@@ -132,7 +132,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
 
         <form.AppField name="voluntaryTargetsOnly">
           {(field) => (
-            <Stack flexGrow={1}>
+            <Stack sx={{ flexGrow: 1 }}>
               <Label label="Voluntary Targets Only?" variant="text" />
               <ButtonGroup>
                 <ToggleButton

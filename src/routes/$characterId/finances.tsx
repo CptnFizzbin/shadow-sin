@@ -48,7 +48,7 @@ function RouteComponent() {
     <Stack>
       <SectionHeader>Finances</SectionHeader>
 
-      <Stack direction="row" alignItems="center" gap={1} justifyContent="flex-end">
+      <Stack direction="row" sx={{ alignItems: "center", justifyContent: "flex-end", gap: 1 }}>
         <Button
           size="small"
           variant="outlined"
@@ -61,7 +61,7 @@ function RouteComponent() {
 
       <Grid container columns={3} spacing={1}>
         <Grid size={1}>
-          <Stack sx={{ flexGrow: 1 }} alignItems="center" gap={1}>
+          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
             <Label label="Nuyen" />
             <Typography color={nuyenBalance < 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={nuyenBalance} />
@@ -70,7 +70,7 @@ function RouteComponent() {
         </Grid>
 
         <Grid size={1}>
-          <Stack sx={{ flexGrow: 1 }} alignItems="center" gap={1}>
+          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
             <Label label="Loans" />
             <Typography color={loansBalance > 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={loansBalance} />
@@ -79,7 +79,7 @@ function RouteComponent() {
         </Grid>
 
         <Grid size={1}>
-          <Stack sx={{ flexGrow: 1 }} alignItems="center" gap={1}>
+          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
             <Label label="Net Worth" />
             <Typography color={netWorth < 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={netWorth} />

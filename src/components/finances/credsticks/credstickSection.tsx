@@ -25,7 +25,7 @@ export const CredstickSection: FC = () => {
 
   return (
 
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Label label="Credsticks" />
 
       {credsticks.length === 0
@@ -35,7 +35,7 @@ export const CredstickSection: FC = () => {
             </Typography>
           )
         : (
-            <Stack gap={0.5}>
+            <Stack sx={{ gap: 0.5 }}>
               {credsticks.map((credstick) => (
                 <CredstickCard
                   key={credstick.id}
@@ -46,7 +46,7 @@ export const CredstickSection: FC = () => {
             </Stack>
           )}
 
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <Button
           size="small"
           variant="outlined"

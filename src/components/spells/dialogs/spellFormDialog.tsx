@@ -54,7 +54,7 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
         <SpellFormFields form={form} />
       </DialogContent>
       <DialogActions>
-        <Stack justifyContent="space-between" direction="row" width="100%">
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
           <Box>
             {onDelete && (
               <Button

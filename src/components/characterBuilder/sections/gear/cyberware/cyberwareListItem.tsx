@@ -52,7 +52,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
         <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
           {implant.name}
         </Typography>
@@ -79,7 +79,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
         </IconButton>
       </Stack>
 
-      <Stack direction="row" gap={1} sx={{ pt: 1 }} flexWrap="wrap">
+      <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
         {implant.implantType && (
           <Chip
             label={typeLabel[implant.implantType] ?? implant.implantType}

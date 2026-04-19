@@ -50,7 +50,7 @@ const attachmentSlots = [
 export const FirearmFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <group.AppField name="firearmType">
         {(field) => (
           <field.SelectField
@@ -62,7 +62,7 @@ export const FirearmFormFields = withFieldGroup({
         )}
       </group.AppField>
 
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <group.AppField
           name="recoil"
           validators={{
@@ -143,7 +143,7 @@ export const FirearmFormFields = withFieldGroup({
       <Stack>
         <Label label="Ammo" variant="text" />
 
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" sx={{ gap: 1 }}>
           <group.AppField
             name="ammo.size"
             validators={{

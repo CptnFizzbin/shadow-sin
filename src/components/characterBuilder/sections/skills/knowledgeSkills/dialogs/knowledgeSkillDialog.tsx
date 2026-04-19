@@ -75,7 +75,7 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
       </DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
-        <Stack gap={2} sx={{ pt: 1 }}>
+        <Stack sx={{ gap: 2, pt: 1 }}>
           <TextField
             label="Skill Name"
             value={name}

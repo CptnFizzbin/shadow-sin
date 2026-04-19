@@ -38,9 +38,9 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle variant="h3">{weapon.name}</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
-        <Stack gap={1.5}>
+        <Stack sx={{ gap: 1.5 }}>
           {isFirearm && firearm && firearm.firemodes.length > 0 && (
-            <Stack gap={0.5}>
+            <Stack sx={{ gap: 0.5 }}>
               <Label label="Fire Mode" />
               <ButtonGroup size="small" variant="outlined" fullWidth>
                 {firearm.firemodes.map((mode) => (
@@ -66,19 +66,19 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
             {weapon.dmg && (
               <Grid size={1}>
                 <Label label="DV" variant="outlined" />
-                <Typography textAlign="center">{weapon.dmg}</Typography>
+                <Typography sx={{ textAlign: "center" }}>{weapon.dmg}</Typography>
               </Grid>
             )}
             {weapon.ap !== undefined && weapon.ap !== 0 && (
               <Grid size={1}>
                 <Label label="AP" variant="outlined" />
-                <Typography textAlign="center">{weapon.ap}</Typography>
+                <Typography sx={{ textAlign: "center" }}>{weapon.ap}</Typography>
               </Grid>
             )}
             {isFirearm && firearm && (
               <Grid size={1}>
                 <Label label="Ammo" variant="outlined" />
-                <Typography textAlign="center">
+                <Typography sx={{ textAlign: "center" }}>
                   {firearm.ammo.remaining}/{firearm.ammo.size}
                 </Typography>
               </Grid>

@@ -36,7 +36,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
         <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
           {item.name}
         </Typography>
@@ -68,7 +68,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
       </Stack>
 
       {(availability || source || description) && (
-        <Stack direction="row" gap={1} sx={{ pt: 1 }} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
           {availability && (
             <AvailabilityChip
               availability={availability}

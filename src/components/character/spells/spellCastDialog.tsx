@@ -25,43 +25,43 @@ export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose
     <Dialog open={open} onClose={onClose} onTransitionExited={onClosed} fullWidth maxWidth="sm">
       <DialogTitle sx={{ pb: 0 }}>{spell.name}</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
-        <Stack gap={1.5}>
+        <Stack sx={{ gap: 1.5 }}>
           <Grid container spacing={1} columns={3}>
             <Grid size={1}>
               <Label label="Category" variant="outlined" />
-              <Typography textAlign="center">
+              <Typography sx={{ textAlign: "center" }}>
                 {spell.category}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Type" variant="outlined" />
-              <Typography textAlign="center">
+              <Typography sx={{ textAlign: "center" }}>
                 {spell.type}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Range" variant="outlined" />
-              <Typography textAlign="center">
+              <Typography sx={{ textAlign: "center" }}>
                 {spell.range}
               </Typography>
             </Grid>
             <Grid size={1}>
               <Label label="Duration" variant="outlined" />
-              <Typography textAlign="center">
+              <Typography sx={{ textAlign: "center" }}>
                 {spell.duration}
               </Typography>
             </Grid>
             {spell.dealsDamage && (
               <Grid size={1}>
                 <Label label="Damage" variant="outlined" />
-                <Typography textAlign="center">
+                <Typography sx={{ textAlign: "center" }}>
                   {spell.damage}
                 </Typography>
               </Grid>
             )}
             <Grid size={1}>
               <Label label="Drain" variant="outlined" />
-              <Typography textAlign="center">
+              <Typography sx={{ textAlign: "center" }}>
                 {formatDrainFormula(spell.drainValueMod)}
               </Typography>
             </Grid>

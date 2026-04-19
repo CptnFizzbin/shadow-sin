@@ -43,7 +43,7 @@ export const NuyenSection: FC = () => {
     <Stack>
       <Label label="Current Nuyen" />
 
-      <Typography color={currentNuyen < 0 ? "error.main" : "text.primary"} textAlign="center" fontWeight="bold">
+      <Typography color={currentNuyen < 0 ? "error.main" : "text.primary"} sx={{ textAlign: "center", fontWeight: "bold" }}>
         <Nuyen amount={currentNuyen} />
       </Typography>
 

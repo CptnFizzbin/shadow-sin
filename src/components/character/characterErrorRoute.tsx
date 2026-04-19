@@ -29,13 +29,13 @@ export const CharacterErrorRoute = () => {
   }
 
   return (
-    <Stack gap={2} padding={2}>
+    <Stack sx={{ gap: 2, padding: 2 }}>
       <Alert severity="error">
         <AlertTitle>Failed to load character</AlertTitle>
         This character sheet could not be loaded. It may be corrupted or from an incompatible version.
       </Alert>
 
-      <Stack direction="row" gap={1}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <Button variant="outlined" onClick={handleExport}>
           Export raw data as JSON
         </Button>

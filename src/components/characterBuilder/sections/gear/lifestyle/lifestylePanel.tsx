@@ -22,7 +22,7 @@ export const LifestylePanel: FC = () => {
   const totalCost = upkeep * monthsPaid
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <FormControl fullWidth size="small">
         <InputLabel>Lifestyle</InputLabel>
         <Select

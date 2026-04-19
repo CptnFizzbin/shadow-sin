@@ -18,9 +18,9 @@ export const InitiativePassTracker: FC<InitiativePassTrackerProps> = ({
   const completedSet = useInitiativePassesCompleted(store)
 
   return (
-    <Stack alignItems="center" gap={0.5}>
+    <Stack sx={{ alignItems: "center", gap: 0.5 }}>
       <Label label="Passes" />
-      <Stack direction="row" gap={0.5} justifyContent="center">
+      <Stack direction="row" sx={{ gap: 0.5, justifyContent: "center" }}>
         {Array.from({ length: numPasses }, (_, passIndex) => {
           const completed = completedSet.has(passIndex)
           return (

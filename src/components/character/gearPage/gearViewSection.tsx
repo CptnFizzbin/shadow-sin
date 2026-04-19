@@ -61,14 +61,11 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
       >
         <Stack
           direction="row"
-          justifyContent="space-between"
-          sx={{
-            flexGrow: 1,
+          sx={{ justifyContent: "space-between", flexGrow: 1,
             paddingRight: 1,
             marginRight: 1,
             borderRight: "1px solid",
-            borderColor: "divider",
-          }}
+            borderColor: "divider" }}
         >
           <Typography>{section}</Typography>
           {section === GearSection.Cyberware && <CyberwareSectionHeader />}

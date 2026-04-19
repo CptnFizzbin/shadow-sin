@@ -42,9 +42,9 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {sins.map((sin) => (
-        <Stack key={sin.id} gap={1}>
+        <Stack key={sin.id} sx={{ gap: 1 }}>
           <GearViewItem
             item={sin}
             subItems={getLicenses(sin.id)}

@@ -29,8 +29,8 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
       onClick={onClick}
       aria-label={`Cast ${spell.name}`}
     >
-      <Stack direction="row" alignItems="center" gap={1}>
-        <Typography flexGrow={1}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {spell.name}
         </Typography>
         <Typography color="text.secondary">

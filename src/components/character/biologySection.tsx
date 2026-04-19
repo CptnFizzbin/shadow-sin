@@ -11,7 +11,7 @@ interface BiologyRowProps {
 }
 
 const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
-  <Stack direction="row" gap={1} alignItems="baseline">
+  <Stack direction="row" sx={{ gap: 1, alignItems: "baseline" }}>
     <Typography color="text.secondary" sx={{ minWidth: 100 }}>
       {label}
     </Typography>
@@ -25,10 +25,10 @@ export const BiologySection: FC = () => {
   const biology = useCharacterSheet((s) => s.biology)
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Label label="Biology" />
 
-      <Stack gap={0.5}>
+      <Stack sx={{ gap: 0.5 }}>
         <BiologyRow label="Metatype" value={biology.metatype} />
         <BiologyRow label="Awakening" value={biology.awakening} />
         {biology.gender && <BiologyRow label="Gender" value={biology.gender} />}

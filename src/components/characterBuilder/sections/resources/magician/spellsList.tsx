@@ -28,7 +28,7 @@ export const SpellsList: FC = () => {
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Stack>
         <BuildPoints
           value={buildPoints.spent}

@@ -42,14 +42,14 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
       <DialogContent>
         <Typography gutterBottom>
           A character named{" "}
-          <Typography component="span" fontWeight="bold">
+          <Typography component="span" sx={{ fontWeight: "bold" }}>
             {existingCharacter.profile.alias}
           </Typography>{" "}
           with this ID already exists in your roster.
         </Typography>
         <Typography>
           Would you like to overwrite the existing character, or import{" "}
-          <Typography component="span" fontWeight="bold">
+          <Typography component="span" sx={{ fontWeight: "bold" }}>
             {incomingCharacter.profile.alias}
           </Typography>{" "}
           as a new character?

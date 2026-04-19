@@ -129,7 +129,7 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
     <Dialog open={open} onTransitionExited={handleTransitionExited} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>End of Month</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
-        <Stack gap={0.5} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 0.5, padding: 1 }}>
           {allItems.length === 0 && (
             <Typography color="text.secondary" sx={{ fontStyle: "italic" }}>
               No monthly expenses.
@@ -147,7 +147,7 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
                 />
               )}
               label={(
-                <Stack direction="row" justifyContent="space-between" gap={1} sx={{ width: "100%" }}>
+                <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1, width: "100%" }}>
                   <Typography variant="body2">{item.label}</Typography>
                   {item.interestAmount > 0 && (
                     <Typography variant="body2" color="error.main" noWrap>
@@ -170,13 +170,13 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
             <>
               <Divider />
               {totalNuyenCost > 0 && (
-                <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
                   <Typography color="text.secondary">Nuyen cost</Typography>
                   <Typography color="error.main">-<Nuyen amount={totalNuyenCost} /></Typography>
                 </Stack>
               )}
               {totalInterest > 0 && (
-                <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" sx={{ justifyContent: "space-between" }}>
                   <Typography color="text.secondary">Interest accrued</Typography>
                   <Typography color="error.main">+<Nuyen amount={totalInterest} /></Typography>
                 </Stack>

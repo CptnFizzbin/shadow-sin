@@ -14,7 +14,7 @@ export const QualitiesSection: FC = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false)
 
   return (
-    <Stack gap={0.5}>
+    <Stack sx={{ gap: 0.5 }}>
       <QualitiesList type="positive" />
       <Divider sx={{ marginY: 1 }} />
       <QualitiesList type="negative" />

@@ -59,14 +59,14 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
-        <Stack gap={1} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
           <LicenseFormFields form={form} fields={licenseFieldMap} />
 
           <form.Subscribe selector={(state) => state.values.rating}>
             {(rating) => {
               const availability = getLicenseAvailability(rating)
               return (
-                <Stack direction="row" gap={1} flexWrap="wrap">
+                <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
                   <AvailabilityChip availability={availability} />
                   {license?.source && (
                     <Chip

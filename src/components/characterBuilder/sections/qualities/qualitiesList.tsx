@@ -65,7 +65,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
     <>
       <Label label={label} variant="outlined" />
 
-      <Stack direction="row" justifyContent="flex-end">
+      <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
         <Typography color="secondary.main">
           {bpLabel}: {bpValue} BP
         </Typography>
@@ -84,7 +84,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
             </Typography>
           )
         : (
-            <Stack gap={0.5}>
+            <Stack sx={{ gap: 0.5 }}>
               {filteredQualities.map((quality) => (
                 <QualitiesListItem
                   key={quality.name}

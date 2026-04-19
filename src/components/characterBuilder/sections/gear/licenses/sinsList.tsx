@@ -89,7 +89,7 @@ export const SinsList: FC = () => {
               }}
               onClick={() => setDialogState({ mode: "edit", sin, open: true })}
             >
-              <Stack direction="row" alignItems="center" gap={1}>
+              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
                 <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
                   {sin.name}
                 </Typography>
@@ -114,7 +114,7 @@ export const SinsList: FC = () => {
                 </IconButton>
               </Stack>
 
-              <Stack direction="row" gap={1} sx={{ pt: 1 }}>
+              <Stack direction="row" sx={{ gap: 1, pt: 1 }}>
                 <RatingChip rating={sin.rating} />
 
                 <AvailabilityChip availability={sinAvail} />
@@ -122,15 +122,12 @@ export const SinsList: FC = () => {
             </Stack>
 
             <Stack
-              gap={1}
-              sx={{
-                paddingTop: 1,
+              sx={{ gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: 1,
                 borderLeft: "8px solid",
                 borderBottom: "1px solid",
-                borderColor: "divider",
-              }}
+                borderColor: "divider" }}
             >
               <LicensesList sin={sin} />
             </Stack>

@@ -9,7 +9,7 @@ import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
   return (
-    <Stack gap={0.5}>
+    <Stack sx={{ gap: 0.5 }}>
       <Label label="Damage" />
 
       <WoundModLabel />

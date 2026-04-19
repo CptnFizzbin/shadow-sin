@@ -14,7 +14,7 @@ export const GearItemFormFields = withFieldGroup({
   ...gearItemFormOpts,
   render: ({ group }) => {
     return (
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <group.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Name is required") }}

@@ -40,8 +40,7 @@ export const BiologySection: FC = () => {
             <MenuItem value={name} key={name} sx={{ display: "flex" }}>
               <Stack
                 direction="row"
-                justifyContent="space-between"
-                width="100%"
+                sx={{ justifyContent: "space-between", width: "100%" }}
               >
                 <Typography>{name}</Typography>
                 <BuildPoints value={cost} />
@@ -71,8 +70,7 @@ export const BiologySection: FC = () => {
               <MenuItem value={name} key={name} sx={{ display: "flex" }}>
                 <Stack
                   direction="row"
-                  justifyContent="space-between"
-                  width="100%"
+                  sx={{ justifyContent: "space-between", width: "100%" }}
                 >
                   <Typography>{name}</Typography>
                   <BuildPoints value={cost} />

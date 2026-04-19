@@ -21,8 +21,8 @@ function IndexRoute() {
   const { characters, errors } = Route.useLoaderData()
 
   return (
-    <Stack gap={1} padding={1}>
-      <Stack direction="row" gap={1}>
+    <Stack sx={{ gap: 1, padding: 1 }}>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <Button
           variant="outlined"
           onClick={() => {

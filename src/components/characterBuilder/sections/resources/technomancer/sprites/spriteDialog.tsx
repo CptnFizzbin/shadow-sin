@@ -72,7 +72,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
       <DialogTitle>{isEditMode ? "Edit Sprite" : "Add Sprite"}</DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
-        <Stack gap={2} sx={{ pt: 1 }}>
+        <Stack sx={{ gap: 2, pt: 1 }}>
           <TextField
             label="Sprite Name"
             value={name}

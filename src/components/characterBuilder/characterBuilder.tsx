@@ -66,7 +66,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             pointerEvents: isBpPanelExpanded ? "none" : "auto",
           }}
         >
-          <Stack direction="row" justifyContent="space-between" gap={1}>
+          <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
             <Button
               variant="outlined"
               color="inherit"
@@ -75,7 +75,7 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
             >
               Cancel
             </Button>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
               <ImportYamlBuilderButton onImport={loadCharacter} />
               <ExportCharacterButton />
               <Button

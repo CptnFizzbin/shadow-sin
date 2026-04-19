@@ -29,17 +29,17 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
         "&:hover": { bgcolor: "action.hover" },
       }}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
-        <Stack gap={0.5} flex={1} minWidth={0}>
+      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", gap: 1 }}>
+        <Stack sx={{ flex: 1, gap: 0.5, minWidth: 0 }}>
           <Typography
-
-            fontWeight="medium"
             noWrap
             title={credstick.name || CredstickTypeLabel[credstick.credstickType]}
+
+            sx={{ fontWeight: "medium" }}
           >
             {credstick.name || CredstickTypeLabel[credstick.credstickType]}
           </Typography>
-          <Stack direction="row" gap={0.5} alignItems="center" flexWrap="wrap">
+          <Stack direction="row" sx={{ gap: 0.5, alignItems: "center", flexWrap: "wrap" }}>
             <Chip
               label={CredstickTypeLabel[credstick.credstickType]}
               size="small"
@@ -50,7 +50,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
             </Typography>
           </Stack>
         </Stack>
-        <Typography fontWeight="medium" sx={{ whiteSpace: "nowrap" }}>
+        <Typography sx={{ fontWeight: "medium", whiteSpace: "nowrap" }}>
           {formatNuyen(credstick.balance)}
         </Typography>
       </Stack>

@@ -21,7 +21,7 @@ export const ContactsBuilderSection: FC = () => {
 
   return (
     <BuilderSection id={BuilderSectionId.contacts} alerts={contactsAlerts}>
-      <Stack direction="row" justifyContent="flex-end" alignItems="center">
+      <Stack direction="row" sx={{ justifyContent: "flex-end", alignItems: "center" }}>
         <BuildPoints value={bpSpent} />
       </Stack>
 

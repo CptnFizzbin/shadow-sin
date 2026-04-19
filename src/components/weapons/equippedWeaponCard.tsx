@@ -32,21 +32,21 @@ export const EquippedWeaponCard: FC<EquippedWeaponCardProps> = ({ weapon }) => {
 
   return (
     <>
-      <Paper component={Stack} padding={1} gap={1}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Paper component={Stack} sx={{ padding: 1, gap: 1 }}>
+        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
           <Typography>{weapon.name}</Typography>
 
-          <Stack direction="row" gap={0.5} alignItems="center">
+          <Stack direction="row" sx={{ gap: 0.5, alignItems: "center" }}>
             {weapon.ap && <WeaponStatChip label={`AP: ${weapon.ap}`} />}
             {weapon.dmg && <Typography color="secondary">DV: {weapon.dmg}</Typography>}
           </Stack>
         </Stack>
 
-        <Stack direction="row" gap={0.5} alignItems="center">
+        <Stack direction="row" sx={{ gap: 0.5, alignItems: "center" }}>
           <Typography color="primary" variant="caption">{weapon.skill}</Typography>
         </Stack>
 
-        <Stack direction="row" gap={0.5} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
 
           {weapon.weaponType === WeaponType.melee && (
             <WeaponStatChip label="Melee" />

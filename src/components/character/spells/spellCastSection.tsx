@@ -75,8 +75,8 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
           : undefined,
       }}
     >
-      <Stack gap={1}>
-        <Stack gap={0.5}>
+      <Stack sx={{ gap: 1 }}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label label="Cast" variant="text" />
           {isOvercasting && (
             <Typography color="error.main">
@@ -115,7 +115,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
 
         <Divider />
 
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label
             label={`Apply Drain — DV ${drainDv} ${drainIsPhysical ? "Physical" : "Stun"}`}
             variant="text"

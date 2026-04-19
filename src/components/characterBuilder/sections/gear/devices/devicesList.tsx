@@ -53,7 +53,7 @@ export const DevicesList: FC = () => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {rootDevices.map((device) => {
         const devicePrograms = getProgramsForDevice(device.id)
 
@@ -66,15 +66,12 @@ export const DevicesList: FC = () => {
             />
 
             <Stack
-              gap={1}
-              sx={{
-                paddingTop: 1,
+              sx={{ gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: devicePrograms.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: devicePrograms.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
+                borderColor: "divider" }}
             >
               {devicePrograms.map((program) => (
                 <GearItemCard

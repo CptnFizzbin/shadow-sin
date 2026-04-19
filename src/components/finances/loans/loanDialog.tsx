@@ -95,7 +95,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
     <Dialog open={open} onTransitionExited={handleClosed} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
-        <Stack gap={2} sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 2, padding: 1 }}>
           <TextField
             label="Lender"
             size="small"
@@ -149,7 +149,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
                       your nuyen and remove the loan.
                     </Typography>
                   )}
-              <Stack direction="row" gap={1} justifyContent="flex-end">
+              <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
                 <Button size="small" onClick={() => setShowPayoffConfirm(false)}>
                   Cancel
                 </Button>
@@ -172,7 +172,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
               <Typography color="error">
                 Remove this loan record? The loan balance will not be paid.
               </Typography>
-              <Stack direction="row" gap={1} justifyContent="flex-end">
+              <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
                 <Button size="small" onClick={() => setShowRemoveConfirm(false)}>
                   Cancel
                 </Button>

@@ -31,8 +31,8 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
         "&:hover": { bgcolor: "action.hover" },
       }}
     >
-      <Stack direction="row" alignItems="center" width="100%">
-        <Typography flexGrow={1}>
+      <Stack direction="row" sx={{ alignItems: "center", width: "100%" }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {quality.name}
           {rating !== undefined && ` (Rating ${rating})`}
         </Typography>

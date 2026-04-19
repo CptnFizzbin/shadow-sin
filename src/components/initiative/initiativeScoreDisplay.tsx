@@ -9,9 +9,9 @@ interface InitiativeScoreDisplayProps {
 }
 
 export const InitiativeScoreDisplay: FC<InitiativeScoreDisplayProps> = ({ score }) => (
-  <Stack gap={0.5}>
+  <Stack sx={{ gap: 0.5 }}>
     <Label label="Initiative Score" />
-    <Typography textAlign="center" fontWeight="bold">
+    <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
       {score}
     </Typography>
   </Stack>

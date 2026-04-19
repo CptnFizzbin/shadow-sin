@@ -38,7 +38,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
     : (item.cost ?? 0)
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Stack
         direction="column"
         sx={{
@@ -48,7 +48,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           borderColor: "divider",
         }}
       >
-        <Stack direction="row" alignItems="center" gap={1}>
+        <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
           <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
             {item.name}
           </Typography>
@@ -88,7 +88,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           </Typography>
         </Stack>
 
-        <Stack direction="row" gap={1} sx={{ pt: 1 }} flexWrap="wrap">
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
           {isWeaponData(item) && item.dmg && (
             <Chip
               label={`DV: ${item.dmg}`}
@@ -197,14 +197,11 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
 
       {subItems.length > 0 && (
         <Stack
-          gap={1}
-          sx={{
-            paddingLeft: 1,
+          sx={{ gap: 1, paddingLeft: 1,
             paddingBottom: 1,
             borderLeft: "4px solid",
             borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
+            borderColor: "divider" }}
         >
           {subItems.map((subItem) => (
             <GearViewItem key={subItem.id} item={subItem} />

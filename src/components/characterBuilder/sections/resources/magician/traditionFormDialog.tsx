@@ -77,7 +77,7 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
             </form.AppField>
 
             <Paper>
-              <Stack padding={1}>
+              <Stack sx={{ padding: 1 }}>
                 <Label label="Spirit Types" variant="outlined" />
 
                 <form.AppField name="spiritTypes.combat">

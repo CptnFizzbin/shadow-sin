@@ -40,15 +40,15 @@ function RouteComponent() {
         <RiEditLine size={16} />
       </IconButton>
 
-      <Typography variant="h1" textAlign="center">{profile.alias || profile.name}</Typography>
+      <Typography variant="h1" sx={{ textAlign: "center" }}>{profile.alias || profile.name}</Typography>
 
       <SectionHeader>Profile</SectionHeader>
       <ProfileSection />
       <BiologySection />
 
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <Label label="Reputation" />
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
           <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
           <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
           <Chip label={`Awareness: ${publicAwareness}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />

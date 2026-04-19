@@ -10,9 +10,9 @@ export const ProfileSection: FC = () => {
   const profile = useCharacterSheet((s) => s.profile)
 
   return (
-    <Stack gap={1} divider={<Divider />}>
+    <Stack divider={<Divider />} sx={{ gap: 1 }}>
       {profile.description && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label label="Description" />
           <Typography sx={{ whiteSpace: "pre-wrap" }}>
             {profile.description}
@@ -21,7 +21,7 @@ export const ProfileSection: FC = () => {
       )}
 
       {profile.personality && (
-        <Stack gap={0.5}>
+        <Stack sx={{ gap: 0.5 }}>
           <Label label="Personality" />
           <Typography sx={{ whiteSpace: "pre-wrap" }}>
             {profile.personality}

@@ -15,12 +15,10 @@ export const CyberwarePanel: FC = () => {
   const isEssenceError = essenseInfo.essenseRemaining <= 0
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <Stack
         direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 0.5 }}
+        sx={{ justifyContent: "space-between", alignItems: "center", px: 0.5 }}
       >
         <Typography color="text.secondary">
           Essence Used: {essenseInfo.essenceUsed.toFixed(2).replace(/\.?0+$/, "")}

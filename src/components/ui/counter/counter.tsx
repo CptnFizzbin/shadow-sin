@@ -17,17 +17,17 @@ export interface CounterProps {
 
 export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, unit }) => {
   return (
-    <Stack alignItems="center" gap={0} flexGrow={1}>
+    <Stack sx={{ alignItems: "center", gap: 0, flexGrow: 1 }}>
       {label && <Label label={label} />}
 
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <IconButton
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
         >
           <RiSubtractLine />
         </IconButton>
-        <Stack direction="row" alignItems="center" gap={0.5} minWidth={50} justifyContent="center">
+        <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, minWidth: 50, justifyContent: "center" }}>
           <Typography>{value} {max >= 1 && <>/ {max}</>}</Typography>
           {unit}
         </Stack>

@@ -22,7 +22,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
   const targetOptions = getTargetOptions(effect.type)
 
   return (
-    <Stack direction="row" gap={1} alignItems="flex-start" flexWrap="wrap">
+    <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start", flexWrap: "wrap" }}>
       <FormControl size="small" sx={{ flex: "2 1 120px" }}>
         <InputLabel>Type</InputLabel>
         <Select

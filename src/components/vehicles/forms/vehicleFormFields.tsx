@@ -19,7 +19,7 @@ export const VehicleFormFields = withFieldGroup({
   ...vehicleFormOpts,
   render: ({ group }) => {
     return (
-      <Stack gap={1}>
+      <Stack sx={{ gap: 1 }}>
         <group.Subscribe selector={({ values }) => values.vehicleCategory}>
           {(vehicleCategory) => (
             <ToggleButtonGroup
@@ -61,10 +61,10 @@ export const VehicleFormFields = withFieldGroup({
         </group.AppField>
 
         <Paper sx={{ padding: 1 }}>
-          <Stack gap={1}>
+          <Stack sx={{ gap: 1 }}>
             <Label label="Vehicle Stats" />
 
-            <Stack direction="row" gap={1} flexWrap="wrap">
+            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
               <group.AppField
                 name="handling"
                 validators={{
@@ -122,7 +122,7 @@ export const VehicleFormFields = withFieldGroup({
               </group.AppField>
             </Stack>
 
-            <Stack direction="row" gap={1} flexWrap="wrap">
+            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
               <group.AppField
                 name="pilot"
                 validators={{

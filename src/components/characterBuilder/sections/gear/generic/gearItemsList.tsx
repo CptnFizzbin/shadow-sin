@@ -57,7 +57,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
   }
 
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       {topLevelItems.map((item) => {
         const subItems = getSubItems(item.id)
 
@@ -70,15 +70,12 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
             />
 
             <Stack
-              gap={1}
-              sx={{
-                paddingTop: 1,
+              sx={{ gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: subItems.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: subItems.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
+                borderColor: "divider" }}
             >
               {subItems.map((subItem) => (
                 <GearItemCard

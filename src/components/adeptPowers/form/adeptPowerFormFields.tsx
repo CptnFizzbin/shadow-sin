@@ -14,12 +14,12 @@ export const AdeptPowerFormFields: FC<AdeptPowerFormFieldsProps> = ({
 }) => {
   return (
     <form.AppForm>
-      <Stack gap={2} sx={{ pt: 1 }}>
+      <Stack sx={{ gap: 2, pt: 1 }}>
         <form.AppField name="name">
           {(field) => <field.TextField label="Name" required />}
         </form.AppField>
 
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" sx={{ gap: 2 }}>
           <form.AppField name="rating">
             {(field) => (
               <field.NumberField

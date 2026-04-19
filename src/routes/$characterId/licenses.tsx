@@ -10,7 +10,7 @@ export const Route = createFileRoute("/$characterId/licenses")({
 
 function RouteComponent() {
   return (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
       <SectionHeader>SINs & Licenses</SectionHeader>
       <SinsAndLicensesSection />
     </Stack>

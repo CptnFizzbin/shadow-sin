@@ -111,7 +111,7 @@ export const ActiveSkillsList: FC = () => {
         fullWidth
       />
 
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
         <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
           Group by:
         </Typography>
