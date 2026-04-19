@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import jsYaml from "js-yaml"
 
+import { applyMigrations } from "#/character/applyMigrations.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 import type { ItemData } from "#/lib/system/itemData.ts"
 
@@ -86,21 +87,36 @@ export function gearFromTree(
 }
 
 /**
- * Parse a YAML string (previously created by characterSheetToYaml) back into
- * a CharacterSheet.  The nested gear tree is flattened back to a flat map.
+ * Parse a YAML string back into a CharacterSheet.
+ *
+ * For current-format characters the nested gear tree is flattened back to a
+ * flat map.  For old-format characters (those with a top-level `characterId`
+ * field) the gear array is left untouched so that the migration pipeline can
+ * perform the full normalisation (itemType renaming, sinId → parentId, etc.).
+ *
+ * Migrations are always run on the parsed data so that any character —
+ * regardless of which version it was exported from — is returned as a fully
+ * up-to-date {@link CharacterSheet}.
  */
 export function yamlToCharacterSheet(
   yamlContent: string,
 ): CharacterSheet {
   const parsed = jsYaml.load(yamlContent) as Record<string, unknown>
 
-  const gearTree = Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : []
-  const gear = gearFromTree(gearTree)
+  // Old-format characters have `characterId` at the root instead of `id`.
+  // Leave the gear array intact so migration 20250101 can normalise it.
+  const isOldFormat = "characterId" in parsed
 
-  return {
-    ...parsed,
-    gear,
-  } as CharacterSheet
+  const payload: Record<string, unknown> = isOldFormat
+    ? parsed
+    : {
+        ...parsed,
+        gear: gearFromTree(
+          Array.isArray(parsed.gear) ? (parsed.gear as GearTreeNode[]) : [],
+        ),
+      }
+
+  return applyMigrations(payload) as CharacterSheet
 }
 
 /**

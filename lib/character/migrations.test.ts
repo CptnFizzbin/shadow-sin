@@ -1,3 +1,7 @@
+import { readFileSync } from "node:fs"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
+
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { CharacterManager } from "#/character/characterManager.ts"
@@ -181,5 +185,57 @@ describe("character migrations + yaml round-trip", () => {
 
     // migration ID recorded
     expect(migrated!._meta_.appliedMigrations).toContain("20250101")
+  })
+
+  it("imports blur.yaml (v0 export) via yamlToCharacterSheet into a valid CharacterSheet", () => {
+    // Arrange
+    const testDir = dirname(fileURLToPath(import.meta.url))
+    const blurYaml = readFileSync(
+      resolve(testDir, "../../testUtils/fixtures/characters/blur.yaml"),
+      "utf-8",
+    )
+
+    // Act
+    const character = yamlToCharacterSheet(blurYaml)
+
+    // Assert — top-level CharacterSheet fields
+    expect(character.id).toBe("00000000-0000-0000-0000-000000000000")
+    expect(character.profile.alias).toBe("Blur")
+    expect(character.profile.name).toBe("Long")
+    expect(character.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
+    expect(character.biology.metatype).toBe("Human")
+    expect(character.biology.awakening).toBe("Mystic Adept")
+
+    // attributes are flat numbers
+    expect(character.attributes.body).toBe(4)
+    expect(character.attributes.agility).toBe(5)
+    expect(character.attributes.magic).toBe(5)
+
+    // skills migrated
+    expect(character.skills.skillGroups).toHaveLength(1)
+    expect(character.skills.skillGroups[0].name).toBe("Athletics")
+    const english = character.skills.languageSkills.find((s) => s.name === "English")
+    expect(english?.rating).toBe("native")
+
+    // spells promoted from awakened wrapper
+    expect(character.spells).toHaveLength(2)
+    expect(character.adeptPowers).toHaveLength(4)
+
+    // gear is a Record, empty entries stripped, itemTypes normalised
+    const gearValues = Object.values(character.gear)
+    expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toBe("weapon")
+    expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toBe("device")
+    expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toBe("other")
+
+    // license linked to its parent SIN
+    const sin = gearValues.find((item) => item.itemType === "sin")
+    const license = gearValues.find((item) => item.itemType === "license")
+    expect(sin).toBeDefined()
+    expect(license).toBeDefined()
+    expect(license!.parentId).toBe(sin!.id)
+    expect(sin!.childIds).toContain(license!.id)
+
+    // migrations applied
+    expect(character._meta_.appliedMigrations).toContain("20250101")
   })
 })
