@@ -20,7 +20,7 @@ export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
     return { id: groupId, name: skillKey, size: skillRating }
   }
 
-  return { id: groupId, name: skillKey, size: -1, color: "error.light" }
+  return { id: groupId, name: skillKey, size: 0 }
 }
 
 export function useWoundDiceGroup(): DiceGroup | null {

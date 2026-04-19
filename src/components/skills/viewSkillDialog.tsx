@@ -24,17 +24,19 @@ export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
     <Dialog {...props}>
       <DialogTitle sx={{ padding: 1 }}>{name}</DialogTitle>
       <DialogContent sx={{ padding: 1 }}>
-        <Stack direction="row">
+        <Stack spacing={1}>
           {body}
 
-          {dicePools
-            .filter((item): item is DicePoolData => Boolean(item))
-            .map((pool) => (
-              <DicePool
-                key={pool.name}
-                {...pool}
-              />
-            ))}
+          <Stack direction="row">
+            {dicePools
+              .filter((item): item is DicePoolData => Boolean(item))
+              .map((pool) => (
+                <DicePool
+                  key={pool.name}
+                  {...pool}
+                />
+              ))}
+          </Stack>
         </Stack>
       </DialogContent>
     </Dialog>

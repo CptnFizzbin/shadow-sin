@@ -49,7 +49,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
       />
 
       <Stack sx={{ gap: 0, flexGrow: 1 }}>
-        <Typography>{name}</Typography>
+        <Typography color={isDefaulted ? "warning.dark" : undefined}>{name}</Typography>
         {specialization && <Typography color="text.secondary">{specialization}</Typography>}
       </Stack>
 
@@ -60,7 +60,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
       <Chip
         label={rating === "native" ? "Auto" : totalDice}
         size="small"
-        color="secondary"
+        color={isDefaulted ? "warning" : "secondary"}
         sx={{ height: 52, width: 52, fontWeight: "bold" }}
       />
     </Stack>
