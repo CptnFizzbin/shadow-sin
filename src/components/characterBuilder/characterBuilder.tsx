@@ -58,11 +58,13 @@ export const CharacterBuilder: FC<CharacterFormProps> = ({ character }) => {
 
   return (
     <CharacterBuilderStoreProvider rootStore={rootStore}>
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Stack
-          sx={{ gap: 1, opacity: isBpPanelExpanded ? 0.6 : 1,
+          sx={{
+            opacity: isBpPanelExpanded ? 0.6 : 1,
             transition: "opacity 0.2s ease",
-            pointerEvents: isBpPanelExpanded ? "none" : "auto" }}
+            pointerEvents: isBpPanelExpanded ? "none" : "auto",
+          }}
         >
           <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
             <Button

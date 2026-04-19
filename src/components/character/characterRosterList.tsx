@@ -12,9 +12,9 @@ import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
+import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import { downloadTextFile } from "#/components/character/exportUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
-import type { CharacterLoadError } from "#/lib/storage/characters/characterLoadError.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
