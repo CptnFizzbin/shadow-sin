@@ -31,7 +31,7 @@ function IndexRoute() {
         >
           Create New
         </Button>
-        <ImportCharacterButton onImported={() => { void router.invalidate() }} />
+        <ImportCharacterButton onImported={() => router.invalidate({ sync: true })} />
       </Stack>
       <CharacterRosterList characters={characters} errors={errors} />
     </Stack>
