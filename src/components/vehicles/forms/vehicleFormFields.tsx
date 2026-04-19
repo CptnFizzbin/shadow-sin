@@ -70,8 +70,7 @@ export const VehicleFormFields = withFieldGroup({
                 validators={{
                   onChange: z
                     .number("Handling is required")
-                    .int("Handling must be a whole number")
-                    .min(0, "Handling must be 0 or more"),
+                    .int("Handling must be a whole number"),
                 }}
               >
                 {(field) => (
@@ -79,7 +78,7 @@ export const VehicleFormFields = withFieldGroup({
                     label="Handling"
                     size="small"
                     sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
+                    slotProps={{ htmlInput: { step: 1 } }}
                   />
                 )}
               </group.AppField>
