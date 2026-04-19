@@ -19,6 +19,7 @@ const defaultFormValues: ItemData = {
   name: "",
   cost: 0,
   quantity: 1,
+  rating: undefined,
   description: "",
   availability: {
     rating: 0,

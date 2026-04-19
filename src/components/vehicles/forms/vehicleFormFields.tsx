@@ -70,8 +70,7 @@ export const VehicleFormFields = withFieldGroup({
                 validators={{
                   onChange: z
                     .number("Handling is required")
-                    .int("Handling must be a whole number")
-                    .min(0, "Handling must be 0 or more"),
+                    .int("Handling must be a whole number"),
                 }}
               >
                 {(field) => (
@@ -79,7 +78,7 @@ export const VehicleFormFields = withFieldGroup({
                     label="Handling"
                     size="small"
                     sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
+                    slotProps={{ htmlInput: { step: 1 } }}
                   />
                 )}
               </group.AppField>
@@ -230,6 +229,26 @@ export const VehicleFormFields = withFieldGroup({
         >
           {(field) => (
             <field.NumberField label="Cost (¥)" fullWidth size="small" />
+          )}
+        </group.AppField>
+
+        <group.AppField
+          name="rating"
+          validators={{
+            onChange: z
+              .number()
+              .int("Rating must be a whole number")
+              .min(1, "Rating must be at least 1")
+              .optional(),
+          }}
+        >
+          {(field) => (
+            <field.NumberField
+              label="Rating"
+              size="small"
+              sx={{ width: 120 }}
+              slotProps={{ htmlInput: { min: 1, step: 1 } }}
+            />
           )}
         </group.AppField>
 
