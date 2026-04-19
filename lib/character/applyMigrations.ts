@@ -1,6 +1,7 @@
 import { sort } from "fast-sort"
 
 import { migrations } from "#/migrations.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 /**
  * Run all pending migrations against a raw character object and return the
@@ -8,11 +9,11 @@ import { migrations } from "#/migrations.ts"
  * {@link CharacterManager} (which also persists after migration) and
  * {@link yamlToCharacterSheet} (which only needs the in-memory result).
  */
-export function applyMigrations(character: object): object {
+export function applyMigrations(character: object): CharacterSheet {
   let characterData: object = character
 
   const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
-    | { version?: number; appliedMigrations?: unknown }
+    | { version?: number, appliedMigrations?: unknown }
     | undefined
 
   const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
@@ -46,5 +47,6 @@ export function applyMigrations(character: object): object {
     }
   }
 
-  return characterData
+  // Using `as` here as migrations are expected to produce a fully valid CharacterSheet, but the type system can't verify that.
+  return characterData as CharacterSheet
 }

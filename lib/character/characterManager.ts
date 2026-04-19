@@ -1,8 +1,9 @@
-import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import { applyMigrations } from "#/character/applyMigrations.ts"
+import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import type { StorageManager } from "#/storage/storageManager.ts"
 import type { StoredJsonFile } from "#/storage/storageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 
 export interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -157,15 +158,11 @@ export class CharacterManager {
   }
 
   private async migrateCharacter(character: object): Promise<CharacterSheet> {
-    const existingMigrations = (character as { _meta_?: { appliedMigrations?: unknown } })._meta_
-      ?.appliedMigrations
-    const existingAppliedCount = Array.isArray(existingMigrations) ? existingMigrations.length : 0
+    const preMeta = CharacterMetaSchema.parse("_meta_" in character ? character._meta_ : {})
+    const playerCharacter = applyMigrations(character)
+    const postMeta = playerCharacter._meta_
 
-    const playerCharacter = applyMigrations(character) as CharacterSheet
-
-    const newAppliedCount = playerCharacter._meta_?.appliedMigrations?.length ?? 0
-
-    if (newAppliedCount > existingAppliedCount) {
+    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
       await this.saveCharacter(playerCharacter)
     }
 

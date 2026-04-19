@@ -102,9 +102,6 @@ export function yamlToCharacterSheet(
   yamlContent: string,
 ): CharacterSheet {
   const parsed = jsYaml.load(yamlContent) as Record<string, unknown>
-
-  // Old-format characters have `characterId` at the root instead of `id`.
-  // Leave the gear array intact so migration 20250101 can normalise it.
   const isOldFormat = "characterId" in parsed
 
   const payload: Record<string, unknown> = isOldFormat
@@ -116,7 +113,7 @@ export function yamlToCharacterSheet(
         ),
       }
 
-  return applyMigrations(payload) as CharacterSheet
+  return applyMigrations(payload)
 }
 
 /**

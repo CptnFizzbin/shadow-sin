@@ -1,5 +1,7 @@
 import type { UUID } from "node:crypto"
 
+import { z } from "zod"
+
 import type { LifestyleType } from "#/lib/system/lifestyleType.ts"
 import type { MetatypeType } from "#/lib/system/metatypeData.ts"
 import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
@@ -23,6 +25,11 @@ export interface CharacterMeta {
   /** IDs of all migrations that have already been applied to this character. */
   appliedMigrations: string[]
 }
+
+export const CharacterMetaSchema = z.object({
+  version: z.number().default(0),
+  appliedMigrations: z.array(z.string()).default([]),
+})
 
 export interface CharacterSheet {
   id: UUID
