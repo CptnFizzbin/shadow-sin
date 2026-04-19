@@ -10,7 +10,7 @@ import { localCharacterManager } from "#/lib/storage/localStorage/localCharacter
 import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
 
 interface ImportCharacterButtonProps {
-  onImported?: () => void
+  onImported?: () => void | Promise<void>
 }
 
 /**
@@ -60,7 +60,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
       setExistingCharacter(existing)
     } else {
       await localCharacterManager.saveCharacter(character)
-      onImported?.()
+      await onImported?.()
     }
   }
 
@@ -69,7 +69,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
 
     if (choice === "overwrite") {
       await localCharacterManager.saveCharacter(pendingCharacter)
-      onImported?.()
+      await onImported?.()
     } else if (choice === "create-new") {
       const allCharacters = await localCharacterManager.listCharacters()
       const existingAliases = new Set(
@@ -85,7 +85,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
         },
       }
       await localCharacterManager.saveCharacter(newCharacter)
-      onImported?.()
+      await onImported?.()
     }
 
     setPendingCharacter(null)
