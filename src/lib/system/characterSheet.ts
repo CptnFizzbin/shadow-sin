@@ -20,6 +20,8 @@ import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
 import type { QualityData } from "./qualityData.ts"
 
+export const CHARACTER_SHEET_VERSION = 1
+
 export interface CharacterMeta {
   version: number
   /** IDs of all migrations that have already been applied to this character. */
@@ -28,7 +30,7 @@ export interface CharacterMeta {
 
 export const CharacterMetaSchema = z.object({
   version: z.number().default(0),
-  appliedMigrations: z.array(z.string()).default([]),
+  appliedMigrations: z.string().array().default([]),
 })
 
 export interface CharacterSheet {

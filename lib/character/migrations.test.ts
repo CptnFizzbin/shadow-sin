@@ -1,13 +1,10 @@
-import { readFileSync } from "node:fs"
-import { dirname, resolve } from "node:path"
-import { fileURLToPath } from "node:url"
-
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { CharacterManager } from "#/character/characterManager.ts"
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
 import { LocalStorageProvider } from "#/storage/localStorage/localStorageProvider.ts"
 import { StorageManager } from "#/storage/storageManager.ts"
+import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
   characterV1,
@@ -188,15 +185,8 @@ describe("character migrations + yaml round-trip", () => {
   })
 
   it("imports blur.yaml (v0 export) via yamlToCharacterSheet into a valid CharacterSheet", () => {
-    // Arrange
-    const testDir = dirname(fileURLToPath(import.meta.url))
-    const blurYaml = readFileSync(
-      resolve(testDir, "../../testUtils/fixtures/characters/blur.yaml"),
-      "utf-8",
-    )
-
     // Act
-    const character = yamlToCharacterSheet(blurYaml)
+    const character = yamlToCharacterSheet(BlurYaml)
 
     // Assert — top-level CharacterSheet fields
     expect(character.id).toBe("00000000-0000-0000-0000-000000000000")

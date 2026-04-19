@@ -1,7 +1,16 @@
 import { sort } from "fast-sort"
+import { produce } from "immer"
 
 import { migrations } from "#/migrations.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { CHARACTER_SHEET_VERSION, CharacterMetaSchema } from "#/system/characterSheet.ts"
+
+interface MigrationDraft {
+  _meta_: {
+    version: number
+    appliedMigrations: string[]
+  }
+}
 
 /**
  * Run all pending migrations against a raw character object and return the
@@ -10,43 +19,25 @@ import type { CharacterSheet } from "#/system/characterSheet.ts"
  * {@link yamlToCharacterSheet} (which only needs the in-memory result).
  */
 export function applyMigrations(character: object): CharacterSheet {
-  let characterData: object = character
-
-  const existingMeta = (characterData as { _meta_?: unknown })._meta_ as
-    | { version?: number, appliedMigrations?: unknown }
-    | undefined
-
-  const appliedMigrationIds: string[] = Array.isArray(existingMeta?.appliedMigrations)
-    ? (existingMeta.appliedMigrations as unknown[]).filter(
-        (id): id is string => typeof id === "string",
-      )
-    : []
-
-  characterData = {
-    ...(characterData as Record<string, unknown>),
-    _meta_: { version: 1, ...(existingMeta ?? {}), appliedMigrations: [...appliedMigrationIds] },
-  }
+  const preMeta = CharacterMetaSchema.parse("_meta_" in character ? character._meta_ : {})
+  const appliedMigrationIds = new Set(preMeta.appliedMigrations)
 
   const migrationsToRun = sort(migrations)
     .asc((migration) => migration.id)
-    .filter((migration) => !appliedMigrationIds.includes(migration.id))
+    .filter((migration) => !appliedMigrationIds.has(migration.id))
+
+  let migrated: MigrationDraft = { ...character, _meta_: preMeta }
 
   for (const migration of migrationsToRun) {
-    characterData = migration.up(characterData)
-    appliedMigrationIds.push(migration.id)
-    const metaAfterMigration = (characterData as { _meta_?: unknown })._meta_
-    characterData = {
-      ...(characterData as Record<string, unknown>),
-      _meta_: {
-        version: 1,
-        ...(typeof metaAfterMigration === "object" && metaAfterMigration !== null
-          ? (metaAfterMigration as Record<string, unknown>)
-          : {}),
-        appliedMigrations: [...appliedMigrationIds],
-      },
-    }
+    migrated = migration.up(migrated)
+    appliedMigrationIds.add(migration.id)
   }
 
+  migrated = produce(migrated, (draft) => {
+    draft._meta_.version = CHARACTER_SHEET_VERSION
+    draft._meta_.appliedMigrations = Array.from(appliedMigrationIds)
+  })
+
   // Using `as` here as migrations are expected to produce a fully valid CharacterSheet, but the type system can't verify that.
-  return characterData as CharacterSheet
+  return migrated as CharacterSheet
 }
