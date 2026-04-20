@@ -10,12 +10,12 @@ import { useState } from "react"
 import { LicenseFormDialog } from "#/components/characterBuilder/sections/gear/licenses/dialogs/licenseFormDialog.tsx"
 import { getLicenseAvailability } from "#/components/characterBuilder/sections/gear/licenses/forms/licenseUtils.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 interface LicensesListProps {
   sin: SinData
@@ -65,12 +65,14 @@ export const LicensesList: FC<LicensesListProps> = ({ sin }) => {
               direction="column"
               onClick={() =>
                 setDialogState({ mode: "edit", license, open: true })}
-              sx={{ "gap": 0, "p": 1,
+              sx={{
+                "gap": 0, "p": 1,
                 "borderRadius": 1,
                 "border": "1px solid",
                 "borderColor": "divider",
                 "cursor": "pointer",
-                "&:hover": { bgcolor: "action.hover" } }}
+                "&:hover": { bgcolor: "action.hover" },
+              }}
             >
               <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
                 <Typography sx={{ flexGrow: 1 }}>{license.name}</Typography>

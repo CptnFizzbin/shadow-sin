@@ -1,7 +1,7 @@
-import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
-import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
-import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
-import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
+import type { ActiveSkillData } from "#/system/skills/activeSkillData"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData"
+import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 export const ActiveSkillBpPerRating = 4
 export const ActiveSkillGroupBpPerRating = 10

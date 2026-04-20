@@ -2,10 +2,10 @@ import { Button } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
+import { Artemis } from "#/character/fixtures/artemis.ts"
+import { Hexen } from "#/character/fixtures/hexen.ts"
 import CharacterRosterList from "#/components/character/characterRosterList.tsx"
 import { ImportCharacterButton } from "#/components/character/importCharacterButton.tsx"
-import { Artemis } from "#/lib/fixture/character/artemis.ts"
-import { Hexen } from "#/lib/fixture/character/hexen.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 
 export const Route = createFileRoute("/")({

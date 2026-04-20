@@ -1,4 +1,4 @@
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
 
 export const ComplexFormBpPerRating = 1
 export const SpriteBpPerTask = 1

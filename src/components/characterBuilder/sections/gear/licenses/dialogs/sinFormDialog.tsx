@@ -8,7 +8,7 @@ import type { FC } from "react"
 
 import { SinFormFields } from "#/components/characterBuilder/sections/gear/licenses/forms/sinFormFields.tsx"
 import { sinFieldMap, useSinForm } from "#/components/characterBuilder/sections/gear/licenses/forms/useSinForm.tsx"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinEditDialogProps {
   open: boolean

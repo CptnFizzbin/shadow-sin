@@ -5,7 +5,7 @@ import { useAdeptPowersStore } from "#/components/adeptPowers/useAdeptPowersStor
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

@@ -27,8 +27,8 @@ import {
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
-import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
-import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 type DialogState =
   | null

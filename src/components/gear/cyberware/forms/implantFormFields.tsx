@@ -8,7 +8,7 @@ import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsField
 import { implantFormOpts } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [
   { label: "Cyberware", value: ImplantType.cyberware },

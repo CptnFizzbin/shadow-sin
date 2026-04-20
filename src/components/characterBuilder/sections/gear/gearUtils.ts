@@ -3,9 +3,9 @@ import { SectionHeader } from "#/components/characterBuilder/sections/gear/secti
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/licenses/licenseUtils.ts"
 import { getSinAvailability } from "#/components/licenses/sinUtils.ts"
-import { isImplant } from "#/lib/system/gear/implantData.ts"
-import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
-import { isSinData } from "#/lib/system/gear/sinData.ts"
+import { isImplant } from "#/system/gear/implantData.ts"
+import { isLicenseData } from "#/system/gear/licenseData.ts"
+import { isSinData } from "#/system/gear/sinData.ts"
 
 export type GearItemCostInfo = {
   cost?: number

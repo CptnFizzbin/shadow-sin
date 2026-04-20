@@ -5,10 +5,10 @@ import { GearSection } from "#/components/character/gearPage/gearSectionTypes.ts
 import { GenericSectionContent } from "#/components/character/gearPage/genericSectionContent.tsx"
 import { LicensesSectionContent } from "#/components/character/gearPage/licensesSectionContent.tsx"
 import { WeaponsSectionContent } from "#/components/character/gearPage/weaponsSectionContent.tsx"
-import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
-import { isSinData } from "#/lib/system/gear/sinData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import { isLicenseData } from "#/system/gear/licenseData.ts"
+import { isSinData } from "#/system/gear/sinData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 interface GearViewSectionContentProps {
   section: GearSection

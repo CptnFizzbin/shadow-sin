@@ -2,8 +2,8 @@ import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { DeviceFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/deviceFormDialog.tsx"
-import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { DeviceData } from "#/system/gear/deviceData.ts"
+import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderWithTheme } from "#testUtils/renderUtils.tsx"
 
 describe("DeviceFormDialog", () => {

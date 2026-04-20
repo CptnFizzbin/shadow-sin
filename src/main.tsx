@@ -6,8 +6,8 @@ import { createRoot } from "react-dom/client"
 
 import { RootDialogOutlet } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
 import TanStackQueryProvider from "#/integrations/tanstackQuery/rootProvider.tsx"
-import { getRouter } from "./router.ts"
-import { theme } from "./theme.ts"
+import { getRouter } from "#/router.ts"
+import { theme } from "#/theme.ts"
 
 const router = getRouter()
 const rootElement = document.getElementById("root")

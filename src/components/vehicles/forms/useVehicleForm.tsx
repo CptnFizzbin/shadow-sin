@@ -3,10 +3,10 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
-import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/system/gear/vehicleData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface VehicleFormOptions {
   vehicle?: VehicleData

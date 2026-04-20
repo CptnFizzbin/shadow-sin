@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { QualityData } from "#/lib/system/qualityData.ts"
+import type { QualityData } from "#/system/qualityData.ts"
 
 const QualityViewerRow: FC<{ quality: QualityData }> = ({ quality }) => {
   const { rating } = quality

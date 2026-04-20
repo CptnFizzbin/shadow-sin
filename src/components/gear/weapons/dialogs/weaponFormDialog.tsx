@@ -13,7 +13,7 @@ import {
   useWeaponForm,
 } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
 import { WeaponFormFields } from "#/components/gear/weapons/forms/weaponFormFields.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
   open: boolean

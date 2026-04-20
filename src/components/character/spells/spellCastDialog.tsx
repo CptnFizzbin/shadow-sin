@@ -11,7 +11,7 @@ import type { FC } from "react"
 import { SpellCastSection } from "#/components/character/spells/spellCastSection.tsx"
 import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 interface SpellCastDialogProps {
   spell: SpellData

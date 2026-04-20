@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import type { LoanData } from "#/lib/system/loanData.ts"
+import type { LoanData } from "#/system/loanData.ts"
 
 export interface LoanCardProps {
   loan: LoanData

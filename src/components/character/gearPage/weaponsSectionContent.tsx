@@ -10,9 +10,9 @@ import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import { isWeaponData } from "#/system/gear/weaponData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 type WeaponDialogState =
   | null

@@ -5,7 +5,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { SpellsViewerSection } from "#/components/character/spells/spellsViewerSection.tsx"
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$characterId/spells")({
   component: RouteComponent,

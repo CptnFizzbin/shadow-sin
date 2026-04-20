@@ -7,9 +7,9 @@ import { RiAddLine } from "@remixicon/react"
 import { GameEffectRow } from "#/components/gameEffects/gameEffectRow.tsx"
 import { getDefaultTarget } from "#/components/gameEffects/gameEffectUtils.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { GameEffectData } from "#/lib/system/gameEffects/gameEffectData.ts"
-import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 interface FormFields {
   effects?: GameEffectData[]

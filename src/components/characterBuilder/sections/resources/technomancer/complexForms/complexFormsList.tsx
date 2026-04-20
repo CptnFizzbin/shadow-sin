@@ -22,8 +22,8 @@ import { useMaxComplexForms } from "#/components/technomancer/complexFormsHooks.
 import { useComplexFormsStore } from "#/components/technomancer/useComplexFormsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
 type ComplexFormDialogState =
   | null

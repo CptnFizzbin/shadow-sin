@@ -9,9 +9,9 @@ import { useCharacterSheet } from "#/components/character/characterSheetProvider
 import { useActiveSkillDicePool } from "#/components/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/skills/skillListItem.tsx"
 import { ViewSkillDialog } from "#/components/skills/viewSkillDialog.tsx"
-import { AttributeKey, AttributeLabels } from "#/lib/system/attributeKey.ts"
-import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList.ts"
+import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 export interface ActiveSkillsListItemProps {
   skillKey: SkillKey

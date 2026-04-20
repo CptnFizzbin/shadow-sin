@@ -9,9 +9,9 @@ import { createDefaultCharacterSheet } from "#/components/character/createDefaul
 import type { BuilderRootState } from "#/components/characterBuilder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { CyberwareList } from "#/components/characterBuilder/sections/gear/cyberware/cyberwareList.tsx"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { ImplantType } from "#/lib/system/gear/implantData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import { ImplantType } from "#/system/gear/implantData.ts"
+import { ItemType } from "#/system/itemType.ts"
 import { theme } from "#/theme.ts"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {

@@ -3,12 +3,12 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { FirearmData, MeleeWeaponData, WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { FirearmAttachmentPoint, WeaponType } from "#/lib/system/gear/weaponData.ts"
-import { FirearmTypeKey } from "#/lib/system/gear/weapons/firearms/firearmTypeKey.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/gear/weaponData.ts"
+import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
+import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
+import { ItemType } from "#/system/itemType.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export interface WeaponFormOptions {
   weapon?: WeaponData

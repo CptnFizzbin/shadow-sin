@@ -9,7 +9,7 @@ import { ContactRow } from "#/components/contacts/contactsListItem.tsx"
 import { ContactFormDialog } from "#/components/contacts/form/contactFormDialog.tsx"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
-import type { ContactData } from "#/lib/system/contactData.ts"
+import type { ContactData } from "#/system/contactData.ts"
 
 interface DialogState {
   open: boolean

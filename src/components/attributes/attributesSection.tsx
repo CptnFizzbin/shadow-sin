@@ -10,7 +10,7 @@ import {
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/lib/system/attributeKey.ts"
+} from "#/system/attributeKey.ts"
 
 interface AttrListProps {
   attrKeys: readonly AttributeKey[]

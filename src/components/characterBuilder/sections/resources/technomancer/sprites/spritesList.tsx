@@ -19,8 +19,8 @@ import { useSpritesStore } from "#/components/technomancer/useSpritesStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 type SpriteDialogState =
   | null

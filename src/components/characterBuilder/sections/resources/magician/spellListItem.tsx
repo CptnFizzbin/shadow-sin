@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { SpellsBpPerSpell } from "#/components/spells/spellsUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 interface SpellListItemProps {
   spell: SpellData

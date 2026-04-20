@@ -1,5 +1,5 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { QualityData } from "#/lib/system/qualityData.ts"
+import type { QualityData } from "#/system/qualityData.ts"
 
 export interface QualityFormOptions {
   quality?: QualityData

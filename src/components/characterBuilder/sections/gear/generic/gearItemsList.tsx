@@ -10,8 +10,8 @@ import { useState } from "react"
 import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
 import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import type { ItemType } from "#/lib/system/itemType.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 type DialogState =
   | null
@@ -70,12 +70,14 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
             />
 
             <Stack
-              sx={{ gap: 1, paddingTop: 1,
+              sx={{
+                gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: subItems.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: subItems.length > 0 ? "1px solid" : "none",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               {subItems.map((subItem) => (
                 <GearItemCard

@@ -5,10 +5,10 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface ImplantFormOptions {
   implant?: ImplantData

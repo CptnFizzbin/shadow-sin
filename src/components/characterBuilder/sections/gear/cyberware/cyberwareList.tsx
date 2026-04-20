@@ -9,10 +9,10 @@ import { useState } from "react"
 
 import { CyberwareListItem } from "#/components/characterBuilder/sections/gear/cyberware/cyberwareListItem.tsx"
 import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
-import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type ImplantDialogState =
   | null
@@ -59,12 +59,14 @@ export const CyberwareList: FC = () => {
             />
 
             <Stack
-              sx={{ gap: 1, paddingTop: 1,
+              sx={{
+                gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: accessories.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: accessories.length > 0 ? "1px solid" : "none",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               {accessories.map((accessory) => (
                 <CyberwareListItem

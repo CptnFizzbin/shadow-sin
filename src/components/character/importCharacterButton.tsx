@@ -7,7 +7,7 @@ import { yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
 import type { ImportConflictChoice } from "#/components/character/importConflictDialog.tsx"
 import { ImportConflictDialog } from "#/components/character/importConflictDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 interface ImportCharacterButtonProps {
   onImported?: () => void | Promise<void>

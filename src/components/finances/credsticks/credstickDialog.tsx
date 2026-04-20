@@ -18,15 +18,15 @@ import { useState } from "react"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
+import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
   CredstickMaxBalance,
   CredstickPurchaseCost,
   CredstickType,
   CredstickTypeLabel,
-} from "#/lib/system/gear/credstickData.ts"
-import { createItem } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+} from "#/system/gear/credstickData.ts"
+import { createItem } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export type CredstickDialogMode = "add" | "add-certified" | "edit"
 

@@ -8,7 +8,7 @@ import type { FC } from "react"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 interface GearItemCardProps {
   item: ItemData

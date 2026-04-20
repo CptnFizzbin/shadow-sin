@@ -13,8 +13,8 @@ import {
   MeleeFullParryDicePool,
   RangedFullDefenseDicePool,
 } from "#/components/damage/resistanceDicePools.tsx"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
 
 interface TestProvidersProps extends PropsWithChildren {

@@ -9,11 +9,11 @@ import { useState } from "react"
 
 import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
 import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
-import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type WeaponDialogState =
   | null
@@ -76,12 +76,14 @@ export const WeaponsList: FC = () => {
             />
 
             <Stack
-              sx={{ gap: 1, paddingTop: 1,
+              sx={{
+                gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: accessories.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: accessories.length > 0 ? "1px solid" : "none",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               {accessories.map((accessory) => (
                 <GearItemCard

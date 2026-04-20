@@ -10,8 +10,8 @@ import { useBiologyStore } from "#/components/biology/useBiologyStore.ts"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { BiologyAttributes } from "#/components/characterBuilder/sections/biology/biologyAttributes.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { awakenings } from "#/lib/system/awakeningType.ts"
-import { metatypes, MetatypeType } from "#/lib/system/metatypeData.ts"
+import { awakenings } from "#/system/awakeningType.ts"
+import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
 export const BiologySection: FC = () => {
   const sheet = useCharacterSheetContext()

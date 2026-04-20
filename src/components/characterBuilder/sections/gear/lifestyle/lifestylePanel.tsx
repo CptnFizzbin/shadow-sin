@@ -10,7 +10,7 @@ import type { FC } from "react"
 
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { Lifestyles, LifestyleType } from "#/lib/system/lifestyleType.ts"
+import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
   const lifestyleStore = useLifestyleStore()

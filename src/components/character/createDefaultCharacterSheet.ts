@@ -1,10 +1,10 @@
+import { migrationIds } from "#/character/migrations.ts"
 import { getAttributesValues } from "#/components/attributes/getAttributesValues.ts"
-import { awakenings, AwakeningType } from "#/lib/system/awakeningType.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { LifestyleType } from "#/lib/system/lifestyleType.ts"
-import { metatypes, MetatypeType } from "#/lib/system/metatypeData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import { migrationIds } from "#/migrations.ts"
+import { awakenings, AwakeningType } from "#/system/awakeningType.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { LifestyleType } from "#/system/lifestyleType.ts"
+import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
 export const createDefaultCharacterSheet = (): CharacterSheet => ({
   id: NullUuid,

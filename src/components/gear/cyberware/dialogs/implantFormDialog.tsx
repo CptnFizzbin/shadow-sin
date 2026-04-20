@@ -9,17 +9,12 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { ImplantFormFields } from "#/components/gear/cyberware/forms/implantFormFields.tsx"
-import {
-  implantFieldMap,
-  useImplantForm,
-} from "#/components/gear/cyberware/forms/useImplantForm.tsx"
+import { implantFieldMap, useImplantForm } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
-import {
-  getImplantEffectiveNuyenCost, ImplantGradeNuyenMultiplier,
-} from "#/components/gear/implantUtils.ts"
+import { getImplantEffectiveNuyenCost, ImplantGradeNuyenMultiplier } from "#/components/gear/implantUtils.ts"
 import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { ImplantGrade } from "#/lib/system/gear/implantData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import { ImplantGrade } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
   open: boolean
