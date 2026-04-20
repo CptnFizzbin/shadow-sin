@@ -1,17 +1,39 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
+import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
+import type { ItemDialogProps } from "#/components/gear/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
+/**
+ * Test wrapper that creates an ItemForm from the given item/itemType/onSave and
+ * passes it to ItemDialog. Mirrors how real callers use ItemDialog.
+ */
+const ItemDialogWrapper: FC<{
+  onSave?: (item: ItemData) => void | Promise<void>
+  item?: ItemData
+  itemType?: ItemType
+} & Omit<ItemDialogProps, "form">> = ({ onSave = vi.fn(), item, itemType, ...props }) => {
+  const form = useItemForm({
+    item,
+    itemType,
+    onSubmit: async (submittedItem) => {
+      await onSave(submittedItem)
+    },
+  })
+  return <ItemDialog form={form} {...props} />
+}
+
 describe("ItemDialog", () => {
   it("renders with a name field and save button", () => {
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
-        label="Thing"
+        title="Add Thing"
         onSave={vi.fn()}
         onClose={vi.fn()}
       />,
@@ -26,10 +48,10 @@ describe("ItemDialog", () => {
   it("calls onSave with the item on save", async () => {
     const onSave = vi.fn()
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
         itemType={ItemType.other}
-        label="Gadget"
+        title="Add Gadget"
         onSave={onSave}
         onClose={vi.fn()}
       />,
@@ -47,7 +69,7 @@ describe("ItemDialog", () => {
 
   it("opens the options dialog when the settings button is clicked", () => {
     renderInBuilder(
-      <ItemDialog open label="Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      <ItemDialogWrapper open title="Add Item" onSave={vi.fn()} onClose={vi.fn()} />,
     )
 
     const dialogs = screen.getAllByRole("dialog")
@@ -60,9 +82,9 @@ describe("ItemDialog", () => {
 
   it("shows the rating counter when hasRating option is enabled", () => {
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
-        label="Rated Item"
+        title="Add Rated Item"
         onSave={vi.fn()}
         onClose={vi.fn()}
         options={{ hasRating: { enabled: true } }}
@@ -76,9 +98,9 @@ describe("ItemDialog", () => {
 
   it("shows the quantity counter when multiple option is enabled", () => {
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
-        label="Bulk Item"
+        title="Add Bulk Item"
         onSave={vi.fn()}
         onClose={vi.fn()}
         options={{ multiple: { enabled: true } }}
@@ -92,9 +114,9 @@ describe("ItemDialog", () => {
 
   it("shows the attached-to section when isSubItem option is enabled", () => {
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
-        label="Sub-Item"
+        title="Add Sub-Item"
         onSave={vi.fn()}
         onClose={vi.fn()}
         options={{ isSubItem: { enabled: true } }}
@@ -104,11 +126,11 @@ describe("ItemDialog", () => {
     expect(screen.getByText("Attached To")).toBeDefined()
   })
 
-  it("renders slot itemFields with the form", () => {
+  it("renders slot itemFields", () => {
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
-        label="Item"
+        title="Add Item"
         onSave={vi.fn()}
         onClose={vi.fn()}
         slots={{
@@ -122,7 +144,7 @@ describe("ItemDialog", () => {
 
   it("shows acquire and purchase buttons in viewer mode", () => {
     renderWithProviders(
-      <ItemDialog open label="Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      <ItemDialogWrapper open title="Add Item" onSave={vi.fn()} onClose={vi.fn()} />,
     )
 
     const dialogs = screen.getAllByRole("dialog")
@@ -134,10 +156,10 @@ describe("ItemDialog", () => {
   it("calls onSave then deducts nuyen on purchase in viewer mode", async () => {
     const onSave = vi.fn()
     renderWithProviders(
-      <ItemDialog
+      <ItemDialogWrapper
         open
         itemType={ItemType.other}
-        label="Item"
+        title="Add Item"
         onSave={onSave}
         onClose={vi.fn()}
       />,
@@ -160,7 +182,7 @@ describe("ItemDialog", () => {
     })
   })
 
-  it("shows 'Edit' in title when editing an existing item", () => {
+  it("shows the correct title when passed in", () => {
     const existingItem: ItemData = {
       id: "test-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>,
       itemType: ItemType.other,
@@ -168,10 +190,10 @@ describe("ItemDialog", () => {
     }
 
     renderInBuilder(
-      <ItemDialog
+      <ItemDialogWrapper
         open
         item={existingItem}
-        label="Thing"
+        title="Edit Thing"
         onSave={vi.fn()}
         onClose={vi.fn()}
       />,

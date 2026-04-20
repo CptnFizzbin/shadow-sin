@@ -9,32 +9,12 @@ import { useState } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 
-export interface ItemOptionFlags {
-  equipable: boolean
-  licenseRequired: boolean
-  licenseAlwaysShow: boolean
-  hasRating: boolean
-  multiple: boolean
-  isSubItem: boolean
-  fixed: boolean
-  hasEffects: boolean
-}
-
-export interface ItemOptionForced {
-  equipable?: boolean
-  licenseRequired?: boolean
-  hasRating?: boolean
-  multiple?: boolean
-  isSubItem?: boolean
-  hasEffects?: boolean
-}
-
 interface ItemOptionsDialogProps {
   open: boolean
   onClose: () => void
-  options: ItemOptionFlags
-  forced: ItemOptionForced
-  onChange: (updated: ItemOptionFlags) => void
+  options: Record<string, boolean>
+  forced: Record<string, boolean>
+  onChange: (updated: Record<string, boolean>) => void
 }
 
 export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
@@ -47,15 +27,15 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   const [pendingUnfix, setPendingUnfix] = useState(false)
   const confirmDialog = useConfirmDialog({ id: "item-unfix-confirm" })
 
-  const set = (patch: Partial<ItemOptionFlags>) => onChange({ ...options, ...patch })
+  const set = (patch: Record<string, boolean>) => onChange({ ...options, ...patch })
 
   /**
    * Returns whether a togglable option's checkbox should appear checked.
    * A forced option is always checked (regardless of local state). A non-forced
    * option reflects the user's local toggle.
    */
-  const isChecked = (flag: keyof ItemOptionForced, value: boolean): boolean =>
-    (forced[flag] ?? false) ? true : value
+  const isChecked = (key: string, value: boolean): boolean =>
+    (forced[key] ?? false) ? true : value
 
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
@@ -84,10 +64,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
         <Stack>
           <FormControlLabel
             label="Equippable"
-            disabled={forced.equipable}
+            disabled={forced["equipable"]}
             control={(
               <Checkbox
-                checked={isChecked("equipable", options.equipable)}
+                checked={isChecked("equipable", options["equipable"] ?? false)}
                 onChange={(e) => set({ equipable: e.target.checked })}
               />
             )}
@@ -95,10 +75,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Has License"
-            disabled={forced.licenseRequired}
+            disabled={forced["licenseRequired"]}
             control={(
               <Checkbox
-                checked={isChecked("licenseRequired", options.licenseRequired)}
+                checked={isChecked("licenseRequired", options["licenseRequired"] ?? false)}
                 onChange={(e) => set({ licenseRequired: e.target.checked })}
               />
             )}
@@ -107,10 +87,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           <FormControlLabel
             label="Always show license field"
             sx={{ pl: 4 }}
-            disabled={forced.licenseRequired}
+            disabled={forced["licenseRequired"]}
             control={(
               <Checkbox
-                checked={options.licenseAlwaysShow}
+                checked={options["licenseAlwaysShow"] ?? false}
                 onChange={(e) => set({ licenseAlwaysShow: e.target.checked })}
               />
             )}
@@ -118,10 +98,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Has rating"
-            disabled={forced.hasRating}
+            disabled={forced["hasRating"]}
             control={(
               <Checkbox
-                checked={isChecked("hasRating", options.hasRating)}
+                checked={isChecked("hasRating", options["hasRating"] ?? false)}
                 onChange={(e) => set({ hasRating: e.target.checked })}
               />
             )}
@@ -129,10 +109,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Can have multiple"
-            disabled={forced.multiple}
+            disabled={forced["multiple"]}
             control={(
               <Checkbox
-                checked={isChecked("multiple", options.multiple)}
+                checked={isChecked("multiple", options["multiple"] ?? false)}
                 onChange={(e) => set({ multiple: e.target.checked })}
               />
             )}
@@ -140,10 +120,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Is attachment / sub-item"
-            disabled={forced.isSubItem}
+            disabled={forced["isSubItem"]}
             control={(
               <Checkbox
-                checked={isChecked("isSubItem", options.isSubItem)}
+                checked={isChecked("isSubItem", options["isSubItem"] ?? false)}
                 onChange={(e) => set({ isSubItem: e.target.checked })}
               />
             )}
@@ -152,10 +132,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           <FormControlLabel
             label="Is fixed / integrated item"
             sx={{ pl: 4 }}
-            disabled={!options.isSubItem && !forced.isSubItem}
+            disabled={!(options["isSubItem"] ?? false) && !(forced["isSubItem"] ?? false)}
             control={(
               <Checkbox
-                checked={options.fixed}
+                checked={options["fixed"] ?? false}
                 onChange={(e) => handleFixedChange(e.target.checked)}
               />
             )}
@@ -163,10 +143,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Applies game effects"
-            disabled={forced.hasEffects}
+            disabled={forced["hasEffects"]}
             control={(
               <Checkbox
-                checked={options.hasEffects || (forced.hasEffects ?? false)}
+                checked={isChecked("hasEffects", options["hasEffects"] ?? false)}
                 onChange={(e) => set({ hasEffects: e.target.checked })}
               />
             )}

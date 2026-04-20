@@ -5,11 +5,11 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
-import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 
 export interface BuyQuantityDialogProps {
@@ -33,27 +33,6 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const totalCost = Math.max(0, (costPerItem - discount) * quantity)
   const canAfford = currentNuyen >= totalCost
 
-  const handleQuantityChange = (value: string) => {
-    const parsed = Number.parseInt(value, 10)
-    if (!Number.isNaN(parsed) && parsed >= 1) {
-      setQuantity(parsed)
-    }
-  }
-
-  const handleCostChange = (value: string) => {
-    const parsed = Number.parseFloat(value)
-    if (!Number.isNaN(parsed) && parsed >= 0) {
-      setCostPerItem(parsed)
-    }
-  }
-
-  const handleDiscountChange = (value: string) => {
-    const parsed = Number.parseFloat(value)
-    if (!Number.isNaN(parsed) && parsed >= 0) {
-      setDiscount(parsed)
-    }
-  }
-
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>Buy More</DialogTitle>
@@ -69,14 +48,15 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
               −
             </Button>
 
-            <TextField
+            <NumberField
               label="Quantity"
               size="small"
-              type="number"
               value={quantity}
-              onChange={(e) => handleQuantityChange(e.target.value)}
-              sx={{ flex: 1, textAlign: "center" }}
-              slotProps={{ htmlInput: { min: 1, step: 1, style: { textAlign: "center" } } }}
+              onChange={setQuantity}
+              min={1}
+              step={1}
+              sx={{ flex: 1 }}
+              slotProps={{ htmlInput: { style: { textAlign: "center" } } }}
             />
 
             <Button
@@ -89,24 +69,22 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
           </Stack>
 
           <Stack direction="row" sx={{ gap: 1 }}>
-            <TextField
+            <NumberField
               label="Cost per item"
               size="small"
-              type="number"
               value={costPerItem}
-              onChange={(e) => handleCostChange(e.target.value)}
+              onChange={setCostPerItem}
+              min={0}
               sx={{ flex: 1 }}
-              slotProps={{ htmlInput: { min: 0, step: 1 } }}
             />
 
-            <TextField
+            <NumberField
               label="Discount"
               size="small"
-              type="number"
               value={discount}
-              onChange={(e) => handleDiscountChange(e.target.value)}
+              onChange={setDiscount}
+              min={0}
               sx={{ flex: 1 }}
-              slotProps={{ htmlInput: { min: 0, step: 1 } }}
             />
           </Stack>
         </Stack>

@@ -30,6 +30,7 @@ const defaultFormValues: ItemData = {
     book: "",
     page: 0,
   },
+  parentId: undefined,
   effects: [],
 }
 
