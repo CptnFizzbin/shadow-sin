@@ -3,8 +3,7 @@ import type { UUID } from "node:crypto"
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
@@ -57,15 +56,10 @@ export const implantFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
 
-export const useImplantForm = (options: ImplantFormOptions) => {
-  return useAppForm({
-    ...implantFormOpts,
-    defaultValues: {
-      ...defaultFormValues,
-      parentId: options.parentId,
-      ...options.implant,
-    },
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => options.onSubmit(value, meta),
+export const useImplantForm = ({ implant, parentId, onSubmit }: ImplantFormOptions) => {
+  return useItemForm<ImplantData>({
+    item: implant,
+    defaultValues: { ...defaultFormValues, parentId },
+    onSubmit,
   })
 }

@@ -1,9 +1,9 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import { gearItemDefaults, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
-import type { ItemType } from "#/system/itemType.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 interface GearItemFormDialogProps {
   open: boolean
@@ -28,7 +28,10 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
 
   const form = useItemForm({
     item,
-    itemType,
+    defaultValues: {
+      ...gearItemDefaults,
+      itemType: itemType ?? ItemType.other,
+    },
     onSubmit: onSave,
   })
 
