@@ -1,7 +1,7 @@
 import { InputAdornment } from "@mui/material"
 import type { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField"
 import MuiTextField from "@mui/material/TextField"
-import type { ChangeEvent, FocusEvent, FC } from "react"
+import type { ChangeEvent, FocusEvent, KeyboardEvent, FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
@@ -95,17 +95,45 @@ export const NuyenField: FC<NuyenFieldProps> = ({ value, onChange, onBlur, ...pr
     }
   })
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { rawDigits, formatted, cursor } = computeNuyenEdit(
-      e.target.value,
-      e.target.selectionStart ?? e.target.value.length,
-    )
-
+  const applyEdit = (nextValue: string, nextCursor: number) => {
+    const { rawDigits, formatted, cursor } = computeNuyenEdit(nextValue, nextCursor)
     nextCursorRef.current = cursor
-
-    const numericValue = rawDigits === "" ? undefined : Number(rawDigits)
     setDisplayValue(formatted)
-    onChange(numericValue)
+    onChange(rawDigits === "" ? undefined : Number(rawDigits))
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const input = inputRef.current
+    if (!input) return
+
+    const { value: currentValue, selectionStart, selectionEnd } = input
+    const start = selectionStart ?? currentValue.length
+    const end = selectionEnd ?? currentValue.length
+
+    if (e.key === "Backspace") {
+      e.preventDefault()
+      if (start !== end) {
+        applyEdit(currentValue.slice(0, start) + currentValue.slice(end), start)
+      } else if (start > 0) {
+        applyEdit(currentValue.slice(0, start - 1) + currentValue.slice(start), start - 1)
+      }
+    } else if (e.key === "Delete") {
+      e.preventDefault()
+      if (start !== end) {
+        applyEdit(currentValue.slice(0, start) + currentValue.slice(end), start)
+      } else if (start < currentValue.length) {
+        applyEdit(currentValue.slice(0, start) + currentValue.slice(start + 1), start)
+      }
+    } else if (/^\d$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault()
+      applyEdit(currentValue.slice(0, start) + e.key + currentValue.slice(end), start + 1)
+    }
+    // All other keys (arrows, tab, Ctrl+C, etc.) are not prevented — the browser handles them.
+  }
+
+  // Handles paste and other non-keyboard input (e.g. auto-fill).
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    applyEdit(e.target.value, e.target.selectionStart ?? e.target.value.length)
   }
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
@@ -124,6 +152,7 @@ export const NuyenField: FC<NuyenFieldProps> = ({ value, onChange, onBlur, ...pr
       type="text"
       inputMode="numeric"
       value={displayValue}
+      onKeyDown={handleKeyDown}
       onChange={handleChange}
       onBlur={handleBlur}
       slotProps={{

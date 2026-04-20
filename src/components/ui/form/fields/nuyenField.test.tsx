@@ -18,60 +18,14 @@ function renderField(initial?: number) {
   return container.querySelector("input")! as HTMLInputElement
 }
 
-/** Sets the field value by firing a change event, cursor placed at the end. */
-function setInputValue(input: HTMLInputElement, value: string) {
-  fireEvent.change(input, { target: { value, selectionStart: value.length } })
-}
-
 /** Positions the cursor inside the input without triggering React events. */
 function setCursorPosition(input: HTMLInputElement, pos: number) {
   input.setSelectionRange(pos, pos)
 }
 
-/**
- * Simulates a key press: computes the resulting DOM string the browser would
- * produce for the given key, then fires a change event so the component's
- * handler runs.
- *
- * Supported keys: any single printable character (e.g. "0"–"9"), "Backspace",
- * and "Delete".
- */
+/** Fires a keydown event for the given key. */
 function pressKey(input: HTMLInputElement, key: string) {
-  const currentValue = input.value
-  const selStart = input.selectionStart ?? currentValue.length
-  const selEnd = input.selectionEnd ?? currentValue.length
-
-  let nextValue: string
-  let nextCursor: number
-
-  if (key === "Backspace") {
-    if (selStart !== selEnd) {
-      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selEnd)
-      nextCursor = selStart
-    } else if (selStart > 0) {
-      nextValue = currentValue.slice(0, selStart - 1) + currentValue.slice(selStart)
-      nextCursor = selStart - 1
-    } else {
-      return
-    }
-  } else if (key === "Delete") {
-    if (selStart !== selEnd) {
-      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selEnd)
-      nextCursor = selStart
-    } else if (selStart < currentValue.length) {
-      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selStart + 1)
-      nextCursor = selStart
-    } else {
-      return
-    }
-  } else if (key.length === 1) {
-    nextValue = currentValue.slice(0, selStart) + key + currentValue.slice(selEnd)
-    nextCursor = selStart + 1
-  } else {
-    return
-  }
-
-  fireEvent.change(input, { target: { value: nextValue, selectionStart: nextCursor } })
+  fireEvent.keyDown(input, { key })
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -153,12 +107,11 @@ describe("NuyenField", () => {
   describe("UX scenario 3: backspace from the middle", () => {
     it("cursor stays in position through mid-number edits that introduce a comma", () => {
       // Arrange
-      const input = renderField()
-      setInputValue(input, "100")
+      const input = renderField(100)
       setCursorPosition(input, 2) // cursor between '10' and '0' in "100"
 
       // Act / Assert
-      pressKey(input, "Backspace") // removes first '0' → "10"
+      pressKey(input, "Backspace") // removes '0' at index 1 → "10"
       expect(input.value).toBe("10")
       expect(input.selectionStart).toBe(1)
 
