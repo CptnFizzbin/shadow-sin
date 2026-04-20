@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 interface SpellViewerListItemProps {
   spell: SpellData

@@ -19,9 +19,9 @@ import {
   useProgramForm,
 } from "#/components/characterBuilder/sections/gear/devices/forms/useProgramForm.tsx"
 import { useGearByType } from "#/components/gear/useGearApi.ts"
-import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
-import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { DeviceData } from "#/system/gear/deviceData.ts"
+import type { ProgramData } from "#/system/gear/programData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 const STORAGE_SENTINEL = "__storage__"
 

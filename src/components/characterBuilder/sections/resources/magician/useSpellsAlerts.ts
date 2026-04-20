@@ -5,8 +5,8 @@ import { useActiveSkill, useAttr } from "#/components/character/characterUtils.t
 import { isMagician, SpellsBpPerSpell } from "#/components/spells/spellsUtils.ts"
 import { useSpellsStore } from "#/components/spells/useSpellsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

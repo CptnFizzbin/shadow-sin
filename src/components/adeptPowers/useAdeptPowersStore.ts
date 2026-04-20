@@ -4,9 +4,9 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
 export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
 

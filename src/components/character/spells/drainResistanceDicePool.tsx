@@ -5,7 +5,7 @@ import {
   useAttrDiceGroup,
   useWoundDiceGroup,
 } from "#/components/dicePool/useDiceGroup.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface DrainResistanceDicePoolProps {
   drainAttribute: AttributeKey

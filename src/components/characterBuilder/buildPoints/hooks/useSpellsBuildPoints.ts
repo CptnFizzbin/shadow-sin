@@ -6,7 +6,7 @@ import type { BpLineItem } from "#/components/characterBuilder/buildPoints/bpLin
 import { BuilderSectionId } from "#/components/characterBuilder/sections/builderSectionId.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/spells/spellsUtils.ts"
 import { useSpellsStore } from "#/components/spells/useSpellsStore.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsBuildPoints = (): BpLineItem => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

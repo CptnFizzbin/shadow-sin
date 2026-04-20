@@ -4,8 +4,8 @@ import { useState } from "react"
 import { useKnowledgeSkillDicePool } from "#/components/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/skills/skillListItem.tsx"
 import { ViewSkillDialog } from "#/components/skills/viewSkillDialog.tsx"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 
 interface KnowledgeSkillListItemProps {
   skill: KnowledgeSkillData

@@ -14,7 +14,7 @@ import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
 import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
 import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
 import { getSinAvailability, getSinCost } from "#/components/licenses/sinUtils.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinFormDialogProps {
   open: boolean

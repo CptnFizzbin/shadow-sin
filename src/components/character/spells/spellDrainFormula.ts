@@ -1,4 +1,4 @@
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 /**
  * Returns the human-readable drain formula string, e.g. "F/2+2", "F/2", "F/2-1"

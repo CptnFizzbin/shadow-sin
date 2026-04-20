@@ -2,8 +2,8 @@ import { useMemo } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 export interface InitiativeInfo {
   initiativeScore: number

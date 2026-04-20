@@ -1,5 +1,5 @@
-import type { ImplantData, ImplantType } from "#/lib/system/gear/implantData.ts"
-import { ImplantGrade } from "#/lib/system/gear/implantData.ts"
+import type { ImplantData, ImplantType } from "#/system/gear/implantData.ts"
+import { ImplantGrade } from "#/system/gear/implantData.ts"
 
 export const BASE_ESSENCE = 6
 

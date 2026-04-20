@@ -9,9 +9,9 @@ import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
 import { LicenseCard } from "#/components/licenses/licenseCard.tsx"
 import { SinCard } from "#/components/licenses/sinCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface SinsAndLicensesSectionSlots {
   sinTrailingContent?: (sin: SinData) => ReactNode

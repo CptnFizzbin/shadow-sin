@@ -7,8 +7,8 @@ import {
 } from "#/components/characterBuilder/sections/gear/licenses/ratingOptions.ts"
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export const LicenseFormFields = withFieldGroup({
   ...licenseFormOpts,

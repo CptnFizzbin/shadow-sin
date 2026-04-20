@@ -7,7 +7,7 @@ import { CharacterSheetProvider } from "#/components/character/characterSheetPro
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/createDefaultCharacterSheet.ts"
 import { KnowledgeSkillsList } from "#/components/skills/knowledgeSkills/knowledgeSkillsList.tsx"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { theme } from "#/theme.ts"
 
 interface TestProvidersProps extends PropsWithChildren {

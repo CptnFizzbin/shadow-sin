@@ -3,20 +3,13 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
-import {
-  weaponFieldMap,
-  weaponFormOpts,
-} from "#/components/gear/weapons/forms/useWeaponForm.tsx"
-import {
-  WeaponDamageFormFields,
-} from "#/components/gear/weapons/forms/weaponDamageFormFields.tsx"
-import {
-  WeaponSkillFormFields,
-} from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
+import { weaponFieldMap, weaponFormOpts } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
+import { WeaponDamageFormFields } from "#/components/gear/weapons/forms/weaponDamageFormFields.tsx"
+import { WeaponSkillFormFields } from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { FirearmAttachmentPoint } from "#/lib/system/gear/weaponData.ts"
-import { firearmTypes } from "#/lib/system/gear/weapons/firearms/firearmTypeInfo.ts"
+import { FirearmAttachmentPoint } from "#/system/gear/weaponData.ts"
+import { firearmTypes } from "#/system/gear/weapons/firearms/firearmTypeInfo.ts"
 
 const firearmTypeOptions = Object.entries(firearmTypes).map(([type, value]) => ({
   label: type,

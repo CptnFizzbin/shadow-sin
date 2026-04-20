@@ -6,8 +6,8 @@ import { selectWoundInterval } from "#/components/damage/damageUtils.ts"
 import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 interface DamageTrackState {
   max: number

@@ -7,11 +7,9 @@ import { z } from "zod"
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import {
-  vehicleFormOpts,
-} from "#/components/vehicles/forms/useVehicleForm.tsx"
+import { vehicleFormOpts } from "#/components/vehicles/forms/useVehicleForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 const accelPattern = /^\d+\/\d+$/
 

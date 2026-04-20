@@ -4,9 +4,9 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { getLicenseCost } from "#/components/characterBuilder/sections/gear/licenses/forms/licenseUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface LicenseFormOptions {
   parentId?: UUID

@@ -10,7 +10,7 @@ import type { FC } from "react"
 import { QualityFormFields } from "#/components/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/qualities/form/useQualityForm.ts"
 import { noop } from "#/lib/noop.ts"
-import type { QualityData } from "#/lib/system/qualityData.ts"
+import type { QualityData } from "#/system/qualityData.ts"
 
 export interface QualityFormDialogProps {
   open: boolean

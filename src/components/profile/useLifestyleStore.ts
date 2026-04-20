@@ -3,8 +3,8 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { LifestyleType } from "#/lib/system/lifestyleType.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { LifestyleType } from "#/system/lifestyleType.ts"
 
 export type LifestyleStoreState = NonNullable<CharacterSheet["profile"]["lifestyle"]>
 

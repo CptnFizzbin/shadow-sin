@@ -1,6 +1,6 @@
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
-import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
-import { GameEffectTypeOptions } from "#/lib/system/gameEffects/gameEffectTypeOptions.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
 
 /**
  * Retrieve the target options associated with a game effect type.

@@ -10,7 +10,7 @@ import { LoanCard } from "#/components/finances/loans/loanCard.tsx"
 import type { LoanDialogMode } from "#/components/finances/loans/loanDialog.tsx"
 import { LoanDialog } from "#/components/finances/loans/loanDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { LoanData } from "#/lib/system/loanData.ts"
+import type { LoanData } from "#/system/loanData.ts"
 
 type DialogState = { open: boolean, mode: LoanDialogMode, loan?: LoanData } | null
 

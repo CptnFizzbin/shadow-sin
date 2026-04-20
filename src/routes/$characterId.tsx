@@ -10,7 +10,7 @@ import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
 import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,

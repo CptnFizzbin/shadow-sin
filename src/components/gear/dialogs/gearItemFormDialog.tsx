@@ -7,14 +7,11 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { GearItemFormFields } from "#/components/gear/forms/gearItemFormFields.tsx"
-import {
-  gearItemFieldMap,
-  useItemForm,
-} from "#/components/gear/forms/useItemForm.tsx"
+import { gearItemFieldMap, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import type { ItemType } from "#/lib/system/itemType.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 interface GearItemFormDialogProps {
   open: boolean

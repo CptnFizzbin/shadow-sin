@@ -11,7 +11,7 @@ import {
   AttributeBpCostMaxOut,
 } from "#/components/characterBuilder/buildPoints/attributeUtils.ts"
 import { useAttributesBuildPoints } from "#/components/characterBuilder/buildPoints/hooks/useAttributesBuildPoints.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {
   attr: AttributeKey

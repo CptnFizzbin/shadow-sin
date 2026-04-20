@@ -6,8 +6,8 @@ import type { FC } from "react"
 
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/damage/useWoundModifier.ts"
-import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { AttributeLabels } from "#/lib/system/attributeKey.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeLabels } from "#/system/attributeKey.ts"
 
 interface SkillListItemProps {
   name: string

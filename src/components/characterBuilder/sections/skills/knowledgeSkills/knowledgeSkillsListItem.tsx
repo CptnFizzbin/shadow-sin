@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getKnowledgeSkillSp } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
-import type { KnowledgeSkillData } from "#/lib/system/skills/knowledgeSkillData"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 
 interface KnowledgeSkillsListItemProps {
   skill: KnowledgeSkillData

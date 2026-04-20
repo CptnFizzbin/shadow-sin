@@ -8,13 +8,10 @@ import type { FC } from "react"
 
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
-import {
-  vehicleFieldMap,
-  useVehicleForm,
-} from "#/components/vehicles/forms/useVehicleForm.tsx"
+import { useVehicleForm, vehicleFieldMap } from "#/components/vehicles/forms/useVehicleForm.tsx"
 import { VehicleFormFields } from "#/components/vehicles/forms/vehicleFormFields.tsx"
-import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
-import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
+import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 interface VehicleFormDialogProps {
   open: boolean

@@ -4,8 +4,8 @@ import { useState } from "react"
 import { useLanguageSkillDicePool } from "#/components/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/skills/skillListItem.tsx"
 import { ViewSkillDialog } from "#/components/skills/viewSkillDialog.tsx"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillListItemProps {
   skill: LanguageSkillData

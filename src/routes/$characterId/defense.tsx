@@ -23,8 +23,8 @@ import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const Route = createFileRoute("/$characterId/defense")({
   component: RouteComponent,

@@ -8,7 +8,7 @@ import { useCharacterSheet } from "#/components/character/characterSheetProvider
 import { SpellCastDialog } from "#/components/character/spells/spellCastDialog.tsx"
 import { SpellViewerListItem } from "#/components/character/spells/spellViewerListItem.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 type DialogState = { spell: SpellData, open: boolean } | null
 

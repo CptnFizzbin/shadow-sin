@@ -11,9 +11,9 @@ import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog
 import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
 import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
-import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
-import { VehicleCategory, isVehicleData } from "#/lib/system/gear/vehicleData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { VehicleCategory, isVehicleData } from "#/system/gear/vehicleData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 type VehicleDialogState =
   | null

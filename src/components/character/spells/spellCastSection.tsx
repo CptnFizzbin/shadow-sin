@@ -21,9 +21,9 @@ import { computeDrainValue } from "#/components/character/spells/spellDrainFormu
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 interface SpellCastSectionProps {
   spell: SpellData

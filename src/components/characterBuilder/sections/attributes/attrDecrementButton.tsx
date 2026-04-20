@@ -9,7 +9,7 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/characterBuilder/buildPoints/attributeUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
   attr: AttributeKey

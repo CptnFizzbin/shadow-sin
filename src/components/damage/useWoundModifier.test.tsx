@@ -6,11 +6,11 @@ import { CharacterSheetProvider } from "#/components/character/characterSheetPro
 import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/createDefaultCharacterSheet.ts"
 import { useWoundModifier } from "#/components/damage/useWoundModifier.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
-import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
-import { createItem, createItemMap } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { createItem, createItemMap } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 function makeWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
   const store = new CharacterSheetStore(characterSheet)

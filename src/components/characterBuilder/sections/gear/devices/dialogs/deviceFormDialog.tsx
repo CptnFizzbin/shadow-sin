@@ -11,7 +11,7 @@ import {
   deviceFieldMap,
   useDeviceForm,
 } from "#/components/characterBuilder/sections/gear/devices/forms/useDeviceForm.tsx"
-import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
+import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {
   open: boolean

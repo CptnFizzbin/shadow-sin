@@ -19,7 +19,7 @@ import {
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { WeaponType } from "#/lib/system/gear/weaponData.ts"
+import { WeaponType } from "#/system/gear/weaponData.ts"
 
 const weaponTypeOptions = [
   { label: "Melee", value: WeaponType.melee },

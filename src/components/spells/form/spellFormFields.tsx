@@ -7,7 +7,13 @@ import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsField
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import type { SpellForm } from "#/components/spells/form/useSpellForm.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/lib/system/magic/spellData.ts"
+import {
+  SpellCategory,
+  SpellDamage,
+  SpellDuration,
+  SpellRange,
+  SpellType,
+} from "#/system/magic/spellData.ts"
 
 export interface SpellFormFieldsProps {
   form: SpellForm

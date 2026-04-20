@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinRemoveDialogProps extends Omit<
   DialogProps,

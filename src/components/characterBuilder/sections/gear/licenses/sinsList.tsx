@@ -12,12 +12,12 @@ import { SinRemoveDialog } from "#/components/characterBuilder/sections/gear/lic
 import { LicensesList } from "#/components/characterBuilder/sections/gear/licenses/licensesList.tsx"
 import { getSinAvailability } from "#/components/characterBuilder/sections/gear/licenses/sinUtils.ts"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type DialogState =
   | null
@@ -122,12 +122,14 @@ export const SinsList: FC = () => {
             </Stack>
 
             <Stack
-              sx={{ gap: 1, paddingTop: 1,
+              sx={{
+                gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: 1,
                 borderLeft: "8px solid",
                 borderBottom: "1px solid",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               <LicensesList sin={sin} />
             </Stack>

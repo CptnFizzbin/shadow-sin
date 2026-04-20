@@ -3,7 +3,7 @@ import type { FC } from "react"
 
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Counter } from "#/components/ui/counter/counter.tsx"
-import type { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
+import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 interface DamageCounterProps {
   trackKey: DamageTrackKey

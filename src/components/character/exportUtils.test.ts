@@ -1,13 +1,18 @@
 import { describe, expect, it } from "vitest"
 
-import { Artemis } from "#/lib/fixture/character/artemis.ts"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { createItem, createItemMap } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
-import type { GearTreeNode } from "./exportUtils.ts"
-import { characterSheetToYaml, gearFromTree, gearToTree, yamlToCharacterSheet } from "./exportUtils.ts"
+import { Artemis } from "#/character/fixtures/artemis.ts"
+import type { GearTreeNode } from "#/components/character/exportUtils.ts"
+import {
+  characterSheetToYaml,
+  gearFromTree,
+  gearToTree,
+  yamlToCharacterSheet,
+} from "#/components/character/exportUtils.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { createItem, createItemMap } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 describe("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
@@ -182,7 +187,13 @@ describe("gearToTree", () => {
 
     const gear: Record<string, ItemData> = {
       [sinId]: { id: sinId, name: "Handcrafted SIN", itemType: ItemType.sin, rating: 4, childIds: [licenseId] },
-      [licenseId]: { id: licenseId, name: "Handcrafted License", itemType: ItemType.license, rating: 4, parentId: sinId },
+      [licenseId]: {
+        id: licenseId,
+        name: "Handcrafted License",
+        itemType: ItemType.license,
+        rating: 4,
+        parentId: sinId,
+      },
     }
 
     // Act

@@ -6,8 +6,8 @@ import type { FC } from "react"
 import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
 import { AttrDecrementButton } from "#/components/characterBuilder/sections/attributes/attrDecrementButton.tsx"
 import { AttrIncrementButton } from "#/components/characterBuilder/sections/attributes/attrIncrementButton.tsx"
-import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { AttributeLabels } from "#/lib/system/attributeKey.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeLabels } from "#/system/attributeKey.ts"
 
 interface AttributeRowProps {
   attr: AttributeKey

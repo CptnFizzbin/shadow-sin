@@ -24,8 +24,8 @@ import {
   ActiveSkillGroupDialog,
 } from "#/components/characterBuilder/sections/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
-import type { ActiveSkillData } from "#/lib/system/skills/activeSkillData"
-import type { SkillGroupData } from "#/lib/system/skills/skillGroupData"
+import type { ActiveSkillData } from "#/system/skills/activeSkillData"
+import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 type DialogState =
   | null

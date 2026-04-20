@@ -12,7 +12,7 @@ import {
   useLanguageSkillForm,
 } from "#/components/characterBuilder/sections/skills/knowledgeSkills/hooks/useLanguageSkillForm.ts"
 import { noop } from "#/lib/noop.ts"
-import type { LanguageSkillData } from "#/lib/system/skills/languageSkillData"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillDialogProps {
   open: boolean

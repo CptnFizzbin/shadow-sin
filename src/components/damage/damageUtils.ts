@@ -1,6 +1,6 @@
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import type { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
-import { GameEffectType } from "#/lib/system/gameEffects/gameEffectType.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 /**
  * Returns a selector that computes the total pain tolerance modifier for a

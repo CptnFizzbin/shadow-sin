@@ -7,9 +7,9 @@ import { useState } from "react"
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { isImplant } from "#/lib/system/gear/implantData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import { isImplant } from "#/system/gear/implantData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 type CyberwareDialogState = null | { open: boolean, implant?: ImplantData }
 

@@ -8,7 +8,7 @@ import { createDefaultCharacterSheet } from "#/components/character/createDefaul
 import type { BuilderRootState } from "#/components/characterBuilder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { ActiveSkillsList } from "#/components/characterBuilder/sections/skills/activeSkills/activeSkillsList.tsx"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
 
 interface WrapperProps extends PropsWithChildren {

@@ -37,7 +37,7 @@ import {
   KnowledgeSkillsBuilderSection,
 } from "#/components/characterBuilder/sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "#/components/characterBuilder/sections/summary/bpSummaryFooter.tsx"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 interface CharacterFormProps {
   character?: CharacterSheet

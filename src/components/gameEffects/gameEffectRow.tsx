@@ -9,8 +9,8 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getDefaultTarget, getTargetOptions } from "#/components/gameEffects/gameEffectUtils.ts"
-import type { GameEffectData } from "#/lib/system/gameEffects/gameEffectData.ts"
-import { GameEffectTypeOptions } from "#/lib/system/gameEffects/gameEffectTypeOptions.ts"
+import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
 
 interface GameEffectRowProps {
   effect: GameEffectData
