@@ -1,7 +1,8 @@
 import type { FC } from "react"
 
-export function formatNuyen(amount: number): string {
-  return `${amount.toLocaleString("en")}¥`
+export function formatNuyen(amount: number, includeSymbol = true): string {
+  const formatted = amount.toLocaleString("en")
+  return includeSymbol ? `${formatted}¥` : formatted
 }
 
 interface NuyenProps {
