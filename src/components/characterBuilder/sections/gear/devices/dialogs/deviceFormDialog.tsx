@@ -8,7 +8,6 @@ import {
   useDeviceForm,
 } from "#/components/characterBuilder/sections/gear/devices/forms/useDeviceForm.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {
@@ -37,16 +36,13 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
 
   return (
     <ItemDialog
-      form={form as unknown as ItemForm}
+      form={form}
       title={title}
       open={open}
       onClose={onClose}
       onClosed={() => {
         form.reset()
         onClosed?.()
-      }}
-      options={{
-        hasEffects: { forced: true },
       }}
       slots={{
         itemFields: () => <DeviceFormFields form={form} fields={deviceFieldMap} />,

@@ -1,4 +1,5 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
+import type { AppFieldExtendedReactFormApi } from "@tanstack/react-form"
 
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
@@ -41,6 +42,14 @@ export const gearItemFormOpts = formOptions({
 })
 
 export type ItemForm = ReturnType<typeof useItemForm>
+
+/**
+ * Accepts any gear item form (ArmorData, WeaponData, ImplantData, etc.) without
+ * requiring unsafe double type assertions. Gear-specific forms are assignable to
+ * this type because their submit meta matches and the field data is `any`.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyItemForm = AppFieldExtendedReactFormApi<any, any, any, any, any, any, any, any, any, any, any, GearSubmitMeta, any, any>
 
 export const useItemForm = ({ item, itemType, onSubmit }: ItemFormOptions) => {
   const defaults: typeof defaultFormValues =

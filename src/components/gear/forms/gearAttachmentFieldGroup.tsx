@@ -9,15 +9,16 @@ export const GearAttachmentFieldGroup = withFieldGroup({
   props: {
     isFixed: false as boolean,
     parentItemOptions: [] as SelectOption[],
+    fieldLabel: "Parent Item" as string,
     attachmentSlot: undefined as (() => ReactNode) | undefined,
   },
-  render: ({ group, isFixed, parentItemOptions, attachmentSlot }) => {
+  render: ({ group, isFixed, parentItemOptions, fieldLabel, attachmentSlot }) => {
     return (
       <>
         <group.AppField name="parentId">
           {(field) => (
             <field.SelectField
-              label="Parent Item"
+              label={fieldLabel}
               size="small"
               fullWidth
               options={[{ label: "—", value: "" }, ...parentItemOptions]}

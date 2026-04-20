@@ -1,7 +1,6 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import {
   weaponFieldMap,
   useWeaponForm,
@@ -33,7 +32,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
 
   return (
     <ItemDialog
-      form={form as unknown as ItemForm}
+      form={form}
       title={title}
       open={open}
       onClose={onClose}

@@ -6,7 +6,6 @@ import {
   useArmorForm,
 } from "#/components/gear/armor/forms/useArmorForm.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {
@@ -33,14 +32,13 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({
 
   return (
     <ItemDialog
-      form={form as unknown as ItemForm}
+      form={form}
       title={title}
       open={open}
       onClose={onClose}
       onClosed={onClosed}
       options={{
         equipable: { forced: true },
-        multiple: { forced: true },
         hasEffects: { forced: true },
       }}
       slots={{

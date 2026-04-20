@@ -5,7 +5,6 @@ import type { FC } from "react"
 import { ImplantFormFields } from "#/components/gear/cyberware/forms/implantFormFields.tsx"
 import { implantFieldMap, useImplantForm } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
@@ -36,12 +35,12 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
 
   return (
     <ItemDialog
-      form={form as unknown as ItemForm}
+      form={form}
       title={title}
       open={open}
       onClose={onClose}
       onClosed={onClosed}
-      computeTotalCost={(values) => getImplantEffectiveNuyenCost(values as ImplantData)}
+      getCost={(values) => getImplantEffectiveNuyenCost(values as ImplantData)}
       options={{
         equipable: { forced: true },
         hasEffects: { forced: true },

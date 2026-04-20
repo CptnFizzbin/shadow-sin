@@ -1,5 +1,4 @@
 import Stack from "@mui/material/Stack"
-import { z } from "zod"
 
 import { programFormOpts } from "#/components/characterBuilder/sections/gear/devices/forms/useProgramForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
@@ -25,22 +24,6 @@ export const ProgramFormFields = withFieldGroup({
               fullWidth
               size="small"
               options={programTypeOptions}
-            />
-          )}
-        </group.AppField>
-
-        <group.AppField
-          name="rating"
-          validators={{
-            onChange: z.number().int().min(0, "Rating must be 0 or more"),
-          }}
-        >
-          {(field) => (
-            <field.NumberField
-              label="Rating"
-              size="small"
-              sx={{ flex: 1 }}
-              slotProps={{ htmlInput: { min: 0, step: 1 } }}
             />
           )}
         </group.AppField>

@@ -1,13 +1,10 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { vehicleFormOpts } from "#/components/vehicles/forms/useVehicleForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 const accelPattern = /^\d+\/\d+$/
 
@@ -16,25 +13,6 @@ export const VehicleFormFields = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <group.Subscribe selector={({ values }) => values.vehicleCategory}>
-          {(vehicleCategory) => (
-            <ToggleButtonGroup
-              exclusive
-              size="small"
-              value={vehicleCategory}
-              onChange={(_, value: VehicleCategory | null) => {
-                if (value !== null) {
-                  group.setFieldValue("vehicleCategory", value)
-                }
-              }}
-              fullWidth
-            >
-              <ToggleButton value={VehicleCategory.vehicle}>Vehicle</ToggleButton>
-              <ToggleButton value={VehicleCategory.drone}>Drone</ToggleButton>
-            </ToggleButtonGroup>
-          )}
-        </group.Subscribe>
-
         <group.AppField name="vehicleType">
           {(field) => (
             <field.TextField label="Vehicle Type" fullWidth size="small" placeholder="e.g. bike, car, drone" />

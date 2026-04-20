@@ -42,7 +42,6 @@ export const GearItemFormDialog: FC<GearItemFormDialogProps> = ({
       options={{
         hasRating: { enabled: true },
         multiple: { enabled: true },
-        hasEffects: { enabled: true },
       }}
     />
   )

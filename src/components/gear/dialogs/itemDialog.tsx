@@ -21,7 +21,7 @@ import { GearCostAvailabilityFieldGroup } from "#/components/gear/forms/gearCost
 import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescriptionFieldGroup.tsx"
 import { GearLicenseFieldGroup } from "#/components/gear/forms/gearLicenseFieldGroup.tsx"
 import { GearQuantityFieldGroup } from "#/components/gear/forms/gearQuantityFieldGroup.tsx"
-import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { gearItemFieldMap } from "#/components/gear/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { useIsBuilder } from "#/components/gear/useIsBuilder.ts"
@@ -36,14 +36,20 @@ export interface ItemDialogOptionConfig {
 }
 
 export interface ItemDialogProps {
-  form: ItemForm
+  form: AnyItemForm
   title: ReactNode
   open: boolean
   onClose: () => void
   onClosed?: () => void
   /** Override the total cost calculation used for display and nuyen withdrawal. Defaults to `cost × quantity`. */
-  computeTotalCost?: (values: ItemData) => number
+  getCost?: (values: ItemData) => number
+  /** Filter which gear items appear in the "Attached To" parent dropdown. */
+  parentItemFilter?: (item: ItemData) => boolean
+  /** Override the "Attached To" section label and the parent select field label. */
+  parentItemLabel?: string
   slots?: {
+    /** Content rendered before the Name field (e.g. a category toggle). */
+    preForm?: () => ReactNode
     attachmentFields?: () => ReactNode
     itemFields?: () => ReactNode
   }
@@ -66,15 +72,20 @@ function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
 }
 
 export const ItemDialog: FC<ItemDialogProps> = ({
-  form,
+  form: formArg,
   title,
   open,
   onClose,
   onClosed,
-  computeTotalCost,
+  getCost,
+  parentItemFilter,
+  parentItemLabel,
   slots,
   options: optionsProp,
 }) => {
+  // Cast once from AnyItemForm to ItemForm for use with the typed field group
+  // components. ItemDialog only accesses ItemData fields from the form, so this is safe.
+  const form = formArg as ItemForm
   const isBuilder = useIsBuilder()
   const nuyenStore = useNuyenStore()
   const gearStore = useGearStore()
@@ -112,8 +123,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     await form.handleSubmit({ submitAction })
     if (submitAction === "purchase") {
       const values = form.state.values
-      const totalCost = computeTotalCost
-        ? computeTotalCost(values)
+      const totalCost = getCost
+        ? getCost(values)
         : (values.cost ?? 0) * (values.quantity ?? 1)
       nuyenStore.withdraw(totalCost)
     }
@@ -130,6 +141,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const currentItemId = form.state.values.id
   const parentItemOptions = allItems
     .filter((gear) => gear.id !== currentItemId)
+    .filter((gear) => (parentItemFilter ? parentItemFilter(gear) : true))
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   const sinOptions = allItems
@@ -143,6 +155,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <DialogContent sx={{ padding: 1 }}>
           <Stack sx={{ gap: 1, padding: 1 }}>
+            {slots?.preForm?.()}
+
             <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
               <form.AppField
                 name="name"
@@ -222,13 +236,14 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             {localOptions["isSubItem"] && (
               <Stack sx={{ gap: 1 }}>
-                <Label label="Attached To" />
+                <Label label={parentItemLabel ?? "Attached To"} />
 
                 <GearAttachmentFieldGroup
                   form={form}
                   fields={gearItemFieldMap}
                   isFixed={localOptions["fixed"] ?? false}
                   parentItemOptions={parentItemOptions}
+                  fieldLabel={parentItemLabel ?? "Parent Item"}
                   attachmentSlot={slots?.attachmentFields}
                 />
               </Stack>
@@ -251,8 +266,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <DialogActions sx={{ padding: 1 }}>
           <form.Subscribe
-            selector={(state) => computeTotalCost
-              ? computeTotalCost(state.values)
+            selector={(state) => getCost
+              ? getCost(state.values)
               : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
           >
             {(totalCost) => (
