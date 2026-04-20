@@ -64,7 +64,7 @@ export class CharacterManager {
 
   public saveCharacter(
     character: CharacterSheet,
-  ): Promise<StoredJsonFile<CharacterSheet>> {
+  ): Promise<StoredJsonFile<CharacterSheet> | undefined> {
     return this.storageManager.saveJsonFile(
       this.getCharacterPath(character.id),
       character,

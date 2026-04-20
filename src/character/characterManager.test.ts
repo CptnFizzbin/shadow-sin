@@ -14,7 +14,7 @@ function makeManager(): CharacterManager {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ;(provider as any).getStorage = () => memStorage
 
-  return new CharacterManager(new StorageManager(provider))
+  return new CharacterManager(new StorageManager(provider, { saveDebounceWait: 0 }))
 }
 
 describe("CharacterManager.listCharactersWithErrors", () => {
@@ -36,7 +36,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
+    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
     await provider.saveJsonFile("characters/bad-id.json", {})
 
     const localManager = new CharacterManager(storageManager)
@@ -53,7 +53,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
+    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
     await provider.saveJsonFile("characters/bad-version.json", { version: "foobar" })
 
     const localManager = new CharacterManager(storageManager)
@@ -68,7 +68,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
+    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
     await provider.saveJsonFile("characters/bad.json", {})
 
     const localManager = new CharacterManager(storageManager)
@@ -95,5 +95,25 @@ describe("CharacterManager.saveCharacter", () => {
     const loaded = await manager.getCharacter(character.id)
     expect(loaded).not.toBeNull()
     expect(loaded?.id).toBe(character.id)
+  })
+
+  it("debounces rapid saves so only the last value is persisted", async () => {
+    // Arrange
+    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+    const first = { ...character, profile: { ...character.profile, alias: "first" } }
+    const second = { ...character, profile: { ...character.profile, alias: "second" } }
+    const third = { ...character, profile: { ...character.profile, alias: "third" } }
+
+    // Act: fire three saves synchronously before any timer fires
+    const saves = Promise.all([
+      manager.saveCharacter(first),
+      manager.saveCharacter(second),
+      manager.saveCharacter(third),
+    ])
+    await saves
+
+    // Assert
+    const loaded = await manager.getCharacter(character.id)
+    expect(loaded?.profile.alias).toBe("third")
   })
 })
