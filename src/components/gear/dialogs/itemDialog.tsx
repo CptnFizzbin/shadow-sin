@@ -22,7 +22,7 @@ import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescripti
 import { GearLicenseFieldGroup } from "#/components/gear/forms/gearLicenseFieldGroup.tsx"
 import { GearQuantityFieldGroup } from "#/components/gear/forms/gearQuantityFieldGroup.tsx"
 import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
-import { gearItemFieldMap } from "#/components/gear/forms/useItemForm.tsx"
+import { itemFieldMap } from "#/components/gear/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { useIsBuilder } from "#/components/gear/useIsBuilder.ts"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
@@ -195,11 +195,11 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </IconButton>
             </Stack>
 
-            <GearCostAvailabilityFieldGroup form={form} fields={gearItemFieldMap} />
+            <GearCostAvailabilityFieldGroup form={form} fields={itemFieldMap} />
 
             {localOptions["multiple"] && (
               <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-                <GearQuantityFieldGroup form={form} fields={gearItemFieldMap} />
+                <GearQuantityFieldGroup form={form} fields={itemFieldMap} />
 
                 {!isBuilder && !isNewItem && (
                   <Button size="small" variant="outlined" onClick={() => setBuyOpen(true)}>
@@ -225,7 +225,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
                       <GearLicenseFieldGroup
                         form={form}
-                        fields={gearItemFieldMap}
+                        fields={itemFieldMap}
                         sinOptions={sinOptions}
                       />
                     </Stack>
@@ -240,7 +240,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
                 <GearAttachmentFieldGroup
                   form={form}
-                  fields={gearItemFieldMap}
+                  fields={itemFieldMap}
                   isFixed={localOptions["fixed"] ?? false}
                   parentItemOptions={parentItemOptions}
                   fieldLabel={parentItemLabel ?? "Parent Item"}
@@ -253,10 +253,10 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             <Label label="Description" />
 
-            <GearDescriptionFieldGroup form={form} fields={gearItemFieldMap} />
+            <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
 
             <Label label="Source" />
-            <SourceFieldGroup form={form} fields={gearItemFieldMap} />
+            <SourceFieldGroup form={form} fields={itemFieldMap} />
 
             {localOptions["hasEffects"] && (
               <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />

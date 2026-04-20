@@ -14,7 +14,7 @@ export interface ItemFormOptions<TData extends ItemData = ItemData> {
   onSubmit: (item: TData, meta: GearSubmitMeta) => void
 }
 
-export const gearItemDefaults: ItemData = {
+export const itemDefaults: ItemData = {
   id: NullUuid,
   itemType: ItemType.other,
   name: "",
@@ -35,10 +35,10 @@ export const gearItemDefaults: ItemData = {
   effects: [],
 }
 
-export const gearItemFieldMap = createFieldMap(gearItemDefaults)
+export const itemFieldMap = createFieldMap(itemDefaults)
 
-export const gearItemFormOpts = formOptions({
-  defaultValues: gearItemDefaults,
+export const itemFormOpts = formOptions({
+  defaultValues: itemDefaults,
 })
 
 export const useItemForm = <TData extends ItemData>({
@@ -60,8 +60,8 @@ export const useItemForm = <TData extends ItemData>({
 export type ItemForm = ReturnType<typeof useItemForm<ItemData>>
 
 /**
- * Accepts any gear item form (ArmorData, WeaponData, ImplantData, etc.) without
- * requiring unsafe double type assertions. Gear-specific forms are assignable to
+ * Accepts any item form (ArmorData, WeaponData, ImplantData, etc.) without
+ * requiring unsafe double type assertions. Item-specific forms are assignable to
  * this type because their submit meta matches and the field data is `any`.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

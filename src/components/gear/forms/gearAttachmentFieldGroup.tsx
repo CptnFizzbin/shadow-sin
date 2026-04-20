@@ -1,11 +1,11 @@
 import type { ReactNode } from "react"
 
-import { gearItemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
+import { itemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export const GearAttachmentFieldGroup = withFieldGroup({
-  ...gearItemFormOpts,
+  ...itemFormOpts,
   props: {
     isFixed: false as boolean,
     parentItemOptions: [] as SelectOption[],

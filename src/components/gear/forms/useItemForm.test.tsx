@@ -1,14 +1,14 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { gearItemDefaults, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import { itemDefaults, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { createItem } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 describe("useItemForm", () => {
   it("defaults to ItemType.other when no itemType is provided", () => {
     const { result } = renderHook(() =>
-      useItemForm({ defaultValues: gearItemDefaults, onSubmit: vi.fn() }),
+      useItemForm({ defaultValues: itemDefaults, onSubmit: vi.fn() }),
     )
     expect(result.current.state.values.itemType).toBe(ItemType.other)
   })
@@ -16,7 +16,7 @@ describe("useItemForm", () => {
   it("uses ItemType.vehicle when itemType=vehicle is provided", () => {
     const { result } = renderHook(() =>
       useItemForm({
-        defaultValues: { ...gearItemDefaults, itemType: ItemType.vehicle },
+        defaultValues: { ...itemDefaults, itemType: ItemType.vehicle },
         onSubmit: vi.fn(),
       }),
     )
@@ -26,7 +26,7 @@ describe("useItemForm", () => {
   it("uses ItemType.armor when itemType=armor is provided", () => {
     const { result } = renderHook(() =>
       useItemForm({
-        defaultValues: { ...gearItemDefaults, itemType: ItemType.armor },
+        defaultValues: { ...itemDefaults, itemType: ItemType.armor },
         onSubmit: vi.fn(),
       }),
     )
@@ -40,7 +40,7 @@ describe("useItemForm", () => {
       cost: 65000,
     })
     const { result } = renderHook(() =>
-      useItemForm({ item: existingItem, defaultValues: gearItemDefaults, onSubmit: vi.fn() }),
+      useItemForm({ item: existingItem, defaultValues: itemDefaults, onSubmit: vi.fn() }),
     )
     expect(result.current.state.values.itemType).toBe(ItemType.vehicle)
   })

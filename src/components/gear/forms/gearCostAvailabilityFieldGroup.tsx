@@ -2,11 +2,11 @@ import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
-import { gearItemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
+import { itemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export const GearCostAvailabilityFieldGroup = withFieldGroup({
-  ...gearItemFormOpts,
+  ...itemFormOpts,
   render: ({ group }) => {
     return (
       <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>

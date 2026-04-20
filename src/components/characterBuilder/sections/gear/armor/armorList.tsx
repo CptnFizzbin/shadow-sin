@@ -6,7 +6,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ArmorFormDialog } from "#/components/gear/armor/dialogs/armorFormDialog.tsx"
-import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
+import { ItemCard } from "#/components/gear/itemCard.tsx"
 import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -38,7 +38,7 @@ export const ArmorList: FC = () => {
     <Stack sx={{ gap: 1 }}>
       {armorItems.map((armor) => (
         <Box key={armor.id}>
-          <GearItemCard
+          <ItemCard
             item={armor}
             onEdit={() => setDialogState({ mode: "edit", armor, open: true })}
             onRemove={() => gearApi.remove(armor)}

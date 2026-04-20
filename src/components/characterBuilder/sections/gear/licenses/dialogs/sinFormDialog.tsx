@@ -6,8 +6,8 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SinFormFields } from "#/components/characterBuilder/sections/gear/licenses/forms/sinFormFields.tsx"
-import { sinFieldMap, useSinForm } from "#/components/characterBuilder/sections/gear/licenses/forms/useSinForm.tsx"
+import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
+import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinEditDialogProps {
@@ -28,7 +28,7 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
   onSave,
 }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
-  const form = useSinForm({ sin, onSubmit: onSave })
+  const form = useSinForm({ sin, onSubmit: (value) => onSave(value) })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

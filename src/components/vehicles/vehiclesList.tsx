@@ -7,8 +7,8 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
-import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
+import { ItemCard } from "#/components/gear/itemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
 import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
@@ -77,7 +77,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
         return (
           <Box key={vehicle.id}>
-            <GearItemCard
+            <ItemCard
               item={vehicle}
               onEdit={() => setVehicleDialog({ mode: "edit", vehicle, open: true })}
               onRemove={() => gearApi.remove(vehicle)}
@@ -95,7 +95,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
               }}
             >
               {attachments.map((attachment) => (
-                <GearItemCard
+                <ItemCard
                   key={attachment.id}
                   item={attachment}
                   onEdit={() =>
@@ -156,7 +156,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
       )}
 
       {attachmentDialog?.mode === "create" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={attachmentDialog.open}
           label="Vehicle Attachment"
           onSave={handleAddAttachment}
@@ -166,7 +166,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
       )}
 
       {attachmentDialog?.mode === "edit" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={attachmentDialog.open}
           item={attachmentDialog.item}
           label="Vehicle Attachment"
