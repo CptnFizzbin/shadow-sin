@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { CharacterManager } from "#/character/characterManager.ts"
+import { createDefaultCharacterSheet } from "#/components/character/createDefaultCharacterSheet.ts"
 import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import { StorageManager } from "#/lib/storage/storageManager.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
@@ -73,5 +74,26 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const localManager = new CharacterManager(storageManager)
     const characters = await localManager.listCharacters()
     expect(characters).toEqual({})
+  })
+})
+
+describe("CharacterManager.saveCharacter", () => {
+  let manager: CharacterManager
+
+  beforeEach(() => {
+    manager = makeManager()
+  })
+
+  it("persists the character so getCharacter returns it immediately after save resolves", async () => {
+    // Arrange
+    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+
+    // Act
+    await manager.saveCharacter(character)
+
+    // Assert
+    const loaded = await manager.getCharacter(character.id)
+    expect(loaded).not.toBeNull()
+    expect(loaded?.id).toBe(character.id)
   })
 })
