@@ -75,7 +75,10 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const nuyenStore = useNuyenStore()
   const gearStore = useGearStore()
 
-  const forced: Record<string, boolean> = {
+  type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
+  type LocalOptionKey = OptionKey | "licenseAlwaysShow" | "fixed"
+
+  const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
     licenseRequired: resolveForced(optionsProp?.licenseRequired),
     hasRating: resolveForced(optionsProp?.hasRating),
@@ -84,7 +87,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     hasEffects: resolveForced(optionsProp?.hasEffects),
   }
 
-  const [localOptions, setLocalOptions] = useState<Record<string, boolean>>({
+  const [localOptions, setLocalOptions] = useState<Record<LocalOptionKey, boolean>>({
     equipable: resolveEnabled(optionsProp?.equipable),
     licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
     licenseAlwaysShow: false,
@@ -134,7 +137,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <DialogContent sx={{ padding: 1 }}>
           <Stack sx={{ gap: 1, padding: 1 }}>
-            {/* Name + Rating */}
             <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
               <form.AppField
                 name="name"
@@ -156,18 +158,16 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             <Divider />
 
-            {/* Equipped toggle + Options button */}
-            <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-              {localOptions["equipable"]
-                ? (
-                    <form.AppField name="equipped">
-                      {(field) => <field.SwitchField label="Equipped" />}
-                    </form.AppField>
-                  )
-                : <span />}
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              {localOptions["equipable"] && (
+                <form.AppField name="equipped">
+                  {(field) => <field.SwitchField label="Equipped" />}
+                </form.AppField>
+              )}
 
               <IconButton
                 size="small"
+                sx={{ ml: "auto" }}
                 onClick={() => setOptionsOpen(true)}
                 aria-label="Item options"
               >
@@ -175,15 +175,13 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </IconButton>
             </Stack>
 
-            {/* Cost + Availability */}
             <GearCostAvailabilityFieldGroup form={form} fields={gearItemFieldMap} />
 
-            {/* Quantity + Buy More */}
             {localOptions["multiple"] && (
               <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
                 <GearQuantityFieldGroup form={form} fields={gearItemFieldMap} />
 
-                {!isBuilder && (
+                {!isBuilder && !isNewItem && (
                   <Button size="small" variant="outlined" onClick={() => setBuyOpen(true)}>
                     Buy More
                   </Button>
@@ -191,7 +189,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </Stack>
             )}
 
-            {/* Licenses section — shown when restricted/forbidden (or forced via option) */}
             {(localOptions["licenseRequired"] || localOptions["licenseAlwaysShow"]) && (
               <form.Subscribe
                 selector={(state) => ({
@@ -217,7 +214,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </form.Subscribe>
             )}
 
-            {/* Attached To section */}
             {localOptions["isSubItem"] && (
               <Stack sx={{ gap: 1 }}>
                 <Label label="Attached To" />
@@ -232,19 +228,15 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </Stack>
             )}
 
-            {/* Item-specific fields from caller */}
             {slots?.itemFields?.()}
 
-            {/* Description */}
             <Label label="Description" />
 
             <GearDescriptionFieldGroup form={form} fields={gearItemFieldMap} />
 
-            {/* Source */}
             <Label label="Source" />
             <SourceFieldGroup form={form} fields={gearItemFieldMap} />
 
-            {/* Effects */}
             {localOptions["hasEffects"] && (
               <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
             )}
@@ -253,15 +245,12 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <DialogActions sx={{ padding: 1 }}>
           <form.Subscribe
-            selector={(state) => ({
-              cost: state.values.cost ?? 0,
-              quantity: state.values.quantity ?? 1,
-            })}
+            selector={(state) => (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
           >
-            {({ cost, quantity }) => (
+            {(totalCost) => (
               <ItemDialogActions
                 isAcquireMode={isAcquireMode}
-                totalCost={cost * quantity}
+                totalCost={totalCost}
                 onClose={onClose}
                 onAcquire={() => handleSubmitWithAction("acquire")}
                 onPurchase={() => handleSubmitWithAction("purchase")}
