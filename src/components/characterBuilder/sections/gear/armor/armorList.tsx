@@ -8,8 +8,8 @@ import { useState } from "react"
 import { ArmorFormDialog } from "#/components/gear/armor/dialogs/armorFormDialog.tsx"
 import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
-import type { ArmorData } from "#/lib/system/gear/armorData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { ArmorData } from "#/system/gear/armorData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type ArmorDialogState =
   | null

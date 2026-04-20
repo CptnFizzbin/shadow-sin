@@ -13,7 +13,7 @@ import {
 } from "#/components/gear/armor/forms/useArmorForm.tsx"
 import { GearAcquireActions } from "#/components/gear/gearAcquireActions.tsx"
 import { useItemFormSubmit } from "#/components/gear/useItemFormSubmit.ts"
-import type { ArmorData } from "#/lib/system/gear/armorData.ts"
+import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {
   open: boolean

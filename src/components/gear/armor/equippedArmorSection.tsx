@@ -6,8 +6,8 @@ import type { FC } from "react"
 
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { ArmorData } from "#/lib/system/gear/armorData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { ArmorData } from "#/system/gear/armorData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 interface ArmorStatChipProps {
   label: string
