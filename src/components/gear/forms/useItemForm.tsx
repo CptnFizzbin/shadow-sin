@@ -30,6 +30,7 @@ const defaultFormValues: ItemData = {
     book: "",
     page: 0,
   },
+  parentId: undefined,
   effects: [],
 }
 
@@ -38,6 +39,8 @@ export const gearItemFieldMap = createFieldMap(defaultFormValues)
 export const gearItemFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
+
+export type ItemForm = ReturnType<typeof useItemForm>
 
 export const useItemForm = ({ item, itemType, onSubmit }: ItemFormOptions) => {
   const defaults: typeof defaultFormValues =
