@@ -28,7 +28,7 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
   onSave,
 }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
-  const form = useSinForm({ sin, onSubmit: (value) => onSave(value) })
+  const form = useSinForm({ sin, onSubmit: onSave })
 
   return (
     <Dialog open={open} fullWidth onTransitionExited={onClosed}>

@@ -32,7 +32,7 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
     license,
     parentId: sin?.id,
     sinReal: sin?.rating === "real" || false,
-    onSubmit: (value) => onSave(value),
+    onSubmit: onSave,
   })
 
   const title = license ? "Edit License" : "Create License"
