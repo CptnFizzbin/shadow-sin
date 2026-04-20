@@ -1,13 +1,7 @@
 import type { FC } from "react"
 
-import { GearItemsList } from "#/components/characterBuilder/sections/gear/generic/gearItemsList.tsx"
-import { useGearByType } from "#/components/gear/useGearApi.ts"
-import { ItemType } from "#/system/itemType.ts"
+import { ArmorList } from "#/components/characterBuilder/sections/gear/armor/armorList.tsx"
 
 export const ArmorPanel: FC = () => {
-  const armor = useGearByType(ItemType.armor)
-
-  return (
-    <GearItemsList items={armor} itemLabel="Armor" itemType={ItemType.armor} />
-  )
+  return <ArmorList />
 }
