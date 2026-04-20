@@ -6,6 +6,8 @@ import { describe, expect, it } from "vitest"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
+// ── Test helpers ──────────────────────────────────────────────────────────────
+
 const ControlledNuyenField: FC<{ initial?: number }> = ({ initial }) => {
   const [value, setValue] = useState(initial)
   return <NuyenField value={value} onChange={setValue} />
@@ -16,10 +18,63 @@ function renderField(initial?: number) {
   return container.querySelector("input")! as HTMLInputElement
 }
 
-/** Simulates the browser posting a change event after a key press. */
-function pressKey(input: HTMLInputElement, resultValue: string, cursorAfter: number) {
-  fireEvent.change(input, { target: { value: resultValue, selectionStart: cursorAfter } })
+/** Sets the field value by firing a change event, cursor placed at the end. */
+function setInputValue(input: HTMLInputElement, value: string) {
+  fireEvent.change(input, { target: { value, selectionStart: value.length } })
 }
+
+/** Positions the cursor inside the input without triggering React events. */
+function setCursorPosition(input: HTMLInputElement, pos: number) {
+  input.setSelectionRange(pos, pos)
+}
+
+/**
+ * Simulates a key press: computes the resulting DOM string the browser would
+ * produce for the given key, then fires a change event so the component's
+ * handler runs.
+ *
+ * Supported keys: any single printable character (e.g. "0"–"9"), "Backspace",
+ * and "Delete".
+ */
+function pressKey(input: HTMLInputElement, key: string) {
+  const currentValue = input.value
+  const selStart = input.selectionStart ?? currentValue.length
+  const selEnd = input.selectionEnd ?? currentValue.length
+
+  let nextValue: string
+  let nextCursor: number
+
+  if (key === "Backspace") {
+    if (selStart !== selEnd) {
+      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selEnd)
+      nextCursor = selStart
+    } else if (selStart > 0) {
+      nextValue = currentValue.slice(0, selStart - 1) + currentValue.slice(selStart)
+      nextCursor = selStart - 1
+    } else {
+      return
+    }
+  } else if (key === "Delete") {
+    if (selStart !== selEnd) {
+      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selEnd)
+      nextCursor = selStart
+    } else if (selStart < currentValue.length) {
+      nextValue = currentValue.slice(0, selStart) + currentValue.slice(selStart + 1)
+      nextCursor = selStart
+    } else {
+      return
+    }
+  } else if (key.length === 1) {
+    nextValue = currentValue.slice(0, selStart) + key + currentValue.slice(selEnd)
+    nextCursor = selStart + 1
+  } else {
+    return
+  }
+
+  fireEvent.change(input, { target: { value: nextValue, selectionStart: nextCursor } })
+}
+
+// ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe("NuyenField", () => {
   describe("UX scenario 1: typing digits from empty to 1,234,567", () => {
@@ -28,118 +83,119 @@ describe("NuyenField", () => {
       const input = renderField()
 
       // Act / Assert — step through each keystroke
-      pressKey(input, "1", 1)
+      pressKey(input, "1")
       expect(input.value).toBe("1")
       expect(input.selectionStart).toBe(1)
 
-      pressKey(input, "12", 2)
+      pressKey(input, "2")
       expect(input.value).toBe("12")
-      expect(input.selectionStart).toBe(2)
 
-      pressKey(input, "123", 3)
+      pressKey(input, "3")
       expect(input.value).toBe("123")
-      expect(input.selectionStart).toBe(3)
 
-      // 4th digit — comma is inserted
-      pressKey(input, "1234", 4)
+      // 4th digit causes comma insertion; cursor must jump past it
+      pressKey(input, "4")
       expect(input.value).toBe("1,234")
       expect(input.selectionStart).toBe(5)
 
-      // 5th digit
-      pressKey(input, "1,2345", 6)
+      pressKey(input, "5")
       expect(input.value).toBe("12,345")
       expect(input.selectionStart).toBe(6)
 
-      // 6th digit
-      pressKey(input, "12,3456", 7)
+      pressKey(input, "6")
       expect(input.value).toBe("123,456")
       expect(input.selectionStart).toBe(7)
 
-      // 7th digit — second comma is inserted
-      pressKey(input, "123,4567", 8)
+      // 7th digit inserts a second comma
+      pressKey(input, "7")
       expect(input.value).toBe("1,234,567")
       expect(input.selectionStart).toBe(9)
     })
   })
 
-  describe("UX scenario 2: backspace 100 → empty, then retype to 15,000", () => {
+  describe("UX scenario 2: backspace from 100 to empty, then retype to 15,000", () => {
     it("decreases count then reformats on re-entry", () => {
       // Arrange
       const input = renderField(100)
-      expect(input.value).toBe("100")
+      setCursorPosition(input, 3) // place cursor at end of "100"
 
-      // Act / Assert
-      pressKey(input, "10", 2)
+      // Act / Assert — backspace to empty
+      pressKey(input, "Backspace")
       expect(input.value).toBe("10")
+      expect(input.selectionStart).toBe(2)
 
-      pressKey(input, "1", 1)
+      pressKey(input, "Backspace")
       expect(input.value).toBe("1")
 
-      pressKey(input, "", 0)
+      pressKey(input, "Backspace")
       expect(input.value).toBe("")
 
-      pressKey(input, "1", 1)
+      // Retype to 15,000
+      pressKey(input, "1")
       expect(input.value).toBe("1")
 
-      pressKey(input, "15", 2)
+      pressKey(input, "5")
       expect(input.value).toBe("15")
 
-      pressKey(input, "150", 3)
+      pressKey(input, "0")
       expect(input.value).toBe("150")
 
-      // 4th digit — comma inserted
-      pressKey(input, "1500", 4)
+      pressKey(input, "0")
       expect(input.value).toBe("1,500")
       expect(input.selectionStart).toBe(5)
 
-      // 5th digit
-      pressKey(input, "1,5000", 6)
+      pressKey(input, "0")
       expect(input.value).toBe("15,000")
       expect(input.selectionStart).toBe(6)
     })
   })
 
-  describe("UX scenario 3: backspace in the middle of 100", () => {
-    it("preserves leading zeros and tracks cursor through mid-number edits", () => {
-      // Arrange — initial value "100", cursor after '1' (pos 1)
-      const input = renderField(100)
+  describe("UX scenario 3: backspace from the middle", () => {
+    it("cursor stays in position through mid-number edits that introduce a comma", () => {
+      // Arrange
+      const input = renderField()
+      setInputValue(input, "100")
+      setCursorPosition(input, 2) // cursor between '10' and '0' in "100"
 
       // Act / Assert
-      // Backspace removes '1' → "00", cursor at 0
-      pressKey(input, "00", 0)
-      expect(input.value).toBe("00")
-      expect(input.selectionStart).toBe(0)
-
-      // Type '2' → "200", cursor at 1
-      pressKey(input, "200", 1)
-      expect(input.value).toBe("200")
-      expect(input.selectionStart).toBe(1)
-
-      // Type '0' → "2000" → "2,000", cursor shifts past new comma → pos 3
-      pressKey(input, "2000", 2)
-      expect(input.value).toBe("2,000")
-      expect(input.selectionStart).toBe(3)
-    })
-  })
-
-  describe("UX scenario 4: delete then insert in the middle of 100", () => {
-    it("removes the character ahead of the cursor then inserts correctly", () => {
-      // Arrange — initial value "100", cursor after '1' (pos 1)
-      const input = renderField(100)
-
-      // Act / Assert
-      // Delete removes '0' after cursor → "10", cursor stays at 1
-      pressKey(input, "10", 1)
+      pressKey(input, "Backspace") // removes first '0' → "10"
       expect(input.value).toBe("10")
       expect(input.selectionStart).toBe(1)
 
-      // Type '2' → "120", cursor at 2
-      pressKey(input, "120", 2)
+      pressKey(input, "Backspace") // removes '1' → "0"
+      expect(input.value).toBe("0")
+      expect(input.selectionStart).toBe(0)
+
+      pressKey(input, "2") // inserts at start → "20"
+      expect(input.value).toBe("20")
+      expect(input.selectionStart).toBe(1)
+
+      pressKey(input, "0") // "200"
+      expect(input.value).toBe("200")
+      expect(input.selectionStart).toBe(2)
+
+      pressKey(input, "0") // "2000" → "2,000"; cursor shifts past new comma
+      expect(input.value).toBe("2,000")
+      expect(input.selectionStart).toBe(4)
+    })
+  })
+
+  describe("UX scenario 4: delete then insert in the middle", () => {
+    it("removes the digit ahead of the cursor then reformats on insertion", () => {
+      // Arrange
+      const input = renderField(100)
+      setCursorPosition(input, 1) // cursor after '1'
+
+      // Act / Assert
+      pressKey(input, "Delete") // removes first '0' → "10"
+      expect(input.value).toBe("10")
+      expect(input.selectionStart).toBe(1)
+
+      pressKey(input, "2") // inserts at cursor → "120"
       expect(input.value).toBe("120")
       expect(input.selectionStart).toBe(2)
 
-      // Type '0' → "1200" → "1,200", cursor shifts past new comma → pos 4
-      pressKey(input, "1200", 3)
+      pressKey(input, "0") // "1200" → "1,200"; cursor shifts past new comma
       expect(input.value).toBe("1,200")
       expect(input.selectionStart).toBe(4)
     })

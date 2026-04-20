@@ -17,16 +17,7 @@ export interface NuyenFieldProps extends Omit<MuiTextFieldProps, "type" | "value
  */
 function formatNuyenDisplay(value: number | undefined): string {
   if (value === undefined || Number.isNaN(value)) return ""
-  return formatNuyen(value, false)
-}
-
-/**
- * Inserts commas every three digits from the right of a raw digit string.
- * Preserves leading zeros so that mid-edit transient states (e.g. "00") are
- * kept as-is rather than collapsed through Number conversion.
- */
-function applyCommasToDigits(digits: string): string {
-  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  return formatNuyen(value, { includeSymbol: false })
 }
 
 /**
@@ -62,7 +53,7 @@ function computeNuyenEdit(
   const rawCursorPos = selectionStart - commasBeforeCursor
 
   const rawDigits = inputValue.replace(/[^0-9]/g, "")
-  const formatted = applyCommasToDigits(rawDigits)
+  const formatted = rawDigits === "" ? "" : formatNuyen(Number(rawDigits), { includeSymbol: false })
   const newCommasBefore = countCommasBeforeDigit(formatted, rawCursorPos)
 
   return { rawDigits, formatted, cursor: rawCursorPos + newCommasBefore }
