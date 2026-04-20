@@ -3,10 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
-import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
 import { implantFormOpts } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
-import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 
@@ -58,15 +55,6 @@ export const ImplantFormFields = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <group.AppField
-          name="name"
-          validators={{ onChange: z.string().min(1, "Name is required") }}
-        >
-          {(field) => (
-            <field.TextField label="Name" fullWidth size="small" autoFocus />
-          )}
-        </group.AppField>
-
         <group.AppField name="implantType">
           {(field) => (
             <field.SelectField
@@ -90,23 +78,6 @@ export const ImplantFormFields = withFieldGroup({
         </group.AppField>
 
         <Stack direction="row" sx={{ gap: 1 }}>
-          <group.AppField
-            name="cost"
-            validators={{
-              onChange: z
-                .number("Cost is required")
-                .min(0, "Cost must be 0 or more"),
-            }}
-          >
-            {(field) => (
-              <field.NumberField
-                label="Base Cost"
-                size="small"
-                sx={{ flex: 1 }}
-              />
-            )}
-          </group.AppField>
-
           <group.AppField
             name="essenceCost"
             validators={{
@@ -155,8 +126,8 @@ export const ImplantFormFields = withFieldGroup({
                         name="capacityCost"
                         validators={{
                           onChange: z
-                            .number("Essence cost is required")
-                            .min(0, "Essence cost must be 0 or more"),
+                            .number("Capacity cost is required")
+                            .min(0, "Capacity cost must be 0 or more"),
                         }}
                       >
                         {(field) => (
@@ -173,8 +144,8 @@ export const ImplantFormFields = withFieldGroup({
                         name="capacity"
                         validators={{
                           onChange: z
-                            .number("Essence cost is required")
-                            .min(0, "Essence cost must be 0 or more"),
+                            .number("Capacity is required")
+                            .min(0, "Capacity must be 0 or more"),
                         }}
                       >
                         {(field) => (
@@ -203,25 +174,6 @@ export const ImplantFormFields = withFieldGroup({
             </>
           )}
         </group.Subscribe>
-
-        <AvailabilityFieldGroup
-          form={group}
-          fields="availability"
-        />
-        <SourceFieldGroup form={group} fields={{ source: "source" }} />
-        <GameEffectsFieldGroup form={group} fields={{ effects: "effects" }} />
-
-        <group.AppField name="description">
-          {(field) => (
-            <field.TextField
-              label="Description / Notes"
-              fullWidth
-              size="small"
-              multiline
-              rows={2}
-            />
-          )}
-        </group.AppField>
       </Stack>
     )
   },

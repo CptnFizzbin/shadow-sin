@@ -28,6 +28,7 @@ import { useIsBuilder } from "#/components/gear/useIsBuilder.ts"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export interface ItemDialogOptionConfig {
   forced?: boolean
@@ -36,10 +37,12 @@ export interface ItemDialogOptionConfig {
 
 export interface ItemDialogProps {
   form: ItemForm
-  title: string
+  title: ReactNode
   open: boolean
   onClose: () => void
   onClosed?: () => void
+  /** Override the total cost calculation used for display and nuyen withdrawal. Defaults to `cost × quantity`. */
+  computeTotalCost?: (values: ItemData) => number
   slots?: {
     attachmentFields?: () => ReactNode
     itemFields?: () => ReactNode
@@ -68,6 +71,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   open,
   onClose,
   onClosed,
+  computeTotalCost,
   slots,
   options: optionsProp,
 }) => {
@@ -107,9 +111,11 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const handleSubmitWithAction = async (submitAction: "acquire" | "purchase" | "save") => {
     await form.handleSubmit({ submitAction })
     if (submitAction === "purchase") {
-      const cost = form.state.values.cost ?? 0
-      const quantity = form.state.values.quantity ?? 1
-      nuyenStore.withdraw(cost * quantity)
+      const values = form.state.values
+      const totalCost = computeTotalCost
+        ? computeTotalCost(values)
+        : (values.cost ?? 0) * (values.quantity ?? 1)
+      nuyenStore.withdraw(totalCost)
     }
   }
 
@@ -245,7 +251,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
         <DialogActions sx={{ padding: 1 }}>
           <form.Subscribe
-            selector={(state) => (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
+            selector={(state) => computeTotalCost
+              ? computeTotalCost(state.values)
+              : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
           >
             {(totalCost) => (
               <ItemDialogActions

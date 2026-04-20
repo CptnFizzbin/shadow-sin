@@ -1,10 +1,5 @@
 import type { UUID } from "node:crypto"
 
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -18,6 +13,8 @@ import {
   programFieldMap,
   useProgramForm,
 } from "#/components/characterBuilder/sections/gear/devices/forms/useProgramForm.tsx"
+import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
+import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
@@ -72,52 +69,41 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
   }, [program, parentId, form, selectedDeviceId])
 
   return (
-    <Dialog
+    <ItemDialog
+      form={form as unknown as ItemForm}
+      title={title}
       open={open}
-      fullWidth
       onClose={onClose}
-      onTransitionExited={() => {
+      onClosed={() => {
         form.reset()
         onClosed?.()
       }}
-    >
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-
-      <DialogContent sx={{ padding: 1 }}>
-        <Stack sx={{ gap: 1, padding: 1 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="program-device-label">Device</InputLabel>
-            <Select
-              labelId="program-device-label"
-              label="Device"
-              value={selectedDeviceId}
-              onChange={(event) => setSelectedDeviceId(event.target.value)}
-            >
-              <MenuItem value={STORAGE_SENTINEL}>
-                <em>Storage (no device)</em>
-              </MenuItem>
-              {devices.map((device) => (
-                <MenuItem key={device.id} value={device.id}>
-                  {device.name}
+      slots={{
+        itemFields: () => (
+          <Stack sx={{ gap: 1 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="program-device-label">Device</InputLabel>
+              <Select
+                labelId="program-device-label"
+                label="Device"
+                value={selectedDeviceId}
+                onChange={(event) => setSelectedDeviceId(event.target.value)}
+              >
+                <MenuItem value={STORAGE_SENTINEL}>
+                  <em>Storage (no device)</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {devices.map((device) => (
+                  <MenuItem key={device.id} value={device.id}>
+                    {device.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <ProgramFormFields form={form} fields={programFieldMap} />
-        </Stack>
-      </DialogContent>
-
-      <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button
-          type="submit"
-          onClick={() => form.handleSubmit()}
-          variant="contained"
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+            <ProgramFormFields form={form} fields={programFieldMap} />
+          </Stack>
+        ),
+      }}
+    />
   )
 }

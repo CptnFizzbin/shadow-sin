@@ -1,16 +1,14 @@
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { DeviceFormFields } from "#/components/characterBuilder/sections/gear/devices/forms/deviceFormFields.tsx"
+import {
+  DeviceFormFields,
+} from "#/components/characterBuilder/sections/gear/devices/forms/deviceFormFields.tsx"
 import {
   deviceFieldMap,
   useDeviceForm,
 } from "#/components/characterBuilder/sections/gear/devices/forms/useDeviceForm.tsx"
+import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
+import type { ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {
@@ -38,33 +36,21 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
   })
 
   return (
-    <Dialog
+    <ItemDialog
+      form={form as unknown as ItemForm}
+      title={title}
       open={open}
-      fullWidth
       onClose={onClose}
-      onTransitionExited={() => {
+      onClosed={() => {
         form.reset()
         onClosed?.()
       }}
-    >
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-
-      <DialogContent sx={{ padding: 1 }}>
-        <Stack sx={{ gap: 1, padding: 1 }}>
-          <DeviceFormFields form={form} fields={deviceFieldMap} />
-        </Stack>
-      </DialogContent>
-
-      <DialogActions sx={{ padding: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button
-          type="submit"
-          onClick={() => form.handleSubmit()}
-          variant="contained"
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+      options={{
+        hasEffects: { forced: true },
+      }}
+      slots={{
+        itemFields: () => <DeviceFormFields form={form} fields={deviceFieldMap} />,
+      }}
+    />
   )
 }
