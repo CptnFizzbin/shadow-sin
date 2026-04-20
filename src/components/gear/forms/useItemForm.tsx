@@ -39,6 +39,8 @@ export const gearItemFormOpts = formOptions({
   defaultValues: defaultFormValues,
 })
 
+export type ItemForm = ReturnType<typeof useItemForm>
+
 export const useItemForm = ({ item, itemType, onSubmit }: ItemFormOptions) => {
   const defaults: typeof defaultFormValues =
     typeof item !== "undefined"
