@@ -6,6 +6,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
+import { EquippedChip } from "#/components/gear/equippedChip.tsx"
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ItemData } from "#/system/itemData.ts"
@@ -51,13 +52,7 @@ export const GearItemCard: FC<GearItemCardProps> = ({
           />
         )}
 
-        {item.equipped && (
-          <Chip
-            label="Equipped"
-            size="small"
-            color="success"
-          />
-        )}
+        {item.equipped && <EquippedChip />}
 
         {item.rating !== undefined && (
           <Chip

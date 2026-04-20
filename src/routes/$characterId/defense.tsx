@@ -68,6 +68,10 @@ function RouteComponent() {
           </Grid>
         </Grid>
 
+        <Grid size={2}>
+          <EquippedArmorSection />
+        </Grid>
+
         <Grid container columns={{ sm: 1, md: 3 }} size={2} spacing={1}>
           <Grid container columns={2} size={1}>
             <Grid size={2}>
@@ -156,10 +160,6 @@ function RouteComponent() {
               </Fragment>
             ))}
           </Grid>
-        </Grid>
-
-        <Grid size={2}>
-          <EquippedArmorSection />
         </Grid>
       </Grid>
     </Stack>
