@@ -49,6 +49,14 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
   const set = (patch: Partial<ItemOptionFlags>) => onChange({ ...options, ...patch })
 
+  /**
+   * Returns whether a togglable option's checkbox should appear checked.
+   * A forced option is always checked (regardless of local state). A non-forced
+   * option reflects the user's local toggle.
+   */
+  const isChecked = (flag: keyof ItemOptionForced, value: boolean): boolean =>
+    (forced[flag] ?? false) ? true : value
+
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
       set({ fixed: true })
@@ -79,7 +87,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             disabled={forced.equipable}
             control={(
               <Checkbox
-                checked={options.equipable || (forced.equipable ?? false)}
+                checked={isChecked("equipable", options.equipable)}
                 onChange={(e) => set({ equipable: e.target.checked })}
               />
             )}
@@ -90,7 +98,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             disabled={forced.licenseRequired}
             control={(
               <Checkbox
-                checked={options.licenseRequired || (forced.licenseRequired ?? false)}
+                checked={isChecked("licenseRequired", options.licenseRequired)}
                 onChange={(e) => set({ licenseRequired: e.target.checked })}
               />
             )}
@@ -113,7 +121,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             disabled={forced.hasRating}
             control={(
               <Checkbox
-                checked={options.hasRating || (forced.hasRating ?? false)}
+                checked={isChecked("hasRating", options.hasRating)}
                 onChange={(e) => set({ hasRating: e.target.checked })}
               />
             )}
@@ -124,7 +132,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             disabled={forced.multiple}
             control={(
               <Checkbox
-                checked={options.multiple || (forced.multiple ?? false)}
+                checked={isChecked("multiple", options.multiple)}
                 onChange={(e) => set({ multiple: e.target.checked })}
               />
             )}
@@ -135,7 +143,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             disabled={forced.isSubItem}
             control={(
               <Checkbox
-                checked={options.isSubItem || (forced.isSubItem ?? false)}
+                checked={isChecked("isSubItem", options.isSubItem)}
                 onChange={(e) => set({ isSubItem: e.target.checked })}
               />
             )}
