@@ -6,15 +6,14 @@ import { LocalStorageProvider } from "#/lib/storage/localStorage/localStoragePro
 import { StorageManager } from "#/lib/storage/storageManager.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
-function makeManager(): CharacterManager {
-  const memStorage = new MemoryStorage()
+function makeManager(memStorage = new MemoryStorage()): CharacterManager {
   const provider = new LocalStorageProvider({ storagePrefix: "test" })
 
   // Patch provider to use MemoryStorage
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ;(provider as any).getStorage = () => memStorage
 
-  return new CharacterManager(new StorageManager(provider, { saveDebounceWait: 0 }))
+  return new CharacterManager(new StorageManager(provider), { saveDebounceWait: 0 })
 }
 
 describe("CharacterManager.listCharactersWithErrors", () => {
@@ -36,10 +35,10 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
+    const storageManager = new StorageManager(provider)
     await provider.saveJsonFile("characters/bad-id.json", {})
 
-    const localManager = new CharacterManager(storageManager)
+    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
     const result = await localManager.listCharactersWithErrors()
 
     expect(result.errors).toHaveLength(1)
@@ -53,10 +52,10 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
+    const storageManager = new StorageManager(provider)
     await provider.saveJsonFile("characters/bad-version.json", { version: "foobar" })
 
-    const localManager = new CharacterManager(storageManager)
+    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
     const result = await localManager.listCharactersWithErrors()
 
     expect(result.errors).toHaveLength(1)
@@ -68,28 +67,28 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     const memStorage = new MemoryStorage()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider, { saveDebounceWait: 0 })
+    const storageManager = new StorageManager(provider)
     await provider.saveJsonFile("characters/bad.json", {})
 
-    const localManager = new CharacterManager(storageManager)
+    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
     const characters = await localManager.listCharacters()
     expect(characters).toEqual({})
   })
 })
 
-describe("CharacterManager.saveCharacter", () => {
+describe("CharacterManager.forceSave", () => {
   let manager: CharacterManager
 
   beforeEach(() => {
     manager = makeManager()
   })
 
-  it("persists the character so getCharacter returns it immediately after save resolves", async () => {
+  it("persists the character so getCharacter returns it immediately after forceSave resolves", async () => {
     // Arrange
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act
-    await manager.saveCharacter(character)
+    await manager.forceSave(character)
 
     // Assert
     const loaded = await manager.getCharacter(character.id)
@@ -97,8 +96,42 @@ describe("CharacterManager.saveCharacter", () => {
     expect(loaded?.id).toBe(character.id)
   })
 
-  it("debounces rapid saves so only the last value is persisted", async () => {
+  it("returns the in-memory character by reference so storage is not re-read", async () => {
     // Arrange
+    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+
+    // Act
+    await manager.forceSave(character)
+    const loaded = await manager.getCharacter(character.id)
+
+    // Assert — same object reference proves the in-memory cache was used
+    expect(loaded).toBe(character)
+  })
+})
+
+describe("CharacterManager.save", () => {
+  let manager: CharacterManager
+
+  beforeEach(() => {
+    manager = makeManager()
+  })
+
+  it("makes the character available via getCharacter before the debounce fires", async () => {
+    // Arrange
+    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+
+    // Act — do not await; the debounce timer has not fired yet
+    void manager.save(character)
+    const loaded = await manager.getCharacter(character.id)
+
+    // Assert — in-memory cache returns the character immediately
+    expect(loaded).toBe(character)
+  })
+
+  it("debounces rapid saves so only the last value is persisted to storage", async () => {
+    // Arrange
+    const sharedStorage = new MemoryStorage()
+    const writingManager = makeManager(sharedStorage)
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
     const first = { ...character, profile: { ...character.profile, alias: "first" } }
     const second = { ...character, profile: { ...character.profile, alias: "second" } }
@@ -106,14 +139,15 @@ describe("CharacterManager.saveCharacter", () => {
 
     // Act: fire three saves synchronously before any timer fires
     const saves = Promise.all([
-      manager.saveCharacter(first),
-      manager.saveCharacter(second),
-      manager.saveCharacter(third),
+      writingManager.save(first),
+      writingManager.save(second),
+      writingManager.save(third),
     ])
     await saves
 
-    // Assert
-    const loaded = await manager.getCharacter(character.id)
+    // Assert — only the last alias reaches storage; bypass the cache with a fresh manager
+    const freshManager = makeManager(sharedStorage)
+    const loaded = await freshManager.getCharacter(character.id)
     expect(loaded?.profile.alias).toBe("third")
   })
 })
