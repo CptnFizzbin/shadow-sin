@@ -2,9 +2,8 @@ import type { UUID } from "node:crypto"
 
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
@@ -44,14 +43,9 @@ export const programFormOpts = formOptions({
 })
 
 export const useProgramForm = ({ program, parentId, onSubmit }: ProgramFormOptions) => {
-  return useAppForm({
-    ...programFormOpts,
-    defaultValues: {
-      ...defaultFormValues,
-      parentId,
-      ...program,
-    },
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => onSubmit(value, meta),
+  return useItemForm<ProgramData>({
+    item: program,
+    defaultValues: { ...defaultFormValues, parentId },
+    onSubmit,
   })
 }

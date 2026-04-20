@@ -1,7 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"

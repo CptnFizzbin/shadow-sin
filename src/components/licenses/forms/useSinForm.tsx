@@ -1,9 +1,8 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { getSinCost } from "#/components/licenses/sinUtils.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -26,23 +25,13 @@ export const sinFormOpts = formOptions({
   defaultValues,
 })
 
-export const useSinForm = (options: SinFormOptions) => {
-  return useAppForm({
-    ...sinFormOpts,
-    defaultValues: {
-      ...defaultValues,
-      ...options.sin,
-    },
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => {
-      const rating: "real" | number =
-        value.rating === "real" ? "real" : Number(value.rating)
-
-      options.onSubmit({
-        ...value,
-        rating: rating,
-        cost: getSinCost(rating),
-      }, meta)
+export const useSinForm = ({ sin, onSubmit }: SinFormOptions) => {
+  return useItemForm<SinData>({
+    item: sin,
+    defaultValues,
+    onSubmit: (value, meta) => {
+      const rating: "real" | number = value.rating === "real" ? "real" : Number(value.rating)
+      onSubmit({ ...value, rating, cost: getSinCost(rating) }, meta)
     },
   })
 }

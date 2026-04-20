@@ -2,8 +2,8 @@ import type { UUID } from "node:crypto"
 
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"

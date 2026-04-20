@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import type { ItemDialogProps } from "#/components/gear/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import { gearItemDefaults, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -20,7 +20,7 @@ const ItemDialogWrapper: FC<{
 } & Omit<ItemDialogProps, "form">> = ({ onSave = vi.fn(), item, itemType, ...props }) => {
   const form = useItemForm({
     item,
-    itemType,
+    defaultValues: { ...gearItemDefaults, itemType: itemType ?? ItemType.other },
     onSubmit: async (submittedItem) => {
       await onSave(submittedItem)
     },
