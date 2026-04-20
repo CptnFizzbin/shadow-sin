@@ -1,38 +1,26 @@
-import type { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField"
-import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 
+import type { NuyenFieldProps } from "#/components/ui/form/fields/nuyenField.tsx"
+import {
+  NuyenField as NuyenInputField,
+} from "#/components/ui/form/fields/nuyenField.tsx"
 import { useFieldErrors } from "#/integrations/tanstackForm/fields/useFieldError.ts"
 import { useFieldContext } from "../fieldContext.ts"
 
-interface NumberFieldProps extends Omit<
-  MuiTextFieldProps,
-  "type" | "value" | "onChange" | "onBlur"
-> {}
+type NuyenFormFieldProps = Omit<NuyenFieldProps, "value" | "onChange">
 
-export const NuyenField: FC<NumberFieldProps> = ({ ...props }) => {
+export const NuyenField: FC<NuyenFormFieldProps> = ({ ...props }) => {
   const field = useFieldContext<number | undefined>()
   const errors = useFieldErrors()
 
   return (
-    <MuiTextField
-      fullWidth
-      variant="outlined"
-      size="small"
+    <NuyenInputField
       {...props}
       error={errors ? true : props.error}
       helperText={errors ? errors.join(", ") : props.helperText}
-      type="number"
-      value={field.state.value ?? ""}
+      value={field.state.value}
+      onChange={field.handleChange}
       onBlur={field.handleBlur}
-      onChange={(e) => {
-        const value = e.target.value
-        if (value === "") {
-          field.handleChange(undefined)
-        } else {
-          field.handleChange(Number(e.target.value))
-        }
-      }}
     />
   )
 }
