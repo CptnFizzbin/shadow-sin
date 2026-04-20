@@ -13,7 +13,7 @@ import { SpellFormDialog } from "#/components/spells/dialogs/spellFormDialog.tsx
 import { useSpellsStore } from "#/components/spells/useSpellsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { SpellData } from "#/lib/system/magic/spellData.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 
 type DialogState =
   | null

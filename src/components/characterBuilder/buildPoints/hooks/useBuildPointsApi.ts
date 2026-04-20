@@ -19,9 +19,9 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { awakenings } from "#/lib/system/awakeningType.ts"
-import { metatypes } from "#/lib/system/metatypeData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { awakenings } from "#/system/awakeningType.ts"
+import { metatypes } from "#/system/metatypeData.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [

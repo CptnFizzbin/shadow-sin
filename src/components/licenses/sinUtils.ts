@@ -1,5 +1,5 @@
-import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { AvailablityInfo } from "#/system/availablityInfo.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export const getSinAvailability = (
   rating: ItemData["rating"],

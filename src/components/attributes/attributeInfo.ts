@@ -1,6 +1,6 @@
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import type { AwakeningData } from "#/lib/system/awakeningType.ts"
-import type { MetatypeData } from "#/lib/system/metatypeData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { AwakeningData } from "#/system/awakeningType.ts"
+import type { MetatypeData } from "#/system/metatypeData.ts"
 
 export interface AttributeInfo {
   attr: AttributeKey

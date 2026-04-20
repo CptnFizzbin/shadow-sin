@@ -8,7 +8,7 @@ import type { FC } from "react"
 
 import { getSpriteTasksBp } from "#/components/characterBuilder/sections/resources/technomancer/sprites/spritesUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
+import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 interface SpriteRowProps {
   sprite: SpriteData

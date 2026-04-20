@@ -14,8 +14,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useMaxSpriteTasks } from "#/components/technomancer/spritesHooks.ts"
-import type { SpriteData } from "#/lib/system/magic/spriteData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 interface SpriteDialogProps {
   open: boolean

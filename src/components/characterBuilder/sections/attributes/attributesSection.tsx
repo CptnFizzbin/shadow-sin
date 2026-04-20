@@ -14,7 +14,7 @@ import {
   MentalAttributes,
   PhysicalAttributes,
   SpecialAttributes,
-} from "#/lib/system/attributeKey.ts"
+} from "#/system/attributeKey.ts"
 
 export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()

@@ -1,4 +1,4 @@
-import { ItemType } from "#/lib/system/itemType.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export enum GearSection {
   Cyberware = "Cyberware",

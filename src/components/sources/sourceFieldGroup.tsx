@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { SourceData } from "#/lib/system/sourceData.ts"
-import { bookOptions } from "#/lib/system/sourceData.ts"
+import type { SourceData } from "#/system/sourceData.ts"
+import { bookOptions } from "#/system/sourceData.ts"
 
 interface SourceFormFieldsProps {
   source?: SourceData

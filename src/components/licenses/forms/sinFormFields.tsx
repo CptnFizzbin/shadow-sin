@@ -1,10 +1,7 @@
 import { z } from "zod"
 
 import { sinFormOpts } from "#/components/licenses/forms/useSinForm.tsx"
-import {
-  FakeRatingOptions,
-  RealRatingOptions,
-} from "#/components/licenses/ratingOptions.ts"
+import { FakeRatingOptions, RealRatingOptions } from "#/components/licenses/ratingOptions.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export const SinFormFields = withFieldGroup({

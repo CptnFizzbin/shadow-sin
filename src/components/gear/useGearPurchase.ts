@@ -1,6 +1,6 @@
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export interface GearPurchaseHandlers {
   acquire: (item: ItemData, onClose: () => void) => void

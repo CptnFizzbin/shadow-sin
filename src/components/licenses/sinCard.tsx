@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 export interface SinCardSlots {
   trailingContent?: ReactNode
@@ -31,14 +31,16 @@ export const SinCard: FC<SinCardProps> = ({
       <Stack
         direction="row"
         onClick={onClick}
-        sx={{ alignItems: "center", gap: 1, padding: 1,
+        sx={{
+          alignItems: "center", gap: 1, padding: 1,
           borderRadius: 1,
           border: "1px solid",
           borderColor: "divider",
           ...(onClick && {
             "cursor": "pointer",
             "&:hover": { bgcolor: "action.hover" },
-          }) }}
+          }),
+        }}
       >
         <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
           {sin.name}
@@ -64,12 +66,14 @@ export const SinCard: FC<SinCardProps> = ({
 
       {children && (
         <Stack
-          sx={{ gap: 1, paddingTop: 1,
+          sx={{
+            gap: 1, paddingTop: 1,
             paddingLeft: 1,
             paddingBottom: 1,
             borderLeft: "8px solid",
             borderBottom: "1px solid",
-            borderColor: "divider" }}
+            borderColor: "divider",
+          }}
         >
           {children}
         </Stack>

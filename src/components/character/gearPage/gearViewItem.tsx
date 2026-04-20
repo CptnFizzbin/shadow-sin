@@ -1,21 +1,31 @@
 import Chip from "@mui/material/Chip"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { isArmorData } from "#/lib/system/gear/armorData.ts"
-import { ImplantGrade, ImplantType, isImplant } from "#/lib/system/gear/implantData.ts"
-import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
-import { isSinData } from "#/lib/system/gear/sinData.ts"
-import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import { isArmorData } from "#/system/gear/armorData.ts"
+import { ImplantGrade, ImplantType, isImplant } from "#/system/gear/implantData.ts"
+import { isLicenseData } from "#/system/gear/licenseData.ts"
+import { isSinData } from "#/system/gear/sinData.ts"
+import { isWeaponData } from "#/system/gear/weaponData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+
+interface SubItemCallbacks {
+  onEdit?: () => void
+  onRemove?: () => void
+}
 
 interface GearViewItemProps {
   item: ItemData
   subItems?: ItemData[]
+  onEdit?: () => void
+  onRemove?: () => void
+  getSubItemCallbacks?: (subItemId: string) => SubItemCallbacks
 }
 
 const gradeLabel: Partial<Record<string, string>> = {
@@ -30,7 +40,13 @@ const implantTypeLabel: Partial<Record<string, string>> = {
   [ImplantType.bioware]: "Bio",
 }
 
-export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => {
+export const GearViewItem: FC<GearViewItemProps> = ({
+  item,
+  subItems = [],
+  onEdit,
+  onRemove,
+  getSubItemCallbacks,
+}) => {
   const { availability, source, description } = item
 
   const displayCost = isImplant(item)
@@ -46,7 +62,12 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           borderRadius: 1,
           border: "1px solid",
           borderColor: "divider",
+          ...(onEdit && {
+            "cursor": "pointer",
+            "&:hover": { bgcolor: "action.hover" },
+          }),
         }}
+        onClick={onEdit}
       >
         <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
           <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
@@ -86,6 +107,19 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
           <Typography>
             <Nuyen amount={displayCost} />
           </Typography>
+
+          {onRemove && (
+            <IconButton
+              size="small"
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation()
+                onRemove()
+              }}
+            >
+              <RiDeleteBin6Line size={16} />
+            </IconButton>
+          )}
         </Stack>
 
         <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
@@ -197,15 +231,25 @@ export const GearViewItem: FC<GearViewItemProps> = ({ item, subItems = [] }) => 
 
       {subItems.length > 0 && (
         <Stack
-          sx={{ gap: 1, paddingLeft: 1,
+          sx={{
+            gap: 1, paddingLeft: 1,
             paddingBottom: 1,
             borderLeft: "4px solid",
             borderBottom: "1px solid",
-            borderColor: "divider" }}
+            borderColor: "divider",
+          }}
         >
-          {subItems.map((subItem) => (
-            <GearViewItem key={subItem.id} item={subItem} />
-          ))}
+          {subItems.map((subItem) => {
+            const subItemCallbacks = getSubItemCallbacks?.(subItem.id) ?? {}
+            return (
+              <GearViewItem
+                key={subItem.id}
+                item={subItem}
+                onEdit={subItemCallbacks.onEdit}
+                onRemove={subItemCallbacks.onRemove}
+              />
+            )
+          })}
         </Stack>
       )}
     </Stack>

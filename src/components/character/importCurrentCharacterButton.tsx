@@ -7,7 +7,7 @@ import { useRef, useState } from "react"
 import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
 import { ConfirmDialog } from "#/components/ui/dialogs/confirmDialog.tsx"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export const ImportCurrentCharacterButton: FC = () => {
   const store = useCharacterSheetContext()

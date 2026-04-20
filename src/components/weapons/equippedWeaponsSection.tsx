@@ -4,13 +4,13 @@ import type { FC } from "react"
 
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { isWeaponData } from "#/lib/system/gear/weaponData.ts"
-import { GearType } from "#/lib/system/gearType.ts"
-import { EquippedWeaponCard } from "./equippedWeaponCard.tsx"
+import { EquippedWeaponCard } from "#/components/weapons/equippedWeaponCard.tsx"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import { isWeaponData } from "#/system/gear/weaponData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export const EquippedWeaponsSection: FC = () => {
-  const allWeapons = useGearByType<WeaponData>(GearType.weapon)
+  const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
 
   const equippedWeapons = allWeapons.filter(
     (weapon) => !weapon.parentId && isWeaponData(weapon) && weapon.equipped,

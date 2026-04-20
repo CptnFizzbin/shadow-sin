@@ -11,7 +11,7 @@ import { ContactFormFields } from "#/components/contacts/form/contactFormFields.
 import { contactFieldMap, useContactForm } from "#/components/contacts/form/useContactForm.tsx"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import { noop } from "#/lib/noop.ts"
-import type { ContactData } from "#/lib/system/contactData.ts"
+import type { ContactData } from "#/system/contactData.ts"
 
 export interface ContactFormDialogProps {
   open: boolean

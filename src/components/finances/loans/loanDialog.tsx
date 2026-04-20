@@ -13,8 +13,8 @@ import { useState } from "react"
 
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { LoanData } from "#/lib/system/loanData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { LoanData } from "#/system/loanData.ts"
 
 export type LoanDialogMode = "add" | "edit"
 

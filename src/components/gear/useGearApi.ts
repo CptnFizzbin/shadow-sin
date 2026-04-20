@@ -7,8 +7,8 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
-import type { ItemData } from "#/lib/system/itemData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export interface RemoveItemOptions {
   removeChildren?: boolean

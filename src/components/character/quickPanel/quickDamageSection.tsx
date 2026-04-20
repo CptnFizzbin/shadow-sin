@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { DamageCounter } from "#/components/character/quickPanel/damageCounter.tsx"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { DamageTrackKey } from "#/lib/system/damageTrackKey.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
   return (

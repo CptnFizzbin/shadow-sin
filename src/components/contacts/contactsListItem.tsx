@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { ContactData } from "#/lib/system/contactData.ts"
+import type { ContactData } from "#/system/contactData.ts"
 
 interface ContactRowProps {
   contact: ContactData
@@ -22,12 +22,14 @@ export const ContactRow: FC<ContactRowProps> = ({
     <Stack
       direction="row"
       onClick={onClick}
-      sx={{ "alignItems": "center", "gap": 1, "padding": 1,
+      sx={{
+        "alignItems": "center", "gap": 1, "padding": 1,
         "borderRadius": 1,
         "border": "1px solid",
         "borderColor": "divider",
         "cursor": "pointer",
-        "&:hover": { bgcolor: "action.hover" } }}
+        "&:hover": { bgcolor: "action.hover" },
+      }}
     >
       <Stack sx={{ gap: 0.5, flexGrow: 1 }}>
         <Stack direction="row">

@@ -1,8 +1,8 @@
 import { createAttrInfo } from "#/components/attributes/attributeInfo.ts"
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/lib/system/awakeningType.ts"
-import { metatypes } from "#/lib/system/metatypeData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
+import { metatypes } from "#/system/metatypeData.ts"
 
 export const useActiveAttributes = () => {
   const attributes = useCharacterSheet((sheet) => sheet.attributes)

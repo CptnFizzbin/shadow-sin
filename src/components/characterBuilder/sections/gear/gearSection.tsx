@@ -33,11 +33,11 @@ import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { isImplant } from "#/lib/system/gear/implantData.ts"
-import { isLicenseData } from "#/lib/system/gear/licenseData.ts"
-import { isSinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
-import { Lifestyles } from "#/lib/system/lifestyleType.ts"
+import { isImplant } from "#/system/gear/implantData.ts"
+import { isLicenseData } from "#/system/gear/licenseData.ts"
+import { isSinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
+import { Lifestyles } from "#/system/lifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
@@ -96,11 +96,13 @@ export const GearSection: FC = () => {
           >
             <Stack
               direction="row"
-              sx={{ justifyContent: "space-between", flexGrow: 1,
+              sx={{
+                justifyContent: "space-between", flexGrow: 1,
                 paddingRight: 1,
                 marginRight: 1,
                 borderRight: "1px solid",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
                 <Typography>{sectionName}</Typography>

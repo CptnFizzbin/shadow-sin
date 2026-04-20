@@ -2,7 +2,7 @@ import { useCharacterSheet } from "#/components/character/characterSheetProvider
 import type { BpLineItem } from "#/components/characterBuilder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/characterBuilder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/characterBuilder/sections/gear/gearUtils.ts"
-import { Lifestyles, LifestyleType } from "#/lib/system/lifestyleType.ts"
+import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const GearBuildPointAllowance = 50
 export const GearNuyenPerBuildPoint = 5_000

@@ -16,7 +16,7 @@ import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import { downloadTextFile } from "#/components/character/exportUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 interface CharacterRosterListProps {
   characters: Record<string, CharacterSheet>

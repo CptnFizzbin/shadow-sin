@@ -2,9 +2,9 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 
 import { getSinCost } from "#/components/characterBuilder/sections/gear/licenses/sinUtils.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface SinFormOptions {
   sin?: SinData

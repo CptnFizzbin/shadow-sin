@@ -11,8 +11,11 @@ import type { FC } from "react"
 import { useTraditionForm } from "#/components/characterBuilder/sections/resources/magician/useTraditionForm.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
-import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
-import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/lib/system/magic/traditionData.ts"
+import type { TraditionData } from "#/system/magic/traditionData.ts"
+import {
+  drainAttributeSelectOptions,
+  spiritTypeSelectOptions,
+} from "#/system/magic/traditionData.ts"
 
 export interface TraditionFormDialogProps {
   open: boolean

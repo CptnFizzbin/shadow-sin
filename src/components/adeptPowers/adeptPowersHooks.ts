@@ -2,7 +2,7 @@ import { useStore } from "@tanstack/react-store"
 
 import { useAdeptPowersStore } from "#/components/adeptPowers/useAdeptPowersStore.ts"
 import { useAttr } from "#/components/character/characterUtils.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const usePowerPoints = () => {
   const adeptPowersStore = useAdeptPowersStore()

@@ -11,7 +11,7 @@ import { QualitiesMaxNegativeBpBonus } from "#/components/characterBuilder/secti
 import { QualityFormDialog } from "#/components/qualities/dialogs/qualityFormDialog.tsx"
 import { useQualitiesStore } from "#/components/qualities/useQualitiesStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { QualityData } from "#/lib/system/qualityData.ts"
+import type { QualityData } from "#/system/qualityData.ts"
 
 type DialogState =
   | { open: true, quality: QualityData }

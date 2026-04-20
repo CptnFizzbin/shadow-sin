@@ -1,9 +1,12 @@
 import { useStore } from "@tanstack/react-store"
 
 import { useAttr } from "#/components/character/characterUtils.ts"
-import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
+import {
+  getKnowledgeSkillSp,
+  getLanguageSkillSp,
+} from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {
   const skillsStore = useSkillsStore()

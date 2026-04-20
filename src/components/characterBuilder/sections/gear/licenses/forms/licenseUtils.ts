@@ -1,5 +1,5 @@
-import type { AvailablityInfo } from "#/lib/system/availablityInfo.ts"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
+import type { AvailablityInfo } from "#/system/availablityInfo.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
 
 export const getLicenseAvailability = (
   rating: LicenseData["rating"],

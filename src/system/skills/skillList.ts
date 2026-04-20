@@ -1,0 +1,800 @@
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
+import { SpiritType, SpiritTypeLabels } from "#/system/magic/traditionData.ts"
+import { SkillCategory } from "#/system/skills/skillCategory.ts"
+import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
+import type { SkillInfo } from "#/system/skills/skillInfo.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
+
+const spiritTypeSpecializations = Object.values(SpiritType).map(
+  (spiritType) => `Spirits of ${SpiritTypeLabels[spiritType]}`,
+)
+
+export const skillList: Record<SkillKey, SkillInfo> = {
+  // == Combat Skills ==========================================================
+  [SkillKey.archery]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    specializations: [
+      "Bows",
+      "Crossbows",
+      "Slingshots",
+    ],
+  },
+  [SkillKey.automatics]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.Firearms,
+    specializations: [
+      "Assault Rifles",
+      "Carbines",
+      "Machine Pistols",
+      "Submachine Guns",
+    ],
+  },
+  [SkillKey.blades]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.CloseCombat,
+    specializations: [
+      "Axes",
+      "Cyber-Implant Blades",
+      "Knives",
+      "Swords",
+      "Parrying",
+    ],
+  },
+  [SkillKey.clubs]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.CloseCombat,
+    specializations: [
+      "Batons",
+      "Hammers",
+      "Saps",
+      "Staves",
+      "Parrying",
+    ],
+  },
+  [SkillKey.dodge]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Physical,
+    specializations: [
+      "Melee Combat",
+      "Ranged Combat",
+    ],
+  },
+  [SkillKey.exoticMeleeWeapons]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+  },
+  [SkillKey.exoticRangedWeapons]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+  },
+  [SkillKey.heavyWeapons]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    specializations: [
+      "Assault Cannons",
+      "Grenade Launchers",
+      "Guided Missiles",
+      "Machine Guns",
+      "Rocket Launchers",
+    ],
+  },
+  [SkillKey.longarms]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.Firearms,
+    specializations: [
+      "Shotguns",
+      "Sniper Rifles",
+      "Sporting Rifles",
+    ],
+  },
+  [SkillKey.pistols]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.Firearms,
+    specializations: [
+      "Hold-Out Pistols",
+      "Revolvers",
+      "Semi-Automatics",
+      "Tasers",
+    ],
+  },
+  [SkillKey.thrownWeapons]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    specializations: [
+      "Lobbed",
+      "Overhands",
+      "Shuriken",
+      "Throwing Knives",
+    ],
+  },
+  [SkillKey.unarmedCombat]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    group: SkillGroupKey.CloseCombat,
+    specializations: [
+      "Cyber-Implants",
+      "Martial Arts",
+      "Subdual Combat",
+      "Block",
+    ],
+  },
+
+  // == Magical Skills ==========================================================
+  [SkillKey.arcana]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Magic,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: [
+      "Spell Design (Combat)",
+      "Spell Design (Detection)",
+      "Spell Design (Health)",
+      "Spell Design (Illusion)",
+      "Spell Design (Manipulation)",
+      "Focus design (Spell)",
+      "Focus design (Spirit)",
+      "Focus design (Power)",
+      "Focus design (Weapon)",
+      "Ally Spirit Formula",
+      "Free Spirit Formula",
+    ],
+  },
+  [SkillKey.assensing]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Magic,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: [
+      "Aura Reading",
+      "Astral Signatures",
+      "Psychometry",
+      "Metahuman Auras",
+      "Spirit Auras",
+      "Focus Auras",
+      "Ward Auras",
+      { custom: true, placeholder: "e.g. specific aura type" },
+    ],
+  },
+  [SkillKey.astralCombat]: {
+    attr: AttributeKey.willpower,
+    category: SkillCategory.Magic,
+    defaultable: false,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific combat style" },
+    ],
+    awakening: MagicAwakeningTypes,
+  },
+  [SkillKey.banishing]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Conjuring,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: spiritTypeSpecializations,
+  },
+  [SkillKey.binding]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Conjuring,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: spiritTypeSpecializations,
+  },
+  [SkillKey.counterspelling]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Sorcery,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: [
+      "Combat Spells",
+      "Detection Spells",
+      "Health Spells",
+      "Illusion Spells",
+      "Manipulation Spells",
+    ],
+  },
+  [SkillKey.enchanting]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: [
+      "Artificing",
+      "Alchemy",
+      "Vessel Preparation",
+    ],
+  },
+  [SkillKey.ritualSpellcasting]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Sorcery,
+    awakening: MagicAwakeningTypes,
+    defaultable: false,
+    specializations: [
+      "Combat Spells",
+      "Detection Spells",
+      "Health Spells",
+      "Illusion Spells",
+      "Manipulation Spells",
+    ],
+  },
+  [SkillKey.spellcasting]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Sorcery,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: [
+      "Combat Spells",
+      "Detection Spells",
+      "Health Spells",
+      "Illusion Spells",
+      "Manipulation Spells",
+    ],
+  },
+  [SkillKey.summoning]: {
+    attr: AttributeKey.magic,
+    category: SkillCategory.Magic,
+    group: SkillGroupKey.Conjuring,
+    defaultable: false,
+    awakening: MagicAwakeningTypes,
+    specializations: spiritTypeSpecializations,
+  },
+
+  // == Physical Skills ========================================================
+  [SkillKey.climbing]: {
+    attr: AttributeKey.strength,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Athletics,
+    specializations: [
+      "Assisted",
+      "Freehand",
+      "Rappelling",
+      { custom: true, placeholder: "e.g. cliff face, ice wall" },
+    ],
+  },
+  [SkillKey.disguise]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Stealth,
+    specializations: [
+      "Camouflage",
+      "Cosmetic",
+      "Theatrical",
+      "Trideo",
+    ],
+  },
+  [SkillKey.diving]: {
+    attr: AttributeKey.body,
+    category: SkillCategory.Physical,
+    specializations: [
+      "Liquid Breathing",
+      "Mixed Gas",
+      "Oxygen Extraction",
+      "SCUBA",
+      { custom: true, placeholder: "e.g. specific diving technique" },
+    ],
+  },
+  [SkillKey.escapeArtist]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Physical,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific restraint type" },
+    ],
+  },
+  [SkillKey.gymnastics]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Athletics,
+    specializations: [
+      "Balance",
+      "Breakfall",
+      "Dance",
+      "Jumping",
+      "Parkour",
+      "Tumbling",
+    ],
+  },
+  [SkillKey.infiltration]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Stealth,
+    specializations: [
+      "Urban",
+      "Vehicle",
+      "Wilderness",
+      { custom: true, placeholder: "e.g. specific environment type" },
+    ],
+  },
+  [SkillKey.navigation]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Outdoors,
+    specializations: [
+      "Desert",
+      "Forest",
+      "Jungle",
+      "Mountain",
+      "Polar",
+      "Urban",
+      { custom: true, placeholder: "e.g. specific terrain or environment" },
+    ],
+  },
+  [SkillKey.palming]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Stealth,
+    specializations: [
+      "Legerdemain",
+      "Pickpocketing",
+      "Shoplifting",
+    ],
+  },
+  [SkillKey.parachuting]: {
+    attr: AttributeKey.body,
+    category: SkillCategory.Physical,
+    specializations: [
+      "BASE Jumping",
+      "HALO",
+      "Low Altitude",
+      "Recreational",
+      "Static Line",
+    ],
+  },
+  [SkillKey.perception]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Physical,
+    specializations: [
+      "Hearing",
+      "Scent",
+      "Sight",
+      "Touch",
+      "Visual",
+    ],
+  },
+  [SkillKey.running]: {
+    attr: AttributeKey.strength,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Athletics,
+    specializations: [
+      "Long Distance",
+      "Sprinting",
+      "Urban",
+      "Wilderness",
+    ],
+  },
+  [SkillKey.shadowing]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Stealth,
+    specializations: [
+      "Stakeout",
+      "Tail Evasion",
+      "Tailing",
+    ],
+  },
+  [SkillKey.survival]: {
+    attr: AttributeKey.willpower,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Outdoors,
+    specializations: [
+      "Desert",
+      "Forest",
+      "Jungle",
+      "Mountain",
+      "Polar",
+      "Urban",
+      { custom: true, placeholder: "e.g. specific environment" },
+    ],
+  },
+  [SkillKey.swimming]: {
+    attr: AttributeKey.strength,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Athletics,
+    specializations: [
+      "Long Distance",
+      "Sprinting",
+    ],
+  },
+  [SkillKey.tracking]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Physical,
+    group: SkillGroupKey.Outdoors,
+    specializations: [
+      "Desert",
+      "Forest",
+      "Jungle",
+      "Mountain",
+      "Polar",
+      "Urban",
+      { custom: true, placeholder: "e.g. specific terrain" },
+    ],
+  },
+
+  // == Resonance Skills =======================================================
+  [SkillKey.compiling]: {
+    attr: AttributeKey.resonance,
+    category: SkillCategory.Resonance,
+    group: SkillGroupKey.Tasking,
+    defaultable: false,
+    awakening: TechAwakeningTypes,
+    specializations: [
+      "Courier Sprites",
+      "Crack Sprites",
+      "Data Sprites",
+      "Fault Sprites",
+      "Machine Sprites",
+    ],
+  },
+  [SkillKey.demolitions]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    specializations: [
+      "Commercial Explosives",
+      "Defusing",
+      "Improvised Explosives",
+      "Plastic Explosives",
+    ],
+  },
+  [SkillKey.registering]: {
+    attr: AttributeKey.resonance,
+    category: SkillCategory.Resonance,
+    group: SkillGroupKey.Tasking,
+    defaultable: false,
+    awakening: TechAwakeningTypes,
+    specializations: [
+      "Courier Sprites",
+      "Crack Sprites",
+      "Data Sprites",
+      "Fault Sprites",
+      "Machine Sprites",
+    ],
+  },
+
+  // == Social Skills ==========================================================
+  [SkillKey.con]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    group: SkillGroupKey.Influence,
+    specializations: ["Fast Talk", "Impersonation", "Seduction"],
+  },
+  [SkillKey.etiquette]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    group: SkillGroupKey.Influence,
+    specializations: [{ custom: true, placeholder: "e.g. Corporate, Street, Yakuza" }],
+  },
+  [SkillKey.instruction]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific subject or skill" },
+    ],
+  },
+  [SkillKey.intimidation]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    specializations: [
+      "Interrogation",
+      "Mental",
+      "Physical",
+      "Torture",
+    ],
+  },
+  [SkillKey.leadership]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    group: SkillGroupKey.Influence,
+    specializations: [
+      "Gut Check",
+      "Morale",
+      "Persuasion",
+      "Strategy",
+      "Tactics",
+    ],
+  },
+  [SkillKey.negotiation]: {
+    attr: AttributeKey.charisma,
+    category: SkillCategory.Social,
+    group: SkillGroupKey.Influence,
+    specializations: [
+      "Bargaining",
+      "Diplomacy",
+      "Sense Motive",
+    ],
+  },
+
+  // == Technical Skills ==========================================================
+  [SkillKey.aronauticsMechanic]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Mechanic,
+    defaultable: false,
+    specializations: [
+      "Aerospace",
+      "Fixed Wing",
+      "Lighter than Air",
+      "Rotary Wing",
+      "Tilt Wing",
+      "Vector Thrust",
+    ],
+  },
+  [SkillKey.armorer]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    specializations: [
+      "Armor",
+      "Artillery",
+      "Explosives",
+      "Firearms",
+      "Heavy Weapons",
+      "Weapon Accessories",
+    ],
+  },
+  [SkillKey.artisan]: {
+    attr: AttributeKey.intuition,
+    category: SkillCategory.Technical,
+    specializations: [
+      "Carpentry",
+      "Guitars",
+      "Painting",
+      "Sculpture",
+      { custom: true, placeholder: "e.g. specific craft or art form" },
+    ],
+  },
+  [SkillKey.autoMechanic]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Mechanic,
+    defaultable: false,
+    specializations: [
+      "Anthroform",
+      "Hover",
+      "Tracked",
+      "Wheeled",
+    ],
+  },
+  [SkillKey.chemistry]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    specializations: [
+      "Compounds",
+      "Drugs",
+      "Toxins",
+    ],
+  },
+  [SkillKey.computer]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Electronics,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific program" },
+      { custom: true, placeholder: "e.g. device type" },
+    ],
+  },
+  [SkillKey.cybercombat]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Cracking,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific opponent type" },
+    ],
+  },
+  [SkillKey.cybertechnology]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Biotech,
+    defaultable: false,
+    specializations: [
+      "Bioware",
+      "Bodyware",
+      "Cyberlimbs",
+      "Headware",
+      "Nanoware",
+    ],
+  },
+  [SkillKey.dataSearch]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Electronics,
+    specializations: [
+      { custom: true, placeholder: "e.g. source" },
+      { custom: true, placeholder: "e.g. data type" },
+    ],
+  },
+  [SkillKey.electronicWarfare]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Cracking,
+    defaultable: false,
+    specializations: [
+      "Communications",
+      "Encryption",
+      "Jamming",
+      "Sensor Operations",
+    ],
+  },
+  [SkillKey.firstAid]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Biotech,
+    specializations: [
+      { custom: true, placeholder: "e.g. type of injury" },
+      { custom: true, placeholder: "e.g. type of treatment" },
+    ],
+  },
+  [SkillKey.forgery]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Technical,
+    specializations: [
+      "Counterfeiting",
+      "Credstick Forgery",
+      "False ID",
+      "Image Doctoring",
+      "Paper Forgery",
+    ],
+  },
+  [SkillKey.gunnery]: {
+    isWeaponSkill: true,
+    attr: AttributeKey.agility,
+    category: SkillCategory.Combat,
+    specializations: [
+      "Artillery",
+      "Ballistic",
+      "Energy",
+      "Guided Missile",
+      "Rocket",
+    ],
+  },
+  [SkillKey.hacking]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Cracking,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific program" },
+      { custom: true, placeholder: "e.g. device type" },
+    ],
+  },
+  [SkillKey.hardware]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Electronics,
+    defaultable: false,
+    specializations: [
+      { custom: true, placeholder: "e.g. specific hardware type" },
+    ],
+  },
+  [SkillKey.industrialMechanic]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Mechanic,
+    defaultable: false,
+    specializations: [
+      "Electrical Power Systems",
+      "Hydraulics",
+      "Robotics",
+      "Structural",
+      "Welding",
+    ],
+  },
+  [SkillKey.locksmith]: {
+    attr: AttributeKey.agility,
+    category: SkillCategory.Technical,
+    specializations: [
+      { custom: true, placeholder: "e.g. keypad lock, deadbolt, electronic" },
+    ],
+  },
+  [SkillKey.medicine]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Biotech,
+    defaultable: false,
+    specializations: [
+      "Cosmetic Surgery",
+      "Extended Care",
+      "Implant Surgery",
+      "Magical Health",
+      "Organ Culture",
+      "Trauma Surgery",
+    ],
+  },
+  [SkillKey.nauticalMechanic]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Mechanic,
+    defaultable: false,
+  },
+  [SkillKey.pilotAerospace]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    defaultable: false,
+    specializations: [
+      "Deep Space",
+      "Launch Craft",
+      "Remote Operation",
+      "Semiballistic",
+      "Suborbital",
+    ],
+  },
+  [SkillKey.pilotAircraft]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    defaultable: false,
+    specializations: [
+      "Fixed Wing",
+      "Lighter than Air",
+      "Remote Operation",
+      "Rotary Wing",
+      "Tilt Wing",
+      "Vector Thrust",
+    ],
+  },
+  [SkillKey.pilotAnthroform]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    defaultable: false,
+    specializations: [
+      "Remote Operation",
+      "Biped",
+      "Quadruped",
+    ],
+  },
+  [SkillKey.pilotExoticVehicle]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    defaultable: false,
+  },
+  [SkillKey.pilotGroundCraft]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    specializations: [
+      "Bike",
+      "Hovercraft",
+      "Remote Operation",
+      "Tracked",
+      "Wheeled",
+    ],
+  },
+  [SkillKey.pilotWatercraft]: {
+    attr: AttributeKey.reaction,
+    category: SkillCategory.Vehicle,
+    specializations: [
+      "Motorboat",
+      "Remote Operation",
+      "Sail",
+      "Ship",
+      "Submarine",
+    ],
+  },
+  [SkillKey.software]: {
+    attr: AttributeKey.logic,
+    category: SkillCategory.Technical,
+    group: SkillGroupKey.Electronics,
+    defaultable: false,
+    specializations: [
+      "Defensive Utilities",
+      "Offensive Utilities",
+      "Masking Utilities",
+      "Operational Utilities",
+      { custom: true, placeholder: "e.g. special utilities" },
+    ],
+  },
+}

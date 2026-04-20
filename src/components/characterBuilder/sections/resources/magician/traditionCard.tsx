@@ -7,8 +7,8 @@ import { useState } from "react"
 
 import { TraditionFormDialog } from "#/components/characterBuilder/sections/resources/magician/traditionFormDialog.tsx"
 import { useTraditionStore } from "#/components/characterBuilder/sections/resources/magician/useTraditionStore.ts"
-import { AttributeLabels } from "#/lib/system/attributeKey.ts"
-import type { TraditionData } from "#/lib/system/magic/traditionData.ts"
+import { AttributeLabels } from "#/system/attributeKey.ts"
+import type { TraditionData } from "#/system/magic/traditionData.ts"
 
 export const TraditionCard: FC = () => {
   const traditionStore = useTraditionStore()

@@ -1,5 +1,5 @@
 import type { BuilderState } from "#/components/characterBuilder/builderState.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export interface BuilderRootState {
   character: CharacterSheet

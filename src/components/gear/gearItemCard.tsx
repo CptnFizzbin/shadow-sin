@@ -8,7 +8,7 @@ import type { FC } from "react"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 interface GearItemCardProps {
   item: ItemData
@@ -56,6 +56,13 @@ export const GearItemCard: FC<GearItemCardProps> = ({
             label="Equipped"
             size="small"
             color="success"
+          />
+        )}
+
+        {item.rating !== undefined && (
+          <Chip
+            label={`Rating: ${item.rating}`}
+            size="small"
             variant="outlined"
             sx={{ height: 20, fontSize: "0.7rem" }}
           />

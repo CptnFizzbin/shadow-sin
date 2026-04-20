@@ -3,9 +3,9 @@ import { useStore } from "@tanstack/react-store"
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useActiveSkill, useAttr } from "#/components/character/characterUtils.ts"
 import { useSpritesStore } from "#/components/technomancer/useSpritesStore.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { AwakeningType } from "#/lib/system/awakeningType.ts"
-import { SkillKey } from "#/lib/system/skills/skillKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSprites = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

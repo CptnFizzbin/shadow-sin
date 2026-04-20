@@ -16,8 +16,8 @@ import { useState } from "react"
 
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { Lifestyles } from "#/lib/system/lifestyleType.ts"
-import { calculateMonthlyInterest } from "#/lib/system/loanData.ts"
+import { Lifestyles } from "#/system/lifestyleType.ts"
+import { calculateMonthlyInterest } from "#/system/loanData.ts"
 import type { NuyenStore } from "../nuyen/useNuyenStore.ts"
 
 interface EndOfMonthLineItem {

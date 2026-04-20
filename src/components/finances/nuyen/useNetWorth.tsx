@@ -1,7 +1,7 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useGearFilter } from "#/components/gear/useGearApi.ts"
-import { isCredstickData } from "#/lib/system/gear/credstickData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import { isCredstickData } from "#/system/gear/credstickData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export function useNetWorth(): number {
   const currentNuyen = useCharacterSheet((s) => s.nuyen.current)

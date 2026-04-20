@@ -14,7 +14,7 @@ import {
 import { DiceResult } from "#/components/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
-import { Lifestyles, LifestyleType } from "#/lib/system/lifestyleType.ts"
+import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
   const lifestyle = useCharacterSheet((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)

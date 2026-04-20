@@ -12,7 +12,7 @@ import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwar
 import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
-import type { ItemType } from "#/lib/system/itemType.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 export { GearSection, sectionGearTypes }
 
@@ -61,11 +61,13 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
       >
         <Stack
           direction="row"
-          sx={{ justifyContent: "space-between", flexGrow: 1,
+          sx={{
+            justifyContent: "space-between", flexGrow: 1,
             paddingRight: 1,
             marginRight: 1,
             borderRight: "1px solid",
-            borderColor: "divider" }}
+            borderColor: "divider",
+          }}
         >
           <Typography>{section}</Typography>
           {section === GearSection.Cyberware && <CyberwareSectionHeader />}

@@ -3,10 +3,10 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { VehicleData } from "#/lib/system/gear/vehicleData.ts"
-import { VehicleCategory } from "#/lib/system/gear/vehicleData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import { VehicleCategory } from "#/system/gear/vehicleData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface VehicleFormOptions {
   vehicle?: VehicleData
@@ -43,6 +43,7 @@ const defaultFormValues = {
   armor: 0,
   sensor: 0,
   seats: undefined as number | undefined,
+  rating: undefined as number | undefined,
 }
 
 export type VehicleFormState = typeof defaultFormValues
@@ -75,6 +76,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     armor: values.armor,
     sensor: values.sensor,
     ...(values.seats !== undefined && { seats: values.seats }),
+    ...(values.rating !== undefined && { rating: values.rating }),
   }
 }
 
@@ -112,6 +114,7 @@ export const useVehicleForm = ({
         armor: vehicle.armor,
         sensor: vehicle.sensor,
         seats: vehicle.seats,
+        rating: typeof vehicle.rating === "number" ? vehicle.rating : undefined,
       }
     : {
         ...defaultFormValues,

@@ -2,8 +2,8 @@ import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { ProgramFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/programFormDialog.tsx"
-import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { ProgramData } from "#/system/gear/programData.ts"
+import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 describe("ProgramFormDialog", () => {

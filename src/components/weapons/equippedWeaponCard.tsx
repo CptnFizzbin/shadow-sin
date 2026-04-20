@@ -7,8 +7,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { WeaponAttackDialog } from "#/components/weapons/weaponAttackDialog.tsx"
-import type { WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { isFirearmData, WeaponType } from "#/lib/system/gear/weaponData.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import { isFirearmData, WeaponType } from "#/system/gear/weaponData.ts"
 
 interface WeaponStatChipProps {
   label: string

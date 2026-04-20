@@ -4,7 +4,7 @@ import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
 import Footer from "#/components/ui/footer.tsx"
 import { Header } from "#/components/ui/header.tsx"
-import TanStackQueryProvider from "../integrations/tanstackQuery/rootProvider.tsx"
+import TanStackQueryProvider from "#/integrations/tanstackQuery/rootProvider.tsx"
 
 type RouterContext = object
 

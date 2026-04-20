@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
-import { CredstickMaxBalance, CredstickTypeLabel } from "#/lib/system/gear/credstickData.ts"
+import type { CredstickData } from "#/system/gear/credstickData.ts"
+import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/gear/credstickData.ts"
 
 export interface CredstickCardProps {
   credstick: CredstickData

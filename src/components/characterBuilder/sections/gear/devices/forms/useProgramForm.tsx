@@ -5,10 +5,10 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import { ProgramType } from "#/lib/system/gear/programData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ProgramData } from "#/system/gear/programData.ts"
+import { ProgramType } from "#/system/gear/programData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export interface ProgramFormOptions {
   program?: ProgramData

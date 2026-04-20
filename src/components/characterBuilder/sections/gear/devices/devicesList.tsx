@@ -11,10 +11,10 @@ import { DeviceFormDialog } from "#/components/characterBuilder/sections/gear/de
 import { ProgramFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/programFormDialog.tsx"
 import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
-import type { DeviceData } from "#/lib/system/gear/deviceData.ts"
-import type { ProgramData } from "#/lib/system/gear/programData.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { DeviceData } from "#/system/gear/deviceData.ts"
+import type { ProgramData } from "#/system/gear/programData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type DeviceDialogState = null | { device?: DeviceData, open: boolean }
 
@@ -66,12 +66,14 @@ export const DevicesList: FC = () => {
             />
 
             <Stack
-              sx={{ gap: 1, paddingTop: 1,
+              sx={{
+                gap: 1, paddingTop: 1,
                 paddingLeft: 1,
                 paddingBottom: devicePrograms.length > 0 ? 1 : 0,
                 borderLeft: "4px solid",
                 borderBottom: devicePrograms.length > 0 ? "1px solid" : "none",
-                borderColor: "divider" }}
+                borderColor: "divider",
+              }}
             >
               {devicePrograms.map((program) => (
                 <GearItemCard

@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 
 import { weaponFormOpts } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { skillList } from "#/lib/system/skills/skillList.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 const skillOptions = Object.entries(skillList)
   .filter(([_, skill]) => skill.isWeaponSkill)

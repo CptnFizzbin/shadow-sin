@@ -10,7 +10,7 @@ import {
   getComplexFormBp,
 } from "#/components/characterBuilder/sections/resources/technomancer/complexForms/complexFormsUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
+import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
 interface ComplexFormRowProps {
   form: ComplexFormData

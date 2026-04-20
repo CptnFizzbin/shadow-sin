@@ -6,8 +6,8 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import type { ContactData } from "#/lib/system/contactData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ContactData } from "#/system/contactData.ts"
 
 export class ContactsStore extends StoreSlice<ContactData[]> {
   save(contact: ContactData) {

@@ -8,7 +8,7 @@ import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsField
 import { implantFormOpts } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { ImplantGrade, ImplantLocation, ImplantType } from "#/lib/system/gear/implantData.ts"
+import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [
   { label: "Cyberware", value: ImplantType.cyberware },
@@ -124,6 +124,26 @@ export const ImplantFormFields = withFieldGroup({
             )}
           </group.AppField>
         </Stack>
+
+        <group.AppField
+          name="rating"
+          validators={{
+            onChange: z
+              .number()
+              .int("Rating must be a whole number")
+              .min(1, "Rating must be at least 1")
+              .optional(),
+          }}
+        >
+          {(field) => (
+            <field.NumberField
+              label="Rating"
+              size="small"
+              sx={{ width: 120 }}
+              slotProps={{ htmlInput: { min: 1, step: 1 } }}
+            />
+          )}
+        </group.AppField>
 
         <group.Subscribe selector={({ values }) => values.parentId}>
           {(parentId) => (

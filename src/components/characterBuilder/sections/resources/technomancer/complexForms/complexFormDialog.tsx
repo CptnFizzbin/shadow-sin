@@ -9,8 +9,8 @@ import { z } from "zod"
 
 import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { ComplexFormData } from "#/lib/system/magic/complexFormData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
 interface ComplexFormDialogProps {
   open: boolean

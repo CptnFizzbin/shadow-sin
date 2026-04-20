@@ -10,8 +10,8 @@ import type { CredstickDialogMode } from "#/components/finances/credsticks/creds
 import { CredstickDialog } from "#/components/finances/credsticks/credstickDialog.tsx"
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { CredstickData } from "#/lib/system/gear/credstickData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { CredstickData } from "#/system/gear/credstickData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 type DialogState = { open: boolean, mode: CredstickDialogMode, credstick?: CredstickData } | null
 

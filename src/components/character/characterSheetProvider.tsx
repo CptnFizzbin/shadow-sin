@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
 import type { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 

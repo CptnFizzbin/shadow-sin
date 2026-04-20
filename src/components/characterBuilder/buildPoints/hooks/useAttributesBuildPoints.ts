@@ -6,7 +6,7 @@ import {
 } from "#/components/characterBuilder/buildPoints/attributeUtils.ts"
 import type { BpLineItem } from "#/components/characterBuilder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/characterBuilder/sections/builderSectionId.ts"
-import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/lib/system/attributeKey.ts"
+import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
 export interface AttributesBuildPoints extends BpLineItem {
   physicalBp: number

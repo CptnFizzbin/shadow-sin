@@ -9,8 +9,8 @@ import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import type { ImplantData } from "#/lib/system/gear/implantData.ts"
-import { ImplantGrade, ImplantType } from "#/lib/system/gear/implantData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
+import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
 interface CyberwareListItemProps {
   implant: ImplantData

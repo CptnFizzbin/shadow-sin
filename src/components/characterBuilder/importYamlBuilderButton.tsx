@@ -6,7 +6,7 @@ import type { ChangeEvent, FC } from "react"
 import { useRef, useState } from "react"
 
 import { yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 interface ImportYamlBuilderButtonProps {
   onImport: (importedCharacter: CharacterSheet) => void

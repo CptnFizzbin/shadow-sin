@@ -1,10 +1,7 @@
-import {
-  createHashHistory,
-  createRouter as createTanStackRouter,
-} from "@tanstack/react-router"
+import { createHashHistory, createRouter as createTanStackRouter } from "@tanstack/react-router"
 
-import { getContext } from "./integrations/tanstackQuery/rootProvider.tsx"
-import { routeTree } from "./routeTree.gen.ts"
+import { getContext } from "#/integrations/tanstackQuery/rootProvider.tsx"
+import { routeTree } from "#/routeTree.gen.ts"
 
 export function getRouter() {
   const hashHistory = createHashHistory()

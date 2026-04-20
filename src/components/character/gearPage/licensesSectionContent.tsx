@@ -8,13 +8,13 @@ import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 type LicensesDialogState =
   | null
-  | { type: "sin", open: boolean }
-  | { type: "license", sin: SinData, open: boolean }
+  | { type: "sin", open: boolean, sin?: SinData }
+  | { type: "license", sin: SinData, open: boolean, license?: LicenseData }
 
 interface LicensesSectionContentProps {
   sins: SinData[]
@@ -48,6 +48,17 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
           <GearViewItem
             item={sin}
             subItems={getLicenses(sin.id)}
+            onEdit={() => setDialogState({ type: "sin", sin, open: true })}
+            onRemove={() => gearStore.remove(sin, { removeChildren: true })}
+            getSubItemCallbacks={(licenseId) => {
+              const license = getLicenses(sin.id).find((l) => l.id === licenseId)
+              return {
+                onEdit: license
+                  ? () => setDialogState({ type: "license", sin, license, open: true })
+                  : undefined,
+                onRemove: license ? () => gearStore.remove(license) : undefined,
+              }
+            }}
           />
           <Button
             variant="outlined"
@@ -76,7 +87,8 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
       {dialogState?.type === "sin" && (
         <SinFormDialog
           open={dialogState.open}
-          allowReal={!hasRealSin}
+          sin={dialogState.sin}
+          allowReal={!hasRealSin || dialogState.sin?.rating === "real"}
           onSave={handleSaveSin}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}
@@ -87,6 +99,7 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
         <LicenseFormDialog
           open={dialogState.open}
           sin={dialogState.sin}
+          license={dialogState.license}
           onSave={handleSaveLicense}
           onClose={closeDialog}
           onClosed={() => setDialogState(null)}

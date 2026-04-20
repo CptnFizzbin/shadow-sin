@@ -3,10 +3,7 @@ import { z } from "zod"
 
 import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
 import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
-import {
-  gearItemFieldMap,
-  gearItemFormOpts,
-} from "#/components/gear/forms/useItemForm.tsx"
+import { gearItemFieldMap, gearItemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
@@ -34,6 +31,26 @@ export const GearItemFormFields = withFieldGroup({
         >
           {(field) => (
             <field.NumberField label="Cost (¥)" fullWidth size="small" />
+          )}
+        </group.AppField>
+
+        <group.AppField
+          name="rating"
+          validators={{
+            onChange: z
+              .number()
+              .int("Rating must be a whole number")
+              .min(1, "Rating must be at least 1")
+              .optional(),
+          }}
+        >
+          {(field) => (
+            <field.NumberField
+              label="Rating"
+              size="small"
+              sx={{ width: 120 }}
+              slotProps={{ htmlInput: { min: 1, step: 1 } }}
+            />
           )}
         </group.AppField>
 

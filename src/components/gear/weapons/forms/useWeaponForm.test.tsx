@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { useWeaponForm } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
-import { ItemType } from "#/lib/system/itemType.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 describe("useWeaponForm", () => {
   it("always defaults to ItemType.weapon", () => {

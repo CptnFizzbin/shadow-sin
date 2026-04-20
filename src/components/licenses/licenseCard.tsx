@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
 
 export interface LicenseCardSlots {
   trailingContent?: ReactNode
@@ -28,11 +28,13 @@ export const LicenseCard: FC<LicenseCardProps> = ({
     <Stack
       direction="row"
       onClick={onClick}
-      sx={{ alignItems: "center", gap: 1, paddingRight: 1, ...(onClick && {
-        "cursor": "pointer",
-        "borderRadius": 1,
-        "&:hover": { bgcolor: "action.hover" },
-      }) }}
+      sx={{
+        alignItems: "center", gap: 1, paddingRight: 1, ...(onClick && {
+          "cursor": "pointer",
+          "borderRadius": 1,
+          "&:hover": { bgcolor: "action.hover" },
+        }),
+      }}
     >
       <Typography sx={{ flexGrow: 1 }}>
         {license.name}

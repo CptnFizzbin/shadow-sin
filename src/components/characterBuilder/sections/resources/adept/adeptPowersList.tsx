@@ -11,7 +11,7 @@ import { AdeptPowerFormDialog } from "#/components/adeptPowers/dialogs/adeptPowe
 import { useAdeptPowersStore } from "#/components/adeptPowers/useAdeptPowersStore.ts"
 import { AdeptPowersListItem } from "#/components/characterBuilder/sections/resources/adept/adeptPowersListItem.tsx"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import type { AdeptPowerData } from "#/lib/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
 type DialogState =
   | null

@@ -6,9 +6,9 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import type { LoanData } from "#/lib/system/loanData.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { LoanData } from "#/system/loanData.ts"
 
 type NuyenState = CharacterSheet["nuyen"]
 

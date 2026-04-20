@@ -3,10 +3,10 @@ import { useId } from "react"
 import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/damage/useWoundModifier.ts"
 import type { DiceGroup } from "#/components/dicePool/diceGroup.tsx"
-import type { AttributeKey } from "#/lib/system/attributeKey.ts"
-import { AttributeLabels } from "#/lib/system/attributeKey.ts"
-import type { SkillKey } from "#/lib/system/skills/skillKey.ts"
-import { skillList } from "#/lib/system/skills/skillList.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeLabels } from "#/system/attributeKey.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]

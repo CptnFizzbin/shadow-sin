@@ -3,8 +3,8 @@ import type { UUID } from "node:crypto"
 import jsYaml from "js-yaml"
 
 import { applyMigrations } from "#/character/applyMigrations.ts"
-import type { CharacterSheet } from "#/lib/system/characterSheet.ts"
-import type { ItemData } from "#/lib/system/itemData.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export interface GearTreeNode extends Omit<ItemData, "parentId" | "childIds"> {
   children?: GearTreeNode[]

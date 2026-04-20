@@ -2,8 +2,8 @@ import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
-import type { ItemData } from "#/lib/system/itemData.ts"
-import { ItemType } from "#/lib/system/itemType.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 describe("GearItemFormDialog", () => {

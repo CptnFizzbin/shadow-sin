@@ -11,8 +11,8 @@ import {
   licenseFieldMap,
   useLicenseForm,
 } from "#/components/characterBuilder/sections/gear/licenses/forms/useLicenseForm.tsx"
-import type { LicenseData } from "#/lib/system/gear/licenseData.ts"
-import type { SinData } from "#/lib/system/gear/sinData.ts"
+import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
 
 export interface LicenseFormDialogProps {
   open: boolean

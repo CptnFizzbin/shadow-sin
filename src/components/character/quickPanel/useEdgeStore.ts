@@ -5,7 +5,7 @@ import { useCharacterSheetContext } from "#/components/character/characterSheetP
 import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { AttributeKey } from "#/lib/system/attributeKey.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface EdgeStoreState {
   max: number

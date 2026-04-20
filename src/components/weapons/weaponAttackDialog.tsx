@@ -12,8 +12,8 @@ import { useState } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import type { FirearmData, WeaponData } from "#/lib/system/gear/weaponData.ts"
-import { isFirearmData } from "#/lib/system/gear/weaponData.ts"
+import type { FirearmData, WeaponData } from "#/system/gear/weaponData.ts"
+import { isFirearmData } from "#/system/gear/weaponData.ts"
 import { AttackDicePool } from "./attackDicePool.tsx"
 
 interface WeaponAttackDialogProps {
