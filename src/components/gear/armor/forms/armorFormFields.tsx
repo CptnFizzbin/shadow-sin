@@ -1,6 +1,5 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import { z } from "zod"
 
 import {
   armorFormOpts,
@@ -17,42 +16,12 @@ export const ArmorFormFields = withFieldGroup({
           <Label label="Armor Ratings" />
 
           <Stack direction="row" sx={{ gap: 1 }}>
-            <group.AppField
-              name="ballistic"
-              validators={{
-                onChange: z
-                  .number("Ballistic is required")
-                  .int("Ballistic must be a whole number")
-                  .min(0, "Ballistic must be 0 or more"),
-              }}
-            >
-              {(field) => (
-                <field.NumberField
-                  label="Ballistic"
-                  size="small"
-                  sx={{ flex: 1 }}
-                  slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                />
-              )}
+            <group.AppField name="ballistic">
+              {(field) => <field.CounterField label="Ballistic" min={0} max={20} />}
             </group.AppField>
 
-            <group.AppField
-              name="impact"
-              validators={{
-                onChange: z
-                  .number("Impact is required")
-                  .int("Impact must be a whole number")
-                  .min(0, "Impact must be 0 or more"),
-              }}
-            >
-              {(field) => (
-                <field.NumberField
-                  label="Impact"
-                  size="small"
-                  sx={{ flex: 1 }}
-                  slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                />
-              )}
+            <group.AppField name="impact">
+              {(field) => <field.CounterField label="Impact" min={0} max={20} />}
             </group.AppField>
           </Stack>
         </Stack>
