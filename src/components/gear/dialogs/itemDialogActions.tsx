@@ -12,6 +12,7 @@ interface ItemDialogActionsProps {
   onAcquire: () => void
   onPurchase: () => void
   onSave: () => void
+  onDelete?: () => void
 }
 
 export const ItemDialogActions: FC<ItemDialogActionsProps> = ({
@@ -21,6 +22,7 @@ export const ItemDialogActions: FC<ItemDialogActionsProps> = ({
   onAcquire,
   onPurchase,
   onSave,
+  onDelete,
 }) => {
   const currentNuyen = useCharacterSheet((s) => s.nuyen.current)
   const canAfford = currentNuyen >= totalCost
@@ -28,6 +30,12 @@ export const ItemDialogActions: FC<ItemDialogActionsProps> = ({
   if (!isAcquireMode) {
     return (
       <>
+        {onDelete && (
+          <Button color="error" sx={{ mr: "auto" }} onClick={onDelete}>
+            Delete
+          </Button>
+        )}
+
         <Button onClick={onClose}>Cancel</Button>
 
         <Button type="submit" variant="contained" onClick={onSave}>

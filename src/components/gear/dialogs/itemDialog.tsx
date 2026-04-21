@@ -41,6 +41,7 @@ export interface ItemDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
+  onDelete?: () => void
   /** Override the total cost calculation used for display and nuyen withdrawal. Defaults to `cost × quantity`. */
   getCost?: (values: ItemData) => number
   /** Filter which gear items appear in the "Attached To" parent dropdown. */
@@ -77,6 +78,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   open,
   onClose,
   onClosed,
+  onDelete,
   getCost,
   parentItemFilter,
   parentItemLabel,
@@ -284,6 +286,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
                 onAcquire={() => handleSubmitWithAction("acquire")}
                 onPurchase={() => handleSubmitWithAction("purchase")}
                 onSave={() => handleSubmitWithAction("save")}
+                onDelete={onDelete}
               />
             )}
           </form.Subscribe>

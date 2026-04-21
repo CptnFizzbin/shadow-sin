@@ -1,11 +1,6 @@
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
 import { LicenseFormFields } from "#/components/licenses/forms/licenseFormFields.tsx"
 import { licenseFieldMap, useLicenseForm } from "#/components/licenses/forms/useLicenseForm.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
@@ -38,28 +33,17 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   const title = license ? "Edit License" : "Create License"
 
   return (
-    <Dialog open={open} fullWidth onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-
-      <DialogContent sx={{ padding: 1 }}>
-        <Stack sx={{ gap: 1, padding: 1 }}>
+    <ItemDialog
+      form={form}
+      title={title}
+      open={open}
+      onClose={onClose}
+      onClosed={onClosed}
+      slots={{
+        itemFields: () => (
           <LicenseFormFields form={form} fields={licenseFieldMap} />
-        </Stack>
-      </DialogContent>
-
-      <DialogActions sx={{ padding: 1 }}>
-        <Button color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          color="secondary"
-          onClick={form.handleSubmit}
-          variant="contained"
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+        ),
+      }}
+    />
   )
 }

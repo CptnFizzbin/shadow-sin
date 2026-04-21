@@ -1,5 +1,3 @@
-import { z } from "zod"
-
 import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { licenseFormOpts } from "#/components/licenses/forms/useLicenseForm.tsx"
 import { FakeRatingOptions, RealRatingOptions } from "#/components/licenses/ratingOptions.ts"
@@ -15,17 +13,6 @@ export const LicenseFormFields = withFieldGroup({
 
     return (
       <>
-        <group.AppField
-          name="name"
-          validators={{
-            onChange: z.string().min(1, "Name is required"),
-          }}
-        >
-          {(field) => (
-            <field.TextField label="Name" fullWidth size="small" autoFocus />
-          )}
-        </group.AppField>
-
         <group.AppField name="parentId">
           {(field) => (
             <field.SelectField
