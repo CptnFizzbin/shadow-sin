@@ -33,7 +33,7 @@ function CharacterRoute() {
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
       try {
-        await localCharacterManager.saveCharacter(sheet)
+        await localCharacterManager.save(sheet)
       } catch (error) {
         console.error("Failed to save character sheet.", error)
       }
