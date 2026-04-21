@@ -103,6 +103,76 @@ describe("Counter", () => {
     })
   })
 
+  describe("onChange timing", () => {
+    it("calls onChange immediately when a valid number is typed", () => {
+      // Arrange
+      const onChange = vi.fn()
+      const { container } = render(
+        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        { wrapper: ThemeWrapper },
+      )
+      const input = container.querySelector("input")! as HTMLInputElement
+
+      // Act
+      focus(input)
+      change(input, "7")
+
+      // Assert — no blur needed; onChange fires as soon as the valid number is entered
+      expect(onChange).toHaveBeenCalledWith(7)
+    })
+
+    it("does not call onChange while the draft is an incomplete value like '-'", () => {
+      // Arrange
+      const onChange = vi.fn()
+      const { container } = render(
+        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        { wrapper: ThemeWrapper },
+      )
+      const input = container.querySelector("input")! as HTMLInputElement
+
+      // Act
+      focus(input)
+      change(input, "-")
+
+      // Assert — "-" is not yet a valid number; onChange must not fire yet
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it("does not call onChange while the field is empty mid-edit", () => {
+      // Arrange
+      const onChange = vi.fn()
+      const { container } = render(
+        <Counter value={5} min={0} max={10} onChange={onChange} />,
+        { wrapper: ThemeWrapper },
+      )
+      const input = container.querySelector("input")! as HTMLInputElement
+
+      // Act — clear without blurring
+      focus(input)
+      change(input, "")
+
+      // Assert — empty draft must not propagate null yet
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it("clamps immediately when the typed value exceeds max", () => {
+      // Arrange
+      const onChange = vi.fn()
+      const { container } = render(
+        <Counter value={null} min={0} max={6} onChange={onChange} />,
+        { wrapper: ThemeWrapper },
+      )
+      const input = container.querySelector("input")! as HTMLInputElement
+
+      // Act
+      focus(input)
+      change(input, "99")
+
+      // Assert — clamped during typing, no blur required
+      expect(onChange).toHaveBeenCalledWith(6)
+    })
+  })
+
   describe("clear and retype", () => {
     it("shows an empty field immediately when cleared during editing", () => {
       // Arrange
@@ -125,13 +195,16 @@ describe("Counter", () => {
       )
       const input = container.querySelector("input")! as HTMLInputElement
 
-      // Act — clear then retype without blurring
+      // Act — clear (invalid draft, no onChange), then retype a valid digit
       focus(input)
       change(input, "")
-      change(input, "3")
-
-      // Assert — onChange not yet called (still drafting)
+      // Assert — clearing must not propagate null while the user is still editing
       expect(onChange).not.toHaveBeenCalled()
+
+      change(input, "3")
+      // Assert — retyping a valid number commits it immediately (no blur needed)
+      expect(onChange).toHaveBeenCalledTimes(1)
+      expect(onChange).toHaveBeenCalledWith(3)
       expect(input.value).toBe("3")
     })
   })

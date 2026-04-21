@@ -35,17 +35,23 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
     // Strip every character that is not a digit, sign, or decimal point.
     const sanitized = e.target.value.replace(/[^0-9+.-]/g, "")
     setLocalValue(sanitized)
+
+    // If the sanitized string is already a valid integer, commit it immediately
+    // (clamped). Invalid/partial inputs like "", "-", "." are deferred to blur.
+    const parsed = Number.parseInt(sanitized, 10)
+    if (!Number.isNaN(parsed)) {
+      onChange(NumberUtils.clamp(parsed, { min, max }))
+    }
   }
 
   const handleBlur = () => {
     if (localValue === null) return
 
-    const trimmed = localValue.trim()
-    if (!trimmed) {
+    // Only fire onChange for invalid/empty drafts — valid ones were already
+    // committed inside handleChange.
+    const parsed = Number.parseInt(localValue.trim(), 10)
+    if (Number.isNaN(parsed)) {
       onChange(null)
-    } else {
-      const parsed = Number.parseInt(trimmed, 10)
-      onChange(Number.isNaN(parsed) ? null : NumberUtils.clamp(parsed, { min, max }))
     }
 
     // Reset to "not editing" — the display reverts to the controlled value prop.
