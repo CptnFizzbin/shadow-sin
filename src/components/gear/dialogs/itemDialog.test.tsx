@@ -94,7 +94,7 @@ describe("ItemDialog", () => {
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
-    expect(within(dialog).getByText("Rating")).toBeDefined()
+    expect(within(dialog).getByLabelText("Rating")).toBeDefined()
   })
 
   it("shows the quantity counter when multiple option is enabled", () => {
@@ -110,7 +110,7 @@ describe("ItemDialog", () => {
 
     const dialogs = screen.getAllByRole("dialog")
     const dialog = dialogs[dialogs.length - 1]
-    expect(within(dialog).getByText("Quantity")).toBeDefined()
+    expect(within(dialog).getByLabelText("Quantity")).toBeDefined()
   })
 
   it("shows the attached-to section when isSubItem option is enabled", () => {

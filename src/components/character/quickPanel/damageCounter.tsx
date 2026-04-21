@@ -21,7 +21,7 @@ export const DamageCounter: FC<DamageCounterProps> = ({ trackKey, label }) => {
       value={current}
       min={0}
       max={max}
-      onChange={(newValue) => damageStore.setDamage(trackKey, newValue)}
+      onChange={(newValue) => newValue !== null && damageStore.setDamage(trackKey, newValue)}
     />
   )
 }

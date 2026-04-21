@@ -33,6 +33,19 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
     }
   }
 
+  const handleDecrement = () => {
+    const current = value ?? min ?? 0
+    onChange(NumberUtils.clamp(current - 1, { min, max }))
+  }
+
+  const handleIncrement = () => {
+    const current = value ?? min ?? 0
+    onChange(NumberUtils.clamp(current + 1, { min, max }))
+  }
+
+  const isAtMin = value !== null && min !== undefined && value <= min
+  const isAtMax = value !== null && max !== undefined && value >= max
+
   return (
     <TextField
       label={label}
@@ -51,7 +64,7 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
           },
           startAdornment: (
             <InputAdornment position="start">
-              <Button sx={{ minWidth: "unset" }}>
+              <Button sx={{ minWidth: "unset" }} onClick={handleDecrement} disabled={isAtMin}>
                 <RiSubtractLine />
               </Button>
             </InputAdornment>
@@ -59,7 +72,7 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
           endAdornment: (
             <InputAdornment position="end">
               {unit}
-              <Button sx={{ minWidth: "unset" }}>
+              <Button sx={{ minWidth: "unset" }} onClick={handleIncrement} disabled={isAtMax}>
                 <RiAddLine />
               </Button>
             </InputAdornment>
