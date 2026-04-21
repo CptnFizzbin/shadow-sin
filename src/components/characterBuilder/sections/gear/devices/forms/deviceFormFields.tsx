@@ -1,101 +1,104 @@
 import Stack from "@mui/material/Stack"
-import { z } from "zod"
 
 import { deviceFormOpts } from "#/components/characterBuilder/sections/gear/devices/forms/useDeviceForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
-const positiveInt = z.number().int().min(0)
+const deviceTypeOptions = [
+  { label: "Commlink", value: "commlink" },
+  { label: "Other", value: "other" },
+]
 
 export const DeviceFormFields = withFieldGroup({
   ...deviceFormOpts,
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-          <group.AppField
-            name="deviceRating"
-            validators={{ onChange: positiveInt }}
-          >
-            {(field) => (
-              <field.NumberField
-                label="Device Rating"
-                size="small"
-                sx={{ flex: 1, minWidth: 100 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
-        </Stack>
+        <group.AppField name="deviceType">
+          {(field) => (
+            <field.SelectField
+              label="Device Type"
+              size="small"
+              fullWidth
+              options={deviceTypeOptions}
+            />
+          )}
+        </group.AppField>
 
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-          <group.AppField name="response" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="Response"
-                size="small"
-                sx={{ flex: 1, minWidth: 80 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
+        <group.Subscribe selector={(state) => state.values.deviceType}>
+          {(deviceType) => {
+            if (deviceType === "other") {
+              return (
+                <group.AppField name="customDeviceType">
+                  {(field) => (
+                    <field.TextField label="Device Type" size="small" fullWidth />
+                  )}
+                </group.AppField>
+              )
+            }
 
-          <group.AppField name="signal" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="Signal"
-                size="small"
-                sx={{ flex: 1, minWidth: 80 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
+            return (
+              <Stack sx={{ gap: 1 }}>
+                <Stack direction="row" sx={{ gap: 1 }}>
+                  <group.AppField name="deviceModel">
+                    {(field) => (
+                      <field.TextField label="Model" size="small" sx={{ flex: 1 }} />
+                    )}
+                  </group.AppField>
 
-          <group.AppField name="system" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="System"
-                size="small"
-                sx={{ flex: 1, minWidth: 80 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
+                  <group.AppField name="deviceOS">
+                    {(field) => (
+                      <field.TextField label="OS" size="small" sx={{ flex: 1 }} />
+                    )}
+                  </group.AppField>
+                </Stack>
 
-          <group.AppField name="firewall" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="Firewall"
-                size="small"
-                sx={{ flex: 1, minWidth: 80 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
-        </Stack>
+                <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+                  <group.AppField name="deviceRating">
+                    {(field) => (
+                      <field.CounterField label="Device Rating" min={0} max={99} />
+                    )}
+                  </group.AppField>
 
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-          <group.AppField name="dataProcessing" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="Data Processing"
-                size="small"
-                sx={{ flex: 1, minWidth: 120 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
+                  <group.AppField name="response">
+                    {(field) => (
+                      <field.CounterField label="Response" min={0} max={99} />
+                    )}
+                  </group.AppField>
 
-          <group.AppField name="programSlots" validators={{ onChange: positiveInt }}>
-            {(field) => (
-              <field.NumberField
-                label="Program Slots"
-                size="small"
-                sx={{ flex: 1, minWidth: 120 }}
-                slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
-        </Stack>
+                  <group.AppField name="signal">
+                    {(field) => (
+                      <field.CounterField label="Signal" min={0} max={99} />
+                    )}
+                  </group.AppField>
+
+                  <group.AppField name="system">
+                    {(field) => (
+                      <field.CounterField label="System" min={0} max={99} />
+                    )}
+                  </group.AppField>
+
+                  <group.AppField name="firewall">
+                    {(field) => (
+                      <field.CounterField label="Firewall" min={0} max={99} />
+                    )}
+                  </group.AppField>
+
+                  <group.AppField name="dataProcessing">
+                    {(field) => (
+                      <field.CounterField label="Data Processing" min={0} max={99} />
+                    )}
+                  </group.AppField>
+
+                  <group.AppField name="programSlots">
+                    {(field) => (
+                      <field.CounterField label="Program Slots" min={0} max={99} />
+                    )}
+                  </group.AppField>
+                </Stack>
+              </Stack>
+            )
+          }}
+        </group.Subscribe>
       </Stack>
     )
   },

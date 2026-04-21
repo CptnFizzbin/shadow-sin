@@ -6,6 +6,13 @@ import { ItemType } from "#/system/itemType.ts"
 export interface DeviceData extends ItemData {
   itemType: ItemType.device
 
+  deviceType?: "commlink" | "other"
+  /** Custom label shown when deviceType is "other" */
+  customDeviceType?: string
+  /** Brand/model name — shown when deviceType is "commlink" */
+  deviceModel?: string
+  deviceOS?: string
+
   deviceRating?: number
   response?: number
   signal?: number
@@ -53,4 +60,8 @@ export const DeviceDataSchema = z.object({
   firewall: z.number().optional(),
   dataProcessing: z.number().optional(),
   programSlots: z.number().optional(),
+  deviceType: z.enum(["commlink", "other"]).optional(),
+  customDeviceType: z.string().optional(),
+  deviceModel: z.string().optional(),
+  deviceOS: z.string().optional(),
 })
