@@ -15,7 +15,9 @@ import {
 } from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { WeaponType } from "#/system/gear/weaponData.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { MeleeWeaponType, WeaponType } from "#/system/gear/weaponData.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 const weaponTypeOptions = [
   { label: "Melee", value: WeaponType.melee },
@@ -25,12 +27,33 @@ const weaponTypeOptions = [
   { label: "Exotic", value: WeaponType.exotic },
   { label: "Other", value: WeaponType.other },
 ]
+
+const meleeTypeOptions = [
+  { label: "Blade", value: MeleeWeaponType.blade },
+  { label: "Club", value: MeleeWeaponType.club },
+]
+
+const meleeSkillByType: Record<MeleeWeaponType, SkillKey> = {
+  [MeleeWeaponType.blade]: SkillKey.blades,
+  [MeleeWeaponType.club]: SkillKey.clubs,
+}
 export const WeaponFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <group.AppField name="weaponType">
+        <group.AppField
+          name="weaponType"
+          listeners={{
+            onChange: ({ value }) => {
+              if (value === WeaponType.melee) {
+                group.setFieldValue("attribute", AttributeKey.strength)
+              } else {
+                group.setFieldValue("attribute", "")
+              }
+            },
+          }}
+        >
           {(field) => (
             <field.SelectField
               label="Weapon Type"
@@ -50,6 +73,26 @@ export const WeaponFormFields = withFieldGroup({
                     <Stack>
                       <Label label="Melee Weapon Traits" />
 
+                      <group.AppField
+                        name="meleeType"
+                        listeners={{
+                          onChange: ({ value }) => {
+                            if (value) {
+                              group.setFieldValue("skill", meleeSkillByType[value])
+                            }
+                          },
+                        }}
+                      >
+                        {(field) => (
+                          <field.SelectField
+                            label="Melee Weapon Type"
+                            size="small"
+                            fullWidth
+                            options={meleeTypeOptions}
+                          />
+                        )}
+                      </group.AppField>
+
                       <WeaponSkillFormFields form={group} fields={weaponFieldMap} />
                       <WeaponDamageFormFields form={group} fields={weaponFieldMap} />
 
@@ -63,11 +106,7 @@ export const WeaponFormFields = withFieldGroup({
                         }}
                       >
                         {(field) => (
-                          <field.NumberField
-                            label="Reach"
-                            size="small"
-                            slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                          />
+                          <field.CounterField label="Reach" min={0} max={4} />
                         )}
                       </group.AppField>
                     </Stack>
