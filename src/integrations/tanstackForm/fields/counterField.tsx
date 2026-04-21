@@ -18,7 +18,7 @@ export const CounterField: FC<CounterFieldProps> = ({ min, max, label }) => {
       min={min}
       max={max}
       label={label}
-      onChange={(newValue) => field.handleChange(newValue)}
+      onChange={field.handleChange}
     />
   )
 }

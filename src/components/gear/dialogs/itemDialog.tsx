@@ -123,7 +123,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     try {
       await form.handleSubmit({ submitAction })
     } catch {
-      // onSubmit threw; form.state.isSubmitSuccessful is already false
+      // TanStack Form re-throws errors from onSubmit after setting
+      // isSubmitSuccessful to false. Swallow the re-throw here — the
+      // isSubmitSuccessful check below prevents the nuyen deduction.
     }
     if (submitAction === "purchase" && form.state.isSubmitSuccessful) {
       const values = form.state.values
