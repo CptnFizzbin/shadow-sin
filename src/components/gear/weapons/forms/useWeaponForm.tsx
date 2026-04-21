@@ -3,6 +3,7 @@ import { createFieldMap, formOptions } from "@tanstack/form-core"
 import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
@@ -22,9 +23,11 @@ const defaultFormValues = {
   name: "",
   weaponType: WeaponType.firearm,
   dmg: "",
+  dmgType: "physical" as "physical" | "stun" | "custom",
+  dmgValue: 0,
   ap: 0,
-  skill: SkillKey.unarmedCombat as SkillKey,
-  attribute: "",
+  skill: SkillKey.automatics as SkillKey,
+  attribute: AttributeKey.agility as AttributeKey | "",
   cost: 0,
   description: "",
   equipped: false,
@@ -79,7 +82,8 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     itemType: ItemType.weapon as typeof ItemType.weapon,
     name: values.name,
     weaponType: values.weaponType,
-    dmg: values.dmg,
+    dmg: values.dmgType === "custom" ? values.dmg : String(values.dmgValue),
+    dmgType: values.dmgType,
     equipped: values.equipped,
     ...(values.ap !== 0 && { ap: values.ap }),
     skill: values.skill as SkillKey,
@@ -128,10 +132,12 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
     id: weapon.id,
     name: weapon.name,
     weaponType: weapon.weaponType,
-    dmg: weapon.dmg,
+    dmg: weapon.dmgType === "custom" ? weapon.dmg : "",
+    dmgType: weapon.dmgType ?? "physical",
+    dmgValue: weapon.dmgType !== "custom" ? (Number.parseInt(weapon.dmg, 10) || 0) : 0,
     ap: weapon.ap ?? 0,
     skill: weapon.skill,
-    attribute: weapon.attribute ?? "",
+    attribute: weapon.attribute ?? (weapon.weaponType === WeaponType.firearm ? AttributeKey.agility : ""),
     cost: weapon.cost ?? 0,
     description: weapon.description ?? "",
     equipped: weapon.equipped ?? false,

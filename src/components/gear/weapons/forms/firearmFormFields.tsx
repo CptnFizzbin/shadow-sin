@@ -1,6 +1,6 @@
+import Checkbox from "@mui/material/Checkbox"
+import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
 import { weaponFieldMap, weaponFormOpts } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
@@ -8,8 +8,10 @@ import { WeaponDamageFormFields } from "#/components/gear/weapons/forms/weaponDa
 import { WeaponSkillFormFields } from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 import { FirearmAttachmentPoint } from "#/system/gear/weaponData.ts"
 import { firearmTypes } from "#/system/gear/weapons/firearms/firearmTypeInfo.ts"
+import type { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 
 const firearmTypeOptions = Object.entries(firearmTypes).map(([type, value]) => ({
   label: type,
@@ -44,7 +46,20 @@ export const FirearmFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => (
     <Stack sx={{ gap: 1 }}>
-      <group.AppField name="firearmType">
+      <group.AppField
+        name="firearmType"
+        listeners={{
+          onChange: ({ value, fieldApi }) => {
+            const skill = firearmTypes[value as FirearmTypeKey]?.skill
+            if (skill) {
+              fieldApi.form.setFieldValue("skill", skill)
+            }
+            if (!fieldApi.form.getFieldValue("attribute")) {
+              fieldApi.form.setFieldValue("attribute", AttributeKey.agility)
+            }
+          },
+        }}
+      >
         {(field) => (
           <field.SelectField
             label="Firearm Type"
@@ -65,7 +80,7 @@ export const FirearmFormFields = withFieldGroup({
           }}
         >
           {(field) => (
-            <field.NumberField label="Recoil" />
+            <field.CounterField label="Recoil" min={0} max={20} />
           )}
         </group.AppField>
       </Stack>
@@ -85,19 +100,21 @@ export const FirearmFormFields = withFieldGroup({
               group.setFieldValue("firemodes", updatedModes)
             }
             return (
-              <ToggleButtonGroup size="small">
+              <Stack direction="row" sx={{ flexWrap: "wrap" }}>
                 {firingModes.map(({ label, value }) => (
-                  <ToggleButton
+                  <FormControlLabel
                     key={value}
-                    value={value}
-                    selected={firemodes.includes(value)}
-                    onClick={() => toggleMode(value)}
-                    sx={{ flex: 1 }}
-                  >
-                    {label}
-                  </ToggleButton>
+                    label={label}
+                    control={(
+                      <Checkbox
+                        checked={firemodes.includes(value)}
+                        onChange={() => toggleMode(value)}
+                        size="small"
+                      />
+                    )}
+                  />
                 ))}
-              </ToggleButtonGroup>
+              </Stack>
             )
           }}
         </group.Subscribe>
@@ -115,19 +132,21 @@ export const FirearmFormFields = withFieldGroup({
               group.setFieldValue("attachmentPoints", updatedSlots)
             }
             return (
-              <ToggleButtonGroup size="small">
+              <Stack direction="row" sx={{ flexWrap: "wrap" }}>
                 {attachmentSlots.map(({ label, value }) => (
-                  <ToggleButton
+                  <FormControlLabel
                     key={value}
-                    value={value}
-                    selected={attachmentPoints.includes(value)}
-                    onClick={() => toggleSlot(value)}
-                    sx={{ flex: 1 }}
-                  >
-                    {label}
-                  </ToggleButton>
+                    label={label}
+                    control={(
+                      <Checkbox
+                        checked={attachmentPoints.includes(value)}
+                        onChange={() => toggleSlot(value)}
+                        size="small"
+                      />
+                    )}
+                  />
                 ))}
-              </ToggleButtonGroup>
+              </Stack>
             )
           }}
         </group.Subscribe>
@@ -137,6 +156,17 @@ export const FirearmFormFields = withFieldGroup({
         <Label label="Ammo" variant="text" />
 
         <Stack direction="row" sx={{ gap: 1 }}>
+          <group.AppField name="ammo.type">
+            {(field) => (
+              <field.SelectField
+                label="Feed Type"
+                size="small"
+                sx={{ flex: 1 }}
+                options={ammoTypeOptions}
+              />
+            )}
+          </group.AppField>
+
           <group.AppField
             name="ammo.size"
             validators={{
@@ -152,17 +182,6 @@ export const FirearmFormFields = withFieldGroup({
                 size="small"
                 sx={{ flex: 1 }}
                 slotProps={{ htmlInput: { min: 0, step: 1 } }}
-              />
-            )}
-          </group.AppField>
-
-          <group.AppField name="ammo.type">
-            {(field) => (
-              <field.SelectField
-                label="Feed Type"
-                size="small"
-                sx={{ flex: 1 }}
-                options={ammoTypeOptions}
               />
             )}
           </group.AppField>

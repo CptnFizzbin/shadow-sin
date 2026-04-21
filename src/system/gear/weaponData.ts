@@ -22,6 +22,7 @@ export enum WeaponType {
 
 export interface WeaponData extends ItemData {
   dmg: string
+  dmgType?: "physical" | "stun" | "custom"
   ap?: number
   itemType: ItemType.weapon
   weaponType: WeaponType
