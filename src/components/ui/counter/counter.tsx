@@ -1,43 +1,71 @@
-import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import InputAdornment from "@mui/material/InputAdornment"
+import type { TextFieldProps } from "@mui/material/TextField"
+import TextField from "@mui/material/TextField"
 import { RiAddLine, RiSubtractLine } from "@remixicon/react"
-import type { FC, ReactNode } from "react"
+import type { ChangeEventHandler, FC, ReactNode } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { NumberUtils } from "#/lib/numberUtils.ts"
+import styles from "./counter.module.css"
 
-export interface CounterProps {
-  value: number
-  min: number
-  max: number
-  onChange: (newValue: number) => void
+export interface CounterProps extends Omit<TextFieldProps, "value" | "onChange"> {
+  value: number | null
+  min?: number
+  max?: number
+  onChange: (newValue: number | null) => void
   label?: string
   unit?: ReactNode
 }
 
 export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, unit }) => {
-  return (
-    <Stack sx={{ alignItems: "center", gap: 0, flexGrow: 1 }}>
-      {label && <Label label={label} />}
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const strValue = e.target.value.trim()
+    if (!strValue) {
+      onChange(null)
+      return
+    }
 
-      <Stack direction="row" sx={{ alignItems: "center" }}>
-        <IconButton
-          onClick={() => onChange(Math.max(min, value - 1))}
-          disabled={value <= min}
-        >
-          <RiSubtractLine />
-        </IconButton>
-        <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, minWidth: 50, justifyContent: "center" }}>
-          <Typography>{value} {max >= 1 && <>/ {max}</>}</Typography>
-          {unit}
-        </Stack>
-        <IconButton
-          onClick={() => onChange(Math.min(max, value + 1))}
-          disabled={value >= max}
-        >
-          <RiAddLine />
-        </IconButton>
-      </Stack>
-    </Stack>
+    const nextValue = Number.parseInt(e.target.value)
+    if (Number.isNaN(nextValue)) {
+      onChange(null)
+    } else {
+      onChange(NumberUtils.clamp(nextValue, { min, max }))
+    }
+  }
+
+  return (
+    <TextField
+      label={label}
+      type="number"
+      value={value ?? ""}
+      onChange={handleChange}
+      className={styles.numberField}
+      slotProps={{
+        htmlInput: {
+          style: { textAlign: "center", minWidth: 50 },
+        },
+        input: {
+          sx: {
+            padding: 0,
+            width: "min-content",
+          },
+          startAdornment: (
+            <InputAdornment position="start">
+              <Button sx={{ minWidth: "unset" }}>
+                <RiSubtractLine />
+              </Button>
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position="end">
+              {unit}
+              <Button sx={{ minWidth: "unset" }}>
+                <RiAddLine />
+              </Button>
+            </InputAdornment>
+          ),
+        },
+      }}
+    />
   )
 }

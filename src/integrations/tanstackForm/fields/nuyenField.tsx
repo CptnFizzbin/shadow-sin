@@ -1,9 +1,7 @@
 import type { FC } from "react"
 
 import type { NuyenFieldProps } from "#/components/ui/form/fields/nuyenField.tsx"
-import {
-  NuyenField as NuyenInputField,
-} from "#/components/ui/form/fields/nuyenField.tsx"
+import { NuyenField as NuyenInputField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { useFieldErrors } from "#/integrations/tanstackForm/fields/useFieldError.ts"
 import { useFieldContext } from "../fieldContext.ts"
 
