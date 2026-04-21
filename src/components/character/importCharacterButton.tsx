@@ -59,7 +59,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
       setPendingCharacter(character)
       setExistingCharacter(existing)
     } else {
-      await localCharacterManager.saveCharacter(character)
+      await localCharacterManager.forceSave(character)
       await onImported?.()
     }
   }
@@ -68,7 +68,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
     if (!pendingCharacter) return
 
     if (choice === "overwrite") {
-      await localCharacterManager.saveCharacter(pendingCharacter)
+      await localCharacterManager.forceSave(pendingCharacter)
       await onImported?.()
     } else if (choice === "create-new") {
       const allCharacters = await localCharacterManager.listCharacters()
@@ -84,7 +84,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
           alias: newAlias,
         },
       }
-      await localCharacterManager.saveCharacter(newCharacter)
+      await localCharacterManager.forceSave(newCharacter)
       await onImported?.()
     }
 

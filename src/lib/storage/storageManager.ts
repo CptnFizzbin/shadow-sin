@@ -1,11 +1,6 @@
-import type { AnyFunction } from "@tanstack/pacer"
-import { debounce } from "@tanstack/pacer"
-
 import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/storageProvider.ts"
 
 export class StorageManager {
-  private readonly debouncedSaveFns: Record<string, AnyFunction> = {}
-
   public constructor(private readonly storageProvider: StorageProvider) {}
 
   public get providerId(): string {
@@ -28,11 +23,7 @@ export class StorageManager {
     path: string,
     value: TValue,
   ): Promise<StoredJsonFile<TValue>> {
-    const saveFn = this.debouncedSaveFns[path] ??= debounce((content: TValue) => {
-      return this.storageProvider.saveJsonFile(path, content)
-    }, { wait: 1000 })
-
-    return saveFn(value)
+    return this.storageProvider.saveJsonFile(path, value)
   }
 
   public deleteJsonFile(path: string): Promise<void> {

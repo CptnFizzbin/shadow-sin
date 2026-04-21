@@ -19,7 +19,7 @@ export const SaveCharacterButton: FC = () => {
         character = { ...character, id: crypto.randomUUID() }
       }
 
-      await localCharacterManager.saveCharacter(character)
+      await localCharacterManager.forceSave(character)
       await navigate({ to: "/$characterId", params: { characterId: character.id } })
     },
   })
