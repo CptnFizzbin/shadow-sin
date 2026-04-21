@@ -31,7 +31,14 @@ export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
     onSubmit: onSave,
   })
 
-  const title = vehicle ? "Edit Vehicle" : "Add Vehicle"
+  const title = (
+    <form.Subscribe selector={({ values }) => values.vehicleCategory}>
+      {(currentCategory) => {
+        const categoryLabel = currentCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
+        return vehicle ? `Edit ${categoryLabel}` : `Add ${categoryLabel}`
+      }}
+    </form.Subscribe>
+  )
 
   return (
     <ItemDialog

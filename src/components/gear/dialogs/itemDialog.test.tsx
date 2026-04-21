@@ -1,7 +1,8 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import type { FC } from "react"
-import { describe, expect, it, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
+import { NuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import type { ItemDialogProps } from "#/components/gear/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
 import { itemDefaults, useItemForm } from "#/components/gear/forms/useItemForm.tsx"
@@ -153,32 +154,97 @@ describe("ItemDialog", () => {
     expect(within(dialog).queryByRole("button", { name: /save/i })).toBeNull()
   })
 
-  it("calls onSave then deducts nuyen on purchase in viewer mode", async () => {
-    const onSave = vi.fn()
-    renderWithProviders(
-      <ItemDialogWrapper
-        open
-        itemType={ItemType.other}
-        title="Add Item"
-        onSave={onSave}
-        onClose={vi.fn()}
-      />,
-    )
+  describe.sequential("nuyen deduction on purchase", () => {
+    afterEach(() => vi.restoreAllMocks())
 
-    const dialogs = screen.getAllByRole("dialog")
-    const dialog = dialogs[dialogs.length - 1]
+    it("calls onSave and deducts nuyen on successful purchase in viewer mode", async () => {
+      // Arrange
+      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const onSave = vi.fn()
+      renderWithProviders(
+        <ItemDialogWrapper
+          open
+          itemType={ItemType.other}
+          title="Add Item"
+          onSave={onSave}
+          onClose={vi.fn()}
+        />,
+      )
 
-    fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
-      target: { value: "Bought Thing" },
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
+        target: { value: "Bought Thing" },
+      })
+
+      // Act
+      fireEvent.click(within(dialog).getByRole("button", { name: /purchase/i }))
+
+      // Assert
+      await waitFor(() => {
+        expect(onSave).toHaveBeenCalledOnce()
+        const submitted: ItemData = onSave.mock.calls[0][0]
+        expect(submitted.name).toBe("Bought Thing")
+        expect(withdrawSpy).toHaveBeenCalledOnce()
+      })
     })
 
-    const purchaseButton = within(dialog).getByRole("button", { name: /purchase/i })
-    fireEvent.click(purchaseButton)
+    it("does not deduct nuyen when onSave throws on purchase", async () => {
+      // Arrange
+      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const onSave = vi.fn().mockRejectedValue(new Error("save failed"))
+      renderWithProviders(
+        <ItemDialogWrapper
+          open
+          itemType={ItemType.other}
+          title="Add Item"
+          onSave={onSave}
+          onClose={vi.fn()}
+        />,
+      )
 
-    await waitFor(() => {
-      expect(onSave).toHaveBeenCalledOnce()
-      const submitted: ItemData = onSave.mock.calls[0][0]
-      expect(submitted.name).toBe("Bought Thing")
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
+        target: { value: "Failed Item" },
+      })
+
+      // Act — onSave is called but rejects, so isSubmitSuccessful is false
+      fireEvent.click(within(dialog).getByRole("button", { name: /purchase/i }))
+
+      // Assert — wait for onSave to have been called (it was, but threw), then verify no withdrawal
+      await waitFor(() => expect(onSave).toHaveBeenCalledOnce())
+      expect(withdrawSpy).not.toHaveBeenCalled()
+    })
+
+    it("does not deduct nuyen when form validation fails on purchase", async () => {
+      // Arrange
+      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const onSave = vi.fn()
+      renderWithProviders(
+        <ItemDialogWrapper
+          open
+          itemType={ItemType.other}
+          title="Add Item"
+          onSave={onSave}
+          onClose={vi.fn()}
+        />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
+
+      // Name intentionally left empty — validation will fail
+
+      // Act
+      fireEvent.click(within(dialog).getByRole("button", { name: /purchase/i }))
+
+      // Assert — wait for the validation error then confirm neither onSave nor withdraw ran
+      await waitFor(() => within(dialog).getByText("Name is required"))
+      expect(onSave).not.toHaveBeenCalled()
+      expect(withdrawSpy).not.toHaveBeenCalled()
     })
   })
 

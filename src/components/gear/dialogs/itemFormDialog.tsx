@@ -31,6 +31,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
     defaultValues: {
       ...itemDefaults,
       itemType: itemType ?? ItemType.other,
+      rating: 1,
     },
     onSubmit: onSave,
   })

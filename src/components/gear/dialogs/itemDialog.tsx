@@ -120,8 +120,12 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const isAcquireMode = isNewItem && !isBuilder
 
   const handleSubmitWithAction = async (submitAction: "acquire" | "purchase" | "save") => {
-    await form.handleSubmit({ submitAction })
-    if (submitAction === "purchase") {
+    try {
+      await form.handleSubmit({ submitAction })
+    } catch {
+      // onSubmit threw; form.state.isSubmitSuccessful is already false
+    }
+    if (submitAction === "purchase" && form.state.isSubmitSuccessful) {
       const values = form.state.values
       const totalCost = getCost
         ? getCost(values)

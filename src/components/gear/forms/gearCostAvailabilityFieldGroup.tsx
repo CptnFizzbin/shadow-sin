@@ -17,7 +17,7 @@ export const GearCostAvailabilityFieldGroup = withFieldGroup({
           }}
         >
           {(field) => (
-            <field.NuyenField size="small" sx={{ flex: 1 }} />
+            <field.NuyenField label="Cost" size="small" sx={{ flex: 1 }} />
           )}
         </group.AppField>
 
