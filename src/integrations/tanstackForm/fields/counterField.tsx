@@ -10,15 +10,15 @@ interface CounterFieldProps {
 }
 
 export const CounterField: FC<CounterFieldProps> = ({ min, max, label }) => {
-  const field = useFieldContext<number>()
+  const field = useFieldContext<number | undefined>()
 
   return (
     <Counter
-      value={field.state.value}
+      value={field.state.value ?? min}
       min={min}
       max={max}
       label={label}
-      onChange={field.handleChange}
+      onChange={(newValue) => field.handleChange(newValue ?? undefined)}
     />
   )
 }

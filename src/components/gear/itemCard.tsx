@@ -11,13 +11,13 @@ import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
-interface GearItemCardProps {
+interface ItemCardProps {
   item: ItemData
   onEdit: () => void
   onRemove: () => void
 }
 
-export const GearItemCard: FC<GearItemCardProps> = ({
+export const ItemCard: FC<ItemCardProps> = ({
   item,
   onEdit,
   onRemove,

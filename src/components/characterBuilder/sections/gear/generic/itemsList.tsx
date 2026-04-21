@@ -7,8 +7,8 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
-import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
+import { ItemCard } from "#/components/gear/itemCard.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
@@ -18,13 +18,13 @@ type DialogState =
   | { mode: "create", parentId?: UUID, open: boolean }
   | { mode: "edit", item: ItemData, open: boolean }
 
-interface GearItemsListProps {
+interface ItemsListProps {
   items: ItemData[]
   itemLabel?: string
   itemType?: ItemType
 }
 
-export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", itemType, items }) => {
+export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, items }) => {
   const gearApi = useGearStore()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 
@@ -63,7 +63,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
 
         return (
           <Box key={item.id}>
-            <GearItemCard
+            <ItemCard
               item={item}
               onEdit={() => setDialogState({ mode: "edit", item, open: true })}
               onRemove={() => gearApi.remove(item)}
@@ -80,7 +80,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
               }}
             >
               {subItems.map((subItem) => (
-                <GearItemCard
+                <ItemCard
                   key={subItem.id}
                   item={subItem}
                   onEdit={() =>
@@ -121,7 +121,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
       </Button>
 
       {dialogState?.mode === "create" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={dialogState.open}
           itemType={itemType}
           label={dialogState.parentId ? `${itemLabel} sub-item` : itemLabel}
@@ -132,7 +132,7 @@ export const GearItemsList: FC<GearItemsListProps> = ({ itemLabel = "Item", item
       )}
 
       {dialogState?.mode === "edit" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={dialogState.open}
           itemType={itemType}
           item={dialogState.item}

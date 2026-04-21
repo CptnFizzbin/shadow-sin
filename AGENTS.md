@@ -128,6 +128,20 @@ it("does something", () => {
 })
 ```
 
+## Type assertions
+
+**Never use `as unknown as T`** (the double type assertion pattern). This two-step cast bypasses TypeScript's structural checks entirely and hides real type incompatibilities.
+
+- If two types are structurally compatible, a single `as T` assertion is enough.
+- If a function or component needs to accept many concrete subtypes (e.g. `ArmorData`, `WeaponData`), export a shared alias using `any` in a targeted type position and document it:
+  ```ts
+  // ✅ — one explicit any in a named alias; no assertion at call sites
+  export type AnyItemForm = AppFieldExtendedReactFormApi<any, …, GearSubmitMeta, any, any>
+
+  // ❌ — hides the incompatibility, breaks IDE navigation
+  form={form as unknown as ItemForm}
+  ```
+
 ## MUI style props
 
 Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**.

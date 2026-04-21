@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { gearItemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
+import { itemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export const GearQuantityFieldGroup = withFieldGroup({
-  ...gearItemFormOpts,
+  ...itemFormOpts,
   render: ({ group }) => {
     return (
       <group.AppField

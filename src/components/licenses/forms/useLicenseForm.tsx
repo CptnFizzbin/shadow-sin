@@ -2,10 +2,9 @@ import type { UUID } from "node:crypto"
 
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { getLicenseCost } from "#/components/licenses/licenseUtils.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -33,19 +32,11 @@ export const licenseFormOpts = formOptions({
 })
 
 export const useLicenseForm = ({ parentId, license, onSubmit }: LicenseFormOptions) => {
-  return useAppForm({
-    ...licenseFormOpts,
-    defaultValues: {
-      ...defaultValues,
-      parentId: parentId,
-      ...license,
-    },
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => {
-      onSubmit({
-        ...value,
-        cost: getLicenseCost(value.rating),
-      }, meta)
+  return useItemForm<LicenseData>({
+    item: license,
+    defaultValues: { ...defaultValues, parentId },
+    onSubmit: (value, meta) => {
+      onSubmit({ ...value, cost: getLicenseCost(value.rating) }, meta)
     },
   })
 }

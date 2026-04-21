@@ -1,8 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
@@ -120,51 +119,46 @@ function toWeaponData(values: WeaponFormState): WeaponData {
   return base as WeaponData
 }
 
+function weaponToFormState(weapon: WeaponData): WeaponFormState {
+  const firearmWeapon = weapon.weaponType === WeaponType.firearm ? (weapon as FirearmData) : undefined
+  const meleeWeapon = weapon.weaponType === WeaponType.melee ? (weapon as MeleeWeaponData) : undefined
+
+  return {
+    ...defaultFormValues,
+    id: weapon.id,
+    name: weapon.name,
+    weaponType: weapon.weaponType,
+    dmg: weapon.dmg,
+    ap: weapon.ap ?? 0,
+    skill: weapon.skill,
+    attribute: weapon.attribute ?? "",
+    cost: weapon.cost ?? 0,
+    description: weapon.description ?? "",
+    equipped: weapon.equipped ?? false,
+    availability: {
+      rating: weapon.availability?.rating ?? 0,
+      restricted: weapon.availability?.restricted ?? false,
+      forbidden: weapon.availability?.forbidden ?? false,
+    },
+    source: {
+      book: weapon.source?.book ?? "",
+      page: weapon.source?.page ?? 0,
+    },
+    quantity: weapon.quantity ?? 1,
+    rating: typeof weapon.rating === "number" ? weapon.rating : undefined,
+    reach: meleeWeapon?.reach ?? 0,
+    firearmType: firearmWeapon?.firearmType ?? FirearmTypeKey.lightPistol,
+    firemodes: firearmWeapon?.firemodes ?? [],
+    attachmentPoints: firearmWeapon?.attachmentPoints ?? [],
+    recoil: firearmWeapon?.recoil ?? 0,
+    ammo: firearmWeapon?.ammo ?? defaultFormValues.ammo,
+  }
+}
+
 export const useWeaponForm = ({ weapon, onSubmit }: WeaponFormOptions) => {
-  const firearmWeapon =
-    weapon?.weaponType === WeaponType.firearm ? (weapon as FirearmData) : undefined
-  const meleeWeapon =
-    weapon?.weaponType === WeaponType.melee ? (weapon as MeleeWeaponData) : undefined
-
-  const defaults: WeaponFormState = weapon
-    ? {
-        ...defaultFormValues,
-        id: weapon.id,
-        name: weapon.name,
-        weaponType: weapon.weaponType,
-        dmg: weapon.dmg,
-        ap: weapon.ap ?? 0,
-        skill: weapon.skill,
-        attribute: weapon.attribute ?? "",
-        cost: weapon.cost ?? 0,
-        description: weapon.description ?? "",
-        equipped: weapon.equipped ?? false,
-        availability: {
-          rating: weapon.availability?.rating ?? 0,
-          restricted: weapon.availability?.restricted ?? false,
-          forbidden: weapon.availability?.forbidden ?? false,
-        },
-        source: {
-          book: weapon.source?.book ?? "",
-          page: weapon.source?.page ?? 0,
-        },
-        quantity: weapon.quantity ?? 1,
-        rating: typeof weapon.rating === "number" ? weapon.rating : undefined,
-        reach: meleeWeapon?.reach ?? 0,
-        firearmType: firearmWeapon?.firearmType ?? FirearmTypeKey.lightPistol,
-        firemodes: firearmWeapon?.firemodes ?? [],
-        attachmentPoints: firearmWeapon?.attachmentPoints ?? [],
-        recoil: firearmWeapon?.recoil ?? 0,
-        ammo: firearmWeapon?.ammo ?? defaultFormValues.ammo,
-      }
-    : {
-        ...defaultFormValues,
-      }
-
-  return useAppForm({
-    ...weaponFormOpts,
-    defaultValues: defaults,
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => onSubmit(toWeaponData(value), meta),
+  return useItemForm<WeaponFormState>({
+    item: weapon ? weaponToFormState(weapon) : undefined,
+    defaultValues: defaultFormValues,
+    onSubmit: (formState, meta) => onSubmit(toWeaponData(formState), meta),
   })
 }

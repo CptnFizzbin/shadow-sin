@@ -1,8 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -45,13 +44,9 @@ export const deviceFormOpts = formOptions({
 })
 
 export const useDeviceForm = ({ device, onSubmit }: DeviceFormOptions) => {
-  return useAppForm({
-    ...deviceFormOpts,
-    defaultValues: {
-      ...defaultFormValues,
-      ...device,
-    },
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => onSubmit(value, meta),
+  return useItemForm<DeviceData>({
+    item: device,
+    defaultValues: defaultFormValues,
+    onSubmit,
   })
 }

@@ -1,16 +1,16 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
-describe("GearItemFormDialog", () => {
+describe("ItemFormDialog", () => {
   it("submits a vehicle item when itemType=vehicle", async () => {
     const onSave = vi.fn()
     renderInBuilder(
-      <GearItemFormDialog
+      <ItemFormDialog
         open
         itemType={ItemType.vehicle}
         label="Vehicle"
@@ -32,7 +32,7 @@ describe("GearItemFormDialog", () => {
   it("submits an armor item when itemType=armor", async () => {
     const onSave = vi.fn()
     renderInBuilder(
-      <GearItemFormDialog
+      <ItemFormDialog
         open
         itemType={ItemType.armor}
         label="Armor"
@@ -53,7 +53,7 @@ describe("GearItemFormDialog", () => {
   it("submits a misc (other) item when no itemType is provided", async () => {
     const onSave = vi.fn()
     renderInBuilder(
-      <GearItemFormDialog open label="Item" onSave={onSave} onClose={vi.fn()} />,
+      <ItemFormDialog open label="Item" onSave={onSave} onClose={vi.fn()} />,
     )
 
     fillNameAndClickSave("Random Gear")
@@ -68,7 +68,7 @@ describe("GearItemFormDialog", () => {
   it("submits an explicit misc item when itemType=other", async () => {
     const onSave = vi.fn()
     renderInBuilder(
-      <GearItemFormDialog
+      <ItemFormDialog
         open
         itemType={ItemType.other}
         label="Item"

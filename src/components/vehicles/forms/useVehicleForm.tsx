@@ -1,8 +1,7 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
+import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { defaultGearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
@@ -80,51 +79,43 @@ function toVehicleData(values: VehicleFormState): VehicleData {
   }
 }
 
-export const useVehicleForm = ({
-  vehicle,
-  vehicleCategory,
-  onSubmit,
-}: VehicleFormOptions) => {
-  const defaults: VehicleFormState = vehicle
-    ? {
-        ...defaultFormValues,
-        id: vehicle.id,
-        vehicleCategory: vehicle.vehicleCategory,
-        vehicleType: vehicle.vehicleType ?? "",
-        model: vehicle.model ?? "",
-        name: vehicle.name,
-        cost: vehicle.cost ?? 0,
-        description: vehicle.description ?? "",
-        quantity: vehicle.quantity ?? 1,
-        availability: {
-          rating: vehicle.availability?.rating ?? 0,
-          restricted: vehicle.availability?.restricted ?? false,
-          forbidden: vehicle.availability?.forbidden ?? false,
-        },
-        source: {
-          book: vehicle.source?.book ?? "",
-          page: vehicle.source?.page ?? 0,
-        },
-        effects: vehicle.effects ?? [],
-        handling: vehicle.handling,
-        accel: vehicle.accel,
-        pilot: vehicle.pilot,
-        speed: vehicle.speed,
-        body: vehicle.body,
-        armor: vehicle.armor,
-        sensor: vehicle.sensor,
-        seats: vehicle.seats,
-        rating: typeof vehicle.rating === "number" ? vehicle.rating : undefined,
-      }
-    : {
-        ...defaultFormValues,
-        vehicleCategory: vehicleCategory ?? VehicleCategory.vehicle,
-      }
+function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
+  return {
+    ...defaultFormValues,
+    id: vehicle.id,
+    vehicleCategory: vehicle.vehicleCategory,
+    vehicleType: vehicle.vehicleType ?? "",
+    model: vehicle.model ?? "",
+    name: vehicle.name,
+    cost: vehicle.cost ?? 0,
+    description: vehicle.description ?? "",
+    quantity: vehicle.quantity ?? 1,
+    availability: {
+      rating: vehicle.availability?.rating ?? 0,
+      restricted: vehicle.availability?.restricted ?? false,
+      forbidden: vehicle.availability?.forbidden ?? false,
+    },
+    source: {
+      book: vehicle.source?.book ?? "",
+      page: vehicle.source?.page ?? 0,
+    },
+    effects: vehicle.effects ?? [],
+    handling: vehicle.handling,
+    accel: vehicle.accel,
+    pilot: vehicle.pilot,
+    speed: vehicle.speed,
+    body: vehicle.body,
+    armor: vehicle.armor,
+    sensor: vehicle.sensor,
+    seats: vehicle.seats,
+    rating: typeof vehicle.rating === "number" ? vehicle.rating : undefined,
+  }
+}
 
-  return useAppForm({
-    ...vehicleFormOpts,
-    defaultValues: defaults,
-    onSubmitMeta: defaultGearSubmitMeta,
-    onSubmit: ({ value, meta }) => onSubmit(toVehicleData(value), meta),
+export const useVehicleForm = ({ vehicle, vehicleCategory, onSubmit }: VehicleFormOptions) => {
+  return useItemForm<VehicleFormState>({
+    item: vehicle ? vehicleToFormState(vehicle) : undefined,
+    defaultValues: { ...defaultFormValues, vehicleCategory: vehicleCategory ?? VehicleCategory.vehicle },
+    onSubmit: (formState, meta) => onSubmit(toVehicleData(formState), meta),
   })
 }

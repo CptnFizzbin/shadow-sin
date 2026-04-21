@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { DeviceFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/deviceFormDialog.tsx"
 import { ProgramFormDialog } from "#/components/characterBuilder/sections/gear/devices/dialogs/programFormDialog.tsx"
-import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
+import { ItemCard } from "#/components/gear/itemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
@@ -59,7 +59,7 @@ export const DevicesList: FC = () => {
 
         return (
           <Box key={device.id}>
-            <GearItemCard
+            <ItemCard
               item={device}
               onEdit={() => setDeviceDialog({ device, open: true })}
               onRemove={() => handleRemoveDevice(device)}
@@ -76,7 +76,7 @@ export const DevicesList: FC = () => {
               }}
             >
               {devicePrograms.map((program) => (
-                <GearItemCard
+                <ItemCard
                   key={program.id}
                   item={program}
                   onEdit={() => setProgramDialog({ program, open: true })}

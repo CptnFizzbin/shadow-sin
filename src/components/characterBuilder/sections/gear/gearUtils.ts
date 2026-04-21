@@ -7,12 +7,12 @@ import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 
-export type GearItemCostInfo = {
+export type ItemCostInfo = {
   cost?: number
   quantity?: number
 }
 
-export const getTotalCost = (...items: GearItemCostInfo[]) => {
+export const getTotalCost = (...items: ItemCostInfo[]) => {
   return items
     .map((item) => ({
       cost: item.cost ?? 0,

@@ -6,8 +6,8 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { SinFormFields } from "#/components/characterBuilder/sections/gear/licenses/forms/sinFormFields.tsx"
-import { sinFieldMap, useSinForm } from "#/components/characterBuilder/sections/gear/licenses/forms/useSinForm.tsx"
+import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
+import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinEditDialogProps {

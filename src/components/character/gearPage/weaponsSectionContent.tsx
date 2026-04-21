@@ -7,7 +7,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
@@ -90,7 +90,7 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
       )}
 
       {dialogState && isAccessoryMode && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={dialogState.open}
           item={"accessory" in dialogState ? dialogState.accessory : undefined}
           label="Weapon Accessory"

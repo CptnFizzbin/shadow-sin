@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
@@ -66,7 +66,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
       </Button>
 
       {dialogState && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={dialogState.open}
           item={dialogState.item}
           itemType={itemType}

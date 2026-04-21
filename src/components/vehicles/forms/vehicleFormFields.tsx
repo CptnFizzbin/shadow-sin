@@ -1,15 +1,10 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
-import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { vehicleFormOpts } from "#/components/vehicles/forms/useVehicleForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 const accelPattern = /^\d+\/\d+$/
 
@@ -18,34 +13,6 @@ export const VehicleFormFields = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <group.Subscribe selector={({ values }) => values.vehicleCategory}>
-          {(vehicleCategory) => (
-            <ToggleButtonGroup
-              exclusive
-              size="small"
-              value={vehicleCategory}
-              onChange={(_, value: VehicleCategory | null) => {
-                if (value !== null) {
-                  group.setFieldValue("vehicleCategory", value)
-                }
-              }}
-              fullWidth
-            >
-              <ToggleButton value={VehicleCategory.vehicle}>Vehicle</ToggleButton>
-              <ToggleButton value={VehicleCategory.drone}>Drone</ToggleButton>
-            </ToggleButtonGroup>
-          )}
-        </group.Subscribe>
-
-        <group.AppField
-          name="name"
-          validators={{ onChange: z.string().min(1, "Name is required") }}
-        >
-          {(field) => (
-            <field.TextField label="Name" fullWidth size="small" autoFocus />
-          )}
-        </group.AppField>
-
         <group.AppField name="vehicleType">
           {(field) => (
             <field.TextField label="Vehicle Type" fullWidth size="small" placeholder="e.g. bike, car, drone" />
@@ -218,52 +185,6 @@ export const VehicleFormFields = withFieldGroup({
             </Stack>
           </Stack>
         </Paper>
-
-        <group.AppField
-          name="cost"
-          validators={{
-            onChange: z.number("Cost is required").min(0, "Cost must be 0 or more"),
-          }}
-        >
-          {(field) => (
-            <field.NumberField label="Cost (¥)" fullWidth size="small" />
-          )}
-        </group.AppField>
-
-        <group.AppField
-          name="rating"
-          validators={{
-            onChange: z
-              .number()
-              .int("Rating must be a whole number")
-              .min(1, "Rating must be at least 1")
-              .optional(),
-          }}
-        >
-          {(field) => (
-            <field.NumberField
-              label="Rating"
-              size="small"
-              sx={{ width: 120 }}
-              slotProps={{ htmlInput: { min: 1, step: 1 } }}
-            />
-          )}
-        </group.AppField>
-
-        <AvailabilityFieldGroup form={group} fields="availability" />
-        <SourceFieldGroup form={group} fields={{ source: "source" }} />
-
-        <group.AppField name="description">
-          {(field) => (
-            <field.TextField
-              label="Description / Notes"
-              fullWidth
-              size="small"
-              multiline
-              rows={2}
-            />
-          )}
-        </group.AppField>
       </Stack>
     )
   },

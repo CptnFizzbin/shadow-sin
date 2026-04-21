@@ -1,10 +1,7 @@
-import FormControlLabel from "@mui/material/FormControlLabel"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Switch from "@mui/material/Switch"
 import { z } from "zod"
 
-import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
 import { FirearmFormFields } from "#/components/gear/weapons/forms/firearmFormFields.tsx"
 import {
   weaponFieldMap,
@@ -16,7 +13,6 @@ import {
 import {
   WeaponSkillFormFields,
 } from "#/components/gear/weapons/forms/weaponSkillFormFields.tsx"
-import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { WeaponType } from "#/system/gear/weaponData.ts"
@@ -34,15 +30,6 @@ export const WeaponFormFields = withFieldGroup({
   render: ({ group }) => {
     return (
       <Stack sx={{ gap: 1 }}>
-        <group.AppField
-          name="name"
-          validators={{ onChange: z.string().min(1, "Name is required") }}
-        >
-          {(field) => (
-            <field.TextField label="Name" fullWidth size="small" autoFocus />
-          )}
-        </group.AppField>
-
         <group.AppField name="weaponType">
           {(field) => (
             <field.SelectField
@@ -108,66 +95,6 @@ export const WeaponFormFields = withFieldGroup({
             }
           }}
         </group.Subscribe>
-
-        <group.AppField
-          name="cost"
-          validators={{
-            onChange: z.number("Cost is required").min(0, "Cost must be 0 or more"),
-          }}
-        >
-          {(field) => (
-            <field.NumberField label="Cost (¥)" fullWidth size="small" />
-          )}
-        </group.AppField>
-
-        <group.AppField
-          name="rating"
-          validators={{
-            onChange: z
-              .number()
-              .int("Rating must be a whole number")
-              .min(1, "Rating must be at least 1")
-              .optional(),
-          }}
-        >
-          {(field) => (
-            <field.NumberField
-              label="Rating"
-              size="small"
-              sx={{ width: 120 }}
-              slotProps={{ htmlInput: { min: 1, step: 1 } }}
-            />
-          )}
-        </group.AppField>
-
-        <AvailabilityFieldGroup form={group} fields="availability" />
-        <SourceFieldGroup form={group} fields={{ source: "source" }} />
-
-        <group.AppField name="equipped">
-          {(field) => (
-            <FormControlLabel
-              control={(
-                <Switch
-                  checked={field.state.value}
-                  onChange={(event) => field.handleChange(event.target.checked)}
-                />
-              )}
-              label="Equipped"
-            />
-          )}
-        </group.AppField>
-
-        <group.AppField name="description">
-          {(field) => (
-            <field.TextField
-              label="Description / Notes"
-              fullWidth
-              size="small"
-              multiline
-              rows={2}
-            />
-          )}
-        </group.AppField>
       </Stack>
     )
   },

@@ -41,7 +41,7 @@ export const QuickEdgeSection: FC = () => {
         value={current}
         min={0}
         max={max}
-        onChange={(value) => edgeStore.setCurrent(value)}
+        onChange={(value) => value !== null && edgeStore.setCurrent(value)}
       />
 
       <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>

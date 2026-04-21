@@ -7,8 +7,8 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { GearItemFormDialog } from "#/components/gear/dialogs/gearItemFormDialog.tsx"
-import { GearItemCard } from "#/components/gear/gearItemCard.tsx"
+import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
+import { ItemCard } from "#/components/gear/itemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import { WeaponFormDialog } from "#/components/gear/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
@@ -69,7 +69,7 @@ export const WeaponsList: FC = () => {
 
         return (
           <Box key={weapon.id}>
-            <GearItemCard
+            <ItemCard
               item={weapon}
               onEdit={() => setWeaponDialog({ mode: "edit", weapon, open: true })}
               onRemove={() => gearApi.remove(weapon)}
@@ -86,7 +86,7 @@ export const WeaponsList: FC = () => {
               }}
             >
               {accessories.map((accessory) => (
-                <GearItemCard
+                <ItemCard
                   key={accessory.id}
                   item={accessory}
                   onEdit={() =>
@@ -146,7 +146,7 @@ export const WeaponsList: FC = () => {
       )}
 
       {accessoryDialog?.mode === "create" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={accessoryDialog.open}
           label="Weapon Accessory"
           onSave={handleAddAccessory}
@@ -156,7 +156,7 @@ export const WeaponsList: FC = () => {
       )}
 
       {accessoryDialog?.mode === "edit" && (
-        <GearItemFormDialog
+        <ItemFormDialog
           open={accessoryDialog.open}
           item={accessoryDialog.item}
           label="Weapon Accessory"

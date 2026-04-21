@@ -1,7 +1,7 @@
 import { InputAdornment } from "@mui/material"
 import type { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField"
 import MuiTextField from "@mui/material/TextField"
-import type { ChangeEvent, FocusEvent, KeyboardEvent, FC } from "react"
+import type { ChangeEvent, FC, FocusEvent, KeyboardEvent } from "react"
 import { useEffect, useRef, useState } from "react"
 
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
@@ -157,6 +157,9 @@ export const NuyenField: FC<NuyenFieldProps> = ({ value, onChange, onBlur, ...pr
       onBlur={handleBlur}
       slotProps={{
         ...props.slotProps,
+        htmlInput: {
+          style: { textAlign: "right" },
+        },
         input: {
           endAdornment: <InputAdornment position="end">¥</InputAdornment>,
         },

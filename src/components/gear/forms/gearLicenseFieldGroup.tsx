@@ -1,9 +1,9 @@
-import { gearItemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
+import { itemFormOpts } from "#/components/gear/forms/useItemForm.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export const GearLicenseFieldGroup = withFieldGroup({
-  ...gearItemFormOpts,
+  ...itemFormOpts,
   props: {
     sinOptions: [] as SelectOption[],
   },
