@@ -13,12 +13,13 @@ export interface CounterProps extends Omit<TextFieldProps, "value" | "onChange">
   value: number | null
   min?: number
   max?: number
+  step?: number
   onChange: (newValue: number | null) => void
   label?: string
   unit?: ReactNode
 }
 
-export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, unit }) => {
+export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange, label, unit }) => {
   // localValue holds the raw string while the user is editing. null means "not
   // editing" — the displayed value falls back to the controlled `value` prop.
   // This lets the user clear the field mid-edit and retype without immediately
@@ -36,9 +37,9 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
     const sanitized = e.target.value.replace(/[^0-9+.-]/g, "")
     setLocalValue(sanitized)
 
-    // If the sanitized string is already a valid integer, commit it immediately
+    // If the sanitized string is already a valid number, commit it immediately
     // (clamped). Invalid/partial inputs like "", "-", "." are deferred to blur.
-    const parsed = Number.parseInt(sanitized, 10)
+    const parsed = Number.parseFloat(sanitized)
     if (!Number.isNaN(parsed)) {
       onChange(NumberUtils.clamp(parsed, { min, max }))
     }
@@ -49,7 +50,7 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
 
     // Only fire onChange for invalid/empty drafts — valid ones were already
     // committed inside handleChange.
-    const parsed = Number.parseInt(localValue.trim(), 10)
+    const parsed = Number.parseFloat(localValue.trim())
     if (Number.isNaN(parsed)) {
       onChange(null)
     }
@@ -60,12 +61,14 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
 
   const handleDecrement = () => {
     const current = value ?? min ?? 0
-    onChange(NumberUtils.clamp(current - 1, { min, max }))
+    // toFixed(10) eliminates floating-point drift (e.g. 0.1 + 0.2 = 0.30000000000000004)
+    onChange(NumberUtils.clamp(Number((current - step).toFixed(10)), { min, max }))
   }
 
   const handleIncrement = () => {
     const current = value ?? min ?? 0
-    onChange(NumberUtils.clamp(current + 1, { min, max }))
+    // toFixed(10) eliminates floating-point drift (e.g. 0.1 + 0.2 = 0.30000000000000004)
+    onChange(NumberUtils.clamp(Number((current + step).toFixed(10)), { min, max }))
   }
 
   const isAtMin = value !== null && min !== undefined && value <= min
