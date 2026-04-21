@@ -18,11 +18,7 @@ export const AvailabilityFieldGroup = withFieldGroup({
       <Stack direction="row" sx={{ gap: 1 }}>
         <group.AppField name="rating">
           {(field) => (
-            <field.NumberField
-              label="Availability"
-              size="small"
-              sx={{ flex: 1 }}
-            />
+            <field.CounterField label="Availability" min={0} max={24} />
           )}
         </group.AppField>
 

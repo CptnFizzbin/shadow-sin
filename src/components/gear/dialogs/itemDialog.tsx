@@ -203,18 +203,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             <GearCostAvailabilityFieldGroup form={form} fields={itemFieldMap} />
 
-            {localOptions["multiple"] && (
-              <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-                <GearQuantityFieldGroup form={form} fields={itemFieldMap} />
-
-                {!isBuilder && !isNewItem && (
-                  <Button size="small" variant="outlined" onClick={() => setBuyOpen(true)}>
-                    Buy More
-                  </Button>
-                )}
-              </Stack>
-            )}
-
             {(localOptions["licenseRequired"] || localOptions["licenseAlwaysShow"]) && (
               <form.Subscribe
                 selector={(state) => ({
@@ -240,6 +228,31 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </form.Subscribe>
             )}
 
+            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <form.AppField
+                name="cost"
+                validators={{
+                  onChange: z.number("Cost is required").min(0, "Cost must be 0 or more"),
+                }}
+              >
+                {(field) => (
+                  <field.NuyenField label="Cost" size="small" sx={{ flex: 1 }} />
+                )}
+              </form.AppField>
+
+              {localOptions["multiple"] && (
+                <>
+                  <GearQuantityFieldGroup form={form} fields={itemFieldMap} />
+
+                  {!isBuilder && !isNewItem && (
+                    <Button size="small" variant="outlined" onClick={() => setBuyOpen(true)}>
+                      Buy More
+                    </Button>
+                  )}
+                </>
+              )}
+            </Stack>
+
             {localOptions["isSubItem"] && (
               <Stack sx={{ gap: 1 }}>
                 <Label label={parentItemLabel ?? "Attached To"} />
@@ -254,6 +267,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
                 />
               </Stack>
             )}
+
+            {slots?.itemFields && <Divider />}
 
             {slots?.itemFields?.()}
 
