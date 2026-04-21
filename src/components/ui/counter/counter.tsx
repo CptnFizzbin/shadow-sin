@@ -4,6 +4,7 @@ import type { TextFieldProps } from "@mui/material/TextField"
 import TextField from "@mui/material/TextField"
 import { RiAddLine, RiSubtractLine } from "@remixicon/react"
 import type { ChangeEventHandler, FC, ReactNode } from "react"
+import { useState } from "react"
 
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import styles from "./counter.module.css"
@@ -18,19 +19,37 @@ export interface CounterProps extends Omit<TextFieldProps, "value" | "onChange">
 }
 
 export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, unit }) => {
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const strValue = e.target.value.trim()
-    if (!strValue) {
-      onChange(null)
-      return
-    }
+  // localValue holds the raw string while the user is editing. null means "not
+  // editing" — the displayed value falls back to the controlled `value` prop.
+  // This lets the user clear the field mid-edit and retype without immediately
+  // committing null to the parent, and defers clamping to blur.
+  const [localValue, setLocalValue] = useState<string | null>(null)
 
-    const nextValue = Number.parseInt(e.target.value)
-    if (Number.isNaN(nextValue)) {
+  const displayValue = localValue ?? (value?.toString() ?? "")
+
+  const handleFocus = () => {
+    setLocalValue(value?.toString() ?? "")
+  }
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    // Strip every character that is not a digit, sign, or decimal point.
+    const sanitized = e.target.value.replace(/[^0-9+.-]/g, "")
+    setLocalValue(sanitized)
+  }
+
+  const handleBlur = () => {
+    if (localValue === null) return
+
+    const trimmed = localValue.trim()
+    if (!trimmed) {
       onChange(null)
     } else {
-      onChange(NumberUtils.clamp(nextValue, { min, max }))
+      const parsed = Number.parseInt(trimmed, 10)
+      onChange(Number.isNaN(parsed) ? null : NumberUtils.clamp(parsed, { min, max }))
     }
+
+    // Reset to "not editing" — the display reverts to the controlled value prop.
+    setLocalValue(null)
   }
 
   const handleDecrement = () => {
@@ -49,13 +68,16 @@ export const Counter: FC<CounterProps> = ({ value, min, max, onChange, label, un
   return (
     <TextField
       label={label}
-      type="number"
-      value={value ?? ""}
+      type="text"
+      value={displayValue}
       onChange={handleChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       className={styles.numberField}
       slotProps={{
         htmlInput: {
           style: { textAlign: "center", minWidth: 50 },
+          inputMode: "decimal",
         },
         input: {
           sx: {
