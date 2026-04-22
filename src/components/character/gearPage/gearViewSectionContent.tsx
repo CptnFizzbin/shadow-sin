@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { ArmorSectionContent } from "#/components/character/gearPage/armorSectionContent.tsx"
 import { CyberwareSectionContent } from "#/components/character/gearPage/cyberwareSectionContent.tsx"
 import { GearSection } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GenericSectionContent } from "#/components/character/gearPage/genericSectionContent.tsx"
@@ -53,11 +54,9 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
 
   if (section === GearSection.Armor) {
     return (
-      <GenericSectionContent
+      <ArmorSectionContent
         items={rootItems}
         getChildren={getChildItems}
-        itemLabel="Armor"
-        itemType={ItemType.armor}
       />
     )
   }
