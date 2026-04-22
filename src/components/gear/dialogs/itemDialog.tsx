@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
@@ -11,16 +10,15 @@ import type { FC, ReactNode } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
+import { AvailabilityFieldGroup } from "#/components/availablity/availabilityFieldGroup.tsx"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsFieldGroup.tsx"
 import { BuyQuantityDialog } from "#/components/gear/dialogs/buyQuantityDialog.tsx"
 import { ItemDialogActions } from "#/components/gear/dialogs/itemDialogActions.tsx"
 import { ItemOptionsDialog } from "#/components/gear/dialogs/itemOptionsDialog.tsx"
 import { GearAttachmentFieldGroup } from "#/components/gear/forms/gearAttachmentFieldGroup.tsx"
-import { GearCostAvailabilityFieldGroup } from "#/components/gear/forms/gearCostAvailabilityFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescriptionFieldGroup.tsx"
 import { GearLicenseFieldGroup } from "#/components/gear/forms/gearLicenseFieldGroup.tsx"
-import { GearQuantityFieldGroup } from "#/components/gear/forms/gearQuantityFieldGroup.tsx"
 import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { itemFieldMap } from "#/components/gear/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
@@ -29,6 +27,7 @@ import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import { GearCostFieldGroup } from "../forms/gearCostFieldGroup.tsx"
 
 export interface ItemDialogOptionConfig {
   forced?: boolean
@@ -201,7 +200,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </IconButton>
             </Stack>
 
-            <GearCostAvailabilityFieldGroup form={form} fields={itemFieldMap} />
+            <AvailabilityFieldGroup form={form} fields="availability" />
 
             {(localOptions["licenseRequired"] || localOptions["licenseAlwaysShow"]) && (
               <form.Subscribe
@@ -228,30 +227,12 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               </form.Subscribe>
             )}
 
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-              <form.AppField
-                name="cost"
-                validators={{
-                  onChange: z.number("Cost is required").min(0, "Cost must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NuyenField label="Cost" size="small" sx={{ flex: 1 }} />
-                )}
-              </form.AppField>
-
-              {localOptions["multiple"] && (
-                <>
-                  <GearQuantityFieldGroup form={form} fields={itemFieldMap} />
-
-                  {!isBuilder && !isNewItem && (
-                    <Button size="small" variant="outlined" onClick={() => setBuyOpen(true)}>
-                      Buy More
-                    </Button>
-                  )}
-                </>
-              )}
-            </Stack>
+            <GearCostFieldGroup
+              form={form}
+              fields={itemFieldMap}
+              enableQuantity={localOptions["multiple"]}
+              onBuyMore={(!isBuilder && !isNewItem) ? () => setBuyOpen(true) : undefined}
+            />
 
             {localOptions["isSubItem"] && (
               <Stack sx={{ gap: 1 }}>
