@@ -1,25 +1,21 @@
 import type { FC } from "react"
 
-import { Counter } from "#/components/ui/counter/counter.tsx"
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
+import type { CounterFieldProps as CounterInputProps } from "../../../components/ui/counter/counterField.tsx"
+import { CounterField as CounterInput } from "../../../components/ui/counter/counterField.tsx"
 
-interface CounterFieldProps {
-  min: number
-  max?: number
-  step?: number
-  label?: string
+interface CounterFieldProps extends Omit<CounterInputProps, "value" | "onChange" | "onBlur"> {
+
 }
 
-export const CounterField: FC<CounterFieldProps> = ({ min, max, step, label }) => {
+export const CounterField: FC<CounterFieldProps> = ({ min, ...props }) => {
   const field = useFieldContext<number | undefined>()
 
   return (
-    <Counter
-      value={field.state.value ?? min}
+    <CounterInput
+      {...props}
       min={min}
-      max={max}
-      step={step}
-      label={label}
+      value={field.state.value ?? min ?? null}
       onChange={(newValue) => field.handleChange(newValue ?? undefined)}
     />
   )

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
-import { Counter } from "./counter.tsx"
+import { CounterField } from "./counterField.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 
@@ -16,7 +16,7 @@ interface ControlledCounterProps {
 
 const ControlledCounter: FC<ControlledCounterProps> = ({ initial = null, min, max }) => {
   const [value, setValue] = useState<number | null>(initial ?? null)
-  return <Counter value={value} min={min} max={max} onChange={setValue} />
+  return <CounterField value={value} min={min} max={max} onChange={setValue} />
 }
 
 function renderCounter(initial?: number | null, min?: number, max?: number) {
@@ -108,7 +108,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        <CounterField value={null} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -125,7 +125,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        <CounterField value={null} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -142,7 +142,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={5} min={0} max={10} onChange={onChange} />,
+        <CounterField value={5} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -159,7 +159,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={6} onChange={onChange} />,
+        <CounterField value={null} min={0} max={6} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -190,7 +190,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={5} min={0} max={10} onChange={onChange} />,
+        <CounterField value={5} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -214,7 +214,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        <CounterField value={null} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -232,7 +232,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={2} max={10} onChange={onChange} />,
+        <CounterField value={null} min={2} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -250,7 +250,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={6} onChange={onChange} />,
+        <CounterField value={null} min={0} max={6} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -268,7 +268,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={5} min={0} max={10} onChange={onChange} />,
+        <CounterField value={5} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -286,7 +286,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={null} min={0} max={10} onChange={onChange} />,
+        <CounterField value={null} min={0} max={10} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const input = container.querySelector("input")! as HTMLInputElement
@@ -319,7 +319,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={3} min={0} max={6} onChange={onChange} />,
+        <CounterField value={3} min={0} max={6} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const buttons = container.querySelectorAll("button")
@@ -336,7 +336,7 @@ describe("Counter", () => {
       // Arrange
       const onChange = vi.fn()
       const { container } = render(
-        <Counter value={3} min={0} max={6} onChange={onChange} />,
+        <CounterField value={3} min={0} max={6} onChange={onChange} />,
         { wrapper: ThemeWrapper },
       )
       const buttons = container.querySelectorAll("button")
@@ -352,7 +352,7 @@ describe("Counter", () => {
     it("disables the - button when value equals min", () => {
       // Arrange
       const { container } = render(
-        <Counter value={0} min={0} max={6} onChange={vi.fn()} />,
+        <CounterField value={0} min={0} max={6} onChange={vi.fn()} />,
         { wrapper: ThemeWrapper },
       )
       const decrementButton = container.querySelectorAll("button")[0]
@@ -364,7 +364,7 @@ describe("Counter", () => {
     it("disables the + button when value equals max", () => {
       // Arrange
       const { container } = render(
-        <Counter value={6} min={0} max={6} onChange={vi.fn()} />,
+        <CounterField value={6} min={0} max={6} onChange={vi.fn()} />,
         { wrapper: ThemeWrapper },
       )
       const buttons = container.querySelectorAll("button")

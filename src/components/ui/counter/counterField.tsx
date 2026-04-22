@@ -3,29 +3,40 @@ import InputAdornment from "@mui/material/InputAdornment"
 import type { TextFieldProps } from "@mui/material/TextField"
 import TextField from "@mui/material/TextField"
 import { RiAddLine, RiSubtractLine } from "@remixicon/react"
-import type { ChangeEventHandler, FC, ReactNode } from "react"
+import classnames from "classnames"
+import type { ChangeEventHandler, FC } from "react"
 import { useState } from "react"
 
+import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import styles from "./counter.module.css"
 
-export interface CounterProps extends Omit<TextFieldProps, "value" | "onChange"> {
+type OmittedProps =
+  | "value"
+  | "onChange"
+  | "onFocus"
+  | "onBlur"
+  | "type"
+  | "slot"
+  | "slotProps"
+
+export interface CounterFieldProps extends Omit<TextFieldProps, OmittedProps> {
   value: number | null
+  onChange: (newValue: number | null) => void
   min?: number
   max?: number
   step?: number
-  onChange: (newValue: number | null) => void
-  label?: string
-  unit?: ReactNode
 }
 
-export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange, label, unit }) => {
-  // localValue holds the raw string while the user is editing. null means "not
-  // editing" — the displayed value falls back to the controlled `value` prop.
-  // This lets the user clear the field mid-edit and retype without immediately
-  // committing null to the parent, and defers clamping to blur.
+export const CounterField: FC<CounterFieldProps> = ({
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  ...props
+}) => {
   const [localValue, setLocalValue] = useState<string | null>(null)
-
   const displayValue = localValue ?? (value?.toString() ?? "")
 
   const handleFocus = () => {
@@ -33,12 +44,9 @@ export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange,
   }
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    // Strip every character that is not a digit, sign, or decimal point.
-    const sanitized = e.target.value.replace(/[^0-9+.-]/g, "")
+    const sanitized = e.target.value.replace(/[^\d.+-]/g, "")
     setLocalValue(sanitized)
 
-    // If the sanitized string is already a valid number, commit it immediately
-    // (clamped). Invalid/partial inputs like "", "-", "." are deferred to blur.
     const parsed = Number.parseFloat(sanitized)
     if (!Number.isNaN(parsed)) {
       onChange(NumberUtils.clamp(parsed, { min, max }))
@@ -48,14 +56,11 @@ export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange,
   const handleBlur = () => {
     if (localValue === null) return
 
-    // Only fire onChange for invalid/empty drafts — valid ones were already
-    // committed inside handleChange.
     const parsed = Number.parseFloat(localValue.trim())
     if (Number.isNaN(parsed)) {
       onChange(null)
     }
 
-    // Reset to "not editing" — the display reverts to the controlled value prop.
     setLocalValue(null)
   }
 
@@ -76,23 +81,24 @@ export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange,
 
   return (
     <TextField
-      label={label}
+      {...props}
       type="text"
       value={displayValue}
       onChange={handleChange}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      className={styles.numberField}
-      slotProps={{
-        htmlInput: {
-          style: { textAlign: "center", minWidth: 50 },
-          inputMode: "decimal",
+      className={classnames(props.className, styles.numberField)}
+      sx={mergeSx({
+        ".MuiInputBase-root": {
+          padding: 0,
         },
+        "input": {
+          textAlign: "center",
+          width: props.fullWidth ? "100%" : 50,
+        },
+      }, props.sx)}
+      slotProps={{
         input: {
-          sx: {
-            padding: 0,
-            width: "min-content",
-          },
           startAdornment: (
             <InputAdornment position="start">
               <Button sx={{ minWidth: "unset" }} onClick={handleDecrement} disabled={isAtMin}>
@@ -102,7 +108,6 @@ export const Counter: FC<CounterProps> = ({ value, min, max, step = 1, onChange,
           ),
           endAdornment: (
             <InputAdornment position="end">
-              {unit}
               <Button sx={{ minWidth: "unset" }} onClick={handleIncrement} disabled={isAtMax}>
                 <RiAddLine />
               </Button>
