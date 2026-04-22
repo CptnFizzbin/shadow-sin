@@ -267,4 +267,127 @@ describe("ItemDialog", () => {
 
     expect(screen.getByText("Edit Thing")).toBeDefined()
   })
+
+  describe("field-driven option visibility for existing items", () => {
+    const existingItemId = "existing-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+
+    it("shows the equipped switch when the existing item has an equipped value", async () => {
+      // Arrange
+      const item: ItemData = {
+        id: existingItemId,
+        itemType: ItemType.other,
+        name: "Holster",
+        equipped: false,
+      }
+
+      // Act
+      renderInBuilder(
+        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      )
+
+      // Assert
+      expect(await screen.findByLabelText("Equipped")).toBeDefined()
+    })
+
+    it("shows the rating counter when the existing item has a non-zero rating", async () => {
+      // Arrange
+      const item: ItemData = {
+        id: existingItemId,
+        itemType: ItemType.other,
+        name: "Rated Gear",
+        rating: 3,
+      }
+
+      // Act
+      renderInBuilder(
+        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      )
+
+      // Assert
+      expect(await screen.findByLabelText("Rating")).toBeDefined()
+    })
+
+    it("shows the quantity field when the existing item has a non-zero quantity", async () => {
+      // Arrange
+      const item: ItemData = {
+        id: existingItemId,
+        itemType: ItemType.other,
+        name: "Bulk Item",
+        quantity: 5,
+      }
+
+      // Act
+      renderInBuilder(
+        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      )
+
+      // Assert
+      expect(await screen.findByLabelText("Quantity")).toBeDefined()
+    })
+
+    it("shows the attachment section when the existing item has a parentId", async () => {
+      // Arrange
+      const parentId = "parent-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+      const item: ItemData = {
+        id: existingItemId,
+        itemType: ItemType.other,
+        name: "Sub-Item",
+        parentId,
+      }
+
+      // Act
+      renderInBuilder(
+        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      )
+
+      // Assert
+      expect(await screen.findByText("Attached To")).toBeDefined()
+    })
+  })
+
+  describe("clearing fields when options are toggled off", () => {
+    const existingItemId = "existing-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+
+    it("sets equipped to undefined when equippable is toggled off and equipped is false", async () => {
+      // Arrange
+      const onSave = vi.fn()
+      const item: ItemData = {
+        id: existingItemId,
+        itemType: ItemType.other,
+        name: "Gear",
+        equipped: false,
+      }
+
+      renderInBuilder(
+        <ItemDialogWrapper open item={item} title="Edit Item" onSave={onSave} onClose={vi.fn()} />,
+      )
+
+      const dialogs = screen.getAllByRole("dialog")
+      const mainDialog = dialogs[dialogs.length - 1]
+
+      // Act — open options dialog and uncheck equippable
+      fireEvent.click(within(mainDialog).getByRole("button", { name: /item options/i }))
+      const optionsTitleEl = screen.getByText("Item Options")
+      const optionsDialog = optionsTitleEl.closest("[role='dialog']") as HTMLElement
+      const equippableCheckbox = within(optionsDialog).getByRole("checkbox", { name: /equippable/i })
+      fireEvent.click(equippableCheckbox)
+
+      // Close the options dialog via Escape on the document so MUI's listener fires
+      fireEvent.keyDown(document.body, { key: "Escape" })
+
+      // Save button is in the main dialog; use hidden:true to find it even when
+      // the options dialog's aria-modal makes it inaccessible to the a11y tree
+      await waitFor(() => {
+        const saveButton = within(mainDialog).getByRole("button", { name: /save/i, hidden: true })
+        fireEvent.click(saveButton)
+      })
+
+      // Assert — equipped should be cleared to undefined
+      await waitFor(() => {
+        expect(onSave).toHaveBeenCalledOnce()
+        const submitted: ItemData = onSave.mock.calls[0][0]
+        expect(submitted.equipped).toBeUndefined()
+      })
+    })
+  })
 })

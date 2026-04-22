@@ -105,15 +105,21 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     hasEffects: resolveForced(optionsProp?.hasEffects),
   }
 
-  const [localOptions, setLocalOptions] = useState<Record<LocalOptionKey, boolean>>({
-    equipable: resolveEnabled(optionsProp?.equipable),
-    licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
-    licenseAlwaysShow: false,
-    hasRating: resolveEnabled(optionsProp?.hasRating),
-    multiple: resolveEnabled(optionsProp?.multiple),
-    isSubItem: resolveEnabled(optionsProp?.isSubItem),
-    fixed: false,
-    hasEffects: resolveEnabled(optionsProp?.hasEffects),
+  const [localOptions, setLocalOptions] = useState<Record<LocalOptionKey, boolean>>(() => {
+    // For existing items (non-null id), automatically enable options whose related
+    // fields are already populated so their values are visible when reopening the dialog.
+    const isEditMode = form.state.values.id !== NullUuid
+    const initialValues = form.state.values
+    return {
+      equipable: resolveEnabled(optionsProp?.equipable) || (isEditMode && initialValues.equipped !== undefined),
+      licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
+      licenseAlwaysShow: false,
+      hasRating: resolveEnabled(optionsProp?.hasRating) || (isEditMode && initialValues.rating !== undefined && initialValues.rating !== 0),
+      multiple: resolveEnabled(optionsProp?.multiple) || (isEditMode && (initialValues.quantity ?? 0) > 1),
+      isSubItem: resolveEnabled(optionsProp?.isSubItem) || (isEditMode && initialValues.parentId !== undefined),
+      fixed: initialValues.fixed ?? false,
+      hasEffects: resolveEnabled(optionsProp?.hasEffects) || (isEditMode && initialValues.effects !== undefined),
+    }
   })
 
   const [optionsOpen, setOptionsOpen] = useState(false)
@@ -121,6 +127,30 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   const isNewItem = form.state.values.id === NullUuid
   const isAcquireMode = isNewItem && !isBuilder
+
+  // When an option is toggled off, reset the related field to undefined if its
+  // current value is falsey (no meaningful data to preserve).
+  const handleOptionsChange = (updated: Record<LocalOptionKey, boolean>) => {
+    if (localOptions.equipable && !updated.equipable && !form.state.values.equipped) {
+      form.setFieldValue("equipped", undefined)
+    }
+    if (localOptions.hasRating && !updated.hasRating && !form.state.values.rating) {
+      form.setFieldValue("rating", undefined)
+    }
+    if (localOptions.multiple && !updated.multiple && !form.state.values.quantity) {
+      form.setFieldValue("quantity", undefined)
+    }
+    if (localOptions.isSubItem && !updated.isSubItem && !form.state.values.parentId) {
+      form.setFieldValue("parentId", undefined)
+    }
+    if (localOptions.hasEffects && !updated.hasEffects) {
+      const currentEffects = form.state.values.effects
+      if (!currentEffects || currentEffects.length === 0) {
+        form.setFieldValue("effects", undefined)
+      }
+    }
+    setLocalOptions(updated)
+  }
 
   const handleSubmitWithAction = async (submitAction: "acquire" | "purchase" | "save") => {
     try {
@@ -265,7 +295,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
         onClose={() => setOptionsOpen(false)}
         options={localOptions}
         forced={forced}
-        onChange={setLocalOptions}
+        onChange={handleOptionsChange}
       />
 
       {buyOpen && (
