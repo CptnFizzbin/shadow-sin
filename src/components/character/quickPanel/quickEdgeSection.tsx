@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import { Counter } from "#/components/ui/counter/counter.tsx"
+import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 
@@ -37,7 +37,7 @@ export const QuickEdgeSection: FC = () => {
     <Stack sx={{ gap: 0.5 }}>
       <Label label="Edge" />
 
-      <Counter
+      <CounterField
         value={current}
         min={0}
         max={max}
