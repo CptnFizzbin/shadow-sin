@@ -30,22 +30,8 @@ export const VehicleFormFields = withFieldGroup({
             <Label label="Vehicle Stats" />
 
             <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-              <group.AppField
-                name="handling"
-                validators={{
-                  onChange: z
-                    .number("Handling is required")
-                    .int("Handling must be a whole number"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Handling"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { step: 1 } }}
-                  />
-                )}
+              <group.AppField name="handling">
+                {(field) => <field.CounterField label="Handling" min={0} max={20} />}
               </group.AppField>
 
               <group.AppField
@@ -66,121 +52,46 @@ export const VehicleFormFields = withFieldGroup({
                 )}
               </group.AppField>
 
-              <group.AppField
-                name="speed"
-                validators={{
-                  onChange: z
-                    .number("Speed is required")
-                    .int("Speed must be a whole number")
-                    .min(0, "Speed must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Speed"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="speed">
+                {(field) => <field.CounterField label="Speed" min={0} max={999} />}
               </group.AppField>
             </Stack>
 
             <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-              <group.AppField
-                name="pilot"
-                validators={{
-                  onChange: z
-                    .number("Pilot is required")
-                    .int("Pilot must be a whole number")
-                    .min(0, "Pilot must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Pilot"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="pilot">
+                {(field) => <field.CounterField label="Pilot" min={0} max={12} />}
               </group.AppField>
 
-              <group.AppField
-                name="body"
-                validators={{
-                  onChange: z
-                    .number("Body is required")
-                    .int("Body must be a whole number")
-                    .min(0, "Body must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Body"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="body">
+                {(field) => <field.CounterField label="Body" min={0} max={20} />}
               </group.AppField>
 
-              <group.AppField
-                name="armor"
-                validators={{
-                  onChange: z
-                    .number("Armor is required")
-                    .int("Armor must be a whole number")
-                    .min(0, "Armor must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Armor"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="armor">
+                {(field) => <field.CounterField label="Armor" min={0} max={20} />}
               </group.AppField>
 
-              <group.AppField
-                name="sensor"
-                validators={{
-                  onChange: z
-                    .number("Sensor is required")
-                    .int("Sensor must be a whole number")
-                    .min(0, "Sensor must be 0 or more"),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Sensor"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="sensor">
+                {(field) => <field.CounterField label="Sensor" min={0} max={12} />}
               </group.AppField>
 
-              <group.AppField
-                name="seats"
-                validators={{
-                  onChange: z
-                    .number()
-                    .int("Seats must be a whole number")
-                    .min(0, "Seats must be 0 or more")
-                    .optional(),
-                }}
-              >
-                {(field) => (
-                  <field.NumberField
-                    label="Seats"
-                    size="small"
-                    sx={{ flex: 1, minWidth: 90 }}
-                    slotProps={{ htmlInput: { min: 0, step: 1 } }}
-                  />
-                )}
+              <group.AppField name="seats">
+                {(field) => <field.CounterField label="Seats" min={0} max={20} />}
+              </group.AppField>
+            </Stack>
+          </Stack>
+        </Paper>
+
+        <Paper sx={{ padding: 1 }}>
+          <Stack sx={{ gap: 1 }}>
+            <Label label="Physical Damage Track" />
+
+            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+              <group.AppField name="damage.physical.current">
+                {(field) => <field.CounterField label="Current Damage" min={0} max={50} />}
+              </group.AppField>
+
+              <group.AppField name="damage.physical.max">
+                {(field) => <field.CounterField label="Max Damage" min={0} max={50} />}
               </group.AppField>
             </Stack>
           </Stack>
