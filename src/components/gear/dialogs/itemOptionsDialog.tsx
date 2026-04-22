@@ -74,29 +74,6 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           />
 
           <FormControlLabel
-            label="Has License"
-            disabled={forced["licenseRequired"]}
-            control={(
-              <Checkbox
-                checked={isChecked("licenseRequired", options["licenseRequired"] ?? false)}
-                onChange={(e) => set({ licenseRequired: e.target.checked })}
-              />
-            )}
-          />
-
-          <FormControlLabel
-            label="Always show license field"
-            sx={{ pl: 4 }}
-            disabled={forced["licenseRequired"]}
-            control={(
-              <Checkbox
-                checked={options["licenseAlwaysShow"] ?? false}
-                onChange={(e) => set({ licenseAlwaysShow: e.target.checked })}
-              />
-            )}
-          />
-
-          <FormControlLabel
             label="Has rating"
             disabled={forced["hasRating"]}
             control={(

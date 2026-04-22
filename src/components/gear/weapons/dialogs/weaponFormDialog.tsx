@@ -40,7 +40,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
       options={{
         equipable: { forced: true },
         hasRating: { enabled: true },
-        multiple: { forced: true },
+        multiple: { forced: false },
       }}
       slots={{
         itemFields: () => <WeaponFormFields form={form} fields={weaponFieldMap} />,
