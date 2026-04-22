@@ -80,10 +80,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 
           const groupOptions = optionsByGroup[groupKey] ?? []
           sort(groupOptions)
-            .by([
-              { asc: (option) => option.value !== "" },
-              { asc: (option) => option.label },
-            ])
+            .by([{ asc: (option) => option.value !== "" }])
             .forEach((item) => items.push(
               <MenuItem
                 key={`option-${item.value}`}
