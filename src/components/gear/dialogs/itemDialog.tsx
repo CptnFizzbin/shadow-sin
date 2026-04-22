@@ -114,7 +114,10 @@ export const ItemDialog: FC<ItemDialogProps> = ({
       equipable: resolveEnabled(optionsProp?.equipable) || (isEditMode && initialValues.equipped !== undefined),
       licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
       licenseAlwaysShow: false,
+      // rating: 0 is not a meaningful value so is excluded (same as undefined).
       hasRating: resolveEnabled(optionsProp?.hasRating) || (isEditMode && initialValues.rating !== undefined && initialValues.rating !== 0),
+      // quantity defaults to 1 for every item; only enable "multiple" when the stored
+      // quantity is explicitly greater than 1, indicating the user intentionally set it.
       multiple: resolveEnabled(optionsProp?.multiple) || (isEditMode && (initialValues.quantity ?? 0) > 1),
       isSubItem: resolveEnabled(optionsProp?.isSubItem) || (isEditMode && initialValues.parentId !== undefined),
       fixed: initialValues.fixed ?? false,
@@ -128,8 +131,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const isNewItem = form.state.values.id === NullUuid
   const isAcquireMode = isNewItem && !isBuilder
 
-  // When an option is toggled off, reset the related field to undefined if its
-  // current value is falsey (no meaningful data to preserve).
+  // When an option is toggled off, reset the related field to undefined when its
+  // current value is falsey (no meaningful data to preserve).  rating: 0 and
+  // quantity: 0/undefined are both falsey and treated as "no value set".
   const handleOptionsChange = (updated: Record<LocalOptionKey, boolean>) => {
     if (localOptions.equipable && !updated.equipable && !form.state.values.equipped) {
       form.setFieldValue("equipped", undefined)
