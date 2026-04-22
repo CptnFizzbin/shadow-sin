@@ -4,12 +4,15 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
+import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
+import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 
 export interface BuyQuantityDialogProps {
@@ -30,74 +33,61 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const [discount, setDiscount] = useState(0)
 
   const currentNuyen = useCharacterSheet((s) => s.nuyen.current)
-  const totalCost = Math.max(0, (costPerItem - discount) * quantity)
+  const discountPercent = (discount / 100)
+  const subTotal = Math.max(0, costPerItem * quantity)
+  const discountTotal = subTotal * discountPercent
+  const totalCost = subTotal - discountTotal
   const canAfford = currentNuyen >= totalCost
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle sx={{ padding: 1 }}>Buy More</DialogTitle>
+      <DialogTitle>Buy More</DialogTitle>
 
-      <DialogContent sx={{ padding: 1 }}>
-        <Stack sx={{ gap: 1, padding: 1 }}>
-          <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            >
-              −
-            </Button>
-
-            <NumberField
+      <DialogContent>
+        <Stack sx={{ paddingTop: 2 }}>
+          <Stack direction="row">
+            <CounterField
               label="Quantity"
               size="small"
               value={quantity}
-              onChange={setQuantity}
+              onChange={(value) => setQuantity(value ?? 1)}
               min={1}
               step={1}
-              sx={{ flex: 1 }}
-              slotProps={{ htmlInput: { style: { textAlign: "center" } } }}
             />
 
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => setQuantity((q) => q + 1)}
-            >
-              +
-            </Button>
-          </Stack>
-
-          <Stack direction="row" sx={{ gap: 1 }}>
-            <NumberField
+            <NuyenField
               label="Cost per item"
               size="small"
               value={costPerItem}
-              onChange={setCostPerItem}
-              min={0}
-              sx={{ flex: 1 }}
-            />
-
-            <NumberField
-              label="Discount"
-              size="small"
-              value={discount}
-              onChange={setDiscount}
-              min={0}
+              onChange={(value) => setCostPerItem(value ?? 0)}
               sx={{ flex: 1 }}
             />
           </Stack>
+
+          <NumberField
+            label="Discount"
+            size="small"
+            value={discount}
+            onChange={(value) => setDiscount(value ?? 0)}
+            min={0}
+            max={100}
+            slotProps={{
+              input: {
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              },
+            }}
+          />
         </Stack>
       </DialogContent>
 
-      <DialogActions sx={{ padding: 1 }}>
+      <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
         <Box sx={{ flexGrow: 1 }} />
 
         <Button
           variant="contained"
-          disabled={!canAfford}
+          disabled={totalCost !== 0 && !canAfford}
           onClick={() => onPurchase(quantity, totalCost)}
         >
           Purchase (
