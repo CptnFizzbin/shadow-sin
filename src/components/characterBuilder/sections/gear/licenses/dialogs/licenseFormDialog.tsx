@@ -26,7 +26,6 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   const form = useLicenseForm({
     license,
     parentId: sin?.id,
-    sinReal: sin?.rating === "real" || false,
     onSubmit: onSave,
   })
 

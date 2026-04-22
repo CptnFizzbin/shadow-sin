@@ -1,11 +1,12 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import { LicenseFormFields } from "#/components/licenses/forms/licenseFormFields.tsx"
-import { licenseFieldMap, useLicenseForm } from "#/components/licenses/forms/useLicenseForm.tsx"
+import { useLicenseForm } from "#/components/licenses/forms/useLicenseForm.tsx"
 import { getLicenseCost } from "#/components/licenses/licenseUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
+import { isSinData } from "#/system/gear/sinData.ts"
+import type { ItemData } from "#/system/itemData.ts"
 
 export interface LicenseFormDialogProps {
   open: boolean
@@ -31,7 +32,6 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   const form = useLicenseForm({
     license,
     parentId: sin?.id,
-    sinReal: sin?.rating === "real" || false,
     onSubmit: onSave,
   })
 
@@ -43,12 +43,11 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       onClose={onClose}
       onClosed={onClosed}
       onDelete={onDelete}
-      getCost={(l) => getLicenseCost(l.rating === "real" ? "real" : Number(l.rating))}
-      slots={{
-        itemFields: () => (
-          <LicenseFormFields form={form} fields={licenseFieldMap} />
-        ),
-      }}
+      getCost={(l) => getLicenseCost(Number(l.rating))}
+      ratingMax={6}
+      parentItemFilter={(item: ItemData) => isSinData(item)}
+      parentItemLabel="SIN"
+      options={{ hasRating: { forced: true }, isSubItem: { forced: true } }}
     />
   )
 }

@@ -46,6 +46,8 @@ export interface ItemDialogProps {
   parentItemFilter?: (item: ItemData) => boolean
   /** Override the "Attached To" section label and the parent select field label. */
   parentItemLabel?: string
+  /** Maximum value for the hasRating CounterField. Defaults to 12. */
+  ratingMax?: number
   slots?: {
     /** Content rendered before the Name field (e.g. a category toggle). */
     preForm?: () => ReactNode
@@ -80,6 +82,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   getCost,
   parentItemFilter,
   parentItemLabel,
+  ratingMax,
   slots,
   options: optionsProp,
 }) => {
@@ -172,7 +175,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               {localOptions["hasRating"] && (
                 <form.AppField name="rating">
                   {(field) => (
-                    <field.CounterField label="Rating" min={1} max={12} />
+                    <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
                   )}
                 </form.AppField>
               )}

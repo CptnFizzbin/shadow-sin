@@ -12,7 +12,6 @@ import { ItemType } from "#/system/itemType.ts"
 export interface LicenseFormOptions {
   parentId?: UUID
   license?: LicenseData
-  sinReal: boolean
   onSubmit: (data: LicenseData, meta: GearSubmitMeta) => void
 }
 
