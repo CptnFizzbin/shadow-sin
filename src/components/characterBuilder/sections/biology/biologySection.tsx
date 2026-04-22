@@ -6,6 +6,7 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { getAttributesValues } from "#/components/attributes/getAttributesValues.ts"
+import { selectAwakening, selectMetatype } from "#/components/biology/biologySelectors.ts"
 import { useBiologyStore } from "#/components/biology/useBiologyStore.ts"
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { BiologyAttributes } from "#/components/characterBuilder/sections/biology/biologyAttributes.tsx"
@@ -16,8 +17,8 @@ import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 export const BiologySection: FC = () => {
   const sheet = useCharacterSheetContext()
   const biologyStore = useBiologyStore()
-  const metatypeKey = useStore(biologyStore, (state) => state.metatype)
-  const awakeningType = useStore(biologyStore, (state) => state.awakening)
+  const metatypeKey = useStore(biologyStore, selectMetatype)
+  const awakeningType = useStore(biologyStore, selectAwakening)
 
   return (
     <>

@@ -5591,6 +5591,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"reselect@npm:5.1.1":
+  version: 5.1.1
+  resolution: "reselect@npm:5.1.1"
+  checksum: 10c0/219c30da122980f61853db3aebd173524a2accd4b3baec770e3d51941426c87648a125ca08d8c57daa6b8b086f2fdd2703cb035dd6231db98cdbe1176a71f489
+  languageName: node
+  linkType: hard
+
 "resolve-from@npm:^4.0.0":
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
@@ -5975,6 +5982,7 @@ __metadata:
     pluralize: "npm:^8.0.0"
     react: "npm:^19.2.4"
     react-dom: "npm:^19.2.4"
+    reselect: "npm:5.1.1"
     rolldown: "npm:^1.0.0-rc.13"
     typescript: "npm:^6.0.2"
     typescript-eslint: "npm:^8.58.0"

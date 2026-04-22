@@ -11,7 +11,9 @@ import { EndOfMonthDialog } from "#/components/finances/endOfMonth/endOfMonthDia
 import { LifestyleSection } from "#/components/finances/lifestyle/lifestyleSection.tsx"
 import { LoansSection } from "#/components/finances/loans/loansSection.tsx"
 import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
+import { selectNuyenAmount, selectLoans } from "#/components/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
+import { selectLifestyleQuality, selectLifestyleMonthsPaid } from "#/components/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -30,12 +32,12 @@ function RouteComponent() {
   const [endOfMonthOpen, setEndOfMonthOpen] = useState(false)
 
   const netWorth = useNetWorth()
-  const nuyenBalance = useStore(nuyenStore, (state) => state.current)
-  const loans = useStore(nuyenStore, (state) => state.loans)
+  const nuyenBalance = useStore(nuyenStore, selectNuyenAmount)
+  const loans = useStore(nuyenStore, selectLoans)
   const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  const lifestyleQuality = useStore(lifestyleStore, (s) => s.quality)
-  const lifestyleMonthsPaid = useStore(lifestyleStore, (s) => s.monthsPaid)
+  const lifestyleQuality = useStore(lifestyleStore, selectLifestyleQuality)
+  const lifestyleMonthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
   const lifestyleUpkeep = Lifestyles[lifestyleQuality].upkeep
 
   const monthlyNuyenCost = lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0

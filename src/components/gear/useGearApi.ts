@@ -7,6 +7,7 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
+import { selectAllGear, selectGearById, selectGearParent } from "#/components/gear/gearSelectors.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -170,7 +171,7 @@ export function useGearStore() {
  */
 export function useGearById<TItem extends ItemData>(id: UUID): TItem | undefined {
   const store = useGearStore()
-  return useStore(store, (gear) => gear[id] as TItem | undefined)
+  return useStore(store, selectGearById<TItem>(id))
 }
 
 /**
@@ -187,10 +188,7 @@ export function useGearByType<TItem extends ItemData>(itemType: string): TItem[]
  */
 export function useGearParent(item: ItemData): ItemData | undefined {
   const store = useGearStore()
-  return useStore(store, (gear) => {
-    if (!item || !item.parentId) return undefined
-    return gear[item.parentId]
-  })
+  return useStore(store, selectGearParent(item))
 }
 
 /**
@@ -198,13 +196,13 @@ export function useGearParent(item: ItemData): ItemData | undefined {
  */
 export function useGearChildren(item: ItemData): ItemData[] {
   const store = useGearStore()
-  const gear = useStore(store, (items) => items)
+  const gear = useStore(store, selectAllGear)
   const childIds = item.childIds ?? []
   return childIds.map((itemId) => gear[itemId])
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
   const store = useGearStore()
-  const gear = useStore(store, (g) => g)
+  const gear = useStore(store, selectAllGear)
   return Object.values(gear).filter(filter)
 }

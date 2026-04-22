@@ -7,6 +7,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { usePowerPoints } from "#/components/adeptPowers/adeptPowersHooks.ts"
+import { selectAllAdeptPowers } from "#/components/adeptPowers/adeptPowersSelectors.ts"
 import { AdeptPowerFormDialog } from "#/components/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
 import { useAdeptPowersStore } from "#/components/adeptPowers/useAdeptPowersStore.ts"
 import { AdeptPowersListItem } from "#/components/characterBuilder/sections/resources/adept/adeptPowersListItem.tsx"
@@ -20,7 +21,7 @@ type DialogState =
 
 export const AdeptPowersList: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()
-  const adeptPowers = useStore(adeptPowersStore, (state) => state)
+  const adeptPowers = useStore(adeptPowersStore, selectAllAdeptPowers)
   const powerPoints = usePowerPoints()
   const [dialogState, setDialogState] = useState<DialogState>(null)
 

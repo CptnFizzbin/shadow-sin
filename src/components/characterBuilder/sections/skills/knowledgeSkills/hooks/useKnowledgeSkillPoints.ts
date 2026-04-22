@@ -5,6 +5,7 @@ import {
   getKnowledgeSkillSp,
   getLanguageSkillSp,
 } from "#/components/characterBuilder/sections/skills/skillsBuilderUtils.ts"
+import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -14,8 +15,8 @@ export const useKnowledgeSkillPoints = () => {
   const logicAttr = useAttr(AttributeKey.logic)
   const intuitionAttr = useAttr(AttributeKey.intuition)
 
-  const knowledgeSkills = useStore(skillsStore, (state) => state.knowledgeSkills)
-  const languageSkills = useStore(skillsStore, (state) => state.languageSkills)
+  const knowledgeSkills = useStore(skillsStore, selectKnowledgeSkills)
+  const languageSkills = useStore(skillsStore, selectLanguageSkills)
 
   const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
     return total + getKnowledgeSkillSp(skill)

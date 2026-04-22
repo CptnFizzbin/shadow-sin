@@ -15,6 +15,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { selectNuyenAmount } from "#/components/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
@@ -47,7 +48,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
 }) => {
   const gearStore = useGearStore()
   const nuyenStore = useNuyenStore()
-  const currentNuyen = useStore(nuyenStore, (state) => state.current)
+  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
 
   const isEditMode = mode === "edit"
   const isCertified = mode === "add-certified"

@@ -7,12 +7,13 @@ import { BuilderSection } from "#/components/characterBuilder/sections/builderSe
 import { BuilderSectionId } from "#/components/characterBuilder/sections/builderSectionId.ts"
 import { getContactBpCost } from "#/components/characterBuilder/sections/contacts/contactsBuilderUtils.ts"
 import { ContactsList } from "#/components/contacts/contactsList.tsx"
+import { selectAllContacts } from "#/components/contacts/contactsSelectors.ts"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 
 export const ContactsBuilderSection: FC = () => {
   const contactsStore = useContactsStore()
-  const allContacts = useStore(contactsStore, (contacts) => contacts)
+  const allContacts = useStore(contactsStore, selectAllContacts)
   const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts

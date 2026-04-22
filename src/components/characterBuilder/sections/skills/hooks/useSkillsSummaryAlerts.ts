@@ -1,13 +1,14 @@
 import { useStore } from "@tanstack/react-store"
 
+import { selectActiveSkills, selectKnowledgeSkills, selectLanguageSkills } from "#/components/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()
-  const active = useStore(skillsStore, (s) => s.activeSkills)
-  const knowledge = useStore(skillsStore, (s) => s.knowledgeSkills)
-  const language = useStore(skillsStore, (s) => s.languageSkills)
+  const active = useStore(skillsStore, selectActiveSkills)
+  const knowledge = useStore(skillsStore, selectKnowledgeSkills)
+  const language = useStore(skillsStore, selectLanguageSkills)
 
   if (active.length === 0 && knowledge.length === 0 && language.length === 0) {
     return [{

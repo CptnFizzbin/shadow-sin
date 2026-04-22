@@ -2,6 +2,7 @@ import { useStore } from "@tanstack/react-store"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useActiveSkill, useAttr } from "#/components/character/characterUtils.ts"
+import { selectAllSpells } from "#/components/spells/spellsSelectors.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/spells/spellsUtils.ts"
 import { useSpellsStore } from "#/components/spells/useSpellsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
@@ -14,7 +15,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spellsStore = useSpellsStore()
-  const spells = useStore(spellsStore, (state) => state)
+  const spells = useStore(spellsStore, selectAllSpells)
 
   const statuses: AlertInfo[] = []
 

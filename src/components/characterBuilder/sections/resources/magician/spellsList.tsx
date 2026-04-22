@@ -10,6 +10,7 @@ import { useSpellsBuildPoints } from "#/components/characterBuilder/buildPoints/
 import { SpellListItem } from "#/components/characterBuilder/sections/resources/magician/spellListItem.tsx"
 import { TraditionCard } from "#/components/characterBuilder/sections/resources/magician/traditionCard.tsx"
 import { SpellFormDialog } from "#/components/spells/dialogs/spellFormDialog.tsx"
+import { selectAllSpells } from "#/components/spells/spellsSelectors.ts"
 import { useSpellsStore } from "#/components/spells/useSpellsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -22,7 +23,7 @@ type DialogState =
 
 export const SpellsList: FC = () => {
   const spellsStore = useSpellsStore()
-  const spells = useStore(spellsStore, (state) => state)
+  const spells = useStore(spellsStore, selectAllSpells)
   const buildPoints = useSpellsBuildPoints()
 
   const [dialogState, setDialogState] = useState<DialogState>(null)

@@ -2,6 +2,7 @@ import { useStore } from "@tanstack/react-store"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
+import { selectAllComplexForms } from "#/components/technomancer/complexFormsSelectors.ts"
 import { useComplexFormsStore } from "#/components/technomancer/useComplexFormsStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
@@ -9,7 +10,7 @@ import { AwakeningType } from "#/system/awakeningType.ts"
 export const useComplexForms = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const complexFormsStore = useComplexFormsStore()
-  const complexForms = useStore(complexFormsStore, (state) => state)
+  const complexForms = useStore(complexFormsStore, selectAllComplexForms)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

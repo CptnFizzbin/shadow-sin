@@ -9,6 +9,7 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import { implantFormOpts } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
+import { selectAllGear } from "#/components/gear/gearSelectors.ts"
 import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -64,7 +65,7 @@ interface CapacitySlotsChipProps {
 
 const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity }) => {
   const gearStore = useGearStore()
-  const gear = useStore(gearStore, (items) => items)
+  const gear = useStore(gearStore, selectAllGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
     .filter((item) => item.parentId === implantId)
