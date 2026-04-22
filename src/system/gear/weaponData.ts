@@ -20,6 +20,12 @@ export enum WeaponType {
   other = "other",
 }
 
+/** The sub-type of a melee weapon, which determines the associated combat skill. */
+export enum MeleeWeaponType {
+  blade = "blade",
+  club = "club",
+}
+
 export interface WeaponData extends ItemData {
   dmg: string
   dmgType?: "physical" | "stun" | "custom"
@@ -54,6 +60,7 @@ export interface FirearmData extends WeaponData {
 export interface MeleeWeaponData extends WeaponData {
   weaponType: WeaponType.melee
   reach: number
+  meleeType?: MeleeWeaponType
 }
 
 export interface ThrownWeaponData extends WeaponData {

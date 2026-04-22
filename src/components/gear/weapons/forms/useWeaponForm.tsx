@@ -4,7 +4,7 @@ import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import type { FirearmData, MeleeWeaponData, WeaponData } from "#/system/gear/weaponData.ts"
+import type { FirearmData, MeleeWeaponData, WeaponData, MeleeWeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -45,6 +45,7 @@ const defaultFormValues = {
 
   // MeleeWeaponData-specific
   reach: 0,
+  meleeType: undefined as MeleeWeaponType | undefined,
 
   // FirearmData-specific
   firearmType: FirearmTypeKey.assaultRifle,
@@ -117,6 +118,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
       ...base,
       weaponType: WeaponType.melee,
       reach: values.reach,
+      ...(values.meleeType !== undefined && { meleeType: values.meleeType }),
     } as MeleeWeaponData
   }
 
@@ -153,6 +155,7 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
     quantity: weapon.quantity ?? 1,
     rating: typeof weapon.rating === "number" ? weapon.rating : undefined,
     reach: meleeWeapon?.reach ?? 0,
+    meleeType: meleeWeapon?.meleeType,
     firearmType: firearmWeapon?.firearmType ?? FirearmTypeKey.lightPistol,
     firemodes: firearmWeapon?.firemodes ?? [],
     attachmentPoints: firearmWeapon?.attachmentPoints ?? [],
