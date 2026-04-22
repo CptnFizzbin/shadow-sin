@@ -66,12 +66,14 @@ export const CounterField: FC<CounterFieldProps> = ({
 
   const handleDecrement = () => {
     const current = value ?? min ?? 0
-    onChange(NumberUtils.clamp(current - step, { min, max }))
+    // toFixed(10) eliminates floating-point drift (e.g. 0.1 + 0.2 = 0.30000000000000004)
+    onChange(NumberUtils.clamp(Number((current - step).toFixed(10)), { min, max }))
   }
 
   const handleIncrement = () => {
     const current = value ?? min ?? 0
-    onChange(NumberUtils.clamp(current + step, { min, max }))
+    // toFixed(10) eliminates floating-point drift (e.g. 0.1 + 0.2 = 0.30000000000000004)
+    onChange(NumberUtils.clamp(Number((current + step).toFixed(10)), { min, max }))
   }
 
   const isAtMin = value !== null && min !== undefined && value <= min
