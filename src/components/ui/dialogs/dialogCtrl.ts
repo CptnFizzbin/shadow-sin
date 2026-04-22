@@ -9,12 +9,12 @@ export class DialogCtrl<TReturn> {
   readonly isOpenStore = createStore<boolean>(true)
 
   private readonly promise: Promise<TReturn>
-  private resolvePromise!: (value: TReturn) => void
+  private readonly resolvePromise: (value: TReturn) => void
 
   constructor() {
-    this.promise = new Promise<TReturn>((resolve) => {
-      this.resolvePromise = resolve
-    })
+    const { promise, resolve } = Promise.withResolvers<TReturn>()
+    this.promise = promise
+    this.resolvePromise = resolve
   }
 
   /**
