@@ -40,6 +40,7 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({
       options={{
         equipable: { forced: true },
         hasEffects: { forced: true },
+        multiple: { forced: false },
       }}
       slots={{
         itemFields: () => <ArmorFormFields form={form} fields={armorFieldMap} />,
