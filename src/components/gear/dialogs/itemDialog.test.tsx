@@ -269,7 +269,7 @@ describe("ItemDialog", () => {
   })
 
   describe("field-driven option visibility for existing items", () => {
-    const existingItemId = "existing-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+    const existingItemId = crypto.randomUUID()
 
     it("shows the equipped switch when the existing item has an equipped value", async () => {
       // Arrange
@@ -327,7 +327,7 @@ describe("ItemDialog", () => {
 
     it("shows the attachment section when the existing item has a parentId", async () => {
       // Arrange
-      const parentId = "parent-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+      const parentId = crypto.randomUUID()
       const item: ItemData = {
         id: existingItemId,
         itemType: ItemType.other,
@@ -346,7 +346,7 @@ describe("ItemDialog", () => {
   })
 
   describe("clearing fields when options are toggled off", () => {
-    const existingItemId = "existing-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>
+    const existingItemId = crypto.randomUUID()
 
     it("sets equipped to undefined when equippable is toggled off and equipped is false", async () => {
       // Arrange
@@ -375,8 +375,8 @@ describe("ItemDialog", () => {
       // Close the options dialog via Escape on the document so MUI's listener fires
       fireEvent.keyDown(document.body, { key: "Escape" })
 
-      // Save button is in the main dialog; use hidden:true to find it even when
-      // the options dialog's aria-modal makes it inaccessible to the a11y tree
+      // MUI keeps the options dialog mounted with aria-modal=true during its
+      // close animation, temporarily blocking a11y queries on the main dialog.
       await waitFor(() => {
         const saveButton = within(mainDialog).getByRole("button", { name: /save/i, hidden: true })
         fireEvent.click(saveButton)

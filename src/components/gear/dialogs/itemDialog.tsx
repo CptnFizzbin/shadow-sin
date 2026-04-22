@@ -16,6 +16,8 @@ import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsField
 import { BuyQuantityDialog } from "#/components/gear/dialogs/buyQuantityDialog.tsx"
 import { ItemDialogActions } from "#/components/gear/dialogs/itemDialogActions.tsx"
 import { ItemOptionsDialog } from "#/components/gear/dialogs/itemOptionsDialog.tsx"
+import type { ItemDialogOptionConfig } from "#/components/gear/dialogs/useItemOptions.ts"
+import { useItemOptions } from "#/components/gear/dialogs/useItemOptions.ts"
 import { GearAttachmentFieldGroup } from "#/components/gear/forms/gearAttachmentFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescriptionFieldGroup.tsx"
 import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
@@ -28,10 +30,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { GearCostFieldGroup } from "../forms/gearCostFieldGroup.tsx"
 
-export interface ItemDialogOptionConfig {
-  forced?: boolean
-  enabled?: boolean
-}
+export type { ItemDialogOptionConfig }
 
 export interface ItemDialogProps {
   form: AnyItemForm
@@ -64,10 +63,6 @@ export interface ItemDialogProps {
   }
 }
 
-function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
-  return (config?.forced ?? false) || (config?.enabled ?? false)
-}
-
 function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
   return config?.forced ?? false
 }
@@ -94,7 +89,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const gearStore = useGearStore()
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
-  type LocalOptionKey = OptionKey | "licenseAlwaysShow" | "fixed"
 
   const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
@@ -105,56 +99,13 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     hasEffects: resolveForced(optionsProp?.hasEffects),
   }
 
-  const [localOptions, setLocalOptions] = useState<Record<LocalOptionKey, boolean>>(() => {
-    // For existing items (non-null id), automatically enable options whose related
-    // fields are already populated so their values are visible when reopening the dialog.
-    const isEditMode = form.state.values.id !== NullUuid
-    const initialValues = form.state.values
-    return {
-      equipable: resolveEnabled(optionsProp?.equipable) || (isEditMode && initialValues.equipped !== undefined),
-      licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
-      licenseAlwaysShow: false,
-      // rating: 0 is not a meaningful value so is excluded (same as undefined).
-      hasRating: resolveEnabled(optionsProp?.hasRating) || (isEditMode && initialValues.rating !== undefined && initialValues.rating !== 0),
-      // quantity defaults to 1 for every item; only enable "multiple" when the stored
-      // quantity is explicitly greater than 1, indicating the user intentionally set it.
-      multiple: resolveEnabled(optionsProp?.multiple) || (isEditMode && (initialValues.quantity ?? 0) > 1),
-      isSubItem: resolveEnabled(optionsProp?.isSubItem) || (isEditMode && initialValues.parentId !== undefined),
-      fixed: initialValues.fixed ?? false,
-      hasEffects: resolveEnabled(optionsProp?.hasEffects) || (isEditMode && initialValues.effects !== undefined),
-    }
-  })
+  const [localOptions, handleOptionsChange] = useItemOptions(form, optionsProp)
 
   const [optionsOpen, setOptionsOpen] = useState(false)
   const [buyOpen, setBuyOpen] = useState(false)
 
   const isNewItem = form.state.values.id === NullUuid
   const isAcquireMode = isNewItem && !isBuilder
-
-  // When an option is toggled off, reset the related field to undefined when its
-  // current value is falsey (no meaningful data to preserve).  rating: 0 and
-  // quantity: 0/undefined are both falsey and treated as "no value set".
-  const handleOptionsChange = (updated: Record<LocalOptionKey, boolean>) => {
-    if (localOptions.equipable && !updated.equipable && !form.state.values.equipped) {
-      form.setFieldValue("equipped", undefined)
-    }
-    if (localOptions.hasRating && !updated.hasRating && !form.state.values.rating) {
-      form.setFieldValue("rating", undefined)
-    }
-    if (localOptions.multiple && !updated.multiple && !form.state.values.quantity) {
-      form.setFieldValue("quantity", undefined)
-    }
-    if (localOptions.isSubItem && !updated.isSubItem && !form.state.values.parentId) {
-      form.setFieldValue("parentId", undefined)
-    }
-    if (localOptions.hasEffects && !updated.hasEffects) {
-      const currentEffects = form.state.values.effects
-      if (!currentEffects || currentEffects.length === 0) {
-        form.setFieldValue("effects", undefined)
-      }
-    }
-    setLocalOptions(updated)
-  }
 
   const handleSubmitWithAction = async (submitAction: "acquire" | "purchase" | "save") => {
     try {
