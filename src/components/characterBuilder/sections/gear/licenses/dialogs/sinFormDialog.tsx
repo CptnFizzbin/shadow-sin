@@ -1,11 +1,6 @@
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
 import { SinFormFields } from "#/components/licenses/forms/sinFormFields.tsx"
 import { sinFieldMap, useSinForm } from "#/components/licenses/forms/useSinForm.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
@@ -31,32 +26,17 @@ export const SinFormDialog: FC<SinEditDialogProps> = ({
   const form = useSinForm({ sin, onSubmit: onSave })
 
   return (
-    <Dialog open={open} fullWidth onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-
-      <DialogContent sx={{ padding: 1 }}>
-        <Stack sx={{ gap: 1, padding: 1 }}>
-          <SinFormFields
-            form={form}
-            allowReal={allowReal}
-            fields={sinFieldMap}
-          />
-        </Stack>
-      </DialogContent>
-
-      <DialogActions sx={{ padding: 1 }}>
-        <Button color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          color="secondary"
-          onClick={form.handleSubmit}
-          variant="contained"
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <ItemDialog
+      form={form}
+      title={title}
+      open={open}
+      onClose={onClose}
+      onClosed={onClosed}
+      slots={{
+        itemFields: () => (
+          <SinFormFields form={form} allowReal={allowReal} fields={sinFieldMap} />
+        ),
+      }}
+    />
   )
 }

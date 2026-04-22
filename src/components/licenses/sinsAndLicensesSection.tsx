@@ -43,8 +43,6 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
     setDialogState(null)
   }
 
-  const hasRealSin = sins.some((sin) => sin.rating === "real")
-
   const handleSaveSin = (sin: SinData) => {
     gearStore.save(sin)
     onDialogClose()
@@ -136,7 +134,6 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         <SinFormDialog
           open={dialogState.open}
           sin={dialogState.sin}
-          allowReal={!hasRealSin || dialogState.sin?.rating === "real"}
           onSave={handleSaveSin}
           onDelete={
             dialogState.sin

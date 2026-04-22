@@ -1,6 +1,6 @@
 import { createFieldMap, formOptions } from "@tanstack/form-core"
 
-import { useItemForm } from "#/components/gear/forms/useItemForm.tsx"
+import { useItemForm, itemDefaults } from "#/components/gear/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/gear/gearSubmitMeta.ts"
 import { getSinCost } from "#/components/licenses/sinUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -13,6 +13,7 @@ export interface SinFormOptions {
 }
 
 const defaultValues: SinData = {
+  ...itemDefaults,
   itemType: ItemType.sin,
   id: NullUuid,
   name: "",
