@@ -56,11 +56,13 @@ export function useGearStore() {
             savedItem.childIds = savedItem.childIds.filter((id) => id !== updatedItem.id)
           }
 
-          const itemChildIds = updatedItem.childIds ?? []
-          if (itemChildIds.includes(savedItem.id)) {
-            savedItem.parentId = updatedItem.id
-          } else {
-            if (savedItem.parentId === updatedItem.id) {
+          // Only manage children's parentId when childIds is explicitly provided.
+          // If childIds is absent (e.g. a form submission that does not include it),
+          // leave existing children's parentId untouched to avoid detaching them.
+          if (updatedItem.childIds !== undefined) {
+            if (updatedItem.childIds.includes(savedItem.id)) {
+              savedItem.parentId = updatedItem.id
+            } else if (savedItem.parentId === updatedItem.id) {
               savedItem.parentId = undefined
             }
           }
