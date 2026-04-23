@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useTraditionForm } from "#/components/builder/sections/resources/magician/useTraditionForm.ts"
+import { useTraditionForm } from "#/components/character/spells/form/useTraditionForm.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"

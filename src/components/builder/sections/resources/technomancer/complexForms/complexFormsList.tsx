@@ -10,14 +10,14 @@ import { useState } from "react"
 
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
 import {
-  ComplexFormDialog,
-} from "#/components/builder/sections/resources/technomancer/complexForms/complexFormDialog.tsx"
-import {
   ComplexFormsListItem,
 } from "#/components/builder/sections/resources/technomancer/complexForms/complexFormsListItem.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useMaxComplexForms } from "#/components/character/technomancer/complexFormsHooks.ts"
 import { selectAllComplexForms } from "#/components/character/technomancer/complexFormsSelectors.ts"
+import {
+  ComplexFormDialog,
+} from "#/components/character/technomancer/dialogs/complexFormDialog.tsx"
 import { useComplexFormsStore } from "#/components/character/technomancer/useComplexFormsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"

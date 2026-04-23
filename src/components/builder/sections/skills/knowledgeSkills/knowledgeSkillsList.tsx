@@ -8,12 +8,6 @@ import { useState } from "react"
 
 import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
-  KnowledgeSkillDialog,
-} from "#/components/builder/sections/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"
-import {
-  LanguageSkillDialog,
-} from "#/components/builder/sections/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
-import {
   useKnowledgeSkillPoints,
 } from "#/components/builder/sections/skills/knowledgeSkills/hooks/useKnowledgeSkillPoints.ts"
 import {
@@ -22,6 +16,12 @@ import {
 import {
   LanguageSkillsListItem,
 } from "#/components/builder/sections/skills/knowledgeSkills/languageSkillsListItem.tsx"
+import {
+  KnowledgeSkillDialog,
+} from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"
+import {
+  LanguageSkillDialog,
+} from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/character/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"

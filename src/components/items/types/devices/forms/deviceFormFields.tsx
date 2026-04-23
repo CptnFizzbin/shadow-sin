@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack"
 
-import { deviceFormOpts } from "#/components/builder/sections/gear/devices/forms/useDeviceForm.tsx"
+import { deviceFormOpts } from "#/components/items/types/devices/forms/useDeviceForm.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 
