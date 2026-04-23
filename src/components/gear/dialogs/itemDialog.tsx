@@ -16,6 +16,8 @@ import { GameEffectsFieldGroup } from "#/components/gameEffects/gameEffectsField
 import { BuyQuantityDialog } from "#/components/gear/dialogs/buyQuantityDialog.tsx"
 import { ItemDialogActions } from "#/components/gear/dialogs/itemDialogActions.tsx"
 import { ItemOptionsDialog } from "#/components/gear/dialogs/itemOptionsDialog.tsx"
+import type { ItemDialogOptionConfig } from "#/components/gear/dialogs/useItemOptions.ts"
+import { useItemOptions } from "#/components/gear/dialogs/useItemOptions.ts"
 import { GearAttachmentFieldGroup } from "#/components/gear/forms/gearAttachmentFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescriptionFieldGroup.tsx"
 import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
@@ -28,10 +30,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import { GearCostFieldGroup } from "../forms/gearCostFieldGroup.tsx"
 import { useGearStore } from "../useGearStore.ts"
 
-export interface ItemDialogOptionConfig {
-  forced?: boolean
-  enabled?: boolean
-}
+export type { ItemDialogOptionConfig }
 
 export interface ItemDialogProps {
   form: AnyItemForm
@@ -64,12 +63,8 @@ export interface ItemDialogProps {
   }
 }
 
-function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
-  return (config?.forced ?? false) || (config?.enabled ?? false)
-}
-
 function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
-  return config?.forced ?? false
+  return config?.forced === true
 }
 
 export const ItemDialog: FC<ItemDialogProps> = ({
@@ -94,7 +89,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const gearStore = useGearStore()
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
-  type LocalOptionKey = OptionKey | "licenseAlwaysShow" | "fixed"
 
   const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
@@ -105,16 +99,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     hasEffects: resolveForced(optionsProp?.hasEffects),
   }
 
-  const [localOptions, setLocalOptions] = useState<Record<LocalOptionKey, boolean>>({
-    equipable: resolveEnabled(optionsProp?.equipable),
-    licenseRequired: resolveEnabled(optionsProp?.licenseRequired),
-    licenseAlwaysShow: false,
-    hasRating: resolveEnabled(optionsProp?.hasRating),
-    multiple: resolveEnabled(optionsProp?.multiple),
-    isSubItem: resolveEnabled(optionsProp?.isSubItem),
-    fixed: false,
-    hasEffects: resolveEnabled(optionsProp?.hasEffects),
-  })
+  const [localOptions, handleOptionsChange] = useItemOptions(form, optionsProp)
 
   const [optionsOpen, setOptionsOpen] = useState(false)
   const [buyOpen, setBuyOpen] = useState(false)
@@ -265,7 +250,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
         onClose={() => setOptionsOpen(false)}
         options={localOptions}
         forced={forced}
-        onChange={setLocalOptions}
+        onChange={handleOptionsChange}
       />
 
       {buyOpen && (
