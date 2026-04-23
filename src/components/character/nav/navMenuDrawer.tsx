@@ -13,6 +13,7 @@ import type { FC } from "react"
 
 import { characterSectionOrder } from "#/components/character/characterSections.ts"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 
 export interface NavMenuDrawerProps {
   open: boolean
@@ -22,6 +23,11 @@ export interface NavMenuDrawerProps {
 export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
+  const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
+
+  const visibleSections = characterSectionOrder.filter(
+    (section) => !section.visibleFor || section.visibleFor.includes(awakening),
+  )
 
   const handleSectionClick = (sectionRoute: string) => {
     navigate({ to: sectionRoute })
@@ -42,7 +48,7 @@ export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
       </Toolbar>
 
       <List disablePadding>
-        {characterSectionOrder.map((section) => (
+        {visibleSections.map((section) => (
           <ListItem key={section.id} disablePadding>
             <ListItemButton
               selected={section.id === currentSection.id}

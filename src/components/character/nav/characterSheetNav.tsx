@@ -10,11 +10,17 @@ import { useState } from "react"
 import { characterSections } from "#/components/character/characterSections.ts"
 import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 
 export const CharacterSheetNav: FC = () => {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
   const [menuOpen, setMenuOpen] = useState(false)
+  const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
+
+  const visibleSections = Object.values(characterSections).filter(
+    (section) => !section.visibleFor || section.visibleFor.includes(awakening),
+  )
 
   return (
     <>
@@ -27,7 +33,7 @@ export const CharacterSheetNav: FC = () => {
           scrollButtons="auto"
           sx={{ flex: 1, minWidth: 0 }}
         >
-          {Object.values(characterSections).map((section) => (
+          {visibleSections.map((section) => (
             <Tab key={section.id} label={section.label} value={section} />
           ))}
         </Tabs>

@@ -3,6 +3,7 @@ import { useCallback } from "react"
 
 import type { CharacterSection } from "#/components/character/characterSections.ts"
 import { characterSectionOrder, characterSections } from "#/components/character/characterSections.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 
 export const useCurrentCharacterSection = (): CharacterSection => {
   const matches = useMatches()
@@ -16,19 +17,25 @@ export const useCurrentCharacterSection = (): CharacterSection => {
 export function useCharacterNav() {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
-  const currentIndex = characterSectionOrder.indexOf(currentSection)
+  const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
+
+  const visibleSections = characterSectionOrder.filter(
+    (section) => !section.visibleFor || section.visibleFor.includes(awakening),
+  )
+
+  const currentIndex = visibleSections.indexOf(currentSection)
 
   const nextPage = useCallback(() => {
-    if (currentIndex !== -1 && currentIndex < characterSectionOrder.length - 1) {
-      navigate({ to: characterSectionOrder[currentIndex + 1].route.path })
+    if (currentIndex !== -1 && currentIndex < visibleSections.length - 1) {
+      navigate({ to: visibleSections[currentIndex + 1].route.path })
     }
-  }, [currentIndex, navigate])
+  }, [currentIndex, navigate, visibleSections])
 
   const prevPage = useCallback(() => {
     if (currentIndex !== -1 && currentIndex > 0) {
-      navigate({ to: characterSectionOrder[currentIndex - 1].route.path })
+      navigate({ to: visibleSections[currentIndex - 1].route.path })
     }
-  }, [currentIndex, navigate])
+  }, [currentIndex, navigate, visibleSections])
 
   return { nextPage, prevPage }
 }
