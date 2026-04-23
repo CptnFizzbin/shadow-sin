@@ -25,6 +25,7 @@ export interface CounterFieldProps extends Omit<TextFieldProps, OmittedProps> {
   onChange: (newValue: number | null) => void
   min?: number
   max?: number
+  showMax?: boolean
   step?: number
 }
 
@@ -33,6 +34,7 @@ export const CounterField: FC<CounterFieldProps> = ({
   onChange,
   min,
   max,
+  showMax,
   step = 1,
   ...props
 }) => {
@@ -90,11 +92,11 @@ export const CounterField: FC<CounterFieldProps> = ({
       className={classnames(props.className, styles.numberField)}
       sx={mergeSx({
         ".MuiInputBase-root": {
+          maxWidth: props.fullWidth ? "100%" : 150,
           padding: 0,
         },
         "input": {
           textAlign: "center",
-          width: props.fullWidth ? "100%" : 50,
         },
       }, props.sx)}
       slotProps={{

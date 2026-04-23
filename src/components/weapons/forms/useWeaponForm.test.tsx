@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useWeaponForm } from "#/components/gear/weapons/forms/useWeaponForm.tsx"
+import { useWeaponForm } from "#/components/weapons/forms/useWeaponForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
 
 describe("useWeaponForm", () => {
