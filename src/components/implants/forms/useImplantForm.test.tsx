@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useImplantForm } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
+import { useImplantForm } from "#/components/implants/forms/useImplantForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
 
 describe("useImplantForm", () => {

@@ -7,7 +7,7 @@ import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
 import { GearMaxAvailability } from "#/components/gear/gearUtils.ts"
-import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/implants/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
@@ -43,8 +43,8 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
     <Stack
       direction="column"
       sx={{
+        "gap": 0,
         "padding": 1,
-        "borderRadius": 1,
         "border": "1px solid",
         "borderColor": "divider",
         "cursor": "pointer",
@@ -53,17 +53,17 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
       onClick={onEdit}
     >
       <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
+        <Typography sx={{ flexGrow: 1 }}>
           {implant.name}
         </Typography>
 
-        <Typography color="text.secondary">
+        <Typography sx={{ color: "text.secondary", minWidth: 100, textAlign: "right" }}>
           {effectiveEssence > 0
             ? `${effectiveEssence.toFixed(2).replace(/\.?0+$/, "")} Ess`
             : "0 Ess"}
         </Typography>
 
-        <Typography>
+        <Typography sx={{ minWidth: 100, textAlign: "right" }}>
           <Nuyen amount={effectiveNuyen} />
         </Typography>
 
@@ -79,7 +79,7 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
         </IconButton>
       </Stack>
 
-      <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
+      <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
         {implant.implantType && (
           <Chip
             label={typeLabel[implant.implantType] ?? implant.implantType}

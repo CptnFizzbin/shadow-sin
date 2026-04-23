@@ -7,9 +7,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { CyberwareListItem } from "#/components/characterBuilder/sections/gear/cyberware/cyberwareListItem.tsx"
-import { ImplantFormDialog } from "#/components/gear/cyberware/dialogs/implantFormDialog.tsx"
-import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearStore.ts"
+import { CyberwareListItem } from "#/components/implants/cyberwareListItem.tsx"
+import { ImplantFormDialog } from "#/components/implants/dialogs/implantFormDialog.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -46,6 +46,17 @@ export const CyberwareList: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
+      <Button
+        variant="outlined"
+        size="small"
+        startIcon={<RiAddLine size={14} />}
+        onClick={() => setImplantDialog({ mode: "create", open: true })}
+        color="secondary"
+        fullWidth
+      >
+        Add Implant
+      </Button>
+
       {rootImplants.map((implant) => {
         const accessories = implants.filter((i) => i.parentId === implant.id)
 
@@ -60,12 +71,12 @@ export const CyberwareList: FC = () => {
 
             <Stack
               sx={{
-                gap: 1, paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: accessories.length > 0 ? 1 : 0,
+                gap: 0,
+                padding: 0,
                 borderLeft: "4px solid",
-                borderBottom: accessories.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
+                borderBottom: "1px solid",
+                borderColor: "secondary.dark",
+                paddingLeft: 1,
               }}
             >
               {accessories.map((accessory) => (
@@ -97,17 +108,6 @@ export const CyberwareList: FC = () => {
           </Box>
         )
       })}
-
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => setImplantDialog({ mode: "create", open: true })}
-        color="secondary"
-        fullWidth
-      >
-        Add Implant
-      </Button>
 
       {implantDialog?.mode === "create" && (
         <ImplantFormDialog

@@ -74,10 +74,11 @@ Each gear type follows a consistent three-layer pattern:
    `<Dialog>`. Uses `useItemFormSubmit` to handle the acquire / purchase / save decision automatically.
 
 Supporting utilities in `src/components/gear/`:
+
 - `useItemFormSubmit.ts` — centralises the builder-vs-viewer submit logic; in builder context or edit
   mode it calls `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
 - `gearSubmitMeta.ts` — `GearSubmitMeta` type (`submitAction: "acquire" | "purchase" | "save"`)
-- `useGearApi.ts` — `useGearStore()`, `useGearById()`, `useGearByType()`, `useGearFilter()` reactive hooks
+- `useGearStore.ts` — `useGearStore()`, `useGearById()`, `useGearByType()`, `useGearFilter()` reactive hooks
 - `gearItemCard.tsx` — shared display card used across gear list views
 - `availabilityChip.tsx` — `AvailabilityChip` for restricted/forbidden badges
 
@@ -130,10 +131,12 @@ it("does something", () => {
 
 ## Type assertions
 
-**Never use `as unknown as T`** (the double type assertion pattern). This two-step cast bypasses TypeScript's structural checks entirely and hides real type incompatibilities.
+**Never use `as unknown as T`** (the double type assertion pattern). This two-step cast bypasses TypeScript's structural
+checks entirely and hides real type incompatibilities.
 
 - If two types are structurally compatible, a single `as T` assertion is enough.
-- If a function or component needs to accept many concrete subtypes (e.g. `ArmorData`, `WeaponData`), export a shared alias using `any` in a targeted type position and document it:
+- If a function or component needs to accept many concrete subtypes (e.g. `ArmorData`, `WeaponData`), export a shared
+  alias using `any` in a targeted type position and document it:
   ```ts
   // ✅ — one explicit any in a named alias; no assertion at call sites
   export type AnyItemForm = AppFieldExtendedReactFormApi<any, …, GearSubmitMeta, any, any>

@@ -1,24 +1,47 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { DamageCounter } from "#/components/character/quickPanel/damageCounter.tsx"
+import DamageTrack from "#/components/damage/damageTrack.tsx"
+import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
+  const damageStore = useDamageStore()
+  const physical = useStore(damageStore, (state) => state.physical)
+  const stun = useStore(damageStore, (state) => state.stun)
+
   return (
     <Stack sx={{ gap: 0.5 }}>
       <Label label="Damage" />
 
-      <WoundModLabel />
-      <Grid container columns={2} spacing={1}>
+      <Grid container columns={2} size={2} spacing={1} sx={{ width: { sm: "100%", md: "50%" }, margin: "auto" }}>
         <Grid size={1}>
-          <DamageCounter trackKey={DamageTrackKey.physical} label="Physical" />
+          <DamageTrack
+            label="Physical"
+            max={physical.max}
+            current={physical.current}
+            woundInterval={physical.woundInterval}
+            allowOverflow
+            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.physical, newValue)}
+          />
         </Grid>
+
         <Grid size={1}>
-          <DamageCounter trackKey={DamageTrackKey.stun} label="Stun" />
+          <DamageTrack
+            label="Stun"
+            max={stun.max}
+            current={stun.current}
+            woundInterval={stun.woundInterval}
+            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.stun, newValue)}
+          />
+        </Grid>
+
+        <Grid size={2}>
+          <WoundModLabel />
         </Grid>
       </Grid>
 

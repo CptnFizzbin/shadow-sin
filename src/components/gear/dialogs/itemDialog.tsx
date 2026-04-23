@@ -20,13 +20,13 @@ import { GearAttachmentFieldGroup } from "#/components/gear/forms/gearAttachment
 import { GearDescriptionFieldGroup } from "#/components/gear/forms/gearDescriptionFieldGroup.tsx"
 import type { AnyItemForm, ItemForm } from "#/components/gear/forms/useItemForm.tsx"
 import { itemFieldMap } from "#/components/gear/forms/useItemForm.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
 import { useIsBuilder } from "#/components/gear/useIsBuilder.ts"
 import { SourceFieldGroup } from "#/components/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { GearCostFieldGroup } from "../forms/gearCostFieldGroup.tsx"
+import { useGearStore } from "../useGearStore.ts"
 
 export interface ItemDialogOptionConfig {
   forced?: boolean

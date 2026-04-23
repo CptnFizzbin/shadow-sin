@@ -4,8 +4,8 @@ import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
 import {
   weaponFieldMap,
   useWeaponForm,
-} from "#/components/gear/weapons/forms/useWeaponForm.tsx"
-import { WeaponFormFields } from "#/components/gear/weapons/forms/weaponFormFields.tsx"
+} from "#/components/weapons/forms/useWeaponForm.tsx"
+import { WeaponFormFields } from "#/components/weapons/forms/weaponFormFields.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
