@@ -3,10 +3,12 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import type { ReactNode, FC } from "react"
 
+import { selectAllDialogs } from "#/components/ui/dialogs/rootDialogsSelectors.ts"
+
 const rootDialogsStore = createStore<Record<string, ReactNode>>({})
 
 export const RootDialogOutlet: FC = () => {
-  const dialogsMap = useStore(rootDialogsStore, (state) => state)
+  const dialogsMap = useStore(rootDialogsStore, selectAllDialogs)
 
   return Object.entries(dialogsMap).map(([key, dialog]) => (
     <div key={key}>{dialog}</div>

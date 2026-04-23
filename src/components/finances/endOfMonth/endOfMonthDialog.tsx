@@ -14,6 +14,8 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { selectLoans } from "#/components/finances/nuyen/nuyenSelectors.ts"
+import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
@@ -38,9 +40,9 @@ interface Props {
 export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
   const lifestyleStore = useLifestyleStore()
 
-  const loans = useStore(nuyenStore, (state) => state.loans)
-  const quality = useStore(lifestyleStore, (lifestyle) => lifestyle.quality)
-  const monthsPaid = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
+  const loans = useStore(nuyenStore, selectLoans)
+  const quality = useStore(lifestyleStore, selectLifestyleQuality)
+  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
   const upkeep = Lifestyles[quality].upkeep
 
   const loanItems: EndOfMonthLineItem[] = loans

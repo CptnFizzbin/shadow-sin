@@ -23,6 +23,7 @@ import {
 import {
   ActiveSkillGroupDialog,
 } from "#/components/characterBuilder/sections/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"
+import { selectActiveSkills, selectSkillGroups } from "#/components/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
@@ -37,8 +38,8 @@ export const ActiveSkillsList: FC = () => {
 
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
   const skillsStore = useSkillsStore()
-  const activeSkills = useStore(skillsStore, (state) => state.activeSkills)
-  const skillGroups = useStore(skillsStore, (state) => state.skillGroups)
+  const activeSkills = useStore(skillsStore, selectActiveSkills)
+  const skillGroups = useStore(skillsStore, selectSkillGroups)
 
   const editingSkillName = dialogState?.type === "activeSkill" ? dialogState.skill?.name : undefined
   const disabledSkills = getDisabledSkills(activeSkills, skillGroups, editingSkillName)

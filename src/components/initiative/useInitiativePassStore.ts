@@ -3,36 +3,11 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
+import { selectPassesCompleted } from "#/components/initiative/initiativePassSelectors.ts"
+import { InitiativePassStore } from "#/components/initiative/initiativePassStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
-import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 
-interface InitiativePassState {
-  passesCompleted: number[]
-}
-
-export class InitiativePassStore extends StoreSlice<InitiativePassState> {
-  togglePass(passIndex: number): void {
-    this.set(
-      produce((state) => {
-        const completed = new Set(state.passesCompleted)
-        if (completed.has(passIndex)) {
-          completed.delete(passIndex)
-        } else {
-          completed.add(passIndex)
-        }
-        state.passesCompleted = Array.from(completed)
-      }),
-    )
-  }
-
-  resetPasses(): void {
-    this.set(
-      produce((state) => {
-        state.passesCompleted = []
-      }),
-    )
-  }
-}
+export { InitiativePassStore } from "#/components/initiative/initiativePassStore.ts"
 
 export const useInitiativePassStore = (): InitiativePassStore => {
   const sheetStore = useCharacterSheetContext()
@@ -57,6 +32,6 @@ export const useInitiativePassStore = (): InitiativePassStore => {
 export const useInitiativePassesCompleted = (
   store: InitiativePassStore,
 ): ReadonlySet<number> => {
-  const passesCompleted = useStore(store, (state) => state.passesCompleted)
+  const passesCompleted = useStore(store, selectPassesCompleted)
   return useMemo(() => new Set(passesCompleted), [passesCompleted])
 }

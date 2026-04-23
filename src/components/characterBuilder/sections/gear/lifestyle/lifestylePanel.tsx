@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
@@ -15,9 +16,9 @@ import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 export const LifestylePanel: FC = () => {
   const lifestyleStore = useLifestyleStore()
 
-  const quality = useStore(lifestyleStore, (lifestyle) => lifestyle.quality)
+  const quality = useStore(lifestyleStore, selectLifestyleQuality)
   const upkeep = Lifestyles[quality].upkeep
-  const monthsPaid = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
+  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
 
   const totalCost = upkeep * monthsPaid
 

@@ -5,6 +5,7 @@ import { useStore } from "@tanstack/react-store"
 import { useState } from "react"
 
 import { ContactsList } from "#/components/contacts/contactsList.tsx"
+import { selectAllContacts } from "#/components/contacts/contactsSelectors.ts"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/$characterId/contacts")({
  */
 function RouteComponent() {
   const contactsStore = useContactsStore()
-  const allContacts = useStore(contactsStore, (contacts) => contacts)
+  const allContacts = useStore(contactsStore, selectAllContacts)
   const [searchQuery, setSearchQuery] = useState("")
 
   let filteredContacts = allContacts

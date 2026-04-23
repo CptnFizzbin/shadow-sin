@@ -15,6 +15,7 @@ import {
   SpritesListItem,
 } from "#/components/characterBuilder/sections/resources/technomancer/sprites/spritesListItem.tsx"
 import { useMaxSpritesRegistered } from "#/components/technomancer/spritesHooks.ts"
+import { selectAllSprites } from "#/components/technomancer/spritesSelectors.ts"
 import { useSpritesStore } from "#/components/technomancer/useSpritesStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -31,7 +32,7 @@ export const SpritesList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
   const spritesStore = useSpritesStore()
-  const sprites = useStore(spritesStore, (state) => state)
+  const sprites = useStore(spritesStore, selectAllSprites)
   const spritesBp = useSpritesBuildPoints()
 
   const [spriteDialog, setSpriteDialog] = useState<SpriteDialogState>(null)

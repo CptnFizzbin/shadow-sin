@@ -19,6 +19,7 @@ import { useAttr } from "#/components/character/characterUtils.ts"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
+import { selectPhysicalCurrent, selectPhysicalMax, selectStunCurrent, selectStunMax } from "#/components/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -43,10 +44,10 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainIsPhysical = isOvercasting
 
   const damageStore = useDamageStore()
-  const physicalMax = useStore(damageStore, (state) => state.physical.max)
-  const physicalCurrent = useStore(damageStore, (state) => state.physical.current)
-  const stunMax = useStore(damageStore, (state) => state.stun.max)
-  const stunCurrent = useStore(damageStore, (state) => state.stun.current)
+  const physicalMax = useStore(damageStore, selectPhysicalMax)
+  const physicalCurrent = useStore(damageStore, selectPhysicalCurrent)
+  const stunMax = useStore(damageStore, selectStunMax)
+  const stunCurrent = useStore(damageStore, selectStunCurrent)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return

@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 
+import { selectProfileAlias, selectProfileName } from "#/components/profile/profileSelectors.ts"
 import { useProfileStore } from "#/components/profile/useProfileStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
@@ -12,7 +13,7 @@ export const useProfileAlerts = (): AlertInfo[] => {
 
   const alerts: AlertInfo[] = []
 
-  const alias = useStore(profileStore, (state) => state.alias)
+  const alias = useStore(profileStore, selectProfileAlias)
   if (!alias) {
     addAlert({
       severity: "error",
@@ -22,7 +23,7 @@ export const useProfileAlerts = (): AlertInfo[] => {
     })
   }
 
-  const name = useStore(profileStore, (state) => state.name)
+  const name = useStore(profileStore, selectProfileName)
   if (!name) {
     addAlert({
       severity: "error",

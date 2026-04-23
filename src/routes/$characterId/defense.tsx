@@ -5,6 +5,7 @@ import { useStore } from "@tanstack/react-store"
 import { Fragment } from "react"
 
 import { EquippedArmorSection } from "#/components/armor/equippedArmorSection.tsx"
+import { selectPhysicalTrack, selectStunTrack } from "#/components/damage/damageSelectors.ts"
 import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -33,8 +34,8 @@ export const Route = createFileRoute("/$characterId/defense")({
 
 function RouteComponent() {
   const damageStore = useDamageStore()
-  const physical = useStore(damageStore, (state) => state.physical)
-  const stun = useStore(damageStore, (state) => state.stun)
+  const physical = useStore(damageStore, selectPhysicalTrack)
+  const stun = useStore(damageStore, selectStunTrack)
 
   return (
     <Stack>

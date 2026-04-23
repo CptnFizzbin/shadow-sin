@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -13,8 +14,8 @@ export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog({ id: "edge-confirm-burn" })
   const edgeStore = useEdgeStore()
 
-  const max = useStore(edgeStore, (state) => state.max)
-  const current = useStore(edgeStore, (state) => state.current)
+  const max = useStore(edgeStore, selectEdgeMax)
+  const current = useStore(edgeStore, selectEdgeCurrent)
 
   const onBurnClick = async () => {
     if (
