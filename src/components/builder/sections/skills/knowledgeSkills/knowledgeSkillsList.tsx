@@ -9,10 +9,10 @@ import { useState } from "react"
 import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
   KnowledgeSkillDialog,
-} from "#/components/builder/sections/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"
+} from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"
 import {
   LanguageSkillDialog,
-} from "#/components/builder/sections/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
+} from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import {
   useKnowledgeSkillPoints,
 } from "#/components/builder/sections/skills/knowledgeSkills/hooks/useKnowledgeSkillPoints.ts"

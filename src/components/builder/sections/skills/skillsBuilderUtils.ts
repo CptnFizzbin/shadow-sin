@@ -11,8 +11,6 @@ export const LanguageSkillSpPerRating = 1
 export const KnowledgeSpecializationSp = 1
 export const LanguageSpecializationSp = 1
 export const ExtraSkillPointBpCost = 2
-export const SkillRatingMax = 6
-export const SkillGroupRatingMax = 4
 
 export const getFreeSkillPoints = (
   logic: number,

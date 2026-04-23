@@ -11,7 +11,7 @@ import { useState } from "react"
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
 import {
   ComplexFormDialog,
-} from "#/components/builder/sections/resources/technomancer/complexForms/complexFormDialog.tsx"
+} from "#/components/character/technomancer/dialogs/complexFormDialog.tsx"
 import {
   ComplexFormsListItem,
 } from "#/components/builder/sections/resources/technomancer/complexForms/complexFormsListItem.tsx"

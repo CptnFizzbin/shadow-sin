@@ -7,10 +7,10 @@ import type { FC } from "react"
 
 import {
   LanguageSkillFormFields,
-} from "#/components/builder/sections/skills/knowledgeSkills/forms/languageSkillFormFields.tsx"
+} from "#/components/character/skills/knowledgeSkills/forms/languageSkillFormFields.tsx"
 import {
   useLanguageSkillForm,
-} from "#/components/builder/sections/skills/knowledgeSkills/hooks/useLanguageSkillForm.ts"
+} from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
 import { noop } from "#/lib/noop.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 

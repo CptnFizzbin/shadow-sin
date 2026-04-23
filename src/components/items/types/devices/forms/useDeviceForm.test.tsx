@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useDeviceForm } from "#/components/builder/sections/gear/devices/forms/useDeviceForm.tsx"
+import { useDeviceForm } from "#/components/items/types/devices/forms/useDeviceForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
 
 describe("useDeviceForm", () => {

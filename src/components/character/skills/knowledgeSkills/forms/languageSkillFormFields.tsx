@@ -3,11 +3,11 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import type {
   LanguageSkillForm,
-} from "#/components/builder/sections/skills/knowledgeSkills/hooks/useLanguageSkillForm.ts"
-import { SkillRatingMax } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+} from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import { SkillRatingMax } from "#/system/skills/skillConstants.ts"
 
 interface LanguageSkillFormFieldsProps {
   form: LanguageSkillForm

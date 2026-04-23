@@ -2,11 +2,11 @@ import type { FC } from "react"
 
 import {
   DeviceFormFields,
-} from "#/components/builder/sections/gear/devices/forms/deviceFormFields.tsx"
+} from "#/components/items/types/devices/forms/deviceFormFields.tsx"
 import {
   deviceFieldMap,
   useDeviceForm,
-} from "#/components/builder/sections/gear/devices/forms/useDeviceForm.tsx"
+} from "#/components/items/types/devices/forms/useDeviceForm.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 

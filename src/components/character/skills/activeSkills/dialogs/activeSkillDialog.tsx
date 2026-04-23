@@ -15,10 +15,10 @@ import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
-import { SkillRatingMax } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
+import { SkillRatingMax } from "#/system/skills/skillConstants.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
