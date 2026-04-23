@@ -29,6 +29,17 @@ describe("DialogCtrl", () => {
     await expect(ctrl.result()).resolves.toBe("hello")
   })
 
+  it("result() resolves with undefined when close() is called with no arguments", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<string>()
+
+    // Act
+    ctrl.close()
+
+    // Assert
+    await expect(ctrl.result()).resolves.toBeUndefined()
+  })
+
   it("sets isOpenStore to false when close() is called", () => {
     // Arrange
     const ctrl = new DialogCtrl<number>()

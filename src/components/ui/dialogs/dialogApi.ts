@@ -30,7 +30,7 @@ export interface DialogApiDialogProps<TReturn = void> {
    * Call when the dialog should close. Resolves the promise returned by
    * `ctrl.result()` with the provided value and triggers the close animation.
    */
-  onClose: (value: TReturn) => void
+  onClose: (value?: TReturn) => void
   /**
    * Call after the close animation has finished (e.g. MUI's `onTransitionExited`).
    * Removes the dialog from the root outlet so it unmounts cleanly.
