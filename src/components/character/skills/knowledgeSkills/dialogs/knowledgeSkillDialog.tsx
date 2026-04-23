@@ -13,7 +13,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
-import { SkillRatingMax } from "#/system/skills/skillConstants.ts"
+import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 interface KnowledgeSkillDialogProps {
   open: boolean
