@@ -9,7 +9,7 @@ import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface ProgramFormOptions {
+interface ProgramFormOptions {
   program?: ProgramData
   parentId?: UUID
   onSubmit: (program: ProgramData, meta: GearSubmitMeta) => void
