@@ -1,6 +1,5 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-import { getImplantEffectiveEssenceCost } from "#/components/gear/implantUtils.ts"
-import { useGearByType } from "#/components/gear/useGearApi.ts"
+import { getImplantEffectiveEssenceCost } from "#/components/implants/implantUtils.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -10,6 +9,7 @@ import { ItemType } from "#/system/itemType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+import { useGearByType } from "../gear/useGearStore.ts"
 
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])

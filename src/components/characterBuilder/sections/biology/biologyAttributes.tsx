@@ -6,19 +6,14 @@ import { createAttrInfo } from "#/components/attributes/attributeInfo.ts"
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
-import {
-  AttributeLabels,
-  MentalAttributes,
-  PhysicalAttributes,
-  SpecialAttributes,
-} from "#/system/attributeKey.ts"
+import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
 export const BiologyAttributes: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
-      <Label label="min / max (aug)" variant="outlined" />
+      <Label label="min / max (aug)" />
 
       <Stack sx={{ gap: 0 }}>
         <AttrList attrKeys={PhysicalAttributes} />

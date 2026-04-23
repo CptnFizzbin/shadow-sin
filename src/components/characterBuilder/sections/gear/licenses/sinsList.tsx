@@ -11,7 +11,7 @@ import { SinFormDialog } from "#/components/characterBuilder/sections/gear/licen
 import { SinRemoveDialog } from "#/components/characterBuilder/sections/gear/licenses/dialogs/sinRemoveDialog.tsx"
 import { LicensesList } from "#/components/characterBuilder/sections/gear/licenses/licensesList.tsx"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearStore.ts"
 import { getSinAvailability } from "#/components/licenses/sinUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"

@@ -2,10 +2,10 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
-import { ImplantFormFields } from "#/components/gear/cyberware/forms/implantFormFields.tsx"
-import { implantFieldMap, useImplantForm } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
-import { getImplantEffectiveNuyenCost } from "#/components/gear/implantUtils.ts"
+import { ImplantFormFields } from "#/components/implants/forms/implantFormFields.tsx"
+import { implantFieldMap, useImplantForm } from "#/components/implants/forms/useImplantForm.tsx"
+import { getImplantEffectiveNuyenCost } from "#/components/implants/implantUtils.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
