@@ -13,17 +13,25 @@ export const RootDialogOutlet: FC = () => {
   ))
 }
 
+export const addRootDialog = (id: string, dialog: ReactNode): void => {
+  rootDialogsStore.setState(produce((prev) => {
+    prev[id] = dialog
+  }))
+}
+
+export const removeRootDialog = (id: string): void => {
+  rootDialogsStore.setState(produce((prev) => {
+    delete prev[id]
+  }))
+}
+
+export const clearRootDialogs = (): void => {
+  rootDialogsStore.setState(() => ({}))
+}
+
 export const useRootDialogs = () => {
   return {
-    add: (id: string, dialog: ReactNode) => {
-      rootDialogsStore.setState(produce((prev) => {
-        prev[id] = dialog
-      }))
-    },
-    remove: (id: string) => {
-      rootDialogsStore.setState(produce((prev) => {
-        delete prev[id]
-      }))
-    },
+    add: addRootDialog,
+    remove: removeRootDialog,
   }
 }
