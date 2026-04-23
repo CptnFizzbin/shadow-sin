@@ -2,8 +2,8 @@ import { useMatches, useNavigate } from "@tanstack/react-router"
 import { useCallback } from "react"
 
 import type { CharacterSection } from "#/components/character/characterSections.ts"
-import { characterSectionOrder, characterSections } from "#/components/character/characterSections.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { characterSections } from "#/components/character/characterSections.ts"
+import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 
 export const useCurrentCharacterSection = (): CharacterSection => {
   const matches = useMatches()
@@ -17,11 +17,7 @@ export const useCurrentCharacterSection = (): CharacterSection => {
 export function useCharacterNav() {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
-  const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
-
-  const visibleSections = characterSectionOrder.filter(
-    (section) => !section.visibleFor || section.visibleFor.includes(awakening),
-  )
+  const visibleSections = useCharacterSheetTabs()
 
   const currentIndex = visibleSections.indexOf(currentSection)
 

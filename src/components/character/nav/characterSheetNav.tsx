@@ -7,20 +7,15 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { characterSections } from "#/components/character/characterSections.ts"
 import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 
 export const CharacterSheetNav: FC = () => {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
   const [menuOpen, setMenuOpen] = useState(false)
-  const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
-
-  const visibleSections = Object.values(characterSections).filter(
-    (section) => !section.visibleFor || section.visibleFor.includes(awakening),
-  )
+  const visibleSections = useCharacterSheetTabs()
 
   return (
     <>
