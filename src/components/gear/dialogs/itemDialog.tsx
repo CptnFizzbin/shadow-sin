@@ -63,8 +63,8 @@ export interface ItemDialogProps {
   }
 }
 
-function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
-  return config?.forced ?? false
+function resolveForced(config: ItemDialogOptionConfig | undefined): boolean | undefined {
+  return config?.forced
 }
 
 export const ItemDialog: FC<ItemDialogProps> = ({
@@ -90,7 +90,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 
-  const forced: Record<OptionKey, boolean> = {
+  const forced: Record<OptionKey, boolean | undefined> = {
     equipable: resolveForced(optionsProp?.equipable),
     licenseRequired: resolveForced(optionsProp?.licenseRequired),
     hasRating: resolveForced(optionsProp?.hasRating),

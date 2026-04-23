@@ -13,7 +13,7 @@ interface ItemOptionsDialogProps {
   open: boolean
   onClose: () => void
   options: Record<string, boolean>
-  forced: Record<string, boolean>
+  forced: Record<string, boolean | undefined>
   onChange: (updated: Record<string, boolean>) => void
 }
 
@@ -31,11 +31,17 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
   /**
    * Returns whether a togglable option's checkbox should appear checked.
-   * A forced option is always checked (regardless of local state). A non-forced
-   * option reflects the user's local toggle.
+   * A force-enabled option is always checked. A force-disabled option is always
+   * unchecked. A non-forced option reflects the user's local toggle.
    */
-  const isChecked = (key: string, value: boolean): boolean =>
-    (forced[key] ?? false) ? true : value
+  const isChecked = (key: string, value: boolean): boolean => {
+    if (forced[key] === true) return true
+    if (forced[key] === false) return false
+    return value
+  }
+
+  /** A forced option (either on or off) cannot be toggled by the user. */
+  const isForced = (key: string): boolean => forced[key] !== undefined
 
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
@@ -64,7 +70,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
         <Stack>
           <FormControlLabel
             label="Equippable"
-            disabled={forced["equipable"]}
+            disabled={isForced("equipable")}
             control={(
               <Checkbox
                 checked={isChecked("equipable", options["equipable"] ?? false)}
@@ -75,7 +81,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Has rating"
-            disabled={forced["hasRating"]}
+            disabled={isForced("hasRating")}
             control={(
               <Checkbox
                 checked={isChecked("hasRating", options["hasRating"] ?? false)}
@@ -86,7 +92,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Can have multiple"
-            disabled={forced["multiple"]}
+            disabled={isForced("multiple")}
             control={(
               <Checkbox
                 checked={isChecked("multiple", options["multiple"] ?? false)}
@@ -97,7 +103,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Is attachment / sub-item"
-            disabled={forced["isSubItem"]}
+            disabled={isForced("isSubItem")}
             control={(
               <Checkbox
                 checked={isChecked("isSubItem", options["isSubItem"] ?? false)}
@@ -109,7 +115,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           <FormControlLabel
             label="Is fixed / integrated item"
             sx={{ pl: 4 }}
-            disabled={!(options["isSubItem"] ?? false) && !(forced["isSubItem"] ?? false)}
+            disabled={!(options["isSubItem"] ?? false) && forced["isSubItem"] !== true}
             control={(
               <Checkbox
                 checked={options["fixed"] ?? false}
@@ -120,7 +126,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
           <FormControlLabel
             label="Applies game effects"
-            disabled={forced["hasEffects"]}
+            disabled={isForced("hasEffects")}
             control={(
               <Checkbox
                 checked={isChecked("hasEffects", options["hasEffects"] ?? false)}

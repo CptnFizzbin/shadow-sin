@@ -28,7 +28,13 @@ interface ItemOptionsDefaults {
 }
 
 function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
+  // forced: false means always disabled — never enable regardless of anything else.
+  if (config?.forced === false) return false
   return (config?.forced ?? false) || (config?.enabled ?? false)
+}
+
+function isForceDisabled(config: ItemDialogOptionConfig | undefined): boolean {
+  return config?.forced === false
 }
 
 /**
@@ -49,17 +55,17 @@ export function useItemOptions(
     const isEditMode = form.state.values.id !== NullUuid
     const initialValues = form.state.values
     return {
-      equipable: resolveEnabled(defaults?.equipable) || (isEditMode && initialValues.equipped !== undefined),
+      equipable: resolveEnabled(defaults?.equipable) || (!isForceDisabled(defaults?.equipable) && isEditMode && initialValues.equipped !== undefined),
       licenseRequired: resolveEnabled(defaults?.licenseRequired),
       licenseAlwaysShow: false,
       // rating: 0 is not a meaningful value so is treated the same as undefined.
-      hasRating: resolveEnabled(defaults?.hasRating) || (isEditMode && initialValues.rating !== undefined && initialValues.rating !== 0),
+      hasRating: resolveEnabled(defaults?.hasRating) || (!isForceDisabled(defaults?.hasRating) && isEditMode && initialValues.rating !== undefined && initialValues.rating !== 0),
       // quantity defaults to 1 for every item; only enable "multiple" when the stored
       // quantity is explicitly greater than 1, indicating the user intentionally set it.
-      multiple: resolveEnabled(defaults?.multiple) || (isEditMode && (initialValues.quantity ?? 0) > 1),
-      isSubItem: resolveEnabled(defaults?.isSubItem) || (isEditMode && initialValues.parentId !== undefined),
+      multiple: resolveEnabled(defaults?.multiple) || (!isForceDisabled(defaults?.multiple) && isEditMode && (initialValues.quantity ?? 0) > 1),
+      isSubItem: resolveEnabled(defaults?.isSubItem) || (!isForceDisabled(defaults?.isSubItem) && isEditMode && initialValues.parentId !== undefined),
       fixed: initialValues.fixed ?? false,
-      hasEffects: resolveEnabled(defaults?.hasEffects) || (isEditMode && initialValues.effects !== undefined),
+      hasEffects: resolveEnabled(defaults?.hasEffects) || (!isForceDisabled(defaults?.hasEffects) && isEditMode && initialValues.effects !== undefined),
     }
   })
 
