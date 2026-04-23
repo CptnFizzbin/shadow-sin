@@ -9,6 +9,7 @@ import { useQualitiesBuildPoints } from "#/components/characterBuilder/buildPoin
 import { QualitiesListItem } from "#/components/characterBuilder/sections/qualities/qualitiesListItem.tsx"
 import { QualitiesMaxNegativeBpBonus } from "#/components/characterBuilder/sections/qualities/qualitiesUtils.ts"
 import { QualityFormDialog } from "#/components/qualities/dialogs/qualityFormDialog.tsx"
+import { selectAllQualities } from "#/components/qualities/qualitiesSelectors.ts"
 import { useQualitiesStore } from "#/components/qualities/useQualitiesStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
@@ -23,7 +24,7 @@ interface QualitiesListProps {
 
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
   const qualitiesStore = useQualitiesStore()
-  const qualities = useStore(qualitiesStore, (state) => state)
+  const qualities = useStore(qualitiesStore, selectAllQualities)
   const qualitiesBuildPoints = useQualitiesBuildPoints()
 
   const [editDialogState, setEditDialogState] = useState<DialogState>({

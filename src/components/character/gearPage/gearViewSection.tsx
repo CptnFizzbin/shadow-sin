@@ -11,6 +11,7 @@ import { useState } from "react"
 import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwareSectionHeader.tsx"
 import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
+import { selectAllGear } from "#/components/gear/gearSelectors.ts"
 import { useGearStore } from "#/components/gear/useGearStore.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -24,7 +25,7 @@ interface GearViewSectionProps {
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
   const gearStore = useGearStore()
-  const allGearItems = useStore(gearStore, (gear) => gear)
+  const allGearItems = useStore(gearStore, selectAllGear)
 
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0

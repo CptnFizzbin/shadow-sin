@@ -11,6 +11,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { selectNuyenAmount } from "#/components/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -42,7 +43,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
 }) => {
   const nuyenStore = useNuyenStore()
   const isEditMode = mode === "edit"
-  const currentNuyen = useStore(nuyenStore, (state) => state.current)
+  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
   const [amount, setAmount] = useState<number>(loan?.amount ?? 0)

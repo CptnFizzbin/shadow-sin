@@ -19,6 +19,7 @@ import {
   ComplexFormsListItem,
 } from "#/components/characterBuilder/sections/resources/technomancer/complexForms/complexFormsListItem.tsx"
 import { useMaxComplexForms } from "#/components/technomancer/complexFormsHooks.ts"
+import { selectAllComplexForms } from "#/components/technomancer/complexFormsSelectors.ts"
 import { useComplexFormsStore } from "#/components/technomancer/useComplexFormsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
@@ -33,7 +34,7 @@ type ComplexFormDialogState =
 export const ComplexFormsList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
   const complexFormsStore = useComplexFormsStore()
-  const complexForms = useStore(complexFormsStore, (state) => state)
+  const complexForms = useStore(complexFormsStore, selectAllComplexForms)
   const complexFormsBp = useComplexFormsBuildPoints()
   const maxComplexForms = useMaxComplexForms()
 

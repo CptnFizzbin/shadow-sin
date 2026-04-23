@@ -8,6 +8,8 @@ import { RiInfinityLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { selectNuyenAmount } from "#/components/finances/nuyen/nuyenSelectors.ts"
+import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -21,10 +23,10 @@ interface Props {
 export const LifestyleSection: FC<Props> = ({ nuyenStore }) => {
   const lifestyleStore = useLifestyleStore()
 
-  const quality = useStore(lifestyleStore, (lifestyle) => lifestyle.quality)
-  const monthsPaid = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
+  const quality = useStore(lifestyleStore, selectLifestyleQuality)
+  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
   const upkeep = Lifestyles[quality].upkeep
-  const currentNuyen = useStore(nuyenStore, (state) => state.current)
+  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
 
   const canPrepay = upkeep > 0 && currentNuyen >= upkeep
 

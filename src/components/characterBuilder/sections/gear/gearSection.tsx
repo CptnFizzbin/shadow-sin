@@ -26,9 +26,11 @@ import { SectionHeader } from "#/components/characterBuilder/sections/gear/secti
 import { StartingNuyenSection } from "#/components/characterBuilder/sections/gear/startingNuyenSection.tsx"
 import { VehiclesPanel } from "#/components/characterBuilder/sections/gear/vehicles/vehiclesPanel.tsx"
 import { WeaponsPanel } from "#/components/characterBuilder/sections/gear/weapons/weaponsPanel.tsx"
+import { selectAllGear } from "#/components/gear/gearSelectors.ts"
 import { useGearStore } from "#/components/gear/useGearStore.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/licenses/sinsAndLicensesSection.tsx"
+import { selectLifestyleInfo, selectLifestyleMonthsPaid } from "#/components/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -37,7 +39,6 @@ import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { Lifestyles } from "#/system/lifestyleType.ts"
 
 export const GearSection: FC = () => {
   const theme = useTheme()
@@ -163,11 +164,11 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gearApi = useGearStore()
-  const allGearItems = useStore(gearApi, (g) => g)
+  const allGearItems = useStore(gearApi, selectAllGear)
 
   const lifestyleStore = useLifestyleStore()
-  const lifestyleInfo = useStore(lifestyleStore, (lifestyle) => Lifestyles[lifestyle.quality])
-  const lifestyleMonths = useStore(lifestyleStore, (lifestyle) => lifestyle.monthsPaid)
+  const lifestyleInfo = useStore(lifestyleStore, selectLifestyleInfo)
+  const lifestyleMonths = useStore(lifestyleStore, selectLifestyleMonthsPaid)
 
   if (section === SectionHeader.Lifestyle) {
     return (

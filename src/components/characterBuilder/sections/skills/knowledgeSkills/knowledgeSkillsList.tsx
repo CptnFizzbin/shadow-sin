@@ -24,6 +24,7 @@ import {
 import {
   LanguageSkillsListItem,
 } from "#/components/characterBuilder/sections/skills/knowledgeSkills/languageSkillsListItem.tsx"
+import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/skills/useSkillsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
@@ -40,8 +41,8 @@ export const KnowledgeSkillsList: FC = () => {
   const skillPoints = useKnowledgeSkillPoints()
   const buildPoints = useKnowledgeSkillsBuildPoints()
 
-  const knowledgeSkills = useStore(skillsStore, (state) => state.knowledgeSkills)
-  const languageSkills = useStore(skillsStore, (state) => state.languageSkills)
+  const knowledgeSkills = useStore(skillsStore, selectKnowledgeSkills)
+  const languageSkills = useStore(skillsStore, selectLanguageSkills)
 
   const [dialogState, setDialogState] = useState<DialogState>(null)
 

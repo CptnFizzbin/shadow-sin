@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-store"
 
+import { selectAllContacts } from "#/components/contacts/contactsSelectors.ts"
 import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
@@ -12,7 +13,7 @@ export const useContactsAlerts = (): AlertInfo[] => {
     alerts.push({ section: "Contacts", ...alert })
   }
 
-  const contacts = useStore(contactsStore, (state) => state)
+  const contacts = useStore(contactsStore, selectAllContacts)
 
   if (contacts.length === 0) {
     addAlert({
