@@ -10,16 +10,12 @@ import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/ho
 import {
   ActiveSkillGroupsListItem,
 } from "#/components/builder/sections/skills/activeSkills/activeSkillGroupsListItem.tsx"
-import {
-  ActiveSkillsListItem,
-} from "#/components/builder/sections/skills/activeSkills/activeSkillsListItem.tsx"
+import { ActiveSkillsListItem } from "#/components/builder/sections/skills/activeSkills/activeSkillsListItem.tsx"
 import {
   getDisabledGroups,
   getDisabledSkills,
 } from "#/components/builder/sections/skills/activeSkills/activeSkillsUtils.ts"
-import {
-  ActiveSkillDialog,
-} from "#/components/builder/sections/skills/activeSkills/dialogs/activeSkillDialog.tsx"
+import { ActiveSkillDialog } from "#/components/builder/sections/skills/activeSkills/dialogs/activeSkillDialog.tsx"
 import {
   ActiveSkillGroupDialog,
 } from "#/components/builder/sections/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"

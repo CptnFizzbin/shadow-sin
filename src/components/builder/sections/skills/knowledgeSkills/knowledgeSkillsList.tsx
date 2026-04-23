@@ -6,9 +6,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  useKnowledgeSkillsBuildPoints,
-} from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
+import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
   KnowledgeSkillDialog,
 } from "#/components/builder/sections/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"

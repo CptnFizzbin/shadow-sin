@@ -8,9 +8,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  useComplexFormsBuildPoints,
-} from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
+import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
 import {
   ComplexFormDialog,
 } from "#/components/builder/sections/resources/technomancer/complexForms/complexFormDialog.tsx"
