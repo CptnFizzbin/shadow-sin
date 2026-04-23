@@ -52,7 +52,6 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
           value={amountInput}
           onChange={(e) => setAmountInput(e.target.value)}
           slotProps={{ htmlInput: { min: 1 } }}
-          sx={{ marginTop: 1 }}
         />
       </DialogContent>
 
