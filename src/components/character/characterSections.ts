@@ -41,7 +41,6 @@ export interface SectionInfo {
   readonly id: CharacterSectionKey
   readonly label: string
   readonly route: AnyRoute
-  /** When defined, this section is only visible for characters with one of these awakening types. */
   readonly visibleFor?: AwakeningType[]
 }
 

@@ -3,9 +3,9 @@ import IconButton from "@mui/material/IconButton"
 import Tab from "@mui/material/Tab"
 import Tabs from "@mui/material/Tabs"
 import { RiMenuLine } from "@remixicon/react"
-import { useNavigate } from "@tanstack/react-router"
+import { Navigate, useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { characterSections } from "#/components/character/characterSections.ts"
 import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
@@ -20,17 +20,15 @@ export const CharacterSheetNav: FC = () => {
 
   const isCurrentSectionVisible = visibleSections.some((section) => section.id === currentSection.id)
 
-  useEffect(() => {
-    if (!isCurrentSectionVisible) {
-      void navigate({ to: characterSections.about.route.path })
-    }
-  }, [isCurrentSectionVisible, currentSection, navigate])
+  if (!isCurrentSectionVisible) {
+    return <Navigate to={characterSections.about.route.path} replace />
+  }
 
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Tabs
-          value={isCurrentSectionVisible ? currentSection : false}
+          value={currentSection}
           onChange={(_, section) => navigate({ to: section.route.path })}
           variant="scrollable"
           allowScrollButtonsMobile
