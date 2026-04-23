@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ArmorFormDialog } from "#/components/gear/armor/dialogs/armorFormDialog.tsx"
+import { ArmorFormDialog } from "#/components/armor/dialogs/armorFormDialog.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"

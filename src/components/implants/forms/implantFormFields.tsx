@@ -1,17 +1,18 @@
 import type { UUID } from "node:crypto"
 
 import { Box } from "@mui/material"
+import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
+import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { implantFormOpts } from "#/components/gear/cyberware/forms/useImplantForm.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
+import { implantFormOpts } from "#/components/implants/forms/useImplantForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 
 const implantTypeOptions = [
@@ -57,12 +58,12 @@ const implantLocationOptions = Object.values(ImplantLocation).map((location) => 
   value: location,
 }))
 
-interface CapacitySlotsChipProps {
+interface CapacitySlotsChipProps extends ChipProps {
   implantId: UUID
   capacity: number
 }
 
-const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity }) => {
+const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ...props }) => {
   const gearStore = useGearStore()
   const gear = useStore(gearStore, (items) => items)
   const usedCapacity = Object.values(gear)
@@ -71,17 +72,16 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity }) 
     .reduce((sum, child) => sum + (child.capacityCost ?? 0), 0)
 
   return (
-    <Chip
-      label={`${usedCapacity} / ${capacity} slots used`}
-      size="small"
-      variant="outlined"
-    />
+    <Chip label={`${usedCapacity} / ${capacity} slots used`} variant="outlined" size="small" {...props} />
   )
 }
 
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
-  render: ({ group }) => {
+  render: function Render({ group }) {
+    const parentId = useStore(group.store, (state) => state.values.parentId)
+    const itemId = useStore(group.store, (state) => state.values.id)
+
     return (
       <Stack sx={{ gap: 1 }}>
         <Stack direction={{ xs: "column", md: "row" }} sx={{ gap: 1 }}>
@@ -108,64 +108,66 @@ export const ImplantFormFields = withFieldGroup({
           </group.AppField>
         </Stack>
 
-        <group.AppField
-          name="essenceCost"
-          validators={{
-            onChange: z
-              .number("Essence cost is required")
-              .min(0, "Essence cost must be 0 or more"),
-          }}
-        >
-          {(field) => (
-            <field.CounterField label="Base Essence Cost" min={0} step={0.1} />
+        <Grid container spacing={1} columns={{ xs: 1, sm: 2 }}>
+          <Grid size={1}>
+            <group.AppField
+              name="essenceCost"
+              validators={{
+                onChange: z
+                  .number("Essence cost is required")
+                  .min(0, "Essence cost must be 0 or more"),
+              }}
+            >
+              {(field) => (
+                <field.CounterField label="Base Essence Cost" min={0} step={0.1} fullWidth />
+              )}
+            </group.AppField>
+          </Grid>
+
+          {parentId && (
+            <Grid size={1}>
+              <group.AppField
+                name="capacityCost"
+                validators={{
+                  onChange: z
+                    .number("Capacity cost is required")
+                    .min(0, "Capacity cost must be 0 or more"),
+                }}
+              >
+                {(field) => (
+                  <field.CounterField label="Capacity Cost" min={0} fullWidth />
+                )}
+              </group.AppField>
+            </Grid>
           )}
-        </group.AppField>
 
-        <group.Subscribe selector={({ values }) => values.parentId}>
-          {(parentId) => (
+          {!parentId && (
             <>
-              {parentId
-                ? (
-                    <group.AppField
-                      name="capacityCost"
-                      validators={{
-                        onChange: z
-                          .number("Capacity cost is required")
-                          .min(0, "Capacity cost must be 0 or more"),
-                      }}
-                    >
-                      {(field) => (
-                        <field.CounterField label="Capacity Cost" min={0} />
-                      )}
-                    </group.AppField>
-                  )
-                : (
-                    <group.Subscribe
-                      selector={({ values }) => ({ capacity: values.capacity, id: values.id })}
-                    >
-                      {({ capacity, id }) => (
-                        <Stack sx={{ gap: 1 }}>
-                          <group.AppField
-                            name="capacity"
-                            validators={{
-                              onChange: z
-                                .number("Capacity is required")
-                                .min(0, "Capacity must be 0 or more"),
-                            }}
-                          >
-                            {(field) => (
-                              <field.CounterField label="Capacity" min={0} />
-                            )}
-                          </group.AppField>
-                          {capacity !== undefined && capacity > 0 && id && id !== NullUuid && (
-                            <CapacitySlotsChip implantId={id} capacity={capacity} />
-                          )}
-                        </Stack>
-                      )}
-                    </group.Subscribe>
-                  )}
+              <Grid size={1}>
+                <group.AppField
+                  name="capacity"
+                  validators={{
+                    onChange: z
+                      .number("Capacity is required")
+                      .min(0, "Capacity must be 0 or more"),
+                  }}
+                >
+                  {(field) => {
+                    const capacity = field.state.value ?? 0
 
-              {!parentId && (
+                    return (
+                      <Stack sx={{ gap: 1 }}>
+                        <field.CounterField label="Capacity" min={0} fullWidth />
+                        {capacity >= 1 && (
+                          <CapacitySlotsChip implantId={itemId} capacity={capacity} sx={{ width: "100%" }} />
+                        )}
+                      </Stack>
+                    )
+                  }}
+                </group.AppField>
+              </Grid>
+
+              <Grid size={2}>
                 <group.AppField name="location">
                   {(field) => (
                     <field.SelectField
@@ -176,10 +178,10 @@ export const ImplantFormFields = withFieldGroup({
                     />
                   )}
                 </group.AppField>
-              )}
+              </Grid>
             </>
           )}
-        </group.Subscribe>
+        </Grid>
       </Stack>
     )
   },

@@ -4,9 +4,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { ArmorFormDialog } from "#/components/armor/dialogs/armorFormDialog.tsx"
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { ArmorFormDialog } from "#/components/gear/armor/dialogs/armorFormDialog.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -44,7 +44,14 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
           getSubItemCallbacks={(subItemId) => {
             const subItem = getChildren(item.id).find((child) => child.id === subItemId)
             return {
-              onEdit: subItem ? () => setDialogState(isArmorData(subItem) ? { open: true, armor: subItem } : null) : undefined,
+              onEdit: subItem
+                ? () => setDialogState(isArmorData(subItem)
+                    ? {
+                        open: true,
+                        armor: subItem,
+                      }
+                    : null)
+                : undefined,
               onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
             }
           }}

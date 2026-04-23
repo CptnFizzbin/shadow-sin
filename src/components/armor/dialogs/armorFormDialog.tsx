@@ -1,10 +1,7 @@
 import type { FC } from "react"
 
-import { ArmorFormFields } from "#/components/gear/armor/forms/armorFormFields.tsx"
-import {
-  armorFieldMap,
-  useArmorForm,
-} from "#/components/gear/armor/forms/useArmorForm.tsx"
+import { ArmorFormFields } from "#/components/armor/forms/armorFormFields.tsx"
+import { armorFieldMap, useArmorForm } from "#/components/armor/forms/useArmorForm.tsx"
 import { ItemDialog } from "#/components/gear/dialogs/itemDialog.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 

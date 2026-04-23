@@ -32,7 +32,7 @@ export default function DamageTrack({
     <Stack sx={{ gap: 0.5 }}>
       <Label label={label} />
 
-      <TrackCell onClick={() => onChange(0)}>0</TrackCell>
+      <TrackCell onClick={() => onChange(0)}>Reset</TrackCell>
 
       <Box
         sx={{

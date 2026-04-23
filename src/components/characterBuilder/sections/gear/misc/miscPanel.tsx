@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { ItemsList } from "#/components/characterBuilder/sections/gear/generic/itemsList.tsx"
-import { useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType } from "#/components/gear/useGearStore.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 export const MiscPanel: FC = () => {

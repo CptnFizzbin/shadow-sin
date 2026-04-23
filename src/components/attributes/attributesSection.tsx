@@ -3,21 +3,19 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import {
-  AttributeKey,
-  AttributeLabels,
-  MentalAttributes,
-  PhysicalAttributes,
-  SpecialAttributes,
-} from "#/system/attributeKey.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
+import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
 interface AttrListProps {
   attrKeys: readonly AttributeKey[]
+  showMaximums?: boolean
 }
 
-const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
+const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
   const attrs = useCharacterSheet((s) => s.attributes)
+  const attrInfos = useAllAttrInfos()
 
   const attributes = attrKeys
     .map((k) => ({ key: k, value: attrs[k] }))
@@ -30,7 +28,17 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
       {attributes.map((attribute) => (
         <Stack key={attribute.key} sx={{ flexGrow: 1, alignItems: "center", gap: 0 }}>
           <Label label={AttributeLabels[attribute.key]} variant="text" />
-          <Typography>{attribute.value}</Typography>
+          <Typography>
+            {attribute.value ?? attrInfos[attribute.key].min}
+            {showMaximums && (
+              <>
+                /
+                {attrInfos[attribute.key].max}
+                {" "}
+                {(attrInfos[attribute.key].augMax || 0) >= 1 && <>({attrInfos[attribute.key].augMax})</>}
+              </>
+            )}
+          </Typography>
         </Stack>
       ))}
     </Stack>
@@ -38,30 +46,18 @@ const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
 }
 
 export interface AttributesSectionProps {
-  showLabels?: boolean
+  showMaximums?: boolean
 }
 
 export const AttributesSection: FC<AttributesSectionProps> = ({
-  showLabels = true,
+  showMaximums = false,
 }) => {
   return (
-    <Stack>
-      <Stack>
-        {showLabels && <Label label="Physical" />}
-        <AttrList attrKeys={PhysicalAttributes} />
-      </Stack>
-
-      <Stack>
-        {showLabels && <Label label="Mental" />}
-        <AttrList attrKeys={MentalAttributes} />
-      </Stack>
-
-      <Stack>
-        {showLabels && <Label label="Special" />}
-        <AttrList
-          attrKeys={SpecialAttributes.filter((k) => k !== AttributeKey.essence)}
-        />
-      </Stack>
+    <Stack sx={{ gap: 0, width: 300, margin: "auto" }}>
+      {showMaximums && <Label label="min / max (aug)" />}
+      <AttrList attrKeys={PhysicalAttributes} showMaximums={showMaximums} />
+      <AttrList attrKeys={MentalAttributes} showMaximums={showMaximums} />
+      <AttrList attrKeys={SpecialAttributes} showMaximums={showMaximums} />
     </Stack>
   )
 }

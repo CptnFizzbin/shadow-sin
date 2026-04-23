@@ -9,11 +9,11 @@ import { useState } from "react"
 
 import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
 import { ItemCard } from "#/components/gear/itemCard.tsx"
-import { useGearFilter, useGearStore } from "#/components/gear/useGearApi.ts"
 import { VehicleFormDialog } from "#/components/vehicles/dialogs/vehicleFormDialog.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
-import { VehicleCategory, isVehicleData } from "#/system/gear/vehicleData.ts"
+import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import { useGearFilter, useGearStore } from "../gear/useGearStore.ts"
 
 type VehicleDialogState =
   | null

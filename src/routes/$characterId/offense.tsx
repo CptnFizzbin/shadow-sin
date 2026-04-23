@@ -2,9 +2,9 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { InitiativeSection } from "#/components/initiative/initiativeSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { InitiativeSection } from "../../components/initiative/initiativeSection.tsx"
-import { EquippedWeaponsSection } from "../../components/weapons/equippedWeaponsSection.tsx"
+import { EquippedWeaponsSection } from "#/components/weapons/equippedWeaponsSection.tsx"
 
 export const Route = createFileRoute("/$characterId/offense")({
   component: RouteComponent,

@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
 import { ItemCard } from "#/components/gear/itemCard.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 

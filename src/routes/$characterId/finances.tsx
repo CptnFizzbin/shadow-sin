@@ -11,6 +11,7 @@ import { EndOfMonthDialog } from "#/components/finances/endOfMonth/endOfMonthDia
 import { LifestyleSection } from "#/components/finances/lifestyle/lifestyleSection.tsx"
 import { LoansSection } from "#/components/finances/loans/loansSection.tsx"
 import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
+import { useNetWorth } from "#/components/finances/nuyen/useNetWorth.tsx"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
 import { useLifestyleStore } from "#/components/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -18,7 +19,6 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
-import { useNetWorth } from "../../components/finances/nuyen/useNetWorth.tsx"
 
 export const Route = createFileRoute("/$characterId/finances")({
   component: RouteComponent,

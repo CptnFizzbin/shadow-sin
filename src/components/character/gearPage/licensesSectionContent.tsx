@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
 import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"

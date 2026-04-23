@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useEssenseInfo } from "#/components/character/characterUtils.ts"
-import { CyberwareList } from "#/components/characterBuilder/sections/gear/cyberware/cyberwareList.tsx"
-import { BASE_ESSENCE } from "#/components/gear/implantUtils.ts"
+import { BASE_ESSENCE } from "#/components/implants/implantUtils.ts"
+import { CyberwareList } from "../../../../implants/cyberwareList.tsx"
 
 export const CyberwarePanel: FC = () => {
   const essenseInfo = useEssenseInfo()
