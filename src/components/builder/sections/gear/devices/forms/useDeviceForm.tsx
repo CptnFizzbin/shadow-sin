@@ -6,7 +6,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface DeviceFormOptions {
+interface DeviceFormOptions {
   device?: DeviceData
   onSubmit: (device: DeviceData, meta: GearSubmitMeta) => void
 }

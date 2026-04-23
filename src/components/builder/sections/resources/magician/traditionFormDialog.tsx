@@ -17,7 +17,7 @@ import {
   spiritTypeSelectOptions,
 } from "#/system/magic/traditionData.ts"
 
-export interface TraditionFormDialogProps {
+interface TraditionFormDialogProps {
   open: boolean
   tradition?: TraditionData
   onSave: (tradition: TraditionData) => void

@@ -5,7 +5,7 @@ import { z } from "zod"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
-export interface CostFieldGroupProps {
+interface CostFieldGroupProps {
   enableQuantity?: boolean
   onBuyMore?: () => void
 }

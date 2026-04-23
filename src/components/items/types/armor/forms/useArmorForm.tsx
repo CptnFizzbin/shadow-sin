@@ -6,7 +6,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface ArmorFormOptions {
+interface ArmorFormOptions {
   armor?: ArmorData
   onSubmit: (armor: ArmorData, meta: GearSubmitMeta) => void
 }

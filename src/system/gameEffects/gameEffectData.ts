@@ -11,25 +11,6 @@ export interface GameEffectData {
   value: number
 }
 
-export interface AttrModEffect extends GameEffectData {
-  type: GameEffectType.attrMod
-  target: AttributeKey
-}
-
-export interface SkillModEffect extends GameEffectData {
-  type: GameEffectType.skillMod
-  target: SkillKey
-}
-
-export interface ExtraInitiativePassesEffect extends GameEffectData {
-  type: GameEffectType.extraInitiativePasses
-}
-
-export interface PainToleranceEffect extends GameEffectData {
-  type: GameEffectType.painTolerance
-  target: DamageTrackKey | "all"
-}
-
 const InitiativeBonusSchema = z.object({
   type: z.literal(GameEffectType.initiativeBonus),
   target: z.string().optional(),

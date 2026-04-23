@@ -6,12 +6,12 @@ import type { StorageManager } from "#/lib/storage/storageManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 
-export interface CharactersWithErrors {
+interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
   errors: CharacterLoadError[]
 }
 
-export interface CharacterManagerOptions {
+interface CharacterManagerOptions {
   /**
    * Debounce wait in milliseconds applied to `save()`. Rapid calls within this
    * window coalesce into a single storage write. Default: 1000.

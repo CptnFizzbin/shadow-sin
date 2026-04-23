@@ -56,7 +56,7 @@ const debouncedSaveState = debounce(
   { wait: 500 },
 )
 
-export const usePersistStore = (persistanceKey: string, store: AnyAtom) => {
+const usePersistStore = (persistanceKey: string, store: AnyAtom) => {
   useEffect(() => {
     const { unsubscribe } = store.subscribe((state) => {
       debouncedSaveState(persistanceKey, state)

@@ -8,7 +8,7 @@ export interface ItemDialogOptionConfig {
   enabled?: boolean
 }
 
-export type ItemOptionKey =
+type ItemOptionKey =
   | "equipable"
   | "licenseRequired"
   | "licenseAlwaysShow"

@@ -13,7 +13,7 @@ import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
-export interface ActiveSkillsListItemProps {
+interface ActiveSkillsListItemProps {
   skillKey: SkillKey
   rating: number
 }

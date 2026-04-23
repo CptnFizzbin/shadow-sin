@@ -7,7 +7,7 @@ import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface VehicleFormOptions {
+interface VehicleFormOptions {
   vehicle?: VehicleData
   vehicleCategory?: VehicleCategory
   onSubmit: (vehicle: VehicleData, meta: GearSubmitMeta) => void
@@ -51,7 +51,7 @@ const defaultFormValues = {
   },
 }
 
-export type VehicleFormState = typeof defaultFormValues
+type VehicleFormState = typeof defaultFormValues
 
 export const vehicleFieldMap = createFieldMap(defaultFormValues)
 

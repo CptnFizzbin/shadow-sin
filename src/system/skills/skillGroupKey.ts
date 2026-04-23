@@ -13,5 +13,3 @@ export enum SkillGroupKey {
   Stealth = "Stealth",
   Tasking = "Tasking",
 }
-
-export const SkillGroupNames = Object.values(SkillGroupKey)

@@ -7,7 +7,7 @@ import type { QualityForm } from "#/components/character/qualities/form/useQuali
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 
-export interface QualityFormFieldsProps {
+interface QualityFormFieldsProps {
   form: QualityForm
 }
 

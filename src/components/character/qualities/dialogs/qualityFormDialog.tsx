@@ -12,7 +12,7 @@ import { useQualityForm } from "#/components/character/qualities/form/useQuality
 import { noop } from "#/lib/noop.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
-export interface QualityFormDialogProps {
+interface QualityFormDialogProps {
   open: boolean
   quality?: QualityData
   onSave: (quality: QualityData) => void

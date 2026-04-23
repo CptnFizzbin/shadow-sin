@@ -18,7 +18,7 @@ const defaultTraditionValues: TraditionData = {
   concept: "",
 }
 
-export type TraditionFormOptions = {
+type TraditionFormOptions = {
   tradition?: TraditionData
   onSubmit: (tradition: TraditionData) => void
 }
@@ -36,5 +36,3 @@ export function useTraditionForm({ tradition, onSubmit }: TraditionFormOptions) 
     },
   })
 }
-
-export type TraditionForm = ReturnType<typeof useTraditionForm>

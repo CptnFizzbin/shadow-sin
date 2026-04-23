@@ -12,7 +12,7 @@ import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAd
 import { noop } from "#/lib/noop.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
-export interface AdeptPowerFormDialogProps {
+interface AdeptPowerFormDialogProps {
   open: boolean
   power?: AdeptPowerData
   onSave: (power: AdeptPowerData) => void

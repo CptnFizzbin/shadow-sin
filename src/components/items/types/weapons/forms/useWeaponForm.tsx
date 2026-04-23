@@ -10,7 +10,7 @@ import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts
 import { ItemType } from "#/system/itemType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export interface WeaponFormOptions {
+interface WeaponFormOptions {
   weapon?: WeaponData
   onSubmit: (weapon: WeaponData, meta: GearSubmitMeta) => void
 }
@@ -63,7 +63,7 @@ const defaultFormValues = {
   },
 }
 
-export type WeaponFormState = typeof defaultFormValues
+type WeaponFormState = typeof defaultFormValues
 
 export const weaponFieldMap = createFieldMap(defaultFormValues)
 

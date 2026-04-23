@@ -15,8 +15,6 @@ import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
-export { GearSection, sectionGearTypes }
-
 interface GearViewSectionProps {
   section: GearSection
   searchTerms: string[]

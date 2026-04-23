@@ -5,9 +5,9 @@ import { createContext, useContext } from "react"
 import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
-export const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
+const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 
-export interface CharacterSheetProviderProps extends PropsWithChildren {
+interface CharacterSheetProviderProps extends PropsWithChildren {
   store: CharacterSheetStore
 }
 

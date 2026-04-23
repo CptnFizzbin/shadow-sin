@@ -695,13 +695,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:^10.4.0":
-  version: 10.4.0
-  resolution: "@faker-js/faker@npm:10.4.0"
-  checksum: 10c0/29f15e46f91757d654f6f42ac8313ac4aebb6591e2ebae7fdd8d36d5017490327ea67be37cff06d18303db54abf468524bcc7e4b1de53be4eb884c1f71d571c1
-  languageName: node
-  linkType: hard
-
 "@gar/promise-retry@npm:^1.0.0":
   version: 1.0.2
   resolution: "@gar/promise-retry@npm:1.0.2"
@@ -1835,15 +1828,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/match-sorter-utils@npm:^8.19.4":
-  version: 8.19.4
-  resolution: "@tanstack/match-sorter-utils@npm:8.19.4"
-  dependencies:
-    remove-accents: "npm:0.5.0"
-  checksum: 10c0/935022e3d639f19472131d289f3e1202253ff34301717c337e9bac0eeae6a0bd56450ed8ae2f7eb7ac9dfefa7ceaa7d126d8c5441021968b4a9eabc3ac4f8ba1
-  languageName: node
-  linkType: hard
-
 "@tanstack/pacer-lite@npm:^0.1.1":
   version: 0.1.1
   resolution: "@tanstack/pacer-lite@npm:0.1.1"
@@ -1897,19 +1881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-pacer@npm:^0.21.1":
-  version: 0.21.1
-  resolution: "@tanstack/react-pacer@npm:0.21.1"
-  dependencies:
-    "@tanstack/pacer": "npm:0.20.1"
-    "@tanstack/react-store": "npm:^0.9.3"
-  peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: 10c0/7e1b51efcd0ef1a1f28eb8dcb1e2dd0980631acbe6bb662d419c14ed7bc9781746d8cfca16489b99656c74e1d81652d5805c8b7b60973213d2ceb4bd92ae25e9
-  languageName: node
-  linkType: hard
-
 "@tanstack/react-query@npm:^5.96.2":
   version: 5.96.2
   resolution: "@tanstack/react-query@npm:5.96.2"
@@ -1949,19 +1920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-table@npm:^8.21.3":
-  version: 8.21.3
-  resolution: "@tanstack/react-table@npm:8.21.3"
-  dependencies:
-    "@tanstack/table-core": "npm:8.21.3"
-  peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: 10c0/85d1d0fcb690ecc011f68a5a61c96f82142e31a0270dcf9cbc699a6f36715b1653fe6ff1518302a6d08b7093351fc4cabefd055a7db3cd8ac01e068956b0f944
-  languageName: node
-  linkType: hard
-
-"@tanstack/router-core@npm:1.168.9, @tanstack/router-core@npm:^1.168.9":
+"@tanstack/router-core@npm:1.168.9":
   version: 1.168.9
   resolution: "@tanstack/router-core@npm:1.168.9"
   dependencies:
@@ -2052,13 +2011,6 @@ __metadata:
   version: 0.9.3
   resolution: "@tanstack/store@npm:0.9.3"
   checksum: 10c0/ec022c792c298be0717d7a2d06d6db4459077db775a27d86a2a248f446257e133c5d7c77a74bf6a4fa6993cfaef09b6f58a68a601c3becca834ed0b457ebe824
-  languageName: node
-  linkType: hard
-
-"@tanstack/table-core@npm:8.21.3":
-  version: 8.21.3
-  resolution: "@tanstack/table-core@npm:8.21.3"
-  checksum: 10c0/40e3560e6d55e07cc047024aa7f83bd47a9323d21920d4adabba8071fd2d21230c48460b26cedf392588f8265b9edc133abb1b0d6d0adf4dae0970032900a8c9
   languageName: node
   linkType: hard
 
@@ -2275,7 +2227,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:8.58.0, @typescript-eslint/eslint-plugin@npm:^8.58.0":
+"@typescript-eslint/eslint-plugin@npm:8.58.0":
   version: 8.58.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.58.0"
   dependencies:
@@ -2295,7 +2247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.58.0, @typescript-eslint/parser@npm:^8.58.0":
+"@typescript-eslint/parser@npm:8.58.0":
   version: 8.58.0
   resolution: "@typescript-eslint/parser@npm:8.58.0"
   dependencies:
@@ -6065,13 +6017,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remove-accents@npm:0.5.0":
-  version: 0.5.0
-  resolution: "remove-accents@npm:0.5.0"
-  checksum: 10c0/a75321aa1b53d9abe82637115a492770bfe42bb38ed258be748bf6795871202bc8b4badff22013494a7029f5a241057ad8d3f72adf67884dbe15a9e37e87adc4
-  languageName: node
-  linkType: hard
-
 "reselect@npm:5.1.1":
   version: 5.1.1
   resolution: "reselect@npm:5.1.1"
@@ -6426,7 +6371,6 @@ __metadata:
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.1"
     "@eslint/js": "npm:^9.39.4"
-    "@faker-js/faker": "npm:^10.4.0"
     "@mui/icons-material": "npm:^9.0.0"
     "@mui/material": "npm:^9.0.0"
     "@playwright/test": "npm:1.59.1"
@@ -6434,17 +6378,14 @@ __metadata:
     "@rolldown/plugin-babel": "npm:^0.2.2"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
     "@t3-oss/env-core": "npm:^0.13.11"
-    "@tanstack/devtools-event-client": "npm:^0.4.3"
     "@tanstack/devtools-vite": "npm:^0.6.0"
-    "@tanstack/match-sorter-utils": "npm:^8.19.4"
+    "@tanstack/form-core": "npm:1.28.6"
+    "@tanstack/pacer": "npm:0.20.1"
     "@tanstack/react-devtools": "npm:^0.10.2"
     "@tanstack/react-form": "npm:^1.28.6"
-    "@tanstack/react-pacer": "npm:^0.21.1"
     "@tanstack/react-query": "npm:^5.96.2"
     "@tanstack/react-router": "npm:^1.168.10"
     "@tanstack/react-store": "npm:^0.9.3"
-    "@tanstack/react-table": "npm:^8.21.3"
-    "@tanstack/router-core": "npm:^1.168.9"
     "@tanstack/router-plugin": "npm:^1.167.12"
     "@tanstack/store": "npm:^0.9.3"
     "@testing-library/dom": "npm:^10.4.1"
@@ -6455,8 +6396,6 @@ __metadata:
     "@types/pluralize": "npm:^0.0.33"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
-    "@typescript-eslint/eslint-plugin": "npm:^8.58.0"
-    "@typescript-eslint/parser": "npm:^8.58.0"
     "@vitejs/plugin-react": "npm:^6.0.1"
     "@vitest/ui": "npm:4.1.2"
     babel-plugin-react-compiler: "npm:^1.0.0"

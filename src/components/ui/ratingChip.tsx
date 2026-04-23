@@ -2,7 +2,7 @@ import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
 import type { FC } from "react"
 
-export interface RatingChipProps extends Omit<ChipProps, "label"> {
+interface RatingChipProps extends Omit<ChipProps, "label"> {
   rating: "real" | number | string
 }
 

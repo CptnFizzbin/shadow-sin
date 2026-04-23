@@ -10,7 +10,7 @@ import type { DialogCtrl } from "#/components/ui/dialogs/dialogCtrl.ts"
  * unifies the ctrl and dialogFc — using `any` here avoids unsafe double casts.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyDialogFc = FC<DialogApiDialogProps<any>>
+type AnyDialogFc = FC<DialogApiDialogProps<any>>
 
 interface DialogApiWrapperProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
