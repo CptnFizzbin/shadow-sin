@@ -42,10 +42,10 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       onClosed={onClosed}
       getCost={(values) => getImplantEffectiveNuyenCost(values as ImplantData)}
       options={{
-        equipable: { forced: false },
+        equipable: { forced: true, enabled: false },
         hasRating: { forced: true },
-        multiple: { forced: false },
-        isSubItem: { forced: false },
+        multiple: { forced: true, enabled: false },
+        isSubItem: { forced: true, enabled: false },
         hasEffects: { forced: true },
       }}
       slots={{

@@ -13,7 +13,7 @@ interface ItemOptionsDialogProps {
   open: boolean
   onClose: () => void
   options: Record<string, boolean>
-  forced: Record<string, boolean | undefined>
+  forced: Record<string, boolean>
   onChange: (updated: Record<string, boolean>) => void
 }
 
@@ -28,20 +28,6 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   const confirmDialog = useConfirmDialog({ id: "item-unfix-confirm" })
 
   const set = (patch: Record<string, boolean>) => onChange({ ...options, ...patch })
-
-  /**
-   * Returns whether a togglable option's checkbox should appear checked.
-   * A force-enabled option is always checked. A force-disabled option is always
-   * unchecked. A non-forced option reflects the user's local toggle.
-   */
-  const isChecked = (key: string, value: boolean): boolean => {
-    if (forced[key] === true) return true
-    if (forced[key] === false) return false
-    return value
-  }
-
-  /** A forced option (either on or off) cannot be toggled by the user. */
-  const isForced = (key: string): boolean => forced[key] !== undefined
 
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
@@ -68,72 +54,81 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
 
       <DialogContent sx={{ padding: 1 }}>
         <Stack>
-          <FormControlLabel
-            label="Equippable"
-            disabled={isForced("equipable")}
-            control={(
-              <Checkbox
-                checked={isChecked("equipable", options["equipable"] ?? false)}
-                onChange={(e) => set({ equipable: e.target.checked })}
-              />
-            )}
-          />
+          {!forced["equipable"] && (
+            <FormControlLabel
+              label="Equippable"
+              control={(
+                <Checkbox
+                  checked={options["equipable"] ?? false}
+                  onChange={(e) => set({ equipable: e.target.checked })}
+                />
+              )}
+            />
+          )}
 
-          <FormControlLabel
-            label="Has rating"
-            disabled={isForced("hasRating")}
-            control={(
-              <Checkbox
-                checked={isChecked("hasRating", options["hasRating"] ?? false)}
-                onChange={(e) => set({ hasRating: e.target.checked })}
-              />
-            )}
-          />
+          {!forced["hasRating"] && (
+            <FormControlLabel
+              label="Has rating"
+              control={(
+                <Checkbox
+                  checked={options["hasRating"] ?? false}
+                  onChange={(e) => set({ hasRating: e.target.checked })}
+                />
+              )}
+            />
+          )}
 
-          <FormControlLabel
-            label="Can have multiple"
-            disabled={isForced("multiple")}
-            control={(
-              <Checkbox
-                checked={isChecked("multiple", options["multiple"] ?? false)}
-                onChange={(e) => set({ multiple: e.target.checked })}
-              />
-            )}
-          />
+          {!forced["multiple"] && (
+            <FormControlLabel
+              label="Can have multiple"
+              control={(
+                <Checkbox
+                  checked={options["multiple"] ?? false}
+                  onChange={(e) => set({ multiple: e.target.checked })}
+                />
+              )}
+            />
+          )}
 
-          <FormControlLabel
-            label="Is attachment / sub-item"
-            disabled={isForced("isSubItem")}
-            control={(
-              <Checkbox
-                checked={isChecked("isSubItem", options["isSubItem"] ?? false)}
-                onChange={(e) => set({ isSubItem: e.target.checked })}
-              />
-            )}
-          />
+          {/* Show isSubItem row only when it is user-toggleable. */}
+          {!forced["isSubItem"] && (
+            <FormControlLabel
+              label="Is attachment / sub-item"
+              control={(
+                <Checkbox
+                  checked={options["isSubItem"] ?? false}
+                  onChange={(e) => set({ isSubItem: e.target.checked })}
+                />
+              )}
+            />
+          )}
 
-          <FormControlLabel
-            label="Is fixed / integrated item"
-            sx={{ pl: 4 }}
-            disabled={!(options["isSubItem"] ?? false) && forced["isSubItem"] !== true}
-            control={(
-              <Checkbox
-                checked={options["fixed"] ?? false}
-                onChange={(e) => handleFixedChange(e.target.checked)}
-              />
-            )}
-          />
+          {/* Show fixed row when isSubItem is user-toggleable or forced-on (options["isSubItem"] is true). */}
+          {(!forced["isSubItem"] || options["isSubItem"]) && (
+            <FormControlLabel
+              label="Is fixed / integrated item"
+              sx={{ pl: 4 }}
+              disabled={!options["isSubItem"]}
+              control={(
+                <Checkbox
+                  checked={options["fixed"] ?? false}
+                  onChange={(e) => handleFixedChange(e.target.checked)}
+                />
+              )}
+            />
+          )}
 
-          <FormControlLabel
-            label="Applies game effects"
-            disabled={isForced("hasEffects")}
-            control={(
-              <Checkbox
-                checked={isChecked("hasEffects", options["hasEffects"] ?? false)}
-                onChange={(e) => set({ hasEffects: e.target.checked })}
-              />
-            )}
-          />
+          {!forced["hasEffects"] && (
+            <FormControlLabel
+              label="Applies game effects"
+              control={(
+                <Checkbox
+                  checked={options["hasEffects"] ?? false}
+                  onChange={(e) => set({ hasEffects: e.target.checked })}
+                />
+              )}
+            />
+          )}
         </Stack>
       </DialogContent>
     </Dialog>

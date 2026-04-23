@@ -28,13 +28,15 @@ interface ItemOptionsDefaults {
 }
 
 function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
-  // forced: false means always disabled — never enable regardless of anything else.
-  if (config?.forced === false) return false
-  return (config?.forced ?? false) || (config?.enabled ?? false)
+  // { forced: true, enabled: false } = force-disabled: never enable.
+  if (config?.forced === true && config?.enabled === false) return false
+  // { forced: true } = force-enabled: always on.
+  if (config?.forced === true) return true
+  return config?.enabled ?? false
 }
 
 function isForceDisabled(config: ItemDialogOptionConfig | undefined): boolean {
-  return config?.forced === false
+  return config?.forced === true && config?.enabled === false
 }
 
 /**
