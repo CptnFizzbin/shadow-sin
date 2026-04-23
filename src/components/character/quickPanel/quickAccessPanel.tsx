@@ -9,10 +9,10 @@ import { RiCloseLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { NuyenSection } from "#/components/character/finances/nuyen/nuyenSection.tsx"
 import { QuickAttributesSection } from "#/components/character/quickPanel/quickAttributesSection.tsx"
 import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
 import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
-import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
 
 export const QuickAccessPanel: FC = () => {
   const [isOpen, setIsOpen] = useState(false)

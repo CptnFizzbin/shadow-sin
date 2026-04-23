@@ -4,9 +4,9 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { Fragment } from "react"
 
-import { EquippedArmorSection } from "#/components/armor/equippedArmorSection.tsx"
-import { selectPhysicalTrack, selectStunTrack } from "#/components/damage/damageSelectors.ts"
-import DamageTrack from "#/components/damage/damageTrack.tsx"
+import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
+import { selectPhysicalTrack, selectStunTrack } from "#/components/system/damage/damageSelectors.ts"
+import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
   MeleeBlockDicePool,
@@ -20,9 +20,9 @@ import {
   RangedFullDefenseDicePool,
   ResistBodyDicePool,
   ResistWillpowerDicePool,
-} from "#/components/damage/resistanceDicePools.tsx"
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
-import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
+} from "#/components/system/damage/resistanceDicePools.tsx"
+import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
+import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"

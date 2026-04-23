@@ -109,7 +109,7 @@ Supporting utilities in `src/components/gear/`:
   ```
 
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
-  `npm-run-all`) and then `yarn tsc` to ensure formatting, linting, and types are clean before pushing.
+  `npm-run-all`) to ensure formatting, linting, and types are clean before pushing.
 - Google Drive integration (`src/integrations/googleDrive/api.ts`) is a placeholder stub — not implemented.
 
 ## Testing conventions

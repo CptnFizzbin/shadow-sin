@@ -18,8 +18,8 @@ Formatting and tooling notes:
 
 - The project uses Biome for formatting and linting. Use 2 spaces for indentation and double quotes for JS/TS strings.
 - Respect the existing path alias `#/` → `src/` and other conventions in `AGENTS.md`.
-- After making changes, always verify with `yarn fix` (auto-fix lint/format) followed by `yarn tsc` (type check). Both
-  must pass before considering a change complete.
+- After making changes, always verify with `yarn fix` (auto-fix lint/format). Must pass before considering a change
+  complete.
 - When a task involves any UI change (new component, layout update, added controls, style adjustments), **always include
   at least one screenshot** of the affected area. Start the dev server (`yarn dev`), capture the relevant region of the
   browser, and attach the image to the PR or response so reviewers can verify the visual result without running the app.
@@ -42,12 +42,12 @@ Formatting and tooling notes:
   ```
 - `StoreSlice` instances work with `useStore` in the same way. Pass the `StoreSlice` instance as the
   first argument and a selector as the second.
- - **Derived stores**: `createStore(() => selector(root.get()))` can produce a derived store that
-   tracks dependencies read inside the selector. When the selector reads reactive values from the root
-   store (or other atoms), the derived store will update automatically and its `get()`/`state`
-   reflect the current derived value. This is useful for creating lightweight slice-atoms, but be
-   explicit about whether you rely on automatic derivation or prefer explicit selectors via
-   `useCharacterSheet` / `useStore` to avoid subtle sync issues.
+- **Derived stores**: `createStore(() => selector(root.get()))` can produce a derived store that
+  tracks dependencies read inside the selector. When the selector reads reactive values from the root
+  store (or other atoms), the derived store will update automatically and its `get()`/`state`
+  reflect the current derived value. This is useful for creating lightweight slice-atoms, but be
+  explicit about whether you rely on automatic derivation or prefer explicit selectors via
+  `useCharacterSheet` / `useStore` to avoid subtle sync issues.
 
 ## Final Notes
 

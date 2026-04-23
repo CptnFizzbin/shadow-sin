@@ -14,13 +14,18 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
 import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
-import { selectPhysicalCurrent, selectPhysicalMax, selectStunCurrent, selectStunMax } from "#/components/damage/damageSelectors.ts"
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
+import {
+  selectPhysicalCurrent,
+  selectPhysicalMax,
+  selectStunCurrent,
+  selectStunMax,
+} from "#/components/system/damage/damageSelectors.ts"
+import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"

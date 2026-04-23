@@ -1,6 +1,6 @@
 import type { UUID } from "node:crypto"
 
-import type { AvailablityInfo } from "#/system/availablityInfo.ts"
+import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 import type { SourceData } from "#/system/sourceData.ts"
@@ -13,7 +13,7 @@ export interface ItemData {
   description?: string
   cost?: number
   quantity?: number
-  availability?: AvailablityInfo
+  availability?: AvailabilityInfo
   source?: SourceData
   rating?: number | string
 

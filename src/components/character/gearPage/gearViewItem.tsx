@@ -5,8 +5,11 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "#/components/implants/implantUtils.ts"
+import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import {
+  getImplantEffectiveEssenceCost,
+  getImplantEffectiveNuyenCost,
+} from "#/components/items/types/implants/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import { ImplantGrade, ImplantType, isImplant } from "#/system/gear/implantData.ts"

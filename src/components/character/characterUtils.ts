@@ -1,5 +1,6 @@
-import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-import { getImplantEffectiveEssenceCost } from "#/components/implants/implantUtils.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
+import { useGearByType } from "#/components/items/useGearStore.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -9,7 +10,6 @@ import { ItemType } from "#/system/itemType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
-import { useGearByType } from "../gear/useGearStore.ts"
 
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
@@ -40,7 +40,7 @@ export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
 
 export const useAttr = (attribute: AttributeKey) => {
   if (attribute === AttributeKey.essence) {
-    throw new Error("Use useEssenseAttr (or useEssenseInfo) for the Essence attribute")
+    throw new Error("Use useEssenceAttr (or useEssenceInfo) for the Essence attribute")
   }
 
   return useCharacterSheet((sheet) => {
@@ -69,41 +69,41 @@ export const useActiveSkill = (skill: SkillKey) => {
   return rating + attribute
 }
 
-export const useEssenseInfo = () => {
-  const essenseInfo = useAttrInfo(AttributeKey.essence)
+export const useEssenceInfo = () => {
+  const essenceInfo = useAttrInfo(AttributeKey.essence)
   const implants = useGearByType<ImplantData>(ItemType.implant)
 
-  const implantEssense = implants
-    .filter((implant) => !implant.parentId) // implant accessories cost Capacity, not Essense
+  const implantEssence = implants
+    .filter((implant) => !implant.parentId) // implant accessories cost Capacity, not Essence
     .map((implant) => ({
       implantType: implant.implantType,
       essenceCost: getImplantEffectiveEssenceCost(implant),
     }))
 
-  const cyberwareEssense = implantEssense.filter((i) => i.implantType === ImplantType.cyberware)
+  const cyberwareEssence = implantEssence.filter((i) => i.implantType === ImplantType.cyberware)
     .map((item) => item.essenceCost)
     .reduce((sum, cost) => sum + cost, 0)
 
-  const biowareEssense = implantEssense.filter((i) => i.implantType === ImplantType.bioware)
+  const biowareEssence = implantEssence.filter((i) => i.implantType === ImplantType.bioware)
     .map((item) => item.essenceCost)
     .reduce((sum, cost) => sum + cost, 0)
 
   const essenceUsed =
-    cyberwareEssense >= biowareEssense
-      ? cyberwareEssense + (biowareEssense / 2)
-      : biowareEssense + (cyberwareEssense / 2)
+    cyberwareEssence >= biowareEssence
+      ? cyberwareEssence + (biowareEssence / 2)
+      : biowareEssence + (cyberwareEssence / 2)
 
-  const essenseRemaining = essenseInfo.max - essenceUsed
+  const essenceRemaining = essenceInfo.max - essenceUsed
 
   return {
     essenceUsed,
-    essenseRemaining,
-    cyberwareEssense,
-    biowareEssense,
+    essenceRemaining,
+    cyberwareEssence,
+    biowareEssence,
   }
 }
 
-export const useEssenseAttr = (): number => {
-  const { essenseRemaining } = useEssenseInfo()
-  return Math.floor(essenseRemaining)
+export const useEssenceAttr = (): number => {
+  const { essenceRemaining } = useEssenceInfo()
+  return Math.floor(essenceRemaining)
 }

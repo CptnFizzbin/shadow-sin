@@ -1,12 +1,12 @@
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useEssenseInfo } from "#/components/character/characterUtils.ts"
-import { BASE_ESSENCE } from "#/components/implants/implantUtils.ts"
+import { useEssenceInfo } from "#/components/character/characterUtils.ts"
+import { BASE_ESSENCE } from "#/components/items/types/implants/implantUtils.ts"
 
 export const CyberwareSectionHeader: FC = () => {
-  const essenceInfo = useEssenseInfo()
-  const isEssenceError = essenceInfo.essenseRemaining <= 0
+  const essenceInfo = useEssenceInfo()
+  const isEssenceError = essenceInfo.essenceRemaining <= 0
 
   return (
     <Typography color={isEssenceError ? "error" : "text.secondary"}>

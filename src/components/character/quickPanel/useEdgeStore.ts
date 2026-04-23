@@ -1,8 +1,8 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/character/characterSheetProvider.tsx"
 import { EdgeStore } from "#/components/character/quickPanel/edgeStore.ts"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 

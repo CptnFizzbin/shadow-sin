@@ -1,16 +1,16 @@
-import { Store } from "@tanstack/store"
 import { ThemeProvider } from "@mui/material/styles"
+import { Store } from "@tanstack/store"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { useMemo } from "react"
 import { afterEach } from "vitest"
 
-import { CharacterSheetProvider } from "#/components/character/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/createDefaultCharacterSheet.ts"
-import type { BuilderRootState } from "#/components/characterBuilder/builderRootState.ts"
-import { CharacterBuilderStoreProvider } from "#/components/characterBuilder/characterBuilderStoreProvider.tsx"
 import { theme } from "#/theme.ts"
+import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
+import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
+import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 
 export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>

@@ -5,9 +5,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { useGearStore } from "#/components/gear/useGearStore.ts"
-import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
-import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
+import { LicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
+import { SinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 

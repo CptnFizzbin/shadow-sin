@@ -1,8 +1,8 @@
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectTrackCurrent, selectTrackMax } from "#/components/damage/damageSelectors.ts"
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
+import { selectTrackCurrent, selectTrackMax } from "#/components/system/damage/damageSelectors.ts"
+import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 

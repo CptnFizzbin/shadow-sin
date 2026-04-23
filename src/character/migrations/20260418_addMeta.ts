@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "../characterMigration.ts"
+import type { CharacterMigration } from "#/character/characterMigration.ts"
 
 const migration: CharacterMigration<{
   _meta_: {

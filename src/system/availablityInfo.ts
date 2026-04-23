@@ -1,4 +1,4 @@
-export interface AvailablityInfo {
+export interface AvailabilityInfo {
   rating: number
   restricted?: boolean
   forbidden?: boolean
@@ -8,7 +8,7 @@ export function availabilityToString({
   rating,
   restricted,
   forbidden,
-}: AvailablityInfo): string {
+}: AvailabilityInfo): string {
   if (rating === 0) return "-"
   if (forbidden) return `${rating}F`
   if (restricted) return `${rating}R`

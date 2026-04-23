@@ -6,9 +6,9 @@ import { RiSearchLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
+import { NuyenSection } from "#/components/character/finances/nuyen/nuyenSection.tsx"
 import { GearSection } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GearViewSection } from "#/components/character/gearPage/gearViewSection.tsx"
-import { NuyenSection } from "#/components/finances/nuyen/nuyenSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/gear")({

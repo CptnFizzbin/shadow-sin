@@ -1,0 +1,26 @@
+import { useMemo } from "react"
+
+import { LifestyleStore } from "#/components/character/profile/lifestyleStore.ts"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+import { LifestyleType } from "#/system/lifestyleType.ts"
+
+export const useLifestyleStore = (): LifestyleStore => {
+  const store = useCharacterSheetContext()
+
+  return useMemo((): LifestyleStore => {
+    const atom = createSliceAtom(
+      store,
+      (root) => root.profile.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: 1 },
+      (root, lifestyle) => ({
+        ...root,
+        profile: {
+          ...root.profile,
+          lifestyle,
+        },
+      }),
+    )
+
+    return new LifestyleStore(atom)
+  }, [store])
+}

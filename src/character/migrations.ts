@@ -1,4 +1,4 @@
-import type { AnyCharacterMigration } from "./characterMigration.ts"
+import type { AnyCharacterMigration } from "#/character/characterMigration.ts"
 
 export const migrations: AnyCharacterMigration[] = [
   await import("./migrations/20250101_normalizeOldFormatCharacter.ts"),
