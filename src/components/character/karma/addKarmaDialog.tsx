@@ -3,63 +3,69 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
-import TextField from "@mui/material/TextField"
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useState } from "react"
+import { z } from "zod"
 
-import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
+import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
+import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-export interface AddKarmaDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
+export interface AddKarmaDialogProps extends DialogApiDialogProps<void> {
+  onSubmit: (amount: number) => void
 }
 
 export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
   open,
   onClose,
   onClosed,
+  onSubmit,
 }) => {
-  const karmaStore = useKarmaStore()
-  const [amountInput, setAmountInput] = useState<string>("")
-
-  const parsedAmount = parseInt(amountInput, 10)
-  const isValid = !Number.isNaN(parsedAmount) && parsedAmount > 0
-
-  const handleConfirm = () => {
-    if (!isValid) return
-    karmaStore.addKarma(parsedAmount)
-    setAmountInput("")
-    onClose()
-  }
-
-  const handleClose = () => {
-    setAmountInput("")
-    onClose()
-  }
+  const form = useAppForm({
+    defaultValues: { amount: 1 as number | undefined },
+    onSubmit: ({ value }) => {
+      if (value.amount !== undefined) {
+        onSubmit(value.amount)
+      }
+      onClose()
+    },
+  })
 
   return (
-    <Dialog open={open} fullWidth maxWidth="xs" onTransitionExited={onClosed}>
-      <DialogTitle sx={{ padding: 1 }}>Add Karma</DialogTitle>
+    <Dialog
+      open={open}
+      fullWidth
+      maxWidth="xs"
+      onTransitionExited={() => {
+        form.reset()
+        onClosed()
+      }}
+    >
+      <DialogTitle>Add Karma</DialogTitle>
 
-      <DialogContent sx={{ padding: 1 }}>
-        <TextField
-          label="Amount"
-          type="number"
-          autoFocus
-          fullWidth
-          size="small"
-          value={amountInput}
-          onChange={(e) => setAmountInput(e.target.value)}
-          slotProps={{ htmlInput: { min: 1 } }}
-        />
+      <DialogContent>
+        <form.AppForm>
+          <Stack sx={{ pt: 1 }}>
+            <form.AppField
+              name="amount"
+              validators={{
+                onChange: z.number().int().min(1, "Amount must be at least 1"),
+              }}
+            >
+              {(field) => <field.CounterField label="Amount" min={1} fullWidth />}
+            </form.AppField>
+          </Stack>
+        </form.AppForm>
       </DialogContent>
 
-      <DialogActions sx={{ padding: 1 }}>
-        <Button color="secondary" onClick={handleClose}>
+      <DialogActions>
+        <Button color="secondary" onClick={() => onClose()}>
           Cancel
         </Button>
-        <Button color="secondary" variant="contained" disabled={!isValid} onClick={handleConfirm}>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => form.handleSubmit()}
+        >
           Add
         </Button>
       </DialogActions>
