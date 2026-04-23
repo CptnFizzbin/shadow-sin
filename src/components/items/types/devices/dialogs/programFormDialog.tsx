@@ -2,12 +2,12 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
+import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
 import {
   programFieldMap,
   useProgramForm,
 } from "#/components/items/types/devices/forms/useProgramForm.tsx"
-import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

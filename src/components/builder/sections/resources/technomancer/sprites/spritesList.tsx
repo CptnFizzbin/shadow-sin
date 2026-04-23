@@ -9,11 +9,11 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
-import { SpriteDialog } from "#/components/character/technomancer/dialogs/spriteDialog.tsx"
 import {
   SpritesListItem,
 } from "#/components/builder/sections/resources/technomancer/sprites/spritesListItem.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
+import { SpriteDialog } from "#/components/character/technomancer/dialogs/spriteDialog.tsx"
 import { useMaxSpritesRegistered } from "#/components/character/technomancer/spritesHooks.ts"
 import { selectAllSprites } from "#/components/character/technomancer/spritesSelectors.ts"
 import { useSpritesStore } from "#/components/character/technomancer/useSpritesStore.ts"
