@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { useState } from "react"
 import { describe, expect, it, vi } from "vitest"
 
+import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
-import { CounterField } from "./counterField.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 

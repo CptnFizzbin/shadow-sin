@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { VehiclesList } from "#/components/items/types/vehicles/vehiclesList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { VehiclesList } from "#/components/vehicles/vehiclesList.tsx"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 export const Route = createFileRoute("/$characterId/vehicles")({

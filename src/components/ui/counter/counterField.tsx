@@ -7,9 +7,9 @@ import classnames from "classnames"
 import type { ChangeEventHandler, FC } from "react"
 import { useState } from "react"
 
+import styles from "#/components/ui/counter/counter.module.css"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
-import styles from "./counter.module.css"
 
 type OmittedProps =
   | "value"

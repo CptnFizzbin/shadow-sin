@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SpellsViewerSection } from "#/components/character/spells/spellsViewerSection.tsx"
 import { AwakeningType } from "#/system/awakeningType.ts"
 

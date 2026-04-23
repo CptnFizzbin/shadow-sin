@@ -4,9 +4,9 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { useState } from "react"
 
-import { ContactsList } from "#/components/contacts/contactsList.tsx"
-import { selectAllContacts } from "#/components/contacts/contactsSelectors.ts"
-import { useContactsStore } from "#/components/contacts/useContactsStore.ts"
+import { ContactsList } from "#/components/character/contacts/contactsList.tsx"
+import { selectAllContacts } from "#/components/character/contacts/contactsSelectors.ts"
+import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 

@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import DamageTrack from "#/components/damage/damageTrack.tsx"
-import { useDamageStore } from "#/components/damage/useDamageStore.ts"
-import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
+import DamageTrack from "#/components/system/damage/damageTrack.tsx"
+import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
+import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 

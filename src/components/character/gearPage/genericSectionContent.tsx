@@ -5,8 +5,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
-import { useGearStore } from "#/components/gear/useGearStore.ts"
+import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 

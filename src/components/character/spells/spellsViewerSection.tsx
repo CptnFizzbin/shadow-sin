@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SpellCastDialog } from "#/components/character/spells/spellCastDialog.tsx"
 import { SpellViewerListItem } from "#/components/character/spells/spellViewerListItem.tsx"
 import { Label } from "#/components/ui/text/label.tsx"

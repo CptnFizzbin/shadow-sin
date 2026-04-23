@@ -11,8 +11,8 @@ import { useState } from "react"
 import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwareSectionHeader.tsx"
 import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
 import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
-import { selectAllGear } from "#/components/gear/gearSelectors.ts"
-import { useGearStore } from "#/components/gear/useGearStore.ts"
+import { selectAllGear } from "#/components/items/gearSelectors.ts"
+import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 export { GearSection, sectionGearTypes }

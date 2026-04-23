@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { DicePool } from "#/components/dicePool/dicePool.tsx"
+import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import {
   useAttrDiceGroup,
   useWoundDiceGroup,
-} from "#/components/dicePool/useDiceGroup.ts"
+} from "#/components/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface DrainResistanceDicePoolProps {

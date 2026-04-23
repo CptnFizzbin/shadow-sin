@@ -1,0 +1,49 @@
+import type { FC } from "react"
+import { useState } from "react"
+
+import { useKnowledgeSkillDicePool } from "#/components/character/skills/skillDicePools.ts"
+import { SkillListItem } from "#/components/character/skills/skillListItem.tsx"
+import { ViewSkillDialog } from "#/components/character/skills/viewSkillDialog.tsx"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
+
+interface KnowledgeSkillListItemProps {
+  skill: KnowledgeSkillData
+}
+
+export const KnowledgeSkillsListItem: FC<KnowledgeSkillListItemProps> = ({ skill }) => {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const skillDicePool = useKnowledgeSkillDicePool({
+    knowledge: skill.name,
+    rating: skill.rating,
+  })
+
+  const specializationDicePool = useKnowledgeSkillDicePool({
+    knowledge: skill.name,
+    rating: skill.rating,
+    specialization: skill.specialization,
+  })
+
+  return (
+    <>
+      <SkillListItem
+        name={skill.name}
+        rating={skill.rating}
+        specialization={skill.specialization}
+        attr={AttributeKey.logic}
+        onClick={() => setDialogOpen(true)}
+      />
+
+      <ViewSkillDialog
+        name={skill.name}
+        dicePools={[
+          skillDicePool,
+          skill.specialization ? specializationDicePool : false,
+        ]}
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
+    </>
+  )
+}

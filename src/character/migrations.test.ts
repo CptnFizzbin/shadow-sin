@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { CharacterManager } from "#/character/characterManager.ts"
-import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportUtils.ts"
+import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import { StorageManager } from "#/lib/storage/storageManager.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"

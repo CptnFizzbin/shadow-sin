@@ -5,7 +5,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { Artemis } from "#/character/fixtures/artemis.ts"
 import { Hexen } from "#/character/fixtures/hexen.ts"
 import CharacterRosterList from "#/components/character/characterRosterList.tsx"
-import { ImportCharacterButton } from "#/components/character/importCharacterButton.tsx"
+import { ImportCharacterButton } from "#/components/character/exportImport/importCharacterButton.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 
 export const Route = createFileRoute("/")({
