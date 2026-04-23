@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack"
 
-import { programFormOpts } from "#/components/builder/sections/gear/devices/forms/useProgramForm.tsx"
+import { programFormOpts } from "#/components/items/types/devices/forms/useProgramForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 

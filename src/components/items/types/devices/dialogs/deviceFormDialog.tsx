@@ -1,13 +1,13 @@
 import type { FC } from "react"
 
+import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import {
   DeviceFormFields,
-} from "#/components/builder/sections/gear/devices/forms/deviceFormFields.tsx"
+} from "#/components/items/types/devices/forms/deviceFormFields.tsx"
 import {
   deviceFieldMap,
   useDeviceForm,
-} from "#/components/builder/sections/gear/devices/forms/useDeviceForm.tsx"
-import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
+} from "#/components/items/types/devices/forms/useDeviceForm.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {

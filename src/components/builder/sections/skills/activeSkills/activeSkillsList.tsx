@@ -15,10 +15,10 @@ import {
   getDisabledGroups,
   getDisabledSkills,
 } from "#/components/builder/sections/skills/activeSkills/activeSkillsUtils.ts"
-import { ActiveSkillDialog } from "#/components/builder/sections/skills/activeSkills/dialogs/activeSkillDialog.tsx"
+import { ActiveSkillDialog } from "#/components/character/skills/activeSkills/dialogs/activeSkillDialog.tsx"
 import {
   ActiveSkillGroupDialog,
-} from "#/components/builder/sections/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"
+} from "#/components/character/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"
 import { selectActiveSkills, selectSkillGroups } from "#/components/character/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
