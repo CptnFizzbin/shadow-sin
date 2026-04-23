@@ -1796,9 +1796,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/devtools@npm:0.11.1":
-  version: 0.11.1
-  resolution: "@tanstack/devtools@npm:0.11.1"
+"@tanstack/devtools@npm:0.11.2":
+  version: 0.11.2
+  resolution: "@tanstack/devtools@npm:0.11.2"
   dependencies:
     "@solid-primitives/event-listener": "npm:^2.4.3"
     "@solid-primitives/keyboard": "npm:^1.3.3"
@@ -1813,7 +1813,7 @@ __metadata:
     solid-js: ">=1.9.7"
   bin:
     intent: bin/intent.js
-  checksum: 10c0/3ed88fb8c1e78a998e6e254b0dfb127276dc2716dbe28e20ee02fdd54191efad600c903d7e300005e22e94bc3c1e40a9f115904878a4e48af824784ab3b869e7
+  checksum: 10c0/b93f8c1792e584660806608e2edb2ad15b5073c2eae9bea0f902925287ab496400f471cbbd08791245117a06c44e1fdb9c18d6e251bdcdd8177873369ca2633f
   languageName: node
   linkType: hard
 
@@ -1868,24 +1868,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.96.2":
-  version: 5.96.2
-  resolution: "@tanstack/query-devtools@npm:5.96.2"
-  checksum: 10c0/9b47c5182ab8925f3000a17d340a19602e7e7b11cc48c77a6f6c7863b830191ab8e6e48ee5ed6278a1cc380e70d2061708de2f30fdb62cb6785c57f07d61c589
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-devtools@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "@tanstack/react-devtools@npm:0.10.1"
+"@tanstack/react-devtools@npm:^0.10.2":
+  version: 0.10.2
+  resolution: "@tanstack/react-devtools@npm:0.10.2"
   dependencies:
-    "@tanstack/devtools": "npm:0.11.1"
+    "@tanstack/devtools": "npm:0.11.2"
   peerDependencies:
     "@types/react": ">=16.8"
     "@types/react-dom": ">=16.8"
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/4b6343fb5a10ec5047dcf773b19c046e3207d5167d62d5c151f3acdacdda34c645e6e07f3941e8ff7e480d0e9b8c77c25cf0e326cb6c7c40b36dea947053bfb4
+  checksum: 10c0/46c58a218f0f81661b3480105d53fc1fc5f3e7fbc8aa00172e48321e350ec88ea03cb4fb29a59255ab957b6aaf1da9b11fdbd793d0627ec37c5b0c5317284661
   languageName: node
   linkType: hard
 
@@ -1917,18 +1910,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.96.2":
-  version: 5.96.2
-  resolution: "@tanstack/react-query-devtools@npm:5.96.2"
-  dependencies:
-    "@tanstack/query-devtools": "npm:5.96.2"
-  peerDependencies:
-    "@tanstack/react-query": ^5.96.2
-    react: ^18 || ^19
-  checksum: 10c0/92bd9a1d5e4a2aa6de7c0d350e3657d9b83f11bacbe72ad7af9d68de0e18206a73d04dd745eabf2e3f35d5c11e5eea8a4ab66a43643762affd128a571c769ef1
-  languageName: node
-  linkType: hard
-
 "@tanstack/react-query@npm:^5.96.2":
   version: 5.96.2
   resolution: "@tanstack/react-query@npm:5.96.2"
@@ -1937,23 +1918,6 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10c0/68528558fc208d921dde98ded3c140409ca55836623efb4e79ee9bd308cefe567c1e9e4cce5bebaa9a72a32e5397febb484b8b6842658b2cdff28de957c11f67
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-router-devtools@npm:^1.166.11":
-  version: 1.166.11
-  resolution: "@tanstack/react-router-devtools@npm:1.166.11"
-  dependencies:
-    "@tanstack/router-devtools-core": "npm:1.167.1"
-  peerDependencies:
-    "@tanstack/react-router": ^1.168.2
-    "@tanstack/router-core": ^1.168.2
-    react: ">=18.0.0 || >=19.0.0"
-    react-dom: ">=18.0.0 || >=19.0.0"
-  peerDependenciesMeta:
-    "@tanstack/router-core":
-      optional: true
-  checksum: 10c0/9be0ab52c8fdb6e7b3a64f6b923fd37e86b517a5b2477752a2c43235b0914e5a56882930e6b1742d2ef064913554713189005d707c0dd4e7e168e48e626009a3
   languageName: node
   linkType: hard
 
@@ -2008,22 +1972,6 @@ __metadata:
   bin:
     intent: bin/intent.js
   checksum: 10c0/cdc4a3de30adae18d355ea79569fdde2a51e3952eef9e9db8f6ad5eec970781f1e5fca7ccb5c8f562b139cb440780803f871f1c812686c2ff83328634433617d
-  languageName: node
-  linkType: hard
-
-"@tanstack/router-devtools-core@npm:1.167.1":
-  version: 1.167.1
-  resolution: "@tanstack/router-devtools-core@npm:1.167.1"
-  dependencies:
-    clsx: "npm:^2.1.1"
-    goober: "npm:^2.1.16"
-  peerDependencies:
-    "@tanstack/router-core": ^1.168.2
-    csstype: ^3.0.10
-  peerDependenciesMeta:
-    csstype:
-      optional: true
-  checksum: 10c0/edf8e8f7a2c0db48a3d92bfc8f5ddbc656ac7b196598b63c679785fc8a9327b2ff696b960ed6cd6738107f976b48be404d12c382b1b8330d73df1e56af94d62e
   languageName: node
   linkType: hard
 
@@ -6401,7 +6349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"seroval-plugins@npm:^1.4.2, seroval-plugins@npm:~1.5.0":
+"seroval-plugins@npm:^1.4.2":
   version: 1.5.1
   resolution: "seroval-plugins@npm:1.5.1"
   peerDependencies:
@@ -6410,10 +6358,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"seroval@npm:^1.4.2, seroval@npm:~1.5.0":
+"seroval-plugins@npm:~1.5.0":
+  version: 1.5.2
+  resolution: "seroval-plugins@npm:1.5.2"
+  peerDependencies:
+    seroval: ^1.0
+  checksum: 10c0/feccb47f269c3d378979b835e5bada25a1f34fd811aae99e2c5f8ec65c6b06286627d6fdc5855a89f060aeba799d615da583b6b18e51a5d0f6e161dd8105cb95
+  languageName: node
+  linkType: hard
+
+"seroval@npm:^1.4.2":
   version: 1.5.1
   resolution: "seroval@npm:1.5.1"
   checksum: 10c0/34ae9faf56b88cdddca8c481bc4f5829be0e9666c65ea6060a033fadd5af26027b47be43dd5d9498c1168a5b2336779d9316a0e2644d6b1e24f575959ddb6c85
+  languageName: node
+  linkType: hard
+
+"seroval@npm:~1.5.0":
+  version: 1.5.2
+  resolution: "seroval@npm:1.5.2"
+  checksum: 10c0/6efe24fc00aa667408214d890fe5ff316bf120ea2239278051bce86c9beaeac2c6692020316ccbc32f7daf74bbffa0f27f3a3e5190d82e089180009cab590bbf
   languageName: node
   linkType: hard
 
@@ -6473,13 +6437,11 @@ __metadata:
     "@tanstack/devtools-event-client": "npm:^0.4.3"
     "@tanstack/devtools-vite": "npm:^0.6.0"
     "@tanstack/match-sorter-utils": "npm:^8.19.4"
-    "@tanstack/react-devtools": "npm:^0.10.1"
+    "@tanstack/react-devtools": "npm:^0.10.2"
     "@tanstack/react-form": "npm:^1.28.6"
     "@tanstack/react-pacer": "npm:^0.21.1"
     "@tanstack/react-query": "npm:^5.96.2"
-    "@tanstack/react-query-devtools": "npm:^5.96.2"
     "@tanstack/react-router": "npm:^1.168.10"
-    "@tanstack/react-router-devtools": "npm:^1.166.11"
     "@tanstack/react-store": "npm:^0.9.3"
     "@tanstack/react-table": "npm:^8.21.3"
     "@tanstack/router-core": "npm:^1.168.9"
@@ -6667,13 +6629,13 @@ __metadata:
   linkType: hard
 
 "solid-js@npm:^1.9.9":
-  version: 1.9.11
-  resolution: "solid-js@npm:1.9.11"
+  version: 1.9.12
+  resolution: "solid-js@npm:1.9.12"
   dependencies:
     csstype: "npm:^3.1.0"
     seroval: "npm:~1.5.0"
     seroval-plugins: "npm:~1.5.0"
-  checksum: 10c0/78b55d47b11a9f65410f78d3bd604b96540557b396681c08df02ad5cad800b2ea9ddbfceab832055b5fbddd3072d925cefda25616d8f380e70292a264ceb8854
+  checksum: 10c0/bfab10ea42b4954e0de8e0e4710d45456836c9bf12fbe8d35a567e3877a26f3af2105bf92940cdfb64c169418035d8eb1d5f44a198cc3b76f274e79ad008fec4
   languageName: node
   linkType: hard
 

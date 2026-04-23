@@ -1,5 +1,6 @@
 import { Container, Divider } from "@mui/material"
 import Stack from "@mui/material/Stack"
+import { TanStackDevtools } from "@tanstack/react-devtools"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
 import Footer from "#/components/ui/footer.tsx"
@@ -42,6 +43,7 @@ function RootLayout() {
           <Footer />
         </Stack>
       </Stack>
+      <TanStackDevtools />
     </TanStackQueryProvider>
   )
 }
