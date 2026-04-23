@@ -7,7 +7,6 @@ import type { FC } from "react"
 import { AddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
 import { selectCurrentKarma, selectTotalKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
@@ -17,7 +16,7 @@ export const KarmaSection: FC = () => {
   const totalKarma = useStore(karmaStore, selectTotalKarma)
 
   const handleOpenAddKarma = () => {
-    dialogApi.open<void>((props: DialogApiDialogProps<void>) => (
+    dialogApi.open<void>((props) => (
       <AddKarmaDialog {...props} onSubmit={(amount) => karmaStore.addKarma(amount)} />
     ))
   }
