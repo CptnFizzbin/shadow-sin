@@ -21,7 +21,7 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
   onSubmit,
 }) => {
   const form = useAppForm({
-    defaultValues: { amount: 1 as number | undefined },
+    defaultValues: { amount: 1 },
     onSubmit: ({ value }) => {
       if (value.amount !== undefined) {
         onSubmit(value.amount)
@@ -64,7 +64,7 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => form.handleSubmit()}
+          onClick={form.handleSubmit}
         >
           Add
         </Button>
