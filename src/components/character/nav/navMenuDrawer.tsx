@@ -11,8 +11,8 @@ import { RiCloseLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { characterSectionOrder } from "#/components/character/characterSections.ts"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
+import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 
 export interface NavMenuDrawerProps {
   open: boolean
@@ -22,6 +22,7 @@ export interface NavMenuDrawerProps {
 export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
+  const visibleSections = useCharacterSheetTabs()
 
   const handleSectionClick = (sectionRoute: string) => {
     navigate({ to: sectionRoute })
@@ -42,7 +43,7 @@ export const NavMenuDrawer: FC<NavMenuDrawerProps> = ({ open, onClose }) => {
       </Toolbar>
 
       <List disablePadding>
-        {characterSectionOrder.map((section) => (
+        {visibleSections.map((section) => (
           <ListItem key={section.id} disablePadding>
             <ListItemButton
               selected={section.id === currentSection.id}

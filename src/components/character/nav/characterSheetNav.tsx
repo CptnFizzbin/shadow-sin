@@ -3,18 +3,26 @@ import IconButton from "@mui/material/IconButton"
 import Tab from "@mui/material/Tab"
 import Tabs from "@mui/material/Tabs"
 import { RiMenuLine } from "@remixicon/react"
-import { useNavigate } from "@tanstack/react-router"
+import { Navigate, useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { characterSections } from "#/components/character/characterSections.ts"
 import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
+import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 
 export const CharacterSheetNav: FC = () => {
   const navigate = useNavigate({ from: "/$characterId" })
   const currentSection = useCurrentCharacterSection()
   const [menuOpen, setMenuOpen] = useState(false)
+  const visibleSections = useCharacterSheetTabs()
+
+  const isCurrentSectionVisible = visibleSections.some((section) => section.id === currentSection.id)
+
+  if (!isCurrentSectionVisible) {
+    return <Navigate to={characterSections.about.route.path} replace />
+  }
 
   return (
     <>
@@ -27,7 +35,7 @@ export const CharacterSheetNav: FC = () => {
           scrollButtons="auto"
           sx={{ flex: 1, minWidth: 0 }}
         >
-          {Object.values(characterSections).map((section) => (
+          {visibleSections.map((section) => (
             <Tab key={section.id} label={section.label} value={section} />
           ))}
         </Tabs>
