@@ -1,3 +1,6 @@
 # Ensure LF line endings for all text files in this repository
 # This forces Git to normalize text files to LF on checkout and commit.
 * text=auto eol=lf
+
+# Mark auto-generated files so GitHub collapses them in PR diffs
+src/routeTree.gen.ts linguist-generated=true

@@ -42,10 +42,18 @@ function CharacterRoute() {
     return () => unsubscribe()
   }, [store])
 
+  return (
+    <CharacterSheetProvider store={store}>
+      <CharacterSheetContent />
+    </CharacterSheetProvider>
+  )
+}
+
+function CharacterSheetContent() {
   const { nextPage, prevPage } = useCharacterNav()
 
   return (
-    <CharacterSheetProvider store={store}>
+    <>
       <CharacterSheetNav />
 
       <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
@@ -64,6 +72,6 @@ function CharacterRoute() {
       >
         <QuickAccessPanel />
       </Box>
-    </CharacterSheetProvider>
+    </>
   )
 }
