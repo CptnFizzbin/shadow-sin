@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button"
+import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
@@ -8,7 +9,7 @@ import { AddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
 import { selectCurrentKarma, selectTotalKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
 import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
-import { Label } from "#/components/ui/text/label.tsx"
+import { Label } from "#/components/ui/text/label"
 
 export const KarmaSection: FC = () => {
   const karmaStore = useKarmaStore()
@@ -22,28 +23,36 @@ export const KarmaSection: FC = () => {
   }
 
   return (
-    <Stack>
-      <Label label="Karma" />
-
-      <Stack direction="row" sx={{ alignItems: "center", gap: 2 }}>
-        <Stack sx={{ flex: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            Current
+    <Grid container columns={2} spacing={1} sx={{ margin: "auto" }}>
+      <Grid size={1}>
+        <Stack sx={{ gap: 1, alignItems: "center" }}>
+          <Label label="Current" />
+          <Typography sx={{ fontWeight: "bold" }}>
+            {currentKarma}
           </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{currentKarma}</Typography>
         </Stack>
+      </Grid>
 
-        <Stack sx={{ flex: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            Total Earned
+      <Grid size={1}>
+        <Stack sx={{ gap: 1, alignItems: "center" }}>
+          <Label label="Total Earned" />
+          <Typography sx={{ fontWeight: "bold" }}>
+            {totalKarma}
           </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{totalKarma}</Typography>
         </Stack>
+      </Grid>
 
-        <Button size="small" variant="outlined" onClick={handleOpenAddKarma}>
+      <Grid size={1}>
+        <Button size="small" variant="outlined" onClick={handleOpenAddKarma} fullWidth>
           Add Karma
         </Button>
-      </Stack>
-    </Stack>
+      </Grid>
+
+      <Grid size={1}>
+        <Button size="small" variant="outlined" disabled fullWidth>
+          Spend Karma
+        </Button>
+      </Grid>
+    </Grid>
   )
 }
