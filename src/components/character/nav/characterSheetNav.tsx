@@ -5,8 +5,9 @@ import Tabs from "@mui/material/Tabs"
 import { RiMenuLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
+import { characterSections } from "#/components/character/characterSections.ts"
 import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
 import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
@@ -17,11 +18,19 @@ export const CharacterSheetNav: FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const visibleSections = useCharacterSheetTabs()
 
+  const isCurrentSectionVisible = visibleSections.some((section) => section.id === currentSection.id)
+
+  useEffect(() => {
+    if (!isCurrentSectionVisible) {
+      void navigate({ to: characterSections.about.route.path })
+    }
+  }, [isCurrentSectionVisible, currentSection, navigate])
+
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Tabs
-          value={currentSection}
+          value={isCurrentSectionVisible ? currentSection : false}
           onChange={(_, section) => navigate({ to: section.route.path })}
           variant="scrollable"
           allowScrollButtonsMobile
