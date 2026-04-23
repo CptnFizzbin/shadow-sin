@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { Fragment } from "react"
 
+import { EquippedArmorSection } from "#/components/armor/equippedArmorSection.tsx"
 import { selectPhysicalTrack, selectStunTrack } from "#/components/damage/damageSelectors.ts"
 import DamageTrack from "#/components/damage/damageTrack.tsx"
 import {
@@ -22,7 +23,6 @@ import {
 } from "#/components/damage/resistanceDicePools.tsx"
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/damage/woundModLabel.tsx"
-import { EquippedArmorSection } from "#/components/gear/armor/equippedArmorSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"

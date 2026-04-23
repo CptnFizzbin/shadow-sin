@@ -3,7 +3,6 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
 import { LicenseFormDialog } from "#/components/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/licenses/dialogs/sinFormDialog.tsx"
 import { LicenseCard } from "#/components/licenses/licenseCard.tsx"
@@ -12,6 +11,7 @@ import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { useGearByType, useGearStore } from "../gear/useGearStore.ts"
 
 export interface SinsAndLicensesSectionSlots {
   sinTrailingContent?: (sin: SinData) => ReactNode

@@ -1,4 +1,4 @@
-import { useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType } from "#/components/gear/useGearStore.ts"
 import { licenseFormOpts } from "#/components/licenses/forms/useLicenseForm.tsx"
 import { FakeRatingOptions, RealRatingOptions } from "#/components/licenses/ratingOptions.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"

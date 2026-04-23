@@ -1,5 +1,5 @@
 import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
-import { useGearFilter } from "#/components/gear/useGearApi.ts"
+import { useGearFilter } from "#/components/gear/useGearStore.ts"
 import { isCredstickData } from "#/system/gear/credstickData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 

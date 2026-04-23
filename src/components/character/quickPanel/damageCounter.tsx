@@ -3,8 +3,8 @@ import type { FC } from "react"
 
 import { selectTrackCurrent, selectTrackMax } from "#/components/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/damage/useDamageStore.ts"
+import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import { CounterField } from "../../ui/counter/counterField.tsx"
 
 interface DamageCounterProps {
   trackKey: DamageTrackKey
@@ -22,7 +22,9 @@ export const DamageCounter: FC<DamageCounterProps> = ({ trackKey, label }) => {
       value={current}
       min={0}
       max={max}
+      showMax
       onChange={(newValue) => newValue !== null && damageStore.setDamage(trackKey, newValue)}
+      fullWidth
     />
   )
 }

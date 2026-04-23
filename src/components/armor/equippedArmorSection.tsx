@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType } from "#/components/gear/useGearStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"

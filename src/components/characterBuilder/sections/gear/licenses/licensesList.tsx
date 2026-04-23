@@ -9,7 +9,7 @@ import { useState } from "react"
 
 import { LicenseFormDialog } from "#/components/characterBuilder/sections/gear/licenses/dialogs/licenseFormDialog.tsx"
 import { AvailabilityChip } from "#/components/gear/availabilityChip.tsx"
-import { useGearByType, useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearStore.ts"
 import { getLicenseAvailability } from "#/components/licenses/licenseUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"

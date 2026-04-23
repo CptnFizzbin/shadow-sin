@@ -6,7 +6,7 @@ import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { ItemFormDialog } from "#/components/gear/dialogs/itemFormDialog.tsx"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 

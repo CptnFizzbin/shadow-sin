@@ -17,7 +17,7 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/finances/nuyen/useNuyenStore.ts"
-import { useGearStore } from "#/components/gear/useGearApi.ts"
+import { useGearStore } from "#/components/gear/useGearStore.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {

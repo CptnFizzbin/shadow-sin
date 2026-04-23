@@ -8,7 +8,7 @@ export const QuickAttributesSection: FC = () => {
   return (
     <Stack>
       <Label label="Attributes" />
-      <AttributesSection showLabels={false} />
+      <AttributesSection />
     </Stack>
   )
 }

@@ -5,9 +5,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { ArmorFormDialog } from "#/components/gear/armor/dialogs/armorFormDialog.tsx"
+import { ArmorFormDialog } from "#/components/armor/dialogs/armorFormDialog.tsx"
 import { ItemCard } from "#/components/gear/itemCard.tsx"
-import { useGearStore, useGearByType } from "#/components/gear/useGearApi.ts"
+import { useGearByType, useGearStore } from "#/components/gear/useGearStore.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useGearByType } from "#/components/gear/useGearApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { EquippedWeaponCard } from "#/components/weapons/equippedWeaponCard.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { useGearByType } from "../gear/useGearStore.ts"
 
 export const EquippedWeaponsSection: FC = () => {
   const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
