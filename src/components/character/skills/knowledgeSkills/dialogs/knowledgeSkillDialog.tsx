@@ -12,8 +12,8 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SkillRatingMax } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
+import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 interface KnowledgeSkillDialogProps {
   open: boolean

@@ -13,9 +13,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { SkillGroupRatingMax } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
+import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
 interface ActiveSkillGroupDialogProps {
   open: boolean

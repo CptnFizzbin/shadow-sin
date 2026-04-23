@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useProgramForm } from "#/components/builder/sections/gear/devices/forms/useProgramForm.tsx"
+import { useProgramForm } from "#/components/items/types/devices/forms/useProgramForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
 
 describe("useProgramForm", () => {
