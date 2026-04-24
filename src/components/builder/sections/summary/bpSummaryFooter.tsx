@@ -1,5 +1,5 @@
-import { Button } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
+import Button from "@mui/material/Button"
 import ButtonBase from "@mui/material/ButtonBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Collapse from "@mui/material/Collapse"

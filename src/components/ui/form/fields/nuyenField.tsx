@@ -1,4 +1,4 @@
-import { InputAdornment } from "@mui/material"
+import InputAdornment from "@mui/material/InputAdornment"
 import type { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField"
 import MuiTextField from "@mui/material/TextField"
 import type { ChangeEvent, FC, FocusEvent, KeyboardEvent } from "react"

@@ -1,5 +1,5 @@
-import { AlertTitle } from "@mui/material"
 import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
