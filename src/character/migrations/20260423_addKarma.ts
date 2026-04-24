@@ -1,4 +1,5 @@
 import { produce } from "immer"
+import { z } from "zod"
 
 import type { CharacterMigration } from "#/character/characterMigration.ts"
 
@@ -10,13 +11,20 @@ const migration: CharacterMigration<{
 }> = {
   id: "20260423",
   up: produce((draft) => {
-    if (typeof draft.karma === "number") {
-      const karmaValue = draft.karma
-      draft.karma = { current: karmaValue, total: karmaValue }
-    } else {
-      draft.karma ??= { current: 0, total: 0 }
-      draft.karma.current ??= 0
-      draft.karma.total ??= 0
+    switch (typeof draft.karma) {
+      case "number": {
+        const karmaValue = draft.karma
+        draft.karma = { current: karmaValue, total: karmaValue }
+        break
+      }
+      case "object":
+        draft.karma = z.object({
+          current: z.number().default(0),
+          total: z.number().default(0),
+        }).parse(draft.karma)
+        break
+      default:
+        draft.karma = { current: 0, total: 0 }
     }
   }),
 }
