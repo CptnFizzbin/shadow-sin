@@ -9,7 +9,7 @@ import { SelectField } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { SwitchField } from "#/integrations/tanstackForm/fields/switchField.tsx"
 import { TextField } from "#/integrations/tanstackForm/fields/textField.tsx"
 
-export const { useAppForm, withForm, withFieldGroup } = createFormHook({
+export const { useAppForm, withFieldGroup } = createFormHook({
   fieldComponents: {
     CheckboxField,
     CounterField,

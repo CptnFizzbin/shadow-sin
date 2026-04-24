@@ -14,7 +14,7 @@ import type { FC } from "react"
 import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
 import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 
-export interface NavMenuDrawerProps {
+interface NavMenuDrawerProps {
   open: boolean
   onClose: () => void
 }

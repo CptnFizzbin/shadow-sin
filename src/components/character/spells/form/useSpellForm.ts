@@ -26,7 +26,7 @@ const defaultValues: SpellData = {
   effects: [],
 }
 
-export interface SpellFormOptions {
+interface SpellFormOptions {
   spell?: SpellData
   onSubmit: (values: SpellData) => void
 }

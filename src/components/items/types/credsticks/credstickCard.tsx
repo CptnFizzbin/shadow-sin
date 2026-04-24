@@ -8,7 +8,7 @@ import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/gear/credstickData.ts"
 
-export interface CredstickCardProps {
+interface CredstickCardProps {
   credstick: CredstickData
   onClick: (credstick: CredstickData) => void
 }

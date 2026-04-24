@@ -9,7 +9,7 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface ImplantFormOptions {
+interface ImplantFormOptions {
   implant?: ImplantData
   parentId?: UUID
   onSubmit: (implant: ImplantData, meta: GearSubmitMeta) => void

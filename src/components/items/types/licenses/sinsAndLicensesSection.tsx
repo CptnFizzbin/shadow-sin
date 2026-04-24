@@ -13,12 +13,12 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface SinsAndLicensesSectionSlots {
+interface SinsAndLicensesSectionSlots {
   sinTrailingContent?: (sin: SinData) => ReactNode
   licenseTrailingContent?: (license: LicenseData) => ReactNode
 }
 
-export interface SinsAndLicensesSectionProps {
+interface SinsAndLicensesSectionProps {
   slots?: SinsAndLicensesSectionSlots
 }
 

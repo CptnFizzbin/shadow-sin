@@ -1,6 +1,6 @@
 import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext, useMemo } from "react"
+import { createContext, useMemo } from "react"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { BuilderStateStore } from "#/components/builder/builderStateStore.ts"
@@ -9,10 +9,10 @@ import { CharacterSheetProvider } from "#/components/character/sheet/characterSh
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
-export const CharacterBuilderContext =
+const CharacterBuilderContext =
   createContext<BuilderStateStore | null>(null)
 
-export interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
+interface CharacterBuilderStoreProviderProps extends PropsWithChildren {
   rootStore: Store<BuilderRootState>
 }
 
@@ -45,16 +45,4 @@ export const CharacterBuilderStoreProvider: FC<CharacterBuilderStoreProviderProp
       </CharacterBuilderContext.Provider>
     </IsBuilderContext.Provider>
   )
-}
-
-export const useBuilderStore = (): BuilderStateStore => {
-  const store = useContext(CharacterBuilderContext)
-
-  if (!store) {
-    throw new Error(
-      "useCharacterBuilderStoreContext must be used within a CharacterBuilderStoreProvider",
-    )
-  }
-
-  return store
 }

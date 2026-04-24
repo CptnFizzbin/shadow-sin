@@ -3,13 +3,13 @@ import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
-export const ActiveSkillBpPerRating = 4
-export const ActiveSkillGroupBpPerRating = 10
-export const ActiveSkillSpecializationBp = 2
-export const KnowledgeSkillSpPerRating = 1
-export const LanguageSkillSpPerRating = 1
-export const KnowledgeSpecializationSp = 1
-export const LanguageSpecializationSp = 1
+const ActiveSkillBpPerRating = 4
+const ActiveSkillGroupBpPerRating = 10
+const ActiveSkillSpecializationBp = 2
+const KnowledgeSkillSpPerRating = 1
+const LanguageSkillSpPerRating = 1
+const KnowledgeSpecializationSp = 1
+const LanguageSpecializationSp = 1
 export const ExtraSkillPointBpCost = 2
 
 export const getFreeSkillPoints = (
@@ -17,10 +17,6 @@ export const getFreeSkillPoints = (
   intuition: number,
 ): number => {
   return (logic + intuition) * 3
-}
-
-export const getMaxSkillPoints = (logic: number, intuition: number): number => {
-  return (logic + intuition) * 6
 }
 
 export const getActiveSkillBp = (

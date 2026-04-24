@@ -14,7 +14,7 @@ export interface SelectOption {
   disabled?: boolean
 }
 
-export interface SelectFieldProps extends FormControlProps {
+interface SelectFieldProps extends FormControlProps {
   label: ReactNode
   options: SelectOption[]
   slotProps?: {

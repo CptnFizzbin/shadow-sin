@@ -18,7 +18,7 @@ export const contactFormOpts = formOptions({
   defaultValues,
 })
 
-export type ContactFormOptions = {
+type ContactFormOptions = {
   contact?: ContactData
   onSubmit: (contact: ContactData) => void
 }

@@ -2,7 +2,7 @@ import type { ConfirmDialogProps } from "#/components/ui/dialogs/confirmDialog.t
 import { ConfirmDialog } from "#/components/ui/dialogs/confirmDialog.tsx"
 import { useRootDialogs } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
 
-export interface UseConfirmDialogProps {
+interface UseConfirmDialogProps {
   id: string
 }
 

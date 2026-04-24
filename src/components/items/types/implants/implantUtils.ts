@@ -1,16 +1,16 @@
-import type { ImplantData, ImplantType } from "#/system/gear/implantData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade } from "#/system/gear/implantData.ts"
 
 export const BASE_ESSENCE = 6
 
-export const ImplantGradeEssenceMultiplier: Record<ImplantGrade, number> = {
+const ImplantGradeEssenceMultiplier: Record<ImplantGrade, number> = {
   [ImplantGrade.standard]: 1.0,
   [ImplantGrade.alpha]: 0.8,
   [ImplantGrade.beta]: 0.7,
   [ImplantGrade.delta]: 0.5,
 }
 
-export const ImplantGradeNuyenMultiplier: Record<ImplantGrade, number> = {
+const ImplantGradeNuyenMultiplier: Record<ImplantGrade, number> = {
   [ImplantGrade.standard]: 1,
   [ImplantGrade.alpha]: 2,
   [ImplantGrade.beta]: 4,
@@ -31,12 +31,4 @@ export function getImplantEffectiveNuyenCost(item: ImplantData): number {
     ImplantGradeNuyenMultiplier[item.grade as ImplantGrade]
     ?? ImplantGradeNuyenMultiplier[ImplantGrade.standard]
   return nuyenCost * multiplier
-}
-
-export interface ImplantEssenceSummary {
-  cyberwareTotal: number
-  biowareTotal: number
-  higherType: ImplantType | null
-  effectiveEssenceUsed: number
-  remainingEssence: number
 }

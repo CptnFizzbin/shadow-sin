@@ -45,7 +45,7 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
   )
 }
 
-export interface AttributesSectionProps {
+interface AttributesSectionProps {
   showMaximums?: boolean
 }
 

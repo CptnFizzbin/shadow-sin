@@ -57,6 +57,7 @@ describe("character migrations + yaml round-trip", () => {
     expect(migrated!._meta_.appliedMigrations).toContain("20260417")
     expect(migrated!._meta_.appliedMigrations).toContain("20260418")
     expect(migrated!._meta_.appliedMigrations).toContain("20260419")
+    expect(migrated!._meta_.appliedMigrations).toContain("20260423")
     expect("version" in (migrated! as object)).toBe(false)
   })
 

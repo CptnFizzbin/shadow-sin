@@ -19,7 +19,7 @@ export interface MetatypeData {
   movement: { walk: number, run: number }
 }
 
-export const baseAttributes = {
+const baseAttributes = {
   body: { min: 1, max: 6, augMax: 9 },
   agility: { min: 1, max: 6, augMax: 9 },
   reaction: { min: 1, max: 6, augMax: 9 },

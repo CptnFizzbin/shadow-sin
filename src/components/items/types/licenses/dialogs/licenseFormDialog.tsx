@@ -8,7 +8,7 @@ import type { SinData } from "#/system/gear/sinData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
-export interface LicenseFormDialogProps {
+interface LicenseFormDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void

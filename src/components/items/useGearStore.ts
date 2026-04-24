@@ -7,15 +7,15 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectAllGear, selectGearById, selectGearParent } from "#/components/items/gearSelectors.ts"
+import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
-export interface RemoveItemOptions {
+interface RemoveItemOptions {
   removeChildren?: boolean
 }
 
-export interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
+interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
   set(item: ItemData): ItemData
 
   add(item: Omit<ItemData, "id">): ItemData
@@ -167,38 +167,12 @@ export function useGearStore() {
 }
 
 /**
- * Reactively read a single gear item by id. Re-renders only when that item changes.
- */
-export function useGearById<TItem extends ItemData>(id: UUID): TItem | undefined {
-  const store = useGearStore()
-  return useStore(store, selectGearById<TItem>(id))
-}
-
-/**
  * Reactively read all gear items of a given itemType.
  * Subscribes to the gear Record; re-renders when any gear changes.
  * The React Compiler memoizes the filter result based on the stable `gear` reference.
  */
 export function useGearByType<TItem extends ItemData>(itemType: string): TItem[] {
   return useGearFilter((item): item is TItem => item.itemType === itemType)
-}
-
-/**
- * Reactively read the parent of a gear item. Re-renders only when that parent item reference changes.
- */
-export function useGearParent(item: ItemData): ItemData | undefined {
-  const store = useGearStore()
-  return useStore(store, selectGearParent(item))
-}
-
-/**
- * Reactively read the children of a gear item. Re-renders when the gear Record changes.
- */
-export function useGearChildren(item: ItemData): ItemData[] {
-  const store = useGearStore()
-  const gear = useStore(store, selectAllGear)
-  const childIds = item.childIds ?? []
-  return childIds.map((itemId) => gear[itemId])
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
