@@ -43,7 +43,9 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
   const [customModeActive, setCustomModeActive] = React.useState<boolean>(() => shouldUseCustomMode)
 
   React.useEffect(() => {
-    setCustomModeActive(shouldUseCustomMode)
+    if (shouldUseCustomMode) {
+      setCustomModeActive(true)
+    }
   }, [shouldUseCustomMode])
 
   const selectedSkillName = effect.target as SkillKey
