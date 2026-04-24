@@ -1,10 +1,10 @@
-import type { Atom, Observer, Store, Subscription } from "@tanstack/store"
+import type { Atom, Observer, Subscription } from "@tanstack/store"
 import { createAtom, toObserver } from "@tanstack/store"
 
 import type { SliceUpdater } from "#/integrations/tanstackStore/atomUtils.ts"
 import { isAnyAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
-export class StoreSlice<TData> implements Omit<Store<TData>, "atom">, Atom<TData> {
+export class StoreSlice<TData> implements Atom<TData> {
   private atom: Atom<TData>
 
   constructor(value: TData)
