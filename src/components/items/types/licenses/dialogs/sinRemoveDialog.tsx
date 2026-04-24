@@ -24,8 +24,16 @@ export const SinRemoveDialog: FC<SinRemoveDialogProps> = ({
   onClosed,
   ...props
 }) => {
+  const combinedSlotProps = {
+    ...props.slotProps,
+    transition: {
+      ...props.slotProps?.transition,
+      onExited: onClosed,
+    },
+  }
+
   return (
-    <Dialog {...props} slotProps={{ transition: { onExited: onClosed } }}>
+    <Dialog {...props} slotProps={combinedSlotProps}>
       <DialogTitle>Remove SIN</DialogTitle>
       <DialogContent>
         <Typography>

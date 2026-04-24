@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import * as React from "react"
+import { Fragment, useState } from "react"
 
 import { GameEffectRow } from "#/components/system/gameEffects/gameEffectRow.tsx"
 import { getDefaultTarget } from "#/components/system/gameEffects/gameEffectUtils.ts"
@@ -27,7 +27,7 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   onClosed,
   initialEffects,
 }) => {
-  const [effects, setEffects] = React.useState<GameEffectData[]>(initialEffects)
+  const [effects, setEffects] = useState<GameEffectData[]>(initialEffects)
 
   const handleAdd = () => {
     const defaultTarget = getDefaultTarget(GameEffectType.attrMod) ?? AttributeKey.body
@@ -63,14 +63,14 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
           )}
 
           {effects.map((effect, index) => (
-            <React.Fragment key={`${effect.type}-${effect.target ?? "none"}-${index}`}>
+            <Fragment key={index}>
               {index > 0 && <Divider />}
               <GameEffectRow
                 effect={effect}
                 onChange={(updated) => handleChange(index, updated)}
                 onRemove={() => handleRemove(index)}
               />
-            </React.Fragment>
+            </Fragment>
           ))}
 
           <Button
