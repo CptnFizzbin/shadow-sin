@@ -7,10 +7,22 @@ import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
+import * as React from "react"
 
 import { getDefaultTarget, getTargetOptions } from "#/components/system/gameEffects/gameEffectUtils.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
+
+const CUSTOM_SENTINEL = "__custom__"
+
+function isCustomSpec(skillName: string, specialization: string): boolean {
+  const info = skillList[skillName as SkillKey]
+  const fixedSpecs = (info?.specializations ?? []).filter((s): s is string => typeof s === "string")
+  return specialization !== "" && !fixedSpecs.includes(specialization)
+}
 
 interface GameEffectRowProps {
   effect: GameEffectData
@@ -20,6 +32,27 @@ interface GameEffectRowProps {
 
 export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemove }) => {
   const targetOptions = getTargetOptions(effect.type)
+
+  const [customModeActive, setCustomModeActive] = React.useState<boolean>(
+    () =>
+      effect.type === GameEffectType.skillSpecializationMod
+      && !!effect.target
+      && !!effect.subTarget
+      && isCustomSpec(effect.target, effect.subTarget),
+  )
+
+  const selectedSkillName = effect.target as SkillKey
+  const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName] : undefined
+  const allSpecs = selectedSkillInfo?.specializations ?? []
+  const fixedSpecs = allSpecs.filter((s): s is string => typeof s === "string")
+  const customEntries = allSpecs.filter(
+    (s): s is { custom: true, placeholder: string } => typeof s === "object" && s !== null,
+  )
+  const hasFixed = fixedSpecs.length > 0
+  const hasCustom = customEntries.length > 0
+
+  const dropdownValue = customModeActive ? CUSTOM_SENTINEL : (effect.subTarget ?? "")
+  const showCustomTextField = hasCustom && (customModeActive || !hasFixed)
 
   return (
     <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start", flexWrap: "wrap" }}>
@@ -47,7 +80,10 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
           <Select
             value={effect.target ?? ""}
             label="Target"
-            onChange={(e) => onChange({ ...effect, target: e.target.value })}
+            onChange={(e) => {
+              onChange({ ...effect, target: e.target.value, subTarget: undefined })
+              setCustomModeActive(false)
+            }}
           >
             {targetOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -56,6 +92,69 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
             ))}
           </Select>
         </FormControl>
+      )}
+
+      {effect.type === GameEffectType.skillSpecializationMod && (
+        <Stack sx={{ flex: "2 1 160px", minWidth: 160, gap: 1 }}>
+          {hasFixed && (
+            <FormControl size="small" fullWidth>
+              <InputLabel>Specialization</InputLabel>
+              <Select
+                value={dropdownValue}
+                label="Specialization"
+                onChange={(e) => {
+                  const value = e.target.value as string
+                  if (value === CUSTOM_SENTINEL) {
+                    setCustomModeActive(true)
+                    onChange({ ...effect, subTarget: "" })
+                  } else {
+                    setCustomModeActive(false)
+                    onChange({ ...effect, subTarget: value })
+                  }
+                }}
+              >
+                {fixedSpecs.map((spec) => (
+                  <MenuItem key={spec} value={spec}>
+                    {spec}
+                  </MenuItem>
+                ))}
+                {hasCustom && (
+                  <MenuItem value={CUSTOM_SENTINEL}>
+                    <em>Custom...</em>
+                  </MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          )}
+
+          {showCustomTextField && customEntries.length > 0 && (
+            <>
+              {customEntries.map((entry, idx) => (
+                <MuiTextField
+                  key={`${entry.placeholder}-${idx}`}
+                  label={hasFixed ? "Custom Specialization" : "Specialization"}
+                  placeholder={entry.placeholder}
+                  value={effect.subTarget ?? ""}
+                  onChange={(e) => onChange({ ...effect, subTarget: e.target.value })}
+                  size="small"
+                  fullWidth
+                  autoFocus={customModeActive && hasFixed && idx === 0}
+                />
+              ))}
+            </>
+          )}
+
+          {!hasFixed && !hasCustom && (
+            <FormControl size="small" fullWidth disabled>
+              <InputLabel>Specialization</InputLabel>
+              <Select value="" label="Specialization">
+                <MenuItem value="">
+                  <em>None available</em>
+                </MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        </Stack>
       )}
 
       <MuiTextField

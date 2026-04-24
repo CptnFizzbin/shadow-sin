@@ -30,6 +30,14 @@ export const GameEffectTypeOptions: GameEffectOption[] = [
     })),
   },
   {
+    label: "Skill Specialization Modifier",
+    value: GameEffectType.skillSpecializationMod,
+    targets: Object.values(SkillKey).map((skill) => ({
+      value: skill,
+      label: skill,
+    })),
+  },
+  {
     label: "Initiative Bonus",
     value: GameEffectType.initiativeBonus,
   },

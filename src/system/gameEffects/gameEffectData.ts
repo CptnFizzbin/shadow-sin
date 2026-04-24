@@ -8,6 +8,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 export interface GameEffectData {
   type: GameEffectType | string
   target?: string
+  subTarget?: string
   value: number
 }
 
@@ -19,6 +20,12 @@ export interface AttrModEffect extends GameEffectData {
 export interface SkillModEffect extends GameEffectData {
   type: GameEffectType.skillMod
   target: SkillKey
+}
+
+export interface SkillSpecializationModEffect extends GameEffectData {
+  type: GameEffectType.skillSpecializationMod
+  target: SkillKey
+  subTarget: string
 }
 
 export interface ExtraInitiativePassesEffect extends GameEffectData {
@@ -60,6 +67,13 @@ const SkillModSchema = z.object({
   value: z.number(),
 })
 
+const SkillSpecializationModSchema = z.object({
+  type: z.literal(GameEffectType.skillSpecializationMod),
+  target: z.enum(SkillKey),
+  subTarget: z.string(),
+  value: z.number(),
+})
+
 const ExtraInitiativePassesSchema = z.object({
   type: z.literal(GameEffectType.extraInitiativePasses),
   value: z.number(),
@@ -77,6 +91,7 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   DicePoolModSchema,
   AttrModSchema,
   SkillModSchema,
+  SkillSpecializationModSchema,
   ExtraInitiativePassesSchema,
   PainToleranceSchema,
 ]) satisfies z.ZodType<GameEffectData>

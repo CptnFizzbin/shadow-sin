@@ -8,3 +8,11 @@ export const isMagician = (awakeningType: AwakeningType) => {
     || awakeningType === AwakeningType.MysticAdept
   )
 }
+
+export const isAwakened = (awakeningType: AwakeningType) => {
+  return (
+    awakeningType === AwakeningType.Magician
+    || awakeningType === AwakeningType.MysticAdept
+    || awakeningType === AwakeningType.Adept
+  )
+}
