@@ -1,9 +1,12 @@
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
+import type { SkillModEffect } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -66,7 +69,13 @@ export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
   const attribute = useAttr(skillInfo.attr)
-  return rating + attribute
+
+  const skillMods = useGameEffects<SkillModEffect>(GameEffectType.skillMod)
+  const totalMod = skillMods
+    .filter((e) => e.target === skill)
+    .reduce((sum, e) => sum + e.value, 0)
+
+  return rating + attribute + totalMod
 }
 
 export const useEssenceInfo = () => {

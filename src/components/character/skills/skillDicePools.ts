@@ -2,7 +2,10 @@ import { useActiveSkillRating } from "#/components/character/characterUtils.ts"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { SkillSpecializationModEffect } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
@@ -25,11 +28,16 @@ export const useActiveSkillDicePool = (props: {
     name += ` (${specialization})`
   }
 
+  const specMods = useGameEffects<SkillSpecializationModEffect>(GameEffectType.skillSpecializationMod)
+  const totalSpecMod = specMods
+    .filter((e) => e.target === skillKey && (!specialization || e.subTarget === specialization))
+    .reduce((sum, e) => sum + e.value, 0)
+
   return createDicePool(id, name, [
     useActiveSkillDiceGroup(skillKey),
     useAttrDiceGroup(attr),
     isDefaulted ? { name: "Defaulting", size: -1, color: "warning.main" } : null,
-    specialization ? { name: specialization, size: 2 } : null,
+    specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
     useWoundDiceGroup(),
   ])
 }
