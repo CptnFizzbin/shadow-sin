@@ -65,7 +65,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children }) => {
   const handleRootClick = onClick
     ? (e: MouseEvent<HTMLDivElement>) => {
         const target = e.target as HTMLElement
-        if (target.closest("button")) return
+        if (target.closest("button, a, [role='button']")) return
         onClick()
       }
     : undefined

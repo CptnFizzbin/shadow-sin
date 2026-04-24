@@ -15,11 +15,12 @@ interface CredstickCardProps {
 export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) => {
   const maxBalance = CredstickMaxBalance[credstick.credstickType]
   const fillPercent = maxBalance > 0 ? (credstick.balance / maxBalance) * 100 : 0
-  const displayName = credstick.name || CredstickTypeLabel[credstick.credstickType]
 
   return (
     <ItemCard onClick={() => onClick(credstick)}>
-      <ItemCard.Title>{displayName}</ItemCard.Title>
+      <ItemCard.Title>
+        {credstick.name || CredstickTypeLabel[credstick.credstickType]}
+      </ItemCard.Title>
 
       <ItemCard.Meta type="cost">
         <Typography sx={{ fontWeight: "medium", whiteSpace: "nowrap" }}>
