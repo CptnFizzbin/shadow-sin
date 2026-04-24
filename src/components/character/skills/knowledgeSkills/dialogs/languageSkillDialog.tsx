@@ -40,9 +40,13 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={() => {
-        form.reset()
-        onClosed()
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            onClosed()
+          },
+        },
       }}
     >
       <DialogTitle>

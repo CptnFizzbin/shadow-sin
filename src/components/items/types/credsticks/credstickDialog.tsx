@@ -132,7 +132,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
       : "Add Credstick"
 
   return (
-    <Dialog open={open} onTransitionExited={handleClosed} fullWidth>
+    <Dialog open={open} slotProps={{ transition: { onExited: handleClosed } }} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <Stack sx={{ gap: 2, padding: 1 }}>

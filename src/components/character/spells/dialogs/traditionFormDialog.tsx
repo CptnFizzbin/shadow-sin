@@ -44,12 +44,16 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      onTransitionExited={() => {
-        form.reset()
-        onClosed()
-      }}
       fullWidth
       maxWidth="sm"
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            onClosed()
+          },
+        },
+      }}
     >
       <DialogTitle>Tradition</DialogTitle>
       <DialogContent sx={{ p: 1 }}>

@@ -75,7 +75,7 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={handleClosed}
+      slotProps={{ transition: { onExited: handleClosed } }}
     >
       <DialogTitle>
         {isEditMode ? "Edit Skill Group" : "Add Skill Group"}

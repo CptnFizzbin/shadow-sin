@@ -112,12 +112,16 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={() => {
-        form.reset()
-        setCustomModeActive(
-          !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
-        )
-        onClosed?.()
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            setCustomModeActive(
+              !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
+            )
+            onClosed?.()
+          },
+        },
       }}
     >
       <DialogTitle>{isEditMode ? "Edit Active Skill" : "Add Active Skill"}</DialogTitle>

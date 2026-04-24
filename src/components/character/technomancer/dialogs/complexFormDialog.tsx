@@ -56,9 +56,13 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={() => {
-        appForm.reset()
-        onClosed?.()
+      slotProps={{
+        transition: {
+          onExited: () => {
+            appForm.reset()
+            onClosed?.()
+          },
+        },
       }}
     >
       <DialogTitle>

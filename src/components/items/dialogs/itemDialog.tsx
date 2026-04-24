@@ -140,7 +140,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   return (
     <>
-      <Dialog open={open} fullWidth onClose={onClose} onTransitionExited={onClosed}>
+      <Dialog open={open} fullWidth onClose={onClose} slotProps={{ transition: { onExited: onClosed } }}>
         <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
         <DialogContent sx={{ padding: 1 }}>
