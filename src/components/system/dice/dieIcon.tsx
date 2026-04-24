@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material"
 import {
   RiDice1Fill,
   RiDice1Line,
@@ -13,6 +12,9 @@ import {
 } from "@remixicon/react"
 import type { CSSProperties, FC } from "react"
 
+const glitchColor = "var(--mui-palette-error-main)"
+const hitColor = "var(--mui-palette-success-main)"
+
 interface DieIconProps {
   value: number // 1-6 or 0 for unrolled
   highlightHit?: boolean
@@ -26,10 +28,6 @@ export const DieIcon: FC<DieIconProps> = ({
   highlightGlitch = true,
   style,
 }) => {
-  const theme = useTheme()
-  const glitchColor = theme.palette.error.main
-  const hitColor = theme.palette.success.main
-
   switch (value) {
     case 1:
       return highlightGlitch ? <RiDice1Fill color={glitchColor} style={style} /> : <RiDice1Line style={style} />
