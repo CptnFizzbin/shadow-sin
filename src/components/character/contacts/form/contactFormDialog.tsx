@@ -43,15 +43,15 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
     onClose()
   }
 
-  const handleClosed = () => {
-    form.reset()
-    onClosed?.()
-  }
-
   const form = useContactForm({
     contact,
     onSubmit: handleSubmit,
   })
+
+  const handleClosed = () => {
+    form.reset()
+    onClosed()
+  }
 
   return (
     <Dialog

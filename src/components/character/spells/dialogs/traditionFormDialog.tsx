@@ -13,10 +13,7 @@ import { useTraditionForm } from "#/components/character/spells/form/useTraditio
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
-import {
-  drainAttributeSelectOptions,
-  spiritTypeSelectOptions,
-} from "#/system/magic/traditionData.ts"
+import { drainAttributeSelectOptions, spiritTypeSelectOptions, } from "#/system/magic/traditionData.ts"
 
 interface TraditionFormDialogProps {
   open: boolean
@@ -44,16 +41,16 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
-      maxWidth="sm"
       slotProps={{
         transition: {
           onExited: () => {
             form.reset()
             onClosed()
-          },
-        },
+          }
+        }
       }}
+      fullWidth
+      maxWidth="sm"
     >
       <DialogTitle>Tradition</DialogTitle>
       <DialogContent sx={{ p: 1 }}>

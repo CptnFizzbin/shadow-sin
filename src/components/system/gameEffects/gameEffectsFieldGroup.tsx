@@ -1,15 +1,6 @@
-import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
-import { RiAddLine } from "@remixicon/react"
-
-import { GameEffectRow } from "#/components/system/gameEffects/gameEffectRow.tsx"
-import { getDefaultTarget } from "#/components/system/gameEffects/gameEffectUtils.ts"
+import { GameEffectsSummary } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 interface FormFields {
   effects?: GameEffectData[]
@@ -26,45 +17,10 @@ export const GameEffectsFieldGroup = withFieldGroup({
           const effects = (field.state.value as GameEffectData[]) ?? []
 
           return (
-            <Stack sx={{ gap: 1 }}>
-              <Divider />
-
-              <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
-                <Typography variant="subtitle2">Effects</Typography>
-                <Button
-                  size="small"
-                  startIcon={<RiAddLine size={14} />}
-                  onClick={() => {
-                    const defaultTarget = getDefaultTarget(GameEffectType.attrMod) ?? AttributeKey.body
-                    field.handleChange([
-                      ...effects,
-                      {
-                        type: GameEffectType.attrMod,
-                        target: defaultTarget,
-                        value: 0,
-                      },
-                    ])
-                  }}
-                >
-                  Add Effect
-                </Button>
-              </Stack>
-
-              {effects.map((effect, index) => (
-                <GameEffectRow
-                  key={`${effect.type}-${effect.target ?? "none"}-${index}`}
-                  effect={effect}
-                  onChange={(updated) => {
-                    const newEffects = [...effects]
-                    newEffects[index] = updated
-                    field.handleChange(newEffects)
-                  }}
-                  onRemove={() => {
-                    field.handleChange(effects.filter((_, i) => i !== index))
-                  }}
-                />
-              ))}
-            </Stack>
+            <GameEffectsSummary
+              effects={effects}
+              onChange={(updated) => field.handleChange(updated)}
+            />
           )
         }}
       </group.AppField>

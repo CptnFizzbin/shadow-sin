@@ -41,16 +41,16 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
-      maxWidth="sm"
       slotProps={{
         transition: {
           onExited: () => {
             form.reset()
             onClosed()
-          },
-        },
+          }
+        }
       }}
+      fullWidth
+      maxWidth="sm"
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>

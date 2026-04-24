@@ -34,7 +34,7 @@ function selectPainToleranceModifier(track: DamageTrackKey | "all") {
     }
 
     for (const item of Object.values(sheet.gear)) {
-      if (item.equipped === false) continue
+      if (item.equipped !== true) continue
       for (const effect of item.effects ?? []) {
         if (
           effect.type === GameEffectType.painTolerance

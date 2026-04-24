@@ -42,20 +42,19 @@ export const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
 
   const title = editMode ? "Edit Adept Power" : "Add Adept Power"
 
+  const handleClosed = () => {
+    form.reset()
+    onClosed()
+  }
+
   return (
     <Dialog
       open={open}
+      slotProps={{ transition: { onExited: handleClosed } }}
       fullWidth
       maxWidth="sm"
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
-      }}
     >
+
       <DialogTitle>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <AdeptPowerFormFields form={form} />

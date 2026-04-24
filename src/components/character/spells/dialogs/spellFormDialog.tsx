@@ -42,16 +42,16 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
-      maxWidth="sm"
       slotProps={{
         transition: {
           onExited: () => {
             form.reset()
             onClosed()
-          },
-        },
+          }
+        }
       }}
+      fullWidth
+      maxWidth="sm"
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
