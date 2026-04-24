@@ -3,7 +3,7 @@ import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export interface GameEffectOption {
+interface GameEffectOption {
   label: string
   value: GameEffectType
   targets?: Array<{

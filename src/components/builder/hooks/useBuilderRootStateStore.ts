@@ -6,7 +6,7 @@ import { createDefaultCharacterSheet } from "#/components/character/sheet/create
 import { StorePersister, usePersistedStore } from "#/lib/storage/storePersister.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
-export type UseBuilderRootStateStore = [
+type UseBuilderRootStateStore = [
   store: Store<BuilderRootState>,
   reset: () => void,
   loadCharacter: (importedCharacter: CharacterSheet) => void,

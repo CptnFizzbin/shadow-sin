@@ -11,7 +11,7 @@ import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
 
-export interface ImportConflictDialogProps {
+interface ImportConflictDialogProps {
   incomingCharacter: CharacterSheet
   existingCharacter: CharacterSheet
   onChoice: (choice: ImportConflictChoice) => void

@@ -11,9 +11,9 @@ function getFormStorageKey(characterId: string): string {
   return `${FORM_STORAGE_KEY_PREFIX}${characterId}`
 }
 
-function loadState<TData extends object>(persistanceKey: string): TData | undefined {
+function loadState<TData extends object>(key: string): TData | undefined {
   const rawValue =
-    globalThis.localStorage?.getItem(getFormStorageKey(persistanceKey))
+    globalThis.localStorage?.getItem(getFormStorageKey(key))
     ?? undefined
   if (!rawValue) return undefined
 
@@ -24,10 +24,10 @@ function loadState<TData extends object>(persistanceKey: string): TData | undefi
   }
 }
 
-function saveState<TData extends object>(persistanceKey: string, state: TData): void {
+function saveState<TData extends object>(key: string, state: TData): void {
   try {
     globalThis.localStorage?.setItem(
-      getFormStorageKey(persistanceKey),
+      getFormStorageKey(key),
       JSON.stringify(state),
     )
   } catch {
@@ -35,9 +35,9 @@ function saveState<TData extends object>(persistanceKey: string, state: TData): 
   }
 }
 
-function clearState(persistanceKey: string): void {
+function clearState(key: string): void {
   try {
-    globalThis.localStorage?.removeItem(getFormStorageKey(persistanceKey))
+    globalThis.localStorage?.removeItem(getFormStorageKey(key))
   } catch {
     /* storage unavailable */
   }
@@ -56,7 +56,7 @@ const debouncedSaveState = debounce(
   { wait: 500 },
 )
 
-export const usePersistStore = (persistanceKey: string, store: AnyAtom) => {
+const usePersistStore = (persistanceKey: string, store: AnyAtom) => {
   useEffect(() => {
     const { unsubscribe } = store.subscribe((state) => {
       debouncedSaveState(persistanceKey, state)

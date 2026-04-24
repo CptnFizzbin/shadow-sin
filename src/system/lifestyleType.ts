@@ -7,7 +7,7 @@ export enum LifestyleType {
   Luxury = "Luxury",
 }
 
-export interface LifestyleData {
+interface LifestyleData {
   name: LifestyleType
   upkeep: number
   starting: {

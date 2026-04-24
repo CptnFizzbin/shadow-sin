@@ -7,7 +7,7 @@ import type { FC } from "react"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { LoanData } from "#/system/loanData.ts"
 
-export interface LoanCardProps {
+interface LoanCardProps {
   loan: LoanData
   onClick: (loan: LoanData) => void
 }

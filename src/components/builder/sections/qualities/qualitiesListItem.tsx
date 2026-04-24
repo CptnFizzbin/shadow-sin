@@ -7,7 +7,7 @@ import type { FC } from "react"
 
 import type { QualityData } from "#/system/qualityData.ts"
 
-export interface QualityRowProps {
+interface QualityRowProps {
   quality: QualityData
   onClick: () => void
   onRemove?: () => void

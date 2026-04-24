@@ -1,12 +1,16 @@
+import type { UUID } from "node:crypto"
+
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
-export interface QualityFormOptions {
+interface QualityFormOptions {
   quality?: QualityData
   onSubmit: (values: QualityData) => void
 }
 
 const defaultValues: QualityData = {
+  id: NullUuid,
   name: "",
   type: "positive",
   description: "",
@@ -19,7 +23,13 @@ export function useQualityForm({ quality, onSubmit }: QualityFormOptions) {
       ...defaultValues,
       ...quality,
     },
-    onSubmit: ({ value }) => onSubmit(value),
+    onSubmit: ({ value }) => {
+      const result = { ...value }
+      if (result.id === NullUuid) {
+        result.id = crypto.randomUUID() as UUID
+      }
+      onSubmit(result)
+    },
   })
 }
 

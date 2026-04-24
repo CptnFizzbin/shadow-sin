@@ -16,7 +16,7 @@ import {
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 
-export interface ProfileEditDialogProps {
+interface ProfileEditDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void

@@ -7,11 +7,11 @@ import type { FC, ReactNode } from "react"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 
-export interface LicenseCardSlots {
+interface LicenseCardSlots {
   trailingContent?: ReactNode
 }
 
-export interface LicenseCardProps {
+interface LicenseCardProps {
   license: LicenseData
   slots?: LicenseCardSlots
   onClick?: () => void

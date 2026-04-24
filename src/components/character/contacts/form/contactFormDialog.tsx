@@ -13,7 +13,7 @@ import { useContactsStore } from "#/components/character/contacts/useContactsSto
 import { noop } from "#/lib/noop.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
-export interface ContactFormDialogProps {
+interface ContactFormDialogProps {
   open: boolean
   contact?: ContactData
   onSaved?: (contact: ContactData) => void

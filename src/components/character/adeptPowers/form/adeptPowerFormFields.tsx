@@ -5,7 +5,7 @@ import type { AdeptPowerForm } from "#/components/character/adeptPowers/form/use
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 
-export interface AdeptPowerFormFieldsProps {
+interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm
 }
 

@@ -15,7 +15,7 @@ import {
   SpellType,
 } from "#/system/magic/spellData.ts"
 
-export interface SpellFormFieldsProps {
+interface SpellFormFieldsProps {
   form: SpellForm
 }
 

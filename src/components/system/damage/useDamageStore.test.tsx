@@ -54,6 +54,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
@@ -85,6 +86,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -116,6 +118,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -147,6 +150,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "Extreme Pain Intolerance",
           type: "negative",
           effects: [

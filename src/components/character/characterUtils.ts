@@ -111,8 +111,3 @@ export const useEssenceInfo = () => {
     biowareEssence,
   }
 }
-
-export const useEssenceAttr = (): number => {
-  const { essenceRemaining } = useEssenceInfo()
-  return Math.floor(essenceRemaining)
-}

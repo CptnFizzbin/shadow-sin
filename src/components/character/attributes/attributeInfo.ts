@@ -2,7 +2,7 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import type { AwakeningData } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
 
-export interface AttributeInfo {
+interface AttributeInfo {
   attr: AttributeKey
   value: number
   min: number
@@ -10,7 +10,7 @@ export interface AttributeInfo {
   augMax: number
 }
 
-export interface AttributeInfoOptions {
+interface AttributeInfoOptions {
   attr: AttributeKey
   value?: number
   metatype: MetatypeData
@@ -61,6 +61,6 @@ export const createAttrInfo = ({
   }
 }
 
-export function clampValue(min: number, value: number, max: number): number {
+function clampValue(min: number, value: number, max: number): number {
   return Math.max(min, Math.min(value, max))
 }

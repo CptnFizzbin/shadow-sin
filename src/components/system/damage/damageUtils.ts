@@ -18,7 +18,7 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
  * @param track - The damage track (or "all") to compute the modifier for
  * @returns A selector `(sheet) => number`
  */
-export function selectPainToleranceModifier(track: DamageTrackKey | "all") {
+function selectPainToleranceModifier(track: DamageTrackKey | "all") {
   return (sheet: CharacterSheet): number => {
     let modifier = 0
 

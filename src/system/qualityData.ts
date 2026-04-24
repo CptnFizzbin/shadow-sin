@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import { z } from "zod"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
@@ -5,6 +7,7 @@ import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
 
 export interface QualityData {
+  id: UUID
   name: string
   type: "positive" | "negative"
   bpValue?: number
@@ -16,7 +19,7 @@ export interface QualityData {
 }
 
 export const QualityDataSchema = z.object({
-  id: z.uuid(),
+  id: z.string().uuid() as z.ZodType<UUID>,
   name: z.string().min(1, "Name is required"),
   type: z.enum(["positive", "negative"]),
   bpValue: z.number().min(0, "BP must be 0 or greater").optional(),

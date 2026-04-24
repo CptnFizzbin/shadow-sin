@@ -63,6 +63,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 4
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
@@ -87,6 +88,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -112,6 +114,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -191,6 +194,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 5
       s.qualities = [
         {
+          id: "00000000-0000-0000-0000-000000000000",
           name: "High Pain Tolerance",
           type: "positive",
           effects: [

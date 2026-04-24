@@ -23,8 +23,8 @@
 
 // Stable UUIDs shared across all version fixtures so tests can reference them.
 export const TEST_CHARACTER_ID = "ccccdddd-0000-0000-0000-000000000001" as const
-export const TEST_WEAPON_ID = "ccccdddd-0000-0000-0000-000000000002" as const
-export const TEST_VEHICLE_ID = "ccccdddd-0000-0000-0000-000000000003" as const
+const TEST_WEAPON_ID = "ccccdddd-0000-0000-0000-000000000002" as const
+const TEST_VEHICLE_ID = "ccccdddd-0000-0000-0000-000000000003" as const
 export const TEST_LOAN_ID = "ccccdddd-0000-0000-0000-000000000004" as const
 
 // Stable UUIDs for the old-format character fixture
@@ -280,7 +280,7 @@ export const characterV0 = {
 // • weapon:  no `equipped`
 // • sheet:   no `_meta_`, has old `version` string
 // ---------------------------------------------------------------------------
-export const characterV1_0 = {
+const characterV1_0 = {
   id: TEST_CHARACTER_ID,
   version: "0.1.0",
 
@@ -381,7 +381,7 @@ export const characterV1_0 = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterV1_20250801 = {
+const characterV1_20250801 = {
   ...characterV1_0,
   _meta_: { version: 1, appliedMigrations: ["20250801"] },
   spells: [
@@ -405,7 +405,7 @@ export const characterV1_20250801 = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterV1_20251001 = {
+const characterV1_20251001 = {
   ...characterV1_20250801,
   _meta_: { version: 1, appliedMigrations: ["20250801", "20251001"] },
   nuyen: {
@@ -430,7 +430,7 @@ export const characterV1_20251001 = {
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterV1_20260416 = {
+const characterV1_20260416 = {
   ...characterV1_20251001,
   _meta_: { version: 1, appliedMigrations: ["20250801", "20251001", "20260416"] },
   gear: {
@@ -465,7 +465,7 @@ export const characterV1_20260416 = {
 // • weapon:  `equipped: true` set on the first melee weapon
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-export const characterV1_20260417 = {
+const characterV1_20260417 = {
   ...characterV1_20260416,
   _meta_: {
     version: 1,
@@ -499,7 +499,7 @@ export const characterV1_20260417 = {
 // After 20260418_addMeta
 // All previous migrations applied; `_meta_` updated; old `version` still present.
 // ---------------------------------------------------------------------------
-export const characterV1_20260418 = {
+const characterV1_20260418 = {
   ...characterV1_20260417,
   version: "0.1.0",
   _meta_: {

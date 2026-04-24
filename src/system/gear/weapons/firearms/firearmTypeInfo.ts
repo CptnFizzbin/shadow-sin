@@ -2,7 +2,7 @@ import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts
 import type { WeaponRangeInfo } from "#/system/gear/weapons/weaponRangeInfo.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export interface FirearmTypeInfo {
+interface FirearmTypeInfo {
   weaponGroup: string
   skill: SkillKey
   ranges: WeaponRangeInfo

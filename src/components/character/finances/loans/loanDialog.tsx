@@ -19,7 +19,7 @@ import type { LoanData } from "#/system/loanData.ts"
 
 export type LoanDialogMode = "add" | "edit"
 
-export interface LoanDialogProps {
+interface LoanDialogProps {
   open: boolean
   mode: LoanDialogMode
   loan?: LoanData

@@ -8,7 +8,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export interface ItemFormOptions<TData extends ItemData = ItemData> {
+interface ItemFormOptions<TData extends ItemData = ItemData> {
   item?: TData
   defaultValues: TData
   onSubmit: (item: TData, meta: GearSubmitMeta) => void

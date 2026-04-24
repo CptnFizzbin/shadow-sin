@@ -53,7 +53,7 @@ export const useBuilderBuildPointsApi = () => {
   }
 }
 
-export const useBuilderBiologyBuildPoints = (): BpLineItem => {
+const useBuilderBiologyBuildPoints = (): BpLineItem => {
   const metatypeKey = useCharacterSheet((sheet) => sheet.biology.metatype)
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
 
@@ -82,7 +82,7 @@ export const useBuilderSkillsBuildPoints = () => {
   }
 }
 
-export const useActiveSkillsBuildPoints = () => {
+const useActiveSkillsBuildPoints = () => {
   const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
   const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
 
@@ -98,7 +98,7 @@ export const useActiveSkillsBuildPoints = () => {
   }
 }
 
-export const useKnowledgeSkillsBuildPoints = () => {
+const useKnowledgeSkillsBuildPoints = () => {
   const logicAttr = useAttr(AttributeKey.logic)
   const intuitionAttr = useAttr(AttributeKey.intuition)
 

@@ -1,10 +1,14 @@
 import { Container, Divider } from "@mui/material"
 import Stack from "@mui/material/Stack"
+import { TanStackDevtools } from "@tanstack/react-devtools"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
 import Footer from "#/components/ui/footer.tsx"
 import { Header } from "#/components/ui/header.tsx"
+import { TanStackPacerDevtools } from "#/integrations/tanstackPacer/devtools.tsx"
+import { TanStackQueryDevtools } from "#/integrations/tanstackQuery/devtools.tsx"
 import TanStackQueryProvider from "#/integrations/tanstackQuery/rootProvider.tsx"
+import { TanStackRouterDevtools } from "#/integrations/tanstackRouter/devtools.tsx"
 
 type RouterContext = object
 
@@ -42,6 +46,16 @@ function RootLayout() {
           <Footer />
         </Stack>
       </Stack>
+      <TanStackDevtools
+        plugins={[
+          TanStackQueryDevtools,
+          TanStackRouterDevtools,
+          TanStackPacerDevtools,
+        ]}
+        config={{
+          hideUntilHover: true,
+        }}
+      />
     </TanStackQueryProvider>
   )
 }

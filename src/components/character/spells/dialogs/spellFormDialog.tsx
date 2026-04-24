@@ -12,7 +12,7 @@ import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts
 import { noop } from "#/lib/noop.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
-export interface SpellFormDialogProps {
+interface SpellFormDialogProps {
   open: boolean
   spell?: SpellData
   onSave: (spell: SpellData) => void

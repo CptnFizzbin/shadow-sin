@@ -16,7 +16,7 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )
 
-export const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
+const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
   const store = useMemo(() => new CharacterSheetStore(createDefaultCharacterSheet()), [])
   return (
     <ThemeProvider theme={theme}>
@@ -25,7 +25,7 @@ export const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
   )
 }
 
-export const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
+const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
   const rootStore = useMemo(
     () =>
       new Store<BuilderRootState>({
@@ -41,10 +41,6 @@ export const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
       </CharacterBuilderStoreProvider>
     </ThemeProvider>
   )
-}
-
-export function renderWithTheme(element: ReactElement) {
-  return render(element, { wrapper: ThemeWrapper })
 }
 
 export function renderWithProviders(element: ReactElement) {

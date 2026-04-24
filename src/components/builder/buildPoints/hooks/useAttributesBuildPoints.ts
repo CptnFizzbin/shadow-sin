@@ -8,7 +8,7 @@ import { BuilderSectionId } from "#/components/builder/sections/builderSectionId
 import { useActiveAttributes } from "#/components/character/attributes/hooks/useActiveAttributes.ts"
 import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
-export interface AttributesBuildPoints extends BpLineItem {
+interface AttributesBuildPoints extends BpLineItem {
   physicalBp: number
   mentalBp: number
   specialBp: number
