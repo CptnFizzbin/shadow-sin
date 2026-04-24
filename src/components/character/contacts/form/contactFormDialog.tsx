@@ -50,7 +50,7 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
 
   const handleClosed = () => {
     form.reset()
-    onClosed?.()
+    onClosed()
   }
 
   return (

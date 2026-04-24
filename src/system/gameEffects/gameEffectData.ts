@@ -28,6 +28,19 @@ export interface SkillSpecializationModEffect extends GameEffectData {
   subTarget: string
 }
 
+export interface InitiativeBonusEffect extends GameEffectData {
+  type: GameEffectType.initiativeBonus
+}
+
+export interface RecoilReductionEffect extends GameEffectData {
+  type: GameEffectType.recoilReduction
+}
+
+export interface DicePoolModEffect extends GameEffectData {
+  type: GameEffectType.dicePoolMod
+  target: string
+}
+
 export interface ExtraInitiativePassesEffect extends GameEffectData {
   type: GameEffectType.extraInitiativePasses
 }
@@ -35,6 +48,17 @@ export interface ExtraInitiativePassesEffect extends GameEffectData {
 export interface PainToleranceEffect extends GameEffectData {
   type: GameEffectType.painTolerance
   target: DamageTrackKey | "all"
+}
+
+export type EffectByType = {
+  [GameEffectType.attrMod]: AttrModEffect
+  [GameEffectType.skillMod]: SkillModEffect
+  [GameEffectType.skillSpecializationMod]: SkillSpecializationModEffect
+  [GameEffectType.initiativeBonus]: InitiativeBonusEffect
+  [GameEffectType.extraInitiativePasses]: ExtraInitiativePassesEffect
+  [GameEffectType.painTolerance]: PainToleranceEffect
+  [GameEffectType.recoilReduction]: RecoilReductionEffect
+  [GameEffectType.dicePoolMod]: DicePoolModEffect
 }
 
 const InitiativeBonusSchema = z.object({

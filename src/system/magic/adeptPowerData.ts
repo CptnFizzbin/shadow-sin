@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
+import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export interface AdeptPowerData {
   id: string
@@ -19,12 +21,6 @@ export const AdeptPowerDataSchema = z.object({
   rating: z.number().int().min(1, "Rating must be at least 1"),
   costPerRating: z.number().min(0, "Cost per rating must be 0 or greater"),
   description: z.string().optional(),
-  effects: z
-    .object({
-      type: z.string(),
-      target: z.string().optional(),
-      value: z.number(),
-    })
-    .array()
-    .optional(),
+  source: SourceDataSchema.optional(),
+  effects: z.array(GameEffectDataSchema).optional(),
 }) satisfies z.ZodType<AdeptPowerData>

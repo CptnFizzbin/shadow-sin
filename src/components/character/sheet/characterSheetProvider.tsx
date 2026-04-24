@@ -24,9 +24,12 @@ export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({
 
 type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
-export function useCharacterSheet<TData>(selector: CharacterDataSelector<TData>) {
+export function useCharacterSheet<TData>(
+  selector: CharacterDataSelector<TData>,
+  compare?: (a: TData, b: TData) => boolean,
+) {
   const store = useCharacterSheetContext()
-  return useStore(store, selector)
+  return useStore(store, selector, compare)
 }
 
 export const useCharacterSheetContext = (): CharacterSheetStore => {

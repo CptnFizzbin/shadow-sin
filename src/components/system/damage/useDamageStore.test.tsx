@@ -7,6 +7,7 @@ import { CharacterSheetProvider } from "#/components/character/sheet/characterSh
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -54,7 +55,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
-          id: "00000000-0000-0000-0000-000000000000",
+          id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
@@ -86,7 +87,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
-          id: "00000000-0000-0000-0000-000000000000",
+          id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -118,7 +119,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
-          id: "00000000-0000-0000-0000-000000000000",
+          id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -150,7 +151,7 @@ describe("useDamageStore", () => {
     const sheet = makeSheet((s) => {
       s.qualities = [
         {
-          id: "00000000-0000-0000-0000-000000000000",
+          id: NullUuid,
           name: "Extreme Pain Intolerance",
           type: "negative",
           effects: [

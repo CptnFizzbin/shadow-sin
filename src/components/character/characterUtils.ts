@@ -5,7 +5,6 @@ import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.t
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
-import type { SkillModEffect } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
@@ -70,7 +69,7 @@ export const useActiveSkill = (skill: SkillKey) => {
   const rating = useActiveSkillRating(skill)
   const attribute = useAttr(skillInfo.attr)
 
-  const skillMods = useGameEffects<SkillModEffect>(GameEffectType.skillMod)
+  const skillMods = useGameEffects(GameEffectType.skillMod)
   const totalMod = skillMods
     .filter((e) => e.target === skill)
     .reduce((sum, e) => sum + e.value, 0)
