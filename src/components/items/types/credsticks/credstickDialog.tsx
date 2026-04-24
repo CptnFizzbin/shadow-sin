@@ -31,7 +31,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export type CredstickDialogMode = "add" | "add-certified" | "edit"
 
-export interface CredstickDialogProps {
+interface CredstickDialogProps {
   open: boolean
   mode: CredstickDialogMode
   credstick?: CredstickData

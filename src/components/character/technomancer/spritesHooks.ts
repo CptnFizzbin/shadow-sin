@@ -24,10 +24,6 @@ export const useMaxSpritesRegistered = () => {
   return useAttr(AttributeKey.charisma)
 }
 
-export const useSpriteRating = () => {
-  return useAttr(AttributeKey.resonance)
-}
-
 export const useMaxSpriteTasks = () => {
   return useActiveSkill(SkillKey.compiling)
 }

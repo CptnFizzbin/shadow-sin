@@ -5,7 +5,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
-export interface InitiativeInfo {
+interface InitiativeInfo {
   initiativeScore: number
   initiativePasses: number
 }

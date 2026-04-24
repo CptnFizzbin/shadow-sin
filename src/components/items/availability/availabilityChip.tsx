@@ -5,7 +5,7 @@ import type { FC } from "react"
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import { availabilityToString } from "#/system/availabilityInfo.ts"
 
-export interface AvailabilityChipProps extends Omit<ChipProps, "label"> {
+interface AvailabilityChipProps extends Omit<ChipProps, "label"> {
   availability: AvailabilityInfo
 }
 

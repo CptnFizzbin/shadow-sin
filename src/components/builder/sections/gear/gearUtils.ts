@@ -7,7 +7,7 @@ import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 
-export type ItemCostInfo = {
+type ItemCostInfo = {
   cost?: number
   quantity?: number
 }

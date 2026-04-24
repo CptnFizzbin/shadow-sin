@@ -14,7 +14,7 @@ export function isAnyAtom(obj: unknown): obj is AnyAtom {
 
 export type Recipe<TData> = (prev: TData) => TData
 export type SliceUpdater<TData> = Recipe<TData>
-export type RootUpdater<TRoot, TData> = (prevRoot: TRoot, slice: TData) => TRoot
+type RootUpdater<TRoot, TData> = (prevRoot: TRoot, slice: TData) => TRoot
 
 export function createSliceAtom<TRoot, TData>(
   root: Store<TRoot> | Atom<TRoot>,

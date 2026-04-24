@@ -2,7 +2,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
-export interface LanguageSkillFormOptions {
+interface LanguageSkillFormOptions {
   skill?: LanguageSkillData
   onSubmit: (values: LanguageSkillData) => void
 }

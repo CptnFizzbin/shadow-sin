@@ -19,7 +19,7 @@ import { builderSections } from "#/components/builder/sections/builderSectionId.
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
 
-export interface BpSummaryFooterProps {
+interface BpSummaryFooterProps {
   onExpandedChange?: (expanded: boolean) => void
 }
 

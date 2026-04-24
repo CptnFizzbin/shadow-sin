@@ -13,7 +13,7 @@ export enum BuilderSectionId {
   contacts = "contacts",
 }
 
-export interface BuilderSectionInfo {
+interface BuilderSectionInfo {
   label: string
 }
 

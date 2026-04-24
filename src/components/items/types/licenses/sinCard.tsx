@@ -7,11 +7,11 @@ import type { FC, ReactNode } from "react"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
 
-export interface SinCardSlots {
+interface SinCardSlots {
   trailingContent?: ReactNode
 }
 
-export interface SinCardProps {
+interface SinCardProps {
   sin: SinData
   slots?: SinCardSlots
   onClick?: () => void

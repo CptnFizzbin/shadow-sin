@@ -15,7 +15,7 @@ import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 
-export interface BuyQuantityDialogProps {
+interface BuyQuantityDialogProps {
   open: boolean
   defaultCost: number
   onClose: () => void

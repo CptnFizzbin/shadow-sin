@@ -2,7 +2,7 @@ import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 
-export interface QualitiesBuildPoints extends BpLineItem {
+interface QualitiesBuildPoints extends BpLineItem {
   positive: number
   negative: number
 }

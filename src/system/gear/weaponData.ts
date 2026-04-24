@@ -63,16 +63,6 @@ export interface MeleeWeaponData extends WeaponData {
   meleeType?: MeleeWeaponType
 }
 
-export interface ThrownWeaponData extends WeaponData {
-  weaponType: WeaponType.thrown
-  range: number
-}
-
-export interface ProjectileWeaponData extends WeaponData {
-  weaponType: WeaponType.projectile
-  range: number
-}
-
 export interface FirearmAccessoryData extends ItemData {
   itemType: ItemType.firearmAccessory
   enabled?: boolean
@@ -86,24 +76,4 @@ export function isWeaponData(item: ItemData): item is WeaponData {
 
 export function isFirearmData(item: ItemData): item is FirearmData {
   return isWeaponData(item) && item.weaponType === WeaponType.firearm
-}
-
-export function isMeleeWeaponData(item: ItemData): item is MeleeWeaponData {
-  return isWeaponData(item) && item.weaponType === WeaponType.melee
-}
-
-export function isThrownWeaponData(item: ItemData): item is ThrownWeaponData {
-  return isWeaponData(item) && item.weaponType === WeaponType.thrown
-}
-
-export function isProjectileWeaponData(
-  item: ItemData,
-): item is ProjectileWeaponData {
-  return isWeaponData(item) && item.weaponType === WeaponType.projectile
-}
-
-export function isFirearmAccessoryData(
-  item: ItemData,
-): item is FirearmAccessoryData {
-  return item.itemType === ItemType.firearmAccessory
 }

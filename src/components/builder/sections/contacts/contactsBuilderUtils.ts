@@ -1,7 +1,7 @@
 import type { ContactData } from "#/system/contactData.ts"
 
-export const ContactCostPerConnection = 1
-export const ContactCostPerLoyalty = 1
+const ContactCostPerConnection = 1
+const ContactCostPerLoyalty = 1
 
 export const getContactBpCost = (contact: ContactData): number => {
   return (

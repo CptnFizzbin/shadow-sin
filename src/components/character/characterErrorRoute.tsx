@@ -49,5 +49,3 @@ export const CharacterErrorRoute = () => {
     </Stack>
   )
 }
-
-export default CharacterErrorRoute
