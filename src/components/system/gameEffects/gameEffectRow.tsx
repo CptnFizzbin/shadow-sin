@@ -13,13 +13,13 @@ import { getDefaultTarget, getTargetOptions } from "#/components/system/gameEffe
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
-import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 const CUSTOM_SENTINEL = "__custom__"
 
-function isCustomSpec(skillName: string, specialization: string): boolean {
-  const info = skillList[skillName as SkillKey]
+function isCustomSpec(skillName: SkillKey, specialization: string): boolean {
+  const info = skillList[skillName]
   const fixedSpecs = (info?.specializations ?? []).filter((s): s is string => typeof s === "string")
   return specialization !== "" && !fixedSpecs.includes(specialization)
 }
@@ -33,23 +33,39 @@ interface GameEffectRowProps {
 export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemove }) => {
   const targetOptions = getTargetOptions(effect.type)
 
-  const [customModeActive, setCustomModeActive] = React.useState<boolean>(
-    () =>
-      effect.type === GameEffectType.skillSpecializationMod
-      && !!effect.target
-      && !!effect.subTarget
-      && isCustomSpec(effect.target, effect.subTarget),
-  )
+  const shouldUseCustomMode =
+    effect.type === GameEffectType.skillSpecializationMod
+    && !!effect.target
+    && !!effect.subTarget
+    && Object.values(SkillKey).includes(effect.target as SkillKey)
+    && isCustomSpec(effect.target as SkillKey, effect.subTarget)
+
+  const [customModeActive, setCustomModeActive] = React.useState<boolean>(() => shouldUseCustomMode)
+
+  React.useEffect(() => {
+    setCustomModeActive(shouldUseCustomMode)
+  }, [shouldUseCustomMode])
 
   const selectedSkillName = effect.target as SkillKey
   const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName] : undefined
   const allSpecs = selectedSkillInfo?.specializations ?? []
   const fixedSpecs = allSpecs.filter((s): s is string => typeof s === "string")
   const customEntries = allSpecs.filter(
-    (s): s is { custom: true, placeholder: string } => typeof s === "object" && s !== null,
+    (s): s is { custom: true, placeholder: string } =>
+      typeof s === "object"
+      && s !== null
+      && "custom" in s
+      && s.custom === true
+      && "placeholder" in s
+      && typeof s.placeholder === "string",
   )
   const hasFixed = fixedSpecs.length > 0
   const hasCustom = customEntries.length > 0
+
+  const customPlaceholder = customEntries
+    .map((entry) => entry.placeholder)
+    .filter((p, i, arr) => arr.indexOf(p) === i)
+    .join(" / ")
 
   const dropdownValue = customModeActive ? CUSTOM_SENTINEL : (effect.subTarget ?? "")
   const showCustomTextField = hasCustom && (customModeActive || !hasFixed)
@@ -65,7 +81,8 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
             label="Type"
             onChange={(e) => {
               const newType = e.target.value
-              onChange({ ...effect, type: newType, target: getDefaultTarget(newType) })
+              onChange({ ...effect, type: newType, target: getDefaultTarget(newType), subTarget: undefined })
+              setCustomModeActive(false)
             }}
           >
             {GameEffectTypeOptions.map((option) => (
@@ -138,6 +155,9 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                       }
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      <em>Select specialization...</em>
+                    </MenuItem>
                     {fixedSpecs.map((spec) => (
                       <MenuItem key={spec} value={spec}>
                         {spec}
@@ -152,21 +172,16 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                 </FormControl>
               )}
 
-              {showCustomTextField && customEntries.length > 0 && (
-                <>
-                  {customEntries.map((entry, idx) => (
-                    <MuiTextField
-                      key={`${entry.placeholder}-${idx}`}
-                      label={hasFixed ? "Custom Specialization" : "Specialization"}
-                      placeholder={entry.placeholder}
-                      value={effect.subTarget ?? ""}
-                      onChange={(e) => onChange({ ...effect, subTarget: e.target.value })}
-                      size="small"
-                      fullWidth
-                      autoFocus={customModeActive && hasFixed && idx === 0}
-                    />
-                  ))}
-                </>
+              {showCustomTextField && (
+                <MuiTextField
+                  label={hasFixed ? "Custom Specialization" : "Specialization"}
+                  placeholder={customPlaceholder}
+                  value={effect.subTarget ?? ""}
+                  onChange={(e) => onChange({ ...effect, subTarget: e.target.value })}
+                  size="small"
+                  fullWidth
+                  autoFocus={customModeActive && hasFixed}
+                />
               )}
 
               {!hasFixed && !hasCustom && (
