@@ -8,7 +8,6 @@ import type { ItemCardActionType } from "#/components/items/card/itemCardAction.
 import { ItemCardAction } from "#/components/items/card/itemCardAction.tsx"
 import { ItemCardAddChildButton } from "#/components/items/card/itemCardAddChildButton.tsx"
 import { ItemCardChildren } from "#/components/items/card/itemCardChildren.tsx"
-import { ItemCardContextProvider } from "#/components/items/card/itemCardContext.tsx"
 import type { ItemCardMetaType } from "#/components/items/card/itemCardMeta.tsx"
 import { ItemCardMeta } from "#/components/items/card/itemCardMeta.tsx"
 import { ItemCardTitle } from "#/components/items/card/itemCardTitle.tsx"
@@ -73,106 +72,99 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children }) => {
   const hasMiddleRow = statMetas.length > 0 || sourceMetas.length > 0
 
   return (
-    <ItemCardContextProvider value={{ hasOnClick: !!onClick }}>
+    <Stack
+      direction="column"
+      sx={{
+        padding: 1,
+        borderRadius: 1,
+        border: "1px solid",
+        borderColor: "divider",
+        ...(onClick && {
+          "cursor": "pointer",
+          "&:hover": { bgcolor: "action.hover" },
+        }),
+      }}
+      onClick={handleRootClick}
+    >
+      {/* Title row */}
       <Stack
-        direction="column"
-        sx={{
-          padding: 1,
-          borderRadius: 1,
-          border: "1px solid",
-          borderColor: "divider",
-          ...(onClick && {
-            "cursor": "pointer",
-            "&:hover": { bgcolor: "action.hover" },
-          }),
-        }}
-        onClick={handleRootClick}
+        direction="row"
+        sx={{ alignItems: "center", gap: 1, flexWrap: "wrap" }}
       >
-        {/* Title row */}
+        {titleElement}
+
+        {costMetas.length > 0 && (
+          <Stack
+            direction="row"
+            sx={{ gap: 0.5, alignItems: "center", ml: "auto" }}
+          >
+            {costMetas.map((el, index) => (
+              <Box key={index}>{el.props.children}</Box>
+            ))}
+          </Stack>
+        )}
+
+        {iconActions.length > 0 && (
+          <Stack direction="row" sx={{ gap: 0, alignItems: "center" }}>
+            {iconActions.map((el, index) => (
+              <Box key={index}>{el.props.children}</Box>
+            ))}
+          </Stack>
+        )}
+      </Stack>
+
+      {/* Meta rows */}
+      {hasMiddleRow && (
         <Stack
           direction="row"
-          sx={{ alignItems: "center", gap: 1, flexWrap: "wrap" }}
+          sx={{ gap: 1, flexWrap: "wrap", pt: 0.5, alignItems: "center" }}
         >
-          {titleElement}
+          {statMetas.map((el, index) => (
+            <Box
+              key={index}
+              sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}
+            >
+              {el.props.children}
+            </Box>
+          ))}
 
-          {costMetas.length > 0 && (
+          {sourceMetas.length > 0 && (
             <Stack
               direction="row"
               sx={{ gap: 0.5, alignItems: "center", ml: "auto" }}
             >
-              {costMetas.map((el, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static order
-                <Box key={index}>{el.props.children}</Box>
-              ))}
-            </Stack>
-          )}
-
-          {iconActions.length > 0 && (
-            <Stack direction="row" sx={{ gap: 0, alignItems: "center" }}>
-              {iconActions.map((el, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static order
+              {sourceMetas.map((el, index) => (
                 <Box key={index}>{el.props.children}</Box>
               ))}
             </Stack>
           )}
         </Stack>
+      )}
 
-        {/* Meta rows */}
-        {hasMiddleRow && (
-          <Stack
-            direction="row"
-            sx={{ gap: 1, flexWrap: "wrap", pt: 0.5, alignItems: "center" }}
-          >
-            {statMetas.map((el, index) => (
-              <Box
-                // biome-ignore lint/suspicious/noArrayIndexKey: static order
-                key={index}
-                sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}
-              >
-                {el.props.children}
-              </Box>
-            ))}
+      {/* Button action row */}
+      {buttonActions.length > 0 && (
+        <Stack direction="row" sx={{ gap: 1, pt: 1, flexWrap: "wrap" }}>
+          {buttonActions.map((el, index) => (
+            <Button
+              key={index}
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation()
+                el.props.onClick?.()
+              }}
+              sx={{ flex: 1 }}
+            >
+              {el.props.children}
+            </Button>
+          ))}
+        </Stack>
+      )}
 
-            {sourceMetas.length > 0 && (
-              <Stack
-                direction="row"
-                sx={{ gap: 0.5, alignItems: "center", ml: "auto" }}
-              >
-                {sourceMetas.map((el, index) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: static order
-                  <Box key={index}>{el.props.children}</Box>
-                ))}
-              </Stack>
-            )}
-          </Stack>
-        )}
+      {/* Children area */}
+      {childrenElement}
 
-        {/* Button action row */}
-        {buttonActions.length > 0 && (
-          <Stack direction="row" sx={{ gap: 1, pt: 1, flexWrap: "wrap" }}>
-            {buttonActions.map((el, index) => (
-              <Button
-                // biome-ignore lint/suspicious/noArrayIndexKey: static order
-                key={index}
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  el.props.onClick?.()
-                }}
-                sx={{ flex: 1 }}
-              >
-                {el.props.children}
-              </Button>
-            ))}
-          </Stack>
-        )}
-
-        {/* Children area */}
-        {childrenElement}
-
-        {/* Add child button */}
-        {addChildButtonElement}
-      </Stack>
-    </ItemCardContextProvider>
+      {/* Add child button */}
+      {addChildButtonElement}
+    </Stack>
   )
 }
