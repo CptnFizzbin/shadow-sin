@@ -35,9 +35,13 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="xs"
-      onTransitionExited={() => {
-        form.reset()
-        onClosed()
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            onClosed()
+          },
+        },
       }}
     >
       <DialogTitle>Add Karma</DialogTitle>

@@ -1,6 +1,6 @@
 import type { UUID } from "node:crypto"
 
-import { Box } from "@mui/material"
+import Box from "@mui/material/Box"
 import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"

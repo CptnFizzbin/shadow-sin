@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import Button from "@mui/material/Button"
 import { RiArrowRightBoxLine } from "@remixicon/react"
 import { produce } from "immer"
 import type { FC } from "react"

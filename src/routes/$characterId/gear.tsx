@@ -1,4 +1,4 @@
-import { Divider } from "@mui/material"
+import Divider from "@mui/material/Divider"
 import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"

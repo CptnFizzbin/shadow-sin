@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"

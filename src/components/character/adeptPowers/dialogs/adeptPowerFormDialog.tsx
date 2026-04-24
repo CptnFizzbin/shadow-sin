@@ -1,10 +1,10 @@
-import { Stack } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/character/adeptPowers/form/adeptPowerFormFields.tsx"

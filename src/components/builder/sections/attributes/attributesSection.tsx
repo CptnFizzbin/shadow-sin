@@ -1,4 +1,4 @@
-import { LinearProgress } from "@mui/material"
+import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 

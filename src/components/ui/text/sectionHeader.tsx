@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material"
+import Paper from "@mui/material/Paper"
 import type { TypographyProps } from "@mui/material/Typography"
 import Typography from "@mui/material/Typography"
 import type { FC, PropsWithChildren } from "react"
