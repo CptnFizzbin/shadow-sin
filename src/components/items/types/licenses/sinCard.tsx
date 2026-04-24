@@ -1,9 +1,8 @@
 import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
+import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { RatingChip } from "#/components/ui/ratingChip.tsx"
 import type { SinData } from "#/system/gear/sinData.ts"
 
@@ -27,30 +26,19 @@ export const SinCard: FC<SinCardProps> = ({
   children,
 }) => {
   return (
-    <>
-      <Stack
-        direction="row"
-        onClick={onClick}
-        sx={{
-          alignItems: "center", gap: 1, padding: 1,
-          borderRadius: 1,
-          border: "1px solid",
-          borderColor: "divider",
-          ...(onClick && {
-            "cursor": "pointer",
-            "&:hover": { bgcolor: "action.hover" },
-          }),
-        }}
-      >
-        <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
-          {sin.name}
-        </Typography>
+    <ItemCard onClick={onClick}>
+      <ItemCard.Title>{sin.name}</ItemCard.Title>
 
-        {slots?.trailingContent}
+      {slots?.trailingContent && (
+        <ItemCard.Meta type="cost">{slots.trailingContent}</ItemCard.Meta>
+      )}
 
+      <ItemCard.Meta type="cost">
         <RatingChip rating={sin.rating} />
+      </ItemCard.Meta>
 
-        {onDelete && (
+      {onDelete && (
+        <ItemCard.Action type="icon">
           <IconButton
             size="small"
             color="error"
@@ -61,23 +49,10 @@ export const SinCard: FC<SinCardProps> = ({
           >
             <RiDeleteBin6Line size={16} />
           </IconButton>
-        )}
-      </Stack>
-
-      {children && (
-        <Stack
-          sx={{
-            gap: 1, paddingTop: 1,
-            paddingLeft: 1,
-            paddingBottom: 1,
-            borderLeft: "8px solid",
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
-        >
-          {children}
-        </Stack>
+        </ItemCard.Action>
       )}
-    </>
+
+      {children && <ItemCard.Children>{children}</ItemCard.Children>}
+    </ItemCard>
   )
 }

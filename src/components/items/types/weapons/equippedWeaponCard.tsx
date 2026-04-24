@@ -1,27 +1,11 @@
-import Button from "@mui/material/Button"
-import Chip from "@mui/material/Chip"
-import Paper from "@mui/material/Paper"
-import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { ItemCard } from "#/components/items/card/itemCard.tsx"
+import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { WeaponAttackDialog } from "#/components/items/types/weapons/dialogs/weaponAttackDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData, WeaponType } from "#/system/gear/weaponData.ts"
-
-interface WeaponStatChipProps {
-  label: string
-}
-
-const WeaponStatChip: FC<WeaponStatChipProps> = ({ label }) => (
-  <Chip
-    label={label}
-    size="small"
-    variant="outlined"
-    sx={{ height: 20, fontSize: "0.7rem" }}
-  />
-)
 
 interface EquippedWeaponCardProps {
   weapon: WeaponData
@@ -32,48 +16,49 @@ export const EquippedWeaponCard: FC<EquippedWeaponCardProps> = ({ weapon }) => {
 
   return (
     <>
-      <Paper component={Stack} sx={{ padding: 1, gap: 1 }}>
-        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-          <Typography>{weapon.name}</Typography>
+      <ItemCard>
+        <ItemCard.Title>{weapon.name}</ItemCard.Title>
 
-          <Stack direction="row" sx={{ gap: 0.5, alignItems: "center" }}>
-            {weapon.ap && <WeaponStatChip label={`AP: ${weapon.ap}`} />}
-            {weapon.dmg && <Typography color="secondary">DV: {weapon.dmg}</Typography>}
-          </Stack>
-        </Stack>
+        {weapon.ap && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={`AP: ${weapon.ap}`} />
+          </ItemCard.Meta>
+        )}
 
-        <Stack direction="row" sx={{ gap: 0.5, alignItems: "center" }}>
-          <Typography color="primary" variant="caption">{weapon.skill}</Typography>
-        </Stack>
+        {weapon.dmg && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={`DV: ${weapon.dmg}`} color="secondary" />
+          </ItemCard.Meta>
+        )}
 
-        <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
+        {weapon.skill && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={weapon.skill} color="primary" />
+          </ItemCard.Meta>
+        )}
 
-          {weapon.weaponType === WeaponType.melee && (
-            <WeaponStatChip label="Melee" />
-          )}
+        {weapon.weaponType === WeaponType.melee && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label="Melee" />
+          </ItemCard.Meta>
+        )}
 
-          {isFirearmData(weapon) && (
-            <>
-              <WeaponStatChip label={weapon.firearmType} />
-              {weapon.firemodes.length > 0 && (
-                <WeaponStatChip label={weapon.firemodes.join("/")} />
-              )}
-              <WeaponStatChip
-                label={`Ammo: ${weapon.ammo.remaining}/${weapon.ammo.size}`}
-              />
-            </>
-          )}
-        </Stack>
+        {isFirearmData(weapon) && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={weapon.firearmType} />
+            {weapon.firemodes.length > 0 && (
+              <ItemStatChip label={weapon.firemodes.join("/")} />
+            )}
+            <ItemStatChip
+              label={`Ammo: ${weapon.ammo.remaining}/${weapon.ammo.size}`}
+            />
+          </ItemCard.Meta>
+        )}
 
-        <Button
-          size="small"
-          color="error"
-          onClick={() => setAttackOpen(true)}
-          sx={{ minWidth: 64 }}
-        >
+        <ItemCard.Action type="button" onClick={() => setAttackOpen(true)}>
           Attack
-        </Button>
-      </Paper>
+        </ItemCard.Action>
+      </ItemCard>
 
       <WeaponAttackDialog
         weapon={weapon}

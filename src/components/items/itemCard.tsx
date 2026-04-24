@@ -1,11 +1,11 @@
-import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import { ItemCard as ItemCardComposite } from "#/components/items/card/itemCard.tsx"
+import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { EquippedChip } from "#/components/items/equippedChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -25,48 +25,59 @@ export const ItemCard: FC<ItemCardProps> = ({
   const { availability, source, description } = item
 
   return (
-    <Stack
-      direction="column"
-      sx={{
-        "padding": 1,
-        "borderRadius": 1,
-        "border": "1px solid",
-        "borderColor": "divider",
-        "cursor": "pointer",
-        "&:hover": { bgcolor: "action.hover" },
-      }}
-      onClick={onEdit}
-    >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
-          {item.name}
-        </Typography>
+    <ItemCardComposite onClick={onEdit}>
+      <ItemCardComposite.Title>{item.name}</ItemCardComposite.Title>
 
-        {(item.quantity ?? 1) > 1 && (
-          <Chip
-            label={`×${item.quantity ?? 1}`}
-            size="small"
-            color="primary"
-            variant="outlined"
-            sx={{ height: 20, fontSize: "0.7rem" }}
-          />
-        )}
+      {(item.quantity ?? 1) > 1 && (
+        <ItemCardComposite.Meta type="cost">
+          <ItemStatChip label={`×${item.quantity ?? 1}`} color="primary" />
+        </ItemCardComposite.Meta>
+      )}
 
-        {item.equipped && <EquippedChip />}
+      {item.equipped && (
+        <ItemCardComposite.Meta type="cost">
+          <EquippedChip />
+        </ItemCardComposite.Meta>
+      )}
 
-        {item.rating !== undefined && (
-          <Chip
-            label={`Rating: ${item.rating}`}
-            size="small"
-            variant="outlined"
-            sx={{ height: 20, fontSize: "0.7rem" }}
-          />
-        )}
+      {item.rating !== undefined && (
+        <ItemCardComposite.Meta type="cost">
+          <ItemStatChip label={`Rating: ${item.rating}`} />
+        </ItemCardComposite.Meta>
+      )}
 
-        <Typography>
+      <ItemCardComposite.Meta type="cost">
+        <Typography sx={{ fontSize: "0.875rem" }}>
           <Nuyen amount={item.cost} />
         </Typography>
+      </ItemCardComposite.Meta>
 
+      {availability && (
+        <ItemCardComposite.Meta type="stat">
+          <AvailabilityChip
+            availability={availability}
+            color={
+              availability.rating > GearMaxAvailability ? "warning" : undefined
+            }
+          />
+        </ItemCardComposite.Meta>
+      )}
+
+      {description && (
+        <ItemCardComposite.Meta type="stat">
+          <Typography color="text.secondary" sx={{ alignSelf: "center" }}>
+            {description}
+          </Typography>
+        </ItemCardComposite.Meta>
+      )}
+
+      {source && (
+        <ItemCardComposite.Meta type="source">
+          <ItemStatChip label={`${source.book} p.${source.page}`} />
+        </ItemCardComposite.Meta>
+      )}
+
+      <ItemCardComposite.Action type="icon">
         <IconButton
           size="small"
           color="error"
@@ -77,40 +88,7 @@ export const ItemCard: FC<ItemCardProps> = ({
         >
           <RiDeleteBin6Line size={16} />
         </IconButton>
-      </Stack>
-
-      {(availability || source || description) && (
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
-          {availability && (
-            <AvailabilityChip
-              availability={availability}
-              color={
-                availability.rating > GearMaxAvailability
-                  ? "warning"
-                  : undefined
-              }
-            />
-          )}
-
-          {source && (
-            <Chip
-              label={`${source.book} p.${source.page}`}
-              size="small"
-              variant="outlined"
-              sx={{ height: 20, fontSize: "0.7rem" }}
-            />
-          )}
-
-          {description && (
-            <Typography
-              color="text.secondary"
-              sx={{ flexGrow: 1, alignSelf: "center" }}
-            >
-              {description}
-            </Typography>
-          )}
-        </Stack>
-      )}
-    </Stack>
+      </ItemCardComposite.Action>
+    </ItemCardComposite>
   )
 }
