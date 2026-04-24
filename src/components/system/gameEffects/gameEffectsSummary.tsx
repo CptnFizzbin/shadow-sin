@@ -59,13 +59,14 @@ export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onCha
       </Stack>
 
       {effects.length > 0 && (
-        <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
+        <Stack sx={{ gap: 0.5 }}>
           {effects.map((effect, index) => (
             <Chip
               key={`${effect.type}-${effect.target ?? "none"}-${index}`}
               label={getEffectLabel(effect)}
               size="small"
               variant="outlined"
+              sx={{ "height": "auto", "& .MuiChip-label": { whiteSpace: "normal" } }}
             />
           ))}
         </Stack>
