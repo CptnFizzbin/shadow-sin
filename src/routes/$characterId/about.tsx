@@ -9,6 +9,7 @@ import { useState } from "react"
 import { BiologySection } from "#/components/character/biology/biologySection.tsx"
 import { ExportCharacterButton } from "#/components/character/exportImport/exportCharacterButton.tsx"
 import { ImportCurrentCharacterButton } from "#/components/character/exportImport/importCurrentCharacterButton.tsx"
+import { KarmaSection } from "#/components/character/karma/karmaSection.tsx"
 import { ProfileEditDialog } from "#/components/character/profile/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/character/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/character/qualities/qualitiesViewerSection.tsx"
@@ -64,6 +65,9 @@ function RouteComponent() {
 
       <SectionHeader>Qualities</SectionHeader>
       <QualitiesViewerSection />
+
+      <SectionHeader>Karma</SectionHeader>
+      <KarmaSection />
 
       {profileEditDialog !== null && (
         <ProfileEditDialog
