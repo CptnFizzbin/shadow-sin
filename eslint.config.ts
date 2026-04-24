@@ -1,3 +1,4 @@
+import importAlias from "@dword-design/eslint-plugin-import-alias"
 import js from "@eslint/js"
 import stylistic from "@stylistic/eslint-plugin"
 import { defineConfig } from "eslint/config"
@@ -16,6 +17,7 @@ export default defineConfig([
   js.configs.recommended,
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
+  importAlias.configs.recommended,
   stylistic.configs.customize({
     indent: 2,
     quotes: "double",
@@ -79,6 +81,10 @@ export default defineConfig([
         }],
 
         "no-redeclare": "off", // conflicts with TypeScript's function overloads
+      },
+
+      ...{ // import-alias rules
+        "@dword-design/import-alias/prefer-alias": ["error", { aliasForSubpaths: true }],
       },
 
       ...{ // eslint-plugin-import-x rules

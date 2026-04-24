@@ -1,12 +1,13 @@
-import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
+import { useImplantFormDialog } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
 import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
@@ -15,10 +16,12 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
-interface CyberwareListItemProps {
+interface ImplantItemCardProps extends Omit<ItemCardProps, "children"> {
   implant: ImplantData
-  onEdit: () => void
-  onRemove: () => void
+  onSave?: (value: ImplantData) => void
+  onRemove?: () => void
+  onAddAccessory?: () => void
+  accessories?: ImplantData[]
 }
 
 const gradeLabel: Partial<Record<string, string>> = {
@@ -33,24 +36,32 @@ const typeLabel: Partial<Record<string, string>> = {
   [ImplantType.bioware]: "Bio",
 }
 
-export const CyberwareListItem: FC<CyberwareListItemProps> = ({
+export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   implant,
-  onEdit,
+  onSave,
   onRemove,
+  onAddAccessory,
+  accessories = [],
+  ...props
 }) => {
-  const { availability, source, description } = implant
+  const { availability, source } = implant
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
+  const implantFormDialog = useImplantFormDialog()
+
+  const handleEdit = async () => {
+    if (!onSave) return
+    const saved = await implantFormDialog.open({ implant, parentId: implant.parentId }).result()
+    if (saved) onSave(saved)
+  }
 
   return (
-    <ItemCard onClick={onEdit}>
+    <ItemCard onClick={onSave ? handleEdit : undefined} {...props}>
       <ItemCard.Title>{implant.name}</ItemCard.Title>
 
       <ItemCard.Meta type="cost">
-        <Typography color="text.secondary" sx={{ fontSize: "0.875rem" }}>
-          {effectiveEssence > 0
-            ? `${effectiveEssence.toFixed(2).replace(/\.?0+$/, "")} Ess`
-            : "0 Ess"}
+        <Typography sx={{ fontSize: "0.875rem", color: "text.secondary" }}>
+          {effectiveEssence.toFixed(2)} Ess
         </Typography>
       </ItemCard.Meta>
 
@@ -66,18 +77,18 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
         </ItemCard.Meta>
       )}
 
+      {implant.location && (
+        <ItemCard.Meta type="stat">
+          <ItemStatChip label={implant.location} />
+        </ItemCard.Meta>
+      )}
+
       {implant.grade && implant.grade !== ImplantGrade.standard && (
         <ItemCard.Meta type="stat">
           <ItemStatChip
             label={gradeLabel[implant.grade] ?? implant.grade}
             color="secondary"
           />
-        </ItemCard.Meta>
-      )}
-
-      {implant.location && (
-        <ItemCard.Meta type="stat">
-          <ItemStatChip label={implant.location} />
         </ItemCard.Meta>
       )}
 
@@ -92,32 +103,32 @@ export const CyberwareListItem: FC<CyberwareListItemProps> = ({
         </ItemCard.Meta>
       )}
 
-      {description && (
-        <ItemCard.Meta type="stat">
-          <Typography color="text.secondary" sx={{ alignSelf: "center" }}>
-            {description}
-          </Typography>
-        </ItemCard.Meta>
-      )}
-
       {source && (
         <ItemCard.Meta type="source">
           <ItemStatChip label={`${source.book} p.${source.page}`} />
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon">
-        <IconButton
-          size="small"
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation()
-            onRemove()
-          }}
-        >
-          <RiDeleteBin6Line size={16} />
-        </IconButton>
+      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+        <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
+
+      <ItemCard.Children>
+        {onAddAccessory && (
+          <ItemCard.AddChildButton onClick={onAddAccessory}>
+            Add Accessory
+          </ItemCard.AddChildButton>
+        )}
+
+        {accessories.map((accessory) => (
+          <ImplantItemCard
+            onSave={onSave}
+            key={accessory.id}
+            implant={accessory}
+            variant="borderless"
+          />
+        ))}
+      </ItemCard.Children>
     </ItemCard>
   )
 }

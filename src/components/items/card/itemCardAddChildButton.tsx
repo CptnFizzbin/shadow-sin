@@ -12,14 +12,9 @@ export const ItemCardAddChildButton: FC<ItemCardAddChildButtonProps> = ({
   children,
 }) => (
   <Button
-    variant="text"
     color="secondary"
-    size="small"
     startIcon={<RiAddLine size={14} />}
-    onClick={(e) => {
-      e.stopPropagation()
-      onClick(e)
-    }}
+    onClick={onClick}
     fullWidth
   >
     {children}

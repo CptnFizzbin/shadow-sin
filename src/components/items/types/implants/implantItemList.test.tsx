@@ -8,11 +8,11 @@ import { describe, expect, it } from "vitest"
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { CyberwareList } from "#/components/items/types/implants/cyberwareList.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { theme } from "#/theme.ts"
+import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {
   return {
@@ -49,7 +49,7 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
   )
 }
 
-describe("CyberwareList", () => {
+describe("ImplantItemList", () => {
   it("opens the edit dialog pre-filled with the accessory's data, not the parent's", async () => {
     // Arrange
     const parentId = "aaaaaaaa-0000-0000-0000-000000000001" as ReturnType<typeof crypto.randomUUID>
@@ -66,7 +66,7 @@ describe("CyberwareList", () => {
       parentId,
     })
 
-    render(<CyberwareList />, {
+    render(<ImplantItemList />, {
       wrapper: ({ children }) => (
         <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
           {children}

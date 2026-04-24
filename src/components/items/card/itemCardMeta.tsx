@@ -1,10 +1,10 @@
-import type { FC, ReactNode } from "react"
+import Stack from "@mui/material/Stack"
+import type { FC, PropsWithChildren } from "react"
 
 export type ItemCardMetaType = "cost" | "stat" | "source"
 
-interface ItemCardMetaProps {
+interface ItemCardMetaProps extends PropsWithChildren {
   type: ItemCardMetaType
-  children: ReactNode
 }
 
 /**
@@ -13,10 +13,20 @@ interface ItemCardMetaProps {
  * - "stat"   → rendered bottom-left below title row
  * - "source" → rendered bottom-right below title row
  */
-export const ItemCardMeta: FC<ItemCardMetaProps> = ({ children }) => (
-  // Rendering is handled by ItemCardRoot which reads the type prop via React.Children
-
-  <>{children}</>
-)
+export const ItemCardMeta: FC<ItemCardMetaProps> = ({ type, children }) => {
+  switch (type) {
+    case "cost":
+      return (
+        <Stack
+          direction="row"
+          sx={{ minWidth: 75, justifyContent: "flex-end", textAlign: "right" }}
+        >
+          {children}
+        </Stack>
+      )
+    default:
+      return children
+  }
+}
 
 ItemCardMeta.displayName = "ItemCard.Meta"

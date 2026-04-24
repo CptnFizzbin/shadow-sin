@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useEssenceInfo } from "#/components/character/characterUtils.ts"
-import { CyberwareList } from "#/components/items/types/implants/cyberwareList.tsx"
+import { ImplantItemList } from "#/components/items/types/implants/implantItemList.tsx"
 import { BASE_ESSENCE } from "#/components/items/types/implants/implantUtils.ts"
 
-export const CyberwarePanel: FC = () => {
+export const ImplantsPanel: FC = () => {
   const essenceInfo = useEssenceInfo()
 
   const essenceRemainingDisplay = essenceInfo.essenceRemaining.toFixed(2)
@@ -50,7 +50,7 @@ export const CyberwarePanel: FC = () => {
         </Typography>
       )}
 
-      <CyberwareList />
+      <ImplantItemList />
     </Stack>
   )
 }

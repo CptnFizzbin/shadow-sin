@@ -16,7 +16,6 @@ import {
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
 import { ArmorPanel } from "#/components/builder/sections/gear/armor/armorPanel.tsx"
-import { CyberwarePanel } from "#/components/builder/sections/gear/cyberware/cyberwarePanel.tsx"
 import { DevicesPanel } from "#/components/builder/sections/gear/devices/devicesPanel.tsx"
 import { useGearAvailabilityIssues } from "#/components/builder/sections/gear/gearUtils.ts"
 import { LifestylePanel } from "#/components/builder/sections/gear/lifestyle/lifestylePanel.tsx"
@@ -38,6 +37,7 @@ import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { ImplantsPanel } from "./implants/implantsPanel.tsx"
 
 export const GearSection: FC = () => {
   const totalNuyen = useGearTotalCost()
@@ -148,7 +148,7 @@ const GearSectionContent: FC<{
       />
     )
   }
-  if (section === SectionHeader.Cyberware) return <CyberwarePanel />
+  if (section === SectionHeader.Cyberware) return <ImplantsPanel />
   if (section === SectionHeader.Weapons) return <WeaponsPanel />
   if (section === SectionHeader.Armor) return <ArmorPanel />
   if (section === SectionHeader.Vehicles) return <VehiclesPanel />
