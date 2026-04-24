@@ -47,8 +47,8 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
           onExited: () => {
             form.reset()
             onClosed()
-          }
-        }
+          },
+        },
       }}
       fullWidth
       maxWidth="sm"

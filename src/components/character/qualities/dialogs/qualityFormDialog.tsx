@@ -46,8 +46,8 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
           onExited: () => {
             form.reset()
             onClosed()
-          }
-        }
+          },
+        },
       }}
       fullWidth
       maxWidth="sm"
