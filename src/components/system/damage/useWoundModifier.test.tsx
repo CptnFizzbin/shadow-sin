@@ -6,6 +6,7 @@ import { CharacterSheetProvider } from "#/components/character/sheet/characterSh
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -63,6 +64,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 4
       s.qualities = [
         {
+          id: NullUuid,
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
@@ -87,6 +89,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -112,6 +115,7 @@ describe("useWoundModifier", () => {
       s.damage.stun = 4
       s.qualities = [
         {
+          id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
@@ -191,6 +195,7 @@ describe("useWoundModifier", () => {
       s.damage.physical = 5
       s.qualities = [
         {
+          id: NullUuid,
           name: "High Pain Tolerance",
           type: "positive",
           effects: [

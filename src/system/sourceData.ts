@@ -1,7 +1,14 @@
+import { z } from "zod"
+
 export interface SourceData {
   book: string
   page: number
 }
+
+export const SourceDataSchema = z.object({
+  book: z.string(),
+  page: z.number().int().min(1),
+}) satisfies z.ZodType<SourceData>
 
 export const bookOptions = [
   { value: "SR20A", label: "ShadowRun 20th" },

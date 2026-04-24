@@ -68,7 +68,7 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={handleClosed}
+      slotProps={{ transition: { onExited: handleClosed } }}
     >
       <DialogTitle>
         {isEditMode ? "Edit Knowledge Skill" : "Add Knowledge Skill"}
