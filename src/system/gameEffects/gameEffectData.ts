@@ -5,6 +5,9 @@ import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
+/**
+ * Base interface for all game effects.
+ */
 export interface GameEffectData {
   type: GameEffectType | string
   target?: string
@@ -12,45 +15,73 @@ export interface GameEffectData {
   value: number
 }
 
+/**
+ * Modifier for a specific attribute.
+ */
 export interface AttrModEffect extends GameEffectData {
   type: GameEffectType.attrMod
   target: AttributeKey
 }
 
+/**
+ * Modifier for a specific skill rating.
+ */
 export interface SkillModEffect extends GameEffectData {
   type: GameEffectType.skillMod
   target: SkillKey
 }
 
+/**
+ * Modifier for a skill specialization.
+ */
 export interface SkillSpecializationModEffect extends GameEffectData {
   type: GameEffectType.skillSpecializationMod
   target: SkillKey
   subTarget: string
 }
 
+/**
+ * Flat bonus to initiative score.
+ */
 export interface InitiativeBonusEffect extends GameEffectData {
   type: GameEffectType.initiativeBonus
 }
 
+/**
+ * Flat bonus to recoil reduction.
+ */
 export interface RecoilReductionEffect extends GameEffectData {
   type: GameEffectType.recoilReduction
 }
 
+/**
+ * Generic modifier for a named dice pool.
+ */
 export interface DicePoolModEffect extends GameEffectData {
   type: GameEffectType.dicePoolMod
   target: string
 }
 
+/**
+ * Bonus to initiative passes.
+ */
 export interface ExtraInitiativePassesEffect extends GameEffectData {
   type: GameEffectType.extraInitiativePasses
 }
 
+/**
+ * Modifier for wound penalties (Pain Tolerance).
+ */
 export interface PainToleranceEffect extends GameEffectData {
   type: GameEffectType.painTolerance
   target: DamageTrackKey | "all"
 }
 
+/**
+ * Mapped type for looking up concrete effect interfaces by their type enum.
+ */
 export type EffectByType = {
+
   [GameEffectType.attrMod]: AttrModEffect
   [GameEffectType.skillMod]: SkillModEffect
   [GameEffectType.skillSpecializationMod]: SkillSpecializationModEffect
@@ -109,7 +140,11 @@ const PainToleranceSchema = z.object({
   value: z.number(),
 })
 
+/**
+ * Discriminated union schema for all game effects.
+ */
 export const GameEffectDataSchema = z.discriminatedUnion("type", [
+
   InitiativeBonusSchema,
   RecoilReductionSchema,
   DicePoolModSchema,

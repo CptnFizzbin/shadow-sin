@@ -22,6 +22,9 @@ import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 export const CHARACTER_SHEET_VERSION = 1
 
+/**
+ * Metadata for tracking the version and migration state of a character sheet.
+ */
 export interface CharacterMeta {
   version: number
   /** IDs of all migrations that have already been applied to this character. */
@@ -33,7 +36,11 @@ export const CharacterMetaSchema = z.object({
   appliedMigrations: z.string().array().default([]),
 })
 
+/**
+ * The root structure of a Shadowrun 4e character sheet.
+ */
 export interface CharacterSheet {
+
   id: UUID
   _meta_: CharacterMeta
 
