@@ -56,10 +56,10 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      onTransitionExited={() => {
+      slotProps={{ transition: { onExited: () => {
         appForm.reset()
         onClosed?.()
-      }}
+      } } }}
     >
       <DialogTitle>
         {isEditMode ? "Edit Complex Form" : "Add Complex Form"}

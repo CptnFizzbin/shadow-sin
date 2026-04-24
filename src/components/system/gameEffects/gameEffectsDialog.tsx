@@ -52,7 +52,7 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onTransitionExited={onClosed} fullWidth maxWidth="sm">
+    <Dialog open={open} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
       <DialogTitle>Effects</DialogTitle>
       <DialogContent>
         <Stack sx={{ gap: 2, pt: 1 }}>

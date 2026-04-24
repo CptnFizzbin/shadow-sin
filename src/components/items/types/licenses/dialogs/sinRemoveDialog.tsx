@@ -10,7 +10,7 @@ import type { FC } from "react"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinRemoveDialogProps
-  extends Omit<DialogProps, "onClose" | "onTransitionExited"> {
+  extends Omit<DialogProps, "onClose"> {
   sin: SinData
   onConfirm: () => void
   onClose: () => void
@@ -25,7 +25,7 @@ export const SinRemoveDialog: FC<SinRemoveDialogProps> = ({
   ...props
 }) => {
   return (
-    <Dialog {...props} onTransitionExited={onClosed}>
+    <Dialog {...props} slotProps={{ transition: { onExited: onClosed } }}>
       <DialogTitle>Remove SIN</DialogTitle>
       <DialogContent>
         <Typography>

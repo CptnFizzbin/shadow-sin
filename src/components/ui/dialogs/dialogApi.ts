@@ -13,7 +13,7 @@ import { addRootDialog, removeRootDialog } from "#/components/ui/dialogs/rootDia
  * @example
  * ```tsx
  * const MyDialog: FC<DialogApiDialogProps<boolean>> = ({ open, onClose, onClosed }) => (
- *   <Dialog open={open} onClose={() => onClose(false)} onTransitionExited={onClosed}>
+ *   <Dialog open={open} onClose={() => onClose(false)} slotProps={{ transition: { onExited: onClosed } }}>
  *     …
  *     <Button onClick={() => onClose(true)}>Confirm</Button>
  *   </Dialog>
@@ -32,7 +32,7 @@ export interface DialogApiDialogProps<TReturn = void> {
    */
   onClose: (value?: TReturn) => void
   /**
-   * Call after the close animation has finished (e.g. MUI's `onTransitionExited`).
+   * Call after the close animation has finished (MUI `slotProps.transition.onExited`).
    * Removes the dialog from the root outlet so it unmounts cleanly.
    */
   onClosed: () => void
@@ -60,7 +60,7 @@ export interface DialogApiDialogProps<TReturn = void> {
  * ```tsx
  * // 1. Define the dialog component
  * const ConfirmDialog: FC<DialogApiDialogProps<boolean>> = ({ open, onClose, onClosed }) => (
- *   <Dialog open={open} onClose={() => onClose(false)} onTransitionExited={onClosed}>
+ *   <Dialog open={open} onClose={() => onClose(false)} slotProps={{ transition: { onExited: onClosed } }}>
  *     <DialogTitle>Are you sure?</DialogTitle>
  *     <DialogActions>
  *       <Button onClick={() => onClose(false)}>Cancel</Button>

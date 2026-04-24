@@ -45,10 +45,10 @@ export const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      onTransitionExited={() => {
+      slotProps={{ transition: { onExited: () => {
         form.reset()
         onClosed()
-      }}
+      } } }}
       fullWidth
       maxWidth="sm"
     >

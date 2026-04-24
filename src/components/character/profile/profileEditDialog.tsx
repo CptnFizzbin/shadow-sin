@@ -59,7 +59,7 @@ export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} fullWidth maxWidth="sm" onTransitionExited={onClosed}>
+    <Dialog open={open} fullWidth maxWidth="sm" slotProps={{ transition: { onExited: onClosed } }}>
       <DialogTitle sx={{ padding: 1 }}>Edit Profile</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>

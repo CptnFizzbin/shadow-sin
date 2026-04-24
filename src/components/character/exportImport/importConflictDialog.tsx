@@ -35,7 +35,7 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
     <Dialog
       open={open}
       onClose={() => handleChoice("cancel")}
-      onTransitionExited={onClosed}
+      slotProps={{ transition: { onExited: onClosed } }}
       fullWidth
     >
       <DialogTitle>Character already exists</DialogTitle>

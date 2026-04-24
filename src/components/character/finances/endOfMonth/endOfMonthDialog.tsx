@@ -128,7 +128,7 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
   }
 
   return (
-    <Dialog open={open} onTransitionExited={handleTransitionExited} fullWidth>
+    <Dialog open={open} slotProps={{ transition: { onExited: handleTransitionExited } }} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>End of Month</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <Stack sx={{ gap: 0.5, padding: 1 }}>

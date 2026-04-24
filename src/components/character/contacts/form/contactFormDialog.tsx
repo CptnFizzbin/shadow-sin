@@ -56,7 +56,7 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      onTransitionExited={handleClosed}
+      slotProps={{ transition: { onExited: handleClosed } }}
       fullWidth
     >
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
