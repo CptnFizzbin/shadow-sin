@@ -72,7 +72,7 @@ describe("DialogCtrl", () => {
 /**
  * Minimal dialog component that accepts `DialogApiDialogProps<string>`.
  * Simulates a dialog that animates out: calls `onClosed` via useEffect once
- * `open` becomes false (mirroring MUI's onTransitionExited callback).
+ * `open` becomes false (mirroring MUI's slotProps.transition.onExited callback).
  */
 const FakeStringDialog: FC<DialogApiDialogProps<string>> = ({ open, onClose, onClosed }) => {
   useEffect(() => {

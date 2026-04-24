@@ -68,7 +68,7 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} fullWidth onTransitionExited={handleClosed}>
+    <Dialog open={open} fullWidth slotProps={{ transition: { onExited: handleClosed } }}>
       <DialogTitle>{isEditMode ? "Edit Sprite" : "Add Sprite"}</DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>

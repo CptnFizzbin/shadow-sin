@@ -43,10 +43,10 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      onTransitionExited={() => {
+      slotProps={{ transition: { onExited: () => {
         form.reset()
         onClosed()
-      }}
+      } } }}
       fullWidth
       maxWidth="sm"
     >

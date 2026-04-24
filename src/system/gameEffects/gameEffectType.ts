@@ -4,6 +4,7 @@ export enum GameEffectType {
   dicePoolMod = "dicePoolMod",
   attrMod = "attrMod",
   skillMod = "skillMod",
+  skillSpecializationMod = "skillSpecializationMod",
   extraInitiativePasses = "extraInitiativePasses",
   painTolerance = "painTolerance",
 }

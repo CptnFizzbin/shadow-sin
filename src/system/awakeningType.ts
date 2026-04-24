@@ -18,6 +18,9 @@ export const MagicAwakeningTypes: AwakeningType[] = [
 
 export const TechAwakeningTypes: AwakeningType[] = [AwakeningType.Technomancer]
 
+export const isAwakened = (awakeningType: AwakeningType): boolean =>
+  awakeningType !== AwakeningType.Mundane
+
 export const awakenings: Record<AwakeningType, AwakeningData> = {
   "Mundane": {
     name: AwakeningType.Mundane,

@@ -22,7 +22,7 @@ interface SpellCastDialogProps {
 
 export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
   return (
-    <Dialog open={open} onClose={onClose} onTransitionExited={onClosed} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
       <DialogTitle sx={{ pb: 0 }}>{spell.name}</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
         <Stack sx={{ gap: 1.5 }}>

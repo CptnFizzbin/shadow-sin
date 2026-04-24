@@ -42,7 +42,7 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleCancel}
-      onTransitionExited={onClosed}
+      slotProps={{ transition: { onExited: onClosed } }}
       fullWidth
     >
       <DialogTitle>{title}</DialogTitle>

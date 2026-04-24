@@ -93,7 +93,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
   const title = isEditMode ? "Edit Loan" : "Add Loan"
 
   return (
-    <Dialog open={open} onTransitionExited={handleClosed} fullWidth>
+    <Dialog open={open} slotProps={{ transition: { onExited: handleClosed } }} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
       <DialogContent sx={{ p: 1 }}>
         <Stack sx={{ gap: 2, padding: 1 }}>
