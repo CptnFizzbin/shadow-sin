@@ -10,6 +10,7 @@ interface MigrationDraft {
     version: number
     appliedMigrations: string[]
   }
+  [key: string]: unknown
 }
 
 /**
@@ -33,7 +34,7 @@ export function applyMigrations(character: object): CharacterSheet {
     appliedMigrationIds.add(migration.id)
   }
 
-  migrated = produce(migrated, (draft: any) => {
+  migrated = produce(migrated, (draft) => {
     draft._meta_.version = CHARACTER_SHEET_VERSION
     draft._meta_.appliedMigrations = Array.from(appliedMigrationIds)
 
@@ -49,5 +50,5 @@ export function applyMigrations(character: object): CharacterSheet {
   })
 
   // Using `as` here as migrations are expected to produce a fully valid CharacterSheet, but the type system can't verify that.
-  return migrated as CharacterSheet
+  return migrated as unknown as CharacterSheet
 }

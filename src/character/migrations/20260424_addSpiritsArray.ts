@@ -2,9 +2,9 @@ import { produce } from "immer"
 
 import type { CharacterMigration } from "#/character/characterMigration.ts"
 
-const migration: CharacterMigration = {
+const migration: CharacterMigration<{ spirits?: unknown[] }> = {
   id: "20260424",
-  up: produce((draft: any) => {
+  up: produce((draft) => {
     draft.spirits ??= []
   }),
 }

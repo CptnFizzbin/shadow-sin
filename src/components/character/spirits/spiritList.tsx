@@ -1,14 +1,14 @@
-import { useSelector } from "@tanstack/react-store"
 import Stack from "@mui/material/Stack"
-import { useState } from "react"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
+import { useState } from "react"
 
-import { ItemList } from "#/components/items/card/itemList.tsx"
-import { SpiritItemCard } from "#/components/character/spirits/SpiritItemCard.tsx"
-import { TraditionDisplay } from "#/components/character/spirits/TraditionDisplay.tsx"
-import { useSpiritsStore } from "#/components/character/spirits/useSpiritsStore.ts"
+import { SpiritFormDialog } from "#/components/character/spirits/dialogs/spiritFormDialog.tsx"
+import { SpiritItemCard } from "#/components/character/spirits/spiritItemCard.tsx"
 import { selectAllSpirits } from "#/components/character/spirits/spiritsSelectors.ts"
-import { SpiritFormDialog } from "#/components/character/spirits/dialogs/SpiritFormDialog.tsx"
+import { TraditionDisplay } from "#/components/character/spirits/traditionDisplay.tsx"
+import { useSpiritsStore } from "#/components/character/spirits/useSpiritsStore.ts"
+import { ItemList } from "#/components/items/card/itemList.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 
 export const SpiritList: FC = () => {

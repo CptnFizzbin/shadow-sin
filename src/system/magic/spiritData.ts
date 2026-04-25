@@ -17,16 +17,16 @@ export enum SpiritType {
 
 // Thematic names indexed by [type][force tier]: 1-3, 4-6, 7-9, 10+
 const spiritTierNames: Record<SpiritType, [string, string, string, string]> = {
-  [SpiritType.wind]:     ["Vagrant Breeze",   "Howling Sirocco",    "Tempest Walker",    "Ancient Cyclone"    ],
-  [SpiritType.beast]:    ["Young Prowler",     "Pack Alpha",         "Elder Predator",    "Ancient Hunter"     ],
-  [SpiritType.earth]:    ["Stone Wisp",        "Bedrock Elemental",  "Mountain Elder",    "Ancient Bedrock"    ],
-  [SpiritType.fire]:     ["Ember Sprite",      "Flame Dancer",       "Pyre Elder",        "Inferno Ancient"    ],
-  [SpiritType.guidance]: ["Young Oracle",      "Wandering Guide",    "Elder Sage",        "Eternal Pathfinder" ],
-  [SpiritType.guardian]: ["Young Sentinel",    "Steadfast Warden",   "Elder Aegis",       "Ancient Bastion"    ],
-  [SpiritType.man]:      ["Nascent Shade",     "Restless Specter",   "Elder Wraith",      "Ancient Visage"     ],
-  [SpiritType.plant]:    ["Young Sprig",       "Thicket Walker",     "Root Elder",        "Ancient Grove"      ],
-  [SpiritType.task]:     ["Minor Toiler",      "Dutiful Servant",    "Tireless Worker",   "Bound Ancient"      ],
-  [SpiritType.water]:    ["Fledgling Eddy",    "River Current",      "Tidal Elder",       "Primordial Deep"    ],
+  [SpiritType.wind]: ["Vagrant Breeze", "Howling Sirocco", "Tempest Walker", "Ancient Cyclone"],
+  [SpiritType.beast]: ["Young Prowler", "Pack Alpha", "Elder Predator", "Ancient Hunter"],
+  [SpiritType.earth]: ["Stone Wisp", "Bedrock Elemental", "Mountain Elder", "Ancient Bedrock"],
+  [SpiritType.fire]: ["Ember Sprite", "Flame Dancer", "Pyre Elder", "Inferno Ancient"],
+  [SpiritType.guidance]: ["Young Oracle", "Wandering Guide", "Elder Sage", "Eternal Pathfinder"],
+  [SpiritType.guardian]: ["Young Sentinel", "Steadfast Warden", "Elder Aegis", "Ancient Bastion"],
+  [SpiritType.man]: ["Nascent Shade", "Restless Specter", "Elder Wraith", "Ancient Visage"],
+  [SpiritType.plant]: ["Young Sprig", "Thicket Walker", "Root Elder", "Ancient Grove"],
+  [SpiritType.task]: ["Minor Toiler", "Dutiful Servant", "Tireless Worker", "Bound Ancient"],
+  [SpiritType.water]: ["Fledgling Eddy", "River Current", "Tidal Elder", "Primordial Deep"],
 }
 
 export function generateSpiritName(type: SpiritType, force: number): string {
@@ -136,6 +136,8 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[AttributeKey.agility] = force + 1
       attrs[AttributeKey.reaction] = force + 2
       attrs[AttributeKey.strength] = force - 1
+      break
+    default:
       break
   }
 

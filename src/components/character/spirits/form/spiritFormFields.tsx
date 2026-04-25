@@ -57,12 +57,12 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
               <form.AppField name="bound">
                 {(field) => (
                   <FormControlLabel
-                    control={
+                    control={(
                       <Checkbox
                         checked={field.state.value}
                         onChange={(e) => field.handleChange(e.target.checked)}
                       />
-                    }
+                    )}
                     label="Bound?"
                   />
                 )}
@@ -103,13 +103,13 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
                       {registryInfo.optionalPowers.map((power: string) => (
                         <FormControlLabel
                           key={power}
-                          control={
+                          control={(
                             <Checkbox
                               size="small"
                               checked={field.state.value.includes(power)}
                               disabled={
-                                !field.state.value.includes(power) &&
-                                field.state.value.length >= maxOptionalPowers
+                                !field.state.value.includes(power)
+                                && field.state.value.length >= maxOptionalPowers
                               }
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -119,7 +119,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
                                 }
                               }}
                             />
-                          }
+                          )}
                           label={power}
                         />
                       ))}

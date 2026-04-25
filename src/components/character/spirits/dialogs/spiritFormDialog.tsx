@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { SpiritFormFields } from "#/components/character/spirits/form/SpiritFormFields.tsx"
+import { SpiritFormFields } from "#/components/character/spirits/form/spiritFormFields.tsx"
 import { useSpiritForm } from "#/components/character/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/character/spirits/summoningSection.tsx"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"

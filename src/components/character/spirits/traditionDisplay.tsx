@@ -6,7 +6,8 @@ import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { AttributeLabels } from "#/system/attributeKey.ts"
-import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import type { SpiritType } from "#/system/magic/spiritData.ts"
+import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 
 export const TraditionDisplay: FC = () => {
   const tradition = useCharacterSheet((s) => s.tradition)

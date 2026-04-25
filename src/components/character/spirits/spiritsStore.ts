@@ -1,6 +1,6 @@
-import { produce } from "immer"
-
 import type { UUID } from "node:crypto"
+
+import { produce } from "immer"
 
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
