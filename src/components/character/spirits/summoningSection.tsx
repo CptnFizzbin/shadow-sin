@@ -27,9 +27,10 @@ import { SummoningDicePool } from "./summoningDicePool.tsx"
 interface SummoningSectionProps {
   spiritType: SpiritType
   force: number
+  isBound: boolean
 }
 
-export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force }) => {
+export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force, isBound }) => {
   const magicAttr = useAttr(AttributeKey.magic)
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
@@ -68,7 +69,7 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force 
     >
       <Stack sx={{ gap: 1 }}>
         <Stack sx={{ gap: 0.5 }}>
-          <Label label="Summon / Bind" variant="text" />
+          <Label label={isBound ? "Bind" : "Summon"} variant="text" />
           {isOverforce && (
             <Typography color="error.main">
               Force exceeds Magic — drain is Physical
@@ -78,7 +79,7 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force 
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>
-            <SummoningDicePool spiritType={spiritType} />
+            <SummoningDicePool spiritType={spiritType} isBound={isBound} />
           </Grid>
           <Grid size={1}>
             <DrainResistanceDicePool drainAttribute={drainAttribute} />
