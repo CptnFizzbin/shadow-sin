@@ -8,9 +8,9 @@ import {
   CharacterSheetProvider,
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -29,6 +29,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
 }) => {
   const gearStore = useGearStore()
   const sheetContext = useCharacterSheetContext()
+  const dialogApi = useDialogApi()
 
   const openDialog = (item?: ItemData) => {
     dialogApi.open((injectedProps) => {

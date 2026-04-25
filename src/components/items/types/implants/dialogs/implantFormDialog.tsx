@@ -61,14 +61,16 @@ export const useImplantFormDialog = () => {
   const sheetContext = useCharacterSheetContext()
 
   return {
-    open: (props?: UseImplantFormProps) => dialogApi.open<ImplantData>({
-      render: (dialogProps, ctrl) => {
-        return (
-          <CharacterSheetProvider store={sheetContext}>
-            <ImplantFormDialog {...dialogProps} {...props} onSave={ctrl.close} />
-          </CharacterSheetProvider>
-        )
-      },
-    }),
+    open: (props?: UseImplantFormProps) => dialogApi.open<ImplantData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <ImplantFormDialog
+            {...dialogProps}
+            {...props}
+            onSave={(implant) => dialogProps.onClose(implant)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
   }
 }
