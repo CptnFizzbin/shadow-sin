@@ -1,12 +1,8 @@
-import { test, expect } from "@playwright/test"
+import { expect, test } from "@playwright/test"
 
-/**
- * Artemis is a fixture character seeded into localStorage by the index route
- * loader (`ensureCharacters`). We navigate to `/` first so the loader runs,
- * then go directly to the gear sub-route.
- */
-const ARTEMIS_ID = "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0"
-const GEAR_URL = `/#/${ARTEMIS_ID}/gear`
+import { Artemis } from "#/character/fixtures/artemis.ts"
+
+const GEAR_URL = `/#/${Artemis.id}/gear`
 
 test.describe("Gear page – misc item dialog", () => {
   test.beforeEach(async ({ page }) => {
