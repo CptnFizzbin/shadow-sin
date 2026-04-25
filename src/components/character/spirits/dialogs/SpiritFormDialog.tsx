@@ -3,18 +3,21 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
+import Divider from "@mui/material/Divider"
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SpiritFormFields } from "#/components/character/spirits/form/SpiritFormFields.tsx"
 import { useSpiritForm } from "#/components/character/spirits/form/useSpiritForm.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { dialogApi, type DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
+import { SummoningSection } from "#/components/character/spirits/summoningSection.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
-import type { TraditionData } from "#/system/magic/traditionData.ts"
 
-interface SpiritFormDialogProps extends DialogApiDialogProps<SpiritData> {
+interface SpiritFormDialogProps {
+  open: boolean
   spirit?: SpiritData
-  tradition?: TraditionData
+  onClose: (result?: SpiritData) => void
+  onClosed?: () => void
 }
 
 export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
@@ -22,8 +25,9 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
   onClose,
   onClosed,
   spirit,
-  tradition,
 }) => {
+  const tradition = useCharacterSheet((s) => s.tradition)
+
   const form = useSpiritForm({
     spirit,
     onSubmit: (values) => onClose(values),
@@ -39,11 +43,17 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
     >
       <DialogTitle>{spirit ? "Edit Spirit" : "Summon Spirit"}</DialogTitle>
       <DialogContent>
-        <SpiritFormFields form={form} tradition={tradition} />
+        <Stack sx={{ gap: 2, pt: 1 }}>
+          <SpiritFormFields form={form} tradition={tradition} />
+          <Divider />
+          <form.Subscribe selector={(state) => state.values.force}>
+            {(force) => <SummoningSection force={force} />}
+          </form.Subscribe>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose()}>Cancel</Button>
-        <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+        <form.Subscribe selector={(state): [boolean, boolean] => [state.canSubmit, state.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
             <Button
               disabled={!canSubmit || isSubmitting}
@@ -57,13 +67,4 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
-}
-
-export const useSpiritFormDialog = () => {
-  const tradition = useCharacterSheet((s) => s.tradition)
-
-  return {
-    open: (spirit?: SpiritData) =>
-      dialogApi.open<SpiritData>((props) => <SpiritFormDialog {...props} spirit={spirit} tradition={tradition} />),
-  }
 }

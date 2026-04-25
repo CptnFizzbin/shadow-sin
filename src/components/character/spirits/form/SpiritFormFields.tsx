@@ -17,7 +17,6 @@ interface SpiritFormFieldsProps {
 }
 
 export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition }) => {
-
   return (
     <form.Subscribe selector={(state): [SpiritType, number] => [state.values.spiritType, state.values.force]}>
       {([spiritType, force]) => {
@@ -35,18 +34,13 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
             }))
 
         return (
-          <Stack sx={{ pt: 1, gap: 2 }}>
+          <Stack sx={{ gap: 2 }}>
             <form.AppField name="name">
               {(field) => <field.TextField label="Name" placeholder="e.g. Guardian of the Sacred Grove" />}
             </form.AppField>
 
             <form.AppField name="spiritType">
-              {(field) => (
-                <field.SelectField
-                  label="Spirit Type"
-                  options={spiritOptions}
-                />
-              )}
+              {(field) => <field.SelectField label="Spirit Type" options={spiritOptions} />}
             </form.AppField>
 
             <Stack direction="row" sx={{ gap: 2 }}>
@@ -121,9 +115,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
                                 if (e.target.checked) {
                                   field.handleChange([...field.state.value, power])
                                 } else {
-                                  field.handleChange(
-                                    field.state.value.filter((p: string) => p !== power),
-                                  )
+                                  field.handleChange(field.state.value.filter((p: string) => p !== power))
                                 }
                               }}
                             />
@@ -138,9 +130,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
             )}
 
             <form.AppField name="notes">
-              {(field) => (
-                <field.TextField label="Notes" multiline rows={3} />
-              )}
+              {(field) => <field.TextField label="Notes" multiline rows={3} />}
             </form.AppField>
           </Stack>
         )
