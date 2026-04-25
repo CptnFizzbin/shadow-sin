@@ -5,12 +5,14 @@ import type { FC, PropsWithChildren, ReactElement } from "react"
 import { useMemo } from "react"
 import { afterEach } from "vitest"
 
-import { theme } from "#/theme.ts"
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { theme } from "#/theme.ts"
 
 export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
@@ -18,9 +20,12 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 
 const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
   const store = useMemo(() => new CharacterSheetStore(createDefaultCharacterSheet()), [])
+  const dialogApi = useMemo(() => new DialogApi(), [])
   return (
     <ThemeProvider theme={theme}>
-      <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      <DialogApiProvider dialogApi={dialogApi}>
+        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      </DialogApiProvider>
     </ThemeProvider>
   )
 }
@@ -34,11 +39,14 @@ const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
       }),
     [],
   )
+  const dialogApi = useMemo(() => new DialogApi(), [])
   return (
     <ThemeProvider theme={theme}>
-      <CharacterBuilderStoreProvider rootStore={rootStore}>
-        {children}
-      </CharacterBuilderStoreProvider>
+      <DialogApiProvider dialogApi={dialogApi}>
+        <CharacterBuilderStoreProvider rootStore={rootStore}>
+          {children}
+        </CharacterBuilderStoreProvider>
+      </DialogApiProvider>
     </ThemeProvider>
   )
 }

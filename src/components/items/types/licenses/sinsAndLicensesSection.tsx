@@ -3,12 +3,12 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { LicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { SinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
 import { LicenseCard } from "#/components/items/types/licenses/licenseCard.tsx"
 import { SinCard } from "#/components/items/types/licenses/sinCard.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -30,7 +30,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   slots,
 }) => {
   const [dialogState, setDialogState] = useState<DialogState | null>(null)
-  const confirmDialog = useConfirmDialog({ id: "remove-sin-confirm" })
+  const confirmDialog = useConfirmDialog()
   const gearStore = useGearStore()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)

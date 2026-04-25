@@ -109,9 +109,11 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
-        <RiDeleteBin6Line size={16} />
-      </ItemCard.Action>
+      {onRemove && (
+        <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+          <RiDeleteBin6Line size={16} />
+        </ItemCard.Action>
+      )}
 
       <ItemCard.Children>
         {onAddAccessory && (

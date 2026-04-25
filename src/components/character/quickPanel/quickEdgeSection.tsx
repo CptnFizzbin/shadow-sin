@@ -7,11 +7,11 @@ import type { FC } from "react"
 
 import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 
 export const QuickEdgeSection: FC = () => {
-  const confirmDialog = useConfirmDialog({ id: "edge-confirm-burn" })
+  const confirmDialog = useConfirmDialog()
   const edgeStore = useEdgeStore()
 
   const max = useStore(edgeStore, selectEdgeMax)

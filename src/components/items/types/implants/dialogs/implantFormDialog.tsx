@@ -6,12 +6,12 @@ import {
   CharacterSheetProvider,
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
 import { implantFieldMap, useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
-import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
@@ -57,6 +57,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
 export type UseImplantFormProps = Omit<CyberwareFormDialogProps, "onSave">
 
 export const useImplantFormDialog = () => {
+  const dialogApi = useDialogApi()
   const sheetContext = useCharacterSheetContext()
 
   return {

@@ -26,10 +26,10 @@
     "eslint:fix": "yarn eslint:lint --fix",
     "tsc": "tsc --noEmit",
     "tsc:lint": "yarn tsc",
-    "tsc:fix": "yarn tsc:lint"
+    "tsc:fix": "yarn tsc:lint",
+    "knip": "knip"
   },
   "dependencies": {
-    "@dword-design/eslint-plugin-import-alias": "^8.1.8",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.0",
@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
+    "@dword-design/eslint-plugin-import-alias": "^8.1.8",
     "@eslint/js": "^9.39.4",
     "@playwright/test": "1.59.1",
     "@rolldown/plugin-babel": "^0.2.2",
@@ -71,7 +72,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/babel__core": "^7",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "@types/pluralize": "^0.0.33",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -87,10 +88,10 @@
     "globals": "^17.4.0",
     "happy-dom": "^20.8.9",
     "jiti": "^2.6.1",
-    "knip": "^6.6.2",
+    "knip": "^6.6.3",
     "npm-run-all": "^4.1.5",
     "rolldown": "^1.0.0-rc.13",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.58.0",
     "vite": "^8.0.5",
     "vitest": "^4.1.2"

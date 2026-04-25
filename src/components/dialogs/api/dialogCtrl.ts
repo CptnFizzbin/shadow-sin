@@ -1,13 +1,18 @@
 import { createStore } from "@tanstack/store"
 
+type DialogCtrlState = { open: boolean }
+
 /**
- * Handle returned by `dialogApi.open()`. Allows the caller to programmatically
+ * Handle returned by `api.open()`. Allows the caller to programmatically
  * close the dialog and await its return value.
  */
 export class DialogCtrl<TReturn> {
-  /** Reactive store tracking whether the dialog is currently open. */
-  readonly isOpenStore = createStore<boolean>(true)
+  static readonly selectors = {
+    selectIsOpen: (state: DialogCtrlState) => state.open,
+  }
 
+  /** Reactive store tracking whether the dialog is currently open. */
+  public readonly store = createStore<DialogCtrlState>({ open: true })
   private readonly promise: Promise<TReturn | undefined>
   private readonly resolvePromise: (value: TReturn | undefined) => void
 
@@ -25,7 +30,7 @@ export class DialogCtrl<TReturn> {
    */
   close(value?: TReturn): void {
     this.resolvePromise(value)
-    this.isOpenStore.setState(() => false)
+    this.store.setState(() => ({ open: false }))
   }
 
   /** Resolves when the dialog is closed (either by the user or by `close()`). */
@@ -33,3 +38,6 @@ export class DialogCtrl<TReturn> {
     return this.promise
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyDialogCtrl = DialogCtrl<any>
