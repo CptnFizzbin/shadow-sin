@@ -49,7 +49,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
   }
 
   return (
-    <Stack direction="column" sx={{ gap: 0 }}>
+    <Stack direction="column" sx={{ gap: 0 }} data-testid="diagnostic-item-card-root">
       <Box
         onClick={handleRootClick}
         sx={{

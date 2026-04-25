@@ -22,7 +22,7 @@ export const ImplantItemList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack sx={{ gap: 1 }} data-testid="diagnostic-implant-list">
       <Button
         variant="outlined"
         size="small"
