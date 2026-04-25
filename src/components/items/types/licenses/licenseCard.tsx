@@ -35,7 +35,14 @@ export const LicenseCard: FC<LicenseCardProps> = ({
       </ItemCard.Meta>
 
       {onDelete && (
-        <ItemCard.Action type="icon" color="error" onClick={onDelete}>
+        <ItemCard.Action
+          type="icon"
+          color="error"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete()
+          }}
+        >
           <RiDeleteBin6Line size={16} />
         </ItemCard.Action>
       )}

@@ -22,7 +22,7 @@ export const ImplantItemList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }} data-testid="diagnostic-implant-list">
+    <Stack sx={{ gap: 1 }}>
       <Button
         variant="outlined"
         size="small"
@@ -41,8 +41,6 @@ export const ImplantItemList: FC = () => {
           <ImplantItemCard
             key={implant.id}
             implant={implant}
-            onSave={(saved) => gearApi.save(saved)}
-            onRemove={() => gearApi.remove(implant)}
             onAddAccessory={() => handleAddImplant({ parentId: implant.id })}
             accessories={accessories}
           />

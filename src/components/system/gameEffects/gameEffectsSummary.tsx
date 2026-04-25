@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography"
 import { RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { GameEffectsDialog } from "#/components/system/gameEffects/gameEffectsDialog.tsx"
-import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
 
@@ -31,11 +31,13 @@ interface GameEffectsSummaryProps {
 }
 
 export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onChange }) => {
+  const dialogApi = useDialogApi()
+
   const handleOpenDialog = async () => {
     const result = await dialogApi
-      .open<GameEffectData[]>((props) => (
-        <GameEffectsDialog {...props} initialEffects={effects} />
-      ))
+      .open<GameEffectData[]>(
+        (props) => <GameEffectsDialog {...props} initialEffects={effects} />,
+      )
       .result()
 
     if (result) {

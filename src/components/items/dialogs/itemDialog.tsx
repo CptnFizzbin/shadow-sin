@@ -30,8 +30,6 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
-export type { ItemDialogOptionConfig }
-
 export interface ItemDialogProps {
   form: AnyItemForm
   title: ReactNode

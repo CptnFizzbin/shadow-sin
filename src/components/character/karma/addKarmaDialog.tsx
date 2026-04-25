@@ -7,15 +7,15 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
+import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-export interface AddKarmaDialogProps extends DialogApiDialogProps<void> {
+export interface AddKarmaDialogProps extends DialogApiDialogProps {
   onSubmit: (amount: number) => void
 }
 
 export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
-  open,
+  open = true,
   onClose,
   onClosed,
   onSubmit,

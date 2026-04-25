@@ -7,7 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-export interface ConfirmDialogProps {
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+
+interface ConfirmDialogProps {
   title?: ReactNode
   body: ReactNode
   confirmLabel?: string
@@ -69,4 +71,23 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export const useConfirmDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    confirm: async (props: Omit<ConfirmDialogProps, "onCancel" | "onConfirm" | "onClosed">): Promise<boolean> => {
+      return await dialogApi.open<boolean>((dialogProps) => {
+        return (
+          <ConfirmDialog
+            {...props}
+            {...dialogProps}
+            onCancel={() => dialogProps.onClose(false)}
+            onConfirm={() => dialogProps.onClose(true)}
+          />
+        )
+      }).result() ?? false
+    },
+  }
 }

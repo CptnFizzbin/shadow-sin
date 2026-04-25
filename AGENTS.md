@@ -173,20 +173,3 @@ Take the screenshot after the dev server is running (`yarn dev`) and the change 
 smallest region that clearly shows the new state. Attach the image as part of your response or PR description so
 reviewers can quickly verify the visual result without running the app locally. Do not include screenshots in the git
 commit
-
-### Starting the dev server for screenshots
-
-The dev server is a long-running process. Start it with **`mode="async"`** in the bash tool so it stays alive while
-you continue working:
-
-```
-// Step 1 — start the server in the background (async, detached)
-bash: command="yarn dev", mode="async", detach=true, initial_wait=15
-
-// Step 2 — navigate the Playwright browser to the local URL
-playwright-browser_navigate: url="http://localhost:3000/"
-
-// Step 3 — take a screenshot or snapshot as needed
-```
-
-Do **not** use `mode="sync"` for `yarn dev` — the command never exits, so a sync call will block until it times out.

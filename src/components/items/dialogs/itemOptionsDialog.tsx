@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 
 interface ItemOptionsDialogProps {
   open: boolean
@@ -25,7 +25,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   onChange,
 }) => {
   const [pendingUnfix, setPendingUnfix] = useState(false)
-  const confirmDialog = useConfirmDialog({ id: "item-unfix-confirm" })
+  const confirmDialog = useConfirmDialog()
 
   const set = (patch: Record<string, boolean>) => onChange({ ...options, ...patch })
 
