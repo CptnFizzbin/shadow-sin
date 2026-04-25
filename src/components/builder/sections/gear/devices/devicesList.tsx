@@ -4,51 +4,34 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { DeviceItemCard } from "#/components/items/types/devices/deviceItemCard.tsx"
-import { DeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
-import { ProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
+import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
+import { useProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
-import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-
-type DeviceDialogState = null | { device?: DeviceData, open: boolean }
-
-type ProgramDialogState = null | { program?: ProgramData, parentId?: UUID, open: boolean }
 
 export const DevicesList: FC = () => {
   const gearStore = useGearStore()
   const devices = useGearByType<DeviceData>(ItemType.device)
   const programs = useGearByType<ProgramData>(ItemType.program)
+  const deviceFormDialog = useDeviceFormDialog()
+  const programFormDialog = useProgramFormDialog()
 
   const rootDevices = devices.filter((device) => !device.parentId)
   const getProgramsForDevice = (deviceId: string) =>
     programs.filter((program) => program.parentId === deviceId)
 
-  const [deviceDialog, setDeviceDialog] = useState<DeviceDialogState>(null)
-  const [programDialog, setProgramDialog] = useState<ProgramDialogState>(null)
-
-  const closeDeviceDialog = () =>
-    setDeviceDialog((prev) => prev && { ...prev, open: false })
-
-  const closeProgramDialog = () =>
-    setProgramDialog((prev) => prev && { ...prev, open: false })
-
-  const handleSaveDevice = (device: ItemData) => {
-    gearStore.save(device)
-    closeDeviceDialog()
+  const handleEditDevice = async (device?: DeviceData) => {
+    const saved = await deviceFormDialog.open({ device }).result()
+    if (saved) gearStore.save(saved)
   }
 
-  const handleSaveProgram = (program: ItemData) => {
-    gearStore.save(program)
-    closeProgramDialog()
-  }
-
-  const handleRemoveDevice = (device: ItemData) => {
-    gearStore.remove(device, { removeChildren: true })
+  const handleEditProgram = async (program?: ProgramData, parentId?: UUID) => {
+    const saved = await programFormDialog.open({ program, parentId }).result()
+    if (saved) gearStore.save(saved)
   }
 
   return (
@@ -61,10 +44,10 @@ export const DevicesList: FC = () => {
             key={device.id}
             device={device}
             programs={devicePrograms}
-            onEdit={() => setDeviceDialog({ device, open: true })}
-            onRemove={() => handleRemoveDevice(device)}
-            onAddProgram={() => setProgramDialog({ parentId: device.id, open: true })}
-            onEditProgram={(program) => setProgramDialog({ program, open: true })}
+            onEdit={() => handleEditDevice(device)}
+            onRemove={() => gearStore.remove(device, { removeChildren: true })}
+            onAddProgram={() => handleEditProgram(undefined, device.id as UUID)}
+            onEditProgram={(program) => handleEditProgram(program)}
             onRemoveProgram={(program) => gearStore.remove(program)}
           />
         )
@@ -74,33 +57,12 @@ export const DevicesList: FC = () => {
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDeviceDialog({ open: true })}
+        onClick={() => handleEditDevice()}
         color="secondary"
         fullWidth
       >
         Add Device
       </Button>
-
-      {deviceDialog !== null && (
-        <DeviceFormDialog
-          open={deviceDialog.open}
-          device={deviceDialog.device}
-          onSave={handleSaveDevice}
-          onClose={closeDeviceDialog}
-          onClosed={() => setDeviceDialog(null)}
-        />
-      )}
-
-      {programDialog !== null && (
-        <ProgramFormDialog
-          open={programDialog.open}
-          program={programDialog.program}
-          parentId={programDialog.parentId}
-          onSave={handleSaveProgram}
-          onClose={closeProgramDialog}
-          onClosed={() => setProgramDialog(null)}
-        />
-      )}
     </Stack>
   )
 }
