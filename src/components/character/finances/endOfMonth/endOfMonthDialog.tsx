@@ -15,7 +15,6 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { selectLoans } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
-import type { NuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
@@ -39,12 +38,12 @@ interface EndOfMonthLineItem {
 
 interface Props {
   open: boolean
-  nuyenStore: NuyenStore
   onClose: () => void
   onClosed?: () => void
 }
 
-export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose, onClosed }) => {
+export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
+  const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
 
   const loans = useStore(nuyenStore, selectLoans)
@@ -206,7 +205,6 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose, onClose
 export const useEndOfMonthDialog = () => {
   const dialogApi = useDialogApi()
   const sheetContext = useCharacterSheetContext()
-  const nuyenStore = useNuyenStore()
 
   return {
     open: () => dialogApi.open<void>(
@@ -214,7 +212,6 @@ export const useEndOfMonthDialog = () => {
         <CharacterSheetProvider store={sheetContext}>
           <EndOfMonthDialog
             {...dialogProps}
-            nuyenStore={nuyenStore}
             onClose={() => dialogProps.onClose()}
           />
         </CharacterSheetProvider>
