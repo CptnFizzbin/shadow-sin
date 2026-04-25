@@ -2,28 +2,29 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
 import { implantFieldMap, useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
+import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
-  open: boolean
   implant?: ImplantData
   parentId?: UUID
-  onClose: () => void
-  onClosed?: () => void
   onSave: (implant: ImplantData) => void
 }
 
-export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
-  open,
+export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogProps, "form" | "title">> = ({
   implant,
   parentId,
-  onClose,
-  onClosed,
   onSave,
+  ...dialogProps
 }) => {
   const title = implant ? "Edit Implant" : "Add Implant"
 
@@ -35,11 +36,9 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
 
   return (
     <ItemDialog
+      {...dialogProps}
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
       getCost={(values) => getImplantEffectiveNuyenCost(values as ImplantData)}
       options={{
         equipable: { forced: true, enabled: false },
@@ -53,4 +52,22 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps> = ({
       }}
     />
   )
+}
+
+export type UseImplantFormProps = Omit<CyberwareFormDialogProps, "onSave">
+
+export const useImplantFormDialog = () => {
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseImplantFormProps) => {
+      const dialog = dialogApi.open<ImplantData>((dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <ImplantFormDialog {...dialogProps} {...props} onSave={dialog.close} />
+        </CharacterSheetProvider>
+      ))
+
+      return dialog
+    },
+  }
 }

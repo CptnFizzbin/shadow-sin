@@ -5,7 +5,7 @@ import { GearSection } from "#/components/character/gearPage/gearSectionTypes.ts
 import { GenericSectionContent } from "#/components/character/gearPage/genericSectionContent.tsx"
 import { LicensesSectionContent } from "#/components/character/gearPage/licensesSectionContent.tsx"
 import { WeaponsSectionContent } from "#/components/character/gearPage/weaponsSectionContent.tsx"
-import { CyberwareList } from "#/components/items/types/implants/cyberwareList.tsx"
+import { ImplantItemList } from "#/components/items/types/implants/implantItemList.tsx"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -24,7 +24,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
 }) => {
   switch (section) {
     case GearSection.Cyberware:
-      return <CyberwareList />
+      return <ImplantItemList />
     case GearSection.Weapons:
       return <WeaponsSectionContent items={rootItems} getChildren={getChildItems} />
     case GearSection.Licenses: {

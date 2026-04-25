@@ -1,11 +1,10 @@
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { ItemCard } from "#/components/items/itemCard.tsx"
+import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
 import { ArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
@@ -37,13 +36,12 @@ export const ArmorList: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {armorItems.map((armor) => (
-        <Box key={armor.id}>
-          <ItemCard
-            item={armor}
-            onEdit={() => setDialogState({ mode: "edit", armor, open: true })}
-            onRemove={() => gearApi.remove(armor)}
-          />
-        </Box>
+        <ArmorItemCard
+          key={armor.id}
+          armor={armor}
+          onEdit={() => setDialogState({ mode: "edit", armor, open: true })}
+          onRemove={() => gearApi.remove(armor)}
+        />
       ))}
 
       <Button
