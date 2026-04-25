@@ -1,4 +1,6 @@
-import { ButtonGroup, Divider, InputAdornment } from "@mui/material"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import Divider from "@mui/material/Divider"
+import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"

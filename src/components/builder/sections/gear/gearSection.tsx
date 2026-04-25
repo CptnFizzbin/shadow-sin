@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material"
 import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
@@ -41,7 +40,6 @@ import { isSinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 export const GearSection: FC = () => {
-  const theme = useTheme()
   const totalNuyen = useGearTotalCost()
   const buildPoints = useGearBuildPoints()
   const { invalidSections } = useGearAvailabilityIssues()
@@ -110,7 +108,7 @@ export const GearSection: FC = () => {
                 {invalidSections.has(sectionName) && (
                   <RiErrorWarningLine
                     size={16}
-                    style={{ color: theme.palette.warning.main }}
+                    style={{ color: "var(--mui-palette-warning-main)" }}
                   />
                 )}
               </Stack>

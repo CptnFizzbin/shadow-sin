@@ -1,4 +1,5 @@
-import { Container, Divider } from "@mui/material"
+import Container from "@mui/material/Container"
+import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"

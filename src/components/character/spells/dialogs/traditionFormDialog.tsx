@@ -1,10 +1,11 @@
-import { InputAdornment, Paper } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
+import InputAdornment from "@mui/material/InputAdornment"
+import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
@@ -12,10 +13,7 @@ import { useTraditionForm } from "#/components/character/spells/form/useTraditio
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
-import {
-  drainAttributeSelectOptions,
-  spiritTypeSelectOptions,
-} from "#/system/magic/traditionData.ts"
+import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
 
 interface TraditionFormDialogProps {
   open: boolean
@@ -43,10 +41,14 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{ transition: { onExited: () => {
-        form.reset()
-        onClosed()
-      } } }}
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            onClosed()
+          },
+        },
+      }}
       fullWidth
       maxWidth="sm"
     >

@@ -1,5 +1,5 @@
-import { Divider } from "@mui/material"
 import Button from "@mui/material/Button"
+import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"

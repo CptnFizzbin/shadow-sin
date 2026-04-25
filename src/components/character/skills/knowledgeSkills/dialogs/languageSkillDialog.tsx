@@ -40,10 +40,14 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
       open={open}
       fullWidth
       maxWidth="sm"
-      slotProps={{ transition: { onExited: () => {
-        form.reset()
-        onClosed()
-      } } }}
+      slotProps={{
+        transition: {
+          onExited: () => {
+            form.reset()
+            onClosed()
+          },
+        },
+      }}
     >
       <DialogTitle>
         {isEditMode ? "Edit Language Skill" : "Add Language Skill"}
