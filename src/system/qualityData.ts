@@ -7,7 +7,11 @@ import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
+/**
+ * Represents a quality (positive or negative) that a character can possess.
+ */
 export interface QualityData {
+
   id: UUID
   name: string
   type: "positive" | "negative"
@@ -19,7 +23,11 @@ export interface QualityData {
   incompatibleWith?: string[]
 }
 
+/**
+ * Zod schema for validating QualityData.
+ */
 export const QualityDataSchema = z.object({
+
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string().min(1, "Name is required"),
   type: z.enum(["positive", "negative"]),

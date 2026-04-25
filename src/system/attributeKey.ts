@@ -1,3 +1,6 @@
+/**
+ * Keys for all attributes in Shadowrun 4e.
+ */
 export enum AttributeKey {
   body = "body",
   agility = "agility",
@@ -13,7 +16,11 @@ export enum AttributeKey {
   resonance = "resonance",
 }
 
+/**
+ * Short display labels for each attribute.
+ */
 export const AttributeLabels: Record<AttributeKey, string> = {
+
   body: "BOD",
   agility: "AGI",
   reaction: "REA",
@@ -43,6 +50,9 @@ export const AttributeOrder: AttributeKey[] = [
   AttributeKey.resonance,
 ]
 
+/**
+ * List of physical attributes.
+ */
 export const PhysicalAttributes: AttributeKey[] = [
   AttributeKey.body,
   AttributeKey.agility,
@@ -50,6 +60,9 @@ export const PhysicalAttributes: AttributeKey[] = [
   AttributeKey.strength,
 ] as const
 
+/**
+ * List of mental attributes.
+ */
 export const MentalAttributes: AttributeKey[] = [
   AttributeKey.charisma,
   AttributeKey.intuition,
@@ -57,6 +70,9 @@ export const MentalAttributes: AttributeKey[] = [
   AttributeKey.willpower,
 ] as const
 
+/**
+ * List of special attributes.
+ */
 export const SpecialAttributes: AttributeKey[] = [
   AttributeKey.magic,
   AttributeKey.resonance,

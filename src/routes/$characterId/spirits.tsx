@@ -1,8 +1,8 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { SpiritList } from "#/components/character/spirits/spiritList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 
 export const Route = createFileRoute("/$characterId/spirits")({
   component: RouteComponent,
@@ -13,7 +13,7 @@ function RouteComponent() {
     <Stack sx={{ gap: 1 }}>
       <SectionHeader>Spirits</SectionHeader>
 
-      <UnderConstruction />
+      <SpiritList />
     </Stack>
   )
 }
