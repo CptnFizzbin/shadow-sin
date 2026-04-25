@@ -21,13 +21,15 @@ import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import type { SpiritType } from "#/system/magic/spiritData.ts"
 import { SummoningDicePool } from "./summoningDicePool.tsx"
 
 interface SummoningSectionProps {
+  spiritType: SpiritType
   force: number
 }
 
-export const SummoningSection: FC<SummoningSectionProps> = ({ force }) => {
+export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force }) => {
   const magicAttr = useAttr(AttributeKey.magic)
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
@@ -76,7 +78,7 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ force }) => {
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>
-            <SummoningDicePool />
+            <SummoningDicePool spiritType={spiritType} />
           </Grid>
           <Grid size={1}>
             <DrainResistanceDicePool drainAttribute={drainAttribute} />

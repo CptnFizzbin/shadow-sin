@@ -12,6 +12,7 @@ import { SpiritFormFields } from "#/components/character/spirits/form/SpiritForm
 import { useSpiritForm } from "#/components/character/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/character/spirits/summoningSection.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
+import type { SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {
   open: boolean
@@ -46,8 +47,8 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
         <Stack sx={{ gap: 2, pt: 1 }}>
           <SpiritFormFields form={form} tradition={tradition} />
           <Divider />
-          <form.Subscribe selector={(state) => state.values.force}>
-            {(force) => <SummoningSection force={force} />}
+          <form.Subscribe selector={(state): [SpiritType, number] => [state.values.spiritType, state.values.force]}>
+            {([spiritType, force]) => <SummoningSection spiritType={spiritType} force={force} />}
           </form.Subscribe>
         </Stack>
       </DialogContent>
