@@ -42,5 +42,5 @@ export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
   const { defaultable } = skillList[skillKey]
   const isDefaulted = skillRating === 0 && (defaultable ?? true)
   if (!isDefaulted) return null
-  return { name: "Defaulting", size: -1, color: "warning.main" }
+  return { id: `${skillKey}-defaulting`, name: "Defaulting", size: -1, color: "warning.main" }
 }
