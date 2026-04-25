@@ -1,16 +1,15 @@
 import { screen, render, waitFor, cleanup } from "@testing-library/react"
-import type { FC, ReactElement } from "react"
-import { createElement, useEffect } from "react"
+import type { FC } from "react"
+import { useEffect } from "react"
 import { afterEach, describe, expect, it } from "vitest"
 
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
-import { DialogApi } from "#/components/ui/dialogs/dialogApi.ts"
-import { DialogCtrl } from "#/components/ui/dialogs/dialogCtrl.ts"
-import { clearRootDialogs, RootDialogOutlet } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 
 afterEach(() => {
   cleanup()
-  clearRootDialogs()
 })
 
 // ---------------------------------------------------------------------------
@@ -109,10 +108,9 @@ describe("DialogCtrl", () => {
 
 /**
  * Props for test dialog components. Extends `DialogApiDialogProps` and adds
- * an optional `onSubmit` callback for returning a typed value via the factory
- * overload.
+ * an optional `onSubmit` callback for returning a typed value.
  */
-interface FakeDialogProps extends DialogApiDialogProps {
+interface FakeDialogProps<TReturn = void> extends DialogApiDialogProps<TReturn> {
   onSubmit?: (value: string) => void
 }
 
@@ -121,7 +119,7 @@ interface FakeDialogProps extends DialogApiDialogProps {
  * `useEffect` once `open` becomes false (mirrors MUI's
  * `slotProps.transition.onExited`).
  */
-const FakeStringDialog: FC<FakeDialogProps> = ({ open = true, onClose, onClosed, onSubmit }) => {
+const FakeStringDialog: FC<FakeDialogProps<string>> = ({ open = true, onClose, onClosed, onSubmit }) => {
   useEffect(() => {
     if (!open) {
       onClosed()
@@ -155,12 +153,11 @@ const FakeSecondDialog: FC<FakeDialogProps> = ({ open = true, onClosed }) => {
   return <div role="dialog" aria-label="second-dialog" />
 }
 
-function renderWithOutlet(element: ReactElement) {
+function renderWithProvider(api: DialogApi) {
   return render(
-    <>
-      {element}
-      <RootDialogOutlet />
-    </>,
+    <DialogApiProvider dialogApi={api}>
+      <></>
+    </DialogApiProvider>,
   )
 }
 
@@ -169,13 +166,13 @@ describe.sequential("DialogApi", () => {
   // Component overload — result is always void
   // -------------------------------------------------------------------------
   describe("open with FC (component overload)", () => {
-    it("mounts the dialog into RootDialogOutlet when open() is called", async () => {
+    it("mounts the dialog into the provider when open() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
 
       // Act
-      api.open(FakeStringDialog)
+      dialogApi.open(FakeStringDialog)
 
       // Assert
       await waitFor(() => {
@@ -185,9 +182,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with undefined when onClose() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       // Act — wait for the dialog to appear, then click Submit (calls onClose())
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
@@ -199,9 +196,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with undefined when ctrl.close() is called programmatically", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       // Act
       ctrl.close()
@@ -210,11 +207,11 @@ describe.sequential("DialogApi", () => {
       await expect(ctrl.result()).resolves.toBeUndefined()
     })
 
-    it("dialog is removed from the outlet after onClosed fires", async () => {
+    it("dialog is removed from the provider after onClosed fires", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       await waitFor(() => {
         expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -231,18 +228,18 @@ describe.sequential("DialogApi", () => {
   })
 
   // -------------------------------------------------------------------------
-  // Factory overload — { render: (props, ctrl) => ReactElement } — typed result via save()
+  // Render function overload — typed result via onClose(value)
   // -------------------------------------------------------------------------
-  describe("open with factory (factory overload)", () => {
-    it("mounts the dialog into RootDialogOutlet when open() is called", async () => {
+  describe("open with render function", () => {
+    it("mounts the dialog into the provider when open() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
 
       // Act
-      api.open<string>({ render: (props, ctrl) => (
-        <FakeStringDialog {...props} onSubmit={(value) => ctrl.save(value)} />
-      ) })
+      dialogApi.open<string>((props) => (
+        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      ))
 
       // Assert
       await waitFor(() => {
@@ -250,16 +247,16 @@ describe.sequential("DialogApi", () => {
       })
     })
 
-    it("result() resolves with the saved value when ctrl.save() + onClose() are called", async () => {
+    it("result() resolves with the value passed to onClose()", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
-        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ) })
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
+        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      ))
 
       // Act — wait for the dialog to appear, then click Submit
-      // Submit calls onSubmit("submitted") → ctrl.save("submitted"), then onClose() → ctrl.close()
+      // Submit calls onSubmit("submitted") → props.onClose("submitted") → ctrl resolves
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
       screen.getByRole("button", { name: "Submit" }).click()
 
@@ -269,26 +266,26 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with the value passed directly to ctrl.close()", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
-        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ) })
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
+        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      ))
 
-      // Act — programmatic close with a value (shorthand for save + close)
+      // Act — programmatic close with a value
       ctrl.close("programmatic")
 
       // Assert
       await expect(ctrl.result()).resolves.toBe("programmatic")
     })
 
-    it("dialog is removed from the outlet after onClosed fires", async () => {
+    it("dialog is removed from the provider after onClosed fires", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
-        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ) })
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
+        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      ))
 
       await waitFor(() => {
         expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -305,11 +302,11 @@ describe.sequential("DialogApi", () => {
 
     it("calling onClose() after ctrl.close() is already called is a safe no-op", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
-        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ) })
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
+        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      ))
 
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
       ctrl.save("saved-value")
@@ -325,68 +322,16 @@ describe.sequential("DialogApi", () => {
   })
 
   // -------------------------------------------------------------------------
-  // Raw element overload
-  // -------------------------------------------------------------------------
-  describe("open with ReactElement", () => {
-    it("mounts the element into RootDialogOutlet", async () => {
-      // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
-
-      // Act
-      api.open(element)
-
-      // Assert
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "raw-dialog" })).toBeDefined()
-      })
-    })
-
-    it("result() resolves with void when ctrl.close() is called", async () => {
-      // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
-      const ctrl = api.open(element)
-
-      // Act
-      ctrl.close()
-
-      // Assert
-      await expect(ctrl.result()).resolves.toBeUndefined()
-    })
-
-    it("removes the element from the outlet after ctrl.close()", async () => {
-      // Arrange
-      const api = new DialogApi()
-      renderWithOutlet(<></>)
-      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
-      const ctrl = api.open(element)
-
-      await waitFor(() => expect(screen.getByRole("dialog", { name: "raw-dialog" })).toBeDefined())
-
-      // Act
-      ctrl.close()
-
-      // Assert
-      await waitFor(() => {
-        expect(screen.queryByRole("dialog", { name: "raw-dialog" })).toBeNull()
-      })
-    })
-  })
-
-  // -------------------------------------------------------------------------
   // Multi-dialog tests
   // -------------------------------------------------------------------------
   it("multiple dialogs can be open simultaneously", async () => {
     // Arrange
-    const api = new DialogApi()
-    renderWithOutlet(<></>)
+    const dialogApi = new DialogApi()
+    renderWithProvider(dialogApi)
 
     // Act
-    api.open(FakeStringDialog)
-    api.open(FakeSecondDialog)
+    dialogApi.open(FakeStringDialog)
+    dialogApi.open(FakeSecondDialog)
 
     // Assert
     await waitFor(() => {
@@ -397,10 +342,10 @@ describe.sequential("DialogApi", () => {
 
   it("closing one dialog does not affect another", async () => {
     // Arrange
-    const api = new DialogApi()
-    renderWithOutlet(<></>)
-    const ctrl1 = api.open(FakeStringDialog)
-    api.open(FakeSecondDialog)
+    const dialogApi = new DialogApi()
+    renderWithProvider(dialogApi)
+    const ctrl1 = dialogApi.open(FakeStringDialog)
+    dialogApi.open(FakeSecondDialog)
 
     await waitFor(() => {
       expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()

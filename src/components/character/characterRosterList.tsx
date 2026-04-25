@@ -14,7 +14,7 @@ import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import { downloadTextFile } from "#/components/character/exportImport/exportUtils.ts"
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
@@ -29,7 +29,7 @@ export default function CharacterRosterList({
 }: CharacterRosterListProps) {
   const navigate = useNavigate()
   const router = useRouter()
-  const confirmDialog = useConfirmDialog({ id: "character-roster-delete" })
+  const confirmDialog = useConfirmDialog()
 
   const sortedCharacters = Object.values(characters).sort((a, b) =>
     a.profile.alias.localeCompare(b.profile.alias),

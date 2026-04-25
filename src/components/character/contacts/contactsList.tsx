@@ -8,7 +8,7 @@ import { useState } from "react"
 import { ContactRow } from "#/components/character/contacts/contactsListItem.tsx"
 import { ContactFormDialog } from "#/components/character/contacts/form/contactFormDialog.tsx"
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
 
 interface DialogState {
@@ -25,7 +25,7 @@ export const ContactsList: FC<ContactsListProps> = ({
   contacts,
   emptyState,
 }) => {
-  const confirmDialog = useConfirmDialog({ id: "remove-contact-confirm" })
+  const confirmDialog = useConfirmDialog()
   const contactsStore = useContactsStore()
   const [dialogState, setDialogState] = useState<DialogState | null>(null)
 

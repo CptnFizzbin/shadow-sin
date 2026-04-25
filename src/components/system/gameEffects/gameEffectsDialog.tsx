@@ -10,27 +10,22 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
+import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
 import { GameEffectRow } from "#/components/system/gameEffects/gameEffectRow.tsx"
 import { getDefaultTarget } from "#/components/system/gameEffects/gameEffectUtils.ts"
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
-export type GameEffectsDialogProps = DialogApiDialogProps & {
-  /** Injected at runtime by the DialogApi wrapper; declare here to enable MUI Dialog animation. */
-  open?: boolean
+export type GameEffectsDialogProps = DialogApiDialogProps<GameEffectData[]> & {
   initialEffects: GameEffectData[]
-  /** Called with the edited effects list when the user clicks Save. */
-  onSave?: (effects: GameEffectData[]) => void
 }
 
 export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
-  open = true,
+  open,
   onClose,
   onClosed,
   initialEffects,
-  onSave,
 }) => {
   const [effects, setEffects] = useState<GameEffectData[]>(initialEffects)
 
@@ -92,10 +87,7 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
         <Button onClick={() => onClose()}>Cancel</Button>
         <Button
           variant="contained"
-          onClick={() => {
-            onSave?.(effects)
-            onClose()
-          }}
+          onClick={() => onClose(effects)}
         >
           Save
         </Button>
