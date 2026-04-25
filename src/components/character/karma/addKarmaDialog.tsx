@@ -8,6 +8,7 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export interface AddKarmaDialogProps extends DialogApiDialogProps {
@@ -75,4 +76,23 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+interface UseAddKarmaDialogProps {
+  onSubmit: (amount: number) => void
+}
+
+export const useAddKarmaDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseAddKarmaDialogProps) => dialogApi.open(
+      (dialogProps) => (
+        <AddKarmaDialog
+          {...dialogProps}
+          onSubmit={props.onSubmit}
+        />
+      ),
+    ),
+  }
 }

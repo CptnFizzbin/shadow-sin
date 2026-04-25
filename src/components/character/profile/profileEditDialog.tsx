@@ -12,9 +12,11 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import {
+  CharacterSheetProvider,
   useCharacterSheet,
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 
 interface ProfileEditDialogProps {
   open: boolean
@@ -166,4 +168,23 @@ export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export const useProfileEditDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetStore = useCharacterSheetContext()
+
+  return {
+    open: () => dialogApi.open<void>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetStore}>
+          <ProfileEditDialog
+            open={dialogProps.open}
+            onClose={() => dialogProps.onClose()}
+            onClosed={dialogProps.onClosed}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }

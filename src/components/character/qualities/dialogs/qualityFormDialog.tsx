@@ -9,6 +9,7 @@ import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/character/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/character/qualities/form/useQualityForm.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
@@ -82,4 +83,32 @@ export const QualityFormDialog: FC<QualityFormDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+interface UseQualityFormDialogProps {
+  quality?: QualityData
+  onSave: (quality: QualityData) => void
+  onDelete?: () => void
+}
+
+export const useQualityFormDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseQualityFormDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <QualityFormDialog
+          open={dialogProps.open}
+          quality={props.quality}
+          onSave={(quality) => {
+            props.onSave(quality)
+            dialogProps.onClose()
+          }}
+          onDelete={props.onDelete}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

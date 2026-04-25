@@ -10,6 +10,11 @@ import { useId } from "react"
 import { ContactFormFields } from "#/components/character/contacts/form/contactFormFields.tsx"
 import { contactFieldMap, useContactForm } from "#/components/character/contacts/form/useContactForm.tsx"
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
@@ -92,4 +97,30 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+interface UseContactFormDialogProps {
+  contact?: ContactData
+  onSaved?: (contact: ContactData) => void
+}
+
+export const useContactFormDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetStore = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseContactFormDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetStore}>
+          <ContactFormDialog
+            open={dialogProps.open}
+            contact={props?.contact}
+            onSaved={props?.onSaved}
+            onClose={() => dialogProps.onClose()}
+            onClosed={dialogProps.onClosed}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }
