@@ -5,7 +5,6 @@ import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 
 export { SpiritType, SpiritTypeLabels }
 
-
 export const spiritTypeSelectOptions = Object.values(SpiritType).map((spiritType) => ({
   value: spiritType,
   label: SpiritTypeLabels[spiritType],
