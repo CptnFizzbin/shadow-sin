@@ -10,6 +10,7 @@ export class DialogCtrl<TReturn> {
 
   private readonly promise: Promise<TReturn | undefined>
   private readonly resolvePromise: (value: TReturn | undefined) => void
+  private savedValue: TReturn | undefined = undefined
 
   constructor() {
     const { promise, resolve } = Promise.withResolvers<TReturn | undefined>()
@@ -18,13 +19,34 @@ export class DialogCtrl<TReturn> {
   }
 
   /**
-   * Close the dialog with an optional return value. Resolves the promise returned
-   * by `result()` and sets `isOpenStore` to `false` so the dialog animates out.
+   * Save a return value to be resolved when the dialog closes. Call this before
+   * `onClose()` to provide a result without closing the dialog immediately.
    *
-   * For `DialogCtrl<void>`, this can be called as `close()` with no arguments.
+   * Typical usage in a factory dialog:
+   * ```tsx
+   * dialogApi.open({ render: (props, ctrl) => (
+   *   <MyDialog {...props} onSave={(value) => ctrl.save(value)} />
+   * ) })
+   * ```
+   */
+  save(value: TReturn): void {
+    this.savedValue = value
+  }
+
+  /**
+   * Close the dialog. Resolves the promise returned by `result()` with the value
+   * previously set via `save()`, or with the optional `value` argument (shorthand
+   * for `save(value); close()`). Sets `isOpenStore` to `false` so the dialog
+   * animates out.
+   *
+   * Safe to call multiple times — the promise resolves only once and subsequent
+   * calls are no-ops.
    */
   close(value?: TReturn): void {
-    this.resolvePromise(value)
+    if (value !== undefined) {
+      this.savedValue = value
+    }
+    this.resolvePromise(this.savedValue)
     this.isOpenStore.setState(() => false)
   }
 

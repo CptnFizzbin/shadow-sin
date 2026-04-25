@@ -1,39 +1,69 @@
 import type { FC, ReactElement } from "react"
-import { createElement } from "react"
+import { createElement, isValidElement } from "react"
 
+import type { AnyDialogRenderFn } from "#/components/ui/dialogs/dialogApiWrapper.tsx"
 import { DialogApiWrapper } from "#/components/ui/dialogs/dialogApiWrapper.tsx"
 import { DialogCtrl } from "#/components/ui/dialogs/dialogCtrl.ts"
 import { addRootDialog, removeRootDialog } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
 
 /**
- * Props injected by `DialogApi` into every dialog opened with a component type.
- * Your dialog component must accept (and use) all three props so that the API
- * can drive the open/close lifecycle and clean up after the transition.
+ * Props injected by `DialogApi` into every dialog opened via `open()`.
+ *
+ * The `open` boolean used internally by the wrapper to drive MUI's close
+ * animation is deliberately omitted from this public interface. The wrapper
+ * always passes it at runtime, so dialogs that need it (e.g. to forward to a
+ * MUI `<Dialog open={…}>`) can declare `open?: boolean` in their own props
+ * type alongside `extends DialogApiDialogProps`.
  *
  * @example
  * ```tsx
- * const MyDialog: FC<DialogApiDialogProps<boolean>> = ({ open, onClose, onClosed }) => (
- *   <Dialog open={open} onClose={() => onClose(false)} slotProps={{ transition: { onExited: onClosed } }}>
- *     …
- *     <Button onClick={() => onClose(true)}>Confirm</Button>
+ * // Simple dialog — no return value
+ * const AlertDialog: FC<DialogApiDialogProps> = ({ onClose, onClosed }) => {
+ *   const [open, setOpen] = useState(true)
+ *   return (
+ *     <Dialog open={open} onClose={() => { setOpen(false); onClose() }}
+ *       slotProps={{ transition: { onExited: onClosed } }}>
+ *       …
+ *     </Dialog>
+ *   )
+ * }
+ * await dialogApi.open(AlertDialog).result()
+ *
+ * // Dialog with a typed return value via the factory overload
+ * interface SaveDialogProps extends DialogApiDialogProps {
+ *   open?: boolean
+ *   onSave?: (data: MyData) => void
+ * }
+ * const SaveDialog: FC<SaveDialogProps> = ({ open, onClose, onClosed, onSave }) => (
+ *   <Dialog open={open ?? true} onClose={onClose}
+ *     slotProps={{ transition: { onExited: onClosed } }}>
+ *     <Button onClick={() => { onSave?.(data); onClose() }}>Save</Button>
  *   </Dialog>
  * )
  *
- * const ctrl = dialogApi.open<boolean>(MyDialog)
- * const confirmed = await ctrl.result()
+ * const result = await dialogApi
+ *   .open<MyData>({ render: (props, ctrl) => (
+ *     <SaveDialog {...props} onSave={(value) => ctrl.save(value)} />
+ *   ) })
+ *   .result()
  * ```
  */
-export interface DialogApiDialogProps<TReturn = void> {
-  /** Whether the dialog is currently open. Driven by `DialogCtrl.isOpenStore`. */
+export interface DialogApiDialogProps {
   open: boolean
+
   /**
-   * Call when the dialog should close. Resolves the promise returned by
-   * `ctrl.result()` with the provided value and triggers the close animation.
+   * Call when the dialog should close without a return value. Resolves the
+   * promise returned by `ctrl.result()` with `undefined` (or with whatever
+   * was previously saved via `ctrl.save()`) and triggers the close animation.
+   *
+   * Safe to call after `ctrl.close()` has already been called — subsequent
+   * calls are no-ops.
    */
-  onClose: (value?: TReturn) => void
+  onClose: () => void
   /**
-   * Call after the close animation has finished (MUI `slotProps.transition.onExited`).
-   * Removes the dialog from the root outlet so it unmounts cleanly.
+   * Call after the close animation has finished (e.g. MUI
+   * `slotProps.transition.onExited`). Removes the dialog from the root outlet
+   * so it unmounts cleanly.
    */
   onClosed: () => void
 }
@@ -51,44 +81,50 @@ export interface DialogApiDialogProps<TReturn = void> {
  *
  * ---
  *
- * ### Basic usage — component overload (recommended)
+ * ### Factory overload — dialog with a typed return value (recommended)
  *
- * Define your dialog as a React component that accepts
- * {@link DialogApiDialogProps} and pass the component *type* (not an element)
- * to `open`. The API injects `open`, `onClose`, and `onClosed` automatically.
+ * Pass a render function that receives `dialogProps` **and** a `DialogCtrl`.
+ * Call `ctrl.save(value)` before `onClose()` to surface a typed result.
  *
  * ```tsx
- * // 1. Define the dialog component
- * const ConfirmDialog: FC<DialogApiDialogProps<boolean>> = ({ open, onClose, onClosed }) => (
- *   <Dialog open={open} onClose={() => onClose(false)} slotProps={{ transition: { onExited: onClosed } }}>
- *     <DialogTitle>Are you sure?</DialogTitle>
- *     <DialogActions>
- *       <Button onClick={() => onClose(false)}>Cancel</Button>
- *       <Button onClick={() => onClose(true)}>Confirm</Button>
- *     </DialogActions>
+ * interface RenameDialogProps extends DialogApiDialogProps {
+ *   open?: boolean          // injected at runtime; declare here if needed
+ *   onSave?: (name: string) => void
+ * }
+ *
+ * const RenameDialog: FC<RenameDialogProps> = ({ open, onClose, onClosed, onSave }) => (
+ *   <Dialog open={open ?? true} onClose={onClose}
+ *     slotProps={{ transition: { onExited: onClosed } }}>
+ *     …
+ *     <Button onClick={() => { onSave?.(name); onClose() }}>Save</Button>
  *   </Dialog>
  * )
  *
- * // 2. Open it from any event handler or async function — no JSX required
- * async function handleDelete() {
- *   const confirmed = await dialogApi.open<boolean>(ConfirmDialog).result()
- *   if (confirmed) deleteItem()
- * }
+ * const newName = await dialogApi
+ *   .open<string>({ render: (props, ctrl) => (
+ *     <RenameDialog {...props} initialName={item.name}
+ *       onSave={(value) => ctrl.save(value)} />
+ *   ) })
+ *   .result()
  * ```
  *
- * ### Passing data into a dialog
+ * ### Component overload — simple dialog, result is always `undefined`
  *
- * Wrap your component in a closure (or a factory function) to forward extra
- * props before handing it to `open`:
+ * Pass a component type directly when you do not need a return value. The API
+ * injects `onClose` and `onClosed`; `open` is also passed at runtime so MUI
+ * dialogs animate correctly.
  *
  * ```tsx
- * const RenameDialog: FC<DialogApiDialogProps<string> & { initialName: string }> = (
- *   { open, onClose, onClosed, initialName },
- * ) => { … }
+ * const AlertDialog: FC<DialogApiDialogProps & { open?: boolean }> = (
+ *   { open, onClose, onClosed },
+ * ) => (
+ *   <Dialog open={open ?? true} onClose={onClose}
+ *     slotProps={{ transition: { onExited: onClosed } }}>
+ *     …
+ *   </Dialog>
+ * )
  *
- * const newName = await dialogApi
- *   .open<string>((props) => <RenameDialog {...props} initialName={item.name} />)
- *   .result()
+ * await dialogApi.open(AlertDialog).result()
  * ```
  *
  * ### Programmatic close
@@ -119,16 +155,31 @@ export interface DialogApiDialogProps<TReturn = void> {
  */
 export class DialogApi {
   /**
-   * Mount a dialog component in the root outlet and return a `DialogCtrl` to
-   * drive it. The component receives `open`, `onClose`, and `onClosed` as props.
+   * Mount a dialog using a factory render function that receives both
+   * `dialogProps` and a `DialogCtrl`. Call `ctrl.save(value)` to record a
+   * return value before `onClose()` triggers the close animation.
    *
-   * @param dialogFc - A React component that accepts {@link DialogApiDialogProps}.
-   *   Pass the component *type*, not a JSX element. To forward extra props, wrap
-   *   it in an arrow function: `(props) => <MyDialog {...props} extra={value} />`.
-   * @returns A {@link DialogCtrl} whose `result()` promise resolves with the
-   *   value passed to `onClose` (or `undefined` if closed without a value).
+   * @param factory - `{ render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement }`.
+   *   `render` is called during each render of the internal wrapper component.
+   *   Do **not** call React hooks directly inside `render` — put hooks inside
+   *   the dialog component it returns.
+   * @returns A {@link DialogCtrl} whose `result()` resolves with the value
+   *   passed to `ctrl.save()`, or `undefined` if the dialog was closed without
+   *   saving.
    */
-  open<TReturn>(dialogFc: FC<DialogApiDialogProps<TReturn>>): DialogCtrl<TReturn>
+  open<TReturn>(
+    factory: { render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement },
+  ): DialogCtrl<TReturn>
+
+  /**
+   * Mount a dialog component in the root outlet. The component receives
+   * `onClose` and `onClosed` as props; `open` is also passed at runtime.
+   *
+   * @param component - A React component that accepts {@link DialogApiDialogProps}.
+   * @returns A {@link DialogCtrl}<TReturn> whose `result()` resolves with
+   *   `undefined` when the dialog closes.
+   */
+  open<TReturn = void>(component: FC<DialogApiDialogProps>): DialogCtrl<TReturn>
 
   /**
    * Mount a pre-constructed dialog element in the root outlet. Call
@@ -139,27 +190,34 @@ export class DialogApi {
    * a proper open/close transition.
    *
    * @param element - A fully constructed `ReactElement` to mount in the outlet.
-   * @returns A {@link DialogCtrl}<void> whose `result()` resolves when
+   * @returns A {@link DialogCtrl}<TReturn> whose `result()` resolves when
    *   `ctrl.close()` is called.
    */
-  open(element: ReactElement): DialogCtrl<void>
+  open<TReturn = void>(element: ReactElement): DialogCtrl<TReturn>
 
   open<TReturn>(
-    dialog: FC<DialogApiDialogProps<TReturn>> | ReactElement,
-  ): DialogCtrl<TReturn> | DialogCtrl<void> {
+    dialog:
+      | { render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement }
+      | FC<DialogApiDialogProps>
+      | ReactElement,
+  ): DialogCtrl<TReturn> {
     const dialogId = crypto.randomUUID()
+    const ctrl = new DialogCtrl<TReturn>()
 
-    if (typeof dialog === "function") {
-      const ctrl = new DialogCtrl<TReturn>()
-      const onClosed = () => removeRootDialog(dialogId)
-      const element = createElement(DialogApiWrapper, { ctrl, dialogFc: dialog, onClosed })
-      addRootDialog(dialogId, element)
+    if (isValidElement(dialog)) {
+      ctrl.result().then(() => removeRootDialog(dialogId))
+      addRootDialog(dialogId, dialog)
       return ctrl
     }
 
-    const ctrl = new DialogCtrl<void>()
-    ctrl.result().then(() => removeRootDialog(dialogId))
-    addRootDialog(dialogId, dialog)
+    const onClosed = () => removeRootDialog(dialogId)
+
+    const renderFn: AnyDialogRenderFn =
+      "render" in dialog
+        ? dialog.render
+        : (props) => createElement(dialog, props)
+
+    addRootDialog(dialogId, createElement(DialogApiWrapper, { ctrl, renderFn, onClosed }))
     return ctrl
   }
 }
@@ -171,8 +229,15 @@ export class DialogApi {
  * ```ts
  * import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
  *
- * // Open a typed dialog and await the result
- * const confirmed = await dialogApi.open<boolean>(ConfirmDialog).result()
+ * // Factory pattern — typed result via ctrl.save()
+ * const result = await dialogApi
+ *   .open<string>({ render: (props, ctrl) => (
+ *     <MyDialog {...props} onSave={(value) => ctrl.save(value)} />
+ *   ) })
+ *   .result()
+ *
+ * // Component pattern — no return value
+ * await dialogApi.open(AlertDialog).result()
  *
  * // Open and close programmatically
  * const ctrl = dialogApi.open<void>(LoadingDialog)

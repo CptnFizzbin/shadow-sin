@@ -17,7 +17,7 @@ export const KarmaSection: FC = () => {
   const totalKarma = useStore(karmaStore, selectTotalKarma)
 
   const handleOpenAddKarma = () => {
-    dialogApi.open<void>((props) => (
+    dialogApi.open((props) => (
       <AddKarmaDialog {...props} onSubmit={(amount) => karmaStore.addKarma(amount)} />
     ))
   }

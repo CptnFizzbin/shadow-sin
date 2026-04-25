@@ -10,12 +10,12 @@ import { z } from "zod"
 import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-export interface AddKarmaDialogProps extends DialogApiDialogProps<void> {
+export interface AddKarmaDialogProps extends DialogApiDialogProps {
   onSubmit: (amount: number) => void
 }
 
 export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
-  open,
+  open = true,
   onClose,
   onClosed,
   onSubmit,
