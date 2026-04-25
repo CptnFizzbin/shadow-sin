@@ -12,6 +12,7 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { theme } from "#/theme.ts"
+import { RootDialogOutlet } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
 import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {
@@ -44,6 +45,7 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
     <ThemeProvider theme={theme}>
       <CharacterBuilderStoreProvider rootStore={rootStore}>
         {children}
+        <RootDialogOutlet />
       </CharacterBuilderStoreProvider>
     </ThemeProvider>
   )
