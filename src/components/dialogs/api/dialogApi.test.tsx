@@ -168,11 +168,11 @@ describe.sequential("DialogApi", () => {
   describe("open with FC (component overload)", () => {
     it("mounts the dialog into the provider when open() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
 
       // Act
-      api.open(FakeStringDialog)
+      dialogApi.open(FakeStringDialog)
 
       // Assert
       await waitFor(() => {
@@ -182,9 +182,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with undefined when onClose() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       // Act — wait for the dialog to appear, then click Submit (calls onClose())
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
@@ -196,9 +196,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with undefined when ctrl.close() is called programmatically", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       // Act
       ctrl.close()
@@ -209,9 +209,9 @@ describe.sequential("DialogApi", () => {
 
     it("dialog is removed from the provider after onClosed fires", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open(FakeStringDialog)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open(FakeStringDialog)
 
       await waitFor(() => {
         expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -233,11 +233,11 @@ describe.sequential("DialogApi", () => {
   describe("open with render function", () => {
     it("mounts the dialog into the provider when open() is called", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
 
       // Act
-      api.open<string>((props) => (
+      dialogApi.open<string>((props) => (
         <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
       ))
 
@@ -249,9 +249,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with the value passed to onClose()", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open<string>((props) => (
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
         <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
       ))
 
@@ -266,9 +266,9 @@ describe.sequential("DialogApi", () => {
 
     it("result() resolves with the value passed directly to ctrl.close()", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open<string>((props) => (
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
         <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
       ))
 
@@ -281,9 +281,9 @@ describe.sequential("DialogApi", () => {
 
     it("dialog is removed from the provider after onClosed fires", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open<string>((props) => (
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
         <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
       ))
 
@@ -302,9 +302,9 @@ describe.sequential("DialogApi", () => {
 
     it("calling onClose() after ctrl.close() is already called is a safe no-op", async () => {
       // Arrange
-      const api = new DialogApi()
-      renderWithProvider(api)
-      const ctrl = api.open<string>((props) => (
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const ctrl = dialogApi.open<string>((props) => (
         <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
       ))
 
@@ -326,12 +326,12 @@ describe.sequential("DialogApi", () => {
   // -------------------------------------------------------------------------
   it("multiple dialogs can be open simultaneously", async () => {
     // Arrange
-    const api = new DialogApi()
-    renderWithProvider(api)
+    const dialogApi = new DialogApi()
+    renderWithProvider(dialogApi)
 
     // Act
-    api.open(FakeStringDialog)
-    api.open(FakeSecondDialog)
+    dialogApi.open(FakeStringDialog)
+    dialogApi.open(FakeSecondDialog)
 
     // Assert
     await waitFor(() => {
@@ -342,10 +342,10 @@ describe.sequential("DialogApi", () => {
 
   it("closing one dialog does not affect another", async () => {
     // Arrange
-    const api = new DialogApi()
-    renderWithProvider(api)
-    const ctrl1 = api.open(FakeStringDialog)
-    api.open(FakeSecondDialog)
+    const dialogApi = new DialogApi()
+    renderWithProvider(dialogApi)
+    const ctrl1 = dialogApi.open(FakeStringDialog)
+    dialogApi.open(FakeSecondDialog)
 
     await waitFor(() => {
       expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
