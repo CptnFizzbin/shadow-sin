@@ -1,6 +1,5 @@
 import type { UUID } from "node:crypto"
 
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
@@ -8,7 +7,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { ItemCard } from "#/components/items/itemCard.tsx"
+import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
@@ -62,50 +61,18 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
         const subItems = getSubItems(item.id)
 
         return (
-          <Box key={item.id}>
-            <ItemCard
-              item={item}
-              onEdit={() => setDialogState({ mode: "edit", item, open: true })}
-              onRemove={() => gearApi.remove(item)}
-            />
-
-            <Stack
-              sx={{
-                gap: 1, paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: subItems.length > 0 ? 1 : 0,
-                borderLeft: "4px solid",
-                borderBottom: subItems.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
-            >
-              {subItems.map((subItem) => (
-                <ItemCard
-                  key={subItem.id}
-                  item={subItem}
-                  onEdit={() =>
-                    setDialogState({ mode: "edit", item: subItem, open: true })}
-                  onRemove={() => gearApi.remove(subItem)}
-                />
-              ))}
-
-              <Button
-                variant="text"
-                size="small"
-                startIcon={<RiAddLine size={12} />}
-                onClick={() =>
-                  setDialogState({
-                    mode: "create",
-                    parentId: item.id,
-                    open: true,
-                  })}
-                color="secondary"
-                fullWidth
-              >
-                Add sub-item
-              </Button>
-            </Stack>
-          </Box>
+          <GenericItemCard
+            key={item.id}
+            item={item}
+            subItems={subItems}
+            onEdit={() => setDialogState({ mode: "edit", item, open: true })}
+            onRemove={() => gearApi.remove(item)}
+            onAddSubItem={() =>
+              setDialogState({ mode: "create", parentId: item.id, open: true })}
+            onEditSubItem={(subItem) =>
+              setDialogState({ mode: "edit", item: subItem, open: true })}
+            onRemoveSubItem={(subItem) => gearApi.remove(subItem)}
+          />
         )
       })}
 

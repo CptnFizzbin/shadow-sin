@@ -1,42 +1,26 @@
-import Chip from "@mui/material/Chip"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { ItemCard } from "#/components/items/card/itemCard.tsx"
+import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
-
-interface ArmorStatChipProps {
-  label: string
-}
-
-const ArmorStatChip: FC<ArmorStatChipProps> = ({ label }) => (
-  <Chip
-    label={label}
-    size="small"
-    variant="outlined"
-    sx={{ height: 20, fontSize: "0.7rem" }}
-  />
-)
 
 interface EquippedArmorCardProps {
   armor: ArmorData
 }
 
 const EquippedArmorCard: FC<EquippedArmorCardProps> = ({ armor }) => (
-  <Paper component={Stack} sx={{ padding: 1, gap: 1 }}>
-    <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-      <Typography>{armor.name}</Typography>
-
-      <Stack direction="row" sx={{ gap: 0.5, alignItems: "center" }}>
-        <ArmorStatChip label={`B: ${armor.ballistic}`} />
-        <ArmorStatChip label={`I: ${armor.impact}`} />
-      </Stack>
-    </Stack>
-  </Paper>
+  <ItemCard>
+    <ItemCard.Title>{armor.name}</ItemCard.Title>
+    <ItemCard.Meta type="stat">
+      <ItemStatChip label={`B: ${armor.ballistic}`} />
+      <ItemStatChip label={`I: ${armor.impact}`} />
+    </ItemCard.Meta>
+  </ItemCard>
 )
 
 export const EquippedArmorSection: FC = () => {
