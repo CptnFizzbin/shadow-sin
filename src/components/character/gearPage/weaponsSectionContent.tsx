@@ -33,7 +33,7 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
 
   const handleEditAccessory = async (accessory: ItemData, parentId: UUID) => {
     const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" }).result()
-    if (saved) gearStore.save(parentId ? { ...saved, parentId } : saved)
+    if (saved) gearStore.save({ ...saved, parentId })
   }
 
   return (

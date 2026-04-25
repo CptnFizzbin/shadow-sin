@@ -14,7 +14,7 @@ export const ArmorList: FC = () => {
   const armorItems = useGearByType<ArmorData>(ItemType.armor)
   const armorFormDialog = useArmorFormDialog()
 
-  const handleAddArmor = async (armor?: ArmorData) => {
+  const handleEditArmor = async (armor?: ArmorData) => {
     const saved = await armorFormDialog.open({ armor }).result()
     if (saved) gearApi.save(saved)
   }
@@ -25,7 +25,7 @@ export const ArmorList: FC = () => {
         <ArmorItemCard
           key={armor.id}
           armor={armor}
-          onEdit={() => handleAddArmor(armor)}
+          onEdit={() => handleEditArmor(armor)}
           onRemove={() => gearApi.remove(armor)}
         />
       ))}
@@ -34,7 +34,7 @@ export const ArmorList: FC = () => {
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => handleAddArmor()}
+        onClick={() => handleEditArmor()}
         color="secondary"
         fullWidth
       >
