@@ -21,7 +21,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
     <form.Subscribe selector={(state): [SpiritType, number] => [state.values.spiritType, state.values.force]}>
       {([spiritType, force]) => {
         const maxOptionalPowers = Math.floor(force / 3)
-        const registryInfo = SpiritRegistry[spiritType as SpiritType]
+        const registryInfo = SpiritRegistry[spiritType]
 
         const spiritOptions = tradition
           ? [...new Set(Object.values(tradition.spiritTypes) as SpiritType[])].map((type) => ({
@@ -98,33 +98,48 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
                   Pick up to {maxOptionalPowers} powers (1 per 3 Force)
                 </Typography>
                 <form.AppField name="optionalPowers">
-                  {(field) => (
-                    <FormGroup>
-                      {registryInfo.optionalPowers.map((power: string) => (
-                        <FormControlLabel
-                          key={power}
-                          control={(
-                            <Checkbox
-                              size="small"
-                              checked={field.state.value.includes(power)}
-                              disabled={
-                                !field.state.value.includes(power)
-                                && field.state.value.length >= maxOptionalPowers
-                              }
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  field.handleChange([...field.state.value, power])
-                                } else {
-                                  field.handleChange(field.state.value.filter((p: string) => p !== power))
-                                }
-                              }}
+                  {(field) => {
+                    const overflow = field.state.value.length - maxOptionalPowers
+                    return (
+                      <>
+                        <FormGroup>
+                          {registryInfo.optionalPowers.map((power: string) => (
+                            <FormControlLabel
+                              key={power}
+                              control={(
+                                <Checkbox
+                                  size="small"
+                                  checked={field.state.value.includes(power)}
+                                  disabled={
+                                    !field.state.value.includes(power)
+                                    && field.state.value.length >= maxOptionalPowers
+                                  }
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      field.handleChange([...field.state.value, power])
+                                    } else {
+                                      field.handleChange(field.state.value.filter((p: string) => p !== power))
+                                    }
+                                  }}
+                                />
+                              )}
+                              label={power}
                             />
-                          )}
-                          label={power}
-                        />
-                      ))}
-                    </FormGroup>
-                  )}
+                          ))}
+                        </FormGroup>
+                        {overflow > 0 && (
+                          <Typography
+                            variant="caption"
+                            color="warning.main"
+                            role="status"
+                            aria-live="polite"
+                          >
+                            {`Selected ${field.state.value.length} of ${maxOptionalPowers} allowed — uncheck ${overflow} to change picks`}
+                          </Typography>
+                        )}
+                      </>
+                    )
+                  }}
                 </form.AppField>
               </Stack>
             )}

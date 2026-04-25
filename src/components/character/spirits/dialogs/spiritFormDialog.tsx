@@ -57,7 +57,7 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
           {([canSubmit, isSubmitting]) => (
             <Button
               disabled={!canSubmit || isSubmitting}
-              onClick={form.handleSubmit}
+              onClick={() => form.handleSubmit()}
               variant="contained"
             >
               Save

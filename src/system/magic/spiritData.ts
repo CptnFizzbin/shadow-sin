@@ -64,7 +64,7 @@ export interface SpiritData {
 }
 
 export const SpiritDataSchema = z.object({
-  id: z.uuid() as unknown as z.ZodType<UUID>,
+  id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),
   spiritType: z.nativeEnum(SpiritType),
   force: z.number().int().min(1).max(20),
@@ -131,6 +131,7 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[AttributeKey.reaction] = force + 3
       attrs[AttributeKey.strength] = force + 2
       break
+    // SR4: Spirit of Man only raises agility and intuition; all other stats stay at base force
     case SpiritType.man:
       attrs[AttributeKey.agility] = force + 2
       attrs[AttributeKey.intuition] = force + 1
