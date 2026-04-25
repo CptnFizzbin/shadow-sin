@@ -41,8 +41,6 @@ export const ImplantItemList: FC = () => {
           <ImplantItemCard
             key={implant.id}
             implant={implant}
-            onSave={(saved) => gearApi.save(saved)}
-            onRemove={() => gearApi.remove(implant)}
             onAddAccessory={() => handleAddImplant({ parentId: implant.id })}
             accessories={accessories}
           />

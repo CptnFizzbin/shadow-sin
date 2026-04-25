@@ -1,9 +1,9 @@
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import type { AnyDialog } from "#/components/dialogs/api/dialogApiDialog.ts"
 import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
-import type { AnyDialog } from "./dialogApiDialog"
 
 interface DialogApiWrapperProps {
   ctrl: AnyDialogCtrl

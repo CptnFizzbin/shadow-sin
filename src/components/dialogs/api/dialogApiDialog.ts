@@ -19,7 +19,7 @@ import type { FC } from "react"
  * ```
  */
 export interface DialogApiDialogProps<TReturn = void> {
-  /** Whether the dialog is currently open. Driven by `DialogCtrl.isOpenStore`. */
+  /** Whether the dialog is currently open. Driven by `DialogCtrl.store` (`Store<{ open: boolean }>`) via the `selectIsOpen` selector. */
   open: boolean
   /**
    * Call when the dialog should close. Resolves the promise returned by

@@ -70,11 +70,11 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             {titleNode}
           </Box>
 
-          <Stack
-            direction="row"
-            sx={{ gap: 0.5, alignItems: "center", ml: "auto" }}
-          >
+          <Stack direction="row" sx={{ gap: 0.5 }}>
             {costMetas}
+          </Stack>
+
+          <Stack direction="row" sx={{ gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
             {iconActions}
           </Stack>
         </Stack>
@@ -96,7 +96,11 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
       </Wrapper>
 
       {buttonActions.length > 0 && (
-        <Stack direction="row" sx={{ flexWrap: "wrap", border: "1px solid", borderColor: "divider" }}>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: "wrap", border: "1px solid", borderColor: "divider" }}
+          onClick={(e) => e.stopPropagation()}
+        >
           {buttonActions}
         </Stack>
       )}
