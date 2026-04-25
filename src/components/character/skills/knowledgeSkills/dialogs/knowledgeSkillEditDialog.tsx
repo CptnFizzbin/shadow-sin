@@ -16,7 +16,7 @@ import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
-interface KnowledgeSkillDialogProps {
+interface KnowledgeSkillEditDialogProps {
   open: boolean
   skill?: KnowledgeSkillData
   onSave: (skill: KnowledgeSkillData) => void
@@ -27,7 +27,7 @@ interface KnowledgeSkillDialogProps {
 
 const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
 
-export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
+export const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   open,
   skill,
   onSave,
@@ -145,7 +145,7 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
 }
 
 export type UseKnowledgeSkillDialogProps = Omit<
-  KnowledgeSkillDialogProps,
+  KnowledgeSkillEditDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >
 
@@ -155,7 +155,7 @@ export const useKnowledgeSkillDialog = () => {
   return {
     open: (props?: UseKnowledgeSkillDialogProps) => dialogApi.open<KnowledgeSkillData>(
       (dialogProps) => (
-        <KnowledgeSkillDialog
+        <KnowledgeSkillEditDialog
           {...props}
           open={dialogProps.open}
           onSave={(skill) => dialogProps.onClose(skill)}

@@ -31,7 +31,7 @@ function isCustomSpec(skillName: string, specialization: string): boolean {
   return specialization !== "" && !fixedSpecs.includes(specialization)
 }
 
-interface ActiveSkillDialogProps {
+interface ActiveSkillFormDialogProps {
   open: boolean
   skill?: ActiveSkillData
   /** Skill names that must be disabled because they are already taken (individually or via a group). */
@@ -47,7 +47,7 @@ const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax 
   label: String(i + 1),
 }))
 
-export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
+export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   open,
   skill,
   disabledSkills,
@@ -286,7 +286,7 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
 }
 
 export type UseActiveSkillDialogProps = Omit<
-  ActiveSkillDialogProps,
+  ActiveSkillFormDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >
 
@@ -296,7 +296,7 @@ export const useActiveSkillDialog = () => {
   return {
     open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
       (dialogProps) => (
-        <ActiveSkillDialog
+        <ActiveSkillFormDialog
           {...props}
           open={dialogProps.open}
           onSave={(skill) => dialogProps.onClose(skill)}

@@ -1,55 +1,18 @@
-import { ThemeProvider } from "@mui/material/styles"
-import { render, screen } from "@testing-library/react"
-import type { FC, PropsWithChildren, ReactElement } from "react"
+import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { LanguageSkillsList } from "#/components/character/skills/languageSkills/languageSkillsList.tsx"
-import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
-import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
-import { theme } from "#/theme.ts"
-
-interface TestProvidersProps extends PropsWithChildren {
-  characterSheet: CharacterSheet
-}
-
-const TestProviders: FC<TestProvidersProps> = ({ characterSheet, children }) => {
-  const store = new CharacterSheetStore(characterSheet)
-  const dialogApi = new DialogApi()
-
-  return (
-    <ThemeProvider theme={theme}>
-      <DialogApiProvider dialogApi={dialogApi}>
-        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
-      </DialogApiProvider>
-    </ThemeProvider>
-  )
-}
-
-function renderWithCharacter(
-  element: ReactElement,
-  updateCharacterSheet?: (characterSheet: CharacterSheet) => void,
-) {
-  const characterSheet = createDefaultCharacterSheet()
-  updateCharacterSheet?.(characterSheet)
-
-  return render(element, {
-    wrapper: ({ children }) => {
-      return <TestProviders characterSheet={characterSheet}>{children}</TestProviders>
-    },
-  })
-}
+import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {
-    renderWithCharacter(<LanguageSkillsList />, (characterSheet) => {
-      characterSheet.skills.languageSkills = [
-        { name: "Sperethiel", rating: "native" },
-        { name: "English", rating: 5, lingo: "Seattle Sprawl" },
-      ]
+    renderWithProviders(<LanguageSkillsList />, {
+      updateCharacterSheet: (characterSheet) => {
+        characterSheet.skills.languageSkills = [
+          { name: "Sperethiel", rating: "native" },
+          { name: "English", rating: 5, lingo: "Seattle Sprawl" },
+        ]
+      },
     })
 
     expect(screen.getByText("Languages")).toBeTruthy()
@@ -60,7 +23,7 @@ describe("LanguageSkillsList", () => {
   })
 
   it("renders an empty state when no language skills exist", () => {
-    renderWithCharacter(<LanguageSkillsList />)
+    renderWithProviders(<LanguageSkillsList />)
 
     expect(screen.getByText("No language skills added")).toBeTruthy()
   })

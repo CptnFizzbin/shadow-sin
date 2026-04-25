@@ -17,7 +17,7 @@ import {
 } from "#/components/builder/sections/skills/knowledgeSkills/languageSkillsListItem.tsx"
 import {
   useKnowledgeSkillDialog,
-} from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillDialog.tsx"
+} from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import {
   useLanguageSkillDialog,
 } from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
