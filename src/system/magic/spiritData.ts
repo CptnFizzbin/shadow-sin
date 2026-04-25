@@ -1,5 +1,7 @@
 import type { UUID } from "node:crypto"
 
+import { z } from "zod"
+
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export enum SpiritType {
@@ -60,6 +62,20 @@ export interface SpiritData {
   optionalPowers: string[]
   notes?: string
 }
+
+export const SpiritDataSchema = z.object({
+  id: z.uuid() as unknown as z.ZodType<UUID>,
+  name: z.string(),
+  spiritType: z.nativeEnum(SpiritType),
+  force: z.number().int().min(1).max(20),
+  services: z.object({
+    max: z.number().int().min(0),
+    used: z.number().int().min(0),
+  }),
+  bound: z.boolean(),
+  optionalPowers: z.string().array(),
+  notes: z.string().optional(),
+}) satisfies z.ZodType<SpiritData>
 
 export function calculateSpiritAttributes(force: number, type: SpiritType): Record<AttributeKey, number> {
   const attrs = {
