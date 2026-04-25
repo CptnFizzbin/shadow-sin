@@ -1,6 +1,5 @@
 import type { UUID } from "node:crypto"
 
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
@@ -8,8 +7,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { ItemCard } from "#/components/items/itemCard.tsx"
 import { WeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
+import { WeaponItemCard } from "#/components/items/types/weapons/weaponItemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -68,50 +67,18 @@ export const WeaponsList: FC = () => {
         const accessories = getAccessories(weapon.id)
 
         return (
-          <Box key={weapon.id}>
-            <ItemCard
-              item={weapon}
-              onEdit={() => setWeaponDialog({ mode: "edit", weapon, open: true })}
-              onRemove={() => gearApi.remove(weapon)}
-            />
-
-            <Stack
-              sx={{
-                gap: 1, paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: accessories.length > 0 ? 1 : 0,
-                borderLeft: "4px solid",
-                borderBottom: accessories.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
-            >
-              {accessories.map((accessory) => (
-                <ItemCard
-                  key={accessory.id}
-                  item={accessory}
-                  onEdit={() =>
-                    setAccessoryDialog({ mode: "edit", item: accessory, open: true })}
-                  onRemove={() => gearApi.remove(accessory)}
-                />
-              ))}
-
-              <Button
-                variant="text"
-                size="small"
-                startIcon={<RiAddLine size={12} />}
-                onClick={() =>
-                  setAccessoryDialog({
-                    mode: "create",
-                    parentId: weapon.id,
-                    open: true,
-                  })}
-                color="secondary"
-                fullWidth
-              >
-                Add Accessory
-              </Button>
-            </Stack>
-          </Box>
+          <WeaponItemCard
+            key={weapon.id}
+            weapon={weapon}
+            accessories={accessories}
+            onEdit={() => setWeaponDialog({ mode: "edit", weapon, open: true })}
+            onRemove={() => gearApi.remove(weapon)}
+            onAddAccessory={() =>
+              setAccessoryDialog({ mode: "create", parentId: weapon.id, open: true })}
+            onEditAccessory={(accessory) =>
+              setAccessoryDialog({ mode: "edit", item: accessory, open: true })}
+            onRemoveAccessory={(accessory) => gearApi.remove(accessory)}
+          />
         )
       })}
 
