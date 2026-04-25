@@ -10,7 +10,6 @@ import {
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
@@ -32,10 +31,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   const sheetContext = useCharacterSheetContext()
 
   const openDialog = (item?: ItemData) => {
-    dialogApi.open((props) => {
-      // The wrapper injects `open` at runtime; assert the type so ItemFormDialog
-      // (which has `open: boolean` as a required prop) receives it.
-      const injectedProps = props as DialogApiDialogProps & { open: boolean }
+    dialogApi.open((injectedProps) => {
       return (
         <CharacterSheetProvider store={sheetContext}>
           <ItemFormDialog

@@ -33,9 +33,11 @@ interface GameEffectsSummaryProps {
 export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onChange }) => {
   const handleOpenDialog = async () => {
     const result = await dialogApi
-      .open<GameEffectData[]>((props, ctrl) => (
-        <GameEffectsDialog {...props} initialEffects={effects} onSave={(value) => ctrl.save(value)} />
-      ))
+      .open<GameEffectData[]>({
+        render: (props, ctrl) => (
+          <GameEffectsDialog {...props} initialEffects={effects} onSave={(value) => ctrl.save(value)} />
+        ),
+      })
       .result()
 
     if (result) {

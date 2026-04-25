@@ -110,12 +110,9 @@ describe("DialogCtrl", () => {
 /**
  * Props for test dialog components. Extends `DialogApiDialogProps` and adds
  * an optional `onSubmit` callback for returning a typed value via the factory
- * overload. The wrapper always injects `open` at runtime even though it is not
- * part of `DialogApiDialogProps` — declare it here so the component can pass
- * it to a MUI-style `<Dialog open={…}>`.
+ * overload.
  */
 interface FakeDialogProps extends DialogApiDialogProps {
-  open?: boolean
   onSubmit?: (value: string) => void
 }
 
@@ -234,7 +231,7 @@ describe.sequential("DialogApi", () => {
   })
 
   // -------------------------------------------------------------------------
-  // Factory overload — (props, ctrl) => ReactElement — typed result via save()
+  // Factory overload — { render: (props, ctrl) => ReactElement } — typed result via save()
   // -------------------------------------------------------------------------
   describe("open with factory (factory overload)", () => {
     it("mounts the dialog into RootDialogOutlet when open() is called", async () => {
@@ -243,9 +240,9 @@ describe.sequential("DialogApi", () => {
       renderWithOutlet(<></>)
 
       // Act
-      api.open<string>((props, ctrl) => (
+      api.open<string>({ render: (props, ctrl) => (
         <FakeStringDialog {...props} onSubmit={(value) => ctrl.save(value)} />
-      ))
+      ) })
 
       // Assert
       await waitFor(() => {
@@ -257,9 +254,9 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const api = new DialogApi()
       renderWithOutlet(<></>)
-      const ctrl = api.open<string>((props, dialogCtrl) => (
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
         <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ))
+      ) })
 
       // Act — wait for the dialog to appear, then click Submit
       // Submit calls onSubmit("submitted") → ctrl.save("submitted"), then onClose() → ctrl.close()
@@ -274,9 +271,9 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const api = new DialogApi()
       renderWithOutlet(<></>)
-      const ctrl = api.open<string>((props, dialogCtrl) => (
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
         <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ))
+      ) })
 
       // Act — programmatic close with a value (shorthand for save + close)
       ctrl.close("programmatic")
@@ -289,9 +286,9 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const api = new DialogApi()
       renderWithOutlet(<></>)
-      const ctrl = api.open<string>((props, dialogCtrl) => (
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
         <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ))
+      ) })
 
       await waitFor(() => {
         expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -310,9 +307,9 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const api = new DialogApi()
       renderWithOutlet(<></>)
-      const ctrl = api.open<string>((props, dialogCtrl) => (
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
         <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
-      ))
+      ) })
 
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
       ctrl.save("saved-value")

@@ -24,9 +24,9 @@ export class DialogCtrl<TReturn> {
    *
    * Typical usage in a factory dialog:
    * ```tsx
-   * dialogApi.open((props, ctrl) => (
+   * dialogApi.open({ render: (props, ctrl) => (
    *   <MyDialog {...props} onSave={(value) => ctrl.save(value)} />
-   * ))
+   * ) })
    * ```
    */
   save(value: TReturn): void {

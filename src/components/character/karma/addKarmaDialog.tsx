@@ -11,8 +11,6 @@ import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export interface AddKarmaDialogProps extends DialogApiDialogProps {
-  /** Injected at runtime by the DialogApi wrapper; declare here to enable MUI Dialog animation. */
-  open?: boolean
   onSubmit: (amount: number) => void
 }
 

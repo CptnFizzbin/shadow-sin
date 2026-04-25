@@ -42,13 +42,15 @@ import { addRootDialog, removeRootDialog } from "#/components/ui/dialogs/rootDia
  * )
  *
  * const result = await dialogApi
- *   .open<MyData>((props, ctrl) => (
+ *   .open<MyData>({ render: (props, ctrl) => (
  *     <SaveDialog {...props} onSave={(value) => ctrl.save(value)} />
- *   ))
+ *   ) })
  *   .result()
  * ```
  */
 export interface DialogApiDialogProps {
+  open: boolean
+
   /**
    * Call when the dialog should close without a return value. Resolves the
    * promise returned by `ctrl.result()` with `undefined` (or with whatever
@@ -99,10 +101,10 @@ export interface DialogApiDialogProps {
  * )
  *
  * const newName = await dialogApi
- *   .open<string>((props, ctrl) => (
+ *   .open<string>({ render: (props, ctrl) => (
  *     <RenameDialog {...props} initialName={item.name}
  *       onSave={(value) => ctrl.save(value)} />
- *   ))
+ *   ) })
  *   .result()
  * ```
  *
@@ -157,29 +159,27 @@ export class DialogApi {
    * `dialogProps` and a `DialogCtrl`. Call `ctrl.save(value)` to record a
    * return value before `onClose()` triggers the close animation.
    *
-   * @param factory - `(props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement`.
-   *   The factory is called during each render of the internal wrapper component.
-   *   Do **not** call React hooks directly inside the factory — put hooks inside
-   *   the dialog component the factory returns.
+   * @param factory - `{ render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement }`.
+   *   `render` is called during each render of the internal wrapper component.
+   *   Do **not** call React hooks directly inside `render` — put hooks inside
+   *   the dialog component it returns.
    * @returns A {@link DialogCtrl} whose `result()` resolves with the value
    *   passed to `ctrl.save()`, or `undefined` if the dialog was closed without
    *   saving.
    */
   open<TReturn>(
-    factory: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement,
+    factory: { render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement },
   ): DialogCtrl<TReturn>
 
   /**
    * Mount a dialog component in the root outlet. The component receives
    * `onClose` and `onClosed` as props; `open` is also passed at runtime.
-   * Because the component has no access to a `DialogCtrl`, the result is
-   * always `undefined`. Use the factory overload when you need a typed result.
    *
    * @param component - A React component that accepts {@link DialogApiDialogProps}.
-   * @returns A {@link DialogCtrl}<void> whose `result()` resolves with
+   * @returns A {@link DialogCtrl}<TReturn> whose `result()` resolves with
    *   `undefined` when the dialog closes.
    */
-  open(component: FC<DialogApiDialogProps>): DialogCtrl<void>
+  open<TReturn = void>(component: FC<DialogApiDialogProps>): DialogCtrl<TReturn>
 
   /**
    * Mount a pre-constructed dialog element in the root outlet. Call
@@ -190,31 +190,32 @@ export class DialogApi {
    * a proper open/close transition.
    *
    * @param element - A fully constructed `ReactElement` to mount in the outlet.
-   * @returns A {@link DialogCtrl}<void> whose `result()` resolves when
+   * @returns A {@link DialogCtrl}<TReturn> whose `result()` resolves when
    *   `ctrl.close()` is called.
    */
-  open(element: ReactElement): DialogCtrl<void>
+  open<TReturn = void>(element: ReactElement): DialogCtrl<TReturn>
 
-  open<TReturn>(dialog: ((props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement) | FC<DialogApiDialogProps> | ReactElement): DialogCtrl<TReturn> | DialogCtrl<void> {
+  open<TReturn>(
+    dialog:
+      | { render: (props: DialogApiDialogProps, ctrl: DialogCtrl<TReturn>) => ReactElement }
+      | FC<DialogApiDialogProps>
+      | ReactElement,
+  ): DialogCtrl<TReturn> {
     const dialogId = crypto.randomUUID()
+    const ctrl = new DialogCtrl<TReturn>()
 
     if (isValidElement(dialog)) {
-      const ctrl = new DialogCtrl<void>()
       ctrl.result().then(() => removeRootDialog(dialogId))
       addRootDialog(dialogId, dialog)
       return ctrl
     }
 
-    const ctrl = new DialogCtrl<TReturn>()
     const onClosed = () => removeRootDialog(dialogId)
 
-    // Normalise component (1-arg FC) and factory (2-arg function) to the same
-    // AnyDialogRenderFn shape expected by DialogApiWrapper.
     const renderFn: AnyDialogRenderFn =
-      dialog.length >= 2
-        ? (dialog as AnyDialogRenderFn)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        : (props) => createElement(dialog as FC<any>, props)
+      "render" in dialog
+        ? dialog.render
+        : (props) => createElement(dialog, props)
 
     addRootDialog(dialogId, createElement(DialogApiWrapper, { ctrl, renderFn, onClosed }))
     return ctrl
@@ -230,9 +231,9 @@ export class DialogApi {
  *
  * // Factory pattern — typed result via ctrl.save()
  * const result = await dialogApi
- *   .open<string>((props, ctrl) => (
+ *   .open<string>({ render: (props, ctrl) => (
  *     <MyDialog {...props} onSave={(value) => ctrl.save(value)} />
- *   ))
+ *   ) })
  *   .result()
  *
  * // Component pattern — no return value
