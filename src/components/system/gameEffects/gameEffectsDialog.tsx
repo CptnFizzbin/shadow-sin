@@ -17,15 +17,20 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
-export type GameEffectsDialogProps = DialogApiDialogProps<GameEffectData[]> & {
+export type GameEffectsDialogProps = DialogApiDialogProps & {
+  /** Injected at runtime by the DialogApi wrapper; declare here to enable MUI Dialog animation. */
+  open?: boolean
   initialEffects: GameEffectData[]
+  /** Called with the edited effects list when the user clicks Save. */
+  onSave?: (effects: GameEffectData[]) => void
 }
 
 export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
-  open,
+  open = true,
   onClose,
   onClosed,
   initialEffects,
+  onSave,
 }) => {
   const [effects, setEffects] = useState<GameEffectData[]>(initialEffects)
 
@@ -87,7 +92,10 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
         <Button onClick={() => onClose()}>Cancel</Button>
         <Button
           variant="contained"
-          onClick={() => onClose(effects)}
+          onClick={() => {
+            onSave?.(effects)
+            onClose()
+          }}
         >
           Save
         </Button>

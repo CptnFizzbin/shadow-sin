@@ -1,20 +1,16 @@
 import { createStore } from "@tanstack/store"
 
-type DialogCtrlState = { open: boolean }
-
 /**
- * Handle returned by `api.open()`. Allows the caller to programmatically
+ * Handle returned by `dialogApi.open()`. Allows the caller to programmatically
  * close the dialog and await its return value.
  */
 export class DialogCtrl<TReturn> {
-  static readonly selectors = {
-    selectIsOpen: (state: DialogCtrlState) => state.open,
-  }
-
   /** Reactive store tracking whether the dialog is currently open. */
-  public readonly store = createStore<DialogCtrlState>({ open: true })
+  readonly isOpenStore = createStore<boolean>(true)
+
   private readonly promise: Promise<TReturn | undefined>
   private readonly resolvePromise: (value: TReturn | undefined) => void
+  private savedValue: TReturn | undefined = undefined
 
   constructor() {
     const { promise, resolve } = Promise.withResolvers<TReturn | undefined>()
@@ -23,14 +19,35 @@ export class DialogCtrl<TReturn> {
   }
 
   /**
-   * Close the dialog with an optional return value. Resolves the promise returned
-   * by `result()` and sets `isOpenStore` to `false` so the dialog animates out.
+   * Save a return value to be resolved when the dialog closes. Call this before
+   * `onClose()` to provide a result without closing the dialog immediately.
    *
-   * For `DialogCtrl<void>`, this can be called as `close()` with no arguments.
+   * Typical usage in a factory dialog:
+   * ```tsx
+   * dialogApi.open({ render: (props, ctrl) => (
+   *   <MyDialog {...props} onSave={(value) => ctrl.save(value)} />
+   * ) })
+   * ```
+   */
+  save(value: TReturn): void {
+    this.savedValue = value
+  }
+
+  /**
+   * Close the dialog. Resolves the promise returned by `result()` with the value
+   * previously set via `save()`, or with the optional `value` argument (shorthand
+   * for `save(value); close()`). Sets `isOpenStore` to `false` so the dialog
+   * animates out.
+   *
+   * Safe to call multiple times — the promise resolves only once and subsequent
+   * calls are no-ops.
    */
   close(value?: TReturn): void {
-    this.resolvePromise(value)
-    this.store.setState(() => ({ open: false }))
+    if (value !== undefined) {
+      this.savedValue = value
+    }
+    this.resolvePromise(this.savedValue)
+    this.isOpenStore.setState(() => false)
   }
 
   /** Resolves when the dialog is closed (either by the user or by `close()`). */
@@ -38,6 +55,3 @@ export class DialogCtrl<TReturn> {
     return this.promise
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyDialogCtrl = DialogCtrl<any>

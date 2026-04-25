@@ -1,15 +1,16 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react"
+import { screen, render, waitFor, cleanup } from "@testing-library/react"
 import type { FC, ReactElement } from "react"
-import { useEffect } from "react"
+import { createElement, useEffect } from "react"
 import { afterEach, describe, expect, it } from "vitest"
 
-import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
-import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
-import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
+import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
+import { DialogApi } from "#/components/ui/dialogs/dialogApi.ts"
+import { DialogCtrl } from "#/components/ui/dialogs/dialogCtrl.ts"
+import { clearRootDialogs, RootDialogOutlet } from "#/components/ui/dialogs/rootDialogOutlet.tsx"
 
 afterEach(() => {
   cleanup()
+  clearRootDialogs()
 })
 
 // ---------------------------------------------------------------------------
@@ -19,48 +20,86 @@ afterEach(() => {
 describe("DialogCtrl", () => {
   it("result() resolves with the value passed to close()", async () => {
     // Arrange
-    const dialogCtrl = new DialogCtrl<string>()
+    const ctrl = new DialogCtrl<string>()
 
     // Act
-    dialogCtrl.close("hello")
+    ctrl.close("hello")
 
     // Assert
-    await expect(dialogCtrl.result()).resolves.toBe("hello")
+    await expect(ctrl.result()).resolves.toBe("hello")
   })
 
   it("result() resolves with undefined when close() is called with no arguments", async () => {
     // Arrange
-    const dialogCtrl = new DialogCtrl<string>()
+    const ctrl = new DialogCtrl<string>()
 
     // Act
-    dialogCtrl.close()
+    ctrl.close()
 
     // Assert
-    await expect(dialogCtrl.result()).resolves.toBeUndefined()
+    await expect(ctrl.result()).resolves.toBeUndefined()
   })
 
-  it("sets store.open to false when close() is called", () => {
+  it("sets isOpenStore to false when close() is called", () => {
     // Arrange
-    const dialogCtrl = new DialogCtrl<number>()
-    expect(dialogCtrl.store.state.open).toBe(true)
+    const ctrl = new DialogCtrl<number>()
+    expect(ctrl.isOpenStore.state).toBe(true)
 
     // Act
-    dialogCtrl.close(42)
+    ctrl.close(42)
 
     // Assert
-    expect(dialogCtrl.store.state.open).toBe(false)
+    expect(ctrl.isOpenStore.state).toBe(false)
   })
 
   it("result() resolves only once even if close() is called multiple times", async () => {
     // Arrange
-    const dialogCtrl = new DialogCtrl<string>()
+    const ctrl = new DialogCtrl<string>()
 
     // Act — close twice with different values
-    dialogCtrl.close("first")
-    dialogCtrl.close("second")
+    ctrl.close("first")
+    ctrl.close("second")
 
     // Assert — promise resolves with the first value (Promise resolves once)
-    await expect(dialogCtrl.result()).resolves.toBe("first")
+    await expect(ctrl.result()).resolves.toBe("first")
+  })
+
+  it("result() resolves with the value stored by save() when close() is called without a value", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<string>()
+
+    // Act
+    ctrl.save("saved")
+    ctrl.close()
+
+    // Assert
+    await expect(ctrl.result()).resolves.toBe("saved")
+  })
+
+  it("save() followed by close(value) uses the explicit close value", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<string>()
+
+    // Act — close() value overrides save()
+    ctrl.save("from-save")
+    ctrl.close("from-close")
+
+    // Assert
+    await expect(ctrl.result()).resolves.toBe("from-close")
+  })
+
+  it("calling close() after ctrl.close() is already called is a safe no-op", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<string>()
+    ctrl.save("first")
+    ctrl.close()
+
+    // Act — simulate onClose() being triggered again after programmatic ctrl.close()
+    ctrl.close()
+
+    // Assert — promise still resolves with the first saved value
+    await expect(ctrl.result()).resolves.toBe("first")
+    expect(ctrl.isOpenStore.state).toBe(false)
   })
 })
 
@@ -69,11 +108,20 @@ describe("DialogCtrl", () => {
 // ---------------------------------------------------------------------------
 
 /**
- * Minimal dialog component that accepts `DialogApiDialogProps<string>`.
- * Simulates a dialog that animates out: calls `onClosed` via useEffect once
- * `open` becomes false (mirroring MUI's slotProps.transition.onExited callback).
+ * Props for test dialog components. Extends `DialogApiDialogProps` and adds
+ * an optional `onSubmit` callback for returning a typed value via the factory
+ * overload.
  */
-const FakeStringDialog: FC<DialogApiDialogProps<string>> = ({ open, onClose, onClosed }) => {
+interface FakeDialogProps extends DialogApiDialogProps {
+  onSubmit?: (value: string) => void
+}
+
+/**
+ * Minimal dialog component. Simulates a close animation: calls `onClosed` via
+ * `useEffect` once `open` becomes false (mirrors MUI's
+ * `slotProps.transition.onExited`).
+ */
+const FakeStringDialog: FC<FakeDialogProps> = ({ open = true, onClose, onClosed, onSubmit }) => {
   useEffect(() => {
     if (!open) {
       onClosed()
@@ -84,7 +132,13 @@ const FakeStringDialog: FC<DialogApiDialogProps<string>> = ({ open, onClose, onC
 
   return (
     <div role="dialog" aria-label="fake-dialog">
-      <button type="button" onClick={() => onClose("submitted")}>
+      <button
+        type="button"
+        onClick={() => {
+          onSubmit?.("submitted")
+          onClose()
+        }}
+      >
         Submit
       </button>
     </div>
@@ -92,7 +146,7 @@ const FakeStringDialog: FC<DialogApiDialogProps<string>> = ({ open, onClose, onC
 }
 
 /** Second dialog variant for multi-dialog tests. */
-const FakeSecondDialog: FC<DialogApiDialogProps<string>> = ({ open, onClosed }) => {
+const FakeSecondDialog: FC<FakeDialogProps> = ({ open = true, onClosed }) => {
   useEffect(() => {
     if (!open) onClosed()
   }, [open, onClosed])
@@ -101,23 +155,27 @@ const FakeSecondDialog: FC<DialogApiDialogProps<string>> = ({ open, onClosed }) 
   return <div role="dialog" aria-label="second-dialog" />
 }
 
-function renderWithOutlet(dialogApi: DialogApi, element: ReactElement) {
+function renderWithOutlet(element: ReactElement) {
   return render(
-    <DialogApiProvider dialogApi={dialogApi}>
+    <>
       {element}
-    </DialogApiProvider>,
+      <RootDialogOutlet />
+    </>,
   )
 }
 
 describe.sequential("DialogApi", () => {
-  describe("open with FC", () => {
-    it("mounts the dialog into DialogApiProvider when open() is called", async () => {
+  // -------------------------------------------------------------------------
+  // Component overload — result is always void
+  // -------------------------------------------------------------------------
+  describe("open with FC (component overload)", () => {
+    it("mounts the dialog into RootDialogOutlet when open() is called", async () => {
       // Arrange
-      const dialogApi = new DialogApi()
-      renderWithOutlet(dialogApi, <></>)
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
 
       // Act
-      dialogApi.open<string>(FakeStringDialog)
+      api.open(FakeStringDialog)
 
       // Assert
       await waitFor(() => {
@@ -125,45 +183,45 @@ describe.sequential("DialogApi", () => {
       })
     })
 
-    it("result() resolves with the value when onClose is called", async () => {
+    it("result() resolves with undefined when onClose() is called", async () => {
       // Arrange
-      const dialogApi = new DialogApi()
-      renderWithOutlet(dialogApi, <></>)
-      const dialogCtrl = dialogApi.open<string>(FakeStringDialog)
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open(FakeStringDialog)
 
-      // Act — wait for the dialog to appear, then click Submit
+      // Act — wait for the dialog to appear, then click Submit (calls onClose())
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
       screen.getByRole("button", { name: "Submit" }).click()
 
-      // Assert
-      await expect(dialogCtrl.result()).resolves.toBe("submitted")
+      // Assert — component overload never returns a typed value
+      await expect(ctrl.result()).resolves.toBeUndefined()
     })
 
-    it("result() resolves with the value when ctrl.close() is called programmatically", async () => {
+    it("result() resolves with undefined when ctrl.close() is called programmatically", async () => {
       // Arrange
-      const dialogApi = new DialogApi()
-      renderWithOutlet(dialogApi, <></>)
-      const dialogCtrl = dialogApi.open<string>(FakeStringDialog)
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open(FakeStringDialog)
 
       // Act
-      dialogCtrl.close("programmatic")
+      ctrl.close()
 
       // Assert
-      await expect(dialogCtrl.result()).resolves.toBe("programmatic")
+      await expect(ctrl.result()).resolves.toBeUndefined()
     })
 
     it("dialog is removed from the outlet after onClosed fires", async () => {
       // Arrange
-      const dialogApi = new DialogApi()
-      renderWithOutlet(dialogApi, <></>)
-      const dialogCtrl = dialogApi.open<string>(FakeStringDialog)
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open(FakeStringDialog)
 
       await waitFor(() => {
         expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
       })
 
-      // Act — close() sets store.open=false; FakeStringDialog calls onClosed() in useEffect
-      dialogCtrl.close("done")
+      // Act — close() sets isOpenStore=false; FakeStringDialog calls onClosed() in useEffect
+      ctrl.close()
 
       // Assert
       await waitFor(() => {
@@ -172,14 +230,163 @@ describe.sequential("DialogApi", () => {
     })
   })
 
+  // -------------------------------------------------------------------------
+  // Factory overload — { render: (props, ctrl) => ReactElement } — typed result via save()
+  // -------------------------------------------------------------------------
+  describe("open with factory (factory overload)", () => {
+    it("mounts the dialog into RootDialogOutlet when open() is called", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+
+      // Act
+      api.open<string>({ render: (props, ctrl) => (
+        <FakeStringDialog {...props} onSubmit={(value) => ctrl.save(value)} />
+      ) })
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
+      })
+    })
+
+    it("result() resolves with the saved value when ctrl.save() + onClose() are called", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
+        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
+      ) })
+
+      // Act — wait for the dialog to appear, then click Submit
+      // Submit calls onSubmit("submitted") → ctrl.save("submitted"), then onClose() → ctrl.close()
+      await waitFor(() => screen.getByRole("button", { name: "Submit" }))
+      screen.getByRole("button", { name: "Submit" }).click()
+
+      // Assert
+      await expect(ctrl.result()).resolves.toBe("submitted")
+    })
+
+    it("result() resolves with the value passed directly to ctrl.close()", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
+        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
+      ) })
+
+      // Act — programmatic close with a value (shorthand for save + close)
+      ctrl.close("programmatic")
+
+      // Assert
+      await expect(ctrl.result()).resolves.toBe("programmatic")
+    })
+
+    it("dialog is removed from the outlet after onClosed fires", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
+        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
+      ) })
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
+      })
+
+      // Act
+      ctrl.close()
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog", { name: "fake-dialog" })).toBeNull()
+      })
+    })
+
+    it("calling onClose() after ctrl.close() is already called is a safe no-op", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const ctrl = api.open<string>({ render: (props, dialogCtrl) => (
+        <FakeStringDialog {...props} onSubmit={(value) => dialogCtrl.save(value)} />
+      ) })
+
+      await waitFor(() => screen.getByRole("button", { name: "Submit" }))
+      ctrl.save("saved-value")
+      ctrl.close() // programmatic close — sets open=false, dialog begins animating out
+
+      // Act — onClose() fired again (e.g. backdrop click during animation)
+      ctrl.close()
+
+      // Assert — second close is a no-op; result is still "saved-value"
+      await expect(ctrl.result()).resolves.toBe("saved-value")
+      expect(ctrl.isOpenStore.state).toBe(false)
+    })
+  })
+
+  // -------------------------------------------------------------------------
+  // Raw element overload
+  // -------------------------------------------------------------------------
+  describe("open with ReactElement", () => {
+    it("mounts the element into RootDialogOutlet", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
+
+      // Act
+      api.open(element)
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.getByRole("dialog", { name: "raw-dialog" })).toBeDefined()
+      })
+    })
+
+    it("result() resolves with void when ctrl.close() is called", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
+      const ctrl = api.open(element)
+
+      // Act
+      ctrl.close()
+
+      // Assert
+      await expect(ctrl.result()).resolves.toBeUndefined()
+    })
+
+    it("removes the element from the outlet after ctrl.close()", async () => {
+      // Arrange
+      const api = new DialogApi()
+      renderWithOutlet(<></>)
+      const element = createElement("div", { "role": "dialog", "aria-label": "raw-dialog" })
+      const ctrl = api.open(element)
+
+      await waitFor(() => expect(screen.getByRole("dialog", { name: "raw-dialog" })).toBeDefined())
+
+      // Act
+      ctrl.close()
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog", { name: "raw-dialog" })).toBeNull()
+      })
+    })
+  })
+
+  // -------------------------------------------------------------------------
+  // Multi-dialog tests
+  // -------------------------------------------------------------------------
   it("multiple dialogs can be open simultaneously", async () => {
     // Arrange
-    const dialogApi = new DialogApi()
-    renderWithOutlet(dialogApi, <></>)
+    const api = new DialogApi()
+    renderWithOutlet(<></>)
 
     // Act
-    dialogApi.open<string>(FakeStringDialog)
-    dialogApi.open<string>(FakeSecondDialog)
+    api.open(FakeStringDialog)
+    api.open(FakeSecondDialog)
 
     // Assert
     await waitFor(() => {
@@ -190,10 +397,10 @@ describe.sequential("DialogApi", () => {
 
   it("closing one dialog does not affect another", async () => {
     // Arrange
-    const dialogApi = new DialogApi()
-    renderWithOutlet(dialogApi, <></>)
-    const fakeStringDialogCtrl = dialogApi.open<string>(FakeStringDialog)
-    dialogApi.open<string>(FakeSecondDialog)
+    const api = new DialogApi()
+    renderWithOutlet(<></>)
+    const ctrl1 = api.open(FakeStringDialog)
+    api.open(FakeSecondDialog)
 
     await waitFor(() => {
       expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -201,7 +408,7 @@ describe.sequential("DialogApi", () => {
     })
 
     // Act
-    fakeStringDialogCtrl.close("bye")
+    ctrl1.close()
 
     // Assert
     await waitFor(() => {

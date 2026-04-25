@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test"
 
+import { nodeEnv } from "./env.node.ts"
+
 /**
  * ShadowSIN uses hash-based routing (createHashHistory), so all route paths
  * are expressed as URL hash fragments, e.g. /#/new.
@@ -11,12 +13,12 @@ export default defineConfig({
   fullyParallel: true,
 
   /* Fail the build on CI if test.only is accidentally committed */
-  forbidOnly: !!process.env["CI"],
+  forbidOnly: nodeEnv.CI,
 
   /* Retry flaky tests on CI */
-  retries: process.env["CI"] ? 2 : 0,
+  retries: nodeEnv.CI ? 2 : 0,
 
-  reporter: process.env["CI"]
+  reporter: nodeEnv.CI
     ? [
         ["html", { open: "never" }],
         ["github"],
@@ -27,7 +29,7 @@ export default defineConfig({
   timeout: 90000,
 
   use: {
-    baseURL: "http://localhost:3100",
+    baseURL: nodeEnv.SERVER_URL,
     /* Capture trace on first retry so failures are diagnosable */
     trace: "on-first-retry",
     screenshot: "only-on-failure",
@@ -41,10 +43,10 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "yarn preview --port 3100",
-    url: "http://localhost:3100",
+    command: `yarn preview --port ${nodeEnv.SERVER_PORT}`,
+    url: nodeEnv.SERVER_URL,
     /* Reuse a running server in local dev; always start fresh on CI */
-    reuseExistingServer: !process.env["CI"],
+    reuseExistingServer: !nodeEnv.CI,
     stdout: "pipe",
     stderr: "pipe",
   },
