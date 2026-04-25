@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
-import type { SxProps } from "@mui/material/styles"
-import type { FC, PropsWithChildren, ReactElement, ReactNode } from "react"
+import type { FC, ReactElement, ReactNode } from "react"
 import React, { Children, isValidElement } from "react"
 
 import { ItemCardAction } from "#/components/items/card/itemCardAction.tsx"
