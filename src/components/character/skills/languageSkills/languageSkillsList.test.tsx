@@ -7,6 +7,8 @@ import { CharacterSheetProvider } from "#/components/character/sheet/characterSh
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { LanguageSkillsList } from "#/components/character/skills/languageSkills/languageSkillsList.tsx"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { theme } from "#/theme.ts"
 
@@ -16,10 +18,13 @@ interface TestProvidersProps extends PropsWithChildren {
 
 const TestProviders: FC<TestProvidersProps> = ({ characterSheet, children }) => {
   const store = new CharacterSheetStore(characterSheet)
+  const dialogApi = new DialogApi()
 
   return (
     <ThemeProvider theme={theme}>
-      <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      <DialogApiProvider dialogApi={dialogApi}>
+        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      </DialogApiProvider>
     </ThemeProvider>
   )
 }

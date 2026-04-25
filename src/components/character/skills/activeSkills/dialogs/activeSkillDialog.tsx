@@ -15,6 +15,7 @@ import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
@@ -282,4 +283,27 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseActiveSkillDialogProps = Omit<
+  ActiveSkillDialogProps,
+  "open" | "onSave" | "onClose" | "onClosed"
+>
+
+export const useActiveSkillDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
+      (dialogProps) => (
+        <ActiveSkillDialog
+          {...props}
+          open={dialogProps.open}
+          onSave={(skill) => dialogProps.onClose(skill)}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

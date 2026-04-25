@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
 import {
@@ -15,36 +14,39 @@ import {
   getDisabledGroups,
   getDisabledSkills,
 } from "#/components/builder/sections/skills/activeSkills/activeSkillsUtils.ts"
-import { ActiveSkillDialog } from "#/components/character/skills/activeSkills/dialogs/activeSkillDialog.tsx"
+import { useActiveSkillDialog } from "#/components/character/skills/activeSkills/dialogs/activeSkillDialog.tsx"
 import {
-  ActiveSkillGroupDialog,
+  useActiveSkillGroupDialog,
 } from "#/components/character/skills/activeSkills/dialogs/activeSkillGroupDialog.tsx"
 import { selectActiveSkills, selectSkillGroups } from "#/components/character/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
-type DialogState =
-  | null
-  | { type: "activeSkill", skill?: ActiveSkillData, open: boolean }
-  | { type: "skillGroup", group?: SkillGroupData, open: boolean }
-
 export const ActiveSkillsList: FC = () => {
-  const [dialogState, setDialogState] = useState<DialogState>(null)
-
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
   const skillsStore = useSkillsStore()
   const activeSkills = useStore(skillsStore, selectActiveSkills)
   const skillGroups = useStore(skillsStore, selectSkillGroups)
 
-  const editingSkillName = dialogState?.type === "activeSkill" ? dialogState.skill?.name : undefined
-  const disabledSkills = getDisabledSkills(activeSkills, skillGroups, editingSkillName)
+  const activeSkillDialog = useActiveSkillDialog()
+  const activeSkillGroupDialog = useActiveSkillGroupDialog()
 
-  const editingGroupName = dialogState?.type === "skillGroup" ? dialogState.group?.name : undefined
-  const disabledGroups = getDisabledGroups(skillGroups, editingGroupName)
+  const openActiveSkillDialog = async (skill?: ActiveSkillData) => {
+    const disabledSkills = getDisabledSkills(activeSkills, skillGroups, skill?.name)
+    const saved = await activeSkillDialog.open({ skill, disabledSkills }).result()
+    if (!saved) return
+    const skillName = skill?.name || saved.name
+    skillsStore.activeSkills.setState(skillName, () => saved)
+  }
 
-  const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
-  const clearDialog = () => setDialogState(null)
+  const openSkillGroupDialog = async (group?: SkillGroupData) => {
+    const disabledGroups = getDisabledGroups(skillGroups, group?.name)
+    const saved = await activeSkillGroupDialog.open({ group, disabledGroups }).result()
+    if (!saved) return
+    const groupName = group?.name || saved.name
+    skillsStore.skillGroups.setState(groupName, () => saved)
+  }
 
   return (
     <Stack sx={{ gap: 1 }}>
@@ -63,7 +65,7 @@ export const ActiveSkillsList: FC = () => {
             <ActiveSkillsListItem
               key={skill.name}
               skill={skill}
-              onEdit={() => setDialogState({ type: "activeSkill", skill, open: true })}
+              onEdit={() => openActiveSkillDialog(skill)}
               onDelete={() => skillsStore.activeSkills.remove(skill.name)}
             />
           ))}
@@ -82,7 +84,7 @@ export const ActiveSkillsList: FC = () => {
             <ActiveSkillGroupsListItem
               key={group.name}
               group={group}
-              onEdit={() => setDialogState({ type: "skillGroup", group, open: true })}
+              onEdit={() => openSkillGroupDialog(group)}
               onDelete={() => skillsStore.skillGroups.remove(group.name)}
             />
           ))}
@@ -101,7 +103,7 @@ export const ActiveSkillsList: FC = () => {
           color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
-          onClick={() => setDialogState({ type: "activeSkill", open: true })}
+          onClick={() => openActiveSkillDialog()}
           sx={{ flexGrow: 1 }}
         >
           Add Skill
@@ -111,43 +113,12 @@ export const ActiveSkillsList: FC = () => {
           color="secondary"
           size="small"
           startIcon={<RiAddLine size={14} />}
-          onClick={() => setDialogState({ type: "skillGroup", open: true })}
+          onClick={() => openSkillGroupDialog()}
           sx={{ flexGrow: 1 }}
         >
           Add Group
         </Button>
       </Stack>
-
-      {dialogState?.type === "activeSkill" && (
-        <ActiveSkillDialog
-          key={dialogState.skill?.name ?? "new"}
-          open={dialogState.open}
-          disabledSkills={disabledSkills}
-          skill={dialogState.skill}
-          onSave={(skill) => {
-            const skillName = dialogState.skill?.name || skill.name
-            skillsStore.activeSkills.setState(skillName, () => skill)
-            closeDialog()
-          }}
-          onClose={closeDialog}
-          onClosed={clearDialog}
-        />
-      )}
-
-      {dialogState?.type === "skillGroup" && (
-        <ActiveSkillGroupDialog
-          open={dialogState.open}
-          group={dialogState.group}
-          disabledGroups={disabledGroups}
-          onSave={(group) => {
-            const groupName = dialogState.group?.name || group.name
-            skillsStore.skillGroups.setState(groupName, () => group)
-            closeDialog()
-          }}
-          onClose={closeDialog}
-          onClosed={clearDialog}
-        />
-      )}
     </Stack>
   )
 }

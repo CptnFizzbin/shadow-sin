@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
@@ -141,4 +142,27 @@ export const KnowledgeSkillDialog: FC<KnowledgeSkillDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseKnowledgeSkillDialogProps = Omit<
+  KnowledgeSkillDialogProps,
+  "open" | "onSave" | "onClose" | "onClosed"
+>
+
+export const useKnowledgeSkillDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props?: UseKnowledgeSkillDialogProps) => dialogApi.open<KnowledgeSkillData>(
+      (dialogProps) => (
+        <KnowledgeSkillDialog
+          {...props}
+          open={dialogProps.open}
+          onSave={(skill) => dialogProps.onClose(skill)}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

@@ -13,6 +13,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
@@ -153,4 +154,27 @@ export const ActiveSkillGroupDialog: FC<ActiveSkillGroupDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseActiveSkillGroupDialogProps = Omit<
+  ActiveSkillGroupDialogProps,
+  "open" | "onSave" | "onClose" | "onClosed"
+>
+
+export const useActiveSkillGroupDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props?: UseActiveSkillGroupDialogProps) => dialogApi.open<SkillGroupData>(
+      (dialogProps) => (
+        <ActiveSkillGroupDialog
+          {...props}
+          open={dialogProps.open}
+          onSave={(group) => dialogProps.onClose(group)}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

@@ -8,6 +8,8 @@ import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
 import { ActiveSkillsList } from "#/components/builder/sections/skills/activeSkills/activeSkillsList.tsx"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
 
@@ -15,13 +17,18 @@ interface WrapperProps extends PropsWithChildren {
   rootStore: Store<BuilderRootState>
 }
 
-const Wrapper: FC<WrapperProps> = ({ children, rootStore }) => (
-  <ThemeProvider theme={theme}>
-    <CharacterBuilderStoreProvider rootStore={rootStore}>
-      {children}
-    </CharacterBuilderStoreProvider>
-  </ThemeProvider>
-)
+const Wrapper: FC<WrapperProps> = ({ children, rootStore }) => {
+  const dialogApi = new DialogApi()
+  return (
+    <ThemeProvider theme={theme}>
+      <DialogApiProvider dialogApi={dialogApi}>
+        <CharacterBuilderStoreProvider rootStore={rootStore}>
+          {children}
+        </CharacterBuilderStoreProvider>
+      </DialogApiProvider>
+    </ThemeProvider>
+  )
+}
 
 describe("ActiveSkillsList", () => {
   it("opening a second skill to edit after saving the first shows the second skill's data, not the first skill's", async () => {
@@ -64,7 +71,8 @@ describe("ActiveSkillsList", () => {
 
     // Assert — the newly opened dialog must show Pistols, not the previously-saved Automatics
     await waitFor(() => {
-      const dialog = screen.getByRole("dialog")
+      const dialogs = screen.getAllByRole("dialog")
+      const dialog = dialogs[dialogs.length - 1]
       // The skill Select in the dialog should display "Pistols", not "Automatics"
       expect(within(dialog).queryByText(SkillKey.automatics)).toBeNull()
       expect(within(dialog).getByText(SkillKey.pistols)).toBeTruthy()
