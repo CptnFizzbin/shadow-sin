@@ -50,6 +50,7 @@ export const SpiritList: FC = () => {
       </Stack>
 
       <SpiritFormDialog
+        key={editingSpirit?.id ?? "new"}
         open={dialogOpen}
         spirit={editingSpirit}
         onClose={handleClose}
