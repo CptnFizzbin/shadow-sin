@@ -16,7 +16,8 @@ Follow the repository conventions described in `AGENTS.md` and these additional 
 
 Formatting and tooling notes:
 
-- The project uses ESLint + @stylistic for formatting and linting. Use 2 spaces for indentation and double quotes for JS/TS strings.
+- The project uses ESLint + @stylistic for formatting and linting. Use 2 spaces for indentation and double quotes for
+  JS/TS strings.
 - Respect the existing path alias `#/` → `src/` and other conventions in `AGENTS.md`.
 - After making changes, always verify with `yarn fix` (auto-fix lint/format). Must pass before considering a change
   complete.
@@ -48,6 +49,24 @@ Formatting and tooling notes:
   reflect the current derived value. This is useful for creating lightweight slice-atoms, but be
   explicit about whether you rely on automatic derivation or prefer explicit selectors via
   `useCharacterSheet` / `useStore` to avoid subtle sync issues.
+
+### Starting the dev server for screenshots
+
+The dev server is a long-running process. Start it with **`mode="async", detach=true`** in the bash tool so it stays
+alive while
+you continue working:
+
+```
+// Step 1 — start the server in the background (async, detached)
+bash: command="yarn dev", mode="async", detach=true, initial_wait=15
+
+// Step 2 — navigate the Playwright browser to the local URL
+playwright-browser_navigate: url="http://localhost:3000/"
+
+// Step 3 — take a screenshot or snapshot as needed
+```
+
+Do **not** use `mode="sync"` for `yarn dev` — the command never exits, so a sync call will block until it times out.
 
 ## Final Notes
 
