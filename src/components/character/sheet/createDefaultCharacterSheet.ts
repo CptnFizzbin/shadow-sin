@@ -55,6 +55,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
   },
 
   spells: [],
+  spirits: [],
   adeptPowers: [],
   complexForms: [],
   sprites: [],

@@ -5,7 +5,6 @@ import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { darken, lighten } from "@mui/material/styles"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
@@ -61,10 +60,7 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ force }) => {
         borderRadius: 1,
         padding: 1,
         bgcolor: isOverforce
-          ? (theme) => {
-              const fn = theme.palette.mode === "light" ? lighten : darken
-              return fn(theme.palette.error.light, 0.9)
-            }
+          ? "rgba(var(--mui-palette-error-mainChannel) / 0.15)"
           : undefined,
       }}
     >

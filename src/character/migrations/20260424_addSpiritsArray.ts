@@ -2,12 +2,11 @@ import { produce } from "immer"
 
 import type { CharacterMigration } from "#/character/characterMigration.ts"
 
-const migration: CharacterMigration<any, any> = {
+const migration: CharacterMigration = {
   id: "20260424",
-  up: (draft: any) =>
-    produce(draft, (d: any) => {
-      d.spirits ??= []
-    }),
+  up: produce((draft: any) => {
+    draft.spirits ??= []
+  }),
 }
 
 export default migration
