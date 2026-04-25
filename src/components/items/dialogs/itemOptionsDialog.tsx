@@ -7,12 +7,14 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 
 interface ItemOptionsDialogProps {
   open: boolean
   onClose: () => void
-  options: Record<string, boolean>
+  onClosed?: () => void
+  initialOptions: Record<string, boolean>
   forced: Record<string, boolean>
   onChange: (updated: Record<string, boolean>) => void
 }
@@ -20,14 +22,20 @@ interface ItemOptionsDialogProps {
 export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   open,
   onClose,
-  options,
+  onClosed,
+  initialOptions,
   forced,
   onChange,
 }) => {
   const [pendingUnfix, setPendingUnfix] = useState(false)
+  const [options, setOptions] = useState<Record<string, boolean>>(initialOptions)
   const confirmDialog = useConfirmDialog()
 
-  const set = (patch: Record<string, boolean>) => onChange({ ...options, ...patch })
+  const set = (patch: Record<string, boolean>) => {
+    const updated = { ...options, ...patch }
+    setOptions(updated)
+    onChange(updated)
+  }
 
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
@@ -49,7 +57,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth>
       <DialogTitle sx={{ padding: 1 }}>Item Options</DialogTitle>
 
       <DialogContent sx={{ padding: 1 }}>
@@ -133,4 +141,22 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
       </DialogContent>
     </Dialog>
   )
+}
+
+export type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "open" | "onClose" | "onClosed">
+
+export const useItemOptionsDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseItemOptionsDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <ItemOptionsDialog
+          {...dialogProps}
+          {...props}
+          onClose={() => dialogProps.onClose()}
+        />
+      ),
+    ),
+  }
 }

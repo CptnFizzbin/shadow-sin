@@ -16,8 +16,14 @@ import { useState } from "react"
 
 import { selectLoans } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import type { NuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
+import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
@@ -35,9 +41,10 @@ interface Props {
   open: boolean
   nuyenStore: NuyenStore
   onClose: () => void
+  onClosed?: () => void
 }
 
-export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
+export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose, onClosed }) => {
   const lifestyleStore = useLifestyleStore()
 
   const loans = useStore(nuyenStore, selectLoans)
@@ -125,6 +132,7 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),
       ...(freshUpkeep > 0 ? ["lifestyle"] : []),
     ]))
+    onClosed?.()
   }
 
   return (
@@ -193,4 +201,24 @@ export const EndOfMonthDialog: FC<Props> = ({ open, nuyenStore, onClose }) => {
       </DialogActions>
     </Dialog>
   )
+}
+
+export const useEndOfMonthDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+  const nuyenStore = useNuyenStore()
+
+  return {
+    open: () => dialogApi.open<void>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <EndOfMonthDialog
+            {...dialogProps}
+            nuyenStore={nuyenStore}
+            onClose={() => dialogProps.onClose()}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }
