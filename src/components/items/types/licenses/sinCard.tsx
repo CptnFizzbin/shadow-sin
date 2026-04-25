@@ -1,4 +1,3 @@
-import IconButton from "@mui/material/IconButton"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
@@ -38,17 +37,8 @@ export const SinCard: FC<SinCardProps> = ({
       </ItemCard.Meta>
 
       {onDelete && (
-        <ItemCard.Action type="icon">
-          <IconButton
-            size="small"
-            color="error"
-            onClick={(e) => {
-              e.stopPropagation()
-              onDelete()
-            }}
-          >
-            <RiDeleteBin6Line size={16} />
-          </IconButton>
+        <ItemCard.Action type="icon" color="error" onClick={onDelete}>
+          <RiDeleteBin6Line size={16} />
         </ItemCard.Action>
       )}
 

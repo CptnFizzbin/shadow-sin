@@ -1,6 +1,5 @@
 import type { UUID } from "node:crypto"
 
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
@@ -8,8 +7,8 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { ItemCard } from "#/components/items/itemCard.tsx"
 import { VehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
+import { VehicleItemCard } from "#/components/items/types/vehicles/vehicleItemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/items/useGearStore.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
@@ -76,51 +75,18 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
         const attachments = getAttachments(vehicle.id)
 
         return (
-          <Box key={vehicle.id}>
-            <ItemCard
-              item={vehicle}
-              onEdit={() => setVehicleDialog({ mode: "edit", vehicle, open: true })}
-              onRemove={() => gearApi.remove(vehicle)}
-            />
-
-            <Stack
-              sx={{
-                gap: 1,
-                paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: attachments.length > 0 ? 1 : 0,
-                borderLeft: "4px solid",
-                borderBottom: attachments.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
-            >
-              {attachments.map((attachment) => (
-                <ItemCard
-                  key={attachment.id}
-                  item={attachment}
-                  onEdit={() =>
-                    setAttachmentDialog({ mode: "edit", item: attachment, open: true })}
-                  onRemove={() => gearApi.remove(attachment)}
-                />
-              ))}
-
-              <Button
-                variant="text"
-                size="small"
-                startIcon={<RiAddLine size={12} />}
-                onClick={() =>
-                  setAttachmentDialog({
-                    mode: "create",
-                    parentId: vehicle.id,
-                    open: true,
-                  })}
-                color="secondary"
-                fullWidth
-              >
-                Add Attachment
-              </Button>
-            </Stack>
-          </Box>
+          <VehicleItemCard
+            key={vehicle.id}
+            vehicle={vehicle}
+            attachments={attachments}
+            onEdit={() => setVehicleDialog({ mode: "edit", vehicle, open: true })}
+            onRemove={() => gearApi.remove(vehicle)}
+            onAddAttachment={() =>
+              setAttachmentDialog({ mode: "create", parentId: vehicle.id, open: true })}
+            onEditAttachment={(attachment) =>
+              setAttachmentDialog({ mode: "edit", item: attachment, open: true })}
+            onRemoveAttachment={(attachment) => gearApi.remove(attachment)}
+          />
         )
       })}
 

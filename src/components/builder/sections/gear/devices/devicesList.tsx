@@ -1,13 +1,12 @@
 import type { UUID } from "node:crypto"
 
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { ItemCard } from "#/components/items/itemCard.tsx"
+import { DeviceItemCard } from "#/components/items/types/devices/deviceItemCard.tsx"
 import { DeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
 import { ProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
@@ -58,44 +57,16 @@ export const DevicesList: FC = () => {
         const devicePrograms = getProgramsForDevice(device.id)
 
         return (
-          <Box key={device.id}>
-            <ItemCard
-              item={device}
-              onEdit={() => setDeviceDialog({ device, open: true })}
-              onRemove={() => handleRemoveDevice(device)}
-            />
-
-            <Stack
-              sx={{
-                gap: 1, paddingTop: 1,
-                paddingLeft: 1,
-                paddingBottom: devicePrograms.length > 0 ? 1 : 0,
-                borderLeft: "4px solid",
-                borderBottom: devicePrograms.length > 0 ? "1px solid" : "none",
-                borderColor: "divider",
-              }}
-            >
-              {devicePrograms.map((program) => (
-                <ItemCard
-                  key={program.id}
-                  item={program}
-                  onEdit={() => setProgramDialog({ program, open: true })}
-                  onRemove={() => gearStore.remove(program)}
-                />
-              ))}
-
-              <Button
-                variant="text"
-                size="small"
-                startIcon={<RiAddLine size={12} />}
-                onClick={() => setProgramDialog({ parentId: device.id, open: true })}
-                color="secondary"
-                fullWidth
-              >
-                Add Program
-              </Button>
-            </Stack>
-          </Box>
+          <DeviceItemCard
+            key={device.id}
+            device={device}
+            programs={devicePrograms}
+            onEdit={() => setDeviceDialog({ device, open: true })}
+            onRemove={() => handleRemoveDevice(device)}
+            onAddProgram={() => setProgramDialog({ parentId: device.id, open: true })}
+            onEditProgram={(program) => setProgramDialog({ program, open: true })}
+            onRemoveProgram={(program) => gearStore.remove(program)}
+          />
         )
       })}
 
