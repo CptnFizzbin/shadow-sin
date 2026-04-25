@@ -11,6 +11,7 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
 import { implantFieldMap, useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
+import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
@@ -61,11 +62,16 @@ export const useImplantFormDialog = () => {
 
   return {
     open: (props?: UseImplantFormProps) => {
-      const dialog = dialogApi.open<ImplantData>((dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <ImplantFormDialog {...dialogProps} {...props} onSave={dialog.close} />
-        </CharacterSheetProvider>
-      ))
+      const dialog = dialogApi.open<ImplantData>((dialogProps, ctrl) => {
+        // The wrapper injects `open` at runtime; assert the type so the form
+        // dialog receives it for the MUI Dialog animation.
+        const injectedProps = dialogProps as DialogApiDialogProps & { open: boolean }
+        return (
+          <CharacterSheetProvider store={sheetContext}>
+            <ImplantFormDialog {...injectedProps} {...props} onSave={ctrl.close} />
+          </CharacterSheetProvider>
+        )
+      })
 
       return dialog
     },

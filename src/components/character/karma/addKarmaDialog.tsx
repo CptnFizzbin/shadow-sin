@@ -10,12 +10,14 @@ import { z } from "zod"
 import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-export interface AddKarmaDialogProps extends DialogApiDialogProps<void> {
+export interface AddKarmaDialogProps extends DialogApiDialogProps {
+  /** Injected at runtime by the DialogApi wrapper; declare here to enable MUI Dialog animation. */
+  open?: boolean
   onSubmit: (amount: number) => void
 }
 
 export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
-  open,
+  open = true,
   onClose,
   onClosed,
   onSubmit,
