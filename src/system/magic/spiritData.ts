@@ -85,15 +85,13 @@ export const SpiritDataSchema = z.object({
   }),
 }) satisfies z.ZodType<SpiritData>
 
-// SR4A p.295-302: physical initiative dice = (F×2)+3 for Air/Fire, (F×2)+2 for all others.
+// SR4A p.295-302: physical initiative score = Reaction + Intuition (derived from type-specific attrs).
 // Astral initiative = (Intuition×2)+3d6, 3 astral IP for all spirits.
 export function calculateSpiritInitiative(force: number, type: SpiritType) {
   const attrs = calculateSpiritAttributes(force, type)
-  const physicalDice = (type === SpiritType.wind || type === SpiritType.fire)
-    ? force * 2 + 3
-    : force * 2 + 2
+  const physicalScore = attrs[AttributeKey.reaction] + attrs[AttributeKey.intuition]
   return {
-    physicalDice,
+    physicalScore,
     physicalIp: 2,
     astralBase: attrs[AttributeKey.intuition] * 2,
     astralIp: 3,

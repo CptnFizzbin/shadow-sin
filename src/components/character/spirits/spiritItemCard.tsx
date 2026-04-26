@@ -37,7 +37,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
   const title = spirit.name || SpiritTypeLabels[spirit.spiritType]
   const subtitle = spirit.name ? SpiritTypeLabels[spirit.spiritType] : undefined
 
-  const { physicalDice, physicalIp, astralBase, astralIp } = calculateSpiritInitiative(spirit.force, spirit.spiritType)
+  const { physicalScore, physicalIp, astralBase, astralIp } = calculateSpiritInitiative(spirit.force, spirit.spiritType)
   const attrs = calculateSpiritAttributes(spirit.force, spirit.spiritType)
 
   return (
@@ -60,7 +60,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
         <ItemStatChip label={`Services ${spirit.services.used}/${spirit.services.max}`} />
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
-        <ItemStatChip label={`Init ${physicalDice}d6 (${physicalIp}IP)`} />
+        <ItemStatChip label={`Init pool: ${physicalScore}d6 (${physicalIp}IP)`} />
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
         <ItemStatChip label={`Astral ${astralBase}+3d6 (${astralIp}IP)`} />
