@@ -85,8 +85,8 @@ export const SpiritDataSchema = z.object({
   }),
 }) satisfies z.ZodType<SpiritData>
 
-// SR4A p.295-302: spirit initiative is a fixed per-type pool, not the standard Reaction+Intuition formula.
-// Air/Fire spirits roll (F×2)+3d6; all others roll (F×2)+2d6. Astral initiative = (Intuition×2)+3d6.
+// SR4A p.295-302: spirit initiative is a flat score, not a dice roll.
+// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = (Intuition×2)+3.
 export function calculateSpiritInitiative(force: number, type: SpiritType) {
   const attrs = calculateSpiritAttributes(force, type)
   const physicalScore = (type === SpiritType.wind || type === SpiritType.fire)

@@ -60,10 +60,10 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
         <ItemStatChip label={`Services ${spirit.services.used}/${spirit.services.max}`} />
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
-        <ItemStatChip label={`Init pool: ${physicalScore}d6 (${physicalIp}IP)`} />
+        <ItemStatChip label={`Init: ${physicalScore} (${physicalIp}IP)`} />
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
-        <ItemStatChip label={`Astral ${astralBase}+3d6 (${astralIp}IP)`} />
+        <ItemStatChip label={`Astral ${astralBase}+3 (${astralIp}IP)`} />
       </ItemCard.Meta>
       {spirit.bound && (
         <ItemCard.Meta type="stat">
