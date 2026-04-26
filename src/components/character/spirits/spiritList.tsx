@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
+import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -58,6 +59,7 @@ export const SpiritList: FC = () => {
             spirit={spirit}
             onEdit={() => handleEdit(spirit)}
             onRemove={() => handleRemove(spirit)}
+            onDamageChange={(damage) => spiritsStore.save(produce(spirit, (draft) => { draft.damage = damage }))}
           />
         ))}
       </Stack>

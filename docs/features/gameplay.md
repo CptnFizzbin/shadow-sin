@@ -177,12 +177,13 @@ Players with awakened or technomancer characters need quick access to their magi
 - [ ] Force selection slider before casting (1 to `Magic` rating); update drain DV dynamically
 - [ ] Sustained spell tracker — mark a spell as sustained; display a running list of sustained spells with drain DV
 
-### 6b. Summoning & Binding
+### 6b. Summoning & Binding ⚠️ partially implemented — PR #163
 
-- [ ] **Summon spirit** action — `Magic + Summoning` roll vs. spirit's Force
-- [ ] Track summoned spirits — type, force, services remaining; remove when services are exhausted
-- [ ] Spirit condition monitor — track each summoned spirit's physical/stun damage and status (using a dedicated spirit model, separate from technomancer `sprites` / `spriteData.ts`)
-- [ ] Binding roll support (`Magic + Binding`) after a spirit is summoned
+- [x] **Summon spirit** action — `Magic + Summoning` dice pool with force vs. Magic overcast warning and drain application ✅ PR #163
+- [x] Track summoned spirits — type, force, services (used/max), bound status, optional powers, notes; edit and dismiss with confirmation ✅ PR #163
+- [x] Spirit condition monitor — track each summoned spirit's physical/stun damage and status (using a dedicated spirit model, separate from technomancer `sprites` / `spriteData.ts`) ✅ PR `#177`
+- [x] Binding roll support — `Magic + Binding` dice pool with specialization detection, switching based on Bound checkbox ✅ PR #163
+- [ ] Watcher spirit support — watcher spirits have different initiative passes than standard spirits; track separately
 
 ### 6c. Adept Powers in Play
 
