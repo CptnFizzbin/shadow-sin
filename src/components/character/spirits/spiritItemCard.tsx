@@ -9,8 +9,22 @@ import type { FC } from "react"
 import { SpiritConditionMonitor } from "#/components/character/spirits/spiritConditionMonitor.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
+import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
-import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+
+const SPIRIT_ATTR_ORDER: AttributeKey[] = [
+  AttributeKey.body,
+  AttributeKey.agility,
+  AttributeKey.reaction,
+  AttributeKey.strength,
+  AttributeKey.charisma,
+  AttributeKey.intuition,
+  AttributeKey.logic,
+  AttributeKey.willpower,
+  AttributeKey.edge,
+  AttributeKey.magic,
+]
 
 interface SpiritItemCardProps {
   spirit: SpiritData
@@ -22,6 +36,9 @@ interface SpiritItemCardProps {
 export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemove, onDamageChange }) => {
   const title = spirit.name || SpiritTypeLabels[spirit.spiritType]
   const subtitle = spirit.name ? SpiritTypeLabels[spirit.spiritType] : undefined
+
+  const { physicalDice, physicalIp, astralBase, astralIp } = calculateSpiritInitiative(spirit.force, spirit.spiritType)
+  const attrs = calculateSpiritAttributes(spirit.force, spirit.spiritType)
 
   return (
     <ItemCard onClick={onEdit}>
@@ -41,6 +58,12 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
         <ItemStatChip label={`Services ${spirit.services.used}/${spirit.services.max}`} />
+      </ItemCard.Meta>
+      <ItemCard.Meta type="stat">
+        <ItemStatChip label={`Init ${physicalDice}d6 (${physicalIp}IP)`} />
+      </ItemCard.Meta>
+      <ItemCard.Meta type="stat">
+        <ItemStatChip label={`Astral ${astralBase}+3d6 (${astralIp}IP)`} />
       </ItemCard.Meta>
       {spirit.bound && (
         <ItemCard.Meta type="stat">
@@ -77,6 +100,26 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               <Typography variant="body2">{spirit.notes}</Typography>
             </Box>
           )}
+          <Divider />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(5, 1fr)",
+              gap: 0.5,
+              textAlign: "center",
+            }}
+          >
+            {SPIRIT_ATTR_ORDER.map((key) => (
+              <Box key={key}>
+                <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+                  {AttributeLabels[key]}
+                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                  {attrs[key]}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
           <Divider />
           <SpiritConditionMonitor spirit={spirit} onChange={onDamageChange} />
         </Stack>

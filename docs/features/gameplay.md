@@ -183,6 +183,7 @@ Players with awakened or technomancer characters need quick access to their magi
 - [x] Track summoned spirits — type, force, services (used/max), bound status, optional powers, notes; edit and dismiss with confirmation ✅ PR #163
 - [ ] Spirit condition monitor — track each summoned spirit's physical/stun damage and status (using a dedicated spirit model, separate from technomancer `sprites` / `spriteData.ts`)
 - [x] Binding roll support — `Magic + Binding` dice pool with specialization detection, switching based on Bound checkbox ✅ PR #163
+- [ ] Watcher spirit support — watcher spirits have different initiative passes than standard spirits; track separately
 
 ### 6c. Adept Powers in Play
 
