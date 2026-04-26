@@ -28,13 +28,13 @@ export interface TraditionData {
 export const TraditionDataSchema = z.object({
   name: z.string().min(1, "Name is required"),
   spiritTypes: z.object({
-    combat: z.nativeEnum(SpiritType, { message: "Combat spirit type is required" }),
-    detection: z.nativeEnum(SpiritType, { message: "Detection spirit type is required" }),
-    health: z.nativeEnum(SpiritType, { message: "Health spirit type is required" }),
-    illusion: z.nativeEnum(SpiritType, { message: "Illusion spirit type is required" }),
-    manipulation: z.nativeEnum(SpiritType, { message: "Manipulation spirit type is required" }),
+    combat: z.enum(SpiritType, { error: "Combat spirit type is required" }),
+    detection: z.enum(SpiritType, { error: "Detection spirit type is required" }),
+    health: z.enum(SpiritType, { error: "Health spirit type is required" }),
+    illusion: z.enum(SpiritType, { error: "Illusion spirit type is required" }),
+    manipulation: z.enum(SpiritType, { error: "Manipulation spirit type is required" }),
   }),
-  drainAttribute: z.nativeEnum(AttributeKey),
+  drainAttribute: z.enum(AttributeKey),
   concept: z.string().optional(),
 }) satisfies z.ZodType<TraditionData>
 

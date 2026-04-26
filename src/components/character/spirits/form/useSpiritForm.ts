@@ -17,6 +17,10 @@ const defaultValues: SpiritData = {
   bound: false,
   optionalPowers: [],
   notes: "",
+  damage: {
+    physical: 0,
+    stun: 0,
+  },
 }
 
 interface SpiritFormOptions {
