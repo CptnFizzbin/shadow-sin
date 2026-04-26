@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DiceFace } from "#/components/dice/diceFace.tsx"
+import { DieIcon } from "#/components/system/dice/dieIcon.tsx"
 import {
   countHits,
   isCriticalGlitch,
@@ -75,7 +75,7 @@ export const DiceRollButton: FC<DiceRollButtonProps> = ({
   return (
     <Stack direction="row" sx={{ gap: 0.5, alignItems: "center", flexWrap: "wrap" }}>
       {result.map((value, i) => (
-        <DiceFace key={i} value={value} />
+        <DieIcon key={i} value={value} />
       ))}
 
       <Typography variant="body2" sx={{ fontWeight: 700, px: 0.5 }}>
