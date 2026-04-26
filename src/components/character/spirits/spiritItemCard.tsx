@@ -1,10 +1,12 @@
 import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
+import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { SpiritConditionMonitor } from "#/components/character/spirits/spiritConditionMonitor.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
@@ -14,9 +16,10 @@ interface SpiritItemCardProps {
   spirit: SpiritData
   onEdit: () => void
   onRemove: () => void
+  onDamageChange: (damage: SpiritData["damage"]) => void
 }
 
-export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemove }) => {
+export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemove, onDamageChange }) => {
   const title = spirit.name || SpiritTypeLabels[spirit.spiritType]
   const subtitle = spirit.name ? SpiritTypeLabels[spirit.spiritType] : undefined
 
@@ -74,6 +77,8 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               <Typography variant="body2">{spirit.notes}</Typography>
             </Box>
           )}
+          <Divider />
+          <SpiritConditionMonitor spirit={spirit} onChange={onDamageChange} />
         </Stack>
       </ItemCard.Children>
     </ItemCard>

@@ -58,6 +58,7 @@ export const SpiritList: FC = () => {
             spirit={spirit}
             onEdit={() => handleEdit(spirit)}
             onRemove={() => handleRemove(spirit)}
+            onDamageChange={(damage) => spiritsStore.save(SpiritDataSchema.parse({ ...spirit, damage }))}
           />
         ))}
       </Stack>

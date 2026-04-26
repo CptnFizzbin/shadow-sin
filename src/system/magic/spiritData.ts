@@ -61,6 +61,10 @@ export interface SpiritData {
   bound: boolean
   optionalPowers: string[]
   notes?: string
+  damage: {
+    physical: number
+    stun: number
+  }
 }
 
 export const SpiritDataSchema = z.object({
@@ -75,7 +79,19 @@ export const SpiritDataSchema = z.object({
   bound: z.boolean(),
   optionalPowers: z.string().array(),
   notes: z.string().optional(),
+  damage: z.object({
+    physical: z.number().int().min(0),
+    stun: z.number().int().min(0),
+  }),
 }) satisfies z.ZodType<SpiritData>
+
+export function calculateSpiritConditionMonitor(force: number, type: SpiritType): { physical: number, stun: number } {
+  const attrs = calculateSpiritAttributes(force, type)
+  return {
+    physical: 8 + Math.ceil(attrs[AttributeKey.body] / 2),
+    stun: 8 + Math.ceil(attrs[AttributeKey.willpower] / 2),
+  }
+}
 
 export function calculateSpiritAttributes(force: number, type: SpiritType): Record<AttributeKey, number> {
   const attrs = {
