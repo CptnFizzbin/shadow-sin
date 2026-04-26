@@ -70,7 +70,7 @@ export interface SpiritData {
 export const SpiritDataSchema = z.object({
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),
-  spiritType: z.nativeEnum(SpiritType),
+  spiritType: z.enum(SpiritType),
   force: z.number().int().min(1).max(20),
   services: z.object({
     max: z.number().int().min(0),
@@ -86,7 +86,7 @@ export const SpiritDataSchema = z.object({
 }) satisfies z.ZodType<SpiritData>
 
 // SR4A p.295-302: spirit initiative is a flat score, not a dice roll.
-// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = (F×2)+3.
+// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = F×2, 3 IP.
 export function calculateSpiritInitiative(force: number, type: SpiritType) {
   const physicalScore = (type === SpiritType.wind || type === SpiritType.fire)
     ? force * 2 + 3

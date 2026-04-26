@@ -63,7 +63,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
         <ItemStatChip label={`Init: ${physicalScore} (${physicalIp}IP)`} />
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
-        <ItemStatChip label={`Astral ${astralBase}+3 (${astralIp}IP)`} />
+        <ItemStatChip label={`Astral ${astralBase} (${astralIp}IP)`} />
       </ItemCard.Meta>
       {spirit.bound && (
         <ItemCard.Meta type="stat">
