@@ -15,6 +15,7 @@ import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
@@ -30,7 +31,7 @@ function isCustomSpec(skillName: string, specialization: string): boolean {
   return specialization !== "" && !fixedSpecs.includes(specialization)
 }
 
-interface ActiveSkillDialogProps {
+interface ActiveSkillFormDialogProps {
   open: boolean
   skill?: ActiveSkillData
   /** Skill names that must be disabled because they are already taken (individually or via a group). */
@@ -46,7 +47,7 @@ const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax 
   label: String(i + 1),
 }))
 
-export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
+export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   open,
   skill,
   disabledSkills,
@@ -282,4 +283,27 @@ export const ActiveSkillDialog: FC<ActiveSkillDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseActiveSkillDialogProps = Omit<
+  ActiveSkillFormDialogProps,
+  "open" | "onSave" | "onClose" | "onClosed"
+>
+
+export const useActiveSkillDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
+      (dialogProps) => (
+        <ActiveSkillFormDialog
+          {...props}
+          open={dialogProps.open}
+          onSave={(skill) => dialogProps.onClose(skill)}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

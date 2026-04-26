@@ -8,7 +8,7 @@ import { useState } from "react"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useActiveSkillDicePool } from "#/components/character/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/character/skills/skillListItem.tsx"
-import { ViewSkillDialog } from "#/components/character/skills/viewSkillDialog.tsx"
+import { useViewSkillDialog } from "#/components/character/skills/viewSkillDialog.tsx"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
@@ -23,7 +23,6 @@ const selectableAttributes = Object.values(AttributeKey).filter(
 )
 
 export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
-  const [dialogOpen, setDialogOpen] = useState(false)
   const skillInfo = skillList[skillKey]
   const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
 
@@ -39,6 +38,8 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
   })
 
   const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
+
+  const viewSkillDialog = useViewSkillDialog()
 
   const attributeSelector = (
     <FormControl size="small" fullWidth>
@@ -58,26 +59,20 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
   )
 
   return (
-    <>
-      <SkillListItem
-        name={skillKey}
-        rating={rating}
-        specialization={specialization}
-        attr={selectedAttr}
-        isDefaulted={isDefaulted}
-        onClick={() => setDialogOpen(true)}
-      />
-
-      <ViewSkillDialog
-        name={skillKey}
-        body={attributeSelector}
-        dicePools={[
+    <SkillListItem
+      name={skillKey}
+      rating={rating}
+      specialization={specialization}
+      attr={selectedAttr}
+      isDefaulted={isDefaulted}
+      onClick={() => viewSkillDialog.open({
+        name: skillKey,
+        body: attributeSelector,
+        dicePools: [
           skillDicePool,
           specialization ? specializationDicePool : false,
-        ]}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
-    </>
+        ],
+      })}
+    />
   )
 }
