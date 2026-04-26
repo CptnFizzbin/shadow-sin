@@ -4,6 +4,7 @@ import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 
 export interface InitiativePassState {
   passesCompleted: number[]
+  rolledScore?: number
 }
 
 export class InitiativePassStore extends StoreSlice<InitiativePassState> {
@@ -21,10 +22,23 @@ export class InitiativePassStore extends StoreSlice<InitiativePassState> {
     )
   }
 
+  setRolledScore(score: number): void {
+    this.set(produce((state) => {
+      state.rolledScore = score
+    }))
+  }
+
+  clearRolledScore(): void {
+    this.set(produce((state) => {
+      state.rolledScore = undefined
+    }))
+  }
+
   resetPasses(): void {
     this.set(
       produce((state) => {
         state.passesCompleted = []
+        state.rolledScore = undefined
       }),
     )
   }

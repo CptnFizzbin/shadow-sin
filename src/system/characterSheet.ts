@@ -105,6 +105,7 @@ export interface CharacterSheet {
 
   initiative?: {
     passesCompleted: number[]
+    rolledScore?: number
   }
 
   qualities: QualityData[]

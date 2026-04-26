@@ -23,7 +23,7 @@ export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByT
       }
 
       for (const spell of sheet.spells) {
-        if (spell.effects) {
+        if (spell.effects && spell.sustained === true) {
           allEffects.push(...spell.effects)
         }
       }

@@ -1,3 +1,4 @@
+import Chip from "@mui/material/Chip"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -9,9 +10,12 @@ import type { SpellData } from "#/system/magic/spellData.ts"
 interface SpellViewerListItemProps {
   spell: SpellData
   onClick: () => void
+  onToggleSustained?: () => void
 }
 
-export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onClick }) => {
+export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onClick, onToggleSustained }) => {
+  const hasSustainableEffects = onToggleSustained && spell.effects && spell.effects.length > 0
+
   return (
     <Paper
       component="button"
@@ -36,6 +40,18 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
         <Typography color="text.secondary">
           {formatDrainFormula(spell.drainValueMod)}
         </Typography>
+        {hasSustainableEffects && (
+          <Chip
+            label="Sustained"
+            size="small"
+            variant={spell.sustained ? "filled" : "outlined"}
+            color={spell.sustained ? "secondary" : "default"}
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleSustained()
+            }}
+          />
+        )}
       </Stack>
     </Paper>
   )

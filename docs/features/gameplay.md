@@ -140,17 +140,16 @@ The offense route (`/$characterId/offense`) is a near-empty stub.
 
 ---
 
-## 4. Initiative Tracking
+## 4. Initiative Tracking ⚠️ partially implemented — PR #178
 
-Initiative is central to every combat turn and is currently not implemented anywhere.
-
-- [ ] **Roll Initiative** button — calculates `Reaction + Intuition + 1d6` (physical), `Reaction + Intuition + 2d6`
-  (wired rigging), or `Resonance + Intuition + 1d6` (matrix hot sim) depending on mode
-- [ ] Display current initiative score prominently on the defense or a dedicated combat page
-- [ ] **Initiative pass tracker** — decrement score by 10 after each pass; show how many passes remain in the turn
+- [x] Display current initiative score on the offense page (`Reaction + Intuition + bonuses`) ✅ PR #163
+- [x] **Initiative pass tracker** — pass buttons on the offense page; "End Round" resets ✅ PR #163
+- [x] Support **Wired Reflexes / gear / adept power / spell** extra initiative and extra passes (auto-detected from effects) ✅ PR #178
+- [x] **Roll Initiative** button — rolls 1d6, adds to base score; score decrements by 10 per completed pass ✅ PR #178
+- [x] **Sustained spell modifiers** — toggle a spell as sustained to apply its initiative effects (e.g. Increase Reflexes) ✅ PR #178
 - [ ] **Simple/Complex action tracker** — mark actions used in the current initiative pass
-- [ ] Support **Wired Reflexes / adept power** extra initiative dice and extra passes (auto-detected from gear/powers)
 - [ ] Adrenaline / drug modifier input (add bonus dice or flat bonus to the roll)
+- [ ] Wired Reflexes / Hot-sim / matrix initiative mode switching (`Reaction + Intuition + 2d6` etc.)
 
 ---
 
@@ -175,7 +174,8 @@ Players with awakened or technomancer characters need quick access to their magi
 - [ ] Per-spell **Cast** action — show the casting dice pool inline (`Magic + Spellcasting`)
 - [ ] **Drain** prompt after casting — show drain resistance pool and drain DV; log the result
 - [ ] Force selection slider before casting (1 to `Magic` rating); update drain DV dynamically
-- [ ] Sustained spell tracker — mark a spell as sustained; display a running list of sustained spells with drain DV
+- [x] Sustained spell toggle — mark a spell as sustained so its effects (e.g. initiative bonus) apply automatically ✅ PR #178
+- [ ] Sustained spell display — running list of active sustained spells with their drain DV
 
 ### 6b. Summoning & Binding ⚠️ partially implemented — PR #163
 

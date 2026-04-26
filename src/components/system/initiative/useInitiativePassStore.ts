@@ -17,11 +17,13 @@ export const useInitiativePassStore = (): InitiativePassStore => {
       sheetStore,
       (sheet) => ({
         passesCompleted: sheet.initiative?.passesCompleted ?? [],
+        rolledScore: sheet.initiative?.rolledScore,
       }),
       (sheet, state) =>
         produce(sheet, (draft) => {
           if (!draft.initiative) draft.initiative = { passesCompleted: [] }
           draft.initiative.passesCompleted = state.passesCompleted
+          draft.initiative.rolledScore = state.rolledScore
         }),
     )
 
@@ -35,3 +37,6 @@ export const useInitiativePassesCompleted = (
   const passesCompleted = useStore(store, selectPassesCompleted)
   return useMemo(() => new Set(passesCompleted), [passesCompleted])
 }
+
+export const useInitiativeRolledScore = (store: InitiativePassStore): number | undefined =>
+  useStore(store, (state) => state.rolledScore)
