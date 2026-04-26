@@ -86,16 +86,15 @@ export const SpiritDataSchema = z.object({
 }) satisfies z.ZodType<SpiritData>
 
 // SR4A p.295-302: spirit initiative is a flat score, not a dice roll.
-// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = (Intuition×2)+3.
+// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = (F×2)+3.
 export function calculateSpiritInitiative(force: number, type: SpiritType) {
-  const attrs = calculateSpiritAttributes(force, type)
   const physicalScore = (type === SpiritType.wind || type === SpiritType.fire)
     ? force * 2 + 3
     : force * 2 + 2
   return {
     physicalScore,
     physicalIp: 2,
-    astralBase: attrs[AttributeKey.intuition] * 2,
+    astralBase: force * 2,
     astralIp: 3,
   }
 }

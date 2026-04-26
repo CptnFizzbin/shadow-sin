@@ -138,18 +138,14 @@ describe("calculateSpiritInitiative", () => {
     expect(astralIp).toBe(3)
   })
 
-  it("astral base is Intuition×2 — uses modified intuition for earth spirits", () => {
-    // Earth at force 6: intuition = F-1 = 5, so astralBase = 10
-    const { astralBase } = calculateSpiritInitiative(6, SpiritType.earth)
+  it("astral base is F×2 for all spirit types, ignoring type-specific intuition modifiers", () => {
+    // Earth at force 6: astralBase = 6×2 = 12 (not intuition-based)
+    const { astralBase: earthAstral } = calculateSpiritInitiative(6, SpiritType.earth)
+    // Man at force 6: astralBase = 6×2 = 12 (not intuition-based)
+    const { astralBase: manAstral } = calculateSpiritInitiative(6, SpiritType.man)
 
-    expect(astralBase).toBe(10)
-  })
-
-  it("astral base reflects boosted intuition for Spirit of Man", () => {
-    // Man at force 6: intuition = F+1 = 7, so astralBase = 14
-    const { astralBase } = calculateSpiritInitiative(6, SpiritType.man)
-
-    expect(astralBase).toBe(14)
+    expect(earthAstral).toBe(12)
+    expect(manAstral).toBe(12)
   })
 })
 
