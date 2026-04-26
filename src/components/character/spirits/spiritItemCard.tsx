@@ -6,25 +6,15 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { AttributeValueRow } from "#/components/character/attributes/attributeValueRow.tsx"
 import { SpiritConditionMonitor } from "#/components/character/spirits/spiritConditionMonitor.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 
-const SPIRIT_ATTR_ORDER: AttributeKey[] = [
-  AttributeKey.body,
-  AttributeKey.agility,
-  AttributeKey.reaction,
-  AttributeKey.strength,
-  AttributeKey.charisma,
-  AttributeKey.intuition,
-  AttributeKey.logic,
-  AttributeKey.willpower,
-  AttributeKey.edge,
-  AttributeKey.magic,
-]
+const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
 
 interface SpiritItemCardProps {
   spirit: SpiritData
@@ -101,25 +91,11 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
             </Box>
           )}
           <Divider />
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              gap: 0.5,
-              textAlign: "center",
-            }}
-          >
-            {SPIRIT_ATTR_ORDER.map((key) => (
-              <Box key={key}>
-                <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-                  {AttributeLabels[key]}
-                </Typography>
-                <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  {attrs[key]}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+          <Stack sx={{ gap: 0 }}>
+            <AttributeValueRow values={attrs} attrKeys={PhysicalAttributes} />
+            <AttributeValueRow values={attrs} attrKeys={MentalAttributes} />
+            <AttributeValueRow values={attrs} attrKeys={SPIRIT_SPECIAL_ATTRS} />
+          </Stack>
           <Divider />
           <SpiritConditionMonitor spirit={spirit} onChange={onDamageChange} />
         </Stack>
