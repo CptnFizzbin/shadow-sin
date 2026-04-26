@@ -8,6 +8,8 @@ import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
 import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
+import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -29,6 +31,7 @@ export const Route = createFileRoute("/$characterId")({
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
+  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
@@ -44,7 +47,9 @@ function CharacterRoute() {
 
   return (
     <CharacterSheetProvider store={store}>
-      <CharacterSheetContent />
+      <DiceTrayProvider diceTrayApi={diceTrayApi}>
+        <CharacterSheetContent />
+      </DiceTrayProvider>
     </CharacterSheetProvider>
   )
 }
