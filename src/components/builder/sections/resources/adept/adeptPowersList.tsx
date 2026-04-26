@@ -4,29 +4,35 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { AdeptPowersListItem } from "#/components/builder/sections/resources/adept/adeptPowersListItem.tsx"
 import { usePowerPoints } from "#/components/character/adeptPowers/adeptPowersHooks.ts"
 import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPowersSelectors.ts"
-import { AdeptPowerFormDialog } from "#/components/character/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
+import { useAdeptPowerFormDialog } from "#/components/character/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
 import { useAdeptPowersStore } from "#/components/character/adeptPowers/useAdeptPowersStore.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
-
-type DialogState =
-  | null
-  | { open: boolean, type: "add" }
-  | { open: boolean, type: "edit", power: AdeptPowerData }
 
 export const AdeptPowersList: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()
   const adeptPowers = useStore(adeptPowersStore, selectAllAdeptPowers)
   const powerPoints = usePowerPoints()
-  const [dialogState, setDialogState] = useState<DialogState>(null)
+  const adeptPowerFormDialog = useAdeptPowerFormDialog()
 
   const savePower = (power: AdeptPowerData) => adeptPowersStore.save(power)
   const removePower = (power: AdeptPowerData) => adeptPowersStore.remove(power.id)
+
+  const handleAddPower = async () => {
+    const saved = await adeptPowerFormDialog.open().result()
+    if (saved) savePower(saved)
+  }
+
+  const handleEditPower = async (power: AdeptPowerData) => {
+    const saved = await adeptPowerFormDialog
+      .open({ power, onDelete: () => removePower(power) })
+      .result()
+    if (saved) savePower(saved)
+  }
 
   return (
     <Stack sx={{ gap: 1 }}>
@@ -42,7 +48,7 @@ export const AdeptPowersList: FC = () => {
         <AdeptPowersListItem
           key={power.id}
           power={power}
-          onEdit={() => setDialogState({ type: "edit", open: true, power })}
+          onEdit={() => handleEditPower(power)}
         />
       ))}
 
@@ -50,28 +56,10 @@ export const AdeptPowersList: FC = () => {
         startIcon={<RiAddLine />}
         color="secondary"
         variant="outlined"
-        onClick={() => setDialogState({ type: "add", open: true })}
+        onClick={handleAddPower}
       >
         Add Power
       </Button>
-
-      {dialogState?.type === "add" && (
-        <AdeptPowerFormDialog
-          open={dialogState.open}
-          onSave={savePower}
-          onClose={() => setDialogState({ ...dialogState, open: false })}
-        />
-      )}
-
-      {dialogState?.type === "edit" && (
-        <AdeptPowerFormDialog
-          open={dialogState.open}
-          power={dialogState.power}
-          onSave={savePower}
-          onDelete={() => removePower(dialogState.power)}
-          onClose={() => setDialogState({ ...dialogState, open: false })}
-        />
-      )}
     </Stack>
   )
 }
