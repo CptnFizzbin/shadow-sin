@@ -1,6 +1,6 @@
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
-import { SpiritType, SpiritTypeLabels } from "#/system/magic/traditionData.ts"
+import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import type { SkillInfo } from "#/system/skills/skillInfo.ts"

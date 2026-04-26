@@ -4,61 +4,38 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
-import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { WeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
+import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { WeaponItemCard } from "#/components/items/types/weapons/weaponItemCard.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-type WeaponDialogState =
-  | null
-  | { mode: "create", open: boolean }
-  | { mode: "edit", weapon: WeaponData, open: boolean }
-
-type AccessoryDialogState =
-  | null
-  | { mode: "create", parentId: UUID, open: boolean }
-  | { mode: "edit", item: ItemData, open: boolean }
-
 export const WeaponsList: FC = () => {
   const gearApi = useGearStore()
   const weapons = useGearByType<WeaponData>(ItemType.weapon)
-  const [weaponDialog, setWeaponDialog] = useState<WeaponDialogState>(null)
-  const [accessoryDialog, setAccessoryDialog] = useState<AccessoryDialogState>(null)
+  const weaponFormDialog = useWeaponFormDialog()
+  const accessoryFormDialog = useItemFormDialog()
 
   const topLevelWeapons = weapons.filter((weapon) => !weapon.parentId)
   const getAccessories = (parentId: string) =>
     weapons.filter((weapon) => weapon.parentId === parentId)
 
-  const closeWeaponDialog = () =>
-    setWeaponDialog((prev) => prev && { ...prev, open: false })
-
-  const closeAccessoryDialog = () =>
-    setAccessoryDialog((prev) => prev && { ...prev, open: false })
-
-  const handleAddWeapon = (weapon: WeaponData) => {
-    gearApi.save(weapon)
-    closeWeaponDialog()
+  const handleEditWeapon = async (weapon?: WeaponData) => {
+    const saved = await weaponFormDialog.open({ weapon }).result()
+    if (saved) gearApi.save(saved)
   }
 
-  const handleUpdateWeapon = (weapon: WeaponData) => {
-    gearApi.save(weapon)
-    closeWeaponDialog()
+  const handleAddAccessory = async (parentId: UUID) => {
+    const saved = await accessoryFormDialog.open({ label: "Weapon Accessory" }).result()
+    if (saved) gearApi.save({ ...saved, parentId })
   }
 
-  const handleAddAccessory = (item: ItemData) => {
-    if (accessoryDialog?.mode !== "create") return
-    gearApi.save({ ...item, parentId: accessoryDialog.parentId })
-    closeAccessoryDialog()
-  }
-
-  const handleUpdateAccessory = (item: ItemData) => {
-    gearApi.save(item)
-    closeAccessoryDialog()
+  const handleEditAccessory = async (accessory: ItemData) => {
+    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" }).result()
+    if (saved) gearApi.save(saved)
   }
 
   return (
@@ -71,12 +48,10 @@ export const WeaponsList: FC = () => {
             key={weapon.id}
             weapon={weapon}
             accessories={accessories}
-            onEdit={() => setWeaponDialog({ mode: "edit", weapon, open: true })}
+            onEdit={() => handleEditWeapon(weapon)}
             onRemove={() => gearApi.remove(weapon)}
-            onAddAccessory={() =>
-              setAccessoryDialog({ mode: "create", parentId: weapon.id, open: true })}
-            onEditAccessory={(accessory) =>
-              setAccessoryDialog({ mode: "edit", item: accessory, open: true })}
+            onAddAccessory={() => handleAddAccessory(weapon.id as UUID)}
+            onEditAccessory={(accessory) => handleEditAccessory(accessory)}
             onRemoveAccessory={(accessory) => gearApi.remove(accessory)}
           />
         )
@@ -86,52 +61,12 @@ export const WeaponsList: FC = () => {
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setWeaponDialog({ mode: "create", open: true })}
+        onClick={() => handleEditWeapon()}
         color="secondary"
         fullWidth
       >
         Add Weapon
       </Button>
-
-      {weaponDialog?.mode === "create" && (
-        <WeaponFormDialog
-          open={weaponDialog.open}
-          onSave={handleAddWeapon}
-          onClose={closeWeaponDialog}
-          onClosed={() => setWeaponDialog(null)}
-        />
-      )}
-
-      {weaponDialog?.mode === "edit" && (
-        <WeaponFormDialog
-          open={weaponDialog.open}
-          weapon={weaponDialog.weapon}
-          onSave={handleUpdateWeapon}
-          onClose={closeWeaponDialog}
-          onClosed={() => setWeaponDialog(null)}
-        />
-      )}
-
-      {accessoryDialog?.mode === "create" && (
-        <ItemFormDialog
-          open={accessoryDialog.open}
-          label="Weapon Accessory"
-          onSave={handleAddAccessory}
-          onClose={closeAccessoryDialog}
-          onClosed={() => setAccessoryDialog(null)}
-        />
-      )}
-
-      {accessoryDialog?.mode === "edit" && (
-        <ItemFormDialog
-          open={accessoryDialog.open}
-          item={accessoryDialog.item}
-          label="Weapon Accessory"
-          onSave={handleUpdateAccessory}
-          onClose={closeAccessoryDialog}
-          onClosed={() => setAccessoryDialog(null)}
-        />
-      )}
     </Stack>
   )
 }

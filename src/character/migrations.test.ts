@@ -22,8 +22,8 @@ function makeManager(): {
 } {
   const memStorage = new MemoryStorage()
   const provider = new LocalStorageProvider({ storagePrefix: "test" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(provider as any).getStorage = () => memStorage
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ; (provider as any).getStorage = () => memStorage
 
   return { manager: new CharacterManager(new StorageManager(provider)), provider }
 }

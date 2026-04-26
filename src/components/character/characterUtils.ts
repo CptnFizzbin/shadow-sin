@@ -13,6 +13,9 @@ import { metatypes } from "#/system/metatypeData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
+/**
+ * Hook to retrieve all attribute information for the current metatype and awakening.
+ */
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
   const awakening = useCharacterSheet((sheet) => awakenings[sheet.biology.awakening])
@@ -23,6 +26,9 @@ export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   }
 }
 
+/**
+ * Hook to retrieve information for a specific attribute, including bonuses.
+ */
 export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
   const attributes = useAllAttrInfos()
 
@@ -40,6 +46,9 @@ export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
   return attributeInfo
 }
 
+/**
+ * Hook to retrieve the current value of an attribute from the character sheet.
+ */
 export const useAttr = (attribute: AttributeKey) => {
   if (attribute === AttributeKey.essence) {
     throw new Error("Use useEssenceAttr (or useEssenceInfo) for the Essence attribute")
@@ -50,6 +59,9 @@ export const useAttr = (attribute: AttributeKey) => {
   })
 }
 
+/**
+ * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
+ */
 export const useActiveSkillRating = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
 
@@ -64,6 +76,9 @@ export const useActiveSkillRating = (skill: SkillKey) => {
   return Math.max(skillRating, groupRating, 0)
 }
 
+/**
+ * Hook to retrieve the total value for an active skill check (rating + attribute + mods).
+ */
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
@@ -77,6 +92,9 @@ export const useActiveSkill = (skill: SkillKey) => {
   return rating + attribute + totalMod
 }
 
+/**
+ * Hook to retrieve essence usage and remaining values.
+ */
 export const useEssenceInfo = () => {
   const essenceInfo = useAttrInfo(AttributeKey.essence)
   const implants = useGearByType<ImplantData>(ItemType.implant)

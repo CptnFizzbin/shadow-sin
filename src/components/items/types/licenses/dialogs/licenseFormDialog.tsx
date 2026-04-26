@@ -1,5 +1,10 @@
 import type { FC } from "react"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useLicenseForm } from "#/components/items/types/licenses/forms/useLicenseForm.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
@@ -50,4 +55,25 @@ export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
       options={{ hasRating: { forced: true }, isSubItem: { forced: true } }}
     />
   )
+}
+
+export type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+
+export const useLicenseFormDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseLicenseFormDialogProps) => dialogApi.open<LicenseData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <LicenseFormDialog
+            {...dialogProps}
+            {...props}
+            onSave={(license) => dialogProps.onClose(license)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }

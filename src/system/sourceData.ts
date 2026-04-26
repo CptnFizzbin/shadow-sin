@@ -1,15 +1,24 @@
 import { z } from "zod"
 
+/**
+ * Represents the source (book and page) of an item or rule.
+ */
 export interface SourceData {
   book: string
   page: number
 }
 
+/**
+ * Zod schema for validating SourceData.
+ */
 export const SourceDataSchema = z.object({
   book: z.string(),
   page: z.number().int().min(1),
 }) satisfies z.ZodType<SourceData>
 
+/**
+ * List of available books and their display labels.
+ */
 export const bookOptions = [
   { value: "SR20A", label: "ShadowRun 20th" },
   { value: "AU", label: "Augmentation" },

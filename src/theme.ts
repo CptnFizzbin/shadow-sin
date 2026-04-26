@@ -25,6 +25,10 @@ export const theme = createTheme({
           default: "#EFF6FF",
           paper: "#DBEAFE",
         },
+        text: {
+          primary: "#1E1B4B",
+          secondary: "#4338CA",
+        },
         divider: "rgba(37, 99, 235, 0.5)",
       },
     },

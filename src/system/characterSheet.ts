@@ -11,6 +11,7 @@ import type { LoanData } from "#/system/loanData.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+import type { SpiritData } from "#/system/magic/spiritData.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 import type { MetatypeType } from "#/system/metatypeData.ts"
@@ -22,6 +23,9 @@ import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 export const CHARACTER_SHEET_VERSION = 1
 
+/**
+ * Metadata for tracking the version and migration state of a character sheet.
+ */
 export interface CharacterMeta {
   version: number
   /** IDs of all migrations that have already been applied to this character. */
@@ -33,7 +37,11 @@ export const CharacterMetaSchema = z.object({
   appliedMigrations: z.string().array().default([]),
 })
 
+/**
+ * The root structure of a Shadowrun 4e character sheet.
+ */
 export interface CharacterSheet {
+
   id: UUID
   _meta_: CharacterMeta
 
@@ -105,5 +113,6 @@ export interface CharacterSheet {
   spells: SpellData[]
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
+  spirits: SpiritData[]
   adeptPowers: AdeptPowerData[]
 }
