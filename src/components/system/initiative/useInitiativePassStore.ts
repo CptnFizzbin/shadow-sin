@@ -17,14 +17,14 @@ export const useInitiativePassStore = (): InitiativePassStore => {
       sheetStore,
       (sheet) => ({
         passesCompleted: sheet.initiative?.passesCompleted ?? [],
-        rolledScore: sheet.initiative?.rolledScore,
+        rolledResults: sheet.initiative?.rolledResults,
         goingFirst: sheet.initiative?.goingFirst,
       }),
       (sheet, state) =>
         produce(sheet, (draft) => {
           if (!draft.initiative) draft.initiative = { passesCompleted: [] }
           draft.initiative.passesCompleted = state.passesCompleted
-          draft.initiative.rolledScore = state.rolledScore
+          draft.initiative.rolledResults = state.rolledResults
           draft.initiative.goingFirst = state.goingFirst
         }),
     )
@@ -40,8 +40,8 @@ export const useInitiativePassesCompleted = (
   return useMemo(() => new Set(passesCompleted), [passesCompleted])
 }
 
-export const useInitiativeRolledScore = (store: InitiativePassStore): number | undefined =>
-  useStore(store, (state) => state.rolledScore)
+export const useInitiativeRolledResults = (store: InitiativePassStore): number[] | undefined =>
+  useStore(store, (state) => state.rolledResults)
 
 export const useInitiativeGoingFirst = (store: InitiativePassStore): boolean =>
   useStore(store, (state) => state.goingFirst === true)

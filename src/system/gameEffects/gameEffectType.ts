@@ -6,5 +6,6 @@ export enum GameEffectType {
   skillMod = "skillMod",
   skillSpecializationMod = "skillSpecializationMod",
   extraInitiativePasses = "extraInitiativePasses",
+  extraInitiativeDice = "extraInitiativeDice",
   painTolerance = "painTolerance",
 }

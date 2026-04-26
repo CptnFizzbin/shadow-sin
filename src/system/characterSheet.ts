@@ -105,7 +105,7 @@ export interface CharacterSheet {
 
   initiative?: {
     passesCompleted: number[]
-    rolledScore?: number
+    rolledResults?: number[]
     goingFirst?: boolean
   }
 

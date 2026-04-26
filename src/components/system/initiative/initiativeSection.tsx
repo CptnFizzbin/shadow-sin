@@ -15,29 +15,31 @@ import {
   useInitiativeGoingFirst,
   useInitiativePassStore,
   useInitiativePassesCompleted,
-  useInitiativeRolledScore,
+  useInitiativeRolledResults,
 } from "#/components/system/initiative/useInitiativePassStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { countHits } from "#/system/dice/diceRoll.ts"
 
 export const InitiativeSection: FC = () => {
-  const { baseScore, initiativePasses } = useInitiative()
+  const { dicePool, initiativePasses } = useInitiative()
   const initiativePassStore = useInitiativePassStore()
-  const rolledScore = useInitiativeRolledScore(initiativePassStore)
+  const rolledResults = useInitiativeRolledResults(initiativePassStore)
   const passesCompleted = useInitiativePassesCompleted(initiativePassStore)
   const goingFirst = useInitiativeGoingFirst(initiativePassStore)
 
   const edgeStore = useEdgeStore()
   const edgeCurrent = useStore(edgeStore, selectEdgeCurrent)
 
-  const totalScore = baseScore + (rolledScore ?? 0)
-  const currentScore = totalScore - (passesCompleted.size * 10)
+  const hits = rolledResults ? countHits(rolledResults) : undefined
+  const initiativeScore = hits !== undefined ? dicePool + hits : undefined
+  const currentScore = (initiativeScore ?? 0) - (passesCompleted.size * 10)
 
   const handleRoll = (results: number[]) => {
-    initiativePassStore.setRolledScore(results[0])
+    initiativePassStore.setRolledResults(results)
   }
 
   const handleClearRoll = () => {
-    initiativePassStore.clearRolledScore()
+    initiativePassStore.clearRolledResults()
   }
 
   const handleResetRound = () => {
@@ -53,8 +55,6 @@ export const InitiativeSection: FC = () => {
     edgeStore.setCurrent(edgeCurrent + 1)
     initiativePassStore.setGoingFirst(false)
   }
-
-  const rollResult = rolledScore !== undefined ? [rolledScore] : undefined
 
   return (
     <Grid container columns={2} spacing={1}>
@@ -72,25 +72,18 @@ export const InitiativeSection: FC = () => {
       <Grid size={2}>
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Initiative" />
-          <Stack direction="row" sx={{ gap: 1, alignItems: "baseline", flexWrap: "wrap" }}>
-            <Typography color="text.secondary">
-              {`Base: ${baseScore}`}
-            </Typography>
-            {rolledScore !== undefined && (
-              <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                {`= ${totalScore}`}
-              </Typography>
-            )}
-          </Stack>
+          <Typography color="text.secondary">
+            {`Pool: ${dicePool}d6`}
+          </Typography>
           <DiceRollButton
-            count={1}
-            result={rollResult}
+            count={dicePool}
+            result={rolledResults}
             onRoll={handleRoll}
             onClear={handleClearRoll}
-            label="Roll Initiative"
-            displayMode="sum"
+            label={`Roll ${dicePool}d6`}
+            displayMode="hits"
           />
-          {rolledScore !== undefined && passesCompleted.size > 0 && (
+          {initiativeScore !== undefined && passesCompleted.size > 0 && (
             <Typography color="text.secondary">
               {`Current: ${currentScore}`}
             </Typography>
