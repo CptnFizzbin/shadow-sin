@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
@@ -79,4 +80,26 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+interface UseImportConflictDialogProps {
+  incomingCharacter: CharacterSheet
+  existingCharacter: CharacterSheet
+}
+
+export const useImportConflictDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseImportConflictDialogProps) => dialogApi.open<ImportConflictChoice>(
+      (dialogProps) => (
+        <ImportConflictDialog
+          incomingCharacter={props.incomingCharacter}
+          existingCharacter={props.existingCharacter}
+          onChoice={(choice) => dialogProps.onClose(choice)}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

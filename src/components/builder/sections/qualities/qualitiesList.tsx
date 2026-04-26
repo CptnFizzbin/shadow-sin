@@ -3,20 +3,14 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/useQualitiesBuildPoints.ts"
 import { QualitiesListItem } from "#/components/builder/sections/qualities/qualitiesListItem.tsx"
 import { QualitiesMaxNegativeBpBonus } from "#/components/builder/sections/qualities/qualitiesUtils.ts"
-import { QualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
+import { useQualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
 import { selectAllQualities } from "#/components/character/qualities/qualitiesSelectors.ts"
 import { useQualitiesStore } from "#/components/character/qualities/useQualitiesStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { QualityData } from "#/system/qualityData.ts"
-
-type DialogState =
-  | { open: true, quality: QualityData }
-  | { open: false, quality?: QualityData }
 
 interface QualitiesListProps {
   type?: "positive" | "negative" | "all"
@@ -26,15 +20,7 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
   const qualitiesStore = useQualitiesStore()
   const qualities = useStore(qualitiesStore, selectAllQualities)
   const qualitiesBuildPoints = useQualitiesBuildPoints()
-
-  const [editDialogState, setEditDialogState] = useState<DialogState>({
-    open: false,
-  })
-
-  const closeDialog = () =>
-    setEditDialogState((prev) => prev && { ...prev, open: false })
-  const clearDialog = () =>
-    setEditDialogState({ open: false, quality: undefined })
+  const qualityFormDialog = useQualityFormDialog()
 
   let label: string
   let bpLabel: string
@@ -90,25 +76,15 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
                 <QualitiesListItem
                   key={quality.name}
                   quality={quality}
-                  onClick={() => setEditDialogState({ open: true, quality })}
+                  onClick={() => qualityFormDialog.open({
+                    quality,
+                    onSave: (updated) => qualitiesStore.update(updated),
+                  })}
                   onRemove={() => qualitiesStore.remove(quality.name)}
                 />
               ))}
             </Stack>
           )}
-
-      {editDialogState.quality && (
-        <QualityFormDialog
-          open={editDialogState.open}
-          quality={editDialogState.quality}
-          onClose={closeDialog}
-          onClosed={clearDialog}
-          onSave={(quality) => {
-            qualitiesStore.update(quality)
-            closeDialog()
-          }}
-        />
-      )}
     </>
   )
 }
