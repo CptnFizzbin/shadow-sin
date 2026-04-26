@@ -3,15 +3,14 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { QualitiesList } from "#/components/builder/sections/qualities/qualitiesList.tsx"
-import { QualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
+import { useQualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
 import { useQualitiesStore } from "#/components/character/qualities/useQualitiesStore.ts"
 
 export const QualitiesSection: FC = () => {
   const qualitiesStore = useQualitiesStore()
-  const [addDialogOpen, setAddDialogOpen] = useState(false)
+  const qualityFormDialog = useQualityFormDialog()
 
   return (
     <Stack sx={{ gap: 0.5 }}>
@@ -25,20 +24,13 @@ export const QualitiesSection: FC = () => {
         variant="outlined"
         color="secondary"
         startIcon={<RiAddLine />}
-        onClick={() => setAddDialogOpen(true)}
+        onClick={() => qualityFormDialog.open({
+          onSave: (quality) => qualitiesStore.add(quality),
+        })}
         size="small"
       >
         Add Quality
       </Button>
-
-      <QualityFormDialog
-        open={addDialogOpen}
-        onClose={() => setAddDialogOpen(false)}
-        onSave={(quality) => {
-          qualitiesStore.add(quality)
-          setAddDialogOpen(false)
-        }}
-      />
     </Stack>
   )
 }

@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
 import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
@@ -12,14 +13,13 @@ import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
 } from "#/components/items/types/implants/implantUtils.ts"
+import { useGearStore } from "#/components/items/useGearStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
 interface ImplantItemCardProps extends Omit<ItemCardProps, "children"> {
   implant: ImplantData
-  onSave?: (value: ImplantData) => void
-  onRemove?: () => void
   onAddAccessory?: () => void
   accessories?: ImplantData[]
 }
@@ -38,8 +38,6 @@ const typeLabel: Partial<Record<string, string>> = {
 
 export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   implant,
-  onSave,
-  onRemove,
   onAddAccessory,
   accessories = [],
   ...props
@@ -48,15 +46,25 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const implantFormDialog = useImplantFormDialog()
+  const gearStore = useGearStore()
+  const confirmDialog = useConfirmDialog()
+
+  const handleRemove = async () => {
+    const result = await confirmDialog.confirm({
+      title: <>Remove {implant.name}?</>,
+      body: "Are you sure you want to remove this implant? This action cannot be undone.",
+      confirmLabel: "Remove Implant",
+    })
+    if (result) gearStore.remove(implant)
+  }
 
   const handleEdit = async () => {
-    if (!onSave) return
     const saved = await implantFormDialog.open({ implant, parentId: implant.parentId }).result()
-    if (saved) onSave(saved)
+    if (saved) gearStore.save(saved)
   }
 
   return (
-    <ItemCard onClick={onSave ? handleEdit : undefined} {...props}>
+    <ItemCard onClick={handleEdit} {...props}>
       <ItemCard.Title>{implant.name}</ItemCard.Title>
 
       <ItemCard.Meta type="cost">
@@ -109,7 +117,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+      <ItemCard.Action type="icon" color="error" onClick={handleRemove}>
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
@@ -121,12 +129,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
         )}
 
         {accessories.map((accessory) => (
-          <ImplantItemCard
-            onSave={onSave}
-            key={accessory.id}
-            implant={accessory}
-            variant="borderless"
-          />
+          <ImplantItemCard key={accessory.id} implant={accessory} variant="borderless" />
         ))}
       </ItemCard.Children>
     </ItemCard>

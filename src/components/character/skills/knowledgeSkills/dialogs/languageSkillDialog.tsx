@@ -11,6 +11,7 @@ import {
 import {
   useLanguageSkillForm,
 } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
@@ -86,4 +87,27 @@ export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseLanguageSkillDialogProps = Omit<
+  LanguageSkillDialogProps,
+  "open" | "onSave" | "onClose" | "onClosed"
+>
+
+export const useLanguageSkillDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props?: UseLanguageSkillDialogProps) => dialogApi.open<LanguageSkillData>(
+      (dialogProps) => (
+        <LanguageSkillDialog
+          {...props}
+          open={dialogProps.open}
+          onSave={(skill) => dialogProps.onClose(skill)}
+          onClose={() => dialogProps.onClose()}
+          onClosed={dialogProps.onClosed}
+        />
+      ),
+    ),
+  }
 }

@@ -11,6 +11,7 @@ import type { LoanData } from "#/system/loanData.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+import type { SpiritData } from "#/system/magic/spiritData.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 import type { MetatypeType } from "#/system/metatypeData.ts"
@@ -112,5 +113,6 @@ export interface CharacterSheet {
   spells: SpellData[]
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
+  spirits: SpiritData[]
   adeptPowers: AdeptPowerData[]
 }

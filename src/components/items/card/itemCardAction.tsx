@@ -4,7 +4,7 @@ import type { IconButtonProps } from "@mui/material/IconButton"
 import IconButton from "@mui/material/IconButton"
 import type { FC } from "react"
 
-export type ItemCardActionProps =
+type ItemCardActionProps =
   | ({ type: "button" } & Omit<ButtonProps, "type">)
   | ({ type: "icon" } & Omit<IconButtonProps, "type">)
 

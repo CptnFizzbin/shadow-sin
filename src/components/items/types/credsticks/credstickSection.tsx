@@ -3,24 +3,20 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { CredstickCard } from "#/components/items/types/credsticks/credstickCard.tsx"
-import type { CredstickDialogMode } from "#/components/items/types/credsticks/credstickDialog.tsx"
-import { CredstickDialog } from "#/components/items/types/credsticks/credstickDialog.tsx"
+import { useCredstickDialog } from "#/components/items/types/credsticks/credstickDialog.tsx"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-type DialogState = { open: boolean, mode: CredstickDialogMode, credstick?: CredstickData } | null
-
 export const CredstickSection: FC = () => {
   const credsticks = useGearByType<CredstickData>(ItemType.credstick)
-  const [dialogState, setDialogState] = useState<DialogState>(null)
+  const credstickDialog = useCredstickDialog()
 
   const handleCardClick = (credstick: CredstickData) => {
-    setDialogState({ open: true, mode: "edit", credstick })
+    credstickDialog.open({ mode: "edit", credstick })
   }
 
   return (
@@ -51,7 +47,7 @@ export const CredstickSection: FC = () => {
           size="small"
           variant="outlined"
           startIcon={<RiAddLine size={14} />}
-          onClick={() => setDialogState({ open: true, mode: "add-certified" })}
+          onClick={() => credstickDialog.open({ mode: "add-certified" })}
           fullWidth
         >
           Create
@@ -60,22 +56,12 @@ export const CredstickSection: FC = () => {
           size="small"
           variant="outlined"
           startIcon={<RiAddLine size={14} />}
-          onClick={() => setDialogState({ open: true, mode: "add" })}
+          onClick={() => credstickDialog.open({ mode: "add" })}
           fullWidth
         >
           Receive
         </Button>
       </Stack>
-
-      {dialogState !== null && (
-        <CredstickDialog
-          open={dialogState.open}
-          mode={dialogState.mode}
-          credstick={dialogState.credstick}
-          onClose={() => setDialogState((prev) => prev && { ...prev, open: false })}
-          onClosed={() => setDialogState(null)}
-        />
-      )}
     </Stack>
   )
 }

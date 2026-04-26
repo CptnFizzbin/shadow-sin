@@ -10,9 +10,10 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
+import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { GameEffectRow } from "#/components/system/gameEffects/gameEffectRow.tsx"
 import { getDefaultTarget } from "#/components/system/gameEffects/gameEffectUtils.ts"
-import type { DialogApiDialogProps } from "#/components/ui/dialogs/dialogApi.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -94,4 +95,18 @@ export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, keyof DialogApiDialogProps<GameEffectData[]>>
+
+export const useGameEffectsDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseGameEffectsDialogProps) => dialogApi.open<GameEffectData[]>(
+      (dialogProps) => (
+        <GameEffectsDialog {...dialogProps} {...props} />
+      ),
+    ),
+  }
 }

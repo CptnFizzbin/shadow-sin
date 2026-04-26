@@ -5,21 +5,21 @@ import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { AddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
+import { useAddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
 import { selectCurrentKarma, selectTotalKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
-import { dialogApi } from "#/components/ui/dialogs/dialogApi.ts"
 import { Label } from "#/components/ui/text/label"
 
 export const KarmaSection: FC = () => {
+  const addKarmaDialog = useAddKarmaDialog()
   const karmaStore = useKarmaStore()
   const currentKarma = useStore(karmaStore, selectCurrentKarma)
   const totalKarma = useStore(karmaStore, selectTotalKarma)
 
   const handleOpenAddKarma = () => {
-    dialogApi.open<void>((props) => (
-      <AddKarmaDialog {...props} onSubmit={(amount) => karmaStore.addKarma(amount)} />
-    ))
+    addKarmaDialog.open({
+      onSubmit: (amount) => karmaStore.addKarma(amount),
+    })
   }
 
   return (

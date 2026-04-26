@@ -1,11 +1,10 @@
 import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import type { ChangeEvent, FC } from "react"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 
 import { yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
-import type { ImportConflictChoice } from "#/components/character/exportImport/importConflictDialog.tsx"
-import { ImportConflictDialog } from "#/components/character/exportImport/importConflictDialog.tsx"
+import { useImportConflictDialog } from "#/components/character/exportImport/importConflictDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
@@ -33,8 +32,7 @@ function resolveAlias(
 
 export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImported }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [pendingCharacter, setPendingCharacter] = useState<CharacterSheet | null>(null)
-  const [existingCharacter, setExistingCharacter] = useState<CharacterSheet | null>(null)
+  const importConflictDialog = useImportConflictDialog()
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -55,41 +53,37 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
 
     const existing = await localCharacterManager.getCharacter(character.id)
 
-    if (existing) {
-      setPendingCharacter(character)
-      setExistingCharacter(existing)
-    } else {
+    if (!existing) {
       await localCharacterManager.forceSave(character)
       await onImported?.()
+      return
     }
-  }
 
-  const handleConflictChoice = async (choice: ImportConflictChoice) => {
-    if (!pendingCharacter) return
+    const choice = await importConflictDialog.open({
+      incomingCharacter: character,
+      existingCharacter: existing,
+    }).result()
 
     if (choice === "overwrite") {
-      await localCharacterManager.forceSave(pendingCharacter)
+      await localCharacterManager.forceSave(character)
       await onImported?.()
     } else if (choice === "create-new") {
       const allCharacters = await localCharacterManager.listCharacters()
       const existingAliases = new Set(
         Object.values(allCharacters).map((c) => c.profile.alias),
       )
-      const newAlias = resolveAlias(pendingCharacter.profile.alias, existingAliases)
+      const newAlias = resolveAlias(character.profile.alias, existingAliases)
       const newCharacter: CharacterSheet = {
-        ...pendingCharacter,
+        ...character,
         id: crypto.randomUUID(),
         profile: {
-          ...pendingCharacter.profile,
+          ...character.profile,
           alias: newAlias,
         },
       }
       await localCharacterManager.forceSave(newCharacter)
       await onImported?.()
     }
-
-    setPendingCharacter(null)
-    setExistingCharacter(null)
   }
 
   return (
@@ -108,14 +102,6 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
       >
         Import YAML
       </Button>
-
-      {pendingCharacter && existingCharacter && (
-        <ImportConflictDialog
-          incomingCharacter={pendingCharacter}
-          existingCharacter={existingCharacter}
-          onChoice={(choice) => { void handleConflictChoice(choice) }}
-        />
-      )}
     </>
   )
 }

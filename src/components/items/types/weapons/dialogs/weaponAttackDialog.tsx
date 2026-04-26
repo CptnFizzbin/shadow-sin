@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
@@ -20,12 +21,14 @@ interface WeaponAttackDialogProps {
   weapon: WeaponData
   open: boolean
   onClose: () => void
+  onClosed?: () => void
 }
 
 export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   weapon,
   open,
   onClose,
+  onClosed,
 }) => {
   const isFirearm = isFirearmData(weapon)
   const firearm = isFirearm ? (weapon as FirearmData) : undefined
@@ -35,7 +38,7 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   )
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
       <DialogTitle variant="h3">{weapon.name}</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
         <Stack sx={{ gap: 1.5 }}>
@@ -96,4 +99,22 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
       </DialogContent>
     </Dialog>
   )
+}
+
+export type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed">
+
+export const useWeaponAttackDialog = () => {
+  const dialogApi = useDialogApi()
+
+  return {
+    open: (props: UseWeaponAttackDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <WeaponAttackDialog
+          {...dialogProps}
+          {...props}
+          onClose={() => dialogProps.onClose()}
+        />
+      ),
+    ),
+  }
 }

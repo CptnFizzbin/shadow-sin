@@ -3,18 +3,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
-import { useState } from "react"
 
 import { ContactRow } from "#/components/character/contacts/contactsListItem.tsx"
-import { ContactFormDialog } from "#/components/character/contacts/form/contactFormDialog.tsx"
+import { useContactFormDialog } from "#/components/character/contacts/form/contactFormDialog.tsx"
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
-import { useConfirmDialog } from "#/components/ui/dialogs/useConfirmDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
-
-interface DialogState {
-  open: boolean
-  contact?: ContactData
-}
 
 interface ContactsListProps {
   contacts: ContactData[]
@@ -25,17 +19,9 @@ export const ContactsList: FC<ContactsListProps> = ({
   contacts,
   emptyState,
 }) => {
-  const confirmDialog = useConfirmDialog({ id: "remove-contact-confirm" })
+  const confirmDialog = useConfirmDialog()
+  const contactFormDialog = useContactFormDialog()
   const contactsStore = useContactsStore()
-  const [dialogState, setDialogState] = useState<DialogState | null>(null)
-
-  const onDialogClose = () => {
-    setDialogState((prev) => prev && { ...prev, open: false })
-  }
-
-  const onDialogClosed = () => {
-    setDialogState(null)
-  }
 
   const onRemove = async (contact: ContactData) => {
     if (await confirmDialog.confirm({
@@ -48,42 +34,31 @@ export const ContactsList: FC<ContactsListProps> = ({
   }
 
   return (
-    <>
-      <Stack sx={{ gap: 1 }}>
-        {contacts.length === 0 && (emptyState || (
-          <Typography color="text.secondary" sx={{ pl: 1 }}>
-            No contacts added
-          </Typography>
-        ))}
+    <Stack sx={{ gap: 1 }}>
+      {contacts.length === 0 && (emptyState || (
+        <Typography color="text.secondary" sx={{ pl: 1 }}>
+          No contacts added
+        </Typography>
+      ))}
 
-        {contacts.map((contact) => (
-          <ContactRow
-            key={contact.id}
-            contact={contact}
-            onClick={() => setDialogState({ contact, open: true })}
-            onRemove={() => onRemove(contact)}
-          />
-        ))}
-
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<RiAddLine />}
-          onClick={() => setDialogState({ open: true })}
-          size="small"
-        >
-          Add Contact
-        </Button>
-      </Stack>
-
-      {dialogState && (
-        <ContactFormDialog
-          open={dialogState.open}
-          contact={dialogState.contact}
-          onClose={onDialogClose}
-          onClosed={onDialogClosed}
+      {contacts.map((contact) => (
+        <ContactRow
+          key={contact.id}
+          contact={contact}
+          onClick={() => contactFormDialog.open({ contact })}
+          onRemove={() => onRemove(contact)}
         />
-      )}
-    </>
+      ))}
+
+      <Button
+        variant="outlined"
+        color="secondary"
+        startIcon={<RiAddLine />}
+        onClick={() => contactFormDialog.open()}
+        size="small"
+      >
+        Add Contact
+      </Button>
+    </Stack>
   )
 }

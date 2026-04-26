@@ -1,7 +1,9 @@
 import Box from "@mui/material/Box"
+import ButtonBase from "@mui/material/ButtonBase"
 import Stack from "@mui/material/Stack"
-import type { FC, ReactElement, ReactNode } from "react"
-import React, { Children, isValidElement } from "react"
+import type { SxProps } from "@mui/material/styles"
+import type { FC, PropsWithChildren, ReactElement, ReactNode } from "react"
+import { Children, isValidElement } from "react"
 
 import { ItemCardAction } from "#/components/items/card/itemCardAction.tsx"
 import { ItemCardAddChildButton } from "#/components/items/card/itemCardAddChildButton.tsx"
@@ -39,33 +41,21 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
 
   const hasMiddleRow = statMetas.length > 0 || sourceMetas.length > 0
 
-  const handleRootClick = (e: React.MouseEvent) => {
-    if (!onClick) return
-    const target = e.target as HTMLElement
-    const interactive = target.closest("button, a, [role='button']")
-    if (interactive && interactive !== e.currentTarget) return
-    onClick()
-  }
+  const Wrapper: FC<PropsWithChildren<{ onClick?: () => void, sx: SxProps }>> = onClick ? ButtonBase : Box
 
   return (
-    <Stack direction="column" sx={{ gap: 0 }} data-testid="diagnostic-item-card-root">
-      <Box
-        onClick={handleRootClick}
+    <Stack direction="column" sx={{ gap: 0 }}>
+      <Wrapper
+        onClick={onClick}
         sx={{
           padding: 1,
           border: variant === "outlined" ? "1px solid" : "none",
           borderColor: "primary.dark",
-          display: "flex",
           justifyContent: "flex-start",
           alignItems: "flex-start",
           textAlign: "left",
           flexDirection: "column",
           gap: 0.5,
-          width: "100%",
-          ...(onClick && {
-            "cursor": "pointer",
-            "&:hover": { bgcolor: "action.hover" },
-          }),
         }}
       >
         <Stack
@@ -80,11 +70,11 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             {titleNode}
           </Box>
 
-          <Stack
-            direction="row"
-            sx={{ gap: 0.5, alignItems: "center", ml: "auto" }}
-          >
+          <Stack direction="row" sx={{ gap: 0.5 }}>
             {costMetas}
+          </Stack>
+
+          <Stack direction="row" sx={{ gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
             {iconActions}
           </Stack>
         </Stack>
@@ -103,10 +93,14 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             </Stack>
           </Stack>
         )}
-      </Box>
+      </Wrapper>
 
       {buttonActions.length > 0 && (
-        <Stack direction="row" sx={{ flexWrap: "wrap", border: "1px solid", borderColor: "divider" }}>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: "wrap", border: "1px solid", borderColor: "divider" }}
+          onClick={(e) => e.stopPropagation()}
+        >
           {buttonActions}
         </Stack>
       )}

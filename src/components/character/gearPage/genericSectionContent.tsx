@@ -2,15 +2,12 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
-
-type GenericDialogState = null | { open: boolean, item?: ItemData }
 
 interface GenericSectionContentProps {
   items: ItemData[]
@@ -26,13 +23,11 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   itemType,
 }) => {
   const gearStore = useGearStore()
-  const [dialogState, setDialogState] = useState<GenericDialogState>(null)
+  const itemFormDialog = useItemFormDialog()
 
-  const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
-
-  const handleSave = (item: ItemData) => {
-    gearStore.save(item)
-    closeDialog()
+  const handleEdit = async (item?: ItemData) => {
+    const saved = await itemFormDialog.open({ item, itemType, label: itemLabel }).result()
+    if (saved) gearStore.save(saved)
   }
 
   return (
@@ -42,12 +37,12 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
           key={item.id}
           item={item}
           subItems={getChildren(item.id)}
-          onEdit={() => setDialogState({ open: true, item })}
+          onEdit={() => handleEdit(item)}
           onRemove={() => gearStore.remove(item, { removeChildren: true })}
           getSubItemCallbacks={(subItemId) => {
             const subItem = getChildren(item.id).find((child) => child.id === subItemId)
             return {
-              onEdit: subItem ? () => setDialogState({ open: true, item: subItem }) : undefined,
+              onEdit: subItem ? () => handleEdit(subItem) : undefined,
               onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
             }
           }}
@@ -58,24 +53,12 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDialogState({ open: true })}
+        onClick={() => handleEdit()}
         color="secondary"
         fullWidth
       >
         Add {itemLabel}
       </Button>
-
-      {dialogState && (
-        <ItemFormDialog
-          open={dialogState.open}
-          item={dialogState.item}
-          itemType={itemType}
-          label={itemLabel}
-          onSave={handleSave}
-          onClose={closeDialog}
-          onClosed={() => setDialogState(null)}
-        />
-      )}
     </Stack>
   )
 }

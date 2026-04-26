@@ -1,5 +1,10 @@
 import type { FC } from "react"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import {
   DeviceFormFields,
@@ -49,4 +54,25 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
       }}
     />
   )
+}
+
+export type UseDeviceFormDialogProps = Omit<DeviceFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+
+export const useDeviceFormDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseDeviceFormDialogProps) => dialogApi.open<DeviceData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <DeviceFormDialog
+            {...dialogProps}
+            {...props}
+            onSave={(device) => dialogProps.onClose(device)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }

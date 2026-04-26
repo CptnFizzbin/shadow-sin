@@ -7,6 +7,11 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -136,4 +141,31 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export interface UseComplexFormDialogProps {
+  form?: ComplexFormData
+  maxRating: number
+  onDelete?: () => void
+}
+
+export const useComplexFormDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props: UseComplexFormDialogProps) => dialogApi.open<ComplexFormData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <ComplexFormDialog
+            {...dialogProps}
+            form={props.form}
+            maxRating={props.maxRating}
+            onDelete={props.onDelete}
+            onSave={(complexForm) => dialogProps.onClose(complexForm)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }
