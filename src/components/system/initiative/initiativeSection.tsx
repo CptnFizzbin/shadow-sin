@@ -1,13 +1,18 @@
 import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { selectEdgeCurrent } from "#/components/character/quickPanel/edgeSelectors.ts"
+import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import { DiceRollButton } from "#/components/dice/diceRollButton.tsx"
 import { InitiativePassTracker } from "#/components/system/initiative/initiativePassTracker.tsx"
 import { useInitiative } from "#/components/system/initiative/useInitiative.ts"
 import {
+  useInitiativeGoingFirst,
   useInitiativePassStore,
   useInitiativePassesCompleted,
   useInitiativeRolledScore,
@@ -19,6 +24,10 @@ export const InitiativeSection: FC = () => {
   const initiativePassStore = useInitiativePassStore()
   const rolledScore = useInitiativeRolledScore(initiativePassStore)
   const passesCompleted = useInitiativePassesCompleted(initiativePassStore)
+  const goingFirst = useInitiativeGoingFirst(initiativePassStore)
+
+  const edgeStore = useEdgeStore()
+  const edgeCurrent = useStore(edgeStore, selectEdgeCurrent)
 
   const totalScore = baseScore + (rolledScore ?? 0)
   const currentScore = totalScore - (passesCompleted.size * 10)
@@ -33,6 +42,16 @@ export const InitiativeSection: FC = () => {
 
   const handleResetRound = () => {
     initiativePassStore.resetPasses()
+  }
+
+  const handleSeizeInitiative = () => {
+    edgeStore.setCurrent(edgeCurrent - 1)
+    initiativePassStore.setGoingFirst(true)
+  }
+
+  const handleCancelGoingFirst = () => {
+    edgeStore.setCurrent(edgeCurrent + 1)
+    initiativePassStore.setGoingFirst(false)
   }
 
   const rollResult = rolledScore !== undefined ? [rolledScore] : undefined
@@ -76,6 +95,35 @@ export const InitiativeSection: FC = () => {
               {`Current: ${currentScore}`}
             </Typography>
           )}
+        </Stack>
+      </Grid>
+
+      <Grid size={2}>
+        <Stack sx={{ gap: 0.5 }}>
+          <Label label="Edge" />
+          {goingFirst
+            ? (
+                <Chip
+                  label="Going First"
+                  color="warning"
+                  variant="filled"
+                  size="small"
+                  onDelete={handleCancelGoingFirst}
+                  sx={{ alignSelf: "flex-start" }}
+                />
+              )
+            : (
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  size="small"
+                  disabled={edgeCurrent === 0}
+                  onClick={handleSeizeInitiative}
+                  sx={{ alignSelf: "flex-start" }}
+                >
+                  {`Seize Initiative (Edge: ${edgeCurrent})`}
+                </Button>
+              )}
         </Stack>
       </Grid>
 

@@ -167,6 +167,69 @@ Toggle Sustained → initiative score and pass count update live.
 
 ---
 
+---
+
+## Branch 2 addition: Seize the Initiative (Edge spend)
+
+SR4A p. 166 — A character may spend 1 Edge at the start of a combat turn to act first in the initiative order, regardless of rolled score. Resets at End Round like `passesCompleted` and `rolledScore`.
+
+### State changes
+
+**`CharacterSheet.initiative`**
+```ts
+initiative?: {
+  passesCompleted: number[]
+  rolledScore?: number
+  goingFirst?: boolean    // ← new
+}
+```
+No migration needed — field is optional; undefined = not active.
+
+**`InitiativePassState`** (in `initiativePassStore.ts`)
+```ts
+interface InitiativePassState {
+  passesCompleted: number[]
+  rolledScore?: number
+  goingFirst?: boolean    // ← new
+}
+```
+
+**`InitiativePassStore`** — add one method:
+```ts
+setGoingFirst(value: boolean): void
+```
+`resetPasses()` already clears the whole state — add `goingFirst = undefined` there.
+
+**`useInitiativePassStore.ts`** — expand slice selector/updater to include `goingFirst`.
+
+Add `useInitiativeGoingFirst(store)` hook alongside the existing `useInitiativeRolledScore`.
+
+### UI changes — `initiativeSection.tsx`
+
+Add `useEdgeStore()` to read current edge count.
+
+**When `goingFirst` is false/undefined:**
+- Show "Seize Initiative" button (warning colour, small)
+- Button label: `Seize Initiative (Edge: {current})`
+- Disabled when `edge.current === 0`
+- On click: `edgeStore.setCurrent(current - 1)` + `initiativePassStore.setGoingFirst(true)`
+- No confirm dialog — consistent with how the quick panel lets you freely adjust edge
+
+**When `goingFirst` is true:**
+- Replace button with a filled "Going First" chip (warning/accent colour)
+- Chip has a dismiss (×) icon that refunds 1 edge and clears the flag (mis-click correction)
+
+### Files to change
+
+| File | Change |
+|---|---|
+| `src/system/characterSheet.ts` | Add `goingFirst?: boolean` to `initiative` |
+| `src/components/system/initiative/initiativePassStore.ts` | Add `goingFirst` to state + `setGoingFirst` + clear in `resetPasses` |
+| `src/components/system/initiative/useInitiativePassStore.ts` | Include `goingFirst` in slice; add `useInitiativeGoingFirst` hook |
+| `src/components/system/initiative/initiativeSection.tsx` | Add `useEdgeStore`, Seize Initiative button / Going First chip |
+
+---
+
 ## Todo — Branch 1: `feat/dice-roller`
 
 - [ ] `src/system/dice/diceRoll.ts` — `rollD6`, `rollDice`, `countHits`, `sumDice`
@@ -186,3 +249,10 @@ Toggle Sustained → initiative score and pass count update live.
 - [ ] Expand `InitiativeInfo` — `baseScore`, `rolledScore`, `currentScore`
 - [ ] Update `InitiativeSection` — `DiceRollButton`, per-pass score decrement
 - [ ] Update `docs/features/gameplay.md` — mark completed initiative items
+
+## Todo — Branch 2 addition: Seize the Initiative
+
+- [ ] Add `goingFirst?: boolean` to `CharacterSheet.initiative`
+- [ ] Add `goingFirst` to `InitiativePassState` + `setGoingFirst` method + clear in `resetPasses`
+- [ ] Expand slice selector/updater in `useInitiativePassStore.ts`; add `useInitiativeGoingFirst` hook
+- [ ] Add Seize Initiative button / Going First chip to `InitiativeSection`

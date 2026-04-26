@@ -5,6 +5,7 @@ import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 export interface InitiativePassState {
   passesCompleted: number[]
   rolledScore?: number
+  goingFirst?: boolean
 }
 
 export class InitiativePassStore extends StoreSlice<InitiativePassState> {
@@ -34,11 +35,18 @@ export class InitiativePassStore extends StoreSlice<InitiativePassState> {
     }))
   }
 
+  setGoingFirst(value: boolean): void {
+    this.set(produce((state) => {
+      state.goingFirst = value
+    }))
+  }
+
   resetPasses(): void {
     this.set(
       produce((state) => {
         state.passesCompleted = []
         state.rolledScore = undefined
+        state.goingFirst = undefined
       }),
     )
   }
