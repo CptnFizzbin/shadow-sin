@@ -26,8 +26,8 @@ A generic, reusable d6 rolling subsystem. Shadowrun uses only d6s — all pools,
 - `rollDiceExploding(count: number): number[]` — Rule of Six: each 6 adds an extra die (Edge before roll)
 - `rerollMisses(results: number[]): number[]` — keeps hits, re-rolls non-hits (Edge after roll)
 
-**`src/components/dice/DiceRollButton.tsx`**
-```
+**`src/components/dice/diceRollButton.tsx`**
+```text
 Props:
   count: number         — number of dice to roll
   result?: number[]     — current rolled results (undefined = not yet rolled)
@@ -42,7 +42,7 @@ Props:
 - After roll: shows die faces (hits=accent, 1s=error) + value + glitch label + optional "2nd Chance" button
 - Caller owns state and is responsible for spending the Edge point
 
-**`src/components/dice/DiceFace.tsx`**
+**`src/components/system/dice/dieIcon.tsx`**
 - Small MUI chip or icon showing a single d6 value (1–6)
 - Hits (5–6) rendered in accent colour for visual feedback
 
@@ -156,7 +156,7 @@ Layout changes:
 ### Spell modifier example — Increase Reflexes
 
 No special-casing needed. User adds the spell to their list:
-```
+```text
 Name: Increase Reflexes
 Category: Health / Duration: Sustained
 Effects:
@@ -170,8 +170,8 @@ Toggle Sustained → initiative score and pass count update live.
 ## Todo — Branch 1: `feat/dice-roller`
 
 - [ ] `src/system/dice/diceRoll.ts` — `rollD6`, `rollDice`, `countHits`, `sumDice`
-- [ ] `src/components/dice/DiceFace.tsx` — single die display chip
-- [ ] `src/components/dice/DiceRollButton.tsx` — controlled roll button + result display
+- [ ] `src/components/system/dice/dieIcon.tsx` — single die display chip
+- [ ] `src/components/dice/diceRollButton.tsx` — controlled roll button + result display
 - [ ] Unit tests: `src/system/dice/diceRoll.test.ts` — pure function coverage including glitch detection and edge mechanics
 
 ## Todo — Branch 2: `feat/initiative-roll`
