@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { AttributeValueRow } from "#/components/character/attributes/attributeValueRow.tsx"
 import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -17,6 +18,10 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
   const attrs = useCharacterSheet((s) => s.attributes)
   const attrInfos = useAllAttrInfos()
 
+  if (!showMaximums) {
+    return <AttributeValueRow values={attrs} attrKeys={attrKeys} />
+  }
+
   const attributes = attrKeys
     .map((k) => ({ key: k, value: attrs[k] }))
     .filter((it) => it.value !== 0)
@@ -25,19 +30,15 @@ const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
 
   return (
     <Stack direction="row" sx={{ gap: 0.5 }}>
-      {attributes.map((attribute) => (
-        <Stack key={attribute.key} sx={{ flexGrow: 1, alignItems: "center", gap: 0 }}>
-          <Label label={AttributeLabels[attribute.key]} variant="text" />
+      {attributes.map(({ key, value }) => (
+        <Stack key={key} sx={{ flexGrow: 1, alignItems: "center", gap: 0 }}>
+          <Label label={AttributeLabels[key]} variant="text" />
           <Typography>
-            {attribute.value ?? attrInfos[attribute.key].min}
-            {showMaximums && (
-              <>
-                /
-                {attrInfos[attribute.key].max}
-                {" "}
-                {(attrInfos[attribute.key].augMax || 0) >= 1 && <>({attrInfos[attribute.key].augMax})</>}
-              </>
-            )}
+            {value ?? attrInfos[key].min}
+            /
+            {attrInfos[key].max}
+            {" "}
+            {(attrInfos[key].augMax || 0) >= 1 && <>({attrInfos[key].augMax})</>}
           </Typography>
         </Stack>
       ))}

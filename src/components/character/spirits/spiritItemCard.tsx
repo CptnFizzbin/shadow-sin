@@ -1,24 +1,34 @@
 import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
+import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { AttributeValueRow } from "#/components/character/attributes/attributeValueRow.tsx"
+import { SpiritConditionMonitor } from "#/components/character/spirits/spiritConditionMonitor.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
+import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
-import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+
+const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
 
 interface SpiritItemCardProps {
   spirit: SpiritData
   onEdit: () => void
   onRemove: () => void
+  onDamageChange: (damage: SpiritData["damage"]) => void
 }
 
-export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemove }) => {
+export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemove, onDamageChange }) => {
   const title = spirit.name || SpiritTypeLabels[spirit.spiritType]
   const subtitle = spirit.name ? SpiritTypeLabels[spirit.spiritType] : undefined
+
+  const { physicalScore, physicalIp, astralBase, astralIp } = calculateSpiritInitiative(spirit.force, spirit.spiritType)
+  const attrs = calculateSpiritAttributes(spirit.force, spirit.spiritType)
 
   return (
     <ItemCard onClick={onEdit}>
@@ -38,6 +48,12 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
       </ItemCard.Meta>
       <ItemCard.Meta type="stat">
         <ItemStatChip label={`Services ${spirit.services.used}/${spirit.services.max}`} />
+      </ItemCard.Meta>
+      <ItemCard.Meta type="stat">
+        <ItemStatChip label={`Init: ${physicalScore} (${physicalIp}IP)`} />
+      </ItemCard.Meta>
+      <ItemCard.Meta type="stat">
+        <ItemStatChip label={`Astral ${astralBase} (${astralIp}IP)`} />
       </ItemCard.Meta>
       {spirit.bound && (
         <ItemCard.Meta type="stat">
@@ -74,6 +90,14 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               <Typography variant="body2">{spirit.notes}</Typography>
             </Box>
           )}
+          <Divider />
+          <Stack sx={{ gap: 0 }}>
+            <AttributeValueRow values={attrs} attrKeys={PhysicalAttributes} />
+            <AttributeValueRow values={attrs} attrKeys={MentalAttributes} />
+            <AttributeValueRow values={attrs} attrKeys={SPIRIT_SPECIAL_ATTRS} />
+          </Stack>
+          <Divider />
+          <SpiritConditionMonitor spirit={spirit} onChange={onDamageChange} />
         </Stack>
       </ItemCard.Children>
     </ItemCard>

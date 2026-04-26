@@ -61,12 +61,16 @@ export interface SpiritData {
   bound: boolean
   optionalPowers: string[]
   notes?: string
+  damage: {
+    physical: number
+    stun: number
+  }
 }
 
 export const SpiritDataSchema = z.object({
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),
-  spiritType: z.nativeEnum(SpiritType),
+  spiritType: z.enum(SpiritType),
   force: z.number().int().min(1).max(20),
   services: z.object({
     max: z.number().int().min(0),
@@ -75,7 +79,33 @@ export const SpiritDataSchema = z.object({
   bound: z.boolean(),
   optionalPowers: z.string().array(),
   notes: z.string().optional(),
+  damage: z.object({
+    physical: z.number().int().min(0),
+    stun: z.number().int().min(0),
+  }),
 }) satisfies z.ZodType<SpiritData>
+
+// SR4A p.295-302: spirit initiative is a flat score, not a dice roll.
+// Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = F×2, 3 IP.
+export function calculateSpiritInitiative(force: number, type: SpiritType) {
+  const physicalScore = (type === SpiritType.wind || type === SpiritType.fire)
+    ? force * 2 + 3
+    : force * 2 + 2
+  return {
+    physicalScore,
+    physicalIp: 2,
+    astralBase: force * 2,
+    astralIp: 3,
+  }
+}
+
+export function calculateSpiritConditionMonitor(force: number, type: SpiritType): { physical: number, stun: number } {
+  const attrs = calculateSpiritAttributes(force, type)
+  return {
+    physical: 8 + Math.ceil(attrs[AttributeKey.body] / 2),
+    stun: 8 + Math.ceil(attrs[AttributeKey.willpower] / 2),
+  }
+}
 
 export function calculateSpiritAttributes(force: number, type: SpiritType): Record<AttributeKey, number> {
   const attrs = {
@@ -87,7 +117,7 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
     [AttributeKey.intuition]: force,
     [AttributeKey.logic]: force,
     [AttributeKey.willpower]: force,
-    [AttributeKey.edge]: Math.floor(force / 2),
+    [AttributeKey.edge]: force,
     [AttributeKey.magic]: force,
     [AttributeKey.essence]: force,
     [AttributeKey.resonance]: 0,

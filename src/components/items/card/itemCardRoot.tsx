@@ -84,7 +84,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             direction="row"
             sx={{ gap: 0.5, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}
           >
-            <Stack direction="row" sx={{ gap: 0.5 }}>
+            <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
               {statMetas}
             </Stack>
 
