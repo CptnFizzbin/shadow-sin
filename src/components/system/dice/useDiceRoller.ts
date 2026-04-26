@@ -3,6 +3,11 @@ import { useCallback, useState } from "react"
 
 import type { DiceResultsInfo } from "#/components/system/dice/diceResultsInfo.tsx"
 import { rollD6 } from "#/components/system/dice/diceUtils.ts"
+import {
+  countHits,
+  isCriticalGlitch as checkCriticalGlitch,
+  isGlitch as checkGlitch,
+} from "#/system/dice/diceRoll.ts"
 
 export function useDiceRoller(numDice: number, rollingTime: number = 0): [results: DiceResultsInfo, rollDice: () => void] {
   const [diceValues, setDiceValues] = useState<number[]>(padArray([], numDice, 0))
@@ -23,16 +28,15 @@ export function useDiceRoller(numDice: number, rollingTime: number = 0): [result
   }, [numDice, rollingTime])
 
   const values = padArray(diceValues, numDice, 0)
-  const hits = values.filter((value) => value >= 5).length
-  const ones = values.filter((value) => value === 1).length
-  const isGlitch = ones > numDice / 2
-  const isCriticalGlitch = isGlitch && hits === 0
+  const hits = countHits(values)
+  const glitch = checkGlitch(values)
+  const criticalGlitch = checkCriticalGlitch(values)
 
   const diceResult: DiceResultsInfo = {
     values: sort(values).by({ asc: (value) => value }),
     isRolling: isRolling,
     hits: hits,
-    isGlitch: isCriticalGlitch ? "crtical" : isGlitch,
+    isGlitch: criticalGlitch ? "crtical" : glitch,
   }
 
   return [diceResult, rollDice]

@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react"
 
+export { rollD6 } from "#/system/dice/diceRoll.ts"
+
 export const getDiceOffset = (isRolling: boolean): CSSProperties => {
   const rotate = isRolling ? randomIntInRange(-45, 45) : 0
   const translateX = isRolling ? randomIntInRange(-2, 2) : 1
@@ -9,10 +11,6 @@ export const getDiceOffset = (isRolling: boolean): CSSProperties => {
     rotate: `${rotate}deg`,
     transform: `translate(${translateX}px, ${translateY}px)`,
   }
-}
-
-export const rollD6 = (): number => {
-  return randomIntInRange(1, 6)
 }
 
 const randomIntInRange = (min: number, max: number): number => {
