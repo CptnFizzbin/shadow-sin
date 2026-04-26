@@ -4,12 +4,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { ItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
+import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
@@ -28,26 +23,11 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   itemType,
 }) => {
   const gearStore = useGearStore()
-  const sheetContext = useCharacterSheetContext()
-  const dialogApi = useDialogApi()
+  const itemFormDialog = useItemFormDialog()
 
-  const openDialog = (item?: ItemData) => {
-    dialogApi.open((injectedProps) => {
-      return (
-        <CharacterSheetProvider store={sheetContext}>
-          <ItemFormDialog
-            {...injectedProps}
-            item={item}
-            itemType={itemType}
-            label={itemLabel}
-            onSave={(savedItem) => {
-              gearStore.save(savedItem)
-              injectedProps.onClose()
-            }}
-          />
-        </CharacterSheetProvider>
-      )
-    })
+  const handleEdit = async (item?: ItemData) => {
+    const saved = await itemFormDialog.open({ item, itemType, label: itemLabel }).result()
+    if (saved) gearStore.save(saved)
   }
 
   return (
@@ -57,12 +37,12 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
           key={item.id}
           item={item}
           subItems={getChildren(item.id)}
-          onEdit={() => openDialog(item)}
+          onEdit={() => handleEdit(item)}
           onRemove={() => gearStore.remove(item, { removeChildren: true })}
           getSubItemCallbacks={(subItemId) => {
             const subItem = getChildren(item.id).find((child) => child.id === subItemId)
             return {
-              onEdit: subItem ? () => openDialog(subItem) : undefined,
+              onEdit: subItem ? () => handleEdit(subItem) : undefined,
               onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
             }
           }}
@@ -73,7 +53,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => openDialog()}
+        onClick={() => handleEdit()}
         color="secondary"
         fullWidth
       >

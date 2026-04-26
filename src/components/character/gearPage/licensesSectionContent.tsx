@@ -2,19 +2,13 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
-import { LicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
-import { SinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
+import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
-
-type LicensesDialogState =
-  | null
-  | { type: "sin", open: boolean, sin?: SinData }
-  | { type: "license", sin: SinData, open: boolean, license?: LicenseData }
 
 interface LicensesSectionContentProps {
   sins: SinData[]
@@ -26,18 +20,17 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   getLicenses,
 }) => {
   const gearStore = useGearStore()
-  const [dialogState, setDialogState] = useState<LicensesDialogState>(null)
+  const sinFormDialog = useSinFormDialog()
+  const licenseFormDialog = useLicenseFormDialog()
 
-  const closeDialog = () => setDialogState((prev) => prev && { ...prev, open: false })
-
-  const handleSaveSin = (sin: SinData) => {
-    gearStore.save(sin)
-    closeDialog()
+  const handleEditSin = async (sin?: SinData) => {
+    const saved = await sinFormDialog.open({ sin }).result()
+    if (saved) gearStore.save(saved)
   }
 
-  const handleSaveLicense = (license: LicenseData) => {
-    gearStore.save(license)
-    closeDialog()
+  const handleEditLicense = async (sin: SinData, license?: LicenseData) => {
+    const saved = await licenseFormDialog.open({ sin, license }).result()
+    if (saved) gearStore.save(saved)
   }
 
   return (
@@ -47,13 +40,13 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
           <GearViewItem
             item={sin}
             subItems={getLicenses(sin.id)}
-            onEdit={() => setDialogState({ type: "sin", sin, open: true })}
+            onEdit={() => handleEditSin(sin)}
             onRemove={() => gearStore.remove(sin, { removeChildren: true })}
             getSubItemCallbacks={(licenseId) => {
               const license = getLicenses(sin.id).find((l) => l.id === licenseId)
               return {
                 onEdit: license
-                  ? () => setDialogState({ type: "license", sin, license, open: true })
+                  ? () => handleEditLicense(sin, license)
                   : undefined,
                 onRemove: license ? () => gearStore.remove(license) : undefined,
               }
@@ -63,7 +56,7 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
             variant="outlined"
             size="small"
             startIcon={<RiAddLine size={14} />}
-            onClick={() => setDialogState({ type: "license", sin, open: true })}
+            onClick={() => handleEditLicense(sin)}
             color="secondary"
             fullWidth
           >
@@ -76,33 +69,12 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
         variant="outlined"
         size="small"
         startIcon={<RiAddLine size={14} />}
-        onClick={() => setDialogState({ type: "sin", open: true })}
+        onClick={() => handleEditSin()}
         color="secondary"
         fullWidth
       >
         Add SIN
       </Button>
-
-      {dialogState?.type === "sin" && (
-        <SinFormDialog
-          open={dialogState.open}
-          sin={dialogState.sin}
-          onSave={handleSaveSin}
-          onClose={closeDialog}
-          onClosed={() => setDialogState(null)}
-        />
-      )}
-
-      {dialogState?.type === "license" && (
-        <LicenseFormDialog
-          open={dialogState.open}
-          sin={dialogState.sin}
-          license={dialogState.license}
-          onSave={handleSaveLicense}
-          onClose={closeDialog}
-          onClosed={() => setDialogState(null)}
-        />
-      )}
     </Stack>
   )
 }
