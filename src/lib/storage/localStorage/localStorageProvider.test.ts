@@ -3,15 +3,13 @@ import { describe, expect, it } from "vitest"
 import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
-interface ProviderWithStorage {
-  getStorage: () => Storage
-}
-
 function makeProvider(prefix = "test"): { provider: LocalStorageProvider, storage: MemoryStorage } {
   const storage = new MemoryStorage()
   const provider = new LocalStorageProvider({ storagePrefix: prefix })
   // The provider expects `globalThis.localStorage`; swap in an in-memory fake.
-  ;(provider as unknown as ProviderWithStorage).getStorage = () => storage
+  // Mirrors the pattern already used in `src/character/migrations.test.ts`.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(provider as any).getStorage = () => storage
   return { provider, storage }
 }
 
@@ -141,8 +139,10 @@ describe("LocalStorageProvider", () => {
       const sharedStorage = new MemoryStorage()
       const providerA = new LocalStorageProvider({ storagePrefix: "alpha" })
       const providerB = new LocalStorageProvider({ storagePrefix: "beta" })
-      ;(providerA as unknown as ProviderWithStorage).getStorage = () => sharedStorage
-      ;(providerB as unknown as ProviderWithStorage).getStorage = () => sharedStorage
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      ;(providerA as any).getStorage = () => sharedStorage
+      ;(providerB as any).getStorage = () => sharedStorage
+      /* eslint-enable @typescript-eslint/no-explicit-any */
 
       await providerA.saveJsonFile("a.json", { who: "alpha" })
       await providerB.saveJsonFile("b.json", { who: "beta" })
