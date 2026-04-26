@@ -9,7 +9,12 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useTraditionForm } from "#/components/character/spells/form/useTraditionForm.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
@@ -135,4 +140,27 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export interface UseTraditionFormDialogProps {
+  tradition?: TraditionData
+}
+
+export const useTraditionFormDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseTraditionFormDialogProps) => dialogApi.open<TraditionData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <TraditionFormDialog
+            {...dialogProps}
+            tradition={props?.tradition}
+            onSave={(tradition) => dialogProps.onClose(tradition)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }

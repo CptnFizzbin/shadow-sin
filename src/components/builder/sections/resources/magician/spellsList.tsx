@@ -4,29 +4,34 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
 import { SpellListItem } from "#/components/builder/sections/resources/magician/spellListItem.tsx"
 import { TraditionCard } from "#/components/builder/sections/resources/magician/traditionCard.tsx"
-import { SpellFormDialog } from "#/components/character/spells/dialogs/spellFormDialog.tsx"
+import { useSpellFormDialog } from "#/components/character/spells/dialogs/spellFormDialog.tsx"
 import { selectAllSpells } from "#/components/character/spells/spellsSelectors.ts"
 import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
-type DialogState =
-  | null
-  | { open: boolean, type: "add" }
-  | { open: boolean, type: "edit", spell: SpellData }
-
 export const SpellsList: FC = () => {
   const spellsStore = useSpellsStore()
   const spells = useStore(spellsStore, selectAllSpells)
   const buildPoints = useSpellsBuildPoints()
+  const spellFormDialog = useSpellFormDialog()
 
-  const [dialogState, setDialogState] = useState<DialogState>(null)
+  const handleAddSpell = async () => {
+    const saved = await spellFormDialog.open().result()
+    if (saved) spellsStore.save(saved)
+  }
+
+  const handleEditSpell = async (spell: SpellData) => {
+    const saved = await spellFormDialog
+      .open({ spell, onDelete: () => spellsStore.remove(spell.id) })
+      .result()
+    if (saved) spellsStore.save(saved)
+  }
 
   return (
     <Stack sx={{ gap: 1 }}>
@@ -51,7 +56,7 @@ export const SpellsList: FC = () => {
         <SpellListItem
           key={spell.id}
           spell={spell}
-          onEdit={() => setDialogState({ type: "edit", open: true, spell })}
+          onEdit={() => handleEditSpell(spell)}
         />
       ))}
 
@@ -59,28 +64,10 @@ export const SpellsList: FC = () => {
         startIcon={<RiAddLine />}
         color="secondary"
         variant="outlined"
-        onClick={() => setDialogState({ type: "add", open: true })}
+        onClick={handleAddSpell}
       >
         Add Spell
       </Button>
-
-      {dialogState?.type === "add" && (
-        <SpellFormDialog
-          open={dialogState.open}
-          onSave={(spell) => spellsStore.save(spell)}
-          onClose={() => setDialogState({ ...dialogState, open: false })}
-        />
-      )}
-
-      {dialogState?.type === "edit" && (
-        <SpellFormDialog
-          open={dialogState.open}
-          spell={dialogState.spell}
-          onSave={(spell) => spellsStore.save(spell)}
-          onDelete={() => spellsStore.remove(dialogState.spell.id)}
-          onClose={() => setDialogState({ ...dialogState, open: false })}
-        />
-      )}
     </Stack>
   )
 }

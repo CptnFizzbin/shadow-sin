@@ -13,7 +13,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import {
+  CharacterSheetProvider,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useMaxSpriteTasks } from "#/components/character/technomancer/spritesHooks.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -122,4 +127,27 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export interface UseSpriteDialogProps {
+  sprite?: SpriteData
+}
+
+export const useSpriteDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props?: UseSpriteDialogProps) => dialogApi.open<SpriteData>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <SpriteDialog
+            {...dialogProps}
+            sprite={props?.sprite}
+            onSave={(sprite) => dialogProps.onClose(sprite)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }
