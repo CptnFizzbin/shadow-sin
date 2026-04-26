@@ -13,15 +13,16 @@ import {
 describe("calculateSpiritAttributes", () => {
   describe("wind spirit (Spirit of Air)", () => {
     it("applies the correct modifiers at force 5", () => {
-      const attrs = calculateSpiritAttributes(5, SpiritType.wind)
+      const force = 5
+      const attrs = calculateSpiritAttributes(force, SpiritType.wind)
 
-      expect(attrs[AttributeKey.body]).toBe(3) // F-2
-      expect(attrs[AttributeKey.agility]).toBe(8) // F+3
-      expect(attrs[AttributeKey.reaction]).toBe(9) // F+4
-      expect(attrs[AttributeKey.strength]).toBe(2) // F-3
-      expect(attrs[AttributeKey.charisma]).toBe(5) // unmodified
-      expect(attrs[AttributeKey.intuition]).toBe(5) // unmodified
-      expect(attrs[AttributeKey.willpower]).toBe(5) // unmodified
+      expect(attrs[AttributeKey.body]).toBe(force - 2)
+      expect(attrs[AttributeKey.agility]).toBe(force + 3)
+      expect(attrs[AttributeKey.reaction]).toBe(force + 4)
+      expect(attrs[AttributeKey.strength]).toBe(force - 3)
+      expect(attrs[AttributeKey.charisma]).toBe(force)
+      expect(attrs[AttributeKey.intuition]).toBe(force)
+      expect(attrs[AttributeKey.willpower]).toBe(force)
     })
 
     it("floors negative attributes at 1 when force is low", () => {
@@ -35,56 +36,61 @@ describe("calculateSpiritAttributes", () => {
 
   describe("earth spirit", () => {
     it("applies the correct modifiers at force 5, including the intuition penalty", () => {
-      const attrs = calculateSpiritAttributes(5, SpiritType.earth)
+      const force = 5
+      const attrs = calculateSpiritAttributes(force, SpiritType.earth)
 
-      expect(attrs[AttributeKey.body]).toBe(9) // F+4
-      expect(attrs[AttributeKey.agility]).toBe(3) // F-2
-      expect(attrs[AttributeKey.reaction]).toBe(3) // F-2
-      expect(attrs[AttributeKey.strength]).toBe(9) // F+4
-      expect(attrs[AttributeKey.intuition]).toBe(4) // F-1 (unique to earth)
-      expect(attrs[AttributeKey.willpower]).toBe(5) // unmodified
+      expect(attrs[AttributeKey.body]).toBe(force + 4)
+      expect(attrs[AttributeKey.agility]).toBe(force - 2)
+      expect(attrs[AttributeKey.reaction]).toBe(force - 2)
+      expect(attrs[AttributeKey.strength]).toBe(force + 4)
+      expect(attrs[AttributeKey.intuition]).toBe(force - 1)
+      expect(attrs[AttributeKey.willpower]).toBe(force)
     })
   })
 
   describe("fire spirit", () => {
     it("applies the correct modifiers at force 5", () => {
-      const attrs = calculateSpiritAttributes(5, SpiritType.fire)
+      const force = 5
+      const attrs = calculateSpiritAttributes(force, SpiritType.fire)
 
-      expect(attrs[AttributeKey.body]).toBe(6) // F+1
-      expect(attrs[AttributeKey.agility]).toBe(7) // F+2
-      expect(attrs[AttributeKey.reaction]).toBe(8) // F+3
-      expect(attrs[AttributeKey.strength]).toBe(3) // F-2
-      expect(attrs[AttributeKey.intuition]).toBe(5) // unmodified
+      expect(attrs[AttributeKey.body]).toBe(force + 1)
+      expect(attrs[AttributeKey.agility]).toBe(force + 2)
+      expect(attrs[AttributeKey.reaction]).toBe(force + 3)
+      expect(attrs[AttributeKey.strength]).toBe(force - 2)
+      expect(attrs[AttributeKey.intuition]).toBe(force)
     })
   })
 
   describe("Spirit of Man", () => {
     it("only raises agility and intuition — all other attributes stay at base force", () => {
-      const attrs = calculateSpiritAttributes(5, SpiritType.man)
+      const force = 5
+      const attrs = calculateSpiritAttributes(force, SpiritType.man)
 
-      expect(attrs[AttributeKey.agility]).toBe(7) // F+2
-      expect(attrs[AttributeKey.intuition]).toBe(6) // F+1
+      expect(attrs[AttributeKey.agility]).toBe(force + 2)
+      expect(attrs[AttributeKey.intuition]).toBe(force + 1)
       // Every other attribute is unmodified
-      expect(attrs[AttributeKey.body]).toBe(5)
-      expect(attrs[AttributeKey.reaction]).toBe(5)
-      expect(attrs[AttributeKey.strength]).toBe(5)
-      expect(attrs[AttributeKey.charisma]).toBe(5)
-      expect(attrs[AttributeKey.logic]).toBe(5)
-      expect(attrs[AttributeKey.willpower]).toBe(5)
+      expect(attrs[AttributeKey.body]).toBe(force)
+      expect(attrs[AttributeKey.reaction]).toBe(force)
+      expect(attrs[AttributeKey.strength]).toBe(force)
+      expect(attrs[AttributeKey.charisma]).toBe(force)
+      expect(attrs[AttributeKey.logic]).toBe(force)
+      expect(attrs[AttributeKey.willpower]).toBe(force)
     })
   })
 
   describe("edge and magic", () => {
-    it("sets edge equal to force, not floor(force/2)", () => {
-      const attrs = calculateSpiritAttributes(6, SpiritType.beast)
+    it("sets edge equal to force", () => {
+      const force = 6
+      const attrs = calculateSpiritAttributes(force, SpiritType.beast)
 
-      expect(attrs[AttributeKey.edge]).toBe(6)
+      expect(attrs[AttributeKey.edge]).toBe(force)
     })
 
     it("sets magic equal to force", () => {
-      const attrs = calculateSpiritAttributes(6, SpiritType.beast)
+      const force = 6
+      const attrs = calculateSpiritAttributes(force, SpiritType.beast)
 
-      expect(attrs[AttributeKey.magic]).toBe(6)
+      expect(attrs[AttributeKey.magic]).toBe(force)
     })
   })
 
@@ -101,16 +107,18 @@ describe("calculateSpiritAttributes", () => {
 
 describe("calculateSpiritInitiative", () => {
   it("gives wind spirits (F×2)+3 physical score (SR4A fixed per-type pool)", () => {
-    const { physicalScore, physicalIp } = calculateSpiritInitiative(6, SpiritType.wind)
+    const force = 6
+    const { physicalScore, physicalIp } = calculateSpiritInitiative(force, SpiritType.wind)
 
-    expect(physicalScore).toBe(15) // 6×2+3
+    expect(physicalScore).toBe(force * 2 + 3)
     expect(physicalIp).toBe(2)
   })
 
   it("gives fire spirits (F×2)+3 physical score", () => {
-    const { physicalScore } = calculateSpiritInitiative(6, SpiritType.fire)
+    const force = 6
+    const { physicalScore } = calculateSpiritInitiative(force, SpiritType.fire)
 
-    expect(physicalScore).toBe(15) // 6×2+3
+    expect(physicalScore).toBe(force * 2 + 3)
   })
 
   it("gives all other spirit types (F×2)+2 physical score", () => {
@@ -126,8 +134,9 @@ describe("calculateSpiritInitiative", () => {
     ]
 
     for (const type of types) {
-      const { physicalScore } = calculateSpiritInitiative(6, type)
-      expect(physicalScore, `${type} physicalScore`).toBe(14) // 6×2+2
+      const force = 6
+      const { physicalScore } = calculateSpiritInitiative(force, type)
+      expect(physicalScore, `${type} physicalScore`).toBe(force * 2 + 2)
     }
   })
 
@@ -139,13 +148,12 @@ describe("calculateSpiritInitiative", () => {
   })
 
   it("astral base is F×2 for all spirit types, ignoring type-specific intuition modifiers", () => {
-    // Earth at force 6: astralBase = 6×2 = 12 (not intuition-based)
-    const { astralBase: earthAstral } = calculateSpiritInitiative(6, SpiritType.earth)
-    // Man at force 6: astralBase = 6×2 = 12 (not intuition-based)
-    const { astralBase: manAstral } = calculateSpiritInitiative(6, SpiritType.man)
+    const force = 6
+    const { astralBase: earthAstral } = calculateSpiritInitiative(force, SpiritType.earth)
+    const { astralBase: manAstral } = calculateSpiritInitiative(force, SpiritType.man)
 
-    expect(earthAstral).toBe(12)
-    expect(manAstral).toBe(12)
+    expect(earthAstral).toBe(force * 2)
+    expect(manAstral).toBe(force * 2)
   })
 })
 
@@ -153,27 +161,30 @@ describe("calculateSpiritInitiative", () => {
 
 describe("calculateSpiritConditionMonitor", () => {
   it("computes physical CM as 8 + ceil(Body/2) and stun CM as 8 + ceil(Willpower/2)", () => {
-    // Beast at force 5: body = F+2 = 7, willpower = 5
+    const force = 5
+    // Beast at force 5: body = F+2 = 7, willpower = F = 5
     // physical = 8 + ceil(7/2) = 8 + 4 = 12, stun = 8 + ceil(5/2) = 8 + 3 = 11
-    const { physical, stun } = calculateSpiritConditionMonitor(5, SpiritType.beast)
+    const { physical, stun } = calculateSpiritConditionMonitor(force, SpiritType.beast)
 
     expect(physical).toBe(12)
     expect(stun).toBe(11)
   })
 
   it("uses even body correctly — no rounding needed", () => {
-    // Earth at force 6: body = F+4 = 10, willpower = 6
+    const force = 6
+    // Earth at force 6: body = F+4 = 10, willpower = F = 6
     // physical = 8 + ceil(10/2) = 8 + 5 = 13, stun = 8 + ceil(6/2) = 8 + 3 = 11
-    const { physical, stun } = calculateSpiritConditionMonitor(6, SpiritType.earth)
+    const { physical, stun } = calculateSpiritConditionMonitor(force, SpiritType.earth)
 
     expect(physical).toBe(13)
     expect(stun).toBe(11)
   })
 
   it("uses odd body — ceil rounds up", () => {
-    // Wind at force 5: body = F-2 = 3, willpower = 5
+    const force = 5
+    // Wind at force 5: body = F-2 = 3, willpower = F = 5
     // physical = 8 + ceil(3/2) = 8 + 2 = 10, stun = 8 + ceil(5/2) = 8 + 3 = 11
-    const { physical, stun } = calculateSpiritConditionMonitor(5, SpiritType.wind)
+    const { physical, stun } = calculateSpiritConditionMonitor(force, SpiritType.wind)
 
     expect(physical).toBe(10)
     expect(stun).toBe(11)
