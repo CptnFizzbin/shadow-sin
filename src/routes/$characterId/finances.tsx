@@ -4,9 +4,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
-import { useState } from "react"
 
-import { EndOfMonthDialog } from "#/components/character/finances/endOfMonth/endOfMonthDialog.tsx"
+import { useEndOfMonthDialog } from "#/components/character/finances/endOfMonth/endOfMonthDialog.tsx"
 import { LifestyleSection } from "#/components/character/finances/lifestyle/lifestyleSection.tsx"
 import { LoansSection } from "#/components/character/finances/loans/loansSection.tsx"
 import { NuyenSection } from "#/components/character/finances/nuyen/nuyenSection.tsx"
@@ -32,7 +31,7 @@ export const Route = createFileRoute("/$characterId/finances")({
 function RouteComponent() {
   const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
-  const [endOfMonthOpen, setEndOfMonthOpen] = useState(false)
+  const endOfMonthDialog = useEndOfMonthDialog()
 
   const netWorth = useNetWorth()
   const nuyenBalance = useStore(nuyenStore, selectNuyenAmount)
@@ -58,7 +57,7 @@ function RouteComponent() {
           size="small"
           variant="outlined"
           color="warning"
-          onClick={() => setEndOfMonthOpen(true)}
+          onClick={() => endOfMonthDialog.open()}
         >
           End of Month{totalMonthlyExpenses > 0 && <> — <Nuyen amount={totalMonthlyExpenses} /></>}
         </Button>
@@ -100,12 +99,6 @@ function RouteComponent() {
       <LoansSection />
 
       <LifestyleSection nuyenStore={nuyenStore} />
-
-      <EndOfMonthDialog
-        open={endOfMonthOpen}
-        nuyenStore={nuyenStore}
-        onClose={() => setEndOfMonthOpen(false)}
-      />
     </Stack>
   )
 }

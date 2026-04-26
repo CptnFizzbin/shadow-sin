@@ -9,7 +9,12 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import {
+  CharacterSheetProvider,
+  useCharacterSheet,
+  useCharacterSheetContext,
+} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
@@ -19,6 +24,7 @@ interface BuyQuantityDialogProps {
   open: boolean
   defaultCost: number
   onClose: () => void
+  onClosed?: () => void
   onPurchase: (quantity: number, totalCost: number) => void
 }
 
@@ -26,6 +32,7 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   open,
   defaultCost,
   onClose,
+  onClosed,
   onPurchase,
 }) => {
   const [quantity, setQuantity] = useState(1)
@@ -40,7 +47,7 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const canAfford = currentNuyen >= totalCost
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth>
       <DialogTitle>Buy More</DialogTitle>
 
       <DialogContent>
@@ -97,4 +104,29 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
       </DialogActions>
     </Dialog>
   )
+}
+
+export type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
+
+export const useBuyQuantityDialog = () => {
+  const dialogApi = useDialogApi()
+  const sheetContext = useCharacterSheetContext()
+
+  return {
+    open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <BuyQuantityDialog
+            {...dialogProps}
+            {...props}
+            onClose={() => dialogProps.onClose()}
+            onPurchase={(quantity, totalCost) => {
+              props.onPurchase(quantity, totalCost)
+              dialogProps.onClose()
+            }}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
+  }
 }

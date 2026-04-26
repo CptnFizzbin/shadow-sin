@@ -7,15 +7,14 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import { RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
-import { useState } from "react"
 import { z } from "zod"
 
 import { useIsBuilder } from "#/components/builder/useIsBuilder.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
-import { BuyQuantityDialog } from "#/components/items/dialogs/buyQuantityDialog.tsx"
+import { useBuyQuantityDialog } from "#/components/items/dialogs/buyQuantityDialog.tsx"
 import { ItemDialogActions } from "#/components/items/dialogs/itemDialogActions.tsx"
-import { ItemOptionsDialog } from "#/components/items/dialogs/itemOptionsDialog.tsx"
+import { useItemOptionsDialog } from "#/components/items/dialogs/itemOptionsDialog.tsx"
 import type { ItemDialogOptionConfig } from "#/components/items/dialogs/useItemOptions.ts"
 import { useItemOptions } from "#/components/items/dialogs/useItemOptions.ts"
 import { GearAttachmentFieldGroup } from "#/components/items/forms/gearAttachmentFieldGroup.tsx"
@@ -99,8 +98,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   const [localOptions, handleOptionsChange] = useItemOptions(form, optionsProp)
 
-  const [optionsOpen, setOptionsOpen] = useState(false)
-  const [buyOpen, setBuyOpen] = useState(false)
+  const itemOptionsDialog = useItemOptionsDialog()
+  const buyQuantityDialog = useBuyQuantityDialog()
 
   const isNewItem = form.state.values.id === NullUuid
   const isAcquireMode = isNewItem && !isBuilder
@@ -125,7 +124,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const handleBuyPurchase = (quantity: number, totalCost: number) => {
     const currentQuantity = form.state.values.quantity ?? 0
     form.setFieldValue("quantity", currentQuantity + quantity)
-    setBuyOpen(false)
     nuyenStore.withdraw(totalCost)
   }
 
@@ -137,128 +135,118 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   return (
-    <>
-      <Dialog open={open} fullWidth onClose={onClose} slotProps={{ transition: { onExited: onClosed } }}>
-        <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
+    <Dialog open={open} fullWidth onClose={onClose} slotProps={{ transition: { onExited: onClosed } }}>
+      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
 
-        <DialogContent sx={{ padding: 1 }}>
-          <Stack sx={{ gap: 1, padding: 1 }}>
-            {slots?.preForm?.()}
+      <DialogContent sx={{ padding: 1 }}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
+          {slots?.preForm?.()}
 
-            <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
-              <form.AppField
-                name="name"
-                validators={{ onChange: z.string().min(1, "Name is required") }}
-              >
+          <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+            <form.AppField
+              name="name"
+              validators={{ onChange: z.string().min(1, "Name is required") }}
+            >
+              {(field) => (
+                <field.TextField label="Name" size="small" sx={{ flex: 1 }} autoFocus />
+              )}
+            </form.AppField>
+
+            {localOptions["hasRating"] && (
+              <form.AppField name="rating">
                 {(field) => (
-                  <field.TextField label="Name" size="small" sx={{ flex: 1 }} autoFocus />
+                  <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
                 )}
               </form.AppField>
-
-              {localOptions["hasRating"] && (
-                <form.AppField name="rating">
-                  {(field) => (
-                    <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
-                  )}
-                </form.AppField>
-              )}
-            </Stack>
-
-            <Divider />
-
-            <Stack direction="row" sx={{ alignItems: "center" }}>
-              {localOptions["equipable"] && (
-                <form.AppField name="equipped">
-                  {(field) => <field.SwitchField label="Equipped" />}
-                </form.AppField>
-              )}
-
-              <IconButton
-                size="small"
-                sx={{ ml: "auto" }}
-                onClick={() => setOptionsOpen(true)}
-                aria-label="Item options"
-              >
-                <RiSettings3Line size={18} />
-              </IconButton>
-            </Stack>
-
-            <GearCostFieldGroup
-              form={form}
-              fields={itemFieldMap}
-              enableQuantity={localOptions["multiple"]}
-              onBuyMore={(!isBuilder && !isNewItem) ? () => setBuyOpen(true) : undefined}
-            />
-
-            <AvailabilityFieldGroup form={form} fields="availability" />
-
-            {localOptions["isSubItem"] && (
-              <Stack sx={{ gap: 1 }}>
-                <Label label={parentItemLabel ?? "Attached To"} />
-
-                <GearAttachmentFieldGroup
-                  form={form}
-                  fields={itemFieldMap}
-                  isFixed={localOptions["fixed"] ?? false}
-                  parentItemOptions={parentItemOptions}
-                  fieldLabel={parentItemLabel ?? "Parent Item"}
-                  attachmentSlot={slots?.attachmentFields}
-                />
-              </Stack>
-            )}
-
-            {slots?.itemFields?.()}
-
-            <Label label="Description" />
-
-            <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
-
-            <Label label="Source" />
-            <SourceFieldGroup form={form} fields={itemFieldMap} />
-
-            {localOptions["hasEffects"] && (
-              <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
             )}
           </Stack>
-        </DialogContent>
 
-        <DialogActions sx={{ padding: 1 }}>
-          <form.Subscribe
-            selector={(state) => getCost
-              ? getCost(state.values)
-              : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
-          >
-            {(totalCost) => (
-              <ItemDialogActions
-                isAcquireMode={isAcquireMode}
-                totalCost={totalCost}
-                onClose={onClose}
-                onAcquire={() => handleSubmitWithAction("acquire")}
-                onPurchase={() => handleSubmitWithAction("purchase")}
-                onSave={() => handleSubmitWithAction("save")}
-                onDelete={onDelete}
-              />
+          <Divider />
+
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {localOptions["equipable"] && (
+              <form.AppField name="equipped">
+                {(field) => <field.SwitchField label="Equipped" />}
+              </form.AppField>
             )}
-          </form.Subscribe>
-        </DialogActions>
-      </Dialog>
 
-      <ItemOptionsDialog
-        open={optionsOpen}
-        onClose={() => setOptionsOpen(false)}
-        options={localOptions}
-        forced={forced}
-        onChange={handleOptionsChange}
-      />
+            <IconButton
+              size="small"
+              sx={{ ml: "auto" }}
+              onClick={() => itemOptionsDialog.open({
+                initialOptions: localOptions,
+                forced,
+                onChange: handleOptionsChange,
+              })}
+              aria-label="Item options"
+            >
+              <RiSettings3Line size={18} />
+            </IconButton>
+          </Stack>
 
-      {buyOpen && (
-        <BuyQuantityDialog
-          open={buyOpen}
-          defaultCost={form.state.values.cost ?? 0}
-          onClose={() => setBuyOpen(false)}
-          onPurchase={handleBuyPurchase}
-        />
-      )}
-    </>
+          <GearCostFieldGroup
+            form={form}
+            fields={itemFieldMap}
+            enableQuantity={localOptions["multiple"]}
+            onBuyMore={(!isBuilder && !isNewItem)
+              ? () => buyQuantityDialog.open({
+                  defaultCost: form.state.values.cost ?? 0,
+                  onPurchase: handleBuyPurchase,
+                })
+              : undefined}
+          />
+
+          <AvailabilityFieldGroup form={form} fields="availability" />
+
+          {localOptions["isSubItem"] && (
+            <Stack sx={{ gap: 1 }}>
+              <Label label={parentItemLabel ?? "Attached To"} />
+
+              <GearAttachmentFieldGroup
+                form={form}
+                fields={itemFieldMap}
+                isFixed={localOptions["fixed"] ?? false}
+                parentItemOptions={parentItemOptions}
+                fieldLabel={parentItemLabel ?? "Parent Item"}
+                attachmentSlot={slots?.attachmentFields}
+              />
+            </Stack>
+          )}
+
+          {slots?.itemFields?.()}
+
+          <Label label="Description" />
+
+          <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
+
+          <Label label="Source" />
+          <SourceFieldGroup form={form} fields={itemFieldMap} />
+
+          {localOptions["hasEffects"] && (
+            <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
+          )}
+        </Stack>
+      </DialogContent>
+
+      <DialogActions sx={{ padding: 1 }}>
+        <form.Subscribe
+          selector={(state) => getCost
+            ? getCost(state.values)
+            : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
+        >
+          {(totalCost) => (
+            <ItemDialogActions
+              isAcquireMode={isAcquireMode}
+              totalCost={totalCost}
+              onClose={onClose}
+              onAcquire={() => handleSubmitWithAction("acquire")}
+              onPurchase={() => handleSubmitWithAction("purchase")}
+              onSave={() => handleSubmitWithAction("save")}
+              onDelete={onDelete}
+            />
+          )}
+        </form.Subscribe>
+      </DialogActions>
+    </Dialog>
   )
 }
