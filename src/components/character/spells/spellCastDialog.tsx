@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -20,9 +21,10 @@ interface SpellCastDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
+  onRoll: (count: number) => void
 }
 
-const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
+const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed, onRoll }) => {
   return (
     <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
       <DialogTitle sx={{ pb: 0 }}>{spell.name}</DialogTitle>
@@ -77,7 +79,7 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClo
 
           <Divider />
 
-          <SpellCastSection key={`${spell.id}-${open}`} spell={spell} onClose={onClose} />
+          <SpellCastSection key={`${spell.id}-${open}`} spell={spell} onClose={onClose} onRoll={onRoll} />
 
           <Button onClick={onClose} color="secondary" size="small">
             Close
@@ -94,6 +96,7 @@ export interface UseSpellCastDialogProps {
 
 export const useSpellCastDialog = () => {
   const dialogApi = useDialogApi()
+  const diceTray = useDiceTray()
 
   return {
     open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
@@ -102,6 +105,7 @@ export const useSpellCastDialog = () => {
           {...dialogProps}
           spell={props.spell}
           onClose={() => dialogProps.onClose()}
+          onRoll={(count) => diceTray.setDice(count)}
         />
       ),
     ),
