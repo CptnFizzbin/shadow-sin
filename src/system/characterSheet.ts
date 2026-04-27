@@ -14,6 +14,7 @@ import type { SpellData } from "./magic/spellData.ts"
 import type { SpiritData } from "./magic/spiritData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
+import type { ManualStatus } from "./manualStatus.ts"
 import type { MetatypeType } from "./metatypeData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ActiveSkillData } from "./skills/activeSkillData"
@@ -118,4 +119,7 @@ export interface CharacterSheet {
   sprites: SpriteData[]
   spirits: SpiritData[]
   adeptPowers: AdeptPowerData[]
+
+  /** Player-entered temporary modifiers applied during play (drugs, spell hits, etc.). */
+  manualStatuses?: ManualStatus[]
 }

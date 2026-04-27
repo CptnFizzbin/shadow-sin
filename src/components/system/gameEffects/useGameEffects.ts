@@ -19,8 +19,9 @@ export const selectAllGameEffects: CharacterDataSelector<GameEffectData[]> = cre
     (sheet: CharacterSheet) => sheet.spells,
     (sheet: CharacterSheet) => sheet.complexForms,
     (sheet: CharacterSheet) => sheet.adeptPowers,
+    (sheet: CharacterSheet) => sheet.manualStatuses ?? [],
   ],
-  (qualities, gear, spells, complexForms, adeptPowers): GameEffectData[] => {
+  (qualities, gear, spells, complexForms, adeptPowers, manualStatuses): GameEffectData[] => {
     const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped)
 
     return [
@@ -29,7 +30,7 @@ export const selectAllGameEffects: CharacterDataSelector<GameEffectData[]> = cre
       ...spells,
       ...complexForms,
       ...adeptPowers,
-    ].flatMap(getGameEffects)
+    ].flatMap(getGameEffects).concat(manualStatuses.map((s) => s.effect))
   },
 )
 
@@ -49,7 +50,7 @@ export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSel
 
 /**
  * Hook to retrieve all game effects of a specific type from the character sheet.
- * This scans qualities, gear, spells, complex forms, and adept powers.
+ * This scans qualities, gear, spells, complex forms, adept powers, and manual statuses.
  */
 export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
   return useCharacterSheetSelector(selectGameEffectsByType(type))
