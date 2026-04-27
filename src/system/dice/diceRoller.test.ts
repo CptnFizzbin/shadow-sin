@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { DiceRoller } from "#/system/dice/diceRoller.ts"
 import {
   selectAllDice,
   selectHits,
@@ -8,6 +7,7 @@ import {
   selectIsGlitch,
   selectIsRolling,
 } from "./diceRoller.selectors.ts"
+import { DiceRoller } from "./diceRoller.ts"
 
 describe("DiceRoller", () => {
   describe("constructor", () => {

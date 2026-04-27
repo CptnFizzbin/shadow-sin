@@ -34,10 +34,7 @@ export const Route = createFileRoute("/$characterId")({
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
-  // Re-create the dice tray API per character so its in-flight roller state
-  // doesn't leak across characters when this route remains mounted.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const diceTrayApi = useMemo(() => new DiceTrayApi(), [character])
+  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {

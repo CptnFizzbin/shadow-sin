@@ -76,9 +76,7 @@ export class DiceTrayApi {
     }))
   }
 
-  /** Close the dialog and cancel any in-progress rolling animation. */
   close(): void {
-    this.roller.cancel()
     this.store.setState(produce((state) => {
       state.open = false
     }))
