@@ -132,8 +132,7 @@ export class DiceRoller {
    * await `settled()` themselves once they've scheduled the whole batch.
    */
   private scheduleDie(index: number, options: RollOptions = {}) {
-    const initialDice = this.store.get().dice
-    if (index < 0 || index >= initialDice.length) return
+    if (index < 0 || index >= this.store.get().dice.length) return
 
     const generation = this.rollGeneration
 
