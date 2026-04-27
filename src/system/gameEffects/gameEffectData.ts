@@ -70,6 +70,13 @@ export interface ExtraInitiativePassesEffect extends GameEffectData {
 }
 
 /**
+ * Bonus to initiative dice pool (e.g. Wired Reflexes adds extra dice).
+ */
+export interface ExtraInitiativeDiceEffect extends GameEffectData {
+  type: GameEffectType.extraInitiativeDice
+}
+
+/**
  * Modifier for wound penalties (Pain Tolerance).
  */
 export interface PainToleranceEffect extends GameEffectData {
@@ -87,6 +94,7 @@ export type EffectByType = {
   [GameEffectType.skillSpecializationMod]: SkillSpecializationModEffect
   [GameEffectType.initiativeBonus]: InitiativeBonusEffect
   [GameEffectType.extraInitiativePasses]: ExtraInitiativePassesEffect
+  [GameEffectType.extraInitiativeDice]: ExtraInitiativeDiceEffect
   [GameEffectType.painTolerance]: PainToleranceEffect
   [GameEffectType.recoilReduction]: RecoilReductionEffect
   [GameEffectType.dicePoolMod]: DicePoolModEffect
@@ -134,6 +142,11 @@ const ExtraInitiativePassesSchema = z.object({
   value: z.number(),
 })
 
+const ExtraInitiativeDiceSchema = z.object({
+  type: z.literal(GameEffectType.extraInitiativeDice),
+  value: z.number(),
+})
+
 const PainToleranceSchema = z.object({
   type: z.literal(GameEffectType.painTolerance),
   target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
@@ -152,5 +165,6 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   SkillModSchema,
   SkillSpecializationModSchema,
   ExtraInitiativePassesSchema,
+  ExtraInitiativeDiceSchema,
   PainToleranceSchema,
 ]) satisfies z.ZodType<GameEffectData>

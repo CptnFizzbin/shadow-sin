@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
 
+import type { InitiativePassState } from "#/components/system/initiative/initiativePassStore.ts"
 import { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 
-const makeStore = (overrides: Partial<ConstructorParameters<typeof InitiativePassStore>[0]> = {}) =>
+const makeStore = (overrides: Partial<InitiativePassState> = {}) =>
   new InitiativePassStore({
     passesCompleted: [],
     rolledResults: undefined,
