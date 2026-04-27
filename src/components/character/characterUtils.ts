@@ -32,6 +32,20 @@ export const useAttr = (attribute: AttributeKey) => {
 }
 
 /**
+ * Hook to retrieve the effective value of an attribute, including attrMod game effects
+ * from sustained spells and equipped gear. Use this for skill dice pools and similar.
+ * Do NOT use for drain resistance — drain is an exception and uses raw attribute values.
+ */
+export const useEffectiveAttr = (attribute: AttributeKey): number => {
+  const base = useAttr(attribute)
+  const attrMods = useGameEffects(GameEffectType.attrMod)
+  const mod = attrMods
+    .filter((e) => e.target === attribute)
+    .reduce((sum, e) => sum + e.value, 0)
+  return base + mod
+}
+
+/**
  * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
  */
 export const useActiveSkillRating = (skill: SkillKey) => {
@@ -54,7 +68,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
-  const attribute = useAttr(skillInfo.attr)
+  const attribute = useEffectiveAttr(skillInfo.attr)
 
   const skillMods = useGameEffects(GameEffectType.skillMod)
   const totalMod = skillMods
