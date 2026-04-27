@@ -329,10 +329,10 @@ describe("rollDiceExploding", () => {
     vi.spyOn(Math, "random")
       .mockReturnValueOnce(0.9999) // 6
       .mockReturnValueOnce(0.9999) // 6
-      .mockReturnValueOnce(0.4)    // 3
-      .mockReturnValueOnce(0.4)    // 3
-      .mockReturnValueOnce(0.4)    // 3 (extra die 1)
-      .mockReturnValueOnce(0.4)    // 3 (extra die 2)
+      .mockReturnValueOnce(0.4) // 3
+      .mockReturnValueOnce(0.4) // 3
+      .mockReturnValueOnce(0.4) // 3 (extra die 1)
+      .mockReturnValueOnce(0.4) // 3 (extra die 2)
 
     // Act
     const results = rollDiceExploding(4)
@@ -374,7 +374,7 @@ describe("rerollMisses", () => {
     // Arrange — [5, 6, 2, 3]: 2 hits, 2 misses; re-rolled misses mocked to return 4 and 1
     vi.spyOn(Math, "random")
       .mockReturnValueOnce(0.5) // 4
-      .mockReturnValueOnce(0)   // 1
+      .mockReturnValueOnce(0) // 1
 
     // Act
     const result = rerollMisses([5, 6, 2, 3])
