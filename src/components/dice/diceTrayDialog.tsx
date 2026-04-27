@@ -43,21 +43,19 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
   const handleRoll = () => diceTrayApi.rollStandard()
 
   const handleEdge = () => {
-    edgeStore.setCurrent(edgeCurrent - 1)
+    edgeStore.setCurrent((current) => current - 1)
     diceTrayApi.rollEdge()
   }
+
+  const criticalGlitch = results !== null && isCriticalGlitch(results)
+  const glitch = results !== null && !criticalGlitch && isGlitch(results)
 
   const diceResultsInfo: DiceResultsInfo = {
     values: results ?? Array.from({ length: diceCount }, () => 0),
     isRolling,
     hits: results !== null ? countHits(results) : 0,
-    isGlitch: results !== null
-      ? isCriticalGlitch(results) ? "crtical" : isGlitch(results)
-      : false,
+    isGlitch: criticalGlitch ? "critical" : glitch,
   }
-
-  const criticalGlitch = results !== null && isCriticalGlitch(results)
-  const glitch = results !== null && !criticalGlitch && isGlitch(results)
 
   return (
     <Dialog open={open} onClose={() => diceTrayApi.close()} fullWidth>

@@ -1,7 +1,7 @@
 import type { Store } from "@tanstack/store"
 import { createStore } from "@tanstack/store"
 
-import { rollDice, rollDiceExploding } from "#/system/dice/diceRoll.ts"
+import { rerollMisses, rollDice, rollDiceExploding } from "#/system/dice/diceRoll.ts"
 
 const ROLLING_DURATION_MS = 600
 
@@ -82,9 +82,9 @@ export class DiceTrayApi {
     this.store.setState((prev) => ({ ...prev, open: false, isRolling: false }))
   }
 
-  /** Adjust the dice count shown in the tray. */
+  /** Adjust the dice count shown in the tray. Clears any existing results so displayed dice match the new count. */
   setDiceCount(count: number): void {
-    this.store.setState((prev) => ({ ...prev, diceCount: Math.max(1, count) }))
+    this.store.setState((prev) => ({ ...prev, diceCount: Math.max(1, count), results: null }))
   }
 
   /**
@@ -104,10 +104,28 @@ export class DiceTrayApi {
   }
 
   /**
+   * Edge — Second Chance: re-roll all non-hits from the current results,
+   * preserving existing hits. Does nothing if there are no current results.
+   */
+  rollSecondChance(): void {
+    const { results } = this.store.state
+    if (results === null) return
+    this.startRoll(rerollMisses(results))
+  }
+
+  /** Cancel any in-progress rolling timer. Call on unmount to prevent leaks. */
+  destroy(): void {
+    if (this.rollingTimer !== null) {
+      clearTimeout(this.rollingTimer)
+      this.rollingTimer = null
+    }
+  }
+
+  /**
    * Begin the rolling animation with the provided result values. Cancels any
    * previous animation and schedules the reveal after {@link ROLLING_DURATION_MS}.
    */
-  startRoll(values: number[]): void {
+  private startRoll(values: number[]): void {
     if (this.rollingTimer !== null) {
       clearTimeout(this.rollingTimer)
     }

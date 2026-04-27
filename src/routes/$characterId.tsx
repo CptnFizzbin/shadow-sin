@@ -31,7 +31,8 @@ export const Route = createFileRoute("/$characterId")({
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
-  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- character.id keys the memo so state resets on character switch
+  const diceTrayApi = useMemo(() => new DiceTrayApi(), [character.id])
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
@@ -44,6 +45,10 @@ function CharacterRoute() {
 
     return () => unsubscribe()
   }, [store])
+
+  useEffect(() => {
+    return () => diceTrayApi.destroy()
+  }, [diceTrayApi])
 
   return (
     <CharacterSheetProvider store={store}>
