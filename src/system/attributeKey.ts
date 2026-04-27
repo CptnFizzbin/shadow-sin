@@ -79,4 +79,3 @@ export const SpecialAttributes: AttributeKey[] = [
   AttributeKey.edge,
   AttributeKey.essence,
 ] as const
-
