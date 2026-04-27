@@ -11,6 +11,10 @@ interface DiceResultProps {
   highlightHits?: boolean
   highlightGlitches?: boolean
   iconSize?: number
+  /** Optional inclusive start index into the roller's dice array. */
+  startIndex?: number
+  /** Optional exclusive end index into the roller's dice array. */
+  endIndex?: number
 }
 
 export const DiceResult: FC<DiceResultProps> = ({
@@ -18,9 +22,14 @@ export const DiceResult: FC<DiceResultProps> = ({
   highlightHits = true,
   highlightGlitches = true,
   iconSize = 18,
+  startIndex,
+  endIndex,
 }) => {
-  const dice = useDiceRollerSelector(roller, selectAllDice)
+  const allDice = useDiceRollerSelector(roller, selectAllDice)
   const isGlitch = useDiceRollerSelector(roller, selectIsGlitch)
+  const dice = (startIndex !== undefined || endIndex !== undefined)
+    ? allDice.slice(startIndex ?? 0, endIndex)
+    : allDice
 
   const diceDefaultColor = (isGlitch && highlightGlitches) ? "error.main" : "secondary.main"
 

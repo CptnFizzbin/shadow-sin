@@ -32,18 +32,18 @@ export const TraditionCard: FC = () => {
     >
       {tradition
         ? (
-          <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-            <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
-            <Typography color="text.secondary">
-              WIL + {AttributeLabels[tradition.drainAttribute]}
-            </Typography>
-          </Stack>
-        )
+            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
+              <Typography color="text.secondary">
+                WIL + {AttributeLabels[tradition.drainAttribute]}
+              </Typography>
+            </Stack>
+          )
         : (
-          <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-            Set Tradition
-          </Typography>
-        )}
+            <Typography color="text.secondary" sx={{ textAlign: "center" }}>
+              Set Tradition
+            </Typography>
+          )}
     </Paper>
   )
 }
