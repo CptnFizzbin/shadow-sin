@@ -1,9 +1,12 @@
-import type { DialogTitleProps as MuiDialogTitleProps } from "@mui/material/DialogTitle"
 import MuiDialogTitle from "@mui/material/DialogTitle"
-import type { FC } from "react"
+import type { FC, ReactNode } from "react"
 
-export type DialogTitleProps = MuiDialogTitleProps
+interface DialogTitleProps {
+  children: ReactNode
+}
 
-export const DialogTitle: FC<DialogTitleProps> = (props) => <MuiDialogTitle {...props} />
+export const DialogTitle: FC<DialogTitleProps> = ({ children }) => (
+  <MuiDialogTitle>{children}</MuiDialogTitle>
+)
 
 DialogTitle.displayName = "Dialog.Title"

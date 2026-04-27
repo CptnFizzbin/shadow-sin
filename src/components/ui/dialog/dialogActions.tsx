@@ -1,9 +1,12 @@
-import type { DialogActionsProps as MuiDialogActionsProps } from "@mui/material/DialogActions"
 import MuiDialogActions from "@mui/material/DialogActions"
-import type { FC } from "react"
+import type { FC, ReactNode } from "react"
 
-export type DialogActionsProps = MuiDialogActionsProps
+interface DialogActionsProps {
+  children: ReactNode
+}
 
-export const DialogActions: FC<DialogActionsProps> = (props) => <MuiDialogActions {...props} />
+export const DialogActions: FC<DialogActionsProps> = ({ children }) => (
+  <MuiDialogActions>{children}</MuiDialogActions>
+)
 
 DialogActions.displayName = "Dialog.Actions"

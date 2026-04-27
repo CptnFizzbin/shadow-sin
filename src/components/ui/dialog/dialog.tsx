@@ -12,28 +12,19 @@ interface DialogComponent {
 }
 
 /**
- * Compound `Dialog` component that wraps MUI's `Dialog` and is compatible with
- * `DialogApiDialogProps` — `open`, `onClose`, and `onClosed` can be spread
- * directly onto it from a dialog opened via `DialogApi.open(...)`.
+ * Compound `Dialog` component wrapping MUI's dialog family with a consistent
+ * look and only functional props exposed. Dialogs are always full-width;
+ * use `maxWidth` to control the maximum size (default `"sm"`).
  *
- * Compose the dialog using the static slot components:
- * - `Dialog.Title` — header (wraps MUI `DialogTitle`)
- * - `Dialog.Content` — body (wraps MUI `DialogContent`)
- * - `Dialog.Actions` — footer buttons row (wraps MUI `DialogActions`)
+ * Compatible with `DialogApiDialogProps` — spread the props injected by
+ * `DialogApi.open(...)` directly onto the component.
  *
- * @example
- * ```tsx
- * const ConfirmDialog: FC<DialogApiDialogProps<boolean>> = (props) => (
- *   <Dialog {...props} fullWidth maxWidth="xs">
- *     <Dialog.Title>Are you sure?</Dialog.Title>
- *     <Dialog.Content>This cannot be undone.</Dialog.Content>
- *     <Dialog.Actions>
- *       <Button onClick={() => props.onClose(false)}>Cancel</Button>
- *       <Button onClick={() => props.onClose(true)}>Confirm</Button>
- *     </Dialog.Actions>
- *   </Dialog>
- * )
- * ```
+ * Slot components:
+ * - `Dialog.Title` — header text
+ * - `Dialog.Content` — scrollable body (accepts `dividers` prop)
+ * - `Dialog.Actions` — footer button row
+ *
+ * See `docs/ui/dialog.md` for detailed examples.
  */
 export const Dialog = DialogRoot as DialogComponent
 Dialog.Title = DialogTitle
