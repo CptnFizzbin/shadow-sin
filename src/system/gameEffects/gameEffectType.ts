@@ -8,4 +8,5 @@ export enum GameEffectType {
   extraInitiativePasses = "extraInitiativePasses",
   extraInitiativeDice = "extraInitiativeDice",
   painTolerance = "painTolerance",
+  generalPenalty = "generalPenalty",
 }

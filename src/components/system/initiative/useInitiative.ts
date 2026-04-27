@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -17,6 +17,7 @@ export const useInitiative = (): InitiativeInfo => {
   const initiativeBonuses = useGameEffects(GameEffectType.initiativeBonus)
   const extraPassEffects = useGameEffects(GameEffectType.extraInitiativePasses)
   const extraDiceEffects = useGameEffects(GameEffectType.extraInitiativeDice)
+  const generalPenalty = useGeneralPenalty()
 
   return useMemo(() => {
     const initiativeBonus = initiativeBonuses.reduce((sum, e) => sum + e.value, 0)
@@ -24,8 +25,8 @@ export const useInitiative = (): InitiativeInfo => {
     const extraDice = extraDiceEffects.reduce((sum, e) => sum + e.value, 0)
 
     return {
-      dicePool: reactionAttr + intuitionAttr + initiativeBonus + extraDice,
+      dicePool: reactionAttr + intuitionAttr + initiativeBonus + extraDice + generalPenalty,
       initiativePasses: 1 + extraInitiativePasses,
     }
-  }, [reactionAttr, intuitionAttr, initiativeBonuses, extraPassEffects, extraDiceEffects])
+  }, [reactionAttr, intuitionAttr, initiativeBonuses, extraPassEffects, extraDiceEffects, generalPenalty])
 }

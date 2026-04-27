@@ -1,6 +1,6 @@
 import { useId } from "react"
 
-import { useActiveSkillRating, useAttr, useEffectiveAttr } from "#/components/character/characterUtils.ts"
+import { useActiveSkillRating, useAttr, useEffectiveAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
@@ -40,6 +40,12 @@ export function useWoundDiceGroup(): DiceGroup | null {
   const woundMod = useWoundModifier()
   if (woundMod === 0) return null
   return { name: "Wound", size: woundMod * -1, color: "error.main" }
+}
+
+export function useGeneralPenaltyDiceGroup(): DiceGroup | null {
+  const penalty = useGeneralPenalty()
+  if (penalty === 0) return null
+  return { name: "Concentration", size: penalty, color: "warning.main" }
 }
 
 export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {

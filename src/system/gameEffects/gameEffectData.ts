@@ -85,6 +85,15 @@ export interface PainToleranceEffect extends GameEffectData {
 }
 
 /**
+ * Flat penalty to all general action dice pools (active skills, initiative).
+ * Used for concentration penalties from sustaining spells without a sustaining focus.
+ * Drain resistance is exempt — it uses raw attributes.
+ */
+export interface GeneralPenaltyEffect extends GameEffectData {
+  type: GameEffectType.generalPenalty
+}
+
+/**
  * Mapped type for looking up concrete effect interfaces by their type enum.
  */
 export type EffectByType = {
@@ -98,6 +107,7 @@ export type EffectByType = {
   [GameEffectType.painTolerance]: PainToleranceEffect
   [GameEffectType.recoilReduction]: RecoilReductionEffect
   [GameEffectType.dicePoolMod]: DicePoolModEffect
+  [GameEffectType.generalPenalty]: GeneralPenaltyEffect
 }
 
 const InitiativeBonusSchema = z.object({
@@ -153,6 +163,11 @@ const PainToleranceSchema = z.object({
   value: z.number(),
 })
 
+const GeneralPenaltySchema = z.object({
+  type: z.literal(GameEffectType.generalPenalty),
+  value: z.number(),
+})
+
 /**
  * Discriminated union schema for all game effects.
  */
@@ -167,4 +182,5 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   ExtraInitiativePassesSchema,
   ExtraInitiativeDiceSchema,
   PainToleranceSchema,
+  GeneralPenaltySchema,
 ]) satisfies z.ZodType<GameEffectData>
