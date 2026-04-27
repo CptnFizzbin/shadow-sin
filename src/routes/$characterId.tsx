@@ -3,7 +3,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiDiceLine } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { CharacterErrorRoute } from "#/components/character/characterErrorRoute.tsx"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
@@ -33,9 +33,12 @@ export const Route = createFileRoute("/$characterId")({
 
 function CharacterRoute() {
   const character = Route.useLoaderData()
+  return <CharacterSheetRoot key={character.id} character={character} />
+}
+
+function CharacterSheetRoot({ character }: { character: CharacterSheet }) {
   const store = useMemo(() => new CharacterSheetStore(character), [character])
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- character.id keys the memo so state resets on character switch
-  const diceTrayApi = useMemo(() => new DiceTrayApi(), [character.id])
+  const [diceTrayApi] = useState(() => new DiceTrayApi())
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
