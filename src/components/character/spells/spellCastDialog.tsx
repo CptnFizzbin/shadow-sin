@@ -14,8 +14,8 @@ import {
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SpellCastSection } from "#/components/character/spells/spellCastSection.tsx"
 import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -24,7 +24,7 @@ interface SpellCastDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onRoll?: (count: number) => void
+  onRoll: (count: number) => void
 }
 
 export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed, onRoll }) => {
@@ -103,20 +103,17 @@ export const useSpellCastDialog = () => {
   const diceTray = useDiceTray()
 
   return {
-    open: (props: UseSpellCastDialogProps) => {
-      const onRoll = (count: number) => diceTray.setDice(count)
-      dialogApi.open<void>(
-        (dialogProps) => (
-          <CharacterSheetProvider store={sheetContext}>
-            <SpellCastDialog
-              {...dialogProps}
-              spell={props.spell}
-              onClose={() => dialogProps.onClose()}
-              onRoll={onRoll}
-            />
-          </CharacterSheetProvider>
-        ),
-      )
-    },
+    open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
+      (dialogProps) => (
+        <CharacterSheetProvider store={sheetContext}>
+          <SpellCastDialog
+            {...dialogProps}
+            spell={props.spell}
+            onClose={() => dialogProps.onClose()}
+            onRoll={(count) => diceTray.setDice(count)}
+          />
+        </CharacterSheetProvider>
+      ),
+    ),
   }
 }
