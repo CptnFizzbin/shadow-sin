@@ -29,8 +29,11 @@ const config = defineConfig({
   test: {
     include: ["**/*.test.{ts,tsx}"],
     environment: "happy-dom",
+    // Concurrent test execution is disabled because tests using
+    // `vi.useFakeTimers()` (notably `src/system/dice/diceRoller.test.ts`)
+    // share a global timer mock and can interleave when run in parallel.
     sequence: {
-      concurrent: true,
+      concurrent: false,
     },
   },
 })

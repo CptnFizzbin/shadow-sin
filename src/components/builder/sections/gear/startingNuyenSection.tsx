@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import Chip from "@mui/material/Chip"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
@@ -14,6 +15,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
+import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
@@ -29,10 +31,11 @@ export const StartingNuyenSection: FC = () => {
   const maxBonus = numDice * 3
   const bonus = Math.min(Math.floor(unspentNuyen / 100), maxBonus)
 
-  const [diceResult, rollDice] = useDiceRoller(numDice, 1000)
+  const diceRoller = useDiceRoller(numDice)
+  const dice = useDiceRollerSelector(diceRoller, selectSettledDice)
+  const hasRolled = useDiceRollerSelector(diceRoller, selectWasRolled)
+  const diceSum = dice.reduce((sum, die) => sum + die.value, 0)
 
-  const hasRolled = diceResult.values.some((value) => value > 0)
-  const diceSum = diceResult.values.reduce((sum, value) => sum + value, 0)
   const rolledTotal = hasRolled ? (diceSum + bonus) * mult : null
 
   const minResult = (numDice + bonus) * mult
@@ -57,7 +60,7 @@ export const StartingNuyenSection: FC = () => {
         >
           <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
             <DiceResult
-              results={diceResult}
+              roller={diceRoller}
               highlightHits={false}
               highlightGlitches={false}
             />
@@ -83,9 +86,17 @@ export const StartingNuyenSection: FC = () => {
               )}
         </Stack>
 
-        <Button size="small" variant="outlined" onClick={rollDice}>
-          {hasRolled ? "Reroll" : "Roll"}
-        </Button>
+        <ButtonGroup fullWidth>
+          <Button size="small" variant="outlined" onClick={() => diceRoller.rollAll()}>
+            {hasRolled ? "Reroll" : "Roll"}
+          </Button>
+
+          {hasRolled && (
+            <Button size="small" variant="outlined" onClick={() => diceRoller.reset()}>
+              Reset
+            </Button>
+          )}
+        </ButtonGroup>
 
         {bonus > 0 && (
           <Typography color="text.secondary">
