@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
@@ -11,8 +11,8 @@ import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
   const damageStore = useDamageStore()
-  const physical = useStore(damageStore, (state) => state.physical)
-  const stun = useStore(damageStore, (state) => state.stun)
+  const physical = useSelector(damageStore, (state) => state.physical)
+  const stun = useSelector(damageStore, (state) => state.stun)
 
   return (
     <Stack sx={{ gap: 0.5 }}>

@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import { renderHook } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
@@ -38,8 +38,8 @@ describe("useDamageStore", () => {
       () => {
         const store = useDamageStore()
         return {
-          physicalInterval: useStore(store, (s) => s.physical.woundInterval),
-          stunInterval: useStore(store, (s) => s.stun.woundInterval),
+          physicalInterval: useSelector(store, (s) => s.physical.woundInterval),
+          stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
       { wrapper: makeWrapper(sheet) },
@@ -70,8 +70,8 @@ describe("useDamageStore", () => {
       () => {
         const store = useDamageStore()
         return {
-          physicalInterval: useStore(store, (s) => s.physical.woundInterval),
-          stunInterval: useStore(store, (s) => s.stun.woundInterval),
+          physicalInterval: useSelector(store, (s) => s.physical.woundInterval),
+          stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
       { wrapper: makeWrapper(sheet) },
@@ -102,8 +102,8 @@ describe("useDamageStore", () => {
       () => {
         const store = useDamageStore()
         return {
-          physicalInterval: useStore(store, (s) => s.physical.woundInterval),
-          stunInterval: useStore(store, (s) => s.stun.woundInterval),
+          physicalInterval: useSelector(store, (s) => s.physical.woundInterval),
+          stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
       { wrapper: makeWrapper(sheet) },
@@ -134,8 +134,8 @@ describe("useDamageStore", () => {
       () => {
         const store = useDamageStore()
         return {
-          physicalInterval: useStore(store, (s) => s.physical.woundInterval),
-          stunInterval: useStore(store, (s) => s.stun.woundInterval),
+          physicalInterval: useSelector(store, (s) => s.physical.woundInterval),
+          stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
       { wrapper: makeWrapper(sheet) },
@@ -165,7 +165,7 @@ describe("useDamageStore", () => {
     const { result } = renderHook(
       () => {
         const store = useDamageStore()
-        return useStore(store, (s) => s.physical.woundInterval)
+        return useSelector(store, (s) => s.physical.woundInterval)
       },
       { wrapper: makeWrapper(sheet) },
     )
@@ -184,7 +184,7 @@ describe("useDamageStore", () => {
     const { result } = renderHook(
       () => {
         const store = useDamageStore()
-        return useStore(store, (s) => s.physical.max)
+        return useSelector(store, (s) => s.physical.max)
       },
       { wrapper: makeWrapper(sheet) },
     )
@@ -203,7 +203,7 @@ describe("useDamageStore", () => {
     const { result } = renderHook(
       () => {
         const store = useDamageStore()
-        return useStore(store, (s) => s.stun.max)
+        return useSelector(store, (s) => s.stun.max)
       },
       { wrapper: makeWrapper(sheet) },
     )
@@ -224,8 +224,8 @@ describe("useDamageStore", () => {
       () => {
         const store = useDamageStore()
         return {
-          physicalCurrent: useStore(store, (s) => s.physical.current),
-          stunCurrent: useStore(store, (s) => s.stun.current),
+          physicalCurrent: useSelector(store, (s) => s.physical.current),
+          stunCurrent: useSelector(store, (s) => s.stun.current),
         }
       },
       { wrapper: makeWrapper(sheet) },

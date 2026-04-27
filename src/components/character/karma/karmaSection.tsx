@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useAddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
@@ -13,8 +13,8 @@ import { Label } from "#/components/ui/text/label"
 export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()
   const karmaStore = useKarmaStore()
-  const currentKarma = useStore(karmaStore, selectCurrentKarma)
-  const totalKarma = useStore(karmaStore, selectTotalKarma)
+  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const totalKarma = useSelector(karmaStore, selectTotalKarma)
 
   const handleOpenAddKarma = () => {
     addKarmaDialog.open({

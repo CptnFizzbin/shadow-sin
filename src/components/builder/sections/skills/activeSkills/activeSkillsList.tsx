@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
@@ -26,8 +26,8 @@ import type { SkillGroupData } from "#/system/skills/skillGroupData"
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
   const skillsStore = useSkillsStore()
-  const activeSkills = useStore(skillsStore, selectActiveSkills)
-  const skillGroups = useStore(skillsStore, selectSkillGroups)
+  const activeSkills = useSelector(skillsStore, selectActiveSkills)
+  const skillGroups = useSelector(skillsStore, selectSkillGroups)
 
   const activeSkillDialog = useActiveSkillDialog()
   const activeSkillGroupDialog = useActiveSkillGroupDialog()

@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 
 import {
@@ -10,8 +10,8 @@ import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()
-  const knowledgeSkills = useStore(skillsStore, selectKnowledgeSkills)
-  const languageSkills = useStore(skillsStore, selectLanguageSkills)
+  const knowledgeSkills = useSelector(skillsStore, selectKnowledgeSkills)
+  const languageSkills = useSelector(skillsStore, selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
 
   const statuses: AlertInfo[] = []

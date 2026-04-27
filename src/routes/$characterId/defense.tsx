@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import { Fragment } from "react"
 
 import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
@@ -34,8 +34,8 @@ export const Route = createFileRoute("/$characterId/defense")({
 
 function RouteComponent() {
   const damageStore = useDamageStore()
-  const physical = useStore(damageStore, selectPhysicalTrack)
-  const stun = useStore(damageStore, selectStunTrack)
+  const physical = useSelector(damageStore, selectPhysicalTrack)
+  const stun = useSelector(damageStore, selectStunTrack)
 
   return (
     <Stack>

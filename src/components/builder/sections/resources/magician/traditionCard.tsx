@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { selectTradition } from "#/components/builder/sections/resources/magician/traditionSelectors.ts"
@@ -11,7 +11,7 @@ import { AttributeLabels } from "#/system/attributeKey.ts"
 
 export const TraditionCard: FC = () => {
   const traditionStore = useTraditionStore()
-  const tradition = useStore(traditionStore, selectTradition)
+  const tradition = useSelector(traditionStore, selectTradition)
   const traditionFormDialog = useTraditionFormDialog()
 
   const handleOpen = async () => {
@@ -32,18 +32,18 @@ export const TraditionCard: FC = () => {
     >
       {tradition
         ? (
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-              <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
-              <Typography color="text.secondary">
-                WIL + {AttributeLabels[tradition.drainAttribute]}
-              </Typography>
-            </Stack>
-          )
-        : (
-            <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-              Set Tradition
+          <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+            <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
+            <Typography color="text.secondary">
+              WIL + {AttributeLabels[tradition.drainAttribute]}
             </Typography>
-          )}
+          </Stack>
+        )
+        : (
+          <Typography color="text.secondary" sx={{ textAlign: "center" }}>
+            Set Tradition
+          </Typography>
+        )}
     </Paper>
   )
 }
