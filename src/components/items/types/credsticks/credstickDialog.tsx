@@ -11,7 +11,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -53,7 +53,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
 }) => {
   const gearStore = useGearStore()
   const nuyenStore = useNuyenStore()
-  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
+  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
 
   const isEditMode = mode === "edit"
   const isCertified = mode === "add-certified"

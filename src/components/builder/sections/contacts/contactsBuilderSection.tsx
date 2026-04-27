@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useContactsAlerts } from "#/components/builder/alerts/hooks/useContactsAlerts.ts"
@@ -13,7 +13,7 @@ import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 
 export const ContactsBuilderSection: FC = () => {
   const contactsStore = useContactsStore()
-  const allContacts = useStore(contactsStore, selectAllContacts)
+  const allContacts = useSelector(contactsStore, selectAllContacts)
   const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts

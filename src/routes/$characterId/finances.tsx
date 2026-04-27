@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 
 import { useEndOfMonthDialog } from "#/components/character/finances/endOfMonth/endOfMonthDialog.tsx"
 import { LifestyleSection } from "#/components/character/finances/lifestyle/lifestyleSection.tsx"
@@ -34,12 +34,12 @@ function RouteComponent() {
   const endOfMonthDialog = useEndOfMonthDialog()
 
   const netWorth = useNetWorth()
-  const nuyenBalance = useStore(nuyenStore, selectNuyenAmount)
-  const loans = useStore(nuyenStore, selectLoans)
+  const nuyenBalance = useSelector(nuyenStore, selectNuyenAmount)
+  const loans = useSelector(nuyenStore, selectLoans)
   const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  const lifestyleQuality = useStore(lifestyleStore, selectLifestyleQuality)
-  const lifestyleMonthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const lifestyleQuality = useSelector(lifestyleStore, selectLifestyleQuality)
+  const lifestyleMonthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
   const lifestyleUpkeep = Lifestyles[lifestyleQuality].upkeep
 
   const monthlyNuyenCost = lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0

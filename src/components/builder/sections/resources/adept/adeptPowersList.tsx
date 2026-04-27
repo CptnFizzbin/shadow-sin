@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { AdeptPowersListItem } from "#/components/builder/sections/resources/adept/adeptPowersListItem.tsx"
@@ -15,7 +15,7 @@ import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
 export const AdeptPowersList: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()
-  const adeptPowers = useStore(adeptPowersStore, selectAllAdeptPowers)
+  const adeptPowers = useSelector(adeptPowersStore, selectAllAdeptPowers)
   const powerPoints = usePowerPoints()
   const adeptPowerFormDialog = useAdeptPowerFormDialog()
 

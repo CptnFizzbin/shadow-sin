@@ -10,7 +10,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { darken, lighten } from "@mui/material/styles"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -49,10 +49,10 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainIsPhysical = isOvercasting
 
   const damageStore = useDamageStore()
-  const physicalMax = useStore(damageStore, selectPhysicalMax)
-  const physicalCurrent = useStore(damageStore, selectPhysicalCurrent)
-  const stunMax = useStore(damageStore, selectStunMax)
-  const stunCurrent = useStore(damageStore, selectStunCurrent)
+  const physicalMax = useSelector(damageStore, selectPhysicalMax)
+  const physicalCurrent = useSelector(damageStore, selectPhysicalCurrent)
+  const stunMax = useSelector(damageStore, selectStunMax)
+  const stunCurrent = useSelector(damageStore, selectStunCurrent)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return
