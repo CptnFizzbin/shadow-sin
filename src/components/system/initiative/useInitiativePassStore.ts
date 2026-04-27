@@ -4,6 +4,7 @@ import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { selectPassesCompleted } from "#/components/system/initiative/initiativePassSelectors.ts"
+import type { InitiativePassState } from "#/components/system/initiative/initiativePassStore.ts"
 import { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
@@ -15,10 +16,11 @@ export const useInitiativePassStore = (): InitiativePassStore => {
   return useMemo(() => {
     const sliceAtom = createSliceAtom(
       sheetStore,
-      (sheet) => ({
+      (sheet): InitiativePassState => ({
         passesCompleted: sheet.initiative?.passesCompleted ?? [],
         rolledResults: sheet.initiative?.rolledResults,
         goingFirst: sheet.initiative?.goingFirst,
+        extraPasses: sheet.initiative?.extraPasses ?? 0,
       }),
       (sheet, state) =>
         produce(sheet, (draft) => {
@@ -26,6 +28,7 @@ export const useInitiativePassStore = (): InitiativePassStore => {
           draft.initiative.passesCompleted = state.passesCompleted
           draft.initiative.rolledResults = state.rolledResults
           draft.initiative.goingFirst = state.goingFirst
+          draft.initiative.extraPasses = state.extraPasses
         }),
     )
 
@@ -45,3 +48,6 @@ export const useInitiativeRolledResults = (store: InitiativePassStore): number[]
 
 export const useInitiativeGoingFirst = (store: InitiativePassStore): boolean =>
   useStore(store, (state) => state.goingFirst === true)
+
+export const useInitiativeExtraPasses = (store: InitiativePassStore): number =>
+  useStore(store, (state) => state.extraPasses)

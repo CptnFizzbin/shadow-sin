@@ -107,6 +107,7 @@ export interface CharacterSheet {
     passesCompleted: number[]
     rolledResults?: number[]
     goingFirst?: boolean
+    extraPasses?: number
   }
 
   qualities: QualityData[]

@@ -47,6 +47,11 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
     diceTrayApi.rollEdge()
   }
 
+  const handleSecondChance = () => {
+    edgeStore.setCurrent((current) => current - 1)
+    diceTrayApi.rollSecondChance()
+  }
+
   const criticalGlitch = results !== null && isCriticalGlitch(results)
   const glitch = results !== null && !criticalGlitch && isGlitch(results)
 
@@ -110,14 +115,27 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button
-          variant="outlined"
-          color="warning"
-          onClick={handleEdge}
-          disabled={edgeCurrent <= 0 || isRolling}
-        >
-          Edge ({edgeCurrent})
-        </Button>
+        {results === null
+          ? (
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={handleEdge}
+                disabled={edgeCurrent <= 0 || isRolling}
+              >
+                Push Edge ({edgeCurrent})
+              </Button>
+            )
+          : (
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={handleSecondChance}
+                disabled={edgeCurrent <= 0 || isRolling}
+              >
+                2nd Chance ({edgeCurrent})
+              </Button>
+            )}
 
         <Button variant="contained" onClick={handleRoll} disabled={isRolling}>
           Roll {diceCount}d6

@@ -6,6 +6,7 @@ export interface InitiativePassState {
   passesCompleted: number[]
   rolledResults?: number[]
   goingFirst?: boolean
+  extraPasses: number
 }
 
 export class InitiativePassStore extends StoreSlice<InitiativePassState> {
@@ -41,12 +42,19 @@ export class InitiativePassStore extends StoreSlice<InitiativePassState> {
     }))
   }
 
+  gainExtraPass(): void {
+    this.set(produce((state) => {
+      state.extraPasses += 1
+    }))
+  }
+
   resetPasses(): void {
     this.set(
       produce((state) => {
         state.passesCompleted = []
         state.rolledResults = undefined
         state.goingFirst = undefined
+        state.extraPasses = 0
       }),
     )
   }
