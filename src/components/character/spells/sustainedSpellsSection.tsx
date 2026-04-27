@@ -4,14 +4,14 @@ import Typography from "@mui/material/Typography"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
 import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 export const SustainedSpellsSection: FC = () => {
-  const sustainedSpells = useCharacterSheet(
+  const sustainedSpells = useCharacterSheetSelector(
     (sheet) => sheet.spells.filter((s) => s.sustained),
     (a, b) => a.length === b.length && a.every((s, i) => s.id === b[i].id),
   )

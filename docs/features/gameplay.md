@@ -175,13 +175,14 @@ Edge is a metacurrency spent during play to gain mechanical advantages; it needs
 
 Players with awakened or technomancer characters need quick access to their magic/resonance actions.
 
-### 6a. Spellcasting & Drain
+### 6a. Spellcasting & Drain ⚠️ partially implemented — PR #64, PR #181
 
-- [ ] Per-spell **Cast** action — show the casting dice pool inline (`Magic + Spellcasting`)
-- [ ] **Drain** prompt after casting — show drain resistance pool and drain DV; log the result
-- [ ] Force selection slider before casting (1 to `Magic` rating); update drain DV dynamically
+- [x] Per-spell **Cast** action — `SpellCastDialog` shows casting dice pool (`Magic + Spellcasting`) ✅ PR #64
+- [x] **Drain** prompt after casting — drain resistance pool and drain DV displayed; apply buttons write damage to the sheet ✅ PR #64
+- [x] Force selection before casting (1 to 2×`Magic`; default = `Magic`); drain DV updates dynamically ✅ PR #64
 - [x] Sustained spell toggle — mark a spell as sustained so its effects (e.g. initiative bonus) apply automatically ✅ PR #178
-- [ ] Sustained spell display — running list of active sustained spells with their drain DV
+- [x] Sustained spell display — `SustainedSpellsSection` above the spell catalogue; shows each sustained spell with drain formula and inline un-sustain control ✅ PR #181
+- [x] Sustained spell attribute mods — `useEffectiveAttr` applies `attrMod` effects from sustained spells to skill dice pools; drain resistance uses raw attributes (exempt) ✅ PR #181
 
 ### 6b. Summoning & Binding ⚠️ partially implemented — PR #163
 
