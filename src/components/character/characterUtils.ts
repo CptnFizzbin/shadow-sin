@@ -46,6 +46,15 @@ export const useEffectiveAttr = (attribute: AttributeKey): number => {
 }
 
 /**
+ * Sum of all generalPenalty effects — applied to active skill pools and initiative.
+ * Drain resistance is deliberately exempt; use raw attributes there instead.
+ */
+export const useGeneralPenalty = (): number => {
+  const effects = useGameEffects(GameEffectType.generalPenalty)
+  return effects.reduce((sum, e) => sum + e.value, 0)
+}
+
+/**
  * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
  */
 export const useActiveSkillRating = (skill: SkillKey) => {
@@ -75,7 +84,9 @@ export const useActiveSkill = (skill: SkillKey) => {
     .filter((e) => e.target === skill)
     .reduce((sum, e) => sum + e.value, 0)
 
-  return rating + attribute + totalMod
+  const generalPenalty = useGeneralPenalty()
+
+  return rating + attribute + totalMod + generalPenalty
 }
 
 /**

@@ -29,6 +29,8 @@ function effectLabel(effects: GameEffectData[]): string {
       parts.push(`${e.value > 0 ? "+" : ""}${e.value} ${e.target}`)
     } else if (e.type === GameEffectType.skillMod && e.target) {
       parts.push(`${e.value > 0 ? "+" : ""}${e.value} ${e.target}`)
+    } else if (e.type === GameEffectType.generalPenalty) {
+      parts.push(`${e.value > 0 ? "+" : ""}${e.value} all pools`)
     }
   }
   return parts.join(", ")

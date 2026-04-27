@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useGeneralPenaltyDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
@@ -20,6 +20,7 @@ export const AttackDicePool: FC<AttackDicePoolProps> = ({ weapon, onRoll }) => {
         useAttrDiceGroup(attrKey),
         useActiveSkillDiceGroup(weapon.skill),
         useWoundDiceGroup(),
+        useGeneralPenaltyDiceGroup(),
       ]}
       onRoll={onRoll}
     />

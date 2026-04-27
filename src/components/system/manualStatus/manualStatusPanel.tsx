@@ -28,6 +28,7 @@ type SupportedEffectType =
   | GameEffectType.initiativeBonus
   | GameEffectType.extraInitiativePasses
   | GameEffectType.extraInitiativeDice
+  | GameEffectType.generalPenalty
 
 const EFFECT_TYPE_LABELS: Record<SupportedEffectType, string> = {
   [GameEffectType.attrMod]: "Attribute modifier",
@@ -35,6 +36,7 @@ const EFFECT_TYPE_LABELS: Record<SupportedEffectType, string> = {
   [GameEffectType.initiativeBonus]: "Initiative bonus",
   [GameEffectType.extraInitiativePasses]: "Extra initiative passes",
   [GameEffectType.extraInitiativeDice]: "Extra initiative dice",
+  [GameEffectType.generalPenalty]: "Concentration penalty (all pools)",
 }
 
 const NEEDS_ATTR_TARGET = new Set<SupportedEffectType>([GameEffectType.attrMod])
@@ -53,6 +55,8 @@ function singleEffectLabel(effect: GameEffectData): string {
       return `+${effect.value} IP`
     case GameEffectType.extraInitiativeDice:
       return `+${effect.value} Init Dice`
+    case GameEffectType.generalPenalty:
+      return `${sign}${effect.value} all pools`
     default:
       return `${sign}${effect.value}`
   }
