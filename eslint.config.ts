@@ -84,7 +84,12 @@ export default defineConfig([
       },
 
       ...{ // import-alias rules
-        "@dword-design/import-alias/prefer-alias": ["error", { aliasForSubpaths: true }],
+        "@dword-design/import-alias/prefer-alias": [
+          "error", {
+            shouldReadTsConfig: true,
+            aliasForSubpaths: true,
+          },
+        ],
       },
 
       ...{ // eslint-plugin-import-x rules

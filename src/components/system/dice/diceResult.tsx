@@ -1,54 +1,50 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
-import { useEffect, useState } from "react"
 
-import type { DiceResultsInfo } from "#/components/system/dice/diceResultsInfo.tsx"
-import { getDiceOffset, rollD6 } from "#/components/system/dice/diceUtils.ts"
-import { DieIcon } from "#/components/system/dice/dieIcon.tsx"
+import { getDiceOffset } from "#/components/system/dice/diceUtils.ts"
+import { DieFace } from "#/components/system/dice/dieFace.tsx"
+import { selectAllDice, selectIsGlitch, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
 interface DiceResultProps {
-  results: DiceResultsInfo
+  roller: DiceRoller
   highlightHits?: boolean
   highlightGlitches?: boolean
+  iconSize?: number
 }
 
 export const DiceResult: FC<DiceResultProps> = ({
-  results,
+  roller,
   highlightHits = true,
   highlightGlitches = true,
+  iconSize = 18,
 }) => {
-  const diceDefaultColor = (results.isGlitch === "crtical" && highlightGlitches) ? "error.main" : "secondary.main"
-  const [diceValues, setDiceValues] = useState<number[]>(results.values)
+  const dice = useDiceRollerSelector(roller, selectAllDice)
+  const isGlitch = useDiceRollerSelector(roller, selectIsGlitch)
 
-  useEffect(() => {
-    if (!results.isRolling) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDiceValues(results.values)
-    } else {
-      const handle = setInterval(() => {
-        setDiceValues(results.values.map(() => rollD6()))
-      }, 100)
-
-      return () => clearInterval(handle)
-    }
-  }, [results])
+  const diceDefaultColor = (isGlitch && highlightGlitches) ? "error.main" : "secondary.main"
 
   return (
     <Stack
       direction="row"
-      sx={{ flexWrap: "wrap", gap: 0, color: diceDefaultColor }}
+      sx={{
+        flexWrap: "wrap",
+        gap: 0,
+        color: diceDefaultColor,
+        margin: "auto",
+        justifyContent: "center",
+      }}
     >
-      {diceValues.map((value, index) => {
-        return (
-          <DieIcon
-            key={index}
-            value={value}
-            highlightHit={highlightHits}
-            highlightGlitch={highlightGlitches}
-            style={getDiceOffset(results.isRolling)}
-          />
-        )
-      })}
+      {dice.map((die, index) => (
+        <DieFace
+          key={index}
+          value={die.value}
+          highlightHit={highlightHits}
+          highlightGlitch={highlightGlitches}
+          style={getDiceOffset(die.isRolling)}
+          size={iconSize}
+        />
+      ))}
     </Stack>
   )
 }
