@@ -1,6 +1,6 @@
 import { useId } from "react"
 
-import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
+import { useActiveSkillRating, useAttr, useEffectiveAttr } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
@@ -13,6 +13,11 @@ import { skillList } from "#/system/skills/skillList.ts"
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]
   return { name: label, size: useAttr(attrKey) }
+}
+
+export function useEffectiveAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
+  const label = AttributeLabels[attrKey]
+  return { name: label, size: useEffectiveAttr(attrKey) }
 }
 
 export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {

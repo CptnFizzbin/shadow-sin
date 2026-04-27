@@ -12,7 +12,27 @@ import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+
+function effectLabel(effects: GameEffectData[]): string {
+  const parts: string[] = []
+  for (const e of effects) {
+    if (e.type === GameEffectType.initiativeBonus) {
+      parts.push(`${e.value > 0 ? "+" : ""}${e.value} Init`)
+    } else if (e.type === GameEffectType.extraInitiativePasses) {
+      parts.push(`+${e.value} IP`)
+    } else if (e.type === GameEffectType.extraInitiativeDice) {
+      parts.push(`+${e.value} Init Dice`)
+    } else if (e.type === GameEffectType.attrMod && e.target) {
+      parts.push(`${e.value > 0 ? "+" : ""}${e.value} ${e.target}`)
+    } else if (e.type === GameEffectType.skillMod && e.target) {
+      parts.push(`${e.value > 0 ? "+" : ""}${e.value} ${e.target}`)
+    }
+  }
+  return parts.join(", ")
+}
+
 
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()
@@ -32,16 +52,22 @@ export const CombatHud: FC = () => {
 
   const activeSources = useCharacterSheetSelector(
     (sheet) => {
-      const sources: string[] = []
+      const sources: { name: string, label: string }[] = []
       for (const spell of sheet.spells) {
-        if (spell.sustained && spell.effects?.length) sources.push(spell.name)
+        if (spell.sustained && spell.effects?.length) {
+          const summary = effectLabel(spell.effects)
+          sources.push({ name: spell.name, label: summary ? `${spell.name} (${summary})` : spell.name })
+        }
       }
       for (const gear of Object.values(sheet.gear)) {
-        if (gear.equipped && gear.effects?.length) sources.push(gear.name)
+        if (gear.equipped && gear.effects?.length) {
+          const summary = effectLabel(gear.effects)
+          sources.push({ name: gear.name, label: summary ? `${gear.name} (${summary})` : gear.name })
+        }
       }
       return sources
     },
-    (a: string[], b: string[]) => a.length === b.length && a.every((v, i) => v === b[i]),
+    (a, b) => a.length === b.length && a.every((v, i) => v.label === b[i].label),
   )
 
   const hasStatus =
@@ -89,7 +115,7 @@ export const CombatHud: FC = () => {
                 <Chip label={`+${totalExtraDice} Init dice`} color="success" size="small" variant="outlined" />
               )}
               {activeSources.map((source) => (
-                <Chip key={source} label={source} color="info" size="small" variant="outlined" />
+                <Chip key={source.name} label={source.label} color="info" size="small" variant="outlined" />
               ))}
             </Stack>
           </Stack>
