@@ -1,14 +1,14 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
-import { RiDiceLine } from "@remixicon/react"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import { RiDice6Line } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
 import { CharacterErrorRoute } from "#/components/character/characterErrorRoute.tsx"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
 import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
-import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessPanel.tsx"
+import { QuickAccessButton } from "#/components/character/quickPanel/quickAccessButton.tsx"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
@@ -34,8 +34,7 @@ export const Route = createFileRoute("/$characterId")({
 function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- character.id keys the memo so state resets on character switch
-  const diceTrayApi = useMemo(() => new DiceTrayApi(), [character.id])
+  const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
@@ -84,20 +83,17 @@ function CharacterSheetContent() {
           zIndex: "appBar",
         }}
       >
-        <Stack direction="row" sx={{ gap: 1 }}>
+        <ButtonGroup variant="contained" color="secondary" fullWidth sx={{ borderRadius: 2 }}>
+          <QuickAccessButton />
+
           <Button
-            variant="contained"
-            color="secondary"
+            startIcon={<RiDice6Line size={18} />}
             onClick={() => diceTray.setDice(1)}
-            sx={{ borderRadius: 2, minWidth: 0, px: 1.5 }}
             aria-label="Open dice tray"
           >
-            <RiDiceLine size={20} />
+            Dice Tray
           </Button>
-          <Box sx={{ flex: 1 }}>
-            <QuickAccessPanel />
-          </Box>
-        </Stack>
+        </ButtonGroup>
       </Box>
     </>
   )

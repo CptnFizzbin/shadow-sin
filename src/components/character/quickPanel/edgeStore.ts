@@ -2,6 +2,7 @@ import { produce } from "immer"
 
 import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { NumberUtils } from "#/lib/numberUtils.ts"
 
 export interface EdgeStoreState {
   max: number
@@ -13,7 +14,7 @@ export class EdgeStore extends StoreSlice<EdgeStoreState> {
     this.set(
       produce((state) => {
         const next = valueOrUpdater instanceof Function ? valueOrUpdater(state.current) : valueOrUpdater
-        state.current = Math.max(0, Math.min(next, state.max))
+        state.current = NumberUtils.clamp(next, { min: 0, max: state.max })
       }),
     )
   }
