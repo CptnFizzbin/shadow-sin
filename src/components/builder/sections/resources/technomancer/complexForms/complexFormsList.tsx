@@ -4,7 +4,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
@@ -14,9 +14,7 @@ import {
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useMaxComplexForms } from "#/components/character/technomancer/complexFormsHooks.ts"
 import { selectAllComplexForms } from "#/components/character/technomancer/complexFormsSelectors.ts"
-import {
-  useComplexFormDialog,
-} from "#/components/character/technomancer/dialogs/complexFormDialog.tsx"
+import { useComplexFormDialog } from "#/components/character/technomancer/dialogs/complexFormDialog.tsx"
 import { useComplexFormsStore } from "#/components/character/technomancer/useComplexFormsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
@@ -26,7 +24,7 @@ import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 export const ComplexFormsList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
   const complexFormsStore = useComplexFormsStore()
-  const complexForms = useStore(complexFormsStore, selectAllComplexForms)
+  const complexForms = useSelector(complexFormsStore, selectAllComplexForms)
   const complexFormsBp = useComplexFormsBuildPoints()
   const maxComplexForms = useMaxComplexForms()
   const complexFormDialog = useComplexFormDialog()

@@ -10,7 +10,7 @@ import MuiSelect from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
@@ -82,7 +82,7 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   })
 
   // Reactively subscribe to the selected skill name so the specialization section updates
-  const selectedSkillName = useStore(form.baseStore, (state) => state.values.name)
+  const selectedSkillName = useSelector(form.baseStore, (state) => state.values.name)
   const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName as SkillKey] : undefined
   const linkedAttr = selectedSkillInfo?.attr
   const allSpecs = selectedSkillInfo?.specializations ?? []

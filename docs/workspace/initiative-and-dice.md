@@ -4,183 +4,251 @@ Two sequential branches. The dice subsystem lands first as a reusable primitive;
 
 ---
 
-## Branch 1: `feat/dice-roller` — ✅ Implemented
+## Branch 1: `feat/dice-roller` ✅ Implemented
 
-A generic, reusable d6 rolling subsystem. Shadowrun uses only d6s — all pools, initiative, and nuyen rolls share the same die type.
+A reusable d6 rolling subsystem plus a global Dice Tray dialog. Shadowrun uses
+only d6s — all pools, initiative, and nuyen rolls share the same die type and
+the same engine.
 
-### Canonical dice functions — `src/system/dice/diceRoll.ts`
+### What shipped
 
-| Function | Description |
-|---|---|
-| `rollD6(): number` | Returns 1–6 |
-| `rollDice(count: number): number[]` | Returns array of N d6 results |
-| `countHits(results: number[]): number` | Counts values ≥ 5 |
-| `countOnes(results: number[]): number` | Counts 1s (glitch indicator) |
-| `sumDice(results: number[]): number` | Sums raw pip values |
-| `isGlitch(results: number[]): boolean` | True when more than half the dice show 1s |
-| `isCriticalGlitch(results: number[]): boolean` | Glitch with zero hits |
-| `rollDiceExploding(count: number): number[]` | Rule of Six — each 6 adds an extra die (Push Edge) |
-| `rerollMisses(results: number[]): number[]` | Keeps hits, re-rolls non-hits (Second Chance) |
+The implementation diverged from the original "pure functions + controlled
+button" sketch in favour of a stateful, store-backed engine and a globally
+mounted tray dialog. This makes the same `DiceRoller` reusable from any
+component (skill row, weapon, attribute) without each one owning roll state
+or animation logic.
 
-Covered by 36 AAA-structured tests in `src/system/dice/diceRoll.test.ts`.
+#### Core engine — `src/system/dice/`
 
-### Consolidation
+- **`diceRoller.ts`** — `DiceRoller` class backed by a TanStack `Store`.
+  Chainable API: `addDice`, `removeDice`, `setPoolSize`, `reset`, `rollD6`,
+  `rollDie`, `rollDice`, `rollAll`, `rerollOnes`, `rollMisses`. Returns a
+  `settled()` promise so callers can await the rolling animation. Supports a
+  per-roll `timeout` (animation duration) and an `explodes` option for SR4A's
+  Rule of Six (Push the Limit). Manages its own "shimmer" interval while dice
+  are mid-roll.
+- **`dieState.ts`** — `DieState { value: number | null, isRolling: boolean }`
+  with a `SettledDieState` narrowing for post-roll consumers.
+- **`diceRoller.state.ts`** — `DiceRollerState { dice: DieState[] }`.
+- **`diceRoller.selectors.ts`** — Memoised selectors (via `reselect`) and a
+  `useDiceRollerSelector` hook: `selectAllDice`, `selectSettledDice`,
+  `selectAllSettled`, `selectIsRolling`, `selectWasRolled`, `selectHits`,
+  `selectIsGlitch`, `selectIsCriticalGlitch`, `selectRollState`. Replaces the
+  ad-hoc `countHits` / `sumDice` / `isGlitch` helpers from the original plan.
+- **`rollState.ts`** — `RollState` enum (`Assembling`, `Rolling`, `Critical`,
+  `Glitch`, `Hit`, `Miss`) — drives the dialog's result label.
+- **`diceRoller.test.ts`** — Comprehensive `vi.useFakeTimers`-driven coverage,
+  including exploding 6s and glitch / critical-glitch detection.
 
-- `src/components/system/dice/diceUtils.ts` — re-exports `rollD6` from `diceRoll.ts`; retains `getDiceOffset` with its own `randomIntInRange` (animation-only, not rolling)
-- `src/components/system/dice/useDiceRoller.ts` — delegates `countHits`, `isGlitch`, `isCriticalGlitch` to canonical functions
-- `"crtical"` → `"critical"` typo fixed in `DiceResultsInfo`, `useDiceRoller`, `DiceResult`
+A dedicated `sumDice` selector for initiative pip totals did not ship in this
+branch; if a future consumer needs that value, it can be derived directly from
+`selectSettledDice`.
 
-### DiceRollButton — `src/components/dice/diceRollButton.tsx`
+#### Dice Tray UI — `src/components/dice/`
 
-Controlled component where the caller owns roll state and persists it to the character sheet. Used by initiative (which needs to save results). Props:
+- **`DiceTrayApi`** — Stable, store-backed orchestrator that owns the dialog
+  state (`open`, `edgeSpent`, `threshold`) plus a `DiceRoller` instance.
+  Public surface:
+  - `setDice(count)` — open pre-loaded, no roll
+  - `roll(count?)` — open and immediately roll
+  - `setThreshold`, `rollStandard`, `rollEdge(maxEdge)` (Push the Limit),
+    `rerollMisses` (Second Chance), `reset`, `open`, `close`
+  - `edgeSpent` gate ensures Edge can only be spent once per session
+- **`DiceTrayProvider`** + **`useDiceTray`** — React context that also renders
+  the `DiceTrayDialog` once per provider. Mounted *inside*
+  `CharacterSheetProvider` so the dialog can read/write edge state.
+- **`DiceTrayDialog`** — Full roll UI: dice & threshold counters, animated
+  dice display, hits / glitch / critical-glitch / success label, Edge controls
+  (Reroll Misses, Roll Edge), Reset / Roll / Close.
+- **`DiceRollButton`** — Drop-in `IconButton` (remix `RiDiceLine`) accepting
+  `poolSize` and `autoRoll`. Calls `setDice` or `roll` on the tray. Replaces
+  the originally-planned "controlled button with onRoll/onClear callbacks" —
+  state lives in the shared tray, not at every call site.
+- **`DieFace`** — Single primitive in `src/components/system/dice/dieFace.tsx`
+  rendering one die as a remix dice icon (hit / glitch highlighted). Replaces
+  the previously-separate `DieIcon` and `DiceFace` (chip) components.
 
-```ts
-count: number          // dice pool size
-result?: number[]      // current results (undefined = not yet rolled)
-onRoll: (results: number[]) => void
-onClear?: () => void
-label?: string         // defaults to "Roll {count}d6"
-displayMode: "sum" | "hits"
-```
+#### Route wiring — `src/routes/$characterId.tsx`
 
-### DiceTray system
+Constructs a `DiceTrayApi` (memoised per route mount) and wraps content in
+`<DiceTrayProvider>`. The bottom action bar now contains a `ButtonGroup` with
+the renamed `QuickAccessButton` and a new "Dice Tray" button.
 
-A modal dice tray available app-wide for ad-hoc rolls (weapon attacks, general use).
+#### Consumer migration
 
-**`src/components/dice/diceTrayApi.ts` — `DiceTrayApi`**
+- `useDiceRoller(numDice)` — Now returns a memoised `DiceRoller` instance
+  directly, not a `[results, rollDice]` tuple.
+- `DiceResult` — Switched from a `DiceResultsInfo` prop to a
+  `roller: DiceRoller` prop; subscribes via `useDiceRollerSelector` and owns
+  its own animation.
+- `DieFace` — Replaces `DieIcon`. Accepts `value: number | null` and an
+  optional `size` prop.
+- `StartingNuyenSection` — Migrated to the new `useDiceRoller` shape (the
+  follow-up cleanup originally listed under "Notes" — done).
+- `NumberUtils.randomIntInRange` added; `EdgeStore` and `getDiceOffset` now
+  use it.
 
-Class-based stable API object backed by a TanStack `Store<DiceTrayState>`. Methods:
+### Deviations from the original plan
 
-| Method | Description |
-|---|---|
-| `setDice(count)` | Open tray with N dice; no auto-roll; clears prior results |
-| `roll(count)` | Open tray and auto-roll immediately |
-| `rollStandard()` | Roll current count; standard d6 |
-| `rollEdge()` | Roll current count; exploding 6s (Push the Limit) |
-| `rollSecondChance()` | Re-roll all non-hits from current results |
-| `setDiceCount(count)` | Adjust count; clears results |
-| `close()` | Close dialog; cancels rolling timer |
-| `destroy()` | Cancel pending timer on unmount |
+| Original plan                                        | What shipped                                                            |
+| ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| `diceRoll.ts` with pure functions                    | `DiceRoller` class + TanStack `Store` + `reselect` selectors            |
+| `DiceRollButton` is fully controlled (caller owns state, `onRoll`/`onClear` callbacks) | `DiceRollButton` is an `IconButton` that delegates to a global `DiceTrayApi` |
+| No persistence / dialog at this layer                | Global `DiceTrayDialog` mounted via `DiceTrayProvider`                  |
+| `StartingNuyenSection` migration deferred            | Migrated in this branch                                                 |
 
-Covered by 16 AAA-structured tests in `src/components/dice/diceTrayApi.test.ts`.
+The "no character sheet coupling" goal still holds for `DiceRoller` itself —
+the dialog reads edge state, but the engine is sheet-agnostic.
 
-**`src/components/dice/diceTrayDialog.tsx`**
+### Follow-ups
 
-- Count adjuster (+/− buttons)
-- Animated dice display (randomises faces while `isRolling`)
-- Hit count, glitch / critical glitch labels
-- **Push Edge** button (before rolling) — spends 1 Edge, calls `rollEdge()`
-- **2nd Chance** button (after rolling) — spends 1 Edge, calls `rollSecondChance()`
-- **Roll Nd6** and **Close** buttons
-
-**`src/components/dice/diceTrayProvider.tsx`**
-
-Mounts inside `CharacterSheetProvider` (needs edge access). Renders `DiceTrayDialog` as a singleton and exposes `useDiceTray()` hook to any descendant.
-
-**Bottom bar**
-
-`src/routes/$characterId.tsx` adds a dice icon button (`RiDiceLine`) to the sticky bottom bar alongside Quick Access. Calls `diceTray.setDice(1)` — user sets count and rolls manually.
+- Wire `DiceRollButton` into skill / attribute / weapon rows so any pool can
+  open the tray pre-loaded
+- `selectSumOfPips` selector for initiative pip totals (needed by Branch 2)
 
 ---
 
-## Branch 2: `feat/initiative-roll` — ✅ Implemented
+## Branch 2: `feat/initiative-roll`
 
-Builds on `feat/dice-roller`. Adds initiative dice rolls, pass tracking, Seize the Initiative, and a CombatHud.
+Builds on `feat/dice-roller`. Adds initiative dice rolls, per-pass score decrement, and spell-based modifiers (Increase Reflexes, Synaptic Booster, etc.).
 
-### Initiative formula
+### Goals
+1. Fix `useInitiative` bug — gear equipped-check missing, spells ignored
+2. Add `sustained` toggle to spells so spell effects gate on active casting
+3. Roll 1d6 and persist `initiative.rolledScore` on the character sheet
+4. Display running score: `base + roll − (10 × passesCompleted)`
+5. "End Round" clears both `passesCompleted` and `rolledScore`
 
-```
-dicePool = Reaction + Intuition + initiativeBonus + extraInitiativeDice
-score    = dicePool + countHits(rolledResults)
-```
+---
 
-The full dice pool is rolled (not 1d6). Hits (5–6) are counted and added to the pool value as the initiative score. There is no per-pass score decrement.
+### 2.1 — Fix `useInitiative.ts` (bug fix)
 
-### `src/components/system/initiative/useInitiative.ts`
+**File:** `src/components/system/initiative/useInitiative.ts`
 
-Fixed to use `useGameEffects` so all five effect sources are covered with the correct `equipped`/`sustained` gates:
+Current code manually collects effects from gear, qualities, adeptPowers — skipping spells, complexForms, and the `equipped` check on gear. Replace with `useGameEffects`:
 
 ```ts
-interface InitiativeInfo {
-  dicePool: number       // Reaction + Intuition + bonuses + extra dice
-  initiativePasses: number  // 1 + extraInitiativePasses from effects
-}
+// Before
+const allEffects = useCharacterSheet((sheet) => [
+  ...Object.values(sheet.gear).flatMap((item) => item.effects ?? []),   // ← no equipped check
+  ...sheet.qualities.flatMap((q) => q.effects ?? []),
+  ...sheet.adeptPowers.flatMap((p) => p.effects ?? []),
+  // ← spells missing entirely
+])
+
+// After
+const initiativeBonuses = useGameEffects(GameEffectType.initiativeBonus)
+const extraPassEffects   = useGameEffects(GameEffectType.extraInitiativePasses)
 ```
 
-### `CharacterSheet.initiative`
+`useGameEffects` already handles all five sources with the correct `equipped` gate on gear.
 
+---
+
+### 2.2 — `sustained` flag on spells
+
+SR4A spells like Increase Reflexes are sustained — their effects apply only while the mage concentrates. Gear has `equipped` for this purpose; spells need an equivalent.
+
+**`src/system/magic/spellData.ts`**
+- Add `sustained?: boolean` to `SpellData` interface
+- Add `sustained: z.boolean().optional()` to `SpellDataSchema`
+
+**`src/components/system/gameEffects/useGameEffects.ts`**
+- Change spell loop: `if (spell.effects && spell.sustained === true)`
+
+**`src/components/character/spells/spiritItemCard.tsx`** → `spellItemCard.tsx`
+- Show a "Sustained" toggle chip only on spells that have `effects` defined
+- Saves `{ ...spell, sustained: !spell.sustained }` via the spells store
+
+**Migration: `src/character/migrations/20260426_addSpellSustained.ts`**
+- Ensures `sustained` is absent (undefined = not sustained) — no transform needed, schema default handles it
+
+---
+
+### 2.3 — Persist `rolledScore` on character sheet
+
+**`src/system/characterSheet.ts`**
 ```ts
 initiative?: {
-  passesCompleted: number[]   // indices of completed initiative passes
-  rolledResults?: number[]    // full pool roll results (persisted)
-  goingFirst?: boolean        // Seize the Initiative flag
-  extraPasses?: number        // edge-purchased extra IPs this round
+  passesCompleted: number[]
+  rolledScore?: number      // ← new
 }
 ```
 
-### `src/components/system/initiative/initiativePassStore.ts`
+**Migration: `src/character/migrations/20260426_addInitiativeRolledScore.ts`**
+- If `initiative` exists, set `rolledScore = undefined` (no-op; just marks migration applied)
 
-`InitiativePassStore extends StoreSlice<InitiativePassState>` — methods:
+---
 
-| Method | Description |
-|---|---|
-| `togglePass(index)` | Mark/unmark a pass as completed |
-| `setRolledResults(results)` | Persist initiative roll to sheet |
-| `clearRolledResults()` | Clear roll (undo) |
-| `setGoingFirst(value)` | Set/clear the Seize the Initiative flag |
-| `gainExtraPass()` | Spend 1 Edge to add +1 IP for the round |
-| `resetPasses()` | End Round — clears all five fields |
+### 2.4 — Initiative UI changes
 
-Covered by 13 AAA-structured tests in `src/components/system/initiative/initiativePassStore.test.ts`.
+**`src/components/system/initiative/useInitiative.ts`**
 
-`useInitiativePassStore.ts` exposes per-field hooks: `useInitiativePassesCompleted`, `useInitiativeRolledResults`, `useInitiativeGoingFirst`, `useInitiativeExtraPasses`.
-
-### InitiativeSection — `src/components/system/initiative/initiativeSection.tsx`
-
-HUD row layout:
-
-```
-[Initiative]                              [End Round]
-  14   [🎲]  8d6          ●●○  [1st]  [⋮]
+Expose `rolledScore` and derived `currentScore`:
+```ts
+interface InitiativeInfo {
+  baseScore: number         // reaction + intuition + bonuses
+  rolledScore?: number      // persisted 1d6 result
+  initiativeScore: number   // baseScore + (rolledScore ?? 0)
+  currentScore: number      // initiativeScore − (10 × passesCompleted.length)
+  initiativePasses: number
+}
 ```
 
-- **Score** — `dicePool + countHits(rolledResults)`, shown as `"—"` until rolled
-- **🎲 dice icon** — calls `diceTray.setDice(dicePool)`; when tray closes, `rolledResults` are persisted to the sheet via `isInitiativeRoll` ref guard
-- **Pool caption** — `Nd6`
-- **IP dots** — filled circle per completed pass, empty per remaining; count = `basePasses + extraPasses`
-- **1st chip** — shows when `goingFirst === true`
-- **⋮ popup** — contains:
-  - `InitiativePassTracker` (toggle buttons for each pass)
-  - **Seize Initiative** button — spends 1 Edge, sets `goingFirst` (or "Going First" chip with undo ×)
-  - **Gain IP** button — spends 1 Edge, calls `gainExtraPass()`
+**`src/components/system/initiative/initiativeSection.tsx`**
 
-### CombatHud — `src/components/character/combat/combatHud.tsx`
+Layout changes:
+- Replace `InitiativeScoreDisplay` with a two-line display:
+  - Line 1: `Base: {baseScore}` (dimmed)
+  - Line 2: `Init: {initiativeScore}` (prominent) or `{baseScore} + {roll} = {initiativeScore}`
+- Use `DiceRollButton` (from Branch 1) — wired through `DiceTrayApi.roll(1)`,
+  reading the result back via `roller.settled()` then writing to
+  `initiative.rolledScore`. (The original plan had `count={1}` /
+  `displayMode="sum"` props on a fully-controlled button; with the tray-based
+  API the caller awaits `settled()` and reads `selectSettledDice` instead.)
+- `InitiativePassTracker` shows `currentScore` as each pass is taken
+- "End Round" clears both `passesCompleted` and `rolledScore`
 
-Replaces `InitiativeSection` on the Offense tab. Three sections:
+---
 
-**Initiative** — the `InitiativeSection` component described above.
+### Spell modifier example — Increase Reflexes
 
-**Wounds** — compact segmented tracks for Physical and Stun damage:
+No special-casing needed. User adds the spell to their list:
 ```
-P  ■■■■□□□□□  4/9
-S  ■■□□□□□□□  2/9
+Name: Increase Reflexes
+Category: Health / Duration: Sustained
+Effects:
+  initiativeBonus        value: +2
+  extraInitiativePasses  value: +1
 ```
-Read-only; editing is done via Quick Access panel.
+Toggle Sustained → initiative score and pass count update live.
 
-**Status** — chips for active combat modifiers (hidden when nothing is active):
-- `Wounds −N` (error colour) — from `useWoundModifier()`
-- `Init +N` / `Init −N` — from `useGameEffects(initiativeBonus)`
-- `+N IP` — from `useGameEffects(extraInitiativePasses)`
-- `+N Init dice` — from `useGameEffects(extraInitiativeDice)`
-- Named source chips (info colour) — sustained spells and equipped gear that have effects
+---
 
-### Edge spending summary
+## Todo — Branch 1: `feat/dice-roller` ✅
 
-| Action | When | Cost | Effect |
-|---|---|---|---|
-| Push Edge | Dice tray, before rolling | 1 Edge | Re-roll with exploding 6s |
-| 2nd Chance | Dice tray, after rolling | 1 Edge | Re-roll all non-hits |
-| Seize Initiative | Initiative popup | 1 Edge | Act first this round (`goingFirst = true`) |
-| Gain IP | Initiative popup | 1 Edge | +1 initiative pass for the round |
+- [x] `src/system/dice/diceRoller.ts` — `DiceRoller` class (replaces pure
+      `diceRoll.ts` plan)
+- [x] `src/system/dice/dieState.ts`, `rollState.ts`, `diceRoller.state.ts`
+- [x] `src/system/dice/diceRoller.selectors.ts` — hits, glitch, critical
+      glitch, roll state, settled dice
+- [x] `src/components/dice/diceFace.tsx`
+- [x] `src/components/dice/diceRollButton.tsx`
+- [x] `src/components/dice/diceTrayApi.ts` (new — globally-mounted tray)
+- [x] `src/components/dice/diceTrayDialog.tsx`
+- [x] `src/components/dice/diceTrayProvider.tsx` (+ `useDiceTray`)
+- [x] `src/system/dice/diceRoller.test.ts` — engine + selector coverage
+- [x] `StartingNuyenSection` migrated to `DiceRoller`
 
-All Edge actions are reversed by the undo mechanism on the Going First chip (×). `resetPasses()` / End Round clears all round state.
+## Todo — Branch 2: `feat/initiative-roll`
+
+- [ ] Fix `useInitiative.ts` — switch to `useGameEffects`
+- [ ] Add `sustained` to `SpellData` + `SpellDataSchema`
+- [ ] Gate spell effects in `useGameEffects.ts` on `spell.sustained === true`
+- [ ] Add Sustained toggle to `SpellItemCard` (only when spell has effects)
+- [ ] Migration: `20260426_addSpellSustained.ts`
+- [ ] Add `rolledScore` to `CharacterSheet.initiative`
+- [ ] Migration: `20260426_addInitiativeRolledScore.ts`
+- [ ] Expand `InitiativeInfo` — `baseScore`, `rolledScore`, `currentScore`
+- [ ] Update `InitiativeSection` — wire to `DiceTrayApi`, per-pass score decrement
+- [ ] Update `docs/features/gameplay.md` — mark completed initiative items

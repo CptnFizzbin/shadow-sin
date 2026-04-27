@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -46,9 +46,9 @@ export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
   const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
 
-  const loans = useStore(nuyenStore, selectLoans)
-  const quality = useStore(lifestyleStore, selectLifestyleQuality)
-  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const loans = useSelector(nuyenStore, selectLoans)
+  const quality = useSelector(lifestyleStore, selectLifestyleQuality)
+  const monthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
   const upkeep = Lifestyles[quality].upkeep
 
   const loanItems: EndOfMonthLineItem[] = loans

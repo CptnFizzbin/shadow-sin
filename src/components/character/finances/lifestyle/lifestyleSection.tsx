@@ -5,7 +5,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiInfinityLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
@@ -23,10 +23,10 @@ interface Props {
 export const LifestyleSection: FC<Props> = ({ nuyenStore }) => {
   const lifestyleStore = useLifestyleStore()
 
-  const quality = useStore(lifestyleStore, selectLifestyleQuality)
-  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const quality = useSelector(lifestyleStore, selectLifestyleQuality)
+  const monthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
   const upkeep = Lifestyles[quality].upkeep
-  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
+  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
 
   const canPrepay = upkeep > 0 && currentNuyen >= upkeep
 

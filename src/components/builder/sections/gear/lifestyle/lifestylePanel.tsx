@@ -5,7 +5,7 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
@@ -16,9 +16,9 @@ import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 export const LifestylePanel: FC = () => {
   const lifestyleStore = useLifestyleStore()
 
-  const quality = useStore(lifestyleStore, selectLifestyleQuality)
+  const quality = useSelector(lifestyleStore, selectLifestyleQuality)
   const upkeep = Lifestyles[quality].upkeep
-  const monthsPaid = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const monthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
 
   const totalCost = upkeep * monthsPaid
 

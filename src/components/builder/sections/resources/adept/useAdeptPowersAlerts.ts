@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 
 import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPowersSelectors.ts"
 import { isAdept } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
@@ -12,7 +12,7 @@ export const useAdeptPowersAlerts = (): AlertInfo[] => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const magicAttr = useAttr(AttributeKey.magic)
   const adeptPowersStore = useAdeptPowersStore()
-  const adeptPowers = useStore(adeptPowersStore, selectAllAdeptPowers)
+  const adeptPowers = useSelector(adeptPowersStore, selectAllAdeptPowers)
 
   const statuses: AlertInfo[] = []
 

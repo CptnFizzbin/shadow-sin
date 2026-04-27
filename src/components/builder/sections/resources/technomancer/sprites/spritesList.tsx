@@ -4,13 +4,11 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
-import {
-  SpritesListItem,
-} from "#/components/builder/sections/resources/technomancer/sprites/spritesListItem.tsx"
+import { SpritesListItem } from "#/components/builder/sections/resources/technomancer/sprites/spritesListItem.tsx"
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useSpriteDialog } from "#/components/character/technomancer/dialogs/spriteDialog.tsx"
 import { useMaxSpritesRegistered } from "#/components/character/technomancer/spritesHooks.ts"
@@ -26,7 +24,7 @@ export const SpritesList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
   const spritesStore = useSpritesStore()
-  const sprites = useStore(spritesStore, selectAllSprites)
+  const sprites = useSelector(spritesStore, selectAllSprites)
   const spritesBp = useSpritesBuildPoints()
   const spriteDialog = useSpriteDialog()
 

@@ -1,11 +1,11 @@
 import Typography from "@mui/material/Typography"
 import type { SxProps } from "@mui/material/styles"
-import type { FC, ReactNode } from "react"
+import type { FC, PropsWithChildren, ReactNode } from "react"
 
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 
-interface LabelProps {
-  label: ReactNode
+interface LabelProps extends PropsWithChildren {
+  label?: ReactNode
   variant?: "contained" | "outlined" | "text"
   textAlign?: "center" | "left" | "right"
   color?: string
@@ -15,6 +15,7 @@ interface LabelProps {
 
 export const Label: FC<LabelProps> = ({
   label,
+  children,
   textAlign = "center",
   variant = "outlined",
   color = "secondary.dark",
@@ -49,7 +50,7 @@ export const Label: FC<LabelProps> = ({
     <Typography
       sx={mergeSx(sx, { display: "block", width: "100%" }, styles, { textAlign })}
     >
-      {label}
+      {children ?? label}
     </Typography>
   )
 }

@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
@@ -12,7 +12,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 export const useSpellsBuildPoints = (): BpLineItem => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const spellsStore = useSpellsStore()
-  const spells = useStore(spellsStore, selectAllSpells)
+  const spells = useSelector(spellsStore, selectAllSpells)
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
 

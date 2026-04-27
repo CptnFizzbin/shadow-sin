@@ -14,18 +14,14 @@ import { QuickAttributesSection } from "#/components/character/quickPanel/quickA
 import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
 import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
 
-export const QuickAccessPanel: FC = () => {
+export const QuickAccessButton: FC = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
       <Button
-        variant="contained"
-        color="secondary"
         startIcon={<RiFlashlightLine size={18} />}
         onClick={() => setIsOpen(true)}
-        fullWidth
-        sx={{ borderRadius: 2 }}
       >
         Quick Access
       </Button>
