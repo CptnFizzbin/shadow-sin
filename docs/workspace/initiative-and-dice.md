@@ -4,255 +4,183 @@ Two sequential branches. The dice subsystem lands first as a reusable primitive;
 
 ---
 
-## Branch 1: `feat/dice-roller`
+## Branch 1: `feat/dice-roller` — ✅ Implemented
 
 A generic, reusable d6 rolling subsystem. Shadowrun uses only d6s — all pools, initiative, and nuyen rolls share the same die type.
 
-### Goals
-- Generic hook and display component for rolling Nd6
-- Pure presentational: no character sheet coupling
-- Supports both pool rolls (sum of hits: 5–6) and flat rolls (sum of pips, for initiative)
+### Canonical dice functions — `src/system/dice/diceRoll.ts`
 
-### New Files
+| Function | Description |
+|---|---|
+| `rollD6(): number` | Returns 1–6 |
+| `rollDice(count: number): number[]` | Returns array of N d6 results |
+| `countHits(results: number[]): number` | Counts values ≥ 5 |
+| `countOnes(results: number[]): number` | Counts 1s (glitch indicator) |
+| `sumDice(results: number[]): number` | Sums raw pip values |
+| `isGlitch(results: number[]): boolean` | True when more than half the dice show 1s |
+| `isCriticalGlitch(results: number[]): boolean` | Glitch with zero hits |
+| `rollDiceExploding(count: number): number[]` | Rule of Six — each 6 adds an extra die (Push Edge) |
+| `rerollMisses(results: number[]): number[]` | Keeps hits, re-rolls non-hits (Second Chance) |
 
-**`src/system/dice/diceRoll.ts`**
-- `rollD6(): number` — returns 1–6
-- `rollDice(count: number): number[]` — returns array of N results
-- `countHits(results: number[]): number` — counts values ≥ 5
-- `countOnes(results: number[]): number` — counts 1s (glitch indicator)
-- `sumDice(results: number[]): number` — sums raw pip values (for initiative)
-- `isGlitch(results: number[]): boolean` — more than half the dice show 1s
-- `isCriticalGlitch(results: number[]): boolean` — glitch with zero hits
-- `rollDiceExploding(count: number): number[]` — Rule of Six: each 6 adds an extra die (Edge before roll)
-- `rerollMisses(results: number[]): number[]` — keeps hits, re-rolls non-hits (Edge after roll)
+Covered by 36 AAA-structured tests in `src/system/dice/diceRoll.test.ts`.
 
-**`src/components/dice/diceRollButton.tsx`**
-```text
-Props:
-  count: number         — number of dice to roll
-  result?: number[]     — current rolled results (undefined = not yet rolled)
-  onRoll: (results: number[]) => void
-  onClear?: () => void
-  label?: string        — button label, defaults to "Roll {count}d6"
-  displayMode: "sum" | "hits"
-  onEdgeBefore?: (results: number[]) => void   — Push the Limit: exploding 6s
-  onSecondChance?: (results: number[]) => void — Second Chance: re-roll misses
-```
-- Before roll: shows Roll button + optional "Edge" button (Push the Limit)
-- After roll: shows die faces (hits=accent, 1s=error) + value + glitch label + optional "2nd Chance" button
-- Caller owns state and is responsible for spending the Edge point
+### Consolidation
 
-**`src/components/system/dice/dieIcon.tsx`**
-- Small MUI chip or icon showing a single d6 value (1–6)
-- Hits (5–6) rendered in accent colour for visual feedback
+- `src/components/system/dice/diceUtils.ts` — re-exports `rollD6` from `diceRoll.ts`; retains `getDiceOffset` with its own `randomIntInRange` (animation-only, not rolling)
+- `src/components/system/dice/useDiceRoller.ts` — delegates `countHits`, `isGlitch`, `isCriticalGlitch` to canonical functions
+- `"crtical"` → `"critical"` typo fixed in `DiceResultsInfo`, `useDiceRoller`, `DiceResult`
 
-### Notes
-- `StartingNuyenSection` in the builder already has an ad-hoc dice roller. This subsystem does not replace it yet — that's a follow-up cleanup task.
-- No persistence at this layer. Components are fully controlled (caller owns `result` state).
+### DiceRollButton — `src/components/dice/diceRollButton.tsx`
 
----
-
-## Branch 2: `feat/initiative-roll`
-
-Builds on `feat/dice-roller`. Adds initiative dice rolls, per-pass score decrement, and spell-based modifiers (Increase Reflexes, Synaptic Booster, etc.).
-
-### Goals
-1. Fix `useInitiative` bug — gear equipped-check missing, spells ignored
-2. Add `sustained` toggle to spells so spell effects gate on active casting
-3. Roll 1d6 and persist `initiative.rolledScore` on the character sheet
-4. Display running score: `base + roll − (10 × passesCompleted)`
-5. "End Round" clears both `passesCompleted` and `rolledScore`
-
----
-
-### 2.1 — Fix `useInitiative.ts` (bug fix)
-
-**File:** `src/components/system/initiative/useInitiative.ts`
-
-Current code manually collects effects from gear, qualities, adeptPowers — skipping spells, complexForms, and the `equipped` check on gear. Replace with `useGameEffects`:
+Controlled component where the caller owns roll state and persists it to the character sheet. Used by initiative (which needs to save results). Props:
 
 ```ts
-// Before
-const allEffects = useCharacterSheet((sheet) => [
-  ...Object.values(sheet.gear).flatMap((item) => item.effects ?? []),   // ← no equipped check
-  ...sheet.qualities.flatMap((q) => q.effects ?? []),
-  ...sheet.adeptPowers.flatMap((p) => p.effects ?? []),
-  // ← spells missing entirely
-])
-
-// After
-const initiativeBonuses = useGameEffects(GameEffectType.initiativeBonus)
-const extraPassEffects   = useGameEffects(GameEffectType.extraInitiativePasses)
+count: number          // dice pool size
+result?: number[]      // current results (undefined = not yet rolled)
+onRoll: (results: number[]) => void
+onClear?: () => void
+label?: string         // defaults to "Roll {count}d6"
+displayMode: "sum" | "hits"
 ```
 
-`useGameEffects` already handles all five sources with the correct `equipped` gate on gear.
+### DiceTray system
+
+A modal dice tray available app-wide for ad-hoc rolls (weapon attacks, general use).
+
+**`src/components/dice/diceTrayApi.ts` — `DiceTrayApi`**
+
+Class-based stable API object backed by a TanStack `Store<DiceTrayState>`. Methods:
+
+| Method | Description |
+|---|---|
+| `setDice(count)` | Open tray with N dice; no auto-roll; clears prior results |
+| `roll(count)` | Open tray and auto-roll immediately |
+| `rollStandard()` | Roll current count; standard d6 |
+| `rollEdge()` | Roll current count; exploding 6s (Push the Limit) |
+| `rollSecondChance()` | Re-roll all non-hits from current results |
+| `setDiceCount(count)` | Adjust count; clears results |
+| `close()` | Close dialog; cancels rolling timer |
+| `destroy()` | Cancel pending timer on unmount |
+
+Covered by 16 AAA-structured tests in `src/components/dice/diceTrayApi.test.ts`.
+
+**`src/components/dice/diceTrayDialog.tsx`**
+
+- Count adjuster (+/− buttons)
+- Animated dice display (randomises faces while `isRolling`)
+- Hit count, glitch / critical glitch labels
+- **Push Edge** button (before rolling) — spends 1 Edge, calls `rollEdge()`
+- **2nd Chance** button (after rolling) — spends 1 Edge, calls `rollSecondChance()`
+- **Roll Nd6** and **Close** buttons
+
+**`src/components/dice/diceTrayProvider.tsx`**
+
+Mounts inside `CharacterSheetProvider` (needs edge access). Renders `DiceTrayDialog` as a singleton and exposes `useDiceTray()` hook to any descendant.
+
+**Bottom bar**
+
+`src/routes/$characterId.tsx` adds a dice icon button (`RiDiceLine`) to the sticky bottom bar alongside Quick Access. Calls `diceTray.setDice(1)` — user sets count and rolls manually.
 
 ---
 
-### 2.2 — `sustained` flag on spells
+## Branch 2: `feat/initiative-roll` — ✅ Implemented
 
-SR4A spells like Increase Reflexes are sustained — their effects apply only while the mage concentrates. Gear has `equipped` for this purpose; spells need an equivalent.
+Builds on `feat/dice-roller`. Adds initiative dice rolls, pass tracking, Seize the Initiative, and a CombatHud.
 
-**`src/system/magic/spellData.ts`**
-- Add `sustained?: boolean` to `SpellData` interface
-- Add `sustained: z.boolean().optional()` to `SpellDataSchema`
+### Initiative formula
 
-**`src/components/system/gameEffects/useGameEffects.ts`**
-- Change spell loop: `if (spell.effects && spell.sustained === true)`
-
-**`src/components/character/spells/spiritItemCard.tsx`** → `spellItemCard.tsx`
-- Show a "Sustained" toggle chip only on spells that have `effects` defined
-- Saves `{ ...spell, sustained: !spell.sustained }` via the spells store
-
-**Migration: `src/character/migrations/20260426_addSpellSustained.ts`**
-- Ensures `sustained` is absent (undefined = not sustained) — no transform needed, schema default handles it
-
----
-
-### 2.3 — Persist `rolledScore` on character sheet
-
-**`src/system/characterSheet.ts`**
-```ts
-initiative?: {
-  passesCompleted: number[]
-  rolledScore?: number      // ← new
-}
+```
+dicePool = Reaction + Intuition + initiativeBonus + extraInitiativeDice
+score    = dicePool + countHits(rolledResults)
 ```
 
-**Migration: `src/character/migrations/20260426_addInitiativeRolledScore.ts`**
-- If `initiative` exists, set `rolledScore = undefined` (no-op; just marks migration applied)
+The full dice pool is rolled (not 1d6). Hits (5–6) are counted and added to the pool value as the initiative score. There is no per-pass score decrement.
 
----
+### `src/components/system/initiative/useInitiative.ts`
 
-### 2.4 — Initiative UI changes
+Fixed to use `useGameEffects` so all five effect sources are covered with the correct `equipped`/`sustained` gates:
 
-**`src/components/system/initiative/useInitiative.ts`**
-
-Expose `rolledScore` and derived `currentScore`:
 ```ts
 interface InitiativeInfo {
-  baseScore: number         // reaction + intuition + bonuses
-  rolledScore?: number      // persisted 1d6 result
-  initiativeScore: number   // baseScore + (rolledScore ?? 0)
-  currentScore: number      // initiativeScore − (10 × passesCompleted.length)
-  initiativePasses: number
+  dicePool: number       // Reaction + Intuition + bonuses + extra dice
+  initiativePasses: number  // 1 + extraInitiativePasses from effects
 }
 ```
 
-**`src/components/system/initiative/initiativeSection.tsx`**
+### `CharacterSheet.initiative`
 
-Layout changes:
-- Replace `InitiativeScoreDisplay` with a two-line display:
-  - Line 1: `Base: {baseScore}` (dimmed)
-  - Line 2: `Init: {initiativeScore}` (prominent) or `{baseScore} + {roll} = {initiativeScore}`
-- Use `DiceRollButton` (from Branch 1) with `count={1}` and `displayMode="sum"`
-- `onRoll`: save result to `initiative.rolledScore` via `useCharacterSheetStore`
-- `onClear`: clear `initiative.rolledScore`
-- `InitiativePassTracker` shows `currentScore` as each pass is taken
-- "End Round" clears both `passesCompleted` and `rolledScore`
-
----
-
-### Spell modifier example — Increase Reflexes
-
-No special-casing needed. User adds the spell to their list:
-```text
-Name: Increase Reflexes
-Category: Health / Duration: Sustained
-Effects:
-  initiativeBonus        value: +2
-  extraInitiativePasses  value: +1
-```
-Toggle Sustained → initiative score and pass count update live.
-
----
-
----
-
-## Branch 2 addition: Seize the Initiative (Edge spend)
-
-SR4A p. 166 — A character may spend 1 Edge at the start of a combat turn to act first in the initiative order, regardless of rolled score. Resets at End Round like `passesCompleted` and `rolledScore`.
-
-### State changes
-
-**`CharacterSheet.initiative`**
 ```ts
 initiative?: {
-  passesCompleted: number[]
-  rolledScore?: number
-  goingFirst?: boolean    // ← new
-}
-```
-No migration needed — field is optional; undefined = not active.
-
-**`InitiativePassState`** (in `initiativePassStore.ts`)
-```ts
-interface InitiativePassState {
-  passesCompleted: number[]
-  rolledScore?: number
-  goingFirst?: boolean    // ← new
+  passesCompleted: number[]   // indices of completed initiative passes
+  rolledResults?: number[]    // full pool roll results (persisted)
+  goingFirst?: boolean        // Seize the Initiative flag
+  extraPasses?: number        // edge-purchased extra IPs this round
 }
 ```
 
-**`InitiativePassStore`** — add one method:
-```ts
-setGoingFirst(value: boolean): void
-```
-`resetPasses()` already clears the whole state — add `goingFirst = undefined` there.
+### `src/components/system/initiative/initiativePassStore.ts`
 
-**`useInitiativePassStore.ts`** — expand slice selector/updater to include `goingFirst`.
+`InitiativePassStore extends StoreSlice<InitiativePassState>` — methods:
 
-Add `useInitiativeGoingFirst(store)` hook alongside the existing `useInitiativeRolledScore`.
-
-### UI changes — `initiativeSection.tsx`
-
-Add `useEdgeStore()` to read current edge count.
-
-**When `goingFirst` is false/undefined:**
-- Show "Seize Initiative" button (warning colour, small)
-- Button label: `Seize Initiative (Edge: {current})`
-- Disabled when `edge.current === 0`
-- On click: `edgeStore.setCurrent(current - 1)` + `initiativePassStore.setGoingFirst(true)`
-- No confirm dialog — consistent with how the quick panel lets you freely adjust edge
-
-**When `goingFirst` is true:**
-- Replace button with a filled "Going First" chip (warning/accent colour)
-- Chip has a dismiss (×) icon that refunds 1 edge and clears the flag (mis-click correction)
-
-### Files to change
-
-| File | Change |
+| Method | Description |
 |---|---|
-| `src/system/characterSheet.ts` | Add `goingFirst?: boolean` to `initiative` |
-| `src/components/system/initiative/initiativePassStore.ts` | Add `goingFirst` to state + `setGoingFirst` + clear in `resetPasses` |
-| `src/components/system/initiative/useInitiativePassStore.ts` | Include `goingFirst` in slice; add `useInitiativeGoingFirst` hook |
-| `src/components/system/initiative/initiativeSection.tsx` | Add `useEdgeStore`, Seize Initiative button / Going First chip |
+| `togglePass(index)` | Mark/unmark a pass as completed |
+| `setRolledResults(results)` | Persist initiative roll to sheet |
+| `clearRolledResults()` | Clear roll (undo) |
+| `setGoingFirst(value)` | Set/clear the Seize the Initiative flag |
+| `gainExtraPass()` | Spend 1 Edge to add +1 IP for the round |
+| `resetPasses()` | End Round — clears all five fields |
 
----
+Covered by 13 AAA-structured tests in `src/components/system/initiative/initiativePassStore.test.ts`.
 
-## Todo — Branch 1: `feat/dice-roller`
+`useInitiativePassStore.ts` exposes per-field hooks: `useInitiativePassesCompleted`, `useInitiativeRolledResults`, `useInitiativeGoingFirst`, `useInitiativeExtraPasses`.
 
-- [ ] `src/system/dice/diceRoll.ts` — `rollD6`, `rollDice`, `countHits`, `countOnes`, `sumDice`, `isGlitch`, `isCriticalGlitch`, `rollDiceExploding`, `rerollMisses`
-- [ ] `src/components/system/dice/dieIcon.tsx` — single die display chip
-- [ ] `src/components/dice/diceRollButton.tsx` — controlled roll button + result display
-- [ ] Unit tests: `src/system/dice/diceRoll.test.ts` — pure function coverage including glitch detection and edge mechanics
+### InitiativeSection — `src/components/system/initiative/initiativeSection.tsx`
 
-## Todo — Branch 2: `feat/initiative-roll`
+HUD row layout:
 
-- [ ] Fix `useInitiative.ts` — switch to `useGameEffects`
-- [ ] Add `sustained` to `SpellData` + `SpellDataSchema`
-- [ ] Gate spell effects in `useGameEffects.ts` on `spell.sustained === true`
-- [ ] Add Sustained toggle to `SpellItemCard` (only when spell has effects)
-- [ ] Migration: `20260426_addSpellSustained.ts`
-- [ ] Add `rolledScore` to `CharacterSheet.initiative`
-- [ ] Migration: `20260426_addInitiativeRolledScore.ts`
-- [ ] Expand `InitiativeInfo` — `baseScore`, `rolledScore`, `currentScore`
-- [ ] Update `InitiativeSection` — `DiceRollButton`, per-pass score decrement
-- [ ] Update `docs/features/gameplay.md` — mark completed initiative items
+```
+[Initiative]                              [End Round]
+  14   [🎲]  8d6          ●●○  [1st]  [⋮]
+```
 
-## Todo — Branch 2 addition: Seize the Initiative
+- **Score** — `dicePool + countHits(rolledResults)`, shown as `"—"` until rolled
+- **🎲 dice icon** — calls `diceTray.setDice(dicePool)`; when tray closes, `rolledResults` are persisted to the sheet via `isInitiativeRoll` ref guard
+- **Pool caption** — `Nd6`
+- **IP dots** — filled circle per completed pass, empty per remaining; count = `basePasses + extraPasses`
+- **1st chip** — shows when `goingFirst === true`
+- **⋮ popup** — contains:
+  - `InitiativePassTracker` (toggle buttons for each pass)
+  - **Seize Initiative** button — spends 1 Edge, sets `goingFirst` (or "Going First" chip with undo ×)
+  - **Gain IP** button — spends 1 Edge, calls `gainExtraPass()`
 
-- [ ] Add `goingFirst?: boolean` to `CharacterSheet.initiative`
-- [ ] Add `goingFirst` to `InitiativePassState` + `setGoingFirst` method + clear in `resetPasses`
-- [ ] Expand slice selector/updater in `useInitiativePassStore.ts`; add `useInitiativeGoingFirst` hook
-- [ ] Add Seize Initiative button / Going First chip to `InitiativeSection`
+### CombatHud — `src/components/character/combat/combatHud.tsx`
+
+Replaces `InitiativeSection` on the Offense tab. Three sections:
+
+**Initiative** — the `InitiativeSection` component described above.
+
+**Wounds** — compact segmented tracks for Physical and Stun damage:
+```
+P  ■■■■□□□□□  4/9
+S  ■■□□□□□□□  2/9
+```
+Read-only; editing is done via Quick Access panel.
+
+**Status** — chips for active combat modifiers (hidden when nothing is active):
+- `Wounds −N` (error colour) — from `useWoundModifier()`
+- `Init +N` / `Init −N` — from `useGameEffects(initiativeBonus)`
+- `+N IP` — from `useGameEffects(extraInitiativePasses)`
+- `+N Init dice` — from `useGameEffects(extraInitiativeDice)`
+- Named source chips (info colour) — sustained spells and equipped gear that have effects
+
+### Edge spending summary
+
+| Action | When | Cost | Effect |
+|---|---|---|---|
+| Push Edge | Dice tray, before rolling | 1 Edge | Re-roll with exploding 6s |
+| 2nd Chance | Dice tray, after rolling | 1 Edge | Re-roll all non-hits |
+| Seize Initiative | Initiative popup | 1 Edge | Act first this round (`goingFirst = true`) |
+| Gain IP | Initiative popup | 1 Edge | +1 initiative pass for the round |
+
+All Edge actions are reversed by the undo mechanism on the Going First chip (×). `resetPasses()` / End Round clears all round state.
