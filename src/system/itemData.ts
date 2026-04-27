@@ -64,4 +64,3 @@ export function createItem<TItem extends ItemData>(
 export function createItemMap(...items: (ItemData | ItemData[])[]): Record<string, ItemData> {
   return Object.fromEntries(items.flat().map((item) => [item.id, item]))
 }
-

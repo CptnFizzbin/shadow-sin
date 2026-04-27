@@ -17,7 +17,7 @@ export const DiceResult: FC<DiceResultProps> = ({
   highlightHits = true,
   highlightGlitches = true,
 }) => {
-  const diceDefaultColor = (results.isGlitch === "crtical" && highlightGlitches) ? "error.main" : "secondary.main"
+  const diceDefaultColor = (results.isGlitch === "critical" && highlightGlitches) ? "error.main" : "secondary.main"
   const [diceValues, setDiceValues] = useState<number[]>(results.values)
 
   useEffect(() => {

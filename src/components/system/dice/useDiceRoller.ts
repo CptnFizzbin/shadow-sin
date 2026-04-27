@@ -36,7 +36,7 @@ export function useDiceRoller(numDice: number, rollingTime: number = 0): [result
     values: sort(values).by({ asc: (value) => value }),
     isRolling: isRolling,
     hits: hits,
-    isGlitch: criticalGlitch ? "crtical" : glitch,
+    isGlitch: criticalGlitch ? "critical" : glitch,
   }
 
   return [diceResult, rollDice]

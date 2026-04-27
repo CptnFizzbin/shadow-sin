@@ -96,7 +96,6 @@ export const useActiveSkill = (skill: SkillKey) => {
  * Hook to retrieve essence usage and remaining values.
  */
 export const useEssenceInfo = () => {
-
   const essenceInfo = useAttrInfo(AttributeKey.essence)
   const implants = useGearByType<ImplantData>(ItemType.implant)
 

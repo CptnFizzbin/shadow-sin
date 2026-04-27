@@ -232,7 +232,7 @@ Add `useEdgeStore()` to read current edge count.
 
 ## Todo — Branch 1: `feat/dice-roller`
 
-- [ ] `src/system/dice/diceRoll.ts` — `rollD6`, `rollDice`, `countHits`, `sumDice`
+- [ ] `src/system/dice/diceRoll.ts` — `rollD6`, `rollDice`, `countHits`, `countOnes`, `sumDice`, `isGlitch`, `isCriticalGlitch`, `rollDiceExploding`, `rerollMisses`
 - [ ] `src/components/system/dice/dieIcon.tsx` — single die display chip
 - [ ] `src/components/dice/diceRollButton.tsx` — controlled roll button + result display
 - [ ] Unit tests: `src/system/dice/diceRoll.test.ts` — pure function coverage including glitch detection and edge mechanics
