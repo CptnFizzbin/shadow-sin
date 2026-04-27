@@ -7,6 +7,7 @@ import { selectAllSettled, selectIsRolling } from "./diceRoller.selectors.ts"
 import type { DieState } from "./dieState.ts"
 
 type IntervalId = ReturnType<typeof setInterval>
+type TimeoutId = ReturnType<typeof setTimeout>
 
 interface RollOptions {
   timeout?: number
@@ -16,6 +17,10 @@ interface RollOptions {
 export class DiceRoller {
   public readonly store = createStore<DiceRollerState>({ dice: [] })
   private rollingIntervalId: IntervalId | null = null
+  private pendingTimeouts = new Set<TimeoutId>()
+  /** Generation token; incremented on cancel/reset/setPoolSize so stale
+   * timeouts ignore their results when they finally fire. */
+  private rollGeneration = 0
 
   static createDie(state: Partial<DieState> = {}): DieState {
     return { value: null, isRolling: false, ...state }
@@ -25,7 +30,30 @@ export class DiceRoller {
     return DiceRoller.createDie(state)
   }
 
+  /**
+   * Cancel any in-flight roll animations / timeouts and stop the shimmer
+   * interval. Already-rolled dice keep their values; in-flight dice are left
+   * in their last visible state.
+   */
+  public cancel() {
+    this.rollGeneration += 1
+    for (const id of this.pendingTimeouts) {
+      clearTimeout(id)
+    }
+    this.pendingTimeouts.clear()
+    this.clearRollingInterval()
+
+    this.store.setState(produce((state) => {
+      state.dice.forEach((die) => {
+        die.isRolling = false
+      })
+    }))
+
+    return this
+  }
+
   public reset() {
+    this.cancel()
     this.store.setState(produce((state) => {
       state.dice = state.dice.map(() => this.createDie())
     }))
@@ -84,6 +112,9 @@ export class DiceRoller {
       throw new Error("numDice must be greater than 0")
     }
 
+    // Bump the generation so any in-flight timeouts targeting trimmed
+    // indices are ignored when they fire.
+    this.rollGeneration += 1
     this.store.setState(produce((state) => {
       state.dice = state.dice.slice(0, Math.max(0, state.dice.length - numDice))
     }))
@@ -95,8 +126,19 @@ export class DiceRoller {
     return NumberUtils.randomIntInRange(1, 6)
   }
 
-  public rollDie(index: number, options: RollOptions = {}) {
+  /**
+   * Schedule a single die roll. Internal primitive used by {@link rollDice} /
+   * {@link rollAll}; does not return a `settled()` promise — callers should
+   * await `settled()` themselves once they've scheduled the whole batch.
+   */
+  private scheduleDie(index: number, options: RollOptions = {}) {
+    const initialDice = this.store.get().dice
+    if (index < 0 || index >= initialDice.length) return
+
+    const generation = this.rollGeneration
+
     this.store.setState(produce((state) => {
+      if (index >= state.dice.length) return
       state.dice[index].isRolling = true
       state.dice[index].value = null
     }))
@@ -104,10 +146,16 @@ export class DiceRoller {
     const timeoutRange = 200
     const timeout = Math.max(0, (options.timeout ?? 1_000) - NumberUtils.randomIntInRange(0, timeoutRange))
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
+      this.pendingTimeouts.delete(timeoutId)
+
+      // Stale timeout: pool was reset / resized / cancelled.
+      if (generation !== this.rollGeneration) return
+
       const value = this.rollD6()
 
       this.store.setState(produce(({ dice }) => {
+        if (index < 0 || index >= dice.length) return
         dice[index].isRolling = false
         dice[index].value = value
 
@@ -117,15 +165,24 @@ export class DiceRoller {
       }))
 
       if (options.explodes && value === 6) {
-        const { dice } = this.store.get()
-        this.rollDie(dice.length - 1, { timeout: 500, explodes: true })
+        const { dice: nextDice } = this.store.get()
+        this.scheduleDie(nextDice.length - 1, { timeout: 500, explodes: true })
       }
     }, timeout)
+
+    this.pendingTimeouts.add(timeoutId)
 
     if (timeout >= 1) {
       this.startRollingInterval()
     }
+  }
 
+  /**
+   * Roll a single die at `index`. Public wrapper around the internal scheduler
+   * that returns a `settled()` promise for callers expecting one.
+   */
+  public rollDie(index: number, options: RollOptions = {}) {
+    this.scheduleDie(index, options)
     return this.settled()
   }
 
@@ -139,7 +196,7 @@ export class DiceRoller {
     dice
       .map((die, index) => ({ die, index }))
       .filter(({ index }) => index >= startIndex && index < endIndex)
-      .forEach(({ index }) => this.rollDie(index, options))
+      .forEach(({ index }) => this.scheduleDie(index, options))
 
     return this.settled()
   }
@@ -154,7 +211,7 @@ export class DiceRoller {
     this.store.get()
       .dice
       .map((die, index) => ({ die, index }))
-      .forEach(({ index }) => this.rollDie(index, options))
+      .forEach(({ index }) => this.scheduleDie(index, options))
 
     return this.settled()
   }
@@ -164,7 +221,7 @@ export class DiceRoller {
       .dice
       .map((die, index) => ({ die, index }))
       .filter(({ die }) => die.value === 1)
-      .forEach(({ index }) => this.rollDie(index, options))
+      .forEach(({ index }) => this.scheduleDie(index, options))
 
     return this.settled()
   }
@@ -174,7 +231,7 @@ export class DiceRoller {
       .dice
       .map((die, index) => ({ die, index }))
       .filter(({ die }) => die.value === null || die.value <= 4)
-      .forEach(({ index }) => this.rollDie(index))
+      .forEach(({ index }) => this.scheduleDie(index))
 
     return this.settled()
   }

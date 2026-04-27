@@ -15,7 +15,7 @@ import type { CSSProperties, FC } from "react"
 const glitchColor = "var(--mui-palette-error-main)"
 const hitColor = "var(--mui-palette-success-main)"
 
-interface DieIconProps {
+interface DieFaceProps {
   value: number | null // 1-6 or null for unrolled
   highlightHit?: boolean
   highlightGlitch?: boolean
@@ -23,7 +23,7 @@ interface DieIconProps {
   size?: number
 }
 
-export const DieIcon: FC<DieIconProps> = ({
+export const DieFace: FC<DieFaceProps> = ({
   value,
   highlightHit = true,
   highlightGlitch = true,

@@ -55,13 +55,15 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
   }
 
   const handleRerollMisses = () => {
-    edgeStore.setCurrent(currentEdge - 1)
+    if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rerollMisses()
+    edgeStore.setCurrent(currentEdge - 1)
   }
 
   const handleEdge = () => {
-    edgeStore.setCurrent(currentEdge - 1)
+    if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rollEdge(maxEdge)
+    edgeStore.setCurrent(currentEdge - 1)
   }
 
   return (

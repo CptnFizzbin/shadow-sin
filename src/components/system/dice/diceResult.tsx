@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { getDiceOffset } from "#/components/system/dice/diceUtils.ts"
-import { DieIcon } from "#/components/system/dice/dieIcon.tsx"
+import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import { selectAllDice, selectIsGlitch, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
@@ -36,7 +36,7 @@ export const DiceResult: FC<DiceResultProps> = ({
       }}
     >
       {dice.map((die, index) => (
-        <DieIcon
+        <DieFace
           key={index}
           value={die.value}
           highlightHit={highlightHits}

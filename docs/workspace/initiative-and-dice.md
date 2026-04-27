@@ -40,8 +40,9 @@ or animation logic.
 - **`diceRoller.test.ts`** — Comprehensive `vi.useFakeTimers`-driven coverage,
   including exploding 6s and glitch / critical-glitch detection.
 
-`sumDice` (initiative pip totals) is not yet implemented as a selector — it'll
-be a one-liner over `selectSettledDice` when Branch 2 needs it.
+A dedicated `sumDice` selector for initiative pip totals did not ship in this
+branch; if a future consumer needs that value, it can be derived directly from
+`selectSettledDice`.
 
 #### Dice Tray UI — `src/components/dice/`
 
@@ -63,9 +64,9 @@ be a one-liner over `selectSettledDice` when Branch 2 needs it.
   `poolSize` and `autoRoll`. Calls `setDice` or `roll` on the tray. Replaces
   the originally-planned "controlled button with onRoll/onClear callbacks" —
   state lives in the shared tray, not at every call site.
-- **`DiceFace`** — Small MUI `Chip` rendering one die value (hits / 1s
-  highlighted). Currently unused; included as a primitive for future
-  consumers.
+- **`DieFace`** — Single primitive in `src/components/system/dice/dieFace.tsx`
+  rendering one die as a remix dice icon (hit / glitch highlighted). Replaces
+  the previously-separate `DieIcon` and `DiceFace` (chip) components.
 
 #### Route wiring — `src/routes/$characterId.tsx`
 
@@ -80,7 +81,8 @@ the renamed `QuickAccessButton` and a new "Dice Tray" button.
 - `DiceResult` — Switched from a `DiceResultsInfo` prop to a
   `roller: DiceRoller` prop; subscribes via `useDiceRollerSelector` and owns
   its own animation.
-- `DieIcon` — Accepts `value: number | null` and an optional `size` prop.
+- `DieFace` — Replaces `DieIcon`. Accepts `value: number | null` and an
+  optional `size` prop.
 - `StartingNuyenSection` — Migrated to the new `useDiceRoller` shape (the
   follow-up cleanup originally listed under "Notes" — done).
 - `NumberUtils.randomIntInRange` added; `EdgeStore` and `getDiceOffset` now

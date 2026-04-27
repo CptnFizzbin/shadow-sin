@@ -22,11 +22,8 @@ describe("DiceRoller", () => {
 
   describe("createDie", () => {
     it("returns a die with null value and isRolling false (static)", () => {
-      // Arrange
-      const diceRoller = new DiceRoller()
-
-      // Act
-      const die = diceRoller.createDie()
+      // Arrange / Act
+      const die = DiceRoller.createDie()
 
       // Assert
       expect(die).toEqual({ value: null, isRolling: false })

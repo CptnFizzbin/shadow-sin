@@ -1,4 +1,4 @@
-import type { DieState } from "./dieState"
+import type { DieState } from "./dieState.ts"
 
 export interface DiceRollerState {
   dice: DieState[]

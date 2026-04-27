@@ -1,9 +1,9 @@
 import { useSelector } from "@tanstack/react-store"
 import { createSelector } from "reselect"
 
-import type { DiceRoller } from "./diceRoller"
 import type { DiceRollerState } from "./diceRoller.state.ts"
-import type { DieState, SettledDieState } from "./dieState"
+import type { DiceRoller } from "./diceRoller.ts"
+import type { DieState, SettledDieState } from "./dieState.ts"
 import { RollState } from "./rollState.ts"
 
 export type DiceRollerSelector<T> = (state: DiceRollerState) => T
@@ -31,7 +31,7 @@ export const selectAllSettled: DiceRollerSelector<boolean> = createSelector(
 
 export const selectSettledDice: DiceRollerSelector<SettledDieState[]> = createSelector(
   selectAllDice,
-  (dice) => dice.filter((die): die is SettledDieState => !die.isRolling),
+  (dice) => dice.filter((die): die is SettledDieState => !die.isRolling && die.value !== null),
 )
 
 export const selectHits: DiceRollerSelector<number> = createSelector(
