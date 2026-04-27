@@ -4,18 +4,21 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
 import FormControl from "@mui/material/FormControl"
 import Grid from "@mui/material/Grid"
+import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { darken, lighten } from "@mui/material/styles"
+import { alpha } from "@mui/material/styles"
+import { RiDiceLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import {
   selectPhysicalCurrent,
   selectPhysicalMax,
@@ -23,10 +26,12 @@ import {
   selectStunMax,
 } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
+import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { DrainResistanceDicePool } from "./drainResistanceDicePool.tsx"
 import { computeDrainValue } from "./spellDrainFormula.ts"
@@ -39,8 +44,11 @@ interface SpellCastSectionProps {
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
   const magicAttr = useAttr(AttributeKey.magic)
+  const spellcastingRating = useActiveSkillRating(SkillKey.spellcasting)
+  const woundMod = useWoundModifier()
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
+  const diceTray = useDiceTray()
 
   const [force, setForce] = useState<number>(Math.max(1, magicAttr))
 
@@ -49,6 +57,8 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
 
+  const spellcastingPool = Math.max(0, magicAttr + spellcastingRating - woundMod)
+
   const damageStore = useDamageStore()
   const physicalMax = useSelector(damageStore, selectPhysicalMax)
   const physicalCurrent = useSelector(damageStore, selectPhysicalCurrent)
@@ -56,11 +66,12 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const stunCurrent = useSelector(damageStore, selectStunCurrent)
 
   const handleApplyDrain = (amount: number) => {
-    if (amount <= 0) return
-    if (drainIsPhysical) {
-      damageStore.setDamage(DamageTrackKey.physical, Math.min(physicalMax, physicalCurrent + amount))
-    } else {
-      damageStore.setDamage(DamageTrackKey.stun, Math.min(stunMax, stunCurrent + amount))
+    if (amount > 0) {
+      if (drainIsPhysical) {
+        damageStore.setDamage(DamageTrackKey.physical, Math.min(physicalMax, physicalCurrent + amount))
+      } else {
+        damageStore.setDamage(DamageTrackKey.stun, Math.min(stunMax, stunCurrent + amount))
+      }
     }
     onClose()
   }
@@ -75,16 +86,23 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         borderRadius: 1,
         padding: 1,
         bgcolor: isOvercasting
-          ? (theme) => {
-              const fn = theme.palette.mode === "light" ? lighten : darken
-              return fn(theme.palette.error.light, 0.9)
-            }
+          ? (theme) => alpha(theme.palette.error.main, 0.12)
           : undefined,
       }}
     >
       <Stack sx={{ gap: 1 }}>
         <Stack sx={{ gap: 0.5 }}>
-          <Label label="Cast" variant="text" />
+          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
+            <Label label="Cast" variant="text" />
+            <IconButton
+              size="small"
+              color="secondary"
+              aria-label={`Roll spellcasting pool (${spellcastingPool}d6)`}
+              onClick={() => diceTray.setDice(spellcastingPool)}
+            >
+              <RiDiceLine size={18} />
+            </IconButton>
+          </Stack>
           {isOvercasting && (
             <Typography color="error.main">
               Force exceeds Magic — drain is Physical
