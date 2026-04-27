@@ -1,4 +1,7 @@
 import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
+import { RiDiceLine } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
@@ -9,7 +12,7 @@ import { QuickAccessPanel } from "#/components/character/quickPanel/quickAccessP
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
+import { DiceTrayProvider, useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -61,6 +64,7 @@ function CharacterRoute() {
 
 function CharacterSheetContent() {
   const { nextPage, prevPage } = useCharacterNav()
+  const diceTray = useDiceTray()
 
   return (
     <>
@@ -80,7 +84,20 @@ function CharacterSheetContent() {
           zIndex: "appBar",
         }}
       >
-        <QuickAccessPanel />
+        <Stack direction="row" sx={{ gap: 1 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => diceTray.setDice(1)}
+            sx={{ borderRadius: 2, minWidth: 0, px: 1.5 }}
+            aria-label="Open dice tray"
+          >
+            <RiDiceLine size={20} />
+          </Button>
+          <Box sx={{ flex: 1 }}>
+            <QuickAccessPanel />
+          </Box>
+        </Stack>
       </Box>
     </>
   )
