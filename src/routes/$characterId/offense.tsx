@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import { CombatHud } from "#/components/character/combat/combatHud.tsx"
 import { EquippedWeaponsSection } from "#/components/items/types/weapons/equippedWeaponsSection.tsx"
+import { ManualStatusPanel } from "#/components/system/manualStatus/manualStatusPanel.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/offense")({
@@ -16,6 +17,8 @@ function RouteComponent() {
       <SectionHeader>Offense</SectionHeader>
 
       <CombatHud />
+      <Divider />
+      <ManualStatusPanel />
       <Divider />
       <EquippedWeaponsSection />
     </Stack>

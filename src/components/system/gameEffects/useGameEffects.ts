@@ -3,7 +3,7 @@ import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffe
 
 /**
  * Hook to retrieve all game effects of a specific type from the character sheet.
- * This scans qualities, gear, spells, complex forms, and adept powers.
+ * This scans qualities, gear, spells, complex forms, adept powers, and manual statuses.
  */
 export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
   return useCharacterSheet(
@@ -38,6 +38,10 @@ export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByT
         if (power.effects) {
           allEffects.push(...power.effects)
         }
+      }
+
+      for (const status of sheet.manualStatuses ?? []) {
+        allEffects.push(status.effect)
       }
 
       return allEffects.filter((effect) => effect.type === type) as EffectByType[T][]
