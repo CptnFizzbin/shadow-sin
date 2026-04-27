@@ -19,7 +19,7 @@ interface CharacterSheetProviderProps extends PropsWithChildren {
  * `AttributesProvider` so that `useAttrValue` / `useAttrInfo` work without
  * any additional wiring.
  */
-const CharacterAttributesBridge: FC<PropsWithChildren> = ({ children }) => {
+const CharacterAttributesProvider: FC<PropsWithChildren> = ({ children }) => {
   const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
   const awakening = useCharacterSheet((sheet) => awakenings[sheet.biology.awakening])
   const values = useCharacterSheet((sheet) => sheet.attributes)
@@ -42,9 +42,9 @@ export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({
 }) => {
   return (
     <CharacterSheetContext.Provider value={store}>
-      <CharacterAttributesBridge>
+      <CharacterAttributesProvider>
         {children}
-      </CharacterAttributesBridge>
+      </CharacterAttributesProvider>
     </CharacterSheetContext.Provider>
   )
 }
