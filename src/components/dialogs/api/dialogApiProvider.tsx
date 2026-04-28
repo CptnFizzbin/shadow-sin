@@ -1,3 +1,4 @@
+import Alert from "@mui/material/Alert"
 import { useSelector } from "@tanstack/react-store"
 import type { FC, PropsWithChildren, ReactNode } from "react"
 import { Component, createContext, useContext } from "react"
@@ -41,13 +42,12 @@ class DialogErrorBoundary extends Component<PropsWithChildren, DialogBoundarySta
     const { error } = this.state
     if (error) {
       return (
-        <div role="alert" style={{ padding: "1rem", color: "red" }}>
-          <strong>Dialog context error: </strong>
-          {error.contextName}
+        <Alert severity="error">
+          <strong>{error.contextName}</strong>
           {" requires "}
           <code>{error.requiredProvider}</code>
           {" to be present in the component tree. Make sure DialogApiProvider is mounted inside the required providers."}
-        </div>
+        </Alert>
       )
     }
     return this.props.children
