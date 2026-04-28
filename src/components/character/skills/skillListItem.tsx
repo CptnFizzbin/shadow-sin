@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
@@ -27,12 +27,13 @@ export const SkillListItem: FC<SkillListItemProps> = ({
   onClick,
 }) => {
   const woundMod = useWoundModifier()
+  const generalPenalty = useGeneralPenalty()
   const attrValue = useAttr(attr)
 
   const isNative = rating === "native"
   const ratingDice = isNative ? 0 : rating
   const defaultingPenalty = isDefaulted ? 1 : 0
-  const totalDice = Math.max(0, ratingDice + attrValue - defaultingPenalty - woundMod)
+  const totalDice = Math.max(0, ratingDice + attrValue - defaultingPenalty - woundMod + generalPenalty)
 
   return (
     <Stack
