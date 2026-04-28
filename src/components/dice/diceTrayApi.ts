@@ -97,6 +97,7 @@ export class DiceTrayApi {
    */
   setDice(count: number): void {
     const clamped = this.clamp(count)
+    this.cancelTimer()
     this.store.setState((prev) => ({
       ...prev,
       open: true,
@@ -104,6 +105,7 @@ export class DiceTrayApi {
       results: null,
       autoRoll: false,
       edgeSpent: false,
+      isRolling: false,
     }))
   }
 
@@ -113,6 +115,7 @@ export class DiceTrayApi {
    */
   roll(count: number): void {
     const clamped = this.clamp(count)
+    this.cancelTimer()
     this.store.setState((prev) => ({
       ...prev,
       open: true,
@@ -120,6 +123,7 @@ export class DiceTrayApi {
       results: null,
       autoRoll: true,
       edgeSpent: false,
+      isRolling: false,
     }))
   }
 

@@ -19,6 +19,7 @@ export function DiceGroupDisplay({
   return (
     <Stack
       component={onClick ? "button" : "div"}
+      type={onClick ? "button" : undefined}
       direction="row"
       onClick={onClick}
       sx={{

@@ -18,10 +18,10 @@ export type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
 export function useCharacterSheetSelector<T>(
   selector: CharacterDataSelector<T>,
-  shouldUpdate?: (prev: T, next: T) => boolean,
+  compare?: (prev: T, next: T) => boolean,
 ) {
   const store = useCharacterSheetContext()
-  return useSelector(store, selector, { compare: shouldUpdate })
+  return useSelector(store, selector, { compare })
 }
 
 export const selectAwakeningType: CharacterDataSelector<AwakeningType> = (state) => {

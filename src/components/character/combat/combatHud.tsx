@@ -1,7 +1,7 @@
 import Chip from "@mui/material/Chip"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
@@ -17,10 +17,10 @@ import { MiniDamageTrack } from "./miniDamageTrack.tsx"
 
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()
-  const physicalCurrent = useStore(damageStore, selectPhysicalCurrent)
-  const physicalMax = useStore(damageStore, selectPhysicalMax)
-  const stunCurrent = useStore(damageStore, selectStunCurrent)
-  const stunMax = useStore(damageStore, selectStunMax)
+  const physicalCurrent = useSelector(damageStore, selectPhysicalCurrent)
+  const physicalMax = useSelector(damageStore, selectPhysicalMax)
+  const stunCurrent = useSelector(damageStore, selectStunCurrent)
+  const stunMax = useSelector(damageStore, selectStunMax)
   const woundMod = useWoundModifier()
 
   const initBonuses = useGameEffects(GameEffectType.initiativeBonus)
