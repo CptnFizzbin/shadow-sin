@@ -3,7 +3,6 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
-import { AttributesList } from "#/components/builder/sections/attributes/attributesList.tsx"
 import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -15,6 +14,8 @@ import {
   PhysicalAttributes,
   SpecialAttributes,
 } from "#/system/attributeKey.ts"
+
+import { AttributesList } from "./attributesList.tsx"
 
 export const AttributesSection: FC = () => {
   const { budget, specialBp } = useAttributesBuildPoints()

@@ -10,9 +10,10 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { NuyenSection } from "#/components/character/finances/nuyen/nuyenSection.tsx"
-import { QuickAttributesSection } from "#/components/character/quickPanel/quickAttributesSection.tsx"
-import { QuickDamageSection } from "#/components/character/quickPanel/quickDamageSection.tsx"
-import { QuickEdgeSection } from "#/components/character/quickPanel/quickEdgeSection.tsx"
+
+import { QuickAttributesSection } from "./quickAttributesSection.tsx"
+import { QuickDamageSection } from "./quickDamageSection.tsx"
+import { QuickEdgeSection } from "./quickEdgeSection.tsx"
 
 export const QuickAccessButton: FC = () => {
   const [isOpen, setIsOpen] = useState(false)

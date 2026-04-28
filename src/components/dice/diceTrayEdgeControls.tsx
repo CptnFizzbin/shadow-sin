@@ -6,13 +6,14 @@ import type { FC } from "react"
 
 import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import {
   selectIsRolling,
   selectWasRolled,
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
 
 interface DiceTrayEdgeControlsProps {
   diceTrayApi: DiceTrayApi

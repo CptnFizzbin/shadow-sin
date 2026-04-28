@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { SpiritsStore } from "#/components/character/spirits/spiritsStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { SpiritsStore } from "./spiritsStore.ts"
 
 export function useSpiritsStore(): SpiritsStore {
   const store = useCharacterSheetContext()

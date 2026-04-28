@@ -2,9 +2,10 @@ import type { Store } from "@tanstack/store"
 import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
-import { ExtendedInterval, TestType } from "#/components/dice/testType.ts"
 import { selectWasRolled } from "#/system/dice/diceRoller.selectors.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
+
+import { ExtendedInterval, TestType } from "./testType.ts"
 
 export interface ExtendedRollEntry {
   hits: number

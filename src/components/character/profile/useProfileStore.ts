@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { ProfileStore } from "#/components/character/profile/profileStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { ProfileStore } from "./profileStore.ts"
 
 export const useProfileStore = (): ProfileStore => {
   const store = useCharacterSheetContext()

@@ -8,8 +8,8 @@ import Switch from "@mui/material/Switch"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { TestType, TestTypeLabels } from "#/components/dice/testType.ts"
+import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { TestType, TestTypeLabels } from "./testType.ts"
 
 interface DiceTrayHeaderProps {
   diceTrayApi: DiceTrayApi

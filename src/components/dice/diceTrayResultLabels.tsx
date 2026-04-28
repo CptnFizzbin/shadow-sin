@@ -3,8 +3,6 @@ import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { TestType } from "#/components/dice/testType.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import {
   selectHits,
@@ -13,6 +11,9 @@ import {
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
 import { RollState } from "#/system/dice/rollState.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { TestType } from "./testType.ts"
 
 interface DiceTrayResultLabelsProps {
   diceTrayApi: DiceTrayApi

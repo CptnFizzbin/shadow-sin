@@ -1,3 +1,3 @@
-import type { InitiativePassState } from "#/components/system/initiative/initiativePassStore.ts"
+import type { InitiativePassState } from "./initiativePassStore.ts"
 
 export const selectPassesCompleted = (state: InitiativePassState) => state.passesCompleted

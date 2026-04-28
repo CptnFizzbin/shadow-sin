@@ -8,14 +8,15 @@ import Switch from "@mui/material/Switch"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
+import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
 import {
   ExtendedInterval,
   ExtendedIntervalLabels,
   TestType,
-} from "#/components/dice/testType.ts"
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
-import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+} from "./testType.ts"
 
 interface DiceTrayInputsProps {
   diceTrayApi: DiceTrayApi

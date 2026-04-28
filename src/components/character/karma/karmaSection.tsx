@@ -5,10 +5,11 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useAddKarmaDialog } from "#/components/character/karma/addKarmaDialog.tsx"
-import { selectCurrentKarma, selectTotalKarma } from "#/components/character/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
 import { Label } from "#/components/ui/text/label"
+
+import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
+import { selectCurrentKarma, selectTotalKarma } from "./karmaSelectors.ts"
+import { useKarmaStore } from "./useKarmaStore.ts"
 
 export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()

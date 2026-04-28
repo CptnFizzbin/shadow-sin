@@ -1,7 +1,8 @@
 import { z } from "zod"
 
 import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
-import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+
+import { SpiritType, SpiritTypeLabels } from "./spiritData.ts"
 
 export { SpiritType, SpiritTypeLabels }
 

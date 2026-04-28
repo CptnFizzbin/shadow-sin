@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography"
 import type { ChangeEvent, FC } from "react"
 import { useRef, useState } from "react"
 
-import { yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { ConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import { yamlToCharacterSheet } from "./exportUtils.ts"
 
 export const ImportCurrentCharacterButton: FC = () => {
   const store = useCharacterSheetContext()

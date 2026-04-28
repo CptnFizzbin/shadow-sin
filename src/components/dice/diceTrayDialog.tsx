@@ -8,14 +8,14 @@ import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { DiceTrayActions } from "#/components/dice/diceTrayActions.tsx"
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { DiceTrayDiceDisplay } from "#/components/dice/diceTrayDiceDisplay.tsx"
-import { DiceTrayEdgeControls } from "#/components/dice/diceTrayEdgeControls.tsx"
-import { DiceTrayExtendedHistory } from "#/components/dice/diceTrayExtendedHistory.tsx"
-import { DiceTrayHeader } from "#/components/dice/diceTrayHeader.tsx"
-import { DiceTrayInputs } from "#/components/dice/diceTrayInputs.tsx"
-import { DiceTrayResultLabels } from "#/components/dice/diceTrayResultLabels.tsx"
+import { DiceTrayActions } from "./diceTrayActions.tsx"
+import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { DiceTrayDiceDisplay } from "./diceTrayDiceDisplay.tsx"
+import { DiceTrayEdgeControls } from "./diceTrayEdgeControls.tsx"
+import { DiceTrayExtendedHistory } from "./diceTrayExtendedHistory.tsx"
+import { DiceTrayHeader } from "./diceTrayHeader.tsx"
+import { DiceTrayInputs } from "./diceTrayInputs.tsx"
+import { DiceTrayResultLabels } from "./diceTrayResultLabels.tsx"
 
 interface DiceTrayDialogProps {
   diceTrayApi: DiceTrayApi

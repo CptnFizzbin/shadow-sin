@@ -2,15 +2,16 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { FirearmFormFields } from "#/components/items/types/weapons/forms/firearmFormFields.tsx"
-import { weaponFieldMap, weaponFormOpts } from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
-import { WeaponDamageFormFields } from "#/components/items/types/weapons/forms/weaponDamageFormFields.tsx"
-import { WeaponSkillFormFields } from "#/components/items/types/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { MeleeWeaponType, WeaponType } from "#/system/gear/weaponData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { FirearmFormFields } from "./firearmFormFields.tsx"
+import { weaponFieldMap, weaponFormOpts } from "./useWeaponForm.tsx"
+import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
+import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
 
 const weaponTypeOptions = [
   { label: "Melee", value: WeaponType.melee },

@@ -5,13 +5,14 @@ import { RiAddLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { AdeptPowersListItem } from "#/components/builder/sections/resources/adept/adeptPowersListItem.tsx"
 import { usePowerPoints } from "#/components/character/adeptPowers/adeptPowersHooks.ts"
 import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPowersSelectors.ts"
 import { useAdeptPowerFormDialog } from "#/components/character/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
 import { useAdeptPowersStore } from "#/components/character/adeptPowers/useAdeptPowersStore.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+
+import { AdeptPowersListItem } from "./adeptPowersListItem.tsx"
 
 export const AdeptPowersList: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()

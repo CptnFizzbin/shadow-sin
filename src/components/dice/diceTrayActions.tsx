@@ -3,14 +3,15 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { TestType } from "#/components/dice/testType.ts"
 import {
   selectHits,
   selectIsRolling,
   selectWasRolled,
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { TestType } from "./testType.ts"
 
 interface DiceTrayActionsProps {
   diceTrayApi: DiceTrayApi

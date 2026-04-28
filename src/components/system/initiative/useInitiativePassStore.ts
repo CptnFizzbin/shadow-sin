@@ -3,9 +3,10 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectPassesCompleted } from "#/components/system/initiative/initiativePassSelectors.ts"
-import { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { selectPassesCompleted } from "./initiativePassSelectors.ts"
+import { InitiativePassStore } from "./initiativePassStore.ts"
 
 export { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 

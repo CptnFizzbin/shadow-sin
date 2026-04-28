@@ -3,11 +3,12 @@ import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
 
 interface DiceTrayDiceDisplayProps {
   diceTrayApi: DiceTrayApi

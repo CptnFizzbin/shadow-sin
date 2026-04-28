@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20250801_addSpellThreshold.ts"
+import migration from "./20250801_addSpellThreshold.ts"
 
 describe("20250801_addSpellThreshold", () => {
   it("initialises spells to an empty array when missing", () => {

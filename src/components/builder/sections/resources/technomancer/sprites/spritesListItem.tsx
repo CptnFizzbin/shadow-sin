@@ -6,9 +6,10 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getSpriteTasksBp } from "#/components/builder/sections/resources/technomancer/sprites/spritesUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
+
+import { getSpriteTasksBp } from "./spritesUtils.ts"
 
 interface SpriteRowProps {
   sprite: SpriteData

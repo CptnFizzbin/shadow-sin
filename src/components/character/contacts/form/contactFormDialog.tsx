@@ -7,8 +7,6 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useId } from "react"
 
-import { ContactFormFields } from "#/components/character/contacts/form/contactFormFields.tsx"
-import { contactFieldMap, useContactForm } from "#/components/character/contacts/form/useContactForm.tsx"
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
 import {
   CharacterSheetProvider,
@@ -17,6 +15,9 @@ import {
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { ContactData } from "#/system/contactData.ts"
+
+import { ContactFormFields } from "./contactFormFields.tsx"
+import { contactFieldMap, useContactForm } from "./useContactForm.tsx"
 
 interface ContactFormDialogProps {
   open: boolean

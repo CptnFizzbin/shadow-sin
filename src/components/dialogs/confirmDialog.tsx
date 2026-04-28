@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { useDialogApi } from "./api/dialogApiProvider.tsx"
 
 interface ConfirmDialogProps {
   title?: ReactNode

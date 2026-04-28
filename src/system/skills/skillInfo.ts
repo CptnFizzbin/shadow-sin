@@ -1,7 +1,8 @@
 import type { AttributeKey } from "#/system/attributeKey"
 import type { AwakeningType } from "#/system/awakeningType"
-import type { SkillCategory } from "#/system/skills/skillCategory"
-import type { SkillGroupKey } from "#/system/skills/skillGroupKey"
+
+import type { SkillCategory } from "./skillCategory"
+import type { SkillGroupKey } from "./skillGroupKey"
 
 export interface SkillInfo {
   attr: AttributeKey

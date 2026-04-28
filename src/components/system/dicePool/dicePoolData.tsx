@@ -1,5 +1,5 @@
-import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { isDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
+import type { DiceGroupList } from "./diceGroup.tsx"
+import { isDiceGroup } from "./diceGroup.tsx"
 
 export interface DicePoolData {
   id: string

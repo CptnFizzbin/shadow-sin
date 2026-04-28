@@ -4,8 +4,9 @@ import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
 
 interface DiceTrayExtendedHistoryProps {
   diceTrayApi: DiceTrayApi

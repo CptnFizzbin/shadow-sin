@@ -12,11 +12,6 @@ import { z } from "zod"
 import { useIsBuilder } from "#/components/builder/useIsBuilder.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
-import { useBuyQuantityDialog } from "#/components/items/dialogs/buyQuantityDialog.tsx"
-import { ItemDialogActions } from "#/components/items/dialogs/itemDialogActions.tsx"
-import { useItemOptionsDialog } from "#/components/items/dialogs/itemOptionsDialog.tsx"
-import type { ItemDialogOptionConfig } from "#/components/items/dialogs/useItemOptions.ts"
-import { useItemOptions } from "#/components/items/dialogs/useItemOptions.ts"
 import { GearAttachmentFieldGroup } from "#/components/items/forms/gearAttachmentFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/items/forms/gearCostFieldGroup.tsx"
 import { GearDescriptionFieldGroup } from "#/components/items/forms/gearDescriptionFieldGroup.tsx"
@@ -28,6 +23,12 @@ import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.t
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
+import { ItemDialogActions } from "./itemDialogActions.tsx"
+import { useItemOptionsDialog } from "./itemOptionsDialog.tsx"
+import type { ItemDialogOptionConfig } from "./useItemOptions.ts"
+import { useItemOptions } from "./useItemOptions.ts"
 
 export interface ItemDialogProps {
   form: AnyItemForm

@@ -3,8 +3,8 @@ import AlertTitle from "@mui/material/AlertTitle"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { orderBySeverity } from "#/components/ui/alerts/alertInfo.ts"
+import type { AlertInfo } from "./alertInfo.ts"
+import { orderBySeverity } from "./alertInfo.ts"
 
 interface AlertsListProps {
   alerts: AlertInfo[]

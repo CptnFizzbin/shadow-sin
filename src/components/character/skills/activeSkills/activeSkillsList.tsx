@@ -9,13 +9,14 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { Fragment, useMemo, useState } from "react"
 
-import { ActiveSkillsListItem } from "#/components/character/skills/activeSkills/activeSkillsListItem.tsx"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
 
 type GroupingMode = "type" | "attribute" | "group" | "category"
 

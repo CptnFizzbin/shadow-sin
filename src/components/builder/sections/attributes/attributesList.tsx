@@ -1,8 +1,9 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { AttributeRow } from "#/components/builder/sections/attributes/attributeRow.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
+
+import { AttributeRow } from "./attributeRow.tsx"
 
 interface AttributesListProps {
   attributeKeys: AttributeKey[]
