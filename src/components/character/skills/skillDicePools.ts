@@ -1,7 +1,7 @@
 import { useActiveSkillRating } from "#/components/character/characterUtils.ts"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useGeneralPenaltyDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -40,6 +40,7 @@ export const useActiveSkillDicePool = (props: {
     isDefaulted ? { name: "Defaulting", size: -1, color: "warning.main" } : null,
     specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
     useWoundDiceGroup(),
+    useGeneralPenaltyDiceGroup(),
   ])
 }
 
@@ -62,6 +63,7 @@ export const useKnowledgeSkillDicePool = (props: {
     useAttrDiceGroup(AttributeKey.logic),
     specialization ? { name: specialization, size: 2 } : null,
     useWoundDiceGroup(),
+    useGeneralPenaltyDiceGroup(),
   ])
 }
 
@@ -84,5 +86,6 @@ export const useLanguageSkillDicePool = (props: {
     useAttrDiceGroup(AttributeKey.intuition),
     lingo ? { name: lingo, size: 2 } : null,
     useWoundDiceGroup(),
+    useGeneralPenaltyDiceGroup(),
   ])
 }
