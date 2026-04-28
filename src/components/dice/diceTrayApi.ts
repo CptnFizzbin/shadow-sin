@@ -39,8 +39,8 @@ export interface DiceTrayState {
 const createInitialState = (): DiceTrayState => ({
   open: false,
   edgeSpent: false,
-  threshold: 1,
-  poolSize: 1,
+  threshold: 2,
+  poolSize: 5,
   testType: TestType.Standard,
   opposedHits: 1,
   extendedInterval: ExtendedInterval.CombatRound,
@@ -111,15 +111,19 @@ export class DiceTrayApi {
   }
 
   setTestType(testType: TestType): void {
-    this.store.setState(produce((state) => {
-      state.testType = testType
-      // Leaving extended discards any in-progress history so subsequent tests
-      // start clean.
-      if (testType !== TestType.Extended) {
-        state.extendedHistory = []
-        state.shrinkingPool = false
-      }
+    // Reset all values except for the dice pool size and the digital/physical
+    // mode. Switching test type starts a fresh test from the user's chosen
+    // dice count.
+    const { poolSize, physicalMode, open } = this.store.get()
+    const fresh = createInitialState()
+    this.store.setState(() => ({
+      ...fresh,
+      open,
+      poolSize,
+      physicalMode,
+      testType,
     }))
+    this.roller.reset().setPoolSize(poolSize)
   }
 
   setExtendedInterval(interval: ExtendedInterval): void {
