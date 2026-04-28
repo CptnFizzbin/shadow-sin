@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useGeneralPenaltyDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -17,7 +17,7 @@ export const SpellcastingDicePool: FC<SpellcastingDicePoolProps> = ({ onRoll }) 
   return (
     <DicePool
       name="Spellcasting"
-      groups={[magicGroup, spellcastingGroup, woundGroup]}
+      groups={[magicGroup, spellcastingGroup, woundGroup, useGeneralPenaltyDiceGroup()]}
       onRoll={onRoll}
     />
   )

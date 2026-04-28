@@ -2,7 +2,7 @@ import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useGeneralPenaltyDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -53,5 +53,5 @@ export const SummoningDicePool: FC<SummoningDicePoolProps> = ({ spiritType, isBo
     ? { name: specialization, size: 2 + totalSpecMod }
     : null
 
-  return <DicePool name={poolName} groups={[magicGroup, skillGroup, specGroup, woundGroup]} />
+  return <DicePool name={poolName} groups={[magicGroup, skillGroup, specGroup, woundGroup, useGeneralPenaltyDiceGroup()]} />
 }
