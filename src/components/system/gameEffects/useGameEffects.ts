@@ -1,51 +1,56 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { createSelector } from "reselect"
+
+import type { CharacterDataSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
+
+function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] {
+  return item.effects ?? []
+}
+
+export const selectAllGameEffects: CharacterDataSelector<GameEffectData[]> = createSelector(
+  [
+    (sheet: CharacterSheet) => sheet.qualities,
+    (sheet: CharacterSheet) => sheet.gear,
+    (sheet: CharacterSheet) => sheet.spells,
+    (sheet: CharacterSheet) => sheet.complexForms,
+    (sheet: CharacterSheet) => sheet.adeptPowers,
+  ],
+  (qualities, gear, spells, complexForms, adeptPowers): GameEffectData[] => {
+    const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped)
+
+    return [
+      ...qualities,
+      ...equippedGear,
+      ...spells,
+      ...complexForms,
+      ...adeptPowers,
+    ].flatMap(getGameEffects)
+  },
+)
+
+interface TypedGameEffectSelector {
+  <TType extends GameEffectType>(type: TType): CharacterDataSelector<EffectByType[TType][]>
+}
+
+export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSelector(
+  [
+    selectAllGameEffects,
+    (_, type: keyof EffectByType) => type,
+  ],
+  (allEffects, type) => {
+    return allEffects.filter(filterByEffectType(type))
+  },
+)
 
 /**
  * Hook to retrieve all game effects of a specific type from the character sheet.
- * This scans qualities, gear, spells, complex forms, adept powers, and manual statuses.
+ * This scans qualities, gear, spells, complex forms, and adept powers.
  */
 export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
-  return useCharacterSheet(
-    (sheet) => {
-      const allEffects: GameEffectData[] = []
-
-      for (const quality of sheet.qualities) {
-        if (quality.effects) {
-          allEffects.push(...quality.effects)
-        }
-      }
-
-      for (const gearItem of Object.values(sheet.gear)) {
-        if (gearItem.effects && gearItem.equipped === true) {
-          allEffects.push(...gearItem.effects)
-        }
-      }
-
-      for (const spell of sheet.spells) {
-        if (spell.effects && spell.sustained === true) {
-          allEffects.push(...spell.effects)
-        }
-      }
-
-      for (const complexForm of sheet.complexForms) {
-        if (complexForm.effects) {
-          allEffects.push(...complexForm.effects)
-        }
-      }
-
-      for (const power of sheet.adeptPowers) {
-        if (power.effects) {
-          allEffects.push(...power.effects)
-        }
-      }
-
-      for (const status of sheet.manualStatuses ?? []) {
-        allEffects.push(status.effect)
-      }
-
-      return allEffects.filter((effect) => effect.type === type) as EffectByType[T][]
-    },
-    (a, b) => a.length === b.length && a.every((val, index) => val === b[index]),
-  )
+  return useCharacterSheetSelector(selectGameEffectsByType(type))
 }

@@ -22,8 +22,8 @@ import { useInitiative } from "./useInitiative.ts"
 import {
   useInitiativeExtraPasses,
   useInitiativeGoingFirst,
-  useInitiativePassStore,
   useInitiativePassesCompleted,
+  useInitiativePassStore,
   useInitiativeRolledResults,
 } from "./useInitiativePassStore.ts"
 
@@ -172,28 +172,28 @@ export const InitiativeSection: FC = () => {
           <Stack sx={{ gap: 1 }}>
             {goingFirst
               ? (
-                  <Chip
-                    label="Going First"
-                    color="warning"
-                    variant="filled"
-                    size="small"
-                    onDelete={handleCancelGoingFirst}
-                    sx={{ alignSelf: "flex-start" }}
-                  />
-                )
+                <Chip
+                  label="Going First"
+                  color="warning"
+                  variant="filled"
+                  size="small"
+                  onDelete={handleCancelGoingFirst}
+                  sx={{ alignSelf: "flex-start" }}
+                />
+              )
               : (
-                  <Button
-                    variant="outlined"
-                    color="warning"
-                    size="small"
-                    disabled={edgeCurrent === 0}
-                    onClick={handleSeizeInitiative}
-                    startIcon={<RiFlashlightLine size={16} />}
-                    sx={{ alignSelf: "flex-start" }}
-                  >
-                    {`Seize Initiative (${edgeCurrent})`}
-                  </Button>
-                )}
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  size="small"
+                  disabled={edgeCurrent === 0}
+                  onClick={handleSeizeInitiative}
+                  startIcon={<RiFlashlightLine size={16} />}
+                  sx={{ alignSelf: "flex-start" }}
+                >
+                  {`Seize Initiative (${edgeCurrent})`}
+                </Button>
+              )}
 
             <Button
               variant="outlined"

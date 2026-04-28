@@ -129,3 +129,26 @@ export function fillNameAndClickSave(nameValue: string) {
 
 // Ensure MUI Dialog portals rendered into document.body are cleaned up between tests.
 afterEach(() => cleanup())
+
+/**
+ * Creates a default CharacterSheet, optionally mutated by the provided callback.
+ * Use this in unit tests to build a sheet with only the fields you care about set.
+ */
+export function makeCharacterSheet(overrides?: (sheet: CharacterSheet) => void): CharacterSheet {
+  const sheet = createDefaultCharacterSheet()
+  overrides?.(sheet)
+  return sheet
+}
+
+/**
+ * Returns a React wrapper component that provides a CharacterSheetStore populated
+ * from the given sheet. Pass it directly to `renderHook(..., { wrapper })`.
+ */
+export function makeCharacterSheetWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
+  const store = new CharacterSheetStore(characterSheet)
+  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
+    <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+  )
+  Wrapper.displayName = "TestWrapper"
+  return Wrapper
+}
