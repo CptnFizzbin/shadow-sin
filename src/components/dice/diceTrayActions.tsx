@@ -10,14 +10,11 @@ import {
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType } from "./testType.ts"
 
-interface DiceTrayActionsProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayActions: FC<DiceTrayActionsProps> = ({ diceTrayApi }) => {
+export const DiceTrayActions: FC = () => {
+  const diceTrayApi = useDiceTray()
   const testType = useSelector(diceTrayApi.store, (state) => state.testType)
   const physicalMode = useSelector(diceTrayApi.store, (state) => state.physicalMode)
   const physicalHits = useSelector(diceTrayApi.store, (state) => state.physicalHits)
@@ -29,19 +26,19 @@ export const DiceTrayActions: FC<DiceTrayActionsProps> = ({ diceTrayApi }) => {
   const isExtendedTest = testType === TestType.Extended
 
   const handleReset = () => {
+    diceTrayApi.reset()
     if (physicalMode) {
       diceTrayApi.setPhysicalHits(0)
-      return
     }
-    diceTrayApi.reset()
   }
 
   const handleRoll = () => {
     if (isExtendedTest) {
       // In an extended test, "Roll" commits the current roll into history
       // before starting the next intermediate roll. This unifies "Next Roll"
-      // and "Roll" into a single action.
-      const hadResult = physicalMode ? physicalHits > 0 : wasRolled
+      // and "Roll" into a single action. In physical mode the user explicitly
+      // presses Roll so any value (including 0 hits) is intentional.
+      const hadResult = physicalMode || wasRolled
       if (hadResult) {
         const currentHits = physicalMode ? physicalHits : rolledHits
         diceTrayApi.recordExtendedRoll(currentHits)

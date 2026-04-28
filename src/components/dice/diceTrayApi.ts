@@ -174,10 +174,14 @@ export class DiceTrayApi {
       state.edgeSpent = false
     }))
 
+    // Reset the roller in both branches so stale dice from the previous roll
+    // don't linger between intermediate rolls. When shrinking, drop one die
+    // from the pool too.
+    this.roller.reset()
     if (shrinkingPool && poolSize > 1) {
       this.setPoolSize(poolSize - 1)
     } else {
-      this.roller.reset().setPoolSize(this.store.get().poolSize)
+      this.roller.setPoolSize(this.store.get().poolSize)
     }
   }
 

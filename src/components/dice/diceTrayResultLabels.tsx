@@ -12,14 +12,11 @@ import {
 } from "#/system/dice/diceRoller.selectors.ts"
 import { RollState } from "#/system/dice/rollState.ts"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType } from "./testType.ts"
 
-interface DiceTrayResultLabelsProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayResultLabels: FC<DiceTrayResultLabelsProps> = ({ diceTrayApi }) => {
+export const DiceTrayResultLabels: FC = () => {
+  const diceTrayApi = useDiceTray()
   const threshold = useSelector(diceTrayApi.store, (state) => state.threshold)
   const testType = useSelector(diceTrayApi.store, (state) => state.testType)
   const opposedHits = useSelector(diceTrayApi.store, (state) => state.opposedHits)
@@ -38,7 +35,9 @@ export const DiceTrayResultLabels: FC<DiceTrayResultLabelsProps> = ({ diceTrayAp
   const currentHits = physicalMode ? physicalHits : rolledHits
   const previousExtendedHits = extendedHistory.reduce((sum, entry) => sum + entry.hits, 0)
   const totalExtendedHits = previousExtendedHits + (wasRolled || physicalMode ? currentHits : 0)
-  const netHits = Math.max(0, currentHits - opposedHits)
+  // Allow negative net hits so the user can see when the opposing side won
+  // an opposed test by how much.
+  const netHits = currentHits - opposedHits
 
   return (
     <Stack sx={{ gap: 0 }}>
@@ -69,7 +68,7 @@ export const DiceTrayResultLabels: FC<DiceTrayResultLabelsProps> = ({ diceTrayAp
       {isOpposedTest && (wasRolled || physicalMode) && (
         <Label
           label={`Net hits: ${netHits}`}
-          color={netHits > 0 ? "success.main" : "secondary.dark"}
+          color={netHits > 0 ? "success.main" : netHits < 0 ? "error.main" : "secondary.dark"}
           variant="text"
         />
       )}

@@ -11,18 +11,15 @@ import type { FC } from "react"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 import {
   ExtendedInterval,
   ExtendedIntervalLabels,
   TestType,
 } from "./testType.ts"
 
-interface DiceTrayInputsProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayInputs: FC<DiceTrayInputsProps> = ({ diceTrayApi }) => {
+export const DiceTrayInputs: FC = () => {
+  const diceTrayApi = useDiceTray()
   const threshold = useSelector(diceTrayApi.store, (state) => state.threshold)
   const poolSize = useSelector(diceTrayApi.store, (state) => state.poolSize)
   const testType = useSelector(diceTrayApi.store, (state) => state.testType)

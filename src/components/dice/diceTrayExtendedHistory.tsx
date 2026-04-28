@@ -6,13 +6,10 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 
-interface DiceTrayExtendedHistoryProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayExtendedHistory: FC<DiceTrayExtendedHistoryProps> = ({ diceTrayApi }) => {
+export const DiceTrayExtendedHistory: FC = () => {
+  const diceTrayApi = useDiceTray()
   const extendedHistory = useSelector(diceTrayApi.store, (state) => state.extendedHistory)
 
   if (extendedHistory.length === 0) return null

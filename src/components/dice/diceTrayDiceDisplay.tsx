@@ -8,13 +8,10 @@ import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 
-interface DiceTrayDiceDisplayProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayDiceDisplay: FC<DiceTrayDiceDisplayProps> = ({ diceTrayApi }) => {
+export const DiceTrayDiceDisplay: FC = () => {
+  const diceTrayApi = useDiceTray()
   const poolSize = useSelector(diceTrayApi.store, (state) => state.poolSize)
   const physicalMode = useSelector(diceTrayApi.store, (state) => state.physicalMode)
   const physicalHits = useSelector(diceTrayApi.store, (state) => state.physicalHits)

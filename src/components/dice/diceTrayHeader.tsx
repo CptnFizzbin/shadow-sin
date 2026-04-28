@@ -8,14 +8,11 @@ import Switch from "@mui/material/Switch"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType, TestTypeLabels } from "./testType.ts"
 
-interface DiceTrayHeaderProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayHeader: FC<DiceTrayHeaderProps> = ({ diceTrayApi }) => {
+export const DiceTrayHeader: FC = () => {
+  const diceTrayApi = useDiceTray()
   const testType = useSelector(diceTrayApi.store, (state) => state.testType)
   const physicalMode = useSelector(diceTrayApi.store, (state) => state.physicalMode)
 

@@ -9,7 +9,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { DiceTrayActions } from "./diceTrayActions.tsx"
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 import { DiceTrayDiceDisplay } from "./diceTrayDiceDisplay.tsx"
 import { DiceTrayEdgeControls } from "./diceTrayEdgeControls.tsx"
 import { DiceTrayExtendedHistory } from "./diceTrayExtendedHistory.tsx"
@@ -17,11 +17,8 @@ import { DiceTrayHeader } from "./diceTrayHeader.tsx"
 import { DiceTrayInputs } from "./diceTrayInputs.tsx"
 import { DiceTrayResultLabels } from "./diceTrayResultLabels.tsx"
 
-interface DiceTrayDialogProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
+export const DiceTrayDialog: FC = () => {
+  const diceTrayApi = useDiceTray()
   const open = useSelector(diceTrayApi.store, (state) => state.open)
 
   return (
@@ -39,13 +36,13 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
 
       <DialogContent>
         <Stack sx={{ paddingTop: 1 }}>
-          <DiceTrayHeader diceTrayApi={diceTrayApi} />
-          <DiceTrayInputs diceTrayApi={diceTrayApi} />
-          <DiceTrayDiceDisplay diceTrayApi={diceTrayApi} />
-          <DiceTrayResultLabels diceTrayApi={diceTrayApi} />
-          <DiceTrayExtendedHistory diceTrayApi={diceTrayApi} />
-          <DiceTrayEdgeControls diceTrayApi={diceTrayApi} />
-          <DiceTrayActions diceTrayApi={diceTrayApi} />
+          <DiceTrayHeader />
+          <DiceTrayInputs />
+          <DiceTrayDiceDisplay />
+          <DiceTrayResultLabels />
+          <DiceTrayExtendedHistory />
+          <DiceTrayEdgeControls />
+          <DiceTrayActions />
         </Stack>
       </DialogContent>
 

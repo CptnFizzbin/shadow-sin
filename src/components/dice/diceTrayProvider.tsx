@@ -1,10 +1,8 @@
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
 
 import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { DiceTrayContext, useDiceTray } from "./diceTrayContext.ts"
 import { DiceTrayDialog } from "./diceTrayDialog.tsx"
-
-const DiceTrayContext = createContext<DiceTrayApi | null>(null)
 
 interface DiceTrayProviderProps extends PropsWithChildren {
   diceTrayApi: DiceTrayApi
@@ -27,26 +25,9 @@ export const DiceTrayProvider: FC<DiceTrayProviderProps> = ({ diceTrayApi, child
   return (
     <DiceTrayContext.Provider value={diceTrayApi}>
       {children}
-      <DiceTrayDialog diceTrayApi={diceTrayApi} />
+      <DiceTrayDialog />
     </DiceTrayContext.Provider>
   )
 }
 
-/**
- * Returns the nearest {@link DiceTrayApi} instance from context.
- * Must be used within a {@link DiceTrayProvider}.
- *
- * ```ts
- * const diceTray = useDiceTray()
- * diceTray.roll(pool.size)
- * ```
- */
-export const useDiceTray = (): DiceTrayApi => {
-  const diceTrayApi = useContext(DiceTrayContext)
-
-  if (!diceTrayApi) {
-    throw new Error("useDiceTray must be used within a DiceTrayProvider")
-  }
-
-  return diceTrayApi
-}
+export { useDiceTray }

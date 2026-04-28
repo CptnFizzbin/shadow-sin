@@ -13,13 +13,10 @@ import {
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { useDiceTray } from "./diceTrayContext.ts"
 
-interface DiceTrayEdgeControlsProps {
-  diceTrayApi: DiceTrayApi
-}
-
-export const DiceTrayEdgeControls: FC<DiceTrayEdgeControlsProps> = ({ diceTrayApi }) => {
+export const DiceTrayEdgeControls: FC = () => {
+  const diceTrayApi = useDiceTray()
   const edgeSpent = useSelector(diceTrayApi.store, (state) => state.edgeSpent)
   const physicalMode = useSelector(diceTrayApi.store, (state) => state.physicalMode)
   const isRolling = useDiceRollerSelector(diceTrayApi.roller, selectIsRolling)
@@ -34,13 +31,13 @@ export const DiceTrayEdgeControls: FC<DiceTrayEdgeControlsProps> = ({ diceTrayAp
   const handleRerollMisses = () => {
     if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rerollMisses()
-    edgeStore.setCurrent(currentEdge - 1)
+    edgeStore.setCurrent((current) => current - 1)
   }
 
   const handleEdge = () => {
     if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rollEdge(maxEdge)
-    edgeStore.setCurrent(currentEdge - 1)
+    edgeStore.setCurrent((current) => current - 1)
   }
 
   return (
