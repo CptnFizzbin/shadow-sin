@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
+import { DiceTrayApi } from "./diceTrayApi.ts"
 
 const ROLLING_DURATION_MS = 600
 

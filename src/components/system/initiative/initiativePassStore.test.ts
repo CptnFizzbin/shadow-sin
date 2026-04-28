@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import type { InitiativePassState } from "#/components/system/initiative/initiativePassStore.ts"
-import { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
+import type { InitiativePassState } from "./initiativePassStore.ts"
+import { InitiativePassStore } from "./initiativePassStore.ts"
 
 const makeStore = (overrides: Partial<InitiativePassState> = {}) =>
   new InitiativePassStore({

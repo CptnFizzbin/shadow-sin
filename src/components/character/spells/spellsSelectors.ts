@@ -1,3 +1,3 @@
-import type { SpellsStoreState } from "#/components/character/spells/spellsStore.ts"
+import type { SpellsStoreState } from "./spellsStore.ts"
 
 export const selectAllSpells = (state: SpellsStoreState) => state

@@ -1,8 +1,9 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { KnowledgeSkillsList } from "#/components/character/skills/knowledgeSkills/knowledgeSkillsList.tsx"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import { KnowledgeSkillsList } from "./knowledgeSkillsList.tsx"
 
 describe("KnowledgeSkillsList", () => {
   it("renders skills with name, rating, and optional specialization", () => {

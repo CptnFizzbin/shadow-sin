@@ -4,7 +4,6 @@ import Stack from "@mui/material/Stack"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { MiniDamageTrack } from "#/components/character/combat/miniDamageTrack.tsx"
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import { selectPhysicalCurrent, selectPhysicalMax, selectStunCurrent, selectStunMax } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
@@ -13,6 +12,8 @@ import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.t
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+
+import { MiniDamageTrack } from "./miniDamageTrack.tsx"
 
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()

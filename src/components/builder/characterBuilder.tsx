@@ -4,40 +4,41 @@ import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { AllBuilderAlerts } from "#/components/builder/alerts/allBuilderAlerts.tsx"
-import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
-import { useBuilderRootStateStore } from "#/components/builder/hooks/useBuilderRootStateStore.ts"
-import { ImportYamlBuilderButton } from "#/components/builder/importYamlBuilderButton.tsx"
-import { SaveCharacterButton } from "#/components/builder/saveCharacterButton.tsx"
-import {
-  AttributesBuilderSection,
-} from "#/components/builder/sections/attributes/attributesBuilderSection.tsx"
-import { BiologyBuilderSection } from "#/components/builder/sections/biology/biologyBuilderSection.tsx"
-import { ContactsBuilderSection } from "#/components/builder/sections/contacts/contactsBuilderSection.tsx"
-import { GearBuilderSection } from "#/components/builder/sections/gear/gearBuilderSection.tsx"
-import { ProfileBuilderSection } from "#/components/builder/sections/profile/profileBuilderSection.tsx"
-import { QualitiesBuilderSection } from "#/components/builder/sections/qualities/qualitiesBuilderSection.tsx"
-import {
-  AdeptPowersBuilderSection,
-} from "#/components/builder/sections/resources/adept/adeptPowersBuilderSection.tsx"
-import {
-  SpellsBuilderSection,
-} from "#/components/builder/sections/resources/magician/spellsBuilderSection.tsx"
-import {
-  ComplexFormsBuilderSection,
-} from "#/components/builder/sections/resources/technomancer/complexForms/complexFormsBuilderSection.tsx"
-import {
-  SpritesBuilderSection,
-} from "#/components/builder/sections/resources/technomancer/sprites/spritesBuilderSection.tsx"
-import {
-  ActiveSkillsBuilderSection,
-} from "#/components/builder/sections/skills/activeSkills/activeSkillsBuilderSection.tsx"
-import {
-  KnowledgeSkillsBuilderSection,
-} from "#/components/builder/sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
-import { BpSummaryFooter } from "#/components/builder/sections/summary/bpSummaryFooter.tsx"
 import { ExportCharacterButton } from "#/components/character/exportImport/exportCharacterButton.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
+import { CharacterBuilderStoreProvider } from "./characterBuilderStoreProvider.tsx"
+import { useBuilderRootStateStore } from "./hooks/useBuilderRootStateStore.ts"
+import { ImportYamlBuilderButton } from "./importYamlBuilderButton.tsx"
+import { SaveCharacterButton } from "./saveCharacterButton.tsx"
+import {
+  AttributesBuilderSection,
+} from "./sections/attributes/attributesBuilderSection.tsx"
+import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
+import { ContactsBuilderSection } from "./sections/contacts/contactsBuilderSection.tsx"
+import { GearBuilderSection } from "./sections/gear/gearBuilderSection.tsx"
+import { ProfileBuilderSection } from "./sections/profile/profileBuilderSection.tsx"
+import { QualitiesBuilderSection } from "./sections/qualities/qualitiesBuilderSection.tsx"
+import {
+  AdeptPowersBuilderSection,
+} from "./sections/resources/adept/adeptPowersBuilderSection.tsx"
+import {
+  SpellsBuilderSection,
+} from "./sections/resources/magician/spellsBuilderSection.tsx"
+import {
+  ComplexFormsBuilderSection,
+} from "./sections/resources/technomancer/complexForms/complexFormsBuilderSection.tsx"
+import {
+  SpritesBuilderSection,
+} from "./sections/resources/technomancer/sprites/spritesBuilderSection.tsx"
+import {
+  ActiveSkillsBuilderSection,
+} from "./sections/skills/activeSkills/activeSkillsBuilderSection.tsx"
+import {
+  KnowledgeSkillsBuilderSection,
+} from "./sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
+import { BpSummaryFooter } from "./sections/summary/bpSummaryFooter.tsx"
 
 interface CharacterFormProps {
   character?: CharacterSheet

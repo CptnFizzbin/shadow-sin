@@ -1,7 +1,8 @@
 import { createSelector } from "reselect"
 
-import type { LifestyleStoreState } from "#/components/character/profile/lifestyleStore.ts"
 import { Lifestyles } from "#/system/lifestyleType.ts"
+
+import type { LifestyleStoreState } from "./lifestyleStore.ts"
 
 export const selectLifestyleQuality = (state: LifestyleStoreState) => state.quality
 export const selectLifestyleMonthsPaid = (state: LifestyleStoreState) => state.monthsPaid

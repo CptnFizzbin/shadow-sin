@@ -1,9 +1,10 @@
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { contactFormOpts } from "#/components/character/contacts/form/useContactForm.tsx"
 import { createRatingOptions } from "#/components/system/ratings/ratingUtils.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+
+import { contactFormOpts } from "./useContactForm.tsx"
 
 const ratingOptions = createRatingOptions({ min: 1, max: 6 })
 

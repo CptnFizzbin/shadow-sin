@@ -1,4 +1,3 @@
-import { SectionHeader } from "#/components/builder/sections/gear/sectionHeader.tsx"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/items/types/licenses/licenseUtils.ts"
@@ -6,6 +5,8 @@ import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.t
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
+
+import { SectionHeader } from "./sectionHeader.tsx"
 
 type ItemCostInfo = {
   cost?: number

@@ -14,17 +14,18 @@ import { useEffect, useRef, useState } from "react"
 import { selectEdgeCurrent } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
-import { InitiativePassTracker } from "#/components/system/initiative/initiativePassTracker.tsx"
-import { useInitiative } from "#/components/system/initiative/useInitiative.ts"
+import { Label } from "#/components/ui/text/label.tsx"
+import { countHits } from "#/system/dice/diceRoll.ts"
+
+import { InitiativePassTracker } from "./initiativePassTracker.tsx"
+import { useInitiative } from "./useInitiative.ts"
 import {
   useInitiativeExtraPasses,
   useInitiativeGoingFirst,
   useInitiativePassStore,
   useInitiativePassesCompleted,
   useInitiativeRolledResults,
-} from "#/components/system/initiative/useInitiativePassStore.ts"
-import { Label } from "#/components/ui/text/label.tsx"
-import { countHits } from "#/system/dice/diceRoll.ts"
+} from "./useInitiativePassStore.ts"
 
 export const InitiativeSection: FC = () => {
   const { dicePool, initiativePasses: basePasses } = useInitiative()

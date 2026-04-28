@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { ContactsStore } from "#/components/character/contacts/contactsStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { ContactsStore } from "./contactsStore.ts"
 
 export function useContactsStore() {
   const store = useCharacterSheetContext()

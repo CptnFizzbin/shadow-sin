@@ -4,8 +4,9 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import type { LanguageSkillForm } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
+
+import type { LanguageSkillForm } from "./useLanguageSkillForm.ts"
 
 interface LanguageSkillFormFieldsProps {
   form: LanguageSkillForm

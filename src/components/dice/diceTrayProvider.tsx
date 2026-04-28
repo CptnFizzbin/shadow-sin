@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { DiceTrayDialog } from "#/components/dice/diceTrayDialog.tsx"
+import type { DiceTrayApi } from "./diceTrayApi.ts"
+import { DiceTrayDialog } from "./diceTrayDialog.tsx"
 
 const DiceTrayContext = createContext<DiceTrayApi | null>(null)
 

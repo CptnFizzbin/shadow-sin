@@ -1,7 +1,6 @@
 import { useSelector } from "@tanstack/react-store"
 import { createSelector } from "reselect"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetContext.ts"
 import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -11,6 +10,8 @@ import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
+
+import { useCharacterSheetContext } from "./characterSheetContext.ts"
 
 export type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 

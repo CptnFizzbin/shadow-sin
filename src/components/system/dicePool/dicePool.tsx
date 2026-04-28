@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box"
 import type { FC } from "react"
 
-import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { isDiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
-import { DiceGroupDisplay } from "#/components/system/dicePool/diceGroupDisplay.tsx"
-import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
+import type { DiceGroupList } from "./diceGroup.tsx"
+import { isDiceGroup } from "./diceGroup.tsx"
+import { DiceGroupDisplay } from "./diceGroupDisplay.tsx"
+import { getPoolSize } from "./dicePoolData.tsx"
 
 interface DicePoolProps {
   name: string

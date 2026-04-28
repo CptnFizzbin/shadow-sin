@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
-import { ItemListAddItemButton } from "#/components/items/card/itemListAddItemButton.tsx"
+import { ItemListAddItemButton } from "./itemListAddItemButton.tsx"
 
 interface ItemListProps {
   children: ReactNode

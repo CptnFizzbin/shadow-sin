@@ -1,9 +1,10 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import { CharacterSheetContext, useCharacterSheetContext } from "#/components/character/sheet/characterSheetContext.ts"
-import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import { useCharacterSheetSelector } from "./characterSheet.selectors.ts"
+import { CharacterSheetContext, useCharacterSheetContext } from "./characterSheetContext.ts"
+import type { CharacterSheetStore } from "./characterSheetStore.ts"
 
 export { CharacterSheetContext, useCharacterSheetContext }
 

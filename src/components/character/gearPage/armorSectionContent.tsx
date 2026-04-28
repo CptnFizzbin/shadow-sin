@@ -3,12 +3,13 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { GearViewItem } from "./gearViewItem.tsx"
 
 interface ArmorSectionContentProps {
   items: ItemData[]

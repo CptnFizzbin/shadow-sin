@@ -6,16 +6,17 @@ import { describe, expect, it } from "vitest"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
+import { theme } from "#/theme.ts"
+
 import {
   MeleeDodgeDicePool,
   MeleeFullBlockDicePool,
   MeleeFullDodgeDicePool,
   MeleeFullParryDicePool,
   RangedFullDefenseDicePool,
-} from "#/components/system/damage/resistanceDicePools.tsx"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
-import { theme } from "#/theme.ts"
+} from "./resistanceDicePools.tsx"
 
 interface TestProvidersProps extends PropsWithChildren {
   characterSheet: CharacterSheet

@@ -1,6 +1,6 @@
-import type { AttributeInfo } from "#/system/attributeInfo.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import type { AttributeInfo } from "./attributeInfo.ts"
+import type { AttributeKey } from "./attributeKey.ts"
+import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 
 export enum MetatypeType {
   Human = "Human",

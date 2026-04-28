@@ -1,8 +1,8 @@
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import type { AnyDialog } from "#/components/dialogs/api/dialogApiDialog.ts"
-import type { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
+import type { AnyDialog } from "./dialogApiDialog.ts"
+import type { DialogCtrl } from "./dialogCtrl.ts"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyDialogCtrl = DialogCtrl<any>

@@ -2,8 +2,9 @@ import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Stack from "@mui/material/Stack"
 
-import { weaponFormOpts } from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+
+import { weaponFormOpts } from "./useWeaponForm.tsx"
 
 const damageTypeOptions: Array<{ label: string, value: "physical" | "stun" | "custom" }> = [
   { label: "Physical", value: "physical" },

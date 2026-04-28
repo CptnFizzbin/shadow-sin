@@ -3,7 +3,8 @@ import type { FC } from "react"
 import type { NuyenFieldProps } from "#/components/ui/form/fields/nuyenField.tsx"
 import { NuyenField as NuyenInputField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
-import { useFieldErrors } from "#/integrations/tanstackForm/fields/useFieldError.ts"
+
+import { useFieldErrors } from "./useFieldError.ts"
 
 type NuyenFormFieldProps = Omit<NuyenFieldProps, "value" | "onChange">
 

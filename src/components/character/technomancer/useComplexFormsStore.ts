@@ -2,8 +2,9 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { ComplexFormsStore } from "#/components/character/technomancer/complexFormsStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { ComplexFormsStore } from "./complexFormsStore.ts"
 
 export const useComplexFormsStore = (): ComplexFormsStore => {
   const store = useCharacterSheetContext()
