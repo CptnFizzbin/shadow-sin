@@ -166,11 +166,11 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
 
             {wasRolled
               ? (
-                  <Label label={`${hits} ${pluralize("hit", hits)}`} color="secondary.dark" variant="contained" />
-                )
+                <Label label={`${hits} ${pluralize("hit", hits)}`} color="secondary.dark" variant="contained" />
+              )
               : (
-                  <Label label="-" color="secondary.dark" variant="contained" />
-                )}
+                <Label label="-" color="secondary.dark" variant="contained" />
+              )}
           </Stack>
 
           <Stack sx={{ gap: 1 }}>
