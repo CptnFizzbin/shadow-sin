@@ -11,6 +11,12 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
+import { selectEdgeCurrent } from "#/components/character/quickPanel/edgeSelectors.ts"
+import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
+import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
+import { Label } from "#/components/ui/text/label.tsx"
+import { countHits } from "#/system/dice/diceRoll.ts"
+
 import { InitiativePassTracker } from "./initiativePassTracker.tsx"
 import { useInitiative } from "./useInitiative.ts"
 import {
@@ -18,14 +24,8 @@ import {
   useInitiativeGoingFirst,
   useInitiativePassesCompleted,
   useInitiativePassStore,
-  useInitiativeRolledResults
+  useInitiativeRolledResults,
 } from "./useInitiativePassStore.ts"
-
-import { selectEdgeCurrent } from "#/components/character/quickPanel/edgeSelectors.ts"
-import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { countHits } from "#/system/dice/diceRoll.ts"
 
 export const InitiativeSection: FC = () => {
   const { dicePool, initiativePasses: basePasses } = useInitiative()
@@ -172,28 +172,28 @@ export const InitiativeSection: FC = () => {
           <Stack sx={{ gap: 1 }}>
             {goingFirst
               ? (
-                <Chip
-                  label="Going First"
-                  color="warning"
-                  variant="filled"
-                  size="small"
-                  onDelete={handleCancelGoingFirst}
-                  sx={{ alignSelf: "flex-start" }}
-                />
-              )
+                  <Chip
+                    label="Going First"
+                    color="warning"
+                    variant="filled"
+                    size="small"
+                    onDelete={handleCancelGoingFirst}
+                    sx={{ alignSelf: "flex-start" }}
+                  />
+                )
               : (
-                <Button
-                  variant="outlined"
-                  color="warning"
-                  size="small"
-                  disabled={edgeCurrent === 0}
-                  onClick={handleSeizeInitiative}
-                  startIcon={<RiFlashlightLine size={16} />}
-                  sx={{ alignSelf: "flex-start" }}
-                >
-                  {`Seize Initiative (${edgeCurrent})`}
-                </Button>
-              )}
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="small"
+                    disabled={edgeCurrent === 0}
+                    onClick={handleSeizeInitiative}
+                    startIcon={<RiFlashlightLine size={16} />}
+                    sx={{ alignSelf: "flex-start" }}
+                  >
+                    {`Seize Initiative (${edgeCurrent})`}
+                  </Button>
+                )}
 
             <Button
               variant="outlined"
