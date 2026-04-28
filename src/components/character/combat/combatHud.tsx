@@ -1,11 +1,10 @@
-import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { MiniDamageTrack } from "#/components/character/combat/miniDamageTrack.tsx"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { selectPhysicalCurrent, selectPhysicalMax, selectStunCurrent, selectStunMax } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
@@ -14,36 +13,6 @@ import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.t
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
-
-interface MiniTrackProps {
-  label: string
-  current: number
-  max: number
-}
-
-const MiniTrack: FC<MiniTrackProps> = ({ label, current, max }) => (
-  <Stack direction="row" sx={{ alignItems: "center", gap: 0.75 }}>
-    <Typography variant="caption" sx={{ minWidth: 14, color: "text.secondary" }}>
-      {label}
-    </Typography>
-    <Stack direction="row" sx={{ gap: 0.25, flexWrap: "wrap" }}>
-      {Array.from({ length: max }, (_, i) => (
-        <Box
-          key={i}
-          sx={{
-            width: 9,
-            height: 9,
-            borderRadius: 0.5,
-            bgcolor: i < current ? "error.main" : "action.disabled",
-          }}
-        />
-      ))}
-    </Stack>
-    <Typography variant="caption" color={current > 0 ? "error" : "text.secondary"}>
-      {current}/{max}
-    </Typography>
-  </Stack>
-)
 
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()
@@ -91,8 +60,8 @@ export const CombatHud: FC = () => {
       {/* Wounds */}
       <Stack sx={{ gap: 0.5 }}>
         <Label label="Wounds" />
-        <MiniTrack label="P" current={physicalCurrent} max={physicalMax} />
-        <MiniTrack label="S" current={stunCurrent} max={stunMax} />
+        <MiniDamageTrack label="P" current={physicalCurrent} max={physicalMax} />
+        <MiniDamageTrack label="S" current={stunCurrent} max={stunMax} />
       </Stack>
 
       {/* Active effects / auras */}
