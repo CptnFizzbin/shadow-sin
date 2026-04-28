@@ -52,6 +52,7 @@ The `$characterId.tsx` route subscribes to store changes via `store.subscribe()`
 - `src/components/gear/` — Generic gear infrastructure (see **Gear item forms & dialogs** below)
 - `src/routes/` — TanStack file-based routes
 - `src/integrations/` — TanStack Query/Form setup, Google Drive stub
+- `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
 
 ### Routing
@@ -207,6 +208,7 @@ commit
 
 - Prefer inline `useState`-managed dialogs (open/closed state in the parent component) over `dialogApi` for dialogs that need access to `CharacterSheetProvider` or other React context, since `dialogApi` renders outside the provider tree.
 - Use `useConfirmDialog()` from `#/components/dialogs/confirmDialog.tsx` for confirmation prompts before destructive actions.
+- Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces consistent sizing and wires up `onClosed` automatically. See `docs/ui/dialog.md` for examples.
 
 ## TanStack Form
 
