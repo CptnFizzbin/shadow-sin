@@ -17,6 +17,7 @@ import { getDiceOffset } from "#/components/system/dice/diceUtils.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { isCriticalGlitch, isGlitch } from "#/system/dice/diceRoll.ts"
 import { RollState } from "#/system/dice/rollState.ts"
 
 import type { DiceTrayApi } from "./diceTrayApi.ts"
@@ -46,23 +47,22 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
 
   const wasRolled = results !== null
   const hits = wasRolled ? results.filter((r) => r >= 5).length : 0
-  const ones = wasRolled ? results.filter((r) => r === 1).length : 0
-  const isGlitch = wasRolled && results.length > 0 && ones >= results.length / 2
-  const isCriticalGlitch = isGlitch && hits === 0
+  const glitch = wasRolled && isGlitch(results)
+  const criticalGlitch = wasRolled && isCriticalGlitch(results)
 
   const rollState: RollState = !wasRolled
     ? RollState.Assembling
     : isRolling
       ? RollState.Rolling
-      : isCriticalGlitch
+      : criticalGlitch
         ? RollState.Critical
-        : isGlitch
+        : glitch
           ? RollState.Glitch
           : hits >= 1
             ? RollState.Hit
             : RollState.Miss
 
-  const diceDefaultColor = (isGlitch && wasRolled) ? "error.main" : "secondary.main"
+  const diceDefaultColor = glitch ? "error.main" : "secondary.main"
 
   const handleRoll = () => diceTrayApi.rollStandard()
   const handleReset = () => diceTrayApi.reset()
@@ -188,7 +188,7 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
               <Button
                 color="warning"
                 onClick={handleEdge}
-                disabled={currentEdge <= 0 || edgeSpent || isRolling}
+                disabled={currentEdge <= 0 || edgeSpent || isRolling || wasRolled}
               >
                 Roll Edge
               </Button>

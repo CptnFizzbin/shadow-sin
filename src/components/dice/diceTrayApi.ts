@@ -130,22 +130,15 @@ export class DiceTrayApi {
   }
 
   /**
-   * Roll with Push the Limit (exploding 6s). If `edge` is provided and dice
-   * have already been rolled, appends edge dice to the existing results.
-   * Otherwise rolls the entire pool plus edge dice from scratch.
+   * Roll with Push the Limit (exploding 6s). Pre-roll only — adds `edge` dice
+   * to the pool and rolls everything from scratch with exploding 6s.
    */
   rollEdge(edge: number = 0): void {
-    const { edgeSpent, diceCount, results: existing } = this.store.state
+    const { edgeSpent, diceCount } = this.store.state
     if (edgeSpent) return
 
     this.store.setState((prev) => ({ ...prev, edgeSpent: true }))
-
-    if (existing !== null && edge > 0) {
-      const edgeDice = this.rollNDiceExploding(edge)
-      this.startAnimation([...existing, ...edgeDice])
-    } else {
-      this.startAnimation(this.rollNDiceExploding(diceCount + edge))
-    }
+    this.startAnimation(this.rollNDiceExploding(diceCount + edge))
   }
 
   /** Re-roll all misses (< 5) in the current results, preserving hits. */
@@ -153,7 +146,7 @@ export class DiceTrayApi {
     const { results } = this.store.state
     if (!results) return
     const newResults = results.map((v) => (v >= 5 ? v : this.rollD6()))
-    this.store.setState((prev) => ({ ...prev, results: newResults }))
+    this.store.setState((prev) => ({ ...prev, results: newResults, edgeSpent: true }))
   }
 
   /** Update the dice count and clear any existing results. */
