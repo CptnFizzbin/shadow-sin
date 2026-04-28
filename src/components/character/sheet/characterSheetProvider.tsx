@@ -44,6 +44,7 @@ export const useCharacterSheetContext = (): CharacterSheetStore => {
  */
 export function useCharacterSheet<TData>(
   selector: CharacterDataSelector<TData>,
+  compare?: (prev: TData, next: TData) => boolean,
 ) {
-  return useCharacterSheetSelector(selector)
+  return useCharacterSheetSelector(selector, compare)
 }
