@@ -16,7 +16,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
+import { useActiveSkillRating, useAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import {
   selectPhysicalCurrent,
@@ -46,6 +46,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, on
   const magicAttr = useAttr(AttributeKey.magic)
   const spellcastingRating = useActiveSkillRating(SkillKey.spellcasting)
   const woundMod = useWoundModifier()
+  const generalPenalty = useGeneralPenalty()
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
@@ -56,7 +57,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, on
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
 
-  const spellcastingPool = Math.max(0, magicAttr + spellcastingRating - woundMod)
+  const spellcastingPool = Math.max(0, magicAttr + spellcastingRating - woundMod + generalPenalty)
 
   const damageStore = useDamageStore()
   const physicalMax = useSelector(damageStore, selectPhysicalMax)
