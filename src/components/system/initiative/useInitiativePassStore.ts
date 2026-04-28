@@ -44,10 +44,10 @@ export const useInitiativePassesCompleted = (
 }
 
 export const useInitiativeRolledResults = (store: InitiativePassStore): number[] | undefined =>
-  useStore(store, (state) => state.rolledResults)
+  useSelector(store, (state) => state.rolledResults)
 
 export const useInitiativeGoingFirst = (store: InitiativePassStore): boolean =>
-  useStore(store, (state) => state.goingFirst === true)
+  useSelector(store, (state) => state.goingFirst === true)
 
 export const useInitiativeExtraPasses = (store: InitiativePassStore): number =>
-  useStore(store, (state) => state.extraPasses)
+  useSelector(store, (state) => state.extraPasses)
