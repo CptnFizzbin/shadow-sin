@@ -1,6 +1,7 @@
 import { useSelector } from "@tanstack/react-store"
 import { createSelector } from "reselect"
 
+// eslint-disable-next-line import-x/no-cycle -- Temprorary, as the character sheet context is used in the selector, and the selector is used in the character sheet context
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"

@@ -81,7 +81,6 @@ export interface PainToleranceEffect extends GameEffectData {
  * Mapped type for looking up concrete effect interfaces by their type enum.
  */
 export type EffectByType = {
-
   [GameEffectType.attrMod]: AttrModEffect
   [GameEffectType.skillMod]: SkillModEffect
   [GameEffectType.skillSpecializationMod]: SkillSpecializationModEffect
@@ -144,7 +143,6 @@ const PainToleranceSchema = z.object({
  * Discriminated union schema for all game effects.
  */
 export const GameEffectDataSchema = z.discriminatedUnion("type", [
-
   InitiativeBonusSchema,
   RecoilReductionSchema,
   DicePoolModSchema,
