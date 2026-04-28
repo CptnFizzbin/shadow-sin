@@ -71,7 +71,9 @@ export const InitiativeSection: FC = () => {
   }
 
   const handleCancelGoingFirst = () => {
-    edgeStore.setCurrent(edgeCurrent + 1)
+    if (passesCompleted.size === 0) {
+      edgeStore.setCurrent(edgeCurrent + 1)
+    }
     initiativePassStore.setGoingFirst(false)
   }
 

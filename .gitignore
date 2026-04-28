@@ -46,6 +46,9 @@ coverage
 Thumbs.db
 *.local
 
+# Claude Code
+.claude/settings.local.json
+
 # Agent Artifacts
 .plans/
 .code-reviews/
