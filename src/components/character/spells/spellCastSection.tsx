@@ -4,19 +4,17 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
 import FormControl from "@mui/material/FormControl"
 import Grid from "@mui/material/Grid"
-import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { alpha } from "@mui/material/styles"
-import { RiDiceLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useActiveSkillRating, useAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import {
   selectPhysicalCurrent,
@@ -25,12 +23,10 @@ import {
   selectStunMax,
 } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
-import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { DrainResistanceDicePool } from "./drainResistanceDicePool.tsx"
 import { computeDrainValue } from "./spellDrainFormula.ts"
@@ -44,9 +40,6 @@ interface SpellCastSectionProps {
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, onRoll }) => {
   const magicAttr = useAttr(AttributeKey.magic)
-  const spellcastingRating = useActiveSkillRating(SkillKey.spellcasting)
-  const woundMod = useWoundModifier()
-  const generalPenalty = useGeneralPenalty()
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
@@ -56,8 +49,6 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, on
   const isOvercasting = force > magicAttr
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
-
-  const spellcastingPool = Math.max(0, magicAttr + spellcastingRating - woundMod + generalPenalty)
 
   const damageStore = useDamageStore()
   const physicalMax = useSelector(damageStore, selectPhysicalMax)
@@ -92,17 +83,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, on
     >
       <Stack sx={{ gap: 1 }}>
         <Stack sx={{ gap: 0.5 }}>
-          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
-            <Label label="Cast" variant="text" />
-            <IconButton
-              size="small"
-              color="secondary"
-              aria-label={`Roll spellcasting pool (${spellcastingPool}d6)`}
-              onClick={() => onRoll(spellcastingPool)}
-            >
-              <RiDiceLine size={18} />
-            </IconButton>
-          </Stack>
+          <Label label="Cast" variant="text" />
           {isOvercasting && (
             <Typography color="error.main">
               Force exceeds Magic — drain is Physical
