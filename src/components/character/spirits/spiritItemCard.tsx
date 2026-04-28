@@ -7,12 +7,13 @@ import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AttributeValueRow } from "#/components/character/attributes/attributeValueRow.tsx"
-import { SpiritConditionMonitor } from "#/components/character/spirits/spiritConditionMonitor.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+
+import { SpiritConditionMonitor } from "./spiritConditionMonitor.tsx"
 
 const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
 

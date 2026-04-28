@@ -4,15 +4,16 @@ import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { SpiritFormDialog } from "#/components/character/spirits/dialogs/spiritFormDialog.tsx"
-import { SpiritItemCard } from "#/components/character/spirits/spiritItemCard.tsx"
-import { selectAllSpirits } from "#/components/character/spirits/spiritsSelectors.ts"
-import { TraditionDisplay } from "#/components/character/spirits/traditionDisplay.tsx"
-import { useSpiritsStore } from "#/components/character/spirits/useSpiritsStore.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { ItemList } from "#/components/items/card/itemList.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
+
+import { SpiritFormDialog } from "./dialogs/spiritFormDialog.tsx"
+import { SpiritItemCard } from "./spiritItemCard.tsx"
+import { selectAllSpirits } from "./spiritsSelectors.ts"
+import { TraditionDisplay } from "./traditionDisplay.tsx"
+import { useSpiritsStore } from "./useSpiritsStore.ts"
 
 export const SpiritList: FC = () => {
   const spiritsStore = useSpiritsStore()

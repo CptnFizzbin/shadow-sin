@@ -3,7 +3,8 @@ import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
-import { useFieldErrors } from "#/integrations/tanstackForm/fields/useFieldError.ts"
+
+import { useFieldErrors } from "./useFieldError.ts"
 
 interface TextFieldProps extends Omit<
   MuiTextFieldProps,

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260417_setDefaultEquippedWeapons.ts"
 import { WeaponType } from "#/system/gear/weaponData.ts"
+
+import migration from "./20260417_setDefaultEquippedWeapons.ts"
 
 describe("20260417_setDefaultEquippedWeapons", () => {
   it("returns the character unchanged when there is no gear", () => {

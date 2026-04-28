@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
+
+import { LocalStorageProvider } from "./localStorageProvider.ts"
 
 function makeProvider(prefix = "test"): { provider: LocalStorageProvider, storage: MemoryStorage } {
   const storage = new MemoryStorage()

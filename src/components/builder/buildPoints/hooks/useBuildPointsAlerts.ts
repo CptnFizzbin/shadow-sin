@@ -1,5 +1,6 @@
-import { useBuilderBuildPointsApi } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+
+import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
 
 export const useBuildPointsAlerts = (): AlertInfo[] => {
   const summary = useBuilderBuildPointsApi()

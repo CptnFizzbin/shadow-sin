@@ -6,11 +6,12 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import {
-  getComplexFormBp,
-} from "#/components/builder/sections/resources/technomancer/complexForms/complexFormsUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
+
+import {
+  getComplexFormBp,
+} from "./complexFormsUtils.ts"
 
 interface ComplexFormRowProps {
   form: ComplexFormData

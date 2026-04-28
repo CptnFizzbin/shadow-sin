@@ -3,10 +3,11 @@ import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { useAllAlerts } from "#/components/builder/alerts/hooks/useAllAlerts.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+
+import { useAllAlerts } from "./alerts/hooks/useAllAlerts.ts"
 
 export const SaveCharacterButton: FC = () => {
   const store = useCharacterSheetContext()

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+
 import {
   calculateSpiritAttributes,
   calculateSpiritConditionMonitor,
   calculateSpiritInitiative,
   SpiritType,
-} from "#/system/magic/spiritData.ts"
+} from "./spiritData.ts"
 
 // ─── calculateSpiritAttributes ───────────────────────────────────────────────
 

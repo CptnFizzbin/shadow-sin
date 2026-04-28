@@ -3,10 +3,11 @@ import Button from "@mui/material/Button"
 import type { ChangeEvent, FC } from "react"
 import { useRef } from "react"
 
-import { yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
-import { useImportConflictDialog } from "#/components/character/exportImport/importConflictDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import { yamlToCharacterSheet } from "./exportUtils.ts"
+import { useImportConflictDialog } from "./importConflictDialog.tsx"
 
 interface ImportCharacterButtonProps {
   onImported?: () => void | Promise<void>

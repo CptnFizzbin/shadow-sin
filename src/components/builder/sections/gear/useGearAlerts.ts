@@ -5,9 +5,10 @@ import {
   GearNuyenAllowance,
   useGearBuildPoints,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useGearAvailabilityIssues } from "#/components/builder/sections/gear/gearUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+
+import { useGearAvailabilityIssues } from "./gearUtils.ts"
 
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()

@@ -5,10 +5,11 @@ import {
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { ItemDialog } from "./itemDialog.tsx"
 
 interface ItemFormDialogProps {
   open: boolean

@@ -3,12 +3,13 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
+
+import { GearViewItem } from "./gearViewItem.tsx"
 
 interface LicensesSectionContentProps {
   sins: SinData[]

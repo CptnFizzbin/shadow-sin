@@ -1,8 +1,9 @@
 import type { AttributeKey } from "#/system/attributeKey.ts"
-import type { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
+
+import type { FirearmTypeKey } from "./weapons/firearms/firearmTypeKey.ts"
 
 export enum FirearmAttachmentPoint {
   Internal = "Internal",

@@ -1,3 +1,3 @@
-import type { ComplexFormsStoreState } from "#/components/character/technomancer/complexFormsStore.ts"
+import type { ComplexFormsStoreState } from "./complexFormsStore.ts"
 
 export const selectAllComplexForms = (state: ComplexFormsStoreState) => state

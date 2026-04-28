@@ -6,12 +6,13 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
-import { VehicleItemCard } from "#/components/items/types/vehicles/vehicleItemCard.tsx"
 import { useGearFilter, useGearStore } from "#/components/items/useGearStore.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
+import { VehicleItemCard } from "./vehicleItemCard.tsx"
 
 interface VehiclesListProps {
   vehicleCategory: VehicleCategory

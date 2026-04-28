@@ -11,8 +11,8 @@ import { RiCloseLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
-import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
+import { useCurrentCharacterSection } from "./useCharacterNav.ts"
+import { useCharacterSheetTabs } from "./useCharacterSheetTabs.ts"
 
 interface NavMenuDrawerProps {
   open: boolean

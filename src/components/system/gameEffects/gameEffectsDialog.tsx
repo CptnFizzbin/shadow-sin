@@ -12,11 +12,12 @@ import { Fragment, useState } from "react"
 
 import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { GameEffectRow } from "#/components/system/gameEffects/gameEffectRow.tsx"
-import { getDefaultTarget } from "#/components/system/gameEffects/gameEffectUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+
+import { GameEffectRow } from "./gameEffectRow.tsx"
+import { getDefaultTarget } from "./gameEffectUtils.ts"
 
 export type GameEffectsDialogProps = DialogApiDialogProps<GameEffectData[]> & {
   initialEffects: GameEffectData[]

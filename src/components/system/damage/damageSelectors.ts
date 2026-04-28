@@ -1,6 +1,6 @@
 import { createSelector } from "reselect"
 
-import type { DamageStoreState } from "#/components/system/damage/damageStore.ts"
+import type { DamageStoreState } from "./damageStore.ts"
 
 export const selectPhysicalTrack = (state: DamageStoreState) => state.physical
 export const selectStunTrack = (state: DamageStoreState) => state.stun

@@ -1,18 +1,19 @@
 import { describe, expect, it } from "vitest"
 
 import { Artemis } from "#/character/fixtures/artemis.ts"
-import type { GearTreeNode } from "#/components/character/exportImport/exportUtils.ts"
-import {
-  characterSheetToYaml,
-  gearFromTree,
-  gearToTree,
-  yamlToCharacterSheet,
-} from "#/components/character/exportImport/exportUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import type { GearTreeNode } from "./exportUtils.ts"
+import {
+  characterSheetToYaml,
+  gearFromTree,
+  gearToTree,
+  yamlToCharacterSheet,
+} from "./exportUtils.ts"
 
 describe("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {

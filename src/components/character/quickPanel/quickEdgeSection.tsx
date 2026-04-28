@@ -5,10 +5,11 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
-import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+
+import { selectEdgeCurrent, selectEdgeMax } from "./edgeSelectors.ts"
+import { useEdgeStore } from "./useEdgeStore.ts"
 
 export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog()

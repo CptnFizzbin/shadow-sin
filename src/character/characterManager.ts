@@ -1,10 +1,11 @@
 import { AsyncDebouncer } from "@tanstack/pacer"
 
-import { applyMigrations } from "#/character/applyMigrations.ts"
-import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import type { StorageManager } from "#/lib/storage/storageManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CharacterMetaSchema } from "#/system/characterSheet.ts"
+
+import { applyMigrations } from "./applyMigrations.ts"
+import type { CharacterLoadError } from "./characterLoadError.ts"
 
 interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>

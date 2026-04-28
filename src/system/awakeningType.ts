@@ -1,6 +1,6 @@
-import type { AttributeInfo } from "#/system/attributeInfo.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
-import type { QualityData } from "#/system/qualityData.ts"
+import type { AttributeInfo } from "./attributeInfo.ts"
+import type { AttributeKey } from "./attributeKey.ts"
+import type { QualityData } from "./qualityData.ts"
 
 export enum AwakeningType {
   Mundane = "Mundane",

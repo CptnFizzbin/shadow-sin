@@ -1,3 +1,3 @@
-import type { TraditionStoreState } from "#/components/builder/sections/resources/magician/traditionStore.ts"
+import type { TraditionStoreState } from "./traditionStore.ts"
 
 export const selectTradition = (state: TraditionStoreState) => state

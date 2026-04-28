@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { mergeArrays, mergeObjects } from "#/lib/mergeUtils.ts"
+import { mergeArrays, mergeObjects } from "./mergeUtils.ts"
 
 describe("mergeArrays", () => {
   it("deduplicates primitive values and preserves order", () => {

@@ -1,4 +1,4 @@
-import type { SkillKey } from "#/system/skills/skillKey"
+import type { SkillKey } from "./skillKey"
 
 export interface ActiveSkillData {
   name: SkillKey
