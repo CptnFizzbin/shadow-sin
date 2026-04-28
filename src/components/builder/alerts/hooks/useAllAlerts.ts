@@ -1,5 +1,3 @@
-import { useAttributeAlerts } from "#/components/builder/alerts/hooks/useAttributeAlerts.ts"
-import { useContactsAlerts } from "#/components/builder/alerts/hooks/useContactsAlerts.ts"
 import { useBuildPointsAlerts } from "#/components/builder/buildPoints/hooks/useBuildPointsAlerts.ts"
 import { useBiologyAlerts } from "#/components/builder/sections/biology/useBiologyAlerts.ts"
 import { useGearAlerts } from "#/components/builder/sections/gear/useGearAlerts.ts"
@@ -16,6 +14,9 @@ import {
 import { useSkillsAlerts } from "#/components/builder/sections/skills/hooks/useSkillsAlerts.ts"
 import { useSkillsSummaryAlerts } from "#/components/builder/sections/skills/hooks/useSkillsSummaryAlerts.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+
+import { useAttributeAlerts } from "./useAttributeAlerts.ts"
+import { useContactsAlerts } from "./useContactsAlerts.ts"
 
 /**
  * Aggregates alert information from every character-builder section in a fixed order.

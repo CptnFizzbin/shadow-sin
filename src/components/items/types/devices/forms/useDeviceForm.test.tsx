@@ -1,8 +1,9 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useDeviceForm } from "#/components/items/types/devices/forms/useDeviceForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
+
+import { useDeviceForm } from "./useDeviceForm.tsx"
 
 describe("useDeviceForm", () => {
   it("always defaults to ItemType.device", () => {

@@ -3,8 +3,9 @@ import { useCallback } from "react"
 
 import type { CharacterSection } from "#/components/character/characterSections.ts"
 import { characterSections } from "#/components/character/characterSections.ts"
-import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
+
+import { useCharacterSheetTabs } from "./useCharacterSheetTabs.ts"
 
 export const useCurrentCharacterSection = (): CharacterSection => {
   const matches = useMatches()

@@ -1,10 +1,11 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { ProgramFormDialog } from "./programFormDialog.tsx"
 
 describe("ProgramFormDialog", () => {
   it("submits an item with ItemType.program", async () => {

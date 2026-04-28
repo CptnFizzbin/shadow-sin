@@ -1,9 +1,10 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import { createItem } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { itemDefaults, useItemForm } from "./useItemForm.tsx"
 
 describe("useItemForm", () => {
   it("defaults to ItemType.other when no itemType is provided", () => {

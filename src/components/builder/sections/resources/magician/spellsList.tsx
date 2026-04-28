@@ -6,14 +6,15 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
-import { SpellListItem } from "#/components/builder/sections/resources/magician/spellListItem.tsx"
-import { TraditionCard } from "#/components/builder/sections/resources/magician/traditionCard.tsx"
 import { useSpellFormDialog } from "#/components/character/spells/dialogs/spellFormDialog.tsx"
 import { selectAllSpells } from "#/components/character/spells/spellsSelectors.ts"
 import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { SpellListItem } from "./spellListItem.tsx"
+import { TraditionCard } from "./traditionCard.tsx"
 
 export const SpellsList: FC = () => {
   const spellsStore = useSpellsStore()

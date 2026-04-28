@@ -8,12 +8,13 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { CyberwareSectionHeader } from "#/components/character/gearPage/cyberwareSectionHeader.tsx"
-import { GearSection, sectionGearTypes } from "#/components/character/gearPage/gearSectionTypes.ts"
-import { GearViewSectionContent } from "#/components/character/gearPage/gearViewSectionContent.tsx"
 import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemType } from "#/system/itemType.ts"
+
+import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
+import { GearSection, sectionGearTypes } from "./gearSectionTypes.ts"
+import { GearViewSectionContent } from "./gearViewSectionContent.tsx"
 
 interface GearViewSectionProps {
   section: GearSection

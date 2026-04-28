@@ -1,4 +1,3 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
@@ -12,6 +11,8 @@ import { ItemType } from "#/system/itemType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import { useCharacterSheet } from "./sheet/characterSheetProvider.tsx"
 
 /**
  * Hook to retrieve all attribute information for the current metatype and awakening.

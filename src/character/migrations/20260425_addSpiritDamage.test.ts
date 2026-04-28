@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260425_addSpiritDamage.ts"
+import migration from "./20260425_addSpiritDamage.ts"
 
 describe("20260425_addSpiritDamage", () => {
   it("does nothing when spirits array is absent", () => {

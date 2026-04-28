@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { useSpellCastDialog } from "#/components/character/spells/spellCastDialog.tsx"
-import { SpellViewerListItem } from "#/components/character/spells/spellViewerListItem.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { useSpellCastDialog } from "./spellCastDialog.tsx"
+import { SpellViewerListItem } from "./spellViewerListItem.tsx"
 
 export const SpellsViewerSection: FC = () => {
   const spells = useCharacterSheet((sheet) => sheet.spells)

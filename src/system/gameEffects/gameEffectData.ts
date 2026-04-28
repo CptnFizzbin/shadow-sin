@@ -2,8 +2,9 @@ import { z } from "zod"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { GameEffectType } from "./gameEffectType.ts"
 
 /**
  * Base interface for all game effects.

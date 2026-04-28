@@ -1,8 +1,8 @@
-import { DialogActions } from "#/components/ui/dialog/dialogActions.tsx"
-import { DialogContent } from "#/components/ui/dialog/dialogContent.tsx"
-import type { DialogRootProps } from "#/components/ui/dialog/dialogRoot.tsx"
-import { DialogRoot } from "#/components/ui/dialog/dialogRoot.tsx"
-import { DialogTitle } from "#/components/ui/dialog/dialogTitle.tsx"
+import { DialogActions } from "./dialogActions.tsx"
+import { DialogContent } from "./dialogContent.tsx"
+import type { DialogRootProps } from "./dialogRoot.tsx"
+import { DialogRoot } from "./dialogRoot.tsx"
+import { DialogTitle } from "./dialogTitle.tsx"
 
 interface DialogComponent {
   <TReturn = void>(props: DialogRootProps<TReturn>): ReturnType<typeof DialogRoot<TReturn>>

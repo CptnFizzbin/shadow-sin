@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography"
 import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectTradition } from "#/components/builder/sections/resources/magician/traditionSelectors.ts"
-import { useTraditionStore } from "#/components/builder/sections/resources/magician/useTraditionStore.ts"
 import { useTraditionFormDialog } from "#/components/character/spells/dialogs/traditionFormDialog.tsx"
 import { AttributeLabels } from "#/system/attributeKey.ts"
+
+import { selectTradition } from "./traditionSelectors.ts"
+import { useTraditionStore } from "./useTraditionStore.ts"
 
 export const TraditionCard: FC = () => {
   const traditionStore = useTraditionStore()

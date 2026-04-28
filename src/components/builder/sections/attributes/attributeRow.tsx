@@ -3,11 +3,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { AttrDecrementButton } from "#/components/builder/sections/attributes/attrDecrementButton.tsx"
-import { AttrIncrementButton } from "#/components/builder/sections/attributes/attrIncrementButton.tsx"
 import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
+
+import { AttrDecrementButton } from "./attrDecrementButton.tsx"
+import { AttrIncrementButton } from "./attrIncrementButton.tsx"
 
 interface AttributeRowProps {
   attr: AttributeKey

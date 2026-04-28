@@ -84,12 +84,7 @@ export default defineConfig([
       },
 
       ...{ // import-alias rules
-        "@dword-design/import-alias/prefer-alias": [
-          "error", {
-            shouldReadTsConfig: true,
-            aliasForSubpaths: true,
-          },
-        ],
+        "@dword-design/import-alias/prefer-alias": "error",
       },
 
       ...{ // eslint-plugin-import-x rules
@@ -106,14 +101,15 @@ export default defineConfig([
           {
             "pathGroups": [
               {
-                pattern: "#/**",
+                pattern: "(#/**|#*/**)",
                 group: "internal",
               },
             ],
             "groups": [
               "builtin",
               "external",
-              ["internal", "parent", "sibling"],
+              "internal",
+              ["parent", "sibling"],
               "index",
             ],
             "newlines-between": "always",

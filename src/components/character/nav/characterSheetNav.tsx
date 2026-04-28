@@ -8,9 +8,10 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { characterSections } from "#/components/character/characterSections.ts"
-import { NavMenuDrawer } from "#/components/character/nav/navMenuDrawer.tsx"
-import { useCurrentCharacterSection } from "#/components/character/nav/useCharacterNav.ts"
-import { useCharacterSheetTabs } from "#/components/character/nav/useCharacterSheetTabs.ts"
+
+import { NavMenuDrawer } from "./navMenuDrawer.tsx"
+import { useCurrentCharacterSection } from "./useCharacterNav.ts"
+import { useCharacterSheetTabs } from "./useCharacterSheetTabs.ts"
 
 export const CharacterSheetNav: FC = () => {
   const navigate = useNavigate({ from: "/$characterId" })

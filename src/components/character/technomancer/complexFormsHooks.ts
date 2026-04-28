@@ -2,10 +2,11 @@ import { useStore } from "@tanstack/react-store"
 
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectAllComplexForms } from "#/components/character/technomancer/complexFormsSelectors.ts"
-import { useComplexFormsStore } from "#/components/character/technomancer/useComplexFormsStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+
+import { selectAllComplexForms } from "./complexFormsSelectors.ts"
+import { useComplexFormsStore } from "./useComplexFormsStore.ts"
 
 export const useComplexForms = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

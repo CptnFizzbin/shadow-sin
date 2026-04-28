@@ -2,8 +2,9 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { GearSection } from "#/components/builder/sections/gear/gearSection.tsx"
-import { useGearAlerts } from "#/components/builder/sections/gear/useGearAlerts.ts"
+
+import { GearSection } from "./gearSection.tsx"
+import { useGearAlerts } from "./useGearAlerts.ts"
 
 export const GearBuilderSection: FC = () => {
   return (

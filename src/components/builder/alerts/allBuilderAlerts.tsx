@@ -1,7 +1,8 @@
 import type { FC } from "react"
 
-import { useAllAlerts } from "#/components/builder/alerts/hooks/useAllAlerts.ts"
 import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
+
+import { useAllAlerts } from "./hooks/useAllAlerts.ts"
 
 export const AllBuilderAlerts: FC = () => {
   const statuses = useAllAlerts()

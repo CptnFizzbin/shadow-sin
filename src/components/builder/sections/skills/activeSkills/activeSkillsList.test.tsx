@@ -1,9 +1,10 @@
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { ActiveSkillsList } from "#/components/builder/sections/skills/activeSkills/activeSkillsList.tsx"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { ActiveSkillsList } from "./activeSkillsList.tsx"
 
 describe("ActiveSkillsList", () => {
   it("opening a second skill to edit after saving the first shows the second skill's data, not the first skill's", async () => {

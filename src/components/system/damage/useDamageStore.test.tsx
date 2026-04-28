@@ -6,12 +6,13 @@ import { describe, expect, it } from "vitest"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+
+import { useDamageStore } from "./useDamageStore.ts"
 
 function makeWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
   const store = new CharacterSheetStore(characterSheet)

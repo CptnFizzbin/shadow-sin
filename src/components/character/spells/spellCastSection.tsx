@@ -16,9 +16,6 @@ import { useState } from "react"
 
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
-import { computeDrainValue } from "#/components/character/spells/spellDrainFormula.ts"
-import { SpellcastingDicePool } from "#/components/character/spells/spellcastingDicePool.tsx"
 import {
   selectPhysicalCurrent,
   selectPhysicalMax,
@@ -30,6 +27,10 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { DrainResistanceDicePool } from "./drainResistanceDicePool.tsx"
+import { computeDrainValue } from "./spellDrainFormula.ts"
+import { SpellcastingDicePool } from "./spellcastingDicePool.tsx"
 
 interface SpellCastSectionProps {
   spell: SpellData

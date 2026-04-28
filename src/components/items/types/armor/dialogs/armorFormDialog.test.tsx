@@ -1,10 +1,11 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { ArmorFormDialog } from "./armorFormDialog.tsx"
 
 describe("ArmorFormDialog", () => {
   it("submits an item with ItemType.armor and default ballistic/impact of 0", async () => {

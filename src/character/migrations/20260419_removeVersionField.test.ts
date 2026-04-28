@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260419_removeVersionField.ts"
+import migration from "./20260419_removeVersionField.ts"
 
 describe("20260419_removeVersionField", () => {
   it("removes the top-level version field when present", () => {

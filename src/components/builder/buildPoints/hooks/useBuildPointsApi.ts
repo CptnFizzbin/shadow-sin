@@ -1,14 +1,4 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { useAdeptPowersBuildPoints } from "#/components/builder/buildPoints/hooks/useAdeptPowersBuildPoints.ts"
-import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
-import {
-  useComplexFormsBuildPoints,
-} from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
-import { useContactsBuildPoints } from "#/components/builder/buildPoints/hooks/useContactsBuildPoints.ts"
-import { useGearBuildPoints } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/useQualitiesBuildPoints.ts"
-import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
-import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
 import { CharacterBuilderMaxBp } from "#/components/builder/characterBuilderUtils.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import {
@@ -22,6 +12,17 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
+
+import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
+import { useAttributesBuildPoints } from "./useAttributesBuildPoints.ts"
+import {
+  useComplexFormsBuildPoints,
+} from "./useComplexFormsBuildPoints.ts"
+import { useContactsBuildPoints } from "./useContactsBuildPoints.ts"
+import { useGearBuildPoints } from "./useGearBuildPoints.ts"
+import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
+import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
+import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [

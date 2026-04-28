@@ -2,11 +2,12 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { DamageStore } from "#/components/system/damage/damageStore.ts"
-import { selectWoundInterval } from "#/components/system/damage/damageUtils.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+
+import { DamageStore } from "./damageStore.ts"
+import { selectWoundInterval } from "./damageUtils.ts"
 
 export const useDamageStore = (): DamageStore => {
   const sheetStore = useCharacterSheetContext()

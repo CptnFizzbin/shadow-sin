@@ -6,14 +6,6 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
-import {
-  ActiveSkillGroupsListItem,
-} from "#/components/builder/sections/skills/activeSkills/activeSkillGroupsListItem.tsx"
-import { ActiveSkillsListItem } from "#/components/builder/sections/skills/activeSkills/activeSkillsListItem.tsx"
-import {
-  getDisabledGroups,
-  getDisabledSkills,
-} from "#/components/builder/sections/skills/activeSkills/activeSkillsUtils.ts"
 import { useActiveSkillDialog } from "#/components/character/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
 import {
   useActiveSkillGroupDialog,
@@ -22,6 +14,15 @@ import { selectActiveSkills, selectSkillGroups } from "#/components/character/sk
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
+
+import {
+  ActiveSkillGroupsListItem,
+} from "./activeSkillGroupsListItem.tsx"
+import { ActiveSkillsListItem } from "./activeSkillsListItem.tsx"
+import {
+  getDisabledGroups,
+  getDisabledSkills,
+} from "./activeSkillsUtils.ts"
 
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()

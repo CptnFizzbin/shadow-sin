@@ -2,10 +2,10 @@ import type { UUID } from "node:crypto"
 
 import { z } from "zod"
 
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
-import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/system/sourceData.ts"
-import { SourceDataSchema } from "#/system/sourceData.ts"
+import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "./gameEffects/gameEffectData.ts"
+import type { SourceData } from "./sourceData.ts"
+import { SourceDataSchema } from "./sourceData.ts"
 
 /**
  * Represents a quality (positive or negative) that a character can possess.

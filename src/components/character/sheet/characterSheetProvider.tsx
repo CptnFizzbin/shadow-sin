@@ -2,8 +2,9 @@ import { useStore } from "@tanstack/react-store"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import type { CharacterSheetStore } from "./characterSheetStore.ts"
 
 const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 

@@ -3,10 +3,10 @@ import type { FC } from "react"
 import { useEffect } from "react"
 import { afterEach, describe, expect, it } from "vitest"
 
-import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
-import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
+import { DialogApi } from "./dialogApi.ts"
+import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
+import { DialogApiProvider } from "./dialogApiProvider.tsx"
+import { DialogCtrl } from "./dialogCtrl.ts"
 
 afterEach(() => {
   cleanup()

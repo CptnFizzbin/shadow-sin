@@ -6,9 +6,10 @@ import Typography from "@mui/material/Typography"
 import { RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useGameEffectsDialog } from "#/components/system/gameEffects/gameEffectsDialog.tsx"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
+
+import { useGameEffectsDialog } from "./gameEffectsDialog.tsx"
 
 function getEffectLabel(effect: GameEffectData): string {
   const typeOption = GameEffectTypeOptions.find((o) => o.value === effect.type)

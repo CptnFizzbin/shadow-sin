@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260416_addVehicleCategory.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
+
+import migration from "./20260416_addVehicleCategory.ts"
 
 describe("20260416_addVehicleCategory", () => {
   it("returns the character unchanged when there is no gear", () => {
