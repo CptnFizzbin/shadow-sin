@@ -7,9 +7,10 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { selectAllGear } from "./gearSelectors.ts"
 
 interface RemoveItemOptions {
   removeChildren?: boolean

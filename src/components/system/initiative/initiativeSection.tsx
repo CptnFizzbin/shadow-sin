@@ -2,10 +2,10 @@ import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
 
-import { InitiativePassTracker } from "#/components/system/initiative/initiativePassTracker.tsx"
-import { InitiativeScoreDisplay } from "#/components/system/initiative/initiativeScoreDisplay.tsx"
-import { useInitiative } from "#/components/system/initiative/useInitiative.ts"
-import { useInitiativePassStore } from "#/components/system/initiative/useInitiativePassStore.ts"
+import { InitiativePassTracker } from "./initiativePassTracker.tsx"
+import { InitiativeScoreDisplay } from "./initiativeScoreDisplay.tsx"
+import { useInitiative } from "./useInitiative.ts"
+import { useInitiativePassStore } from "./useInitiativePassStore.ts"
 
 export const InitiativeSection: FC = () => {
   const initiative = useInitiative()

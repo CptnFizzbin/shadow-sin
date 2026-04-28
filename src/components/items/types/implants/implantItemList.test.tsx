@@ -14,6 +14,7 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { theme } from "#/theme.ts"
+
 import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {

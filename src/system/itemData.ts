@@ -1,9 +1,9 @@
 import type { UUID } from "node:crypto"
 
-import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
-import type { ItemType } from "#/system/itemType.ts"
-import type { SourceData } from "#/system/sourceData.ts"
+import type { AvailabilityInfo } from "./availabilityInfo.ts"
+import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
+import type { ItemType } from "./itemType.ts"
+import type { SourceData } from "./sourceData.ts"
 
 /**
  * Base interface for all gear items, weapons, armor, etc.

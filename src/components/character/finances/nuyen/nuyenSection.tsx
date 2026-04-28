@@ -7,10 +7,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+
+import { useNuyenStore } from "./useNuyenStore.ts"
 
 export const NuyenSection: FC = () => {
   const currentNuyen = useCharacterSheet((s) => s.nuyen.current)

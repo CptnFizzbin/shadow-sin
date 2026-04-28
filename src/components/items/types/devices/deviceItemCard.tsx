@@ -6,10 +6,11 @@ import { AvailabilityChip } from "#/components/items/availability/availabilityCh
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
-import { ProgramItemCard } from "#/components/items/types/devices/programItemCard.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
+
+import { ProgramItemCard } from "./programItemCard.tsx"
 
 interface DeviceItemCardProps {
   device: DeviceData

@@ -13,10 +13,11 @@ import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import type { CharacterLoadError } from "#/character/characterLoadError.ts"
-import { downloadTextFile } from "#/components/character/exportImport/exportUtils.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+import { downloadTextFile } from "./exportImport/exportUtils.ts"
 
 interface CharacterRosterListProps {
   characters: Record<string, CharacterSheet>

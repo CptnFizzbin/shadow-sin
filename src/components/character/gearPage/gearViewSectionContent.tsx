@@ -1,15 +1,16 @@
 import type { FC } from "react"
 
-import { ArmorSectionContent } from "#/components/character/gearPage/armorSectionContent.tsx"
-import { GearSection } from "#/components/character/gearPage/gearSectionTypes.ts"
-import { GenericSectionContent } from "#/components/character/gearPage/genericSectionContent.tsx"
-import { LicensesSectionContent } from "#/components/character/gearPage/licensesSectionContent.tsx"
-import { WeaponsSectionContent } from "#/components/character/gearPage/weaponsSectionContent.tsx"
 import { ImplantItemList } from "#/components/items/types/implants/implantItemList.tsx"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { ArmorSectionContent } from "./armorSectionContent.tsx"
+import { GearSection } from "./gearSectionTypes.ts"
+import { GenericSectionContent } from "./genericSectionContent.tsx"
+import { LicensesSectionContent } from "./licensesSectionContent.tsx"
+import { WeaponsSectionContent } from "./weaponsSectionContent.tsx"
 
 interface GearViewSectionContentProps {
   section: GearSection

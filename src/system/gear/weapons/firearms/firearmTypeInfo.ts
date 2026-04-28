@@ -1,6 +1,7 @@
-import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 import type { WeaponRangeInfo } from "#/system/gear/weapons/weaponRangeInfo.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { FirearmTypeKey } from "./firearmTypeKey.ts"
 
 interface FirearmTypeInfo {
   weaponGroup: string

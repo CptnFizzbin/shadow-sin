@@ -1,6 +1,7 @@
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectWoundInterval } from "#/components/system/damage/damageUtils.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+
+import { selectWoundInterval } from "./damageUtils.ts"
 
 export function useWoundModifier() {
   return useCharacterSheet((sheet) => {

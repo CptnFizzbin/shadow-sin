@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 
-import { BiologyStore } from "#/components/character/biology/biologyStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { BiologyStore } from "./biologyStore.ts"
 
 export const useBiologyStore = (): BiologyStore => {
   const sheetStore = useCharacterSheetContext()

@@ -1,8 +1,9 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
+
+import { useImplantForm } from "./useImplantForm.tsx"
 
 describe("useImplantForm", () => {
   it("always defaults to ItemType.implant", () => {

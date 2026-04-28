@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { computeDrainValue, formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
+
+import { computeDrainValue, formatDrainFormula } from "./spellDrainFormula.ts"
 
 function makeSpellWithDrainMod(drainValueMod: number): SpellData {
   return {

@@ -5,11 +5,12 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { SpiritForm } from "#/components/character/spirits/form/useSpiritForm.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
+
+import type { SpiritForm } from "./useSpiritForm.ts"
 
 interface SpiritFormFieldsProps {
   form: SpiritForm

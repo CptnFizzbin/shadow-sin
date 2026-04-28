@@ -5,13 +5,14 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { GearViewItem } from "./gearViewItem.tsx"
 
 interface WeaponsSectionContentProps {
   items: ItemData[]

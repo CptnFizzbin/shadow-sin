@@ -1,4 +1,4 @@
-import { SpiritType } from "#/system/magic/spiritData.ts"
+import { SpiritType } from "./spiritData.ts"
 
 export interface SpiritTypeInfo {
   type: SpiritType

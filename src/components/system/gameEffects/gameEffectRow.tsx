@@ -9,12 +9,13 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 import * as React from "react"
 
-import { getDefaultTarget, getTargetOptions } from "#/components/system/gameEffects/gameEffectUtils.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import { getDefaultTarget, getTargetOptions } from "./gameEffectUtils.ts"
 
 const CUSTOM_SENTINEL = "__custom__"
 

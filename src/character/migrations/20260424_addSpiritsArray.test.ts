@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260424_addSpiritsArray.ts"
+import migration from "./20260424_addSpiritsArray.ts"
 
 describe("20260424_addSpiritsArray", () => {
   it("initialises spirits to an empty array when missing", () => {

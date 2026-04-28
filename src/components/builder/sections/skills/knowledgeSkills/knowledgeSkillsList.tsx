@@ -7,15 +7,6 @@ import type { FC } from "react"
 
 import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
-  useKnowledgeSkillPoints,
-} from "#/components/builder/sections/skills/knowledgeSkills/hooks/useKnowledgeSkillPoints.ts"
-import {
-  KnowledgeSkillsListItem,
-} from "#/components/builder/sections/skills/knowledgeSkills/knowledgeSkillsListItem.tsx"
-import {
-  LanguageSkillsListItem,
-} from "#/components/builder/sections/skills/knowledgeSkills/languageSkillsListItem.tsx"
-import {
   useKnowledgeSkillDialog,
 } from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import { useLanguageSkillDialog } from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
@@ -25,6 +16,16 @@ import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
+
+import {
+  useKnowledgeSkillPoints,
+} from "./hooks/useKnowledgeSkillPoints.ts"
+import {
+  KnowledgeSkillsListItem,
+} from "./knowledgeSkillsListItem.tsx"
+import {
+  LanguageSkillsListItem,
+} from "./languageSkillsListItem.tsx"
 
 export const KnowledgeSkillsList: FC = () => {
   const skillsStore = useSkillsStore()

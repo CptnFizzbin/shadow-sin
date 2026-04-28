@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { filterBySearch } from "#/components/ui/search/searchField.tsx"
+import { filterBySearch } from "./searchField.tsx"
 
 describe("filterBySearch", () => {
   type Item = { name: string, tags: string[] }

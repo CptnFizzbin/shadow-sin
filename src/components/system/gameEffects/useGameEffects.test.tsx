@@ -1,11 +1,6 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import {
-  selectAllGameEffects,
-  selectGameEffectsByType,
-  useGameEffects,
-} from "#/components/system/gameEffects/useGameEffects.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -19,6 +14,12 @@ import {
   SpellType,
 } from "#/system/magic/spellData.ts"
 import { makeCharacterSheet, makeCharacterSheetWrapper } from "#testUtils/renderUtils.tsx"
+
+import {
+  selectAllGameEffects,
+  selectGameEffectsByType,
+  useGameEffects,
+} from "./useGameEffects.ts"
 
 // ---------------------------------------------------------------------------
 // selectAllGameEffects

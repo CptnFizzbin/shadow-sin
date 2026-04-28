@@ -8,7 +8,6 @@ import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import { BiologyAttributes } from "#/components/builder/sections/biology/biologyAttributes.tsx"
 import { getAttributesValues } from "#/components/character/attributes/getAttributesValues.ts"
 import { selectAwakening, selectMetatype } from "#/components/character/biology/biologySelectors.ts"
 import { useBiologyStore } from "#/components/character/biology/useBiologyStore.ts"
@@ -16,6 +15,8 @@ import { useCharacterSheetContext } from "#/components/character/sheet/character
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
+
+import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
   const sheet = useCharacterSheetContext()

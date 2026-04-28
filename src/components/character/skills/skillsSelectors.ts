@@ -1,4 +1,4 @@
-import type { SkillsStoreState } from "#/components/character/skills/skillsStore.ts"
+import type { SkillsStoreState } from "./skillsStore.ts"
 
 export const selectActiveSkills = (state: SkillsStoreState) => state.activeSkills
 export const selectSkillGroups = (state: SkillsStoreState) => state.skillGroups

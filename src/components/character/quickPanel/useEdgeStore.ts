@@ -1,10 +1,11 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { EdgeStore } from "#/components/character/quickPanel/edgeStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+
+import { EdgeStore } from "./edgeStore.ts"
 
 export const useEdgeStore = () => {
   const sheetStore = useCharacterSheetContext()

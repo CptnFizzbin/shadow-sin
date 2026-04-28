@@ -13,7 +13,8 @@ import { sort } from "fast-sort"
 import type { FC, ReactNode } from "react"
 
 import { useFieldContext } from "#/integrations/tanstackForm/fieldContext.ts"
-import { useFieldErrors } from "#/integrations/tanstackForm/fields/useFieldError.ts"
+
+import { useFieldErrors } from "./useFieldError.ts"
 
 export interface SelectOption {
   group?: string

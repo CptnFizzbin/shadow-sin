@@ -3,11 +3,12 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { UseImplantFormProps } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
-import { useImplantFormDialog } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
 import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import type { UseImplantFormProps } from "./dialogs/implantFormDialog.tsx"
+import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
 import { ImplantItemCard } from "./implantItemCard.tsx"
 
 export const ImplantItemList: FC = () => {

@@ -3,12 +3,13 @@ import type { FC } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { NuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
-import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
-import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import type { ItemDialogProps } from "./itemDialog.tsx"
+import { ItemDialog } from "./itemDialog.tsx"
 
 /**
  * Test wrapper that creates an ItemForm from the given item/itemType/onSave and

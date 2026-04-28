@@ -1,10 +1,11 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { DeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { DeviceFormDialog } from "./deviceFormDialog.tsx"
 
 describe("DeviceFormDialog", () => {
   it("submits an item with ItemType.device", async () => {

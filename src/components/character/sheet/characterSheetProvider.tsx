@@ -1,10 +1,11 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-// eslint-disable-next-line import-x/no-cycle -- Temprorary, as the character sheet context is used in the selector, and the selector is used in the character sheet context
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+// eslint-disable-next-line import-x/no-cycle
+import { useCharacterSheetSelector } from "./characterSheet.selectors.ts"
+import type { CharacterSheetStore } from "./characterSheetStore.ts"
 
 const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 

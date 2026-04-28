@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260423_addKarma.ts"
+import migration from "./20260423_addKarma.ts"
 
 describe("20260423_addKarma", () => {
   it("sets karma to { current: 0, total: 0 } when the field is missing", () => {

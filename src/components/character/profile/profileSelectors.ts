@@ -1,4 +1,4 @@
-import type { ProfileStoreState } from "#/components/character/profile/profileStore.ts"
+import type { ProfileStoreState } from "./profileStore.ts"
 
 export const selectProfile = (state: ProfileStoreState) => state
 export const selectProfileName = (state: ProfileStoreState) => state.name

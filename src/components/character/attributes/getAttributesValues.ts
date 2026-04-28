@@ -1,8 +1,9 @@
-import { createAttrInfo } from "#/components/character/attributes/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { AwakeningData } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
+
+import { createAttrInfo } from "./attributeInfo.ts"
 
 export const getAttributesValues = (
   metatype: MetatypeData,
