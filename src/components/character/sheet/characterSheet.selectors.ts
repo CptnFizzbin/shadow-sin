@@ -1,7 +1,7 @@
 import { useSelector } from "@tanstack/react-store"
 import { createSelector } from "reselect"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetContext.ts"
 import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -14,9 +14,12 @@ import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
 
 export type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
-export function useCharacterSheetSelector<T>(selector: CharacterDataSelector<T>) {
+export function useCharacterSheetSelector<T>(
+  selector: CharacterDataSelector<T>,
+  shouldUpdate?: (prev: T, next: T) => boolean,
+) {
   const store = useCharacterSheetContext()
-  return useSelector(store, selector)
+  return useSelector(store, selector, { compare: shouldUpdate })
 }
 
 export const selectAwakeningType: CharacterDataSelector<AwakeningType> = (state) => {

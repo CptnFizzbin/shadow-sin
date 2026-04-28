@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { MiniDamageTrack } from "#/components/character/combat/miniDamageTrack.tsx"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import { selectPhysicalCurrent, selectPhysicalMax, selectStunCurrent, selectStunMax } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
@@ -30,7 +30,7 @@ export const CombatHud: FC = () => {
   const totalExtraPasses = extraPassEffects.reduce((sum, e) => sum + e.value, 0)
   const totalExtraDice = extraDiceEffects.reduce((sum, e) => sum + e.value, 0)
 
-  const activeSources = useCharacterSheet(
+  const activeSources = useCharacterSheetSelector(
     (sheet) => {
       const sources: string[] = []
       for (const spell of sheet.spells) {
@@ -41,7 +41,7 @@ export const CombatHud: FC = () => {
       }
       return sources
     },
-    (a, b) => a.length === b.length && a.every((v, i) => v === b[i]),
+    (a: string[], b: string[]) => a.length === b.length && a.every((v, i) => v === b[i]),
   )
 
   const hasStatus =
