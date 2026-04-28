@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
@@ -21,8 +21,8 @@ import { BiologyAttributes } from "./biologyAttributes.tsx"
 export const BiologySection: FC = () => {
   const sheet = useCharacterSheetContext()
   const biologyStore = useBiologyStore()
-  const metatypeKey = useStore(biologyStore, selectMetatype)
-  const awakeningType = useStore(biologyStore, selectAwakening)
+  const metatypeKey = useSelector(biologyStore, selectMetatype)
+  const awakeningType = useSelector(biologyStore, selectAwakening)
 
   return (
     <>

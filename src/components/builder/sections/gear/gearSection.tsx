@@ -5,7 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
@@ -163,11 +163,11 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gearApi = useGearStore()
-  const allGearItems = useStore(gearApi, selectAllGear)
+  const allGearItems = useSelector(gearApi, selectAllGear)
 
   const lifestyleStore = useLifestyleStore()
-  const lifestyleInfo = useStore(lifestyleStore, selectLifestyleInfo)
-  const lifestyleMonths = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const lifestyleInfo = useSelector(lifestyleStore, selectLifestyleInfo)
+  const lifestyleMonths = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
 
   if (section === SectionHeader.Lifestyle) {
     return (

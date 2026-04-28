@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
@@ -67,7 +67,7 @@ interface CapacitySlotsChipProps extends ChipProps {
 
 const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ...props }) => {
   const gearStore = useGearStore()
-  const gear = useStore(gearStore, selectAllGear)
+  const gear = useSelector(gearStore, selectAllGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
     .filter((item) => item.parentId === implantId)
@@ -81,8 +81,8 @@ const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ..
 export const ImplantFormFields = withFieldGroup({
   ...implantFormOpts,
   render: function Render({ group }) {
-    const parentId = useStore(group.store, (state) => state.values.parentId)
-    const itemId = useStore(group.store, (state) => state.values.id)
+    const parentId = useSelector(group.store, (state) => state.values.parentId)
+    const itemId = useSelector(group.store, (state) => state.values.id)
 
     return (
       <Stack sx={{ gap: 1 }}>

@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 
 import { useActiveSkill, useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
@@ -12,7 +12,7 @@ import { useSpritesStore } from "./useSpritesStore.ts"
 export const useSprites = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const spritesStore = useSpritesStore()
-  const sprites = useStore(spritesStore, selectAllSprites)
+  const sprites = useSelector(spritesStore, selectAllSprites)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

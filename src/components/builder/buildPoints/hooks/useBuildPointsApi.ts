@@ -8,16 +8,20 @@ import {
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useAttr } from "#/components/character/characterUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import {
+  selectActiveSkills,
+  selectAwakening,
+  selectKnowledgeSkills,
+  selectLanguageSkills,
+  selectMetatype,
+  selectSkillGroups,
+  useCharacterSheetSelector,
+} from "#/components/character/sheet/characterSheet.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import { awakenings } from "#/system/awakeningType.ts"
-import { metatypes } from "#/system/metatypeData.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
 import { useAttributesBuildPoints } from "./useAttributesBuildPoints.ts"
-import {
-  useComplexFormsBuildPoints,
-} from "./useComplexFormsBuildPoints.ts"
+import { useComplexFormsBuildPoints } from "./useComplexFormsBuildPoints.ts"
 import { useContactsBuildPoints } from "./useContactsBuildPoints.ts"
 import { useGearBuildPoints } from "./useGearBuildPoints.ts"
 import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
@@ -55,11 +59,8 @@ export const useBuilderBuildPointsApi = () => {
 }
 
 const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeKey = useCharacterSheet((sheet) => sheet.biology.metatype)
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
-
-  const metatypeCost = metatypes[metatypeKey].cost
-  const awakeningCost = awakenings[awakeningType].cost
+  const metatypeCost = useCharacterSheetSelector(selectMetatype).cost
+  const awakeningCost = useCharacterSheetSelector(selectAwakening).cost
 
   return {
     sectionId: BuilderSectionId.biology,
@@ -84,8 +85,8 @@ export const useBuilderSkillsBuildPoints = () => {
 }
 
 const useActiveSkillsBuildPoints = () => {
-  const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
-  const activeSkillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
+  const activeSkills = useCharacterSheetSelector(selectActiveSkills)
+  const activeSkillGroups = useCharacterSheetSelector(selectSkillGroups)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
@@ -103,8 +104,8 @@ const useKnowledgeSkillsBuildPoints = () => {
   const logicAttr = useAttr(AttributeKey.logic)
   const intuitionAttr = useAttr(AttributeKey.intuition)
 
-  const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)
-  const languageSkills = useCharacterSheet((sheet) => sheet.skills.languageSkills)
+  const knowledgeSkills = useCharacterSheetSelector(selectKnowledgeSkills)
+  const languageSkills = useCharacterSheetSelector(selectLanguageSkills)
 
   const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
     knowledgeSkills,

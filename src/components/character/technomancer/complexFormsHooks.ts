@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 
 import { useAttr } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
@@ -11,7 +11,7 @@ import { useComplexFormsStore } from "./useComplexFormsStore.ts"
 export const useComplexForms = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
   const complexFormsStore = useComplexFormsStore()
-  const complexForms = useStore(complexFormsStore, selectAllComplexForms)
+  const complexForms = useSelector(complexFormsStore, selectAllComplexForms)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []

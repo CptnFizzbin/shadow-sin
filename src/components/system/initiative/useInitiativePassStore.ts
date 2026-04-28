@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
@@ -33,6 +33,6 @@ export const useInitiativePassStore = (): InitiativePassStore => {
 export const useInitiativePassesCompleted = (
   store: InitiativePassStore,
 ): ReadonlySet<number> => {
-  const passesCompleted = useStore(store, selectPassesCompleted)
+  const passesCompleted = useSelector(store, selectPassesCompleted)
   return useMemo(() => new Set(passesCompleted), [passesCompleted])
 }

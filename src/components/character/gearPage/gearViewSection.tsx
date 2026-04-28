@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -24,7 +24,7 @@ interface GearViewSectionProps {
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
   const gearStore = useGearStore()
-  const allGearItems = useStore(gearStore, selectAllGear)
+  const allGearItems = useSelector(gearStore, selectAllGear)
 
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0

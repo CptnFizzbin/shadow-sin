@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useTraditionFormDialog } from "#/components/character/spells/dialogs/traditionFormDialog.tsx"
@@ -12,7 +12,7 @@ import { useTraditionStore } from "./useTraditionStore.ts"
 
 export const TraditionCard: FC = () => {
   const traditionStore = useTraditionStore()
-  const tradition = useStore(traditionStore, selectTradition)
+  const tradition = useSelector(traditionStore, selectTradition)
   const traditionFormDialog = useTraditionFormDialog()
 
   const handleOpen = async () => {

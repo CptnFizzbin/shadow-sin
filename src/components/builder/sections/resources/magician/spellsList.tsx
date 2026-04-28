@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
@@ -18,7 +18,7 @@ import { TraditionCard } from "./traditionCard.tsx"
 
 export const SpellsList: FC = () => {
   const spellsStore = useSpellsStore()
-  const spells = useStore(spellsStore, selectAllSpells)
+  const spells = useSelector(spellsStore, selectAllSpells)
   const buildPoints = useSpellsBuildPoints()
   const spellFormDialog = useSpellFormDialog()
 

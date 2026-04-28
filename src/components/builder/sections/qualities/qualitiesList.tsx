@@ -1,7 +1,7 @@
 import Alert from "@mui/material/Alert"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/useQualitiesBuildPoints.ts"
@@ -19,7 +19,7 @@ interface QualitiesListProps {
 
 export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
   const qualitiesStore = useQualitiesStore()
-  const qualities = useStore(qualitiesStore, selectAllQualities)
+  const qualities = useSelector(qualitiesStore, selectAllQualities)
   const qualitiesBuildPoints = useQualitiesBuildPoints()
   const qualityFormDialog = useQualityFormDialog()
 

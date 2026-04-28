@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import type { AnyDialog } from "./dialogApiDialog.ts"
@@ -21,7 +21,7 @@ interface DialogApiWrapperProps {
 export const DialogWrapper: FC<DialogApiWrapperProps> = ({ ctrl, dialog: Dialog, onClosed }) => {
   return (
     <Dialog
-      open={useStore(ctrl.isOpenStore, (state) => state)}
+      open={useSelector(ctrl.isOpenStore, (state) => state)}
       onClose={(value) => ctrl.close(value)}
       onClosed={onClosed}
     />
