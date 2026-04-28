@@ -4,11 +4,12 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { LoanCard } from "#/components/character/finances/loans/loanCard.tsx"
-import { useLoanDialog } from "#/components/character/finances/loans/loanDialog.tsx"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { LoanData } from "#/system/loanData.ts"
+
+import { LoanCard } from "./loanCard.tsx"
+import { useLoanDialog } from "./loanDialog.tsx"
 
 export const LoansSection: FC = () => {
   const loans = useCharacterSheet((s) => s.nuyen.loans)

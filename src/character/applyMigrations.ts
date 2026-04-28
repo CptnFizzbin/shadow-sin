@@ -1,9 +1,10 @@
 import { sort } from "fast-sort"
 import { produce } from "immer"
 
-import { migrations } from "#/character/migrations.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CHARACTER_SHEET_VERSION, CharacterMetaSchema } from "#/system/characterSheet.ts"
+
+import { migrations } from "./migrations.ts"
 
 interface MigrationDraft {
   _meta_: {

@@ -2,25 +2,14 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
-  useKnowledgeSkillPoints,
-} from "#/components/builder/sections/skills/knowledgeSkills/hooks/useKnowledgeSkillPoints.ts"
-import {
-  KnowledgeSkillsListItem,
-} from "#/components/builder/sections/skills/knowledgeSkills/knowledgeSkillsListItem.tsx"
-import {
-  LanguageSkillsListItem,
-} from "#/components/builder/sections/skills/knowledgeSkills/languageSkillsListItem.tsx"
-import {
   useKnowledgeSkillDialog,
 } from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
-import {
-  useLanguageSkillDialog,
-} from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
+import { useLanguageSkillDialog } from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/character/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
@@ -28,13 +17,23 @@ import { SkillPoints } from "#/components/ui/skillPoints.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
+import {
+  useKnowledgeSkillPoints,
+} from "./hooks/useKnowledgeSkillPoints.ts"
+import {
+  KnowledgeSkillsListItem,
+} from "./knowledgeSkillsListItem.tsx"
+import {
+  LanguageSkillsListItem,
+} from "./languageSkillsListItem.tsx"
+
 export const KnowledgeSkillsList: FC = () => {
   const skillsStore = useSkillsStore()
   const skillPoints = useKnowledgeSkillPoints()
   const buildPoints = useKnowledgeSkillsBuildPoints()
 
-  const knowledgeSkills = useStore(skillsStore, selectKnowledgeSkills)
-  const languageSkills = useStore(skillsStore, selectLanguageSkills)
+  const knowledgeSkills = useSelector(skillsStore, selectKnowledgeSkills)
+  const languageSkills = useSelector(skillsStore, selectLanguageSkills)
 
   const knowledgeSkillDialog = useKnowledgeSkillDialog()
   const languageSkillDialog = useLanguageSkillDialog()

@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
-import { CharacterManager } from "#/character/characterManager.ts"
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import { StorageManager } from "#/lib/storage/storageManager.ts"
@@ -15,6 +14,8 @@ import {
   TEST_OLD_FORMAT_SIN_ID,
 } from "#testUtils/fixtures/characters/characterSheets.ts"
 import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
+
+import { CharacterManager } from "./characterManager.ts"
 
 function makeManager(): {
   manager: CharacterManager

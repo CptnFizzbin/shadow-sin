@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import { useState } from "react"
 
 import { ContactsList } from "#/components/character/contacts/contactsList.tsx"
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/$characterId/contacts")({
  */
 function RouteComponent() {
   const contactsStore = useContactsStore()
-  const allContacts = useStore(contactsStore, selectAllContacts)
+  const allContacts = useSelector(contactsStore, selectAllContacts)
   const [searchQuery, setSearchQuery] = useState("")
 
   let filteredContacts = allContacts

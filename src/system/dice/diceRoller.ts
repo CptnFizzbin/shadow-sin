@@ -2,6 +2,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
 import { NumberUtils } from "#/lib/numberUtils.ts"
+
 import { selectAllSettled, selectIsRolling } from "./diceRoller.selectors.ts"
 import type { DiceRollerState } from "./diceRoller.state.ts"
 import type { DieState } from "./dieState.ts"

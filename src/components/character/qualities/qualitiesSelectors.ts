@@ -1,3 +1,3 @@
-import type { QualitiesStoreState } from "#/components/character/qualities/qualitiesStore.ts"
+import type { QualitiesStoreState } from "./qualitiesStore.ts"
 
 export const selectAllQualities = (state: QualitiesStoreState) => state

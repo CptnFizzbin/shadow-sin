@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { KarmaStore } from "#/components/character/karma/karmaStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { KarmaStore } from "./karmaStore.ts"
 
 export { KarmaStore } from "#/components/character/karma/karmaStore.ts"
 

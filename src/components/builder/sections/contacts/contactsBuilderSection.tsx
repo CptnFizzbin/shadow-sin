@@ -1,19 +1,20 @@
 import Stack from "@mui/material/Stack"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useContactsAlerts } from "#/components/builder/alerts/hooks/useContactsAlerts.ts"
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { getContactBpCost } from "#/components/builder/sections/contacts/contactsBuilderUtils.ts"
 import { ContactsList } from "#/components/character/contacts/contactsList.tsx"
 import { selectAllContacts } from "#/components/character/contacts/contactsSelectors.ts"
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 
+import { getContactBpCost } from "./contactsBuilderUtils.ts"
+
 export const ContactsBuilderSection: FC = () => {
   const contactsStore = useContactsStore()
-  const allContacts = useStore(contactsStore, selectAllContacts)
+  const allContacts = useSelector(contactsStore, selectAllContacts)
   const contactsAlerts = useContactsAlerts()
 
   const bpSpent = allContacts

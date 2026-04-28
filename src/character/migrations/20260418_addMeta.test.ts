@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20260418_addMeta.ts"
+import migration from "./20260418_addMeta.ts"
 
 describe("20260418_addMeta", () => {
   it("creates a _meta_ object with version 1 when missing", () => {

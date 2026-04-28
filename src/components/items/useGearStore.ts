@@ -1,15 +1,16 @@
 import type { UUID } from "node:crypto"
 
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { BaseAtom } from "@tanstack/store"
 import { batch, createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { selectAllGear } from "./gearSelectors.ts"
 
 interface RemoveItemOptions {
   removeChildren?: boolean
@@ -177,6 +178,6 @@ export function useGearByType<TItem extends ItemData>(itemType: string): TItem[]
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
   const store = useGearStore()
-  const gear = useStore(store, selectAllGear)
+  const gear = useSelector(store, selectAllGear)
   return Object.values(gear).filter(filter)
 }

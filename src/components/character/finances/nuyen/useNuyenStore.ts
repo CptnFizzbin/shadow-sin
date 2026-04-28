@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { NuyenStore } from "#/components/character/finances/nuyen/nuyenStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { NuyenStore } from "./nuyenStore.ts"
 
 export { NuyenStore } from "#/components/character/finances/nuyen/nuyenStore.ts"
 

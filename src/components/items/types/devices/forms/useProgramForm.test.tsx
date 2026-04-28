@@ -1,8 +1,9 @@
 import { renderHook } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { useProgramForm } from "#/components/items/types/devices/forms/useProgramForm.tsx"
 import { ItemType } from "#/system/itemType.ts"
+
+import { useProgramForm } from "./useProgramForm.tsx"
 
 describe("useProgramForm", () => {
   it("always defaults to ItemType.program", () => {

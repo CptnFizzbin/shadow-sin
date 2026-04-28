@@ -1,11 +1,12 @@
 import Stack from "@mui/material/Stack"
 import type { FC, PropsWithChildren } from "react"
 
-import type { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { builderSections } from "#/components/builder/sections/builderSectionId.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { AlertsList } from "#/components/ui/alerts/alertsList.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+
+import type { BuilderSectionId } from "./builderSectionId.ts"
+import { builderSections } from "./builderSectionId.ts"
 
 interface BuilderSectionProps extends PropsWithChildren {
   id: BuilderSectionId

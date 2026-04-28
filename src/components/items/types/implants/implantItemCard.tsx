@@ -8,15 +8,16 @@ import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
-import { useImplantFormDialog } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
-import {
-  getImplantEffectiveEssenceCost,
-  getImplantEffectiveNuyenCost,
-} from "#/components/items/types/implants/implantUtils.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
+
+import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
+import {
+  getImplantEffectiveEssenceCost,
+  getImplantEffectiveNuyenCost,
+} from "./implantUtils.ts"
 
 interface ImplantItemCardProps extends Omit<ItemCardProps, "children"> {
   implant: ImplantData

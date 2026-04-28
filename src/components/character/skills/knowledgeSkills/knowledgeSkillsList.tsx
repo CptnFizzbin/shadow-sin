@@ -8,8 +8,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { KnowledgeSkillsListItem } from "#/components/character/skills/knowledgeSkills/knowledgeSkillsListItem.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+
+import { KnowledgeSkillsListItem } from "./knowledgeSkillsListItem.tsx"
 
 export const KnowledgeSkillsList: FC = () => {
   const knowledgeSkills = useCharacterSheet((sheet) => sheet.skills.knowledgeSkills)

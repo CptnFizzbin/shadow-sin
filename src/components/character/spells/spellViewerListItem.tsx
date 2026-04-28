@@ -3,8 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { formatDrainFormula } from "./spellDrainFormula.ts"
 
 interface SpellViewerListItemProps {
   spell: SpellData

@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { DevicesList } from "#/components/builder/sections/gear/devices/devicesList.tsx"
+import { DevicesList } from "./devicesList.tsx"
 
 export const DevicesPanel: FC = () => {
   return <DevicesList />

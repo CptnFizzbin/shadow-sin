@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -48,7 +48,7 @@ export const LoanDialog: FC<LoanDialogProps> = ({
 }) => {
   const nuyenStore = useNuyenStore()
   const isEditMode = mode === "edit"
-  const currentNuyen = useStore(nuyenStore, selectNuyenAmount)
+  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
   const [amount, setAmount] = useState<number>(loan?.amount ?? 0)

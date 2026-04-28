@@ -2,8 +2,9 @@ import { z } from "zod"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { GameEffectType } from "./gameEffectType.ts"
 
 /**
  * Base interface for all game effects.
@@ -81,7 +82,6 @@ export interface PainToleranceEffect extends GameEffectData {
  * Mapped type for looking up concrete effect interfaces by their type enum.
  */
 export type EffectByType = {
-
   [GameEffectType.attrMod]: AttrModEffect
   [GameEffectType.skillMod]: SkillModEffect
   [GameEffectType.skillSpecializationMod]: SkillSpecializationModEffect
@@ -144,7 +144,6 @@ const PainToleranceSchema = z.object({
  * Discriminated union schema for all game effects.
  */
 export const GameEffectDataSchema = z.discriminatedUnion("type", [
-
   InitiativeBonusSchema,
   RecoilReductionSchema,
   DicePoolModSchema,

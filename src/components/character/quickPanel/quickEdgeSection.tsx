@@ -2,20 +2,21 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
-import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+
+import { selectEdgeCurrent, selectEdgeMax } from "./edgeSelectors.ts"
+import { useEdgeStore } from "./useEdgeStore.ts"
 
 export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog()
   const edgeStore = useEdgeStore()
 
-  const max = useStore(edgeStore, selectEdgeMax)
-  const current = useStore(edgeStore, selectEdgeCurrent)
+  const max = useSelector(edgeStore, selectEdgeMax)
+  const current = useSelector(edgeStore, selectEdgeCurrent)
 
   const onBurnClick = async () => {
     if (

@@ -1,6 +1,6 @@
 import { useContext } from "react"
 
-import { IsBuilderContext } from "#/components/builder/isBuilderContext.ts"
+import { IsBuilderContext } from "./isBuilderContext.ts"
 
 /**
  * Returns true when rendered inside a CharacterBuilderStoreProvider.

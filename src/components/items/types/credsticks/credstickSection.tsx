@@ -4,12 +4,13 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { CredstickCard } from "#/components/items/types/credsticks/credstickCard.tsx"
-import { useCredstickDialog } from "#/components/items/types/credsticks/credstickDialog.tsx"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { CredstickCard } from "./credstickCard.tsx"
+import { useCredstickDialog } from "./credstickDialog.tsx"
 
 export const CredstickSection: FC = () => {
   const credsticks = useGearByType<CredstickData>(ItemType.credstick)

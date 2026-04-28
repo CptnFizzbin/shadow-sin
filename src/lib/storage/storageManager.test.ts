@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { StorageManager } from "#/lib/storage/storageManager.ts"
-import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "#/lib/storage/storageProvider.ts"
+import { StorageManager } from "./storageManager.ts"
+import type { StorageProvider, StoredJsonFile, StoredJsonFileMetadata } from "./storageProvider.ts"
 
 interface RecordedCall {
   method: string

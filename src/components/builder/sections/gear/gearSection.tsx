@@ -5,7 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
@@ -15,15 +15,6 @@ import {
   useGearBuildPoints,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { ArmorPanel } from "#/components/builder/sections/gear/armor/armorPanel.tsx"
-import { DevicesPanel } from "#/components/builder/sections/gear/devices/devicesPanel.tsx"
-import { useGearAvailabilityIssues } from "#/components/builder/sections/gear/gearUtils.ts"
-import { LifestylePanel } from "#/components/builder/sections/gear/lifestyle/lifestylePanel.tsx"
-import { MiscPanel } from "#/components/builder/sections/gear/misc/miscPanel.tsx"
-import { SectionHeader } from "#/components/builder/sections/gear/sectionHeader.tsx"
-import { StartingNuyenSection } from "#/components/builder/sections/gear/startingNuyenSection.tsx"
-import { VehiclesPanel } from "#/components/builder/sections/gear/vehicles/vehiclesPanel.tsx"
-import { WeaponsPanel } from "#/components/builder/sections/gear/weapons/weaponsPanel.tsx"
 import { selectLifestyleInfo, selectLifestyleMonthsPaid } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
 import { selectAllGear } from "#/components/items/gearSelectors.ts"
@@ -37,7 +28,17 @@ import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { ArmorPanel } from "./armor/armorPanel.tsx"
+import { DevicesPanel } from "./devices/devicesPanel.tsx"
+import { useGearAvailabilityIssues } from "./gearUtils.ts"
 import { ImplantsPanel } from "./implants/implantsPanel.tsx"
+import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
+import { MiscPanel } from "./misc/miscPanel.tsx"
+import { SectionHeader } from "./sectionHeader.tsx"
+import { StartingNuyenSection } from "./startingNuyenSection.tsx"
+import { VehiclesPanel } from "./vehicles/vehiclesPanel.tsx"
+import { WeaponsPanel } from "./weapons/weaponsPanel.tsx"
 
 export const GearSection: FC = () => {
   const totalNuyen = useGearTotalCost()
@@ -162,11 +163,11 @@ const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
   const gearApi = useGearStore()
-  const allGearItems = useStore(gearApi, selectAllGear)
+  const allGearItems = useSelector(gearApi, selectAllGear)
 
   const lifestyleStore = useLifestyleStore()
-  const lifestyleInfo = useStore(lifestyleStore, selectLifestyleInfo)
-  const lifestyleMonths = useStore(lifestyleStore, selectLifestyleMonthsPaid)
+  const lifestyleInfo = useSelector(lifestyleStore, selectLifestyleInfo)
+  const lifestyleMonths = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
 
   if (section === SectionHeader.Lifestyle) {
     return (

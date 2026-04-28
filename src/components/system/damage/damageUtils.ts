@@ -13,7 +13,7 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
  *
  * Usage:
  *   useCharacterSheet(selectPainToleranceModifier(DamageTrackKey.physical))
- *   useStore(store, selectPainToleranceModifier("all"))
+ *   useSelector(store, selectPainToleranceModifier("all"))
  *
  * @param track - The damage track (or "all") to compute the modifier for
  * @returns A selector `(sheet) => number`
@@ -59,7 +59,7 @@ function selectPainToleranceModifier(track: DamageTrackKey | "all") {
  *
  * Usage:
  *   useCharacterSheet(selectWoundInterval(DamageTrackKey.physical))
- *   useStore(store, selectWoundInterval(DamageTrackKey.stun))
+ *   useSelector(store, selectWoundInterval(DamageTrackKey.stun))
  *
  * @param track - The damage track to compute the interval for
  * @returns A selector `(sheet) => number` (result ≥ 1)

@@ -1,10 +1,11 @@
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import { SpiritType, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
-import { SkillCategory } from "#/system/skills/skillCategory.ts"
-import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
-import type { SkillInfo } from "#/system/skills/skillInfo.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { SkillCategory } from "./skillCategory.ts"
+import { SkillGroupKey } from "./skillGroupKey.ts"
+import type { SkillInfo } from "./skillInfo.ts"
+import { SkillKey } from "./skillKey.ts"
 
 const spiritTypeSpecializations = Object.values(SpiritType).map(
   (spiritType) => `Spirits of ${SpiritTypeLabels[spiritType]}`,

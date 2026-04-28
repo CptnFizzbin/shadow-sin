@@ -1,9 +1,3 @@
-import {
-  useAllAttrInfos,
-  useAttrInfo,
-  useAttrValue,
-} from "#/components/character/attributes/attributesProvider.tsx"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
@@ -14,6 +8,9 @@ import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attributesProvider.tsx"
+import { useCharacterSheet } from "./sheet/characterSheetProvider.tsx"
 
 // Re-exported for convenience — see attributesProvider.tsx for full documentation.
 export { useAllAttrInfos, useAttrInfo, useAttrValue }

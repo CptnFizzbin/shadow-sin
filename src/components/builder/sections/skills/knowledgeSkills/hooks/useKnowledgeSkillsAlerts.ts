@@ -1,17 +1,18 @@
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 
-import {
-  useKnowledgeSkillPoints,
-} from "#/components/builder/sections/skills/knowledgeSkills/hooks/useKnowledgeSkillPoints.ts"
 import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/character/skills/skillsSelectors.ts"
 import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
+import {
+  useKnowledgeSkillPoints,
+} from "./useKnowledgeSkillPoints.ts"
+
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const skillsStore = useSkillsStore()
-  const knowledgeSkills = useStore(skillsStore, selectKnowledgeSkills)
-  const languageSkills = useStore(skillsStore, selectLanguageSkills)
+  const knowledgeSkills = useSelector(skillsStore, selectKnowledgeSkills)
+  const languageSkills = useSelector(skillsStore, selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
 
   const statuses: AlertInfo[] = []

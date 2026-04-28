@@ -1,13 +1,12 @@
 import Stack from "@mui/material/Stack"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import type {
-  LanguageSkillForm,
-} from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
+
+import type { LanguageSkillForm } from "./useLanguageSkillForm.ts"
 
 interface LanguageSkillFormFieldsProps {
   form: LanguageSkillForm
@@ -16,7 +15,7 @@ interface LanguageSkillFormFieldsProps {
 export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
   form,
 }) => {
-  const skillName = useStore(form.store, (state) => state.values.name)
+  const skillName = useSelector(form.store, (state) => state.values.name)
   const nativeLanguage = useCharacterSheet((sheet) => {
     return sheet.skills.languageSkills.find((skill) => skill.rating === "native")
   })
