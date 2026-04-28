@@ -1,6 +1,8 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import { OutOfContextError } from "#/components/dialogs/api/outOfContextError.ts"
+
 import type { DiceTrayApi } from "./diceTrayApi.ts"
 import { DiceTrayDialog } from "./diceTrayDialog.tsx"
 
@@ -45,7 +47,7 @@ export const useDiceTray = (): DiceTrayApi => {
   const diceTrayApi = useContext(DiceTrayContext)
 
   if (!diceTrayApi) {
-    throw new Error("useDiceTray must be used within a DiceTrayProvider")
+    throw new OutOfContextError("useDiceTray", "DiceTrayProvider")
   }
 
   return diceTrayApi

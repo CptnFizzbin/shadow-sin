@@ -13,10 +13,6 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -234,18 +230,15 @@ export type UseLoanDialogProps = Omit<LoanDialogProps, "open" | "onClose" | "onC
 
 export const useLoanDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props: UseLoanDialogProps) => dialogApi.open<void>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <LoanDialog
-            {...dialogProps}
-            {...props}
-            onClose={() => dialogProps.onClose()}
-          />
-        </CharacterSheetProvider>
+        <LoanDialog
+          {...dialogProps}
+          {...props}
+          onClose={() => dialogProps.onClose()}
+        />
       ),
     ),
   }

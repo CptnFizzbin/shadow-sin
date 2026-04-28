@@ -4,6 +4,7 @@ import { createContext, Fragment, useContext } from "react"
 
 import type { DialogApi } from "./dialogApi.ts"
 import { selectAllDialogs } from "./dialogApiSelectors.ts"
+import { OutOfContextError } from "./outOfContextError.ts"
 
 const DialogApiContext = createContext<DialogApi | null>(null)
 
@@ -31,7 +32,7 @@ export const useDialogApi = () => {
   const dialogApi = useContext(DialogApiContext)
 
   if (!dialogApi) {
-    throw new Error("useDialogApi must be used within DialogApiProvider")
+    throw new OutOfContextError("useDialogApi", "DialogApiProvider")
   }
 
   return dialogApi

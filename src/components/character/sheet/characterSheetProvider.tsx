@@ -1,6 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import { OutOfContextError } from "#/components/dialogs/api/outOfContextError.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 // eslint-disable-next-line import-x/no-cycle
@@ -30,9 +31,7 @@ export const useCharacterSheetContext = (): CharacterSheetStore => {
   const store = useContext(CharacterSheetContext)
 
   if (!store) {
-    throw new Error(
-      "useCharacterSheetContext must be used within a CharacterSheetProvider",
-    )
+    throw new OutOfContextError("useCharacterSheetContext", "CharacterSheetProvider")
   }
 
   return store

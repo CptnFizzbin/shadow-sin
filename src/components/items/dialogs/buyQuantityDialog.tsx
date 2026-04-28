@@ -10,9 +10,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import {
-  CharacterSheetProvider,
   useCharacterSheet,
-  useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
@@ -110,22 +108,19 @@ export type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "o
 
 export const useBuyQuantityDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <BuyQuantityDialog
-            {...dialogProps}
-            {...props}
-            onClose={() => dialogProps.onClose()}
-            onPurchase={(quantity, totalCost) => {
-              props.onPurchase(quantity, totalCost)
-              dialogProps.onClose()
-            }}
-          />
-        </CharacterSheetProvider>
+        <BuyQuantityDialog
+          {...dialogProps}
+          {...props}
+          onClose={() => dialogProps.onClose()}
+          onPurchase={(quantity, totalCost) => {
+            props.onPurchase(quantity, totalCost)
+            dialogProps.onClose()
+          }}
+        />
       ),
     ),
   }
