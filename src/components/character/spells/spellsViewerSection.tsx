@@ -1,7 +1,6 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { produce } from "immer"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
@@ -21,9 +20,7 @@ export const SpellsViewerSection: FC = () => {
   }
 
   const handleToggleSustained = (spell: SpellData) => {
-    spellsStore.update(produce(spell, (draft) => {
-      draft.sustained = !draft.sustained
-    }))
+    spellsStore.toggleSustained(spell)
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)

@@ -22,6 +22,10 @@ export class SpellsStore extends StoreSlice<SpellsStoreState> {
     this.set((prev) => prev.filter((s) => s.id !== spellId))
   }
 
+  toggleSustained(spell: SpellData): void {
+    this.update({ ...spell, sustained: !spell.sustained })
+  }
+
   save(spell: SpellData): void {
     if (!spell.id || spell.id === NullUuid) {
       this.add({ ...spell, id: crypto.randomUUID() })
