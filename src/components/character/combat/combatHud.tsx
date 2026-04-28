@@ -35,7 +35,6 @@ function effectLabel(effects: GameEffectData[]): string {
   return parts.join(", ")
 }
 
-
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()
   const physicalCurrent = useStore(damageStore, selectPhysicalCurrent)
