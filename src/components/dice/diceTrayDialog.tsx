@@ -9,21 +9,15 @@ import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 import type { FC } from "react"
+import { useEffect } from "react"
 
 import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
 import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
-import { DiceResult } from "#/components/system/dice/diceResult.tsx"
+import { getDiceOffset } from "#/components/system/dice/diceUtils.ts"
+import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import {
-  selectAllDice,
-  selectHits,
-  selectIsRolling,
-  selectRollState,
-  selectWasRolled,
-  useDiceRollerSelector,
-} from "#/system/dice/diceRoller.selectors.ts"
 import { RollState } from "#/system/dice/rollState.ts"
 
 interface DiceTrayDialogProps {
@@ -31,32 +25,50 @@ interface DiceTrayDialogProps {
 }
 
 export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
-  const open = useSelector(diceTrayApi.store, (state) => state.open)
-  const edgeSpent = useSelector(diceTrayApi.store, (state) => state.edgeSpent)
-  const threshold = useSelector(diceTrayApi.store, (state) => state.threshold)
-
-  const dice = useDiceRollerSelector(diceTrayApi.roller, selectAllDice)
-  const isRolling = useDiceRollerSelector(diceTrayApi.roller, selectIsRolling)
-  const wasRolled = useDiceRollerSelector(diceTrayApi.roller, selectWasRolled)
-  const hits = useDiceRollerSelector(diceTrayApi.roller, selectHits)
-  const rollState = useDiceRollerSelector(diceTrayApi.roller, selectRollState)
+  const open = useSelector(diceTrayApi.store, (s) => s.open)
+  const edgeSpent = useSelector(diceTrayApi.store, (s) => s.edgeSpent)
+  const threshold = useSelector(diceTrayApi.store, (s) => s.threshold)
+  const diceCount = useSelector(diceTrayApi.store, (s) => s.diceCount)
+  const results = useSelector(diceTrayApi.store, (s) => s.results)
+  const isRolling = useSelector(diceTrayApi.store, (s) => s.isRolling)
+  const autoRoll = useSelector(diceTrayApi.store, (s) => s.autoRoll)
 
   const edgeStore = useEdgeStore()
   const maxEdge = useSelector(edgeStore, selectEdgeMax)
   const currentEdge = useSelector(edgeStore, selectEdgeCurrent)
 
-  const handleRoll = () => {
-    diceTrayApi.reset()
-    diceTrayApi.rollStandard()
-  }
+  useEffect(() => {
+    if (autoRoll) {
+      diceTrayApi.rollStandard()
+    }
+  }, [autoRoll, diceTrayApi])
 
-  const handleReset = () => {
-    diceTrayApi.reset()
-  }
+  const wasRolled = results !== null
+  const hits = wasRolled ? results.filter((r) => r >= 5).length : 0
+  const ones = wasRolled ? results.filter((r) => r === 1).length : 0
+  const isGlitch = wasRolled && results.length > 0 && ones >= results.length / 2
+  const isCriticalGlitch = isGlitch && hits === 0
+
+  const rollState: RollState = !wasRolled
+    ? RollState.Assembling
+    : isRolling
+      ? RollState.Rolling
+      : isCriticalGlitch
+        ? RollState.Critical
+        : isGlitch
+          ? RollState.Glitch
+          : hits >= 1
+            ? RollState.Hit
+            : RollState.Miss
+
+  const diceDefaultColor = (isGlitch && wasRolled) ? "error.main" : "secondary.main"
+
+  const handleRoll = () => diceTrayApi.rollStandard()
+  const handleReset = () => diceTrayApi.reset()
 
   const handleRerollMisses = () => {
     if (diceTrayApi.store.state.edgeSpent) return
-    diceTrayApi.rerollMisses()
+    diceTrayApi.rollSecondChance()
     edgeStore.setCurrent(currentEdge - 1)
   }
 
@@ -83,8 +95,8 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
         <Stack sx={{ paddingTop: 1 }}>
           <Stack direction="row">
             <CounterField
-              value={dice.length}
-              onChange={(newValue) => diceTrayApi.setDice(newValue ?? 1)}
+              value={diceCount}
+              onChange={(newValue) => diceTrayApi.setDiceCount(newValue ?? 1)}
               min={1}
               max={32}
               disabled={isRolling}
@@ -103,7 +115,28 @@ export const DiceTrayDialog: FC<DiceTrayDialogProps> = ({ diceTrayApi }) => {
             />
           </Stack>
 
-          <DiceResult roller={diceTrayApi.roller} iconSize={48} />
+          <Stack
+            direction="row"
+            sx={{
+              flexWrap: "wrap",
+              gap: 0,
+              color: diceDefaultColor,
+              margin: "auto",
+              justifyContent: "center",
+            }}
+          >
+            {wasRolled && results.map((value, index) => (
+              <DieFace
+                key={index}
+                value={value}
+                style={getDiceOffset(isRolling)}
+                size={48}
+              />
+            ))}
+            {!wasRolled && Array.from({ length: diceCount }).map((_, index) => (
+              <DieFace key={index} value={null} size={48} />
+            ))}
+          </Stack>
 
           <Stack sx={{ gap: 0 }}>
             {rollState === RollState.Assembling && (

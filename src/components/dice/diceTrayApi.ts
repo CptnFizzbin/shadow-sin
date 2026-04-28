@@ -1,22 +1,24 @@
 import type { Store } from "@tanstack/store"
 import { createStore } from "@tanstack/store"
-import { produce } from "immer"
-
-import { selectWasRolled } from "#/system/dice/diceRoller.selectors.ts"
-import { DiceRoller } from "#/system/dice/diceRoller.ts"
 
 export interface DiceTrayState {
   open: boolean
   edgeSpent: boolean
   threshold: number
+  diceCount: number
+  results: number[] | null
+  autoRoll: boolean
+  isRolling: boolean
 }
+
+const ROLL_ANIMATION_MS = 600
 
 /**
  * Stable API object for the dice tray dialog. Holds all UI state in a TanStack
  * Store so that any subscriber (the dialog, external consumers) can react to
  * changes without prop-drilling.
  *
- * Obtain an instance via {@link useDiceTray} rather than constructing this directly.
+ * Obtain an instance via {@link useDiceTray} rather than constructing directly.
  *
  * ```ts
  * const diceTray = useDiceTray()
@@ -30,11 +32,63 @@ export interface DiceTrayState {
  */
 export class DiceTrayApi {
   public readonly store: Store<DiceTrayState>
-  public readonly roller: DiceRoller
+  private rollTimerId: ReturnType<typeof setTimeout> | null = null
 
   constructor() {
-    this.store = createStore({ open: false, edgeSpent: false, threshold: 1 })
-    this.roller = new DiceRoller()
+    this.store = createStore<DiceTrayState>({
+      open: false,
+      edgeSpent: false,
+      threshold: 1,
+      diceCount: 1,
+      results: null,
+      autoRoll: false,
+      isRolling: false,
+    })
+  }
+
+  private clamp(count: number): number {
+    return Math.max(1, count)
+  }
+
+  private rollD6(): number {
+    return Math.floor(Math.random() * 6) + 1
+  }
+
+  private rollNDice(count: number): number[] {
+    return Array.from({ length: count }, () => this.rollD6())
+  }
+
+  private rollNDiceExploding(count: number): number[] {
+    const results: number[] = []
+    let remaining = count
+    while (remaining > 0) {
+      remaining--
+      const value = this.rollD6()
+      results.push(value)
+      if (value === 6) remaining++
+    }
+    return results
+  }
+
+  private startAnimation(results: number[]): void {
+    this.cancelTimer()
+    this.store.setState((prev) => ({
+      ...prev,
+      results,
+      isRolling: true,
+      autoRoll: false,
+    }))
+    this.rollTimerId = setTimeout(() => {
+      this.rollTimerId = null
+      this.store.setState((prev) => ({ ...prev, isRolling: false }))
+    }, ROLL_ANIMATION_MS)
+  }
+
+  private cancelTimer(): void {
+    if (this.rollTimerId !== null) {
+      clearTimeout(this.rollTimerId)
+      this.rollTimerId = null
+    }
   }
 
   /**
@@ -42,89 +96,91 @@ export class DiceTrayApi {
    * and roll manually. Previous results are cleared.
    */
   setDice(count: number): void {
-    this.reset()
-    this.roller
-      .reset()
-      .setPoolSize(count)
-    this.open()
+    const clamped = this.clamp(count)
+    this.store.setState((prev) => ({
+      ...prev,
+      open: true,
+      diceCount: clamped,
+      results: null,
+      autoRoll: false,
+      edgeSpent: false,
+    }))
+  }
+
+  /**
+   * Open the tray and immediately roll `count` dice. The dialog reads
+   * `autoRoll` and triggers the animation automatically.
+   */
+  roll(count: number): void {
+    const clamped = this.clamp(count)
+    this.store.setState((prev) => ({
+      ...prev,
+      open: true,
+      diceCount: clamped,
+      results: null,
+      autoRoll: true,
+      edgeSpent: false,
+    }))
+  }
+
+  /** Roll the current dice pool using standard d6 (no exploding 6s). */
+  rollStandard(): void {
+    const { diceCount } = this.store.state
+    this.startAnimation(this.rollNDice(diceCount))
+  }
+
+  /**
+   * Roll with Push the Limit (exploding 6s). If `edge` is provided and dice
+   * have already been rolled, appends edge dice to the existing results.
+   * Otherwise rolls the entire pool plus edge dice from scratch.
+   */
+  rollEdge(edge: number = 0): void {
+    const { edgeSpent, diceCount, results: existing } = this.store.state
+    if (edgeSpent) return
+
+    this.store.setState((prev) => ({ ...prev, edgeSpent: true }))
+
+    if (existing !== null && edge > 0) {
+      const edgeDice = this.rollNDiceExploding(edge)
+      this.startAnimation([...existing, ...edgeDice])
+    } else {
+      this.startAnimation(this.rollNDiceExploding(diceCount + edge))
+    }
+  }
+
+  /** Re-roll all misses (< 5) in the current results, preserving hits. */
+  rollSecondChance(): void {
+    const { results } = this.store.state
+    if (!results) return
+    const newResults = results.map((v) => (v >= 5 ? v : this.rollD6()))
+    this.store.setState((prev) => ({ ...prev, results: newResults }))
+  }
+
+  /** Update the dice count and clear any existing results. */
+  setDiceCount(count: number): void {
+    const clamped = this.clamp(count)
+    this.store.setState((prev) => ({ ...prev, diceCount: clamped, results: null }))
   }
 
   setThreshold(count: number): void {
-    this.store.setState(produce((state) => {
-      state.threshold = count
-    }))
-  }
-
-  /**
-   * Open the tray and immediately roll `count` dice. The dialog animates the
-   * roll and shows results automatically.
-   */
-  roll(count?: number): void {
-    if (count) {
-      this.roller
-        .reset()
-        .setPoolSize(count)
-    }
-    this.open()
-
-    this.roller.rollAll({ timeout: 1500 })
+    this.store.setState((prev) => ({ ...prev, threshold: count }))
   }
 
   open(): void {
-    this.store.setState(produce((state) => {
-      state.open = true
-    }))
+    this.store.setState((prev) => ({ ...prev, open: true }))
   }
 
   close(): void {
-    this.store.setState(produce((state) => {
-      state.open = false
-    }))
+    this.cancelTimer()
+    this.store.setState((prev) => ({ ...prev, open: false, isRolling: false }))
   }
 
   reset(): void {
-    this.roller.reset()
-    this.store.setState(produce((state) => {
-      state.edgeSpent = false
-    }))
+    this.store.setState((prev) => ({ ...prev, results: null, edgeSpent: false }))
   }
 
-  /**
-   * Roll the current dice count using standard d6 (no exploding).
-   * Starts the rolling animation and stores results when it completes.
-   */
-  rollStandard(): void {
-    this.roller.rollAll()
-  }
-
-  /**
-   * Roll the current dice count using Push the Limit (exploding 6s).
-   * Starts the rolling animation and stores results when it completes.
-   */
-  rollEdge(edge: number): void {
-    const { edgeSpent } = this.store.get()
-    if (edgeSpent) return
-
-    this.store.setState(produce((state) => {
-      state.edgeSpent = true
-    }))
-
-    const wasRolled = selectWasRolled(this.roller.store.get())
-    if (wasRolled) {
-      this.roller.addDice(edge).rollDice(edge * -1, Infinity, { explodes: true })
-    } else {
-      this.roller.addDice(edge).rollAll({ explodes: true })
-    }
-  }
-
-  rerollMisses(): void {
-    const { edgeSpent } = this.store.get()
-    if (edgeSpent) return
-
-    this.store.setState(produce((state) => {
-      state.edgeSpent = true
-    }))
-
-    this.roller.rollMisses()
+  /** Cancel any pending animation timer. Call on component unmount. */
+  destroy(): void {
+    this.cancelTimer()
   }
 }
