@@ -3,9 +3,9 @@ import { produce } from "immer"
 import type { FC, ReactNode } from "react"
 import { createElement } from "react"
 
-import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
 import type { DialogApiStore } from "./dialogApiStore.ts"
+import { DialogCtrl } from "./dialogCtrl.ts"
 import { DialogWrapper } from "./dialogWrapper.tsx"
 
 /**

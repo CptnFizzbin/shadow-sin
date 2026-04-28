@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from "react"
 
-import { ItemCardAction } from "#/components/items/card/itemCardAction.tsx"
-import { ItemCardAddChildButton } from "#/components/items/card/itemCardAddChildButton.tsx"
-import { ItemCardChildren } from "#/components/items/card/itemCardChildren.tsx"
-import { ItemCardMeta } from "#/components/items/card/itemCardMeta.tsx"
-import type { ItemCardRootProps } from "#/components/items/card/itemCardRoot.tsx"
-import { ItemCardRoot } from "#/components/items/card/itemCardRoot.tsx"
-import { ItemCardTitle } from "#/components/items/card/itemCardTitle.tsx"
+import { ItemCardAction } from "./itemCardAction.tsx"
+import { ItemCardAddChildButton } from "./itemCardAddChildButton.tsx"
+import { ItemCardChildren } from "./itemCardChildren.tsx"
+import { ItemCardMeta } from "./itemCardMeta.tsx"
+import type { ItemCardRootProps } from "./itemCardRoot.tsx"
+import { ItemCardRoot } from "./itemCardRoot.tsx"
+import { ItemCardTitle } from "./itemCardTitle.tsx"
 
 export interface ItemCardProps extends ItemCardRootProps {
   onClick?: () => void

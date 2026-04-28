@@ -13,12 +13,13 @@ import { useEffect } from "react"
 
 import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { getDiceOffset } from "#/components/system/dice/diceUtils.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { RollState } from "#/system/dice/rollState.ts"
+
+import type { DiceTrayApi } from "./diceTrayApi.ts"
 
 interface DiceTrayDialogProps {
   diceTrayApi: DiceTrayApi

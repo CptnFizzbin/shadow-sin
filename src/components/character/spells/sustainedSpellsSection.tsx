@@ -5,10 +5,11 @@ import { produce } from "immer"
 import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
-import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { formatDrainFormula } from "./spellDrainFormula.ts"
+import { useSpellsStore } from "./useSpellsStore.ts"
 
 export const SustainedSpellsSection: FC = () => {
   const sustainedSpells = useCharacterSheet(

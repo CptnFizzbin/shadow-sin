@@ -1,10 +1,11 @@
 import { waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ImplantFormDialog } from "#/components/items/types/implants/dialogs/implantFormDialog.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { ImplantFormDialog } from "./implantFormDialog.tsx"
 
 describe("ImplantFormDialog", () => {
   it("submits an item with ItemType.implant", async () => {

@@ -2,9 +2,10 @@ import type { FC } from "react"
 
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { useWeaponAttackDialog } from "#/components/items/types/weapons/dialogs/weaponAttackDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData, WeaponType } from "#/system/gear/weaponData.ts"
+
+import { useWeaponAttackDialog } from "./dialogs/weaponAttackDialog.tsx"
 
 interface EquippedWeaponCardProps {
   weapon: WeaponData

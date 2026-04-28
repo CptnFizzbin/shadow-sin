@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "#/character/migrations/20251001_addLoanIdAndInterestRate.ts"
+import migration from "./20251001_addLoanIdAndInterestRate.ts"
 
 describe("20251001_addLoanIdAndInterestRate", () => {
   it("initialises an empty nuyen object when missing", () => {

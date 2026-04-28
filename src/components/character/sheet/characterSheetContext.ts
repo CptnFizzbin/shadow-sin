@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import type { CharacterSheetStore } from "./characterSheetStore.ts"
 
 export const CharacterSheetContext = createContext<CharacterSheetStore | null>(null)
 

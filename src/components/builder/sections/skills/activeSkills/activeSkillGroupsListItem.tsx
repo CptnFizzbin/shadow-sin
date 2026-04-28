@@ -6,9 +6,10 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { getActiveSkillGroupBp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
+
+import { getSkillsInGroup } from "./skillGroupUtils.ts"
 
 interface ActiveSkillGroupsListItemProps {
   group: SkillGroupData

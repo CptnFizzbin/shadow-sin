@@ -12,12 +12,13 @@ import {
   CharacterSheetProvider,
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { SpellCastSection } from "#/components/character/spells/spellCastSection.tsx"
-import { formatDrainFormula } from "#/components/character/spells/spellDrainFormula.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
+
+import { SpellCastSection } from "./spellCastSection.tsx"
+import { formatDrainFormula } from "./spellDrainFormula.ts"
 
 interface SpellCastDialogProps {
   spell: SpellData

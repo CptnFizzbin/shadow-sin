@@ -1,9 +1,10 @@
 import { useMemo } from "react"
 
-import { LifestyleStore } from "#/components/character/profile/lifestyleStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
+
+import { LifestyleStore } from "./lifestyleStore.ts"
 
 export const useLifestyleStore = (): LifestyleStore => {
   const store = useCharacterSheetContext()

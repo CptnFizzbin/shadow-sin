@@ -2,13 +2,14 @@ import { useId } from "react"
 
 import { useActiveSkillRating, useAttr, useEffectiveAttr, useGeneralPenalty } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
-import type { DiceGroup } from "#/components/system/dicePool/diceGroup.tsx"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import type { DiceGroup } from "./diceGroup.tsx"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]

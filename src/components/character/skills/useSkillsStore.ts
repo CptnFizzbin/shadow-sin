@@ -2,8 +2,9 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { SkillsStore } from "#/components/character/skills/skillsStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { SkillsStore } from "./skillsStore.ts"
 
 export const useSkillsStore = (): SkillsStore => {
   const store = useCharacterSheetContext()

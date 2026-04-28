@@ -1,4 +1,4 @@
-import type { SkillGroupKey } from "#/system/skills/skillGroupKey"
+import type { SkillGroupKey } from "./skillGroupKey"
 
 export interface SkillGroupData {
   name: SkillGroupKey

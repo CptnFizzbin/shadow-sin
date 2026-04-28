@@ -3,11 +3,12 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearViewItem } from "#/components/character/gearPage/gearViewItem.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
+
+import { GearViewItem } from "./gearViewItem.tsx"
 
 interface GenericSectionContentProps {
   items: ItemData[]

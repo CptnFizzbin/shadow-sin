@@ -3,10 +3,11 @@ import { produce } from "immer"
 import { useMemo } from "react"
 
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import type { ManualStatusState } from "#/components/system/manualStatus/manualStatusStore.ts"
-import { ManualStatusStore } from "#/components/system/manualStatus/manualStatusStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import type { ManualStatus } from "#/system/manualStatus.ts"
+
+import type { ManualStatusState } from "./manualStatusStore.ts"
+import { ManualStatusStore } from "./manualStatusStore.ts"
 
 export const useManualStatusStore = (): ManualStatusStore => {
   const sheetStore = useCharacterSheetContext()

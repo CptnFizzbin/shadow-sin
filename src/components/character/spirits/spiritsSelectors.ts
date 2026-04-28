@@ -1,3 +1,3 @@
-import type { SpiritsStoreState } from "#/components/character/spirits/spiritsStore.ts"
+import type { SpiritsStoreState } from "./spiritsStore.ts"
 
 export const selectAllSpirits = (state: SpiritsStoreState) => state

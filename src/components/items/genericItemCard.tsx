@@ -2,14 +2,15 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import type { ItemCardRootProps } from "#/components/items/card/itemCardRoot.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { EquippedChip } from "#/components/items/equippedChip.tsx"
-import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { AvailabilityChip } from "./availability/availabilityChip.tsx"
+import { ItemCard } from "./card/itemCard.tsx"
+import type { ItemCardRootProps } from "./card/itemCardRoot.tsx"
+import { ItemStatChip } from "./card/itemStatChip.tsx"
+import { EquippedChip } from "./equippedChip.tsx"
+import { GearMaxAvailability } from "./gearUtils.ts"
 
 interface GenericItemCardProps extends Pick<ItemCardRootProps, "variant"> {
   item: ItemData

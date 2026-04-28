@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { AdeptPowersStore } from "#/components/character/adeptPowers/adeptPowersStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { AdeptPowersStore } from "./adeptPowersStore.ts"
 
 export const useAdeptPowersStore = (): AdeptPowersStore => {
   const store = useCharacterSheetContext()

@@ -2,14 +2,15 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import {
-  ComplexFormsList,
-} from "#/components/builder/sections/resources/technomancer/complexForms/complexFormsList.tsx"
-import {
-  useComplexFormsAlerts,
-} from "#/components/builder/sections/resources/technomancer/complexForms/useComplexFormsAlerts.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { isTechnomancer } from "#/components/character/technomancer/technomancerUtils.ts"
+
+import {
+  ComplexFormsList,
+} from "./complexFormsList.tsx"
+import {
+  useComplexFormsAlerts,
+} from "./useComplexFormsAlerts.ts"
 
 export const ComplexFormsBuilderSection: FC = () => {
   const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)

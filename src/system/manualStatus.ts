@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 
 /**
  * A player-entered temporary status modifier applied during play.

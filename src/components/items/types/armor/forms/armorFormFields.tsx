@@ -1,8 +1,9 @@
 import Stack from "@mui/material/Stack"
 
-import { armorFormOpts } from "#/components/items/types/armor/forms/useArmorForm.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+
+import { armorFormOpts } from "./useArmorForm.tsx"
 
 export const ArmorFormFields = withFieldGroup({
   ...armorFormOpts,

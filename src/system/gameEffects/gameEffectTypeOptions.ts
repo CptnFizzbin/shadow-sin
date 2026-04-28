@@ -1,7 +1,8 @@
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { GameEffectType } from "./gameEffectType.ts"
 
 interface GameEffectOption {
   label: string

@@ -3,8 +3,9 @@ import type { FC } from "react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
-import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
+
+import { NuyenField } from "./nuyenField.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 

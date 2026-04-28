@@ -1,10 +1,11 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { WeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { WeaponFormDialog } from "./weaponFormDialog.tsx"
 
 describe("WeaponFormDialog", () => {
   it("submits an item with ItemType.weapon", async () => {

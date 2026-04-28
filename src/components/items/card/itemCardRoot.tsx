@@ -5,11 +5,11 @@ import type { SxProps } from "@mui/material/styles"
 import type { FC, PropsWithChildren, ReactElement, ReactNode } from "react"
 import { Children, isValidElement } from "react"
 
-import { ItemCardAction } from "#/components/items/card/itemCardAction.tsx"
-import { ItemCardAddChildButton } from "#/components/items/card/itemCardAddChildButton.tsx"
-import { ItemCardChildren } from "#/components/items/card/itemCardChildren.tsx"
-import { ItemCardMeta } from "#/components/items/card/itemCardMeta.tsx"
-import { ItemCardTitle } from "#/components/items/card/itemCardTitle.tsx"
+import { ItemCardAction } from "./itemCardAction.tsx"
+import { ItemCardAddChildButton } from "./itemCardAddChildButton.tsx"
+import { ItemCardChildren } from "./itemCardChildren.tsx"
+import { ItemCardMeta } from "./itemCardMeta.tsx"
+import { ItemCardTitle } from "./itemCardTitle.tsx"
 
 export interface ItemCardRootProps {
   onClick?: () => void

@@ -2,7 +2,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC, PropsWithChildren } from "react"
 import { createContext, Fragment, useContext } from "react"
 
-import type { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import type { DialogApi } from "./dialogApi.ts"
 import { selectAllDialogs } from "./dialogApiSelectors.ts"
 
 const DialogApiContext = createContext<DialogApi | null>(null)

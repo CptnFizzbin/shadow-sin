@@ -13,7 +13,6 @@ import { RiAddLine, RiCloseLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useManualStatusEntries, useManualStatusStore } from "#/components/system/manualStatus/useManualStatusStore.ts"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
@@ -21,6 +20,8 @@ import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ManualStatus } from "#/system/manualStatus.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { useManualStatusEntries, useManualStatusStore } from "./useManualStatusStore.ts"
 
 type SupportedEffectType =
   | GameEffectType.attrMod

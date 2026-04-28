@@ -10,7 +10,7 @@ import {
   rollDice,
   rollDiceExploding,
   sumDice,
-} from "#/system/dice/diceRoll.ts"
+} from "./diceRoll.ts"
 
 // ─── rollD6 ──────────────────────────────────────────────────────────────────
 

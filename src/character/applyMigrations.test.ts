@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { applyMigrations } from "#/character/applyMigrations.ts"
-import { migrationIds, migrations } from "#/character/migrations.ts"
 import { CHARACTER_SHEET_VERSION } from "#/system/characterSheet.ts"
+
+import { applyMigrations } from "./applyMigrations.ts"
+import { migrationIds, migrations } from "./migrations.ts"
 
 describe("applyMigrations", () => {
   it("stamps the current version and records every migration id when starting from {}", () => {

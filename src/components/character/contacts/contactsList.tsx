@@ -4,11 +4,12 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import { ContactRow } from "#/components/character/contacts/contactsListItem.tsx"
-import { useContactFormDialog } from "#/components/character/contacts/form/contactFormDialog.tsx"
-import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
+
+import { ContactRow } from "./contactsListItem.tsx"
+import { useContactFormDialog } from "./form/contactFormDialog.tsx"
+import { useContactsStore } from "./useContactsStore.ts"
 
 interface ContactsListProps {
   contacts: ContactData[]

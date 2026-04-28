@@ -3,15 +3,16 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import { z } from "zod"
 
-import { weaponFieldMap, weaponFormOpts } from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
-import { WeaponDamageFormFields } from "#/components/items/types/weapons/forms/weaponDamageFormFields.tsx"
-import { WeaponSkillFormFields } from "#/components/items/types/weapons/forms/weaponSkillFormFields.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { FirearmAttachmentPoint } from "#/system/gear/weaponData.ts"
 import { firearmTypes } from "#/system/gear/weapons/firearms/firearmTypeInfo.ts"
 import type { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
+
+import { weaponFieldMap, weaponFormOpts } from "./useWeaponForm.tsx"
+import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
+import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
 
 const firearmTypeOptions = Object.entries(firearmTypes).map(([type, value]) => ({
   label: type,

@@ -1,9 +1,10 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { TraditionStore } from "#/components/builder/sections/resources/magician/traditionStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+
+import { TraditionStore } from "./traditionStore.ts"
 
 export const useTraditionStore = (): TraditionStore => {
   const store = useCharacterSheetContext()

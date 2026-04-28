@@ -1,8 +1,9 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { LanguageSkillsList } from "#/components/character/skills/languageSkills/languageSkillsList.tsx"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import { LanguageSkillsList } from "./languageSkillsList.tsx"
 
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {

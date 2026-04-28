@@ -5,7 +5,6 @@ import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
 
-import type { SpellForm } from "#/components/character/spells/form/useSpellForm.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -16,6 +15,8 @@ import {
   SpellRange,
   SpellType,
 } from "#/system/magic/spellData.ts"
+
+import type { SpellForm } from "./useSpellForm.ts"
 
 interface SpellFormFieldsProps {
   form: SpellForm
