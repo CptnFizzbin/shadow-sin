@@ -1,4 +1,5 @@
 import MuiDialogContent from "@mui/material/DialogContent"
+import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
 interface DialogContentProps {
@@ -8,7 +9,11 @@ interface DialogContentProps {
 }
 
 export const DialogContent: FC<DialogContentProps> = ({ children, dividers }) => (
-  <MuiDialogContent dividers={dividers}>{children}</MuiDialogContent>
+  <MuiDialogContent dividers={dividers}>
+    <Stack sx={{ gap: 2, pt: 1 }}>
+      {children}
+    </Stack>
+  </MuiDialogContent>
 )
 
 DialogContent.displayName = "Dialog.Content"

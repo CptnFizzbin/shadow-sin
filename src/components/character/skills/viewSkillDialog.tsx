@@ -1,30 +1,32 @@
-import type { DialogProps } from "@mui/material/Dialog"
-import Dialog from "@mui/material/Dialog"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
-interface ViewSkillDialogProps extends DialogProps {
+interface ViewSkillDialogProps {
+  open: boolean
+  onClose: () => void
+  onClosed?: () => void
   name: string
   body?: ReactNode
   dicePools?: (false | DicePoolData)[]
 }
 
-const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
+export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
+  open,
+  onClose,
+  onClosed,
   name,
   dicePools = [],
   body,
-  ...props
 }) => {
   return (
-    <Dialog {...props}>
-      <DialogTitle sx={{ padding: 1 }}>{name}</DialogTitle>
-      <DialogContent sx={{ padding: 1 }}>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+      <Dialog.Title>{name}</Dialog.Title>
+      <Dialog.Content>
         <Stack spacing={1}>
           {body}
 
@@ -39,12 +41,12 @@ const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
               ))}
           </Stack>
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   )
 }
 
-export type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, "open" | "onClose">
+export type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, "open" | "onClose" | "onClosed">
 
 export const useViewSkillDialog = () => {
   const dialogApi = useDialogApi()
@@ -56,7 +58,7 @@ export const useViewSkillDialog = () => {
           {...props}
           open={dialogProps.open}
           onClose={() => dialogProps.onClose()}
-          slotProps={{ transition: { onExited: dialogProps.onClosed } }}
+          onClosed={dialogProps.onClosed}
         />
       ),
     ),

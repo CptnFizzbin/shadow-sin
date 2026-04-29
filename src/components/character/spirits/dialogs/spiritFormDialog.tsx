@@ -1,8 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
@@ -11,6 +7,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { SpiritFormFields } from "#/components/character/spirits/form/spiritFormFields.tsx"
 import { useSpiritForm } from "#/components/character/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/character/spirits/summoningSection.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {
@@ -37,12 +34,11 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
     <Dialog
       open={open}
       onClose={() => onClose()}
-      slotProps={{ transition: { onExited: onClosed } }}
-      fullWidth
+      onClosed={onClosed}
       maxWidth="sm"
     >
-      <DialogTitle>{spirit ? "Edit Spirit" : "Summon Spirit"}</DialogTitle>
-      <DialogContent>
+      <Dialog.Title>{spirit ? "Edit Spirit" : "Summon Spirit"}</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, pt: 1 }}>
           <SpiritFormFields form={form} tradition={tradition} />
           <Divider />
@@ -50,8 +46,8 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
             {([spiritType, force, bound]) => <SummoningSection spiritType={spiritType} force={force} isBound={bound} />}
           </form.Subscribe>
         </Stack>
-      </DialogContent>
-      <DialogActions>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Button onClick={() => onClose()}>Cancel</Button>
         <form.Subscribe selector={(state): [boolean, boolean] => [state.canSubmit, state.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
@@ -64,7 +60,7 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
             </Button>
           )}
         </form.Subscribe>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

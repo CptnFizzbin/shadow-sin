@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/character/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/character/qualities/form/useQualityForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
@@ -42,22 +39,17 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
-      }}
-      fullWidth
       maxWidth="sm"
+      onClosed={() => {
+        form.reset()
+        onClosed()
+      }}
     >
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <QualityFormFields form={form} />
-      </DialogContent>
-      <DialogActions>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
           <Box>
             {onDelete && (
@@ -80,7 +72,7 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
             </Button>
           </Box>
         </Stack>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

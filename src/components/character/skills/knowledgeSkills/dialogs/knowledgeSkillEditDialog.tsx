@@ -1,8 +1,5 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -13,6 +10,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
@@ -67,15 +65,14 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
       maxWidth="sm"
-      slotProps={{ transition: { onExited: handleClosed } }}
+      onClosed={handleClosed}
     >
-      <DialogTitle>
+      <Dialog.Title>
         {isEditMode ? "Edit Knowledge Skill" : "Add Knowledge Skill"}
-      </DialogTitle>
+      </Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, pt: 1 }}>
           <TextField
             label="Skill Name"
@@ -115,31 +112,33 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
             helperText="Costs 1 SP"
           />
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
+      <Dialog.Actions>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Box>
+            {onDelete && (
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
             </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleSave}>
-            Save
-          </Button>
-        </div>
-      </DialogActions>
+            <Button variant="contained" color="secondary" onClick={handleSave}>
+              Save
+            </Button>
+          </Box>
+        </Stack>
+      </Dialog.Actions>
     </Dialog>
   )
 }

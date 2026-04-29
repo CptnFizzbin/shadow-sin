@@ -1,8 +1,6 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import {
@@ -12,6 +10,7 @@ import {
   useLanguageSkillForm,
 } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
@@ -39,52 +38,49 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
       maxWidth="sm"
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
+      onClosed={() => {
+        form.reset()
+        onClosed()
       }}
     >
-      <DialogTitle>
+      <Dialog.Title>
         {isEditMode ? "Edit Language Skill" : "Add Language Skill"}
-      </DialogTitle>
+      </Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <LanguageSkillFormFields form={form} />
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
+      <Dialog.Actions>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Box>
+            {onDelete && (
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
             </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => form.handleSubmit()}
-          >
-            Save
-          </Button>
-        </div>
-      </DialogActions>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => form.handleSubmit()}
+            >
+              Save
+            </Button>
+          </Box>
+        </Stack>
+      </Dialog.Actions>
     </Dialog>
   )
 }
