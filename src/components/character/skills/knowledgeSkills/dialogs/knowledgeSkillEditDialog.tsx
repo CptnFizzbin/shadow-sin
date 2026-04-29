@@ -25,7 +25,7 @@ interface KnowledgeSkillEditDialogProps {
 
 const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
 
-export const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
+const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   open,
   skill,
   onSave,

@@ -19,7 +19,7 @@ interface AdeptPowerFormDialogProps {
   onClosed?: () => void
 }
 
-export const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
+const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   open,
   power,
   onSave,

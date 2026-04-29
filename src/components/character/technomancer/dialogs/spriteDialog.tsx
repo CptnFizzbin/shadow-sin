@@ -23,7 +23,7 @@ interface SpriteDialogProps {
   onClosed?: () => void
 }
 
-export const SpriteDialog: FC<SpriteDialogProps> = ({
+const SpriteDialog: FC<SpriteDialogProps> = ({
   open,
   sprite,
   onSave,

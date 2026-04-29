@@ -19,7 +19,7 @@ interface LicenseFormDialogProps {
   sin?: SinData
 }
 
-export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
+const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   open,
   onClose,
   onClosed,

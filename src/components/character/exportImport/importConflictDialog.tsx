@@ -16,7 +16,7 @@ interface ImportConflictDialogProps {
   onClosed?: () => void
 }
 
-export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
+const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
   incomingCharacter,
   existingCharacter,
   onChoice,

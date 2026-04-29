@@ -22,7 +22,7 @@ interface WeaponAttackDialogProps {
   onClosed?: () => void
 }
 
-export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
+const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   weapon,
   open,
   onClose,

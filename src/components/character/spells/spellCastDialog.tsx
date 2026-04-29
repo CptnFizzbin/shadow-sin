@@ -20,7 +20,7 @@ interface SpellCastDialogProps {
   onClosed?: () => void
 }
 
-export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
+const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
   return (
     <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
       <Dialog.Title>{spell.name}</Dialog.Title>

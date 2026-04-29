@@ -23,7 +23,7 @@ interface BuyQuantityDialogProps {
   onPurchase: (quantity: number, totalCost: number) => void
 }
 
-export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
+const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   open,
   defaultCost,
   onClose,

@@ -4,7 +4,7 @@ import { AttributeKey, AttributeLabels, MentalAttributes, PhysicalAttributes } f
 
 import { SpiritType, SpiritTypeLabels } from "./spiritData.ts"
 
-export { SpiritType, SpiritTypeLabels }
+export { SpiritType }
 
 export const spiritTypeSelectOptions = Object.values(SpiritType).map((spiritType) => ({
   value: spiritType,

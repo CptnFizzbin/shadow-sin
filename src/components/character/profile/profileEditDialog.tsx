@@ -20,7 +20,7 @@ interface ProfileEditDialogProps {
   onClosed?: () => void
 }
 
-export const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
+const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
   open,
   onClose,
   onClosed,

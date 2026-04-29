@@ -35,7 +35,7 @@ interface Props {
   onClosed?: () => void
 }
 
-export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
+const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
   const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
 

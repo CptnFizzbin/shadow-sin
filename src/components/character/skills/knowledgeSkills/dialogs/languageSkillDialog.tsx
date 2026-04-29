@@ -23,7 +23,7 @@ interface LanguageSkillDialogProps {
   onClosed?: () => void
 }
 
-export const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
+const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   open,
   skill,
   onSave,

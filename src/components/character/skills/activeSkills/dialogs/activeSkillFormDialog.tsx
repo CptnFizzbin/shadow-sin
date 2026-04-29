@@ -45,7 +45,7 @@ const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax 
   label: String(i + 1),
 }))
 
-export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
+const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   open,
   skill,
   disabledSkills,
