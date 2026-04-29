@@ -36,7 +36,6 @@ function effectLabel(effects: GameEffectData[]): string {
   return parts.join(", ")
 }
 
-
 export const CombatHud: FC = () => {
   const damageStore = useDamageStore()
   const physicalCurrent = useSelector(damageStore, selectPhysicalCurrent)
@@ -55,22 +54,22 @@ export const CombatHud: FC = () => {
 
   const activeSources = useCharacterSheetSelector(
     (sheet) => {
-      const sources: { name: string, label: string }[] = []
+      const sources: { id: string, label: string }[] = []
       for (const spell of sheet.spells) {
         if (spell.sustained && spell.effects?.length) {
           const summary = effectLabel(spell.effects)
-          sources.push({ name: spell.name, label: summary ? `${spell.name} (${summary})` : spell.name })
+          sources.push({ id: spell.id, label: summary ? `${spell.name} (${summary})` : spell.name })
         }
       }
       for (const gear of Object.values(sheet.gear)) {
         if (gear.equipped && gear.effects?.length) {
           const summary = effectLabel(gear.effects)
-          sources.push({ name: gear.name, label: summary ? `${gear.name} (${summary})` : gear.name })
+          sources.push({ id: gear.id, label: summary ? `${gear.name} (${summary})` : gear.name })
         }
       }
       return sources
     },
-    (a, b) => a.length === b.length && a.every((v, i) => v.label === b[i].label),
+    (a, b) => a.length === b.length && a.every((v, i) => v.id === b[i].id),
   )
 
   const hasStatus =
@@ -118,7 +117,7 @@ export const CombatHud: FC = () => {
                 <Chip label={`+${totalExtraDice} Init dice`} color="success" size="small" variant="outlined" />
               )}
               {activeSources.map((source) => (
-                <Chip key={source.name} label={source.label} color="info" size="small" variant="outlined" />
+                <Chip key={source.id} label={source.label} color="info" size="small" variant="outlined" />
               ))}
             </Stack>
           </Stack>
