@@ -5,7 +5,6 @@ import { AttributesProvider } from "#/components/character/attributes/attributes
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
-// eslint-disable-next-line import-x/no-cycle
 import { useCharacterSheetSelector } from "./characterSheet.selectors.ts"
 
 /**
