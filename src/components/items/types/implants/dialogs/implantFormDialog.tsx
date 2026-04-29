@@ -2,10 +2,6 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
@@ -58,18 +54,15 @@ export type UseImplantFormProps = Omit<CyberwareFormDialogProps, "onSave">
 
 export const useImplantFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseImplantFormProps) => dialogApi.open<ImplantData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <ImplantFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(implant) => dialogProps.onClose(implant)}
-          />
-        </CharacterSheetProvider>
+        <ImplantFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(implant) => dialogProps.onClose(implant)}
+        />
       ),
     ),
   }

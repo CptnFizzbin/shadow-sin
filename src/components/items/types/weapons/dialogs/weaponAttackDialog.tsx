@@ -11,7 +11,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"

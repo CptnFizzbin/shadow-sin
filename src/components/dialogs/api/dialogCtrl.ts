@@ -55,3 +55,6 @@ export class DialogCtrl<TReturn> {
     return this.promise
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyDialogCtrl = DialogCtrl<any>

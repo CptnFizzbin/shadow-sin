@@ -176,7 +176,7 @@ reviewers can quickly verify the visual result without running the app locally. 
 commit
 
 - Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`, `vs`) or in tiny local scopes where a longer name reduces clarity.
-- One React component per `.tsx` file. Combine a tiny helper with the main component only when the helper is trivial and used exclusively by the parent (no props, pure presentational fragment). Otherwise, place each component in its own file and export it.
+- One React component per `.tsx` file. Every component — including small internal helpers — must have its own file. Do **not** define a second named component in the same file, even if it is only used by the component in that file.
 - Prefer functional React components using a named exported const with an explicit props interface (e.g. `export const Header: FC<Props> = ({ ... }) => { ... }`). Avoid class components and default anonymous exports.
 
 ## Formatting and tooling

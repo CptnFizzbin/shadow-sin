@@ -1,9 +1,11 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 // eslint-disable-next-line import-x/no-cycle
+import { CharacterAttributesProvider } from "./characterAttributesProvider.tsx"
 import { useCharacterSheetSelector } from "./characterSheet.selectors.ts"
 import type { CharacterSheetStore } from "./characterSheetStore.ts"
 
@@ -19,7 +21,9 @@ export const CharacterSheetProvider: FC<CharacterSheetProviderProps> = ({
 }) => {
   return (
     <CharacterSheetContext.Provider value={store}>
-      {children}
+      <CharacterAttributesProvider>
+        {children}
+      </CharacterAttributesProvider>
     </CharacterSheetContext.Provider>
   )
 }
@@ -30,9 +34,7 @@ export const useCharacterSheetContext = (): CharacterSheetStore => {
   const store = useContext(CharacterSheetContext)
 
   if (!store) {
-    throw new Error(
-      "useCharacterSheetContext must be used within a CharacterSheetProvider",
-    )
+    throw new OutOfContextError("useCharacterSheetContext", "CharacterSheetProvider")
   }
 
   return store

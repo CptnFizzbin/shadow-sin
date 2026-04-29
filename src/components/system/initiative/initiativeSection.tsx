@@ -13,9 +13,10 @@ import { useEffect, useRef, useState } from "react"
 
 import { selectEdgeCurrent } from "#/components/character/quickPanel/edgeSelectors.ts"
 import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
-import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
+import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { countHits } from "#/system/dice/diceRoll.ts"
+import { selectSettledDice } from "#/system/dice/diceRoller.selectors.ts"
 
 import { InitiativePassTracker } from "./initiativePassTracker.tsx"
 import { useInitiative } from "./useInitiative.ts"
@@ -41,7 +42,6 @@ export const InitiativeSection: FC = () => {
 
   const diceTray = useDiceTray()
   const trayOpen = useSelector(diceTray.store, (s) => s.open)
-  const trayResults = useSelector(diceTray.store, (s) => s.results)
   const isInitiativeRoll = useRef(false)
 
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(null)
@@ -53,11 +53,12 @@ export const InitiativeSection: FC = () => {
   useEffect(() => {
     if (!trayOpen && isInitiativeRoll.current) {
       isInitiativeRoll.current = false
-      if (trayResults !== null) {
-        initiativePassStore.setRolledResults(trayResults)
+      const settled = selectSettledDice(diceTray.roller.store.get())
+      if (settled.length > 0) {
+        initiativePassStore.setRolledResults(settled.map((d) => d.value))
       }
     }
-  }, [trayOpen, trayResults, initiativePassStore])
+  }, [trayOpen, diceTray.roller, initiativePassStore])
 
   const handleRollClick = () => {
     isInitiativeRoll.current = true

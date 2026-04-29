@@ -1,276 +1,128 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { DiceTrayApi } from "./diceTrayApi.ts"
-
-const ROLLING_DURATION_MS = 600
+import { TestType } from "./testType.ts"
 
 describe("DiceTrayApi", () => {
   let api: DiceTrayApi
 
   beforeEach(() => {
-    vi.useFakeTimers()
     api = new DiceTrayApi()
-  })
-
-  afterEach(() => {
-    api.destroy()
-    vi.useRealTimers()
-    vi.restoreAllMocks()
+    vi.spyOn(api.roller, "rollAll").mockResolvedValue(api.roller)
+    vi.spyOn(api.roller, "rollMisses").mockResolvedValue(api.roller)
+    vi.spyOn(api.roller, "addDice").mockReturnValue(api.roller)
+    vi.spyOn(api.roller, "rollDice").mockResolvedValue(api.roller)
+    vi.spyOn(api.roller, "reset").mockReturnValue(api.roller)
+    vi.spyOn(api.roller, "setPoolSize").mockReturnValue(api.roller)
   })
 
   // ─── setDice ───────────────────────────────────────────────────────────────
 
   describe("setDice", () => {
-    it("opens the tray with the given count and clears any previous results", () => {
-      // Arrange
-      api.roll(3)
-      api.rollStandard()
+    it("opens the tray, sets pool size, and clears edge state", () => {
+      api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
-      // Act
       api.setDice(8)
 
-      // Assert
       expect(api.store.state.open).toBe(true)
-      expect(api.store.state.diceCount).toBe(8)
-      expect(api.store.state.results).toBeNull()
-      expect(api.store.state.autoRoll).toBe(false)
+      expect(api.store.state.poolSize).toBe(8)
+      expect(api.store.state.edgeSpent).toBe(false)
     })
 
-    it("clamps count to a minimum of 1", () => {
-      // Arrange — no setup needed
-
-      // Act
+    it("clamps pool size to a minimum of 0", () => {
       api.setDice(0)
 
-      // Assert
-      expect(api.store.state.diceCount).toBe(1)
-    })
-  })
-
-  // ─── roll ──────────────────────────────────────────────────────────────────
-
-  describe("roll", () => {
-    it("opens with autoRoll true so the dialog can trigger the animation", () => {
-      // Arrange — no setup needed
-
-      // Act
-      api.roll(4)
-
-      // Assert
-      expect(api.store.state.open).toBe(true)
-      expect(api.store.state.diceCount).toBe(4)
-      expect(api.store.state.autoRoll).toBe(true)
-      expect(api.store.state.results).toBeNull()
-    })
-
-    it("clamps count to a minimum of 1", () => {
-      // Arrange — no setup needed
-
-      // Act
-      api.roll(0)
-
-      // Assert
-      expect(api.store.state.diceCount).toBe(1)
-    })
-  })
-
-  // ─── rollStandard ──────────────────────────────────────────────────────────
-
-  describe("rollStandard", () => {
-    it("sets isRolling to true immediately", () => {
-      // Arrange
-      api.setDice(3)
-
-      // Act
-      api.rollStandard()
-
-      // Assert
-      expect(api.store.state.isRolling).toBe(true)
-    })
-
-    it("sets isRolling to false after the rolling duration", () => {
-      // Arrange
-      api.setDice(3)
-
-      // Act
-      api.rollStandard()
-      vi.advanceTimersByTime(ROLLING_DURATION_MS)
-
-      // Assert
-      expect(api.store.state.isRolling).toBe(false)
-    })
-
-    it("stores results with length equal to diceCount", () => {
-      // Arrange
-      api.setDice(5)
-
-      // Act
-      api.rollStandard()
-
-      // Assert
-      expect(api.store.state.results).toHaveLength(5)
-    })
-
-    it("clears autoRoll once a roll starts", () => {
-      // Arrange
-      api.roll(3)
-
-      // Act
-      api.rollStandard()
-
-      // Assert
-      expect(api.store.state.autoRoll).toBe(false)
+      expect(api.store.state.poolSize).toBe(0)
     })
   })
 
   // ─── rollEdge ──────────────────────────────────────────────────────────────
 
   describe("rollEdge", () => {
-    it("produces at least diceCount results (extra dice from explosions are additive)", () => {
-      // Arrange
-      api.setDice(4)
+    it("marks edge as spent and delegates to the roller", () => {
+      api.rollEdge(3)
 
-      // Act
-      api.rollEdge()
-
-      // Assert
-      expect(api.store.state.results!.length).toBeGreaterThanOrEqual(4)
+      expect(api.store.state.edgeSpent).toBe(true)
+      expect(vi.mocked(api.roller.addDice)).toHaveBeenCalledWith(3)
     })
 
-    it("sets isRolling to true immediately", () => {
-      // Arrange
-      api.setDice(4)
+    it("is a no-op when edge is already spent", () => {
+      api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
-      // Act
-      api.rollEdge()
+      api.rollEdge(3)
 
-      // Assert
-      expect(api.store.state.isRolling).toBe(true)
-    })
-  })
-
-  // ─── rollSecondChance ──────────────────────────────────────────────────────
-
-  describe("rollSecondChance", () => {
-    it("re-rolls non-hits and preserves existing hits", () => {
-      // Arrange — [5, 6, 2, 3]: 2 hits, 2 misses; re-rolled misses mocked to 6
-      vi.spyOn(Math, "random").mockReturnValue(0.9999) // floor(0.9999 * 6) + 1 = 6
-      api.store.setState((prev) => ({ ...prev, results: [5, 6, 2, 3], open: true }))
-
-      // Act
-      api.rollSecondChance()
-
-      // Assert — 4 dice total, all now hits (2 kept + 2 rerolled 6s)
-      const results = api.store.state.results!
-      expect(results).toHaveLength(4)
-      expect(results.filter((r) => r >= 5)).toHaveLength(4)
+      expect(vi.mocked(api.roller.addDice)).not.toHaveBeenCalled()
     })
 
-    it("does nothing when there are no current results", () => {
-      // Arrange — tray open but no roll yet
-      api.setDice(4)
-      expect(api.store.state.results).toBeNull()
+    it("is a no-op when edge count is 0 or less", () => {
+      api.rollEdge(0)
 
-      // Act
-      api.rollSecondChance()
-
-      // Assert
-      expect(api.store.state.results).toBeNull()
-      expect(api.store.state.isRolling).toBe(false)
+      expect(api.store.state.edgeSpent).toBe(false)
+      expect(vi.mocked(api.roller.addDice)).not.toHaveBeenCalled()
     })
   })
 
-  // ─── setDiceCount ──────────────────────────────────────────────────────────
+  // ─── rerollMisses ─────────────────────────────────────────────────────────
 
-  describe("setDiceCount", () => {
-    it("updates the count and clears results so displayed dice match", () => {
-      // Arrange
-      api.setDice(4)
-      api.rollStandard()
-      expect(api.store.state.results).not.toBeNull()
+  describe("rerollMisses", () => {
+    it("marks edge as spent and delegates to the roller", () => {
+      api.rerollMisses()
 
-      // Act
-      api.setDiceCount(6)
-
-      // Assert
-      expect(api.store.state.diceCount).toBe(6)
-      expect(api.store.state.results).toBeNull()
+      expect(api.store.state.edgeSpent).toBe(true)
+      expect(vi.mocked(api.roller.rollMisses)).toHaveBeenCalled()
     })
 
-    it("clamps count to a minimum of 1", () => {
-      // Arrange — no setup needed
+    it("is a no-op when edge is already spent", () => {
+      api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
 
-      // Act
-      api.setDiceCount(0)
+      api.rerollMisses()
 
-      // Assert
-      expect(api.store.state.diceCount).toBe(1)
+      expect(vi.mocked(api.roller.rollMisses)).not.toHaveBeenCalled()
     })
   })
 
   // ─── close ────────────────────────────────────────────────────────────────
 
   describe("close", () => {
-    it("sets open to false and stops an in-progress animation", () => {
-      // Arrange
-      api.setDice(3)
-      api.rollStandard()
-      expect(api.store.state.isRolling).toBe(true)
-
-      // Act
+    it("sets open to false", () => {
+      api.open()
       api.close()
 
-      // Assert
       expect(api.store.state.open).toBe(false)
-      expect(api.store.state.isRolling).toBe(false)
-    })
-
-    it("cancels the reveal timer so it does not fire after close", () => {
-      // Arrange
-      api.setDice(3)
-      api.rollStandard()
-      api.close()
-
-      // Act
-      vi.advanceTimersByTime(ROLLING_DURATION_MS)
-
-      // Assert — isRolling stays false; the timer did not re-set it
-      expect(api.store.state.isRolling).toBe(false)
     })
   })
 
-  // ─── startRoll (timer de-duplication) ─────────────────────────────────────
+  // ─── reset ────────────────────────────────────────────────────────────────
 
-  describe("startRoll timer cancellation", () => {
-    it("a second roll before the timer fires cancels the first timer", () => {
-      // Arrange
-      api.setDice(3)
-      api.rollStandard()
+  describe("reset", () => {
+    it("clears edgeSpent and extendedHistory", () => {
+      api.store.setState((prev) => ({
+        ...prev,
+        edgeSpent: true,
+        extendedHistory: [{ hits: 2, edgeUsed: false }],
+      }))
 
-      // Act — second roll before the first timer fires
-      api.rollStandard()
-      vi.advanceTimersByTime(ROLLING_DURATION_MS)
+      api.reset()
 
-      // Assert — exactly one timer fired; isRolling is false
-      expect(api.store.state.isRolling).toBe(false)
+      expect(api.store.state.edgeSpent).toBe(false)
+      expect(api.store.state.extendedHistory).toHaveLength(0)
     })
   })
 
-  // ─── destroy ──────────────────────────────────────────────────────────────
+  // ─── setTestType ──────────────────────────────────────────────────────────
 
-  describe("destroy", () => {
-    it("cancels the rolling timer so it does not fire after cleanup", () => {
-      // Arrange
-      api.setDice(3)
-      api.rollStandard()
-      expect(api.store.state.isRolling).toBe(true)
+  describe("setTestType", () => {
+    it("resets state while preserving poolSize, physicalMode, and open", () => {
+      api.setDice(10)
+      api.store.setState((prev) => ({ ...prev, edgeSpent: true, physicalMode: true }))
 
-      // Act
-      api.destroy()
-      vi.advanceTimersByTime(ROLLING_DURATION_MS)
+      api.setTestType(TestType.Extended)
 
-      // Assert — timer was cancelled; isRolling was not changed to false by the timer
-      expect(api.store.state.isRolling).toBe(true)
+      expect(api.store.state.testType).toBe(TestType.Extended)
+      expect(api.store.state.poolSize).toBe(10)
+      expect(api.store.state.physicalMode).toBe(true)
+      expect(api.store.state.open).toBe(true)
+      expect(api.store.state.edgeSpent).toBe(false)
     })
   })
 })
