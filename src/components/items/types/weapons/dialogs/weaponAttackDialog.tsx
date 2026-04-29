@@ -1,8 +1,5 @@
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
-import Dialog from "@mui/material/Dialog"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
@@ -12,6 +9,7 @@ import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import type { FirearmData, WeaponData } from "#/system/gear/weaponData.ts"
@@ -38,9 +36,9 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   )
 
   return (
-    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
-      <DialogTitle variant="h3">{weapon.name}</DialogTitle>
-      <DialogContent sx={{ pt: 1 }}>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
+      <Dialog.Title>{weapon.name}</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
           {isFirearm && firearm && firearm.firemodes.length > 0 && (
             <Stack sx={{ gap: 0.5 }}>
@@ -96,7 +94,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
             Close
           </Button>
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   )
 }

@@ -1,7 +1,3 @@
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
@@ -20,6 +16,7 @@ import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -136,10 +133,10 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   return (
-    <Dialog open={open} fullWidth onClose={onClose} slotProps={{ transition: { onExited: onClosed } }}>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+      <Dialog.Title>{title}</Dialog.Title>
 
-      <DialogContent sx={{ padding: 1 }}>
+      <Dialog.Content>
         <Stack sx={{ gap: 1, padding: 1 }}>
           {slots?.preForm?.()}
 
@@ -227,9 +224,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
             <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
           )}
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ padding: 1 }}>
+      <Dialog.Actions>
         <form.Subscribe
           selector={(state) => getCost
             ? getCost(state.values)
@@ -247,7 +244,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
             />
           )}
         </form.Subscribe>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

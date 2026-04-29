@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/character/adeptPowers/form/adeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAdeptPowerForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
@@ -51,16 +48,15 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{ transition: { onExited: handleClosed } }}
-      fullWidth
+      onClosed={handleClosed}
       maxWidth="sm"
     >
 
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <AdeptPowerFormFields form={form} />
-      </DialogContent>
-      <DialogActions>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
           <Box>
             {onDelete && (
@@ -83,7 +79,7 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
             </Button>
           </Box>
         </Stack>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

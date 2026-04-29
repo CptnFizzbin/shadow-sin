@@ -1,8 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
@@ -16,6 +12,7 @@ import {
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 interface ProfileEditDialogProps {
   open: boolean
@@ -60,10 +57,10 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} fullWidth maxWidth="sm" slotProps={{ transition: { onExited: onClosed } }}>
-      <DialogTitle sx={{ padding: 1 }}>Edit Profile</DialogTitle>
+    <Dialog open={open} onClosed={onClosed}>
+      <Dialog.Title>Edit Profile</Dialog.Title>
 
-      <DialogContent sx={{ padding: 1 }}>
+      <Dialog.Content>
         <Stack divider={<Divider />} sx={{ gap: 2, padding: 1 }}>
           <Stack sx={{ gap: 1 }}>
             <Typography variant="subtitle2">Profile</Typography>
@@ -155,16 +152,16 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
             </Stack>
           </Stack>
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ padding: 1 }}>
+      <Dialog.Actions>
         <Button color="secondary" onClick={onClose}>
           Cancel
         </Button>
         <Button color="secondary" variant="contained" onClick={handleSave}>
           Save
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

@@ -1,8 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
@@ -14,6 +10,7 @@ import { useState } from "react"
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LoanData } from "#/system/loanData.ts"
@@ -94,9 +91,9 @@ const LoanDialog: FC<LoanDialogProps> = ({
   const title = isEditMode ? "Edit Loan" : "Add Loan"
 
   return (
-    <Dialog open={open} slotProps={{ transition: { onExited: handleClosed } }} fullWidth>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+    <Dialog open={open} onClosed={handleClosed}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>
           <TextField
             label="Lender"
@@ -185,8 +182,8 @@ const LoanDialog: FC<LoanDialogProps> = ({
             </>
           )}
         </Stack>
-      </DialogContent>
-      <DialogActions sx={{ padding: 1, flexWrap: "wrap", gap: 1 }}>
+      </Dialog.Content>
+      <Dialog.Actions>
         {isEditMode && !showPayoffConfirm && !showRemoveConfirm && (
           <>
             <Button
@@ -221,7 +218,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
             </Button>
           </>
         )}
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }
