@@ -18,7 +18,7 @@ import { Route as SpritesRoute } from "#/routes/$characterId/sprites.tsx"
 import { Route as VehiclesRoute } from "#/routes/$characterId/vehicles.tsx"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
-export enum SectionKey {
+enum SectionKey {
   about = "about",
   licenses = "licenses",
   defense = "defense",

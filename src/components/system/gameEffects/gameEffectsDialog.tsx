@@ -23,7 +23,7 @@ export type GameEffectsDialogProps = DialogApiDialogProps<GameEffectData[]> & {
   initialEffects: GameEffectData[]
 }
 
-export const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
+const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   open,
   onClose,
   onClosed,

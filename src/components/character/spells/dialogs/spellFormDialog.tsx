@@ -22,7 +22,7 @@ interface SpellFormDialogProps {
   onClosed?: () => void
 }
 
-export const SpellFormDialog: FC<SpellFormDialogProps> = ({
+const SpellFormDialog: FC<SpellFormDialogProps> = ({
   open,
   spell,
   onSave,
