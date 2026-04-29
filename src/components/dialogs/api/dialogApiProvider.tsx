@@ -1,6 +1,8 @@
 import { useSelector } from "@tanstack/react-store"
 import type { FC, PropsWithChildren } from "react"
-import { createContext, Fragment, useContext } from "react"
+import { Fragment, createContext, useContext } from "react"
+
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
 import type { DialogApi } from "./dialogApi.ts"
 import { selectAllDialogs } from "./dialogApiSelectors.ts"
@@ -19,9 +21,7 @@ export const DialogApiProvider: FC<DialogApiProviderProps> = ({ dialogApi, child
       {children}
 
       {Object.entries(dialogsMap).map(([key, dialog]) => (
-        <Fragment key={key}>
-          {dialog}
-        </Fragment>
+        <Fragment key={key}>{dialog}</Fragment>
       ))}
     </DialogApiContext.Provider>
   )
@@ -31,7 +31,7 @@ export const useDialogApi = () => {
   const dialogApi = useContext(DialogApiContext)
 
   if (!dialogApi) {
-    throw new Error("useDialogApi must be used within DialogApiProvider")
+    throw new OutOfContextError("useDialogApi", "DialogApiProvider")
   }
 
   return dialogApi

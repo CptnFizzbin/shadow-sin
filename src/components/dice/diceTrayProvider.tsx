@@ -1,5 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
+
 import type { DiceTrayApi } from "./diceTrayApi.ts"
 import { DiceTrayContext, useDiceTray } from "./diceTrayContext.ts"
 import { DiceTrayDialog } from "./diceTrayDialog.tsx"
@@ -29,5 +31,3 @@ export const DiceTrayProvider: FC<DiceTrayProviderProps> = ({ diceTrayApi, child
     </DiceTrayContext.Provider>
   )
 }
-
-export { useDiceTray }

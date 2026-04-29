@@ -2,10 +2,6 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
@@ -68,18 +64,15 @@ export type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "open" | "o
 
 export const useProgramFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseProgramFormDialogProps) => dialogApi.open<ProgramData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <ProgramFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(program) => dialogProps.onClose(program)}
-          />
-        </CharacterSheetProvider>
+        <ProgramFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(program) => dialogProps.onClose(program)}
+        />
       ),
     ),
   }

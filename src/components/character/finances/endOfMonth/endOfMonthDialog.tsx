@@ -18,10 +18,6 @@ import { selectLoans } from "#/components/character/finances/nuyen/nuyenSelector
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
@@ -204,17 +200,14 @@ export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
 
 export const useEndOfMonthDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: () => dialogApi.open<void>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <EndOfMonthDialog
-            {...dialogProps}
-            onClose={() => dialogProps.onClose()}
-          />
-        </CharacterSheetProvider>
+        <EndOfMonthDialog
+          {...dialogProps}
+          onClose={() => dialogProps.onClose()}
+        />
       ),
     ),
   }
