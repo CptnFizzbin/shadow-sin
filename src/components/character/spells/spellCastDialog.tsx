@@ -8,10 +8,6 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
@@ -98,18 +94,15 @@ export interface UseSpellCastDialogProps {
 
 export const useSpellCastDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <SpellCastDialog
-            {...dialogProps}
-            spell={props.spell}
-            onClose={() => dialogProps.onClose()}
-          />
-        </CharacterSheetProvider>
+        <SpellCastDialog
+          {...dialogProps}
+          spell={props.spell}
+          onClose={() => dialogProps.onClose()}
+        />
       ),
     ),
   }

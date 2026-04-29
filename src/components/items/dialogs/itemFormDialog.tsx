@@ -1,9 +1,5 @@
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
@@ -61,18 +57,15 @@ export type UseItemFormDialogProps = Omit<ItemFormDialogProps, "open" | "onClose
 
 export const useItemFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseItemFormDialogProps) => dialogApi.open<ItemData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <ItemFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(item) => dialogProps.onClose(item)}
-          />
-        </CharacterSheetProvider>
+        <ItemFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(item) => dialogProps.onClose(item)}
+        />
       ),
     ),
   }

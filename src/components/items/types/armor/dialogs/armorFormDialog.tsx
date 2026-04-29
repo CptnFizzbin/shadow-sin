@@ -1,9 +1,5 @@
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
@@ -55,18 +51,15 @@ export type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "open" | "onClo
 
 export const useArmorFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseArmorFormDialogProps) => dialogApi.open<ArmorData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <ArmorFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(armor) => dialogProps.onClose(armor)}
-          />
-        </CharacterSheetProvider>
+        <ArmorFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(armor) => dialogProps.onClose(armor)}
+        />
       ),
     ),
   }

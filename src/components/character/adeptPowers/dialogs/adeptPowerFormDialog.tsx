@@ -9,10 +9,6 @@ import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/character/adeptPowers/form/adeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAdeptPowerForm.ts"
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
@@ -99,19 +95,16 @@ export interface UseAdeptPowerFormDialogProps {
 
 export const useAdeptPowerFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseAdeptPowerFormDialogProps) => dialogApi.open<AdeptPowerData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <AdeptPowerFormDialog
-            {...dialogProps}
-            power={props?.power}
-            onDelete={props?.onDelete}
-            onSave={(power) => dialogProps.onClose(power)}
-          />
-        </CharacterSheetProvider>
+        <AdeptPowerFormDialog
+          {...dialogProps}
+          power={props?.power}
+          onDelete={props?.onDelete}
+          onSave={(power) => dialogProps.onClose(power)}
+        />
       ),
     ),
   }

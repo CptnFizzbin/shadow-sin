@@ -2,10 +2,6 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useVehicleForm, vehicleFieldMap } from "#/components/items/types/vehicles/forms/useVehicleForm.tsx"
@@ -86,18 +82,15 @@ export type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "open" | "o
 
 export const useVehicleFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseVehicleFormDialogProps) => dialogApi.open<VehicleData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <VehicleFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(vehicle) => dialogProps.onClose(vehicle)}
-          />
-        </CharacterSheetProvider>
+        <VehicleFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(vehicle) => dialogProps.onClose(vehicle)}
+        />
       ),
     ),
   }
