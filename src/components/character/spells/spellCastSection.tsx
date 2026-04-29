@@ -35,10 +35,9 @@ import { SpellcastingDicePool } from "./spellcastingDicePool.tsx"
 interface SpellCastSectionProps {
   spell: SpellData
   onClose: () => void
-  onRoll: (count: number) => void
 }
 
-export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, onRoll }) => {
+export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
   const magicAttr = useAttr(AttributeKey.magic)
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
@@ -112,10 +111,10 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, on
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>
-            <SpellcastingDicePool onRoll={onRoll} />
+            <SpellcastingDicePool />
           </Grid>
           <Grid size={1}>
-            <DrainResistanceDicePool drainAttribute={drainAttribute} onRoll={onRoll} />
+            <DrainResistanceDicePool drainAttribute={drainAttribute} />
           </Grid>
         </Grid>
 

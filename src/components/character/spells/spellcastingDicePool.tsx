@@ -5,11 +5,7 @@ import { useActiveSkillDiceGroup, useAttrDiceGroup, useGeneralPenaltyDiceGroup, 
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-interface SpellcastingDicePoolProps {
-  onRoll?: (count: number) => void
-}
-
-export const SpellcastingDicePool: FC<SpellcastingDicePoolProps> = ({ onRoll }) => {
+export const SpellcastingDicePool: FC = () => {
   const magicGroup = useAttrDiceGroup(AttributeKey.magic)
   const spellcastingGroup = useActiveSkillDiceGroup(SkillKey.spellcasting)
   const woundGroup = useWoundDiceGroup()
@@ -18,7 +14,6 @@ export const SpellcastingDicePool: FC<SpellcastingDicePoolProps> = ({ onRoll }) 
     <DicePool
       name="Spellcasting"
       groups={[magicGroup, spellcastingGroup, woundGroup, useGeneralPenaltyDiceGroup()]}
-      onRoll={onRoll}
     />
   )
 }

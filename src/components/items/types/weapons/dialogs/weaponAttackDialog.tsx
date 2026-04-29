@@ -11,7 +11,6 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
@@ -23,7 +22,6 @@ interface WeaponAttackDialogProps {
   open: boolean
   onClose: () => void
   onClosed?: () => void
-  onRoll?: (count: number) => void
 }
 
 export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
@@ -31,7 +29,6 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   open,
   onClose,
   onClosed,
-  onRoll,
 }) => {
   const isFirearm = isFirearmData(weapon)
   const firearm = isFirearm ? (weapon as FirearmData) : undefined
@@ -93,7 +90,7 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
 
           <Divider />
 
-          <AttackDicePool weapon={weapon} onRoll={onRoll} />
+          <AttackDicePool weapon={weapon} />
 
           <Button onClick={onClose} color="secondary" size="small">
             Close
@@ -104,22 +101,19 @@ export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   )
 }
 
-export type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed" | "onRoll">
+export type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed">
 
 export const useWeaponAttackDialog = () => {
   const dialogApi = useDialogApi()
-  const diceTray = useDiceTray()
 
   return {
     open: (props: UseWeaponAttackDialogProps) => {
-      const onRoll = (count: number) => diceTray.setDice(count)
       dialogApi.open<void>(
         (dialogProps) => (
           <WeaponAttackDialog
             {...dialogProps}
             {...props}
             onClose={() => dialogProps.onClose()}
-            onRoll={onRoll}
           />
         ),
       )

@@ -1,5 +1,8 @@
 import Box from "@mui/material/Box"
 import type { FC } from "react"
+import { useContext } from "react"
+
+import { DiceTrayContext } from "#/components/dice/diceTrayContext.ts"
 
 import type { DiceGroupList } from "./diceGroup.tsx"
 import { isDiceGroup } from "./diceGroup.tsx"
@@ -9,10 +12,10 @@ import { getPoolSize } from "./dicePoolData.tsx"
 interface DicePoolProps {
   name: string
   groups: DiceGroupList
-  onRoll?: (count: number) => void
 }
 
-export const DicePool: FC<DicePoolProps> = ({ name, groups, onRoll }) => {
+export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
+  const diceTray = useContext(DiceTrayContext)
   const diceGroups = groups.flat().filter(isDiceGroup)
 
   const total = getPoolSize(diceGroups)
@@ -23,7 +26,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups, onRoll }) => {
         name={name}
         size={total}
         total
-        onClick={onRoll ? () => onRoll(total) : undefined}
+        onClick={diceTray ? () => diceTray.setDice(total) : undefined}
       />
 
       {diceGroups.map((group) => (

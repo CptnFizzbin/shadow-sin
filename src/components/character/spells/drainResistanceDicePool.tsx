@@ -6,10 +6,9 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface DrainResistanceDicePoolProps {
   drainAttribute: AttributeKey
-  onRoll?: (count: number) => void
 }
 
-export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute, onRoll }) => {
+export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drainAttribute }) => {
   const willpowerGroup = useAttrDiceGroup(AttributeKey.willpower)
   const drainAttrGroup = useAttrDiceGroup(drainAttribute)
 
@@ -23,7 +22,6 @@ export const DrainResistanceDicePool: FC<DrainResistanceDicePoolProps> = ({ drai
     <DicePool
       name="Drain Resistance"
       groups={[willpowerGroup, resolvedDrainAttrGroup]}
-      onRoll={onRoll}
     />
   )
 }
