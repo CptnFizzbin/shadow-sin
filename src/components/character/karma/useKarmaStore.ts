@@ -6,8 +6,6 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { KarmaStore } from "./karmaStore.ts"
 
-export { KarmaStore } from "#/components/character/karma/karmaStore.ts"
-
 export function useKarmaStore() {
   const store = useCharacterSheetContext()
 

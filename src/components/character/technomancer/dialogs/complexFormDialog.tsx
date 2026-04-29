@@ -23,7 +23,7 @@ interface ComplexFormDialogProps {
   onClosed?: () => void
 }
 
-export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
+const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   open,
   form,
   maxRating,

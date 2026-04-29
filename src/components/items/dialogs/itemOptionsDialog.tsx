@@ -19,7 +19,7 @@ interface ItemOptionsDialogProps {
   onChange: (updated: Record<string, boolean>) => void
 }
 
-export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
+const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   open,
   onClose,
   onClosed,

@@ -11,8 +11,7 @@ import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
 
-// eslint-disable-next-line import-x/no-cycle
-import { useCharacterSheetContext } from "./characterSheetProvider.tsx"
+import { useCharacterSheetContext } from "./characterSheetContext.ts"
 
 export type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
@@ -33,7 +32,7 @@ export const selectAwakening: CharacterDataSelector<AwakeningData> = createSelec
   (awakening) => awakenings[awakening],
 )
 
-export const selectMetatypeKey: CharacterDataSelector<MetatypeType> = (state) => {
+const selectMetatypeKey: CharacterDataSelector<MetatypeType> = (state) => {
   return state.biology.metatype
 }
 

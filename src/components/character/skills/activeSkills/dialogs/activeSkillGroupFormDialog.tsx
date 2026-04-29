@@ -34,7 +34,7 @@ const ratingOptions = Array.from(
   (_, i) => i + 1,
 )
 
-export const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
+const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   open,
   group,
   disabledGroups,

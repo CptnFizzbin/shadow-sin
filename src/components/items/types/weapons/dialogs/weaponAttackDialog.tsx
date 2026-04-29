@@ -26,7 +26,7 @@ interface WeaponAttackDialogProps {
   onRoll?: (count: number) => void
 }
 
-export const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
+const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   weapon,
   open,
   onClose,
