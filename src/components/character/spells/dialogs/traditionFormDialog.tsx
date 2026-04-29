@@ -24,7 +24,7 @@ interface TraditionFormDialogProps {
   onClosed?: () => void
 }
 
-export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
+const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   open,
   tradition,
   onSave,

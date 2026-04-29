@@ -22,7 +22,7 @@ export class SpellsStore extends StoreSlice<SpellsStoreState> {
     this.set((prev) => prev.filter((s) => s.id !== spellId))
   }
 
-  toggleSustained(spell: SpellData): void {
+  setSustained(spell: SpellData): void {
     this.set((prev) => prev.map((s) => s.id === spell.id ? { ...s, sustained: !s.sustained } : s))
   }
 

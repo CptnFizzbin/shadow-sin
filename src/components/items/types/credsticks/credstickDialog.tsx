@@ -40,7 +40,7 @@ interface CredstickDialogProps {
   onClosed?: () => void
 }
 
-export const CredstickDialog: FC<CredstickDialogProps> = ({
+const CredstickDialog: FC<CredstickDialogProps> = ({
   open,
   mode,
   credstick,

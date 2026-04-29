@@ -13,7 +13,7 @@ import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attribu
 import { useCharacterSheet } from "./sheet/characterSheetProvider.tsx"
 
 // Re-exported for convenience — see attributesProvider.tsx for full documentation.
-export { useAllAttrInfos, useAttrInfo, useAttrValue }
+export { useAllAttrInfos, useAttrInfo }
 
 /**
  * Hook to retrieve the current value of an attribute.

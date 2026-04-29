@@ -22,7 +22,7 @@ interface QualityFormDialogProps {
   onClosed?: () => void
 }
 
-export const QualityFormDialog: FC<QualityFormDialogProps> = ({
+const QualityFormDialog: FC<QualityFormDialogProps> = ({
   open,
   quality,
   onSave,

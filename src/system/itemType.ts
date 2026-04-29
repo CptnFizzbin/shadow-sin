@@ -2,7 +2,6 @@ export enum ItemType {
   armor = "armor",
   implant = "implant",
   firearm = "firearm",
-  lifestyle = "lifestyle",
   software = "software",
   vehicle = "vehicle",
   weapon = "weapon",

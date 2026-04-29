@@ -23,7 +23,7 @@ interface ContactFormDialogProps {
   onClosed?: () => void
 }
 
-export const ContactFormDialog: FC<ContactFormDialogProps> = ({
+const ContactFormDialog: FC<ContactFormDialogProps> = ({
   open,
   contact,
   onSaved,
