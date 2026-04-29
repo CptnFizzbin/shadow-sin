@@ -15,7 +15,7 @@ interface ViewSkillDialogProps extends DialogProps {
   dicePools?: (false | DicePoolData)[]
 }
 
-export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
+const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
   name,
   dicePools = [],
   body,

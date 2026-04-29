@@ -15,7 +15,7 @@ export interface AddKarmaDialogProps extends DialogApiDialogProps {
   onSubmit: (amount: number) => void
 }
 
-export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
+const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
   open = true,
   onClose,
   onClosed,

@@ -1,7 +1,7 @@
 import type { SelectorArray, UnknownMemoizer, weakMapMemoize } from "reselect"
 import { createSelector } from "reselect"
 
-export const currySelector = <
+const currySelector = <
   State,
   Result,
   Params extends readonly unknown[],

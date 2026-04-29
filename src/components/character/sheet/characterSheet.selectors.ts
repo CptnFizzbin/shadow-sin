@@ -30,7 +30,7 @@ export const selectAwakening: CharacterDataSelector<AwakeningData> = createSelec
   (awakening) => awakenings[awakening],
 )
 
-export const selectMetatypeKey: CharacterDataSelector<MetatypeType> = (state) => {
+const selectMetatypeKey: CharacterDataSelector<MetatypeType> = (state) => {
   return state.biology.metatype
 }
 

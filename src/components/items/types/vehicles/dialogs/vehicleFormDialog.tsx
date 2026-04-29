@@ -18,7 +18,7 @@ interface VehicleFormDialogProps {
   onSave: (vehicle: VehicleData) => void
 }
 
-export const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
+const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
   open,
   vehicle,
   vehicleCategory,

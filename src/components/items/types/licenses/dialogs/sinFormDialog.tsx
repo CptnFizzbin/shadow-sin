@@ -15,7 +15,7 @@ interface SinFormDialogProps {
   sin?: SinData
 }
 
-export const SinFormDialog: FC<SinFormDialogProps> = ({
+const SinFormDialog: FC<SinFormDialogProps> = ({
   open,
   sin,
   onClose,
