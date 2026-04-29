@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": [
+    "src/index.{ts,tsx,js,jsx}",
+    "src/main.{ts,tsx,js,jsx}"
+  ],
+  "rules": {
+    "unused-dependencies": "warn"
+  },
+  "ignorePatterns": [
+    "**/*.gen.ts"
+  ],
+  "ignoreDependencies": [
+    "@tanstack/router-core",
+    "jiti"
+  ]
+}

@@ -35,7 +35,7 @@ const defaultLoanValues = (): Omit<LoanData, "id"> => ({
   notes: "",
 })
 
-export const LoanDialog: FC<LoanDialogProps> = ({
+const LoanDialog: FC<LoanDialogProps> = ({
   open,
   mode,
   loan,
