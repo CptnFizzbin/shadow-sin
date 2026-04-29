@@ -7,7 +7,7 @@ import Popover from "@mui/material/Popover"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiDiceLine, RiFlashlightLine, RiMore2Line } from "@remixicon/react"
-import { useStore } from "@tanstack/react-store"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
@@ -37,11 +37,11 @@ export const InitiativeSection: FC = () => {
   const totalPasses = basePasses + extraPasses
 
   const edgeStore = useEdgeStore()
-  const edgeCurrent = useStore(edgeStore, selectEdgeCurrent)
+  const edgeCurrent = useSelector(edgeStore, selectEdgeCurrent)
 
   const diceTray = useDiceTray()
-  const trayOpen = useStore(diceTray.store, (s) => s.open)
-  const trayResults = useStore(diceTray.store, (s) => s.results)
+  const trayOpen = useSelector(diceTray.store, (s) => s.open)
+  const trayResults = useSelector(diceTray.store, (s) => s.results)
   const isInitiativeRoll = useRef(false)
 
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(null)
