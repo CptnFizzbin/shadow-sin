@@ -10,7 +10,11 @@ metadata:
 
 # Fallow: codebase intelligence for JavaScript and TypeScript
 
-Codebase intelligence for JavaScript and TypeScript. The free static layer finds unused code, circular dependencies, code duplication, complexity hotspots, architecture boundary violations, and feature flag patterns. The optional paid runtime layer (Fallow Runtime) merges production execution data into the same `fallow health` report for hot-path review, cold-path deletion confidence, and stale-flag evidence. 90 framework plugins, zero configuration, sub-second static analysis.
+Codebase intelligence for JavaScript and TypeScript. The free static layer finds unused code, circular dependencies,
+code duplication, complexity hotspots, architecture boundary violations, and feature flag patterns. The optional paid
+runtime layer (Fallow Runtime) merges production execution data into the same `fallow health` report for hot-path
+review, cold-path deletion confidence, and stale-flag evidence. 90 framework plugins, zero configuration, sub-second
+static analysis.
 
 ## When to Use
 
@@ -34,23 +38,15 @@ Codebase intelligence for JavaScript and TypeScript. The free static layer finds
 - Bundle size analysis
 - Projects that are not JavaScript or TypeScript
 
-## Prerequisites
-
-Fallow must be installed. If not available, install it:
-
-```bash
-npm install -g fallow          # prebuilt binaries (fastest)
-# or
-npx fallow dead-code               # run without installing
-# or
-cargo install fallow-cli        # build from source
-```
-
 ## Agent Rules
 
-1. **Always use `--format json --quiet 2>/dev/null`** for machine-readable output. The `2>/dev/null` discards stderr so progress messages and threshold warnings don't corrupt the JSON on stdout. Never use `2>&1`
-2. **Always append `|| true`** to every fallow command. Exit code 1 means "issues found" (normal), not a runtime error. Without `|| true`, the Bash tool treats exit 1 as failure and cancels parallel commands. Only exit code 2 is a real error (invalid config, parse failure)
-3. **Use `--explain`** to include a `_meta` object in JSON output with metric definitions, ranges, and interpretation hints
+1. **Always use `--format json --quiet 2>/dev/null`** for machine-readable output. The `2>/dev/null` discards stderr so
+   progress messages and threshold warnings don't corrupt the JSON on stdout. Never use `2>&1`
+2. **Always append `|| true`** to every fallow command. Exit code 1 means "issues found" (normal), not a runtime error.
+   Without `|| true`, the Bash tool treats exit 1 as failure and cancels parallel commands. Only exit code 2 is a real
+   error (invalid config, parse failure)
+3. **Use `--explain`** to include a `_meta` object in JSON output with metric definitions, ranges, and interpretation
+   hints
 4. **Use issue type filters** (`--unused-exports`, `--unused-files`, etc.) to limit output scope
 5. **Always `--dry-run` before `fix`**, then `fix --yes` to apply
 6. **All output paths are relative** to the project root
@@ -58,89 +54,70 @@ cargo install fallow-cli        # build from source
 
 ## Commands
 
-| Command | Purpose | Key Flags |
-|---------|---------|-----------|
-| `fallow` | Run all analyses: dead code + duplication + complexity (default) | `--only`, `--skip`, `--production`, `--production-dead-code`, `--production-health`, `--production-dupes`, `--ci`, `--fail-on-issues`, `--group-by`, `--summary`, `--fail-on-regression`, `--tolerance`, `--regression-baseline`, `--save-regression-baseline`, `--score`, `--trend`, `--save-snapshot` |
-| `dead-code` | Dead code analysis (`check` is an alias) | `--unused-exports`, `--changed-since`, `--changed-workspaces`, `--production`, `--file`, `--include-entry-exports`, `--stale-suppressions`, `--ci`, `--group-by`, `--summary`, `--fail-on-regression`, `--tolerance`, `--regression-baseline`, `--save-regression-baseline` |
-| `dupes` | Code duplication detection | `--mode`, `--threshold`, `--top`, `--changed-since`, `--workspace`, `--changed-workspaces`, `--skip-local`, `--cross-language`, `--ignore-imports`, `--fail-on-regression`, `--tolerance`, `--regression-baseline`, `--save-regression-baseline` |
-| `fix` | Auto-remove unused exports/deps | `--dry-run`, `--yes` (required in non-TTY) |
-| `init` | Generate config file or pre-commit hook | `--toml`, `--hooks`, `--branch` |
-| `migrate` | Convert knip/jscpd config | `--dry-run`, `--from PATH` |
-| `list` | Inspect project structure | `--files`, `--entry-points`, `--plugins`, `--boundaries` |
-| `health` | Function complexity analysis (also covers Angular templates as synthetic `<template>` findings: external `.html` files via `templateUrl` AND inline `@Component({ template: \`...\` })` literals; suppress external with `<!-- fallow-ignore-file complexity -->` at the top of the `.html` file, suppress inline with `// fallow-ignore-next-line complexity` directly above the `@Component` decorator) | `--complexity`, `--max-cyclomatic`, `--max-cognitive`, `--max-crap`, `--top`, `--sort`, `--file-scores`, `--hotspots`, `--ownership`, `--ownership-emails`, `--targets`, `--effort`, `--score`, `--min-score`, `--since`, `--min-commits`, `--save-snapshot`, `--trend`, `--coverage-gaps`, `--coverage`, `--coverage-root`, `--runtime-coverage`, `--min-invocations-hot`, `--min-observation-volume`, `--low-traffic-threshold`, `--workspace`, `--changed-workspaces`, `--baseline`, `--save-baseline` |
-| `audit` | Combined dead-code + complexity + duplication for changed files | `--base`, `--production`, `--production-dead-code`, `--production-health`, `--production-dupes`, `--workspace`, `--changed-workspaces`, `--ci`, `--fail-on-issues`, `--explain`, `--dead-code-baseline`, `--health-baseline`, `--dupes-baseline`, `--max-crap` |
-| `flags` | Detect feature flag patterns (env vars, SDK calls, config objects) | `--top` |
-| `license` | Manage the local license JWT for paid features (activate, status, refresh, deactivate) | `activate --trial --email <addr>`, `activate --from-file`, `activate --stdin`, `status`, `refresh`, `deactivate` |
-| `coverage` | Production-coverage workflow helper (paid) | `setup`, `setup --yes`, `setup --non-interactive` |
-| `schema` | Dump CLI definition as JSON | |
-| `config` | Show the loaded config path and resolved config (verifies which `.fallowrc.json` is in effect) | `--path` |
+- **`yarn fallow`** — Run all analyses: dead code + duplication + complexity (default)
+  - Key flags: `--only`, `--skip`, `--production`, `--production-dead-code`, `--production-health`,
+    `--production-dupes`, `--ci`, `--fail-on-issues`, `--group-by`, `--summary`, `--fail-on-regression`, `--tolerance`,
+    `--regression-baseline`, `--save-regression-baseline`, `--score`, `--trend`, `--save-snapshot`
+- **`dead-code`** — Dead code analysis (`check` is an alias)
+  - Key flags: `--unused-exports`, `--changed-since`, `--changed-workspaces`, `--production`, `--file`,
+    `--include-entry-exports`, `--stale-suppressions`, `--ci`, `--group-by`, `--summary`, `--fail-on-regression`,
+    `--tolerance`, `--regression-baseline`, `--save-regression-baseline`
+- **`dupes`** — Code duplication detection
+  - Key flags: `--mode`, `--threshold`, `--top`, `--changed-since`, `--workspace`, `--changed-workspaces`,
+    `--skip-local`, `--cross-language`, `--ignore-imports`, `--fail-on-regression`, `--tolerance`,
+    `--regression-baseline`, `--save-regression-baseline`
+- **`fix`** — Auto-remove unused exports/deps
+  - Key flags: `--dry-run`, `--yes` (required in non-TTY)
+- **`init`** — Generate config file or pre-commit hook
+  - Key flags: `--toml`, `--hooks`, `--branch`
+- **`migrate`** — Convert knip/jscpd config
+  - Key flags: `--dry-run`, `--from PATH`
+- **`list`** — Inspect project structure
+  - Key flags: `--files`, `--entry-points`, `--plugins`, `--boundaries`
+- **`health`** — Function complexity analysis (also covers Angular templates as synthetic `<template>` findings:
+  external `.html` files via `templateUrl` AND inline `@Component({ template: \`...\` })
+  ` literals; suppress external with `<!-- fallow-ignore-file complexity -->` at the top of the `.html
+  ` file, suppress inline with `// fallow-ignore-next-line complexity` directly above the `@Component` decorator)
+  - Key flags: `--complexity`, `--max-cyclomatic`, `--max-cognitive`, `--max-crap`, `--top`, `--sort`, `--file-scores`,
+    `--hotspots`, `--ownership`, `--ownership-emails`, `--targets`, `--effort`, `--score`, `--min-score`, `--since`,
+    `--min-commits`, `--save-snapshot`, `--trend`, `--coverage-gaps`, `--coverage`, `--coverage-root`,
+    `--runtime-coverage`, `--min-invocations-hot`, `--min-observation-volume`, `--low-traffic-threshold`, `--workspace`,
+    `--changed-workspaces`, `--baseline`, `--save-baseline`
+- **`audit`** — Combined dead-code + complexity + duplication for changed files
+  - Key flags: `--base`, `--production`, `--production-dead-code`, `--production-health`, `--production-dupes`,
+    `--workspace`, `--changed-workspaces`, `--ci`, `--fail-on-issues`, `--explain`, `--dead-code-baseline`,
+    `--health-baseline`, `--dupes-baseline`, `--max-crap`
+- **`flags`** — Detect feature flag patterns (env vars, SDK calls, config objects)
+  - Key flags: `--top`
+- **`license`** — Manage the local license JWT for paid features (activate, status, refresh, deactivate)
+  - Key flags: `activate --trial --email <addr>`, `activate --from-file`, `activate --stdin`, `status`, `refresh`,
+    `deactivate`
+- **`coverage`** — Production-coverage workflow helper (paid)
+  - Key flags: `setup`, `setup --yes`, `setup --non-interactive`
+- **`schema`** — Dump CLI definition as JSON
+- **`config`** — Show the loaded config path and resolved config (verifies which `.fallowrc.json` is in effect)
+  - Key flags: `--path`
 
 ## Issue Types
 
-| Type | Filter Flag | Description |
-|------|-------------|-------------|
-| Unused files | `--unused-files` | Files unreachable from entry points |
-| Unused exports | `--unused-exports` | Symbols never imported elsewhere |
-| Unused types | `--unused-types` | Type aliases and interfaces |
-| Private type leaks | `--private-type-leaks` | Exported signatures whose type references a same-file private type |
-| Unused dependencies | `--unused-deps` | Packages in `dependencies`, `devDependencies`, `optionalDependencies`, type-only production deps, and test-only production deps |
-| Unused enum members | `--unused-enum-members` | Enum values never referenced |
-| Unused class members | `--unused-class-members` | Methods and properties |
-| Unresolved imports | `--unresolved-imports` | Imports that can't be resolved |
-| Unlisted dependencies | `--unlisted-deps` | Used packages missing from package.json |
-| Duplicate exports | `--duplicate-exports` | Same symbol exported from multiple modules |
-| Circular dependencies | `--circular-deps` | Import cycles in the module graph |
-| Boundary violations | `--boundary-violations` | Imports crossing architecture zone boundaries. Presets: `layered`, `hexagonal`, `feature-sliced`, `bulletproof` |
-| Stale suppressions | `--stale-suppressions` | `fallow-ignore` comments or `@expected-unused` JSDoc tags that no longer match any issue |
-| Test-only dependencies | n/a | Production deps only imported from test files (should be devDependencies) |
-
-## MCP Tools
-
-When using fallow via MCP (`fallow-mcp`), the following tools are available:
-
-| Tool | Description |
-|------|-------------|
-| `analyze` | Full dead code analysis (unused files/exports/types/dependencies/members + private type leaks + circular dependencies + boundary violations + stale suppressions). Set `boundary_violations: true` as a convenience alias for `issue_types: ["boundary-violations"]`. Set `group_by` to `"owner"`, `"directory"`, `"package"`, or `"section"` (GitLab CODEOWNERS `[Section]` headers, with `owners` metadata per group) to partition results |
-| `check_changed` | Incremental analysis of files changed since a git ref |
-| `find_dupes` | Code duplication detection. Set `changed_since` to scope to changed files since a git ref |
-| `fix_preview` | Dry-run auto-fix preview |
-| `fix_apply` | Apply auto-fixes (destructive) |
-| `check_health` | Complexity metrics, health scores, hotspots, and refactoring targets. Set `group_by` to `owner`, `directory`, `package`, or `section` for per-group `vital_signs` / `health_score`; SARIF results gain `properties.group`, CodeClimate issues gain a top-level `group` field |
-| `check_runtime_coverage` | Merge V8 or Istanbul runtime-coverage data into the health report (paid). Required `coverage` param (V8 dir, V8 JSON, or Istanbul `coverage-final.json`). Tuning knobs: `min_invocations_hot` (default 100), `min_observation_volume` (default 5000), `low_traffic_threshold` (default 0.001), `max_crap` (default 30.0), `group_by`. Long dumps may exceed the 120s MCP timeout; raise `FALLOW_TIMEOUT_SECS`. Pick this over `check_health` when you have a coverage dump. |
-| `audit` | Combined dead-code + complexity + duplication for changed files, returns verdict |
-| `project_info` | Project metadata. Set `entry_points`, `files`, `plugins`, or `boundaries` to `true` to request specific sections |
-| `list_boundaries` | Architecture boundary zones and access rules. Returns `{"configured": false}` if no boundaries configured |
-| `feature_flags` | Detect feature flag patterns (env vars, SDK calls, config objects). Set `top` to limit results |
-| `trace_export` | Trace why an export is used or unused (`fallow dead-code --trace FILE:EXPORT_NAME --format json`). Required `file` and `export_name`. Returns file reachability, entry-point status, direct references, re-export chains, and a reason string. Use before deleting a supposedly-unused export |
-| `trace_file` | Trace all graph edges for a file (`fallow dead-code --trace-file PATH --format json`). Required `file`. Returns reachability, exports, imports-from, imported-by, and re-exports. Use to decide whether a file is isolated, barrel-only, or imported by live entry points |
-| `trace_dependency` | Trace where a dependency is imported (`fallow dead-code --trace-dependency PACKAGE --format json`). Required `package_name`. Returns importing files, type-only importers, total import count, `used_in_scripts` (true when invoked from package.json scripts or CI configs), and `is_used` (combined import + script signal; mirrors the unused-deps detector so build tools like `microbundle` or `vitest` are not falsely flagged as unused). Use before removing a dependency or moving between `dependencies` and `devDependencies` |
-| `trace_clone` | Trace duplicate-code groups at a location (`fallow dupes --trace FILE:LINE --format json`). Required `file` and `line`. Returns the matched clone instance plus every clone group containing it. Supports `mode`, `min_tokens`, `min_lines`, `threshold`, `skip_local`, `cross_language`, `ignore_imports`. Use to consolidate duplication when you need the exact sibling locations |
-
-All tools accept `root`, `config`, `no_cache`, and `threads` params. The MCP server subprocess timeout defaults to 120s, configurable via `FALLOW_TIMEOUT_SECS`.
-
-All JSON responses include structured `actions` arrays on every finding (dead code, health, duplication), enabling programmatic fix application or suppression.
-
-## Node.js Bindings
-
-When embedding fallow inside a Node.js process (editor extensions, long-running servers, custom tooling), prefer the NAPI bindings over spawning the CLI. Same analysis engine, same JSON envelopes, no subprocess or JSON parsing overhead.
-
-```bash
-npm install @fallow-cli/fallow-node
-```
-
-```ts
-import { detectDeadCode, detectDuplication, computeHealth } from '@fallow-cli/fallow-node';
-
-const deadCode = await detectDeadCode({ root: process.cwd(), explain: true });
-const dupes = await detectDuplication({ root: process.cwd(), mode: 'mild', minTokens: 30 });
-const health = await computeHealth({ root: process.cwd(), score: true, ownershipEmails: 'handle' });
-```
-
-Six async functions: `detectDeadCode`, `detectCircularDependencies`, `detectBoundaryViolations`, `detectDuplication`, `computeComplexity`, `computeHealth`. Each returns the same JSON envelope the CLI emits for `--format json`. Rejected promises throw a `FallowNodeError` with `message`, `exitCode`, and optional `code`, `help`, `context` fields that mirror the CLI's structured error surface.
-
-Enum-like fields take lowercase CLI-style literals (`"mild"`, `"cyclomatic"`, `"handle"`, `"low"`). Write-path commands (`fix`, `init`, `setup-hooks`, `license activate`, `coverage setup`) are not exposed; use the CLI for those.
-
-See <https://docs.fallow.tools/integrations/node-bindings> for the full field reference.
+- **Unused files** (`--unused-files`) — Files unreachable from entry points
+- **Unused exports** (`--unused-exports`) — Symbols never imported elsewhere
+- **Unused types** (`--unused-types`) — Type aliases and interfaces
+- **Private type leaks** (`--private-type-leaks`) — Exported signatures whose type references a same-file private type
+- **Unused dependencies** (`--unused-deps`) — Packages in `dependencies`, `devDependencies`, `optionalDependencies`,
+  type-only production deps, and test-only production deps
+- **Unused enum members** (`--unused-enum-members`) — Enum values never referenced
+- **Unused class members** (`--unused-class-members`) — Methods and properties
+- **Unresolved imports** (`--unresolved-imports`) — Imports that can't be resolved
+- **Unlisted dependencies** (`--unlisted-deps`) — Used packages missing from package.json
+- **Duplicate exports** (`--duplicate-exports`) — Same symbol exported from multiple modules
+- **Circular dependencies** (`--circular-deps`) — Import cycles in the module graph
+- **Boundary violations** (`--boundary-violations`) — Imports crossing architecture zone boundaries. Presets: `layered`,
+  `hexagonal`, `feature-sliced`, `bulletproof`
+- **Stale suppressions** (`--stale-suppressions`) — `fallow-ignore` comments or `@expected-unused` JSDoc tags that no
+  longer match any issue
+- **Test-only dependencies** (no filter flag) — Production deps only imported from test files (should be
+  devDependencies)
 
 ## References
 
@@ -156,7 +133,11 @@ See <https://docs.fallow.tools/integrations/node-bindings> for the full field re
 fallow dead-code --format json --quiet
 ```
 
-Parse the JSON output. It contains arrays for each issue type (`unused_files`, `unused_exports`, `unused_types`, `unused_dependencies`, etc.) plus `total_issues` and `elapsed_ms` metadata. Each issue object includes an `actions` array with structured fix suggestions (action type, `auto_fixable` flag, description, and optional suppression comment). For dependency findings, a non-empty `used_in_workspaces` array means the package is imported elsewhere in the monorepo; treat it as a workspace placement issue and do not auto-remove it.
+Parse the JSON output. It contains arrays for each issue type (`unused_files`, `unused_exports`, `unused_types`,
+`unused_dependencies`, etc.) plus `total_issues` and `elapsed_ms` metadata. Each issue object includes an `actions`array
+with structured fix suggestions (action type, `auto_fixable` flag, description, and optional suppression comment). For
+dependency findings, a non-empty `used_in_workspaces` array means the package is imported elsewhere in the monorepo;
+treat it as a workspace placement issue and do not auto-remove it.
 
 ### Find only unused exports (smaller output)
 
@@ -179,7 +160,8 @@ fallow dupes --format json --quiet
 fallow dupes --format json --quiet --mode semantic
 ```
 
-The `semantic` mode detects renamed variables. Other modes: `strict` (exact), `mild` (default, syntax normalized), `weak` (different literals).
+The `semantic` mode detects renamed variables. Other modes: `strict` (exact), `mild` (default, syntax normalized),
+`weak` (different literals).
 
 ### Safe auto-fix cycle
 
@@ -203,7 +185,8 @@ fallow list --entry-points --format json --quiet
 fallow list --plugins --format json --quiet
 ```
 
-Shows detected entry points and active framework plugins (91 built-in: Next.js, Vite, Jest, Storybook, Tailwind, PandaCSS, etc.).
+Shows detected entry points and active framework plugins (91 built-in: Next.js, Vite, Jest, Storybook, Tailwind,
+PandaCSS, etc.).
 
 ### Production-only analysis
 
@@ -233,9 +216,14 @@ fallow dead-code --format json --quiet --workspace 'apps/*,!apps/legacy'
 fallow dead-code --format json --quiet --changed-workspaces origin/main
 ```
 
-Scopes output while keeping the full cross-workspace graph. Patterns are tested against BOTH the package name (from `package.json`) AND the workspace path relative to the repo root; either match counts. Use `!`-prefixed patterns to exclude.
+Scopes output while keeping the full cross-workspace graph. Patterns are tested against BOTH the package name (from
+`package.json`) AND the workspace path relative to the repo root; either match counts. Use `!`-prefixed patterns to
+exclude.
 
-`--changed-workspaces <REF>` auto-derives the set from `git diff`. It's the CI primitive: point it at the PR base branch (e.g. `origin/main`) and fallow reports only on workspaces touched by the change. Mutually exclusive with `--workspace`. A missing ref or non-git directory is a hard error (exit 2) rather than a silent full-scope fallback, so CI never quietly widens back to the whole monorepo.
+`--changed-workspaces <REF>` auto-derives the set from `git diff`. It's the CI primitive: point it at the PR base
+branch (e.g. `origin/main`) and fallow reports only on workspaces touched by the change. Mutually exclusive with
+`--workspace`. A missing ref or non-git directory is a hard error (exit 2) rather than a silent full-scope fallback, so
+CI never quietly widens back to the whole monorepo.
 
 ### Scope to specific files (lint-staged)
 
@@ -251,7 +239,8 @@ Only reports issues in the specified files. Project-wide dependency issues are s
 fallow dead-code --format json --quiet --include-entry-exports
 ```
 
-Reports unused exports in entry files (package.json `main`/`exports`, framework pages). By default, exports in entry files are assumed externally consumed. This flag catches typos like `meatdata` instead of `metadata`.
+Reports unused exports in entry files (package.json `main`/`exports`, framework pages). By default, exports in entry
+files are assumed externally consumed. This flag catches typos like `meatdata` instead of `metadata`.
 
 ### Debug why something is flagged
 
@@ -292,20 +281,24 @@ fallow init --hooks --branch develop  # hook using custom base branch
 
 ## Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| 0 | Success, no error-severity issues |
-| 1 | Error-severity issues found |
-| 2 | Runtime error (invalid config, parse failure, or `fix` without `--yes` in non-TTY) |
+- **`0`** — Success, no error-severity issues
+- **`1`** — Error-severity issues found
+- **`2`** — Runtime error (invalid config, parse failure, or `fix` without `--yes` in non-TTY)
 
 When `--format json` is active and exit code is 2, errors are emitted as JSON on stdout:
+
 ```json
-{"error": true, "message": "invalid config: ...", "exit_code": 2}
+{
+  "error": true,
+  "message": "invalid config: ...",
+  "exit_code": 2
+}
 ```
 
 ## Configuration
 
-Fallow reads config from project root: `.fallowrc.json` > `fallow.toml` > `.fallow.toml`. Most projects work with zero configuration thanks to 90 auto-detecting framework plugins.
+Fallow reads config from project root: `.fallowrc.json` > `fallow.toml` > `.fallow.toml`. Most projects work with zero
+configuration thanks to 90 auto-detecting framework plugins.
 
 ```jsonc
 {
@@ -327,10 +320,22 @@ Fallow reads config from project root: `.fallowrc.json` > `fallow.toml` > `.fall
 Rules: `"error"` (fail CI), `"warn"` (report only), `"off"` (skip detection).
 
 Config fields:
+
 - `publicPackages`: workspace packages that are public libraries; exports from these packages are not flagged as unused
 - `dynamicallyLoaded`: glob patterns for files loaded at runtime (plugin dirs, locale files); treated as always-used
-- `usedClassMembers`: class method/property names that extend the built-in Angular/React lifecycle allowlist with framework-invoked names. Each entry is a plain string (global suppression) or a scoped object `{ extends?, implements?, members }` matching only classes with the given heritage. Use scoped rules for common names like `refresh` or `execute` to avoid false negatives on unrelated classes; global strings for unique names like `agInit`. Example: `["agInit", { "implements": "ICellRendererAngularComp", "members": ["refresh"] }, { "extends": "BaseCommand", "members": ["execute"] }]`. An unconstrained scoped rule (no `extends` or `implements`) is rejected at load time. Use plugin-level `usedClassMembers` in a `.fallow/plugins/*.jsonc` file for library-specific allowlists
-- `resolve.conditions`: additional package.json `exports` / `imports` condition names to honor during module resolution. Baseline conditions (`development`, `import`, `require`, `default`, `types`, `node`, plus `react-native` / `browser` under RN/Expo) are always included; user entries prepend ahead of them. Use for community conditions like `worker`, `edge-light`, `deno`, or custom bundler conditions. Example: `{ "resolve": { "conditions": ["worker", "edge-light"] } }`
+- `usedClassMembers`: class method/property names that extend the built-in Angular/React lifecycle allowlist with
+  framework-invoked names. Each entry is a plain string (global suppression) or a scoped object
+  `{ extends?, implements?, members }` matching only classes with the given heritage. Use scoped rules for common names
+  like `refresh` or `execute` to avoid false negatives on unrelated classes; global strings for unique names like
+  `agInit`. Example:
+  `["agInit", { "implements": "ICellRendererAngularComp", "members": ["refresh"] }, { "extends": "BaseCommand", "members": ["execute"] }]`.
+  An unconstrained scoped rule (no `extends` or `implements`) is rejected at load time. Use plugin-level
+  `usedClassMembers` in a `.fallow/plugins/*.jsonc` file for library-specific allowlists
+- `resolve.conditions`: additional package.json `exports` / `imports` condition names to honor during module resolution.
+  Baseline conditions (`development`, `import`, `require`, `default`, `types`, `node`, plus `react-native` / `browser`
+  under RN/Expo) are always included; user entries prepend ahead of them. Use for community conditions like `worker`,
+  `edge-light`, `deno`, or custom bundler conditions. Example:
+  `{ "resolve": { "conditions": ["worker", "edge-light"] } }`
 
 ### Inline suppression
 
@@ -354,7 +359,8 @@ export const deprecatedHelper = () => {};
 - **`fix --yes` is required** in non-TTY (agent) environments. Without it, `fix` exits with code 2
 - **Zero config by default.** 90 framework plugins auto-detect. Don't create config unless customization is needed
 - **Syntactic analysis only.** No TypeScript compiler, so fully dynamic `import(variable)` is not resolved
-- **Function overloads are deduplicated.** TypeScript function overload signatures are merged into a single export (not reported as separate unused exports)
+- **Function overloads are deduplicated.** TypeScript function overload signatures are merged into a single export (not
+  reported as separate unused exports)
 - **Re-export chains are resolved.** Exports through barrel files are tracked, not falsely flagged
 - **`--changed-since` is additive.** Only new issues in changed files, not all issues in the project
 

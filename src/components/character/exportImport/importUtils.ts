@@ -1,25 +1,8 @@
+import { resolveAlias } from "#/components/character/characterUtils.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 import type { useImportConflictDialog } from "./importConflictDialog.tsx"
-
-/**
- * Find the next available alias by appending an incrementing number.
- * E.g. "Artemis" → "Artemis 2" → "Artemis 3" … until no existing character
- * uses that alias.
- */
-export function resolveAlias(
-  baseAlias: string,
-  existingAliases: Set<string>,
-): string {
-  let counter = 2
-  let candidate = `${baseAlias} ${counter}`
-  while (existingAliases.has(candidate)) {
-    counter++
-    candidate = `${baseAlias} ${counter}`
-  }
-  return candidate
-}
 
 /**
  * Shows the conflict dialog and returns the character to save, or null if the
