@@ -1,7 +1,9 @@
-import { screen, render, waitFor, cleanup } from "@testing-library/react"
+import { screen, render, waitFor, cleanup, act } from "@testing-library/react"
 import type { FC } from "react"
 import { useEffect } from "react"
 import { afterEach, describe, expect, it } from "vitest"
+
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
 import { DialogApi } from "./dialogApi.ts"
 import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
@@ -360,5 +362,77 @@ describe.sequential("DialogApi", () => {
       expect(screen.queryByRole("dialog", { name: "fake-dialog" })).toBeNull()
     })
     expect(screen.getByRole("dialog", { name: "second-dialog" })).toBeDefined()
+  })
+
+  // -------------------------------------------------------------------------
+  // OutOfContextError handling
+  // -------------------------------------------------------------------------
+  describe("OutOfContextError in dialog component", () => {
+    /** A dialog that unconditionally throws OutOfContextError on render */
+    const BrokenDialog: FC<DialogApiDialogProps> = () => {
+      throw new OutOfContextError("useSomeContext", "SomeProvider")
+    }
+
+    it("result() resolves with undefined when the dialog throws OutOfContextError", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+
+      // Act — suppress the expected console.error from the error boundary
+      const consoleError = console.error
+      console.error = () => {}
+      let ctrl!: DialogCtrl<void>
+      act(() => {
+        ctrl = dialogApi.open(BrokenDialog)
+      })
+      console.error = consoleError
+
+      // Assert
+      await expect(ctrl.result()).resolves.toBeUndefined()
+    })
+
+    it("shows an error alert with the context name and provider name", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+
+      // Act
+      const consoleError = console.error
+      console.error = () => {}
+      act(() => {
+        dialogApi.open(BrokenDialog)
+      })
+      console.error = consoleError
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.getByRole("alert")).toBeDefined()
+        expect(screen.getByText("useSomeContext")).toBeDefined()
+        expect(screen.getByText("SomeProvider")).toBeDefined()
+      })
+    })
+
+    it("dismissing the error alert removes the dialog entry from the store", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+
+      const consoleError = console.error
+      console.error = () => {}
+      act(() => {
+        dialogApi.open(BrokenDialog)
+      })
+      console.error = consoleError
+
+      await waitFor(() => expect(screen.getByRole("alert")).toBeDefined())
+
+      // Act
+      screen.getByRole("button", { name: "Dismiss" }).click()
+
+      // Assert — alert (and dialog entry) removed from DOM
+      await waitFor(() => {
+        expect(screen.queryByRole("alert")).toBeNull()
+      })
+    })
   })
 })
