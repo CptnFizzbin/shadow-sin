@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton"
 import { RiDiceLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useDiceTray } from "./diceTrayProvider.tsx"
+import { useDiceTray } from "./diceTrayContext.ts"
 
 interface DiceRollButtonProps extends IconButtonProps {
   poolSize?: number
