@@ -94,7 +94,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
 
         {isOvercasting && (
           <Typography color="error.main">
-            Overcasting (Force {force} &gt; Magic {magicAttr}) — drain is Physical
+            Overcasting (Force {force} {">"} Magic {magicAttr}) — drain is Physical
           </Typography>
         )}
 
