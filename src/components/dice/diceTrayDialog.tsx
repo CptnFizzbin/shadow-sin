@@ -1,12 +1,10 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
+
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 import { DiceTrayActions } from "./diceTrayActions.tsx"
 import { useDiceTray } from "./diceTrayContext.ts"
@@ -25,16 +23,11 @@ export const DiceTrayDialog: FC = () => {
     <Dialog
       open={open}
       onClose={() => diceTrayApi.close()}
-      slotProps={{
-        transition: {
-          onExited: () => diceTrayApi.reset(),
-        },
-      }}
-      fullWidth
+      onClosed={() => diceTrayApi.reset()}
     >
-      <DialogTitle>Dice Tray</DialogTitle>
+      <Dialog.Title>Dice Tray</Dialog.Title>
 
-      <DialogContent>
+      <Dialog.Content>
         <Stack sx={{ paddingTop: 1 }}>
           <DiceTrayHeader />
           <DiceTrayInputs />
@@ -44,15 +37,15 @@ export const DiceTrayDialog: FC = () => {
           <DiceTrayEdgeControls />
           <DiceTrayActions />
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
       <Divider />
 
-      <DialogActions>
+      <Dialog.Actions>
         <Button onClick={() => diceTrayApi.close()} fullWidth>
           Close
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

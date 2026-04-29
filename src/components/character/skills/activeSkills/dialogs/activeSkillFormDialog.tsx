@@ -1,8 +1,5 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -16,6 +13,7 @@ import { useState } from "react"
 import { z } from "zod"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
@@ -47,7 +45,7 @@ const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax 
   label: String(i + 1),
 }))
 
-export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
+const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   open,
   skill,
   disabledSkills,
@@ -111,23 +109,18 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
     <Dialog
       key={dialogKey}
       open={open}
-      fullWidth
       maxWidth="sm"
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            setCustomModeActive(
-              !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
-            )
-            onClosed?.()
-          },
-        },
+      onClosed={() => {
+        form.reset()
+        setCustomModeActive(
+          !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
+        )
+        onClosed?.()
       }}
     >
-      <DialogTitle>{isEditMode ? "Edit Active Skill" : "Add Active Skill"}</DialogTitle>
+      <Dialog.Title>{isEditMode ? "Edit Active Skill" : "Add Active Skill"}</Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <form.AppForm>
           <Stack sx={{ gap: 2, pt: 1 }}>
 
@@ -256,31 +249,33 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
           </Stack>
         </form.AppForm>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
+      <Dialog.Actions>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Box>
+            {onDelete && (
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
             </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" onClick={() => form.handleSubmit()}>
-            Save
-          </Button>
-        </div>
-      </DialogActions>
+            <Button variant="contained" color="secondary" onClick={() => form.handleSubmit()}>
+              Save
+            </Button>
+          </Box>
+        </Stack>
+      </Dialog.Actions>
     </Dialog>
   )
 }

@@ -1,13 +1,10 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 export type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
@@ -19,7 +16,7 @@ interface ImportConflictDialogProps {
   onClosed?: () => void
 }
 
-export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
+const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
   incomingCharacter,
   existingCharacter,
   onChoice,
@@ -36,11 +33,10 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
     <Dialog
       open={open}
       onClose={() => handleChoice("cancel")}
-      slotProps={{ transition: { onExited: onClosed } }}
-      fullWidth
+      onClosed={onClosed}
     >
-      <DialogTitle>Character already exists</DialogTitle>
-      <DialogContent>
+      <Dialog.Title>Character already exists</Dialog.Title>
+      <Dialog.Content>
         <Typography gutterBottom>
           A character named{" "}
           <Typography component="span" sx={{ fontWeight: "bold" }}>
@@ -55,8 +51,8 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
           </Typography>{" "}
           as a new character?
         </Typography>
-      </DialogContent>
-      <DialogActions sx={{ padding: 1, gap: 1 }}>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Button
           color="secondary"
           onClick={() => handleChoice("cancel")}
@@ -77,7 +73,7 @@ export const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
         >
           Overwrite
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

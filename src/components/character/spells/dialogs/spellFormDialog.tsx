@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { SpellFormFields } from "#/components/character/spells/form/spellFormFields.tsx"
 import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -22,7 +19,7 @@ interface SpellFormDialogProps {
   onClosed?: () => void
 }
 
-export const SpellFormDialog: FC<SpellFormDialogProps> = ({
+const SpellFormDialog: FC<SpellFormDialogProps> = ({
   open,
   spell,
   onSave,
@@ -43,22 +40,17 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
-      }}
-      fullWidth
       maxWidth="sm"
+      onClosed={() => {
+        form.reset()
+        onClosed()
+      }}
     >
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <SpellFormFields form={form} />
-      </DialogContent>
-      <DialogActions>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
           <Box>
             {onDelete && (
@@ -81,7 +73,7 @@ export const SpellFormDialog: FC<SpellFormDialogProps> = ({
             </Button>
           </Box>
         </Stack>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

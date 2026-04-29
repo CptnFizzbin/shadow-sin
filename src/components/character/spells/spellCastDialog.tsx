@@ -1,7 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
@@ -9,6 +6,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -22,11 +20,11 @@ interface SpellCastDialogProps {
   onClosed?: () => void
 }
 
-export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
+const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
   return (
-    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ pb: 0 }}>{spell.name}</DialogTitle>
-      <DialogContent sx={{ pt: 1 }}>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
+      <Dialog.Title>{spell.name}</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
           <Grid container spacing={1} columns={3}>
             <Grid size={1}>
@@ -83,7 +81,7 @@ export const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose
             Close
           </Button>
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   )
 }

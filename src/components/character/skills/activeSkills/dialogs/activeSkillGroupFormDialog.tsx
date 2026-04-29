@@ -1,8 +1,5 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -14,6 +11,7 @@ import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
@@ -34,7 +32,7 @@ const ratingOptions = Array.from(
   (_, i) => i + 1,
 )
 
-export const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
+const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   open,
   group,
   disabledGroups,
@@ -74,15 +72,14 @@ export const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = (
   return (
     <Dialog
       open={open}
-      fullWidth
       maxWidth="sm"
-      slotProps={{ transition: { onExited: handleClosed } }}
+      onClosed={handleClosed}
     >
-      <DialogTitle>
+      <Dialog.Title>
         {isEditMode ? "Edit Skill Group" : "Add Skill Group"}
-      </DialogTitle>
+      </Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, pt: 1 }}>
           <FormControl fullWidth size="small" error={groupNameError}>
             <InputLabel>Skill Group</InputLabel>
@@ -127,31 +124,33 @@ export const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = (
             </Select>
           </FormControl>
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
+      <Dialog.Actions>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Box>
+            {onDelete && (
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
             </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" onClick={handleSave}>
-            Save
-          </Button>
-        </div>
-      </DialogActions>
+            <Button variant="contained" color="secondary" onClick={handleSave}>
+              Save
+            </Button>
+          </Box>
+        </Stack>
+      </Dialog.Actions>
     </Dialog>
   )
 }

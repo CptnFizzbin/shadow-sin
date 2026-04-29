@@ -1,7 +1,4 @@
 import Checkbox from "@mui/material/Checkbox"
-import Dialog from "@mui/material/Dialog"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
@@ -9,6 +6,7 @@ import { useState } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 interface ItemOptionsDialogProps {
   open: boolean
@@ -19,7 +17,7 @@ interface ItemOptionsDialogProps {
   onChange: (updated: Record<string, boolean>) => void
 }
 
-export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
+const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   open,
   onClose,
   onClosed,
@@ -57,10 +55,10 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth>
-      <DialogTitle sx={{ padding: 1 }}>Item Options</DialogTitle>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+      <Dialog.Title>Item Options</Dialog.Title>
 
-      <DialogContent sx={{ padding: 1 }}>
+      <Dialog.Content>
         <Stack>
           {!forced["equipable"] && (
             <FormControlLabel
@@ -138,7 +136,7 @@ export const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
             />
           )}
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   )
 }
