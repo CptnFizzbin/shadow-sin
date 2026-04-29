@@ -1,9 +1,5 @@
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useSinForm } from "#/components/items/types/licenses/forms/useSinForm.tsx"
@@ -53,18 +49,15 @@ export type UseSinFormDialogProps = Omit<SinFormDialogProps, "open" | "onClose" 
 
 export const useSinFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseSinFormDialogProps) => dialogApi.open<SinData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <SinFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(sin) => dialogProps.onClose(sin)}
-          />
-        </CharacterSheetProvider>
+        <SinFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(sin) => dialogProps.onClose(sin)}
+        />
       ),
     ),
   }

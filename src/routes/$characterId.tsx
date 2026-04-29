@@ -11,6 +11,8 @@ import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
 import { QuickAccessButton } from "#/components/character/quickPanel/quickAccessButton.tsx"
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { DiceTrayProvider, useDiceTray } from "#/components/dice/diceTrayProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
@@ -35,6 +37,7 @@ function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
   const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
+  const characterDialogApi = useMemo(() => new DialogApi(), [])
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
@@ -51,7 +54,9 @@ function CharacterRoute() {
   return (
     <CharacterSheetProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>
-        <CharacterSheetContent />
+        <DialogApiProvider dialogApi={characterDialogApi}>
+          <CharacterSheetContent />
+        </DialogApiProvider>
       </DiceTrayProvider>
     </CharacterSheetProvider>
   )

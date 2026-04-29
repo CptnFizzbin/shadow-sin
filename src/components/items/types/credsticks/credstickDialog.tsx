@@ -17,10 +17,6 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
@@ -285,18 +281,15 @@ export type UseCredstickDialogProps = Omit<CredstickDialogProps, "open" | "onClo
 
 export const useCredstickDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props: UseCredstickDialogProps) => dialogApi.open<void>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <CredstickDialog
-            {...dialogProps}
-            {...props}
-            onClose={() => dialogProps.onClose()}
-          />
-        </CharacterSheetProvider>
+        <CredstickDialog
+          {...dialogProps}
+          {...props}
+          onClose={() => dialogProps.onClose()}
+        />
       ),
     ),
   }

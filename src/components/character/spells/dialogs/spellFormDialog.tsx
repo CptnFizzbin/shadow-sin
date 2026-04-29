@@ -7,10 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SpellFormFields } from "#/components/character/spells/form/spellFormFields.tsx"
 import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
@@ -97,19 +93,16 @@ export interface UseSpellFormDialogProps {
 
 export const useSpellFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseSpellFormDialogProps) => dialogApi.open<SpellData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <SpellFormDialog
-            {...dialogProps}
-            spell={props?.spell}
-            onDelete={props?.onDelete}
-            onSave={(spell) => dialogProps.onClose(spell)}
-          />
-        </CharacterSheetProvider>
+        <SpellFormDialog
+          {...dialogProps}
+          spell={props?.spell}
+          onDelete={props?.onDelete}
+          onSave={(spell) => dialogProps.onClose(spell)}
+        />
       ),
     ),
   }

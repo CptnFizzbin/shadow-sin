@@ -1,9 +1,5 @@
 import type { FC } from "react"
 
-import {
-  CharacterSheetProvider,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import {
@@ -58,18 +54,15 @@ export type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "open" | "onC
 
 export const useWeaponFormDialog = () => {
   const dialogApi = useDialogApi()
-  const sheetContext = useCharacterSheetContext()
 
   return {
     open: (props?: UseWeaponFormDialogProps) => dialogApi.open<WeaponData>(
       (dialogProps) => (
-        <CharacterSheetProvider store={sheetContext}>
-          <WeaponFormDialog
-            {...dialogProps}
-            {...props}
-            onSave={(weapon) => dialogProps.onClose(weapon)}
-          />
-        </CharacterSheetProvider>
+        <WeaponFormDialog
+          {...dialogProps}
+          {...props}
+          onSave={(weapon) => dialogProps.onClose(weapon)}
+        />
       ),
     ),
   }

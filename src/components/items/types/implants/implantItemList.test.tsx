@@ -74,11 +74,11 @@ describe("ImplantItemList", () => {
         const dialogApi = new DialogApi()
 
         return (
-          <DialogApiProvider dialogApi={dialogApi}>
-            <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
+          <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
+            <DialogApiProvider dialogApi={dialogApi}>
               {children}
-            </BuilderWrapperWithGear>
-          </DialogApiProvider>
+            </DialogApiProvider>
+          </BuilderWrapperWithGear>
         )
       },
     })
