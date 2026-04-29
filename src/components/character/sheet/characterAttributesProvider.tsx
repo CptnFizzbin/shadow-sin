@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "react"
+import { useMemo } from "react"
 
 import { AttributesProvider } from "#/components/character/attributes/attributesProvider.tsx"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -17,10 +18,10 @@ export const CharacterAttributesProvider: FC<PropsWithChildren> = ({ children })
   const awakening = useCharacterSheetSelector((sheet) => awakenings[sheet.biology.awakening])
   const values = useCharacterSheetSelector((sheet) => sheet.attributes)
 
-  const infos = {
-    ...metatype.attributes,
-    ...awakening.attributes,
-  }
+  const infos = useMemo(
+    () => ({ ...metatype.attributes, ...awakening.attributes }),
+    [metatype, awakening],
+  )
 
   return (
     <AttributesProvider values={values} infos={infos}>
