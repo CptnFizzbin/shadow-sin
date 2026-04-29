@@ -30,42 +30,51 @@ function resolveAlias(
   return candidate
 }
 
+/**
+ * Shows the conflict dialog and returns the character to save, or null if the
+ * user dismissed the dialog without making a choice.
+ */
+async function resolveConflictedCharacter(
+  character: CharacterSheet,
+  existing: CharacterSheet,
+  importConflictDialog: ReturnType<typeof useImportConflictDialog>,
+): Promise<CharacterSheet | null> {
+  const choice = await importConflictDialog.open({
+    incomingCharacter: character,
+    existingCharacter: existing,
+  }).result()
+
+  if (choice === "overwrite") {
+    return character
+  }
+
+  if (choice === "create-new") {
+    const allCharacters = await localCharacterManager.listCharacters()
+    const existingAliases = new Set(
+      Object.values(allCharacters).map((c) => c.profile.alias),
+    )
+    const newAlias = resolveAlias(character.profile.alias, existingAliases)
+    return {
+      ...character,
+      id: crypto.randomUUID(),
+      profile: { ...character.profile, alias: newAlias },
+    }
+  }
+
+  return null
+}
+
 export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImported }) => {
   const importConflictDialog = useImportConflictDialog()
 
-  // fallow-ignore-next-line complexity
   const handleParsed = async (character: CharacterSheet) => {
     const existing = await localCharacterManager.getCharacter(character.id)
+    const characterToSave = existing
+      ? await resolveConflictedCharacter(character, existing, importConflictDialog)
+      : character
 
-    if (!existing) {
-      await localCharacterManager.forceSave(character)
-      await onImported?.()
-      return
-    }
-
-    const choice = await importConflictDialog.open({
-      incomingCharacter: character,
-      existingCharacter: existing,
-    }).result()
-
-    if (choice === "overwrite") {
-      await localCharacterManager.forceSave(character)
-      await onImported?.()
-    } else if (choice === "create-new") {
-      const allCharacters = await localCharacterManager.listCharacters()
-      const existingAliases = new Set(
-        Object.values(allCharacters).map((c) => c.profile.alias),
-      )
-      const newAlias = resolveAlias(character.profile.alias, existingAliases)
-      const newCharacter: CharacterSheet = {
-        ...character,
-        id: crypto.randomUUID(),
-        profile: {
-          ...character.profile,
-          alias: newAlias,
-        },
-      }
-      await localCharacterManager.forceSave(newCharacter)
+    if (characterToSave !== null) {
+      await localCharacterManager.forceSave(characterToSave)
       await onImported?.()
     }
   }

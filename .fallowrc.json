@@ -11,7 +11,10 @@
     "**/*.gen.ts"
   ],
   "ignoreDependencies": [
+    "@emotion/react",
+    "@emotion/styled",
     "@tanstack/router-core",
+    "babel-plugin-react-compiler",
     "jiti"
   ]
 }

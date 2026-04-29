@@ -9,7 +9,7 @@ import { characterSheetToYaml } from "./exportUtils.ts"
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 
 interface HookWithMocks {
-  result: ReturnType<typeof renderHook<ReturnType<typeof useYamlFileImport>>>["result"]
+  result: { current: ReturnType<typeof useYamlFileImport> }
   onParsed: ReturnType<typeof vi.fn>
   onError: ReturnType<typeof vi.fn>
 }
