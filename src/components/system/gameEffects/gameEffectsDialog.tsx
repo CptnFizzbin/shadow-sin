@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
-import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
@@ -54,33 +53,31 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
     <Dialog open={open} onClosed={onClosed} maxWidth="sm">
       <Dialog.Title>Effects</Dialog.Title>
       <Dialog.Content>
-        <Stack sx={{ gap: 2, pt: 1 }}>
-          {effects.length === 0 && (
-            <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
-              No effects added yet.
-            </Typography>
-          )}
+        {effects.length === 0 && (
+          <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
+            No effects added yet.
+          </Typography>
+        )}
 
-          {effects.map((effect, index) => (
-            <Fragment key={index}>
-              {index > 0 && <Divider />}
-              <GameEffectRow
-                effect={effect}
-                onChange={(updated) => handleChange(index, updated)}
-                onRemove={() => handleRemove(index)}
-              />
-            </Fragment>
-          ))}
+        {effects.map((effect, index) => (
+          <Fragment key={index}>
+            {index > 0 && <Divider />}
+            <GameEffectRow
+              effect={effect}
+              onChange={(updated) => handleChange(index, updated)}
+              onRemove={() => handleRemove(index)}
+            />
+          </Fragment>
+        ))}
 
-          <Button
-            size="small"
-            startIcon={<RiAddLine size={14} />}
-            onClick={handleAdd}
-            sx={{ alignSelf: "flex-start" }}
-          >
-            Add Effect
-          </Button>
-        </Stack>
+        <Button
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          onClick={handleAdd}
+          sx={{ alignSelf: "flex-start" }}
+        >
+          Add Effect
+        </Button>
       </Dialog.Content>
       <Dialog.Actions>
         <Button onClick={() => onClose()}>Cancel</Button>

@@ -37,9 +37,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
-      <Dialog.Title>
-        <Typography variant="h3" component="span">{weapon.name}</Typography>
-      </Dialog.Title>
+      <Dialog.Title>{weapon.name}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
           {isFirearm && firearm && firearm.firemodes.length > 0 && (
