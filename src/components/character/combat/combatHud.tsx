@@ -33,16 +33,16 @@ export const CombatHud: FC = () => {
 
   const activeSources = useCharacterSheetSelector(
     (sheet) => {
-      const sources: string[] = []
+      const sources: { id: string, name: string }[] = []
       for (const spell of sheet.spells) {
-        if (spell.sustained && spell.effects?.length) sources.push(spell.name)
+        if (spell.sustained && spell.effects?.length) sources.push({ id: spell.id, name: spell.name })
       }
       for (const gear of Object.values(sheet.gear)) {
-        if (gear.equipped && gear.effects?.length) sources.push(gear.name)
+        if (gear.equipped && gear.effects?.length) sources.push({ id: gear.id, name: gear.name })
       }
       return sources
     },
-    (a: string[], b: string[]) => a.length === b.length && a.every((v, i) => v === b[i]),
+    (a, b) => a.length === b.length && a.every((v, i) => v.id === b[i].id),
   )
 
   const hasStatus =
@@ -90,7 +90,7 @@ export const CombatHud: FC = () => {
                 <Chip label={`+${totalExtraDice} Init dice`} color="success" size="small" variant="outlined" />
               )}
               {activeSources.map((source) => (
-                <Chip key={source} label={source} color="info" size="small" variant="outlined" />
+                <Chip key={source.id} label={source.name} color="info" size="small" variant="outlined" />
               ))}
             </Stack>
           </Stack>
