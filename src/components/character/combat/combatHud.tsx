@@ -42,7 +42,7 @@ export const CombatHud: FC = () => {
       }
       return sources
     },
-    (a, b) => a.length === b.length && a.every((v, i) => v.id === b[i].id),
+    (a, b) => a.length === b.length && a.every((v, i) => v.id === b[i].id && v.name === b[i].name),
   )
 
   const hasStatus =
