@@ -33,6 +33,7 @@ function resolveAlias(
 export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImported }) => {
   const importConflictDialog = useImportConflictDialog()
 
+  // fallow-ignore-next-line complexity
   const handleParsed = async (character: CharacterSheet) => {
     const existing = await localCharacterManager.getCharacter(character.id)
 

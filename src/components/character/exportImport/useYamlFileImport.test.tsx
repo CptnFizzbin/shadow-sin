@@ -8,6 +8,19 @@ import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { characterSheetToYaml } from "./exportUtils.ts"
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 
+interface HookWithMocks {
+  result: ReturnType<typeof renderHook<ReturnType<typeof useYamlFileImport>>>["result"]
+  onParsed: ReturnType<typeof vi.fn>
+  onError: ReturnType<typeof vi.fn>
+}
+
+function makeHookWithMocks(): HookWithMocks {
+  const onParsed = vi.fn()
+  const onError = vi.fn()
+  const { result } = renderHook(() => useYamlFileImport({ onParsed, onError }))
+  return { result, onParsed, onError }
+}
+
 function makeChangeEvent(yamlContent: string | null): ChangeEvent<HTMLInputElement> {
   const input = document.createElement("input")
   input.type = "file"
@@ -47,15 +60,13 @@ describe("useYamlFileImport", () => {
     // Assert
     expect(onError).not.toHaveBeenCalled()
     expect(onParsed).toHaveBeenCalledTimes(1)
-    expect(onParsed.mock.calls[0][0].id).toBe(Artemis.id)
+    expect((onParsed.mock.calls[0] as [CharacterSheet])[0].id).toBe(Artemis.id)
   })
 
   it("clears the input value so the same file can be re-selected", async () => {
     // Arrange
     const yaml = characterSheetToYaml(Artemis)
-    const { result } = renderHook(() =>
-      useYamlFileImport({ onParsed: vi.fn(), onError: vi.fn() }),
-    )
+    const { result } = makeHookWithMocks()
     const event = makeChangeEvent(yaml)
 
     // Act
@@ -69,9 +80,7 @@ describe("useYamlFileImport", () => {
 
   it("calls onError when the YAML cannot be parsed", async () => {
     // Arrange
-    const onParsed = vi.fn()
-    const onError = vi.fn()
-    const { result } = renderHook(() => useYamlFileImport({ onParsed, onError }))
+    const { result, onParsed, onError } = makeHookWithMocks()
     const event = makeChangeEvent("::: not valid yaml :::\n  - [")
 
     // Act
@@ -86,9 +95,7 @@ describe("useYamlFileImport", () => {
 
   it("does nothing when no file is selected", async () => {
     // Arrange
-    const onParsed = vi.fn()
-    const onError = vi.fn()
-    const { result } = renderHook(() => useYamlFileImport({ onParsed, onError }))
+    const { result, onParsed, onError } = makeHookWithMocks()
     const event = makeChangeEvent(null)
 
     // Act
@@ -103,9 +110,7 @@ describe("useYamlFileImport", () => {
 
   it("openFilePicker clicks the input element", () => {
     // Arrange
-    const { result } = renderHook(() =>
-      useYamlFileImport({ onParsed: vi.fn(), onError: vi.fn() }),
-    )
+    const { result } = makeHookWithMocks()
     const input = document.createElement("input")
     const clickSpy = vi.spyOn(input, "click")
     result.current.inputRef.current = input
