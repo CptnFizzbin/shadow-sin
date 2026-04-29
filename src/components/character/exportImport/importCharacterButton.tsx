@@ -1,13 +1,12 @@
 import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
-import type { ChangeEvent, FC } from "react"
-import { useRef } from "react"
+import type { FC } from "react"
 
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
-import { yamlToCharacterSheet } from "./exportUtils.ts"
 import { useImportConflictDialog } from "./importConflictDialog.tsx"
+import { useYamlFileImport } from "./useYamlFileImport.ts"
 
 interface ImportCharacterButtonProps {
   onImported?: () => void | Promise<void>
@@ -32,26 +31,9 @@ function resolveAlias(
 }
 
 export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImported }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
   const importConflictDialog = useImportConflictDialog()
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
-    // Reset so the same file can be re-selected if needed
-    event.target.value = ""
-
-    const yamlContent = await file.text()
-    let character: CharacterSheet
-
-    try {
-      character = yamlToCharacterSheet(yamlContent)
-    } catch (error) {
-      console.error("Failed to parse YAML file:", error)
-      return
-    }
-
+  const handleParsed = async (character: CharacterSheet) => {
     const existing = await localCharacterManager.getCharacter(character.id)
 
     if (!existing) {
@@ -87,19 +69,20 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
     }
   }
 
+  const { inputProps, openFilePicker } = useYamlFileImport({
+    onParsed: handleParsed,
+    onError: (error) => {
+      console.error("Failed to parse YAML file:", error)
+    },
+  })
+
   return (
     <>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".yaml,.yml"
-        style={{ display: "none" }}
-        onChange={(event) => { void handleFileChange(event) }}
-      />
+      <input {...inputProps} />
       <Button
         variant="outlined"
         startIcon={<UploadIcon />}
-        onClick={() => inputRef.current?.click()}
+        onClick={openFilePicker}
       >
         Import YAML
       </Button>
