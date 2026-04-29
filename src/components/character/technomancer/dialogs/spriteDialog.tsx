@@ -1,8 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -15,6 +11,7 @@ import { useState } from "react"
 
 import { useMaxSpriteTasks } from "#/components/character/technomancer/spritesHooks.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -69,10 +66,10 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} fullWidth slotProps={{ transition: { onExited: handleClosed } }}>
-      <DialogTitle>{isEditMode ? "Edit Sprite" : "Add Sprite"}</DialogTitle>
+    <Dialog open={open} onClosed={handleClosed}>
+      <Dialog.Title>{isEditMode ? "Edit Sprite" : "Add Sprite"}</Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, pt: 1 }}>
           <TextField
             label="Sprite Name"
@@ -111,16 +108,16 @@ export const SpriteDialog: FC<SpriteDialogProps> = ({
                 </FormControl>
               )}
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions>
+      <Dialog.Actions>
         <Button color="secondary" onClick={onClose}>
           Cancel
         </Button>
         <Button variant="contained" color="secondary" onClick={handleSave}>
           Save
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

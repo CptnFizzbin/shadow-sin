@@ -1,14 +1,11 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useId } from "react"
 
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
@@ -58,11 +55,10 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{ transition: { onExited: handleClosed } }}
-      fullWidth
+      onClosed={handleClosed}
     >
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <form
           id={formId}
           onSubmit={(e) => {
@@ -74,8 +70,8 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
             <ContactFormFields form={form} fields={contactFieldMap} />
           </Stack>
         </form>
-      </DialogContent>
-      <DialogActions sx={{ padding: 1 }}>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Button
           color="secondary"
           onClick={handleCancel}
@@ -91,7 +87,7 @@ export const ContactFormDialog: FC<ContactFormDialogProps> = ({
         >
           Save
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

@@ -1,9 +1,5 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import InputAdornment from "@mui/material/InputAdornment"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
@@ -11,6 +7,7 @@ import type { FC } from "react"
 
 import { useTraditionForm } from "#/components/character/spells/form/useTraditionForm.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
@@ -42,19 +39,14 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
-      }}
-      fullWidth
       maxWidth="sm"
+      onClosed={() => {
+        form.reset()
+        onClosed()
+      }}
     >
-      <DialogTitle>Tradition</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <Dialog.Title>Tradition</Dialog.Title>
+      <Dialog.Content>
         <form.AppForm>
           <Stack>
             <form.AppField name="name">
@@ -125,15 +117,15 @@ export const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
             </form.AppField>
           </Stack>
         </form.AppForm>
-      </DialogContent>
-      <DialogActions>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Box>
           <Button onClick={onClose}>Cancel</Button>
           <Button variant="contained" onClick={() => form.handleSubmit()}>
             Save
           </Button>
         </Box>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

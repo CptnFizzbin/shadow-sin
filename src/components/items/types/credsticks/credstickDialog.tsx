@@ -1,8 +1,4 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
@@ -19,6 +15,7 @@ import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSe
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
@@ -133,9 +130,9 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
       : "Add Credstick"
 
   return (
-    <Dialog open={open} slotProps={{ transition: { onExited: handleClosed } }} fullWidth>
-      <DialogTitle sx={{ padding: 1 }}>{title}</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+    <Dialog open={open} onClosed={handleClosed}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>
           {isCertified && (
             <>
@@ -240,8 +237,8 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
             </>
           )}
         </Stack>
-      </DialogContent>
-      <DialogActions sx={{ padding: 1, flexWrap: "wrap", gap: 1 }}>
+      </Dialog.Content>
+      <Dialog.Actions>
         {isEditMode && !showWithdrawConfirm && !showRemoveConfirm && (
           <>
             <Button
@@ -272,7 +269,7 @@ export const CredstickDialog: FC<CredstickDialogProps> = ({
             </Button>
           </>
         )}
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

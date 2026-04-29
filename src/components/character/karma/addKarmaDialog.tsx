@@ -1,14 +1,11 @@
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
 import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
 export interface AddKarmaDialogProps extends DialogApiDialogProps {
@@ -34,20 +31,15 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
   return (
     <Dialog
       open={open}
-      fullWidth
       maxWidth="xs"
-      slotProps={{
-        transition: {
-          onExited: () => {
-            form.reset()
-            onClosed()
-          },
-        },
+      onClosed={() => {
+        form.reset()
+        onClosed()
       }}
     >
-      <DialogTitle>Add Karma</DialogTitle>
+      <Dialog.Title>Add Karma</Dialog.Title>
 
-      <DialogContent>
+      <Dialog.Content>
         <form.AppForm>
           <Stack sx={{ pt: 1 }}>
             <form.AppField
@@ -60,20 +52,20 @@ export const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
             </form.AppField>
           </Stack>
         </form.AppForm>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions>
+      <Dialog.Actions>
         <Button color="secondary" onClick={() => onClose()}>
           Cancel
         </Button>
         <Button
           color="secondary"
           variant="contained"
-          onClick={form.handleSubmit}
+          onClick={() => form.handleSubmit()}
         >
           Add
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

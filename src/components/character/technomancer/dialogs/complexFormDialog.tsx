@@ -1,14 +1,12 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
@@ -55,22 +53,17 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
     <Dialog
       key={dialogKey}
       open={open}
-      fullWidth
       maxWidth="sm"
-      slotProps={{
-        transition: {
-          onExited: () => {
-            appForm.reset()
-            onClosed?.()
-          },
-        },
+      onClosed={() => {
+        appForm.reset()
+        onClosed?.()
       }}
     >
-      <DialogTitle>
+      <Dialog.Title>
         {isEditMode ? "Edit Complex Form" : "Add Complex Form"}
-      </DialogTitle>
+      </Dialog.Title>
 
-      <DialogContent sx={{ p: 2 }}>
+      <Dialog.Content>
         <appForm.AppForm>
           <Stack sx={{ gap: 2, pt: 1 }}>
             <appForm.AppField
@@ -110,31 +103,33 @@ export const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
             <GameEffectsFieldGroup form={appForm} fields={{ effects: "effects" }} />
           </Stack>
         </appForm.AppForm>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-        <div>
-          {onDelete && (
-            <Button
-              color="error"
-              onClick={() => {
-                onDelete()
-                onClose()
-              }}
-            >
-              Delete
+      <Dialog.Actions>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Box>
+            {onDelete && (
+              <Button
+                color="error"
+                onClick={() => {
+                  onDelete()
+                  onClose()
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
             </Button>
-          )}
-        </div>
-        <div>
-          <Button color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" onClick={() => appForm.handleSubmit()}>
-            Save
-          </Button>
-        </div>
-      </DialogActions>
+            <Button variant="contained" color="secondary" onClick={() => appForm.handleSubmit()}>
+              Save
+            </Button>
+          </Box>
+        </Stack>
+      </Dialog.Actions>
     </Dialog>
   )
 }

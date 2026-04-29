@@ -1,11 +1,9 @@
 import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
+
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 import { useDialogApi } from "./api/dialogApiProvider.tsx"
 
@@ -44,12 +42,11 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleCancel}
-      slotProps={{ transition: { onExited: onClosed } }}
-      fullWidth
+      onClosed={onClosed}
     >
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>{body}</DialogContent>
-      <DialogActions sx={{ padding: 1 }}>
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>{body}</Dialog.Content>
+      <Dialog.Actions>
         <Button
           color="secondary"
           onClick={handleCancel}
@@ -68,7 +65,7 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
         >
           {slotProps?.confirmButton?.label ?? confirmLabel ?? "Ok"}
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

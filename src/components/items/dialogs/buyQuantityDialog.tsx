@@ -1,9 +1,5 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
@@ -14,6 +10,7 @@ import {
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -45,10 +42,10 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const canAfford = currentNuyen >= totalCost
 
   return (
-    <Dialog open={open} onClose={onClose} slotProps={{ transition: { onExited: onClosed } }} fullWidth>
-      <DialogTitle>Buy More</DialogTitle>
+    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+      <Dialog.Title>Buy More</Dialog.Title>
 
-      <DialogContent>
+      <Dialog.Content>
         <Stack sx={{ paddingTop: 2 }}>
           <Stack direction="row">
             <CounterField
@@ -83,9 +80,9 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
             }}
           />
         </Stack>
-      </DialogContent>
+      </Dialog.Content>
 
-      <DialogActions>
+      <Dialog.Actions>
         <Button onClick={onClose}>Cancel</Button>
 
         <Box sx={{ flexGrow: 1 }} />
@@ -99,7 +96,7 @@ export const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
           <Nuyen amount={totalCost} />
           )
         </Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }

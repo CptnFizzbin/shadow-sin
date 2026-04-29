@@ -2,10 +2,6 @@ import type { UUID } from "node:crypto"
 
 import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogTitle from "@mui/material/DialogTitle"
 import Divider from "@mui/material/Divider"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
@@ -19,6 +15,7 @@ import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenSto
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
@@ -131,9 +128,9 @@ export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
   }
 
   return (
-    <Dialog open={open} slotProps={{ transition: { onExited: handleTransitionExited } }} fullWidth>
-      <DialogTitle sx={{ padding: 1 }}>End of Month</DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+    <Dialog open={open} onClosed={handleTransitionExited}>
+      <Dialog.Title>End of Month</Dialog.Title>
+      <Dialog.Content>
         <Stack sx={{ gap: 0.5, padding: 1 }}>
           {allItems.length === 0 && (
             <Typography color="text.secondary" sx={{ fontStyle: "italic" }}>
@@ -189,11 +186,11 @@ export const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
             </>
           )}
         </Stack>
-      </DialogContent>
-      <DialogActions sx={{ padding: 1 }}>
+      </Dialog.Content>
+      <Dialog.Actions>
         <Button color="secondary" onClick={onClose}>Cancel</Button>
         <Button color="warning" variant="contained" onClick={handleApply}>Apply</Button>
-      </DialogActions>
+      </Dialog.Actions>
     </Dialog>
   )
 }
