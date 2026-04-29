@@ -1,6 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useMemo } from "react"
 
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -26,8 +27,10 @@ interface AttributesProviderProps extends PropsWithChildren {
  * provider directly.
  */
 export const AttributesProvider: FC<AttributesProviderProps> = ({ values, infos, children }) => {
+  const contextValue = useMemo(() => ({ values, infos }), [values, infos])
+
   return (
-    <AttributesContext.Provider value={{ values, infos }}>
+    <AttributesContext.Provider value={contextValue}>
       {children}
     </AttributesContext.Provider>
   )
@@ -37,7 +40,7 @@ const useAttributesContext = (): AttributesContextValue => {
   const context = useContext(AttributesContext)
 
   if (!context) {
-    throw new Error("useAttributesContext must be used within an AttributesProvider")
+    throw new OutOfContextError("useAttributesContext", "AttributesProvider")
   }
 
   return context

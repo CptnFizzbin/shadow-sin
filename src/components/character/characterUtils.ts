@@ -25,7 +25,7 @@ export { useAllAttrInfos, useAttrInfo, useAttrValue }
  */
 export const useAttr = (attribute: AttributeKey) => {
   if (attribute === AttributeKey.essence) {
-    throw new Error("Use useEssenceAttr (or useEssenceInfo) for the Essence attribute")
+    throw new Error("Use useEssenceInfo for the Essence attribute")
   }
 
   return useAttrValue(attribute)
