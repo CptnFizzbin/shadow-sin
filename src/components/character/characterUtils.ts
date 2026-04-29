@@ -1,63 +1,34 @@
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGearByType } from "#/components/items/useGearStore.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
-import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import { awakenings } from "#/system/awakeningType.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { metatypes } from "#/system/metatypeData.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
+import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attributesProvider.tsx"
 import { useCharacterSheet } from "./sheet/characterSheetProvider.tsx"
 
-/**
- * Hook to retrieve all attribute information for the current metatype and awakening.
- */
-export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
-  const metatype = useCharacterSheet((sheet) => metatypes[sheet.biology.metatype])
-  const awakening = useCharacterSheet((sheet) => awakenings[sheet.biology.awakening])
-
-  return {
-    ...metatype.attributes,
-    ...awakening.attributes,
-  }
-}
+// Re-exported for convenience — see attributesProvider.tsx for full documentation.
+export { useAllAttrInfos, useAttrInfo, useAttrValue }
 
 /**
- * Hook to retrieve information for a specific attribute, including bonuses.
- */
-export const useAttrInfo = (attribute: AttributeKey): AttributeInfo => {
-  const attributes = useAllAttrInfos()
-
-  let attributeInfo = {
-    ...attributes[attribute],
-  }
-
-  if (attribute === AttributeKey.magic || attribute === AttributeKey.resonance) {
-    attributeInfo = {
-      ...attributeInfo,
-      ...attributes[attribute],
-    }
-  }
-
-  return attributeInfo
-}
-
-/**
- * Hook to retrieve the current value of an attribute from the character sheet.
+ * Hook to retrieve the current value of an attribute.
+ * Reads from the nearest `AttributesProvider` in the tree.
+ *
+ * @deprecated Prefer `useAttrValue` from `attributesProvider.tsx` directly.
+ *   This wrapper exists for backwards compatibility and adds an Essence guard.
+ * @throws if called with `AttributeKey.essence` — use `useEssenceInfo` instead.
  */
 export const useAttr = (attribute: AttributeKey) => {
   if (attribute === AttributeKey.essence) {
-    throw new Error("Use useEssenceAttr (or useEssenceInfo) for the Essence attribute")
+    throw new Error("Use useEssenceInfo for the Essence attribute")
   }
 
-  return useCharacterSheet((sheet) => {
-    return sheet.attributes[attribute]
-  })
+  return useAttrValue(attribute)
 }
 
 /**
