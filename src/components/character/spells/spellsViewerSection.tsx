@@ -9,13 +9,19 @@ import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { useSpellCastDialog } from "./spellCastDialog.tsx"
 import { SpellViewerListItem } from "./spellViewerListItem.tsx"
+import { useSpellsStore } from "./useSpellsStore.ts"
 
 export const SpellsViewerSection: FC = () => {
   const spells = useCharacterSheet((sheet) => sheet.spells)
   const spellCastDialog = useSpellCastDialog()
+  const spellsStore = useSpellsStore()
 
   const handleOpenSpell = (spell: SpellData) => {
     spellCastDialog.open({ spell })
+  }
+
+  const handleToggleSustained = (spell: SpellData) => {
+    spellsStore.setSustained(spell)
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)
@@ -40,6 +46,7 @@ export const SpellsViewerSection: FC = () => {
               key={spell.id}
               spell={spell}
               onClick={() => handleOpenSpell(spell)}
+              onToggleSustained={() => handleToggleSustained(spell)}
             />
           ))}
         </Stack>

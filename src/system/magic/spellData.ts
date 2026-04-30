@@ -48,6 +48,7 @@ export interface SpellData {
   description?: string
   source?: SourceData
   effects?: GameEffectData[]
+  sustained?: boolean
 }
 
 export const SpellDataSchema = z.object({
@@ -77,4 +78,5 @@ export const SpellDataSchema = z.object({
     })
     .array()
     .optional(),
+  sustained: z.boolean().optional(),
 }) satisfies z.ZodType<SpellData>
