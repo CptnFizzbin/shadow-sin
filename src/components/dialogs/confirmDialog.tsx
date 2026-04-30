@@ -51,9 +51,9 @@ export const useConfirmDialog = () => {
 
   return {
     confirm: async (props: Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>): Promise<boolean> => {
-      return await dialogApi.open<boolean>((ctrl) => (
+      return (await dialogApi.open<boolean>((ctrl) => (
         <ConfirmDialog ctrl={ctrl} {...props} />
-      )).result ?? false
+      ))) ?? false
     },
   }
 }

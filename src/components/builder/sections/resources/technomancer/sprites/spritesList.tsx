@@ -32,12 +32,12 @@ export const SpritesList: FC = () => {
   const isAtMax = sprites.length >= maxSpritesRegistered
 
   const handleAddSprite = async () => {
-    const saved = await spriteDialog.open().result
+    const saved = await spriteDialog.open()
     if (saved) spritesStore.save(saved)
   }
 
   const handleEditSprite = async (sprite: SpriteData) => {
-    const saved = await spriteDialog.open({ sprite }).result
+    const saved = await spriteDialog.open({ sprite })
     if (saved) spritesStore.save(saved)
   }
 

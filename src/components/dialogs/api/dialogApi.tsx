@@ -2,7 +2,6 @@ import { useSelector } from "@tanstack/react-store"
 import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import type { FC, ReactNode } from "react"
-import { createElement } from "react"
 
 import type { DialogApiStore } from "./dialogApiStore.ts"
 import type { AnyDialogCtrl } from "./dialogCtrl.ts"
@@ -48,7 +47,7 @@ const OpenFactoryWrapper: FC<OpenFactoryWrapperProps> = ({ ctrl, factory }) => {
  * Receive `ctrl` and `open` in the factory. The `open` boolean is reactive.
  *
  * ```tsx
- * const { result } = dialogApi.open<boolean>((ctrl, open) => (
+ * const result = await dialogApi.open<boolean>((ctrl, open) => (
  *   <Dialog open={open} onClose={() => ctrl.close(false)} onClosed={() => ctrl.onClosed()}>
  *     <Button onClick={() => ctrl.close(true)}>Yes</Button>
  *   </Dialog>
@@ -69,23 +68,25 @@ export class DialogApi {
    * The factory receives `ctrl` (to call `close()`) and `open` (a reactive
    * boolean that becomes `false` after `ctrl.close()` is called).
    *
-   * Returns `{ result }` — a promise that resolves when the dialog closes.
+   * Returns a promise that resolves when the dialog closes.
    */
   open<TReturn>(
     factory: (ctrl: DialogCtrl<TReturn>, open: boolean) => ReactNode,
-  ): { result: Promise<TReturn | undefined> } {
+  ): Promise<TReturn | undefined> {
     const dialogId = crypto.randomUUID()
     const ctrl = new DialogCtrl<TReturn>()
     ctrl._setOpen()
     ctrl._setOnClosedCallback(() => this.removeDialog(dialogId))
 
-    const inner = createElement(OpenFactoryWrapper, {
-      ctrl,
-      factory: factory as (ctrl: AnyDialogCtrl, open: boolean) => ReactNode,
-    })
-    const element = createElement(DialogErrorBoundary, { ctrl, children: inner })
+    const inner = (
+      <OpenFactoryWrapper
+        ctrl={ctrl}
+        factory={factory as (ctrl: AnyDialogCtrl, open: boolean) => ReactNode}
+      />
+    )
+    const element = <DialogErrorBoundary ctrl={ctrl}>{inner}</DialogErrorBoundary>
     this.addDialog(dialogId, element)
-    return { result: ctrl.result() }
+    return ctrl.result()
   }
 
   private addDialog(id: string, dialog: ReactNode) {

@@ -187,7 +187,7 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
-      const { result } = dialogApi.open<string>((ctrl, open) => (
+      const result = dialogApi.open<string>((ctrl, open) => (
         <FakeStringDialog ctrl={ctrl} open={open} />
       ))
 
@@ -204,7 +204,7 @@ describe.sequential("DialogApi", () => {
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
       let capturedCtrl!: DialogCtrl<string>
-      const { result } = dialogApi.open<string>((ctrl, open) => {
+      const result = dialogApi.open<string>((ctrl, open) => {
         capturedCtrl = ctrl
         return <FakeStringDialog ctrl={ctrl} open={open} />
       })
@@ -249,7 +249,7 @@ describe.sequential("DialogApi", () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
-      const { result } = dialogApi.open<string>((ctrl, open) => (
+      const result = dialogApi.open<string>((ctrl, open) => (
         <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
       ))
 
@@ -266,7 +266,7 @@ describe.sequential("DialogApi", () => {
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
       let capturedCtrl!: DialogCtrl<string>
-      const { result } = dialogApi.open<string>((ctrl, open) => {
+      const result = dialogApi.open<string>((ctrl, open) => {
         capturedCtrl = ctrl
         return <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
       })
@@ -286,7 +286,7 @@ describe.sequential("DialogApi", () => {
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
       let capturedCtrl!: DialogCtrl<string>
-      const { result } = dialogApi.open<string>((ctrl, open) => {
+      const result = dialogApi.open<string>((ctrl, open) => {
         capturedCtrl = ctrl
         return <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
       })
@@ -372,14 +372,14 @@ describe.sequential("DialogApi", () => {
       // Act — suppress the expected console.error from the error boundary
       const consoleError = console.error
       console.error = () => {}
-      let openResult!: { result: Promise<void | undefined> }
+      let openResult!: Promise<void | undefined>
       act(() => {
         openResult = dialogApi.open<void>((ctrl) => <BrokenDialog ctrl={ctrl} />)
       })
       console.error = consoleError
 
       // Assert
-      await expect(openResult.result).resolves.toBeUndefined()
+      await expect(openResult).resolves.toBeUndefined()
     })
 
     it("shows an error alert with the context name and provider name", async () => {

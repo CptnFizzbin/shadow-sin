@@ -31,16 +31,16 @@ export class DialogCtrl<TReturn> {
 
   /**
    * Open the dialog. Resets the result promise and transitions `store.open` to `true`.
-   * Returns `{ result }` which resolves when the dialog is closed.
+   * Returns a promise that resolves when the dialog is closed.
    */
-  open(): { result: Promise<TReturn | undefined> } {
+  open(): Promise<TReturn | undefined> {
     // Reset promise and transition to open
     const { promise, resolve } = Promise.withResolvers<TReturn | undefined>()
     this.promise = promise
     this.resolve = resolve
     this.savedValue = undefined
     this.store.setState(() => ({ open: true }))
-    return { result: this.promise }
+    return this.promise
   }
 
   /**

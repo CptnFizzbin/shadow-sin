@@ -16,7 +16,7 @@ export async function resolveConflictedCharacter(
   const choice = await importConflictDialog.open({
     incomingCharacter: character,
     existingCharacter: existing,
-  }).result
+  })
 
   if (choice === "overwrite") {
     return character

@@ -16,7 +16,7 @@ export const TraditionCard: FC = () => {
   const traditionFormDialog = useTraditionFormDialog()
 
   const handleOpen = async () => {
-    const saved = await traditionFormDialog.open({ tradition }).result
+    const saved = await traditionFormDialog.open({ tradition })
     if (saved) traditionStore.save(saved)
   }
 

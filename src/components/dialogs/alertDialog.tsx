@@ -46,7 +46,7 @@ export const useAlertDialog = () => {
     open: async (props: Omit<AlertDialogProps, keyof ControlledDialogProps<void>>): Promise<void> => {
       await dialogApi.open<void>((ctrl) => (
         <AlertDialog ctrl={ctrl} {...props} />
-      )).result
+      ))
     },
   }
 }

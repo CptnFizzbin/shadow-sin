@@ -60,7 +60,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   }
 
   const handleEdit = async () => {
-    const saved = await implantFormDialog.open({ implant, parentId: implant.parentId }).result
+    const saved = await implantFormDialog.open({ implant, parentId: implant.parentId })
     if (saved) gearStore.save(saved)
   }
 

@@ -18,7 +18,7 @@ export const ImplantItemList: FC = () => {
   const implantFormDialog = useImplantFormDialog()
 
   const handleAddImplant = async (props?: UseImplantFormProps) => {
-    const saved = await implantFormDialog.open(props).result
+    const saved = await implantFormDialog.open(props)
     if (saved) gearApi.save(saved)
   }
 

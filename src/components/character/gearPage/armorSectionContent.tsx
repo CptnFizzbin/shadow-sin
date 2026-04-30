@@ -24,7 +24,7 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
   const armorFormDialog = useArmorFormDialog()
 
   const handleEditArmor = async (armor?: ArmorData) => {
-    const saved = await armorFormDialog.open({ armor }).result
+    const saved = await armorFormDialog.open({ armor })
     if (saved) gearStore.save(saved)
   }
 
