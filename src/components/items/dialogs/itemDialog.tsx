@@ -7,6 +7,7 @@ import { z } from "zod"
 
 import { useIsBuilder } from "#/components/builder/useIsBuilder.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
 import { GearAttachmentFieldGroup } from "#/components/items/forms/gearAttachmentFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/items/forms/gearCostFieldGroup.tsx"
@@ -16,7 +17,6 @@ import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
@@ -32,6 +32,8 @@ export interface ItemDialogProps {
   form: AnyItemForm
   title: ReactNode
   ctrl: AnyDialogCtrl
+  /** Called after the exit animation completes (e.g. to reset form state). */
+  onClosed?: () => void
   onDelete?: () => void
   /** Override the total cost calculation used for display and nuyen withdrawal. Defaults to `cost × quantity`. */
   getCost?: (values: ItemData) => number
@@ -65,6 +67,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   form: formArg,
   title,
   ctrl,
+  onClosed,
   onDelete,
   getCost,
   parentItemFilter,
@@ -130,7 +133,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   return (
-    <ControlledDialog ctrl={ctrl}>
+    <ControlledDialog ctrl={ctrl} onClosed={onClosed}>
       <Dialog.Title>{title}</Dialog.Title>
 
       <Dialog.Content>

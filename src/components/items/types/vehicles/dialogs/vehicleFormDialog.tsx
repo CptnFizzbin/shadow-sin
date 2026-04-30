@@ -3,6 +3,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useVehicleForm, vehicleFieldMap } from "#/components/items/types/vehicles/forms/useVehicleForm.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
@@ -10,26 +11,16 @@ import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 interface VehicleFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   vehicle?: VehicleData
   vehicleCategory?: VehicleCategory
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (vehicle: VehicleData) => void
 }
 
-const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
-  open,
-  vehicle,
-  vehicleCategory,
-  onClose,
-  onClosed,
-  onSave,
-}) => {
+const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleCategory }) => {
   const form = useVehicleForm({
     vehicle,
     vehicleCategory,
-    onSubmit: onSave,
+    onSubmit: (vehicleData) => ctrl.close(vehicleData),
   })
 
   const title = (
@@ -45,9 +36,7 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       options={{
         hasRating: { enabled: true },
       }}
@@ -78,20 +67,14 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({
   )
 }
 
-export type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+export type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "ctrl">
 
 export const useVehicleFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseVehicleFormDialogProps) => dialogApi.open<VehicleData>(
-      (dialogProps) => (
-        <VehicleFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(vehicle) => dialogProps.onClose(vehicle)}
-        />
-      ),
+      (ctrl) => <VehicleFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

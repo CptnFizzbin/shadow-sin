@@ -145,13 +145,15 @@ export const useComplexFormDialog = () => {
 
   return {
     open: (props: UseComplexFormDialogProps) => dialogApi.open<ComplexFormData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ComplexFormDialog
-          {...dialogProps}
+          open={open}
           form={props.form}
           maxRating={props.maxRating}
           onDelete={props.onDelete}
-          onSave={(complexForm) => dialogProps.onClose(complexForm)}
+          onSave={(complexForm) => ctrl.close(complexForm)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

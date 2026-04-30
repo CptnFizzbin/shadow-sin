@@ -281,11 +281,12 @@ export const useCredstickDialog = () => {
 
   return {
     open: (props: UseCredstickDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <CredstickDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
         />
       ),
     ),

@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
+import { DialogCtrl } from "./api/dialogCtrl.ts"
 
 /**
  * Creates a stable `DialogCtrl<TReturn>` for use with inline dialogs that need

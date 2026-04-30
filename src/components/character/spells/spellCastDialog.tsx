@@ -95,11 +95,12 @@ export const useSpellCastDialog = () => {
 
   return {
     open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <SpellCastDialog
-          {...dialogProps}
+          open={open}
           spell={props.spell}
-          onClose={() => dialogProps.onClose()}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

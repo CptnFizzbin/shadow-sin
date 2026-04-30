@@ -1,12 +1,12 @@
-import { createStore } from "@tanstack/store"
 import { useSelector } from "@tanstack/react-store"
+import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 import type { FC, ReactNode } from "react"
 import { createElement } from "react"
 
 import type { DialogApiStore } from "./dialogApiStore.ts"
-import { DialogCtrl } from "./dialogCtrl.ts"
 import type { AnyDialogCtrl } from "./dialogCtrl.ts"
+import { DialogCtrl } from "./dialogCtrl.ts"
 import { DialogErrorBoundary } from "./dialogErrorBoundary.tsx"
 
 // ---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ import { DialogErrorBoundary } from "./dialogErrorBoundary.tsx"
 
 interface OpenFactoryWrapperProps {
   ctrl: AnyDialogCtrl
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   factory: (ctrl: AnyDialogCtrl, open: boolean) => ReactNode
 }
 
@@ -26,7 +26,7 @@ interface OpenFactoryWrapperProps {
  */
 const OpenFactoryWrapper: FC<OpenFactoryWrapperProps> = ({ ctrl, factory }) => {
   const isOpen = useSelector(ctrl.store, (state) => state.open)
-  // eslint-disable-next-line react/jsx-no-useless-fragment
+
   return <>{factory(ctrl, isOpen)}</>
 }
 
@@ -44,7 +44,6 @@ interface ControlledFactoryWrapperProps {
  * `ControlledDialog` internally, which subscribes to `ctrl.store` directly.
  */
 const ControlledFactoryWrapper: FC<ControlledFactoryWrapperProps> = ({ ctrl, factory, props }) => {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{factory(ctrl, props)}</>
 }
 

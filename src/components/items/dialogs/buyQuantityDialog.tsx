@@ -108,14 +108,15 @@ export const useBuyQuantityDialog = () => {
 
   return {
     open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <BuyQuantityDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
           onPurchase={(quantity, totalCost) => {
             props.onPurchase(quantity, totalCost)
-            dialogProps.onClose()
+            ctrl.close()
           }}
         />
       ),

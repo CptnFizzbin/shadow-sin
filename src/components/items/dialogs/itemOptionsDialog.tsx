@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 

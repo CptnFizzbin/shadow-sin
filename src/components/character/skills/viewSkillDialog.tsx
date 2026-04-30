@@ -53,12 +53,12 @@ export const useViewSkillDialog = () => {
 
   return {
     open: (props: UseViewSkillDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ViewSkillDialog
           {...props}
-          open={dialogProps.open}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

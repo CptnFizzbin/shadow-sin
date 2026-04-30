@@ -88,17 +88,17 @@ export const useQualityFormDialog = () => {
 
   return {
     open: (props: UseQualityFormDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <QualityFormDialog
-          open={dialogProps.open}
+          open={open}
           quality={props.quality}
           onSave={(quality) => {
             props.onSave(quality)
-            dialogProps.onClose()
+            ctrl.close()
           }}
           onDelete={props.onDelete}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

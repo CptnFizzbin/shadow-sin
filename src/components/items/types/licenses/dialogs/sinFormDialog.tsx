@@ -1,42 +1,31 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useSinForm } from "#/components/items/types/licenses/forms/useSinForm.tsx"
 import { getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinFormDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (sin: SinData) => void
+  ctrl: AnyDialogCtrl
   onDelete?: () => void
   sin?: SinData
 }
 
-const SinFormDialog: FC<SinFormDialogProps> = ({
-  open,
-  sin,
-  onClose,
-  onClosed,
-  onSave,
-  onDelete,
-}) => {
+const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
 
   const form = useSinForm({
     sin,
-    onSubmit: onSave,
+    onSubmit: (sinData) => ctrl.close(sinData),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       onDelete={onDelete}
       getCost={(s) => getSinCost(Number(s.rating))}
       ratingMax={6}
@@ -45,20 +34,14 @@ const SinFormDialog: FC<SinFormDialogProps> = ({
   )
 }
 
-export type UseSinFormDialogProps = Omit<SinFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+export type UseSinFormDialogProps = Omit<SinFormDialogProps, "ctrl">
 
 export const useSinFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseSinFormDialogProps) => dialogApi.open<SinData>(
-      (dialogProps) => (
-        <SinFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(sin) => dialogProps.onClose(sin)}
-        />
-      ),
+      (ctrl) => <SinFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

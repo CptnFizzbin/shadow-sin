@@ -102,13 +102,13 @@ export const useContactFormDialog = () => {
 
   return {
     open: (props?: UseContactFormDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ContactFormDialog
-          open={dialogProps.open}
+          open={open}
           contact={props?.contact}
           onSaved={props?.onSaved}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

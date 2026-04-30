@@ -95,13 +95,13 @@ export const useLanguageSkillDialog = () => {
 
   return {
     open: (props?: UseLanguageSkillDialogProps) => dialogApi.open<LanguageSkillData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <LanguageSkillDialog
           {...props}
-          open={dialogProps.open}
-          onSave={(skill) => dialogProps.onClose(skill)}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onSave={(skill) => ctrl.close(skill)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

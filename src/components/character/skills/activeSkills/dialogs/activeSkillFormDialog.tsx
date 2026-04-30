@@ -290,13 +290,13 @@ export const useActiveSkillDialog = () => {
 
   return {
     open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ActiveSkillFormDialog
           {...props}
-          open={dialogProps.open}
-          onSave={(skill) => dialogProps.onClose(skill)}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onSave={(skill) => ctrl.close(skill)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

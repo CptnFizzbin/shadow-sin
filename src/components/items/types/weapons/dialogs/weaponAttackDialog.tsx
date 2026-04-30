@@ -106,11 +106,12 @@ export const useWeaponAttackDialog = () => {
 
   return {
     open: (props: UseWeaponAttackDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <WeaponAttackDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
         />
       ),
     ),

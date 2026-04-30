@@ -171,11 +171,11 @@ export const useProfileEditDialog = () => {
 
   return {
     open: () => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ProfileEditDialog
-          open={dialogProps.open}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

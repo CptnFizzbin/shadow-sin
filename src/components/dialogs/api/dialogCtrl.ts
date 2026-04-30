@@ -82,9 +82,9 @@ export class DialogCtrl<TReturn, TProps = void> {
     if (this.onClosedCallback && this.closeTimeoutId === undefined) {
       this.closeTimeoutId = setTimeout(() => {
         console.warn(
-          "[DialogCtrl] onClosed() was not called within 5 seconds after close(). " +
-            "Auto-evicting the dialog entry. " +
-            "Ensure ControlledDialog (or your onClosed handler) is called after the exit animation.",
+          "[DialogCtrl] onClosed() was not called within 5 seconds after close(). "
+          + "Auto-evicting the dialog entry. "
+          + "Ensure ControlledDialog (or your onClosed handler) is called after the exit animation.",
         )
         this.onClosed()
       }, 5000)

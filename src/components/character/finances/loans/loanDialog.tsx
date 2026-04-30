@@ -230,11 +230,12 @@ export const useLoanDialog = () => {
 
   return {
     open: (props: UseLoanDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <LoanDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
         />
       ),
     ),

@@ -6,8 +6,8 @@ import { afterEach, describe, expect, it } from "vitest"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
 import { DialogApi } from "./dialogApi.tsx"
-import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
 import { DialogApiProvider } from "./dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "./dialogCtrl.ts"
 import { DialogCtrl } from "./dialogCtrl.ts"
 
 afterEach(() => {
@@ -41,16 +41,17 @@ describe("DialogCtrl", () => {
     await expect(ctrl.result()).resolves.toBeUndefined()
   })
 
-  it("sets isOpenStore to false when close() is called", () => {
+  it("sets store.open to false when close() is called", () => {
     // Arrange
     const ctrl = new DialogCtrl<number>()
-    expect(ctrl.isOpenStore.state).toBe(true)
+    ctrl._setOpen()
+    expect(ctrl.store.state.open).toBe(true)
 
     // Act
     ctrl.close(42)
 
     // Assert
-    expect(ctrl.isOpenStore.state).toBe(false)
+    expect(ctrl.store.state.open).toBe(false)
   })
 
   it("result() resolves only once even if close() is called multiple times", async () => {
@@ -100,7 +101,7 @@ describe("DialogCtrl", () => {
 
     // Assert — promise still resolves with the first saved value
     await expect(ctrl.result()).resolves.toBe("first")
-    expect(ctrl.isOpenStore.state).toBe(false)
+    expect(ctrl.store.state.open).toBe(false)
   })
 })
 
@@ -108,25 +109,23 @@ describe("DialogCtrl", () => {
 // DialogApi.open — React integration tests
 // ---------------------------------------------------------------------------
 
-/**
- * Props for test dialog components. Extends `DialogApiDialogProps` and adds
- * an optional `onSubmit` callback for returning a typed value.
- */
-interface FakeDialogProps<TReturn = void> extends DialogApiDialogProps<TReturn> {
+interface FakeDialogProps {
+  ctrl: AnyDialogCtrl
+  open?: boolean
   onSubmit?: (value: string) => void
 }
 
 /**
- * Minimal dialog component. Simulates a close animation: calls `onClosed` via
+ * Minimal dialog component. Simulates a close animation: calls `ctrl.onClosed()` via
  * `useEffect` once `open` becomes false (mirrors MUI's
  * `slotProps.transition.onExited`).
  */
-const FakeStringDialog: FC<FakeDialogProps<string>> = ({ open = true, onClose, onClosed, onSubmit }) => {
+const FakeStringDialog: FC<FakeDialogProps> = ({ ctrl, open = true, onSubmit }) => {
   useEffect(() => {
     if (!open) {
-      onClosed()
+      ctrl.onClosed()
     }
-  }, [open, onClosed])
+  }, [open, ctrl])
 
   if (!open) return null
 
@@ -136,7 +135,7 @@ const FakeStringDialog: FC<FakeDialogProps<string>> = ({ open = true, onClose, o
         type="button"
         onClick={() => {
           onSubmit?.("submitted")
-          onClose()
+          ctrl.close()
         }}
       >
         Submit
@@ -146,10 +145,10 @@ const FakeStringDialog: FC<FakeDialogProps<string>> = ({ open = true, onClose, o
 }
 
 /** Second dialog variant for multi-dialog tests. */
-const FakeSecondDialog: FC<FakeDialogProps> = ({ open = true, onClosed }) => {
+const FakeSecondDialog: FC<FakeDialogProps> = ({ ctrl, open = true }) => {
   useEffect(() => {
-    if (!open) onClosed()
-  }, [open, onClosed])
+    if (!open) ctrl.onClosed()
+  }, [open, ctrl])
 
   if (!open) return null
   return <div role="dialog" aria-label="second-dialog" />
@@ -165,82 +164,17 @@ function renderWithProvider(api: DialogApi) {
 
 describe.sequential("DialogApi", () => {
   // -------------------------------------------------------------------------
-  // Component overload — result is always void
+  // Factory function — typed result via ctrl.close(value)
   // -------------------------------------------------------------------------
-  describe("open with FC (component overload)", () => {
+  describe("open with factory function", () => {
     it("mounts the dialog into the provider when open() is called", async () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
 
       // Act
-      dialogApi.open(FakeStringDialog)
-
-      // Assert
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
-      })
-    })
-
-    it("result() resolves with undefined when onClose() is called", async () => {
-      // Arrange
-      const dialogApi = new DialogApi()
-      renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open(FakeStringDialog)
-
-      // Act — wait for the dialog to appear, then click Submit (calls onClose())
-      await waitFor(() => screen.getByRole("button", { name: "Submit" }))
-      screen.getByRole("button", { name: "Submit" }).click()
-
-      // Assert — component overload never returns a typed value
-      await expect(ctrl.result()).resolves.toBeUndefined()
-    })
-
-    it("result() resolves with undefined when ctrl.close() is called programmatically", async () => {
-      // Arrange
-      const dialogApi = new DialogApi()
-      renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open(FakeStringDialog)
-
-      // Act
-      ctrl.close()
-
-      // Assert
-      await expect(ctrl.result()).resolves.toBeUndefined()
-    })
-
-    it("dialog is removed from the provider after onClosed fires", async () => {
-      // Arrange
-      const dialogApi = new DialogApi()
-      renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open(FakeStringDialog)
-
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
-      })
-
-      // Act — close() sets isOpenStore=false; FakeStringDialog calls onClosed() in useEffect
-      ctrl.close()
-
-      // Assert
-      await waitFor(() => {
-        expect(screen.queryByRole("dialog", { name: "fake-dialog" })).toBeNull()
-      })
-    })
-  })
-
-  // -------------------------------------------------------------------------
-  // Render function overload — typed result via onClose(value)
-  // -------------------------------------------------------------------------
-  describe("open with render function", () => {
-    it("mounts the dialog into the provider when open() is called", async () => {
-      // Arrange
-      const dialogApi = new DialogApi()
-      renderWithProvider(dialogApi)
-
-      // Act
-      dialogApi.open<string>((props) => (
-        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      dialogApi.open<string>((ctrl, open) => (
+        <FakeStringDialog ctrl={ctrl} open={open} />
       ))
 
       // Assert
@@ -249,77 +183,127 @@ describe.sequential("DialogApi", () => {
       })
     })
 
-    it("result() resolves with the value passed to onClose()", async () => {
+    it("result resolves with undefined when ctrl.close() is called via Submit", async () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open<string>((props) => (
-        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
+      const { result } = dialogApi.open<string>((ctrl, open) => (
+        <FakeStringDialog ctrl={ctrl} open={open} />
+      ))
+
+      // Act — wait for the dialog to appear, then click Submit (calls ctrl.close())
+      await waitFor(() => screen.getByRole("button", { name: "Submit" }))
+      screen.getByRole("button", { name: "Submit" }).click()
+
+      // Assert
+      await expect(result).resolves.toBeUndefined()
+    })
+
+    it("result resolves with undefined when ctrl.close() is called programmatically", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      let capturedCtrl!: DialogCtrl<string>
+      const { result } = dialogApi.open<string>((ctrl, open) => {
+        capturedCtrl = ctrl
+        return <FakeStringDialog ctrl={ctrl} open={open} />
+      })
+
+      // Act
+      await waitFor(() => {
+        if (!capturedCtrl) throw new Error("ctrl not set")
+      })
+      capturedCtrl.close()
+
+      // Assert
+      await expect(result).resolves.toBeUndefined()
+    })
+
+    it("dialog is removed from the provider after onClosed fires", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      let capturedCtrl!: DialogCtrl<string>
+      dialogApi.open<string>((ctrl, open) => {
+        capturedCtrl = ctrl
+        return <FakeStringDialog ctrl={ctrl} open={open} />
+      })
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
+      })
+
+      // Act — close() sets store.open=false; FakeStringDialog calls ctrl.onClosed() in useEffect
+      await waitFor(() => {
+        if (!capturedCtrl) throw new Error("ctrl not set")
+      })
+      capturedCtrl.close()
+
+      // Assert
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog", { name: "fake-dialog" })).toBeNull()
+      })
+    })
+
+    it("result resolves with the value passed to onSubmit → ctrl.close(value)", async () => {
+      // Arrange
+      const dialogApi = new DialogApi()
+      renderWithProvider(dialogApi)
+      const { result } = dialogApi.open<string>((ctrl, open) => (
+        <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
       ))
 
       // Act — wait for the dialog to appear, then click Submit
-      // Submit calls onSubmit("submitted") → props.onClose("submitted") → ctrl resolves
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
       screen.getByRole("button", { name: "Submit" }).click()
 
       // Assert
-      await expect(ctrl.result()).resolves.toBe("submitted")
+      await expect(result).resolves.toBe("submitted")
     })
 
-    it("result() resolves with the value passed directly to ctrl.close()", async () => {
+    it("result resolves with the value passed directly to ctrl.close()", async () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open<string>((props) => (
-        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
-      ))
+      let capturedCtrl!: DialogCtrl<string>
+      const { result } = dialogApi.open<string>((ctrl, open) => {
+        capturedCtrl = ctrl
+        return <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
+      })
 
       // Act — programmatic close with a value
-      ctrl.close("programmatic")
+      await waitFor(() => {
+        if (!capturedCtrl) throw new Error("ctrl not set")
+      })
+      capturedCtrl.close("programmatic")
 
       // Assert
-      await expect(ctrl.result()).resolves.toBe("programmatic")
+      await expect(result).resolves.toBe("programmatic")
     })
 
-    it("dialog is removed from the provider after onClosed fires", async () => {
+    it("calling ctrl.close() after save() then close() is already called is a safe no-op", async () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open<string>((props) => (
-        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
-      ))
-
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
+      let capturedCtrl!: DialogCtrl<string>
+      const { result } = dialogApi.open<string>((ctrl, open) => {
+        capturedCtrl = ctrl
+        return <FakeStringDialog ctrl={ctrl} open={open} onSubmit={(value) => ctrl.close(value)} />
       })
-
-      // Act
-      ctrl.close()
-
-      // Assert
-      await waitFor(() => {
-        expect(screen.queryByRole("dialog", { name: "fake-dialog" })).toBeNull()
-      })
-    })
-
-    it("calling onClose() after ctrl.close() is already called is a safe no-op", async () => {
-      // Arrange
-      const dialogApi = new DialogApi()
-      renderWithProvider(dialogApi)
-      const ctrl = dialogApi.open<string>((props) => (
-        <FakeStringDialog {...props} onSubmit={(value) => props.onClose(value)} />
-      ))
 
       await waitFor(() => screen.getByRole("button", { name: "Submit" }))
-      ctrl.save("saved-value")
-      ctrl.close() // programmatic close — sets open=false, dialog begins animating out
+      await waitFor(() => {
+        if (!capturedCtrl) throw new Error("ctrl not set")
+      })
+      capturedCtrl.save("saved-value")
+      capturedCtrl.close() // programmatic close — sets open=false, dialog begins animating out
 
-      // Act — onClose() fired again (e.g. backdrop click during animation)
-      ctrl.close()
+      // Act — ctrl.close() fired again (e.g. backdrop click during animation)
+      capturedCtrl.close()
 
       // Assert — second close is a no-op; result is still "saved-value"
-      await expect(ctrl.result()).resolves.toBe("saved-value")
-      expect(ctrl.isOpenStore.state).toBe(false)
+      await expect(result).resolves.toBe("saved-value")
+      expect(capturedCtrl.store.state.open).toBe(false)
     })
   })
 
@@ -332,8 +316,8 @@ describe.sequential("DialogApi", () => {
     renderWithProvider(dialogApi)
 
     // Act
-    dialogApi.open(FakeStringDialog)
-    dialogApi.open(FakeSecondDialog)
+    dialogApi.open<void>((ctrl, open) => <FakeStringDialog ctrl={ctrl} open={open} />)
+    dialogApi.open<void>((ctrl, open) => <FakeSecondDialog ctrl={ctrl} open={open} />)
 
     // Assert
     await waitFor(() => {
@@ -346,8 +330,12 @@ describe.sequential("DialogApi", () => {
     // Arrange
     const dialogApi = new DialogApi()
     renderWithProvider(dialogApi)
-    const ctrl1 = dialogApi.open(FakeStringDialog)
-    dialogApi.open(FakeSecondDialog)
+    let ctrl1!: DialogCtrl<void>
+    dialogApi.open<void>((ctrl, open) => {
+      ctrl1 = ctrl
+      return <FakeStringDialog ctrl={ctrl} open={open} />
+    })
+    dialogApi.open<void>((ctrl, open) => <FakeSecondDialog ctrl={ctrl} open={open} />)
 
     await waitFor(() => {
       expect(screen.getByRole("dialog", { name: "fake-dialog" })).toBeDefined()
@@ -355,6 +343,9 @@ describe.sequential("DialogApi", () => {
     })
 
     // Act
+    await waitFor(() => {
+      if (!ctrl1) throw new Error("ctrl1 not set")
+    })
     ctrl1.close()
 
     // Assert
@@ -369,11 +360,11 @@ describe.sequential("DialogApi", () => {
   // -------------------------------------------------------------------------
   describe("OutOfContextError in dialog component", () => {
     /** A dialog that unconditionally throws OutOfContextError on render */
-    const BrokenDialog: FC<DialogApiDialogProps> = () => {
+    const BrokenDialog: FC<{ ctrl: AnyDialogCtrl }> = () => {
       throw new OutOfContextError("useSomeContext", "SomeProvider")
     }
 
-    it("result() resolves with undefined when the dialog throws OutOfContextError", async () => {
+    it("result resolves with undefined when the dialog throws OutOfContextError", async () => {
       // Arrange
       const dialogApi = new DialogApi()
       renderWithProvider(dialogApi)
@@ -381,14 +372,14 @@ describe.sequential("DialogApi", () => {
       // Act — suppress the expected console.error from the error boundary
       const consoleError = console.error
       console.error = () => {}
-      let ctrl!: DialogCtrl<void>
+      let openResult!: { result: Promise<void | undefined> }
       act(() => {
-        ctrl = dialogApi.open(BrokenDialog)
+        openResult = dialogApi.open<void>((ctrl) => <BrokenDialog ctrl={ctrl} />)
       })
       console.error = consoleError
 
       // Assert
-      await expect(ctrl.result()).resolves.toBeUndefined()
+      await expect(openResult.result).resolves.toBeUndefined()
     })
 
     it("shows an error alert with the context name and provider name", async () => {
@@ -400,7 +391,7 @@ describe.sequential("DialogApi", () => {
       const consoleError = console.error
       console.error = () => {}
       act(() => {
-        dialogApi.open(BrokenDialog)
+        dialogApi.open<void>((ctrl) => <BrokenDialog ctrl={ctrl} />)
       })
       console.error = consoleError
 
@@ -420,7 +411,7 @@ describe.sequential("DialogApi", () => {
       const consoleError = console.error
       console.error = () => {}
       act(() => {
-        dialogApi.open(BrokenDialog)
+        dialogApi.open<void>((ctrl) => <BrokenDialog ctrl={ctrl} />)
       })
       console.error = consoleError
 

@@ -88,12 +88,12 @@ export const useImportConflictDialog = () => {
 
   return {
     open: (props: UseImportConflictDialogProps) => dialogApi.open<ImportConflictChoice>(
-      (dialogProps) => (
+      (ctrl) => (
         <ImportConflictDialog
           incomingCharacter={props.incomingCharacter}
           existingCharacter={props.existingCharacter}
-          onChoice={(choice) => dialogProps.onClose(choice)}
-          onClosed={dialogProps.onClosed}
+          onChoice={(choice) => ctrl.close(choice)}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

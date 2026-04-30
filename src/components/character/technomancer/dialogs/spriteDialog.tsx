@@ -131,11 +131,13 @@ export const useSpriteDialog = () => {
 
   return {
     open: (props?: UseSpriteDialogProps) => dialogApi.open<SpriteData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <SpriteDialog
-          {...dialogProps}
+          open={open}
           sprite={props?.sprite}
-          onSave={(sprite) => dialogProps.onClose(sprite)}
+          onSave={(sprite) => ctrl.close(sprite)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

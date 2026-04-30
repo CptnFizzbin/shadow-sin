@@ -2,9 +2,9 @@ import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
 
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
+import type { ControlledDialogProps } from "./api/controlledDialogProps.ts"
 import { useDialogApi } from "./api/dialogApiProvider.tsx"
 
 interface ConfirmDialogProps extends ControlledDialogProps<boolean> {

@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import {
   DeviceFormFields,
@@ -12,39 +13,24 @@ import {
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   device?: DeviceData
-  onClose: () => void
-  onClosed?: () => void
-  onSave?: (device: DeviceData) => void
 }
 
-export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
-  open,
-  device,
-  onClose,
-  onClosed,
-  onSave,
-}) => {
+export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device }) => {
   const title = device ? "Edit Device" : "Add Device"
 
   const form = useDeviceForm({
     device,
-    onSubmit: (submittedDevice) => {
-      onSave?.(submittedDevice)
-    },
+    onSubmit: (submittedDevice) => ctrl.close(submittedDevice),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={() => {
-        form.reset()
-        onClosed?.()
-      }}
+      ctrl={ctrl}
+      onClosed={() => form.reset()}
       slots={{
         itemFields: () => <DeviceFormFields form={form} fields={deviceFieldMap} />,
       }}
@@ -52,20 +38,14 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({
   )
 }
 
-export type UseDeviceFormDialogProps = Omit<DeviceFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+export type UseDeviceFormDialogProps = Omit<DeviceFormDialogProps, "ctrl">
 
 export const useDeviceFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseDeviceFormDialogProps) => dialogApi.open<DeviceData>(
-      (dialogProps) => (
-        <DeviceFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(device) => dialogProps.onClose(device)}
-        />
-      ),
+      (ctrl) => <DeviceFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }
