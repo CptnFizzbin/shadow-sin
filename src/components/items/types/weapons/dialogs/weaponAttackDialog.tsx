@@ -7,26 +7,22 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import type { FirearmData, WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
 
-interface WeaponAttackDialogProps {
+interface WeaponAttackDialogProps extends ControlledDialogProps<void> {
   weapon: WeaponData
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
+  ctrl,
   weapon,
-  open,
-  onClose,
-  onClosed,
 }) => {
   const isFirearm = isFirearmData(weapon)
   const firearm = isFirearm ? (weapon as FirearmData) : undefined
@@ -36,7 +32,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   )
 
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
+    <ControlledDialog ctrl={ctrl} maxWidth="sm">
       <Dialog.Title>{weapon.name}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
@@ -90,30 +86,23 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
 
           <AttackDicePool weapon={weapon} />
 
-          <Button onClick={onClose} color="secondary" size="small">
+          <Button onClick={() => ctrl.close()} color="secondary" size="small">
             Close
           </Button>
         </Stack>
       </Dialog.Content>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed">
+type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, keyof ControlledDialogProps<void>>
 
 export const useWeaponAttackDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseWeaponAttackDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <WeaponAttackDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-          {...props}
-        />
-      ),
+      (ctrl) => <WeaponAttackDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

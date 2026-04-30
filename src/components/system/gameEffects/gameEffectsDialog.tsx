@@ -5,8 +5,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -14,17 +15,12 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectRow } from "./gameEffectRow.tsx"
 import { getDefaultTarget } from "./gameEffectUtils.ts"
 
-interface GameEffectsDialogProps {
-  open: boolean
-  onClose: (value?: GameEffectData[]) => void
-  onClosed: () => void
+interface GameEffectsDialogProps extends ControlledDialogProps<GameEffectData[]> {
   initialEffects: GameEffectData[]
 }
 
 const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
+  ctrl,
   initialEffects,
 }) => {
   const [effects, setEffects] = useState<GameEffectData[]>(initialEffects)
@@ -52,7 +48,7 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onClosed={onClosed} maxWidth="sm">
+    <ControlledDialog ctrl={ctrl} onClose={false} maxWidth="sm">
       <Dialog.Title>Effects</Dialog.Title>
       <Dialog.Content>
         {effects.length === 0 && (
@@ -82,33 +78,26 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
         </Button>
       </Dialog.Content>
       <Dialog.Actions>
-        <Button onClick={() => onClose()}>Cancel</Button>
+        <Button onClick={() => ctrl.close()}>Cancel</Button>
         <Button
           variant="contained"
-          onClick={() => onClose(effects)}
+          onClick={() => ctrl.close(effects)}
         >
           Save
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, "open" | "onClose" | "onClosed">
+type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, keyof ControlledDialogProps<GameEffectData[]>>
 
 export const useGameEffectsDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseGameEffectsDialogProps) => dialogApi.open<GameEffectData[]>(
-      (ctrl, open) => (
-        <GameEffectsDialog
-          open={open}
-          onClose={(effects) => ctrl.close(effects)}
-          onClosed={() => ctrl.onClosed()}
-          {...props}
-        />
-      ),
+      (ctrl) => <GameEffectsDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

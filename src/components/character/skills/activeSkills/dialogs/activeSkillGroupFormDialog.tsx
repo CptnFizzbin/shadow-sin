@@ -10,21 +10,18 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
-interface ActiveSkillGroupFormDialogProps {
-  open: boolean
+interface ActiveSkillGroupFormDialogProps extends ControlledDialogProps<SkillGroupData> {
   group?: SkillGroupData
   /** Group names that must be disabled because they are already taken or a member skill is already individually selected. */
   disabledGroups?: ReadonlySet<string>
-  onSave: (group: SkillGroupData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const ratingOptions = Array.from(
@@ -33,13 +30,10 @@ const ratingOptions = Array.from(
 )
 
 const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
-  open,
+  ctrl,
   group,
   disabledGroups,
-  onSave,
   onDelete,
-  onClose,
-  onClosed,
 }) => {
   const isEditMode = !!group
 
@@ -54,7 +48,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
       setGroupNameError(true)
       return
     }
-    onSave({
+    ctrl.close({
       name: groupName,
       rating,
     })
@@ -64,17 +58,12 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
     setGroupName(group?.name ?? null)
     setRating(group?.rating ?? 1)
     setGroupNameError(false)
-    onClosed?.()
   }
 
   const memberSkills = groupName ? getSkillsInGroup(groupName) : []
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="sm"
-      onClosed={handleClosed}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={handleClosed}>
       <Dialog.Title>
         {isEditMode ? "Edit Skill Group" : "Add Skill Group"}
       </Dialog.Title>
@@ -134,7 +123,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -142,7 +131,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
             )}
           </Box>
           <Box>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button variant="contained" color="secondary" onClick={handleSave}>
@@ -151,13 +140,13 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
 type UseActiveSkillGroupDialogProps = Omit<
   ActiveSkillGroupFormDialogProps,
-  "open" | "onSave" | "onClose" | "onClosed"
+  keyof ControlledDialogProps<SkillGroupData>
 >
 
 export const useActiveSkillGroupDialog = () => {
@@ -165,13 +154,12 @@ export const useActiveSkillGroupDialog = () => {
 
   return {
     open: (props?: UseActiveSkillGroupDialogProps) => dialogApi.open<SkillGroupData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <ActiveSkillGroupFormDialog
-          {...props}
-          open={open}
-          onSave={(group) => ctrl.close(group)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
+          ctrl={ctrl}
+          group={props?.group}
+          disabledGroups={props?.disabledGroups}
+          onDelete={props?.onDelete}
         />
       ),
     ),

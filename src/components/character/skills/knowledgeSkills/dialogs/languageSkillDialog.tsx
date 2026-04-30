@@ -9,41 +9,27 @@ import {
 import {
   useLanguageSkillForm,
 } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
-interface LanguageSkillDialogProps {
-  open: boolean
+interface LanguageSkillDialogProps extends ControlledDialogProps<LanguageSkillData> {
   skill?: LanguageSkillData
-  onSave: (skill: LanguageSkillData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
-  open,
+  ctrl,
   skill,
-  onSave,
   onDelete,
-  onClose,
-  onClosed = noop,
 }) => {
   const isEditMode = !!skill
 
-  const form = useLanguageSkillForm({ skill, onSubmit: onSave })
+  const form = useLanguageSkillForm({ skill, onSubmit: (savedSkill) => ctrl.close(savedSkill) })
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="sm"
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
       <Dialog.Title>
         {isEditMode ? "Edit Language Skill" : "Add Language Skill"}
       </Dialog.Title>
@@ -60,7 +46,7 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -68,7 +54,7 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
             )}
           </Box>
           <Box>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button
@@ -81,13 +67,13 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
 type UseLanguageSkillDialogProps = Omit<
   LanguageSkillDialogProps,
-  "open" | "onSave" | "onClose" | "onClosed"
+  keyof ControlledDialogProps<LanguageSkillData>
 >
 
 export const useLanguageSkillDialog = () => {
@@ -95,15 +81,7 @@ export const useLanguageSkillDialog = () => {
 
   return {
     open: (props?: UseLanguageSkillDialogProps) => dialogApi.open<LanguageSkillData>(
-      (ctrl, open) => (
-        <LanguageSkillDialog
-          {...props}
-          open={open}
-          onSave={(skill) => ctrl.close(skill)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <LanguageSkillDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

@@ -11,20 +11,13 @@ import {
   useCharacterSheet,
   useCharacterSheetContext,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
-interface ProfileEditDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
-}
+type ProfileEditDialogProps = ControlledDialogProps<void>
 
-const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
-}) => {
+const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   const store = useCharacterSheetContext()
   const profile = useCharacterSheet((s) => s.profile)
   const biology = useCharacterSheet((s) => s.biology)
@@ -53,11 +46,11 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
         prev.biology.weight = weight || undefined
       }),
     )
-    onClose()
+    ctrl.close()
   }
 
   return (
-    <Dialog open={open} onClosed={onClosed}>
+    <ControlledDialog ctrl={ctrl}>
       <Dialog.Title>Edit Profile</Dialog.Title>
 
       <Dialog.Content>
@@ -155,14 +148,14 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button color="secondary" onClick={onClose}>
+        <Button color="secondary" onClick={() => ctrl.close()}>
           Cancel
         </Button>
         <Button color="secondary" variant="contained" onClick={handleSave}>
           Save
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -171,13 +164,7 @@ export const useProfileEditDialog = () => {
 
   return {
     open: () => dialogApi.open<void>(
-      (ctrl, open) => (
-        <ProfileEditDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <ProfileEditDialog ctrl={ctrl} />,
     ),
   }
 }

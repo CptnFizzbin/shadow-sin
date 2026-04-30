@@ -5,45 +5,40 @@ import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/character/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/character/qualities/form/useQualityForm.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
-interface QualityFormDialogProps {
-  open: boolean
+interface QualityFormDialogProps extends ControlledDialogProps<void> {
   quality?: QualityData
   onSave: (quality: QualityData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const QualityFormDialog: FC<QualityFormDialogProps> = ({
-  open,
+  ctrl,
   quality,
   onSave,
   onDelete,
-  onClose,
-  onClosed = noop,
 }) => {
   const editMode = !!quality
 
   const form = useQualityForm({
     quality,
-    onSubmit: (q) => onSave(q),
+    onSubmit: (savedQuality) => {
+      onSave(savedQuality)
+      ctrl.close()
+    },
   })
 
   const title = editMode ? "Edit Quality" : "Add Quality"
 
   return (
-    <Dialog
-      open={open}
+    <ControlledDialog
+      ctrl={ctrl}
       maxWidth="sm"
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
+      onClosed={() => form.reset()}
     >
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
@@ -57,7 +52,7 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -66,14 +61,14 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
           </Box>
 
           <Box>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={() => ctrl.close()}>Cancel</Button>
             <Button variant="contained" onClick={() => form.handleSubmit()}>
               Save
             </Button>
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -88,17 +83,12 @@ export const useQualityFormDialog = () => {
 
   return {
     open: (props: UseQualityFormDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
+      (ctrl) => (
         <QualityFormDialog
-          open={open}
+          ctrl={ctrl}
           quality={props.quality}
-          onSave={(quality) => {
-            props.onSave(quality)
-            ctrl.close()
-          }}
+          onSave={props.onSave}
           onDelete={props.onDelete}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),
