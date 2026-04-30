@@ -30,7 +30,6 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
           "borderColor": "divider",
           "flexGrow": 1,
           "textAlign": "left",
-          "display": "block",
           "&:hover": { bgcolor: "action.hover" },
         }}
       >
