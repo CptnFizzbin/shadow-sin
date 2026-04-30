@@ -47,6 +47,10 @@ export const GameEffectTypeOptions: GameEffectOption[] = [
     value: GameEffectType.extraInitiativePasses,
   },
   {
+    label: "Extra Initiative Dice",
+    value: GameEffectType.extraInitiativeDice,
+  },
+  {
     label: "Recoil Reduction",
     value: GameEffectType.recoilReduction,
   },
