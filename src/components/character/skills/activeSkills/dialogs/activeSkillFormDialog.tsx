@@ -12,8 +12,9 @@ import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
@@ -29,15 +30,11 @@ function isCustomSpec(skillName: string, specialization: string): boolean {
   return specialization !== "" && !fixedSpecs.includes(specialization)
 }
 
-interface ActiveSkillFormDialogProps {
-  open: boolean
+interface ActiveSkillFormDialogProps extends ControlledDialogProps<ActiveSkillData> {
   skill?: ActiveSkillData
   /** Skill names that must be disabled because they are already taken (individually or via a group). */
   disabledSkills?: ReadonlySet<string>
-  onSave: (skill: ActiveSkillData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax }, (_, i) => ({
@@ -46,16 +43,13 @@ const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax 
 }))
 
 const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
-  open,
+  ctrl,
   skill,
   disabledSkills,
-  onSave,
   onDelete,
-  onClose,
-  onClosed,
 }) => {
   const isEditMode = !!skill
-  const dialogKey = `${skill?.name ?? "new"}-${open ? "1" : "0"}`
+  const dialogKey = skill?.name ?? "new"
 
   // UI-only state: tracks whether the user has activated the free-text custom input
   const [customModeActive, setCustomModeActive] = useState<boolean>(
@@ -70,12 +64,11 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
       specialization: skill?.specialization ?? "",
     },
     onSubmit: ({ value }) => {
-      onSave({
+      ctrl.close({
         name: value.name as SkillKey,
         rating: Number(value.rating),
         specialization: value.specialization || undefined,
       })
-      onClose()
     },
   })
 
@@ -106,16 +99,15 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   })
 
   return (
-    <Dialog
+    <ControlledDialog
       key={dialogKey}
-      open={open}
+      ctrl={ctrl}
       maxWidth="sm"
       onClosed={() => {
         form.reset()
         setCustomModeActive(
           !!skill?.name && !!skill?.specialization && isCustomSpec(skill.name, skill.specialization),
         )
-        onClosed?.()
       }}
     >
       <Dialog.Title>{isEditMode ? "Edit Active Skill" : "Add Active Skill"}</Dialog.Title>
@@ -259,7 +251,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -267,7 +259,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
             )}
           </Box>
           <Box>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button variant="contained" color="secondary" onClick={() => form.handleSubmit()}>
@@ -276,13 +268,13 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
 type UseActiveSkillDialogProps = Omit<
   ActiveSkillFormDialogProps,
-  "open" | "onSave" | "onClose" | "onClosed"
+  keyof ControlledDialogProps<ActiveSkillData>
 >
 
 export const useActiveSkillDialog = () => {
@@ -290,13 +282,12 @@ export const useActiveSkillDialog = () => {
 
   return {
     open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <ActiveSkillFormDialog
-          {...props}
-          open={open}
-          onSave={(skill) => ctrl.close(skill)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
+          ctrl={ctrl}
+          skill={props?.skill}
+          disabledSkills={props?.disabledSkills}
+          onDelete={props?.onDelete}
         />
       ),
     ),

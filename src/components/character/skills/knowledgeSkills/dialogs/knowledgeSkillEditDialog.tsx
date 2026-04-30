@@ -9,29 +9,23 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
-interface KnowledgeSkillEditDialogProps {
-  open: boolean
+interface KnowledgeSkillEditDialogProps extends ControlledDialogProps<KnowledgeSkillData> {
   skill?: KnowledgeSkillData
-  onSave: (skill: KnowledgeSkillData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
 
 const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
-  open,
+  ctrl,
   skill,
-  onSave,
   onDelete,
-  onClose,
-  onClosed,
 }) => {
   const isEditMode = !!skill
 
@@ -47,7 +41,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
       setNameError(true)
       return
     }
-    onSave({
+    ctrl.close({
       name: name.trim(),
       rating,
       specialization: specialization.trim() || undefined,
@@ -59,15 +53,10 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
     setRating(skill?.rating ?? 1)
     setSpecialization(skill?.specialization ?? "")
     setNameError(false)
-    onClosed?.()
   }
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="sm"
-      onClosed={handleClosed}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={handleClosed}>
       <Dialog.Title>
         {isEditMode ? "Edit Knowledge Skill" : "Add Knowledge Skill"}
       </Dialog.Title>
@@ -122,7 +111,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -130,7 +119,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
             )}
           </Box>
           <Box>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button variant="contained" color="secondary" onClick={handleSave}>
@@ -139,13 +128,13 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
 type UseKnowledgeSkillDialogProps = Omit<
   KnowledgeSkillEditDialogProps,
-  "open" | "onSave" | "onClose" | "onClosed"
+  keyof ControlledDialogProps<KnowledgeSkillData>
 >
 
 export const useKnowledgeSkillDialog = () => {
@@ -153,15 +142,7 @@ export const useKnowledgeSkillDialog = () => {
 
   return {
     open: (props?: UseKnowledgeSkillDialogProps) => dialogApi.open<KnowledgeSkillData>(
-      (ctrl, open) => (
-        <KnowledgeSkillEditDialog
-          {...props}
-          open={open}
-          onSave={(skill) => ctrl.close(skill)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <KnowledgeSkillEditDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

@@ -5,24 +5,22 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { SpellCastSection } from "./spellCastSection.tsx"
 import { formatDrainFormula } from "./spellDrainFormula.ts"
 
-interface SpellCastDialogProps {
+interface SpellCastDialogProps extends ControlledDialogProps<void> {
   spell: SpellData
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
 }
 
-const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClosed }) => {
+const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="sm">
+    <ControlledDialog ctrl={ctrl} maxWidth="sm">
       <Dialog.Title>{spell.name}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
@@ -75,14 +73,14 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClo
 
           <Divider />
 
-          <SpellCastSection key={`${spell.id}-${open}`} spell={spell} onClose={onClose} />
+          <SpellCastSection key={spell.id} spell={spell} onClose={() => ctrl.close()} />
 
-          <Button onClick={onClose} color="secondary" size="small">
+          <Button onClick={() => ctrl.close()} color="secondary" size="small">
             Close
           </Button>
         </Stack>
       </Dialog.Content>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -95,14 +93,7 @@ export const useSpellCastDialog = () => {
 
   return {
     open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <SpellCastDialog
-          open={open}
-          spell={props.spell}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <SpellCastDialog ctrl={ctrl} spell={props.spell} />,
     ),
   }
 }

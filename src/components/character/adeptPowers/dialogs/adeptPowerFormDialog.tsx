@@ -5,52 +5,33 @@ import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/character/adeptPowers/form/adeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAdeptPowerForm.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
-interface AdeptPowerFormDialogProps {
-  open: boolean
+interface AdeptPowerFormDialogProps extends ControlledDialogProps<AdeptPowerData> {
   power?: AdeptPowerData
-  onSave: (power: AdeptPowerData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
-  open,
+  ctrl,
   power,
-  onSave,
   onDelete,
-  onClose,
-  onClosed = noop,
 }) => {
   const editMode = !!power
 
-  const onSubmit = (nextPower: AdeptPowerData) => {
-    onSave(nextPower)
-    onClose()
-  }
-
   const form = useAdeptPowerForm(
-    editMode ? { mode: "edit", power, onSubmit } : { mode: "create", onSubmit },
+    editMode
+      ? { mode: "edit", power, onSubmit: (nextPower) => ctrl.close(nextPower) }
+      : { mode: "create", onSubmit: (nextPower) => ctrl.close(nextPower) },
   )
 
   const title = editMode ? "Edit Adept Power" : "Add Adept Power"
 
-  const handleClosed = () => {
-    form.reset()
-    onClosed()
-  }
-
   return (
-    <Dialog
-      open={open}
-      onClosed={handleClosed}
-      maxWidth="sm"
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
 
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
@@ -64,7 +45,7 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -73,14 +54,14 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
           </Box>
 
           <Box>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={() => ctrl.close()}>Cancel</Button>
             <Button variant="contained" onClick={() => form.handleSubmit()}>
               Save
             </Button>
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -94,14 +75,11 @@ export const useAdeptPowerFormDialog = () => {
 
   return {
     open: (props?: UseAdeptPowerFormDialogProps) => dialogApi.open<AdeptPowerData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <AdeptPowerFormDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
+          ctrl={ctrl}
           power={props?.power}
           onDelete={props?.onDelete}
-          onSave={(power) => ctrl.close(power)}
         />
       ),
     ),

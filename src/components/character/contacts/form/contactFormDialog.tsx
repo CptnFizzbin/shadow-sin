@@ -4,28 +4,23 @@ import type { FC } from "react"
 import { useId } from "react"
 
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
 import { contactFieldMap, useContactForm } from "./useContactForm.tsx"
 
-interface ContactFormDialogProps {
-  open: boolean
+interface ContactFormDialogProps extends ControlledDialogProps<void> {
   contact?: ContactData
   onSaved?: (contact: ContactData) => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const ContactFormDialog: FC<ContactFormDialogProps> = ({
-  open,
+  ctrl,
   contact,
   onSaved,
-  onClose,
-  onClosed = noop,
 }) => {
   const isEditMode = !!contact
   const title = isEditMode ? "Edit Contact" : "Add Contact"
@@ -35,11 +30,7 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
   const handleSubmit = (savedContact: ContactData) => {
     const persistedContact = contactStore.save(savedContact)
     onSaved?.(persistedContact)
-    onClose()
-  }
-
-  const handleCancel = () => {
-    onClose()
+    ctrl.close()
   }
 
   const form = useContactForm({
@@ -49,14 +40,10 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
 
   const handleClosed = () => {
     form.reset()
-    onClosed()
   }
 
   return (
-    <Dialog
-      open={open}
-      onClosed={handleClosed}
-    >
+    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <form
@@ -74,7 +61,7 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
       <Dialog.Actions>
         <Button
           color="secondary"
-          onClick={handleCancel}
+          onClick={() => ctrl.close()}
         >
           Cancel
         </Button>
@@ -88,7 +75,7 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
           Save
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -102,15 +89,7 @@ export const useContactFormDialog = () => {
 
   return {
     open: (props?: UseContactFormDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <ContactFormDialog
-          open={open}
-          contact={props?.contact}
-          onSaved={props?.onSaved}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <ContactFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

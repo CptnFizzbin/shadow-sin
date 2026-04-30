@@ -8,26 +8,22 @@ import { useState } from "react"
 import {
   useCharacterSheet,
 } from "#/components/character/sheet/characterSheetProvider.tsx"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 
-interface BuyQuantityDialogProps {
-  open: boolean
+interface BuyQuantityDialogProps extends ControlledDialogProps<void> {
   defaultCost: number
-  onClose: () => void
-  onClosed?: () => void
   onPurchase: (quantity: number, totalCost: number) => void
 }
 
 const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
-  open,
+  ctrl,
   defaultCost,
-  onClose,
-  onClosed,
   onPurchase,
 }) => {
   const [quantity, setQuantity] = useState(1)
@@ -42,7 +38,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const canAfford = currentNuyen >= totalCost
 
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+    <ControlledDialog ctrl={ctrl}>
       <Dialog.Title>Buy More</Dialog.Title>
 
       <Dialog.Content>
@@ -83,43 +79,35 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={() => ctrl.close()}>Cancel</Button>
 
         <Box sx={{ flexGrow: 1 }} />
 
         <Button
           variant="contained"
           disabled={totalCost !== 0 && !canAfford}
-          onClick={() => onPurchase(quantity, totalCost)}
+          onClick={() => {
+            onPurchase(quantity, totalCost)
+            ctrl.close()
+          }}
         >
           Purchase (
           <Nuyen amount={totalCost} />
           )
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
+type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, keyof ControlledDialogProps<void>>
 
 export const useBuyQuantityDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <BuyQuantityDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-          {...props}
-          onPurchase={(quantity, totalCost) => {
-            props.onPurchase(quantity, totalCost)
-            ctrl.close()
-          }}
-        />
-      ),
+      (ctrl) => <BuyQuantityDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

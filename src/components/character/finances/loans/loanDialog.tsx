@@ -9,20 +9,18 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 type LoanDialogMode = "add" | "edit"
 
-interface LoanDialogProps {
-  open: boolean
+interface LoanDialogProps extends ControlledDialogProps<void> {
   mode: LoanDialogMode
   loan?: LoanData
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const defaultLoanValues = (): Omit<LoanData, "id"> => ({
@@ -33,11 +31,9 @@ const defaultLoanValues = (): Omit<LoanData, "id"> => ({
 })
 
 const LoanDialog: FC<LoanDialogProps> = ({
-  open,
+  ctrl,
   mode,
   loan,
-  onClose,
-  onClosed,
 }) => {
   const nuyenStore = useNuyenStore()
   const isEditMode = mode === "edit"
@@ -60,21 +56,21 @@ const LoanDialog: FC<LoanDialogProps> = ({
       notes,
     }
     nuyenStore.saveLoan(loanData)
-    onClose()
+    ctrl.close()
   }
 
   const handlePayoff = () => {
     if (!loan) return
     nuyenStore.payoffLoan(loan.id)
     setShowPayoffConfirm(false)
-    onClose()
+    ctrl.close()
   }
 
   const handleRemove = () => {
     if (!loan) return
     nuyenStore.removeLoan(loan.id)
     setShowRemoveConfirm(false)
-    onClose()
+    ctrl.close()
   }
 
   const handleClosed = () => {
@@ -85,13 +81,12 @@ const LoanDialog: FC<LoanDialogProps> = ({
     setNotes(loan?.notes ?? defaults.notes ?? "")
     setShowPayoffConfirm(false)
     setShowRemoveConfirm(false)
-    onClosed?.()
   }
 
   const title = isEditMode ? "Edit Loan" : "Add Loan"
 
   return (
-    <Dialog open={open} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>
@@ -205,7 +200,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
         )}
         {!showPayoffConfirm && !showRemoveConfirm && (
           <>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button
@@ -219,25 +214,18 @@ const LoanDialog: FC<LoanDialogProps> = ({
           </>
         )}
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseLoanDialogProps = Omit<LoanDialogProps, "open" | "onClose" | "onClosed">
+type UseLoanDialogProps = Omit<LoanDialogProps, keyof ControlledDialogProps<void>>
 
 export const useLoanDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseLoanDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <LoanDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-          {...props}
-        />
-      ),
+      (ctrl) => <LoanDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

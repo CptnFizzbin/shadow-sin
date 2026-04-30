@@ -13,9 +13,10 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
@@ -29,20 +30,15 @@ import { ItemType } from "#/system/itemType.ts"
 
 type CredstickDialogMode = "add" | "add-certified" | "edit"
 
-interface CredstickDialogProps {
-  open: boolean
+interface CredstickDialogProps extends ControlledDialogProps<void> {
   mode: CredstickDialogMode
   credstick?: CredstickData
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const CredstickDialog: FC<CredstickDialogProps> = ({
-  open,
+  ctrl,
   mode,
   credstick,
-  onClose,
-  onClosed,
 }) => {
   const gearStore = useGearStore()
   const nuyenStore = useNuyenStore()
@@ -95,7 +91,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       }
     }
 
-    onClose()
+    ctrl.close()
   }
 
   /** Withdraws the full balance from the credstick and deletes it. */
@@ -104,14 +100,14 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
     nuyenStore.deposit(credstick.balance)
     gearStore.remove(credstick)
     setShowWithdrawConfirm(false)
-    onClose()
+    ctrl.close()
   }
 
   const handleRemove = () => {
     if (!credstick) return
     gearStore.remove(credstick)
     setShowRemoveConfirm(false)
-    onClose()
+    ctrl.close()
   }
 
   const handleClosed = () => {
@@ -120,7 +116,6 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
     setBalance(credstick?.balance ?? CredstickMaxBalance[CredstickType.standard])
     setShowWithdrawConfirm(false)
     setShowRemoveConfirm(false)
-    onClosed?.()
   }
 
   const title = isEditMode
@@ -130,7 +125,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       : "Add Credstick"
 
   return (
-    <Dialog open={open} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>
@@ -261,7 +256,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
 
         {!showWithdrawConfirm && !showRemoveConfirm && (
           <>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button color="secondary" variant="contained" onClick={handleSave} disabled={hasInsufficientNuyen}>
@@ -270,25 +265,18 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
           </>
         )}
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseCredstickDialogProps = Omit<CredstickDialogProps, "open" | "onClose" | "onClosed">
+type UseCredstickDialogProps = Omit<CredstickDialogProps, keyof ControlledDialogProps<void>>
 
 export const useCredstickDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseCredstickDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <CredstickDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-          {...props}
-        />
-      ),
+      (ctrl) => <CredstickDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

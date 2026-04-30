@@ -5,47 +5,30 @@ import type { FC } from "react"
 
 import { SpellFormFields } from "#/components/character/spells/form/spellFormFields.tsx"
 import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
-interface SpellFormDialogProps {
-  open: boolean
+interface SpellFormDialogProps extends ControlledDialogProps<SpellData> {
   spell?: SpellData
-  onSave: (spell: SpellData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const SpellFormDialog: FC<SpellFormDialogProps> = ({
-  open,
+  ctrl,
   spell,
-  onSave,
   onDelete,
-  onClose,
-  onClosed = noop,
 }) => {
   const title = spell ? "Edit Spell" : "Add Spell"
 
   const form = useSpellForm({
     spell,
-    onSubmit: (nextSpell: SpellData) => {
-      onSave(nextSpell)
-      onClose()
-    },
+    onSubmit: (nextSpell: SpellData) => ctrl.close(nextSpell),
   })
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="sm"
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <SpellFormFields form={form} />
@@ -58,7 +41,7 @@ const SpellFormDialog: FC<SpellFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -67,14 +50,14 @@ const SpellFormDialog: FC<SpellFormDialogProps> = ({
           </Box>
 
           <Box>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={() => ctrl.close()}>Cancel</Button>
             <Button variant="contained" onClick={() => form.handleSubmit()}>
               Save
             </Button>
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -88,14 +71,11 @@ export const useSpellFormDialog = () => {
 
   return {
     open: (props?: UseSpellFormDialogProps) => dialogApi.open<SpellData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <SpellFormDialog
-          open={open}
+          ctrl={ctrl}
           spell={props?.spell}
           onDelete={props?.onDelete}
-          onSave={(spell) => ctrl.close(spell)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

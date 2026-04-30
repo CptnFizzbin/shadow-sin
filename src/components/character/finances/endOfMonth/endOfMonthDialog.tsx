@@ -14,8 +14,9 @@ import { selectLoans } from "#/components/character/finances/nuyen/nuyenSelector
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
 import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
@@ -29,13 +30,9 @@ interface EndOfMonthLineItem {
   isLifestyle: boolean
 }
 
-interface Props {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
-}
+type Props = ControlledDialogProps<void>
 
-const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
+const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const nuyenStore = useNuyenStore()
   const lifestyleStore = useLifestyleStore()
 
@@ -112,7 +109,7 @@ const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
       }
     }
 
-    onClose()
+    ctrl.close()
   }
 
   const handleTransitionExited = () => {
@@ -124,11 +121,10 @@ const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),
       ...(freshUpkeep > 0 ? ["lifestyle"] : []),
     ]))
-    onClosed?.()
   }
 
   return (
-    <Dialog open={open} onClosed={handleTransitionExited}>
+    <ControlledDialog ctrl={ctrl} onClosed={handleTransitionExited}>
       <Dialog.Title>End of Month</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 0.5, padding: 1 }}>
@@ -188,10 +184,10 @@ const EndOfMonthDialog: FC<Props> = ({ open, onClose, onClosed }) => {
         </Stack>
       </Dialog.Content>
       <Dialog.Actions>
-        <Button color="secondary" onClick={onClose}>Cancel</Button>
+        <Button color="secondary" onClick={() => ctrl.close()}>Cancel</Button>
         <Button color="warning" variant="contained" onClick={handleApply}>Apply</Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -200,13 +196,7 @@ export const useEndOfMonthDialog = () => {
 
   return {
     open: () => dialogApi.open<void>(
-      (ctrl, open) => (
-        <EndOfMonthDialog
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <EndOfMonthDialog ctrl={ctrl} />,
     ),
   }
 }
