@@ -1,7 +1,7 @@
 import MuiDialogContent from "@mui/material/DialogContent"
 import Stack from "@mui/material/Stack"
-import type { FC, ReactNode } from "react"
 import Typography from "@mui/material/Typography"
+import type { FC, ReactNode } from "react"
 
 interface DialogContentProps {
   children: ReactNode
