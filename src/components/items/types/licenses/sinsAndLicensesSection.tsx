@@ -57,7 +57,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
             void handleRemoveSin(sin, sinLicenses.length > 0)
           }
         : undefined,
-    }).result()
+    }).result
     if (saved) gearStore.save(saved)
   }
 
@@ -66,7 +66,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
       sin,
       license,
       onDelete: license ? () => handleRemoveLicense(license) : undefined,
-    }).result()
+    }).result
     if (saved) gearStore.save(saved)
   }
 

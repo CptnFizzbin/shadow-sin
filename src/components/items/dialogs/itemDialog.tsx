@@ -16,7 +16,8 @@ import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -30,9 +31,7 @@ import { useItemOptions } from "./useItemOptions.ts"
 export interface ItemDialogProps {
   form: AnyItemForm
   title: ReactNode
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
+  ctrl: AnyDialogCtrl
   onDelete?: () => void
   /** Override the total cost calculation used for display and nuyen withdrawal. Defaults to `cost × quantity`. */
   getCost?: (values: ItemData) => number
@@ -65,9 +64,7 @@ function resolveForced(config: ItemDialogOptionConfig | undefined): boolean {
 export const ItemDialog: FC<ItemDialogProps> = ({
   form: formArg,
   title,
-  open,
-  onClose,
-  onClosed,
+  ctrl,
   onDelete,
   getCost,
   parentItemFilter,
@@ -133,7 +130,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+    <ControlledDialog ctrl={ctrl}>
       <Dialog.Title>{title}</Dialog.Title>
 
       <Dialog.Content>
@@ -236,7 +233,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
             <ItemDialogActions
               isAcquireMode={isAcquireMode}
               totalCost={totalCost}
-              onClose={onClose}
+              onClose={() => ctrl.close()}
               onAcquire={() => handleSubmitWithAction("acquire")}
               onPurchase={() => handleSubmitWithAction("purchase")}
               onSave={() => handleSubmitWithAction("save")}
@@ -245,6 +242,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
           )}
         </form.Subscribe>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }

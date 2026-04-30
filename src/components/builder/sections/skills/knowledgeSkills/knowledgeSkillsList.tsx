@@ -39,14 +39,14 @@ export const KnowledgeSkillsList: FC = () => {
   const languageSkillDialog = useLanguageSkillDialog()
 
   const openKnowledgeSkillDialog = async (skill?: KnowledgeSkillData) => {
-    const saved = await knowledgeSkillDialog.open({ skill }).result()
+    const saved = await knowledgeSkillDialog.open({ skill }).result
     if (!saved) return
     const skillName = skill?.name || saved.name
     skillsStore.knowledgeSkills.setState(skillName, () => saved)
   }
 
   const openLanguageSkillDialog = async (skill?: LanguageSkillData) => {
-    const saved = await languageSkillDialog.open({ skill }).result()
+    const saved = await languageSkillDialog.open({ skill }).result
     if (!saved) return
     const skillName = skill?.name || saved.name
     skillsStore.languageSkills.setState(skillName, () => saved)

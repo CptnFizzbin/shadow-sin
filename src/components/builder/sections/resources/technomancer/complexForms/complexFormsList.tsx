@@ -33,7 +33,7 @@ export const ComplexFormsList: FC = () => {
   const isAtMax = complexForms.length >= maxComplexForms
 
   const handleAddForm = async () => {
-    const saved = await complexFormDialog.open({ maxRating: resonance }).result()
+    const saved = await complexFormDialog.open({ maxRating: resonance }).result
     if (saved) complexFormsStore.save(saved)
   }
 
@@ -44,7 +44,7 @@ export const ComplexFormsList: FC = () => {
         maxRating: resonance,
         onDelete: () => complexFormsStore.remove(complexForm.id),
       })
-      .result()
+      .result
     if (saved) complexFormsStore.save(saved)
   }
 

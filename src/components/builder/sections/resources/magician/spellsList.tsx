@@ -23,14 +23,14 @@ export const SpellsList: FC = () => {
   const spellFormDialog = useSpellFormDialog()
 
   const handleAddSpell = async () => {
-    const saved = await spellFormDialog.open().result()
+    const saved = await spellFormDialog.open().result
     if (saved) spellsStore.save(saved)
   }
 
   const handleEditSpell = async (spell: SpellData) => {
     const saved = await spellFormDialog
       .open({ spell, onDelete: () => spellsStore.remove(spell.id) })
-      .result()
+      .result
     if (saved) spellsStore.save(saved)
   }
 

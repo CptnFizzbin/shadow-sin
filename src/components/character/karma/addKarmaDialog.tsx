@@ -3,42 +3,27 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-export interface AddKarmaDialogProps extends DialogApiDialogProps {
+interface AddKarmaDialogProps extends ControlledDialogProps<void> {
   onSubmit: (amount: number) => void
 }
 
-const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
-  open = true,
-  onClose,
-  onClosed,
-  onSubmit,
-}) => {
+const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl, onSubmit }) => {
   const form = useAppForm({
     defaultValues: { amount: 1 },
     onSubmit: ({ value }) => {
-      if (value.amount !== undefined) {
-        onSubmit(value.amount)
-      }
-      onClose()
+      if (value.amount !== undefined) onSubmit(value.amount)
+      ctrl.close()
     },
   })
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="xs"
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="xs">
       <Dialog.Title>Add Karma</Dialog.Title>
-
       <Dialog.Content>
         <form.AppForm>
           <Stack sx={{ pt: 1 }}>
@@ -53,9 +38,8 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
           </Stack>
         </form.AppForm>
       </Dialog.Content>
-
       <Dialog.Actions>
-        <Button color="secondary" onClick={() => onClose()}>
+        <Button color="secondary" onClick={() => ctrl.close()}>
           Cancel
         </Button>
         <Button
@@ -66,7 +50,7 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({
           Add
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -78,13 +62,8 @@ export const useAddKarmaDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
-    open: (props: UseAddKarmaDialogProps) => dialogApi.open(
-      (dialogProps) => (
-        <AddKarmaDialog
-          {...dialogProps}
-          onSubmit={props.onSubmit}
-        />
-      ),
+    open: (props: UseAddKarmaDialogProps) => dialogApi.open<void>(
+      (ctrl) => <AddKarmaDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

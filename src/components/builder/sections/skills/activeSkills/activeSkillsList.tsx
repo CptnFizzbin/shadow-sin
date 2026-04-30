@@ -35,7 +35,7 @@ export const ActiveSkillsList: FC = () => {
 
   const openActiveSkillDialog = async (skill?: ActiveSkillData) => {
     const disabledSkills = getDisabledSkills(activeSkills, skillGroups, skill?.name)
-    const saved = await activeSkillDialog.open({ skill, disabledSkills }).result()
+    const saved = await activeSkillDialog.open({ skill, disabledSkills }).result
     if (!saved) return
     const skillName = skill?.name || saved.name
     skillsStore.activeSkills.setState(skillName, () => saved)
@@ -43,7 +43,7 @@ export const ActiveSkillsList: FC = () => {
 
   const openSkillGroupDialog = async (group?: SkillGroupData) => {
     const disabledGroups = getDisabledGroups(skillGroups, group?.name)
-    const saved = await activeSkillGroupDialog.open({ group, disabledGroups }).result()
+    const saved = await activeSkillGroupDialog.open({ group, disabledGroups }).result
     if (!saved) return
     const groupName = group?.name || saved.name
     skillsStore.skillGroups.setState(groupName, () => saved)
