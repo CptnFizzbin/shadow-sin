@@ -114,11 +114,12 @@ export const useWeaponAttackDialog = () => {
     open: (props: UseWeaponAttackDialogProps) => {
       const onRoll = (count: number) => diceTray.setDice(count)
       dialogApi.open<void>(
-        (dialogProps) => (
+        (ctrl, open) => (
           <WeaponAttackDialog
-            {...dialogProps}
             {...props}
-            onClose={() => dialogProps.onClose()}
+            open={open}
+            onClose={() => ctrl.close()}
+            onClosed={() => ctrl.onClosed()}
             onRoll={onRoll}
           />
         ),
