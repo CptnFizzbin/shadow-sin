@@ -9,7 +9,6 @@ import type { AnyDialogCtrl } from "./dialogCtrl.ts"
 
 interface DialogErrorBoundaryProps {
   ctrl: AnyDialogCtrl
-  onClosed: () => void
   children: ReactNode
 }
 
@@ -56,7 +55,7 @@ export class DialogErrorBoundary extends Component<DialogErrorBoundaryProps, Dia
         <Alert
           severity="error"
           action={(
-            <Button color="inherit" size="small" onClick={this.props.onClosed}>
+            <Button color="inherit" size="small" onClick={() => this.props.ctrl.onClosed()}>
               Dismiss
             </Button>
           )}

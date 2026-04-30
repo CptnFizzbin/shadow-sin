@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from "vitest"
 
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-import { DialogApi } from "./dialogApi.ts"
+import { DialogApi } from "./dialogApi.tsx"
 import type { DialogApiDialogProps } from "./dialogApiDialog.ts"
 import { DialogApiProvider } from "./dialogApiProvider.tsx"
 import { DialogCtrl } from "./dialogCtrl.ts"

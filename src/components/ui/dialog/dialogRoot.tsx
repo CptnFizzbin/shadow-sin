@@ -1,8 +1,6 @@
 import type { DialogProps as MuiDialogProps } from "@mui/material/Dialog"
 import MuiDialog from "@mui/material/Dialog"
-import type { FC, ReactNode } from "react"
-
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import type { ReactNode } from "react"
 
 /**
  * Props for the compound `Dialog` root.
@@ -11,15 +9,15 @@ import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDia
  * component to keep dialogs uniform across the application. Dialogs are always
  * full-width; use `maxWidth` to control the maximum size.
  *
- * Compatible with {@link DialogApiDialogProps}: spread the props injected by
- * `DialogApi.open(...)` directly onto this component and the `open` / lifecycle
- * wiring is handled automatically.
- *
  * See `docs/ui/dialog.md` for usage examples.
  */
-export interface DialogRootProps<TReturn = void> extends Partial<DialogApiDialogProps<TReturn>> {
+export interface DialogRootProps {
   /** Whether the dialog is open. */
   open: boolean
+  /** Called when the backdrop is clicked or Escape is pressed. */
+  onClose?: () => void
+  /** Called after the exit animation completes. */
+  onClosed?: () => void
   /** Maximum width breakpoint. Defaults to `"sm"`. */
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false
   /** Render the dialog in full-screen mode (useful on narrow viewports). */
@@ -27,14 +25,14 @@ export interface DialogRootProps<TReturn = void> extends Partial<DialogApiDialog
   children: ReactNode
 }
 
-export const DialogRoot = <TReturn = void>({
+export const DialogRoot = ({
   open,
   onClose,
   onClosed,
   maxWidth = "sm",
   fullScreen,
   children,
-}: DialogRootProps<TReturn>) => {
+}: DialogRootProps) => {
   const handleClose: MuiDialogProps["onClose"] = () => {
     onClose?.()
   }
@@ -53,4 +51,4 @@ export const DialogRoot = <TReturn = void>({
   )
 }
 
-;(DialogRoot as FC).displayName = "Dialog"
+DialogRoot.displayName = "Dialog"

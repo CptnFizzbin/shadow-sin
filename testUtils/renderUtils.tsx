@@ -10,7 +10,7 @@ import { CharacterBuilderStoreProvider } from "#/components/builder/characterBui
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { DialogApi } from "#/components/dialogs/api/dialogApi.ts"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.tsx"
 import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { theme } from "#/theme.ts"
