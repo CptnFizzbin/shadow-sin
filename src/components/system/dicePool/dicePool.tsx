@@ -9,22 +9,16 @@ import { getPoolSize } from "./dicePoolData.tsx"
 interface DicePoolProps {
   name: string
   groups: DiceGroupList
-  onRoll?: (count: number) => void
 }
 
-export const DicePool: FC<DicePoolProps> = ({ name, groups, onRoll }) => {
+export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
   const diceGroups = groups.flat().filter(isDiceGroup)
 
   const total = getPoolSize(diceGroups)
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <DiceGroupDisplay
-        name={name}
-        size={total}
-        total
-        onClick={onRoll ? () => onRoll(total) : undefined}
-      />
+      <DiceGroupDisplay name={name} size={total} total />
 
       {diceGroups.map((group) => (
         <DiceGroupDisplay

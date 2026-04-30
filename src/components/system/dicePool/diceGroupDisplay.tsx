@@ -6,7 +6,6 @@ interface DiceGroupDisplayProps {
   size: number
   total?: boolean
   color?: string
-  onClick?: () => void
 }
 
 export function DiceGroupDisplay({
@@ -14,34 +13,30 @@ export function DiceGroupDisplay({
   size,
   total = false,
   color,
-  onClick,
 }: DiceGroupDisplayProps) {
   return (
     <Stack
-      component={onClick ? "button" : "div"}
-      type={onClick ? "button" : undefined}
       direction="row"
-      onClick={onClick}
-      sx={{
-        alignItems: "flex-start",
-        gap: 1,
+      sx={{ alignItems: "flex-start", gap: 1,
         paddingX: 1,
         backgroundColor: total ? "primary.dark" : undefined,
         color: color ?? (total ? "primary.contrastText" : undefined),
-        fontWeight: total ? "bold" : "normal",
-        width: "100%",
-        border: "none",
-        textAlign: "left",
-        ...(onClick && {
-          "cursor": "pointer",
-          "&:hover": { filter: "brightness(1.15)" },
-        }),
-      }}
+        fontWeight: total ? "bold" : "normal" }}
     >
-      <Typography sx={{ flexGrow: 1 }}>
+      <Typography
+        sx={{
+          flexGrow: 1,
+        }}
+      >
         {name}
       </Typography>
-      <Typography sx={{ display: "flex", width: "2em", justifyContent: "flex-end" }}>
+      <Typography
+        sx={{
+          display: "flex",
+          width: "2em",
+          justifyContent: "flex-end",
+        }}
+      >
         {size}
       </Typography>
     </Stack>

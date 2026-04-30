@@ -124,10 +124,9 @@ The defense page has a working damage track, but several gameplay interactions a
 
 ## 3. Offense — Attack Dice Pools ⚠️ partially implemented
 
-The offense route (`/$characterId/offense`) renders `CombatHud` (initiative + wounds + status) and `EquippedWeaponsSection`.
+The offense route (`/$characterId/offense`) renders `InitiativeSection` and `EquippedWeaponsSection`.
 
 - [x] List all equipped/carried weapons from `CharacterSheet.gear` ✅ (filtered by `equipped === true`; empty-state message when none equipped)
-- [x] **Combat HUD** — initiative score, IP dots, wounds (P/S), and active-effect status chips ✅ (see Section 4)
 - [ ] Show attack dice pool per weapon (`linked-skill + Agility + modifiers`)
   - Firearms: Agility + relevant Firearms skill (Automatics, Heavy Weapons, Pistols, Rifles, Shotguns)
   - Melee: Agility + relevant Close Combat skill (Blades, Clubs, Unarmed Combat)
@@ -143,19 +142,17 @@ The offense route (`/$characterId/offense`) renders `CombatHud` (initiative + wo
 
 ## 4. Initiative Tracking ⚠️ partially implemented — PR #178
 
-Formula: `score = dicePool + countHits(rolledResults)` where `dicePool = Reaction + Intuition + initiativeBonus + extraInitiativeDice`.
-Hits are values ≥ 5. There is no per-pass score decrement.
+Formula: `dicePool = Reaction + Intuition + initiativeBonus + extraInitiativeDice`. Score = pool + hits from roll.
 
-- [x] Display current initiative score on the offense page ✅ PR #163
-- [x] **Initiative pass tracker** — compact IP dot row in `CombatHud`; dots fill as passes complete; "End Round" resets all pass state ✅ PR #163
+- [x] Display current initiative dice pool on the offense page ✅ PR #163
+- [x] **Initiative pass tracker** — IP dots; "End Round" resets all pass state ✅ PR #163
 - [x] Support **Wired Reflexes / gear / adept power / spell** extra initiative and extra passes (auto-detected from `useGameEffects`) ✅ PR #178
-- [x] **Roll Initiative** — opens `DiceTrayDialog` with the full dice pool; hits (5–6) added to pool value for final score; results persisted to sheet when tray closes ✅ PR #178
 - [x] **Sustained spell modifiers** — toggle a spell as sustained to apply its initiative effects (e.g. Increase Reflexes) ✅ PR #178
-- [x] **CombatHud** — `InitiativeSection` embedded in the Offense tab; shows score, IP dots, Going First chip, and options popup ✅ PR #178
-- [x] **Seize the Initiative** (Edge spend) — 1 Edge → act first this round; "Going First" chip shown; undoable via × ✅ PR #178
-- [x] **Gain IP** (Edge spend) — 1 Edge → +1 initiative pass for the round (`extraPasses`) ✅ PR #178
-- [x] **Push Edge** (dice tray, before rolling) — 1 Edge → roll with exploding 6s (Rule of Six) ✅ PR #178
-- [x] **2nd Chance** (dice tray, after rolling) — 1 Edge → re-roll all non-hits from current results ✅ PR #178
+- [x] Initiative state expanded with `rolledResults`, `goingFirst`, and `extraPasses` on `CharacterSheet.initiative` ✅ PR #178
+- [ ] **Roll Initiative** — open dice tray from InitiativeSection; hits added to pool for final score (planned — PR in progress)
+- [ ] **CombatHud** — combined initiative + wounds + active effects panel (planned)
+- [ ] **Seize the Initiative** (Edge spend) — 1 Edge → act first this round (planned)
+- [ ] **Gain IP** (Edge spend) — 1 Edge → +1 initiative pass (planned)
 - [ ] **Simple/Complex action tracker** — mark actions used in the current initiative pass
 - [ ] Adrenaline / drug modifier input (add bonus dice or flat bonus to the roll)
 - [ ] Wired Reflexes / Hot-sim / matrix initiative mode switching (`Reaction + Intuition + 2d6` etc.)

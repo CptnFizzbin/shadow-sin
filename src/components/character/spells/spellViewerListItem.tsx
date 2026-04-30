@@ -1,3 +1,4 @@
+import ButtonBase from "@mui/material/ButtonBase"
 import Chip from "@mui/material/Chip"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
@@ -6,7 +7,7 @@ import type { FC } from "react"
 
 import type { SpellData } from "#/system/magic/spellData.ts"
 
-import { formatDrainFormula } from "./spellDrainFormula.ts"
+import { DrainValue } from "./drainValue.tsx"
 
 interface SpellViewerListItemProps {
   spell: SpellData
@@ -19,31 +20,27 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
 
   return (
     <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-      <Paper
-        component="button"
-        type="button"
+      <ButtonBase
+        component={Paper}
+        onClick={onClick}
+        aria-label={`Cast ${spell.name}`}
         sx={{
           "padding": 1,
           "border": "1px solid",
           "borderColor": "divider",
-          "cursor": "pointer",
           "flexGrow": 1,
           "textAlign": "left",
-          "background": "inherit",
+          "display": "block",
           "&:hover": { bgcolor: "action.hover" },
         }}
-        onClick={onClick}
-        aria-label={`Cast ${spell.name}`}
       >
         <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
           <Typography sx={{ flexGrow: 1 }}>
             {spell.name}
           </Typography>
-          <Typography color="text.secondary">
-            {formatDrainFormula(spell.drainValueMod)}
-          </Typography>
+          <DrainValue mod={spell.drainValueMod} />
         </Stack>
-      </Paper>
+      </ButtonBase>
       {hasSustainableEffects && (
         <Chip
           label="Sustained"

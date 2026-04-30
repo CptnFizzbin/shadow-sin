@@ -6,7 +6,6 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 
 interface InitiativeInfo {
-  /** Reaction + Intuition + bonuses — this is the dice pool size */
   dicePool: number
   initiativePasses: number
 }

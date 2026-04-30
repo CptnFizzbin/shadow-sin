@@ -21,7 +21,7 @@ export const SpellsViewerSection: FC = () => {
   }
 
   const handleToggleSustained = (spell: SpellData) => {
-    spellsStore.setSustained(spell)
+    spellsStore.toggleSustained(spell)
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)

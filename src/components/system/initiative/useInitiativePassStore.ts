@@ -5,7 +5,12 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
-import { selectPassesCompleted } from "./initiativePassSelectors.ts"
+import {
+  selectExtraPasses,
+  selectGoingFirst,
+  selectPassesCompleted,
+  selectRolledResults,
+} from "./initiativePassSelectors.ts"
 import type { InitiativePassState } from "./initiativePassStore.ts"
 import { InitiativePassStore } from "./initiativePassStore.ts"
 
@@ -37,18 +42,25 @@ export const useInitiativePassStore = (): InitiativePassStore => {
   }, [sheetStore])
 }
 
+export function useInitiativePassSelector<T>(
+  store: InitiativePassStore,
+  selector: (state: InitiativePassState) => T,
+): T {
+  return useSelector(store, selector)
+}
+
 export const useInitiativePassesCompleted = (
   store: InitiativePassStore,
 ): ReadonlySet<number> => {
-  const passesCompleted = useSelector(store, selectPassesCompleted)
+  const passesCompleted = useInitiativePassSelector(store, selectPassesCompleted)
   return useMemo(() => new Set(passesCompleted), [passesCompleted])
 }
 
 export const useInitiativeRolledResults = (store: InitiativePassStore): number[] | undefined =>
-  useSelector(store, (state) => state.rolledResults)
+  useInitiativePassSelector(store, selectRolledResults)
 
 export const useInitiativeGoingFirst = (store: InitiativePassStore): boolean =>
-  useSelector(store, (state) => state.goingFirst === true)
+  useInitiativePassSelector(store, selectGoingFirst)
 
 export const useInitiativeExtraPasses = (store: InitiativePassStore): number =>
-  useSelector(store, (state) => state.extraPasses)
+  useInitiativePassSelector(store, selectExtraPasses)
