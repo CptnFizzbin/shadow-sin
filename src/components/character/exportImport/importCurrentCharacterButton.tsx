@@ -1,110 +1,62 @@
 import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
-import type { ChangeEvent, FC } from "react"
-import { useRef, useState } from "react"
+import type { FC } from "react"
 
-import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { ConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useAlertDialog } from "#/components/dialogs/alertDialog.tsx"
+import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { stringifyError } from "#/lib/errors/errorUtils.ts"
 
-import { yamlToCharacterSheet } from "./exportUtils.ts"
+import { useYamlFileImport } from "./useYamlFileImport.ts"
 
 export const ImportCurrentCharacterButton: FC = () => {
   const store = useCharacterSheetContext()
-  const characterName = useCharacterSheet((s) => s.profile.alias || s.profile.name)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [pendingCharacter, setPendingCharacter] = useState<CharacterSheet | null>(null)
-  const [parseError, setParseError] = useState<string | null>(null)
+  const characterName = useCharacterSheetSelector((s) => s.profile.alias || s.profile.name)
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+  const confirmDialog = useConfirmDialog()
+  const alertDialog = useAlertDialog()
 
-    // Reset so the same file can be re-selected if needed
-    event.target.value = ""
+  const { inputProps, openFilePicker } = useYamlFileImport({
+    onParsed: async (character) => {
+      const performOverwrite = await confirmDialog.confirm({
+        title: "Overwrite character?",
+        body: (
+          <Typography>
+            Importing will overwrite <strong>{characterName}</strong> with the imported data. This cannot be
+            undone.
+          </Typography>
+        ),
+        slotProps: {
+          confirmButton: { label: "Overwrite", color: "warning" },
+        },
+      })
 
-    const yamlContent = await file.text()
-    let character: CharacterSheet
-
-    try {
-      character = yamlToCharacterSheet(yamlContent)
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error"
-      setParseError(message)
-      return
-    }
-
-    setPendingCharacter(character)
-  }
-
-  const handleConfirm = () => {
-    if (!pendingCharacter) return
-    store.set(pendingCharacter)
-    setPendingCharacter(null)
-  }
-
-  const handleCancel = () => {
-    setPendingCharacter(null)
-  }
+      if (performOverwrite) {
+        store.set(character)
+      }
+    },
+    onError: async (error) => {
+      await alertDialog.open({
+        title: "Import failed",
+        body: `The selected file could not be imported: ${stringifyError(error)}`,
+      })
+    },
+  })
 
   return (
     <>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".yaml,.yml"
-        style={{ display: "none" }}
-        onChange={(event) => { void handleFileChange(event) }}
-      />
+      <input {...inputProps} />
       <Button
         variant="outlined"
         color="warning"
         size="small"
         startIcon={<UploadIcon />}
-        onClick={() => inputRef.current?.click()}
+        onClick={openFilePicker}
       >
         Import YAML
       </Button>
-
-      {pendingCharacter !== null && (
-        <ConfirmDialog
-          title="Overwrite character?"
-          body={(
-            <Typography>
-              Importing will overwrite{" "}
-              <Typography component="span" sx={{ fontWeight: "bold" }}>
-                {characterName}
-              </Typography>{" "}
-              with the imported data. This cannot be undone.
-            </Typography>
-          )}
-          slotProps={{
-            confirmButton: { label: "Overwrite", color: "warning" },
-          }}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-          onClosed={handleCancel}
-        />
-      )}
-
-      {parseError !== null && (
-        <ConfirmDialog
-          title="Import failed"
-          body={(
-            <Typography>
-              The selected file could not be imported: {parseError}
-            </Typography>
-          )}
-          slotProps={{
-            confirmButton: { label: "OK", color: "primary" },
-            cancelButton: { sx: { display: "none" } },
-          }}
-          onConfirm={() => setParseError(null)}
-          onCancel={() => setParseError(null)}
-          onClosed={() => setParseError(null)}
-        />
-      )}
     </>
   )
 }

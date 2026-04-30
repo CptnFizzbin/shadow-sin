@@ -2,10 +2,10 @@ import UploadIcon from "@mui/icons-material/Upload"
 import Alert from "@mui/material/Alert"
 import Button from "@mui/material/Button"
 import Snackbar from "@mui/material/Snackbar"
-import type { ChangeEvent, FC } from "react"
-import { useRef, useState } from "react"
+import type { FC } from "react"
+import { useState } from "react"
 
-import { yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
+import { useYamlFileImport } from "#/components/character/exportImport/useYamlFileImport.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 interface ImportYamlBuilderButtonProps {
@@ -13,42 +13,27 @@ interface ImportYamlBuilderButtonProps {
 }
 
 export const ImportYamlBuilderButton: FC<ImportYamlBuilderButtonProps> = ({ onImport }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [importError, setImportError] = useState(false)
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
-    // Reset so the same file can be re-selected if needed
-    event.target.value = ""
-
-    const yamlContent = await file.text()
-
-    try {
-      const importedCharacter = yamlToCharacterSheet(yamlContent)
+  const { inputProps, openFilePicker } = useYamlFileImport({
+    onParsed: (importedCharacter) => {
       onImport(importedCharacter)
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error("Failed to parse YAML file:", error)
       setImportError(true)
-    }
-  }
+    },
+  })
 
   return (
     <>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".yaml,.yml"
-        style={{ display: "none" }}
-        onChange={(event) => { void handleFileChange(event) }}
-      />
+      <input {...inputProps} />
       <Button
         variant="outlined"
         color="info"
         size="small"
         startIcon={<UploadIcon />}
-        onClick={() => inputRef.current?.click()}
+        onClick={openFilePicker}
       >
         Import YAML
       </Button>
