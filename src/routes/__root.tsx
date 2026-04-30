@@ -6,6 +6,7 @@ import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 
 import Footer from "#/components/ui/footer.tsx"
 import { Header } from "#/components/ui/header.tsx"
+import { ShadowSinDevtools } from "#/integrations/tanstackDevtools/shadowSinDevtools.tsx"
 import { TanStackPacerDevtools } from "#/integrations/tanstackPacer/devtools.tsx"
 import { TanStackQueryDevtools } from "#/integrations/tanstackQuery/devtools.tsx"
 import TanStackQueryProvider from "#/integrations/tanstackQuery/rootProvider.tsx"
@@ -49,6 +50,7 @@ function RootLayout() {
       </Stack>
       <TanStackDevtools
         plugins={[
+          ShadowSinDevtools,
           TanStackQueryDevtools,
           TanStackRouterDevtools,
           TanStackPacerDevtools,
