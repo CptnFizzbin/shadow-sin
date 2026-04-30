@@ -10,26 +10,21 @@ import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
-interface QualityFormDialogProps extends ControlledDialogProps<void> {
+interface QualityFormDialogProps extends ControlledDialogProps<QualityData> {
   quality?: QualityData
-  onSave: (quality: QualityData) => void
   onDelete?: () => void
 }
 
 const QualityFormDialog: FC<QualityFormDialogProps> = ({
   ctrl,
   quality,
-  onSave,
   onDelete,
 }) => {
   const editMode = !!quality
 
   const form = useQualityForm({
     quality,
-    onSubmit: (savedQuality) => {
-      onSave(savedQuality)
-      ctrl.close()
-    },
+    onSubmit: (savedQuality) => ctrl.close(savedQuality),
   })
 
   const title = editMode ? "Edit Quality" : "Add Quality"
@@ -72,23 +67,21 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
   )
 }
 
-interface UseQualityFormDialogProps {
-  quality?: QualityData
-  onSave: (quality: QualityData) => void
-  onDelete?: () => void
-}
+type UseQualityFormDialogProps = Omit<
+  QualityFormDialogProps,
+  keyof ControlledDialogProps<QualityData>
+>
 
 export const useQualityFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
-    open: (props: UseQualityFormDialogProps) => dialogApi.open<void>(
+    open: (props?: UseQualityFormDialogProps) => dialogApi.open<QualityData>(
       (ctrl) => (
         <QualityFormDialog
           ctrl={ctrl}
-          quality={props.quality}
-          onSave={props.onSave}
-          onDelete={props.onDelete}
+          quality={props?.quality}
+          onDelete={props?.onDelete}
         />
       ),
     ),

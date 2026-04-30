@@ -25,8 +25,8 @@ export const QualitiesSection: FC = () => {
         variant="outlined"
         color="secondary"
         startIcon={<RiAddLine />}
-        onClick={() => qualityFormDialog.open({
-          onSave: (quality) => qualitiesStore.add(quality),
+        onClick={() => qualityFormDialog.open().then((quality) => {
+          if (quality) qualitiesStore.add(quality)
         })}
         size="small"
       >
