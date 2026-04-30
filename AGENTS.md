@@ -20,6 +20,7 @@ yarn fix          # Runs all "*:fix" scripts (npm-run-all) — auto-fix lint/for
 yarn lint         # Runs all lint tasks (eslint checks via npm-run-all)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
 yarn tsc          # TypeScript type check (no emit)
+yarn fallow       # Run Fallow codebase analysis (dead code, duplication, complexity)
 ```
 
 ## Architecture
@@ -214,3 +215,30 @@ commit
 
 - `defaultValues` are frozen at first mount — the form does not reset when props change. For dialogs that reuse a single mounted instance, add `key={item?.id ?? "new"}` to the dialog component element so it remounts (and re-initializes the form) when the target item changes.
 - When the form's `onSubmit` is wired to a button, wrap it: `onClick={() => form.handleSubmit()}` rather than `onClick={form.handleSubmit}` to avoid forwarding the click event.
+
+## Fallow (codebase health)
+
+Use the `fallow` skill to audit dead code, duplication, and complexity. Always pass `--format json --quiet 2>/dev/null || true` to every command.
+
+```bash
+# Full health report
+yarn fallow --format json --quiet 2>/dev/null || true
+
+# Dead code only (unused exports, files, types)
+yarn fallow dead-code --format json --quiet 2>/dev/null || true
+
+# Code duplication
+yarn fallow dupes --format json --quiet 2>/dev/null || true
+
+# Complexity hotspots
+yarn fallow health --format json --quiet --hotspots 2>/dev/null || true
+
+# Preview what auto-fix would remove, then apply
+yarn fallow fix --dry-run --format json --quiet 2>/dev/null || true
+yarn fallow fix --yes --format json --quiet 2>/dev/null || true
+```
+
+- **Always `--dry-run` before `fix`**, then `fix --yes` to apply (required in non-TTY agent environments)
+- **Always run `yarn fallow dead-code --format json --quiet 2>/dev/null || true` after making code changes** to verify that no dead code, unused exports, or unused types were introduced or left behind.
+- When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those findings have been resolved by the current change
+- See `.agents/skills/fallow/SKILL.md` for the full command reference

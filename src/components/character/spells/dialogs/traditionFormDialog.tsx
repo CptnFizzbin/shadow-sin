@@ -6,45 +6,28 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useTraditionForm } from "#/components/character/spells/form/useTraditionForm.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { noop } from "#/lib/noop.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
 
-interface TraditionFormDialogProps {
-  open: boolean
+interface TraditionFormDialogProps extends ControlledDialogProps<TraditionData> {
   tradition?: TraditionData
-  onSave: (tradition: TraditionData) => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
-  open,
+  ctrl,
   tradition,
-  onSave,
-  onClose,
-  onClosed = noop,
 }) => {
   const form = useTraditionForm({
     tradition,
-    onSubmit: (updatedTradition) => {
-      onSave(updatedTradition)
-      onClose()
-    },
+    onSubmit: (updatedTradition) => ctrl.close(updatedTradition),
   })
 
   return (
-    <Dialog
-      open={open}
-      maxWidth="sm"
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
-    >
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
       <Dialog.Title>Tradition</Dialog.Title>
       <Dialog.Content>
         <form.AppForm>
@@ -120,13 +103,13 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
       </Dialog.Content>
       <Dialog.Actions>
         <Box>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => ctrl.close()}>Cancel</Button>
           <Button variant="contained" onClick={() => form.handleSubmit()}>
             Save
           </Button>
         </Box>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -139,13 +122,10 @@ export const useTraditionFormDialog = () => {
 
   return {
     open: (props?: UseTraditionFormDialogProps) => dialogApi.open<TraditionData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <TraditionFormDialog
-          open={open}
+          ctrl={ctrl}
           tradition={props?.tradition}
-          onSave={(tradition) => ctrl.close(tradition)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

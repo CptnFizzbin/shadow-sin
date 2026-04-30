@@ -1,30 +1,26 @@
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
-interface ViewSkillDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
+interface ViewSkillDialogProps extends ControlledDialogProps<void> {
   name: string
   body?: ReactNode
   dicePools?: (false | DicePoolData)[]
 }
 
 const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
+  ctrl,
   name,
   dicePools = [],
   body,
 }) => {
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+    <ControlledDialog ctrl={ctrl}>
       <Dialog.Title>{name}</Dialog.Title>
       <Dialog.Content>
         <Stack spacing={1}>
@@ -42,25 +38,18 @@ const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
           </Stack>
         </Stack>
       </Dialog.Content>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, "open" | "onClose" | "onClosed">
+type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, keyof ControlledDialogProps<void>>
 
 export const useViewSkillDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseViewSkillDialogProps) => dialogApi.open<void>(
-      (ctrl, open) => (
-        <ViewSkillDialog
-          {...props}
-          open={open}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <ViewSkillDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

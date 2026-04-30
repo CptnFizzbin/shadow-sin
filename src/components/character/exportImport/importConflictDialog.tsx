@@ -1,40 +1,26 @@
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
 
-interface ImportConflictDialogProps {
+interface ImportConflictDialogProps extends ControlledDialogProps<ImportConflictChoice> {
   incomingCharacter: CharacterSheet
   existingCharacter: CharacterSheet
-  onChoice: (choice: ImportConflictChoice) => void
-  onClosed?: () => void
 }
 
 const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
+  ctrl,
   incomingCharacter,
   existingCharacter,
-  onChoice,
-  onClosed,
 }) => {
-  const [open, setOpen] = useState<boolean>(true)
-
-  const handleChoice = (choice: ImportConflictChoice) => {
-    onChoice(choice)
-    setOpen(false)
-  }
-
   return (
-    <Dialog
-      open={open}
-      onClose={() => handleChoice("cancel")}
-      onClosed={onClosed}
-    >
+    <ControlledDialog ctrl={ctrl} onClose={() => ctrl.close("cancel")}>
       <Dialog.Title>Character already exists</Dialog.Title>
       <Dialog.Content>
         <Typography gutterBottom>
@@ -55,26 +41,26 @@ const ImportConflictDialog: FC<ImportConflictDialogProps> = ({
       <Dialog.Actions>
         <Button
           color="secondary"
-          onClick={() => handleChoice("cancel")}
+          onClick={() => ctrl.close("cancel")}
         >
           Cancel
         </Button>
         <Button
           color="primary"
           variant="outlined"
-          onClick={() => handleChoice("create-new")}
+          onClick={() => ctrl.close("create-new")}
         >
           Create new
         </Button>
         <Button
           color="warning"
           variant="contained"
-          onClick={() => handleChoice("overwrite")}
+          onClick={() => ctrl.close("overwrite")}
         >
           Overwrite
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -90,10 +76,9 @@ export const useImportConflictDialog = () => {
     open: (props: UseImportConflictDialogProps) => dialogApi.open<ImportConflictChoice>(
       (ctrl) => (
         <ImportConflictDialog
+          ctrl={ctrl}
           incomingCharacter={props.incomingCharacter}
           existingCharacter={props.existingCharacter}
-          onChoice={(choice) => ctrl.close(choice)}
-          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

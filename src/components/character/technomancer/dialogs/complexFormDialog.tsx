@@ -4,37 +4,31 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
-interface ComplexFormDialogProps {
-  open: boolean
+interface ComplexFormDialogProps extends ControlledDialogProps<ComplexFormData> {
   form?: ComplexFormData
   maxRating: number
-  onSave: (form: ComplexFormData) => void
   onDelete?: () => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
-  open,
+  ctrl,
   form,
   maxRating,
-  onSave,
   onDelete,
-  onClose,
-  onClosed,
 }) => {
   const isEditMode = !!form
   const effectiveMaxRating = Math.max(maxRating, 1)
 
   const recordId = form?.id ?? NullUuid
-  const dialogKey = `${recordId}-${open ? "1" : "0"}`
+  const dialogKey = recordId
 
   const appForm = useAppForm({
     defaultValues: {
@@ -44,20 +38,16 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
       effects: form?.effects ?? [],
     } satisfies ComplexFormData,
     onSubmit: ({ value }) => {
-      onSave({ ...value, rating: Math.min(value.rating, effectiveMaxRating) })
-      onClose()
+      ctrl.close({ ...value, rating: Math.min(value.rating, effectiveMaxRating) })
     },
   })
 
   return (
-    <Dialog
+    <ControlledDialog
       key={dialogKey}
-      open={open}
+      ctrl={ctrl}
       maxWidth="sm"
-      onClosed={() => {
-        appForm.reset()
-        onClosed?.()
-      }}
+      onClosed={() => appForm.reset()}
     >
       <Dialog.Title>
         {isEditMode ? "Edit Complex Form" : "Add Complex Form"}
@@ -113,7 +103,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
                 color="error"
                 onClick={() => {
                   onDelete()
-                  onClose()
+                  ctrl.close()
                 }}
               >
                 Delete
@@ -121,7 +111,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
             )}
           </Box>
           <Box>
-            <Button color="secondary" onClick={onClose}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
               Cancel
             </Button>
             <Button variant="contained" color="secondary" onClick={() => appForm.handleSubmit()}>
@@ -130,7 +120,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
           </Box>
         </Stack>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -145,15 +135,12 @@ export const useComplexFormDialog = () => {
 
   return {
     open: (props: UseComplexFormDialogProps) => dialogApi.open<ComplexFormData>(
-      (ctrl, open) => (
+      (ctrl) => (
         <ComplexFormDialog
-          open={open}
+          ctrl={ctrl}
           form={props.form}
           maxRating={props.maxRating}
           onDelete={props.onDelete}
-          onSave={(complexForm) => ctrl.close(complexForm)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

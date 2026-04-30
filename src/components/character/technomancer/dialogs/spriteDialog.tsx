@@ -10,25 +10,19 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useMaxSpriteTasks } from "#/components/character/technomancer/spritesHooks.ts"
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
-interface SpriteDialogProps {
-  open: boolean
+interface SpriteDialogProps extends ControlledDialogProps<SpriteData> {
   sprite?: SpriteData
-  onSave: (sprite: SpriteData) => void
-  onClose: () => void
-  onClosed?: () => void
 }
 
 const SpriteDialog: FC<SpriteDialogProps> = ({
-  open,
+  ctrl,
   sprite,
-  onSave,
-  onClose,
-  onClosed,
 }) => {
   const maxSpriteTasks = useMaxSpriteTasks()
   const isEditMode = !!sprite
@@ -47,7 +41,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
       setNameError(true)
       return
     }
-    onSave({
+    ctrl.close({
       id: sprite?.id ?? NullUuid,
       name: name.trim(),
       force: sprite?.force ?? 0,
@@ -62,11 +56,10 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
     setName(sprite?.name ?? "")
     setTasks(sprite?.services.max ?? 1)
     setNameError(false)
-    onClosed?.()
   }
 
   return (
-    <Dialog open={open} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
       <Dialog.Title>{isEditMode ? "Edit Sprite" : "Add Sprite"}</Dialog.Title>
 
       <Dialog.Content>
@@ -111,14 +104,14 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button color="secondary" onClick={onClose}>
+        <Button color="secondary" onClick={() => ctrl.close()}>
           Cancel
         </Button>
         <Button variant="contained" color="secondary" onClick={handleSave}>
           Save
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -131,15 +124,7 @@ export const useSpriteDialog = () => {
 
   return {
     open: (props?: UseSpriteDialogProps) => dialogApi.open<SpriteData>(
-      (ctrl, open) => (
-        <SpriteDialog
-          open={open}
-          sprite={props?.sprite}
-          onSave={(sprite) => ctrl.close(sprite)}
-          onClose={() => ctrl.close()}
-          onClosed={() => ctrl.onClosed()}
-        />
-      ),
+      (ctrl) => <SpriteDialog ctrl={ctrl} sprite={props?.sprite} />,
     ),
   }
 }
