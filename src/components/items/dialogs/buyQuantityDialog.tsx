@@ -101,21 +101,22 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   )
 }
 
-export type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
+type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
 
 export const useBuyQuantityDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <BuyQuantityDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
           onPurchase={(quantity, totalCost) => {
             props.onPurchase(quantity, totalCost)
-            dialogProps.onClose()
+            ctrl.close()
           }}
         />
       ),

@@ -34,7 +34,7 @@ export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onCha
   const gameEffectsDialog = useGameEffectsDialog()
 
   const handleOpenDialog = async () => {
-    const result = await gameEffectsDialog.open({ initialEffects: effects }).result()
+    const result = await gameEffectsDialog.open({ initialEffects: effects })
 
     if (result) {
       onChange(result)

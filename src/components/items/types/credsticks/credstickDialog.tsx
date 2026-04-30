@@ -27,7 +27,7 @@ import {
 import { createItem } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export type CredstickDialogMode = "add" | "add-certified" | "edit"
+type CredstickDialogMode = "add" | "add-certified" | "edit"
 
 interface CredstickDialogProps {
   open: boolean
@@ -274,18 +274,19 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   )
 }
 
-export type UseCredstickDialogProps = Omit<CredstickDialogProps, "open" | "onClose" | "onClosed">
+type UseCredstickDialogProps = Omit<CredstickDialogProps, "open" | "onClose" | "onClosed">
 
 export const useCredstickDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseCredstickDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <CredstickDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
         />
       ),
     ),

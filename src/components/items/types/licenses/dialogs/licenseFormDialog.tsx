@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useLicenseForm } from "#/components/items/types/licenses/forms/useLicenseForm.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
@@ -10,20 +11,14 @@ import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 interface LicenseFormDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (data: LicenseData) => void
+  ctrl: AnyDialogCtrl
   onDelete?: () => void
   license?: LicenseData
   sin?: SinData
 }
 
 const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
-  onSave,
+  ctrl,
   onDelete,
   license,
   sin,
@@ -33,16 +28,14 @@ const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   const form = useLicenseForm({
     license,
     parentId: sin?.id,
-    onSubmit: onSave,
+    onSubmit: (licenseData) => ctrl.close(licenseData),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       onDelete={onDelete}
       getCost={(l) => getLicenseCost(Number(l.rating))}
       ratingMax={6}
@@ -53,20 +46,14 @@ const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   )
 }
 
-export type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "ctrl">
 
 export const useLicenseFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseLicenseFormDialogProps) => dialogApi.open<LicenseData>(
-      (dialogProps) => (
-        <LicenseFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(license) => dialogProps.onClose(license)}
-        />
-      ),
+      (ctrl) => <LicenseFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

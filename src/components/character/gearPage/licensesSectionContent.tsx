@@ -25,12 +25,12 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   const licenseFormDialog = useLicenseFormDialog()
 
   const handleEditSin = async (sin?: SinData) => {
-    const saved = await sinFormDialog.open({ sin }).result()
+    const saved = await sinFormDialog.open({ sin })
     if (saved) gearStore.save(saved)
   }
 
   const handleEditLicense = async (sin: SinData, license?: LicenseData) => {
-    const saved = await licenseFormDialog.open({ sin, license }).result()
+    const saved = await licenseFormDialog.open({ sin, license })
     if (saved) gearStore.save(saved)
   }
 

@@ -1,40 +1,30 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
 import { armorFieldMap, useArmorForm } from "#/components/items/types/armor/forms/useArmorForm.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   armor?: ArmorData
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (armor: ArmorData) => void
 }
 
-export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({
-  open,
-  armor,
-  onClose,
-  onClosed,
-  onSave,
-}) => {
+export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
   const title = armor ? "Edit Armor" : "Add Armor"
 
   const form = useArmorForm({
     armor,
-    onSubmit: onSave,
+    onSubmit: (armorData) => ctrl.close(armorData),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       options={{
         equipable: { forced: true },
         hasEffects: { forced: true },
@@ -47,20 +37,14 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({
   )
 }
 
-export type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "ctrl">
 
 export const useArmorFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseArmorFormDialogProps) => dialogApi.open<ArmorData>(
-      (dialogProps) => (
-        <ArmorFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(armor) => dialogProps.onClose(armor)}
-        />
-      ),
+      (ctrl) => <ArmorFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

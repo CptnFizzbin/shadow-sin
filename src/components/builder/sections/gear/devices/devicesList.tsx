@@ -25,12 +25,12 @@ export const DevicesList: FC = () => {
     programs.filter((program) => program.parentId === deviceId)
 
   const handleEditDevice = async (device?: DeviceData) => {
-    const saved = await deviceFormDialog.open({ device }).result()
+    const saved = await deviceFormDialog.open({ device })
     if (saved) gearStore.save(saved)
   }
 
   const handleEditProgram = async (program?: ProgramData, parentId?: UUID) => {
-    const saved = await programFormDialog.open({ program, parentId }).result()
+    const saved = await programFormDialog.open({ program, parentId })
     if (saved) gearStore.save(saved)
   }
 

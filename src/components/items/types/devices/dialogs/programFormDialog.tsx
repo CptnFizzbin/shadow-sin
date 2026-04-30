@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
 import {
@@ -13,40 +14,26 @@ import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 interface ProgramFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   program?: ProgramData
   parentId?: UUID
-  onClose: () => void
-  onClosed?: () => void
-  onSave?: (program: ProgramData) => void
 }
 
-export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
-  open,
-  program,
-  parentId,
-  onClose,
-  onClosed,
-  onSave,
-}) => {
+export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, parentId }) => {
   const title = program ? "Edit Program" : "Add Program"
 
   const form = useProgramForm({
     program,
     parentId,
-    onSubmit: (submittedProgram) => onSave?.(submittedProgram),
+    onSubmit: (submittedProgram) => ctrl.close(submittedProgram),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={() => {
-        form.reset()
-        onClosed?.()
-      }}
+      ctrl={ctrl}
+      onClosed={() => form.reset()}
       parentItemFilter={(item) => item.itemType === ItemType.device}
       parentItemLabel="Device"
       options={{
@@ -60,20 +47,14 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({
   )
 }
 
-export type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "ctrl">
 
 export const useProgramFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseProgramFormDialogProps) => dialogApi.open<ProgramData>(
-      (dialogProps) => (
-        <ProgramFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(program) => dialogProps.onClose(program)}
-        />
-      ),
+      (ctrl) => <ProgramFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

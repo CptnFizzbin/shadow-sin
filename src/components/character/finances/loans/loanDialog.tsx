@@ -15,7 +15,7 @@ import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
-export type LoanDialogMode = "add" | "edit"
+type LoanDialogMode = "add" | "edit"
 
 interface LoanDialogProps {
   open: boolean
@@ -223,18 +223,19 @@ const LoanDialog: FC<LoanDialogProps> = ({
   )
 }
 
-export type UseLoanDialogProps = Omit<LoanDialogProps, "open" | "onClose" | "onClosed">
+type UseLoanDialogProps = Omit<LoanDialogProps, "open" | "onClose" | "onClosed">
 
 export const useLoanDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseLoanDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <LoanDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           {...props}
-          onClose={() => dialogProps.onClose()}
         />
       ),
     ),

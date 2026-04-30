@@ -27,7 +27,7 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   const itemFormDialog = useItemFormDialog()
 
   const handleEdit = async (item?: ItemData) => {
-    const saved = await itemFormDialog.open({ item, itemType, label: itemLabel }).result()
+    const saved = await itemFormDialog.open({ item, itemType, label: itemLabel })
     if (saved) gearStore.save(saved)
   }
 

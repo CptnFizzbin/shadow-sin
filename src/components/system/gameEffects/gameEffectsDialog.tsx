@@ -5,7 +5,6 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -15,7 +14,10 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectRow } from "./gameEffectRow.tsx"
 import { getDefaultTarget } from "./gameEffectUtils.ts"
 
-export type GameEffectsDialogProps = DialogApiDialogProps<GameEffectData[]> & {
+interface GameEffectsDialogProps {
+  open: boolean
+  onClose: (value?: GameEffectData[]) => void
+  onClosed: () => void
   initialEffects: GameEffectData[]
 }
 
@@ -92,15 +94,20 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   )
 }
 
-export type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, keyof DialogApiDialogProps<GameEffectData[]>>
+type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, "open" | "onClose" | "onClosed">
 
 export const useGameEffectsDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseGameEffectsDialogProps) => dialogApi.open<GameEffectData[]>(
-      (dialogProps) => (
-        <GameEffectsDialog {...dialogProps} {...props} />
+      (ctrl, open) => (
+        <GameEffectsDialog
+          open={open}
+          onClose={(effects) => ctrl.close(effects)}
+          onClosed={() => ctrl.onClosed()}
+          {...props}
+        />
       ),
     ),
   }

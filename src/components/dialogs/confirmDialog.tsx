@@ -2,13 +2,12 @@ import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
 
-import type { DialogProps } from "#/components/ui/dialog/dialog.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { noop } from "#/lib/noop.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
+import type { ControlledDialogProps } from "./api/controlledDialogProps.ts"
 import { useDialogApi } from "./api/dialogApiProvider.tsx"
 
-interface ConfirmDialogProps extends Omit<DialogProps<boolean>, "children"> {
+interface ConfirmDialogProps extends ControlledDialogProps<boolean> {
   title?: ReactNode
   body: ReactNode
   confirmLabel?: string
@@ -19,40 +18,31 @@ interface ConfirmDialogProps extends Omit<DialogProps<boolean>, "children"> {
   }
 }
 
-export const ConfirmDialog: FC<ConfirmDialogProps> = ({
+const ConfirmDialog: FC<ConfirmDialogProps> = ({
+  ctrl,
+  onClose,
   title,
   body,
   confirmLabel,
   cancelLabel,
   slotProps,
-  onClose = noop,
-  ...dialogProps
 }) => {
   const cancelBtnProps = slotProps?.cancelButton ?? {}
   const confirmBtnProps = slotProps?.confirmButton ?? {}
 
   return (
-    <Dialog {...dialogProps} onClose={() => onClose(false)}>
+    <ControlledDialog ctrl={ctrl} onClose={onClose}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>{body}</Dialog.Content>
       <Dialog.Actions>
-        <Button
-          color="secondary"
-          {...cancelBtnProps}
-          onClick={() => onClose(false)}
-        >
+        <Button color="secondary" {...cancelBtnProps} onClick={() => ctrl.close(false)}>
           {cancelBtnProps.label ?? cancelLabel ?? "Cancel"}
         </Button>
-        <Button
-          color="error"
-          variant="contained"
-          {...confirmBtnProps}
-          onClick={() => onClose(true)}
-        >
+        <Button color="error" variant="contained" {...confirmBtnProps} onClick={() => ctrl.close(true)}>
           {confirmBtnProps.label ?? confirmLabel ?? "Ok"}
         </Button>
       </Dialog.Actions>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
@@ -60,10 +50,10 @@ export const useConfirmDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
-    confirm: async (props: Omit<ConfirmDialogProps, keyof DialogProps>): Promise<boolean> => {
-      return await dialogApi
-        .open<boolean>((dialogProps) => <ConfirmDialog {...props} {...dialogProps} />)
-        .result() ?? false
+    confirm: async (props: Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>): Promise<boolean> => {
+      return (await dialogApi.open<boolean>((ctrl) => (
+        <ConfirmDialog ctrl={ctrl} {...props} />
+      ))) ?? false
     },
   }
 }

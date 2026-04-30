@@ -84,7 +84,7 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   )
 }
 
-export interface UseAdeptPowerFormDialogProps {
+interface UseAdeptPowerFormDialogProps {
   power?: AdeptPowerData
   onDelete?: () => void
 }
@@ -94,12 +94,14 @@ export const useAdeptPowerFormDialog = () => {
 
   return {
     open: (props?: UseAdeptPowerFormDialogProps) => dialogApi.open<AdeptPowerData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <AdeptPowerFormDialog
-          {...dialogProps}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
           power={props?.power}
           onDelete={props?.onDelete}
-          onSave={(power) => dialogProps.onClose(power)}
+          onSave={(power) => ctrl.close(power)}
         />
       ),
     ),

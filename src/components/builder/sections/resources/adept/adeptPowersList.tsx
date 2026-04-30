@@ -24,14 +24,13 @@ export const AdeptPowersList: FC = () => {
   const removePower = (power: AdeptPowerData) => adeptPowersStore.remove(power.id)
 
   const handleAddPower = async () => {
-    const saved = await adeptPowerFormDialog.open().result()
+    const saved = await adeptPowerFormDialog.open()
     if (saved) savePower(saved)
   }
 
   const handleEditPower = async (power: AdeptPowerData) => {
     const saved = await adeptPowerFormDialog
       .open({ power, onDelete: () => removePower(power) })
-      .result()
     if (saved) savePower(saved)
   }
 

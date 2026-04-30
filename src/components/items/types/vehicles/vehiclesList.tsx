@@ -38,17 +38,17 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   const categoryLabel = vehicleCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
 
   const handleEditVehicle = async (vehicle?: VehicleData) => {
-    const saved = await vehicleFormDialog.open({ vehicle, vehicleCategory }).result()
+    const saved = await vehicleFormDialog.open({ vehicle, vehicleCategory })
     if (saved) gearApi.save(saved)
   }
 
   const handleAddAttachment = async (parentId: UUID) => {
-    const saved = await attachmentFormDialog.open({ label: "Vehicle Attachment" }).result()
+    const saved = await attachmentFormDialog.open({ label: "Vehicle Attachment" })
     if (saved) gearApi.save({ ...saved, parentId })
   }
 
   const handleEditAttachment = async (attachment: ItemData) => {
-    const saved = await attachmentFormDialog.open({ item: attachment, label: "Vehicle Attachment" }).result()
+    const saved = await attachmentFormDialog.open({ item: attachment, label: "Vehicle Attachment" })
     if (saved) gearApi.save(saved)
   }
 

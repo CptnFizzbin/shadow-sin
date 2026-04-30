@@ -7,7 +7,7 @@ import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
-export type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
+type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
 
 interface ImportConflictDialogProps {
   incomingCharacter: CharacterSheet
@@ -88,12 +88,12 @@ export const useImportConflictDialog = () => {
 
   return {
     open: (props: UseImportConflictDialogProps) => dialogApi.open<ImportConflictChoice>(
-      (dialogProps) => (
+      (ctrl) => (
         <ImportConflictDialog
           incomingCharacter={props.incomingCharacter}
           existingCharacter={props.existingCharacter}
-          onChoice={(choice) => dialogProps.onClose(choice)}
-          onClosed={dialogProps.onClosed}
+          onChoice={(choice) => ctrl.close(choice)}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

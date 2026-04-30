@@ -28,12 +28,12 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
   const accessoryFormDialog = useItemFormDialog()
 
   const handleEditWeapon = async (weapon?: WeaponData) => {
-    const saved = await weaponFormDialog.open({ weapon }).result()
+    const saved = await weaponFormDialog.open({ weapon })
     if (saved) gearStore.save(saved)
   }
 
   const handleEditAccessory = async (accessory: ItemData, parentId: UUID) => {
-    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" }).result()
+    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" })
     if (saved) gearStore.save({ ...saved, parentId })
   }
 

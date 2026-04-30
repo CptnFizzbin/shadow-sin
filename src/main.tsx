@@ -4,7 +4,7 @@ import { RouterProvider } from "@tanstack/react-router"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
-import { DialogApi } from "./components/dialogs/api/dialogApi.ts"
+import { DialogApi } from "./components/dialogs/api/dialogApi.tsx"
 import { DialogApiProvider } from "./components/dialogs/api/dialogApiProvider.tsx"
 import TanStackQueryProvider from "./integrations/tanstackQuery/rootProvider.tsx"
 import { getRouter } from "./router.ts"

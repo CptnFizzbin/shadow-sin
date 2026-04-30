@@ -27,13 +27,13 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
 
   const handleAdd = async (parentId?: UUID) => {
     const label = parentId ? `${itemLabel} sub-item` : itemLabel
-    const saved = await itemFormDialog.open({ itemType, label }).result()
+    const saved = await itemFormDialog.open({ itemType, label })
     if (saved) gearApi.save(parentId ? { ...saved, parentId } : saved)
   }
 
   const handleEdit = async (item: ItemData) => {
     const label = item.parentId ? `${itemLabel} sub-item` : itemLabel
-    const saved = await itemFormDialog.open({ item, itemType, label }).result()
+    const saved = await itemFormDialog.open({ item, itemType, label })
     if (saved) gearApi.save(saved)
   }
 

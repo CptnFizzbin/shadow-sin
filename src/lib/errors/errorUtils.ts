@@ -5,12 +5,12 @@ export interface ErrorLike {
   stack?: string
 }
 
-export const ErrorLikeSchema = z.object({
+const ErrorLikeSchema = z.object({
   message: z.string(),
   stack: z.string().optional(),
 }) satisfies z.ZodType<ErrorLike>
 
-export const isErrorLike = (obj: unknown): obj is ErrorLike => {
+const isErrorLike = (obj: unknown): obj is ErrorLike => {
   return ErrorLikeSchema.safeParse(obj).success
 }
 

@@ -5,7 +5,7 @@ import { DialogRoot } from "./dialogRoot.tsx"
 import { DialogTitle } from "./dialogTitle.tsx"
 
 interface DialogComponent {
-  <TReturn = void>(props: DialogRootProps<TReturn>): ReturnType<typeof DialogRoot<TReturn>>
+  (props: DialogRootProps): ReturnType<typeof DialogRoot>
   Title: typeof DialogTitle
   Content: typeof DialogContent
   Actions: typeof DialogActions
@@ -16,9 +16,6 @@ interface DialogComponent {
  * look and only functional props exposed. Dialogs are always full-width;
  * use `maxWidth` to control the maximum size (default `"sm"`).
  *
- * Compatible with `DialogApiDialogProps` — spread the props injected by
- * `DialogApi.open(...)` directly onto the component.
- *
  * Slot components:
  * - `Dialog.Title` — header text
  * - `Dialog.Content` — scrollable body (accepts `dividers` prop)
@@ -26,9 +23,10 @@ interface DialogComponent {
  *
  * See `docs/ui/dialog.md` for detailed examples.
  */
-export const Dialog = DialogRoot as DialogComponent
+export const Dialog = DialogRoot as unknown as DialogComponent
 Dialog.Title = DialogTitle
 Dialog.Content = DialogContent
 Dialog.Actions = DialogActions
 
 export type { DialogRootProps as DialogProps } from "#/components/ui/dialog/dialogRoot.tsx"
+export { ControlledDialog } from "./controlledDialog.tsx"

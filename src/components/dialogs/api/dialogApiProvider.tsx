@@ -4,7 +4,7 @@ import { Fragment, createContext, useContext } from "react"
 
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-import type { DialogApi } from "./dialogApi.ts"
+import type { DialogApi } from "./dialogApi.tsx"
 import { selectAllDialogs } from "./dialogApiSelectors.ts"
 
 const DialogApiContext = createContext<DialogApi | null>(null)

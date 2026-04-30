@@ -15,7 +15,7 @@ interface ViewSkillDialogProps {
   dicePools?: (false | DicePoolData)[]
 }
 
-export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
+const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
   open,
   onClose,
   onClosed,
@@ -46,19 +46,19 @@ export const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
   )
 }
 
-export type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, "open" | "onClose" | "onClosed">
+type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, "open" | "onClose" | "onClosed">
 
 export const useViewSkillDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseViewSkillDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ViewSkillDialog
           {...props}
-          open={dialogProps.open}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

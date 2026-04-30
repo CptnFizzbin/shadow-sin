@@ -4,23 +4,19 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
+import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
-interface ItemOptionsDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed?: () => void
+interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
   initialOptions: Record<string, boolean>
   forced: Record<string, boolean>
   onChange: (updated: Record<string, boolean>) => void
 }
 
 const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
+  ctrl,
   initialOptions,
   forced,
   onChange,
@@ -55,7 +51,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   }
 
   return (
-    <Dialog open={open} onClose={onClose} onClosed={onClosed}>
+    <ControlledDialog ctrl={ctrl}>
       <Dialog.Title>Item Options</Dialog.Title>
 
       <Dialog.Content>
@@ -137,24 +133,18 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           )}
         </Stack>
       </Dialog.Content>
-    </Dialog>
+    </ControlledDialog>
   )
 }
 
-export type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "open" | "onClose" | "onClosed">
+type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "ctrl" | "onClose">
 
 export const useItemOptionsDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props: UseItemOptionsDialogProps) => dialogApi.open<void>(
-      (dialogProps) => (
-        <ItemOptionsDialog
-          {...dialogProps}
-          {...props}
-          onClose={() => dialogProps.onClose()}
-        />
-      ),
+      (ctrl) => <ItemOptionsDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

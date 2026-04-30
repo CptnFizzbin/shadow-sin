@@ -78,7 +78,7 @@ const SpellFormDialog: FC<SpellFormDialogProps> = ({
   )
 }
 
-export interface UseSpellFormDialogProps {
+interface UseSpellFormDialogProps {
   spell?: SpellData
   onDelete?: () => void
 }
@@ -88,12 +88,14 @@ export const useSpellFormDialog = () => {
 
   return {
     open: (props?: UseSpellFormDialogProps) => dialogApi.open<SpellData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <SpellFormDialog
-          {...dialogProps}
+          open={open}
           spell={props?.spell}
           onDelete={props?.onDelete}
-          onSave={(spell) => dialogProps.onClose(spell)}
+          onSave={(spell) => ctrl.close(spell)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

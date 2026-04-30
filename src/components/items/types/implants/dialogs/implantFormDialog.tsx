@@ -13,13 +13,11 @@ import type { ImplantData } from "#/system/gear/implantData.ts"
 interface CyberwareFormDialogProps {
   implant?: ImplantData
   parentId?: UUID
-  onSave: (implant: ImplantData) => void
 }
 
 export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogProps, "form" | "title">> = ({
   implant,
   parentId,
-  onSave,
   ...dialogProps
 }) => {
   const title = implant ? "Edit Implant" : "Add Implant"
@@ -27,7 +25,7 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
   const form = useImplantForm({
     implant,
     parentId,
-    onSubmit: onSave,
+    onSubmit: (implantData) => dialogProps.ctrl.close(implantData),
   })
 
   return (
@@ -50,20 +48,14 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
   )
 }
 
-export type UseImplantFormProps = Omit<CyberwareFormDialogProps, "onSave">
+export type UseImplantFormProps = CyberwareFormDialogProps
 
 export const useImplantFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseImplantFormProps) => dialogApi.open<ImplantData>(
-      (dialogProps) => (
-        <ImplantFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(implant) => dialogProps.onClose(implant)}
-        />
-      ),
+      (ctrl) => <ImplantFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

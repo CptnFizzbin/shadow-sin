@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -8,22 +9,16 @@ import { ItemType } from "#/system/itemType.ts"
 import { ItemDialog } from "./itemDialog.tsx"
 
 interface ItemFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   item?: ItemData
   itemType?: ItemType
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (item: ItemData) => void
   label?: string
 }
 
 export const ItemFormDialog: FC<ItemFormDialogProps> = ({
-  open,
+  ctrl,
   item,
   itemType,
-  onClose,
-  onClosed,
-  onSave,
   label = "Item",
 }) => {
   const title = item ? `Edit ${label}` : `Add ${label}`
@@ -35,16 +30,14 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
       itemType: itemType ?? ItemType.other,
       rating: 1,
     },
-    onSubmit: onSave,
+    onSubmit: (itemData) => ctrl.close(itemData),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       options={{
         hasRating: { enabled: true },
         multiple: { enabled: true },
@@ -53,20 +46,14 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
   )
 }
 
-export type UseItemFormDialogProps = Omit<ItemFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+type UseItemFormDialogProps = Omit<ItemFormDialogProps, "ctrl">
 
 export const useItemFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseItemFormDialogProps) => dialogApi.open<ItemData>(
-      (dialogProps) => (
-        <ItemFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(item) => dialogProps.onClose(item)}
-        />
-      ),
+      (ctrl) => <ItemFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

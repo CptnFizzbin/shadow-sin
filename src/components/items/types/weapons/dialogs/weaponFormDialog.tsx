@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import {
   weaponFieldMap,
@@ -10,34 +11,23 @@ import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponF
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
-  open: boolean
+  ctrl: AnyDialogCtrl
   weapon?: WeaponData
-  onClose: () => void
-  onClosed?: () => void
-  onSave: (weapon: WeaponData) => void
 }
 
-export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
-  open,
-  weapon,
-  onClose,
-  onClosed,
-  onSave,
-}) => {
+export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) => {
   const title = weapon ? "Edit Weapon" : "Add Weapon"
 
   const form = useWeaponForm({
     weapon,
-    onSubmit: onSave,
+    onSubmit: (weaponData) => ctrl.close(weaponData),
   })
 
   return (
     <ItemDialog
       form={form}
       title={title}
-      open={open}
-      onClose={onClose}
-      onClosed={onClosed}
+      ctrl={ctrl}
       options={{
         equipable: { forced: true },
         hasRating: { enabled: true },
@@ -50,20 +40,14 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({
   )
 }
 
-export type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "open" | "onClose" | "onClosed" | "onSave">
+type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "ctrl">
 
 export const useWeaponFormDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
     open: (props?: UseWeaponFormDialogProps) => dialogApi.open<WeaponData>(
-      (dialogProps) => (
-        <WeaponFormDialog
-          {...dialogProps}
-          {...props}
-          onSave={(weapon) => dialogProps.onClose(weapon)}
-        />
-      ),
+      (ctrl) => <WeaponFormDialog ctrl={ctrl} {...props} />,
     ),
   }
 }

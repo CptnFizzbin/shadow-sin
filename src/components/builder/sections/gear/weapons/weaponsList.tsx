@@ -24,17 +24,17 @@ export const WeaponsList: FC = () => {
     weapons.filter((weapon) => weapon.parentId === parentId)
 
   const handleEditWeapon = async (weapon?: WeaponData) => {
-    const saved = await weaponFormDialog.open({ weapon }).result()
+    const saved = await weaponFormDialog.open({ weapon })
     if (saved) gearApi.save(saved)
   }
 
   const handleAddAccessory = async (parentId: UUID) => {
-    const saved = await accessoryFormDialog.open({ label: "Weapon Accessory" }).result()
+    const saved = await accessoryFormDialog.open({ label: "Weapon Accessory" })
     if (saved) gearApi.save({ ...saved, parentId })
   }
 
   const handleEditAccessory = async (accessory: ItemData) => {
-    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" }).result()
+    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" })
     if (saved) gearApi.save(saved)
   }
 

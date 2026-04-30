@@ -155,7 +155,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   )
 }
 
-export type UseActiveSkillGroupDialogProps = Omit<
+type UseActiveSkillGroupDialogProps = Omit<
   ActiveSkillGroupFormDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >
@@ -165,13 +165,13 @@ export const useActiveSkillGroupDialog = () => {
 
   return {
     open: (props?: UseActiveSkillGroupDialogProps) => dialogApi.open<SkillGroupData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <ActiveSkillGroupFormDialog
           {...props}
-          open={dialogProps.open}
-          onSave={(group) => dialogProps.onClose(group)}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onSave={(group) => ctrl.close(group)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

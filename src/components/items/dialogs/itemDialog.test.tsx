@@ -1,8 +1,10 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import type { FC } from "react"
+import { useMemo } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { NuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
+import { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -12,14 +14,21 @@ import type { ItemDialogProps } from "./itemDialog.tsx"
 import { ItemDialog } from "./itemDialog.tsx"
 
 /**
- * Test wrapper that creates an ItemForm from the given item/itemType/onSave and
- * passes it to ItemDialog. Mirrors how real callers use ItemDialog.
+ * Test wrapper that creates an ItemForm and a DialogCtrl from the given
+ * item/itemType/onSave and passes them to ItemDialog.
+ * Mirrors how real callers use ItemDialog.
  */
 const ItemDialogWrapper: FC<{
   onSave?: (item: ItemData) => void | Promise<void>
   item?: ItemData
   itemType?: ItemType
-} & Omit<ItemDialogProps, "form">> = ({ onSave = vi.fn(), item, itemType, ...props }) => {
+} & Omit<ItemDialogProps, "form" | "ctrl">> = ({ onSave = vi.fn(), item, itemType, ...props }) => {
+  const ctrl = useMemo(() => {
+    const dialogCtrl = new DialogCtrl<ItemData>()
+    dialogCtrl.open()
+    return dialogCtrl
+  }, [])
+
   const form = useItemForm({
     item,
     defaultValues: { ...itemDefaults, itemType: itemType ?? ItemType.other },
@@ -27,17 +36,17 @@ const ItemDialogWrapper: FC<{
       await onSave(submittedItem)
     },
   })
-  return <ItemDialog form={form} {...props} />
+  return <ItemDialog ctrl={ctrl} form={form} {...props} />
 }
 
 describe("ItemDialog", () => {
   it("renders with a name field and save button", () => {
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         title="Add Thing"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
       />,
     )
 
@@ -51,11 +60,11 @@ describe("ItemDialog", () => {
     const onSave = vi.fn()
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         itemType={ItemType.other}
         title="Add Gadget"
         onSave={onSave}
-        onClose={vi.fn()}
+
       />,
     )
 
@@ -71,7 +80,7 @@ describe("ItemDialog", () => {
 
   it("opens the options dialog when the settings button is clicked", () => {
     renderInBuilder(
-      <ItemDialogWrapper open title="Add Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      <ItemDialogWrapper title="Add Item" onSave={vi.fn()} />,
     )
 
     const dialogs = screen.getAllByRole("dialog")
@@ -85,10 +94,10 @@ describe("ItemDialog", () => {
   it("shows the rating counter when hasRating option is enabled", () => {
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         title="Add Rated Item"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
         options={{ hasRating: { enabled: true } }}
       />,
     )
@@ -101,10 +110,10 @@ describe("ItemDialog", () => {
   it("shows the quantity counter when multiple option is enabled", () => {
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         title="Add Bulk Item"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
         options={{ multiple: { enabled: true } }}
       />,
     )
@@ -117,10 +126,10 @@ describe("ItemDialog", () => {
   it("shows the attached-to section when isSubItem option is enabled", () => {
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         title="Add Sub-Item"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
         options={{ isSubItem: { enabled: true } }}
       />,
     )
@@ -131,10 +140,10 @@ describe("ItemDialog", () => {
   it("renders slot itemFields", () => {
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         title="Add Item"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
         slots={{
           itemFields: () => <div data-testid="custom-fields">Custom Fields</div>,
         }}
@@ -146,7 +155,7 @@ describe("ItemDialog", () => {
 
   it("shows acquire and purchase buttons in viewer mode", () => {
     renderWithProviders(
-      <ItemDialogWrapper open title="Add Item" onSave={vi.fn()} onClose={vi.fn()} />,
+      <ItemDialogWrapper title="Add Item" onSave={vi.fn()} />,
     )
 
     const dialogs = screen.getAllByRole("dialog")
@@ -164,11 +173,11 @@ describe("ItemDialog", () => {
       const onSave = vi.fn()
       renderWithProviders(
         <ItemDialogWrapper
-          open
+
           itemType={ItemType.other}
           title="Add Item"
           onSave={onSave}
-          onClose={vi.fn()}
+
         />,
       )
 
@@ -197,11 +206,11 @@ describe("ItemDialog", () => {
       const onSave = vi.fn().mockRejectedValue(new Error("save failed"))
       renderWithProviders(
         <ItemDialogWrapper
-          open
+
           itemType={ItemType.other}
           title="Add Item"
           onSave={onSave}
-          onClose={vi.fn()}
+
         />,
       )
 
@@ -226,11 +235,11 @@ describe("ItemDialog", () => {
       const onSave = vi.fn()
       renderWithProviders(
         <ItemDialogWrapper
-          open
+
           itemType={ItemType.other}
           title="Add Item"
           onSave={onSave}
-          onClose={vi.fn()}
+
         />,
       )
 
@@ -258,11 +267,11 @@ describe("ItemDialog", () => {
 
     renderInBuilder(
       <ItemDialogWrapper
-        open
+
         item={existingItem}
         title="Edit Thing"
         onSave={vi.fn()}
-        onClose={vi.fn()}
+
       />,
     )
 
@@ -283,7 +292,7 @@ describe("ItemDialog", () => {
 
       // Act
       renderInBuilder(
-        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+        <ItemDialogWrapper item={item} title="Edit Item" onSave={vi.fn()} />,
       )
 
       // Assert
@@ -301,7 +310,7 @@ describe("ItemDialog", () => {
 
       // Act
       renderInBuilder(
-        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+        <ItemDialogWrapper item={item} title="Edit Item" onSave={vi.fn()} />,
       )
 
       // Assert
@@ -319,7 +328,7 @@ describe("ItemDialog", () => {
 
       // Act
       renderInBuilder(
-        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+        <ItemDialogWrapper item={item} title="Edit Item" onSave={vi.fn()} />,
       )
 
       // Assert
@@ -338,7 +347,7 @@ describe("ItemDialog", () => {
 
       // Act
       renderInBuilder(
-        <ItemDialogWrapper open item={item} title="Edit Item" onSave={vi.fn()} onClose={vi.fn()} />,
+        <ItemDialogWrapper item={item} title="Edit Item" onSave={vi.fn()} />,
       )
 
       // Assert
@@ -360,7 +369,7 @@ describe("ItemDialog", () => {
       }
 
       renderInBuilder(
-        <ItemDialogWrapper open item={item} title="Edit Item" onSave={onSave} onClose={vi.fn()} />,
+        <ItemDialogWrapper item={item} title="Edit Item" onSave={onSave} />,
       )
 
       const dialogs = screen.getAllByRole("dialog")

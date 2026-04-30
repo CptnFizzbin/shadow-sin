@@ -143,7 +143,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   )
 }
 
-export type UseKnowledgeSkillDialogProps = Omit<
+type UseKnowledgeSkillDialogProps = Omit<
   KnowledgeSkillEditDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >
@@ -153,13 +153,13 @@ export const useKnowledgeSkillDialog = () => {
 
   return {
     open: (props?: UseKnowledgeSkillDialogProps) => dialogApi.open<KnowledgeSkillData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <KnowledgeSkillEditDialog
           {...props}
-          open={dialogProps.open}
-          onSave={(skill) => dialogProps.onClose(skill)}
-          onClose={() => dialogProps.onClose()}
-          onClosed={dialogProps.onClosed}
+          open={open}
+          onSave={(skill) => ctrl.close(skill)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),

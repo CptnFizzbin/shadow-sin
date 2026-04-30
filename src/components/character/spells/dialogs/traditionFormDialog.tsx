@@ -130,7 +130,7 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   )
 }
 
-export interface UseTraditionFormDialogProps {
+interface UseTraditionFormDialogProps {
   tradition?: TraditionData
 }
 
@@ -139,11 +139,13 @@ export const useTraditionFormDialog = () => {
 
   return {
     open: (props?: UseTraditionFormDialogProps) => dialogApi.open<TraditionData>(
-      (dialogProps) => (
+      (ctrl, open) => (
         <TraditionFormDialog
-          {...dialogProps}
+          open={open}
           tradition={props?.tradition}
-          onSave={(tradition) => dialogProps.onClose(tradition)}
+          onSave={(tradition) => ctrl.close(tradition)}
+          onClose={() => ctrl.close()}
+          onClosed={() => ctrl.onClosed()}
         />
       ),
     ),
