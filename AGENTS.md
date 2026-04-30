@@ -239,5 +239,6 @@ yarn fallow fix --yes --format json --quiet 2>/dev/null || true
 ```
 
 - **Always `--dry-run` before `fix`**, then `fix --yes` to apply (required in non-TTY agent environments)
+- **Always run `yarn fallow dead-code --format json --quiet 2>/dev/null || true` after making code changes** to verify that no dead code, unused exports, or unused types were introduced or left behind.
 - When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those findings have been resolved by the current change
 - See `.agents/skills/fallow/SKILL.md` for the full command reference
