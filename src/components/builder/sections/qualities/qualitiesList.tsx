@@ -77,9 +77,10 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
                 <QualitiesListItem
                   key={quality.name}
                   quality={quality}
-                  onClick={() => qualityFormDialog.open({ quality }).then((updated) => {
+                  onClick={async () => {
+                    const updated = await qualityFormDialog.open({ quality })
                     if (updated) qualitiesStore.update(updated)
-                  })}
+                  }}
                   onRemove={() => qualitiesStore.remove(quality.name)}
                 />
               ))}
