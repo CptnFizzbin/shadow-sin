@@ -16,9 +16,9 @@ type ControlledDialogOwnProps<TReturn> = ControlledDialogProps<TReturn> & {
  * Reads `ctrl.store` for the open state and calls `ctrl.onClosed()` after the
  * exit animation.
  *
- * @example Inline usage (with `useDialogCtrl`)
+ * @example Inline usage
  * ```tsx
- * const confirmCtrl = useDialogCtrl<boolean>()
+ * const confirmCtrl = useMemo(() => new DialogCtrl<boolean>(), [])
  *
  * return (
  *   <>

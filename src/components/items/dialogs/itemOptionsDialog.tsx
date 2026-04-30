@@ -137,7 +137,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   )
 }
 
-export type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "ctrl" | "onClose">
+type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "ctrl" | "onClose">
 
 export const useItemOptionsDialog = () => {
   const dialogApi = useDialogApi()

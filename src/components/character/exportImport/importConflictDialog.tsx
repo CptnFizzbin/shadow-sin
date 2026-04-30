@@ -7,7 +7,7 @@ import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
-export type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
+type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
 
 interface ImportConflictDialogProps {
   incomingCharacter: CharacterSheet

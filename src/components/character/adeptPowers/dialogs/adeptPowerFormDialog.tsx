@@ -84,7 +84,7 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   )
 }
 
-export interface UseAdeptPowerFormDialogProps {
+interface UseAdeptPowerFormDialogProps {
   power?: AdeptPowerData
   onDelete?: () => void
 }

@@ -30,23 +30,6 @@ const OpenFactoryWrapper: FC<OpenFactoryWrapperProps> = ({ ctrl, factory }) => {
   return <>{factory(ctrl, isOpen)}</>
 }
 
-interface ControlledFactoryWrapperProps {
-  ctrl: AnyDialogCtrl
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  factory: (ctrl: AnyDialogCtrl, props: any) => ReactNode
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props: any
-}
-
-/**
- * Wraps the factory passed to `DialogApi.createControlled()`. No reactive
- * open-boolean is needed here because the dialog component uses
- * `ControlledDialog` internally, which subscribes to `ctrl.store` directly.
- */
-const ControlledFactoryWrapper: FC<ControlledFactoryWrapperProps> = ({ ctrl, factory, props }) => {
-  return <>{factory(ctrl, props)}</>
-}
-
 // ---------------------------------------------------------------------------
 // DialogApi
 // ---------------------------------------------------------------------------
@@ -70,23 +53,6 @@ const ControlledFactoryWrapper: FC<ControlledFactoryWrapperProps> = ({ ctrl, fac
  *     <Button onClick={() => ctrl.close(true)}>Yes</Button>
  *   </Dialog>
  * ))
- * if (await result) deleteItem()
- * ```
- *
- * ### Pattern 2 — `createControlled` (reusable dialog hook)
- *
- * ```tsx
- * // hook definition
- * export const useConfirmDialog = () => {
- *   const dialogApi = useDialogApi()
- *   return dialogApi.createControlled<boolean, ConfirmDialogProps>(
- *     (ctrl, props) => <ConfirmDialog ctrl={ctrl} {...props} />
- *   )
- * }
- *
- * // call site
- * const confirmDialog = useConfirmDialog()
- * const { result } = confirmDialog.open({ title: "Delete?", body: "..." })
  * if (await result) deleteItem()
  * ```
  */
@@ -120,46 +86,6 @@ export class DialogApi {
     const element = createElement(DialogErrorBoundary, { ctrl, children: inner })
     this.addDialog(dialogId, element)
     return { result: ctrl.result() }
-  }
-
-  /**
-   * Create a reusable ctrl whose `open(props)` mounts a new dialog via this
-   * `DialogApi` each time it is called.
-   *
-   * @example
-   * ```tsx
-   * const ctrl = dialogApi.createControlled<boolean, ConfirmDialogProps>(
-   *   (ctrl, props) => <ConfirmDialog ctrl={ctrl} {...props} />
-   * )
-   * const { result } = ctrl.open({ title: "Delete?", body: "..." })
-   * if (await result) deleteItem()
-   * ```
-   */
-  createControlled<TReturn, TProps = void>(
-    factory: (
-      ctrl: DialogCtrl<TReturn>,
-      props: Omit<TProps, "ctrl" | "onClose">,
-    ) => ReactNode,
-  ): DialogCtrl<TReturn, TProps> {
-    const outerCtrl = new DialogCtrl<TReturn, TProps>()
-
-    outerCtrl._setOpenOverride((props?: Omit<TProps, "ctrl" | "onClose">) => {
-      const dialogId = crypto.randomUUID()
-      const innerCtrl = new DialogCtrl<TReturn>()
-      innerCtrl._setOpen()
-      innerCtrl._setOnClosedCallback(() => this.removeDialog(dialogId))
-
-      const inner = createElement(ControlledFactoryWrapper, {
-        ctrl: innerCtrl,
-        factory: factory as (ctrl: AnyDialogCtrl, props: unknown) => ReactNode,
-        props: props ?? {},
-      })
-      const element = createElement(DialogErrorBoundary, { ctrl: innerCtrl, children: inner })
-      this.addDialog(dialogId, element)
-      return { result: innerCtrl.result() }
-    })
-
-    return outerCtrl
   }
 
   private addDialog(id: string, dialog: ReactNode) {

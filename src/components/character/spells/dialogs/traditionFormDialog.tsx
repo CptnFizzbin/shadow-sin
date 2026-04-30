@@ -130,7 +130,7 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   )
 }
 
-export interface UseTraditionFormDialogProps {
+interface UseTraditionFormDialogProps {
   tradition?: TraditionData
 }
 

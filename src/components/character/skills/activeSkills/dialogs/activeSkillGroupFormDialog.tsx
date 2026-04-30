@@ -155,7 +155,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   )
 }
 
-export type UseActiveSkillGroupDialogProps = Omit<
+type UseActiveSkillGroupDialogProps = Omit<
   ActiveSkillGroupFormDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >

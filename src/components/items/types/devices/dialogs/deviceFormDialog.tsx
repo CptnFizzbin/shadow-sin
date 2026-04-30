@@ -38,7 +38,7 @@ export const DeviceFormDialog: FC<DeviceFormDialogProps> = ({ ctrl, device }) =>
   )
 }
 
-export type UseDeviceFormDialogProps = Omit<DeviceFormDialogProps, "ctrl">
+type UseDeviceFormDialogProps = Omit<DeviceFormDialogProps, "ctrl">
 
 export const useDeviceFormDialog = () => {
   const dialogApi = useDialogApi()

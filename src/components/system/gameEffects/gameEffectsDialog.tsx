@@ -94,7 +94,7 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
   )
 }
 
-export type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, "open" | "onClose" | "onClosed">
+type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, "open" | "onClose" | "onClosed">
 
 export const useGameEffectsDialog = () => {
   const dialogApi = useDialogApi()

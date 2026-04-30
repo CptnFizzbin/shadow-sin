@@ -134,7 +134,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
   )
 }
 
-export interface UseComplexFormDialogProps {
+interface UseComplexFormDialogProps {
   form?: ComplexFormData
   maxRating: number
   onDelete?: () => void

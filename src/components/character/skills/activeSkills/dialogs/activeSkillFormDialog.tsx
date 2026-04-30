@@ -280,7 +280,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   )
 }
 
-export type UseActiveSkillDialogProps = Omit<
+type UseActiveSkillDialogProps = Omit<
   ActiveSkillFormDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >

@@ -78,7 +78,7 @@ const SpellFormDialog: FC<SpellFormDialogProps> = ({
   )
 }
 
-export interface UseSpellFormDialogProps {
+interface UseSpellFormDialogProps {
   spell?: SpellData
   onDelete?: () => void
 }

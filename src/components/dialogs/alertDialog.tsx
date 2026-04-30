@@ -16,7 +16,7 @@ interface AlertDialogProps extends ControlledDialogProps<void> {
   }
 }
 
-export const AlertDialog: FC<AlertDialogProps> = ({
+const AlertDialog: FC<AlertDialogProps> = ({
   ctrl,
   onClose,
   title,

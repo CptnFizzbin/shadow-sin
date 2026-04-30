@@ -46,7 +46,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
   )
 }
 
-export type UseItemFormDialogProps = Omit<ItemFormDialogProps, "ctrl">
+type UseItemFormDialogProps = Omit<ItemFormDialogProps, "ctrl">
 
 export const useItemFormDialog = () => {
   const dialogApi = useDialogApi()

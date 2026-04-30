@@ -67,7 +67,7 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleC
   )
 }
 
-export type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "ctrl">
+type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "ctrl">
 
 export const useVehicleFormDialog = () => {
   const dialogApi = useDialogApi()

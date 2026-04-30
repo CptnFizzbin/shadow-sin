@@ -18,7 +18,7 @@ interface ConfirmDialogProps extends ControlledDialogProps<boolean> {
   }
 }
 
-export const ConfirmDialog: FC<ConfirmDialogProps> = ({
+const ConfirmDialog: FC<ConfirmDialogProps> = ({
   ctrl,
   onClose,
   title,

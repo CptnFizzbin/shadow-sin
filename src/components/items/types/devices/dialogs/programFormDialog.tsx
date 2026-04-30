@@ -47,7 +47,7 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, p
   )
 }
 
-export type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "ctrl">
+type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "ctrl">
 
 export const useProgramFormDialog = () => {
   const dialogApi = useDialogApi()

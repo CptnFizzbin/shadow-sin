@@ -37,7 +37,7 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
   )
 }
 
-export type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "ctrl">
+type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "ctrl">
 
 export const useArmorFormDialog = () => {
   const dialogApi = useDialogApi()

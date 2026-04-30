@@ -86,7 +86,7 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ spell, open, onClose, onClo
   )
 }
 
-export interface UseSpellCastDialogProps {
+interface UseSpellCastDialogProps {
   spell: SpellData
 }
 

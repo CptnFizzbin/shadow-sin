@@ -3,15 +3,14 @@ import { createStore } from "@tanstack/store"
 /**
  * Controls the lifecycle of a dialog.
  *
- * Two usage modes:
  * - **Inline** (`new DialogCtrl<TReturn>()`): `open()` transitions the already-rendered
- *   dialog to visible. Use with `ControlledDialog` + `useDialogCtrl`.
- * - **API-managed** (`DialogCtrl<TReturn, TProps>` from `dialogApi.createControlled()`):
- *   `open(props)` mounts a new dialog via `DialogApi` each time.
+ *   dialog to visible. Use with `ControlledDialog`.
+ * - **API-managed** (via `DialogApi.open()`): the factory receives a `ctrl` that is
+ *   pre-opened; callers use `ctrl.close()` / `ctrl.result()`.
  *
  * Both modes share the same `close()`, `onClosed()`, and `result()` interface.
  */
-export class DialogCtrl<TReturn, TProps = void> {
+export class DialogCtrl<TReturn> {
   /** Reactive store tracking whether the dialog is currently open. */
   readonly store = createStore<{ open: boolean }>({ open: false })
 
@@ -23,10 +22,6 @@ export class DialogCtrl<TReturn, TProps = void> {
   private onClosedCallback: (() => void) | undefined = undefined
   // Timer ID for the 5-second onClosed safety timeout
   private closeTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined
-  // For createControlled: overrides the default open() behaviour
-  private openOverride:
-    | ((props?: Omit<TProps, "ctrl" | "onClose">) => { result: Promise<TReturn | undefined> })
-    | undefined = undefined
 
   constructor() {
     const { promise, resolve } = Promise.withResolvers<TReturn | undefined>()
@@ -35,18 +30,11 @@ export class DialogCtrl<TReturn, TProps = void> {
   }
 
   /**
-   * Open the dialog.
-   *
-   * - For **inline** dialogs: transitions `store.open` to `true` and returns `{ result }`.
-   * - For **createControlled** ctrls: mounts a new dialog via `DialogApi` and returns `{ result }`.
+   * Open the dialog. Resets the result promise and transitions `store.open` to `true`.
+   * Returns `{ result }` which resolves when the dialog is closed.
    */
-  open(
-    ...args: TProps extends void ? [] : [props: Omit<TProps, "ctrl" | "onClose">]
-  ): { result: Promise<TReturn | undefined> } {
-    if (this.openOverride) {
-      return this.openOverride((args as [Omit<TProps, "ctrl" | "onClose">])[0])
-    }
-    // Default inline behaviour: reset promise and transition to open
+  open(): { result: Promise<TReturn | undefined> } {
+    // Reset promise and transition to open
     const { promise, resolve } = Promise.withResolvers<TReturn | undefined>()
     this.promise = promise
     this.resolve = resolve
@@ -122,13 +110,6 @@ export class DialogCtrl<TReturn, TProps = void> {
   /** @internal Called by DialogApi to register the cleanup callback and enable the timeout. */
   _setOnClosedCallback(callback: () => void): void {
     this.onClosedCallback = callback
-  }
-
-  /** @internal Called by DialogApi.createControlled to override the default open() behaviour. */
-  _setOpenOverride(
-    fn: (props?: Omit<TProps, "ctrl" | "onClose">) => { result: Promise<TReturn | undefined> },
-  ): void {
-    this.openOverride = fn
   }
 }
 

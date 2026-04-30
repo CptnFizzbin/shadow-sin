@@ -122,7 +122,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
   )
 }
 
-export interface UseSpriteDialogProps {
+interface UseSpriteDialogProps {
   sprite?: SpriteData
 }
 

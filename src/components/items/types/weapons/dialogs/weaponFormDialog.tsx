@@ -40,7 +40,7 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) =>
   )
 }
 
-export type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "ctrl">
+type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "ctrl">
 
 export const useWeaponFormDialog = () => {
   const dialogApi = useDialogApi()

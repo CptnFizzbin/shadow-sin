@@ -34,7 +34,7 @@ const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
   )
 }
 
-export type UseSinFormDialogProps = Omit<SinFormDialogProps, "ctrl">
+type UseSinFormDialogProps = Omit<SinFormDialogProps, "ctrl">
 
 export const useSinFormDialog = () => {
   const dialogApi = useDialogApi()

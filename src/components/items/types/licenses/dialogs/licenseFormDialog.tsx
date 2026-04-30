@@ -46,7 +46,7 @@ const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   )
 }
 
-export type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "ctrl">
+type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "ctrl">
 
 export const useLicenseFormDialog = () => {
   const dialogApi = useDialogApi()

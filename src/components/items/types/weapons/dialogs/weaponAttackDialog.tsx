@@ -99,7 +99,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   )
 }
 
-export type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed">
+type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, "open" | "onClose" | "onClosed">
 
 export const useWeaponAttackDialog = () => {
   const dialogApi = useDialogApi()

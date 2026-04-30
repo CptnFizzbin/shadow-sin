@@ -101,7 +101,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   )
 }
 
-export type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
+type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, "open" | "onClose" | "onClosed">
 
 export const useBuyQuantityDialog = () => {
   const dialogApi = useDialogApi()

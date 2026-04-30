@@ -85,7 +85,7 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   )
 }
 
-export type UseLanguageSkillDialogProps = Omit<
+type UseLanguageSkillDialogProps = Omit<
   LanguageSkillDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >

@@ -143,7 +143,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   )
 }
 
-export type UseKnowledgeSkillDialogProps = Omit<
+type UseKnowledgeSkillDialogProps = Omit<
   KnowledgeSkillEditDialogProps,
   "open" | "onSave" | "onClose" | "onClosed"
 >
