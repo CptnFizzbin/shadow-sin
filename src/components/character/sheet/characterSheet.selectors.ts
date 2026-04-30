@@ -15,9 +15,12 @@ import { useCharacterSheetContext } from "./characterSheetContext.ts"
 
 export type CharacterDataSelector<TData> = (state: CharacterSheet) => TData
 
-export function useCharacterSheetSelector<T>(selector: CharacterDataSelector<T>) {
+export function useCharacterSheetSelector<T>(
+  selector: CharacterDataSelector<T>,
+  compare?: (prev: T, next: T) => boolean,
+) {
   const store = useCharacterSheetContext()
-  return useSelector(store, selector)
+  return useSelector(store, selector, { compare })
 }
 
 export const selectAwakeningType: CharacterDataSelector<AwakeningType> = (state) => {

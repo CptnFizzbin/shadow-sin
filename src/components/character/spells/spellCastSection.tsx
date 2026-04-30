@@ -2,7 +2,11 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
+import FormControl from "@mui/material/FormControl"
 import Grid from "@mui/material/Grid"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { darken, lighten } from "@mui/material/styles"
@@ -19,7 +23,6 @@ import {
   selectStunMax,
 } from "#/components/system/damage/damageSelectors.ts"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -32,9 +35,10 @@ import { SpellcastingDicePool } from "./spellcastingDicePool.tsx"
 interface SpellCastSectionProps {
   spell: SpellData
   onClose: () => void
+  onRoll?: (count: number) => void
 }
 
-export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
+export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose, onRoll }) => {
   const magicAttr = useAttr(AttributeKey.magic)
   const tradition = useCharacterSheet((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
@@ -80,30 +84,40 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
       }}
     >
       <Stack sx={{ gap: 1 }}>
-        <Label label="Cast" variant="text" />
+        <Stack sx={{ gap: 0.5 }}>
+          <Label label="Cast" variant="text" />
+          {isOvercasting && (
+            <Typography color="error.main">
+              Force exceeds Magic — drain is Physical
+            </Typography>
+          )}
+        </Stack>
 
-        <CounterField
-          label="Force"
-          value={force}
-          onChange={(newValue) => setForce(newValue ?? 1)}
-          min={1}
-          max={maxForce}
-          size="small"
-          fullWidth
-        />
-
-        {isOvercasting && (
-          <Typography color="error.main">
-            Overcasting (Force {force} {">"} Magic {magicAttr}) — drain is Physical
-          </Typography>
-        )}
+        <FormControl size="small" fullWidth>
+          <InputLabel id="spell-force-label">Force</InputLabel>
+          <Select
+            labelId="spell-force-label"
+            id="spell-force-select"
+            value={force}
+            label="Force"
+            onChange={(e) => setForce(Number(e.target.value))}
+          >
+            {Array.from({ length: maxForce }, (_, i) => i + 1).map((forceValue) => (
+              <MenuItem key={forceValue} value={forceValue}>
+                {forceValue}
+                {forceValue === magicAttr ? " (MAG)" : ""}
+                {forceValue > magicAttr ? " ⚠️" : ""}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>
-            <SpellcastingDicePool />
+            <SpellcastingDicePool onRoll={onRoll} />
           </Grid>
           <Grid size={1}>
-            <DrainResistanceDicePool drainAttribute={drainAttribute} />
+            <DrainResistanceDicePool drainAttribute={drainAttribute} onRoll={onRoll} />
           </Grid>
         </Grid>
 

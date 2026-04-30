@@ -7,9 +7,10 @@ import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface AttackDicePoolProps {
   weapon: WeaponData
+  onRoll?: (count: number) => void
 }
 
-export const AttackDicePool: FC<AttackDicePoolProps> = ({ weapon }) => {
+export const AttackDicePool: FC<AttackDicePoolProps> = ({ weapon, onRoll }) => {
   const attrKey = weapon.attribute ?? AttributeKey.agility
 
   return (
@@ -20,6 +21,7 @@ export const AttackDicePool: FC<AttackDicePoolProps> = ({ weapon }) => {
         useActiveSkillDiceGroup(weapon.skill),
         useWoundDiceGroup(),
       ]}
+      onRoll={onRoll}
     />
   )
 }
