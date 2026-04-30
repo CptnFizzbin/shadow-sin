@@ -23,7 +23,7 @@ interface DialogComponent {
  *
  * See `docs/ui/dialog.md` for detailed examples.
  */
-export const Dialog = DialogRoot as DialogComponent
+export const Dialog = DialogRoot as unknown as DialogComponent
 Dialog.Title = DialogTitle
 Dialog.Content = DialogContent
 Dialog.Actions = DialogActions

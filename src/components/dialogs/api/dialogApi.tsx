@@ -114,14 +114,11 @@ export class DialogApi {
     ctrl._setOpen()
     ctrl._setOnClosedCallback(() => this.removeDialog(dialogId))
 
-    const element = createElement(
-      DialogErrorBoundary,
-      { ctrl },
-      createElement(OpenFactoryWrapper, {
-        ctrl,
-        factory: factory as (ctrl: AnyDialogCtrl, open: boolean) => ReactNode,
-      }),
-    )
+    const inner = createElement(OpenFactoryWrapper, {
+      ctrl,
+      factory: factory as (ctrl: AnyDialogCtrl, open: boolean) => ReactNode,
+    })
+    const element = createElement(DialogErrorBoundary, { ctrl, children: inner })
     this.addDialog(dialogId, element)
     return { result: ctrl.result() }
   }
@@ -153,15 +150,12 @@ export class DialogApi {
       innerCtrl._setOpen()
       innerCtrl._setOnClosedCallback(() => this.removeDialog(dialogId))
 
-      const element = createElement(
-        DialogErrorBoundary,
-        { ctrl: innerCtrl },
-        createElement(ControlledFactoryWrapper, {
-          ctrl: innerCtrl,
-          factory: factory as (ctrl: AnyDialogCtrl, props: unknown) => ReactNode,
-          props: props ?? {},
-        }),
-      )
+      const inner = createElement(ControlledFactoryWrapper, {
+        ctrl: innerCtrl,
+        factory: factory as (ctrl: AnyDialogCtrl, props: unknown) => ReactNode,
+        props: props ?? {},
+      })
+      const element = createElement(DialogErrorBoundary, { ctrl: innerCtrl, children: inner })
       this.addDialog(dialogId, element)
       return { result: innerCtrl.result() }
     })
