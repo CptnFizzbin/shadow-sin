@@ -10,7 +10,8 @@ import { localCharacterManager } from "#/lib/storage/localStorage/localCharacter
 
 export const Route = createFileRoute("/")({
   loader: () => {
-    return localCharacterManager.ensureCharacters([Artemis, Hexen])
+    const fixtures = import.meta.env.DEV ? [Artemis, Hexen] : []
+    return localCharacterManager.ensureCharacters(fixtures)
   },
   component: IndexRoute,
 })
