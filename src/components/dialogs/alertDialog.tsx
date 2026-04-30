@@ -1,52 +1,44 @@
 import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
-import { useState } from "react"
 
+import type { DialogProps } from "#/components/ui/dialog/dialog.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { noop } from "#/lib/noop.ts"
 
 import { useDialogApi } from "./api/dialogApiProvider.tsx"
 
-interface ConfirmDialogProps {
+interface AlertDialogProps extends Omit<DialogProps<void>, "children"> {
   title?: ReactNode
   body: ReactNode
   confirmLabel?: string
-  onConfirm: () => void
-  onClosed: () => void
   slotProps?: {
     confirmButton?: { label?: string } & Omit<ButtonProps, "onClick" | "children">
   }
 }
 
-export const AlertDialog: FC<ConfirmDialogProps> = ({
+export const AlertDialog: FC<AlertDialogProps> = ({
   title,
   body,
   confirmLabel,
-  onConfirm,
-  onClosed,
   slotProps,
+  onClose = noop,
+  ...dialogProps
 }) => {
-  const [open, setOpen] = useState<boolean>(true)
+  const confirmBtnProps = slotProps?.confirmButton ?? {}
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => setOpen(false)}
-      onClosed={onClosed}
-    >
+    <Dialog {...dialogProps}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>{body}</Dialog.Content>
       <Dialog.Actions>
         <Button
           color="error"
           variant="contained"
-          onClick={() => {
-            onConfirm()
-            setOpen(false)
-          }}
-          {...slotProps?.confirmButton}
+          {...confirmBtnProps}
+          onClick={() => onClose()}
         >
-          {slotProps?.confirmButton?.label ?? confirmLabel ?? "Ok"}
+          {confirmBtnProps.label ?? confirmLabel ?? "Ok"}
         </Button>
       </Dialog.Actions>
     </Dialog>
@@ -57,16 +49,10 @@ export const useAlertDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
-    open: async (props: Omit<ConfirmDialogProps, "onCancel" | "onConfirm" | "onClosed">): Promise<boolean> => {
-      return await dialogApi.open<boolean>((dialogProps) => {
-        return (
-          <AlertDialog
-            {...props}
-            {...dialogProps}
-            onConfirm={() => dialogProps.onClose(true)}
-          />
-        )
-      }).result() ?? false
+    open: async (props: Omit<AlertDialogProps, keyof DialogProps>): Promise<void> => {
+      await dialogApi
+        .open((dialogProps) => <AlertDialog {...props} {...dialogProps} />)
+        .result()
     },
   }
 }

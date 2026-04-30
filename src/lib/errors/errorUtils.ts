@@ -1,12 +1,17 @@
+import { z } from "zod"
+
 export interface ErrorLike {
   message: string
   stack?: string
 }
 
+export const ErrorLikeSchema = z.object({
+  message: z.string(),
+  stack: z.string().optional(),
+}) satisfies z.ZodType<ErrorLike>
+
 export const isErrorLike = (obj: unknown): obj is ErrorLike => {
-  return typeof obj === "object"
-    && obj !== null
-    && "message" in obj
+  return ErrorLikeSchema.safeParse(obj).success
 }
 
 export const stringifyError = (error: unknown) => {

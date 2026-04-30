@@ -75,9 +75,9 @@ static analysis.
 - **`list`** — Inspect project structure
   - Key flags: `--files`, `--entry-points`, `--plugins`, `--boundaries`
 - **`health`** — Function complexity analysis (also covers Angular templates as synthetic `<template>` findings:
-  external `.html` files via `templateUrl` AND inline `@Component({ template: \`...\` })
-  ` literals; suppress external with `<!-- fallow-ignore-file complexity -->` at the top of the `.html
-  ` file, suppress inline with `// fallow-ignore-next-line complexity` directly above the `@Component` decorator)
+  external `.html` files via `templateUrl` AND inline `@Component({ template: '...' })`
+  literals; suppress external with `<!-- fallow-ignore-file complexity -->` at the top of the `.html` file, suppress
+  inline with `// fallow-ignore-next-line complexity` directly above the `@Component` decorator)
   - Key flags: `--complexity`, `--max-cyclomatic`, `--max-cognitive`, `--max-crap`, `--top`, `--sort`, `--file-scores`,
     `--hotspots`, `--ownership`, `--ownership-emails`, `--targets`, `--effort`, `--score`, `--min-score`, `--since`,
     `--min-commits`, `--save-snapshot`, `--trend`, `--coverage-gaps`, `--coverage`, `--coverage-root`,
@@ -134,9 +134,9 @@ fallow dead-code --format json --quiet
 ```
 
 Parse the JSON output. It contains arrays for each issue type (`unused_files`, `unused_exports`, `unused_types`,
-`unused_dependencies`, etc.) plus `total_issues` and `elapsed_ms` metadata. Each issue object includes an `actions`array
-with structured fix suggestions (action type, `auto_fixable` flag, description, and optional suppression comment). For
-dependency findings, a non-empty `used_in_workspaces` array means the package is imported elsewhere in the monorepo;
+`unused_dependencies`, etc.) plus `total_issues` and `elapsed_ms` metadata. Each issue object includes an `actions`
+array with structured fix suggestions (action type, `auto_fixable` flag, description, and optional suppression comment).
+For dependency findings, a non-empty `used_in_workspaces` array means the package is imported elsewhere in the monorepo;
 treat it as a workspace placement issue and do not auto-remove it.
 
 ### Find only unused exports (smaller output)
