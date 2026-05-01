@@ -6,11 +6,12 @@ import { Artemis } from "#/character/fixtures/artemis.ts"
 import { Hexen } from "#/character/fixtures/hexen.ts"
 import CharacterRosterList from "#/components/character/characterRosterList.tsx"
 import { ImportCharacterButton } from "#/components/character/exportImport/importCharacterButton.tsx"
+import { env } from "#/env.ts"
 import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 
 export const Route = createFileRoute("/")({
   loader: () => {
-    const fixtures = import.meta.env.DEV ? [Artemis, Hexen] : []
+    const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? [Artemis, Hexen] : []
     return localCharacterManager.ensureCharacters(fixtures)
   },
   component: IndexRoute,
