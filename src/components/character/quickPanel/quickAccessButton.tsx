@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import { RiCloseLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { NuyenSection } from "#/components/character/finances/nuyen/nuyenSection.tsx"
 
@@ -17,12 +17,40 @@ import { QuickEdgeSection } from "./quickEdgeSection.tsx"
 
 export const QuickAccessButton: FC = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const historyEntryPushed = useRef(false)
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (historyEntryPushed.current) {
+        historyEntryPushed.current = false
+        setIsOpen(false)
+      }
+    }
+
+    window.addEventListener("popstate", handlePopState)
+    return () => window.removeEventListener("popstate", handlePopState)
+  }, [])
+
+  const openPanel = () => {
+    if (historyEntryPushed.current) return
+    window.history.pushState({ quickAccessPanel: true }, "")
+    historyEntryPushed.current = true
+    setIsOpen(true)
+  }
+
+  const closePanel = () => {
+    setIsOpen(false)
+    if (historyEntryPushed.current) {
+      historyEntryPushed.current = false
+      window.history.replaceState(null, "")
+    }
+  }
 
   return (
     <>
       <Button
         startIcon={<RiFlashlightLine size={18} />}
-        onClick={() => setIsOpen(true)}
+        onClick={openPanel}
       >
         Quick Access
       </Button>
@@ -30,12 +58,12 @@ export const QuickAccessButton: FC = () => {
       <Drawer
         anchor="bottom"
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={closePanel}
         slotProps={{ paper: { sx: { height: "100vh" } } }}
       >
         <Toolbar sx={{ justifyContent: "space-between", paddingX: 1, backgroundColor: "primary.main" }}>
           <Typography variant="h2">Quick Access</Typography>
-          <IconButton onClick={() => setIsOpen(false)} aria-label="Close quick access">
+          <IconButton onClick={closePanel} aria-label="Close quick access">
             <RiCloseLine />
           </IconButton>
         </Toolbar>
