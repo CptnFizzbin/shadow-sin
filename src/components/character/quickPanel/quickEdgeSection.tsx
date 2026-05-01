@@ -87,20 +87,22 @@ export const QuickEdgeSection: FC = () => {
           </span>
         </Tooltip>
 
-        <ButtonGroup fullWidth>
+        <ButtonGroup sx={{ flex: 1 }}>
           <Button
             color="warning"
             disabled={current <= 0}
-            onClick={() => edgeStore.setCurrent(current - 1)}
+            onClick={() => edgeStore.setCurrent((c) => c - 1)}
             startIcon={<RiSubtractLine />}
+            fullWidth
           >
             Spend 1
           </Button>
           <Button
             color="warning"
             disabled={current >= max}
-            onClick={() => edgeStore.setCurrent(current + 1)}
+            onClick={() => edgeStore.setCurrent((c) => c + 1)}
             endIcon={<RiAddLine />}
+            fullWidth
           >
             Regain 1
           </Button>
