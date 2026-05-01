@@ -39,7 +39,9 @@ export default defineConfig([
     settings: {
       "import-x/resolver-next": [createTypeScriptImportResolver()],
       "react": {
-        version: "detect",
+        // "detect" uses context.getFilename() which was removed in ESLint 10.
+        // Update this when eslint-plugin-react adds ESLint 10 support.
+        version: "19.0",
       },
     },
     rules: {
