@@ -41,13 +41,8 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
     && Object.values(SkillKey).includes(effect.target as SkillKey)
     && isCustomSpec(effect.target as SkillKey, effect.subTarget)
 
-  const [customModeActive, setCustomModeActive] = React.useState<boolean>(() => shouldUseCustomMode)
-
-  React.useEffect(() => {
-    if (shouldUseCustomMode) {
-      setCustomModeActive(true)
-    }
-  }, [shouldUseCustomMode])
+  const [userSelectedCustom, setUserSelectedCustom] = React.useState(false)
+  const customModeActive = shouldUseCustomMode || userSelectedCustom
 
   const selectedSkillName = effect.target as SkillKey
   const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName] : undefined
@@ -85,7 +80,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
             onChange={(e) => {
               const newType = e.target.value
               onChange({ ...effect, type: newType, target: getDefaultTarget(newType), subTarget: undefined })
-              setCustomModeActive(false)
+              setUserSelectedCustom(false)
             }}
           >
             {GameEffectTypeOptions.map((option) => (
@@ -127,7 +122,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                 label="Target"
                 onChange={(e) => {
                   onChange({ ...effect, target: e.target.value, subTarget: undefined })
-                  setCustomModeActive(false)
+                  setUserSelectedCustom(false)
                 }}
               >
                 {targetOptions.map((option) => (
@@ -150,10 +145,10 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                     onChange={(e) => {
                       const value = e.target.value as string
                       if (value === CUSTOM_SENTINEL) {
-                        setCustomModeActive(true)
+                        setUserSelectedCustom(true)
                         onChange({ ...effect, subTarget: "" })
                       } else {
-                        setCustomModeActive(false)
+                        setUserSelectedCustom(false)
                         onChange({ ...effect, subTarget: value })
                       }
                     }}

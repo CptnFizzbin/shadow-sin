@@ -75,6 +75,7 @@ export default defineConfig([
         "@typescript-eslint/consistent-type-imports": "error",
         "@typescript-eslint/no-unused-vars": ["error", {
           ignoreRestSiblings: true,
+          argsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           varsIgnorePattern: "^_",
