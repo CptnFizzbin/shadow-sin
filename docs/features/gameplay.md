@@ -122,11 +122,11 @@ The defense page has a working damage track, but several gameplay interactions a
 
 ---
 
-## 3. Offense — Attack Dice Pools
+## 3. Offense — Attack Dice Pools ⚠️ partially implemented
 
-The offense route (`/$characterId/offense`) is a near-empty stub.
+The offense route (`/$characterId/offense`) renders `InitiativeSection` and `EquippedWeaponsSection`.
 
-- [ ] List all equipped/carried weapons from `CharacterSheet.gear`
+- [x] List all equipped/carried weapons from `CharacterSheet.gear` ✅ (filtered by `equipped === true`; empty-state message when none equipped)
 - [ ] Show attack dice pool per weapon (`linked-skill + Agility + modifiers`)
   - Firearms: Agility + relevant Firearms skill (Automatics, Heavy Weapons, Pistols, Rifles, Shotguns)
   - Melee: Agility + relevant Close Combat skill (Blades, Clubs, Unarmed Combat)
@@ -140,29 +140,34 @@ The offense route (`/$characterId/offense`) is a near-empty stub.
 
 ---
 
-## 4. Initiative Tracking
+## 4. Initiative Tracking ⚠️ partially implemented — PR #178
 
-Initiative is central to every combat turn and is currently not implemented anywhere.
+Formula: `dicePool = Reaction + Intuition + initiativeBonus + extraInitiativeDice`. Score = pool + hits from roll.
 
-- [ ] **Roll Initiative** button — calculates `Reaction + Intuition + 1d6` (physical), `Reaction + Intuition + 2d6`
-  (wired rigging), or `Resonance + Intuition + 1d6` (matrix hot sim) depending on mode
-- [ ] Display current initiative score prominently on the defense or a dedicated combat page
-- [ ] **Initiative pass tracker** — decrement score by 10 after each pass; show how many passes remain in the turn
+- [x] Display current initiative dice pool on the offense page ✅ PR #163
+- [x] **Initiative pass tracker** — IP dots; "End Round" resets all pass state ✅ PR #163
+- [x] Support **Wired Reflexes / gear / adept power / spell** extra initiative and extra passes (auto-detected from `useGameEffects`) ✅ PR #178
+- [x] **Sustained spell modifiers** — toggle a spell as sustained to apply its initiative effects (e.g. Increase Reflexes) ✅ PR #178
+- [x] Initiative state expanded with `rolledResults`, `goingFirst`, and `extraPasses` on `CharacterSheet.initiative` ✅ PR #178
+- [ ] **Roll Initiative** — open dice tray from InitiativeSection; hits added to pool for final score (planned — PR in progress)
+- [ ] **CombatHud** — combined initiative + wounds + active effects panel (planned)
+- [ ] **Seize the Initiative** (Edge spend) — 1 Edge → act first this round (planned)
+- [ ] **Gain IP** (Edge spend) — 1 Edge → +1 initiative pass (planned)
 - [ ] **Simple/Complex action tracker** — mark actions used in the current initiative pass
-- [ ] Support **Wired Reflexes / adept power** extra initiative dice and extra passes (auto-detected from gear/powers)
 - [ ] Adrenaline / drug modifier input (add bonus dice or flat bonus to the roll)
+- [ ] Wired Reflexes / Hot-sim / matrix initiative mode switching (`Reaction + Intuition + 2d6` etc.)
 
 ---
 
-## 5. Edge Management
+## 5. Edge Management ⚠️ partially implemented
 
 Edge is a metacurrency spent during play to gain mechanical advantages; it needs to be tracked session-to-session.
 
-- [ ] Display current Edge on the about / defense page (`CharacterSheet.edge.current`)
-- [ ] **Spend Edge** button — decrement `CharacterSheet.edge.current` by 1 with a floor of 0
-- [ ] **Recover Edge** button — increment `CharacterSheet.edge.current` by 1 up to the character's Edge attribute rating (`CharacterSheet.attributes.edge`)
-- [ ] Persist Edge changes immediately to storage so they survive a page refresh
-- [ ] Show a visual indicator when Edge is at max vs. depleted
+- [x] Display current Edge in the Quick Access panel (`CharacterSheet.edge.current`) ✅
+- [x] **Spend Edge** — decrement `edge.current` by 1 (floor 0) via toggle cells in Quick Access ✅
+- [x] **Recover Edge** — increment `edge.current` by 1 up to the Edge attribute rating via toggle cells in Quick Access ✅
+- [x] Persist Edge changes immediately to storage so they survive a page refresh ✅ (EdgeStore writes through to characterSheetProvider)
+- [ ] Show a visual indicator when Edge is at max vs. depleted (current UI shows count but no distinct max/depleted colour)
 
 ---
 
@@ -175,7 +180,8 @@ Players with awakened or technomancer characters need quick access to their magi
 - [ ] Per-spell **Cast** action — show the casting dice pool inline (`Magic + Spellcasting`)
 - [ ] **Drain** prompt after casting — show drain resistance pool and drain DV; log the result
 - [ ] Force selection slider before casting (1 to `Magic` rating); update drain DV dynamically
-- [ ] Sustained spell tracker — mark a spell as sustained; display a running list of sustained spells with drain DV
+- [x] Sustained spell toggle — mark a spell as sustained so its effects (e.g. initiative bonus) apply automatically ✅ PR #178
+- [ ] Sustained spell display — running list of active sustained spells with their drain DV
 
 ### 6b. Summoning & Binding ⚠️ partially implemented — PR #163
 
@@ -251,9 +257,9 @@ Characters must be portable so runners can share them, back them up, or restore 
 
 Small quality-of-life features that make the app genuinely useful at the table.
 
-- [ ] **Free dice roller** — input a pool size and roll; display individual dice, hits, and glitch/critical-glitch status
-  - Extended test mode: track accumulated hits across rolls with a threshold input
-  - Opposed test mode: roll two pools and compare hits automatically
+- [x] **Free dice roller** — `DiceTrayDialog` accessible via the dice icon button in the sticky bottom bar; shows animated dice faces, hit count, and glitch / critical-glitch labels; Push Edge (exploding 6s) and 2nd Chance (re-roll non-hits) available ✅
+  - [ ] Extended test mode: track accumulated hits across rolls with a threshold input
+  - [ ] Opposed test mode: roll two pools and compare hits automatically
 - [ ] **Threshold / limit display** — show the effective limit for a given roll (Physical, Mental, Social, Matrix) derived
   from the character's attributes
 - [ ] **Wound modifier badge** — persistent display of the current `−X` wound modifier on every page header so it's
