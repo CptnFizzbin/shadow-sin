@@ -1,7 +1,11 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
+import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
+import { RiFireLine, RiLoopLeftLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
@@ -74,15 +78,37 @@ export const QuickEdgeSection: FC = () => {
         ))}
       </Box>
 
-      <Button
-        variant="outlined"
-        color="error"
-        disabled={max <= 1}
-        onClick={onBurnClick}
-        fullWidth
-      >
-        Burn
-      </Button>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+        <Tooltip title="Burn Edge (permanently reduces max)">
+          <span>
+            <IconButton color="error" disabled={max <= 1} onClick={onBurnClick} aria-label="Burn edge">
+              <RiFireLine />
+            </IconButton>
+          </span>
+        </Tooltip>
+
+        <ButtonGroup fullWidth>
+          <Button color="warning" disabled={current <= 0} onClick={() => edgeStore.setCurrent(current - 1)}>
+            − Spend 1
+          </Button>
+          <Button color="warning" disabled={current >= max} onClick={() => edgeStore.setCurrent(current + 1)}>
+            Regain 1 +
+          </Button>
+        </ButtonGroup>
+
+        <Tooltip title="Restore edge to maximum">
+          <span>
+            <IconButton
+              color="warning"
+              disabled={current >= max}
+              onClick={() => edgeStore.restore()}
+              aria-label="Restore edge to maximum"
+            >
+              <RiLoopLeftLine />
+            </IconButton>
+          </span>
+        </Tooltip>
+      </Stack>
     </Stack>
   )
 }
