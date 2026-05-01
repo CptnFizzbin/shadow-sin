@@ -32,6 +32,7 @@ export const QuickAccessButton: FC = () => {
   }, [])
 
   const openPanel = () => {
+    if (historyEntryPushed.current) return
     window.history.pushState({ quickAccessPanel: true }, "")
     historyEntryPushed.current = true
     setIsOpen(true)
@@ -41,7 +42,7 @@ export const QuickAccessButton: FC = () => {
     setIsOpen(false)
     if (historyEntryPushed.current) {
       historyEntryPushed.current = false
-      window.history.back()
+      window.history.replaceState(null, "")
     }
   }
 
