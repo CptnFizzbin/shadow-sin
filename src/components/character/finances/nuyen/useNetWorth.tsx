@@ -6,7 +6,7 @@ import type { ItemData } from "#/system/itemData.ts"
 export function useNetWorth(): number {
   const currentNuyen = useCharacterSheet((s) => s.nuyen.current)
   const loans = useCharacterSheet((s) => s.nuyen.loans)
-  const allGear = useGearFilter((_item): _item is ItemData => true)
+  const allGear = useGearFilter((_): _ is ItemData => true)
 
   const credstickTotal = allGear
     .filter(isCredstickData)
