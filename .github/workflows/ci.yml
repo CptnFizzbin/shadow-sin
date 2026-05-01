@@ -64,6 +64,11 @@ jobs:
     steps:
       - uses: ./.github/actions/setup-workspace
 
+      - name: Build (with fixture seeding for e2e)
+        run: yarn build
+        env:
+          VITE_SEED_FIXTURES: true
+
       - name: Install Playwright browsers
         run: yarn playwright install --with-deps chromium
 

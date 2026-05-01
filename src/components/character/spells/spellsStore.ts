@@ -1,3 +1,5 @@
+import { produce } from "immer"
+
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -20,6 +22,13 @@ export class SpellsStore extends StoreSlice<SpellsStoreState> {
 
   remove(spellId: string): void {
     this.set((prev) => prev.filter((s) => s.id !== spellId))
+  }
+
+  toggleSustained(spell: SpellData): void {
+    this.set(produce((prev) => {
+      const target = prev.find((s) => s.id === spell.id)
+      if (target) target.sustained = !target.sustained
+    }))
   }
 
   save(spell: SpellData): void {

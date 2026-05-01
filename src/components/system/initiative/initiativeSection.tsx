@@ -29,7 +29,7 @@ export const InitiativeSection: FC = () => {
       </Grid>
 
       <Grid size={1}>
-        <InitiativeScoreDisplay score={initiative.initiativeScore} />
+        <InitiativeScoreDisplay score={initiative.dicePool} />
       </Grid>
 
       <Grid size={1}>
