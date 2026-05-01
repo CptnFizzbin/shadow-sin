@@ -167,14 +167,14 @@ jobs:
 
       - name: Download base branch coverage artifact
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v7
         with:
           name: ${{ steps.base-coverage.outputs.artifact-name }}
           path: coverage-base/
 
       - name: Download base branch coverage artifact
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v7
         with:
           name: ${{ needs.unit-tests.outputs.artifact-name }}
           path: coverage/
