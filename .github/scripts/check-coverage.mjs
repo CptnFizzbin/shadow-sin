@@ -2,7 +2,7 @@
 /**
  * Compares two vitest coverage-summary.json files and fails if any tracked
  * metric (lines, branches, functions, statements) has dropped by more than
- * MAX_DROP percentage points.
+ * MAX_DROP_PERCENTAGE_POINTS
  *
  * Usage:
  *   node check-coverage.mjs <base-summary.json> <pr-summary.json>
