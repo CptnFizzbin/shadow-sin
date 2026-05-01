@@ -1,0 +1,21 @@
+name: setup-workspace
+author: swilson2
+description: Set up the workspace for the project, including checking out the repository, setting up Node.js, enabling Corepack, and installing dependencies.
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: 25
+
+    - name: Enable Corepack
+      shell: bash
+      run: corepack enable
+
+    - name: Install dependencies
+      shell: bash
+      run: yarn install --immutable

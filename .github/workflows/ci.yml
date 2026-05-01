@@ -13,19 +13,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - uses: ./.github/actions/setup-workspace
 
       - name: Build
         run: yarn build
@@ -37,24 +25,12 @@ jobs:
           path: dist/
 
   lint:
-    name: Lint and Build
+    name: Lint
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - uses: ./.github/actions/setup-workspace
 
       - name: Run lint and format check
         run: yarn lint
@@ -65,52 +41,28 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build
-        run: yarn build
+      - uses: ./.github/actions/setup-workspace
 
       - name: Run unit tests
-        run: yarn test
+        run: yarn test:coverage
+
+      - id: upload-report
+        name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.sha }}
+          path: coverage/coverage-summary.json
+          retention-days: 90
 
   e2e-tests:
-    name: End-to-End Tests
+    name: E2E Tests
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - uses: ./.github/actions/setup-workspace
 
       - name: Install Playwright browsers
         run: yarn playwright install --with-deps chromium
@@ -118,9 +70,10 @@ jobs:
       - name: Run end-to-end tests
         run: yarn test:e2e
 
-      - name: Upload Playwright report
+      - id: upload-report
+        name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/
@@ -132,37 +85,14 @@ jobs:
     permissions:
       contents: read
       actions: read
+    needs:
+      - unit-tests
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-workspace
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build
-        run: yarn build
-
-      - name: Run tests with coverage
-        run: yarn test:coverage
-
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-${{ github.sha }}
-          path: coverage/coverage-summary.json
-          retention-days: 90
-
-      - name: Find base branch coverage artifact
+      - id: base-coverage
+        name: Find base branch coverage artifact
         if: github.event_name == 'pull_request'
-        id: base-coverage
         uses: actions/github-script@v7
         with:
           script: |
@@ -202,10 +132,17 @@ jobs:
 
       - name: Download base branch coverage artifact
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
-          artifact-id: ${{ steps.base-coverage.outputs.artifact-id }}
+          name: ${{ steps.base-coverage.outputs.artifact-id }}
           path: coverage-base/
+
+      - name: Download base branch coverage artifact
+        if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.unit-tests.upload-report.outputs.artifact-id }}
+          path: coverage/
 
       - name: Compare coverage against base branch
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
