@@ -170,13 +170,15 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: ${{ steps.base-coverage.outputs.artifact-name }}
+          run-id: ${{ steps.base-coverage.outputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           path: coverage-base/
 
-      - name: Download base branch coverage artifact
+      - name: Download current coverage artifact
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
         uses: actions/download-artifact@v7
         with:
-          name: ${{ needs.unit-tests.outputs.artifact-name }}
+          artifact-ids: ${{ needs.unit-tests.outputs.artifact-id }}
           path: coverage/
 
       - name: Compare coverage against base branch
