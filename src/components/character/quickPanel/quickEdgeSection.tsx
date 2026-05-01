@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import { RiFireLine, RiLoopLeftLine } from "@remixicon/react"
+import { RiAddLine, RiFireLine, RiLoopLeftLine, RiSubtractLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
@@ -88,11 +88,21 @@ export const QuickEdgeSection: FC = () => {
         </Tooltip>
 
         <ButtonGroup fullWidth>
-          <Button color="warning" disabled={current <= 0} onClick={() => edgeStore.setCurrent(current - 1)}>
-            − Spend 1
+          <Button
+            color="warning"
+            disabled={current <= 0}
+            onClick={() => edgeStore.setCurrent(current - 1)}
+            startIcon={<RiSubtractLine />}
+          >
+            Spend 1
           </Button>
-          <Button color="warning" disabled={current >= max} onClick={() => edgeStore.setCurrent(current + 1)}>
-            Regain 1 +
+          <Button
+            color="warning"
+            disabled={current >= max}
+            onClick={() => edgeStore.setCurrent(current + 1)}
+            endIcon={<RiAddLine />}
+          >
+            Regain 1
           </Button>
         </ButtonGroup>
 
