@@ -7,7 +7,6 @@ import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
-import * as React from "react"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -34,20 +33,12 @@ interface GameEffectRowProps {
 export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemove }) => {
   const targetOptions = getTargetOptions(effect.type)
 
-  const shouldUseCustomMode =
+  const customModeActive =
     effect.type === GameEffectType.skillSpecializationMod
     && !!effect.target
     && !!effect.subTarget
     && Object.values(SkillKey).includes(effect.target as SkillKey)
     && isCustomSpec(effect.target as SkillKey, effect.subTarget)
-
-  const [customModeActive, setCustomModeActive] = React.useState<boolean>(() => shouldUseCustomMode)
-
-  React.useEffect(() => {
-    if (shouldUseCustomMode) {
-      setCustomModeActive(true)
-    }
-  }, [shouldUseCustomMode])
 
   const selectedSkillName = effect.target as SkillKey
   const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName] : undefined
@@ -57,9 +48,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
     (s): s is { custom: true, placeholder: string } =>
       typeof s === "object"
       && s !== null
-      && "custom" in s
-      && s.custom === true
-      && "placeholder" in s
+      && "custom" in s && s.custom && "placeholder" in s
       && typeof s.placeholder === "string",
   )
   const hasFixed = fixedSpecs.length > 0
@@ -85,7 +74,6 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
             onChange={(e) => {
               const newType = e.target.value
               onChange({ ...effect, type: newType, target: getDefaultTarget(newType), subTarget: undefined })
-              setCustomModeActive(false)
             }}
           >
             {GameEffectTypeOptions.map((option) => (
@@ -127,7 +115,6 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                 label="Target"
                 onChange={(e) => {
                   onChange({ ...effect, target: e.target.value, subTarget: undefined })
-                  setCustomModeActive(false)
                 }}
               >
                 {targetOptions.map((option) => (
@@ -150,10 +137,8 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
                     onChange={(e) => {
                       const value = e.target.value as string
                       if (value === CUSTOM_SENTINEL) {
-                        setCustomModeActive(true)
                         onChange({ ...effect, subTarget: "" })
                       } else {
-                        setCustomModeActive(false)
                         onChange({ ...effect, subTarget: value })
                       }
                     }}
