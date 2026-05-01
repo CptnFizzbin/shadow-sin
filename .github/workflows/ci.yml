@@ -75,6 +75,7 @@ jobs:
     permissions:
       contents: read
     outputs:
+      artifact-name: ${{ steps.upload-report.outputs.artifact-name }}
       artifact-id: ${{ steps.upload-report.outputs.artifact-id }}
     steps:
       - name: Checkout repository
@@ -121,8 +122,8 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v9
         with:
+          # language=js
           script: |
-            const baseSha = context.payload.pull_request.base.sha;
             const baseRef = context.payload.pull_request.base.ref;
 
             // Search recent successful coverage runs on the base branch
@@ -146,10 +147,17 @@ jobs:
               );
 
               if (coverageArtifact) {
-                core.setOutput('run-id', coverageArtifact.workflow_run.id);
-                core.setOutput('artifact-id', coverageArtifact.id);
+                const runId = coverageArtifact.workflow_run.id;
+                core.setOutput('run-id', runId);
+
+                const artifactId = coverageArtifact.id
+                core.setOutput('artifact-id', artifactId);
+
+                const artifactName = coverageArtifact.name;
+                core.setOutput('artifact-name', artifactName);
+
                 core.setOutput('found', 'true');
-                console.log(`Found base coverage artifact: ${coverageArtifact.name} (id=${coverageArtifact.id})`);
+                console.log(`Found base coverage artifact: ${artifactName} (runId=${runId} id=${artifactId})`);
                 return;
               }
             }
@@ -161,15 +169,14 @@ jobs:
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
         uses: actions/download-artifact@v8
         with:
-          run-id: ${{ steps.base-coverage.outputs.run-id }}
-          artifact-ids: ${{ steps.base-coverage.outputs.artifact-id }}
+          name: ${{ steps.base-coverage.outputs.artifact-name }}
           path: coverage-base/
 
       - name: Download base branch coverage artifact
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
         uses: actions/download-artifact@v8
         with:
-          artifact-ids: ${{ needs.unit-tests.outputs.artifact-id }}
+          name: ${{ needs.unit-tests.outputs.artifact-name }}
           path: coverage/
 
       - name: Compare coverage against base branch
