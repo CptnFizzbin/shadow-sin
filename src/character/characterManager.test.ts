@@ -1,31 +1,29 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { makeTestCharacterManager } from "#testUtils/storage/makeTestCharacterManager.ts"
-import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
-
-import type { CharacterManager } from "./characterManager.ts"
 
 describe("CharacterManager.listCharactersWithErrors", () => {
-  let manager: CharacterManager
-
-  beforeEach(() => {
-    ;({ manager } = makeTestCharacterManager())
-  })
-
   it("returns an empty result when storage is empty", async () => {
+    // Arrange
+    const { manager } = makeTestCharacterManager()
+
+    // Act
     const result = await manager.listCharactersWithErrors()
+
+    // Assert
     expect(result.characters).toEqual({})
     expect(result.errors).toEqual([])
   })
 
   it("surfaces an error entry for a character with a missing version", async () => {
     // Arrange
-    const { manager: localManager, provider } = makeTestCharacterManager()
+    const { manager, provider } = makeTestCharacterManager()
     await provider.saveJsonFile("characters/bad-id.json", {})
 
     // Act
-    const result = await localManager.listCharactersWithErrors()
+    const result = await manager.listCharactersWithErrors()
 
     // Assert
     expect(result.errors).toHaveLength(1)
@@ -36,11 +34,11 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 
   it("surfaces an error entry for a character with an invalid version string", async () => {
     // Arrange
-    const { manager: localManager, provider } = makeTestCharacterManager()
+    const { manager, provider } = makeTestCharacterManager()
     await provider.saveJsonFile("characters/bad-version.json", { version: "foobar" })
 
     // Act
-    const result = await localManager.listCharactersWithErrors()
+    const result = await manager.listCharactersWithErrors()
 
     // Assert
     expect(result.errors).toHaveLength(1)
@@ -49,11 +47,11 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 
   it("does not crash listCharacters when one character is invalid", async () => {
     // Arrange
-    const { manager: localManager, provider } = makeTestCharacterManager()
+    const { manager, provider } = makeTestCharacterManager()
     await provider.saveJsonFile("characters/bad.json", {})
 
     // Act
-    const characters = await localManager.listCharacters()
+    const characters = await manager.listCharacters()
 
     // Assert
     expect(characters).toEqual({})
@@ -61,14 +59,9 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 })
 
 describe("CharacterManager.forceSave", () => {
-  let manager: CharacterManager
-
-  beforeEach(() => {
-    ;({ manager } = makeTestCharacterManager())
-  })
-
   it("persists the character so getCharacter returns it immediately after forceSave resolves", async () => {
     // Arrange
+    const { manager } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act
@@ -82,6 +75,7 @@ describe("CharacterManager.forceSave", () => {
 
   it("returns the in-memory character by reference so storage is not re-read", async () => {
     // Arrange
+    const { manager } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act
@@ -94,14 +88,9 @@ describe("CharacterManager.forceSave", () => {
 })
 
 describe("CharacterManager.save", () => {
-  let manager: CharacterManager
-
-  beforeEach(() => {
-    ;({ manager } = makeTestCharacterManager())
-  })
-
   it("makes the character available via getCharacter before the debounce fires", async () => {
     // Arrange
+    const { manager } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act — do not await; the debounce timer has not fired yet
@@ -114,24 +103,22 @@ describe("CharacterManager.save", () => {
 
   it("debounces rapid saves so only the last value is persisted to storage", async () => {
     // Arrange
-    const sharedStorage = new MemoryStorage()
-    const { manager: writingManager } = makeTestCharacterManager(sharedStorage)
+    const { manager, provider } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
     const first = { ...character, profile: { ...character.profile, alias: "first" } }
     const second = { ...character, profile: { ...character.profile, alias: "second" } }
     const third = { ...character, profile: { ...character.profile, alias: "third" } }
 
     // Act: fire three saves synchronously before any timer fires
-    const saves = Promise.all([
-      writingManager.save(first),
-      writingManager.save(second),
-      writingManager.save(third),
+    await Promise.all([
+      manager.save(first),
+      manager.save(second),
+      manager.save(third),
     ])
-    await saves
 
-    // Assert — only the last alias reaches storage; bypass the cache with a fresh manager
-    const { manager: freshManager } = makeTestCharacterManager(sharedStorage)
-    const loaded = await freshManager.getCharacter(character.id)
-    expect(loaded?.profile.alias).toBe("third")
+    // Assert — only the last alias reaches storage; read directly from the provider
+    // (bypasses the manager's in-memory cache) to confirm what was persisted
+    const stored = await provider.loadJsonFile<CharacterSheet>(`characters/${character.id}.json`)
+    expect(stored?.value.profile.alias).toBe("third")
   })
 })

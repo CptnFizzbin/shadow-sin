@@ -11,19 +11,16 @@ export interface TestCharacterManagerResult {
 }
 
 /**
- * Creates a CharacterManager backed by in-memory storage, suitable for unit tests.
- * Returns the manager, provider (for writing raw fixture files), and the underlying
- * MemoryStorage instance (for sharing between multiple managers in debounce tests).
- *
- * Pass an existing `storage` to have two managers share the same underlying store.
+ * Creates an isolated CharacterManager backed by fresh in-memory storage.
+ * Returns the manager, the provider (for seeding raw fixture files via
+ * `saveJsonFile`), and the underlying MemoryStorage (for direct inspection
+ * of what was persisted, bypassing the manager's in-memory cache).
  */
-export function makeTestCharacterManager(
-  storage: MemoryStorage = new MemoryStorage(),
-): TestCharacterManagerResult {
+export function makeTestCharacterManager(): TestCharacterManagerResult {
+  const storage = new MemoryStorage()
   const provider = new LocalStorageProvider({ storagePrefix: "test" })
-  // LocalStorageProvider.getStorage is private; Object.defineProperty overrides it
-  // without a type cast so the compile-time signature remains intact.
-  Object.defineProperty(provider, "getStorage", { value: () => storage, writable: true, configurable: true })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(provider as any).getStorage = () => storage
   const manager = new CharacterManager(new StorageManager(provider), { saveDebounceWait: 0 })
   return { manager, provider, storage }
 }
