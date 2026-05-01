@@ -1,42 +1,23 @@
 import { renderHook } from "@testing-library/react"
-import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { makeCharacterSheet, makeCharacterSheetWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useWoundModifier } from "./useWoundModifier.ts"
-
-function makeWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
-  const store = new CharacterSheetStore(characterSheet)
-  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
-  )
-  Wrapper.displayName = "TestWrapper"
-  return Wrapper
-}
-
-function makeSheet(overrides?: (sheet: CharacterSheet) => void): CharacterSheet {
-  const sheet = createDefaultCharacterSheet()
-  overrides?.(sheet)
-  return sheet
-}
 
 describe("useWoundModifier", () => {
   it("returns 0 when there is no damage", () => {
     // Arrange
-    const sheet = makeSheet()
+    const sheet = makeCharacterSheet()
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -45,14 +26,14 @@ describe("useWoundModifier", () => {
 
   it("computes the default wound modifier at every 3 boxes", () => {
     // Arrange — 3 physical + 3 stun → floor(3/3) + floor(3/3) = 2
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 3
       s.damage.stun = 3
     })
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -61,7 +42,7 @@ describe("useWoundModifier", () => {
 
   it("applies 2 boxes per wound step with Low Pain Tolerance (-1) on physical", () => {
     // Arrange — 4 physical damage, interval 2 → floor(4/2) = 2 wound steps
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 4
       s.qualities = [
         {
@@ -77,7 +58,7 @@ describe("useWoundModifier", () => {
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -86,7 +67,7 @@ describe("useWoundModifier", () => {
 
   it("applies 4 boxes per wound step with High Pain Tolerance (+1) on stun", () => {
     // Arrange — 4 stun damage, interval 4 → floor(4/4) = 1 wound step
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.stun = 4
       s.qualities = [
         {
@@ -102,7 +83,7 @@ describe("useWoundModifier", () => {
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -111,7 +92,7 @@ describe("useWoundModifier", () => {
 
   it("applies an 'all' target pain tolerance effect to both physical and stun tracks", () => {
     // Arrange — 4 physical + 4 stun, interval 4 → floor(4/4) + floor(4/4) = 2
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 4
       s.damage.stun = 4
       s.qualities = [
@@ -128,7 +109,7 @@ describe("useWoundModifier", () => {
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -145,14 +126,14 @@ describe("useWoundModifier", () => {
         { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 6
       s.gear = createItemMap([painBlocker])
     })
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -169,14 +150,14 @@ describe("useWoundModifier", () => {
         { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 6
       s.gear = createItemMap([painBlocker])
     })
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert
@@ -192,7 +173,7 @@ describe("useWoundModifier", () => {
         { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 5
       s.qualities = [
         {
@@ -209,7 +190,7 @@ describe("useWoundModifier", () => {
 
     // Act
     const { result } = renderHook(() => useWoundModifier(), {
-      wrapper: makeWrapper(sheet),
+      wrapper: makeCharacterSheetWrapper(sheet),
     })
 
     // Assert

@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
+import type { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -13,30 +12,16 @@ import {
   TEST_OLD_FORMAT_LICENSE_ID,
   TEST_OLD_FORMAT_SIN_ID,
 } from "#testUtils/fixtures/characters/characterSheets.ts"
-import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
+import { makeTestCharacterManager } from "#testUtils/storage/makeTestCharacterManager.ts"
 
-import { CharacterManager } from "./characterManager.ts"
-
-function makeManager(): {
-  manager: CharacterManager
-  provider: LocalStorageProvider
-} {
-  const memStorage = new MemoryStorage()
-  const provider = new LocalStorageProvider({ storagePrefix: "test" })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ; (provider as any).getStorage = () => memStorage
-
-  return { manager: new CharacterManager(new StorageManager(provider)), provider }
-}
+import type { CharacterManager } from "./characterManager.ts"
 
 describe("character migrations + yaml round-trip", () => {
   let manager: CharacterManager
   let provider: LocalStorageProvider
 
   beforeEach(async () => {
-    const result = makeManager()
-    manager = result.manager
-    provider = result.provider
+    ;({ manager, provider } = makeTestCharacterManager())
     await provider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
       characterV1,
@@ -65,7 +50,7 @@ describe("character migrations + yaml round-trip", () => {
   it("does not re-run migrations already in appliedMigrations", async () => {
     // Arrange — characterPost20260418 has 20250801–20260418 applied and a
     // loan with a known stable ID; only 20260419 should run
-    const { manager: freshManager, provider: freshProvider } = makeManager()
+    const { manager: freshManager, provider: freshProvider } = makeTestCharacterManager()
     await freshProvider.saveJsonFile(
       `characters/${TEST_CHARACTER_ID}.json`,
       characterV1,
@@ -103,7 +88,7 @@ describe("character migrations + yaml round-trip", () => {
     const restored = yamlToCharacterSheet(yaml)
 
     // Save the restored (already-migrated) character into fresh storage
-    const { manager: freshManager, provider: freshProvider } = makeManager()
+    const { manager: freshManager, provider: freshProvider } = makeTestCharacterManager()
     await freshProvider.saveJsonFile(`characters/${restored.id}.json`, restored)
 
     // Act — loading should not re-run any migrations
@@ -116,7 +101,7 @@ describe("character migrations + yaml round-trip", () => {
 
   it("normalises an old-format character into the current CharacterSheet shape", async () => {
     // Arrange — save the old-format character into fresh storage
-    const { manager: freshManager, provider: freshProvider } = makeManager()
+    const { manager: freshManager, provider: freshProvider } = makeTestCharacterManager()
     await freshProvider.saveJsonFile(
       `characters/${TEST_OLD_FORMAT_CHARACTER_ID}.json`,
       characterV0,

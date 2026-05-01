@@ -27,6 +27,20 @@ function renderCounter(initial?: number | null, min?: number, max?: number) {
   return container.querySelector("input")! as HTMLInputElement
 }
 
+/**
+ * Renders a CounterField with a spy onChange and returns the input element,
+ * the spy, and the container for tests that also need to query buttons.
+ */
+function renderSpiedCounter(value: number | null, min: number, max: number) {
+  const onChange = vi.fn()
+  const { container } = render(
+    <CounterField value={value} min={min} max={max} onChange={onChange} />,
+    { wrapper: ThemeWrapper },
+  )
+  const input = container.querySelector("input")! as HTMLInputElement
+  return { input, onChange, container }
+}
+
 function focus(input: HTMLInputElement) {
   fireEvent.focus(input)
 }
@@ -107,12 +121,7 @@ describe("Counter", () => {
   describe("onChange timing", () => {
     it("calls onChange immediately when a valid number is typed", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 10)
 
       // Act
       focus(input)
@@ -124,12 +133,7 @@ describe("Counter", () => {
 
     it("does not call onChange while the draft is an incomplete value like '-'", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 10)
 
       // Act
       focus(input)
@@ -141,12 +145,7 @@ describe("Counter", () => {
 
     it("does not call onChange while the field is empty mid-edit", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={5} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(5, 0, 10)
 
       // Act — clear without blurring
       focus(input)
@@ -158,12 +157,7 @@ describe("Counter", () => {
 
     it("clamps immediately when the typed value exceeds max", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={6} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 6)
 
       // Act
       focus(input)
@@ -189,12 +183,7 @@ describe("Counter", () => {
 
     it("allows retyping after clearing without committing null to the parent", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={5} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(5, 0, 10)
 
       // Act — clear (invalid draft, no onChange), then retype a valid digit
       focus(input)
@@ -213,12 +202,7 @@ describe("Counter", () => {
   describe("blur commits and clamps", () => {
     it("commits the typed value to the parent on blur", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 10)
 
       // Act
       focus(input)
@@ -231,12 +215,7 @@ describe("Counter", () => {
 
     it("clamps to min when the typed value is below min", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={2} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 2, 10)
 
       // Act
       focus(input)
@@ -249,12 +228,7 @@ describe("Counter", () => {
 
     it("clamps to max when the typed value is above max", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={6} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 6)
 
       // Act
       focus(input)
@@ -267,12 +241,7 @@ describe("Counter", () => {
 
     it("calls onChange(null) when the field is empty on blur", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={5} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(5, 0, 10)
 
       // Act
       focus(input)
@@ -285,12 +254,7 @@ describe("Counter", () => {
 
     it("calls onChange(null) when the input contains only non-numeric chars like '-'", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={null} min={0} max={10} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
-      const input = container.querySelector("input")! as HTMLInputElement
+      const { input, onChange } = renderSpiedCounter(null, 0, 10)
 
       // Act
       focus(input)
@@ -318,11 +282,7 @@ describe("Counter", () => {
   describe("increment / decrement buttons", () => {
     it("increments the value when the + button is clicked", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={3} min={0} max={6} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
+      const { onChange, container } = renderSpiedCounter(3, 0, 6)
       const buttons = container.querySelectorAll("button")
       const incrementButton = buttons[buttons.length - 1]
 
@@ -335,11 +295,7 @@ describe("Counter", () => {
 
     it("decrements the value when the - button is clicked", () => {
       // Arrange
-      const onChange = vi.fn()
-      const { container } = render(
-        <CounterField value={3} min={0} max={6} onChange={onChange} />,
-        { wrapper: ThemeWrapper },
-      )
+      const { onChange, container } = renderSpiedCounter(3, 0, 6)
       const buttons = container.querySelectorAll("button")
       const decrementButton = buttons[0]
 
@@ -352,10 +308,7 @@ describe("Counter", () => {
 
     it("disables the - button when value equals min", () => {
       // Arrange
-      const { container } = render(
-        <CounterField value={0} min={0} max={6} onChange={vi.fn()} />,
-        { wrapper: ThemeWrapper },
-      )
+      const { container } = renderSpiedCounter(0, 0, 6)
       const decrementButton = container.querySelectorAll("button")[0]
 
       // Assert
@@ -364,10 +317,7 @@ describe("Counter", () => {
 
     it("disables the + button when value equals max", () => {
       // Arrange
-      const { container } = render(
-        <CounterField value={6} min={0} max={6} onChange={vi.fn()} />,
-        { wrapper: ThemeWrapper },
-      )
+      const { container } = renderSpiedCounter(6, 0, 6)
       const buttons = container.querySelectorAll("button")
       const incrementButton = buttons[buttons.length - 1]
 
