@@ -146,6 +146,7 @@ jobs:
               );
 
               if (coverageArtifact) {
+                core.setOutput('run-id', coverageArtifact.workflow_run.id);
                 core.setOutput('artifact-id', coverageArtifact.id);
                 core.setOutput('found', 'true');
                 console.log(`Found base coverage artifact: ${coverageArtifact.name} (id=${coverageArtifact.id})`);
@@ -160,6 +161,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.base-coverage.outputs.found == 'true'
         uses: actions/download-artifact@v8
         with:
+          run-id: ${{ steps.base-coverage.outputs.run-id }}
           artifact-ids: ${{ steps.base-coverage.outputs.artifact-id }}
           path: coverage-base/
 
