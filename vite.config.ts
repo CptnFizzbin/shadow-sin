@@ -74,6 +74,17 @@ const config = defineConfig({
     sequence: {
       concurrent: false,
     },
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json-summary"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/routeTree.gen.ts",
+        "src/**/*.test.{ts,tsx}",
+        "src/main.tsx",
+        "src/env.ts",
+      ],
+    },
   },
 })
 

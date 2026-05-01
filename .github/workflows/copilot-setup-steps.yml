@@ -10,15 +10,9 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "25"
+      - uses: ./.github/actions/setup-workspace
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
