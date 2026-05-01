@@ -21,8 +21,9 @@ export function makeTestCharacterManager(
   storage: MemoryStorage = new MemoryStorage(),
 ): TestCharacterManagerResult {
   const provider = new LocalStorageProvider({ storagePrefix: "test" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(provider as any).getStorage = () => storage
+  // LocalStorageProvider.getStorage is private; Object.defineProperty overrides it
+  // without a type cast so the compile-time signature remains intact.
+  Object.defineProperty(provider, "getStorage", { value: () => storage, writable: true, configurable: true })
   const manager = new CharacterManager(new StorageManager(provider), { saveDebounceWait: 0 })
   return { manager, provider, storage }
 }
