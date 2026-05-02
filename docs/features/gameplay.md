@@ -91,7 +91,7 @@ opening the builder.
 - [ ] **Background / Description** free-text field (maps to `profile.description`)
 - [ ] **Personality** free-text field (maps to `profile.personality`)
 - [ ] Auto-save changes back to character store without requiring a separate save action
-- [ ] **Run notes** free-text scratch pad — ephemeral session notes that are _not_ persisted to the character record
+- [x] **Run notes** free-text scratch pad — ephemeral session notes that are _not_ persisted to the character record
 
 ---
 
