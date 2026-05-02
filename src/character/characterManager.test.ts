@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { MemoryStorageProvider } from "#/lib/storage/providers/memoryStorageProvider.ts"
+import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
 
 import { CharacterManager } from "./characterManager.ts"
 
 function makeManager() {
-  const storage = MemoryStorageProvider.getStorage()
+  const storage = createMemoryStorage()
   const manager = new CharacterManager({ local: storage }, 0)
   return { manager, storage }
 }

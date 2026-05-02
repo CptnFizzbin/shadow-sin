@@ -1,11 +1,11 @@
 import { Store } from "@tanstack/store"
-import { useCallback, useEffect, useState } from "react"
+import { use, useCallback, useEffect, useMemo, useState } from "react"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { mergeObjects } from "#/lib/mergeUtils.ts"
 import type { JsonValue } from "#/lib/storage/asyncStorage.ts"
-import { fromJsonValue, toJsonValue } from "#/lib/storage/asyncStorage.ts"
+import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
@@ -21,33 +21,35 @@ function getBuilderKey(characterId: string): string {
   return `character-form/${characterId}`
 }
 
+function useSavedBuilderState(storageKey: string): BuilderRootState | null {
+  const [promise] = useState(() => builderStorage.getJson<JsonValue>(storageKey).then((val) => val as BuilderRootState | null))
+  return use(promise)
+}
+
 export const useBuilderRootStateStore = (
   character?: CharacterSheet,
 ): UseBuilderRootStateStore => {
-  const defaultBuilderValues: BuilderRootState = {
-    character: character || createDefaultCharacterSheet(),
-    builder: {
-      startingNuyen: undefined,
-    },
-  }
-
   const storageKey = getBuilderKey(character?.id ?? "new")
+  const savedState = useSavedBuilderState(storageKey)
 
-  const [store] = useState(() => new Store<BuilderRootState>(defaultBuilderValues))
+  const defaultBuilderValues = useMemo(
+    (): BuilderRootState => ({
+      character: character || createDefaultCharacterSheet(),
+      builder: {
+        startingNuyen: undefined,
+      },
+    }),
+    // character object reference is intentionally stable per mount (keyed by id in parent)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [character?.id],
+  )
 
-  // Load persisted state asynchronously on mount
-  useEffect(() => {
-    let cancelled = false
-    builderStorage.getJson<JsonValue>(storageKey).then((saved) => {
-      if (!cancelled && saved) {
-        store.setState(() => mergeObjects<BuilderRootState>(defaultBuilderValues, fromJsonValue<BuilderRootState>(saved)))
-      }
-    })
-    return () => {
-      cancelled = true
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- storageKey is stable per character; store is stable for the lifetime of this component instance
-  }, [storageKey])
+  const [store] = useState(
+    () =>
+      new Store<BuilderRootState>(
+        savedState ? mergeObjects<BuilderRootState>(defaultBuilderValues, savedState) : defaultBuilderValues,
+      ),
+  )
 
   // Persist state on every change
   useEffect(() => {
@@ -60,16 +62,18 @@ export const useBuilderRootStateStore = (
   const onReset = useCallback(() => {
     void builderStorage.removeItem(storageKey)
     store.setState(() => defaultBuilderValues)
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultBuilderValues is recomputed each render but its deep values are stable for a given character instance
-  }, [store, storageKey])
+  }, [store, storageKey, defaultBuilderValues])
 
-  const loadCharacter = useCallback((importedCharacter: CharacterSheet) => {
-    void builderStorage.removeItem(storageKey)
-    store.setState(() => ({
-      character: importedCharacter,
-      builder: { startingNuyen: undefined },
-    }))
-  }, [store, storageKey])
+  const loadCharacter = useCallback(
+    (importedCharacter: CharacterSheet) => {
+      void builderStorage.removeItem(storageKey)
+      store.setState(() => ({
+        character: importedCharacter,
+        builder: { startingNuyen: undefined },
+      }))
+    },
+    [store, storageKey],
+  )
 
   return [store, onReset, loadCharacter]
 }

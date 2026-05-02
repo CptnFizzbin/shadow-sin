@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
-import { MemoryStorageProvider } from "#/lib/storage/providers/memoryStorageProvider.ts"
+import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -21,7 +21,7 @@ function makeManager(): {
   manager: CharacterManager
   storage: AsyncJsonStorage
 } {
-  const storage = MemoryStorageProvider.getStorage()
+  const storage = createMemoryStorage()
   return { manager: new CharacterManager({ local: storage }), storage }
 }
 

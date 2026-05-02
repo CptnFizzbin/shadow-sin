@@ -1,5 +1,5 @@
-import type { AsyncStorage, AsyncJsonStorage, JsonStorageProvider } from "#/lib/storage/asyncStorage.ts"
-import { toJsonStorage } from "#/lib/storage/asyncStorage.ts"
+import type { AsyncJsonStorage, AsyncStorage } from "#/lib/storage/asyncStorage.ts"
+import { JsonStorageAdapter } from "#/lib/storage/jsonStorageAdapter.ts"
 
 class MemoryAsyncStorage implements AsyncStorage {
   private readonly map: Map<string, string>
@@ -38,11 +38,9 @@ class MemoryAsyncStorage implements AsyncStorage {
   }
 }
 
-// Stores everything in a Map<string, string>. No CachedStorage wrapper needed.
+// Creates a fresh Map-backed AsyncJsonStorage instance. No CachedStorage wrapper needed.
 // Use in unit tests and anywhere no persistence is required.
-// getStorage() returns a fresh instance each call (for test isolation).
-export const MemoryStorageProvider: JsonStorageProvider = {
-  getStorage(): AsyncJsonStorage {
-    return toJsonStorage(new MemoryAsyncStorage())
-  },
+// Each call returns a new independent instance for test isolation.
+export function createMemoryStorage(): AsyncJsonStorage {
+  return new JsonStorageAdapter(new MemoryAsyncStorage())
 }

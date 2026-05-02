@@ -1,3 +1,5 @@
+import { milliseconds } from "date-fns"
+
 import type { AsyncStorage } from "./asyncStorage.ts"
 
 export interface CachedStorageOptions {
@@ -6,19 +8,14 @@ export interface CachedStorageOptions {
 }
 
 interface CacheEntry {
+  // Current value: the pending write value when savePending is true,
+  // or the last fetched value otherwise.
   value: string | null
   fetchedAt: number
-}
-
-interface PendingWriteEntry {
-  pendingValue: string
-  fetchedAt: number
-}
-
-type AnyEntry = CacheEntry | PendingWriteEntry
-
-function isPendingWrite(entry: AnyEntry): entry is PendingWriteEntry {
-  return "pendingValue" in entry
+  // True when a write is buffered and has not yet been flushed to underlying storage.
+  savePending: boolean
+  // Timer handle for the debounced flush, present only when savePending is true.
+  timeoutId: ReturnType<typeof setTimeout> | undefined
 }
 
 // Middleware that wraps any AsyncStorage to add:
@@ -29,8 +26,7 @@ function isPendingWrite(entry: AnyEntry): entry is PendingWriteEntry {
 // - Shared cache across namespaces. namespace() creates a child CachedStorage that references
 //   the same internal cache Map, keyed by full namespaced path to avoid collisions.
 export class CachedStorage implements AsyncStorage {
-  private readonly cache: Map<string, AnyEntry>
-  private readonly timers: Map<string, ReturnType<typeof setTimeout>>
+  private readonly cache: Map<string, CacheEntry>
   private readonly inFlight: Map<string, Promise<string | null>>
   private readonly ttlMs: number
   private readonly debounceMs: number
@@ -40,14 +36,13 @@ export class CachedStorage implements AsyncStorage {
   public constructor(
     storage: AsyncStorage,
     options?: CachedStorageOptions,
-    sharedCache?: Map<string, AnyEntry>,
+    sharedCache?: Map<string, CacheEntry>,
     namespacePath?: string,
   ) {
     this.underlying = storage
-    this.ttlMs = options?.ttlMs ?? 5 * 60 * 1000
-    this.debounceMs = options?.debounceMs ?? 30 * 1000
+    this.ttlMs = options?.ttlMs ?? milliseconds({ minutes: 5 })
+    this.debounceMs = options?.debounceMs ?? milliseconds({ seconds: 30 })
     this.cache = sharedCache ?? new Map()
-    this.timers = new Map()
     this.inFlight = new Map()
     this.namespacePath = namespacePath ?? ""
   }
@@ -66,8 +61,8 @@ export class CachedStorage implements AsyncStorage {
     const entry = this.cache.get(cacheKey)
 
     if (entry !== undefined) {
-      if (isPendingWrite(entry)) {
-        return Promise.resolve(entry.pendingValue)
+      if (entry.savePending) {
+        return Promise.resolve(entry.value)
       }
       if (Date.now() - entry.fetchedAt < this.ttlMs) {
         return Promise.resolve(entry.value)
@@ -79,8 +74,9 @@ export class CachedStorage implements AsyncStorage {
     if (!inFlight) {
       inFlight = this.underlying.getItem(key).then((value) => {
         // Only update cache if no pending write appeared during the fetch
-        if (!this.cache.has(cacheKey) || !isPendingWrite(this.cache.get(cacheKey)!)) {
-          this.cache.set(cacheKey, { value, fetchedAt: Date.now() })
+        const current = this.cache.get(cacheKey)
+        if (current === undefined || !current.savePending) {
+          this.cache.set(cacheKey, { value, fetchedAt: Date.now(), savePending: false, timeoutId: undefined })
         }
         this.inFlight.delete(cacheKey)
         return value
@@ -97,43 +93,27 @@ export class CachedStorage implements AsyncStorage {
 
   public setItem(key: string, value: string): Promise<void> {
     const cacheKey = this.fullCacheKey(key)
+    const existing = this.cache.get(cacheKey)
 
-    // Write to cache immediately
-    this.cache.set(cacheKey, { pendingValue: value, fetchedAt: Date.now() })
-
-    // Cancel any existing timer
-    const existing = this.timers.get(cacheKey)
-    if (existing !== undefined) {
-      clearTimeout(existing)
+    // Cancel any existing debounce timer
+    if (existing?.timeoutId !== undefined) {
+      clearTimeout(existing.timeoutId)
     }
 
-    // Schedule debounced flush
-    const timer = setTimeout(() => {
-      this.timers.delete(cacheKey)
-      const currentEntry = this.cache.get(cacheKey)
-      if (currentEntry !== undefined && isPendingWrite(currentEntry)) {
-        void this.underlying.setItem(key, currentEntry.pendingValue).then(() => {
-          // Mark as settled in cache
-          const settled = this.cache.get(cacheKey)
-          if (settled !== undefined && isPendingWrite(settled) && settled.pendingValue === currentEntry.pendingValue) {
-            this.cache.set(cacheKey, { value: currentEntry.pendingValue, fetchedAt: Date.now() })
-          }
-        })
-      }
-    }, this.debounceMs)
+    // Schedule debounced flush and write to cache immediately
+    const timeoutId = setTimeout(() => this.flushPendingWrite(key, cacheKey), this.debounceMs)
+    this.cache.set(cacheKey, { value, fetchedAt: Date.now(), savePending: true, timeoutId })
 
-    this.timers.set(cacheKey, timer)
     return Promise.resolve()
   }
 
   public async removeItem(key: string): Promise<void> {
     const cacheKey = this.fullCacheKey(key)
+    const existing = this.cache.get(cacheKey)
 
     // Cancel any pending write
-    const existing = this.timers.get(cacheKey)
-    if (existing !== undefined) {
-      clearTimeout(existing)
-      this.timers.delete(cacheKey)
+    if (existing?.timeoutId !== undefined) {
+      clearTimeout(existing.timeoutId)
     }
 
     this.cache.delete(cacheKey)
@@ -149,5 +129,17 @@ export class CachedStorage implements AsyncStorage {
       this.cache,
       newPath,
     )
+  }
+
+  private flushPendingWrite(key: string, cacheKey: string): void {
+    const entry = this.cache.get(cacheKey)
+    if (entry === undefined || !entry.savePending) return
+
+    void this.underlying.setItem(key, entry.value!).then(() => {
+      const current = this.cache.get(cacheKey)
+      if (current !== undefined && current.savePending && current.value === entry.value) {
+        this.cache.set(cacheKey, { value: entry.value, fetchedAt: Date.now(), savePending: false, timeoutId: undefined })
+      }
+    })
   }
 }

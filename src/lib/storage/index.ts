@@ -1,4 +1,5 @@
-export type { AsyncStorage, AsyncJsonStorage, JsonObject, JsonArray, JsonValue, JsonStorageProvider } from "./asyncStorage.ts"
-export { toJsonStorage, toJsonValue, fromJsonValue } from "./asyncStorage.ts"
+export type { AsyncStorage, AsyncJsonStorage, JsonObject, JsonArray, JsonValue } from "./asyncStorage.ts"
+export { toJsonValue, fromJsonValue } from "./asyncStorage.ts"
 export { CachedStorage } from "./cachedStorage.ts"
 export type { CachedStorageOptions } from "./cachedStorage.ts"
+export { JsonStorageAdapter } from "./jsonStorageAdapter.ts"

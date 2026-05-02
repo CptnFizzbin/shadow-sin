@@ -18,12 +18,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
   const characterManager = useCharacterManager()
 
   const handleParsed = async (character: CharacterSheet) => {
-    let existing: CharacterSheet | null = null
-    try {
-      existing = await characterManager.getCharacter(character.id)
-    } catch {
-      // CharacterNotFoundError is expected when the character doesn't exist
-    }
+    const existing = await characterManager.findCharacter(character.id)
 
     const characterToSave = existing
       ? await resolveConflictedCharacter(character, existing, importConflictDialog, characterManager)

@@ -2,6 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { AsyncDebouncer } from "@tanstack/pacer"
 
+import { CharacterNotFoundError } from "#/lib/errors/characterNotFoundError.ts"
 import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
 import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -13,10 +14,9 @@ import { parseCharacterId } from "./characterId.ts"
 import type { SavedCharacter } from "./characterIndex.ts"
 import { CharacterIndexSchema } from "./characterIndex.ts"
 import type { CharacterLoadError } from "./characterLoadError.ts"
-import { CharacterNotFoundError } from "./characterNotFoundError.ts"
 
-export { CharacterMigrationError } from "./characterMigrationError.ts"
-export { CharacterNotFoundError } from "./characterNotFoundError.ts"
+export { CharacterMigrationError } from "#/lib/errors/characterMigrationError.ts"
+export { CharacterNotFoundError } from "#/lib/errors/characterNotFoundError.ts"
 
 interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
@@ -85,6 +85,16 @@ export class CharacterManager {
     }
 
     return migrated
+  }
+
+  // Like getCharacter, but returns null instead of throwing when the character is not found.
+  public async findCharacter(id: CharacterId | CharacterRef): Promise<CharacterSheet | null> {
+    try {
+      return await this.getCharacter(id)
+    } catch (error) {
+      if (error instanceof CharacterNotFoundError) return null
+      throw error
+    }
   }
 
   // Read the raw stored JSON for a character without running migrations.

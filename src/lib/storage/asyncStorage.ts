@@ -18,52 +18,6 @@ export interface AsyncJsonStorage extends AsyncStorage {
   namespace(namespace: string): AsyncJsonStorage
 }
 
-type JsonStorageProvider = {
-  getStorage(): AsyncJsonStorage
-}
-
-export type { JsonStorageProvider }
-
-class JsonStorageAdapter implements AsyncJsonStorage {
-  public constructor(private readonly storage: AsyncStorage) {}
-
-  public hasKey(key: string): Promise<boolean> {
-    return this.storage.hasKey(key)
-  }
-
-  public getItem(key: string): Promise<string | null> {
-    return this.storage.getItem(key)
-  }
-
-  public setItem(key: string, value: string): Promise<void> {
-    return this.storage.setItem(key, value)
-  }
-
-  public removeItem(key: string): Promise<void> {
-    return this.storage.removeItem(key)
-  }
-
-  public namespace(ns: string): AsyncJsonStorage {
-    return toJsonStorage(this.storage.namespace(ns))
-  }
-
-  public async getJson<TData extends JsonValue>(key: string): Promise<TData | null> {
-    const raw = await this.storage.getItem(key)
-    if (raw === null) return null
-    return JSON.parse(raw) as TData
-  }
-
-  public async setJson<TData extends JsonValue>(key: string, value: TData): Promise<void> {
-    await this.storage.setItem(key, JSON.stringify(value))
-  }
-}
-
-// Wraps any AsyncStorage to add JSON serialization/deserialization.
-// namespace() returns a new AsyncJsonStorage wrapping the namespaced view.
-export function toJsonStorage(storage: AsyncStorage): AsyncJsonStorage {
-  return new JsonStorageAdapter(storage)
-}
-
 // Type-safe escape hatch for serializing structured objects at storage
 // boundaries. Centralises the unsafe cast into a single named helper so call
 // sites can stay free of `as unknown as JsonValue` double assertions.
