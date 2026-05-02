@@ -33,6 +33,11 @@ export enum SpellDuration {
   Permanent = "Permanent",
 }
 
+export enum SpellDrainBaseType {
+  Force = "Force",
+  Fixed = "Fixed",
+}
+
 export interface SpellData {
   id: string
   name: string
@@ -40,6 +45,8 @@ export interface SpellData {
   range: SpellRange
   damage: SpellDamage
   category: SpellCategory
+  drainBaseType: SpellDrainBaseType
+  drainBaseValue?: number
   drainValueMod: number
   dealsDamage: boolean
   duration: SpellDuration
@@ -58,6 +65,8 @@ export const SpellDataSchema = z.object({
   range: z.enum(SpellRange),
   damage: z.enum(SpellDamage),
   category: z.enum(SpellCategory),
+  drainBaseType: z.enum(SpellDrainBaseType),
+  drainBaseValue: z.number().int().min(1).optional(),
   drainValueMod: z.number().int().min(-4).max(4),
   dealsDamage: z.boolean(),
   duration: z.enum(SpellDuration),
@@ -79,4 +88,12 @@ export const SpellDataSchema = z.object({
     .array()
     .optional(),
   sustained: z.boolean().optional(),
+}).superRefine((data, ctx) => {
+  if (data.drainBaseType === SpellDrainBaseType.Fixed && data.drainBaseValue === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Drain base value is required when drain base type is Fixed",
+      path: ["drainBaseValue"],
+    })
+  }
 }) satisfies z.ZodType<SpellData>
