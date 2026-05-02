@@ -84,6 +84,10 @@ export class CachedStorage implements AsyncStorage {
         }
         this.inFlight.delete(cacheKey)
         return value
+      }).catch((error: unknown) => {
+        // Clean up so future calls retry rather than receiving the rejected promise
+        this.inFlight.delete(cacheKey)
+        throw error
       })
       this.inFlight.set(cacheKey, inFlight)
     }

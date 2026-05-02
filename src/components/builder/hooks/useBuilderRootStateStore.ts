@@ -46,7 +46,7 @@ export const useBuilderRootStateStore = (
     return () => {
       cancelled = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- storageKey is stable after mount; store is a module-level singleton
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- storageKey is stable per character; store is stable for the lifetime of this component instance
   }, [storageKey])
 
   // Persist state on every change
@@ -60,7 +60,7 @@ export const useBuilderRootStateStore = (
   const onReset = useCallback(() => {
     void builderStorage.removeItem(storageKey)
     store.setState(() => defaultBuilderValues)
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultBuilderValues is a stable module constant
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultBuilderValues is recomputed each render but its deep values are stable for a given character instance
   }, [store, storageKey])
 
   const loadCharacter = useCallback((importedCharacter: CharacterSheet) => {

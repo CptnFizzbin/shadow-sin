@@ -70,6 +70,8 @@ describe("CharacterManager.listCharactersWithErrors", () => {
     // Assert — listCharacters reads from index, not by scanning; the character is in the index
     expect(characters).toHaveLength(1)
     expect(characters[0].id).toBe("bad")
+    // The entry appears in the index but loading it throws because the stored data is invalid
+    await expect(localManager.getCharacter("bad")).rejects.toThrow()
   })
 })
 
