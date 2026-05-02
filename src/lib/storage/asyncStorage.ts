@@ -63,3 +63,18 @@ class JsonStorageAdapter implements AsyncJsonStorage {
 export function toJsonStorage(storage: AsyncStorage): AsyncJsonStorage {
   return new JsonStorageAdapter(storage)
 }
+
+// Type-safe escape hatch for serializing structured objects at storage
+// boundaries. Centralises the unsafe cast into a single named helper so call
+// sites can stay free of `as unknown as JsonValue` double assertions.
+export function toJsonValue(value: unknown): JsonValue {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- single escape hatch; callers stay assertion-free
+  return value as any
+}
+
+// Reverse of toJsonValue — casts a JsonValue back to a caller-specified type.
+// Use at deserialization boundaries where the stored type is known.
+export function fromJsonValue<T>(value: JsonValue): T {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- single escape hatch; callers stay assertion-free
+  return value as any
+}

@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
-import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
+import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
+import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
 import { MemoryStorageProvider } from "#/lib/storage/providers/memoryStorageProvider.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
@@ -34,7 +35,7 @@ describe("character migrations + yaml round-trip", () => {
     storage = result.storage
     await storage.setJson(
       `characters/${TEST_CHARACTER_ID}`,
-      characterV1 as unknown as JsonValue,
+      toJsonValue(characterV1),
     )
   })
 
@@ -62,7 +63,7 @@ describe("character migrations + yaml round-trip", () => {
     const { manager: freshManager, storage: freshStorage } = makeManager()
     await freshStorage.setJson(
       `characters/${TEST_CHARACTER_ID}`,
-      characterV1 as unknown as JsonValue,
+      toJsonValue(characterV1),
     )
 
     // Act
@@ -96,7 +97,7 @@ describe("character migrations + yaml round-trip", () => {
 
     // Save the restored (already-migrated) character into fresh storage
     const { manager: freshManager, storage: freshStorage } = makeManager()
-    await freshStorage.setJson(`characters/${restored.id}`, restored as unknown as JsonValue)
+    await freshStorage.setJson(`characters/${restored.id}`, toJsonValue(restored))
 
     // Act — loading should not re-run any migrations
     const reloaded = await freshManager.getCharacter(restored.id)
@@ -110,7 +111,7 @@ describe("character migrations + yaml round-trip", () => {
     const { manager: freshManager, storage: freshStorage } = makeManager()
     await freshStorage.setJson(
       `characters/${TEST_OLD_FORMAT_CHARACTER_ID}`,
-      characterV0 as unknown as JsonValue,
+      toJsonValue(characterV0),
     )
 
     // Act

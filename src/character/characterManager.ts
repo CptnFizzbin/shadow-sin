@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { AsyncDebouncer } from "@tanstack/pacer"
 
 import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
+import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 
@@ -44,7 +45,7 @@ export class CharacterManager {
   public async saveCharacter(character: CharacterSheet): Promise<void> {
     const ref = parseCharacterId(character.id)
     const storage = this.requireSource(ref.source)
-    await storage.setJson(this.characterKey(character.id as UUID), character as unknown as JsonValue)
+    await storage.setJson(this.characterKey(character.id as UUID), toJsonValue(character))
     await this.upsertIndex(ref.source, {
       id: character.id,
       name: character.profile.alias,
@@ -87,7 +88,7 @@ export class CharacterManager {
   }
 
   // Read the raw stored JSON for a character without running migrations.
-  public getRawCharacter(characterId: string): Promise<unknown | null> {
+  public getRawCharacter(characterId: string): Promise<JsonValue | null> {
     const ref = parseCharacterId(characterId)
     const storage = this.requireSource(ref.source)
     return storage.getJson<JsonValue>(this.characterKey(ref.id))
@@ -169,7 +170,7 @@ export class CharacterManager {
 
   private async writeIndex(source: string, index: SavedCharacter[]): Promise<void> {
     const storage = this.requireSource(source)
-    await storage.setJson("index", index as unknown as JsonValue)
+    await storage.setJson("index", toJsonValue(index))
   }
 
   private async upsertIndex(source: string, entry: SavedCharacter): Promise<void> {
