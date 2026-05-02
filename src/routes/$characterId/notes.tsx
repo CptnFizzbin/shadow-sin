@@ -43,8 +43,8 @@ function RouteComponent() {
   }
 
   return (
-    <Stack sx={{ gap: 2, height: "100%", flexGrow: 1, pb: 2 }}>
-      <Stack sx={{ gap: 1 }}>
+    <Stack sx={{ height: "100%", flexGrow: 1 }}>
+      <Stack>
         <SectionHeader id="description-label">Background / Description</SectionHeader>
         <TextField
           multiline
@@ -59,7 +59,7 @@ function RouteComponent() {
         />
       </Stack>
 
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <SectionHeader id="personality-label">Personality</SectionHeader>
         <TextField
           multiline
@@ -74,7 +74,7 @@ function RouteComponent() {
         />
       </Stack>
 
-      <Stack sx={{ gap: 1, height: "100%", flexGrow: 1 }}>
+      <Stack sx={{ flexGrow: 1 }}>
         <SectionHeader id="run-notes-label">Run Notes</SectionHeader>
 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
