@@ -4,6 +4,8 @@ import { createContext, useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import { DialogApi } from "#/components/dialogs/api/dialogApi.tsx"
+import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import type { BuilderRootState } from "./builderRootState.ts"
@@ -37,11 +39,15 @@ export const CharacterBuilderStoreProvider: FC<CharacterBuilderStoreProviderProp
     ))
   }, [rootStore])
 
+  const dialogApi = useMemo(() => new DialogApi(), [])
+
   return (
     <IsBuilderContext.Provider value={true}>
       <CharacterBuilderContext.Provider value={builderStateStore}>
         <CharacterSheetProvider store={characterSheetStore}>
-          {children}
+          <DialogApiProvider dialogApi={dialogApi}>
+            {children}
+          </DialogApiProvider>
         </CharacterSheetProvider>
       </CharacterBuilderContext.Provider>
     </IsBuilderContext.Provider>
