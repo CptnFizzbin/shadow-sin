@@ -4,27 +4,26 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"
 
 export const CharacterErrorRoute = () => {
-  // Derive characterId from the current location as a robust way to get the
-  // param without relying on Route.useParams (avoids circular imports).
   const path = typeof window !== "undefined" ? window.location.pathname : ""
   const characterId = path.split("/").filter(Boolean).pop() ?? "unknown"
   const navigate = useNavigate()
   const router = useRouter()
+  const characterManager = useCharacterManager()
 
   const handleExport = async () => {
-    const raw = await localCharacterManager.getRawCharacter(characterId).catch(() => null)
+    const raw = await characterManager.getRawCharacter(characterId).catch(() => null)
     const rawData = raw ?? { characterId }
     const jsonContent = JSON.stringify(rawData, null, 2)
     downloadTextFile(jsonContent, `invalid-character-${characterId}.json`, "application/json")
   }
 
   const handleDelete = async () => {
-    await localCharacterManager.deleteCharacter(characterId)
+    await characterManager.deleteCharacter(characterId)
     await router.invalidate()
     await navigate({ to: "/" })
   }

@@ -1,9 +1,11 @@
-import type { Store } from "@tanstack/store"
-import { useCallback, useMemo } from "react"
+import { Store } from "@tanstack/store"
+import { useCallback, useEffect, useState } from "react"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { StorePersister, usePersistedStore } from "#/lib/storage/storePersister.ts"
+import { mergeObjects } from "#/lib/mergeUtils.ts"
+import type { JsonValue } from "#/lib/storage/asyncStorage.ts"
+import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 type UseBuilderRootStateStore = [
@@ -12,26 +14,56 @@ type UseBuilderRootStateStore = [
   loadCharacter: (importedCharacter: CharacterSheet) => void,
 ]
 
+const builderStorage = LocalStorageProvider.getStorage().namespace("builder")
+
+function getBuilderKey(characterId: string): string {
+  return `character-form/${characterId}`
+}
+
 export const useBuilderRootStateStore = (
   character?: CharacterSheet,
 ): UseBuilderRootStateStore => {
-  const defaultBuilderValues = useMemo((): BuilderRootState => ({
+  const defaultBuilderValues: BuilderRootState = {
     character: character || createDefaultCharacterSheet(),
     builder: {
       startingNuyen: undefined,
     },
-  }), [character])
+  }
 
-  const storageKey = `builder:${character?.id ?? "new"}`
-  const store = usePersistedStore(storageKey, defaultBuilderValues)
+  const storageKey = getBuilderKey(character?.id ?? "new")
+
+  const [store] = useState(() => new Store<BuilderRootState>(defaultBuilderValues))
+
+  // Load persisted state asynchronously on mount
+  useEffect(() => {
+    let cancelled = false
+    builderStorage.getJson<JsonValue>(storageKey).then((saved) => {
+      if (!cancelled && saved) {
+        store.setState(() => mergeObjects<BuilderRootState>(defaultBuilderValues, saved as unknown as BuilderRootState))
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey])
+
+  // Persist state on every change
+  useEffect(() => {
+    const { unsubscribe } = store.subscribe((state) => {
+      void builderStorage.setJson(storageKey, state as unknown as JsonValue)
+    })
+    return () => unsubscribe()
+  }, [store, storageKey])
 
   const onReset = useCallback(() => {
-    StorePersister.clearState(storageKey)
+    void builderStorage.removeItem(storageKey)
     store.setState(() => defaultBuilderValues)
-  }, [store, storageKey, defaultBuilderValues])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store, storageKey])
 
   const loadCharacter = useCallback((importedCharacter: CharacterSheet) => {
-    StorePersister.clearState(storageKey)
+    void builderStorage.removeItem(storageKey)
     store.setState(() => ({
       character: importedCharacter,
       builder: { startingNuyen: undefined },

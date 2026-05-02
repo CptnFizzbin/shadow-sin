@@ -1,138 +1,143 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
-import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
+import { MemoryStorageProvider } from "#/lib/storage/providers/memoryStorageProvider.ts"
 
 import { CharacterManager } from "./characterManager.ts"
 
-function makeManager(memStorage = new MemoryStorage()): CharacterManager {
-  const provider = new LocalStorageProvider({ storagePrefix: "test" })
-
-  // Patch provider to use MemoryStorage
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(provider as any).getStorage = () => memStorage
-
-  return new CharacterManager(new StorageManager(provider), { saveDebounceWait: 0 })
+function makeManager() {
+  const storage = MemoryStorageProvider.getStorage()
+  const manager = new CharacterManager({ local: storage }, 0)
+  return { manager, storage }
 }
 
 describe("CharacterManager.listCharactersWithErrors", () => {
   let manager: CharacterManager
 
   beforeEach(() => {
-    manager = makeManager()
+    manager = makeManager().manager
   })
 
   it("returns an empty result when storage is empty", async () => {
+    // Arrange — no setup needed
+
+    // Act
     const result = await manager.listCharactersWithErrors()
+
+    // Assert
     expect(result.characters).toEqual({})
     expect(result.errors).toEqual([])
   })
 
   it("surfaces an error entry for a character with a missing version", async () => {
-    // Write a raw invalid character directly via storage
-    const provider = new LocalStorageProvider({ storagePrefix: "test" })
-    const memStorage = new MemoryStorage()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
-    await provider.saveJsonFile("characters/bad-id.json", {})
+    // Arrange
+    const { manager: localManager, storage } = makeManager()
+    await storage.setJson("index", [{ id: "bad-id", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setJson("characters/bad-id", {})
 
-    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
+    // Act
     const result = await localManager.listCharactersWithErrors()
 
+    // Assert
     expect(result.errors).toHaveLength(1)
     expect(result.errors[0].characterId).toBe("bad-id")
-    expect(result.errors[0].rawData).toEqual({})
     expect(result.characters).toEqual({})
   })
 
   it("surfaces an error entry for a character with an invalid version string", async () => {
-    const provider = new LocalStorageProvider({ storagePrefix: "test" })
-    const memStorage = new MemoryStorage()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
-    await provider.saveJsonFile("characters/bad-version.json", { version: "foobar" })
+    // Arrange
+    const { manager: localManager, storage } = makeManager()
+    await storage.setJson("index", [{ id: "bad-version", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setJson("characters/bad-version", { version: "foobar" })
 
-    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
+    // Act
     const result = await localManager.listCharactersWithErrors()
 
+    // Assert
     expect(result.errors).toHaveLength(1)
     expect(result.errors[0].characterId).toBe("bad-version")
   })
 
   it("does not crash listCharacters when one character is invalid", async () => {
-    const provider = new LocalStorageProvider({ storagePrefix: "test" })
-    const memStorage = new MemoryStorage()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(provider as any).getStorage = () => memStorage
-    const storageManager = new StorageManager(provider)
-    await provider.saveJsonFile("characters/bad.json", {})
+    // Arrange
+    const { manager: localManager, storage } = makeManager()
+    await storage.setJson("index", [{ id: "bad", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setJson("characters/bad", {})
 
-    const localManager = new CharacterManager(storageManager, { saveDebounceWait: 0 })
+    // Act
     const characters = await localManager.listCharacters()
-    expect(characters).toEqual({})
+
+    // Assert — listCharacters reads from index, not by scanning; the character is in the index
+    expect(characters).toHaveLength(1)
+    expect(characters[0].id).toBe("bad")
   })
 })
 
-describe("CharacterManager.forceSave", () => {
+describe("CharacterManager.saveCharacter / getCharacter", () => {
   let manager: CharacterManager
 
   beforeEach(() => {
-    manager = makeManager()
+    manager = makeManager().manager
   })
 
-  it("persists the character so getCharacter returns it immediately after forceSave resolves", async () => {
+  it("persists the character so getCharacter returns it immediately after saveCharacter resolves", async () => {
     // Arrange
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act
-    await manager.forceSave(character)
+    await manager.saveCharacter(character)
 
     // Assert
     const loaded = await manager.getCharacter(character.id)
     expect(loaded).not.toBeNull()
-    expect(loaded?.id).toBe(character.id)
+    expect(loaded.id).toBe(character.id)
   })
 
-  it("returns the in-memory character by reference so storage is not re-read", async () => {
+  it("throws CharacterNotFoundError for an unknown character id", async () => {
     // Arrange
-    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+    const unknownId = crypto.randomUUID()
 
-    // Act
-    await manager.forceSave(character)
-    const loaded = await manager.getCharacter(character.id)
-
-    // Assert — same object reference proves the in-memory cache was used
-    expect(loaded).toBe(character)
+    // Act / Assert
+    await expect(manager.getCharacter(unknownId)).rejects.toThrow("Character not found")
   })
 })
 
-describe("CharacterManager.save", () => {
-  let manager: CharacterManager
-
-  beforeEach(() => {
-    manager = makeManager()
-  })
-
-  it("makes the character available via getCharacter before the debounce fires", async () => {
+describe("CharacterManager.listCharacters", () => {
+  it("returns saved character metadata from the index", async () => {
     // Arrange
+    const { manager } = makeManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
-    // Act — do not await; the debounce timer has not fired yet
-    void manager.save(character)
-    const loaded = await manager.getCharacter(character.id)
+    // Act
+    await manager.saveCharacter(character)
+    const list = await manager.listCharacters()
 
-    // Assert — in-memory cache returns the character immediately
-    expect(loaded).toBe(character)
+    // Assert
+    expect(list).toHaveLength(1)
+    expect(list[0].id).toBe(character.id)
+    expect(list[0].name).toBe(character.profile.alias)
   })
+})
 
+describe("CharacterManager.deleteCharacter", () => {
+  it("removes the character so subsequent getCharacter throws", async () => {
+    // Arrange
+    const { manager } = makeManager()
+    const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
+    await manager.saveCharacter(character)
+
+    // Act
+    await manager.deleteCharacter(character.id)
+
+    // Assert
+    await expect(manager.getCharacter(character.id)).rejects.toThrow("Character not found")
+  })
+})
+
+describe("CharacterManager.save (debounced)", () => {
   it("debounces rapid saves so only the last value is persisted to storage", async () => {
     // Arrange
-    const sharedStorage = new MemoryStorage()
-    const writingManager = makeManager(sharedStorage)
+    const { manager: writingManager, storage } = makeManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
     const first = { ...character, profile: { ...character.profile, alias: "first" } }
     const second = { ...character, profile: { ...character.profile, alias: "second" } }
@@ -147,8 +152,8 @@ describe("CharacterManager.save", () => {
     await saves
 
     // Assert — only the last alias reaches storage; bypass the cache with a fresh manager
-    const freshManager = makeManager(sharedStorage)
+    const freshManager = new CharacterManager({ local: storage }, 0)
     const loaded = await freshManager.getCharacter(character.id)
-    expect(loaded?.profile.alias).toBe("third")
+    expect(loaded.profile.alias).toBe("third")
   })
 })

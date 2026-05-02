@@ -1,73 +1,123 @@
+import type { UUID } from "node:crypto"
+
 import { AsyncDebouncer } from "@tanstack/pacer"
 
-import type { StorageManager } from "#/lib/storage/storageManager.ts"
+import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 
 import { applyMigrations } from "./applyMigrations.ts"
+import type { CharacterId, CharacterRef } from "./characterId.ts"
+import { parseCharacterId } from "./characterId.ts"
+import type { SavedCharacter } from "./characterIndex.ts"
+import { CharacterIndexSchema } from "./characterIndex.ts"
 import type { CharacterLoadError } from "./characterLoadError.ts"
+import { CharacterNotFoundError } from "./characterNotFoundError.ts"
+
+export { CharacterMigrationError } from "./characterMigrationError.ts"
+export { CharacterNotFoundError } from "./characterNotFoundError.ts"
 
 interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
   errors: CharacterLoadError[]
 }
 
-interface CharacterManagerOptions {
-  /**
-   * Debounce wait in milliseconds applied to `save()`. Rapid calls within this
-   * window coalesce into a single storage write. Default: 1000.
-   */
-  saveDebounceWait: number
-}
-
-const defaultOptions: CharacterManagerOptions = {
-  saveDebounceWait: 1000,
-}
-
 type CharacterSaveFn = (character: CharacterSheet) => Promise<void>
 
-/**
- * Manages character persistence with an in-memory cache as the primary source
- * of truth. Storage is kept in sync asynchronously.
- *
- * - `save(character)` — writes to the in-memory store immediately and debounces
- *   the write to external storage. Safe for high-frequency callers (e.g. reactive
- *   auto-save subscriptions).
- * - `forceSave(character)` — writes to the in-memory store and immediately
- *   persists to external storage, cancelling any pending debounced write. Use
- *   when the caller must await confirmed persistence (e.g. before navigation).
- */
 export class CharacterManager {
-  private readonly characterDirectoryPath = "characters"
-
-  /** In-memory cache — source of truth for all loaded/saved characters. */
-  private readonly characters = new Map<string, CharacterSheet>()
-
-  /** Per-character AsyncDebouncers used by `save()`. */
+  private readonly sources: Record<string, AsyncJsonStorage>
   private readonly debouncers = new Map<string, AsyncDebouncer<CharacterSaveFn>>()
-
   private readonly saveDebounceWait: number
 
-  public constructor(
-    private readonly storageManager: StorageManager,
-    options: CharacterManagerOptions = defaultOptions,
-  ) {
-    this.saveDebounceWait = options.saveDebounceWait
+  public constructor(sources: Record<string, AsyncJsonStorage>, saveDebounceWait = 0) {
+    this.sources = sources
+    this.saveDebounceWait = saveDebounceWait
   }
 
-  public async listCharacters(): Promise<Record<string, CharacterSheet>> {
-    const { characters } = await this.listCharactersWithErrors()
-    return characters
+  // Exposes the underlying AsyncJsonStorage for a given source name.
+  public getSource(source: string): AsyncJsonStorage | undefined {
+    return this.sources[source]
   }
 
+  // Saves the character to the source identified by character.id.
+  // Updates the "index" key on that source with id, name, and lastModified.
+  public async saveCharacter(character: CharacterSheet): Promise<void> {
+    const ref = parseCharacterId(character.id)
+    const storage = this.requireSource(ref.source)
+    await storage.setJson(this.characterKey(character.id as UUID), character as unknown as JsonValue)
+    await this.upsertIndex(ref.source, {
+      id: character.id,
+      name: character.profile.alias,
+      lastModified: new Date().toISOString(),
+    })
+  }
+
+  // Debounced save — writes to underlying storage after saveDebounceWait ms.
+  // Use for reactive auto-save subscriptions.
+  public save(character: CharacterSheet): Promise<void> {
+    return this.getOrCreateDebouncer(character.id).maybeExecute(character) as Promise<void>
+  }
+
+  // Loads and migrates a character by CharacterId.
+  // Throws CharacterNotFoundError if missing.
+  // Accepts a plain UUID string and coerces it to a "local" CharacterId for
+  // backward-compatibility.
+  public async getCharacter(id: CharacterId | CharacterRef): Promise<CharacterSheet> {
+    const ref = typeof id === "object" ? id : parseCharacterId(id as CharacterId)
+    const storage = this.requireSource(ref.source)
+    const raw = await storage.getJson<JsonValue>(this.characterKey(ref.id))
+
+    if (raw === null) {
+      throw new CharacterNotFoundError(String(id))
+    }
+
+    const preMeta = CharacterMetaSchema.parse(
+      typeof raw === "object" && raw !== null && "_meta_" in (raw as object)
+        ? (raw as Record<string, unknown>)._meta_
+        : {},
+    )
+    const migrated = applyMigrations(raw as object)
+    const postMeta = migrated._meta_
+
+    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
+      await this.saveCharacter(migrated)
+    }
+
+    return migrated
+  }
+
+  // Read the raw stored JSON for a character without running migrations.
+  public getRawCharacter(characterId: string): Promise<unknown | null> {
+    const ref = parseCharacterId(characterId)
+    const storage = this.requireSource(ref.source)
+    return storage.getJson<JsonValue>(this.characterKey(ref.id))
+  }
+
+  // Reads the "index" key from every registered source and merges the results.
+  // Returns [] if no index exists on any source.
+  public async listCharacters(source?: string): Promise<SavedCharacter[]> {
+    const sourceNames = source ? [source] : Object.keys(this.sources)
+    const results = await Promise.all(sourceNames.map((name) => this.readIndex(name)))
+    return results.flat()
+  }
+
+  // Removes the character from its source storage and from that source's "index".
+  // Accepts a plain UUID string (coerced to "local") for backward-compatibility.
+  public async deleteCharacter(id: CharacterId | CharacterRef): Promise<void> {
+    const ref = typeof id === "object" ? id : parseCharacterId(id as CharacterId)
+    const storage = this.requireSource(ref.source)
+
+    this.debouncers.get(String(ref.id))?.cancel()
+    this.debouncers.delete(String(ref.id))
+
+    await storage.removeItem(this.characterKey(ref.id))
+    await this.removeFromIndex(ref.source, String(ref.id))
+  }
+
+  // Loads all characters with error tracking (for roster display).
   public async listCharactersWithErrors(): Promise<CharactersWithErrors> {
-    const characterFiles = await this.storageManager.listJsonFiles(
-      this.characterDirectoryPath,
-    )
-
-    const results = await Promise.all(
-      characterFiles.map(({ path }) => this.loadCharacterByPathSafe(path)),
-    )
+    const allSaved = await this.listCharacters()
+    const results = await Promise.all(allSaved.map((saved) => this.loadCharacterSafe(saved.id)))
 
     const characters: Record<string, CharacterSheet> = {}
     const errors: CharacterLoadError[] = []
@@ -78,176 +128,81 @@ export class CharacterManager {
         errors.push(result)
       } else {
         characters[result.id] = result
-        this.characters.set(result.id, result)
       }
     }
 
     return { characters, errors }
   }
 
-  /**
-   * Returns the character from the in-memory cache if available, otherwise loads
-   * it from storage (running migrations if needed) and populates the cache.
-   */
-  public getCharacter(
-    characterId: string,
-  ): Promise<CharacterSheet | null> {
-    const cached = this.characters.get(characterId)
-    if (cached) return Promise.resolve(cached)
-
-    return this.loadCharacterByPath(this.getCharacterPath(characterId))
-  }
-
-  /**
-   * Read the raw stored JSON for a character without running migrations or
-   * transformations. Returns the stored value or null if not present. This is
-   * non-mutating and safe to use for exports/debugging of potentially corrupted
-   * files.
-   */
-  public async getRawCharacter(characterId: string): Promise<unknown | null> {
-    const path = this.getCharacterPath(characterId)
-    const stored = await this.storageManager.loadJsonFile<unknown>(path)
-    return stored ? stored.value : null
-  }
-
-  /**
-   * Writes the character to the in-memory cache immediately, then schedules a
-   * debounced write to external storage. Rapid successive calls coalesce into a
-   * single storage write. The returned Promise resolves when the (possibly
-   * delayed) write completes, or immediately if this call is displaced by a
-   * newer call.
-   *
-   * Note: AsyncDebouncer wraps the inner function's `Promise<void>` return type
-   * in an additional Promise layer, yielding `Promise<Promise<void> | undefined>`
-   * in the static type. JavaScript auto-unwraps nested Promises at runtime, so
-   * the awaited value is always `void | undefined`. The cast to `Promise<void>`
-   * aligns the declared type with that runtime behaviour.
-   */
-  public save(character: CharacterSheet): Promise<void> {
-    this.characters.set(character.id, character)
-
-    return this.getOrCreateDebouncer(character.id).maybeExecute(character) as Promise<void>
-  }
-
-  /**
-   * Writes the character to the in-memory cache immediately, cancels any
-   * pending debounced write, and performs an immediate write to external
-   * storage. The returned Promise resolves only after the storage write
-   * completes.
-   */
-  public async forceSave(character: CharacterSheet): Promise<void> {
-    this.characters.set(character.id, character)
-    this.debouncers.get(character.id)?.cancel()
-    await this.storageManager.saveJsonFile(
-      this.getCharacterPath(character.id),
-      character,
-    )
-  }
-
-  public async deleteCharacter(characterId: string): Promise<void> {
-    this.characters.delete(characterId)
-    this.debouncers.get(characterId)?.cancel()
-    this.debouncers.delete(characterId)
-    await this.storageManager.deleteJsonFile(this.getCharacterPath(characterId))
-  }
-
-  public async ensureCharacters(
-    characters: CharacterSheet[],
-  ): Promise<CharactersWithErrors> {
+  // Ensures the given fixture characters exist in storage (seeds if missing).
+  public async ensureCharacters(characters: CharacterSheet[]): Promise<CharactersWithErrors> {
     for (const character of characters) {
-      const stored = await this.storageManager.loadJsonFile(this.getCharacterPath(character.id)).catch(() => null)
-
-      if (stored) {
-        continue
+      const ref = parseCharacterId(character.id)
+      const storage = this.requireSource(ref.source)
+      const existing = await storage.getJson(this.characterKey(ref.id))
+      if (!existing) {
+        await this.saveCharacter(character)
       }
-
-      await this.forceSave(character)
     }
-
     return this.listCharactersWithErrors()
   }
 
-  private async loadCharacterByPath(
-    path: string,
-  ): Promise<CharacterSheet | null> {
-    const storedCharacter =
-      await this.storageManager.loadJsonFile<CharacterSheet>(path)
-
-    if (!storedCharacter) {
-      return null
+  private requireSource(source: string): AsyncJsonStorage {
+    const storage = this.sources[source]
+    if (!storage) {
+      throw new Error(`Unknown storage source: "${source}"`)
     }
-
-    const character = await this.migrateCharacter(storedCharacter.value)
-    this.characters.set(character.id, character)
-    return character
+    return storage
   }
 
-  private async loadCharacterByPathSafe(
-    path: string,
-  ): Promise<CharacterSheet | CharacterLoadError | null> {
-    const storedCharacter = await this.storageManager.loadJsonFile<unknown>(path)
+  private characterKey(id: UUID | string): string {
+    return `characters/${id}`
+  }
 
-    if (!storedCharacter) {
-      return null
+  private async readIndex(source: string): Promise<SavedCharacter[]> {
+    const storage = this.requireSource(source)
+    const raw = await storage.getJson<JsonValue>("index")
+    if (!raw) return []
+    const result = CharacterIndexSchema.safeParse(raw)
+    return result.success ? result.data : []
+  }
+
+  private async writeIndex(source: string, index: SavedCharacter[]): Promise<void> {
+    const storage = this.requireSource(source)
+    await storage.setJson("index", index as unknown as JsonValue)
+  }
+
+  private async upsertIndex(source: string, entry: SavedCharacter): Promise<void> {
+    const index = await this.readIndex(source)
+    const existingIdx = index.findIndex((item) => item.id === entry.id)
+    if (existingIdx >= 0) {
+      index[existingIdx] = entry
+    } else {
+      index.push(entry)
     }
+    await this.writeIndex(source, index)
+  }
 
+  private async removeFromIndex(source: string, id: string): Promise<void> {
+    const index = await this.readIndex(source)
+    const filtered = index.filter((item) => item.id !== id)
+    await this.writeIndex(source, filtered)
+  }
+
+  private async loadCharacterSafe(id: CharacterId): Promise<CharacterSheet | CharacterLoadError | null> {
+    const idStr = String(id)
     try {
-      const rawData = storedCharacter.value
-      const characterId = this.extractCharacterIdFromPath(path)
-
-      if (typeof rawData !== "object" || rawData === null) {
-        return {
-          characterId,
-          path,
-          errorMessage: "Character data is not a valid object.",
-          rawData,
-        }
-      }
-
-      const migrated = await this.migrateCharacter(rawData)
-
-      if (!migrated.id || !migrated.profile) {
-        return {
-          characterId,
-          path,
-          errorMessage: "Character data is missing required fields (id or profile).",
-          rawData,
-        }
-      }
-
-      return migrated
+      return await this.getCharacter(id)
     } catch (error) {
+      if (error instanceof Error && error.name === "CharacterNotFoundError") {
+        return null
+      }
       return {
-        characterId: this.extractCharacterIdFromPath(path),
-        path,
+        characterId: idStr,
         errorMessage: error instanceof Error ? error.message : String(error),
-        rawData: storedCharacter.value,
+        rawData: null,
       }
     }
-  }
-
-  private getCharacterPath(characterId: string): string {
-    return `${this.characterDirectoryPath}/${characterId}.json`
-  }
-
-  private extractCharacterIdFromPath(path: string): string {
-    const filename = path.split("/").pop() ?? path
-    return filename.replace(/\.json$/, "")
-  }
-
-  private async migrateCharacter(character: object): Promise<CharacterSheet> {
-    const preMeta = CharacterMetaSchema.parse("_meta_" in character ? character._meta_ : {})
-    const playerCharacter = applyMigrations(character)
-    const postMeta = playerCharacter._meta_
-
-    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
-      await this.storageManager.saveJsonFile(
-        this.getCharacterPath(playerCharacter.id),
-        playerCharacter,
-      )
-    }
-
-    return playerCharacter
   }
 
   private getOrCreateDebouncer(characterId: string): AsyncDebouncer<CharacterSaveFn> {
@@ -256,10 +211,7 @@ export class CharacterManager {
 
     const debouncer = new AsyncDebouncer<CharacterSaveFn>(
       async (character) => {
-        await this.storageManager.saveJsonFile(
-          this.getCharacterPath(character.id),
-          character,
-        )
+        await this.saveCharacter(character)
       },
       { wait: this.saveDebounceWait },
     )

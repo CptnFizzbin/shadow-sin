@@ -2,17 +2,21 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
+import { CharacterManager } from "#/character/characterManager.ts"
 import { Artemis } from "#/character/fixtures/artemis.ts"
 import { Hexen } from "#/character/fixtures/hexen.ts"
 import CharacterRosterList from "#/components/character/characterRosterList.tsx"
 import { ImportCharacterButton } from "#/components/character/exportImport/importCharacterButton.tsx"
 import { env } from "#/env.ts"
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
+import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
+
+// Module-level manager for use in loaders (outside React context)
+const loaderManager = new CharacterManager({ local: LocalStorageProvider.getStorage() })
 
 export const Route = createFileRoute("/")({
   loader: () => {
     const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? [Artemis, Hexen] : []
-    return localCharacterManager.ensureCharacters(fixtures)
+    return loaderManager.ensureCharacters(fixtures)
   },
   component: IndexRoute,
 })

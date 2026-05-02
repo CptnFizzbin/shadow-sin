@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
-import { LocalStorageProvider } from "#/lib/storage/localStorage/localStorageProvider.ts"
-import { StorageManager } from "#/lib/storage/storageManager.ts"
+import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
+import { MemoryStorageProvider } from "#/lib/storage/providers/memoryStorageProvider.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -13,33 +13,28 @@ import {
   TEST_OLD_FORMAT_LICENSE_ID,
   TEST_OLD_FORMAT_SIN_ID,
 } from "#testUtils/fixtures/characters/characterSheets.ts"
-import { MemoryStorage } from "#testUtils/storage/memoryStorage.ts"
 
 import { CharacterManager } from "./characterManager.ts"
 
 function makeManager(): {
   manager: CharacterManager
-  provider: LocalStorageProvider
+  storage: AsyncJsonStorage
 } {
-  const memStorage = new MemoryStorage()
-  const provider = new LocalStorageProvider({ storagePrefix: "test" })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ; (provider as any).getStorage = () => memStorage
-
-  return { manager: new CharacterManager(new StorageManager(provider)), provider }
+  const storage = MemoryStorageProvider.getStorage()
+  return { manager: new CharacterManager({ local: storage }), storage }
 }
 
 describe("character migrations + yaml round-trip", () => {
   let manager: CharacterManager
-  let provider: LocalStorageProvider
+  let storage: AsyncJsonStorage
 
   beforeEach(async () => {
     const result = makeManager()
     manager = result.manager
-    provider = result.provider
-    await provider.saveJsonFile(
-      `characters/${TEST_CHARACTER_ID}.json`,
-      characterV1,
+    storage = result.storage
+    await storage.setJson(
+      `characters/${TEST_CHARACTER_ID}`,
+      characterV1 as unknown as JsonValue,
     )
   })
 
@@ -50,119 +45,114 @@ describe("character migrations + yaml round-trip", () => {
     const migrated = await manager.getCharacter(TEST_CHARACTER_ID)
 
     // Assert
-    expect(migrated).not.toBeNull()
-    expect(migrated!._meta_.appliedMigrations).toContain("20250101")
-    expect(migrated!._meta_.appliedMigrations).toContain("20250801")
-    expect(migrated!._meta_.appliedMigrations).toContain("20251001")
-    expect(migrated!._meta_.appliedMigrations).toContain("20260416")
-    expect(migrated!._meta_.appliedMigrations).toContain("20260417")
-    expect(migrated!._meta_.appliedMigrations).toContain("20260418")
-    expect(migrated!._meta_.appliedMigrations).toContain("20260419")
-    expect(migrated!._meta_.appliedMigrations).toContain("20260423")
-    expect("version" in (migrated! as object)).toBe(false)
+    expect(migrated._meta_.appliedMigrations).toContain("20250101")
+    expect(migrated._meta_.appliedMigrations).toContain("20250801")
+    expect(migrated._meta_.appliedMigrations).toContain("20251001")
+    expect(migrated._meta_.appliedMigrations).toContain("20260416")
+    expect(migrated._meta_.appliedMigrations).toContain("20260417")
+    expect(migrated._meta_.appliedMigrations).toContain("20260418")
+    expect(migrated._meta_.appliedMigrations).toContain("20260419")
+    expect(migrated._meta_.appliedMigrations).toContain("20260423")
+    expect("version" in (migrated as object)).toBe(false)
   })
 
   it("does not re-run migrations already in appliedMigrations", async () => {
     // Arrange — characterPost20260418 has 20250801–20260418 applied and a
     // loan with a known stable ID; only 20260419 should run
-    const { manager: freshManager, provider: freshProvider } = makeManager()
-    await freshProvider.saveJsonFile(
-      `characters/${TEST_CHARACTER_ID}.json`,
-      characterV1,
+    const { manager: freshManager, storage: freshStorage } = makeManager()
+    await freshStorage.setJson(
+      `characters/${TEST_CHARACTER_ID}`,
+      characterV1 as unknown as JsonValue,
     )
 
     // Act
     const migrated = await freshManager.getCharacter(TEST_CHARACTER_ID)
 
     // Assert — loan ID unchanged (20251001 was NOT re-run)
-    expect(migrated).not.toBeNull()
-    expect(migrated!.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
-    expect(migrated!._meta_.appliedMigrations).toContain("20260419")
+    expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
+    expect(migrated._meta_.appliedMigrations).toContain("20260419")
   })
 
   it("yaml export/import round-trips a fully migrated character", async () => {
     // Arrange — migrate the pre-migration character
     const migrated = await manager.getCharacter(TEST_CHARACTER_ID)
-    expect(migrated).not.toBeNull()
 
     // Act
-    const yaml = characterSheetToYaml(migrated!)
+    const yaml = characterSheetToYaml(migrated)
     const restored = yamlToCharacterSheet(yaml)
 
     // Assert — scalar fields survive the round-trip
-    expect(restored.id).toBe(migrated!.id)
-    expect(restored._meta_).toEqual(migrated!._meta_)
-    expect(restored.nuyen).toEqual(migrated!.nuyen)
-    expect(restored.spells).toEqual(migrated!.spells)
+    expect(restored.id).toBe(migrated.id)
+    expect(restored._meta_).toEqual(migrated._meta_)
+    expect(restored.nuyen).toEqual(migrated.nuyen)
+    expect(restored.spells).toEqual(migrated.spells)
   })
 
   it("yaml-imported character has all migration IDs already applied", async () => {
     // Arrange — migrate then export/import
     const migrated = await manager.getCharacter(TEST_CHARACTER_ID)
-    const yaml = characterSheetToYaml(migrated!)
+    const yaml = characterSheetToYaml(migrated)
     const restored = yamlToCharacterSheet(yaml)
 
     // Save the restored (already-migrated) character into fresh storage
-    const { manager: freshManager, provider: freshProvider } = makeManager()
-    await freshProvider.saveJsonFile(`characters/${restored.id}.json`, restored)
+    const { manager: freshManager, storage: freshStorage } = makeManager()
+    await freshStorage.setJson(`characters/${restored.id}`, restored as unknown as JsonValue)
 
     // Act — loading should not re-run any migrations
     const reloaded = await freshManager.getCharacter(restored.id)
 
     // Assert
-    expect(reloaded).not.toBeNull()
-    expect(reloaded!._meta_.appliedMigrations).toEqual(migrated!._meta_.appliedMigrations)
+    expect(reloaded._meta_.appliedMigrations).toEqual(migrated._meta_.appliedMigrations)
   })
 
   it("normalises an old-format character into the current CharacterSheet shape", async () => {
     // Arrange — save the old-format character into fresh storage
-    const { manager: freshManager, provider: freshProvider } = makeManager()
-    await freshProvider.saveJsonFile(
-      `characters/${TEST_OLD_FORMAT_CHARACTER_ID}.json`,
-      characterV0,
+    const { manager: freshManager, storage: freshStorage } = makeManager()
+    await freshStorage.setJson(
+      `characters/${TEST_OLD_FORMAT_CHARACTER_ID}`,
+      characterV0 as unknown as JsonValue,
     )
 
     // Act
     const migrated = await freshManager.getCharacter(TEST_OLD_FORMAT_CHARACTER_ID)
 
     // Assert — character loaded without error
-    expect(migrated).not.toBeNull()
 
     // id migrated from characterId
-    expect(migrated!.id).toBe(TEST_OLD_FORMAT_CHARACTER_ID)
+    expect(migrated.id).toBe(TEST_OLD_FORMAT_CHARACTER_ID)
 
     // profile/biology populated from flat fields
-    expect(migrated!.profile.alias).toBe("Blur")
-    expect(migrated!.profile.name).toBe("Long")
-    expect(migrated!.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
-    expect(migrated!.biology.metatype).toBe("Human")
-    expect(migrated!.biology.awakening).toBe("Mystic Adept")
-    expect(migrated!.biology.age).toBe(0)
+    expect(migrated.profile.alias).toBe("Blur")
+    expect(migrated.profile.name).toBe("Long")
+    expect(migrated.profile.lifestyle).toEqual({ quality: "Low", monthsPaid: 3 })
+    expect(migrated.biology.metatype).toBe("Human")
+    expect(migrated.biology.awakening).toBe("Mystic Adept")
+    expect(migrated.biology.age).toBe(0)
 
     // attributes are flat numbers
-    expect(migrated!.attributes.body).toBe(4)
-    expect(migrated!.attributes.agility).toBe(5)
-    expect(migrated!.attributes.magic).toBe(5)
-    expect(migrated!.attributes.essence).toBe(6)
+    expect(migrated.attributes.body).toBe(4)
+    expect(migrated.attributes.agility).toBe(5)
+    expect(migrated.attributes.magic).toBe(5)
+    expect(migrated.attributes.essence).toBe(6)
 
     // skill groups use `name` instead of `groupName`
-    expect(migrated!.skills.skillGroups).toHaveLength(1)
-    expect(migrated!.skills.skillGroups[0].name).toBe("Athletics")
-    expect(migrated!.skills.skillGroups[0].rating).toBe(2)
+    expect(migrated.skills.skillGroups).toHaveLength(1)
+    expect(migrated.skills.skillGroups[0].name).toBe("Athletics")
+    expect(migrated.skills.skillGroups[0].rating).toBe(2)
 
     // native language skill uses `"native"` rating
-    const english = migrated!.skills.languageSkills.find((s) => s.name === "English")
+    const english = migrated.skills.languageSkills.find((s) => s.name === "English")
     expect(english?.rating).toBe("native")
-    const sylvan = migrated!.skills.languageSkills.find((s) => s.name === "Sylvan")
+    const sylvan = migrated.skills.languageSkills.find((s) => s.name === "Sylvan")
     expect(sylvan?.rating).toBe(4)
 
     // spells promoted from awakened to top-level
-    expect(migrated!.spells).toHaveLength(2)
-    expect(migrated!.adeptPowers).toHaveLength(4)
-    expect(migrated!.complexForms).toHaveLength(0)
+    expect(migrated.spells).toHaveLength(2)
+    expect(migrated.adeptPowers).toHaveLength(4)
+    expect(migrated.complexForms).toHaveLength(0)
 
     // gear is a Record, empty items stripped, itemTypes normalised
-    const gearValues = Object.values(migrated!.gear)
+    const gearValues = Object.values(migrated.gear)
     const weapon = gearValues.find((item) => item.name === "SM-4")
     expect(weapon?.itemType).toBe("weapon")
     const device = gearValues.find((item) => item.name === "Contact Lenses 3")
@@ -173,17 +163,17 @@ describe("character migrations + yaml round-trip", () => {
     expect(vehicle?.itemType).toBe("vehicle")
 
     // license linked to SIN via parentId
-    const sin = migrated!.gear[TEST_OLD_FORMAT_SIN_ID]
+    const sin = migrated.gear[TEST_OLD_FORMAT_SIN_ID]
     expect(sin).toBeDefined()
     expect(sin.itemType).toBe("sin")
-    const license = migrated!.gear[TEST_OLD_FORMAT_LICENSE_ID]
+    const license = migrated.gear[TEST_OLD_FORMAT_LICENSE_ID]
     expect(license).toBeDefined()
     expect(license.itemType).toBe("license")
     expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
     expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
     // migration ID recorded
-    expect(migrated!._meta_.appliedMigrations).toContain("20250101")
+    expect(migrated._meta_.appliedMigrations).toContain("20250101")
   })
 
   it("imports blur.yaml (v0 export) via yamlToCharacterSheet into a valid CharacterSheet", () => {
