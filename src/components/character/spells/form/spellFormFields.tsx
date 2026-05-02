@@ -11,6 +11,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import {
   SpellCategory,
   SpellDamage,
+  SpellDrainBaseType,
   SpellDuration,
   SpellRange,
   SpellType,
@@ -76,16 +77,41 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
           )}
         </form.AppField>
 
+        <form.AppField name="drainBaseType">
+          {(field) => (
+            <field.SelectField
+              label="Drain Base"
+              options={[
+                { label: "Force ÷ 2", value: SpellDrainBaseType.Force },
+                { label: "Fixed Value", value: SpellDrainBaseType.Fixed },
+              ]}
+            />
+          )}
+        </form.AppField>
+
+        <form.Subscribe selector={(state) => state.values.drainBaseType}>
+          {(drainBaseType) => drainBaseType === SpellDrainBaseType.Fixed && (
+            <form.AppField name="drainBaseValue">
+              {(field) => (
+                <field.NumberField
+                  label="Drain Base Value"
+                  slotProps={{ htmlInput: { min: 1, step: 1 } }}
+                />
+              )}
+            </form.AppField>
+          )}
+        </form.Subscribe>
+
         <form.AppField name="drainValueMod">
           {(field) => (
             <field.NumberField
-              label="Drain Value"
+              label="Drain Modifier"
               slotProps={{
-                htmlInput: { min: 0, max: 4, step: 1 },
+                htmlInput: { min: -4, max: 4, step: 1 },
                 input: {
                   startAdornment: (
                     <InputAdornment position="start" sx={{ marginRight: 0.5 }}>
-                      (F ÷ 2) {field.state.value >= 0 ? "+" : ""}
+                      {field.state.value >= 0 ? "+" : ""}
                     </InputAdornment>
                   ),
                 },
