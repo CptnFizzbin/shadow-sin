@@ -11,17 +11,20 @@ import {
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
+const ephemeralRunNotes = new Map<string, string>()
+
 export const Route = createFileRoute("/$characterId/notes")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { characterId } = Route.useParams()
   const store = useCharacterSheetContext()
   const profile = useCharacterSheet((s) => s.profile)
 
   const [description, setDescription] = useState(profile.description ?? "")
   const [personality, setPersonality] = useState(profile.personality ?? "")
-  const [runNotes, setRunNotes] = useState("")
+  const [runNotes, setRunNotes] = useState(() => ephemeralRunNotes.get(characterId) ?? "")
 
   const handleDescriptionBlur = () => {
     store.setState(
@@ -42,7 +45,7 @@ function RouteComponent() {
   return (
     <Stack sx={{ gap: 2, height: "100%", flexGrow: 1, pb: 2 }}>
       <Stack sx={{ gap: 1 }}>
-        <SectionHeader>Background / Description</SectionHeader>
+        <SectionHeader id="description-label">Background / Description</SectionHeader>
         <TextField
           multiline
           minRows={4}
@@ -52,11 +55,12 @@ function RouteComponent() {
           onChange={(e) => setDescription(e.target.value)}
           onBlur={handleDescriptionBlur}
           fullWidth
+          slotProps={{ htmlInput: { "aria-labelledby": "description-label" } }}
         />
       </Stack>
 
       <Stack sx={{ gap: 1 }}>
-        <SectionHeader>Personality</SectionHeader>
+        <SectionHeader id="personality-label">Personality</SectionHeader>
         <TextField
           multiline
           minRows={3}
@@ -66,14 +70,15 @@ function RouteComponent() {
           onChange={(e) => setPersonality(e.target.value)}
           onBlur={handlePersonalityBlur}
           fullWidth
+          slotProps={{ htmlInput: { "aria-labelledby": "personality-label" } }}
         />
       </Stack>
 
       <Stack sx={{ gap: 1, height: "100%", flexGrow: 1 }}>
-        <SectionHeader>Run Notes</SectionHeader>
+        <SectionHeader id="run-notes-label">Run Notes</SectionHeader>
 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          Ephemeral session scratch pad. These notes are <strong>not</strong> saved to your character record and will be lost when you reload the page.
+          Ephemeral session scratch pad. These notes survive tab navigation but are <strong>not</strong> saved to your character record and will be lost when you reload the page.
         </Typography>
 
         <TextField
@@ -82,7 +87,11 @@ function RouteComponent() {
           variant="outlined"
           placeholder="Jot down session notes, NPC names, temporary status effects..."
           value={runNotes}
-          onChange={(e) => setRunNotes(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value
+            setRunNotes(val)
+            ephemeralRunNotes.set(characterId, val)
+          }}
           fullWidth
           sx={{
             "flexGrow": 1,
@@ -92,6 +101,7 @@ function RouteComponent() {
               height: "100%",
             },
           }}
+          slotProps={{ htmlInput: { "aria-labelledby": "run-notes-label" } }}
         />
       </Stack>
     </Stack>
