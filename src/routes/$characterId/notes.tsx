@@ -6,9 +6,10 @@ import { produce } from "immer"
 import { useEffect, useMemo, useState } from "react"
 
 import {
-  useCharacterSheet,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
+  selectCharacterProfile,
+  useCharacterSheetSelector,
+} from "#/components/character/sheet/characterSheet.selectors.ts"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 export const Route = createFileRoute("/$characterId/notes")({
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/$characterId/notes")({
 
 function RouteComponent() {
   const store = useCharacterSheetContext()
-  const profile = useCharacterSheet((s) => s.profile)
+  const profile = useCharacterSheetSelector(selectCharacterProfile)
 
   const [description, setDescription] = useState(profile.description ?? "")
   const [personality, setPersonality] = useState(profile.personality ?? "")

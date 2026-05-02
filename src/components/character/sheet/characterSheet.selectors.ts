@@ -23,6 +23,9 @@ export function useCharacterSheetSelector<T>(
   return useSelector(store, selector, { compare })
 }
 
+export const selectCharacterProfile: CharacterDataSelector<CharacterSheet["profile"]> = (state) =>
+  state.profile
+
 export const selectAwakeningType: CharacterDataSelector<AwakeningType> = (state) => {
   return state.biology.awakening
 }
