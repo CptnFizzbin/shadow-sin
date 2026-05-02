@@ -37,7 +37,7 @@ export const SpellViewerListItem: FC<SpellViewerListItemProps> = ({ spell, onCli
           <Typography sx={{ flexGrow: 1 }}>
             {spell.name}
           </Typography>
-          <DrainValue mod={spell.drainValueMod} />
+          <DrainValue spell={spell} />
         </Stack>
       </ButtonBase>
       {hasSustainableEffects && (
