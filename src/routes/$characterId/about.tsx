@@ -10,7 +10,6 @@ import { ExportCharacterButton } from "#/components/character/exportImport/expor
 import { ImportCurrentCharacterButton } from "#/components/character/exportImport/importCurrentCharacterButton.tsx"
 import { KarmaSection } from "#/components/character/karma/karmaSection.tsx"
 import { useProfileEditDialog } from "#/components/character/profile/profileEditDialog.tsx"
-import { ProfileSection } from "#/components/character/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/character/qualities/qualitiesViewerSection.tsx"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -47,8 +46,6 @@ function RouteComponent() {
         <ImportCurrentCharacterButton />
       </Stack>
 
-      <SectionHeader>Profile</SectionHeader>
-      <ProfileSection />
       <BiologySection />
 
       <Stack sx={{ gap: 1 }}>

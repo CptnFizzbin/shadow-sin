@@ -86,11 +86,11 @@ opening the builder.
 - [ ] Show vehicle condition monitor (body × 2 + damage boxes)
 - [ ] Link pilot skill dice pool for rigging calculations
 
-### 1f. Notes Page (`/$characterId/notes`) ⚠️ stub
+### 1f. Notes Page (`/$characterId/notes`) ✅ implemented
 
-- [ ] **Background / Description** free-text field (maps to `profile.description`)
-- [ ] **Personality** free-text field (maps to `profile.personality`)
-- [ ] Auto-save changes back to character store without requiring a separate save action
+- [x] **Background / Description** free-text field (maps to `profile.description`)
+- [x] **Personality** free-text field (maps to `profile.personality`)
+- [x] Auto-save changes back to character store (Updates on blur)
 - [x] **Run notes** free-text scratch pad — ephemeral session notes that are _not_ persisted to the character record
 
 ---

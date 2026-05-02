@@ -25,8 +25,6 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   const [alias, setAlias] = useState(profile.alias)
   const [name, setName] = useState(profile.name)
   const [archetype, setArchetype] = useState(profile.archetype ?? "")
-  const [description, setDescription] = useState(profile.description ?? "")
-  const [personality, setPersonality] = useState(profile.personality ?? "")
   const [gender, setGender] = useState(biology.gender ?? "")
   const [age, setAge] = useState(biology.age?.toString() ?? "")
   const [height, setHeight] = useState(biology.height ?? "")
@@ -38,8 +36,6 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
         prev.profile.alias = alias
         prev.profile.name = name
         prev.profile.archetype = archetype || undefined
-        prev.profile.description = description || undefined
-        prev.profile.personality = personality || undefined
         prev.biology.gender = gender || undefined
         prev.biology.age = age ? Number(age) : undefined
         prev.biology.height = height || undefined
@@ -81,26 +77,6 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
               size="small"
               value={archetype}
               onChange={(e) => setArchetype(e.target.value)}
-            />
-            <MuiTextField
-              label="Description"
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-              size="small"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <MuiTextField
-              label="Personality"
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-              size="small"
-              value={personality}
-              onChange={(e) => setPersonality(e.target.value)}
             />
           </Stack>
 
