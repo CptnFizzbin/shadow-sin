@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import Typography from "@mui/material/Typography"
+import { Debouncer } from "@tanstack/pacer"
 import { createFileRoute } from "@tanstack/react-router"
 import { produce } from "immer"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import {
   useCharacterSheet,
@@ -11,36 +11,68 @@ import {
 } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
-const ephemeralRunNotes = new Map<string, string>()
-
 export const Route = createFileRoute("/$characterId/notes")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { characterId } = Route.useParams()
   const store = useCharacterSheetContext()
   const profile = useCharacterSheet((s) => s.profile)
 
   const [description, setDescription] = useState(profile.description ?? "")
   const [personality, setPersonality] = useState(profile.personality ?? "")
-  const [runNotes, setRunNotes] = useState(() => ephemeralRunNotes.get(characterId) ?? "")
+  const [runNotes, setRunNotes] = useState(profile.runNotes ?? "")
 
-  const handleDescriptionBlur = () => {
-    store.setState(
-      produce((draft) => {
-        draft.profile.description = description || undefined
-      }),
-    )
-  }
+  const saveDescription = useMemo(
+    () =>
+      new Debouncer(
+        (value: string) =>
+          store.setState(
+            produce((draft) => {
+              draft.profile.description = value || undefined
+            }),
+          ),
+        { wait: 500 },
+      ),
+    [store],
+  )
 
-  const handlePersonalityBlur = () => {
-    store.setState(
-      produce((draft) => {
-        draft.profile.personality = personality || undefined
-      }),
-    )
-  }
+  const savePersonality = useMemo(
+    () =>
+      new Debouncer(
+        (value: string) =>
+          store.setState(
+            produce((draft) => {
+              draft.profile.personality = value || undefined
+            }),
+          ),
+        { wait: 500 },
+      ),
+    [store],
+  )
+
+  const saveRunNotes = useMemo(
+    () =>
+      new Debouncer(
+        (value: string) =>
+          store.setState(
+            produce((draft) => {
+              draft.profile.runNotes = value || undefined
+            }),
+          ),
+        { wait: 500 },
+      ),
+    [store],
+  )
+
+  useEffect(
+    () => () => {
+      saveDescription.flush()
+      savePersonality.flush()
+      saveRunNotes.flush()
+    },
+    [saveDescription, savePersonality, saveRunNotes],
+  )
 
   return (
     <Stack sx={{ height: "100%", flexGrow: 1 }}>
@@ -52,8 +84,11 @@ function RouteComponent() {
           variant="outlined"
           placeholder="Character background, appearance, and history..."
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          onBlur={handleDescriptionBlur}
+          onChange={(e) => {
+            setDescription(e.target.value)
+            saveDescription.maybeExecute(e.target.value)
+          }}
+          onBlur={() => saveDescription.flush()}
           fullWidth
           slotProps={{ htmlInput: { "aria-labelledby": "description-label" } }}
         />
@@ -67,8 +102,11 @@ function RouteComponent() {
           variant="outlined"
           placeholder="Character traits, quirks, and behavioral notes..."
           value={personality}
-          onChange={(e) => setPersonality(e.target.value)}
-          onBlur={handlePersonalityBlur}
+          onChange={(e) => {
+            setPersonality(e.target.value)
+            savePersonality.maybeExecute(e.target.value)
+          }}
+          onBlur={() => savePersonality.flush()}
           fullWidth
           slotProps={{ htmlInput: { "aria-labelledby": "personality-label" } }}
         />
@@ -77,10 +115,6 @@ function RouteComponent() {
       <Stack sx={{ flexGrow: 1 }}>
         <SectionHeader id="run-notes-label">Run Notes</SectionHeader>
 
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          Ephemeral session scratch pad. These notes survive tab navigation but are <strong>not</strong> saved to your character record and will be lost when you reload the page.
-        </Typography>
-
         <TextField
           multiline
           minRows={8}
@@ -88,10 +122,10 @@ function RouteComponent() {
           placeholder="Jot down session notes, NPC names, temporary status effects..."
           value={runNotes}
           onChange={(e) => {
-            const val = e.target.value
-            setRunNotes(val)
-            ephemeralRunNotes.set(characterId, val)
+            setRunNotes(e.target.value)
+            saveRunNotes.maybeExecute(e.target.value)
           }}
+          onBlur={() => saveRunNotes.flush()}
           fullWidth
           sx={{
             "flexGrow": 1,

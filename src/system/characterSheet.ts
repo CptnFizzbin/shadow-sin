@@ -56,6 +56,7 @@ export interface CharacterSheet {
 
     description?: string
     personality?: string
+    runNotes?: string
 
     lifestyle?: {
       quality: LifestyleType
