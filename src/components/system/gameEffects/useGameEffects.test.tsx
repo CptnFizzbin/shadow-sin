@@ -9,6 +9,7 @@ import { ItemType } from "#/system/itemType.ts"
 import {
   SpellCategory,
   SpellDamage,
+  SpellDrainBaseType,
   SpellDuration,
   SpellRange,
   SpellType,
@@ -108,6 +109,7 @@ describe("selectAllGameEffects", () => {
           range: SpellRange.Touch,
           damage: SpellDamage.Stun,
           category: SpellCategory.Health,
+          drainBaseType: SpellDrainBaseType.Force,
           drainValueMod: 0,
           dealsDamage: false,
           duration: SpellDuration.Sustained,
@@ -276,6 +278,7 @@ describe("selectGameEffectsByType", () => {
           range: SpellRange.Touch,
           damage: SpellDamage.Stun,
           category: SpellCategory.Health,
+          drainBaseType: SpellDrainBaseType.Force,
           drainValueMod: 0,
           dealsDamage: false,
           duration: SpellDuration.Sustained,
