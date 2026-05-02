@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import { Debouncer } from "@tanstack/pacer"
+import { debounce } from "@tanstack/pacer"
 import { createFileRoute } from "@tanstack/react-router"
 import { produce } from "immer"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 
 import {
   selectCharacterProfile,
