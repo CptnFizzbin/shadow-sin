@@ -25,54 +25,27 @@ function RouteComponent() {
   const [runNotes, setRunNotes] = useState(profile.runNotes ?? "")
 
   const saveDescription = useMemo(
-    () =>
-      new Debouncer(
-        (value: string) =>
-          store.setState(
-            produce((draft) => {
-              draft.profile.description = value || undefined
-            }),
-          ),
-        { wait: 500 },
-      ),
+    () => debounce(
+      (value: string) => store.setState(produce((draft) => { draft.profile.description = value || undefined })),
+      { wait: 300 },
+    ),
     [store],
   )
 
   const savePersonality = useMemo(
-    () =>
-      new Debouncer(
-        (value: string) =>
-          store.setState(
-            produce((draft) => {
-              draft.profile.personality = value || undefined
-            }),
-          ),
-        { wait: 500 },
-      ),
+    () => debounce(
+      (value: string) => store.setState(produce((draft) => { draft.profile.personality = value || undefined })),
+      { wait: 300 },
+    ),
     [store],
   )
 
   const saveRunNotes = useMemo(
-    () =>
-      new Debouncer(
-        (value: string) =>
-          store.setState(
-            produce((draft) => {
-              draft.profile.runNotes = value || undefined
-            }),
-          ),
-        { wait: 500 },
-      ),
+    () => debounce(
+      (value: string) => store.setState(produce((draft) => { draft.profile.runNotes = value || undefined })),
+      { wait: 300 },
+    ),
     [store],
-  )
-
-  useEffect(
-    () => () => {
-      saveDescription.flush()
-      savePersonality.flush()
-      saveRunNotes.flush()
-    },
-    [saveDescription, savePersonality, saveRunNotes],
   )
 
   return (
@@ -87,9 +60,8 @@ function RouteComponent() {
           value={description}
           onChange={(e) => {
             setDescription(e.target.value)
-            saveDescription.maybeExecute(e.target.value)
+            saveDescription(e.target.value)
           }}
-          onBlur={() => saveDescription.flush()}
           fullWidth
           slotProps={{ htmlInput: { "aria-labelledby": "description-label" } }}
         />
@@ -105,9 +77,8 @@ function RouteComponent() {
           value={personality}
           onChange={(e) => {
             setPersonality(e.target.value)
-            savePersonality.maybeExecute(e.target.value)
+            savePersonality(e.target.value)
           }}
-          onBlur={() => savePersonality.flush()}
           fullWidth
           slotProps={{ htmlInput: { "aria-labelledby": "personality-label" } }}
         />
@@ -115,7 +86,6 @@ function RouteComponent() {
 
       <Stack sx={{ flexGrow: 1 }}>
         <SectionHeader id="run-notes-label">Run Notes</SectionHeader>
-
         <TextField
           multiline
           minRows={8}
@@ -124,9 +94,8 @@ function RouteComponent() {
           value={runNotes}
           onChange={(e) => {
             setRunNotes(e.target.value)
-            saveRunNotes.maybeExecute(e.target.value)
+            saveRunNotes(e.target.value)
           }}
-          onBlur={() => saveRunNotes.flush()}
           fullWidth
           sx={{
             "flexGrow": 1,
