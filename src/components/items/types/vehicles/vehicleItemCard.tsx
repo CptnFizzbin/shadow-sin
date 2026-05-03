@@ -70,13 +70,14 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
-      {(attachments.length > 0 || onAddAttachment) && (
+      {onAddAttachment && (
+        <ItemCard.AddChildButton onClick={onAddAttachment}>
+          Add Attachment
+        </ItemCard.AddChildButton>
+      )}
+
+      {attachments.length > 0 && (
         <ItemCard.Children>
-          {onAddAttachment && (
-            <ItemCard.AddChildButton onClick={onAddAttachment}>
-              Add Attachment
-            </ItemCard.AddChildButton>
-          )}
           {attachments.map((attachment) => (
             <GenericItemCard
               key={attachment.id}

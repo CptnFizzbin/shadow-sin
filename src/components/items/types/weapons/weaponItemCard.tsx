@@ -86,13 +86,14 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
-      {(accessories.length > 0 || onAddAccessory) && (
+      {onAddAccessory && (
+        <ItemCard.AddChildButton onClick={onAddAccessory}>
+          Add Accessory
+        </ItemCard.AddChildButton>
+      )}
+
+      {accessories.length > 0 && (
         <ItemCard.Children>
-          {onAddAccessory && (
-            <ItemCard.AddChildButton onClick={onAddAccessory}>
-              Add Accessory
-            </ItemCard.AddChildButton>
-          )}
           {accessories.map((accessory) => (
             <GenericItemCard
               key={accessory.id}
