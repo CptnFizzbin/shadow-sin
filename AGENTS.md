@@ -143,7 +143,7 @@ checks entirely and hides real type incompatibilities.
   // ✅ — one explicit any in a named alias; no assertion at call sites
   export type AnyItemForm = AppFieldExtendedReactFormApi<any, …, GearSubmitMeta, any, any>
 
-  // ❌ — hides the incompatibility, breaks IDE navigation
+  // ❌ — hides the incompatibility
   form={form as unknown as ItemForm}
   ```
 
@@ -176,9 +176,13 @@ smallest region that clearly shows the new state. Attach the image as part of yo
 reviewers can quickly verify the visual result without running the app locally. Do not include screenshots in the git
 commit
 
-- Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`, `vs`) or in tiny local scopes where a longer name reduces clarity.
-- One React component per `.tsx` file. Every component — including small internal helpers — must have its own file. Do **not** define a second named component in the same file, even if it is only used by the component in that file.
-- Prefer functional React components using a named exported const with an explicit props interface (e.g. `export const Header: FC<Props> = ({ ... }) => { ... }`). Avoid class components and default anonymous exports.
+- Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of
+  `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`,
+  `vs`) or in tiny local scopes where a longer name reduces clarity.
+- One React component per `.tsx` file. Every component — including small internal helpers — must have its own file. Do *
+  *not** define a second named component in the same file, even if it is only used by the component in that file.
+- Prefer functional React components using a named exported const with an explicit props interface (e.g.
+  `export const Header: FC<Props> = ({ ... }) => { ... }`). Avoid class components and default anonymous exports.
 
 ## Formatting and tooling
 
@@ -188,8 +192,10 @@ commit
 
 ## TanStack Store patterns
 
-- **Store objects are stable** — do not re-create store instances on every render. Use `useMemo` or module-level singletons.
-- **Reactivity requires `useSelector`** — reading directly off a store instance (e.g. `store.state.foo`) gives a snapshot and will not trigger re-renders. Always use `useSelector(store, selector)` for reactive reads:
+- **Store objects are stable** — do not re-create store instances on every render. Use `useMemo` or module-level
+  singletons.
+- **Reactivity requires `useSelector`** — reading directly off a store instance (e.g. `store.state.foo`) gives a
+  snapshot and will not trigger re-renders. Always use `useSelector(store, selector)` for reactive reads:
   ```ts
   // ✅ reactive
   const max = useSelector(edgeStore, (state) => state.max)
@@ -201,44 +207,60 @@ commit
 
 ## MUI v9 CSS variables
 
-- `colorSchemeSelector: "data"` is active. Palette callbacks like `(t) => t.palette.background.paper` return static hex values, not CSS variables — they will not respond to theme/color-scheme changes.
+- `colorSchemeSelector: "data"` is active. Palette callbacks like `(t) => t.palette.background.paper` return static hex
+  values, not CSS variables — they will not respond to theme/color-scheme changes.
 - Use CSS variable strings directly for theme-responsive styles: `"var(--mui-palette-background-paper)"`.
 - For opacity tints use channel variables: `"rgba(var(--mui-palette-error-mainChannel) / 0.15)"`.
 
 ## Dialog patterns
 
-- Prefer inline `useState`-managed dialogs (open/closed state in the parent component) over `dialogApi` for dialogs that need access to `CharacterSheetProvider` or other React context, since `dialogApi` renders outside the provider tree.
-- Use `useConfirmDialog()` from `#/components/dialogs/confirmDialog.tsx` for confirmation prompts before destructive actions.
-- Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces consistent sizing and wires up `onClosed` automatically. See `docs/ui/dialog.md` for examples.
+- Prefer inline `useState`-managed dialogs (open/closed state in the parent component) over `dialogApi` for dialogs that
+  need access to `CharacterSheetProvider` or other React context, since `dialogApi` renders outside the provider tree.
+- Use `useConfirmDialog()` from `#/components/dialogs/confirmDialog.tsx` for confirmation prompts before destructive
+  actions.
+- Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces
+  consistent sizing and wires up `onClosed` automatically. See `docs/ui/dialog.md` for examples.
 
 ## TanStack Form
 
-- `defaultValues` are frozen at first mount — the form does not reset when props change. For dialogs that reuse a single mounted instance, add `key={item?.id ?? "new"}` to the dialog component element so it remounts (and re-initializes the form) when the target item changes.
-- When the form's `onSubmit` is wired to a button, wrap it: `onClick={() => form.handleSubmit()}` rather than `onClick={form.handleSubmit}` to avoid forwarding the click event.
+- `defaultValues` are frozen at first mount — the form does not reset when props change. For dialogs that reuse a single
+  mounted instance, add `key={item?.id ?? "new"}` to the dialog component element so it remounts (and re-initializes the
+  form) when the target item changes.
+- When the form's `onSubmit` is wired to a button, wrap it: `onClick={() => form.handleSubmit()}` rather than
+  `onClick={form.handleSubmit}` to avoid forwarding the click event.
+
+## Version control
+
+- The default branch is `origin/shadowrun-4e` — **not** `origin/main`
+- Do not commit or push — leave that to the user
 
 ## Fallow (codebase health)
 
-Use the `fallow` skill to audit dead code, duplication, and complexity. Always pass `--format json --quiet 2>/dev/null || true` to every command.
+Use the `fallow` skill to audit dead code, duplication, and complexity. Use the provided skill to run the full suite of
+checks and auto-fixes, then review the JSON output for any issues that need attention. Always run the dead code check
+after making changes to verify that no unused exports, files, or types were introduced or left behind.
 
 ```bash
 # Full health report
-yarn fallow --format json --quiet 2>/dev/null || true
+yarn fallow --format json
 
 # Dead code only (unused exports, files, types)
-yarn fallow dead-code --format json --quiet 2>/dev/null || true
+yarn fallow dead-code --format json
 
 # Code duplication
-yarn fallow dupes --format json --quiet 2>/dev/null || true
+yarn fallow dupes --format json
 
 # Complexity hotspots
-yarn fallow health --format json --quiet --hotspots 2>/dev/null || true
+yarn fallow health --format json
 
 # Preview what auto-fix would remove, then apply
-yarn fallow fix --dry-run --format json --quiet 2>/dev/null || true
-yarn fallow fix --yes --format json --quiet 2>/dev/null || true
+yarn fallow fix --dry-run --format json
+yarn fallow fix --yes --format json
 ```
 
 - **Always `--dry-run` before `fix`**, then `fix --yes` to apply (required in non-TTY agent environments)
-- **Always run `yarn fallow dead-code --format json --quiet 2>/dev/null || true` after making code changes** to verify that no dead code, unused exports, or unused types were introduced or left behind.
-- When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those findings have been resolved by the current change
+- **Always run `yarn fallow dead-code --format json` after making code changes** to verify
+  that no dead code, unused exports, or unused types were introduced or left behind.
+- When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those
+  findings have been resolved by the current change
 - See `.agents/skills/fallow/SKILL.md` for the full command reference
