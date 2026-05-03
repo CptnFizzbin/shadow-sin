@@ -95,7 +95,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
               <form.AppField name="drain.value">
                 {(field) => (
                   <field.CounterField
-                    label="Mod"
+                    label={drainType === SpellDrainType.Fixed ? "Value" : "Mod"}
                     min={drainType === SpellDrainType.Fixed ? 1 : -4}
                     max={drainType === SpellDrainType.Force ? 4 : undefined}
                   />
