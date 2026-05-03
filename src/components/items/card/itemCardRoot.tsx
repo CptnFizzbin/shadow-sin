@@ -61,7 +61,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
         <Stack
           direction="row"
           sx={{
-            alignItems: "baseline",
+            alignItems: "center",
             flexWrap: "wrap",
             width: "100%",
           }}

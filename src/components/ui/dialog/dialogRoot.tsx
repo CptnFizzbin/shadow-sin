@@ -1,6 +1,19 @@
 import type { DialogProps as MuiDialogProps } from "@mui/material/Dialog"
 import MuiDialog from "@mui/material/Dialog"
-import type { ReactNode } from "react"
+import Divider from "@mui/material/Divider"
+import Stack from "@mui/material/Stack"
+import type { FC, ReactElement, ReactNode } from "react"
+import { Children, isValidElement } from "react"
+
+import { DialogActions } from "./dialogActions.tsx"
+import { DialogContent } from "./dialogContent.tsx"
+import { DialogTitle } from "./dialogTitle.tsx"
+
+function isElementType<TProps>(type: FC<TProps>) {
+  return (item: ReactNode): item is ReactElement<TProps> => {
+    return isValidElement(item) && item.type === type
+  }
+}
 
 /**
  * Props for the compound `Dialog` root.
@@ -33,6 +46,12 @@ export const DialogRoot = ({
   fullScreen,
   children,
 }: DialogRootProps) => {
+  const childArray = Children.toArray(children)
+
+  const title = childArray.find(isElementType(DialogTitle))
+  const content = childArray.find(isElementType(DialogContent))
+  const actions = childArray.find(isElementType(DialogActions))
+
   const handleClose: MuiDialogProps["onClose"] = () => {
     onClose?.()
   }
@@ -46,7 +65,11 @@ export const DialogRoot = ({
       fullScreen={fullScreen}
       slotProps={{ transition: { onExited: onClosed } }}
     >
-      {children}
+      <Stack divider={<Divider />} sx={{ gap: 0 }}>
+        {title}
+        {content}
+        {actions}
+      </Stack>
     </MuiDialog>
   )
 }
