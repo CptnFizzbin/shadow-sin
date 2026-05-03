@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { SpellData } from "#/system/magic/spellData.ts"
-import { SpellCategory, SpellDamage, SpellDrainBaseType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
+import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
 
 import { computeDrainValue, formatDrainFormula } from "./spellDrainFormula.ts"
 
@@ -13,15 +13,14 @@ function makeForceSpell(drainValueMod: number): SpellData {
     range: SpellRange.LoS,
     damage: SpellDamage.Stun,
     category: SpellCategory.Combat,
-    drainBaseType: SpellDrainBaseType.Force,
-    drainValueMod,
+    drain: { type: SpellDrainType.Force, value: drainValueMod },
     dealsDamage: false,
     duration: SpellDuration.Instantaneous,
     voluntaryTargetsOnly: false,
   }
 }
 
-function makeFixedSpell(drainBaseValue: number, drainValueMod: number): SpellData {
+function makeFixedSpell(drainValue: number): SpellData {
   return {
     id: "00000000-0000-0000-0000-000000000002",
     name: "Test Curative Spell",
@@ -29,9 +28,7 @@ function makeFixedSpell(drainBaseValue: number, drainValueMod: number): SpellDat
     range: SpellRange.Touch,
     damage: SpellDamage.Stun,
     category: SpellCategory.Health,
-    drainBaseType: SpellDrainBaseType.Fixed,
-    drainBaseValue,
-    drainValueMod,
+    drain: { type: SpellDrainType.Fixed, value: drainValue },
     dealsDamage: false,
     duration: SpellDuration.Permanent,
     voluntaryTargetsOnly: true,
@@ -81,9 +78,9 @@ describe("formatDrainFormula", () => {
   })
 
   describe("fixed-base spells", () => {
-    it("returns just the base value when modifier is 0", () => {
+    it("returns the fixed value as a string", () => {
       // Arrange
-      const spell = makeFixedSpell(3, 0)
+      const spell = makeFixedSpell(3)
 
       // Act
       const result = formatDrainFormula(spell)
@@ -92,26 +89,18 @@ describe("formatDrainFormula", () => {
       expect(result).toBe("3")
     })
 
-    it("returns 'base+N' for positive modifiers", () => {
+    it("returns the fixed value regardless of its magnitude", () => {
       // Arrange
-      const spell = makeFixedSpell(5, 2)
+      const spellFive = makeFixedSpell(5)
+      const spellOne = makeFixedSpell(1)
 
       // Act
-      const result = formatDrainFormula(spell)
+      const resultFive = formatDrainFormula(spellFive)
+      const resultOne = formatDrainFormula(spellOne)
 
       // Assert
-      expect(result).toBe("5+2")
-    })
-
-    it("returns 'base-N' for negative modifiers", () => {
-      // Arrange
-      const spell = makeFixedSpell(5, -1)
-
-      // Act
-      const result = formatDrainFormula(spell)
-
-      // Assert
-      expect(result).toBe("5-1")
+      expect(resultFive).toBe("5")
+      expect(resultOne).toBe("1")
     })
   })
 })
@@ -170,9 +159,9 @@ describe("computeDrainValue", () => {
   })
 
   describe("fixed-base spells", () => {
-    it("uses the fixed base value regardless of force", () => {
+    it("uses the fixed drain value regardless of force", () => {
       // Arrange
-      const spell = makeFixedSpell(4, 0)
+      const spell = makeFixedSpell(4)
 
       // Act
       const atForce1 = computeDrainValue(1, spell)
@@ -183,31 +172,9 @@ describe("computeDrainValue", () => {
       expect(atForce12).toBe(4)
     })
 
-    it("adds the modifier to the fixed base", () => {
-      // Arrange
-      const spell = makeFixedSpell(4, 2)
-
-      // Act
-      const value = computeDrainValue(6, spell)
-
-      // Assert
-      expect(value).toBe(6)
-    })
-
-    it("subtracts a negative modifier from the fixed base", () => {
-      // Arrange
-      const spell = makeFixedSpell(4, -1)
-
-      // Act
-      const value = computeDrainValue(6, spell)
-
-      // Assert
-      expect(value).toBe(3)
-    })
-
     it("clamps the result to a minimum of 1", () => {
       // Arrange
-      const spell = makeFixedSpell(1, -4)
+      const spell = makeFixedSpell(1)
 
       // Act
       const value = computeDrainValue(6, spell)
