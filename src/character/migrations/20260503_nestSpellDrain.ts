@@ -12,13 +12,15 @@ const migration: CharacterMigration<{ spells?: OldSpell[] }> = {
   id: "20260503",
   up: produce((draft) => {
     if (!Array.isArray(draft.spells)) return
+
     for (const spell of draft.spells) {
       if (typeof spell.drain !== "undefined") continue
+
       const drainType = spell.drainBaseType ?? "Force"
-      const drainValue = drainType === "Fixed"
-        ? (spell.drainBaseValue ?? 0)
-        : (spell.drainValueMod ?? 0)
+      const drainValue = (spell.drainBaseValue ?? 0) + (spell.drainValueMod ?? 0)
+
       spell.drain = { type: drainType, value: drainValue }
+
       delete spell.drainBaseType
       delete spell.drainBaseValue
       delete spell.drainValueMod

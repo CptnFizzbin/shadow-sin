@@ -114,7 +114,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
               <Stack direction="row">
                 <ButtonGroup>
                   <ToggleButton
-                    value="voluntaryTargetsOnly"
+                    value="no"
                     selected={!dealsDmgfield.state.value}
                     onChange={() => dealsDmgfield.handleChange(false)}
                     size="small"
@@ -123,7 +123,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                     No
                   </ToggleButton>
                   <ToggleButton
-                    value="voluntaryTargetsOnly"
+                    value="yes"
                     selected={dealsDmgfield.state.value}
                     onChange={() => dealsDmgfield.handleChange(true)}
                     size="small"
@@ -156,7 +156,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
               <Label label="Voluntary Targets Only?" variant="text" />
               <ButtonGroup>
                 <ToggleButton
-                  value="voluntaryTargetsOnly"
+                  value="no"
                   selected={!field.state.value}
                   onChange={() => field.handleChange(false)}
                   size="small"
@@ -165,7 +165,7 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
                   No
                 </ToggleButton>
                 <ToggleButton
-                  value="voluntaryTargetsOnly"
+                  value="yes"
                   selected={field.state.value}
                   onChange={() => field.handleChange(true)}
                   size="small"

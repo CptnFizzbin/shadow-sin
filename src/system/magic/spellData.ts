@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
+import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export enum SpellType {
   Physical = "Physical",
@@ -75,19 +77,7 @@ export const SpellDataSchema = z.object({
   threshold: z.string().optional(),
   voluntaryTargetsOnly: z.boolean(),
   description: z.string().optional(),
-  source: z
-    .object({
-      book: z.string().min(1, "Source book is required"),
-      page: z.number().min(1, "Source page must be 1 or greater"),
-    })
-    .optional(),
-  effects: z
-    .object({
-      type: z.string(),
-      target: z.string().optional(),
-      value: z.number(),
-    })
-    .array()
-    .optional(),
+  source: SourceDataSchema.optional(),
+  effects: GameEffectDataSchema.array().optional(),
   sustained: z.boolean().optional(),
 }) satisfies z.ZodType<SpellData>
