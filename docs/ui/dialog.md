@@ -1,6 +1,6 @@
 # Dialog
 
-**Location:** `src/components/ui/dialog/dialog.tsx`  
+**Location:** `src/components/ui/dialog/dialog.tsx`
 **Import:** `import { Dialog } from "#/components/ui/dialog/dialog.tsx"`
 
 A compound modal dialog that wraps MUI's dialog family and enforces a
@@ -9,29 +9,29 @@ use `maxWidth` to control how wide they can grow.
 
 ## Slots
 
-| Slot | Description |
-|------|-------------|
-| `Dialog.Title` | Header line rendered above the content area |
+| Slot             | Description                                                       |
+|------------------|-------------------------------------------------------------------|
+| `Dialog.Title`   | Header line rendered above the content area                       |
 | `Dialog.Content` | Scrollable body; accepts a `dividers` prop to add separator lines |
-| `Dialog.Actions` | Footer row for action buttons |
+| `Dialog.Actions` | Footer row for action buttons                                     |
 
 ## Props
 
 ### `Dialog` (root)
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `open` | `boolean` | — | Whether the dialog is visible |
-| `onClose` | `(value?: TReturn) => void` | — | Called when the dialog should close (backdrop click, Escape key, or explicit button) |
-| `onClosed` | `() => void` | — | Called after the exit animation finishes — use this to unmount form state or run cleanup |
-| `maxWidth` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| false` | `"sm"` | Maximum width breakpoint |
-| `fullScreen` | `boolean` | — | Render the dialog full-screen (useful on narrow viewports) |
+| Prop         | Type                                            | Default | Description                                                                              |
+|--------------|-------------------------------------------------|---------|------------------------------------------------------------------------------------------|
+| `open`       | `boolean`                                       | —       | Whether the dialog is visible                                                            |
+| `onClose`    | `(value?: TReturn) => void`                     | —       | Called when the dialog should close (backdrop click, Escape key, or explicit button)     |
+| `onClosed`   | `() => void`                                    | —       | Called after the exit animation finishes — use this to unmount form state or run cleanup |
+| `maxWidth`   | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| false` | `"sm"`  | Maximum width breakpoint                                                                 |
+| `fullScreen` | `boolean`                                       | —       | Render the dialog full-screen (useful on narrow viewports)                               |
 
 ### `Dialog.Content`
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `dividers` | `boolean` | — | Add a top and bottom border to the content area |
+| Prop       | Type      | Default | Description                                     |
+|------------|-----------|---------|-------------------------------------------------|
+| `dividers` | `boolean` | —       | Add a top and bottom border to the content area |
 
 `Dialog.Title` and `Dialog.Actions` accept only `children`.
 

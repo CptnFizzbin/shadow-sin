@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
+import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export enum SpellType {
   Physical = "Physical",
@@ -33,7 +35,7 @@ export enum SpellDuration {
   Permanent = "Permanent",
 }
 
-export enum SpellDrainBaseType {
+export enum SpellDrainType {
   Force = "Force",
   Fixed = "Fixed",
 }
@@ -45,9 +47,10 @@ export interface SpellData {
   range: SpellRange
   damage: SpellDamage
   category: SpellCategory
-  drainBaseType: SpellDrainBaseType
-  drainBaseValue?: number
-  drainValueMod: number
+  drain: {
+    type: SpellDrainType
+    value: number
+  }
   dealsDamage: boolean
   duration: SpellDuration
   threshold?: string
@@ -65,35 +68,16 @@ export const SpellDataSchema = z.object({
   range: z.enum(SpellRange),
   damage: z.enum(SpellDamage),
   category: z.enum(SpellCategory),
-  drainBaseType: z.enum(SpellDrainBaseType),
-  drainBaseValue: z.number().int().min(1).optional(),
-  drainValueMod: z.number().int().min(-4).max(4),
+  drain: z.object({
+    type: z.enum(SpellDrainType),
+    value: z.number().int(),
+  }),
   dealsDamage: z.boolean(),
   duration: z.enum(SpellDuration),
   threshold: z.string().optional(),
   voluntaryTargetsOnly: z.boolean(),
   description: z.string().optional(),
-  source: z
-    .object({
-      book: z.string().min(1, "Source book is required"),
-      page: z.number().min(1, "Source page must be 1 or greater"),
-    })
-    .optional(),
-  effects: z
-    .object({
-      type: z.string(),
-      target: z.string().optional(),
-      value: z.number(),
-    })
-    .array()
-    .optional(),
+  source: SourceDataSchema.optional(),
+  effects: GameEffectDataSchema.array().optional(),
   sustained: z.boolean().optional(),
-}).superRefine((data, ctx) => {
-  if (data.drainBaseType === SpellDrainBaseType.Fixed && data.drainBaseValue === undefined) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "Drain base value is required when drain base type is Fixed",
-      path: ["drainBaseValue"],
-    })
-  }
 }) satisfies z.ZodType<SpellData>
