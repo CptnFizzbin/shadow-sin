@@ -18,6 +18,7 @@ import { makeCharacterSheet, makeCharacterSheetWrapper } from "#testUtils/render
 
 import {
   selectAllGameEffects,
+  selectAllGameEffectsWithSource,
   selectGameEffectsByType,
   useGameEffects,
 } from "./useGameEffects.ts"
@@ -218,6 +219,155 @@ describe("selectAllGameEffects", () => {
 
     // Assert
     expect(effects).toEqual([])
+  })
+
+  it("includes enabled temporary effects", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((s) => {
+      s.temporaryEffects = [
+        {
+          id: "tmp1",
+          label: "Team Coordination",
+          enabled: true,
+          type: GameEffectType.attrMod,
+          target: AttributeKey.body,
+          value: 2,
+        },
+      ]
+    })
+
+    // Act
+    const effects = selectAllGameEffects(sheet)
+
+    // Assert
+    expect(effects).toHaveLength(1)
+    expect(effects[0]).toMatchObject({ type: GameEffectType.attrMod, value: 2 })
+  })
+
+  it("excludes disabled temporary effects", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((s) => {
+      s.temporaryEffects = [
+        {
+          id: "tmp1",
+          label: "Disabled Bonus",
+          enabled: false,
+          type: GameEffectType.initiativeBonus,
+          value: 1,
+        },
+      ]
+    })
+
+    // Act
+    const effects = selectAllGameEffects(sheet)
+
+    // Assert
+    expect(effects).toEqual([])
+  })
+
+  it("handles a missing temporaryEffects field gracefully", () => {
+    // Arrange
+    const sheet = makeCharacterSheet()
+    // Simulate a pre-migration character that lacks temporaryEffects
+    const sheetWithoutField = { ...sheet, temporaryEffects: undefined }
+
+    // Act
+    const effects = selectAllGameEffects(sheetWithoutField)
+
+    // Assert
+    expect(effects).toEqual([])
+  })
+})
+
+// ---------------------------------------------------------------------------
+// selectAllGameEffectsWithSource
+// ---------------------------------------------------------------------------
+
+describe("selectAllGameEffectsWithSource", () => {
+  it("returns an empty array when no sources have effects", () => {
+    // Arrange
+    const sheet = makeCharacterSheet()
+
+    // Act
+    const entries = selectAllGameEffectsWithSource(sheet)
+
+    // Assert
+    expect(entries).toEqual([])
+  })
+
+  it("annotates quality effects with a Quality: prefix", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((s) => {
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "Analytical Mind",
+          type: "positive",
+          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
+        },
+      ]
+    })
+
+    // Act
+    const entries = selectAllGameEffectsWithSource(sheet)
+
+    // Assert
+    expect(entries).toHaveLength(1)
+    expect(entries[0].source).toBe("Quality: Analytical Mind")
+    expect(entries[0].temporaryEffectId).toBeUndefined()
+  })
+
+  it("includes all temporary effects regardless of enabled state", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((s) => {
+      s.temporaryEffects = [
+        {
+          id: "tmp1",
+          label: "Active Bonus",
+          enabled: true,
+          type: GameEffectType.attrMod,
+          target: AttributeKey.body,
+          value: 1,
+        },
+        {
+          id: "tmp2",
+          label: "Inactive Bonus",
+          enabled: false,
+          type: GameEffectType.initiativeBonus,
+          value: 2,
+        },
+      ]
+    })
+
+    // Act
+    const entries = selectAllGameEffectsWithSource(sheet)
+
+    // Assert
+    expect(entries).toHaveLength(2)
+    expect(entries.every((entry) => entry.temporaryEffectId !== undefined)).toBe(true)
+  })
+
+  it("annotates temporary effects with a Temporary: prefix and stores the id", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((s) => {
+      s.temporaryEffects = [
+        {
+          id: "tmp1",
+          label: "Team Sync",
+          enabled: true,
+          type: GameEffectType.attrMod,
+          target: AttributeKey.strength,
+          value: 1,
+        },
+      ]
+    })
+
+    // Act
+    const entries = selectAllGameEffectsWithSource(sheet)
+
+    // Assert
+    expect(entries[0].source).toBe("Temporary: Team Sync")
+    expect(entries[0].temporaryEffectId).toBe("tmp1")
   })
 })
 

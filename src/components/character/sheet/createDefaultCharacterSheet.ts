@@ -60,6 +60,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
   complexForms: [],
   sprites: [],
   contacts: [],
+  temporaryEffects: [],
 
   gear: {},
 

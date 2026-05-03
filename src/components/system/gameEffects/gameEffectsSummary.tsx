@@ -7,23 +7,9 @@ import { RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
-import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
+import { getEffectLabel } from "#/system/gameEffects/gameEffectLabel.ts"
 
 import { useGameEffectsDialog } from "./gameEffectsDialog.tsx"
-
-function getEffectLabel(effect: GameEffectData): string {
-  const typeOption = GameEffectTypeOptions.find((o) => o.value === effect.type)
-  const typeLabel = typeOption?.label ?? effect.type
-
-  const targetLabel = effect.target
-    ? typeOption?.targets?.find((t) => t.value === effect.target)?.label ?? effect.target
-    : undefined
-
-  const sign = effect.value >= 0 ? "+" : ""
-
-  const parts = [typeLabel, targetLabel, effect.subTarget].filter(Boolean)
-  return `${parts.join(" → ")} ${sign}${effect.value}`
-}
 
 interface GameEffectsSummaryProps {
   effects: GameEffectData[]

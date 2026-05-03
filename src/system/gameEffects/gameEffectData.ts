@@ -167,3 +167,26 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   ExtraInitiativeDiceSchema,
   PainToleranceSchema,
 ]) satisfies z.ZodType<GameEffectData>
+
+/**
+ * A temporary, user-managed game effect that can be toggled on/off without
+ * touching any gear item or quality. Lives on `CharacterSheet.temporaryEffects`.
+ */
+export interface TemporaryEffectData extends GameEffectData {
+  /** UUID used as a React key and for toggle/remove targeting. */
+  id: string
+  /** Short human-readable name shown in the UI, e.g. "Team Coordination". */
+  label: string
+  /** Whether the effect is currently contributing to dice pool calculations. */
+  enabled: boolean
+}
+
+export const TemporaryEffectDataSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  enabled: z.boolean(),
+  type: z.string(),
+  target: z.string().optional(),
+  subTarget: z.string().optional(),
+  value: z.number(),
+}) satisfies z.ZodType<TemporaryEffectData>

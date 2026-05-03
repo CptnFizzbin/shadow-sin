@@ -23,6 +23,7 @@ import {
 } from "#/components/system/damage/resistanceDicePools.tsx"
 import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
+import { TemporaryEffectsSection } from "#/components/system/gameEffects/temporaryEffectsSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -163,6 +164,7 @@ function RouteComponent() {
           </Grid>
         </Grid>
       </Grid>
+      <TemporaryEffectsSection />
     </Stack>
   )
 }

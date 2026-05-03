@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { EquippedWeaponsSection } from "#/components/items/types/weapons/equippedWeaponsSection.tsx"
+import { TemporaryEffectsSection } from "#/components/system/gameEffects/temporaryEffectsSection.tsx"
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
@@ -18,6 +19,7 @@ function RouteComponent() {
       <InitiativeSection />
       <Divider />
       <EquippedWeaponsSection />
+      <TemporaryEffectsSection />
     </Stack>
   )
 }
