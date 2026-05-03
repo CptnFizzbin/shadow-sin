@@ -2,7 +2,7 @@ import { migrationIds } from "#/character/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
-import { SpellCategory, SpellDamage, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
+import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
 import { SpiritType } from "#/system/magic/traditionData.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -80,7 +80,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Mana,
       range: SpellRange.LoS,
       damage: SpellDamage.Stun,
-      drainValueMod: -1,
+      drain: { type: SpellDrainType.Force, value: -1 },
       dealsDamage: true,
       duration: SpellDuration.Instantaneous,
       voluntaryTargetsOnly: false,
@@ -94,7 +94,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Physical,
       range: SpellRange.LoS,
       damage: SpellDamage.Physical,
-      drainValueMod: 0,
+      drain: { type: SpellDrainType.Force, value: 0 },
       dealsDamage: true,
       duration: SpellDuration.Instantaneous,
       voluntaryTargetsOnly: false,
@@ -107,7 +107,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Mana,
       range: SpellRange.LoS,
       damage: SpellDamage.Stun,
-      drainValueMod: 2,
+      drain: { type: SpellDrainType.Force, value: 2 },
       dealsDamage: false,
       duration: SpellDuration.Sustained,
       voluntaryTargetsOnly: false,
@@ -120,7 +120,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Mana,
       range: SpellRange.Touch,
       damage: SpellDamage.Stun,
-      drainValueMod: -4,
+      drain: { type: SpellDrainType.Force, value: -4 },
       dealsDamage: false,
       duration: SpellDuration.Permanent,
       voluntaryTargetsOnly: true,
@@ -134,7 +134,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Physical,
       range: SpellRange.LoS,
       damage: SpellDamage.Stun,
-      drainValueMod: -1,
+      drain: { type: SpellDrainType.Force, value: -1 },
       dealsDamage: false,
       duration: SpellDuration.Sustained,
       voluntaryTargetsOnly: true,
@@ -148,7 +148,7 @@ export const Hexen: CharacterSheet = {
       type: SpellType.Mana,
       range: SpellRange.LoS,
       damage: SpellDamage.Stun,
-      drainValueMod: 0,
+      drain: { type: SpellDrainType.Force, value: 0 },
       dealsDamage: false,
       duration: SpellDuration.Sustained,
       voluntaryTargetsOnly: false,

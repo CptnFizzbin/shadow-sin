@@ -60,7 +60,7 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
             <Grid size={1}>
               <Label label="Drain" variant="outlined" />
               <Typography sx={{ textAlign: "center" }}>
-                {formatDrainFormula(spell.drainValueMod)}
+                {formatDrainFormula(spell)}
               </Typography>
             </Grid>
           </Grid>

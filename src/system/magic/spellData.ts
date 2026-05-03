@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
+import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { SourceData } from "#/system/sourceData.ts"
+import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export enum SpellType {
   Physical = "Physical",
@@ -33,6 +35,11 @@ export enum SpellDuration {
   Permanent = "Permanent",
 }
 
+export enum SpellDrainType {
+  Force = "Force",
+  Fixed = "Fixed",
+}
+
 export interface SpellData {
   id: string
   name: string
@@ -40,7 +47,10 @@ export interface SpellData {
   range: SpellRange
   damage: SpellDamage
   category: SpellCategory
-  drainValueMod: number
+  drain: {
+    type: SpellDrainType
+    value: number
+  }
   dealsDamage: boolean
   duration: SpellDuration
   threshold?: string
@@ -58,25 +68,16 @@ export const SpellDataSchema = z.object({
   range: z.enum(SpellRange),
   damage: z.enum(SpellDamage),
   category: z.enum(SpellCategory),
-  drainValueMod: z.number().int().min(-4).max(4),
+  drain: z.object({
+    type: z.enum(SpellDrainType),
+    value: z.number().int(),
+  }),
   dealsDamage: z.boolean(),
   duration: z.enum(SpellDuration),
   threshold: z.string().optional(),
   voluntaryTargetsOnly: z.boolean(),
   description: z.string().optional(),
-  source: z
-    .object({
-      book: z.string().min(1, "Source book is required"),
-      page: z.number().min(1, "Source page must be 1 or greater"),
-    })
-    .optional(),
-  effects: z
-    .object({
-      type: z.string(),
-      target: z.string().optional(),
-      value: z.number(),
-    })
-    .array()
-    .optional(),
+  source: SourceDataSchema.optional(),
+  effects: GameEffectDataSchema.array().optional(),
   sustained: z.boolean().optional(),
 }) satisfies z.ZodType<SpellData>
