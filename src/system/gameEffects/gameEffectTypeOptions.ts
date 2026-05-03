@@ -55,8 +55,19 @@ export const GameEffectTypeOptions: GameEffectOption[] = [
     value: GameEffectType.recoilReduction,
   },
   {
-    label: "Pain Tolerance",
-    value: GameEffectType.painTolerance,
+    label: "High Pain Tolerance",
+    value: GameEffectType.highPainTolerance,
+    targets: [
+      { value: "all", label: "All" },
+      ...Object.values(DamageTrackKey).map((track) => ({
+        value: track,
+        label: track,
+      })),
+    ],
+  },
+  {
+    label: "Low Pain Tolerance",
+    value: GameEffectType.lowPainTolerance,
     targets: [
       { value: "all", label: "All" },
       ...Object.values(DamageTrackKey).map((track) => ({

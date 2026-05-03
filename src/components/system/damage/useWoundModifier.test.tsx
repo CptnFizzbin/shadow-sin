@@ -69,7 +69,7 @@ describe("useWoundModifier", () => {
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: -1 },
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
           ],
         },
       ]
@@ -84,8 +84,8 @@ describe("useWoundModifier", () => {
     expect(result.current).toBe(2)
   })
 
-  it("applies 4 boxes per wound step with High Pain Tolerance (+1) on stun", () => {
-    // Arrange — 4 stun damage, interval 4 → floor(4/4) = 1 wound step
+  it("offsets damage by HPT rating before dividing (stun, rating 1)", () => {
+    // Arrange — 4 stun damage, HPT rating 1 → floor((4-1)/3) = floor(1) = 1 wound step
     const sheet = makeSheet((s) => {
       s.damage.stun = 4
       s.qualities = [
@@ -94,7 +94,7 @@ describe("useWoundModifier", () => {
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.stun, value: 1 },
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.stun, value: 1 },
           ],
         },
       ]
@@ -109,8 +109,8 @@ describe("useWoundModifier", () => {
     expect(result.current).toBe(1)
   })
 
-  it("applies an 'all' target pain tolerance effect to both physical and stun tracks", () => {
-    // Arrange — 4 physical + 4 stun, interval 4 → floor(4/4) + floor(4/4) = 2
+  it("applies HPT offset to both tracks when target is 'all'", () => {
+    // Arrange — 4 physical + 4 stun, HPT rating 1 'all' → floor(3/3) + floor(3/3) = 2
     const sheet = makeSheet((s) => {
       s.damage.physical = 4
       s.damage.stun = 4
@@ -120,7 +120,7 @@ describe("useWoundModifier", () => {
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
-            { type: GameEffectType.painTolerance, target: "all", value: 1 },
+            { type: GameEffectType.highPainTolerance, target: "all", value: 1 },
           ],
         },
       ]
@@ -135,14 +135,14 @@ describe("useWoundModifier", () => {
     expect(result.current).toBe(2)
   })
 
-  it("counts pain tolerance from equipped gear", () => {
-    // Arrange — 6 physical damage, interval 4 via equipped gear → floor(6/4) = 1
+  it("counts HPT offset from equipped gear", () => {
+    // Arrange — 6 physical damage, HPT rating 1 from gear → floor((6-1)/3) = floor(5/3) = 1
     const [painBlocker] = createItem({
       name: "Pain Editor",
       itemType: ItemType.implant,
       equipped: true,
       effects: [
-        { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
+        { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
     const sheet = makeSheet((s) => {
@@ -159,14 +159,14 @@ describe("useWoundModifier", () => {
     expect(result.current).toBe(1)
   })
 
-  it("does not count pain tolerance from unequipped gear", () => {
-    // Arrange — 6 physical damage, interval stays 3 (unequipped) → floor(6/3) = 2
+  it("does not count HPT offset from unequipped gear", () => {
+    // Arrange — 6 physical damage, gear not equipped → floor(6/3) = 2
     const [painBlocker] = createItem({
       name: "Pain Editor",
       itemType: ItemType.implant,
       equipped: false,
       effects: [
-        { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
+        { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
     const sheet = makeSheet((s) => {
@@ -183,13 +183,13 @@ describe("useWoundModifier", () => {
     expect(result.current).toBe(2)
   })
 
-  it("accumulates multiple pain tolerance effects from different sources", () => {
-    // Arrange — +1 quality +1 gear → interval 5; 5 physical → floor(5/5) = 1
+  it("accumulates HPT offsets from multiple sources", () => {
+    // Arrange — HPT +1 quality + HPT +1 gear = offset 2; 5 physical → floor((5-2)/3) = floor(1) = 1
     const [painBlocker] = createItem({
       name: "Pain Editor",
       itemType: ItemType.implant,
       effects: [
-        { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
+        { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
     })
     const sheet = makeSheet((s) => {
@@ -200,7 +200,7 @@ describe("useWoundModifier", () => {
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: 1 },
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
           ],
         },
       ]
@@ -214,5 +214,215 @@ describe("useWoundModifier", () => {
 
     // Assert
     expect(result.current).toBe(1)
+  })
+
+  // Diverging cases that prove the offset model differs from the old interval model
+
+  it("HPT rating 6, 7 physical boxes → wound mod 0 (floor(max(0,7-6)/3) = 0)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 7
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 6 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(0)
+  })
+
+  it("HPT rating 3, 6 physical boxes → wound mod 1 (floor((6-3)/3) = 1, not 2)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 6
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 3 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(1)
+  })
+
+  it("HPT rating 3, 3 physical boxes → wound mod 0 (offset consumes all damage)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 3
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 3 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(0)
+  })
+
+  it("HPT rating 1, 7 physical boxes → wound mod 2 (floor((7-1)/3) = 2)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 7
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(2)
+  })
+
+  it("HPT physical track only — stun damage is unchanged (HPT target=physical, 4 stun → floor(4/3) = 1)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.stun = 4
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 3 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(1)
+  })
+
+  it("LPT, 2 physical boxes → wound mod 1 (floor(2/2) = 1, interval = 2)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 2
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "Low Pain Tolerance",
+          type: "negative",
+          effects: [
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(1)
+  })
+
+  it("LPT, 4 physical boxes → wound mod 2 (floor(4/2) = 2)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 4
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "Low Pain Tolerance",
+          type: "negative",
+          effects: [
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(2)
+  })
+
+  it("HPT 2 + LPT on same track, 8 physical → wound mod 3 (floor((8-2)/2) = 3)", () => {
+    // Arrange
+    const sheet = makeSheet((s) => {
+      s.damage.physical = 8
+      s.qualities = [
+        {
+          id: NullUuid,
+          name: "High Pain Tolerance",
+          type: "positive",
+          effects: [
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 2 },
+          ],
+        },
+        {
+          id: NullUuid,
+          name: "Low Pain Tolerance",
+          type: "negative",
+          effects: [
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
+          ],
+        },
+      ]
+    })
+
+    // Act
+    const { result } = renderHook(() => useWoundModifier(), {
+      wrapper: makeWrapper(sheet),
+    })
+
+    // Assert
+    expect(result.current).toBe(3)
   })
 })
