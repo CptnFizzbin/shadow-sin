@@ -9,6 +9,7 @@ import type { FC } from "react"
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import { useTemporaryEffectsStore } from "#/components/character/temporaryEffects/useTemporaryEffectsStore.ts"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import type { TemporaryEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { getEffectLabel } from "#/system/gameEffects/gameEffectLabel.ts"
 
 import { selectAllGameEffectsWithSource } from "./useGameEffects.ts"
@@ -46,7 +47,8 @@ export const ActiveEffectsList: FC = () => {
       {effectsWithSource.map((entry, index) => {
         const isTemporary = entry.temporaryEffectId !== undefined
         const effectLabel = getEffectLabel(entry.effect)
-        const isEnabled = !isTemporary || (entry.effect as { enabled?: boolean }).enabled !== false
+        const temporaryEffect = isTemporary ? (entry.effect as TemporaryEffectData) : undefined
+        const isEnabled = temporaryEffect ? temporaryEffect.enabled : true
 
         return (
           <Stack

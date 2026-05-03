@@ -5,7 +5,7 @@ export type TemporaryEffectsStoreState = TemporaryEffectData[]
 
 export class TemporaryEffectsStore extends StoreSlice<TemporaryEffectsStoreState> {
   add(effect: TemporaryEffectData): void {
-    this.set((prev) => [...prev, { ...effect, id: effect.id || crypto.randomUUID() }])
+    this.set((prev) => [...prev, effect])
   }
 
   remove(id: string): void {
