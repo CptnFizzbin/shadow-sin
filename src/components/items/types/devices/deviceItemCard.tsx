@@ -99,13 +99,14 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
-      {(programs.length > 0 || onAddProgram) && (
+      {onAddProgram && (
+        <ItemCard.AddChildButton onClick={onAddProgram}>
+          Add Program
+        </ItemCard.AddChildButton>
+      )}
+
+      {programs.length > 0 && (
         <ItemCard.Children>
-          {onAddProgram && (
-            <ItemCard.AddChildButton onClick={onAddProgram}>
-              Add Program
-            </ItemCard.AddChildButton>
-          )}
           {programs.map((program) => (
             <ProgramItemCard
               key={program.id}
