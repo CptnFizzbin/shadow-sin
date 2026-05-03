@@ -32,8 +32,8 @@ describe("CharacterManager.listCharactersWithErrors", () => {
   it("surfaces an error entry for a character with a missing version", async () => {
     // Arrange
     const { manager: localManager, storage } = makeManager()
-    await storage.setJson("index", [{ id: "bad-id", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
-    await storage.setJson("characters/bad-id", {})
+    await storage.setItem("index", [{ id: "bad-id", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setItem("characters/bad-id", {})
 
     // Act
     const result = await localManager.listCharactersWithErrors()
@@ -47,8 +47,8 @@ describe("CharacterManager.listCharactersWithErrors", () => {
   it("surfaces an error entry for a character with an invalid version string", async () => {
     // Arrange
     const { manager: localManager, storage } = makeManager()
-    await storage.setJson("index", [{ id: "bad-version", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
-    await storage.setJson("characters/bad-version", { version: "foobar" })
+    await storage.setItem("index", [{ id: "bad-version", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setItem("characters/bad-version", { version: "foobar" })
 
     // Act
     const result = await localManager.listCharactersWithErrors()
@@ -61,8 +61,8 @@ describe("CharacterManager.listCharactersWithErrors", () => {
   it("does not crash listCharacters when one character is invalid", async () => {
     // Arrange
     const { manager: localManager, storage } = makeManager()
-    await storage.setJson("index", [{ id: "bad", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
-    await storage.setJson("characters/bad", {})
+    await storage.setItem("index", [{ id: "bad", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
+    await storage.setItem("characters/bad", {})
 
     // Act
     const characters = await localManager.listCharacters()

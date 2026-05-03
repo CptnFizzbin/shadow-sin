@@ -33,7 +33,7 @@ describe("character migrations + yaml round-trip", () => {
     const result = makeManager()
     manager = result.manager
     storage = result.storage
-    await storage.setJson(
+    await storage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
       toJsonValue(characterV1),
     )
@@ -61,7 +61,7 @@ describe("character migrations + yaml round-trip", () => {
     // Arrange — characterPost20260418 has 20250801–20260418 applied and a
     // loan with a known stable ID; only 20260419 should run
     const { manager: freshManager, storage: freshStorage } = makeManager()
-    await freshStorage.setJson(
+    await freshStorage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
       toJsonValue(characterV1),
     )
@@ -97,7 +97,7 @@ describe("character migrations + yaml round-trip", () => {
 
     // Save the restored (already-migrated) character into fresh storage
     const { manager: freshManager, storage: freshStorage } = makeManager()
-    await freshStorage.setJson(`characters/${restored.id}`, toJsonValue(restored))
+    await freshStorage.setItem(`characters/${restored.id}`, toJsonValue(restored))
 
     // Act — loading should not re-run any migrations
     const reloaded = await freshManager.getCharacter(restored.id)
@@ -109,7 +109,7 @@ describe("character migrations + yaml round-trip", () => {
   it("normalises an old-format character into the current CharacterSheet shape", async () => {
     // Arrange — save the old-format character into fresh storage
     const { manager: freshManager, storage: freshStorage } = makeManager()
-    await freshStorage.setJson(
+    await freshStorage.setItem(
       `characters/${TEST_OLD_FORMAT_CHARACTER_ID}`,
       toJsonValue(characterV0),
     )

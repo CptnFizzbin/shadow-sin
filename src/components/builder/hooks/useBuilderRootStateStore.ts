@@ -22,7 +22,7 @@ function getBuilderKey(characterId: string): string {
 }
 
 function useSavedBuilderState(storageKey: string): BuilderRootState | null {
-  const [promise] = useState(() => builderStorage.getJson<JsonValue>(storageKey).then((val) => val as BuilderRootState | null))
+  const [promise] = useState(() => builderStorage.getItem<JsonValue>(storageKey).then((val) => val as BuilderRootState | null))
   return use(promise)
 }
 
@@ -39,9 +39,7 @@ export const useBuilderRootStateStore = (
         startingNuyen: undefined,
       },
     }),
-    // character object reference is intentionally stable per mount (keyed by id in parent)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [character?.id],
+    [character],
   )
 
   const [store] = useState(
@@ -51,10 +49,9 @@ export const useBuilderRootStateStore = (
       ),
   )
 
-  // Persist state on every change
   useEffect(() => {
     const { unsubscribe } = store.subscribe((state) => {
-      void builderStorage.setJson(storageKey, toJsonValue(state))
+      void builderStorage.setItem(storageKey, toJsonValue(state))
     })
     return () => unsubscribe()
   }, [store, storageKey])

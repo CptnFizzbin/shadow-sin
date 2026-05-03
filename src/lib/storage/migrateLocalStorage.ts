@@ -1,18 +1,5 @@
 import type { JsonValue } from "./asyncStorage.ts"
 
-// Migrates characters stored by the old storage layer (pre-refactor) to the new key format.
-//
-// Old character key:   shadow-sin:json:characters/${id}.json
-// Old character value: { path: string, updatedAt: string, value: CharacterData }
-//
-// New character key:   shadowsin:characters/${id}
-// New character value: CharacterData (direct JSON)
-//
-// Old builder key:   shadow-sin:character-form:${id}
-// Old builder value: BuilderRootState (direct JSON)
-//
-// New builder key:   shadowsin:builder/character-form/${id}
-// New builder value: BuilderRootState (direct JSON)
 export function migrateOldLocalStorageFormat(ls: Storage): void {
   const oldCharacterPrefix = "shadow-sin:json:characters/"
   const oldCharacterSuffix = ".json"

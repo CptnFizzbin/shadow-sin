@@ -38,9 +38,6 @@ class MemoryAsyncStorage implements AsyncStorage {
   }
 }
 
-// Creates a fresh Map-backed AsyncJsonStorage instance. No CachedStorage wrapper needed.
-// Use in unit tests and anywhere no persistence is required.
-// Each call returns a new independent instance for test isolation.
 export function createMemoryStorage(): AsyncJsonStorage {
   return new JsonStorageAdapter(new MemoryAsyncStorage())
 }

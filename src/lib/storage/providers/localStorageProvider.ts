@@ -1,7 +1,7 @@
 import { milliseconds } from "date-fns"
 
 import type { AsyncJsonStorage, AsyncStorage } from "#/lib/storage/asyncStorage.ts"
-import { CachedStorage } from "#/lib/storage/cachedStorage.ts"
+import { CachedStorageAdaptor } from "#/lib/storage/cachedStorage.ts"
 import { JsonStorageAdapter } from "#/lib/storage/jsonStorageAdapter.ts"
 import { migrateOldLocalStorageFormat } from "#/lib/storage/migrateLocalStorage.ts"
 
@@ -43,15 +43,11 @@ class BrowserLocalStorage implements AsyncStorage {
 
 let _storage: AsyncJsonStorage | undefined
 
-// Wraps window.localStorage. Internally uses CachedStorage with:
-//   ttl: 30 seconds
-//   debounce: 5 seconds
-// Returns a singleton — getStorage() always returns the same instance.
 export const LocalStorageProvider = {
   getStorage(): AsyncJsonStorage {
     if (!_storage) {
       const raw = new BrowserLocalStorage()
-      const cached = new CachedStorage(raw, {
+      const cached = new CachedStorageAdaptor(raw, {
         ttlMs: milliseconds({ seconds: 30 }),
         debounceMs: milliseconds({ seconds: 5 }),
       })

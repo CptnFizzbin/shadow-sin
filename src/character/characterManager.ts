@@ -35,17 +35,14 @@ export class CharacterManager {
     this.saveDebounceWait = saveDebounceWait
   }
 
-  // Exposes the underlying AsyncJsonStorage for a given source name.
   public getSource(source: string): AsyncJsonStorage | undefined {
     return this.sources[source]
   }
 
-  // Saves the character to the source identified by character.id.
-  // Updates the "index" key on that source with id, name, and lastModified.
   public async saveCharacter(character: CharacterSheet): Promise<void> {
     const ref = parseCharacterId(character.id)
     const storage = this.requireSource(ref.source)
-    await storage.setJson(this.characterKey(character.id as UUID), toJsonValue(character))
+    await storage.setItem(this.characterKey(character.id as UUID), toJsonValue(character))
     await this.upsertIndex(ref.source, {
       id: character.id,
       name: character.profile.alias,
@@ -53,20 +50,14 @@ export class CharacterManager {
     })
   }
 
-  // Debounced save — writes to underlying storage after saveDebounceWait ms.
-  // Use for reactive auto-save subscriptions.
   public save(character: CharacterSheet): Promise<void> {
     return this.getOrCreateDebouncer(character.id).maybeExecute(character) as Promise<void>
   }
 
-  // Loads and migrates a character by CharacterId.
-  // Throws CharacterNotFoundError if missing.
-  // Accepts a plain UUID string and coerces it to a "local" CharacterId for
-  // backward-compatibility.
   public async getCharacter(id: CharacterId | CharacterRef): Promise<CharacterSheet> {
     const ref = typeof id === "object" ? id : parseCharacterId(id as CharacterId)
     const storage = this.requireSource(ref.source)
-    const raw = await storage.getJson<JsonValue>(this.characterKey(ref.id))
+    const raw = await storage.getItem<JsonValue>(this.characterKey(ref.id))
 
     if (raw === null) {
       throw new CharacterNotFoundError(String(id))
@@ -87,7 +78,6 @@ export class CharacterManager {
     return migrated
   }
 
-  // Like getCharacter, but returns null instead of throwing when the character is not found.
   public async findCharacter(id: CharacterId | CharacterRef): Promise<CharacterSheet | null> {
     try {
       return await this.getCharacter(id)
@@ -97,23 +87,18 @@ export class CharacterManager {
     }
   }
 
-  // Read the raw stored JSON for a character without running migrations.
   public getRawCharacter(characterId: string): Promise<JsonValue | null> {
     const ref = parseCharacterId(characterId)
     const storage = this.requireSource(ref.source)
-    return storage.getJson<JsonValue>(this.characterKey(ref.id))
+    return storage.getItem<JsonValue>(this.characterKey(ref.id))
   }
 
-  // Reads the "index" key from every registered source and merges the results.
-  // Returns [] if no index exists on any source.
   public async listCharacters(source?: string): Promise<SavedCharacter[]> {
     const sourceNames = source ? [source] : Object.keys(this.sources)
     const results = await Promise.all(sourceNames.map((name) => this.readIndex(name)))
     return results.flat()
   }
 
-  // Removes the character from its source storage and from that source's "index".
-  // Accepts a plain UUID string (coerced to "local") for backward-compatibility.
   public async deleteCharacter(id: CharacterId | CharacterRef): Promise<void> {
     const ref = typeof id === "object" ? id : parseCharacterId(id as CharacterId)
     const storage = this.requireSource(ref.source)
@@ -125,7 +110,6 @@ export class CharacterManager {
     await this.removeFromIndex(ref.source, String(ref.id))
   }
 
-  // Loads all characters with error tracking (for roster display).
   public async listCharactersWithErrors(): Promise<CharactersWithErrors> {
     const allSaved = await this.listCharacters()
     const results = await Promise.all(allSaved.map((saved) => this.loadCharacterSafe(saved.id)))
@@ -145,12 +129,11 @@ export class CharacterManager {
     return { characters, errors }
   }
 
-  // Ensures the given fixture characters exist in storage (seeds if missing).
   public async ensureCharacters(characters: CharacterSheet[]): Promise<CharactersWithErrors> {
     for (const character of characters) {
       const ref = parseCharacterId(character.id)
       const storage = this.requireSource(ref.source)
-      const existing = await storage.getJson(this.characterKey(ref.id))
+      const existing = await storage.getItem(this.characterKey(ref.id))
       if (!existing) {
         await this.saveCharacter(character)
       }
@@ -172,7 +155,7 @@ export class CharacterManager {
 
   private async readIndex(source: string): Promise<SavedCharacter[]> {
     const storage = this.requireSource(source)
-    const raw = await storage.getJson<JsonValue>("index")
+    const raw = await storage.getItem<JsonValue>("index")
     if (!raw) return []
     const result = CharacterIndexSchema.safeParse(raw)
     return result.success ? result.data : []
@@ -180,7 +163,7 @@ export class CharacterManager {
 
   private async writeIndex(source: string, index: SavedCharacter[]): Promise<void> {
     const storage = this.requireSource(source)
-    await storage.setJson("index", toJsonValue(index))
+    await storage.setItem("index", toJsonValue(index))
   }
 
   private async upsertIndex(source: string, entry: SavedCharacter): Promise<void> {
