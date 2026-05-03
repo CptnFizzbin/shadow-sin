@@ -1,6 +1,5 @@
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
-import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import ToggleButton from "@mui/material/ToggleButton"
 import type { FC } from "react"
@@ -11,7 +10,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import {
   SpellCategory,
   SpellDamage,
-  SpellDrainBaseType,
+  SpellDrainType,
   SpellDuration,
   SpellRange,
   SpellType,
@@ -77,48 +76,34 @@ export const SpellFormFields: FC<SpellFormFieldsProps> = ({ form }) => {
           )}
         </form.AppField>
 
-        <form.AppField name="drainBaseType">
-          {(field) => (
-            <field.SelectField
-              label="Drain Base"
-              options={[
-                { label: "Force ÷ 2", value: SpellDrainBaseType.Force },
-                { label: "Fixed Value", value: SpellDrainBaseType.Fixed },
-              ]}
-            />
-          )}
-        </form.AppField>
+        <Stack direction="row" sx={{ alignItems: "flex-end" }}>
+          <form.AppField name="drain.type">
+            {(field) => (
+              <field.SelectField
+                label="Drain"
+                sx={{ flexGrow: 1 }}
+                options={[
+                  { label: "Force ÷ 2", value: SpellDrainType.Force },
+                  { label: "Fixed", value: SpellDrainType.Fixed },
+                ]}
+              />
+            )}
+          </form.AppField>
 
-        <form.Subscribe selector={(state) => state.values.drainBaseType}>
-          {(drainBaseType) => drainBaseType === SpellDrainBaseType.Fixed && (
-            <form.AppField name="drainBaseValue">
-              {(field) => (
-                <field.NumberField
-                  label="Drain Base Value"
-                  slotProps={{ htmlInput: { min: 1, step: 1 } }}
-                />
-              )}
-            </form.AppField>
-          )}
-        </form.Subscribe>
-
-        <form.AppField name="drainValueMod">
-          {(field) => (
-            <field.NumberField
-              label="Drain Modifier"
-              slotProps={{
-                htmlInput: { min: -4, max: 4, step: 1 },
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start" sx={{ marginRight: 0.5 }}>
-                      {field.state.value >= 0 ? "+" : ""}
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-          )}
-        </form.AppField>
+          <form.Subscribe selector={(state) => state.values.drain.type}>
+            {(drainType) => (
+              <form.AppField name="drain.value">
+                {(field) => (
+                  <field.CounterField
+                    label="Mod"
+                    min={drainType === SpellDrainType.Fixed ? 1 : -4}
+                    max={drainType === SpellDrainType.Force ? 4 : undefined}
+                  />
+                )}
+              </form.AppField>
+            )}
+          </form.Subscribe>
+        </Stack>
 
         <Divider />
 
