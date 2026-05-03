@@ -78,10 +78,30 @@ export interface ExtraInitiativeDiceEffect extends GameEffectData {
 }
 
 /**
- * Modifier for wound penalties (Pain Tolerance).
+ * @deprecated Use `HighPainToleranceEffect` or `LowPainToleranceEffect` instead.
+ * Retained only for parsing old character data before the 20260502 migration runs.
  */
 export interface PainToleranceEffect extends GameEffectData {
   type: GameEffectType.painTolerance
+  target: DamageTrackKey | "all"
+}
+
+/**
+ * High Pain Tolerance: ignore the first `value` boxes of damage on the target
+ * track when calculating wound modifiers. The wound interval is unchanged.
+ * `value` must be positive (equal to the quality rating).
+ */
+export interface HighPainToleranceEffect extends GameEffectData {
+  type: GameEffectType.highPainTolerance
+  target: DamageTrackKey | "all"
+}
+
+/**
+ * Low Pain Tolerance: shrinks the wound interval so wound penalties kick in
+ * sooner. `value` must be negative (–1 → interval becomes 2 instead of 3).
+ */
+export interface LowPainToleranceEffect extends GameEffectData {
+  type: GameEffectType.lowPainTolerance
   target: DamageTrackKey | "all"
 }
 
@@ -95,7 +115,10 @@ export type EffectByType = {
   [GameEffectType.initiativeBonus]: InitiativeBonusEffect
   [GameEffectType.extraInitiativePasses]: ExtraInitiativePassesEffect
   [GameEffectType.extraInitiativeDice]: ExtraInitiativeDiceEffect
+  /** @deprecated Use `highPainTolerance` or `lowPainTolerance` instead. */
   [GameEffectType.painTolerance]: PainToleranceEffect
+  [GameEffectType.highPainTolerance]: HighPainToleranceEffect
+  [GameEffectType.lowPainTolerance]: LowPainToleranceEffect
   [GameEffectType.recoilReduction]: RecoilReductionEffect
   [GameEffectType.dicePoolMod]: DicePoolModEffect
 }
@@ -147,8 +170,24 @@ const ExtraInitiativeDiceSchema = z.object({
   value: z.number(),
 })
 
+/**
+ * @deprecated Use `HighPainToleranceSchema` or `LowPainToleranceSchema` instead.
+ * Retained for parsing old character data before the 20260502 migration runs.
+ */
 const PainToleranceSchema = z.object({
   type: z.literal(GameEffectType.painTolerance),
+  target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
+  value: z.number(),
+})
+
+const HighPainToleranceSchema = z.object({
+  type: z.literal(GameEffectType.highPainTolerance),
+  target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
+  value: z.number(),
+})
+
+const LowPainToleranceSchema = z.object({
+  type: z.literal(GameEffectType.lowPainTolerance),
   target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
   value: z.number(),
 })
@@ -166,4 +205,6 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   ExtraInitiativePassesSchema,
   ExtraInitiativeDiceSchema,
   PainToleranceSchema,
+  HighPainToleranceSchema,
+  LowPainToleranceSchema,
 ]) satisfies z.ZodType<GameEffectData>

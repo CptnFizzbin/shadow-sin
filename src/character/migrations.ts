@@ -11,6 +11,7 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./migrations/20260423_addKarma.ts"),
   await import("./migrations/20260424_addSpiritsArray.ts"),
   await import("./migrations/20260425_addSpiritDamage.ts"),
+  await import("./migrations/20260502_splitPainToleranceEffects.ts"),
 ].map((module) => module.default)
 
 export const migrationIds: readonly string[] = migrations.map((m) => m.id)
