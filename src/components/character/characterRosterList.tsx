@@ -13,8 +13,8 @@ import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import type { CharacterLoadError } from "#/character/characterLoadError.ts"
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"
@@ -31,6 +31,7 @@ export default function CharacterRosterList({
   const navigate = useNavigate()
   const router = useRouter()
   const confirmDialog = useConfirmDialog()
+  const characterManager = useCharacterManager()
 
   const sortedCharacters = Object.values(characters).sort((a, b) =>
     a.profile.alias.localeCompare(b.profile.alias),
@@ -44,7 +45,7 @@ export default function CharacterRosterList({
   }
 
   const handleDeleteError = async (loadError: CharacterLoadError) => {
-    await localCharacterManager.deleteCharacter(loadError.characterId)
+    await characterManager.deleteCharacter(loadError.characterId)
     await router.invalidate()
   }
 
@@ -65,7 +66,7 @@ export default function CharacterRosterList({
     })
 
     if (confirmed) {
-      await localCharacterManager.deleteCharacter(character.id)
+      await characterManager.deleteCharacter(character.id)
       await router.invalidate()
     }
   }

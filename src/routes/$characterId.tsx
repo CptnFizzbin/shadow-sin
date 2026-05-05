@@ -5,6 +5,8 @@ import { RiDice6Line } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
+import { CharacterManager } from "#/character/characterManager.ts"
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 import { CharacterErrorRoute } from "#/components/character/characterErrorRoute.tsx"
 import { CharacterSheetNav } from "#/components/character/nav/characterSheetNav.tsx"
 import { useCharacterNav } from "#/components/character/nav/useCharacterNav.ts"
@@ -17,19 +19,17 @@ import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
+import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+
+// Module-level manager for use in loaders (outside React context)
+const loaderManager = new CharacterManager({ local: LocalStorageProvider.getStorage() })
 
 export const Route = createFileRoute("/$characterId")({
   component: CharacterRoute,
   errorComponent: CharacterErrorRoute,
   loader: async ({ params }): Promise<CharacterSheet> => {
-    const character = await localCharacterManager.getCharacter(params.characterId)
-
-    if (!character) {
-      throw new Error(`Character ${params.characterId} was not found.`)
-    }
-
+    const character = await loaderManager.getCharacter(params.characterId)
     return character
   },
 })
@@ -39,18 +39,19 @@ function CharacterRoute() {
   const store = useMemo(() => new CharacterSheetStore(character), [character])
   const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
   const characterDialogApi = useMemo(() => new DialogApi(), [])
+  const characterManager = useCharacterManager()
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
       try {
-        await localCharacterManager.save(sheet)
+        await characterManager.save(sheet)
       } catch (error) {
         console.error("Failed to save character sheet.", error)
       }
     })
 
     return () => unsubscribe()
-  }, [store])
+  }, [store, characterManager])
 
   return (
     <CharacterSheetProvider store={store}>

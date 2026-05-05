@@ -2,7 +2,7 @@ import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 import { useImportConflictDialog } from "./importConflictDialog.tsx"
@@ -15,15 +15,17 @@ interface ImportCharacterButtonProps {
 
 export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImported }) => {
   const importConflictDialog = useImportConflictDialog()
+  const characterManager = useCharacterManager()
 
   const handleParsed = async (character: CharacterSheet) => {
-    const existing = await localCharacterManager.getCharacter(character.id)
+    const existing = await characterManager.findCharacter(character.id)
+
     const characterToSave = existing
-      ? await resolveConflictedCharacter(character, existing, importConflictDialog)
+      ? await resolveConflictedCharacter(character, existing, importConflictDialog, characterManager)
       : character
 
     if (characterToSave !== null) {
-      await localCharacterManager.forceSave(characterToSave)
+      await characterManager.saveCharacter(characterToSave)
       await onImported?.()
     }
   }

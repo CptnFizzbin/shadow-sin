@@ -4,29 +4,30 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 import { Artemis } from "#/character/fixtures/artemis.ts"
 import { Hexen } from "#/character/fixtures/hexen.ts"
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 
 function ShadowSinDevtoolsPanel() {
   const router = useRouter()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
+  const characterManager = useCharacterManager()
 
   async function clearAllCharacters() {
-    const characters = await localCharacterManager.listCharacters()
+    const characters = await characterManager.listCharacters()
     await Promise.all(
-      Object.keys(characters).map((characterId) =>
-        localCharacterManager.deleteCharacter(characterId),
+      characters.map((savedChar) =>
+        characterManager.deleteCharacter(savedChar.id),
       ),
     )
     await router.invalidate({ sync: true })
-    setStatusMessage(`Cleared ${Object.keys(characters).length} character(s).`)
+    setStatusMessage(`Cleared ${characters.length} character(s).`)
   }
 
   async function reloadFixtureCharacters() {
     const fixtureCharacters = [Artemis, Hexen]
     for (const character of fixtureCharacters) {
-      await localCharacterManager.forceSave(character)
+      await characterManager.saveCharacter(character)
     }
     await router.invalidate({ sync: true })
     setStatusMessage(`Reloaded ${fixtureCharacters.length} fixture character(s).`)

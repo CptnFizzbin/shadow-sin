@@ -2982,6 +2982,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.11.19, dayjs@npm:^1.11.20":
   version: 1.11.20
   resolution: "dayjs@npm:1.11.20"
@@ -6063,6 +6070,7 @@ __metadata:
     "@vitest/ui": "npm:4.1.5"
     babel-plugin-react-compiler: "npm:^1.0.0"
     classnames: "npm:^2.5.1"
+    date-fns: "npm:4.1.0"
     dotenv: "npm:^17.4.2"
     eslint: "npm:^10.3.0"
     eslint-import-resolver-typescript: "npm:^4.4.4"
