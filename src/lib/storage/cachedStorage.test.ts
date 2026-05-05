@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { AsyncStorage } from "./asyncStorage.ts"
 import { CachedStorageAdaptor } from "./cachedStorage.ts"
+import { StorageView } from "./storageView.ts"
 
 const FIVE_SECONDS = 5_000
 
@@ -37,6 +38,10 @@ describe("CachedStorageAdaptor", () => {
       const { storage: backingStore } = makeTestAsyncStorage()
       const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
+
+      // Assert namespace() returns a StorageView, not a new CachedStorageAdaptor
+      expect(slice).toBeInstanceOf(StorageView)
+      expect(slice).not.toBeInstanceOf(CachedStorageAdaptor)
 
       // Act
       await slice.setItem("one", "from-slice")

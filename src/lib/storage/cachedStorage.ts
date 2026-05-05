@@ -2,6 +2,7 @@ import { Debouncer } from "@tanstack/pacer"
 import { milliseconds } from "date-fns"
 
 import type { AsyncStorage } from "./asyncStorage.ts"
+import { StorageView } from "./storageView.ts"
 
 export interface CachedStorageAdaptorOptions {
   ttlMs?: number
@@ -9,48 +10,28 @@ export interface CachedStorageAdaptorOptions {
 }
 
 interface CacheEntry {
-  value: string | null
-  fetchedAt: number
+  readonly value: string | null
+  fetchedAt: Date
   savePending: boolean
+  debouncer?: Debouncer<() => void>
 }
-
-interface FlushContext {
-  key: string
-  underlying: AsyncStorage
-}
-
-type FlushFn = (cacheKey: string) => void
 
 export class CachedStorageAdaptor implements AsyncStorage {
   private readonly cache: Map<string, CacheEntry>
-  private readonly debouncers: Map<string, Debouncer<FlushFn>>
-  private readonly flushContexts: Map<string, FlushContext>
   private readonly inFlight: Map<string, Promise<string | null>>
   private readonly ttlMs: number
   private readonly debounceMs: number
-  private readonly namespacePath: string
   private readonly underlying: AsyncStorage
 
   public constructor(
     storage: AsyncStorage,
     options?: CachedStorageAdaptorOptions,
-    sharedCache?: Map<string, CacheEntry>,
-    sharedDebouncers?: Map<string, Debouncer<FlushFn>>,
-    sharedFlushContexts?: Map<string, FlushContext>,
-    namespacePath?: string,
   ) {
     this.underlying = storage
     this.ttlMs = options?.ttlMs ?? milliseconds({ minutes: 5 })
     this.debounceMs = options?.debounceMs ?? milliseconds({ seconds: 30 })
-    this.cache = sharedCache ?? new Map()
-    this.debouncers = sharedDebouncers ?? new Map()
-    this.flushContexts = sharedFlushContexts ?? new Map()
+    this.cache = new Map()
     this.inFlight = new Map()
-    this.namespacePath = namespacePath ?? ""
-  }
-
-  private fullCacheKey(key: string): string {
-    return this.namespacePath ? `${this.namespacePath}/${key}` : key
   }
 
   public async hasKey(key: string): Promise<boolean> {
@@ -59,86 +40,62 @@ export class CachedStorageAdaptor implements AsyncStorage {
   }
 
   public getItem(key: string): Promise<string | null> {
-    const cacheKey = this.fullCacheKey(key)
-    const entry = this.cache.get(cacheKey)
+    const entry = this.cache.get(key)
 
     if (entry !== undefined) {
-      if (entry.savePending || Date.now() - entry.fetchedAt < this.ttlMs) {
+      if (entry.savePending || Date.now() - entry.fetchedAt.getTime() < this.ttlMs) {
         return Promise.resolve(entry.value)
       }
     }
 
-    let inFlight = this.inFlight.get(cacheKey)
+    let inFlight = this.inFlight.get(key)
     if (!inFlight) {
       inFlight = this.underlying.getItem(key).then((value) => {
-        const current = this.cache.get(cacheKey)
+        const current = this.cache.get(key)
         if (current === undefined || !current.savePending) {
-          this.cache.set(cacheKey, { value, fetchedAt: Date.now(), savePending: false })
+          this.cache.set(key, { value, fetchedAt: new Date(), savePending: false })
         }
-        this.inFlight.delete(cacheKey)
+        this.inFlight.delete(key)
         return value
       }).catch((error: unknown) => {
-        this.inFlight.delete(cacheKey)
+        this.inFlight.delete(key)
         throw error
       })
-      this.inFlight.set(cacheKey, inFlight)
+      this.inFlight.set(key, inFlight)
     }
 
     return inFlight
   }
 
   public setItem(key: string, value: string): Promise<void> {
-    const cacheKey = this.fullCacheKey(key)
-    this.cache.set(cacheKey, { value, fetchedAt: Date.now(), savePending: true })
-    this.flushContexts.set(cacheKey, { key, underlying: this.underlying })
-    this.debouncedFlush(cacheKey)
+    const existing = this.cache.get(key)
+    let debouncer = existing?.debouncer
+    if (!debouncer) {
+      debouncer = new Debouncer<() => void>(() => this.flushPendingWrite(key), { wait: this.debounceMs })
+    }
+    this.cache.set(key, { value, fetchedAt: new Date(), savePending: true, debouncer })
+    debouncer.maybeExecute()
     return Promise.resolve()
   }
 
   public async removeItem(key: string): Promise<void> {
-    const cacheKey = this.fullCacheKey(key)
-    this.debouncers.get(cacheKey)?.cancel()
-    this.flushContexts.delete(cacheKey)
-    this.cache.delete(cacheKey)
+    this.cache.get(key)?.debouncer?.cancel()
+    this.cache.delete(key)
     await this.underlying.removeItem(key)
   }
 
-  public namespace(ns: string): CachedStorageAdaptor {
-    const newPath = this.namespacePath ? `${this.namespacePath}/${ns}` : ns
-    const underlyingNamespaced = this.underlying.namespace(ns)
-    return new CachedStorageAdaptor(
-      underlyingNamespaced,
-      { ttlMs: this.ttlMs, debounceMs: this.debounceMs },
-      this.cache,
-      this.debouncers,
-      this.flushContexts,
-      newPath,
-    )
+  public namespace(ns: string): StorageView {
+    return new StorageView(this, ns)
   }
 
-  private debouncedFlush(cacheKey: string): void {
-    let debouncer = this.debouncers.get(cacheKey)
-    if (!debouncer) {
-      debouncer = new Debouncer<FlushFn>(
-        (ck) => this.flushPendingWrite(ck),
-        { wait: this.debounceMs },
-      )
-      this.debouncers.set(cacheKey, debouncer)
-    }
-    debouncer.maybeExecute(cacheKey)
-  }
+  private flushPendingWrite(key: string): void {
+    const entry = this.cache.get(key)
+    if (!entry?.savePending) return
 
-  private flushPendingWrite(cacheKey: string): void {
-    const entry = this.cache.get(cacheKey)
-    if (entry === undefined || !entry.savePending) return
-
-    const context = this.flushContexts.get(cacheKey)
-    if (!context) return
-
-    void context.underlying.setItem(context.key, entry.value!).then(() => {
-      const current = this.cache.get(cacheKey)
+    void this.underlying.setItem(key, entry.value!).then(() => {
+      const current = this.cache.get(key)
       if (current !== undefined && current.savePending && current.value === entry.value) {
-        this.cache.set(cacheKey, { value: entry.value, fetchedAt: Date.now(), savePending: false })
+        this.cache.set(key, { ...current, fetchedAt: new Date(), savePending: false })
       }
     })
   }
