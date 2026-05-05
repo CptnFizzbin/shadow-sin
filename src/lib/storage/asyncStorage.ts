@@ -22,8 +22,3 @@ export function toJsonValue(value: unknown): JsonValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- single escape hatch; callers stay assertion-free
   return value as any
 }
-
-export function fromJsonValue<T>(value: JsonValue): T {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- single escape hatch; callers stay assertion-free
-  return value as any
-}

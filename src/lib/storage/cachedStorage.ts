@@ -14,11 +14,17 @@ interface CacheEntry {
   savePending: boolean
 }
 
-type FlushFn = (key: string, cacheKey: string) => void
+interface FlushContext {
+  key: string
+  underlying: AsyncStorage
+}
+
+type FlushFn = (cacheKey: string) => void
 
 export class CachedStorageAdaptor implements AsyncStorage {
   private readonly cache: Map<string, CacheEntry>
   private readonly debouncers: Map<string, Debouncer<FlushFn>>
+  private readonly flushContexts: Map<string, FlushContext>
   private readonly inFlight: Map<string, Promise<string | null>>
   private readonly ttlMs: number
   private readonly debounceMs: number
@@ -30,6 +36,7 @@ export class CachedStorageAdaptor implements AsyncStorage {
     options?: CachedStorageAdaptorOptions,
     sharedCache?: Map<string, CacheEntry>,
     sharedDebouncers?: Map<string, Debouncer<FlushFn>>,
+    sharedFlushContexts?: Map<string, FlushContext>,
     namespacePath?: string,
   ) {
     this.underlying = storage
@@ -37,6 +44,7 @@ export class CachedStorageAdaptor implements AsyncStorage {
     this.debounceMs = options?.debounceMs ?? milliseconds({ seconds: 30 })
     this.cache = sharedCache ?? new Map()
     this.debouncers = sharedDebouncers ?? new Map()
+    this.flushContexts = sharedFlushContexts ?? new Map()
     this.inFlight = new Map()
     this.namespacePath = namespacePath ?? ""
   }
@@ -82,13 +90,15 @@ export class CachedStorageAdaptor implements AsyncStorage {
   public setItem(key: string, value: string): Promise<void> {
     const cacheKey = this.fullCacheKey(key)
     this.cache.set(cacheKey, { value, fetchedAt: Date.now(), savePending: true })
-    this.debouncedFlush(key, cacheKey)
+    this.flushContexts.set(cacheKey, { key, underlying: this.underlying })
+    this.debouncedFlush(cacheKey)
     return Promise.resolve()
   }
 
   public async removeItem(key: string): Promise<void> {
     const cacheKey = this.fullCacheKey(key)
     this.debouncers.get(cacheKey)?.cancel()
+    this.flushContexts.delete(cacheKey)
     this.cache.delete(cacheKey)
     await this.underlying.removeItem(key)
   }
@@ -101,27 +111,31 @@ export class CachedStorageAdaptor implements AsyncStorage {
       { ttlMs: this.ttlMs, debounceMs: this.debounceMs },
       this.cache,
       this.debouncers,
+      this.flushContexts,
       newPath,
     )
   }
 
-  private debouncedFlush(key: string, cacheKey: string): void {
+  private debouncedFlush(cacheKey: string): void {
     let debouncer = this.debouncers.get(cacheKey)
     if (!debouncer) {
       debouncer = new Debouncer<FlushFn>(
-        (k, ck) => this.flushPendingWrite(k, ck),
+        (ck) => this.flushPendingWrite(ck),
         { wait: this.debounceMs },
       )
       this.debouncers.set(cacheKey, debouncer)
     }
-    debouncer.maybeExecute(key, cacheKey)
+    debouncer.maybeExecute(cacheKey)
   }
 
-  private flushPendingWrite(key: string, cacheKey: string): void {
+  private flushPendingWrite(cacheKey: string): void {
     const entry = this.cache.get(cacheKey)
     if (entry === undefined || !entry.savePending) return
 
-    void this.underlying.setItem(key, entry.value!).then(() => {
+    const context = this.flushContexts.get(cacheKey)
+    if (!context) return
+
+    void context.underlying.setItem(context.key, entry.value!).then(() => {
       const current = this.cache.get(cacheKey)
       if (current !== undefined && current.savePending && current.value === entry.value) {
         this.cache.set(cacheKey, { value: entry.value, fetchedAt: Date.now(), savePending: false })

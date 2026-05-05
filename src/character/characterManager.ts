@@ -15,9 +15,6 @@ import type { SavedCharacter } from "./characterIndex.ts"
 import { CharacterIndexSchema } from "./characterIndex.ts"
 import type { CharacterLoadError } from "./characterLoadError.ts"
 
-export { CharacterMigrationError } from "#/lib/errors/characterMigrationError.ts"
-export { CharacterNotFoundError } from "#/lib/errors/characterNotFoundError.ts"
-
 interface CharactersWithErrors {
   characters: Record<string, CharacterSheet>
   errors: CharacterLoadError[]
@@ -33,10 +30,6 @@ export class CharacterManager {
   public constructor(sources: Record<string, AsyncJsonStorage>, saveDebounceWait = 0) {
     this.sources = sources
     this.saveDebounceWait = saveDebounceWait
-  }
-
-  public getSource(source: string): AsyncJsonStorage | undefined {
-    return this.sources[source]
   }
 
   public async saveCharacter(character: CharacterSheet): Promise<void> {
