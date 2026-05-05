@@ -19,39 +19,6 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )
 
-const FullWrapper: FC<PropsWithChildren> = ({ children }) => {
-  const store = useMemo(() => new CharacterSheetStore(createDefaultCharacterSheet()), [])
-  const dialogApi = useMemo(() => new DialogApi(), [])
-  return (
-    <ThemeProvider theme={theme}>
-      <DialogApiProvider dialogApi={dialogApi}>
-        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
-      </DialogApiProvider>
-    </ThemeProvider>
-  )
-}
-
-const BuilderWrapper: FC<PropsWithChildren> = ({ children }) => {
-  const rootStore = useMemo(
-    () =>
-      new Store<BuilderRootState>({
-        character: createDefaultCharacterSheet(),
-        builder: { startingNuyen: undefined },
-      }),
-    [],
-  )
-  const dialogApi = useMemo(() => new DialogApi(), [])
-  return (
-    <ThemeProvider theme={theme}>
-      <DialogApiProvider dialogApi={dialogApi}>
-        <CharacterBuilderStoreProvider rootStore={rootStore}>
-          {children}
-        </CharacterBuilderStoreProvider>
-      </DialogApiProvider>
-    </ThemeProvider>
-  )
-}
-
 export interface RenderWithProvidersOptions {
   /** Mutate the default `CharacterSheet` before the store is created. */
   updateCharacterSheet?: (characterSheet: CharacterSheet) => void
@@ -82,7 +49,7 @@ export function renderWithProviders(
     )
   }
 
-  return options ? render(element, { wrapper: Wrapper }) : render(element, { wrapper: FullWrapper })
+  return render(element, { wrapper: Wrapper })
 }
 
 export function renderInBuilder(
@@ -110,7 +77,7 @@ export function renderInBuilder(
     )
   }
 
-  return options ? render(element, { wrapper: Wrapper }) : render(element, { wrapper: BuilderWrapper })
+  return render(element, { wrapper: Wrapper })
 }
 
 /**

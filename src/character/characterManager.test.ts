@@ -1,21 +1,15 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
+import { makeTestCharacterManager } from "#testUtils/storage/makeTestCharacterManager.ts"
 
 import { CharacterManager } from "./characterManager.ts"
-
-function makeManager() {
-  const storage = createMemoryStorage()
-  const manager = new CharacterManager({ local: storage }, 0)
-  return { manager, storage }
-}
 
 describe("CharacterManager.listCharactersWithErrors", () => {
   let manager: CharacterManager
 
   beforeEach(() => {
-    manager = makeManager().manager
+    manager = makeTestCharacterManager().manager
   })
 
   it("returns an empty result when storage is empty", async () => {
@@ -31,7 +25,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 
   it("surfaces an error entry for a character with a missing version", async () => {
     // Arrange
-    const { manager: localManager, storage } = makeManager()
+    const { manager: localManager, storage } = makeTestCharacterManager()
     await storage.setItem("index", [{ id: "bad-id", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
     await storage.setItem("characters/bad-id", {})
 
@@ -46,7 +40,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 
   it("surfaces an error entry for a character with an invalid version string", async () => {
     // Arrange
-    const { manager: localManager, storage } = makeManager()
+    const { manager: localManager, storage } = makeTestCharacterManager()
     await storage.setItem("index", [{ id: "bad-version", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
     await storage.setItem("characters/bad-version", { version: "foobar" })
 
@@ -60,7 +54,7 @@ describe("CharacterManager.listCharactersWithErrors", () => {
 
   it("does not crash listCharacters when one character is invalid", async () => {
     // Arrange
-    const { manager: localManager, storage } = makeManager()
+    const { manager: localManager, storage } = makeTestCharacterManager()
     await storage.setItem("index", [{ id: "bad", name: "bad", lastModified: "2024-01-01T00:00:00.000Z" }])
     await storage.setItem("characters/bad", {})
 
@@ -79,7 +73,7 @@ describe("CharacterManager.saveCharacter / getCharacter", () => {
   let manager: CharacterManager
 
   beforeEach(() => {
-    manager = makeManager().manager
+    manager = makeTestCharacterManager().manager
   })
 
   it("persists the character so getCharacter returns it immediately after saveCharacter resolves", async () => {
@@ -107,7 +101,7 @@ describe("CharacterManager.saveCharacter / getCharacter", () => {
 describe("CharacterManager.listCharacters", () => {
   it("returns saved character metadata from the index", async () => {
     // Arrange
-    const { manager } = makeManager()
+    const { manager } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
 
     // Act
@@ -124,7 +118,7 @@ describe("CharacterManager.listCharacters", () => {
 describe("CharacterManager.deleteCharacter", () => {
   it("removes the character so subsequent getCharacter throws", async () => {
     // Arrange
-    const { manager } = makeManager()
+    const { manager } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
     await manager.saveCharacter(character)
 
@@ -139,7 +133,7 @@ describe("CharacterManager.deleteCharacter", () => {
 describe("CharacterManager.save (debounced)", () => {
   it("debounces rapid saves so only the last value is persisted to storage", async () => {
     // Arrange
-    const { manager: writingManager, storage } = makeManager()
+    const { manager: writingManager, storage } = makeTestCharacterManager()
     const character = { ...createDefaultCharacterSheet(), id: crypto.randomUUID() }
     const first = { ...character, profile: { ...character.profile, alias: "first" } }
     const second = { ...character, profile: { ...character.profile, alias: "second" } }
