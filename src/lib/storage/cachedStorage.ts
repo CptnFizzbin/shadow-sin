@@ -11,9 +11,9 @@ export interface CachedStorageAdaptorOptions {
 
 interface CacheEntry {
   readonly value: string | null
-  fetchedAt: Date
-  savePending: boolean
-  debouncer?: Debouncer<() => void>
+  readonly fetchedAt: Date
+  readonly savePending: boolean
+  readonly debouncer?: Debouncer<() => void>
 }
 
 export class CachedStorageAdaptor implements AsyncStorage {
@@ -96,6 +96,11 @@ export class CachedStorageAdaptor implements AsyncStorage {
       const current = this.cache.get(key)
       if (current !== undefined && current.savePending && current.value === entry.value) {
         this.cache.set(key, { ...current, fetchedAt: new Date(), savePending: false })
+      }
+    }).catch(() => {
+      const current = this.cache.get(key)
+      if (current !== undefined && current.savePending) {
+        this.cache.set(key, { ...current, savePending: false })
       }
     })
   }
