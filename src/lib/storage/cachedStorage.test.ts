@@ -5,21 +5,21 @@ import { CachedStorageAdaptor } from "./cachedStorage.ts"
 
 const FIVE_SECONDS = 5_000
 
-function makeRawStore(): { storage: AsyncStorage, getRaw: (key: string) => string | null } {
+function makeTestAsyncStorage(): { storage: AsyncStorage, getRaw: (key: string) => string | null } {
   const map = new Map<string, string>()
 
-  function makeAt(prefix: string): AsyncStorage {
+  function makeAtPrefix(prefix: string): AsyncStorage {
     const fullKey = (key: string): string => (prefix ? `${prefix}/${key}` : key)
     return {
       hasKey: (key) => Promise.resolve(map.has(fullKey(key))),
       getItem: (key) => Promise.resolve(map.get(fullKey(key)) ?? null),
       setItem: (key, value) => (map.set(fullKey(key), value), Promise.resolve()),
       removeItem: (key) => (map.delete(fullKey(key)), Promise.resolve()),
-      namespace: (ns) => makeAt(fullKey(ns)),
+      namespace: (ns) => makeAtPrefix(fullKey(ns)),
     }
   }
 
-  return { storage: makeAt(""), getRaw: (key) => map.get(key) ?? null }
+  return { storage: makeAtPrefix(""), getRaw: (key) => map.get(key) ?? null }
 }
 
 describe("CachedStorageAdaptor", () => {
@@ -34,8 +34,8 @@ describe("CachedStorageAdaptor", () => {
   describe("namespace cache sharing", () => {
     it("returns a StorageView when namespacing; writes through slice are immediately visible via root and vice versa", async () => {
       // Arrange
-      const { storage: rawStore } = makeRawStore()
-      const root = new CachedStorageAdaptor(rawStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const { storage: backingStore } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
 
       // Act
@@ -55,8 +55,8 @@ describe("CachedStorageAdaptor", () => {
 
     it("cross-namespace writes share the debounce timer; the most recent value is flushed to backing storage after the debounce period", () => {
       // Arrange
-      const { storage: rawStore, getRaw } = makeRawStore()
-      const root = new CachedStorageAdaptor(rawStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
 
       // Act — three writes to the same logical key, interleaved between root and slice
@@ -81,8 +81,8 @@ describe("CachedStorageAdaptor", () => {
 
     it("reads via root and slice return the most recent value from shared cache before and after flush", async () => {
       // Arrange
-      const { storage: rawStore } = makeRawStore()
-      const root = new CachedStorageAdaptor(rawStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const { storage: backingStore } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
 
       // Act
@@ -106,8 +106,8 @@ describe("CachedStorageAdaptor", () => {
 
     it("flushes correctly when the slice is the most recent writer", () => {
       // Arrange
-      const { storage: rawStore, getRaw } = makeRawStore()
-      const root = new CachedStorageAdaptor(rawStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
 
       // Act — root writes first, slice writes last
@@ -124,8 +124,8 @@ describe("CachedStorageAdaptor", () => {
 
     it("does not write to backing storage before the debounce period ends", () => {
       // Arrange
-      const { storage: rawStore, getRaw } = makeRawStore()
-      const root = new CachedStorageAdaptor(rawStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
       const slice = root.namespace("key")
 
       // Act
