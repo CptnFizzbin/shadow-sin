@@ -122,17 +122,19 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
-      <ItemCard.Children>
-        {onAddAccessory && (
-          <ItemCard.AddChildButton onClick={onAddAccessory}>
-            Add Accessory
-          </ItemCard.AddChildButton>
-        )}
+      {onAddAccessory && (
+        <ItemCard.AddChildButton onClick={onAddAccessory}>
+          Add Accessory
+        </ItemCard.AddChildButton>
+      )}
 
-        {accessories.map((accessory) => (
-          <ImplantItemCard key={accessory.id} implant={accessory} variant="borderless" />
-        ))}
-      </ItemCard.Children>
+      {accessories.length > 0 && (
+        <ItemCard.Children>
+          {accessories.map((accessory) => (
+            <ImplantItemCard key={accessory.id} implant={accessory} variant="borderless" />
+          ))}
+        </ItemCard.Children>
+      )}
     </ItemCard>
   )
 }

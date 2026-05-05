@@ -91,13 +91,14 @@ export const GenericItemCard: FC<GenericItemCardProps> = ({
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 
-      {(subItems.length > 0 || onAddSubItem) && (
+      {onAddSubItem && (
+        <ItemCard.AddChildButton onClick={onAddSubItem}>
+          Add sub-item
+        </ItemCard.AddChildButton>
+      )}
+
+      {subItems.length > 0 && (
         <ItemCard.Children>
-          {onAddSubItem && (
-            <ItemCard.AddChildButton onClick={onAddSubItem}>
-              Add sub-item
-            </ItemCard.AddChildButton>
-          )}
           {subItems.map((subItem) => (
             <GenericItemCard
               key={subItem.id}

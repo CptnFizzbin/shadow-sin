@@ -15,6 +15,7 @@ export const ItemCardChildren: FC<ItemCardChildrenProps> = ({ children }) => {
       sx={{
         gap: 0,
         padding: 0,
+        paddingLeft: 1,
         borderLeft: "4px solid",
         borderBottom: "1px solid",
         borderColor: "secondary.dark",
