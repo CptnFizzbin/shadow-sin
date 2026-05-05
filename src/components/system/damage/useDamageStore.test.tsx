@@ -60,7 +60,7 @@ describe("useDamageStore", () => {
           name: "Low Pain Tolerance",
           type: "negative",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: -1 },
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -1 },
           ],
         },
       ]
@@ -83,7 +83,7 @@ describe("useDamageStore", () => {
     expect(result.current.stunInterval).toBe(3)
   })
 
-  it("returns wound interval of 4 for stun with High Pain Tolerance (+1)", () => {
+  it("does not change the wound interval with High Pain Tolerance", () => {
     // Arrange
     const sheet = makeSheet((s) => {
       s.qualities = [
@@ -92,7 +92,7 @@ describe("useDamageStore", () => {
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.stun, value: 1 },
+            { type: GameEffectType.highPainTolerance, target: DamageTrackKey.stun, value: 1 },
           ],
         },
       ]
@@ -112,10 +112,10 @@ describe("useDamageStore", () => {
 
     // Assert
     expect(result.current.physicalInterval).toBe(3)
-    expect(result.current.stunInterval).toBe(4)
+    expect(result.current.stunInterval).toBe(3)
   })
 
-  it("returns wound interval of 4 for both tracks with 'all' target", () => {
+  it("does not change the wound interval for either track when High Pain Tolerance targets 'all'", () => {
     // Arrange
     const sheet = makeSheet((s) => {
       s.qualities = [
@@ -124,7 +124,7 @@ describe("useDamageStore", () => {
           name: "High Pain Tolerance",
           type: "positive",
           effects: [
-            { type: GameEffectType.painTolerance, target: "all", value: 1 },
+            { type: GameEffectType.highPainTolerance, target: "all", value: 1 },
           ],
         },
       ]
@@ -143,8 +143,8 @@ describe("useDamageStore", () => {
     )
 
     // Assert
-    expect(result.current.physicalInterval).toBe(4)
-    expect(result.current.stunInterval).toBe(4)
+    expect(result.current.physicalInterval).toBe(3)
+    expect(result.current.stunInterval).toBe(3)
   })
 
   it("clamps wound interval to a minimum of 1 for extreme negative pain tolerance", () => {
@@ -156,7 +156,7 @@ describe("useDamageStore", () => {
           name: "Extreme Pain Intolerance",
           type: "negative",
           effects: [
-            { type: GameEffectType.painTolerance, target: DamageTrackKey.physical, value: -10 },
+            { type: GameEffectType.lowPainTolerance, target: DamageTrackKey.physical, value: -10 },
           ],
         },
       ]

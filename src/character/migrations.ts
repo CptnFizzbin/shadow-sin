@@ -12,6 +12,7 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./migrations/20260424_addSpiritsArray.ts"),
   await import("./migrations/20260425_addSpiritDamage.ts"),
   await import("./migrations/20260502_addTemporaryEffects.ts"),
+  await import("./migrations/20260502_splitPainToleranceEffects.ts"),
   await import("./migrations/20260503_nestSpellDrain.ts"),
 ].map((module) => module.default)
 

@@ -7,5 +7,16 @@ export enum GameEffectType {
   skillSpecializationMod = "skillSpecializationMod",
   extraInitiativePasses = "extraInitiativePasses",
   extraInitiativeDice = "extraInitiativeDice",
+
+  /**
+   * @deprecated Use `highPainTolerance` or `lowPainTolerance` instead.
+   * Retained only for the 20260502 migration that converts existing records.
+   */
   painTolerance = "painTolerance",
+
+  /** Ignore the first `value` boxes of damage before calculating wound modifiers. */
+  highPainTolerance = "highPainTolerance",
+
+  /** Shrink the wound interval so wound penalties trigger sooner. `value` must be negative. */
+  lowPainTolerance = "lowPainTolerance",
 }

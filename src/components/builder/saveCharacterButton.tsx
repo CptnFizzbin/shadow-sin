@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
+import { useCharacterManager } from "#/character/characterManagerContext.tsx"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { localCharacterManager } from "#/lib/storage/localStorage/localCharacterManager.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { useAllAlerts } from "./alerts/hooks/useAllAlerts.ts"
@@ -12,6 +12,8 @@ import { useAllAlerts } from "./alerts/hooks/useAllAlerts.ts"
 export const SaveCharacterButton: FC = () => {
   const store = useCharacterSheetContext()
   const navigate = useNavigate()
+  const characterManager = useCharacterManager()
+
   const saveCharacter = useMutation({
     mutationFn: async () => {
       let character = store.get()
@@ -20,7 +22,7 @@ export const SaveCharacterButton: FC = () => {
         character = { ...character, id: crypto.randomUUID() }
       }
 
-      await localCharacterManager.forceSave(character)
+      await characterManager.saveCharacter(character)
       await navigate({ to: "/$characterId", params: { characterId: character.id } })
     },
   })

@@ -4,6 +4,7 @@ import { RouterProvider } from "@tanstack/react-router"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
+import { CharacterManagerProvider } from "./character/characterManagerContext.tsx"
 import { DialogApi } from "./components/dialogs/api/dialogApi.tsx"
 import { DialogApiProvider } from "./components/dialogs/api/dialogApiProvider.tsx"
 import TanStackQueryProvider from "./integrations/tanstackQuery/rootProvider.tsx"
@@ -22,10 +23,12 @@ createRoot(rootElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme} defaultMode="dark">
       <TanStackQueryProvider>
-        <DialogApiProvider dialogApi={dialogApi}>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </DialogApiProvider>
+        <CharacterManagerProvider>
+          <DialogApiProvider dialogApi={dialogApi}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </DialogApiProvider>
+        </CharacterManagerProvider>
       </TanStackQueryProvider>
     </ThemeProvider>
   </React.StrictMode>,
