@@ -9,10 +9,12 @@ import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
+import type { ItemOptionKey } from "./useItemOptions.ts"
+
 interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
-  initialOptions: Record<string, boolean>
+  initialOptions: Record<ItemOptionKey, boolean>
   forced: Record<string, boolean>
-  onChange: (updated: Record<string, boolean>) => void
+  onChange: (key: ItemOptionKey, value: boolean) => void
 }
 
 const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
@@ -22,18 +24,17 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   onChange,
 }) => {
   const [pendingUnfix, setPendingUnfix] = useState(false)
-  const [options, setOptions] = useState<Record<string, boolean>>(initialOptions)
+  const [options, setOptions] = useState<Record<ItemOptionKey, boolean>>(initialOptions)
   const confirmDialog = useConfirmDialog()
 
-  const set = (patch: Record<string, boolean>) => {
-    const updated = { ...options, ...patch }
-    setOptions(updated)
-    onChange(updated)
+  const set = (key: ItemOptionKey, value: boolean) => {
+    setOptions((prev) => ({ ...prev, [key]: value }))
+    onChange(key, value)
   }
 
   const handleFixedChange = async (checked: boolean) => {
     if (checked) {
-      set({ fixed: true })
+      set("fixed", true)
       return
     }
 
@@ -46,7 +47,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
     })
     setPendingUnfix(false)
     if (confirmed) {
-      set({ fixed: false })
+      set("fixed", false)
     }
   }
 
@@ -62,7 +63,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
               control={(
                 <Checkbox
                   checked={options["equipable"] ?? false}
-                  onChange={(e) => set({ equipable: e.target.checked })}
+                  onChange={(e) => set("equipable", e.target.checked)}
                 />
               )}
             />
@@ -74,7 +75,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
               control={(
                 <Checkbox
                   checked={options["hasRating"] ?? false}
-                  onChange={(e) => set({ hasRating: e.target.checked })}
+                  onChange={(e) => set("hasRating", e.target.checked)}
                 />
               )}
             />
@@ -86,7 +87,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
               control={(
                 <Checkbox
                   checked={options["multiple"] ?? false}
-                  onChange={(e) => set({ multiple: e.target.checked })}
+                  onChange={(e) => set("multiple", e.target.checked)}
                 />
               )}
             />
@@ -99,7 +100,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
               control={(
                 <Checkbox
                   checked={options["isSubItem"] ?? false}
-                  onChange={(e) => set({ isSubItem: e.target.checked })}
+                  onChange={(e) => set("isSubItem", e.target.checked)}
                 />
               )}
             />
@@ -126,7 +127,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
               control={(
                 <Checkbox
                   checked={options["hasEffects"] ?? false}
-                  onChange={(e) => set({ hasEffects: e.target.checked })}
+                  onChange={(e) => set("hasEffects", e.target.checked)}
                 />
               )}
             />

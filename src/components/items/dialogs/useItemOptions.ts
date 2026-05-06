@@ -82,32 +82,45 @@ export function initializeOptions(
 }
 
 /**
- * Clears form field values that became stale when their controlling option was
- * toggled off. Only falsey values are cleared — truthy values are preserved so
- * the data is still available if the user re-enables the option in the same session.
+ * Clears the form field that becomes stale when its controlling option is toggled
+ * off. Only a falsey value is cleared — a truthy value is preserved so the data
+ * is still available if the user re-enables the option in the same session.
  */
-function clearStaleOptionFields(
+function clearStaleOptionField(
   form: ItemForm,
-  previousOptions: Record<ItemOptionKey, boolean>,
-  updatedOptions: Record<ItemOptionKey, boolean>,
+  key: ItemOptionKey,
 ): void {
-  if (previousOptions.equipable && !updatedOptions.equipable && !form.state.values.equipped) {
-    form.setFieldValue("equipped", undefined)
-  }
-  if (previousOptions.hasRating && !updatedOptions.hasRating && !form.state.values.rating) {
-    form.setFieldValue("rating", undefined)
-  }
-  if (previousOptions.multiple && !updatedOptions.multiple && !form.state.values.quantity) {
-    form.setFieldValue("quantity", undefined)
-  }
-  if (previousOptions.isSubItem && !updatedOptions.isSubItem && !form.state.values.parentId) {
-    form.setFieldValue("parentId", undefined)
-  }
-  if (previousOptions.hasEffects && !updatedOptions.hasEffects) {
-    const currentEffects = form.state.values.effects
-    if (!currentEffects || currentEffects.length === 0) {
-      form.setFieldValue("effects", undefined)
+  switch (key) {
+    case "equipable":
+      if (!form.state.values.equipped) {
+        form.setFieldValue("equipped", undefined)
+      }
+      break
+    case "hasRating":
+      if (!form.state.values.rating) {
+        form.setFieldValue("rating", undefined)
+      }
+      break
+    case "multiple":
+      if (!form.state.values.quantity) {
+        form.setFieldValue("quantity", undefined)
+      }
+      break
+    case "isSubItem":
+      if (!form.state.values.parentId) {
+        form.setFieldValue("parentId", undefined)
+      }
+      break
+    case "hasEffects": {
+      const currentEffects = form.state.values.effects
+      if (!currentEffects || currentEffects.length === 0) {
+        form.setFieldValue("effects", undefined)
+      }
+      break
     }
+    default:
+      // No form field to clear for licenseRequired, licenseAlwaysShow, fixed
+      break
   }
 }
 
@@ -124,16 +137,18 @@ function clearStaleOptionFields(
 export function useItemOptions(
   form: ItemForm,
   defaults?: ItemOptionsDefaults,
-): [Record<ItemOptionKey, boolean>, (updated: Record<ItemOptionKey, boolean>) => void] {
+): [Record<ItemOptionKey, boolean>, (key: ItemOptionKey, value: boolean) => void] {
   const [options, setOptions] = useState<Record<ItemOptionKey, boolean>>(() => {
     const isEditMode = form.state.values.id !== NullUuid
     return initializeOptions(form.state.values, isEditMode, defaults)
   })
 
-  const handleOptionsChange = (updated: Record<ItemOptionKey, boolean>) => {
-    clearStaleOptionFields(form, options, updated)
-    setOptions(updated)
+  const handleOptionChange = (key: ItemOptionKey, value: boolean) => {
+    if (!value) {
+      clearStaleOptionField(form, key)
+    }
+    setOptions((prev) => ({ ...prev, [key]: value }))
   }
 
-  return [options, handleOptionsChange]
+  return [options, handleOptionChange]
 }
