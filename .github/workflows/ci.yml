@@ -115,7 +115,7 @@ jobs:
       - uses: ./.github/actions/setup-workspace
 
       - name: Run Fallow dead-code analysis
-        run: yarn fallow dead-code --format json
+        run: yarn fallow dead-code
 
   coverage:
     name: Coverage
