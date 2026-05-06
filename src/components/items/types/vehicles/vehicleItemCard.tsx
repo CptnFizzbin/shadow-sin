@@ -1,11 +1,9 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
@@ -33,7 +31,12 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
   const { availability, source } = vehicle
 
   return (
-    <ItemCard onClick={onEdit}>
+    <GearItemCard
+      availability={availability}
+      source={source}
+      onClick={onEdit}
+      onRemove={onRemove}
+    >
       <ItemCard.Title>{vehicle.name}</ItemCard.Title>
 
       {vehicle.cost !== undefined && (
@@ -50,25 +53,6 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
         <ItemStatChip label={`Bod: ${vehicle.body}`} />
         <ItemStatChip label={`Pilot: ${vehicle.pilot}`} />
       </ItemCard.Meta>
-
-      {availability && (
-        <ItemCard.Meta type="stat">
-          <AvailabilityChip
-            availability={availability}
-            color={availability.rating > GearMaxAvailability ? "warning" : undefined}
-          />
-        </ItemCard.Meta>
-      )}
-
-      {source && (
-        <ItemCard.Meta type="source">
-          <ItemStatChip label={`${source.book} p.${source.page}`} />
-        </ItemCard.Meta>
-      )}
-
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
-        <RiDeleteBin6Line size={16} />
-      </ItemCard.Action>
 
       {onAddAttachment && (
         <ItemCard.AddChildButton onClick={onAddAttachment}>
@@ -89,6 +73,6 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
           ))}
         </ItemCard.Children>
       )}
-    </ItemCard>
+    </GearItemCard>
   )
 }
