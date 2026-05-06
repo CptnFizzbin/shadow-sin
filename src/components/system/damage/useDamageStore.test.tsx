@@ -1,38 +1,19 @@
 import { useSelector } from "@tanstack/react-store"
 import { renderHook } from "@testing-library/react"
-import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { makeCharacterSheet, makeCharacterSheetWrapper } from "#testUtils/renderUtils.tsx"
 
 import { useDamageStore } from "./useDamageStore.ts"
-
-function makeWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
-  const store = new CharacterSheetStore(characterSheet)
-  const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
-  )
-  Wrapper.displayName = "TestWrapper"
-  return Wrapper
-}
-
-function makeSheet(overrides?: (sheet: CharacterSheet) => void): CharacterSheet {
-  const sheet = createDefaultCharacterSheet()
-  overrides?.(sheet)
-  return sheet
-}
 
 describe("useDamageStore", () => {
   it("returns default wound interval of 3 with no pain tolerance effects", () => {
     // Arrange
-    const sheet = makeSheet()
+    const sheet = makeCharacterSheet()
 
     // Act
     const { result } = renderHook(
@@ -43,7 +24,7 @@ describe("useDamageStore", () => {
           stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -53,7 +34,7 @@ describe("useDamageStore", () => {
 
   it("returns wound interval of 2 for physical with Low Pain Tolerance (-1)", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -75,7 +56,7 @@ describe("useDamageStore", () => {
           stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -85,7 +66,7 @@ describe("useDamageStore", () => {
 
   it("does not change the wound interval with High Pain Tolerance", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -107,7 +88,7 @@ describe("useDamageStore", () => {
           stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -117,7 +98,7 @@ describe("useDamageStore", () => {
 
   it("does not change the wound interval for either track when High Pain Tolerance targets 'all'", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -139,7 +120,7 @@ describe("useDamageStore", () => {
           stunInterval: useSelector(store, (s) => s.stun.woundInterval),
         }
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -149,7 +130,7 @@ describe("useDamageStore", () => {
 
   it("clamps wound interval to a minimum of 1 for extreme negative pain tolerance", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -168,7 +149,7 @@ describe("useDamageStore", () => {
         const store = useDamageStore()
         return useSelector(store, (s) => s.physical.woundInterval)
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -177,7 +158,7 @@ describe("useDamageStore", () => {
 
   it("computes physical max from body attribute", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.attributes[AttributeKey.body] = 4
     })
 
@@ -187,7 +168,7 @@ describe("useDamageStore", () => {
         const store = useDamageStore()
         return useSelector(store, (s) => s.physical.max)
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -196,7 +177,7 @@ describe("useDamageStore", () => {
 
   it("computes stun max from willpower attribute", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.attributes[AttributeKey.willpower] = 6
     })
 
@@ -206,7 +187,7 @@ describe("useDamageStore", () => {
         const store = useDamageStore()
         return useSelector(store, (s) => s.stun.max)
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert
@@ -215,7 +196,7 @@ describe("useDamageStore", () => {
 
   it("reflects current damage values", () => {
     // Arrange
-    const sheet = makeSheet((s) => {
+    const sheet = makeCharacterSheet((s) => {
       s.damage.physical = 5
       s.damage.stun = 2
     })
@@ -229,7 +210,7 @@ describe("useDamageStore", () => {
           stunCurrent: useSelector(store, (s) => s.stun.current),
         }
       },
-      { wrapper: makeWrapper(sheet) },
+      { wrapper: makeCharacterSheetWrapper(sheet) },
     )
 
     // Assert

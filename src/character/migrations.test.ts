@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
-import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -14,23 +13,16 @@ import {
   TEST_OLD_FORMAT_LICENSE_ID,
   TEST_OLD_FORMAT_SIN_ID,
 } from "#testUtils/fixtures/characters/characterSheets.ts"
+import { makeTestCharacterManager } from "#testUtils/storage/makeTestCharacterManager.ts"
 
-import { CharacterManager } from "./characterManager.ts"
-
-function makeManager(): {
-  manager: CharacterManager
-  storage: AsyncJsonStorage
-} {
-  const storage = createMemoryStorage()
-  return { manager: new CharacterManager({ local: storage }), storage }
-}
+import type { CharacterManager } from "./characterManager.ts"
 
 describe("character migrations + yaml round-trip", () => {
   let manager: CharacterManager
   let storage: AsyncJsonStorage
 
   beforeEach(async () => {
-    const result = makeManager()
+    const result = makeTestCharacterManager()
     manager = result.manager
     storage = result.storage
     await storage.setItem(
@@ -60,7 +52,7 @@ describe("character migrations + yaml round-trip", () => {
   it("does not re-run migrations already in appliedMigrations", async () => {
     // Arrange — characterPost20260418 has 20250801–20260418 applied and a
     // loan with a known stable ID; only 20260419 should run
-    const { manager: freshManager, storage: freshStorage } = makeManager()
+    const { manager: freshManager, storage: freshStorage } = makeTestCharacterManager()
     await freshStorage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
       toJsonValue(characterV1),
@@ -96,7 +88,7 @@ describe("character migrations + yaml round-trip", () => {
     const restored = yamlToCharacterSheet(yaml)
 
     // Save the restored (already-migrated) character into fresh storage
-    const { manager: freshManager, storage: freshStorage } = makeManager()
+    const { manager: freshManager, storage: freshStorage } = makeTestCharacterManager()
     await freshStorage.setItem(`characters/${restored.id}`, toJsonValue(restored))
 
     // Act — loading should not re-run any migrations
@@ -108,7 +100,7 @@ describe("character migrations + yaml round-trip", () => {
 
   it("normalises an old-format character into the current CharacterSheet shape", async () => {
     // Arrange — save the old-format character into fresh storage
-    const { manager: freshManager, storage: freshStorage } = makeManager()
+    const { manager: freshManager, storage: freshStorage } = makeTestCharacterManager()
     await freshStorage.setItem(
       `characters/${TEST_OLD_FORMAT_CHARACTER_ID}`,
       toJsonValue(characterV0),
