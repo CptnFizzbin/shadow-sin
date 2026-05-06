@@ -111,11 +111,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: ./.github/actions/setup-workspace
 
-      - name: Run Fallow dead-code analysis
-        run: yarn fallow dead-code
+      - name: Run Fallow health check
+        run: |
+          BASE="${{ github.base_ref }}"
+          if [ -n "$BASE" ]; then
+            git fetch origin "$BASE"
+            yarn fallow audit --changed-since "origin/$BASE" --format markdown | tee fallow-report.md
+          else
+            yarn fallow audit --format markdown | tee fallow-report.md
+          fi
+
+      - name: Upload Fallow report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fallow-report
+          path: fallow-report.md
+          retention-days: 30
 
   coverage:
     name: Coverage
