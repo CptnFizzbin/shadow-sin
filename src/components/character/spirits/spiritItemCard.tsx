@@ -14,6 +14,7 @@ import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
+import { CritterPowerChip } from "./critterPowerChip.tsx"
 import { SpiritConditionMonitor } from "./spiritConditionMonitor.tsx"
 
 const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
@@ -95,7 +96,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
             </Typography>
             <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
               {registry.basePowers.map((power) => (
-                <Chip key={power} label={power} size="small" variant="outlined" />
+                <CritterPowerChip key={power} name={power} />
               ))}
             </Stack>
           </Box>
@@ -106,7 +107,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               </Typography>
               <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
                 {spirit.optionalPowers.map((power) => (
-                  <Chip key={power} label={power} size="small" variant="outlined" color="secondary" />
+                  <CritterPowerChip key={power} name={power} color="secondary" />
                 ))}
               </Stack>
             </Box>
