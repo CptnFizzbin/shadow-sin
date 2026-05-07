@@ -1,12 +1,10 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { EquippedChip } from "#/components/items/equippedChip.tsx"
-import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
@@ -35,7 +33,12 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   const { availability, source } = weapon
 
   return (
-    <ItemCard onClick={onEdit}>
+    <GearItemCard
+      availability={availability}
+      source={source}
+      onClick={onEdit}
+      onRemove={onRemove}
+    >
       <ItemCard.Title>{weapon.name}</ItemCard.Title>
 
       {weapon.equipped && (
@@ -67,25 +70,6 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      {availability && (
-        <ItemCard.Meta type="stat">
-          <AvailabilityChip
-            availability={availability}
-            color={availability.rating > GearMaxAvailability ? "warning" : undefined}
-          />
-        </ItemCard.Meta>
-      )}
-
-      {source && (
-        <ItemCard.Meta type="source">
-          <ItemStatChip label={`${source.book} p.${source.page}`} />
-        </ItemCard.Meta>
-      )}
-
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
-        <RiDeleteBin6Line size={16} />
-      </ItemCard.Action>
-
       {onAddAccessory && (
         <ItemCard.AddChildButton onClick={onAddAccessory}>
           Add Accessory
@@ -105,6 +89,6 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
           ))}
         </ItemCard.Children>
       )}
-    </ItemCard>
+    </GearItemCard>
   )
 }

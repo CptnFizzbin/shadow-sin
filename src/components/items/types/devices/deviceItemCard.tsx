@@ -1,11 +1,9 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
@@ -45,7 +43,12 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({
     || device.firewall !== undefined
 
   return (
-    <ItemCard onClick={onEdit}>
+    <GearItemCard
+      availability={availability}
+      source={source}
+      onClick={onEdit}
+      onRemove={onRemove}
+    >
       <ItemCard.Title>{device.name}</ItemCard.Title>
 
       {device.cost !== undefined && (
@@ -80,25 +83,6 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      {availability && (
-        <ItemCard.Meta type="stat">
-          <AvailabilityChip
-            availability={availability}
-            color={availability.rating > GearMaxAvailability ? "warning" : undefined}
-          />
-        </ItemCard.Meta>
-      )}
-
-      {source && (
-        <ItemCard.Meta type="source">
-          <ItemStatChip label={`${source.book} p.${source.page}`} />
-        </ItemCard.Meta>
-      )}
-
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
-        <RiDeleteBin6Line size={16} />
-      </ItemCard.Action>
-
       {onAddProgram && (
         <ItemCard.AddChildButton onClick={onAddProgram}>
           Add Program
@@ -118,6 +102,6 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({
           ))}
         </ItemCard.Children>
       )}
-    </ItemCard>
+    </GearItemCard>
   )
 }
