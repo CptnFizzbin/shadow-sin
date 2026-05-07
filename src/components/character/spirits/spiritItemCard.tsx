@@ -101,7 +101,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
             </Typography>
             <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
               {registry.basePowers.map((power) => (
-                <CritterPowerChip key={power} name={power} />
+                <CritterPowerChip key={power} name={power} force={spirit.force} attrs={attrs} />
               ))}
             </Stack>
           </Box>
@@ -112,7 +112,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               </Typography>
               <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
                 {spirit.optionalPowers.map((power) => (
-                  <CritterPowerChip key={power} name={power} color="secondary" />
+                  <CritterPowerChip key={power} name={power} force={spirit.force} attrs={attrs} color="secondary" />
                 ))}
               </Stack>
             </Box>
