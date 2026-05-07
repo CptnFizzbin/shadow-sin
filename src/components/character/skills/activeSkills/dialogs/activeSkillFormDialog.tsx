@@ -6,16 +6,15 @@ import MenuItem from "@mui/material/MenuItem"
 import MuiSelect from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import MuiTextField from "@mui/material/TextField"
-import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 import { z } from "zod"
 
+import { ActiveSkillSelectInput } from "#/components/character/skills/forms/activeSkillSelectInput.tsx"
 import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import type { SelectOption } from "#/integrations/tanstackForm/fields/selectField.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -37,10 +36,11 @@ interface ActiveSkillFormDialogProps extends ControlledDialogProps<ActiveSkillDa
   onDelete?: () => void
 }
 
-const ratingSelectOptions: SelectOption[] = Array.from({ length: SkillRatingMax }, (_, i) => ({
-  value: String(i + 1),
-  label: String(i + 1),
-}))
+type ActiveSkillFormData = {
+  name: SkillKey | ""
+  rating: string // Stored as string to match SelectField's contract; converted to number on submit
+  specialization: string
+}
 
 const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   ctrl,
@@ -62,7 +62,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
       // Stored as string to match SelectField's string value contract; converted to number on submit
       rating: String(skill?.rating ?? 1),
       specialization: skill?.specialization ?? "",
-    },
+    } satisfies ActiveSkillFormData,
     onSubmit: ({ value }) => {
       ctrl.close({
         name: value.name as SkillKey,
@@ -74,6 +74,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
   // Reactively subscribe to the selected skill name so the specialization section updates
   const selectedSkillName = useSelector(form.baseStore, (state) => state.values.name)
+
   const selectedSkillInfo = selectedSkillName ? skillList[selectedSkillName as SkillKey] : undefined
   const linkedAttr = selectedSkillInfo?.attr
   const allSpecs = selectedSkillInfo?.specializations ?? []
@@ -83,20 +84,6 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   )
   const hasFixed = fixedSpecs.length > 0
   const hasCustom = customEntries.length > 0
-
-  const skillSelectOptions: SelectOption[] = Object.values(SkillKey).sort().map((skillKey) => {
-    const info = skillList[skillKey]
-    return {
-      value: skillKey,
-      label: (
-        <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 10 }}>
-          <Typography>{skillKey}</Typography>
-          <Typography color="text.secondary" sx={{ fontSize: "small" }}>{info?.group}</Typography>
-        </Stack>
-      ),
-      disabled: disabledSkills?.has(skillKey) ?? false,
-    }
-  })
 
   return (
     <ControlledDialog
@@ -118,7 +105,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
             <form.AppField
               name="name"
-              validators={{ onChange: z.string().min(1, "Skill is required") }}
+              validators={{ onChange: z.enum(SkillKey) }}
               listeners={{
                 onChange: () => {
                   form.setFieldValue("specialization", "")
@@ -127,10 +114,13 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
               }}
             >
               {(field) => (
-                <field.SelectField
+                <ActiveSkillSelectInput
                   label="Skill"
-                  options={skillSelectOptions}
                   size="small"
+                  value={field.state.value ?? ""}
+                  filterOption={(key) => disabledSkills?.has(key) ?? true}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={() => field.handleBlur()}
                 />
               )}
             </form.AppField>
@@ -151,9 +141,10 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
               validators={{ onChange: z.string().refine((v) => Number(v) >= 1 && Number(v) <= SkillRatingMax) }}
             >
               {(field) => (
-                <field.SelectField
+                <field.CounterField
                   label="Rating"
-                  options={ratingSelectOptions}
+                  min={1}
+                  max={SkillRatingMax}
                   size="small"
                 />
               )}

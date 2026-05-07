@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { CounterField } from "./counterField.tsx"
+import { CounterInput } from "./counterInput.tsx"
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 
@@ -17,7 +17,7 @@ interface ControlledCounterProps {
 
 const ControlledCounter: FC<ControlledCounterProps> = ({ initial = null, min, max }) => {
   const [value, setValue] = useState<number | null>(initial ?? null)
-  return <CounterField value={value} min={min} max={max} onChange={setValue} />
+  return <CounterInput value={value} min={min} max={max} onChange={setValue} />
 }
 
 function renderCounter(initial?: number | null, min?: number, max?: number) {
@@ -34,7 +34,7 @@ function renderCounter(initial?: number | null, min?: number, max?: number) {
 function renderCounterField(value: number | null, min: number, max: number) {
   const onChange = vi.fn<(newValue: number | null) => void>()
   const { container } = render(
-    <CounterField value={value} min={min} max={max} onChange={onChange} />,
+    <CounterInput value={value} min={min} max={max} onChange={onChange} />,
     { wrapper: ThemeWrapper },
   )
   return {

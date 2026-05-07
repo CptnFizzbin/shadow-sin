@@ -8,15 +8,11 @@ import Switch from "@mui/material/Switch"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
 import { useDiceTray } from "./diceTrayContext.ts"
-import {
-  ExtendedInterval,
-  ExtendedIntervalLabels,
-  TestType,
-} from "./testType.ts"
+import { ExtendedInterval, ExtendedIntervalLabels, TestType } from "./testType.ts"
 
 export const DiceTrayInputs: FC = () => {
   const diceTrayApi = useDiceTray()
@@ -35,7 +31,7 @@ export const DiceTrayInputs: FC = () => {
   return (
     <Stack>
       <Stack direction="row">
-        <CounterField
+        <CounterInput
           value={poolSize}
           onChange={(newValue) => diceTrayApi.setPoolSize(newValue ?? 1)}
           min={1}
@@ -46,7 +42,7 @@ export const DiceTrayInputs: FC = () => {
         />
 
         {isStandardTest && (
-          <CounterField
+          <CounterInput
             value={threshold}
             onChange={(newValue) => diceTrayApi.setThreshold(newValue ?? 1)}
             min={1}
@@ -58,7 +54,7 @@ export const DiceTrayInputs: FC = () => {
         )}
 
         {isOpposedTest && (
-          <CounterField
+          <CounterInput
             value={opposedHits}
             onChange={(newValue) => diceTrayApi.setOpposedHits(newValue ?? 0)}
             min={0}
@@ -70,7 +66,7 @@ export const DiceTrayInputs: FC = () => {
         )}
 
         {isExtendedTest && (
-          <CounterField
+          <CounterInput
             value={threshold}
             onChange={(newValue) => diceTrayApi.setThreshold(newValue ?? 1)}
             min={1}

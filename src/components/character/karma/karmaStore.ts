@@ -11,4 +11,12 @@ export class KarmaStore extends StoreSlice<KarmaState> {
       total: prev.total + amount,
     }))
   }
+
+  spendKarma(amount: number) {
+    if (amount <= 0) throw new Error(`spendKarma requires a positive amount, got ${amount}`)
+    this.set((prev) => ({
+      ...prev,
+      current: Math.max(0, prev.current - amount),
+    }))
+  }
 }

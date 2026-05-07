@@ -1,0 +1,118 @@
+import Chip from "@mui/material/Chip"
+import IconButton from "@mui/material/IconButton"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemText from "@mui/material/ListItemText"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
+import { useSelector } from "@tanstack/react-store"
+import type { FC } from "react"
+
+import { useActiveAttributes } from "#/components/character/attributes/hooks/useActiveAttributes.ts"
+import { selectCurrentKarma } from "#/components/character/karma/karmaSelectors.ts"
+import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
+import { AttributeLabels } from "#/system/attributeKey.ts"
+import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
+import { isAttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
+import {
+  selectAllImprovements,
+  selectImprovementsTotalCost,
+} from "#/system/karma/improvements/improvementSelectors.ts"
+import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
+
+import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "./useImprovementSelector.ts"
+
+interface ImprovementAttributeListProps {
+  onBack: () => void
+}
+
+export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ onBack }) => {
+  const { improvementStore } = useSpendKarmaDialogContext()
+  const karmaStore = useKarmaStore()
+  const activeAttributes = useActiveAttributes()
+  const allImprovements = useImprovementSelector(selectAllImprovements)
+  const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
+  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+
+  const remainingKarma = currentKarma - totalQueuedCost
+  const queuedAttrIncreases = allImprovements.filter(isAttrIncreaseEntry)
+
+  return (
+    <Stack sx={{ gap: 1.5 }}>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+        <IconButton size="small" onClick={onBack} aria-label="Back to categories">
+          <RiArrowLeftLine size={16} />
+        </IconButton>
+        <Typography variant="subtitle1" sx={{ fontWeight: "bold", flex: 1 }}>
+          Attributes
+        </Typography>
+      </Stack>
+
+      <Paper variant="outlined">
+        <List disablePadding>
+          {activeAttributes.map((attrInfo, index) => {
+            const karmaCost = (attrInfo.value + 1) * 5
+            const queuedEntry = queuedAttrIncreases.find(
+              (entry) => entry.attr === attrInfo.attr,
+            ) ?? null
+            const isAtMax = attrInfo.value >= attrInfo.max
+            const canAfford = queuedEntry !== null || karmaCost <= remainingKarma
+
+            const handleToggle = () => {
+              if (queuedEntry) {
+                improvementStore.remove(queuedEntry.id)
+              } else {
+                const newEntry: Omit<AttrIncreaseEntry, "id"> = {
+                  type: ImprovementType.attrIncrease,
+                  attr: attrInfo.attr,
+                  baseRating: attrInfo.value,
+                  newRating: attrInfo.value + 1,
+                }
+                improvementStore.add(newEntry)
+              }
+            }
+
+            return (
+              <ListItem
+                key={attrInfo.attr}
+                disablePadding
+                divider={index < activeAttributes.length - 1}
+                secondaryAction={(
+                  <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+                    <Chip
+                      label={`${karmaCost}k`}
+                      size="small"
+                      color={queuedEntry ? "success" : canAfford ? "default" : "warning"}
+                    />
+                    {queuedEntry && (
+                      <RiCheckLine
+                        size={14}
+                        style={{ color: "var(--mui-palette-success-main)" }}
+                      />
+                    )}
+                  </Stack>
+                )}
+              >
+                <ListItemButton
+                  disabled={isAtMax && !queuedEntry}
+                  selected={queuedEntry !== null}
+                  onClick={handleToggle}
+                  sx={{ minHeight: 52 }}
+                >
+                  <ListItemText
+                    primary={AttributeLabels[attrInfo.attr]}
+                    secondary={isAtMax ? "At maximum" : `${attrInfo.value} → ${attrInfo.value + 1}`}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
+        </List>
+      </Paper>
+    </Stack>
+  )
+}
