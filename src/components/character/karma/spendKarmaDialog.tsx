@@ -64,7 +64,7 @@ const SpendKarmaDialog: FC<SpendKarmaDialogProps> = ({ ctrl, onNewSpell }) => {
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
   const attrInfos = useAllAttrInfos()
 
-  const canLearnSpell = isMagician(awakeningType)
+  const canLearnSpell = isMagician(awakeningType) && !!onNewSpell
 
   const [spendType, setSpendType] = useState<SpendType>("attribute")
   const [selectedAttribute, setSelectedAttribute] = useState<AttributeKey | "">("")
@@ -200,12 +200,11 @@ const SpendKarmaDialog: FC<SpendKarmaDialogProps> = ({ ctrl, onNewSpell }) => {
           const skillsInGroup = getSkillsInGroup(groupToBreak)
           skillsStore.skillGroups.remove(groupToBreak)
           for (const memberSkillKey of skillsInGroup) {
-            if (!activeSkills.find((skill) => skill.name === memberSkillKey)) {
-              skillsStore.activeSkills.setState(memberSkillKey, () => ({
-                name: memberSkillKey,
-                rating: groupRating,
-              }))
-            }
+            const existingRating = activeSkills.find((skill) => skill.name === memberSkillKey)?.rating
+            skillsStore.activeSkills.setState(memberSkillKey, () => ({
+              name: memberSkillKey,
+              rating: Math.max(groupRating, existingRating ?? 0),
+            }))
           }
         }
 
@@ -514,7 +513,7 @@ const NewSkillTab: FC<NewSkillTabProps> = ({ availableNewSkills, selectedKey, on
         label="Skill"
         onChange={(e) => onSelect(e.target.value as SkillKey)}
       >
-        {availableNewSkills.sort().map((skillKey) => {
+        {[...availableNewSkills].sort().map((skillKey) => {
           const info = skillList[skillKey]
           return (
             <MenuItem key={skillKey} value={skillKey}>
