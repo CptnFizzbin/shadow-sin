@@ -12,6 +12,7 @@ import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { AttributeKey, MentalAttributes, PhysicalAttributes } from "#/system/attributeKey.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
+import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
 import { SpiritConditionMonitor } from "./spiritConditionMonitor.tsx"
 
@@ -30,6 +31,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
 
   const { physicalScore, physicalIp, astralBase, astralIp } = calculateSpiritInitiative(spirit.force, spirit.spiritType)
   const attrs = calculateSpiritAttributes(spirit.force, spirit.spiritType)
+  const registry = SpiritRegistry[spirit.spiritType]
 
   return (
     <ItemCard onClick={onEdit}>
@@ -71,6 +73,32 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
 
       <ItemCard.Children>
         <Stack sx={{ p: 1, gap: 1 }}>
+          {registry.skills.length > 0 && (
+            <Box>
+              <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+                Skills
+              </Typography>
+              <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
+                {registry.skills.map((skill) => (
+                  <Chip
+                    key={skill.name}
+                    label={`${skill.name} [${spirit.force + attrs[skill.attribute]}]`}
+                    size="small"
+                  />
+                ))}
+              </Stack>
+            </Box>
+          )}
+          <Box>
+            <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+              Powers
+            </Typography>
+            <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
+              {registry.basePowers.map((power) => (
+                <Chip key={power} label={power} size="small" variant="outlined" />
+              ))}
+            </Stack>
+          </Box>
           {spirit.optionalPowers.length > 0 && (
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
@@ -78,7 +106,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
               </Typography>
               <Stack direction="row" sx={{ mt: 0.5, flexWrap: "wrap", gap: 0.5 }}>
                 {spirit.optionalPowers.map((power) => (
-                  <Chip key={power} label={power} size="small" variant="outlined" />
+                  <Chip key={power} label={power} size="small" variant="outlined" color="secondary" />
                 ))}
               </Stack>
             </Box>
