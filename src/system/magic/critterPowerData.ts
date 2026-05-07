@@ -1,16 +1,58 @@
+import { AttributeKey } from "#/system/attributeKey.ts"
+
+export type RollType = "Opposed" | "Standard" | "Hidden"
+
+export type SpiritPoolFormula =
+  | { type: "force" }
+  | { type: "force_plus", attribute: AttributeKey }
+
 export interface CritterPowerData {
   name: string
+  rollType?: RollType
+  /** Formula used to compute how many dice the spirit rolls. Omitted for passive powers. */
+  spiritPool?: SpiritPoolFormula
+  /** Label for what the target rolls (Opposed only). */
+  targetPool?: string
   description: string
+}
+
+export function computeSpiritPowerPool(
+  formula: SpiritPoolFormula,
+  force: number,
+  attrs: Record<AttributeKey, number>,
+): number {
+  switch (formula.type) {
+    case "force": return force
+    case "force_plus": return force + attrs[formula.attribute]
+    default: return force
+  }
+}
+
+export function formatSpiritPoolLabel(formula: SpiritPoolFormula): string {
+  switch (formula.type) {
+    case "force": return "Force"
+    case "force_plus": {
+      const label = formula.attribute.charAt(0).toUpperCase() + formula.attribute.slice(1)
+      return `Force + ${label}`
+    }
+    default: return "Force"
+  }
 }
 
 const powers: CritterPowerData[] = [
   {
     name: "Accident",
+    rollType: "Hidden",
+    spiritPool: { type: "force" },
+    targetPool: "Reaction + Intuition",
     description:
       "The spirit causes misfortune around it. Opposed test: Force vs. Reaction + Intuition (threshold Force/2). On success, the target suffers a Glitch equal to net hits on their next action.",
   },
   {
     name: "Animal Control",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
+    targetPool: "Willpower + Charisma",
     description:
       "The spirit assumes control of an animal. Force + Charisma vs. Willpower + Charisma. Lasts Force turns or until the animal successfully resists again.",
   },
@@ -21,8 +63,11 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Binding",
+    rollType: "Opposed",
+    spiritPool: { type: "force" },
+    targetPool: "Strength + Body",
     description:
-      "The spirit immobilizes a target in place. Force + Binding vs. Strength + Body. The target is immobilized for a number of turns equal to the net hits.",
+      "The spirit immobilizes a target in place. Force vs. Strength + Body. The target is immobilized for a number of turns equal to the net hits.",
   },
   {
     name: "Concealment",
@@ -31,16 +76,24 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Confusion",
+    rollType: "Opposed",
+    spiritPool: { type: "force" },
+    targetPool: "Willpower + Logic",
     description:
-      "Force + Confusion vs. Willpower + Logic. Net hits become a dice pool penalty applied to the target's next action or task.",
+      "Force vs. Willpower + Logic. Net hits become a dice pool penalty applied to the target's next action or task.",
   },
   {
     name: "Divining",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
-      "The spirit reads the past or senses the likely future of a specific person, place, or object. Roll Force as the dice pool; each hit reveals one piece of relevant information.",
+      "The spirit reads the past or senses the likely future of a specific person, place, or object. Roll Force; each hit reveals one piece of relevant information.",
   },
   {
     name: "Elemental Attack",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.agility },
+    targetPool: "Reaction + Intuition",
     description:
       "Ranged attack using Exotic Ranged Weapon skill. Deals Force DV of the spirit's element (Air, Fire, Earth, or Water) with AP equal to −⌊Force/2⌋. Range is Force × 10 meters.",
   },
@@ -56,11 +109,17 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Engulf",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.agility },
+    targetPool: "Reaction + Body",
     description:
       "The spirit envelops a target in its elemental form. Force + Agility vs. Reaction + Body. While engulfed the target takes Force DV elemental damage each Combat Turn and cannot act freely.",
   },
   {
     name: "Fear",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
+    targetPool: "Charisma + Willpower",
     description:
       "Force + Charisma vs. Charisma + Willpower. Targets who fail flee from the spirit for net hits Combat Turns. A Composure test (threshold = net hits) ends the effect early.",
   },
@@ -71,11 +130,16 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Guard",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
       "The spirit stands ready to absorb harm for a ward or protected individual. When the protected target takes damage, roll Force; each hit reduces the damage by 1 box (Physical or Stun).",
   },
   {
     name: "Influence",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
+    targetPool: "Charisma + Willpower",
     description:
       "Force + Charisma vs. Charisma + Willpower. The spirit plants a single post-hypnotic suggestion in the target's mind that lasts Force hours or until acted upon.",
   },
@@ -91,26 +155,38 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Movement",
+    rollType: "Opposed",
+    spiritPool: { type: "force" },
+    targetPool: "Reaction + Willpower",
     description:
       "The spirit can multiply or divide a target's movement rate by up to Force. Unwilling targets resist with Reaction + Willpower (threshold = ⌈Force/2⌉).",
   },
   {
     name: "Natural Weapon",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.agility },
+    targetPool: "Reaction + Intuition",
     description:
       "The critter possesses natural weapons — claws, fangs, horns, or similar — with DV equal to ⌈Strength/2⌉ + 2 Physical, AP −1. These weapons count as magical for the purposes of barriers and immunity.",
   },
   {
     name: "Noxious Breath",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
       "The spirit exhales a cloud of poisonous or caustic gas. Deals Force × 2 DV Stun reduced by 1 per meter from origin. Targets resist with Body + sealed Armor; standard armor provides no protection.",
   },
   {
     name: "Psychokinesis",
+    rollType: "Standard",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.logic },
     description:
       "The spirit moves or manipulates physical objects at range without touching them. Effective Strength for lifting or throwing equals Force. Fine manipulation uses Force + Logic.",
   },
   {
     name: "Quake",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
       "The earth spirit triggers a localized seismic event within Force × 2 meters. All targets in range resist Force DV Physical damage and must pass a Body + Reaction test (threshold 2) or be knocked prone.",
   },
@@ -121,21 +197,30 @@ const powers: CritterPowerData[] = [
   },
   {
     name: "Search",
+    rollType: "Hidden",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.intuition },
     description:
       "The spirit seeks out a specific person, object, or place known to the summoner. Roll Force + Intuition; each hit reduces the search time by one hour (minimum one minute).",
   },
   {
     name: "Skill",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
       "The spirit possesses one Active skill at a rating equal to its Force, chosen at summoning (e.g., Disguise, Stealth, Spellcasting). Each optional power slot spent grants one additional skill.",
   },
   {
     name: "Spell",
+    rollType: "Opposed",
+    spiritPool: { type: "force_plus", attribute: AttributeKey.magic },
+    targetPool: "Willpower + Logic",
     description:
       "The Spirit of Man knows one specific spell (chosen at summoning) at a Force equal to the spirit's Force. Each optional power slot spent grants one additional spell.",
   },
   {
     name: "Venom",
+    rollType: "Standard",
+    spiritPool: { type: "force" },
     description:
       "The critter injects or projects venom (Toxin Rating = Force). Deals Force DV Stun resisted by Body, with an ongoing damage effect each turn until treated (first aid or antidote).",
   },
