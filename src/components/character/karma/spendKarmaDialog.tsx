@@ -45,6 +45,13 @@ const SPEND_TYPE_LABELS: Record<SpendType, string> = {
   newSpell: "New Spell",
 }
 
+const NEW_SPELL_KARMA_COST = 5
+const NEW_SKILL_KARMA_COST = 2
+
+const attributeKarmaCost = (newRating: number) => 5 * newRating
+const skillGroupKarmaCost = (newRating: number) => 2 * newRating
+const increaseSkillKarmaCost = (newRating: number) => 2 * newRating
+
 const SpendKarmaDialog: FC<SpendKarmaDialogProps> = ({ ctrl, onNewSpell }) => {
   const characterSheetStore = useCharacterSheetContext()
   const karmaStore = useKarmaStore()
@@ -118,22 +125,22 @@ const SpendKarmaDialog: FC<SpendKarmaDialogProps> = ({ ctrl, onNewSpell }) => {
       case "attribute": {
         if (!selectedAttribute) return null
         const currentValue = attributes[selectedAttribute]
-        return 5 * (currentValue + 1)
+        return attributeKarmaCost(currentValue + 1)
       }
       case "skillGroup": {
         if (!selectedSkillGroupKey) return null
         const group = skillGroups.find((grp) => grp.name === selectedSkillGroupKey)
         const currentRating = group?.rating ?? 0
-        return 2 * (currentRating + 1)
+        return skillGroupKarmaCost(currentRating + 1)
       }
       case "increaseSkill": {
         if (!selectedIncreaseSkillEntry) return null
-        return 2 * (selectedIncreaseSkillEntry.currentRating + 1)
+        return increaseSkillKarmaCost(selectedIncreaseSkillEntry.currentRating + 1)
       }
       case "newSkill":
-        return selectedNewSkillKey ? 2 : null
+        return selectedNewSkillKey ? NEW_SKILL_KARMA_COST : null
       case "newSpell":
-        return 5
+        return NEW_SPELL_KARMA_COST
       default:
         return null
     }
@@ -240,7 +247,7 @@ const SpendKarmaDialog: FC<SpendKarmaDialogProps> = ({ ctrl, onNewSpell }) => {
       <Dialog.Title>Spend Karma</Dialog.Title>
 
       <Dialog.Content>
-        <Stack sx={{ gap: 2 }}>
+        <Stack>
           <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
             <Typography variant="body2" color="text.secondary">Unspent Karma</Typography>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>{currentKarma}</Typography>
@@ -355,7 +362,7 @@ const AttributeTab: FC<AttributeTabProps> = ({
         {availableAttributes.map((key) => {
           const currentValue = attributes[key]
           const newValue = currentValue + 1
-          const cost = 5 * newValue
+          const cost = attributeKarmaCost(newValue)
           return (
             <MenuItem key={key} value={key}>
               <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
@@ -401,7 +408,7 @@ const SkillGroupTab: FC<SkillGroupTabProps> = ({
       >
         {availableSkillGroups.map((group) => {
           const newRating = group.rating + 1
-          const cost = 2 * newRating
+          const cost = skillGroupKarmaCost(newRating)
           return (
             <MenuItem key={group.name} value={group.name}>
               <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
@@ -456,7 +463,7 @@ const IncreaseSkillTab: FC<IncreaseSkillTabProps> = ({
         >
           {availableIncreaseSkills.map((entry) => {
             const newRating = entry.currentRating + 1
-            const cost = 2 * newRating
+            const cost = increaseSkillKarmaCost(newRating)
             return (
               <MenuItem key={entry.key} value={entry.key}>
                 <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
