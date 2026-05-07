@@ -14,7 +14,7 @@ import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
-import { CritterPowerChip } from "./critterPowerChip.tsx"
+import { CritterPowerChip } from "#/components/character/spirits/critterPowerChip.tsx"
 import { SpiritConditionMonitor } from "./spiritConditionMonitor.tsx"
 
 const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
@@ -59,6 +59,11 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
       <ItemCard.Meta type="stat">
         <ItemStatChip label={`Astral ${astralBase} (${astralIp}IP)`} />
       </ItemCard.Meta>
+      {registry.movement && (
+        <ItemCard.Meta type="stat">
+          <ItemStatChip label={`Move: ${registry.movement}`} />
+        </ItemCard.Meta>
+      )}
       {spirit.bound && (
         <ItemCard.Meta type="stat">
           <ItemStatChip label="Bound" color="primary" />
