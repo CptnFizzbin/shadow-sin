@@ -5,21 +5,42 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useSpellFormDialog } from "#/components/character/spells/dialogs/spellFormDialog.tsx"
+import { isMagician } from "#/components/character/spells/spellsUtils.ts"
+import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
+import { Label } from "#/components/ui/text/label.tsx"
 
 import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
 import { selectCurrentKarma, selectTotalKarma } from "./karmaSelectors.ts"
+import { useSpendKarmaDialog } from "./spendKarmaDialog.tsx"
 import { useKarmaStore } from "./useKarmaStore.ts"
 
 export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()
+  const spendKarmaDialog = useSpendKarmaDialog()
   const karmaStore = useKarmaStore()
+  const spellsStore = useSpellsStore()
+  const spellFormDialog = useSpellFormDialog()
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
   const totalKarma = useSelector(karmaStore, selectTotalKarma)
+  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
 
   const handleOpenAddKarma = () => {
     addKarmaDialog.open({
       onSubmit: (amount) => karmaStore.addKarma(amount),
+    })
+  }
+
+  const handleOpenSpendKarma = () => {
+    spendKarmaDialog.open({
+      onNewSpell: isMagician(awakeningType)
+        ? () => {
+            spellFormDialog.open().then((spell) => {
+              if (spell) spellsStore.save(spell)
+            })
+          }
+        : undefined,
     })
   }
 
@@ -50,7 +71,7 @@ export const KarmaSection: FC = () => {
       </Grid>
 
       <Grid size={1}>
-        <Button size="small" variant="outlined" disabled fullWidth>
+        <Button size="small" variant="outlined" onClick={handleOpenSpendKarma} fullWidth>
           Spend Karma
         </Button>
       </Grid>

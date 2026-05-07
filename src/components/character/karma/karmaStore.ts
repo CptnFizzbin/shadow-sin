@@ -11,4 +11,11 @@ export class KarmaStore extends StoreSlice<KarmaState> {
       total: prev.total + amount,
     }))
   }
+
+  spendKarma(amount: number) {
+    this.set((prev) => ({
+      ...prev,
+      current: Math.max(0, prev.current - amount),
+    }))
+  }
 }
