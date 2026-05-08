@@ -6,21 +6,63 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useEffect, useState } from "react"
 
+import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { ImprovementsStore } from "./improvementsStore.ts"
+import type { IncreaseSkillEntry } from "./types/increaseSkillEntry.ts"
 
 const increaseSkillKarmaCost = (newRating: number) => 2 * newRating
 
 export const IncreaseSkillTab: FC = () => {
-  const {
-    availableIncreaseSkills,
-    selectedIncreaseSkillKey,
-    setSelectedIncreaseSkillKey,
-    selectedIncreaseSkillEntry,
-  } = useSpendKarmaDialogContext()
+  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const [selectedIncreaseSkillKey, setSelectedIncreaseSkillKey] = useState<SkillKey | "">("")
+  const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
+  const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
+
+  const availableIncreaseSkills: IncreaseSkillEntry[] = [
+    ...activeSkills
+      .filter((skill) => skill.rating < SkillRatingMax)
+      .map((skill) => ({ key: skill.name, currentRating: skill.rating })),
+    ...skillGroups.flatMap((group) => {
+      return getSkillsInGroup(group.name)
+        .filter((skillKey) => !activeSkills.find((skill) => skill.name === skillKey))
+        .map((skillKey) => ({
+          key: skillKey,
+          currentRating: group.rating,
+          groupToBreak: group.name,
+        }))
+    }),
+  ]
+
+  const selectedIncreaseSkillEntry = availableIncreaseSkills.find(
+    (entry) => entry.key === selectedIncreaseSkillKey,
+  )
+
+  useEffect(() => {
+    if (spendType !== "increaseSkill") {
+      setSelectedIncreaseSkillKey("")
+      setPendingImprovement(null)
+    }
+  }, [setPendingImprovement, spendType])
+
+  useEffect(() => {
+    if (!selectedIncreaseSkillEntry) {
+      setPendingImprovement(null)
+      return
+    }
+
+    const nextRating = selectedIncreaseSkillEntry.currentRating + 1
+    const improvementsStore = new ImprovementsStore({ improvements: [] })
+    improvementsStore.improveActiveSkill(selectedIncreaseSkillEntry.key, nextRating)
+
+    setPendingImprovement({ improvementsStore, karmaCost: increaseSkillKarmaCost(nextRating) })
+  }, [selectedIncreaseSkillEntry, setPendingImprovement])
 
   if (availableIncreaseSkills.length === 0) {
     return (
@@ -38,7 +80,7 @@ export const IncreaseSkillTab: FC = () => {
         <Select
           value={selectedIncreaseSkillKey}
           label="Skill"
-          onChange={(e) => setSelectedIncreaseSkillKey(e.target.value as SkillKey)}
+          onChange={(event) => setSelectedIncreaseSkillKey(event.target.value as SkillKey | "")}
         >
           {availableIncreaseSkills.map((entry) => {
             const newRating = entry.currentRating + 1

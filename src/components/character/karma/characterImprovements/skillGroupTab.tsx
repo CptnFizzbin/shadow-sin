@@ -5,20 +5,44 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useEffect, useState } from "react"
 
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { ImprovementsStore } from "./improvementsStore.ts"
 
 const skillGroupKarmaCost = (newRating: number) => 2 * newRating
 
 export const SkillGroupTab: FC = () => {
-  const {
-    availableSkillGroups,
-    selectedSkillGroupKey,
-    setSelectedSkillGroupKey,
-  } = useSpendKarmaDialogContext()
+  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const [selectedSkillGroupKey, setSelectedSkillGroupKey] = useState<SkillGroupKey | "">("")
+  const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
+
+  const availableSkillGroups = skillGroups.filter((group) => group.rating < SkillGroupRatingMax)
+
+  useEffect(() => {
+    if (spendType !== "skillGroup") {
+      setSelectedSkillGroupKey("")
+      setPendingImprovement(null)
+    }
+  }, [setPendingImprovement, spendType])
+
+  useEffect(() => {
+    if (!selectedSkillGroupKey) {
+      setPendingImprovement(null)
+      return
+    }
+
+    const selectedGroup = skillGroups.find((group) => group.name === selectedSkillGroupKey)
+    const nextRating = (selectedGroup?.rating ?? 0) + 1
+    const improvementsStore = new ImprovementsStore({ improvements: [] })
+    improvementsStore.improveSkillGroup(selectedSkillGroupKey, nextRating)
+
+    setPendingImprovement({ improvementsStore, karmaCost: skillGroupKarmaCost(nextRating) })
+  }, [selectedSkillGroupKey, setPendingImprovement, skillGroups])
 
   if (availableSkillGroups.length === 0) {
     return (
@@ -35,7 +59,7 @@ export const SkillGroupTab: FC = () => {
       <Select
         value={selectedSkillGroupKey}
         label="Skill Group"
-        onChange={(e) => setSelectedSkillGroupKey(e.target.value as SkillGroupKey)}
+        onChange={(event) => setSelectedSkillGroupKey(event.target.value as SkillGroupKey | "")}
       >
         {availableSkillGroups.map((group) => {
           const newRating = group.rating + 1

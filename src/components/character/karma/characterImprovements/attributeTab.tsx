@@ -5,22 +5,51 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useEffect, useState } from "react"
 
+import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
-import { AttributeLabels } from "#/system/attributeKey.ts"
+import { AttributeKey as AttributeKeyEnum, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
+import { ImprovementsStore } from "./improvementsStore.ts"
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 
 const attributeKarmaCost = (newRating: number) => 5 * newRating
 
 export const AttributeTab: FC = () => {
-  const {
-    availableAttributes,
-    selectedAttribute,
-    setSelectedAttribute,
-    attributes,
-    attrInfos,
-  } = useSpendKarmaDialogContext()
+  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const [selectedAttribute, setSelectedAttribute] = useState<AttributeKey | "">("")
+  const attributes = useCharacterSheetSelector((sheet) => sheet.attributes)
+  const attrInfos = useAllAttrInfos()
+
+  const availableAttributes = AttributeOrder.filter((key) => {
+    if (key === AttributeKeyEnum.essence) return false
+    const info = attrInfos[key]
+    const currentValue = attributes[key]
+    return info.max > 0 && currentValue < info.max
+  })
+
+  useEffect(() => {
+    if (spendType !== "attribute") {
+      setSelectedAttribute("")
+      setPendingImprovement(null)
+    }
+  }, [setPendingImprovement, spendType])
+
+  useEffect(() => {
+    if (!selectedAttribute) {
+      setPendingImprovement(null)
+      return
+    }
+
+    const currentValue = attributes[selectedAttribute]
+    const nextRating = currentValue + 1
+    const improvementsStore = new ImprovementsStore({ improvements: [] })
+    improvementsStore.improveAttribute(selectedAttribute, nextRating)
+
+    setPendingImprovement({ improvementsStore, karmaCost: attributeKarmaCost(nextRating) })
+  }, [attributes, selectedAttribute, setPendingImprovement])
 
   if (availableAttributes.length === 0) {
     return (
@@ -36,7 +65,7 @@ export const AttributeTab: FC = () => {
       <Select
         value={selectedAttribute}
         label="Attribute"
-        onChange={(e) => setSelectedAttribute(e.target.value as AttributeKey)}
+        onChange={(event) => setSelectedAttribute(event.target.value as AttributeKey | "")}
       >
         {availableAttributes.map((key) => {
           const currentValue = attributes[key]

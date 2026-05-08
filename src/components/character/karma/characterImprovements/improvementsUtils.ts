@@ -2,6 +2,7 @@ import type { Draft } from "immer"
 import { produce } from "immer"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import type { KarmaStore } from "#/components/character/karma/karmaStore.ts"
 import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
@@ -47,6 +48,16 @@ export const applyImprovements = (
       }
     })
   }))
+}
+
+export const applyImprovementsAndSpendKarma = (
+  improvementsStore: ImprovementsStore,
+  characterStore: CharacterSheetStore,
+  karmaStore: KarmaStore,
+  karmaCost: number,
+): void => {
+  applyImprovements(improvementsStore, characterStore)
+  karmaStore.spendKarma(karmaCost)
 }
 
 const applyAttributeImprovement = (
