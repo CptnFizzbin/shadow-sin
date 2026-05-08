@@ -100,8 +100,8 @@ export function calculateSpiritInitiative(force: number, type: SpiritType) {
     : type === SpiritType.guardian
       ? force * 2 + 1
       : (type === SpiritType.guidance || type === SpiritType.plant || type === SpiritType.task)
-        ? force * 2
-        : force * 2 + 2
+          ? force * 2
+          : force * 2 + 2
   return {
     physicalScore,
     physicalIp: 2,
