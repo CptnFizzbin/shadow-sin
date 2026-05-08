@@ -1,8 +1,10 @@
 import type { Draft } from "immer"
 import { produce } from "immer"
 
+import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 
 import type { ImprovementsStore } from "./improvementsStore.ts"
 import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
@@ -58,6 +60,29 @@ const applyActiveSkillImprovement = (
   sheet: Draft<CharacterSheet>,
   improvement: ActiveSkillImprovement,
 ): void => {
+  // Auto-break any skill group that covers this skill before applying the improvement
+  const coveringGroup = sheet.skills.skillGroups.find((group) =>
+    getSkillsInGroup(group.name as SkillGroupKey).includes(improvement.skill),
+  )
+
+  if (coveringGroup) {
+    const groupRating = coveringGroup.rating
+    const skillsInGroup = getSkillsInGroup(coveringGroup.name as SkillGroupKey)
+
+    for (const memberSkillKey of skillsInGroup) {
+      const existingSkill = sheet.skills.activeSkills.find((s) => s.name === memberSkillKey)
+      if (existingSkill) {
+        existingSkill.rating = Math.max(existingSkill.rating, groupRating)
+      } else {
+        sheet.skills.activeSkills.push({ name: memberSkillKey, rating: groupRating })
+      }
+    }
+
+    sheet.skills.skillGroups = sheet.skills.skillGroups.filter(
+      (g) => g.name !== coveringGroup.name,
+    )
+  }
+
   const existingSkill = sheet.skills.activeSkills.find((s) => s.name === improvement.skill)
   if (existingSkill) {
     if (improvement.newRating !== undefined) existingSkill.rating = improvement.newRating
