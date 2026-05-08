@@ -14,6 +14,7 @@ import {
   lookupCritterPower,
 
 } from "#/system/magic/critterPowerData.ts"
+import { bookOptions } from "#/system/sourceData.ts"
 
 const ROLL_TYPE_COLORS: Record<RollType, "warning" | "info" | "default"> = {
   Opposed: "warning",
@@ -86,6 +87,11 @@ export const CritterPowerChip: FC<CritterPowerChipProps> = ({
             <Typography variant="body2">
               {power?.description ?? "No description available for this power."}
             </Typography>
+            {power?.source && (
+              <Typography variant="caption" color="text.secondary">
+                {bookOptions.find((b) => b.value === power.source!.book)?.label ?? power.source.book}, p. {power.source.page}
+              </Typography>
+            )}
           </Stack>
         </Dialog.Content>
         <Dialog.Actions>
