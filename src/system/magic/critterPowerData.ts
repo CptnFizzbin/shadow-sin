@@ -196,11 +196,21 @@ const powers: CritterPowerData[] = [
       "The spirit is fully sentient. It can speak, reason, form its own goals, and communicate in any language known to its summoner.",
   },
   {
+    name: "Shadow Cloak",
+    description:
+      "The spirit wraps itself or a chosen subject in magical darkness. Adds Force dice to Stealth tests for the subject and imposes a −Force dice pool modifier on Perception tests to detect the cloaked subject.",
+  },
+  {
     name: "Search",
     rollType: "Hidden",
     spiritPool: { type: "force_plus", attribute: AttributeKey.intuition },
     description:
       "The spirit seeks out a specific person, object, or place known to the summoner. Roll Force + Intuition; each hit reduces the search time by one hour (minimum one minute).",
+  },
+  {
+    name: "Silence",
+    description:
+      "The spirit creates a zone of magical silence within Force meters. All sound within the area is suppressed. Perception tests relying on hearing automatically fail. Sonic and sound-based attacks cannot originate from or penetrate the zone.",
   },
   {
     name: "Skill",
@@ -210,12 +220,12 @@ const powers: CritterPowerData[] = [
       "The spirit possesses one Active skill at a rating equal to its Force, chosen at summoning (e.g., Disguise, Stealth, Spellcasting). Each optional power slot spent grants one additional skill.",
   },
   {
-    name: "Spell",
+    name: "Innate Spell",
     rollType: "Opposed",
     spiritPool: { type: "force_plus", attribute: AttributeKey.magic },
     targetPool: "Willpower + Logic",
     description:
-      "The Spirit of Man knows one specific spell (chosen at summoning) at a Force equal to the spirit's Force. Each optional power slot spent grants one additional spell.",
+      "The spirit knows one spell chosen by the summoner at summoning. The spell is cast at Force equal to the spirit's Magic. Force is limited to the spirit's Magic rating.",
   },
   {
     name: "Venom",

@@ -15,6 +15,7 @@ export enum SpiritType {
   plant = "plant",
   task = "task",
   water = "water",
+  watcher = "watcher",
 }
 
 // Thematic names indexed by [type][force tier]: 1-3, 4-6, 7-9, 10+
@@ -29,6 +30,7 @@ const spiritTierNames: Record<SpiritType, [string, string, string, string]> = {
   [SpiritType.plant]: ["Young Sprig", "Thicket Walker", "Root Elder", "Ancient Grove"],
   [SpiritType.task]: ["Minor Toiler", "Dutiful Servant", "Tireless Worker", "Bound Ancient"],
   [SpiritType.water]: ["Fledgling Eddy", "River Current", "Tidal Elder", "Primordial Deep"],
+  [SpiritType.watcher]: ["Tiny Watcher", "Keen Watcher", "Elder Watcher", "Ancient Watcher"],
 }
 
 export function generateSpiritName(type: SpiritType, force: number): string {
@@ -47,6 +49,7 @@ export const SpiritTypeLabels: Record<SpiritType, string> = {
   [SpiritType.plant]: "Plant Spirit",
   [SpiritType.task]: "Task Spirit",
   [SpiritType.water]: "Spirit of Water",
+  [SpiritType.watcher]: "Watcher",
 }
 
 export interface SpiritData {
@@ -88,9 +91,17 @@ export const SpiritDataSchema = z.object({
 // SR4A p.295-302: spirit initiative is a flat score, not a dice roll.
 // Air/Fire spirits score (F×2)+3; all others score (F×2)+2. Astral initiative = F×2, 3 IP.
 export function calculateSpiritInitiative(force: number, type: SpiritType) {
+  // Watchers: Force is always 1, all stats = 1, Edge = 0. Init 2, 3 IP (astral beings).
+  if (type === SpiritType.watcher) {
+    return { physicalScore: 2, physicalIp: 3, astralBase: 2, astralIp: 3 }
+  }
   const physicalScore = (type === SpiritType.wind || type === SpiritType.fire)
     ? force * 2 + 3
-    : force * 2 + 2
+    : type === SpiritType.guardian
+      ? force * 2 + 1
+      : (type === SpiritType.guidance || type === SpiritType.plant || type === SpiritType.task)
+        ? force * 2
+        : force * 2 + 2
   return {
     physicalScore,
     physicalIp: 2,
@@ -167,14 +178,12 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[AttributeKey.intuition] = force + 1
       break
     case SpiritType.plant:
-      attrs[AttributeKey.body] = force + 2
+      attrs[AttributeKey.body] = force + 3
       attrs[AttributeKey.agility] = force - 1
-      attrs[AttributeKey.reaction] = force + 1
-      attrs[AttributeKey.strength] = force + 1
+      attrs[AttributeKey.reaction] = force + 2
+      attrs[AttributeKey.strength] = force + 4
       break
     case SpiritType.task:
-      attrs[AttributeKey.body] = force + 2
-      attrs[AttributeKey.agility] = force + 1
       attrs[AttributeKey.reaction] = force + 2
       attrs[AttributeKey.strength] = force + 2
       break
@@ -184,6 +193,20 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[AttributeKey.reaction] = force + 2
       attrs[AttributeKey.strength] = force - 1
       break
+    case SpiritType.watcher: {
+      const half = Math.floor(force / 2)
+      attrs[AttributeKey.body] = half
+      attrs[AttributeKey.agility] = half
+      attrs[AttributeKey.reaction] = half
+      attrs[AttributeKey.strength] = half
+      attrs[AttributeKey.charisma] = half
+      attrs[AttributeKey.intuition] = half
+      attrs[AttributeKey.logic] = half
+      attrs[AttributeKey.willpower] = half
+      attrs[AttributeKey.edge] = half
+      // Magic stays at force
+      break
+    }
     default:
       break
   }
@@ -195,6 +218,10 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[k] = 1
     }
   })
+  // Watchers have Edge 0 per the stat block (minimum-1 clamp does not apply)
+  if (type === SpiritType.watcher) {
+    attrs[AttributeKey.edge] = 0
+  }
 
   return attrs
 }
