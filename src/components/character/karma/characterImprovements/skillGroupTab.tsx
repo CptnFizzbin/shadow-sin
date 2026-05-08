@@ -17,18 +17,11 @@ import { ImprovementsStore } from "./improvementsStore.ts"
 const skillGroupKarmaCost = (newRating: number) => 2 * newRating
 
 export const SkillGroupTab: FC = () => {
-  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const { setPendingImprovement } = useSpendKarmaDialogContext()
   const [selectedSkillGroupKey, setSelectedSkillGroupKey] = useState<SkillGroupKey | "">("")
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
   const availableSkillGroups = skillGroups.filter((group) => group.rating < SkillGroupRatingMax)
-
-  useEffect(() => {
-    if (spendType !== "skillGroup") {
-      setSelectedSkillGroupKey("")
-      setPendingImprovement(null)
-    }
-  }, [setPendingImprovement, spendType])
 
   useEffect(() => {
     if (!selectedSkillGroupKey) {

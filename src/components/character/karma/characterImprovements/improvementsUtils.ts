@@ -16,7 +16,7 @@ import type { LanguageSkillImprovement } from "./types/languageSkillImprovement.
 import type { LearnSpellImprovement } from "./types/learnSpellImprovement.ts"
 import type { SkillGroupImprovement } from "./types/skillGroupImprovement.ts"
 
-export const applyImprovements = (
+const applyImprovements = (
   improvementsStore: ImprovementsStore,
   characterStore: CharacterSheetStore,
 ) => {

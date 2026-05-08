@@ -12,13 +12,13 @@ import { useCharacterSheetSelector } from "#/components/character/sheet/characte
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeKey as AttributeKeyEnum, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
-import { ImprovementsStore } from "./improvementsStore.ts"
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { ImprovementsStore } from "./improvementsStore.ts"
 
 const attributeKarmaCost = (newRating: number) => 5 * newRating
 
 export const AttributeTab: FC = () => {
-  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const { setPendingImprovement } = useSpendKarmaDialogContext()
   const [selectedAttribute, setSelectedAttribute] = useState<AttributeKey | "">("")
   const attributes = useCharacterSheetSelector((sheet) => sheet.attributes)
   const attrInfos = useAllAttrInfos()
@@ -29,13 +29,6 @@ export const AttributeTab: FC = () => {
     const currentValue = attributes[key]
     return info.max > 0 && currentValue < info.max
   })
-
-  useEffect(() => {
-    if (spendType !== "attribute") {
-      setSelectedAttribute("")
-      setPendingImprovement(null)
-    }
-  }, [setPendingImprovement, spendType])
 
   useEffect(() => {
     if (!selectedAttribute) {

@@ -24,7 +24,7 @@ export const SPEND_TYPE_LABELS: Record<SpendType, string> = {
 
 const NEW_SPELL_KARMA_COST = 5
 
-export interface PendingImprovement {
+interface PendingImprovement {
   improvementsStore: ImprovementsStore
   karmaCost: number
 }

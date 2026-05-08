@@ -20,7 +20,7 @@ import type { IncreaseSkillEntry } from "./types/increaseSkillEntry.ts"
 const increaseSkillKarmaCost = (newRating: number) => 2 * newRating
 
 export const IncreaseSkillTab: FC = () => {
-  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const { setPendingImprovement } = useSpendKarmaDialogContext()
   const [selectedIncreaseSkillKey, setSelectedIncreaseSkillKey] = useState<SkillKey | "">("")
   const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
@@ -43,13 +43,6 @@ export const IncreaseSkillTab: FC = () => {
   const selectedIncreaseSkillEntry = availableIncreaseSkills.find(
     (entry) => entry.key === selectedIncreaseSkillKey,
   )
-
-  useEffect(() => {
-    if (spendType !== "increaseSkill") {
-      setSelectedIncreaseSkillKey("")
-      setPendingImprovement(null)
-    }
-  }, [setPendingImprovement, spendType])
 
   useEffect(() => {
     if (!selectedIncreaseSkillEntry) {

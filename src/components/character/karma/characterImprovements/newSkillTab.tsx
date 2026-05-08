@@ -18,7 +18,7 @@ import { ImprovementsStore } from "./improvementsStore.ts"
 const NEW_SKILL_KARMA_COST = 2
 
 export const NewSkillTab: FC = () => {
-  const { setPendingImprovement, spendType } = useSpendKarmaDialogContext()
+  const { setPendingImprovement } = useSpendKarmaDialogContext()
   const [selectedNewSkillKey, setSelectedNewSkillKey] = useState<SkillKey | "">("")
   const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
@@ -28,13 +28,6 @@ export const NewSkillTab: FC = () => {
   const availableNewSkills = (Object.keys(skillList) as SkillKey[]).filter(
     (skillKey) => !existingSkills.has(skillKey) && !coveredSkills.has(skillKey),
   )
-
-  useEffect(() => {
-    if (spendType !== "newSkill") {
-      setSelectedNewSkillKey("")
-      setPendingImprovement(null)
-    }
-  }, [setPendingImprovement, spendType])
 
   useEffect(() => {
     if (!selectedNewSkillKey) {
