@@ -9,8 +9,7 @@ import { useEffect, useState } from "react"
 
 import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import type { AttributeKey } from "#/system/attributeKey.ts"
-import { AttributeKey as AttributeKeyEnum, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
+import { AttributeKey, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 import { ImprovementsStore } from "./improvementsStore.ts"
@@ -24,7 +23,7 @@ export const AttributeTab: FC = () => {
   const attrInfos = useAllAttrInfos()
 
   const availableAttributes = AttributeOrder.filter((key) => {
-    if (key === AttributeKeyEnum.essence) return false
+    if (key === AttributeKey.essence) return false
     const info = attrInfos[key]
     const currentValue = attributes[key]
     return info.max > 0 && currentValue < info.max

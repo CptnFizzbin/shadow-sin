@@ -53,7 +53,7 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
   onNewSpell,
   children,
 }) => {
-  const characterStore = useCharacterSheetContext()
+  const characterSheetStore = useCharacterSheetContext()
   const karmaStore = useKarmaStore()
 
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
@@ -77,9 +77,10 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
     if (!canSave || karmaCost === null) return
 
     if (spendType === "newSpell") {
+      // Keep all karma spending paths on the same canonical helper API.
       applyImprovementsAndSpendKarma(
         new ImprovementsStore({ improvements: [] }),
-        characterStore,
+        characterSheetStore,
         karmaStore,
         NEW_SPELL_KARMA_COST,
       )
@@ -92,7 +93,7 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
 
     applyImprovementsAndSpendKarma(
       pendingImprovement.improvementsStore,
-      characterStore,
+      characterSheetStore,
       karmaStore,
       pendingImprovement.karmaCost,
     )
