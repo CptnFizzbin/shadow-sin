@@ -1,117 +1,20 @@
-import { useSelector } from "@tanstack/react-store"
-import type { FC, PropsWithChildren, SyntheticEvent } from "react"
-import { createContext, useContext, useState } from "react"
+import type { FC, PropsWithChildren } from "react"
+import { createContext, useContext, useMemo } from "react"
 
-import { calcImprovementsKarmaCost, NEW_SPELL_KARMA_COST } from "#/components/character/karma/characterImprovements/improvementsKarmaCost.ts"
-import type { ImprovementsStore } from "#/components/character/karma/characterImprovements/improvementsStore.ts"
-import { applyImprovementsAndSpendKarma } from "#/components/character/karma/characterImprovements/improvementsUtils.ts"
-import { selectCurrentKarma } from "#/components/character/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { isMagician } from "#/components/character/spells/spellsUtils.ts"
-import type { DialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
+import { ImprovementsStore } from "#/components/character/karma/characterImprovements/improvementsStore.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-export type SpendType = "attribute" | "skillGroup" | "increaseSkill" | "newSkill" | "newSpell"
-
-export const SPEND_TYPE_LABELS: Record<SpendType, string> = {
-  attribute: "Attribute",
-  skillGroup: "Skill Group",
-  increaseSkill: "Increase Skill",
-  newSkill: "New Skill",
-  newSpell: "New Spell",
-}
-
-interface PendingImprovement {
-  improvementsStore: ImprovementsStore
-}
-
 interface SpendKarmaDialogContextValue {
-  currentKarma: number
-  spendType: SpendType
-  canLearnSpell: boolean
-  karmaCost: number | null
-  canSave: boolean
-  setPendingImprovement: (improvement: PendingImprovement | null) => void
-  handleSpendTypeChange: (event: SyntheticEvent, newValue: SpendType) => void
-  handleSave: () => void
-  handleClosed: () => void
+  improvementsStore: ImprovementsStore
 }
 
 const SpendKarmaDialogContext = createContext<SpendKarmaDialogContextValue | null>(null)
 
-interface SpendKarmaDialogProviderProps extends PropsWithChildren {
-  ctrl: DialogCtrl<void>
-  onNewSpell?: () => void
-}
-
-export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
-  ctrl,
-  onNewSpell,
-  children,
-}) => {
-  const characterSheetStore = useCharacterSheetContext()
-  const karmaStore = useKarmaStore()
-
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
-  const awakeningType = useCharacterSheetSelector((sheet) => sheet.biology.awakening)
-  const canLearnSpell = isMagician(awakeningType) && !!onNewSpell
-
-  const [spendType, setSpendType] = useState<SpendType>("attribute")
-  const [pendingImprovement, setPendingImprovement] = useState<PendingImprovement | null>(null)
-
-  const karmaCost = spendType === "newSpell"
-    ? NEW_SPELL_KARMA_COST
-    : pendingImprovement
-      ? calcImprovementsKarmaCost(pendingImprovement.improvementsStore.store.state.improvements)
-      : null
-  const canSave = karmaCost !== null && karmaCost <= currentKarma
-
-  const handleSpendTypeChange = (_event: SyntheticEvent, newValue: SpendType) => {
-    setSpendType(newValue)
-    setPendingImprovement(null)
-  }
-
-  const handleSave = () => {
-    if (!canSave || karmaCost === null) return
-
-    if (spendType === "newSpell") {
-      karmaStore.spendKarma(NEW_SPELL_KARMA_COST)
-      ctrl.close()
-      onNewSpell?.()
-      return
-    }
-
-    if (!pendingImprovement) return
-
-    applyImprovementsAndSpendKarma(
-      pendingImprovement.improvementsStore,
-      characterSheetStore,
-      karmaStore,
-    )
-    ctrl.close()
-  }
-
-  const handleClosed = () => {
-    setSpendType("attribute")
-    setPendingImprovement(null)
-  }
-
-  const contextValue: SpendKarmaDialogContextValue = {
-    currentKarma,
-    spendType,
-    canLearnSpell,
-    karmaCost,
-    canSave,
-    setPendingImprovement,
-    handleSpendTypeChange,
-    handleSave,
-    handleClosed,
-  }
+export const SpendKarmaDialogProvider: FC<PropsWithChildren> = ({ children }) => {
+  const improvementsStore = useMemo(() => new ImprovementsStore({ improvements: [] }), [])
 
   return (
-    <SpendKarmaDialogContext.Provider value={contextValue}>
+    <SpendKarmaDialogContext.Provider value={{ improvementsStore }}>
       {children}
     </SpendKarmaDialogContext.Provider>
   )

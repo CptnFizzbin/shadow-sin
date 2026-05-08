@@ -1,36 +1,74 @@
 import Alert from "@mui/material/Alert"
 import Button from "@mui/material/Button"
+import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Tab from "@mui/material/Tab"
 import Tabs from "@mui/material/Tabs"
 import Typography from "@mui/material/Typography"
-import type { FC } from "react"
+import { useSelector } from "@tanstack/react-store"
+import type { FC, SyntheticEvent } from "react"
+import { useState } from "react"
 
+import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { isMagician } from "#/components/character/spells/spellsUtils.ts"
 import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 import { AttributeTab } from "./characterImprovements/attributeTab.tsx"
-import type { SpendType } from "./characterImprovements/forms/spendKarmaDialogContext.tsx"
-import { SPEND_TYPE_LABELS, useSpendKarmaDialogContext } from "./characterImprovements/forms/spendKarmaDialogContext.tsx"
+import { useSpendKarmaDialogContext } from "./characterImprovements/forms/spendKarmaDialogContext.tsx"
+import { calcImprovementsKarmaCost } from "./characterImprovements/improvementsKarmaCost.ts"
+import { applyImprovementsAndSpendKarma } from "./characterImprovements/improvementsUtils.ts"
 import { IncreaseSkillTab } from "./characterImprovements/increaseSkillTab.tsx"
 import { NewSkillTab } from "./characterImprovements/newSkillTab.tsx"
 import { NewSpellTab } from "./characterImprovements/newSpellTab.tsx"
+import { PendingImprovementsList } from "./characterImprovements/pendingImprovementsList.tsx"
 import { SkillGroupTab } from "./characterImprovements/skillGroupTab.tsx"
+import { selectCurrentKarma } from "./karmaSelectors.ts"
+import { useKarmaStore } from "./useKarmaStore.ts"
+
+type SpendType = "attribute" | "skillGroup" | "increaseSkill" | "newSkill" | "newSpell"
+
+const SPEND_TYPE_LABELS: Record<SpendType, string> = {
+  attribute: "Attribute",
+  skillGroup: "Skill Group",
+  increaseSkill: "Increase Skill",
+  newSkill: "New Skill",
+  newSpell: "New Spell",
+}
 
 export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl }) => {
-  const {
-    spendType,
-    canLearnSpell,
-    handleSpendTypeChange,
-    karmaCost,
-    canSave,
-    currentKarma,
-    handleSave,
-    handleClosed,
-  } = useSpendKarmaDialogContext()
+  const { improvementsStore } = useSpendKarmaDialogContext()
+  const characterSheetStore = useCharacterSheetContext()
+  const karmaStore = useKarmaStore()
 
-  const spendTypes: SpendType[] = ["attribute", "skillGroup", "increaseSkill", "newSkill"]
-  if (canLearnSpell) spendTypes.push("newSpell")
+  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const awakeningType = useCharacterSheetSelector((sheet) => sheet.biology.awakening)
+  const canLearnSpell = isMagician(awakeningType)
+
+  const improvements = useSelector(improvementsStore.store, (state) => state.improvements)
+  const karmaCost = calcImprovementsKarmaCost(improvements)
+  const canSave = improvements.length > 0 && karmaCost <= currentKarma
+
+  const [spendType, setSpendType] = useState<SpendType>("attribute")
+
+  const handleSpendTypeChange = (_event: SyntheticEvent, newValue: SpendType) => {
+    setSpendType(newValue)
+  }
+
+  const handleSave = () => {
+    if (!canSave) return
+    applyImprovementsAndSpendKarma(improvementsStore, characterSheetStore, karmaStore)
+    ctrl.close()
+  }
+
+  const handleClosed = () => {
+    improvementsStore.clear()
+    setSpendType("attribute")
+  }
+
+  const availableSpendTypes: SpendType[] = ["attribute", "skillGroup", "increaseSkill", "newSkill"]
+  if (canLearnSpell) availableSpendTypes.push("newSpell")
 
   return (
     <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={handleClosed}>
@@ -38,10 +76,10 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
 
       <Dialog.Content>
         <Stack>
-          <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant="body2" color="text.secondary">Unspent Karma</Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>{currentKarma}</Typography>
-          </Stack>
+          <PendingImprovementsList
+            improvements={improvements}
+            improvementsStore={improvementsStore}
+          />
 
           <Tabs
             value={spendType}
@@ -49,7 +87,7 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
             variant="scrollable"
             scrollButtons="auto"
           >
-            {spendTypes.map((type) => (
+            {availableSpendTypes.map((type) => (
               <Tab key={type} value={type} label={SPEND_TYPE_LABELS[type]} />
             ))}
           </Tabs>
@@ -60,7 +98,7 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
           {spendType === "newSkill" && <NewSkillTab />}
           {spendType === "newSpell" && <NewSpellTab />}
 
-          {karmaCost !== null && karmaCost > currentKarma && (
+          {karmaCost > currentKarma && (
             <Alert severity="warning">
               Not enough karma. You need {karmaCost} but only have {currentKarma}.
             </Alert>
@@ -69,17 +107,32 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button color="secondary" onClick={() => ctrl.close()}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={!canSave}
-          onClick={handleSave}
-        >
-          {karmaCost !== null ? `Spend ${karmaCost} Karma` : "Spend Karma"}
-        </Button>
+        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+          <Stack direction="row" sx={{ gap: 2 }}>
+            <Stack sx={{ alignItems: "center" }}>
+              <Typography variant="caption" color="text.secondary">Remaining</Typography>
+              <Typography variant="body2" sx={{ fontWeight: "bold" }}>{currentKarma - karmaCost}</Typography>
+            </Stack>
+            <Divider orientation="vertical" flexItem />
+            <Stack sx={{ alignItems: "center" }}>
+              <Typography variant="caption" color="text.secondary">Total Cost</Typography>
+              <Typography variant="body2" sx={{ fontWeight: "bold" }}>{karmaCost}</Typography>
+            </Stack>
+          </Stack>
+          <Stack direction="row" sx={{ gap: 1 }}>
+            <Button color="secondary" onClick={() => ctrl.close()}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={!canSave}
+              onClick={handleSave}
+            >
+              Save
+            </Button>
+          </Stack>
+        </Stack>
       </Dialog.Actions>
     </ControlledDialog>
   )

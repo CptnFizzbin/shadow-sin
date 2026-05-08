@@ -1,12 +1,15 @@
+import AddIcon from "@mui/icons-material/Add"
 import Alert from "@mui/material/Alert"
+import Button from "@mui/material/Button"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
@@ -15,16 +18,26 @@ import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 import { calcActiveSkillKarmaCost } from "./improvementsKarmaCost.ts"
-import { ImprovementsStore } from "./improvementsStore.ts"
+import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
+import { ImprovementType } from "./types/improvementType.ts"
 import type { IncreaseSkillEntry } from "./types/increaseSkillEntry.ts"
 
 export const IncreaseSkillTab: FC = () => {
-  const { setPendingImprovement } = useSpendKarmaDialogContext()
+  const { improvementsStore } = useSpendKarmaDialogContext()
   const [selectedIncreaseSkillKey, setSelectedIncreaseSkillKey] = useState<SkillKey | "">("")
   const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
-  const availableIncreaseSkills: IncreaseSkillEntry[] = [
+  const queuedSkills = useSelector(
+    improvementsStore.store,
+    (state) => new Set(
+      state.improvements
+        .filter((i): i is ActiveSkillImprovement => i.type === ImprovementType.ActiveSkill)
+        .map((i) => i.skill),
+    ),
+  )
+
+  const allIncreaseSkills: IncreaseSkillEntry[] = [
     ...activeSkills
       .filter((skill) => skill.rating < SkillRatingMax)
       .map((skill) => ({ key: skill.name, currentRating: skill.rating })),
@@ -39,22 +52,20 @@ export const IncreaseSkillTab: FC = () => {
     }),
   ]
 
+  const availableIncreaseSkills = allIncreaseSkills.filter(
+    (entry) => !queuedSkills.has(entry.key),
+  )
+
   const selectedIncreaseSkillEntry = availableIncreaseSkills.find(
     (entry) => entry.key === selectedIncreaseSkillKey,
   )
 
-  useEffect(() => {
-    if (!selectedIncreaseSkillEntry) {
-      setPendingImprovement(null)
-      return
-    }
-
+  const handleAdd = () => {
+    if (!selectedIncreaseSkillEntry) return
     const nextRating = selectedIncreaseSkillEntry.currentRating + 1
-    const improvementsStore = new ImprovementsStore({ improvements: [] })
     improvementsStore.improveActiveSkill(selectedIncreaseSkillEntry.key, nextRating)
-
-    setPendingImprovement({ improvementsStore })
-  }, [selectedIncreaseSkillEntry, setPendingImprovement])
+    setSelectedIncreaseSkillKey("")
+  }
 
   if (availableIncreaseSkills.length === 0) {
     return (
@@ -66,7 +77,7 @@ export const IncreaseSkillTab: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1.5 }}>
+    <Stack sx={{ gap: 1 }}>
       <FormControl fullWidth size="small">
         <InputLabel>Skill</InputLabel>
         <Select
@@ -101,6 +112,16 @@ export const IncreaseSkillTab: FC = () => {
           individual skills.
         </Alert>
       )}
+
+      <Button
+        variant="outlined"
+        startIcon={<AddIcon />}
+        disabled={!selectedIncreaseSkillKey}
+        onClick={handleAdd}
+        fullWidth
+      >
+        Add Skill
+      </Button>
     </Stack>
   )
 }

@@ -3,6 +3,7 @@ import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
 import type { AttributeKey } from "#/system/attributeKey.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -66,5 +67,21 @@ export class ImprovementsStore {
     this.store.setState(produce((state) => {
       state.improvements.push({ type: ImprovementType.LanguageSkill, skill, specialization })
     }))
+  }
+
+  learnSpell(spell: SpellData) {
+    this.store.setState(produce((state) => {
+      state.improvements.push({ type: ImprovementType.LearnSpell, spell })
+    }))
+  }
+
+  removeImprovement(index: number) {
+    this.store.setState(produce((state) => {
+      state.improvements.splice(index, 1)
+    }))
+  }
+
+  clear() {
+    this.store.setState(() => ({ improvements: [] }))
   }
 }

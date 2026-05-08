@@ -5,10 +5,6 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import { useSpellFormDialog } from "#/components/character/spells/dialogs/spellFormDialog.tsx"
-import { isMagician } from "#/components/character/spells/spellsUtils.ts"
-import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
 import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
@@ -20,26 +16,15 @@ export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()
   const spendKarmaDialog = useSpendKarmaDialog()
   const karmaStore = useKarmaStore()
-  const spellsStore = useSpellsStore()
-  const spellFormDialog = useSpellFormDialog()
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
   const totalKarma = useSelector(karmaStore, selectTotalKarma)
-  const awakeningType = useCharacterSheetSelector((sheet) => sheet.biology.awakening)
 
   const handleOpenAddKarma = () => {
     addKarmaDialog.open()
   }
 
   const handleOpenSpendKarma = () => {
-    spendKarmaDialog.open({
-      onNewSpell: isMagician(awakeningType)
-        ? () => {
-            spellFormDialog.open().then((spell) => {
-              if (spell) spellsStore.save(spell)
-            })
-          }
-        : undefined,
-    })
+    spendKarmaDialog.open()
   }
 
   return (
