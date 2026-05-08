@@ -14,10 +14,9 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { calcActiveSkillKarmaCost } from "./improvementsKarmaCost.ts"
 import { ImprovementsStore } from "./improvementsStore.ts"
 import type { IncreaseSkillEntry } from "./types/increaseSkillEntry.ts"
-
-const increaseSkillKarmaCost = (newRating: number) => 2 * newRating
 
 export const IncreaseSkillTab: FC = () => {
   const { setPendingImprovement } = useSpendKarmaDialogContext()
@@ -54,7 +53,7 @@ export const IncreaseSkillTab: FC = () => {
     const improvementsStore = new ImprovementsStore({ improvements: [] })
     improvementsStore.improveActiveSkill(selectedIncreaseSkillEntry.key, nextRating)
 
-    setPendingImprovement({ improvementsStore, karmaCost: increaseSkillKarmaCost(nextRating) })
+    setPendingImprovement({ improvementsStore })
   }, [selectedIncreaseSkillEntry, setPendingImprovement])
 
   if (availableIncreaseSkills.length === 0) {
@@ -77,7 +76,7 @@ export const IncreaseSkillTab: FC = () => {
         >
           {availableIncreaseSkills.map((entry) => {
             const newRating = entry.currentRating + 1
-            const cost = increaseSkillKarmaCost(newRating)
+            const cost = calcActiveSkillKarmaCost(newRating)
             return (
               <MenuItem key={entry.key} value={entry.key}>
                 <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>

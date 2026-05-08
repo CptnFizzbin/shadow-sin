@@ -12,9 +12,8 @@ import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { calcSkillGroupKarmaCost } from "./improvementsKarmaCost.ts"
 import { ImprovementsStore } from "./improvementsStore.ts"
-
-const skillGroupKarmaCost = (newRating: number) => 2 * newRating
 
 export const SkillGroupTab: FC = () => {
   const { setPendingImprovement } = useSpendKarmaDialogContext()
@@ -34,7 +33,7 @@ export const SkillGroupTab: FC = () => {
     const improvementsStore = new ImprovementsStore({ improvements: [] })
     improvementsStore.improveSkillGroup(selectedSkillGroupKey, nextRating)
 
-    setPendingImprovement({ improvementsStore, karmaCost: skillGroupKarmaCost(nextRating) })
+    setPendingImprovement({ improvementsStore })
   }, [selectedSkillGroupKey, setPendingImprovement, skillGroups])
 
   if (availableSkillGroups.length === 0) {
@@ -56,7 +55,7 @@ export const SkillGroupTab: FC = () => {
       >
         {availableSkillGroups.map((group) => {
           const newRating = group.rating + 1
-          const cost = skillGroupKarmaCost(newRating)
+          const cost = calcSkillGroupKarmaCost(newRating)
           return (
             <MenuItem key={group.name} value={group.name}>
               <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>

@@ -2,7 +2,8 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC, PropsWithChildren, SyntheticEvent } from "react"
 import { createContext, useContext, useState } from "react"
 
-import { ImprovementsStore } from "#/components/character/karma/characterImprovements/improvementsStore.ts"
+import { calcImprovementsKarmaCost, NEW_SPELL_KARMA_COST } from "#/components/character/karma/characterImprovements/improvementsKarmaCost.ts"
+import type { ImprovementsStore } from "#/components/character/karma/characterImprovements/improvementsStore.ts"
 import { applyImprovementsAndSpendKarma } from "#/components/character/karma/characterImprovements/improvementsUtils.ts"
 import { selectCurrentKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
@@ -22,11 +23,8 @@ export const SPEND_TYPE_LABELS: Record<SpendType, string> = {
   newSpell: "New Spell",
 }
 
-const NEW_SPELL_KARMA_COST = 5
-
 interface PendingImprovement {
   improvementsStore: ImprovementsStore
-  karmaCost: number
 }
 
 interface SpendKarmaDialogContextValue {
@@ -65,7 +63,9 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
 
   const karmaCost = spendType === "newSpell"
     ? NEW_SPELL_KARMA_COST
-    : pendingImprovement?.karmaCost ?? null
+    : pendingImprovement
+      ? calcImprovementsKarmaCost(pendingImprovement.improvementsStore.store.state.improvements)
+      : null
   const canSave = karmaCost !== null && karmaCost <= currentKarma
 
   const handleSpendTypeChange = (_event: SyntheticEvent, newValue: SpendType) => {
@@ -77,13 +77,7 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
     if (!canSave || karmaCost === null) return
 
     if (spendType === "newSpell") {
-      // Keep all karma spending paths on the same canonical helper API.
-      applyImprovementsAndSpendKarma(
-        new ImprovementsStore({ improvements: [] }),
-        characterSheetStore,
-        karmaStore,
-        NEW_SPELL_KARMA_COST,
-      )
+      karmaStore.spendKarma(NEW_SPELL_KARMA_COST)
       ctrl.close()
       onNewSpell?.()
       return
@@ -95,7 +89,6 @@ export const SpendKarmaDialogProvider: FC<SpendKarmaDialogProviderProps> = ({
       pendingImprovement.improvementsStore,
       characterSheetStore,
       karmaStore,
-      pendingImprovement.karmaCost,
     )
     ctrl.close()
   }

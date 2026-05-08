@@ -12,9 +12,8 @@ import { useCharacterSheetSelector } from "#/components/character/sheet/characte
 import { AttributeKey, AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { calcAttributeKarmaCost } from "./improvementsKarmaCost.ts"
 import { ImprovementsStore } from "./improvementsStore.ts"
-
-const attributeKarmaCost = (newRating: number) => 5 * newRating
 
 export const AttributeTab: FC = () => {
   const { setPendingImprovement } = useSpendKarmaDialogContext()
@@ -40,7 +39,7 @@ export const AttributeTab: FC = () => {
     const improvementsStore = new ImprovementsStore({ improvements: [] })
     improvementsStore.improveAttribute(selectedAttribute, nextRating)
 
-    setPendingImprovement({ improvementsStore, karmaCost: attributeKarmaCost(nextRating) })
+    setPendingImprovement({ improvementsStore })
   }, [attributes, selectedAttribute, setPendingImprovement])
 
   if (availableAttributes.length === 0) {
@@ -62,7 +61,7 @@ export const AttributeTab: FC = () => {
         {availableAttributes.map((key) => {
           const currentValue = attributes[key]
           const newValue = currentValue + 1
-          const cost = attributeKarmaCost(newValue)
+          const cost = calcAttributeKarmaCost(newValue)
           return (
             <MenuItem key={key} value={key}>
               <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>

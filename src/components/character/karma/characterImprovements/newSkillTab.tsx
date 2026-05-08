@@ -15,8 +15,6 @@ import { skillList } from "#/system/skills/skillList.ts"
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 import { ImprovementsStore } from "./improvementsStore.ts"
 
-const NEW_SKILL_KARMA_COST = 2
-
 export const NewSkillTab: FC = () => {
   const { setPendingImprovement } = useSpendKarmaDialogContext()
   const [selectedNewSkillKey, setSelectedNewSkillKey] = useState<SkillKey | "">("")
@@ -38,7 +36,7 @@ export const NewSkillTab: FC = () => {
     const improvementsStore = new ImprovementsStore({ improvements: [] })
     improvementsStore.improveActiveSkill(selectedNewSkillKey, 1)
 
-    setPendingImprovement({ improvementsStore, karmaCost: NEW_SKILL_KARMA_COST })
+    setPendingImprovement({ improvementsStore })
   }, [selectedNewSkillKey, setPendingImprovement])
 
   if (availableNewSkills.length === 0) {

@@ -7,6 +7,7 @@ import type { CharacterSheetStore } from "#/components/character/sheet/character
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 
+import { calcImprovementsKarmaCost } from "./improvementsKarmaCost.ts"
 import type { ImprovementsStore } from "./improvementsStore.ts"
 import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
 import type { AttributeImprovement } from "./types/attributeImprovement.ts"
@@ -19,10 +20,12 @@ import type { SkillGroupImprovement } from "./types/skillGroupImprovement.ts"
 const applyImprovements = (
   improvementsStore: ImprovementsStore,
   characterStore: CharacterSheetStore,
+  karmaStore: KarmaStore,
 ) => {
-  return characterStore.setState(produce((sheet) => {
-    const { improvements } = improvementsStore.store.get()
+  const { improvements } = improvementsStore.store.state
+  const karmaCost = calcImprovementsKarmaCost(improvements)
 
+  characterStore.setState(produce((sheet) => {
     improvements.forEach((improvement) => {
       switch (improvement.type) {
         case ImprovementType.Attribute:
@@ -48,16 +51,16 @@ const applyImprovements = (
       }
     })
   }))
+
+  if (karmaCost > 0) karmaStore.spendKarma(karmaCost)
 }
 
 export const applyImprovementsAndSpendKarma = (
   improvementsStore: ImprovementsStore,
   characterStore: CharacterSheetStore,
   karmaStore: KarmaStore,
-  karmaCost: number,
 ): void => {
-  applyImprovements(improvementsStore, characterStore)
-  karmaStore.spendKarma(karmaCost)
+  applyImprovements(improvementsStore, characterStore, karmaStore)
 }
 
 const applyAttributeImprovement = (
