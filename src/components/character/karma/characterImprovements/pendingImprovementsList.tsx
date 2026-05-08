@@ -9,6 +9,25 @@ import { describeImprovement } from "./improvementDescription.ts"
 import { calcImprovementKarmaCost } from "./improvementsKarmaCost.ts"
 import type { ImprovementsStore } from "./improvementsStore.ts"
 import type { AnyImprovement } from "./types/anyImprovement.ts"
+import { ImprovementType } from "./types/improvementType.ts"
+
+const improvementKey = (improvement: AnyImprovement, index: number): string => {
+  switch (improvement.type) {
+    case ImprovementType.Attribute:
+      return `${improvement.type}-${improvement.attribute}`
+    case ImprovementType.ActiveSkill:
+      return `${improvement.type}-${improvement.skill}-${improvement.specialization ?? improvement.newRating}`
+    case ImprovementType.SkillGroup:
+      return `${improvement.type}-${improvement.group}`
+    case ImprovementType.KnowledgeSkill:
+    case ImprovementType.LanguageSkill:
+      return `${improvement.type}-${improvement.skill}-${improvement.specialization ?? improvement.newRating}`
+    case ImprovementType.LearnSpell:
+      return `${improvement.type}-${improvement.spell.id}`
+    default:
+      return `${index}`
+  }
+}
 
 interface PendingImprovementsListProps {
   improvements: AnyImprovement[]
@@ -26,7 +45,7 @@ export const PendingImprovementsList: FC<PendingImprovementsListProps> = ({
       <Stack sx={{ gap: 0.5 }}>
         {improvements.map((improvement, index) => (
           <Stack
-            key={index}
+            key={improvementKey(improvement, index)}
             direction="row"
             sx={{ alignItems: "center", justifyContent: "space-between" }}
           >

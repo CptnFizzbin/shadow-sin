@@ -111,7 +111,13 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
           <Stack direction="row" sx={{ gap: 2 }}>
             <Stack sx={{ alignItems: "center" }}>
               <Typography variant="caption" color="text.secondary">Remaining</Typography>
-              <Typography variant="body2" sx={{ fontWeight: "bold" }}>{currentKarma - karmaCost}</Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "bold" }}
+                color={currentKarma - karmaCost < 0 ? "error" : "text.primary"}
+              >
+                {currentKarma - karmaCost}
+              </Typography>
             </Stack>
             <Divider orientation="vertical" flexItem />
             <Stack sx={{ alignItems: "center" }}>
