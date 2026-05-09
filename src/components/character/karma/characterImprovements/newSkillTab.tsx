@@ -2,43 +2,58 @@ import AddIcon from "@mui/icons-material/Add"
 import Button from "@mui/material/Button"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { createSelector } from "reselect"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import {
+  selectActiveSkills,
+  selectAllowedActiveSkills,
+  selectSkillGroups,
+  useCharacterSheetSelector,
+} from "#/components/character/sheet/characterSheet.selectors.ts"
+import { ActiveSkillSelectInput } from "#/components/character/skills/forms/activeSkillSelectInput.tsx"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
-import { skillList } from "#/system/skills/skillList.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { selectQueuedImprovements, useImprovementsSelector } from "./improvements.selectors.ts"
 import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
 import { ImprovementType } from "./types/improvementType.ts"
+
+const selectQueuedSkillsSet = createSelector([
+  selectQueuedImprovements,
+], (improvements) => {
+  return new Set(
+    improvements
+      .filter((i): i is ActiveSkillImprovement => i.type === ImprovementType.ActiveSkill)
+      .map((i) => i.skill),
+  )
+})
 
 export const NewSkillTab: FC = () => {
   const { improvementsStore } = useSpendKarmaDialogContext()
   const [selectedNewSkillKey, setSelectedNewSkillKey] = useState<SkillKey | "">("")
-  const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
-  const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
-  const queuedNewSkills = useSelector(
-    improvementsStore.store,
-    (state) => new Set(
-      state.improvements
-        .filter((i): i is ActiveSkillImprovement => i.type === ImprovementType.ActiveSkill)
-        .map((i) => i.skill),
-    ),
-  )
+  const queuedNewSkills = useImprovementsSelector(selectQueuedSkillsSet)
+  const allowedSkillsSelector = useMemo(() => createSelector([
+    selectAllowedActiveSkills,
+    selectActiveSkills,
+    selectSkillGroups,
+    () => queuedNewSkills,
+  ], (allowed, active, groups, queued) => {
+    const existing = new Set(active.map((skill) => skill.name))
+    const covered = new Set(groups.flatMap((group) => getSkillsInGroup(group.name)))
 
-  const existingSkills = new Set(activeSkills.map((skill) => skill.name))
-  const coveredSkills = new Set(skillGroups.flatMap((group) => getSkillsInGroup(group.name)))
-  const availableNewSkills = (Object.keys(skillList) as SkillKey[]).filter(
-    (skillKey) => !existingSkills.has(skillKey) && !coveredSkills.has(skillKey) && !queuedNewSkills.has(skillKey),
-  )
+    return new Set(Object.keys(allowed) as SkillKey[])
+      .difference(queued)
+      .difference(existing)
+      .difference(covered)
+  }), [queuedNewSkills])
+
+  const allowedSkills = useCharacterSheetSelector(allowedSkillsSelector)
 
   const handleAdd = () => {
     if (!selectedNewSkillKey) return
@@ -46,7 +61,7 @@ export const NewSkillTab: FC = () => {
     setSelectedNewSkillKey("")
   }
 
-  if (availableNewSkills.length === 0) {
+  if (allowedSkills.size === 0) {
     return (
       <Typography color="text.secondary">
         All skills are already known.
@@ -58,25 +73,12 @@ export const NewSkillTab: FC = () => {
     <Stack sx={{ gap: 1 }}>
       <FormControl fullWidth size="small">
         <InputLabel>Skill</InputLabel>
-        <Select
+        <ActiveSkillSelectInput
           value={selectedNewSkillKey}
           label="Skill"
           onChange={(event) => setSelectedNewSkillKey(event.target.value as SkillKey | "")}
-        >
-          {[...availableNewSkills].sort().map((skillKey) => {
-            const info = skillList[skillKey]
-            return (
-              <MenuItem key={skillKey} value={skillKey}>
-                <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
-                  <Typography>{skillKey}</Typography>
-                  <Typography color="text.secondary" sx={{ fontSize: "small" }}>
-                    {info?.group ?? ""}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            )
-          })}
-        </Select>
+          filterOption={(key) => allowedSkills.has(key)}
+        />
       </FormControl>
 
       <Button
