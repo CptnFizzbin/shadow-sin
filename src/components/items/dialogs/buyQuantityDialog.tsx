@@ -5,12 +5,10 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  useCharacterSheet,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
@@ -44,7 +42,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
       <Dialog.Content>
         <Stack sx={{ paddingTop: 2 }}>
           <Stack direction="row">
-            <CounterField
+            <CounterInput
               label="Quantity"
               size="small"
               value={quantity}

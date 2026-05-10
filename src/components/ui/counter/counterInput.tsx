@@ -28,15 +28,17 @@ export interface CounterFieldProps extends Omit<TextFieldProps, OmittedProps> {
   max?: number
   showMax?: boolean
   step?: number
+  directEdit?: boolean
 }
 
-export const CounterField: FC<CounterFieldProps> = ({
+export const CounterInput: FC<CounterFieldProps> = ({
   value,
   onChange,
   min,
   max,
   showMax,
   step = 1,
+  directEdit = true,
   ...props
 }) => {
   const [localValue, setLocalValue] = useState<string | null>(null)
@@ -102,6 +104,7 @@ export const CounterField: FC<CounterFieldProps> = ({
       }, props.sx)}
       slotProps={{
         input: {
+          readOnly: !directEdit,
           startAdornment: (
             <InputAdornment position="start">
               <Button sx={{ minWidth: "unset" }} onClick={handleDecrement} disabled={isAtMin}>
