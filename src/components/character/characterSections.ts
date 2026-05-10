@@ -86,7 +86,7 @@ export const characterSections: Readonly<Record<SectionKey, SectionInfo>> = {
   },
   [SectionKey.adeptPowers]: {
     id: SectionKey.adeptPowers,
-    label: "Adept Powers",
+    label: "Powers",
     route: AdeptPowersRoute,
     visibleFor: [AwakeningType.Adept, AwakeningType.MysticAdept],
   },

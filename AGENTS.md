@@ -87,6 +87,25 @@ Supporting utilities in `src/components/gear/`:
 **Adding a new item type** — create `forms/useMyItemForm.tsx`, `forms/myItemFormFields.tsx`, and
 `dialogs/myItemFormDialog.tsx` following the weapons or cyberware examples.
 
+## Character migrations
+
+Migrations live in `src/character/migrations/` and are registered in `src/character/migrations.ts`.
+
+**Never edit an existing migration file.** Once a migration has been committed it may already have run against
+real character data in user storage. Changing its logic would cause different behaviour on a re-run and could
+corrupt or silently mis-migrate characters.
+
+- **Schema changes always require a new migration** — when a `CharacterSheet` field is added, renamed, or removed,
+  create a new migration file with a date-prefixed name (e.g. `YYYYMMDD_describeChange.ts`) and register it at the
+  bottom of `migrations.ts`.
+- **Earlier migrations may reference the old field name** — migrations that run before the rename migration can
+  still reference the old field name because they operate on pre-rename data. Update them to handle *both* the old
+  and new field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for characters that were
+  already partially migrated.
+- **New migration IDs must sort after all existing IDs** — migrations are applied in ascending string order by `id`.
+  Using an ISO date prefix (without separators, e.g. `"20260510"`) keeps ordering unambiguous.
+- **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
+
 ## Conventions
 
 - **Path alias**: `#/` → `src/` (configured in `tsconfig.json` + `vite-tsconfig-paths`)
