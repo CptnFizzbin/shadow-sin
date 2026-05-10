@@ -1,3 +1,4 @@
+import ButtonBase from "@mui/material/ButtonBase"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -7,20 +8,39 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import { Label } from "#/components/ui/text/label.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
-const QualityViewerRow: FC<{ quality: QualityData }> = ({ quality }) => {
+import { useQualityInfoDialog } from "./dialogs/qualityInfoDialog.tsx"
+
+interface QualityViewerRowProps {
+  quality: QualityData
+  onClick: () => void
+}
+
+const QualityViewerRow: FC<QualityViewerRowProps> = ({ quality, onClick }) => {
   const { rating } = quality
   return (
-    <Paper sx={{ paddingX: 1, paddingY: 0.5 }}>
+    <ButtonBase
+      component={Paper}
+      onClick={onClick}
+      aria-label={`View ${quality.name}`}
+      sx={{
+        "paddingX": 1,
+        "paddingY": 0.5,
+        "width": "100%",
+        "textAlign": "left",
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+    >
       <Typography>
         {quality.name}
         {rating !== undefined && ` (Rating ${rating})`}
       </Typography>
-    </Paper>
+    </ButtonBase>
   )
 }
 
 export const QualitiesViewerSection: FC = () => {
   const qualities = useCharacterSheet((sheet) => sheet.qualities)
+  const qualityInfoDialog = useQualityInfoDialog()
 
   const positiveQualities = qualities.filter((q) => q.type === "positive")
   const negativeQualities = qualities.filter((q) => q.type === "negative")
@@ -39,7 +59,11 @@ export const QualitiesViewerSection: FC = () => {
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Positive Qualities" variant="outlined" />
           {positiveQualities.map((quality) => (
-            <QualityViewerRow key={quality.name} quality={quality} />
+            <QualityViewerRow
+              key={quality.id}
+              quality={quality}
+              onClick={() => qualityInfoDialog.open({ quality })}
+            />
           ))}
         </Stack>
       )}
@@ -48,7 +72,11 @@ export const QualitiesViewerSection: FC = () => {
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Negative Qualities" variant="outlined" />
           {negativeQualities.map((quality) => (
-            <QualityViewerRow key={quality.name} quality={quality} />
+            <QualityViewerRow
+              key={quality.id}
+              quality={quality}
+              onClick={() => qualityInfoDialog.open({ quality })}
+            />
           ))}
         </Stack>
       )}
