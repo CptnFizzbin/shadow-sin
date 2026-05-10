@@ -84,6 +84,19 @@ export class CachedStorageAdaptor implements AsyncStorage {
     await this.underlying.removeItem(key)
   }
 
+  public flush(): void {
+    for (const entry of this.cache.values()) {
+      if (entry.savePending && entry.debouncer) {
+        try {
+          entry.debouncer.flush()
+        } catch {
+          // Ignore individual flush errors (e.g. storage quota exceeded) so
+          // remaining pending writes are still attempted.
+        }
+      }
+    }
+  }
+
   public namespace(ns: string): StorageView {
     return new StorageView(this, ns)
   }
