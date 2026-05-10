@@ -12,12 +12,11 @@ const migration: CharacterMigration<OldShape> = {
   id: "20260510",
   up: produce((draft) => {
     if ("adeptPowers" in draft) {
-      draft.powers = (draft.adeptPowers ?? [])
-        .map((power) => {
-          power.type = "adeptPower"
-          return power
-        })
-
+      const mapped = (draft.adeptPowers ?? []).map((power) => {
+        power.type = "adeptPower"
+        return power
+      })
+      draft.powers = [...(draft.powers ?? []), ...mapped]
       delete draft.adeptPowers
     }
   }),

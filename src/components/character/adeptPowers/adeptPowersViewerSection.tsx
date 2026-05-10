@@ -7,11 +7,11 @@ import type { FC } from "react"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
+import { AdeptPowerListItem } from "./adeptPowerListItem.tsx"
 import { usePowerPoints } from "./adeptPowersHooks.ts"
 import { selectAllAdeptPowers } from "./adeptPowersSelectors.ts"
-import { useAdeptPowersStore } from "./useAdeptPowersStore.ts"
-import { AdeptPowerViewerListItem } from "./adeptPowerViewerListItem.tsx"
 import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
+import { useAdeptPowersStore } from "./useAdeptPowersStore.ts"
 
 export const AdeptPowersViewerSection: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()
@@ -43,7 +43,7 @@ export const AdeptPowersViewerSection: FC = () => {
 
       <Stack sx={{ gap: 0.5 }}>
         {adeptPowers.map((power) => (
-          <AdeptPowerViewerListItem
+          <AdeptPowerListItem
             key={power.id}
             power={power}
             onClick={() => handleEditPower(power)}

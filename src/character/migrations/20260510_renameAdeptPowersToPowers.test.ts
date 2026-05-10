@@ -29,7 +29,7 @@ describe("20260510_renameAdeptPowersToPowers", () => {
     expect(result.powers?.[0]).toEqual(power)
   })
 
-  it("initialises powers as an empty array when adeptPowers is missing", () => {
+  it("initialises powers as undefined when adeptPowers is missing", () => {
     // Arrange
     const character = {}
 

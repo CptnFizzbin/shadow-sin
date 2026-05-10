@@ -2,17 +2,16 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
+import type { FC } from "react"
 
 import { AdeptPowersViewerSection } from "#/components/character/adeptPowers/adeptPowersViewerSection.tsx"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
-export const Route = createFileRoute("/$characterId/powers")({
-  component: RouteComponent,
-})
+interface Props {}
 
-function RouteComponent() {
+export const RouteComponent: FC<Props> = () => {
   const awakening = useCharacterSheet((sheet) => sheet.biology.awakening)
   const isAdept =
     awakening === AwakeningType.Adept || awakening === AwakeningType.MysticAdept
@@ -35,3 +34,7 @@ function RouteComponent() {
     </Stack>
   )
 }
+
+export const Route = createFileRoute("/$characterId/powers")({
+  component: RouteComponent,
+})

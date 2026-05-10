@@ -142,6 +142,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       edge: { min: 1, max: 6 },
     },
   },
+  // stable system UUIDs — do not change
   Pixie: {
     name: MetatypeType.Pixie,
     group: MetatypeGroup.critter,
@@ -165,19 +166,19 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     },
     innatePowers: [
       {
-        type: "critterPower" as const,
+        type: "critterPower",
         id: "3f8a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
         name: "Concealment (Self Only)",
         source: { book: "SR4A", page: 293 },
       },
       {
-        type: "critterPower" as const,
+        type: "critterPower",
         id: "4a9b2c3d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
         name: "Enhanced Senses (Astral Perception)",
         source: { book: "SR4A", page: 294 },
       },
       {
-        type: "critterPower" as const,
+        type: "critterPower",
         id: "5b0c3d4e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
         name: "Sapience",
         source: { book: "SR4A", page: 297 },

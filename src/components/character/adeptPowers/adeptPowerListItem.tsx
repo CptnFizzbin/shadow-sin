@@ -4,18 +4,19 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { getAdeptPowerBpCost } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
+import { getAdeptPowerBpCost } from "./adeptPowersUtils.ts"
+
 interface AdeptPowerListItemProps {
   power: AdeptPowerData
-  onEdit?: () => void
+  onClick?: () => void
 }
 
-export const AdeptPowersListItem: FC<AdeptPowerListItemProps> = ({
+export const AdeptPowerListItem: FC<AdeptPowerListItemProps> = ({
   power,
-  onEdit,
+  onClick,
 }) => {
   return (
     <Paper
@@ -26,7 +27,7 @@ export const AdeptPowersListItem: FC<AdeptPowerListItemProps> = ({
         "cursor": "pointer",
         "&:hover": { bgcolor: "action.hover" },
       }}
-      onClick={onEdit}
+      onClick={onClick}
     >
       <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1 }}>{power.name}</Typography>

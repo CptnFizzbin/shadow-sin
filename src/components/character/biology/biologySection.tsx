@@ -44,9 +44,7 @@ export const BiologySection: FC = () => {
 
       <MovementDisplay movement={metatype.movement} />
 
-      {(metatype.innatePowers ?? []).length > 0 && (
-        <InnatePowersDisplay powers={metatype.innatePowers ?? []} />
-      )}
+      <InnatePowersDisplay powers={metatype.innatePowers ?? []} />
     </Stack>
   )
 }

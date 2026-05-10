@@ -10,6 +10,9 @@ interface MovementDisplayProps {
   movement: MovementData | MovementData[]
 }
 
+const capitalize = (str: string): string =>
+  str.charAt(0).toUpperCase() + str.slice(1)
+
 export const MovementDisplay: FC<MovementDisplayProps> = ({ movement }) => {
   const movementModes = Array.isArray(movement) ? movement : [movement]
 
@@ -17,9 +20,7 @@ export const MovementDisplay: FC<MovementDisplayProps> = ({ movement }) => {
     <Stack sx={{ gap: 0.5 }}>
       <Label label="Movement (walk / run)" />
       {movementModes.map((mode, index) => {
-        const modeLabel = mode.type
-          ? mode.type.charAt(0).toUpperCase() + mode.type.slice(1)
-          : "Ground"
+        const modeLabel = mode.type ? capitalize(mode.type) : "Ground"
 
         return (
           <Paper key={mode.type ?? index} sx={{ paddingX: 1, paddingY: 0.5 }}>
