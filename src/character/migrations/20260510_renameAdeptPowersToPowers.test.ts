@@ -19,7 +19,7 @@ describe("20260510_renameAdeptPowersToPowers", () => {
 
   it("preserves the existing power data", () => {
     // Arrange
-    const power = { id: "abc", name: "Improved Reflexes 2", rating: 1, costPerRating: 2.5 }
+    const power = { type: "adeptPower", id: "abc", name: "Improved Reflexes 2", rating: 1, costPerRating: 2.5 }
     const character = { adeptPowers: [power] }
 
     // Act

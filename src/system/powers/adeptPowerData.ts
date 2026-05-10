@@ -10,6 +10,7 @@ import type { PowerData } from "./powerData.ts"
  * Cost is measured in Magic points per rating.
  */
 export interface AdeptPowerData extends PowerData {
+  type: "adeptPower"
   rating: number
   costPerRating: number
 }
@@ -18,6 +19,7 @@ export interface AdeptPowerData extends PowerData {
  * Zod schema for validating AdeptPowerData.
  */
 export const AdeptPowerDataSchema = z.object({
+  type: z.literal("adeptPower"),
   id: z.uuid(),
   name: z.string().min(1, "Name is required"),
   rating: z.number().int().min(1, "Rating must be at least 1"),

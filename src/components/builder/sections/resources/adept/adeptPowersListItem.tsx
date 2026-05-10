@@ -6,7 +6,7 @@ import type { FC } from "react"
 
 import { getAdeptPowerBpCost } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 interface AdeptPowerListItemProps {
   power: AdeptPowerData

@@ -5,6 +5,7 @@ import type { SourceData } from "#/system/sourceData.ts"
  * Base interface shared by all power types (adept powers, critter powers, etc.).
  */
 export interface PowerData {
+  type: string
   id: string
   name: string
   description?: string

@@ -8,12 +8,7 @@ import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import type { GearTreeNode } from "./exportUtils.ts"
-import {
-  characterSheetToYaml,
-  gearFromTree,
-  gearToTree,
-  yamlToCharacterSheet,
-} from "./exportUtils.ts"
+import { characterSheetToYaml, gearFromTree, gearToTree, yamlToCharacterSheet } from "./exportUtils.ts"
 
 describe("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
@@ -328,7 +323,7 @@ describe("yamlToCharacterSheet / characterSheetToYaml round-trip", () => {
     expect(restored.qualities).toEqual(Artemis.qualities)
     expect(restored.contacts).toEqual(Artemis.contacts)
     expect(restored.spells).toEqual(Artemis.spells)
-    expect(restored.adeptPowers).toEqual(Artemis.adeptPowers)
+    expect(restored.powers).toEqual(Artemis.powers)
   })
 
   it("preserves parent/child IDs exactly through a round-trip", () => {

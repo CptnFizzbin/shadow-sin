@@ -10,7 +10,7 @@ import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPo
 import { useAdeptPowerFormDialog } from "#/components/character/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
 import { useAdeptPowersStore } from "#/components/character/adeptPowers/useAdeptPowersStore.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 import { AdeptPowersListItem } from "./adeptPowersListItem.tsx"
 

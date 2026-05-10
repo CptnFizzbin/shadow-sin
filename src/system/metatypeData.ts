@@ -1,7 +1,7 @@
 import type { AttributeInfo } from "./attributeInfo.ts"
 import type { AttributeKey } from "./attributeKey.ts"
-import type { CritterPowerData } from "./magic/critterPowerData.ts"
 import type { MovementData } from "./movementData.ts"
+import type { CritterPowerData } from "./powers/critterPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
 
 export enum MetatypeGroup {
@@ -165,16 +165,19 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
     },
     innatePowers: [
       {
+        type: "critterPower" as const,
         id: "3f8a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
         name: "Concealment (Self Only)",
         source: { book: "SR4A", page: 293 },
       },
       {
+        type: "critterPower" as const,
         id: "4a9b2c3d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
         name: "Enhanced Senses (Astral Perception)",
         source: { book: "SR4A", page: 294 },
       },
       {
+        type: "critterPower" as const,
         id: "5b0c3d4e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
         name: "Sapience",
         source: { book: "SR4A", page: 297 },
