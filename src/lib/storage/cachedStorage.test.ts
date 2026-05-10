@@ -146,4 +146,62 @@ describe("CachedStorageAdaptor", () => {
       expect(getRaw("key/one")).toBe("value")
     })
   })
+
+  describe("flush()", () => {
+    it("immediately writes all pending items to backing storage without waiting for debounce", () => {
+      // Arrange
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      void root.setItem("alpha", "a")
+      void root.setItem("beta", "b")
+
+      // Act — flush before debounce period ends
+      root.flush()
+
+      // Assert — both values are in backing storage immediately
+      expect(getRaw("alpha")).toBe("a")
+      expect(getRaw("beta")).toBe("b")
+    })
+
+    it("flushes the most recent value when multiple writes occurred before flush", () => {
+      // Arrange
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      void root.setItem("key", "first")
+      vi.advanceTimersByTime(1_000)
+      void root.setItem("key", "second")
+      vi.advanceTimersByTime(1_000)
+      void root.setItem("key", "third")
+
+      // Act — flush without waiting for debounce
+      root.flush()
+
+      // Assert — latest value is persisted
+      expect(getRaw("key")).toBe("third")
+    })
+
+    it("flushes writes made via namespace slices", () => {
+      // Arrange
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+      const slice = root.namespace("ns")
+      void slice.setItem("item", "slice-value")
+
+      // Act
+      root.flush()
+
+      // Assert — key is written with the full namespace path
+      expect(getRaw("ns/item")).toBe("slice-value")
+    })
+
+    it("is a no-op when there are no pending writes", () => {
+      // Arrange
+      const { storage: backingStore, getRaw } = makeTestAsyncStorage()
+      const root = new CachedStorageAdaptor(backingStore, { debounceMs: FIVE_SECONDS, ttlMs: 60_000 })
+
+      // Act — flush with nothing pending
+      expect(() => root.flush()).not.toThrow()
+      expect(getRaw("anything")).toBeNull()
+    })
+  })
 })
