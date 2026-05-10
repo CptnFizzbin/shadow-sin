@@ -60,6 +60,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
   })
 
   const groupRating = useCharacterSheet((sheet) => {
+    if (!skillInfo) return 0
     return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
   })
 
