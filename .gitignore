@@ -48,9 +48,8 @@ Thumbs.db
 .claude/
 
 # Agent Artifacts
-.code-reviews/
-.plans/
 .playwright-mcp/
+docs/workspace/
 diff.txt
 
 # Fallow code quality

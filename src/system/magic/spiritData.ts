@@ -161,7 +161,7 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       attrs[AttributeKey.reaction] = force + 3
       attrs[AttributeKey.strength] = force + 2
       break
-    // SR4: Spirit of Man only raises agility and intuition; all other stats stay at base force
+    // SR4A: Spirit of Man only raises agility and intuition; all other stats stay at base force
     case SpiritType.man:
       attrs[AttributeKey.agility] = force + 2
       attrs[AttributeKey.intuition] = force + 1

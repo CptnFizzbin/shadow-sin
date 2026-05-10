@@ -8,13 +8,13 @@ import type { ContactData } from "./contactData.ts"
 import type { ItemData } from "./itemData.ts"
 import type { LifestyleType } from "./lifestyleType.ts"
 import type { LoanData } from "./loanData.ts"
-import type { AdeptPowerData } from "./magic/adeptPowerData.ts"
 import type { ComplexFormData } from "./magic/complexFormData.ts"
 import type { SpellData } from "./magic/spellData.ts"
 import type { SpiritData } from "./magic/spiritData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
 import type { MetatypeType } from "./metatypeData.ts"
+import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
 import type { ActiveSkillData } from "./skills/activeSkillData"
 import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
@@ -117,5 +117,5 @@ export interface CharacterSheet {
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
   spirits: SpiritData[]
-  adeptPowers: AdeptPowerData[]
+  powers: AdeptPowerData[]
 }

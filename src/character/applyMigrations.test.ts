@@ -30,7 +30,7 @@ describe("applyMigrations", () => {
     // Assert — fields documented in applyMigrations as defensive defaults
     expect(result.spirits).toEqual([])
     expect(result.spells).toEqual([])
-    expect(result.adeptPowers).toEqual([])
+    expect(result.powers).toEqual([])
     expect(result.complexForms).toEqual([])
     expect(result.sprites).toEqual([])
     expect(result.qualities).toEqual([])

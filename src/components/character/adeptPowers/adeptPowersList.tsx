@@ -5,14 +5,14 @@ import { RiAddLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { usePowerPoints } from "#/components/character/adeptPowers/adeptPowersHooks.ts"
-import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPowersSelectors.ts"
-import { useAdeptPowerFormDialog } from "#/components/character/adeptPowers/dialogs/adeptPowerFormDialog.tsx"
-import { useAdeptPowersStore } from "#/components/character/adeptPowers/useAdeptPowersStore.ts"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
-import { AdeptPowersListItem } from "./adeptPowersListItem.tsx"
+import { AdeptPowerListItem } from "./adeptPowerListItem.tsx"
+import { usePowerPoints } from "./adeptPowersHooks.ts"
+import { selectAllAdeptPowers } from "./adeptPowersSelectors.ts"
+import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
+import { useAdeptPowersStore } from "./useAdeptPowersStore.ts"
 
 export const AdeptPowersList: FC = () => {
   const adeptPowersStore = useAdeptPowersStore()
@@ -45,10 +45,10 @@ export const AdeptPowersList: FC = () => {
       )}
 
       {adeptPowers.map((power) => (
-        <AdeptPowersListItem
+        <AdeptPowerListItem
           key={power.id}
           power={power}
-          onEdit={() => handleEditPower(power)}
+          onClick={() => handleEditPower(power)}
         />
       ))}
 

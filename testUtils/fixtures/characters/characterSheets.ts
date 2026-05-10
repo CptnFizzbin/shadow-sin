@@ -370,7 +370,7 @@ const characterV1_0 = {
 
   complexForms: [],
   sprites: [],
-  adeptPowers: [],
+  powers: [],
 }
 
 // ---------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-import type { AsyncJsonStorage, AsyncStorage, JsonValue } from "./asyncStorage.ts"
+import type { JsonValue } from "#/lib/jsonUtils.ts"
+
+import type { AsyncJsonStorage, AsyncStorage } from "./asyncStorage.ts"
 
 export class JsonStorageAdapter implements AsyncJsonStorage {
   public constructor(private readonly storage: AsyncStorage) {}

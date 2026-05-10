@@ -3,8 +3,9 @@ import type { UUID } from "node:crypto"
 import { AsyncDebouncer } from "@tanstack/pacer"
 
 import { CharacterNotFoundError } from "#/lib/errors/characterNotFoundError.ts"
-import type { AsyncJsonStorage, JsonValue } from "#/lib/storage/asyncStorage.ts"
-import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
+import type { JsonValue } from "#/lib/jsonUtils.ts"
+import { toJsonValue } from "#/lib/jsonUtils.ts"
+import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { CharacterMetaSchema } from "#/system/characterSheet.ts"
 

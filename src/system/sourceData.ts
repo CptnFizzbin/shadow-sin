@@ -20,7 +20,8 @@ export const SourceDataSchema = z.object({
  * List of available books and their display labels.
  */
 export const bookOptions = [
-  { value: "SR20A", label: "ShadowRun 20th" },
+  { value: "SR4", label: "Shadowrun 4th" },
+  { value: "SR4A", label: "Shadowrun 20th Anniversary" },
   { value: "AU", label: "Augmentation" },
   { value: "RC", label: "Runner's Companion" },
   { value: "AR", label: "Arsenal" },

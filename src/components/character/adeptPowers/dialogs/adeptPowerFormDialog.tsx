@@ -8,7 +8,7 @@ import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAd
 import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 interface AdeptPowerFormDialogProps extends ControlledDialogProps<AdeptPowerData> {
   power?: AdeptPowerData

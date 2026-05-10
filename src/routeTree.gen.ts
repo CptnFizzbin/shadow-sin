@@ -18,6 +18,7 @@ import { Route as CharacterIdSpritesRouteImport } from './routes/$characterId/sp
 import { Route as CharacterIdSpiritsRouteImport } from './routes/$characterId/spirits'
 import { Route as CharacterIdSpellsRouteImport } from './routes/$characterId/spells'
 import { Route as CharacterIdSkillsRouteImport } from './routes/$characterId/skills'
+import { Route as CharacterIdPowersRouteImport } from './routes/$characterId/powers'
 import { Route as CharacterIdOffenseRouteImport } from './routes/$characterId/offense'
 import { Route as CharacterIdNotesRouteImport } from './routes/$characterId/notes'
 import { Route as CharacterIdLicensesRouteImport } from './routes/$characterId/licenses'
@@ -74,6 +75,11 @@ const CharacterIdSpellsRoute = CharacterIdSpellsRouteImport.update({
 const CharacterIdSkillsRoute = CharacterIdSkillsRouteImport.update({
   id: '/skills',
   path: '/skills',
+  getParentRoute: () => CharacterIdRoute,
+} as any)
+const CharacterIdPowersRoute = CharacterIdPowersRouteImport.update({
+  id: '/powers',
+  path: '/powers',
   getParentRoute: () => CharacterIdRoute,
 } as any)
 const CharacterIdOffenseRoute = CharacterIdOffenseRouteImport.update({
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/$characterId/licenses': typeof CharacterIdLicensesRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
+  '/$characterId/powers': typeof CharacterIdPowersRoute
   '/$characterId/skills': typeof CharacterIdSkillsRoute
   '/$characterId/spells': typeof CharacterIdSpellsRoute
   '/$characterId/spirits': typeof CharacterIdSpiritsRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/$characterId/licenses': typeof CharacterIdLicensesRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
+  '/$characterId/powers': typeof CharacterIdPowersRoute
   '/$characterId/skills': typeof CharacterIdSkillsRoute
   '/$characterId/spells': typeof CharacterIdSpellsRoute
   '/$characterId/spirits': typeof CharacterIdSpiritsRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/$characterId/licenses': typeof CharacterIdLicensesRoute
   '/$characterId/notes': typeof CharacterIdNotesRoute
   '/$characterId/offense': typeof CharacterIdOffenseRoute
+  '/$characterId/powers': typeof CharacterIdPowersRoute
   '/$characterId/skills': typeof CharacterIdSkillsRoute
   '/$characterId/spells': typeof CharacterIdSpellsRoute
   '/$characterId/spirits': typeof CharacterIdSpiritsRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/$characterId/licenses'
     | '/$characterId/notes'
     | '/$characterId/offense'
+    | '/$characterId/powers'
     | '/$characterId/skills'
     | '/$characterId/spells'
     | '/$characterId/spirits'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/$characterId/licenses'
     | '/$characterId/notes'
     | '/$characterId/offense'
+    | '/$characterId/powers'
     | '/$characterId/skills'
     | '/$characterId/spells'
     | '/$characterId/spirits'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/$characterId/licenses'
     | '/$characterId/notes'
     | '/$characterId/offense'
+    | '/$characterId/powers'
     | '/$characterId/skills'
     | '/$characterId/spells'
     | '/$characterId/spirits'
@@ -347,6 +359,13 @@ declare module '@tanstack/react-router' {
       path: '/skills'
       fullPath: '/$characterId/skills'
       preLoaderRoute: typeof CharacterIdSkillsRouteImport
+      parentRoute: typeof CharacterIdRoute
+    }
+    '/$characterId/powers': {
+      id: '/$characterId/powers'
+      path: '/powers'
+      fullPath: '/$characterId/powers'
+      preLoaderRoute: typeof CharacterIdPowersRouteImport
       parentRoute: typeof CharacterIdRoute
     }
     '/$characterId/offense': {
@@ -448,6 +467,7 @@ interface CharacterIdRouteChildren {
   CharacterIdLicensesRoute: typeof CharacterIdLicensesRoute
   CharacterIdNotesRoute: typeof CharacterIdNotesRoute
   CharacterIdOffenseRoute: typeof CharacterIdOffenseRoute
+  CharacterIdPowersRoute: typeof CharacterIdPowersRoute
   CharacterIdSkillsRoute: typeof CharacterIdSkillsRoute
   CharacterIdSpellsRoute: typeof CharacterIdSpellsRoute
   CharacterIdSpiritsRoute: typeof CharacterIdSpiritsRoute
@@ -468,6 +488,7 @@ const CharacterIdRouteChildren: CharacterIdRouteChildren = {
   CharacterIdLicensesRoute: CharacterIdLicensesRoute,
   CharacterIdNotesRoute: CharacterIdNotesRoute,
   CharacterIdOffenseRoute: CharacterIdOffenseRoute,
+  CharacterIdPowersRoute: CharacterIdPowersRoute,
   CharacterIdSkillsRoute: CharacterIdSkillsRoute,
   CharacterIdSpellsRoute: CharacterIdSpellsRoute,
   CharacterIdSpiritsRoute: CharacterIdSpiritsRoute,

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
+import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
-import { toJsonValue } from "#/lib/storage/asyncStorage.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -141,7 +141,7 @@ describe("character migrations + yaml round-trip", () => {
 
     // spells promoted from awakened to top-level
     expect(migrated.spells).toHaveLength(2)
-    expect(migrated.adeptPowers).toHaveLength(4)
+    expect(migrated.powers).toHaveLength(4)
     expect(migrated.complexForms).toHaveLength(0)
 
     // gear is a Record, empty items stripped, itemTypes normalised
@@ -194,7 +194,7 @@ describe("character migrations + yaml round-trip", () => {
 
     // spells promoted from awakened wrapper
     expect(character.spells).toHaveLength(2)
-    expect(character.adeptPowers).toHaveLength(4)
+    expect(character.powers).toHaveLength(4)
 
     // gear is a Record, empty entries stripped, itemTypes normalised
     const gearValues = Object.values(character.gear)

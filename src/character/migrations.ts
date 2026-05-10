@@ -13,6 +13,8 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./migrations/20260425_addSpiritDamage.ts"),
   await import("./migrations/20260502_splitPainToleranceEffects.ts"),
   await import("./migrations/20260503_nestSpellDrain.ts"),
+  await import("./migrations/20260509_renameBookSR20AtoSR4A.ts"),
+  await import("./migrations/20260510_renameAdeptPowersToPowers.ts"),
 ].map((module) => module.default)
 
 export const migrationIds: readonly string[] = migrations.map((m) => m.id)

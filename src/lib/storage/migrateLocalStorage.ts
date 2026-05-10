@@ -1,4 +1,4 @@
-import type { JsonValue } from "./asyncStorage.ts"
+import type { JsonValue } from "#/lib/jsonUtils.ts"
 
 export function migrateOldLocalStorageFormat(ls: Storage): void {
   const oldCharacterPrefix = "shadow-sin:json:characters/"
