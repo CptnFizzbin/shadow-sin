@@ -1,6 +1,3 @@
-import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
-import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
@@ -9,7 +6,8 @@ import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
-import { GearViewItem } from "./gearViewItem.tsx"
+import { GearSectionAddButton } from "./gearSectionAddButton.tsx"
+import { GearSectionContentScaffold } from "./gearSectionContentScaffold.tsx"
 
 interface LicensesSectionContentProps {
   sins: SinData[]
@@ -35,47 +33,29 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
-      {sins.map((sin) => (
-        <Stack key={sin.id} sx={{ gap: 1 }}>
-          <GearViewItem
-            item={sin}
-            subItems={getLicenses(sin.id)}
-            onEdit={() => handleEditSin(sin)}
-            onRemove={() => gearStore.remove(sin, { removeChildren: true })}
-            getSubItemCallbacks={(licenseId) => {
-              const license = getLicenses(sin.id).find((l) => l.id === licenseId)
-              return {
-                onEdit: license
-                  ? () => handleEditLicense(sin, license)
-                  : undefined,
-                onRemove: license ? () => gearStore.remove(license) : undefined,
-              }
-            }}
-          />
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<RiAddLine size={14} />}
-            onClick={() => handleEditLicense(sin)}
-            color="secondary"
-            fullWidth
-          >
-            Add License to {sin.name}
-          </Button>
-        </Stack>
-      ))}
-
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => handleEditSin()}
-        color="secondary"
-        fullWidth
-      >
-        Add SIN
-      </Button>
-    </Stack>
+    <GearSectionContentScaffold
+      items={sins}
+      getSubItems={(sin) => getLicenses(sin.id)}
+      getItemCallbacks={(sin) => ({
+        onEdit: () => handleEditSin(sin),
+        onRemove: () => gearStore.remove(sin, { removeChildren: true }),
+        getSubItemCallbacks: (licenseId) => {
+          const license = getLicenses(sin.id).find((item) => item.id === licenseId)
+          return {
+            onEdit: license
+              ? () => handleEditLicense(sin, license)
+              : undefined,
+            onRemove: license ? () => gearStore.remove(license) : undefined,
+          }
+        },
+      })}
+      renderItemAction={(sin) => (
+        <GearSectionAddButton
+          label={`Add License to ${sin.name}`}
+          onClick={() => handleEditLicense(sin)}
+        />
+      )}
+      addAction={{ label: "Add SIN", onClick: () => handleEditSin() }}
+    />
   )
 }

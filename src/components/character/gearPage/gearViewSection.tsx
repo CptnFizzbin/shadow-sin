@@ -21,6 +21,22 @@ interface GearViewSectionProps {
   searchTerms: string[]
 }
 
+function getSectionItems(
+  isSearching: boolean,
+  searchTerms: string[],
+  allowedTypes: ItemType[],
+  allGearItems: ReturnType<typeof selectAllGear>,
+  gearStore: ReturnType<typeof useGearStore>,
+) {
+  return isSearching
+    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+}
+
+function createGetChildItems(sectionItems: ReturnType<typeof getSectionItems>) {
+  return (parentId: string) => sectionItems.filter((item) => item.parentId === parentId)
+}
+
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
   const gearStore = useGearStore()
@@ -29,15 +45,12 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0
 
-  const sectionItems = isSearching
-    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
-    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+  const sectionItems = getSectionItems(isSearching, searchTerms, allowedTypes, allGearItems, gearStore)
 
   if (isSearching && sectionItems.length === 0) return null
 
   const rootItems = sectionItems.filter((item) => !item.parentId)
-  const getChildItems = (parentId: string) =>
-    sectionItems.filter((item) => item.parentId === parentId)
+  const getChildItems = createGetChildItems(sectionItems)
 
   const isExpanded = isSearching ? sectionItems.length > 0 : isManuallyOpen
 
