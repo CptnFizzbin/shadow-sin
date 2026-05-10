@@ -1,28 +1,23 @@
 import { z } from "zod"
 
-import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
-import type { SourceData } from "#/system/sourceData.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
+
+import type { PowerData } from "./powerData.ts"
 
 /**
  * Represents an adept power and its associated game effects.
+ * Cost is measured in Magic points per rating.
  */
-export interface AdeptPowerData {
-  id: string
-  name: string
+export interface AdeptPowerData extends PowerData {
   rating: number
   costPerRating: number
-  description?: string
-  source?: SourceData
-  effects?: GameEffectData[]
 }
 
 /**
  * Zod schema for validating AdeptPowerData.
  */
 export const AdeptPowerDataSchema = z.object({
-
   id: z.uuid(),
   name: z.string().min(1, "Name is required"),
   rating: z.number().int().min(1, "Rating must be at least 1"),

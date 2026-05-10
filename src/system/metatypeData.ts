@@ -1,22 +1,39 @@
 import type { AttributeInfo } from "./attributeInfo.ts"
 import type { AttributeKey } from "./attributeKey.ts"
-import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
+import type { CritterPowerData } from "./magic/critterPowerData.ts"
+import type { MovementData } from "./movementData.ts"
+import type { QualityData } from "./qualityData.ts"
+
+export enum MetatypeGroup {
+  metahuman = "metahuman",
+  critter = "critter",
+  exotic = "exotic",
+  custom = "custom",
+}
 
 export enum MetatypeType {
+  // Metahumans
   Human = "Human",
   Ork = "Ork",
   Dwarf = "Dwarf",
   Elf = "Elf",
   Troll = "Troll",
+
+  // Critters
+  Pixie = "Pixie",
+
+  // Exotic
   AI = "AI",
 }
 
 export interface MetatypeData {
   name: MetatypeType
+  group?: MetatypeGroup
   cost: number
   attributes: Record<AttributeKey, AttributeInfo>
-  inateAbilites?: GameEffectData[]
-  movement: { walk: number, run: number }
+  innateQualities?: QualityData[]
+  innatePowers?: CritterPowerData[]
+  movement: MovementData | MovementData[]
 }
 
 const baseAttributes = {
@@ -37,6 +54,7 @@ const baseAttributes = {
 export const metatypes: Record<MetatypeType, MetatypeData> = {
   Human: {
     name: MetatypeType.Human,
+    group: MetatypeGroup.metahuman,
     cost: 0,
     movement: { walk: 10, run: 25 },
     attributes: {
@@ -54,6 +72,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   },
   Ork: {
     name: MetatypeType.Ork,
+    group: MetatypeGroup.metahuman,
     cost: 20,
     movement: { walk: 10, run: 25 },
     attributes: {
@@ -71,6 +90,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   },
   Dwarf: {
     name: MetatypeType.Dwarf,
+    group: MetatypeGroup.metahuman,
     cost: 25,
     movement: { walk: 8, run: 20 },
     attributes: {
@@ -88,6 +108,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   },
   Elf: {
     name: MetatypeType.Elf,
+    group: MetatypeGroup.metahuman,
     cost: 30,
     movement: { walk: 10, run: 25 },
     attributes: {
@@ -105,6 +126,7 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
   },
   Troll: {
     name: MetatypeType.Troll,
+    group: MetatypeGroup.metahuman,
     cost: 40,
     movement: { walk: 15, run: 35 },
     attributes: {
@@ -120,8 +142,63 @@ export const metatypes: Record<MetatypeType, MetatypeData> = {
       edge: { min: 1, max: 6 },
     },
   },
+  Pixie: {
+    name: MetatypeType.Pixie,
+    group: MetatypeGroup.critter,
+    cost: 35,
+    movement: [
+      { type: "ground", walk: 1, run: 4 },
+      { type: "fly", walk: 20, run: 50 },
+    ],
+    attributes: {
+      ...baseAttributes,
+      body: { min: 1, max: 3, augMax: 5 },
+      agility: { min: 3, max: 8, augMax: 12 },
+      reaction: { min: 3, max: 8, augMax: 12 },
+      strength: { min: 1, max: 3, augMax: 5 },
+      charisma: { min: 3, max: 8, augMax: 12 },
+      intuition: { min: 2, max: 7, augMax: 10 },
+      logic: { min: 2, max: 7, augMax: 10 },
+      willpower: { min: 3, max: 8, augMax: 12 },
+      edge: { min: 1, max: 7 },
+      magic: { min: 1, max: 6 },
+    },
+    innatePowers: [
+      {
+        id: "3f8a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+        name: "Concealment (Self Only)",
+        source: { book: "SR4A", page: 293 },
+      },
+      {
+        id: "4a9b2c3d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+        name: "Enhanced Senses (Astral Perception)",
+        source: { book: "SR4A", page: 294 },
+      },
+      {
+        id: "5b0c3d4e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+        name: "Sapience",
+        source: { book: "SR4A", page: 297 },
+      },
+    ],
+    innateQualities: [
+      {
+        id: "6c1d4e5f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+        name: "Vanish",
+        type: "negative",
+        source: { book: "RC", page: 85 },
+      },
+      {
+        id: "7d2e5f6a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+        name: "Uneducated",
+        type: "negative",
+        bpValue: 20,
+        source: { book: "SR4A", page: 119 },
+      },
+    ],
+  },
   AI: {
     name: MetatypeType.AI,
+    group: MetatypeGroup.exotic,
     cost: 110,
     movement: { walk: 0, run: 0 },
     attributes: {
