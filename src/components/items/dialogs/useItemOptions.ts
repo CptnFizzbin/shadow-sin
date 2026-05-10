@@ -18,6 +18,8 @@ export type ItemOptionKey =
   | "isSubItem"
   | "fixed"
   | "hasEffects"
+  | "showCost"
+  | "showAvailability"
 
 export interface ItemOptionsDefaults {
   equipable?: ItemDialogOptionConfig
@@ -26,6 +28,8 @@ export interface ItemOptionsDefaults {
   multiple?: ItemDialogOptionConfig
   isSubItem?: ItemDialogOptionConfig
   hasEffects?: ItemDialogOptionConfig
+  showCost?: ItemDialogOptionConfig
+  showAvailability?: ItemDialogOptionConfig
 }
 
 function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
@@ -78,6 +82,9 @@ export function initializeOptions(
     hasEffects:
       resolveEnabled(defaults?.hasEffects)
       || (!isForceDisabled(defaults?.hasEffects) && isEditMode && initialValues.effects !== undefined),
+    // showCost and showAvailability default to true (always visible) unless force-disabled.
+    showCost: resolveEnabled(defaults?.showCost) || !isForceDisabled(defaults?.showCost),
+    showAvailability: resolveEnabled(defaults?.showAvailability) || !isForceDisabled(defaults?.showAvailability),
   }
 }
 

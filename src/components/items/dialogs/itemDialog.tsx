@@ -56,6 +56,8 @@ export interface ItemDialogProps {
     multiple?: ItemDialogOptionConfig
     isSubItem?: ItemDialogOptionConfig
     hasEffects?: ItemDialogOptionConfig
+    showCost?: ItemDialogOptionConfig
+    showAvailability?: ItemDialogOptionConfig
   }
 }
 
@@ -92,6 +94,8 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     multiple: resolveForced(optionsProp?.multiple),
     isSubItem: resolveForced(optionsProp?.isSubItem),
     hasEffects: resolveForced(optionsProp?.hasEffects),
+    showCost: resolveForced(optionsProp?.showCost),
+    showAvailability: resolveForced(optionsProp?.showAvailability),
   }
 
   const [localOptions, handleOptionsChange] = useItemOptions(form, optionsProp)
@@ -182,19 +186,23 @@ export const ItemDialog: FC<ItemDialogProps> = ({
             </IconButton>
           </Stack>
 
-          <GearCostFieldGroup
-            form={form}
-            fields={itemFieldMap}
-            enableQuantity={localOptions["multiple"]}
-            onBuyMore={(!isBuilder && !isNewItem)
-              ? () => buyQuantityDialog.open({
-                  defaultCost: form.state.values.cost ?? 0,
-                  onPurchase: handleBuyPurchase,
-                })
-              : undefined}
-          />
+          {localOptions["showCost"] && (
+            <GearCostFieldGroup
+              form={form}
+              fields={itemFieldMap}
+              enableQuantity={localOptions["multiple"]}
+              onBuyMore={(!isBuilder && !isNewItem)
+                ? () => buyQuantityDialog.open({
+                    defaultCost: form.state.values.cost ?? 0,
+                    onPurchase: handleBuyPurchase,
+                  })
+                : undefined}
+            />
+          )}
 
-          <AvailabilityFieldGroup form={form} fields="availability" />
+          {localOptions["showAvailability"] && (
+            <AvailabilityFieldGroup form={form} fields="availability" />
+          )}
 
           {localOptions["isSubItem"] && (
             <Stack sx={{ gap: 1 }}>
