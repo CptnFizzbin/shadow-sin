@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import { RiCloseLine, RiFlashlightLine } from "@remixicon/react"
+import { RiBugLine, RiCloseLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
@@ -74,6 +74,15 @@ export const QuickAccessButton: FC = () => {
             <QuickDamageSection />
             <QuickEdgeSection />
             <NuyenSection />
+            <Button
+              startIcon={<RiBugLine size={18} />}
+              href="https://github.com/CptnFizzbin/shadow-sin/issues/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              color="warning"
+            >
+              Report Bug
+            </Button>
           </Stack>
         </Container>
       </Drawer>
