@@ -19,7 +19,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
 
 const weapon: FirearmData = {
-  id: "test-weapon",
+  id: "00000000-0000-0000-0000-000000000001",
   name: "Test Pistol",
   itemType: ItemType.weapon,
   weaponType: WeaponType.firearm,
@@ -60,7 +60,7 @@ describe("EquippedWeaponCard - Attack button", () => {
     render(<EquippedWeaponCard weapon={weapon} />, { wrapper: ProductionWrapper })
 
     // Act
-    await act(async () => {
+    await act(() => {
       fireEvent.click(screen.getByRole("button", { name: /attack/i }))
     })
 
@@ -73,12 +73,12 @@ describe("EquippedWeaponCard - Attack button", () => {
     render(<EquippedWeaponCard weapon={weapon} />, { wrapper: ProductionWrapper })
 
     // Open dialog
-    await act(async () => {
+    await act(() => {
       fireEvent.click(screen.getByRole("button", { name: /attack/i }))
     })
 
     // Act - click a fire mode button (this triggers re-render)
-    await act(async () => {
+    await act(() => {
       const fireModeButtons = screen.getAllByRole("button", { name: "SA" })
       const saButton = fireModeButtons[fireModeButtons.length - 1]
       fireEvent.click(saButton)
