@@ -29,7 +29,7 @@ const migration: CharacterMigration<LegacyCharacter> = {
       // Set empty defaults for firearm-specific fields that may be missing in old data.
       if (item.weaponType === "firearm") {
         if (!Array.isArray(item.firemodes)) {
-          item.firemodes = []
+          item.firemodes = ["SA", "BF", "FA"]
         }
         if (!item.ammo) {
           item.ammo = { size: 0, remaining: 0, type: "clip" }

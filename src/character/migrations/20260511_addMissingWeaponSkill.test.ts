@@ -62,7 +62,7 @@ describe("20260511_addMissingWeaponSkill", () => {
     expect(result.gear?.["weapon-3"].skill).toBe("pistols")
   })
 
-  it("adds empty firemodes array for a firearm missing firemodes", () => {
+  it("adds default SA/BF/FA firemodes for a firearm missing firemodes", () => {
     // Arrange
     const input = {
       gear: {
@@ -79,7 +79,7 @@ describe("20260511_addMissingWeaponSkill", () => {
     const result = migration.up(input)
 
     // Assert
-    expect(result.gear?.["weapon-4"].firemodes).toEqual([])
+    expect(result.gear?.["weapon-4"].firemodes).toEqual(["SA", "BF", "FA"])
   })
 
   it("adds default ammo for a firearm missing ammo", () => {
