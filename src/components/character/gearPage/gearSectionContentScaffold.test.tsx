@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { GearSectionContentScaffold } from "./gearSectionContentScaffold.tsx"
 
