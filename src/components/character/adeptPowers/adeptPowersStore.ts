@@ -1,9 +1,9 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
-export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
+export type AdeptPowersStoreState = CharacterSheet["powers"]
 
 export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
   setState(stateOrUpdater: AdeptPowersStoreState | ((prev: AdeptPowersStoreState) => AdeptPowersStoreState)) {

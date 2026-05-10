@@ -4,6 +4,10 @@ import type { FC } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { metatypes } from "#/system/metatypeData.ts"
+
+import { InnatePowersDisplay } from "./innatePowersDisplay.tsx"
+import { MovementDisplay } from "./movementDisplay.tsx"
 
 interface BiologyRowProps {
   label: string
@@ -23,6 +27,7 @@ const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
 
 export const BiologySection: FC = () => {
   const biology = useCharacterSheet((s) => s.biology)
+  const metatype = metatypes[biology.metatype]
 
   return (
     <Stack sx={{ gap: 1 }}>
@@ -36,6 +41,10 @@ export const BiologySection: FC = () => {
         {biology.height && <BiologyRow label="Height" value={biology.height} />}
         {biology.weight && <BiologyRow label="Weight" value={biology.weight} />}
       </Stack>
+
+      <MovementDisplay movement={metatype.movement} />
+
+      <InnatePowersDisplay powers={metatype.innatePowers ?? []} />
     </Stack>
   )
 }

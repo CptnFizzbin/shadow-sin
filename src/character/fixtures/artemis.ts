@@ -41,7 +41,7 @@ export const Artemis: CharacterSheet = {
     description: [
       "Legacy qualities: Exceptional (logic), Aptitude (engineering), Photographic Memory, Analytical Mind, Ambidextrous, Social Stress: Large Groups.",
       "Legacy contacts: James Serif (Drone Parts Dealer, C2/L2), Frank (Matrix Developer, C2/L2), George Crabtree (Lone Star officer, C2/L2).",
-      "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4 data; gear, weapons and augments migrated from legacy modules.",
+      "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4A data; gear, weapons and augments migrated from legacy modules.",
     ].join("\n"),
     lifestyle: {
       quality: LifestyleType.Low,
@@ -93,7 +93,7 @@ export const Artemis: CharacterSheet = {
   },
 
   qualities: [],
-  adeptPowers: [],
+  powers: [],
   spells: [],
   sprites: [],
   complexForms: [],

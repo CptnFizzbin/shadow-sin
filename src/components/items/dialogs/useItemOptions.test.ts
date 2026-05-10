@@ -33,6 +33,8 @@ describe("initializeOptions", () => {
       expect(options.multiple).toBe(false)
       expect(options.isSubItem).toBe(false)
       expect(options.hasEffects).toBe(false)
+      expect(options.showCost).toBe(true)
+      expect(options.showAvailability).toBe(true)
     })
 
     it("sets fixed from item.fixed when true", () => {
@@ -302,6 +304,74 @@ describe("initializeOptions", () => {
       // Assert
       expect(optionsNew.licenseAlwaysShow).toBe(false)
       expect(optionsEdit.licenseAlwaysShow).toBe(false)
+    })
+  })
+
+  describe("showCost", () => {
+    it("is true by default for new items", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false)
+
+      // Assert
+      expect(options.showCost).toBe(true)
+    })
+
+    it("is true by default for existing items", () => {
+      // Arrange & Act
+      const options = initializeOptions(baseItem, true)
+
+      // Assert
+      expect(options.showCost).toBe(true)
+    })
+
+    it("is false when force-disabled", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { showCost: { forced: true, enabled: false } })
+
+      // Assert
+      expect(options.showCost).toBe(false)
+    })
+
+    it("is true when forced without enabled=false", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { showCost: { forced: true } })
+
+      // Assert
+      expect(options.showCost).toBe(true)
+    })
+  })
+
+  describe("showAvailability", () => {
+    it("is true by default for new items", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false)
+
+      // Assert
+      expect(options.showAvailability).toBe(true)
+    })
+
+    it("is true by default for existing items", () => {
+      // Arrange & Act
+      const options = initializeOptions(baseItem, true)
+
+      // Assert
+      expect(options.showAvailability).toBe(true)
+    })
+
+    it("is false when force-disabled", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { showAvailability: { forced: true, enabled: false } })
+
+      // Assert
+      expect(options.showAvailability).toBe(false)
+    })
+
+    it("is true when forced without enabled=false", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { showAvailability: { forced: true } })
+
+      // Assert
+      expect(options.showAvailability).toBe(true)
     })
   })
 })

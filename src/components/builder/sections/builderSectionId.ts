@@ -25,7 +25,7 @@ export const builderSections: Record<BuilderSectionId, BuilderSectionInfo> = {
   [BuilderSectionId.activeSkills]: { label: "Active Skills" },
   [BuilderSectionId.knowledgeSkills]: { label: "Knowledge Skills" },
   [BuilderSectionId.spells]: { label: "Spells" },
-  [BuilderSectionId.adeptPowers]: { label: "Adept Powers" },
+  [BuilderSectionId.adeptPowers]: { label: "Powers" },
   [BuilderSectionId.complexForms]: { label: "Complex Forms" },
   [BuilderSectionId.sprites]: { label: "Sprites" },
   [BuilderSectionId.gear]: { label: "Gear" },

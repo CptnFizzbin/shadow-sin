@@ -10,6 +10,8 @@ import type { FC } from "react"
 
 import { getAttributesValues } from "#/components/character/attributes/getAttributesValues.ts"
 import { selectAwakening, selectMetatype } from "#/components/character/biology/biologySelectors.ts"
+import { InnatePowersDisplay } from "#/components/character/biology/innatePowersDisplay.tsx"
+import { MovementDisplay } from "#/components/character/biology/movementDisplay.tsx"
 import { useBiologyStore } from "#/components/character/biology/useBiologyStore.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
@@ -24,6 +26,8 @@ export const BiologySection: FC = () => {
   const metatypeKey = useSelector(biologyStore, selectMetatype)
   const awakeningType = useSelector(biologyStore, selectAwakening)
 
+  const currentMetatype = metatypes[metatypeKey]
+
   return (
     <>
       <FormControl fullWidth size="small">
@@ -33,11 +37,18 @@ export const BiologySection: FC = () => {
           label="Metatype"
           onChange={(event) => {
             sheet.setState(produce((prev) => {
-              const metatype = metatypes[event.target.value]
+              const newMetatype = metatypes[event.target.value]
+              const oldMetatype = metatypes[prev.biology.metatype]
               const awakening = awakenings[prev.biology.awakening]
 
-              prev.biology.metatype = metatype.name
-              prev.attributes = getAttributesValues(metatype, awakening)
+              prev.biology.metatype = newMetatype.name
+              prev.attributes = getAttributesValues(newMetatype, awakening)
+
+              // Swap out innate qualities: remove old metatype's innate qualities,
+              // then add the new metatype's innate qualities.
+              const oldInnateIds = new Set((oldMetatype.innateQualities ?? []).map((q) => q.id))
+              const withoutOldInnate = prev.qualities.filter((q) => !oldInnateIds.has(q.id))
+              prev.qualities = [...withoutOldInnate, ...(newMetatype.innateQualities ?? [])]
             }))
           }}
         >
@@ -87,6 +98,10 @@ export const BiologySection: FC = () => {
       )}
 
       <BiologyAttributes />
+
+      <MovementDisplay movement={currentMetatype.movement} />
+
+      <InnatePowersDisplay powers={currentMetatype.innatePowers ?? []} />
     </>
   )
 }

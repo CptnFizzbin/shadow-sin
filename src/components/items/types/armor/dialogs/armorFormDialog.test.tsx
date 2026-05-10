@@ -77,7 +77,7 @@ describe("ArmorFormDialog", () => {
       quantity: 1,
       description: "",
       availability: { rating: 14, restricted: true, forbidden: false },
-      source: { book: "SR20A", page: 162 },
+      source: { book: "SR4A", page: 162 },
       effects: [],
     }
 

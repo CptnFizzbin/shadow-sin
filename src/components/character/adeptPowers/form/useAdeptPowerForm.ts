@@ -1,7 +1,7 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
-import { AdeptPowerDataSchema } from "#/system/magic/adeptPowerData.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
+import { AdeptPowerDataSchema } from "#/system/powers/adeptPowerData.ts"
 
 type AdeptPowerFormOptions =
   | { mode: "create", onSubmit: (values: AdeptPowerData) => void }
@@ -12,6 +12,7 @@ type AdeptPowerFormOptions =
   }
 
 const defaultAdeptPowerValues: AdeptPowerData = {
+  type: "adeptPower",
   id: NullUuid,
   name: "",
   rating: 1,

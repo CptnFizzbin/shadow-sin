@@ -55,6 +55,13 @@ export const LocalStorageProvider = {
       if (globalThis.localStorage) {
         migrateOldLocalStorageFormat(globalThis.localStorage)
       }
+      // `getStorage()` is only called once (guarded by `_storage` above), so
+      // this listener is registered exactly once for the lifetime of the page.
+      if (typeof globalThis.addEventListener === "function") {
+        globalThis.addEventListener("beforeunload", () => {
+          cached.flush()
+        })
+      }
     }
     return _storage
   },

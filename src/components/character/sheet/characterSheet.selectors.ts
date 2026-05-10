@@ -6,6 +6,7 @@ import { awakenings } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { MetatypeData, MetatypeType } from "#/system/metatypeData.ts"
 import { metatypes } from "#/system/metatypeData.ts"
+import type { PowerData } from "#/system/powers/powerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
@@ -58,6 +59,10 @@ export const selectKnowledgeSkills: CharacterDataSelector<KnowledgeSkillData[]> 
 
 export const selectLanguageSkills: CharacterDataSelector<LanguageSkillData[]> = (state) => {
   return state.skills.languageSkills
+}
+
+export const selectCharacterPowers: CharacterDataSelector<PowerData[]> = (state) => {
+  return state.powers
 }
 
 export const selectAllowedActiveSkills: CharacterDataSelector<Partial<Record<SkillKey, SkillInfo>>> = createSelector([
