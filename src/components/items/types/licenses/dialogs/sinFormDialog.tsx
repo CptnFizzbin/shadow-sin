@@ -29,7 +29,11 @@ const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
       onDelete={onDelete}
       getCost={(s) => getSinCost(Number(s.rating))}
       ratingMax={6}
-      options={{ hasRating: { forced: true } }}
+      options={{
+        hasRating: { forced: true },
+        showCost: { forced: true, enabled: false },
+        showAvailability: { forced: true, enabled: false },
+      }}
     />
   )
 }
