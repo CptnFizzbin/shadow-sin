@@ -1,7 +1,8 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { useActiveSkill, useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useActiveSkill } from "#/components/character/skills/useActiveSkillHooks.ts"
 import { selectAllSpells } from "#/components/character/spells/spellsSelectors.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/character/spells/spellsUtils.ts"
 import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"

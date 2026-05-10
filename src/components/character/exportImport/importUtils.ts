@@ -1,8 +1,8 @@
 import type { CharacterManager } from "#/character/characterManager.ts"
-import { resolveAlias } from "#/components/character/characterUtils.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 import type { useImportConflictDialog } from "./importConflictDialog.tsx"
+import { resolveAlias } from "./resolveAlias.ts"
 
 export async function resolveConflictedCharacter(
   character: CharacterSheet,

@@ -1,6 +1,6 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"

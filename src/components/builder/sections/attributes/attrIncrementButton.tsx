@@ -8,8 +8,9 @@ import {
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
+import { useAttrInfo } from "#/components/character/attributes/attributesProvider.tsx"
 import { useHasMaxxedAttribute } from "#/components/character/attributes/hooks/useHasMaxxedAttribute.ts"
-import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 

@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useEssenceInfo } from "#/components/character/characterUtils.ts"
+import { useEssenceInfo } from "#/components/character/attributes/useEssenceInfo.ts"
 import { ImplantItemList } from "#/components/items/types/implants/implantItemList.tsx"
 import { BASE_ESSENCE } from "#/components/items/types/implants/implantUtils.ts"
 

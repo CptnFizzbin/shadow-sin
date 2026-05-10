@@ -1,6 +1,7 @@
 import { useId } from "react"
 
-import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
+import { useActiveSkillRating } from "#/components/character/skills/useActiveSkillHooks.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"

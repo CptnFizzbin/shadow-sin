@@ -2,13 +2,13 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAllAttrInfos } from "#/components/character/characterUtils.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
 import { AttributeValueRow } from "./attributeValueRow.tsx"
+import { useAllAttrInfos } from "./attributesProvider.tsx"
 
 interface AttrListProps {
   attrKeys: readonly AttributeKey[]

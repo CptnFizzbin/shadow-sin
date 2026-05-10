@@ -8,7 +8,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useSpriteDialog } from "#/components/character/technomancer/dialogs/spriteDialog.tsx"
 import { useMaxSpritesRegistered } from "#/components/character/technomancer/spritesHooks.ts"
 import { selectAllSprites } from "#/components/character/technomancer/spritesSelectors.ts"

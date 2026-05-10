@@ -14,7 +14,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import {
   selectPhysicalCurrent,

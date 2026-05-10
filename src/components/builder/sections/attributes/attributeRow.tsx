@@ -3,7 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
+import { useAttrInfo } from "#/components/character/attributes/attributesProvider.tsx"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 

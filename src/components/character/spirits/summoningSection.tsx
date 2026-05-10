@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { DrainResistanceDicePool } from "#/components/character/spells/drainResistanceDicePool.tsx"
 import {

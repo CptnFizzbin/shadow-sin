@@ -8,7 +8,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useMaxComplexForms } from "#/components/character/technomancer/complexFormsHooks.ts"
 import { selectAllComplexForms } from "#/components/character/technomancer/complexFormsSelectors.ts"
 import { useComplexFormDialog } from "#/components/character/technomancer/dialogs/complexFormDialog.tsx"

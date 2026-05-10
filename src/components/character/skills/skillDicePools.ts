@@ -1,4 +1,3 @@
-import { useActiveSkillRating } from "#/components/character/characterUtils.ts"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
@@ -7,6 +6,8 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
+
+import { useActiveSkillRating } from "./useActiveSkillHooks.ts"
 
 export const useActiveSkillDicePool = (props: {
   skillKey: SkillKey

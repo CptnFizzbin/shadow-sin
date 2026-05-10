@@ -1,6 +1,6 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { selectAllAdeptPowers } from "./adeptPowersSelectors.ts"

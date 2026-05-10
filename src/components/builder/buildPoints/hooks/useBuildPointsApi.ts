@@ -7,7 +7,7 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import {
   selectActiveSkills,
   selectAwakening,

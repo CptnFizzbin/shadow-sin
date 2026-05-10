@@ -7,7 +7,8 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
-import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
+import { useAttrInfo } from "#/components/character/attributes/attributesProvider.tsx"
+import { useAttr } from "#/components/character/attributes/useAttr.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
