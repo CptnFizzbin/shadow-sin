@@ -117,5 +117,5 @@ export interface CharacterSheet {
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
   spirits: SpiritData[]
-  adeptPowers: AdeptPowerData[]
+  powers: AdeptPowerData[]
 }

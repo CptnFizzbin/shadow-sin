@@ -203,7 +203,7 @@ export const Hexen: CharacterSheet = {
 
   qualities: [],
   contacts: [],
-  adeptPowers: [],
+  powers: [],
   complexForms: [],
   sprites: [],
   spirits: [],

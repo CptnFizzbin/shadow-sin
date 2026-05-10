@@ -12,8 +12,8 @@ export const useAdeptPowersStore = (): AdeptPowersStore => {
   return useMemo((): AdeptPowersStore => {
     const atom = createSliceAtom(
       store,
-      (root) => root.adeptPowers,
-      (root, adeptPowers) => produce(root, (draft) => { draft.adeptPowers = adeptPowers }),
+      (root) => root.powers,
+      (root, powers) => produce(root, (draft) => { draft.powers = powers }),
     )
 
     return new AdeptPowersStore(atom)

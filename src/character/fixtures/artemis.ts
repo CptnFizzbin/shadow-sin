@@ -93,7 +93,7 @@ export const Artemis: CharacterSheet = {
   },
 
   qualities: [],
-  adeptPowers: [],
+  powers: [],
   spells: [],
   sprites: [],
   complexForms: [],

@@ -43,7 +43,7 @@ export function applyMigrations(character: object): CharacterSheet {
     // or skipped migrations.
     draft.spirits ??= []
     draft.spells ??= []
-    draft.adeptPowers ??= []
+    draft.powers ??= []
     draft.complexForms ??= []
     draft.sprites ??= []
     draft.qualities ??= []

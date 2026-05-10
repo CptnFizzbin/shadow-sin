@@ -150,7 +150,7 @@ describe("selectAllGameEffects", () => {
   it("collects effects from adept powers", () => {
     // Arrange
     const sheet = makeCharacterSheet((s) => {
-      s.adeptPowers = [
+      s.powers = [
         {
           id: NullUuid,
           name: "Killing Hands",
@@ -187,7 +187,7 @@ describe("selectAllGameEffects", () => {
         },
       ]
       s.gear = createItemMap([implant])
-      s.adeptPowers = [
+      s.powers = [
         {
           id: NullUuid,
           name: "Killing Hands",
@@ -209,7 +209,7 @@ describe("selectAllGameEffects", () => {
     // Arrange
     const sheet = makeCharacterSheet((s) => {
       s.qualities = [{ id: NullUuid, name: "Toughness", type: "positive" }]
-      s.adeptPowers = [{ id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
+      s.powers = [{ id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
     })
 
     // Act

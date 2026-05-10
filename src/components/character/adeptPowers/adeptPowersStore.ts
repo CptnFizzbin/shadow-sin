@@ -3,7 +3,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { AdeptPowerData } from "#/system/magic/adeptPowerData.ts"
 
-export type AdeptPowersStoreState = CharacterSheet["adeptPowers"]
+export type AdeptPowersStoreState = CharacterSheet["powers"]
 
 export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
   setState(stateOrUpdater: AdeptPowersStoreState | ((prev: AdeptPowersStoreState) => AdeptPowersStoreState)) {
