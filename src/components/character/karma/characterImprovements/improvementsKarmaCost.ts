@@ -1,8 +1,8 @@
-import type { AnyImprovement } from "./types/anyImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
+import type { ImprovementsState } from "./improvementsState.ts"
 
 export const NEW_SKILL_KARMA_COST = 2
 export const NEW_SPELL_KARMA_COST = 5
+export const NEW_COMPLEX_FORM_KARMA_COST = 4
 export const SKILL_SPECIALIZATION_KARMA_COST = 2
 
 export const calcAttributeKarmaCost = (newRating: number): number => 5 * newRating
@@ -11,26 +11,40 @@ export const calcActiveSkillKarmaCost = (newRating: number): number => 2 * newRa
 
 export const calcSkillGroupKarmaCost = (newRating: number): number => 2 * newRating
 
-export const calcImprovementKarmaCost = (improvement: AnyImprovement): number => {
-  switch (improvement.type) {
-    case ImprovementType.Attribute:
-      return calcAttributeKarmaCost(improvement.newRating)
-    case ImprovementType.ActiveSkill:
-      if (improvement.newRating !== undefined) return calcActiveSkillKarmaCost(improvement.newRating)
-      return SKILL_SPECIALIZATION_KARMA_COST
-    case ImprovementType.SkillGroup:
-      if (improvement.newRating !== undefined) return calcSkillGroupKarmaCost(improvement.newRating)
-      return 0
-    case ImprovementType.KnowledgeSkill:
-    case ImprovementType.LanguageSkill:
-      if (improvement.newRating !== undefined) return calcActiveSkillKarmaCost(improvement.newRating)
-      return SKILL_SPECIALIZATION_KARMA_COST
-    case ImprovementType.LearnSpell:
-      return NEW_SPELL_KARMA_COST
-    default:
-      return 0
-  }
-}
+export const calcImprovementsKarmaCost = (state: ImprovementsState): number => {
+  let total = 0
 
-export const calcImprovementsKarmaCost = (improvements: AnyImprovement[]): number =>
-  improvements.reduce((total, improvement) => total + calcImprovementKarmaCost(improvement), 0)
+  for (const value of Object.values(state.attrImprovement)) {
+    if (value) total += calcAttributeKarmaCost(value.newRating)
+  }
+
+  for (const value of Object.values(state.activeSkillImprovement)) {
+    if (!value) continue
+    total += value.newRating !== undefined
+      ? calcActiveSkillKarmaCost(value.newRating)
+      : SKILL_SPECIALIZATION_KARMA_COST
+  }
+
+  for (const value of Object.values(state.skillGroupImprovement)) {
+    if (value?.newRating !== undefined) total += calcSkillGroupKarmaCost(value.newRating)
+  }
+
+  for (const value of Object.values(state.knowledgeImprovement)) {
+    if (!value) continue
+    total += value.newRating !== undefined
+      ? calcActiveSkillKarmaCost(value.newRating)
+      : SKILL_SPECIALIZATION_KARMA_COST
+  }
+
+  for (const value of Object.values(state.languageImprovement)) {
+    if (!value) continue
+    total += value.newRating !== undefined
+      ? calcActiveSkillKarmaCost(value.newRating)
+      : SKILL_SPECIALIZATION_KARMA_COST
+  }
+
+  total += Object.keys(state.learnSpell).length * NEW_SPELL_KARMA_COST
+  total += Object.keys(state.learnComplexForm).length * NEW_COMPLEX_FORM_KARMA_COST
+
+  return total
+}

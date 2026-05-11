@@ -4,53 +4,47 @@ import { produce } from "immer"
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import type { KarmaStore } from "#/components/character/karma/karmaStore.ts"
 import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
+import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { SpellData } from "#/system/magic/spellData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
 
-import { selectQueuedImprovements } from "./improvements.selectors.ts"
 import { calcImprovementsKarmaCost } from "./improvementsKarmaCost.ts"
 import type { ImprovementsStore } from "./improvementsStore.ts"
-import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
-import type { AttributeImprovement } from "./types/attributeImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
-import type { KnowledgeSkillImprovement } from "./types/knowledgeSkillImprovement.ts"
-import type { LanguageSkillImprovement } from "./types/languageSkillImprovement.ts"
-import type { LearnSpellImprovement } from "./types/learnSpellImprovement.ts"
-import type { SkillGroupImprovement } from "./types/skillGroupImprovement.ts"
 
 const applyImprovements = (
   improvementsStore: ImprovementsStore,
   characterStore: CharacterSheetStore,
   karmaStore: KarmaStore,
 ) => {
-  const improvements = selectQueuedImprovements(improvementsStore.store.state)
-  const karmaCost = calcImprovementsKarmaCost(improvements)
+  const state = improvementsStore.store.state
+  const karmaCost = calcImprovementsKarmaCost(state)
 
   characterStore.setState(produce((sheet) => {
-    improvements.forEach((improvement) => {
-      switch (improvement.type) {
-        case ImprovementType.Attribute:
-          applyAttributeImprovement(sheet, improvement)
-          break
-        case ImprovementType.ActiveSkill:
-          applyActiveSkillImprovement(sheet, improvement)
-          break
-        case ImprovementType.SkillGroup:
-          applySkillGroupImprovement(sheet, improvement)
-          break
-        case ImprovementType.KnowledgeSkill:
-          applyKnowledgeSkillImprovement(sheet, improvement)
-          break
-        case ImprovementType.LanguageSkill:
-          applyLanguageSkillImprovement(sheet, improvement)
-          break
-        case ImprovementType.LearnSpell:
-          applySpellImprovement(sheet, improvement)
-          break
-        default:
-          break
-      }
-    })
+    for (const [attr, value] of Object.entries(state.attrImprovement)) {
+      if (value) applyAttributeImprovement(sheet, attr as AttributeKey, value.newRating)
+    }
+
+    for (const [skill, value] of Object.entries(state.activeSkillImprovement)) {
+      if (value) applyActiveSkillImprovement(sheet, skill as SkillKey, value.newRating, value.newSpecialization)
+    }
+
+    for (const [group, value] of Object.entries(state.skillGroupImprovement)) {
+      if (value?.newRating !== undefined) applySkillGroupImprovement(sheet, group as SkillGroupKey, value.newRating)
+    }
+
+    for (const [skill, value] of Object.entries(state.knowledgeImprovement)) {
+      if (value) applyKnowledgeSkillImprovement(sheet, skill, value.newRating, value.newSpecialization)
+    }
+
+    for (const [skill, value] of Object.entries(state.languageImprovement)) {
+      if (value) applyLanguageSkillImprovement(sheet, skill, value.newRating, value.newSpecialization)
+    }
+
+    for (const spell of Object.values(state.learnSpell)) {
+      applySpellImprovement(sheet, spell)
+    }
   }))
 
   if (karmaCost > 0) karmaStore.spendKarma(karmaCost)
@@ -66,18 +60,21 @@ export const applyImprovementsAndSpendKarma = (
 
 const applyAttributeImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: AttributeImprovement,
+  attr: AttributeKey,
+  newRating: number,
 ): void => {
-  sheet.attributes[improvement.attribute] = improvement.newRating
+  sheet.attributes[attr] = newRating
 }
 
 const applyActiveSkillImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: ActiveSkillImprovement,
+  skill: SkillKey,
+  newRating: number | undefined,
+  specialization: string | undefined,
 ): void => {
   // Auto-break any skill group that covers this skill before applying the improvement
   const coveringGroup = sheet.skills.skillGroups.find((group) =>
-    getSkillsInGroup(group.name as SkillGroupKey).includes(improvement.skill),
+    getSkillsInGroup(group.name as SkillGroupKey).includes(skill),
   )
 
   if (coveringGroup) {
@@ -98,73 +95,76 @@ const applyActiveSkillImprovement = (
     )
   }
 
-  const existingSkill = sheet.skills.activeSkills.find((s) => s.name === improvement.skill)
+  const existingSkill = sheet.skills.activeSkills.find((s) => s.name === skill)
   if (existingSkill) {
-    if (improvement.newRating !== undefined) existingSkill.rating = improvement.newRating
-    if (improvement.specialization !== undefined) existingSkill.specialization = improvement.specialization
-  } else if (improvement.newRating !== undefined) {
+    if (newRating !== undefined) existingSkill.rating = newRating
+    if (specialization !== undefined) existingSkill.specialization = specialization
+  } else if (newRating !== undefined) {
     sheet.skills.activeSkills.push({
-      name: improvement.skill,
-      rating: improvement.newRating,
-      specialization: improvement.specialization,
+      name: skill,
+      rating: newRating,
+      specialization,
     })
   }
 }
 
 const applySkillGroupImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: SkillGroupImprovement,
+  group: SkillGroupKey,
+  newRating: number,
 ): void => {
-  if (improvement.newRating === undefined) return
-
-  const existingGroup = sheet.skills.skillGroups.find((g) => g.name === improvement.group)
+  const existingGroup = sheet.skills.skillGroups.find((g) => g.name === group)
   if (existingGroup) {
-    existingGroup.rating = improvement.newRating
+    existingGroup.rating = newRating
   } else {
-    sheet.skills.skillGroups.push({ name: improvement.group, rating: improvement.newRating })
+    sheet.skills.skillGroups.push({ name: group, rating: newRating })
   }
 }
 
 const applyKnowledgeSkillImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: KnowledgeSkillImprovement,
+  skill: string,
+  newRating: number | undefined,
+  specialization: string | undefined,
 ): void => {
-  const existingSkill = sheet.skills.knowledgeSkills.find((s) => s.name === improvement.skill)
+  const existingSkill = sheet.skills.knowledgeSkills.find((s) => s.name === skill)
   if (existingSkill) {
-    if (improvement.newRating !== undefined) existingSkill.rating = improvement.newRating
-    if (improvement.specialization !== undefined) existingSkill.specialization = improvement.specialization
-  } else if (improvement.newRating !== undefined) {
+    if (newRating !== undefined) existingSkill.rating = newRating
+    if (specialization !== undefined) existingSkill.specialization = specialization
+  } else if (newRating !== undefined) {
     sheet.skills.knowledgeSkills.push({
-      name: improvement.skill,
-      rating: improvement.newRating,
-      specialization: improvement.specialization,
+      name: skill,
+      rating: newRating,
+      specialization,
     })
   }
 }
 
 const applyLanguageSkillImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: LanguageSkillImprovement,
+  skill: string,
+  newRating: number | undefined,
+  specialization: string | undefined,
 ): void => {
-  const existingSkill = sheet.skills.languageSkills.find((s) => s.name === improvement.skill)
+  const existingSkill = sheet.skills.languageSkills.find((s) => s.name === skill)
   if (existingSkill) {
-    if (improvement.newRating !== undefined) existingSkill.rating = improvement.newRating
-    if (improvement.specialization !== undefined) existingSkill.lingo = improvement.specialization
-  } else if (improvement.newRating !== undefined) {
+    if (newRating !== undefined) existingSkill.rating = newRating
+    if (specialization !== undefined) existingSkill.lingo = specialization
+  } else if (newRating !== undefined) {
     sheet.skills.languageSkills.push({
-      name: improvement.skill,
-      rating: improvement.newRating,
-      lingo: improvement.specialization,
+      name: skill,
+      rating: newRating,
+      lingo: specialization,
     })
   }
 }
 
 const applySpellImprovement = (
   sheet: Draft<CharacterSheet>,
-  improvement: LearnSpellImprovement,
+  spell: SpellData,
 ): void => {
-  const alreadyKnown = sheet.spells.some((s) => s.id === improvement.spell.id)
+  const alreadyKnown = sheet.spells.some((s) => s.id === spell.id)
   if (!alreadyKnown) {
-    sheet.spells.push(improvement.spell)
+    sheet.spells.push(spell)
   }
 }

@@ -17,7 +17,7 @@ import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 import { AttributeTab } from "./characterImprovements/attributeTab.tsx"
 import { useSpendKarmaDialogContext } from "./characterImprovements/forms/spendKarmaDialogContext.tsx"
-import { selectQueuedImprovements } from "./characterImprovements/improvements.selectors.ts"
+import { selectHasImprovements, useImprovementsSelector } from "./characterImprovements/improvements.selectors.ts"
 import { calcImprovementsKarmaCost } from "./characterImprovements/improvementsKarmaCost.ts"
 import { applyImprovementsAndSpendKarma } from "./characterImprovements/improvementsUtils.ts"
 import { IncreaseSkillTab } from "./characterImprovements/increaseSkillTab.tsx"
@@ -47,9 +47,9 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
   const awakeningType = useCharacterSheetSelector((sheet) => sheet.biology.awakening)
   const canLearnSpell = isMagician(awakeningType)
 
-  const improvements = useSelector(improvementsStore.store, selectQueuedImprovements)
-  const karmaCost = calcImprovementsKarmaCost(improvements)
-  const canSave = improvements.length > 0 && karmaCost <= currentKarma
+  const karmaCost = useImprovementsSelector(calcImprovementsKarmaCost)
+  const hasImprovements = useImprovementsSelector(selectHasImprovements)
+  const canSave = hasImprovements && karmaCost <= currentKarma
 
   const [spendType, setSpendType] = useState<SpendType>("attribute")
 
@@ -77,10 +77,7 @@ export const SpendKarmaDialogContent: FC<ControlledDialogProps<void>> = ({ ctrl 
 
       <Dialog.Content>
         <Stack>
-          <PendingImprovementsList
-            improvements={improvements}
-            improvementsStore={improvementsStore}
-          />
+          <PendingImprovementsList improvementsStore={improvementsStore} />
 
           <Tabs
             value={spendType}

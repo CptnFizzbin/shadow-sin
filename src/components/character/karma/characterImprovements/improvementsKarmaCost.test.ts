@@ -8,20 +8,13 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import {
   calcActiveSkillKarmaCost,
   calcAttributeKarmaCost,
-  calcImprovementKarmaCost,
   calcImprovementsKarmaCost,
   calcSkillGroupKarmaCost,
   NEW_SKILL_KARMA_COST,
   NEW_SPELL_KARMA_COST,
   SKILL_SPECIALIZATION_KARMA_COST,
 } from "./improvementsKarmaCost.ts"
-import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
-import type { AttributeImprovement } from "./types/attributeImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
-import type { KnowledgeSkillImprovement } from "./types/knowledgeSkillImprovement.ts"
-import type { LanguageSkillImprovement } from "./types/languageSkillImprovement.ts"
-import type { LearnSpellImprovement } from "./types/learnSpellImprovement.ts"
-import type { SkillGroupImprovement } from "./types/skillGroupImprovement.ts"
+import { createImprovementsState } from "./improvementsState.ts"
 
 describe("karma cost constants", () => {
   it("NEW_SKILL_KARMA_COST is 2", () => {
@@ -63,17 +56,22 @@ describe("calcSkillGroupKarmaCost", () => {
   })
 })
 
-describe("calcImprovementKarmaCost", () => {
+describe("calcImprovementsKarmaCost", () => {
+  it("returns 0 for an empty state", () => {
+    // Arrange
+    const state = createImprovementsState()
+
+    // Act / Assert
+    expect(calcImprovementsKarmaCost(state)).toBe(0)
+  })
+
   it("calculates cost for an attribute improvement", () => {
     // Arrange
-    const improvement: AttributeImprovement = {
-      type: ImprovementType.Attribute,
-      attribute: AttributeKey.body,
-      newRating: 4,
-    }
+    const state = createImprovementsState()
+    state.attrImprovement[AttributeKey.body] = { newRating: 4 }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(20)
@@ -81,14 +79,11 @@ describe("calcImprovementKarmaCost", () => {
 
   it("calculates cost for an active skill rating improvement", () => {
     // Arrange
-    const improvement: ActiveSkillImprovement = {
-      type: ImprovementType.ActiveSkill,
-      skill: SkillKey.pistols,
-      newRating: 3,
-    }
+    const state = createImprovementsState()
+    state.activeSkillImprovement[SkillKey.pistols] = { newRating: 3 }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(6)
@@ -96,14 +91,11 @@ describe("calcImprovementKarmaCost", () => {
 
   it("returns specialization cost for an active skill with only a specialization", () => {
     // Arrange
-    const improvement: ActiveSkillImprovement = {
-      type: ImprovementType.ActiveSkill,
-      skill: SkillKey.pistols,
-      specialization: "Pistols",
-    }
+    const state = createImprovementsState()
+    state.activeSkillImprovement[SkillKey.pistols] = { newSpecialization: "Pistols" }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(SKILL_SPECIALIZATION_KARMA_COST)
@@ -111,53 +103,34 @@ describe("calcImprovementKarmaCost", () => {
 
   it("calculates cost for a skill group improvement", () => {
     // Arrange
-    const improvement: SkillGroupImprovement = {
-      type: ImprovementType.SkillGroup,
-      group: SkillGroupKey.Athletics,
-      newRating: 2,
-    }
+    const state = createImprovementsState()
+    state.skillGroupImprovement[SkillGroupKey.Athletics] = { newRating: 2 }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(4)
   })
 
-  it("returns 0 for a skill group with no new rating", () => {
-    // Arrange
-    const improvement: SkillGroupImprovement = {
-      type: ImprovementType.SkillGroup,
-      group: SkillGroupKey.Athletics,
-    }
-
-    // Act
-    const cost = calcImprovementKarmaCost(improvement)
-
-    // Assert
-    expect(cost).toBe(0)
-  })
-
   it("calculates cost for a learn spell improvement", () => {
     // Arrange
-    const improvement: LearnSpellImprovement = {
-      type: ImprovementType.LearnSpell,
-      spell: {
-        id: "00000000-0000-0000-0000-000000000001",
-        name: "Fireball",
-        category: SpellCategory.Combat,
-        type: SpellType.Physical,
-        range: SpellRange.LoS,
-        damage: SpellDamage.Physical,
-        duration: SpellDuration.Instantaneous,
-        drain: { type: SpellDrainType.Force, value: 2 },
-        dealsDamage: true,
-        voluntaryTargetsOnly: false,
-      },
+    const state = createImprovementsState()
+    state.learnSpell["00000000-0000-0000-0000-000000000001"] = {
+      id: "00000000-0000-0000-0000-000000000001",
+      name: "Fireball",
+      category: SpellCategory.Combat,
+      type: SpellType.Physical,
+      range: SpellRange.LoS,
+      damage: SpellDamage.Physical,
+      duration: SpellDuration.Instantaneous,
+      drain: { type: SpellDrainType.Force, value: 2 },
+      dealsDamage: true,
+      voluntaryTargetsOnly: false,
     }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(NEW_SPELL_KARMA_COST)
@@ -165,14 +138,11 @@ describe("calcImprovementKarmaCost", () => {
 
   it("calculates cost for a knowledge skill rating improvement", () => {
     // Arrange
-    const improvement: KnowledgeSkillImprovement = {
-      type: ImprovementType.KnowledgeSkill,
-      skill: "History",
-      newRating: 2,
-    }
+    const state = createImprovementsState()
+    state.knowledgeImprovement["History"] = { newRating: 2 }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(4)
@@ -180,14 +150,11 @@ describe("calcImprovementKarmaCost", () => {
 
   it("returns specialization cost for a knowledge skill with only a specialization", () => {
     // Arrange
-    const improvement: KnowledgeSkillImprovement = {
-      type: ImprovementType.KnowledgeSkill,
-      skill: "History",
-      specialization: "Ancient Rome",
-    }
+    const state = createImprovementsState()
+    state.knowledgeImprovement["History"] = { newSpecialization: "Ancient Rome" }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(SKILL_SPECIALIZATION_KARMA_COST)
@@ -195,64 +162,49 @@ describe("calcImprovementKarmaCost", () => {
 
   it("calculates cost for a language skill rating improvement", () => {
     // Arrange
-    const improvement: LanguageSkillImprovement = {
-      type: ImprovementType.LanguageSkill,
-      skill: "Spanish",
-      newRating: 3,
-    }
+    const state = createImprovementsState()
+    state.languageImprovement["Spanish"] = { newRating: 3 }
 
     // Act
-    const cost = calcImprovementKarmaCost(improvement)
+    const cost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(cost).toBe(6)
   })
-})
-
-describe("calcImprovementsKarmaCost", () => {
-  it("returns 0 for an empty improvements list", () => {
-    // Arrange / Act / Assert
-    expect(calcImprovementsKarmaCost([])).toBe(0)
-  })
 
   it("sums costs across multiple improvements", () => {
     // Arrange
-    const improvements = [
-      { type: ImprovementType.Attribute, attribute: AttributeKey.body, newRating: 3 } satisfies AttributeImprovement,
-      { type: ImprovementType.ActiveSkill, skill: SkillKey.pistols, newRating: 4 } satisfies ActiveSkillImprovement,
-      { type: ImprovementType.SkillGroup, group: SkillGroupKey.Athletics, newRating: 2 } satisfies SkillGroupImprovement,
-    ]
+    const state = createImprovementsState()
+    state.attrImprovement[AttributeKey.body] = { newRating: 3 }
+    state.activeSkillImprovement[SkillKey.pistols] = { newRating: 4 }
+    state.skillGroupImprovement[SkillGroupKey.Athletics] = { newRating: 2 }
 
     // Act
-    const totalCost = calcImprovementsKarmaCost(improvements)
+    const totalCost = calcImprovementsKarmaCost(state)
 
     // Assert
-    // Attribute body 3: 5*3=15, Firearms 4: 2*4=8, Athletics group 2: 2*2=4 → 27
+    // Attribute body 3: 5*3=15, Pistols 4: 2*4=8, Athletics group 2: 2*2=4 → 27
     expect(totalCost).toBe(27)
   })
 
   it("counts a learn spell at NEW_SPELL_KARMA_COST", () => {
     // Arrange
-    const improvements = [
-      {
-        type: ImprovementType.LearnSpell,
-        spell: {
-          id: "00000000-0000-0000-0000-000000000002",
-          name: "Lightning Bolt",
-          category: SpellCategory.Combat,
-          type: SpellType.Physical,
-          range: SpellRange.LoS,
-          damage: SpellDamage.Physical,
-          duration: SpellDuration.Instantaneous,
-          drain: { type: SpellDrainType.Force, value: 2 },
-          dealsDamage: true,
-          voluntaryTargetsOnly: false,
-        },
-      } satisfies LearnSpellImprovement,
-    ]
+    const state = createImprovementsState()
+    state.learnSpell["00000000-0000-0000-0000-000000000002"] = {
+      id: "00000000-0000-0000-0000-000000000002",
+      name: "Lightning Bolt",
+      category: SpellCategory.Combat,
+      type: SpellType.Physical,
+      range: SpellRange.LoS,
+      damage: SpellDamage.Physical,
+      duration: SpellDuration.Instantaneous,
+      drain: { type: SpellDrainType.Force, value: 2 },
+      dealsDamage: true,
+      voluntaryTargetsOnly: false,
+    }
 
     // Act
-    const totalCost = calcImprovementsKarmaCost(improvements)
+    const totalCost = calcImprovementsKarmaCost(state)
 
     // Assert
     expect(totalCost).toBe(NEW_SPELL_KARMA_COST)

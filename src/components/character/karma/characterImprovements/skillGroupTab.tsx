@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
-import { createSelector } from "reselect"
 
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
@@ -16,29 +15,17 @@ import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 import {
-  selectQueuedImprovements,
+  selectQueuedSkillGroups,
   useImprovementsSelector,
 } from "./improvements.selectors.ts"
 import { calcSkillGroupKarmaCost } from "./improvementsKarmaCost.ts"
-import { ImprovementType } from "./types/improvementType.ts"
-import type {
-  SkillGroupImprovement,
-} from "./types/skillGroupImprovement.ts"
-
-const selectQueuedGroupSkills = createSelector([
-  selectQueuedImprovements,
-], (improvements) => new Set(
-  improvements
-    .filter((i): i is SkillGroupImprovement => i.type === ImprovementType.SkillGroup)
-    .map((i) => i.group),
-))
 
 export const SkillGroupTab: FC = () => {
   const { improvementsStore } = useSpendKarmaDialogContext()
   const [selectedSkillGroupKey, setSelectedSkillGroupKey] = useState<SkillGroupKey | "">("")
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
-  const queuedGroups = useImprovementsSelector(selectQueuedGroupSkills)
+  const queuedGroups = useImprovementsSelector(selectQueuedSkillGroups)
 
   const availableSkillGroups = skillGroups.filter(
     (group) => group.rating < SkillGroupRatingMax && !queuedGroups.has(group.name as SkillGroupKey),

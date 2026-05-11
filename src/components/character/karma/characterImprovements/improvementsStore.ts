@@ -9,8 +9,6 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 import type { ImprovementsState } from "./improvementsState.ts"
 import { createImprovementsState } from "./improvementsState.ts"
-import type { AnyImprovement } from "./types/anyImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
 
 export class ImprovementsStore {
   public readonly store: Store<ImprovementsState>
@@ -79,30 +77,39 @@ export class ImprovementsStore {
     }))
   }
 
-  removeImprovement(improvement: AnyImprovement) {
+  removeAttributeImprovement(attr: AttributeKey) {
     this.store.setState(produce((state) => {
-      switch (improvement.type) {
-        case ImprovementType.Attribute:
-          delete state.attrImprovement[improvement.attribute]
-          break
-        case ImprovementType.ActiveSkill:
-          delete state.activeSkillImprovement[improvement.skill]
-          break
-        case ImprovementType.SkillGroup:
-          delete state.skillGroupImprovement[improvement.group]
-          break
-        case ImprovementType.KnowledgeSkill:
-          delete state.knowledgeImprovement[improvement.skill]
-          break
-        case ImprovementType.LanguageSkill:
-          delete state.languageImprovement[improvement.skill]
-          break
-        case ImprovementType.LearnSpell:
-          delete state.learnSpell[improvement.spell.id]
-          break
-        default:
-          throw new Error(`unknown improvement type`)
-      }
+      delete state.attrImprovement[attr]
+    }))
+  }
+
+  removeActiveSkillImprovement(skill: SkillKey) {
+    this.store.setState(produce((state) => {
+      delete state.activeSkillImprovement[skill]
+    }))
+  }
+
+  removeSkillGroupImprovement(group: SkillGroupKey) {
+    this.store.setState(produce((state) => {
+      delete state.skillGroupImprovement[group]
+    }))
+  }
+
+  removeKnowledgeSkillImprovement(skill: string) {
+    this.store.setState(produce((state) => {
+      delete state.knowledgeImprovement[skill]
+    }))
+  }
+
+  removeLanguageSkillImprovement(skill: string) {
+    this.store.setState(produce((state) => {
+      delete state.languageImprovement[skill]
+    }))
+  }
+
+  removeLearnSpell(spellId: string) {
+    this.store.setState(produce((state) => {
+      delete state.learnSpell[spellId]
     }))
   }
 
