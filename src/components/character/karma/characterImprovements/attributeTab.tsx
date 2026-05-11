@@ -16,8 +16,6 @@ import { AttributeKey, AttributeLabels, AttributeOrder } from "#/system/attribut
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
 import { calcAttributeKarmaCost } from "./improvementsKarmaCost.ts"
-import type { AttributeImprovement } from "./types/attributeImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
 
 export const AttributeTab: FC = () => {
   const { improvementsStore } = useSpendKarmaDialogContext()
@@ -27,11 +25,7 @@ export const AttributeTab: FC = () => {
 
   const queuedAttributes = useSelector(
     improvementsStore.store,
-    (state) => new Set(
-      state.improvements
-        .filter((i): i is AttributeImprovement => i.type === ImprovementType.Attribute)
-        .map((i) => i.attribute),
-    ),
+    (state) => new Set(Object.keys(state.attrImprovement) as AttributeKey[]),
   )
 
   const availableAttributes = AttributeOrder.filter((key) => {

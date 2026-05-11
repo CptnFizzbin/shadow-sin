@@ -19,19 +19,11 @@ import { ActiveSkillSelectInput } from "#/components/character/skills/forms/acti
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
-import { selectQueuedImprovements, useImprovementsSelector } from "./improvements.selectors.ts"
-import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
+import type { ImprovementsSelector } from "./improvements.selectors.ts"
+import { useImprovementsSelector } from "./improvements.selectors.ts"
 
-const selectQueuedSkillsSet = createSelector([
-  selectQueuedImprovements,
-], (improvements) => {
-  return new Set(
-    improvements
-      .filter((i): i is ActiveSkillImprovement => i.type === ImprovementType.ActiveSkill)
-      .map((i) => i.skill),
-  )
-})
+const selectQueuedSkillsSet: ImprovementsSelector<Set<SkillKey>> = (state) =>
+  new Set(Object.keys(state.activeSkillImprovement) as SkillKey[])
 
 export const NewSkillTab: FC = () => {
   const { improvementsStore } = useSpendKarmaDialogContext()

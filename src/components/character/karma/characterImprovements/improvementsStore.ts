@@ -7,81 +7,106 @@ import type { SpellData } from "#/system/magic/spellData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
+import type { ImprovementsState } from "./improvementsState.ts"
+import { createImprovementsState } from "./improvementsState.ts"
 import type { AnyImprovement } from "./types/anyImprovement.ts"
 import { ImprovementType } from "./types/improvementType.ts"
-
-export interface ImprovementsState {
-  improvements: AnyImprovement[]
-}
 
 export class ImprovementsStore {
   public readonly store: Store<ImprovementsState>
 
-  constructor(value: ImprovementsState) {
-    this.store = createStore(value)
+  constructor(value?: ImprovementsState) {
+    this.store = createStore(value ?? createImprovementsState())
   }
 
   improveAttribute(attr: AttributeKey, newRating: number) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.Attribute, attribute: attr, newRating })
+      state.attrImprovement[attr] = { newRating }
     }))
   }
 
   improveActiveSkill(skill: SkillKey, newRating: number) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.ActiveSkill, skill, newRating })
+      const existing = state.activeSkillImprovement[skill]
+      state.activeSkillImprovement[skill] = { ...existing, newRating }
     }))
   }
 
   addActiveSkillSpecialization(skill: SkillKey, specialization: string) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.ActiveSkill, skill, specialization })
+      const existing = state.activeSkillImprovement[skill]
+      state.activeSkillImprovement[skill] = { ...existing, newSpecialization: specialization }
     }))
   }
 
   improveSkillGroup(group: SkillGroupKey, newRating: number) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.SkillGroup, group, newRating })
+      state.skillGroupImprovement[group] = { newRating }
     }))
   }
 
   improveKnowledgeSkill(skill: string, newRating: number) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.KnowledgeSkill, skill, newRating })
+      const existing = state.knowledgeImprovement[skill]
+      state.knowledgeImprovement[skill] = { ...existing, newRating }
     }))
   }
 
   addKnowledgeSkillSpecialization(skill: string, specialization: string) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.KnowledgeSkill, skill, specialization })
+      const existing = state.knowledgeImprovement[skill]
+      state.knowledgeImprovement[skill] = { ...existing, newSpecialization: specialization }
     }))
   }
 
   improveLanguageSkill(skill: string, newRating: number) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.LanguageSkill, skill, newRating })
+      const existing = state.languageImprovement[skill]
+      state.languageImprovement[skill] = { ...existing, newRating }
     }))
   }
 
   addLanguageSkillSpecialization(skill: string, specialization: string) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.LanguageSkill, skill, specialization })
+      const existing = state.languageImprovement[skill]
+      state.languageImprovement[skill] = { ...existing, newSpecialization: specialization }
     }))
   }
 
   learnSpell(spell: SpellData) {
     this.store.setState(produce((state) => {
-      state.improvements.push({ type: ImprovementType.LearnSpell, spell })
+      state.learnSpell[spell.id] = spell
     }))
   }
 
-  removeImprovement(index: number) {
+  removeImprovement(improvement: AnyImprovement) {
     this.store.setState(produce((state) => {
-      state.improvements.splice(index, 1)
+      switch (improvement.type) {
+        case ImprovementType.Attribute:
+          delete state.attrImprovement[improvement.attribute]
+          break
+        case ImprovementType.ActiveSkill:
+          delete state.activeSkillImprovement[improvement.skill]
+          break
+        case ImprovementType.SkillGroup:
+          delete state.skillGroupImprovement[improvement.group]
+          break
+        case ImprovementType.KnowledgeSkill:
+          delete state.knowledgeImprovement[improvement.skill]
+          break
+        case ImprovementType.LanguageSkill:
+          delete state.languageImprovement[improvement.skill]
+          break
+        case ImprovementType.LearnSpell:
+          delete state.learnSpell[improvement.spell.id]
+          break
+        default:
+          throw new Error(`unknown improvement type`)
+      }
     }))
   }
 
   clear() {
-    this.store.setState(() => ({ improvements: [] }))
+    this.store.setState(() => createImprovementsState())
   }
 }

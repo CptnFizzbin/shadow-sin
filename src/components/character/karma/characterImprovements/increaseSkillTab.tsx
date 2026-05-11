@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
@@ -17,9 +16,8 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import { selectQueuedActiveSkills, useImprovementsSelector } from "./improvements.selectors.ts"
 import { calcActiveSkillKarmaCost } from "./improvementsKarmaCost.ts"
-import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
-import { ImprovementType } from "./types/improvementType.ts"
 import type { IncreaseSkillEntry } from "./types/increaseSkillEntry.ts"
 
 export const IncreaseSkillTab: FC = () => {
@@ -28,14 +26,7 @@ export const IncreaseSkillTab: FC = () => {
   const activeSkills = useCharacterSheetSelector((sheet) => sheet.skills.activeSkills)
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
-  const queuedSkills = useSelector(
-    improvementsStore.store,
-    (state) => new Set(
-      state.improvements
-        .filter((i): i is ActiveSkillImprovement => i.type === ImprovementType.ActiveSkill)
-        .map((i) => i.skill),
-    ),
-  )
+  const queuedSkills = useImprovementsSelector(selectQueuedActiveSkills)
 
   const allIncreaseSkills: IncreaseSkillEntry[] = [
     ...activeSkills
@@ -90,7 +81,10 @@ export const IncreaseSkillTab: FC = () => {
             const cost = calcActiveSkillKarmaCost(newRating)
             return (
               <MenuItem key={entry.key} value={entry.key}>
-                <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
+                <Stack
+                  direction="row"
+                  sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}
+                >
                   <Typography>{entry.key}</Typography>
                   <Typography color="text.secondary" sx={{ fontSize: "small" }}>
                     {entry.currentRating} → {newRating}

@@ -7,6 +7,7 @@ import type { CharacterSheetStore } from "#/components/character/sheet/character
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 
+import { selectQueuedImprovements } from "./improvements.selectors.ts"
 import { calcImprovementsKarmaCost } from "./improvementsKarmaCost.ts"
 import type { ImprovementsStore } from "./improvementsStore.ts"
 import type { ActiveSkillImprovement } from "./types/activeSkillImprovement.ts"
@@ -22,7 +23,7 @@ const applyImprovements = (
   characterStore: CharacterSheetStore,
   karmaStore: KarmaStore,
 ) => {
-  const { improvements } = improvementsStore.store.state
+  const improvements = selectQueuedImprovements(improvementsStore.store.state)
   const karmaCost = calcImprovementsKarmaCost(improvements)
 
   characterStore.setState(produce((sheet) => {

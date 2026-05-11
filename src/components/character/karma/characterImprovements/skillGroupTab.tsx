@@ -6,32 +6,39 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
+import { createSelector } from "reselect"
 
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
 
 import { useSpendKarmaDialogContext } from "./forms/spendKarmaDialogContext.tsx"
+import {
+  selectQueuedImprovements,
+  useImprovementsSelector,
+} from "./improvements.selectors.ts"
 import { calcSkillGroupKarmaCost } from "./improvementsKarmaCost.ts"
 import { ImprovementType } from "./types/improvementType.ts"
-import type { SkillGroupImprovement } from "./types/skillGroupImprovement.ts"
+import type {
+  SkillGroupImprovement,
+} from "./types/skillGroupImprovement.ts"
+
+const selectQueuedGroupSkills = createSelector([
+  selectQueuedImprovements,
+], (improvements) => new Set(
+  improvements
+    .filter((i): i is SkillGroupImprovement => i.type === ImprovementType.SkillGroup)
+    .map((i) => i.group),
+))
 
 export const SkillGroupTab: FC = () => {
   const { improvementsStore } = useSpendKarmaDialogContext()
   const [selectedSkillGroupKey, setSelectedSkillGroupKey] = useState<SkillGroupKey | "">("")
   const skillGroups = useCharacterSheetSelector((sheet) => sheet.skills.skillGroups)
 
-  const queuedGroups = useSelector(
-    improvementsStore.store,
-    (state) => new Set(
-      state.improvements
-        .filter((i): i is SkillGroupImprovement => i.type === ImprovementType.SkillGroup)
-        .map((i) => i.group),
-    ),
-  )
+  const queuedGroups = useImprovementsSelector(selectQueuedGroupSkills)
 
   const availableSkillGroups = skillGroups.filter(
     (group) => group.rating < SkillGroupRatingMax && !queuedGroups.has(group.name as SkillGroupKey),
@@ -68,7 +75,10 @@ export const SkillGroupTab: FC = () => {
             const cost = calcSkillGroupKarmaCost(newRating)
             return (
               <MenuItem key={group.name} value={group.name}>
-                <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}>
+                <Stack
+                  direction="row"
+                  sx={{ gap: 1, alignItems: "center", justifyContent: "space-between", flexGrow: 1 }}
+                >
                   <Typography>{group.name}</Typography>
                   <Typography color="text.secondary" sx={{ fontSize: "small" }}>
                     {group.rating} → {newRating} &nbsp;·&nbsp; {cost} karma

@@ -57,7 +57,7 @@ export const PendingImprovementsList: FC<PendingImprovementsListProps> = ({
               <IconButton
                 size="small"
                 color="error"
-                onClick={() => improvementsStore.removeImprovement(index)}
+                onClick={() => improvementsStore.removeImprovement(improvement)}
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
