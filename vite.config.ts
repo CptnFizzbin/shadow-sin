@@ -28,6 +28,7 @@ const config = defineConfig({
 
   test: {
     include: ["**/*.test.{ts,tsx}"],
+    setupFiles: ["./testUtils/setup.ts"],
     environment: "happy-dom",
     // Concurrent test execution is disabled because tests using
     // `vi.useFakeTimers()` (notably `src/system/dice/diceRoller.test.ts`)
