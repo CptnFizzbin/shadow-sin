@@ -14,7 +14,7 @@ import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { calculateSpiritAttributes, calculateSpiritInitiative, SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 import { SpiritRegistry } from "#/system/magic/spiritRegistry.ts"
 
-import { CritterPowerChip } from "#/components/character/spirits/critterPowerChip.tsx"
+import { CritterPowerChip } from "./critterPowerChip.tsx"
 import { SpiritConditionMonitor } from "./spiritConditionMonitor.tsx"
 
 const SPIRIT_SPECIAL_ATTRS = [AttributeKey.edge, AttributeKey.magic] as const
