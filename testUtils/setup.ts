@@ -1,3 +1,5 @@
+import { setImmediate } from "node:timers"
+
 import { afterEach } from "vitest"
 
 afterEach(async () => {
