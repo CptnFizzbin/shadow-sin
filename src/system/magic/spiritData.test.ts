@@ -122,22 +122,30 @@ describe("calculateSpiritInitiative", () => {
     expect(physicalScore).toBe(force * 2 + 3)
   })
 
-  it("gives all other spirit types (F×2)+2 physical score", () => {
-    const types = [
-      SpiritType.beast,
-      SpiritType.earth,
-      SpiritType.guidance,
-      SpiritType.guardian,
-      SpiritType.man,
-      SpiritType.plant,
-      SpiritType.task,
-      SpiritType.water,
-    ]
+  it("gives beast/earth/man/water spirits (F×2)+2 physical score", () => {
+    const types = [SpiritType.beast, SpiritType.earth, SpiritType.man, SpiritType.water]
 
     for (const type of types) {
       const force = 6
       const { physicalScore } = calculateSpiritInitiative(force, type)
       expect(physicalScore, `${type} physicalScore`).toBe(force * 2 + 2)
+    }
+  })
+
+  it("gives guardian spirits (F×2)+1 physical score", () => {
+    const force = 6
+    const { physicalScore } = calculateSpiritInitiative(force, SpiritType.guardian)
+
+    expect(physicalScore).toBe(force * 2 + 1)
+  })
+
+  it("gives guidance/plant/task spirits F×2 physical score", () => {
+    const types = [SpiritType.guidance, SpiritType.plant, SpiritType.task]
+
+    for (const type of types) {
+      const force = 6
+      const { physicalScore } = calculateSpiritInitiative(force, type)
+      expect(physicalScore, `${type} physicalScore`).toBe(force * 2)
     }
   })
 
