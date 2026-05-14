@@ -48,6 +48,10 @@ export function useSpiritForm(props: SpiritFormOptions) {
       onChange: ({ formApi, fieldApi }) => {
         if (fieldApi.name !== "spiritType" && fieldApi.name !== "force") return
 
+        if (fieldApi.name === "spiritType") {
+          formApi.setFieldValue("optionalPowers", [])
+        }
+
         const { name, spiritType, force } = formApi.state.values
         if (name !== "" && name !== lastGenerated.current) return
 
