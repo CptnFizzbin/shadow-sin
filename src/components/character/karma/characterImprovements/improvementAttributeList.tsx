@@ -1,5 +1,4 @@
 import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
@@ -7,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
+import { RiCheckLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
@@ -26,11 +25,12 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
+// onBack kept for interface compatibility during dialog migration; not rendered
 interface ImprovementAttributeListProps {
-  onBack: () => void
+  onBack?: () => void
 }
 
-export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ onBack }) => {
+export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const karmaStore = useKarmaStore()
   const activeAttributes = useActiveAttributes()
@@ -43,14 +43,7 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ on
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <IconButton size="small" onClick={onBack} aria-label="Back to categories">
-          <RiArrowLeftLine size={16} />
-        </IconButton>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", flex: 1 }}>
-          Attributes
-        </Typography>
-      </Stack>
+      <Typography variant="overline" color="text.secondary">Attributes</Typography>
 
       <Paper variant="outlined">
         <List disablePadding>
@@ -65,7 +58,7 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ on
             const handleToggle = () => {
               if (queuedEntry) {
                 improvementStore.remove(queuedEntry.id)
-              } else {
+              } else if (!isAtMax) {
                 const newEntry: Omit<AttrIncreaseEntry, "id"> = {
                   type: ImprovementType.attrIncrease,
                   attr: attrInfo.attr,
@@ -83,11 +76,14 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ on
                 divider={index < activeAttributes.length - 1}
                 secondaryAction={(
                   <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
-                    <Chip
-                      label={`${karmaCost}k`}
-                      size="small"
-                      color={queuedEntry ? "success" : canAfford ? "default" : "warning"}
-                    />
+                    {isAtMax && <Chip label="Max" size="small" />}
+                    {!isAtMax && (
+                      <Chip
+                        label={`${karmaCost}k`}
+                        size="small"
+                        color={queuedEntry ? "success" : canAfford ? "default" : "warning"}
+                      />
+                    )}
                     {queuedEntry && (
                       <RiCheckLine
                         size={14}
@@ -98,10 +94,13 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = ({ on
                 )}
               >
                 <ListItemButton
-                  disabled={isAtMax && !queuedEntry}
-                  selected={queuedEntry !== null}
+                  disabled={(isAtMax && !queuedEntry) || (!canAfford && !queuedEntry)}
+                  aria-pressed={queuedEntry !== null}
                   onClick={handleToggle}
-                  sx={{ minHeight: 52 }}
+                  sx={{
+                    minHeight: 52,
+                    opacity: !canAfford && !queuedEntry && !isAtMax ? 0.45 : 1,
+                  }}
                 >
                   <ListItemText
                     primary={AttributeLabels[attrInfo.attr]}
