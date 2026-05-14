@@ -6,7 +6,6 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { RollType } from "#/system/magic/critterPowerData.ts"
 import {
