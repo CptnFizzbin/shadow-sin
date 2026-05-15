@@ -86,6 +86,10 @@ export const SpiritDataSchema = z.object({
     physical: z.number().int().min(0),
     stun: z.number().int().min(0),
   }),
+}).superRefine(({ spiritType, force }, ctx) => {
+  if (spiritType === SpiritType.watcher && force !== 1) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["force"], message: "Watchers always have Force 1" })
+  }
 }) satisfies z.ZodType<SpiritData>
 
 // SR4A p.295-302: physical initiative bonus added to F×2, keyed by spirit type.
