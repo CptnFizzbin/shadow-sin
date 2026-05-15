@@ -5,6 +5,10 @@ export interface ArmorData extends ItemData {
   itemType: ItemType.armor
   ballistic: number
   impact: number
+  damage?: {
+    ballistic: number
+    impact: number
+  }
 }
 
 export function isArmorData(item: ItemData): item is ArmorData {
