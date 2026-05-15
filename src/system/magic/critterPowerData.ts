@@ -1,5 +1,8 @@
+import { z } from "zod"
+
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { SourceData } from "#/system/sourceData.ts"
+import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export type RollType = "Opposed" | "Standard" | "Hidden"
 
@@ -17,6 +20,20 @@ export interface CritterPowerData {
   description: string
   source?: SourceData
 }
+
+const SpiritPoolFormulaSchema: z.ZodType<SpiritPoolFormula> = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("force") }),
+  z.object({ type: z.literal("force_plus"), attribute: z.nativeEnum(AttributeKey) }),
+])
+
+export const CritterPowerDataSchema = z.object({
+  name: z.string(),
+  rollType: z.enum(["Opposed", "Standard", "Hidden"]).optional(),
+  spiritPool: SpiritPoolFormulaSchema.optional(),
+  targetPool: z.string().optional(),
+  description: z.string(),
+  source: SourceDataSchema.optional(),
+}) satisfies z.ZodType<CritterPowerData>
 
 export function computeSpiritPowerPool(
   formula: SpiritPoolFormula,
@@ -450,6 +467,12 @@ export interface CritterWeaknessData {
   source?: SourceData
 }
 
+export const CritterWeaknessDataSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  source: SourceDataSchema.optional(),
+}) satisfies z.ZodType<CritterWeaknessData>
+
 const weaknesses: Record<string, CritterWeaknessData> = {
   "allergy": {
     name: "Allergy",
@@ -484,5 +507,8 @@ const weaknesses: Record<string, CritterWeaknessData> = {
 }
 
 export function lookupCritterWeakness(name: string): CritterWeaknessData | undefined {
-  return weaknesses[name.toLowerCase()]
+  const exact = weaknesses[name.toLowerCase()]
+  if (exact) return exact
+  const baseName = name.replace(/\s*\(.*\)$/, "").trim().toLowerCase()
+  return weaknesses[baseName]
 }
