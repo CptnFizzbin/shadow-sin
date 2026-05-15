@@ -287,3 +287,17 @@ yarn fallow fix --yes --format json
 - When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those
   findings have been resolved by the current change
 - See `.agents/skills/fallow/SKILL.md` for the full command reference
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on `CptnFizzbin/shadow-sin`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
