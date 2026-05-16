@@ -1,31 +1,30 @@
+import Chip from "@mui/material/Chip"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
+import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-interface EquippedArmorCardProps {
-  armor: ArmorData
-}
-
-const EquippedArmorCard: FC<EquippedArmorCardProps> = ({ armor }) => (
-  <ItemCard>
-    <ItemCard.Title>{armor.name}</ItemCard.Title>
-    <ItemCard.Meta type="stat">
-      <ItemStatChip label={`B: ${armor.ballistic}`} />
-      <ItemStatChip label={`I: ${armor.impact}`} />
-    </ItemCard.Meta>
-  </ItemCard>
-)
+import { EquippedArmorCard } from "./equippedArmorCard.tsx"
 
 export const EquippedArmorSection: FC = () => {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
   const equippedArmor = allArmor.filter((armor) => armor.equipped)
+  const gearStore = useGearStore()
+  const { totalBallistic, totalImpact, threshold, penalty, isEncumbered } = useEncumbrance()
+
+  const handleDamageChange = (armor: ArmorData, damage: NonNullable<ArmorData["damage"]>) => {
+    const clamped: NonNullable<ArmorData["damage"]> = {
+      ballistic: Math.min(Math.max(0, damage.ballistic), armor.ballistic),
+      impact: Math.min(Math.max(0, damage.impact), armor.impact),
+    }
+    const updated: ArmorData = { ...armor, damage: clamped }
+    gearStore.save(updated)
+  }
 
   if (equippedArmor.length === 0) {
     return (
@@ -44,9 +43,24 @@ export const EquippedArmorSection: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      <Label label="Armor" />
+      <Stack direction="row" sx={{ alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+        <Label label="Armor" />
+        <Chip size="small" label={`B: ${totalBallistic}/${threshold}`} variant="outlined" />
+        <Chip size="small" label={`I: ${totalImpact}/${threshold}`} variant="outlined" />
+        {isEncumbered && (
+          <Chip
+            size="small"
+            label={`Encumbered: −${penalty} Agility & Reaction`}
+            color="warning"
+          />
+        )}
+      </Stack>
       {equippedArmor.map((armor) => (
-        <EquippedArmorCard key={armor.id} armor={armor} />
+        <EquippedArmorCard
+          key={armor.id}
+          armor={armor}
+          onDamageChange={(damage) => handleDamageChange(armor, damage)}
+        />
       ))}
     </Stack>
   )
