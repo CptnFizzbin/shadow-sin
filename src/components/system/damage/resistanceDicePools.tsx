@@ -5,6 +5,7 @@ import {
   useActiveSkillDiceGroup,
   useAttrDiceGroup,
   useDefaultingDiceGroup,
+  useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/components/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -35,6 +36,7 @@ export const RangedDefenseDicePool = () => {
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -49,6 +51,7 @@ export const RangedFullDefenseDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.dodge),
         useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -65,6 +68,7 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useActiveSkillDiceGroup(weaponSkill),
         useDefaultingDiceGroup(weaponSkill),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -79,6 +83,7 @@ export const MeleeBlockDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.unarmedCombat),
         useDefaultingDiceGroup(SkillKey.unarmedCombat),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -93,6 +98,7 @@ export const MeleeDodgeDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.dodge),
         useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -111,6 +117,7 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
         useActiveSkillDiceGroup(SkillKey.dodge),
         useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -127,6 +134,7 @@ export const MeleeFullBlockDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.dodge),
         useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
@@ -142,6 +150,7 @@ export const MeleeFullDodgeDicePool = () => {
         useActiveSkillDiceGroup(SkillKey.dodge),
         useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
+        useEncumbranceDiceGroup(),
       ]}
     />
   )
