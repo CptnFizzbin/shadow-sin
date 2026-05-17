@@ -45,12 +45,14 @@ export const EquippedWeaponCard: FC<EquippedWeaponCardProps> = ({ weapon }) => {
       {isFirearmData(weapon) && (
         <ItemCard.Meta type="stat">
           <ItemStatChip label={weapon.firearmType} />
-          {weapon.firemodes.length > 0 && (
-            <ItemStatChip label={weapon.firemodes.join("/")} />
+          {(weapon.firemodes?.length ?? 0) > 0 && (
+            <ItemStatChip label={weapon.firemodes!.join("/")} />
           )}
-          <ItemStatChip
-            label={`Ammo: ${weapon.ammo.remaining}/${weapon.ammo.size}`}
-          />
+          {weapon.ammo && (
+            <ItemStatChip
+              label={`Ammo: ${weapon.ammo.remaining}/${weapon.ammo.size}`}
+            />
+          )}
         </ItemCard.Meta>
       )}
 

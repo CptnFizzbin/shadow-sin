@@ -28,7 +28,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
   const firearm = isFirearm ? (weapon as FirearmData) : undefined
 
   const [selectedFiremode, setSelectedFiremode] = useState<string | null>(
-    firearm?.firemodes[0] ?? null,
+    firearm?.firemodes?.[0] ?? null,
   )
 
   return (
@@ -36,11 +36,11 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
       <Dialog.Title>{weapon.name}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>
-          {isFirearm && firearm && firearm.firemodes.length > 0 && (
+          {isFirearm && firearm && (firearm.firemodes?.length ?? 0) > 0 && (
             <Stack sx={{ gap: 0.5 }}>
               <Label label="Fire Mode" />
               <ButtonGroup size="small" variant="outlined" fullWidth>
-                {firearm.firemodes.map((mode) => (
+                {firearm.firemodes!.map((mode) => (
                   <Button
                     key={mode}
                     variant={selectedFiremode === mode ? "contained" : "outlined"}
@@ -72,7 +72,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
                 <Typography sx={{ textAlign: "center" }}>{weapon.ap}</Typography>
               </Grid>
             )}
-            {isFirearm && firearm && (
+            {isFirearm && firearm?.ammo && (
               <Grid size={1}>
                 <Label label="Ammo" variant="outlined" />
                 <Typography sx={{ textAlign: "center" }}>
