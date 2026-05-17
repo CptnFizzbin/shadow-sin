@@ -1,3 +1,6 @@
-import { pacerDevtoolsPlugin } from "@tanstack/react-pacer-devtools"
+import { PacerDevtoolsPanel } from "@tanstack/react-pacer-devtools"
 
-export const TanStackPacerDevtools = pacerDevtoolsPlugin()
+export const TanStackPacerDevtools = {
+  name: "TanStack Pacer",
+  render: <PacerDevtoolsPanel />,
+}
