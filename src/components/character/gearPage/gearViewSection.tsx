@@ -10,6 +10,7 @@ import { useState } from "react"
 
 import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
+
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
 import { GearSection, sectionGearTypes } from "./gearSectionTypes.ts"
 import { GearViewSectionContent } from "./gearViewSectionContent.tsx"
