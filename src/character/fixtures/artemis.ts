@@ -102,32 +102,32 @@ export const Artemis: CharacterSheet = {
   gear: createItemMap(
     createItem<SinData>({
       name: "Sara McCabe",
-      itemType: ItemType.sin,
+      itemType: [ItemType.sin],
       notes: "General use SIN.",
       rating: 6,
     }),
     createItem<SinData>({
       name: "Jadzia Dax",
-      itemType: ItemType.sin,
+      itemType: [ItemType.sin],
       notes: "Runner SIN.",
       rating: 4,
     }, [
       createItem<LicenseData>({
         name: "Driver License (Semi-Truck)",
-        itemType: ItemType.license,
+        itemType: [ItemType.license],
         fixed: true,
         rating: 5,
       }),
     ]),
     createItem<SinData>({
       name: "Jane Smith",
-      itemType: ItemType.sin,
+      itemType: [ItemType.sin],
       notes: "Burner SIN.",
       rating: 2,
     }),
     createItem<FirearmData>({
       name: "FN P93 Predator",
-      itemType: ItemType.weapon,
+      itemType: [ItemType.weapon],
       weaponType: WeaponType.firearm,
       firearmType: FirearmTypeKey.lightPistol,
       attribute: AttributeKey.agility,
@@ -144,19 +144,19 @@ export const Artemis: CharacterSheet = {
     }, [
       createItem<FirearmAccessoryData>({
         name: "Laser sight",
-        itemType: ItemType.firearmAccessory,
+        itemType: [ItemType.firearmAccessory],
         mountPoints: [FirearmAttachmentPoint.Top, FirearmAttachmentPoint.Under],
         parentSlot: FirearmAttachmentPoint.Top,
       }),
       createItem<FirearmAccessoryData>({
         name: "Flashlight",
-        itemType: ItemType.firearmAccessory,
+        itemType: [ItemType.firearmAccessory],
         mountPoints: [FirearmAttachmentPoint.Top, FirearmAttachmentPoint.Under],
         parentSlot: FirearmAttachmentPoint.Under,
       }),
       createItem<FirearmAccessoryData>({
         name: "Rigid Stock",
-        itemType: ItemType.firearmAccessory,
+        itemType: [ItemType.firearmAccessory],
         fixed: true,
         enabled: true,
         mountPoints: [FirearmAttachmentPoint.Internal],
@@ -170,7 +170,7 @@ export const Artemis: CharacterSheet = {
       }),
       createItem<FirearmAccessoryData>({
         name: "Smart Gun Int.",
-        itemType: ItemType.firearmAccessory,
+        itemType: [ItemType.firearmAccessory],
         fixed: true,
         notes: "Wireless bonus.",
         mountPoints: [FirearmAttachmentPoint.Internal],
@@ -183,7 +183,7 @@ export const Artemis: CharacterSheet = {
       firemodes: ["SA"],
       recoil: 0,
       name: "Colt America L36",
-      itemType: ItemType.weapon,
+      itemType: [ItemType.weapon],
       weaponType: WeaponType.firearm,
       firearmType: FirearmTypeKey.smg,
       skill: SkillKey.automatics,
@@ -191,7 +191,7 @@ export const Artemis: CharacterSheet = {
     }, [
       createItem<FirearmAccessoryData>({
         name: "Smart Gun Int.",
-        itemType: ItemType.firearmAccessory,
+        itemType: [ItemType.firearmAccessory],
         fixed: true,
         notes: "Wireless bonus.",
         mountPoints: [FirearmAttachmentPoint.Internal],
@@ -200,14 +200,14 @@ export const Artemis: CharacterSheet = {
     ]),
     createItem<ArmorData>({
       name: "Armored Jacket",
-      itemType: ItemType.armor,
+      itemType: [ItemType.armor],
       equipped: true,
       ballistic: 8,
       impact: 6,
     }),
     createItem<ArmorData>({
       name: "Form-Fitting Body Armor",
-      itemType: ItemType.armor,
+      itemType: [ItemType.armor],
       equipped: true,
       ballistic: 2,
       impact: 1,
@@ -215,7 +215,7 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<ImplantData>({
       name: "Control Rig",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "cyberware",
       location: ImplantLocation.head,
       cost: 72000,
@@ -226,7 +226,7 @@ export const Artemis: CharacterSheet = {
     createItem<ImplantData>({
       essenceCost: 0,
       name: "RCC Headwear",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "cyberware",
       location: ImplantLocation.head,
       cost: 2000,
@@ -235,7 +235,7 @@ export const Artemis: CharacterSheet = {
     createItem<ImplantData>({
       essenceCost: 0,
       name: "Cybereyes",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "cyberware",
       grade: ImplantGrade.alpha,
       cost: 12000,
@@ -243,35 +243,35 @@ export const Artemis: CharacterSheet = {
       capacity: 12,
     }, [
       createItem<ImplantData>({
-        itemType: ItemType.implant,
+        itemType: [ItemType.implant],
         name: "Smartlink",
         cost: 4800,
         capacityCost: 3,
         essenceCost: 0,
       }),
       createItem<ImplantData>({
-        itemType: ItemType.implant,
+        itemType: [ItemType.implant],
         name: "Imagelink",
         cost: 960,
         capacityCost: 0,
         essenceCost: 0,
       }),
       createItem<ImplantData>({
-        itemType: ItemType.implant,
+        itemType: [ItemType.implant],
         name: "Low-Light Vision",
         cost: 900,
         capacityCost: 0,
         essenceCost: 0,
       }),
       createItem<ImplantData>({
-        itemType: ItemType.implant,
+        itemType: [ItemType.implant],
         name: "Vision Enhancement",
         cost: 4800,
         capacityCost: 0,
         essenceCost: 0,
       }),
       createItem<ImplantData>({
-        itemType: ItemType.implant,
+        itemType: [ItemType.implant],
         name: "Vision Magnification",
         cost: 2400,
         capacityCost: 0,
@@ -280,7 +280,7 @@ export const Artemis: CharacterSheet = {
     ]),
     createItem<ImplantData>({
       name: "Cerebral Booster",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "bioware",
       grade: ImplantGrade.standard,
       essenceCost: 0.66,
@@ -297,7 +297,7 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<ImplantData>({
       name: "Sleep Regulator",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "bioware",
       cost: 6000,
       essenceCost: 0.11,
@@ -306,7 +306,7 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<ImplantData>({
       name: "Synaptic Booster",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       implantType: "bioware",
       grade: ImplantGrade.standard,
       essenceCost: 0.66,
@@ -327,55 +327,55 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<DeviceData>({
       name: "Proteus Poseidon",
-      itemType: ItemType.device,
+      itemType: [ItemType.device],
       cost: 68000,
       notes: "RCC; deviceRating 5, dataProcessing 5, firewall 5.",
     }, [
       createItem<SoftwareData>({
         name: "FN-HAR Targeting Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
       createItem<SoftwareData>({
         name: "Clearsight Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
       createItem<SoftwareData>({
         name: "Evasion Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
       createItem<SoftwareData>({
         name: "Maneuvering Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
       createItem<SoftwareData>({
         name: "Electronic Warfare Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
       createItem<SoftwareData>({
         name: "Black Knight Targeting Autosoft",
-        itemType: ItemType.software,
+        itemType: [ItemType.software],
         cost: 4000,
         rating: 8,
       }),
     ]),
     createItem<DeviceData>({
       name: "Commlink (headware)",
-      itemType: ItemType.device,
+      itemType: [ItemType.device],
       cost: 1000,
     }, [
       createItem<DeviceData>({
         name: "Hermes Ikon",
-        itemType: ItemType.device,
+        itemType: [ItemType.device],
         cost: 5000,
         fixed: true,
         rating: 5,
@@ -384,7 +384,7 @@ export const Artemis: CharacterSheet = {
     ]),
     createItem<VehicleData>({
       name: "Yamaha Growler",
-      itemType: ItemType.vehicle,
+      itemType: [ItemType.vehicle],
       vehicleCategory: VehicleCategory.vehicle,
       damage: { physical: { current: 0, max: 0 } },
       model: "",
@@ -401,7 +401,7 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<VehicleData>({
       name: "Russian Osprey 9",
-      itemType: ItemType.vehicle,
+      itemType: [ItemType.vehicle],
       vehicleCategory: VehicleCategory.vehicle,
       vehicleType: "vtol",
       handling: 3,
@@ -415,7 +415,7 @@ export const Artemis: CharacterSheet = {
     }),
     createItem<ItemData>({
       name: "Engineering Shop",
-      itemType: ItemType.other,
+      itemType: [ItemType.other],
       cost: 5000,
     }),
   ),

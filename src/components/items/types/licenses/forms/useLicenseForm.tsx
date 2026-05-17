@@ -15,7 +15,7 @@ interface LicenseFormOptions {
 
 const defaultValues: LicenseData = {
   ...itemDefaults,
-  itemType: ItemType.license,
+  itemType: [ItemType.license],
   id: NullUuid,
   name: "",
   rating: 1,

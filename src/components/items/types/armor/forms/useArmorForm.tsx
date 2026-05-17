@@ -13,7 +13,7 @@ interface ArmorFormOptions {
 
 const defaultFormValues: ArmorData = {
   id: NullUuid,
-  itemType: ItemType.armor,
+  itemType: [ItemType.armor],
   name: "",
   ballistic: 0,
   impact: 0,

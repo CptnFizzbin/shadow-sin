@@ -1,9 +1,6 @@
 import type { ItemData } from "#/system/itemData.ts"
-import type { ItemType } from "#/system/itemType.ts"
 
 export interface DeviceData extends ItemData {
-  itemType: ItemType.device
-
   deviceType?: "commlink" | "other"
   /** Custom label shown when deviceType is "other" */
   customDeviceType?: string

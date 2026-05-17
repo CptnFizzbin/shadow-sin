@@ -21,7 +21,7 @@ describe("ItemFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.vehicle)
+      expect(savedItem?.itemType).toEqual([ItemType.vehicle])
       expect(savedItem?.name).toBe("Eurocar Westwind 2000")
     })
   })
@@ -38,7 +38,7 @@ describe("ItemFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.armor)
+      expect(savedItem?.itemType).toEqual([ItemType.armor])
     })
   })
 
@@ -54,7 +54,7 @@ describe("ItemFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.other)
+      expect(savedItem?.itemType).toEqual([ItemType.other])
     })
   })
 
@@ -70,7 +70,7 @@ describe("ItemFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.other)
+      expect(savedItem?.itemType).toEqual([ItemType.other])
     })
   })
 })

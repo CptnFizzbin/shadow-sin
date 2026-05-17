@@ -8,6 +8,6 @@ import { useProgramForm } from "./useProgramForm.tsx"
 describe("useProgramForm", () => {
   it("always defaults to ItemType.program", () => {
     const { result } = renderHook(() => useProgramForm({ onSubmit: vi.fn() }))
-    expect(result.current.state.values.itemType).toBe(ItemType.program)
+    expect(result.current.state.values.itemType).toEqual([ItemType.program])
   })
 })

@@ -12,7 +12,7 @@ interface SinFormOptions {
 
 const defaultValues: SinData = {
   ...itemDefaults,
-  itemType: ItemType.sin,
+  itemType: [ItemType.sin],
   id: NullUuid,
   name: "",
   rating: 1,

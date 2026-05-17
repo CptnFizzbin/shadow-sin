@@ -34,7 +34,7 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, p
       title={title}
       ctrl={ctrl}
       onClosed={() => form.reset()}
-      parentItemFilter={(item) => item.itemType === ItemType.device}
+      parentItemFilter={(item) => item.itemType.includes(ItemType.device)}
       parentItemLabel="Device"
       options={{
         hasRating: { forced: true },

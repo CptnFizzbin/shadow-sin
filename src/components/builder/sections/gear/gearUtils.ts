@@ -5,6 +5,7 @@ import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.t
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 import { SectionHeader } from "./sectionHeader.tsx"
 
@@ -64,7 +65,7 @@ export const useGearAvailabilityIssues = () => {
     } else {
       const sectionKey = genericSectionKeys[sectionName]
       if (sectionKey) {
-        const items = allGear.filter((i) => i.itemType === sectionKey)
+        const items = allGear.filter((i) => i.itemType.includes(sectionKey as ItemType))
         const invalidItems = items.filter((it) => (it.availability?.rating ?? Number.NEGATIVE_INFINITY) > GearMaxAvailability)
         if (invalidItems.length > 0) {
           invalidSections.add(sectionName)

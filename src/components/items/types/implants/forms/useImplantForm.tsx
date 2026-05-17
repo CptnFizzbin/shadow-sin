@@ -16,7 +16,7 @@ interface ImplantFormOptions {
 }
 
 const defaultFormValues: ImplantData = {
-  itemType: ItemType.implant,
+  itemType: [ItemType.implant],
   id: NullUuid,
   name: "",
   cost: 0,

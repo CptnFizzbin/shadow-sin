@@ -8,6 +8,6 @@ import { useWeaponForm } from "./useWeaponForm.tsx"
 describe("useWeaponForm", () => {
   it("always defaults to ItemType.weapon", () => {
     const { result } = renderHook(() => useWeaponForm({ onSubmit: vi.fn() }))
-    expect(result.current.state.values.itemType).toBe(ItemType.weapon)
+    expect(result.current.state.values.itemType).toEqual([ItemType.weapon])
   })
 })

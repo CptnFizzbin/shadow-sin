@@ -59,7 +59,7 @@ describe("selectAllGameEffects", () => {
     // Arrange
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
@@ -79,7 +79,7 @@ describe("selectAllGameEffects", () => {
     // Arrange
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: false,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
@@ -170,7 +170,7 @@ describe("selectAllGameEffects", () => {
     // Arrange
     const [implant] = createItem({
       name: "Wired Reflexes",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
@@ -262,7 +262,7 @@ describe("selectGameEffectsByType", () => {
     // Arrange
     const [implant] = createItem({
       name: "Wired Reflexes",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })

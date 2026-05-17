@@ -8,7 +8,6 @@ import { ItemType } from "#/system/itemType.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export interface ArmorData extends ItemData {
-  itemType: ItemType.armor
   ballistic: number
   impact: number
   damage?: {
@@ -20,7 +19,7 @@ export interface ArmorData extends ItemData {
 export const ArmorDataSchema = z.object({
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),
-  itemType: z.literal(ItemType.armor),
+  itemType: z.array(z.nativeEnum(ItemType)).min(1),
 
   description: z.string().optional(),
   cost: z.number().optional(),
@@ -56,5 +55,5 @@ export const ArmorDataSchema = z.object({
 }) satisfies z.ZodType<ArmorData>
 
 export function isArmorData(item: ItemData): item is ArmorData {
-  return item.itemType === ItemType.armor
+  return item.itemType.includes(ItemType.armor)
 }

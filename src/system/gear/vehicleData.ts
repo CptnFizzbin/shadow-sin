@@ -7,7 +7,6 @@ export enum VehicleCategory {
 }
 
 export interface VehicleData extends ItemData {
-  itemType: ItemType.vehicle
   vehicleCategory: VehicleCategory
   vehicleType: string
   model?: string
@@ -31,5 +30,5 @@ export interface VehicleData extends ItemData {
 }
 
 export function isVehicleData(item: ItemData): item is VehicleData {
-  return item.itemType === ItemType.vehicle
+  return item.itemType.includes(ItemType.vehicle)
 }

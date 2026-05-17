@@ -35,7 +35,6 @@ export enum ImplantLocation {
 }
 
 export interface ImplantData extends ItemData {
-  itemType: ItemType.implant
   implantType?: ImplantType | string
 
   grade?: ImplantGrade
@@ -48,5 +47,5 @@ export interface ImplantData extends ItemData {
 }
 
 export function isImplant(item: ItemData): item is ImplantData {
-  return item.itemType === ItemType.implant
+  return item.itemType.includes(ItemType.implant)
 }

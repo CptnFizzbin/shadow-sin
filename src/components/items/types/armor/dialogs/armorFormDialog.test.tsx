@@ -27,7 +27,7 @@ describe("ArmorFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.armor)
+      expect(savedItem?.itemType).toEqual([ItemType.armor])
       expect(savedItem?.name).toBe("Armor Vest")
       expect(savedItem?.ballistic).toBe(0)
       expect(savedItem?.impact).toBe(0)
@@ -58,7 +58,7 @@ describe("ArmorFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.armor)
+      expect(savedItem?.itemType).toEqual([ItemType.armor])
       expect(savedItem?.name).toBe("Lined Coat")
       expect(savedItem?.ballistic).toBe(6)
       expect(savedItem?.impact).toBe(4)
@@ -69,7 +69,7 @@ describe("ArmorFormDialog", () => {
     // Arrange
     const existingArmor: ArmorData = {
       id: "test-id" as ArmorData["id"],
-      itemType: ItemType.armor,
+      itemType: [ItemType.armor],
       name: "Full Body Armor",
       ballistic: 8,
       impact: 6,

@@ -19,7 +19,7 @@ interface WeaponFormOptions {
 // can handle melee, firearms, thrown, and projectile weapons.
 const defaultFormValues = {
   id: NullUuid,
-  itemType: ItemType.weapon,
+  itemType: [ItemType.weapon],
   name: "",
   weaponType: WeaponType.firearm,
   dmg: "",
@@ -80,7 +80,7 @@ export const weaponFormOpts = formOptions({
 function toWeaponData(values: WeaponFormState): WeaponData {
   const base = {
     id: values.id,
-    itemType: ItemType.weapon as typeof ItemType.weapon,
+    itemType: [ItemType.weapon],
     name: values.name,
     weaponType: values.weaponType,
     dmg: values.dmgType === "custom" ? values.dmg : String(values.dmgValue),

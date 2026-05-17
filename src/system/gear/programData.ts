@@ -1,5 +1,4 @@
 import type { ItemData } from "#/system/itemData.ts"
-import type { ItemType } from "#/system/itemType.ts"
 
 export enum ProgramType {
   attack = "attack",
@@ -20,7 +19,6 @@ export enum ProgramType {
 }
 
 export interface ProgramData extends ItemData {
-  itemType: ItemType.program
   rating: number
   programType: ProgramType
 }

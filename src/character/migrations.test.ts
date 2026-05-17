@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { characterSheetToYaml, yamlToCharacterSheet } from "#/components/character/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
+import { ItemType } from "#/system/itemType.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -147,21 +148,21 @@ describe("character migrations + yaml round-trip", () => {
     // gear is a Record, empty items stripped, itemTypes normalised
     const gearValues = Object.values(migrated.gear)
     const weapon = gearValues.find((item) => item.name === "SM-4")
-    expect(weapon?.itemType).toBe("weapon")
+    expect(weapon?.itemType).toEqual(["weapon"])
     const device = gearValues.find((item) => item.name === "Contact Lenses 3")
-    expect(device?.itemType).toBe("device")
+    expect(device?.itemType).toEqual(["device"])
     const other = gearValues.find((item) => item.name === "Power Foci 2")
-    expect(other?.itemType).toBe("other")
+    expect(other?.itemType).toEqual(["other"])
     const vehicle = gearValues.find((item) => item.name === "Indian Pathfinder")
-    expect(vehicle?.itemType).toBe("vehicle")
+    expect(vehicle?.itemType).toEqual(["vehicle"])
 
     // license linked to SIN via parentId
     const sin = migrated.gear[TEST_OLD_FORMAT_SIN_ID]
     expect(sin).toBeDefined()
-    expect(sin.itemType).toBe("sin")
+    expect(sin.itemType).toEqual(["sin"])
     const license = migrated.gear[TEST_OLD_FORMAT_LICENSE_ID]
     expect(license).toBeDefined()
-    expect(license.itemType).toBe("license")
+    expect(license.itemType).toEqual(["license"])
     expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
     expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
@@ -198,13 +199,13 @@ describe("character migrations + yaml round-trip", () => {
 
     // gear is a Record, empty entries stripped, itemTypes normalised
     const gearValues = Object.values(character.gear)
-    expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toBe("weapon")
-    expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toBe("device")
-    expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toBe("other")
+    expect(gearValues.find((item) => item.name === "SM-4")?.itemType).toEqual(["weapon"])
+    expect(gearValues.find((item) => item.name === "Contact Lenses 3")?.itemType).toEqual(["device"])
+    expect(gearValues.find((item) => item.name === "Power Foci 2")?.itemType).toEqual(["other"])
 
     // license linked to its parent SIN
-    const sin = gearValues.find((item) => item.itemType === "sin")
-    const license = gearValues.find((item) => item.itemType === "license")
+    const sin = gearValues.find((item) => item.itemType.includes(ItemType.sin))
+    const license = gearValues.find((item) => item.itemType.includes(ItemType.license))
     expect(sin).toBeDefined()
     expect(license).toBeDefined()
     expect(license!.parentId).toBe(sin!.id)

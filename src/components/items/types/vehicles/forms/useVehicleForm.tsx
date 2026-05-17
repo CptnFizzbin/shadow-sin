@@ -15,7 +15,7 @@ interface VehicleFormOptions {
 
 const defaultFormValues = {
   id: NullUuid,
-  itemType: ItemType.vehicle as typeof ItemType.vehicle,
+  itemType: [ItemType.vehicle],
   vehicleCategory: VehicleCategory.vehicle,
   vehicleType: "",
   model: "",
@@ -62,7 +62,7 @@ export const vehicleFormOpts = formOptions({
 function toVehicleData(values: VehicleFormState): VehicleData {
   return {
     id: values.id,
-    itemType: ItemType.vehicle,
+    itemType: [ItemType.vehicle],
     vehicleCategory: values.vehicleCategory,
     vehicleType: values.vehicleType,
     ...(values.model && { model: values.model }),

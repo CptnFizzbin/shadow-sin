@@ -13,7 +13,7 @@ interface DeviceFormOptions {
 
 const defaultFormValues: DeviceData = {
   id: NullUuid,
-  itemType: ItemType.device,
+  itemType: [ItemType.device],
   name: "",
   cost: 0,
   quantity: 1,

@@ -21,7 +21,7 @@ describe("DeviceFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.device)
+      expect(savedItem?.itemType).toEqual([ItemType.device])
     })
   })
 })

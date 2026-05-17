@@ -29,11 +29,10 @@ export const CredstickTypeLabel: Record<CredstickType, string> = {
 export const CredstickPurchaseCost = 25
 
 export interface CredstickData extends ItemData {
-  itemType: ItemType.credstick
   credstickType: CredstickType
   balance: number
 }
 
 export function isCredstickData(item: ItemData): item is CredstickData {
-  return item.itemType === ItemType.credstick
+  return item.itemType.includes(ItemType.credstick)
 }

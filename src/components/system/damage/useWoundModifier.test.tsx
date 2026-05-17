@@ -120,7 +120,7 @@ describe("useWoundModifier", () => {
     // Arrange — 6 physical damage, HPT rating 1 from gear → floor((6-1)/3) = floor(5/3) = 1
     const [painBlocker] = createItem({
       name: "Pain Editor",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: true,
       effects: [
         { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
@@ -144,7 +144,7 @@ describe("useWoundModifier", () => {
     // Arrange — 6 physical damage, gear not equipped → floor(6/3) = 2
     const [painBlocker] = createItem({
       name: "Pain Editor",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       equipped: false,
       effects: [
         { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
@@ -168,7 +168,7 @@ describe("useWoundModifier", () => {
     // Arrange — HPT +1 quality + HPT +1 gear = offset 2; 5 physical → floor((5-2)/3) = floor(1) = 1
     const [painBlocker] = createItem({
       name: "Pain Editor",
-      itemType: ItemType.implant,
+      itemType: [ItemType.implant],
       effects: [
         { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],

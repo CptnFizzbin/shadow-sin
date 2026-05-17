@@ -19,7 +19,7 @@ import { ImplantItemList } from "./implantItemList.tsx"
 
 function makeImplant(overrides: Partial<ImplantData> & Pick<ImplantData, "id" | "name">): ImplantData {
   return {
-    itemType: ItemType.implant,
+    itemType: [ItemType.implant],
     implantType: ImplantType.cyberware,
     essenceCost: 1,
     cost: 0,

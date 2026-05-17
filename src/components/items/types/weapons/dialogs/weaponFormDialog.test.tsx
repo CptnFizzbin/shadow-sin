@@ -31,7 +31,7 @@ describe("WeaponFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.weapon)
+      expect(savedItem?.itemType).toEqual([ItemType.weapon])
     })
   })
 })

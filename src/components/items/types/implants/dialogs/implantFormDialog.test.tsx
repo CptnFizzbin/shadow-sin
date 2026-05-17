@@ -21,7 +21,7 @@ describe("ImplantFormDialog", () => {
     // Assert
     const savedItem = await ctrl.result()
     await waitFor(() => {
-      expect(savedItem?.itemType).toBe(ItemType.implant)
+      expect(savedItem?.itemType).toEqual([ItemType.implant])
     })
   })
 })

@@ -31,7 +31,6 @@ export interface WeaponData extends ItemData {
   dmg: string
   dmgType?: "physical" | "stun" | "custom"
   ap?: number
-  itemType: ItemType.weapon
   weaponType: WeaponType
   skill: SkillKey
   attribute?: AttributeKey
@@ -65,14 +64,13 @@ export interface MeleeWeaponData extends WeaponData {
 }
 
 export interface FirearmAccessoryData extends ItemData {
-  itemType: ItemType.firearmAccessory
   enabled?: boolean
   mountPoints: FirearmAttachmentPoint[]
   parentSlot?: FirearmAttachmentPoint
 }
 
 export function isWeaponData(item: ItemData): item is WeaponData {
-  return item.itemType === ItemType.weapon
+  return item.itemType.includes(ItemType.weapon)
 }
 
 export function isFirearmData(item: ItemData): item is FirearmData {

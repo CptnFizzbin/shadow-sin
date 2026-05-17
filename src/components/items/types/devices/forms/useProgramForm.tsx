@@ -17,7 +17,7 @@ interface ProgramFormOptions {
 
 const defaultFormValues: ProgramData = {
   id: NullUuid,
-  itemType: ItemType.program,
+  itemType: [ItemType.program],
   name: "",
   cost: 0,
   quantity: 1,

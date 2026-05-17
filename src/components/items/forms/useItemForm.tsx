@@ -16,7 +16,7 @@ interface ItemFormOptions<TData extends ItemData = ItemData> {
 
 export const itemDefaults: ItemData = {
   id: NullUuid,
-  itemType: ItemType.other,
+  itemType: [ItemType.other],
   name: "",
   cost: 0,
   quantity: 1,

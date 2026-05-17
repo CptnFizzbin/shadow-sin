@@ -31,7 +31,7 @@ const ItemDialogWrapper: FC<{
 
   const form = useItemForm({
     item,
-    defaultValues: { ...itemDefaults, itemType: itemType ?? ItemType.other },
+    defaultValues: { ...itemDefaults, itemType: [itemType ?? ItemType.other] },
     onSubmit: async (submittedItem) => {
       await onSave(submittedItem)
     },
@@ -74,7 +74,7 @@ describe("ItemDialog", () => {
       expect(onSave).toHaveBeenCalledOnce()
       const submitted: ItemData = onSave.mock.calls[0][0]
       expect(submitted.name).toBe("My Gadget")
-      expect(submitted.itemType).toBe(ItemType.other)
+      expect(submitted.itemType).toEqual([ItemType.other])
     })
   })
 
@@ -261,7 +261,7 @@ describe("ItemDialog", () => {
   it("shows the correct title when passed in", () => {
     const existingItem: ItemData = {
       id: "test-id-0000-0000-000000000000" as ReturnType<typeof crypto.randomUUID>,
-      itemType: ItemType.other,
+      itemType: [ItemType.other],
       name: "Old Name",
     }
 
@@ -285,7 +285,7 @@ describe("ItemDialog", () => {
       // Arrange
       const item: ItemData = {
         id: existingItemId,
-        itemType: ItemType.other,
+        itemType: [ItemType.other],
         name: "Holster",
         equipped: false,
       }
@@ -303,7 +303,7 @@ describe("ItemDialog", () => {
       // Arrange
       const item: ItemData = {
         id: existingItemId,
-        itemType: ItemType.other,
+        itemType: [ItemType.other],
         name: "Rated Gear",
         rating: 3,
       }
@@ -321,7 +321,7 @@ describe("ItemDialog", () => {
       // Arrange
       const item: ItemData = {
         id: existingItemId,
-        itemType: ItemType.other,
+        itemType: [ItemType.other],
         name: "Bulk Item",
         quantity: 5,
       }
@@ -340,7 +340,7 @@ describe("ItemDialog", () => {
       const parentId = crypto.randomUUID()
       const item: ItemData = {
         id: existingItemId,
-        itemType: ItemType.other,
+        itemType: [ItemType.other],
         name: "Sub-Item",
         parentId,
       }
@@ -363,7 +363,7 @@ describe("ItemDialog", () => {
       const onSave = vi.fn()
       const item: ItemData = {
         id: existingItemId,
-        itemType: ItemType.other,
+        itemType: [ItemType.other],
         name: "Gear",
         equipped: false,
       }

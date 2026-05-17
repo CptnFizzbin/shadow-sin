@@ -11,7 +11,7 @@ import type { SourceData } from "./sourceData.ts"
 export interface ItemData {
   id: UUID
   name: string
-  itemType: ItemType
+  itemType: ItemType[]
 
   description?: string
   cost?: number

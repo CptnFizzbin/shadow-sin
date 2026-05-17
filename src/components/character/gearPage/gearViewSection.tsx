@@ -10,8 +10,6 @@ import { useState } from "react"
 
 import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import type { ItemType } from "#/system/itemType.ts"
-
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
 import { GearSection, sectionGearTypes } from "./gearSectionTypes.ts"
 import { GearViewSectionContent } from "./gearViewSectionContent.tsx"
@@ -30,8 +28,8 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
   const isSearching = searchTerms.length > 0
 
   const sectionItems = isSearching
-    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
-    : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+    ? gearStore.search(searchTerms).filter((item) => item.itemType.some((t) => allowedTypes.includes(t)))
+    : Object.values(allGearItems).filter((item) => item.itemType.some((t) => allowedTypes.includes(t)))
 
   if (isSearching && sectionItems.length === 0) return null
 

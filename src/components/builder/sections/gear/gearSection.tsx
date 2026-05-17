@@ -219,7 +219,7 @@ const GearSectionNuyen: FC<{
   }
 
   const nuyen = Object.values(allGearItems)
-    .filter((i) => i.itemType === genericSectionTypes[section])
+    .filter((i) => i.itemType.includes(genericSectionTypes[section]!))
     .reduce((sum, item) => sum + (item.cost ?? 0), 0)
 
   return (

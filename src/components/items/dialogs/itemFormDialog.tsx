@@ -27,7 +27,7 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
     item,
     defaultValues: {
       ...itemDefaults,
-      itemType: itemType ?? ItemType.other,
+      itemType: [itemType ?? ItemType.other],
       rating: 1,
     },
     onSubmit: (itemData) => ctrl.close(itemData),

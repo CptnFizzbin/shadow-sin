@@ -11,38 +11,38 @@ describe("useItemForm", () => {
     const { result } = renderHook(() =>
       useItemForm({ defaultValues: itemDefaults, onSubmit: vi.fn() }),
     )
-    expect(result.current.state.values.itemType).toBe(ItemType.other)
+    expect(result.current.state.values.itemType).toEqual([ItemType.other])
   })
 
   it("uses ItemType.vehicle when itemType=vehicle is provided", () => {
     const { result } = renderHook(() =>
       useItemForm({
-        defaultValues: { ...itemDefaults, itemType: ItemType.vehicle },
+        defaultValues: { ...itemDefaults, itemType: [ItemType.vehicle] },
         onSubmit: vi.fn(),
       }),
     )
-    expect(result.current.state.values.itemType).toBe(ItemType.vehicle)
+    expect(result.current.state.values.itemType).toEqual([ItemType.vehicle])
   })
 
   it("uses ItemType.armor when itemType=armor is provided", () => {
     const { result } = renderHook(() =>
       useItemForm({
-        defaultValues: { ...itemDefaults, itemType: ItemType.armor },
+        defaultValues: { ...itemDefaults, itemType: [ItemType.armor] },
         onSubmit: vi.fn(),
       }),
     )
-    expect(result.current.state.values.itemType).toBe(ItemType.armor)
+    expect(result.current.state.values.itemType).toEqual([ItemType.armor])
   })
 
   it("preserves the existing item's itemType when editing", () => {
     const [existingItem] = createItem({
-      itemType: ItemType.vehicle,
+      itemType: [ItemType.vehicle],
       name: "Eurocar Westwind 2000",
       cost: 65000,
     })
     const { result } = renderHook(() =>
       useItemForm({ item: existingItem, defaultValues: itemDefaults, onSubmit: vi.fn() }),
     )
-    expect(result.current.state.values.itemType).toBe(ItemType.vehicle)
+    expect(result.current.state.values.itemType).toEqual([ItemType.vehicle])
   })
 })

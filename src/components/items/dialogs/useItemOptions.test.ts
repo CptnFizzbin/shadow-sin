@@ -11,7 +11,7 @@ const existingItemId = crypto.randomUUID()
 const baseItem: ItemData = {
   id: existingItemId,
   name: "Test Item",
-  itemType: ItemType.other,
+  itemType: [ItemType.other],
 }
 
 const newItem: ItemData = {

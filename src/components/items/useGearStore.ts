@@ -9,6 +9,7 @@ import { useMemo } from "react"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 import { selectAllGear } from "./gearSelectors.ts"
 
@@ -172,8 +173,8 @@ export function useGearStore() {
  * Subscribes to the gear Record; re-renders when any gear changes.
  * The React Compiler memoizes the filter result based on the stable `gear` reference.
  */
-export function useGearByType<TItem extends ItemData>(itemType: string): TItem[] {
-  return useGearFilter((item): item is TItem => item.itemType === itemType)
+export function useGearByType<TItem extends ItemData>(itemType: ItemType): TItem[] {
+  return useGearFilter((item): item is TItem => item.itemType.includes(itemType))
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {

@@ -79,7 +79,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
     } else {
       const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
         name: credstickName,
-        itemType: ItemType.credstick,
+        itemType: [ItemType.credstick],
         credstickType,
         balance: clampedBalance,
       }
