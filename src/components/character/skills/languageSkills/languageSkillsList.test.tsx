@@ -20,6 +20,8 @@ describe("LanguageSkillsList", () => {
     expect(screen.getByText("Sperethiel")).toBeTruthy()
     expect(screen.getByText("English")).toBeTruthy()
     expect(screen.getByText("Seattle Sprawl")).toBeTruthy()
+    expect(screen.getAllByText("INT")).toHaveLength(2)
+    expect(screen.queryByText("LOG")).toBeNull()
     expect(screen.getAllByText("5").length).toBeGreaterThanOrEqual(1)
   })
 

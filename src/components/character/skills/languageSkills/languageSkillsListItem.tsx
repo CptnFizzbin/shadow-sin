@@ -40,7 +40,7 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
       name={skill.name}
       rating={skill.rating}
       specialization={skill.lingo}
-      attr={AttributeKey.logic}
+      attr={AttributeKey.intuition}
       onClick={handleClick}
     />
   )
