@@ -11,5 +11,6 @@ export enum ItemType {
   sin = "sin",
   credstick = "credstick",
   program = "program",
+  focus = "focus",
   other = "other",
 }

@@ -7,6 +7,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import { ArmorSectionContent } from "./armorSectionContent.tsx"
+import { FociSectionContent } from "./fociSectionContent.tsx"
 import { GearSection } from "./gearSectionTypes.ts"
 import { GenericSectionContent } from "./genericSectionContent.tsx"
 import { LicensesSectionContent } from "./licensesSectionContent.tsx"
@@ -55,6 +56,8 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
           itemType={ItemType.device}
         />
       )
+    case GearSection.Foci:
+      return <FociSectionContent items={rootItems} />
     default:
       return (
         <GenericSectionContent

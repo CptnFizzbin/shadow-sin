@@ -31,6 +31,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { ArmorPanel } from "./armor/armorPanel.tsx"
 import { DevicesPanel } from "./devices/devicesPanel.tsx"
+import { FociPanel } from "./foci/fociPanel.tsx"
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
 import { ImplantsPanel } from "./implants/implantsPanel.tsx"
 import { LifestylePanel } from "./lifestyle/lifestylePanel.tsx"
@@ -154,6 +155,7 @@ const GearSectionContent: FC<{
   if (section === SectionHeader.Armor) return <ArmorPanel />
   if (section === SectionHeader.Vehicles) return <VehiclesPanel />
   if (section === SectionHeader.Devices) return <DevicesPanel />
+  if (section === SectionHeader.Foci) return <FociPanel />
   if (section === SectionHeader.Misc) return <MiscPanel />
   if (section === SectionHeader.Lifestyle) return <LifestylePanel />
   return null
@@ -215,6 +217,7 @@ const GearSectionNuyen: FC<{
     [SectionHeader.Armor]: ItemType.armor,
     [SectionHeader.Vehicles]: ItemType.vehicle,
     [SectionHeader.Devices]: ItemType.device,
+    [SectionHeader.Foci]: ItemType.focus,
     [SectionHeader.Misc]: ItemType.other,
   }
 

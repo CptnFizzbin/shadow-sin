@@ -4,6 +4,8 @@ import { describe, expect, it } from "vitest"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import type { FocusData } from "#/system/gear/focusData.ts"
+import { FocusType } from "#/system/gear/focusData.ts"
 import { createItem, createItemMap } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import {
@@ -14,6 +16,7 @@ import {
   SpellRange,
   SpellType,
 } from "#/system/magic/spellData.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 import { makeCharacterSheet, makeCharacterSheetWrapper } from "#testUtils/renderUtils.tsx"
 
 import { selectAllGameEffects, selectGameEffectsByType, useGameEffects } from "./useGameEffects.ts"
@@ -208,6 +211,53 @@ describe("selectAllGameEffects", () => {
     const sheet = makeCharacterSheet((s) => {
       s.qualities = [{ id: NullUuid, name: "Toughness", type: "positive" }]
       s.powers = [{ type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
+    })
+
+    // Act
+    const effects = selectAllGameEffects(sheet)
+
+    // Assert
+    expect(effects).toEqual([])
+  })
+
+  it("collects effects from an activated (equipped + bonded) focus", () => {
+    // Arrange
+    const [powerFocus] = createItem<FocusData>({
+      name: "Power Focus",
+      itemType: ItemType.focus,
+      focusType: FocusType.Power,
+      bonded: true,
+      equipped: true,
+      effects: [{ type: GameEffectType.skillMod, target: SkillKey.spellcasting, value: 2 }],
+    })
+    const sheet = makeCharacterSheet((s) => {
+      s.gear = createItemMap([powerFocus])
+    })
+
+    // Act
+    const effects = selectAllGameEffects(sheet)
+
+    // Assert
+    expect(effects).toHaveLength(1)
+    expect(effects[0]).toMatchObject({
+      type: GameEffectType.skillMod,
+      target: SkillKey.spellcasting,
+      value: 2,
+    })
+  })
+
+  it("ignores effects from a bonded but unequipped focus", () => {
+    // Arrange
+    const [powerFocus] = createItem<FocusData>({
+      name: "Power Focus",
+      itemType: ItemType.focus,
+      focusType: FocusType.Power,
+      bonded: true,
+      equipped: false,
+      effects: [{ type: GameEffectType.skillMod, target: SkillKey.spellcasting, value: 2 }],
+    })
+    const sheet = makeCharacterSheet((s) => {
+      s.gear = createItemMap([powerFocus])
     })
 
     // Act
