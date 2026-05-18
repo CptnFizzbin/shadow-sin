@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
-import { defaultGameConfig, type GameConfig } from "#/system/gameConfig.ts"
+import type { GameConfig } from "#/system/gameConfig.ts"
+import { defaultGameConfig } from "#/system/gameConfig.ts"
 
 import {
   gameConfigToYaml,
