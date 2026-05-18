@@ -1,4 +1,3 @@
-import Chip from "@mui/material/Chip"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line, RiFlashlightFill, RiFlashlightLine } from "@remixicon/react"
@@ -10,6 +9,9 @@ import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { FocusData } from "#/system/gear/focusData.ts"
+
+import { ActiveChip } from "./activeChip.tsx"
+import { BondedChip } from "./bondedChip.tsx"
 
 interface FocusItemCardProps {
   focus: FocusData
@@ -42,13 +44,13 @@ export const FocusItemCard: FC<FocusItemCardProps> = ({
 
       {focus.bonded && (
         <ItemCard.Meta type="stat">
-          <Chip label="Bonded" size="small" color="info" />
+          <BondedChip />
         </ItemCard.Meta>
       )}
 
       {isActive && (
         <ItemCard.Meta type="cost">
-          <Chip label="Active" size="small" color="success" />
+          <ActiveChip />
         </ItemCard.Meta>
       )}
 
