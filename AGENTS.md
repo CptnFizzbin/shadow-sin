@@ -2,6 +2,10 @@
 
 A **Shadowrun 4th Edition character sheet**
 
+> **Domain language:** See [`CONTEXT.md`](./CONTEXT.md) for the canonical glossary of all
+> domain terms, relationships, and flagged ambiguities. Use those terms consistently in code,
+> comments, and docs. Open design problems are tracked in `docs/issues/`.
+
 SPA: React 19 + TanStack Router + TanStack Store + MUI v7.
 
 ## Commands
@@ -120,7 +124,7 @@ corrupt or silently mis-migrate characters.
   import { useCharacterSheet } from "#/components/character/characterSheetProvider"
   ```
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
-  `import { env } from "#/env"`.
+  `import { env } from "#/env.ts"`.
 - `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the
   case.
 - **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using
@@ -206,7 +210,7 @@ commit
 ## Formatting and tooling
 
 - ESLint + @stylistic for formatting. 2 spaces indentation, double quotes for JS/TS strings.
-- Path alias `#/` maps to `src/`. Respect it in all imports.
+- Use the `#/` alias instead of parent-relative (`../`) paths — ESLint auto-enforces this via `@dword-design/import-alias/prefer-alias`. Sibling-relative (`./`) imports within the same directory are also permitted.
 - After making changes, verify with `yarn fix` (auto-fix lint/format). Must pass before a change is complete.
 
 ## TanStack Store patterns
@@ -283,3 +287,17 @@ yarn fallow fix --yes --format json
 - When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those
   findings have been resolved by the current change
 - See `.agents/skills/fallow/SKILL.md` for the full command reference
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on `CptnFizzbin/shadow-sin`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

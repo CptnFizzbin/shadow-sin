@@ -6,6 +6,7 @@ import {
   useGearBuildPoints,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
@@ -13,6 +14,7 @@ import { useGearAvailabilityIssues } from "./gearUtils.ts"
 export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()
   const { isOverBudget } = useGearBuildPoints()
+  const { isEncumbered, penalty, totalBallistic, totalImpact, threshold } = useEncumbrance()
 
   const alerts: AlertInfo[] = []
 
@@ -22,6 +24,18 @@ export const useGearAlerts = (): AlertInfo[] => {
       severity: "error",
       title: "Budget Exceeded",
       message: `Gear budget exceeded! Maximum is ${GearNuyenAllowance.toLocaleString()} (${GearBuildPointAllowance} BP).`,
+    })
+  }
+
+  if (isEncumbered) {
+    const exceededRatings: string[] = []
+    if (totalBallistic > threshold) exceededRatings.push(`Ballistic ${totalBallistic}`)
+    if (totalImpact > threshold) exceededRatings.push(`Impact ${totalImpact}`)
+    alerts.push({
+      section: "Gear",
+      severity: "warning",
+      title: "Armor Encumbrance",
+      message: `Armor exceeds Body × 2 (${threshold}): ${exceededRatings.join(", ")}. −${penalty} to Agility and Reaction.`,
     })
   }
 

@@ -2,6 +2,7 @@ import { useId } from "react"
 
 import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
+import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
@@ -36,6 +37,12 @@ export function useWoundDiceGroup(): DiceGroup | null {
   const woundMod = useWoundModifier()
   if (woundMod === 0) return null
   return { name: "Wound", size: woundMod * -1, color: "error.main" }
+}
+
+export function useEncumbranceDiceGroup(): DiceGroup | null {
+  const { penalty } = useEncumbrance()
+  if (penalty === 0) return null
+  return { name: "Encumbrance", size: penalty * -1, color: "warning.main" }
 }
 
 export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
