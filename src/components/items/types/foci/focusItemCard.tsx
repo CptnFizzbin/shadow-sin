@@ -75,7 +75,7 @@ export const FocusItemCard: FC<FocusItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      {source && (
+      {source?.book && (
         <ItemCard.Meta type="source">
           <ItemStatChip label={`${source.book} p.${source.page}`} />
         </ItemCard.Meta>
