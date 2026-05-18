@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 /**
  * Optional rules that adjust SR4e mechanics. Stored per-character so different
  * Runners can represent different campaigns. A `GameConfig` may override SR4e
@@ -17,6 +19,11 @@ export interface HouseRules {
    */
   encumbranceEnabled: boolean
 }
+
+export const HouseRulesSchema = z.object({
+  woundModifierInterval: z.union([z.literal(3), z.literal(4)]),
+  encumbranceEnabled: z.boolean(),
+}) satisfies z.ZodType<HouseRules>
 
 export const defaultHouseRules: HouseRules = {
   woundModifierInterval: 3,

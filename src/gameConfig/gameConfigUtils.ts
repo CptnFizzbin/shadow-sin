@@ -1,9 +1,9 @@
 import jsYaml from "js-yaml"
 
-import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import type { GameConfig } from "#/system/gameConfig.ts"
+import { GameConfigSchema } from "#/system/gameConfig.ts"
 
 const GAME_CONFIG_STORAGE_KEY = "game-config"
 
@@ -17,22 +17,24 @@ export function gameConfigToYaml(config: GameConfig): string {
 }
 
 /**
- * Parse a YAML string into a {@link GameConfig}. The caller is responsible
- * for any further validation; this helper does not run migrations.
+ * Parse a YAML string into a {@link GameConfig}, validating against
+ * {@link GameConfigSchema}. Throws if the YAML is malformed or fails
+ * schema validation.
  */
 export function yamlToGameConfig(yamlContent: string): GameConfig {
-  return jsYaml.load(yamlContent) as GameConfig
+  return GameConfigSchema.parse(jsYaml.load(yamlContent))
 }
 
 /**
  * Read the persisted {@link GameConfig} from the given storage, or `null`
- * if none has been saved.
+ * if none has been saved. Validates the loaded value against
+ * {@link GameConfigSchema}; throws if storage contains a malformed record.
  */
 export async function loadGameConfig(
   storage: AsyncJsonStorage,
 ): Promise<GameConfig | null> {
-  const raw = await storage.getItem<JsonValue>(GAME_CONFIG_STORAGE_KEY)
-  return raw === null ? null : (raw as unknown as GameConfig)
+  const raw = await storage.getItem(GAME_CONFIG_STORAGE_KEY)
+  return raw === null ? null : GameConfigSchema.parse(raw)
 }
 
 /**

@@ -1,4 +1,7 @@
+import { z } from "zod"
+
 import type { HouseRules } from "./houseRules.ts"
+import { HouseRulesSchema } from "./houseRules.ts"
 
 /**
  * GM-level campaign configuration. Provides a baseline set of house rules
@@ -12,6 +15,11 @@ export interface GameConfig {
   name: string
   houseRules: Partial<HouseRules>
 }
+
+export const GameConfigSchema = z.object({
+  name: z.string(),
+  houseRules: HouseRulesSchema.partial(),
+}) satisfies z.ZodType<GameConfig>
 
 export const defaultGameConfig: GameConfig = {
   name: "",
