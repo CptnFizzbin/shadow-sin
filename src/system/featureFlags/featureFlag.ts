@@ -17,6 +17,8 @@ export interface FeatureFlag<Value = boolean> {
   readonly defaultValue: Value
 }
 
+/** Intentional widening — AnyFeatureFlag must accept FeatureFlag<V> for every concrete V in the registry. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyFeatureFlag = FeatureFlag<any>
 
 /**
