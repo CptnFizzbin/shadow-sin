@@ -47,8 +47,8 @@ describe("ActiveSkillsList", () => {
       const dialogs = screen.getAllByRole("dialog")
       const dialog = dialogs[dialogs.length - 1]
       // The skill Select in the dialog should display "Pistols", not "Automatics"
-      expect(within(dialog).queryByText(SkillKey.automatics)).toBeNull()
-      expect(within(dialog).getByText(SkillKey.pistols)).toBeTruthy()
+      expect(within(dialog).queryByDisplayValue(SkillKey.automatics)).toBeNull()
+      expect(within(dialog).getByDisplayValue(SkillKey.pistols)).toBeTruthy()
     })
   })
 })

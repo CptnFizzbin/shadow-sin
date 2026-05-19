@@ -53,7 +53,7 @@ describe("ImprovementLanguageSkillList", () => {
     // Act — nothing
 
     // Assert
-    expect(screen.getByText("Native")).toBeTruthy()
+    expect(screen.getAllByText("Native").length).toBeGreaterThan(0)
     expect(screen.queryByRole("button", { name: /improve rating/i })).toBeNull()
   })
 

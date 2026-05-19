@@ -84,7 +84,7 @@ describe("SpendKarmaDialogContent", () => {
     // Act — click Attributes nav, queue Body
     fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
     // The list is visible (attrs tab is default), queue BOD
-    const bodButton = screen.getAllByText("BOD")[0].closest("button") as HTMLButtonElement
+    const bodButton = screen.getByRole("button", { name: /bod/i })
     fireEvent.click(bodButton)
 
     // Assert

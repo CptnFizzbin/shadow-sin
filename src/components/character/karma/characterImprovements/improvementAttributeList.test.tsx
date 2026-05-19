@@ -54,8 +54,8 @@ describe("ImprovementAttributeList", () => {
     // Act — nothing
 
     // Assert — maxed attribute button should be disabled
-    const bodRow = screen.getAllByText("BOD")[0].closest("button") as HTMLButtonElement | null
-    expect(bodRow?.disabled).toBe(true)
+    const bodRow = screen.getByRole("button", { name: /bod/i })
+    expect(bodRow.getAttribute("aria-disabled")).toBe("true")
   })
 
   it("clicking an affordable attribute queues it (button becomes aria-pressed)", () => {
@@ -64,7 +64,7 @@ describe("ImprovementAttributeList", () => {
       sheet.attributes[AttributeKey.body] = 3
       sheet.karma.current = 50
     })
-    const bodButton = screen.getAllByText("BOD")[0].closest("button") as HTMLButtonElement
+    const bodButton = screen.getByRole("button", { name: /bod/i }) as HTMLButtonElement
 
     // Act
     fireEvent.click(bodButton)
@@ -79,7 +79,7 @@ describe("ImprovementAttributeList", () => {
       sheet.attributes[AttributeKey.body] = 3
       sheet.karma.current = 50
     })
-    const bodButton = screen.getAllByText("BOD")[0].closest("button") as HTMLButtonElement
+    const bodButton = screen.getByRole("button", { name: /bod/i }) as HTMLButtonElement
     fireEvent.click(bodButton) // queue
 
     // Act
