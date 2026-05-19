@@ -1,27 +1,25 @@
 import { z } from "zod"
 
-import type { HouseRules } from "./houseRules.ts"
-import { HouseRulesSchema } from "./houseRules.ts"
+import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
+import { FeatureFlagsDataSchema } from "./featureFlags/featureFlagsData.ts"
 
 /**
- * GM-level campaign configuration. Provides a baseline set of house rules
- * that character-level settings then override at runtime. The shape aligns
+ * GM-level campaign configuration. Provides a baseline set of feature flags
+ * that runner-level settings can then override at runtime. The shape aligns
  * with the planned GM Game feature (`docs/issues/gm-game.md`).
  *
- * `houseRules` is `Partial<HouseRules>` so the GM only specifies rules that
- * differ from SR4e defaults; an empty object means run stock SR4e.
+ * `featureFlags` is optional so an absent value means "all SR4e defaults".
  */
 export interface GameConfig {
   name: string
-  houseRules: Partial<HouseRules>
+  featureFlags?: FeatureFlagsData
 }
 
 export const GameConfigSchema = z.object({
   name: z.string(),
-  houseRules: HouseRulesSchema.partial(),
+  featureFlags: FeatureFlagsDataSchema.optional(),
 }) satisfies z.ZodType<GameConfig>
 
 export const defaultGameConfig: GameConfig = {
   name: "",
-  houseRules: {},
 }

@@ -25,9 +25,8 @@ describe("gameConfigToYaml / yamlToGameConfig round-trip", () => {
     // Arrange
     const config: GameConfig = {
       name: "Seattle Sprawl",
-      houseRules: {
-        woundModifierInterval: 4,
-        encumbranceEnabled: false,
+      featureFlags: {
+        optionalRules: { encumbranceEnabled: true },
       },
     }
 
@@ -39,11 +38,11 @@ describe("gameConfigToYaml / yamlToGameConfig round-trip", () => {
     expect(restored).toEqual(config)
   })
 
-  it("round-trips a GameConfig with a partial houseRules override", () => {
+  it("round-trips a GameConfig with a partial optionalRules override", () => {
     // Arrange
     const config: GameConfig = {
       name: "Hong Kong",
-      houseRules: { woundModifierInterval: 4 },
+      featureFlags: { optionalRules: {} },
     }
 
     // Act
@@ -52,7 +51,7 @@ describe("gameConfigToYaml / yamlToGameConfig round-trip", () => {
 
     // Assert
     expect(restored).toEqual(config)
-    expect(restored.houseRules).not.toHaveProperty("encumbranceEnabled")
+    expect(restored.featureFlags?.optionalRules).not.toHaveProperty("encumbranceEnabled")
   })
 })
 
@@ -73,7 +72,7 @@ describe("loadGameConfig / saveGameConfig", () => {
     const storage = createMemoryStorage()
     const config: GameConfig = {
       name: "Berlin Z-Zone",
-      houseRules: { encumbranceEnabled: false },
+      featureFlags: { optionalRules: { encumbranceEnabled: true } },
     }
 
     // Act
@@ -87,7 +86,7 @@ describe("loadGameConfig / saveGameConfig", () => {
   it("writes to the well-known `game-config` key", async () => {
     // Arrange
     const storage = createMemoryStorage()
-    const config: GameConfig = { name: "Test", houseRules: {} }
+    const config: GameConfig = { name: "Test" }
 
     // Act
     await saveGameConfig(storage, config)

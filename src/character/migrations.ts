@@ -16,7 +16,7 @@ export const migrations: AnyCharacterMigration[] = [
   await import("./migrations/20260509_renameBookSR20AtoSR4A.ts"),
   await import("./migrations/20260510_renameAdeptPowersToPowers.ts"),
   await import("./migrations/20260511_addMissingWeaponSkill.ts"),
-  await import("./migrations/20260517_addHouseRules.ts"),
+  await import("./migrations/20260517_addFeatureFlags.ts"),
 ].map((module) => module.default)
 
 export const migrationIds: readonly string[] = migrations.map((m) => m.id)

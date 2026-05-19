@@ -5,7 +5,7 @@ import { z } from "zod"
 import type { AttributeKey } from "./attributeKey.ts"
 import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
-import type { HouseRules } from "./houseRules.ts"
+import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
 import type { ItemData } from "./itemData.ts"
 import type { LifestyleType } from "./lifestyleType.ts"
 import type { LoanData } from "./loanData.ts"
@@ -121,8 +121,8 @@ export interface CharacterSheet {
   powers: AdeptPowerData[]
 
   /**
-   * Per-character house rules. Optional so pre-migration characters remain
+   * Per-runner feature flags. Optional so pre-migration runners remain
    * structurally valid; the migration backfills this on next load.
    */
-  houseRules?: HouseRules
+  featureFlags?: FeatureFlagsData
 }

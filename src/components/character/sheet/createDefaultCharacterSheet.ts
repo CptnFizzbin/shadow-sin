@@ -3,7 +3,6 @@ import { getAttributesValues } from "#/components/character/attributes/getAttrib
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { awakenings, AwakeningType } from "#/system/awakeningType.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
-import { defaultHouseRules } from "#/system/houseRules.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
@@ -74,5 +73,5 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
     loans: [],
   },
 
-  houseRules: { ...defaultHouseRules },
+  featureFlags: {},
 })
