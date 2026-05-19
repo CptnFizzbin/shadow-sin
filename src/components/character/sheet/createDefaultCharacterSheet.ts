@@ -72,4 +72,6 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
     current: 0,
     loans: [],
   },
+
+  featureFlags: {},
 })
