@@ -9,12 +9,22 @@ import { skillList } from "#/system/skills/skillList.ts"
 
 import type {
   ImprovementEntry,
+  LearnActiveSkillEntry,
+  LearnKnowledgeSkillEntry,
+  LearnLanguageSkillEntry,
+  LearnSkillGroupEntry,
   SkillGroupIncreaseEntry,
   SkillIncreaseEntry,
   SkillSpecializationEntry,
 } from "./improvementEntry.ts"
 import type { ImprovementStore } from "./improvementStore.ts"
 import { ImprovementType } from "./improvementType.ts"
+
+// SR4A new-skill base karma costs (charged on top of any rating increases above 1).
+const NEW_ACTIVE_SKILL_COST = 4
+const NEW_SKILL_GROUP_COST = 10
+const NEW_KNOWLEDGE_SKILL_COST = 2
+const NEW_LANGUAGE_SKILL_COST = 2
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
@@ -39,6 +49,17 @@ export const getImprovementCost = (entry: ImprovementEntry) => {
       return getRatingIncreaseCost(entry.baseRating, entry.newRating, 2)
     case ImprovementType.skillSpecialization:
       return 2
+    case ImprovementType.learnActiveSkill:
+      return NEW_ACTIVE_SKILL_COST + getRatingIncreaseCost(1, entry.skill.rating, 2)
+    case ImprovementType.learnSkillGroup:
+      return NEW_SKILL_GROUP_COST + getRatingIncreaseCost(1, entry.group.rating, 2)
+    case ImprovementType.learnKnowledgeSkill:
+      return NEW_KNOWLEDGE_SKILL_COST + getRatingIncreaseCost(1, entry.skill.rating, 2)
+    case ImprovementType.learnLanguageSkill: {
+      // Native languages can't be learned via karma; treat as the base cost only.
+      const targetRating = entry.skill.rating === "native" ? 1 : entry.skill.rating
+      return NEW_LANGUAGE_SKILL_COST + getRatingIncreaseCost(1, targetRating, 2)
+    }
     case ImprovementType.learnSpell:
       return 5
     case ImprovementType.learnComplexForm:
@@ -70,6 +91,18 @@ export const applyImprovement = (sheet: Draft<CharacterSheet>, entry: Improvemen
       break
     case ImprovementType.attrIncrease:
       sheet.attributes[entry.attr] = entry.newRating
+      break
+    case ImprovementType.learnActiveSkill:
+      applyLearnActiveSkill(sheet, entry)
+      break
+    case ImprovementType.learnSkillGroup:
+      applyLearnSkillGroup(sheet, entry)
+      break
+    case ImprovementType.learnKnowledgeSkill:
+      applyLearnKnowledgeSkill(sheet, entry)
+      break
+    case ImprovementType.learnLanguageSkill:
+      applyLearnLanguageSkill(sheet, entry)
       break
     case ImprovementType.learnSpell:
       sheet.spells.push(entry.spell)
@@ -144,4 +177,34 @@ const applySkillGroupIncrease = (sheet: Draft<CharacterSheet>, entry: SkillGroup
   const groupData = sheet.skills.skillGroups.find((g) => g.name === entry.group)
   if (!groupData) throw new Error(`Skill group ${entry.group} not found on character sheet`)
   groupData.rating = entry.newRating
+}
+
+const applyLearnActiveSkill = (sheet: Draft<CharacterSheet>, entry: LearnActiveSkillEntry) => {
+  const exists = sheet.skills.activeSkills.some((skill) => skill.name === entry.skill.name)
+  if (exists) throw new Error(`Active skill ${entry.skill.name} already exists on character sheet`)
+  sheet.skills.activeSkills.push({ ...entry.skill })
+}
+
+const applyLearnSkillGroup = (sheet: Draft<CharacterSheet>, entry: LearnSkillGroupEntry) => {
+  const exists = sheet.skills.skillGroups.some((group) => group.name === entry.group.name)
+  if (exists) throw new Error(`Skill group ${entry.group.name} already exists on character sheet`)
+  sheet.skills.skillGroups.push({ ...entry.group })
+}
+
+const applyLearnKnowledgeSkill = (
+  sheet: Draft<CharacterSheet>,
+  entry: LearnKnowledgeSkillEntry,
+) => {
+  const exists = sheet.skills.knowledgeSkills.some((skill) => skill.name === entry.skill.name)
+  if (exists) throw new Error(`Knowledge skill ${entry.skill.name} already exists on character sheet`)
+  sheet.skills.knowledgeSkills.push({ ...entry.skill })
+}
+
+const applyLearnLanguageSkill = (
+  sheet: Draft<CharacterSheet>,
+  entry: LearnLanguageSkillEntry,
+) => {
+  const exists = sheet.skills.languageSkills.some((skill) => skill.name === entry.skill.name)
+  if (exists) throw new Error(`Language skill ${entry.skill.name} already exists on character sheet`)
+  sheet.skills.languageSkills.push({ ...entry.skill })
 }

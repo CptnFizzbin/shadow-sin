@@ -50,7 +50,7 @@ describe("ImprovementActiveSkillList", () => {
     expect(screen.getAllByText("⚠").length).toBeGreaterThan(0)
   })
 
-  it("shows Max chip and no Improve button for skills at maximum rating (6)", () => {
+  it("shows Max chip and disables the Improve button for skills at maximum rating (6)", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 6 }]
@@ -62,7 +62,8 @@ describe("ImprovementActiveSkillList", () => {
 
     // Assert
     expect(screen.getByText("Max")).toBeTruthy()
-    expect(screen.queryByRole("button", { name: /improve rating/i })).toBeNull()
+    const improveButton = screen.getByRole("button", { name: /improve rating/i })
+    expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })
 
   it("clicking Improve queues a skill increase (button becomes aria-pressed)", () => {
@@ -126,6 +127,6 @@ describe("ImprovementActiveSkillList", () => {
 
     // Assert
     const improveButton = screen.getByRole("button", { name: /improve rating/i })
-    expect((improveButton as HTMLButtonElement).disabled).toBe(true)
+    expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })
 })

@@ -1,25 +1,39 @@
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemText from "@mui/material/ListItemText"
+import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import { RiLightbulbLine } from "@remixicon/react"
+import { RiAddLine, RiCheckLine, RiLightbulbLine } from "@remixicon/react"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { selectCurrentKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import type { SkillIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
-import { isSkillIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
+import {
+  useKnowledgeSkillDialog,
+} from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
+import type {
+  LearnKnowledgeSkillEntry,
+  SkillIncreaseEntry,
+} from "#/system/karma/improvements/improvementEntry.ts"
+import {
+  isLearnKnowledgeSkillEntry,
+  isSkillIncreaseEntry,
+} from "#/system/karma/improvements/improvementEntry.ts"
 import {
   selectAllImprovements,
   selectImprovementsTotalCost,
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
+import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
+import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
@@ -32,22 +46,13 @@ export const ImprovementKnowledgeSkillList: FC = () => {
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const knowledgeSkillDialog = useKnowledgeSkillDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedSkillIncreases = allImprovements
     .filter(isSkillIncreaseEntry)
     .filter((entry) => entry.skillType === "KnowledgeSkill")
-
-  if (knowledgeSkills.length === 0) {
-    return (
-      <Stack sx={{ py: 4, alignItems: "center", gap: 1 }}>
-        <RiLightbulbLine size={32} style={{ opacity: 0.3 }} />
-        <Typography variant="body2" color="text.secondary">
-          No knowledge skills
-        </Typography>
-      </Stack>
-    )
-  }
+  const queuedLearns = allImprovements.filter(isLearnKnowledgeSkillEntry)
 
   const handleToggleImprove = (skillName: SkillKey, rating: number) => {
     const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skillName) ?? null
@@ -65,60 +70,104 @@ export const ImprovementKnowledgeSkillList: FC = () => {
     }
   }
 
+  const openLearnDialog = async () => {
+    const saved = await knowledgeSkillDialog.open()
+    if (!saved) return
+    const newEntry: Omit<LearnKnowledgeSkillEntry, "id"> = {
+      type: ImprovementType.learnKnowledgeSkill,
+      skill: saved,
+    }
+    improvementStore.add(newEntry)
+  }
+
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack sx={{ gap: 1.5 }}>
       <Typography variant="overline" color="text.secondary">Knowledge Skills</Typography>
 
-      {knowledgeSkills.map((skill) => {
-        const karmaCost = (skill.rating + 1) * 2
-        const isAtMax = skill.rating >= MAX_SKILL_RATING
-        const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
-        const canAffordImprove = queuedEntry !== null || karmaCost <= remainingKarma
+      {(knowledgeSkills.length > 0 || queuedLearns.length > 0) && (
+        <Paper variant="outlined">
+          <List disablePadding>
+            {knowledgeSkills.map((skill, index) => {
+              const karmaCost = (skill.rating + 1) * 2
+              const isAtMax = skill.rating >= MAX_SKILL_RATING
+              const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
+              const canAffordImprove = queuedEntry !== null || karmaCost <= remainingKarma
+              const improveDisabled = isAtMax || (!canAffordImprove && !queuedEntry)
+              const isLast = index === knowledgeSkills.length - 1 && queuedLearns.length === 0
 
-        return (
-          <Box
-            key={skill.name}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 0.75,
-              px: 1,
-              py: 0.75,
-              borderRadius: 1,
-              border: "1px solid",
-              borderColor: "divider",
-              opacity: !canAffordImprove && !queuedEntry && !isAtMax ? 0.45 : 1,
-            }}
-          >
-            <RiLightbulbLine
-              size={14}
-              style={{ color: "var(--mui-palette-info-main)", flexShrink: 0 }}
-            />
-            <Typography variant="body2" sx={{ flex: 1 }}>{skill.name}</Typography>
-            <Typography variant="caption" color="text.secondary">{skill.rating}</Typography>
-
-            {isAtMax && <Chip label="Max" size="small" />}
-            {!isAtMax && (
-              <Tooltip title={`Improve (${karmaCost}k)`}>
-                <span>
-                  <Button
-                    size="small"
-                    variant="outlined"
+              return (
+                <ListItem
+                  key={skill.name}
+                  disablePadding
+                  divider={!isLast}
+                  secondaryAction={(
+                    <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+                      {isAtMax
+                        ? <Chip label="Max" size="small" />
+                        : (
+                            <Chip
+                              label={`${karmaCost}k`}
+                              size="small"
+                              color={queuedEntry ? "success" : canAffordImprove ? "default" : "warning"}
+                            />
+                          )}
+                      {queuedEntry && (
+                        <RiCheckLine size={14} style={{ color: "var(--mui-palette-success-main)" }} />
+                      )}
+                    </Stack>
+                  )}
+                >
+                  <ListItemButton
                     aria-label="Improve rating"
                     aria-pressed={queuedEntry !== null}
-                    color={queuedEntry ? "success" : "primary"}
-                    disabled={!canAffordImprove}
+                    disabled={improveDisabled}
                     onClick={() => handleToggleImprove(skill.name as SkillKey, skill.rating)}
-                    sx={{ minWidth: 0, px: 0.75 }}
+                    sx={{
+                      minHeight: 52,
+                      opacity: improveDisabled && !queuedEntry && !isAtMax ? 0.45 : 1,
+                    }}
                   >
-                    <RiLightbulbLine size={13} />
-                  </Button>
-                </span>
-              </Tooltip>
-            )}
-          </Box>
-        )
-      })}
+                    <ListItemText
+                      primary={skill.name}
+                      secondary={isAtMax ? `Rating ${skill.rating}` : `${skill.rating} → ${skill.rating + 1}`}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )
+            })}
+            {queuedLearns.map((entry, index) => (
+              <ImprovementQueuedLearnRow
+                key={entry.id}
+                primary={entry.skill.name}
+                secondary={`New knowledge · Rating ${entry.skill.rating}`}
+                cost={getImprovementCost(entry)}
+                isLastRow={index === queuedLearns.length - 1}
+                onRemove={() => improvementStore.remove(entry.id)}
+              />
+            ))}
+          </List>
+        </Paper>
+      )}
+
+      {knowledgeSkills.length === 0 && queuedLearns.length === 0 && (
+        <Stack sx={{ py: 2, alignItems: "center", gap: 0.5 }}>
+          <RiLightbulbLine size={28} style={{ opacity: 0.3 }} />
+          <Typography variant="body2" color="text.secondary">
+            No knowledge skills
+          </Typography>
+        </Stack>
+      )}
+
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        startIcon={<RiAddLine size={14} />}
+        onClick={openLearnDialog}
+        sx={{ alignSelf: "flex-start" }}
+      >
+        Learn New Knowledge
+      </Button>
     </Stack>
   )
 }

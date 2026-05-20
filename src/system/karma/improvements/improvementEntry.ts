@@ -3,6 +3,10 @@ import type { UUID } from "node:crypto"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
+import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
+import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -76,10 +80,54 @@ export function isLearnComplexFormEntry(entry: ImprovementEntry): entry is Learn
   return entry.type === ImprovementType.learnComplexForm
 }
 
+export interface LearnActiveSkillEntry extends BaseImprovementEntry {
+  type: ImprovementType.learnActiveSkill
+  skill: ActiveSkillData
+}
+
+export function isLearnActiveSkillEntry(entry: ImprovementEntry): entry is LearnActiveSkillEntry {
+  return entry.type === ImprovementType.learnActiveSkill
+}
+
+export interface LearnSkillGroupEntry extends BaseImprovementEntry {
+  type: ImprovementType.learnSkillGroup
+  group: SkillGroupData
+}
+
+export function isLearnSkillGroupEntry(entry: ImprovementEntry): entry is LearnSkillGroupEntry {
+  return entry.type === ImprovementType.learnSkillGroup
+}
+
+export interface LearnKnowledgeSkillEntry extends BaseImprovementEntry {
+  type: ImprovementType.learnKnowledgeSkill
+  skill: KnowledgeSkillData
+}
+
+export function isLearnKnowledgeSkillEntry(
+  entry: ImprovementEntry,
+): entry is LearnKnowledgeSkillEntry {
+  return entry.type === ImprovementType.learnKnowledgeSkill
+}
+
+export interface LearnLanguageSkillEntry extends BaseImprovementEntry {
+  type: ImprovementType.learnLanguageSkill
+  skill: LanguageSkillData
+}
+
+export function isLearnLanguageSkillEntry(
+  entry: ImprovementEntry,
+): entry is LearnLanguageSkillEntry {
+  return entry.type === ImprovementType.learnLanguageSkill
+}
+
 export type ImprovementEntry =
   | AttrIncreaseEntry
   | SkillIncreaseEntry
   | SkillSpecializationEntry
   | SkillGroupIncreaseEntry
+  | LearnActiveSkillEntry
+  | LearnSkillGroupEntry
+  | LearnKnowledgeSkillEntry
+  | LearnLanguageSkillEntry
   | LearnSpellEntry
   | LearnComplexFormEntry

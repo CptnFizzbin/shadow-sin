@@ -43,7 +43,7 @@ describe("ImprovementKnowledgeSkillList", () => {
     expect(screen.getByRole("button", { name: /improve rating/i })).toBeTruthy()
   })
 
-  it("shows Max chip and no Improve button for skills at rating 6", () => {
+  it("shows Max chip and disables Improve button for skills at rating 6", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 6 }]
@@ -54,7 +54,8 @@ describe("ImprovementKnowledgeSkillList", () => {
 
     // Assert
     expect(screen.getByText("Max")).toBeTruthy()
-    expect(screen.queryByRole("button", { name: /improve rating/i })).toBeNull()
+    const improveButton = screen.getByRole("button", { name: /improve rating/i })
+    expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })
 
   it("clicking Improve queues a knowledge skill increase (button becomes aria-pressed)", () => {

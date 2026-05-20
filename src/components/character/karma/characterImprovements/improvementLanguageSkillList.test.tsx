@@ -43,7 +43,7 @@ describe("ImprovementLanguageSkillList", () => {
     expect(screen.getByRole("button", { name: /improve rating/i })).toBeTruthy()
   })
 
-  it("shows Native chip (not Improve button) for native-rated language skills", () => {
+  it("shows Native chip and disables Improve button for native-rated language skills", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.languageSkills = [{ name: "Sperethiel", rating: "native" }]
@@ -54,10 +54,11 @@ describe("ImprovementLanguageSkillList", () => {
 
     // Assert
     expect(screen.getAllByText("Native").length).toBeGreaterThan(0)
-    expect(screen.queryByRole("button", { name: /improve rating/i })).toBeNull()
+    const improveButton = screen.getByRole("button", { name: /improve rating/i })
+    expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })
 
-  it("shows Max chip (not Improve button) for language skills at rating 6", () => {
+  it("shows Max chip and disables Improve button for language skills at rating 6", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 6 }]
@@ -68,7 +69,8 @@ describe("ImprovementLanguageSkillList", () => {
 
     // Assert
     expect(screen.getByText("Max")).toBeTruthy()
-    expect(screen.queryByRole("button", { name: /improve rating/i })).toBeNull()
+    const improveButton = screen.getByRole("button", { name: /improve rating/i })
+    expect(improveButton.getAttribute("aria-disabled")).toBe("true")
   })
 
   it("clicking Improve queues a language skill increase (button becomes aria-pressed)", () => {
