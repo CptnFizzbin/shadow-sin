@@ -19,7 +19,7 @@ _Avoid_: dungeon master, DM, storyteller (use GM)
 
 **Game**:
 A GM-managed group that links multiple Players and their Runners together. Allows the GM to
-view all Runners in the group. _(Not yet implemented — see `docs/issues/gm-game.md`)_
+view all Runners in the group.
 _Avoid_: campaign, session (session is in-combat state), party
 
 **Runner**:
@@ -174,12 +174,10 @@ with BP at creation; some are innate to the metatype.
 **Spirit**:
 A magical Entity summoned and bound by a Magician or Mystic Adept. Has its own stat block,
 Force rating, and a pool of Services owed to the Runner.
-_(StatusSheet not yet implemented — see `docs/issues/entity-status-sheets.md`)_
 
 **Sprite**:
 A matrix Entity compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
 own stat block, Level rating, and Services owed.
-_(StatusSheet not yet implemented — see `docs/issues/entity-status-sheets.md`)_
 
 **Entity**:
 Collective term for Spirits and Sprites — summoned or compiled beings controlled by a Runner
@@ -214,7 +212,6 @@ Stored as an Item with `ItemType.device`. May have Programs loaded onto it as At
 Software loaded onto a Commlink. Used in matrix tests the same way Active Skills are used in
 physical tests — e.g. `Response + Analyze` forms a valid dice pool. A Commlink has a limited
 number of program slots determined by its System rating.
-_(Loaded program tracking not yet implemented — see `docs/issues/matrix-programs.md`)_
 _Avoid_: app, software (software is the broader category; Program is the matrix-test-relevant subtype)
 
 **Matrix Test**:
@@ -239,7 +236,6 @@ implant, software, vehicle, etc.).
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
 track) and requires a **StatusSheet** during play.
-_(Vehicle StatusSheet not yet implemented — see `docs/issues/entity-status-sheets.md`)_
 _Avoid_: asset, transport
 
 **Drone**:
@@ -273,7 +269,6 @@ _Avoid_: ID, identity (use SIN)
 An Item (`ItemType.license`) granting legal permission to carry a Restricted piece of gear.
 Currently freeform — no mechanical link to the gear it covers or the SIN it belongs to.
 Planned: a quick-buy flow that creates one or more Licences attached to a chosen SIN.
-_(Quick-buy feature not yet implemented — see `docs/issues/license-quick-buy.md`)_
 _Avoid_: permit, registration
 
 **Availability**:
@@ -286,8 +281,7 @@ A mechanical modifier that changes a derived stat — e.g. an attribute bonus, d
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
 (cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Adept Powers**, drugs,
 matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others. How active
-effects from all sources are aggregated and applied is an open design question — see
-`docs/issues/game-effect-resolution-model.md`.
+effects from all sources are aggregated and applied is an open design question.
 _Avoid_: modifier, bonus (too generic)
 
 **Source**:
@@ -359,7 +353,7 @@ next. Migrations operate on potentially invalid or incomplete data and must neve
 commit — if a migration has a bug, a new migration fixes the output. The current system tracks
 applied migrations as an array of string IDs in `CharacterMeta.appliedMigrations`; this is
 planned to be replaced with a single integer **schema version** number checked against the
-ordered migration list. See `docs/issues/migration-system-improvement.md`.
+ordered migration list.
 _Avoid_: upgrade, patch, update (use migration)
 
 ## Relationships
