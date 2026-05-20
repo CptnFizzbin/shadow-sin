@@ -288,6 +288,12 @@ _Avoid_: modifier, bonus (too generic)
 A reference to the rulebook and page number where a rule or item is defined
 (e.g. `{ book: "SR4A", page: 42 }`).
 
+**Optional Rule**:
+A published variant rule from a Shadowrun source book that modifies core SR4e mechanics and must
+be explicitly opted into. Optional Rules are stored as `featureFlags.optionalRules` on a Runner
+and are disabled by default. Known Optional Rules are defined in the `optionalRulesRegistry`.
+_Avoid_: house rule (a house rule is GM-invented; an Optional Rule is from a source book)
+
 ### Dice
 
 **Dice Pool**:
