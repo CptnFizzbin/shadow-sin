@@ -95,6 +95,34 @@ describe("GameConfigProvider", () => {
     })
   })
 
+  it("does not let an in-flight load overwrite a consumer setConfig", async () => {
+    // Arrange — storage has a stale value that will be returned by the
+    // async load on mount. The consumer immediately overrides it with a
+    // newer value before that load resolves.
+    const storage = createMemoryStorage()
+    await saveGameConfig(storage, persistedConfig)
+
+    const newerConfig: GameConfig = {
+      name: "Newer Config",
+      featureFlags: { optionalRules: { encumbranceEnabled: true } },
+    }
+
+    // Act — render starts the in-flight load; setConfig fires before it resolves.
+    const { result } = renderHook(() => useGameConfig(), { wrapper: makeWrapper(storage) })
+    act(() => {
+      result.current.setConfig(newerConfig)
+    })
+
+    // Flush any pending microtasks so the load's .then would have a chance
+    // to (incorrectly, pre-fix) overwrite the consumer's value.
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0))
+    })
+
+    // Assert — the consumer's value must stick.
+    expect(result.current.config).toEqual(newerConfig)
+  })
+
   it("useGameConfig throws when used outside the provider", () => {
     // Arrange — silence React's expected error log; restore in finally so a
     // failed assertion can't leak the override to other tests.

@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 
 import { loadGameConfig, saveGameConfig } from "#/gameConfig/gameConfigUtils.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
@@ -33,11 +33,18 @@ interface GameConfigProviderProps extends PropsWithChildren {
 export const GameConfigProvider: FC<GameConfigProviderProps> = ({ children, storage: storageProp }) => {
   const [storage] = useState<AsyncJsonStorage>(() => storageProp ?? LocalStorageProvider.getStorage())
   const [config, setConfigState] = useState<GameConfig>(defaultGameConfig)
+  // Load-version token bumped on every consumer `setConfig`. The async load
+  // only applies its result if its captured token still matches — prevents a
+  // stale storage value from clobbering a newer config a consumer set while
+  // the load was in flight. The `cancelled` flag handles unmount/storage
+  // changes separately.
+  const loadTokenRef = useRef(0)
 
   useEffect(() => {
+    const token = ++loadTokenRef.current
     let cancelled = false
     void loadGameConfig(storage).then((loaded) => {
-      if (cancelled || loaded === null) return
+      if (cancelled || loaded === null || loadTokenRef.current !== token) return
       setConfigState(loaded)
     })
     return () => {
@@ -47,6 +54,7 @@ export const GameConfigProvider: FC<GameConfigProviderProps> = ({ children, stor
 
   const setConfig = useCallback(
     (newConfig: GameConfig) => {
+      loadTokenRef.current++
       setConfigState(newConfig)
       void saveGameConfig(storage, newConfig)
     },
