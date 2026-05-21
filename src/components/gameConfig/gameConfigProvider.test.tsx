@@ -26,9 +26,12 @@ function makeWrapper(storage = createMemoryStorage()): FC<PropsWithChildren> {
 
 describe("GameConfigProvider", () => {
   it("renders children", () => {
-    // Arrange & Act
+    // Arrange
+    const storage = createMemoryStorage()
+
+    // Act
     const { getByText } = render(
-      <GameConfigProvider storage={createMemoryStorage()}>
+      <GameConfigProvider storage={storage}>
         <div>child</div>
       </GameConfigProvider>,
     )
