@@ -225,15 +225,15 @@ inactive)
 **Activate** / **Activation**:
 A play-time action that switches a bonded Focus on or off. Only bonded foci can be activated.
 Activation is toggled via a UI action on the focus item card in the Viewer; it does not cost
-Karma. Only activated foci contribute effects and count toward the **Active Foci Limit**.
-Stored as `ItemData.equipped` — the existing field that gates `GameEffect` application.
+Karma. Only activated foci contribute effects. Stored as `ItemData.equipped` — the existing
+field that gates `GameEffect` application.
 _Avoid_: bond (activation is free and reversible; bonding is permanent and costs Karma)
 
-**Active Foci Limit**:
-The cap on how many foci a Runner can have activated simultaneously. Rule: sum of ratings of
-all currently **activated** foci ≤ Magic attribute. Bonded-but-inactive foci do not count. The
-app surfaces a violation as a warning chip, not a hard block.
-_Avoid_: focus cap, foci cap, bonded foci limit (the limit applies to activated foci, not bonded ones)
+**Bonded Foci Limit**:
+The cap on how many foci a Runner can have bonded simultaneously. Rule: count of bonded foci
+≤ Magic attribute (SR4A p.199). Bonding an additional focus past the cap is prohibited
+regardless of activation state. The app surfaces a violation as a warning chip, not a hard block.
+_Avoid_: active foci limit, focus cap, foci cap (the limit applies to bonded foci, not activated ones)
 
 **Foci Force Limit**:
 The cap on the total Force of foci a Runner can have bonded at one time. Rule: sum of Force
