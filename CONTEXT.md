@@ -205,6 +205,49 @@ A Technomancer's equivalent of a spell — a matrix effect compiled from Resonan
 **Tradition**:
 A magical discipline that governs a Magician's drain resistance attribute and available spirits.
 
+**Focus**:
+A magical item that a Runner can own, bond, and activate. Owning a focus has no mechanical
+effect on its own — a focus must first be **bonded** (a permanent Karma expenditure) before it
+can be **activated** (a play-time toggle). Only activated foci contribute `GameEffect` entries
+to dice pools or sustain spells. Focus subtypes include Power, Spellcasting, Summoning,
+Banishing, Centering, Sustaining, and Weapon.
+_(Not yet implemented — see issue #282)_
+_Avoid_: fetish, magical tool
+
+**Bond** / **Bonding**:
+A one-time Karma expenditure that permanently links a Focus to a Runner. Bonding is a
+prerequisite for activation — a focus cannot be activated until it has been bonded. Recorded as
+a `bondFocus` ImprovementEntry. Karma spent on bonding is permanently lost if the Focus is
+subsequently lost, destroyed, or un-bonded.
+_Avoid_: activate, attune (bonding is not the same as activating — a bonded focus can still be
+inactive)
+
+**Activate** / **Activation**:
+A play-time action that switches a bonded Focus on or off. Only bonded foci can be activated.
+Activation is toggled via a UI action on the focus item card in the Viewer; it does not cost
+Karma. Only activated foci contribute effects. Stored as `ItemData.equipped` — the existing
+field that gates `GameEffect` application.
+_Avoid_: bond (activation is free and reversible; bonding is permanent and costs Karma)
+
+**Bonded Foci Limit**:
+The cap on how many foci a Runner can have bonded simultaneously. Rule: count of bonded foci
+≤ Magic attribute (SR4A p.199). Bonding an additional focus past the cap is prohibited
+regardless of activation state. The app surfaces a violation as a warning chip, not a hard block.
+_Avoid_: active foci limit, focus cap, foci cap (the limit applies to bonded foci, not activated ones)
+
+**Foci Force Limit**:
+The cap on the total Force of foci a Runner can have bonded at one time. Rule: sum of Force
+ratings of all bonded foci ≤ Magic × 5 (SR4A p.199). Applies regardless of activation state —
+bonding a new focus that would push the total over the cap is prohibited.
+_Avoid_: bonded foci cap, total force cap (the limit applies to combined Force, not count)
+
+**Sustaining Focus**:
+A Focus subtype that holds one `Sustained` spell active so the caster does not need to maintain
+concentration. Linked to a specific spell via `slottedSpellId`; the spell category
+(`spellCategory`) is fixed at item creation and restricts which spells can be slotted. The
+slotted spell still appears in the Runner's spell list.
+_Avoid_: spell holder
+
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
 **System**, **Firewall**, and **Signal** — that substitute for attributes in matrix tests.
