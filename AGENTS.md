@@ -4,7 +4,10 @@ A **Shadowrun 4th Edition character sheet**
 
 > **Domain language:** See [`CONTEXT.md`](./CONTEXT.md) for the canonical glossary of all
 > domain terms, relationships, and flagged ambiguities. Use those terms consistently in code,
-> comments, and docs. Open design problems are tracked in `docs/issues/`.
+> comments, and docs. Open design problems are tracked in `docs/features/`.
+>
+> **Contribution workflow:** See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for how features,
+> GitHub Issues, and ADRs relate to each other.
 
 SPA: React 19 + TanStack Router + TanStack Store + MUI v7.
 
