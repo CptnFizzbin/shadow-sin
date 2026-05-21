@@ -43,10 +43,14 @@ export const GameConfigProvider: FC<GameConfigProviderProps> = ({ children, stor
   useEffect(() => {
     const token = ++loadTokenRef.current
     let cancelled = false
-    void loadGameConfig(storage).then((loaded) => {
-      if (cancelled || loaded === null || loadTokenRef.current !== token) return
-      setConfigState(loaded)
-    })
+    loadGameConfig(storage)
+      .then((loaded) => {
+        if (cancelled || loaded === null || loadTokenRef.current !== token) return
+        setConfigState(loaded)
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to load game config.", error)
+      })
     return () => {
       cancelled = true
     }
@@ -56,7 +60,9 @@ export const GameConfigProvider: FC<GameConfigProviderProps> = ({ children, stor
     (newConfig: GameConfig) => {
       loadTokenRef.current++
       setConfigState(newConfig)
-      void saveGameConfig(storage, newConfig)
+      saveGameConfig(storage, newConfig).catch((error: unknown) => {
+        console.error("Failed to save game config.", error)
+      })
     },
     [storage],
   )
