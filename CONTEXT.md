@@ -235,6 +235,12 @@ all currently **activated** foci ≤ Magic attribute. Bonded-but-inactive foci d
 app surfaces a violation as a warning chip, not a hard block.
 _Avoid_: focus cap, foci cap, bonded foci limit (the limit applies to activated foci, not bonded ones)
 
+**Foci Force Limit**:
+The cap on the total Force of foci a Runner can have bonded at one time. Rule: sum of Force
+ratings of all bonded foci ≤ Magic × 5 (SR4A p.199). Applies regardless of activation state —
+bonding a new focus that would push the total over the cap is prohibited.
+_Avoid_: bonded foci cap, total force cap (the limit applies to combined Force, not count)
+
 **Sustaining Focus**:
 A Focus subtype that holds one `Sustained` spell active so the caster does not need to maintain
 concentration. Linked to a specific spell via `slottedSpellId`; the spell category
@@ -369,34 +375,6 @@ _Avoid_: editor, creator, creation mode
 The play-time mode for an existing Runner. Used to track damage, roll dice, spend Edge, and
 manage active resources during a session. Accessed via `src/components/character/`.
 _Avoid_: sheet view, player view, read mode
-
-### Configuration & House Rules
-
-**House Rules**:
-A per-character record of optional rule overrides that alter game mechanics (e.g. wound modifier
-interval, encumbrance toggle). Stored on `RunnerData.houseRules` so different characters can
-represent different campaigns with different rule variants. At runtime, house rules are resolved
-via a three-layer merge: `{ ...sr4eDefaults, ...gmConfig.houseRules, ...character.houseRules }`.
-Adding a new rule requires only a new key in the `HouseRules` interface and a default in
-`defaultHouseRules` — no migration, because the `useHouseRulesStore` selector spreads defaults
-first.
-_(Not yet implemented — see issues #288–#291)_
-_Avoid_: options, settings (too generic), preferences
-
-**GameConfig**:
-A GM-managed campaign configuration stub containing a `name` and `Partial<HouseRules>`. Exported
-and imported as YAML. The GM layer sits between SR4e defaults and character-level overrides in
-the three-layer merge. An empty `houseRules: {}` means "run stock SR4e." Future fields (campaign
-metadata, allowed gear lists) will slot in here when the **Game** feature ships.
-_(Not yet implemented — see issue #289)_
-_Avoid_: campaign config, GM settings
-
-**House Rule Source**:
-The origin layer of a resolved house rule value. One of `"sr4e"` (no override — built-in
-default), `"gm"` (set by `GameConfig`), or `"you"` (character-level override). Displayed as a
-labeled badge next to each toggle in the Settings tab so the Player knows where the current
-value comes from.
-_Avoid_: rule origin, source label
 
 ### Infrastructure
 
