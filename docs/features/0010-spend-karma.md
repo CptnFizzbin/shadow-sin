@@ -18,7 +18,7 @@ in a dialog-scoped `ImprovementStore`; on Save, `applyImprovements()` writes eve
 to the character sheet and decrements `karma.current` by the total cost. On Cancel, the queue is
 discarded. This differs from the immediate-spend model originally sketched in
 [#273](https://github.com/CptnFizzbin/shadow-sin/pull/273), and the trade-offs around that
-choice are captured in [Open Questions](#open-questions) below.
+choice are captured in [Open & Resolved Questions](#open--resolved-questions) below.
 
 ## Open & Resolved Questions
 

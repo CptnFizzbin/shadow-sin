@@ -180,7 +180,7 @@ export const ImprovementKnowledgeSkillList: FC = () => {
                         <span>
                           <IconButton
                             size="small"
-                            aria-label="Add specialization"
+                            aria-label={queuedSpec ? "Remove specialization" : "Add specialization"}
                             aria-pressed={queuedSpec !== null}
                             color={queuedSpec ? "success" : "default"}
                             disabled={!canAffordSpec && !queuedSpec}

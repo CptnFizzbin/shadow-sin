@@ -187,7 +187,7 @@ export const ImprovementLanguageSkillList: FC = () => {
                         <span>
                           <IconButton
                             size="small"
-                            aria-label="Add lingo"
+                            aria-label={queuedSpec ? "Remove lingo" : "Add lingo"}
                             aria-pressed={queuedSpec !== null}
                             color={queuedSpec ? "success" : "default"}
                             disabled={!canAffordSpec && !queuedSpec}

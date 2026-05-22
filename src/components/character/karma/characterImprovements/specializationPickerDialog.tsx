@@ -37,7 +37,6 @@ const SpecializationPickerDialog: FC<SpecializationPickerDialogProps> = ({
   initialValue,
 }) => {
   const hasFixed = fixedOptions.length > 0
-  const hasCustom = customPlaceholders.length > 0
   const customOnly = !hasFixed
 
   const initialIsCustom = !!initialValue && !fixedOptions.includes(initialValue)
@@ -87,29 +86,15 @@ const SpecializationPickerDialog: FC<SpecializationPickerDialogProps> = ({
           )}
 
           {showCustomTextField && (
-            hasCustom
-              ? customPlaceholders.map((placeholder, idx) => (
-                  <MuiTextField
-                    key={`${placeholder}-${idx}`}
-                    label={hasFixed ? `Custom ${fieldLabel}` : fieldLabel}
-                    placeholder={placeholder}
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    size="small"
-                    fullWidth
-                    autoFocus={customMode}
-                  />
-                ))
-              : (
-                  <MuiTextField
-                    label={hasFixed ? `Custom ${fieldLabel}` : fieldLabel}
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    size="small"
-                    fullWidth
-                    autoFocus
-                  />
-                )
+            <MuiTextField
+              label={hasFixed ? `Custom ${fieldLabel}` : fieldLabel}
+              placeholder={customPlaceholders[0]}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              size="small"
+              fullWidth
+              autoFocus={customMode || !hasFixed}
+            />
           )}
         </Stack>
       </Dialog.Content>

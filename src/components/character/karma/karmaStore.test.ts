@@ -70,15 +70,14 @@ describe("KarmaStore.spendKarma", () => {
     expect(store.state.total).toBe(10)
   })
 
-  it("clamps current at zero", () => {
+  it("throws on overspend instead of silently clamping current to zero", () => {
     // Arrange
     const store = new KarmaStore(makeKarma({ current: 2, total: 5 }))
 
-    // Act
-    store.spendKarma(10)
-
-    // Assert
-    expect(store.state.current).toBe(0)
+    // Act + Assert
+    expect(() => store.spendKarma(10)).toThrow(/insufficient karma/i)
+    // current is unchanged
+    expect(store.state.current).toBe(2)
   })
 
   it("throws when amount is non-positive", () => {
@@ -88,5 +87,20 @@ describe("KarmaStore.spendKarma", () => {
     // Act + Assert
     expect(() => store.spendKarma(0)).toThrow(/positive/i)
     expect(() => store.spendKarma(-1)).toThrow(/positive/i)
+  })
+})
+
+describe("KarmaStore.addKarma — positive-amount guard", () => {
+  it("throws when amount is zero or negative", () => {
+    // Arrange
+    const store = new KarmaStore(makeKarma({ current: 5, total: 5 }))
+
+    // Act + Assert
+    expect(() => store.addKarma(0)).toThrow(/positive/i)
+    expect(() => store.addKarma(-3)).toThrow(/positive/i)
+    // state untouched
+    expect(store.state.current).toBe(5)
+    expect(store.state.total).toBe(5)
+    expect(store.state.log).toEqual([])
   })
 })

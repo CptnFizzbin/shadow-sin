@@ -7,6 +7,7 @@ export type KarmaState = CharacterSheet["karma"]
 
 export class KarmaStore extends StoreSlice<KarmaState> {
   addKarma(amount: number) {
+    if (amount <= 0) throw new Error(`addKarma requires a positive amount, got ${amount}`)
     this.set((prev) => ({
       ...prev,
       current: prev.current + amount,
@@ -26,9 +27,11 @@ export class KarmaStore extends StoreSlice<KarmaState> {
 
   spendKarma(amount: number) {
     if (amount <= 0) throw new Error(`spendKarma requires a positive amount, got ${amount}`)
-    this.set((prev) => ({
-      ...prev,
-      current: Math.max(0, prev.current - amount),
-    }))
+    this.set((prev) => {
+      if (amount > prev.current) {
+        throw new Error(`Insufficient karma: requested ${amount}, have ${prev.current}`)
+      }
+      return { ...prev, current: prev.current - amount }
+    })
   }
 }

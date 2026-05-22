@@ -28,7 +28,7 @@ function renderCounter(initial?: number | null, min?: number, max?: number) {
 }
 
 /**
- * Renders an uncontrolled CounterField with a mock onChange and returns the
+ * Renders an uncontrolled CounterInput with a mock onChange and returns the
  * input element, the container, and the mock function for assertions.
  */
 function renderCounterField(value: number | null, min: number, max: number) {

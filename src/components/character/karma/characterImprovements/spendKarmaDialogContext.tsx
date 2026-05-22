@@ -11,10 +11,10 @@ interface SpendKarmaDialogContextValue {
 const SpendKarmaDialogContext = createContext<SpendKarmaDialogContextValue | null>(null)
 
 export const SpendKarmaDialogProvider: FC<PropsWithChildren> = ({ children }) => {
-  const improvementsStore = useMemo(() => new ImprovementStore(), [])
+  const improvementStore = useMemo(() => new ImprovementStore(), [])
 
   return (
-    <SpendKarmaDialogContext.Provider value={{ improvementStore: improvementsStore }}>
+    <SpendKarmaDialogContext.Provider value={{ improvementStore }}>
       {children}
     </SpendKarmaDialogContext.Provider>
   )

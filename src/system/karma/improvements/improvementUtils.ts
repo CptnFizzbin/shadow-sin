@@ -47,7 +47,7 @@ export const applyImprovements = (
   characterStore.setState(produce((sheet) => {
     for (const entry of Object.values(improvementsState)) {
       const cost = getImprovementCost(entry)
-      applyImprovement(sheet, entry)
+      applyImprovement(sheet, entry, cost)
       sheet.karma.log.push({
         id: crypto.randomUUID() as UUID,
         timestamp: new Date().toISOString(),
@@ -127,7 +127,17 @@ const getAptitudeBoostedActiveSkillCost = (
 
   return totalKarma
 }
-export const applyImprovement = (sheet: Draft<CharacterSheet>, entry: ImprovementEntry) => {
+/**
+ * Apply a single improvement to the sheet and deduct its karma cost. Pass
+ * `precomputedCost` from `applyImprovements` to avoid recomputing the cost
+ * (which `applyImprovements` already needs for the ledger entry). When called
+ * directly, omit the argument and the cost is computed here.
+ */
+export const applyImprovement = (
+  sheet: Draft<CharacterSheet>,
+  entry: ImprovementEntry,
+  precomputedCost?: number,
+) => {
   switch (entry.type) {
     case ImprovementType.skillIncrease:
       applySkillIncrease(sheet, entry)
@@ -164,7 +174,7 @@ export const applyImprovement = (sheet: Draft<CharacterSheet>, entry: Improvemen
       break
   }
 
-  sheet.karma.current -= getImprovementCost(entry)
+  sheet.karma.current -= precomputedCost ?? getImprovementCost(entry)
 }
 
 const applyComplexFormIncrease = (

@@ -109,13 +109,25 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
           >
             {visibleNavItems.map((navItem) => {
               const isActive = activeSection === navItem.key
+              const activate = () => setActiveSection(navItem.key)
               return (
                 <Tooltip key={navItem.key} title={navItem.label} placement="right">
                   <Box
                     role="button"
+                    tabIndex={0}
                     aria-label={navItem.label}
                     aria-pressed={isActive}
-                    onClick={() => setActiveSection(navItem.key)}
+                    onClick={activate}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault()
+                        activate()
+                      } else if (e.key === " ") {
+                        // Prevent page scroll on Space.
+                        e.preventDefault()
+                        activate()
+                      }
+                    }}
                     sx={{
                       "display": "flex",
                       "flexDirection": "column",
@@ -129,6 +141,7 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
                       "borderColor": isActive ? "primary.main" : "transparent",
                       "transition": "all 0.15s",
                       "&:hover": { bgcolor: "action.hover" },
+                      "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: -2 },
                     }}
                   >
                     <Box sx={{ color: isActive ? "primary.main" : "text.secondary" }}>

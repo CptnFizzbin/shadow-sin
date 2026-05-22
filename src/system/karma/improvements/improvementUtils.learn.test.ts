@@ -134,10 +134,11 @@ describe("applyImprovement — learn entries", () => {
       draft.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
     })
 
-    // Act + Assert
-    expect(() => produce(sheet, (draft) => applyImprovement(draft, entry))).toThrow(
-      /already exists/i,
-    )
+    // Act
+    const act = () => produce(sheet, (draft) => applyImprovement(draft, entry))
+
+    // Assert
+    expect(act).toThrow(/already exists/i)
   })
 
   it("pushes the new skill group onto the character sheet", () => {
