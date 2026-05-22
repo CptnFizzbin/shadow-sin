@@ -1,10 +1,10 @@
 # Spend Karma — Post-Chargen Advancement
 
-> **Status:** In Progress
+> **Status:** v1 shipped — follow-up slices tracked in [Out of Scope](#out-of-scope) below.
 >
 > **GitHub Issues / PRs:**
 > - [#273](https://github.com/CptnFizzbin/shadow-sin/pull/273) — early karma-system planning doc (closed; superseded by this feature doc)
-> - [#274](https://github.com/CptnFizzbin/shadow-sin/pull/274) — first implementation slice: dialog + improvement queue for attributes, skills, skill groups, knowledge, language
+> - [#274](https://github.com/CptnFizzbin/shadow-sin/pull/274) — full v1 implementation: dialog + improvement queue for attributes, skills, skill groups, knowledge, language, spells; cost-formula fixes; cap enforcement; `complexFormIncrease`; native-language suppression; `karma.log` ledger + migration; specialization picker for active / knowledge / language skills.
 
 Players need to spend earned **Karma** on post-chargen advancement — raising attributes, raising
 or learning skills and skill groups, picking up new knowledge and language skills, learning
@@ -42,21 +42,19 @@ Integration](#optional-rules-integration) below.
       separate decision.
 
 - [x] **Cost-formula deviations from SR4A — fix to SR4A defaults; route any intentional
-      group-level deviation through `optionalRulesRegistry`.** Each value in
-      `improvementUtils.ts` is treated as a bug against the
-      SR4A advancement table (wiki: `rules/character-improvement.md`) until
-      shown otherwise; the defaults below are what the code should compute when no optional
-      rule is set. If a group wants to keep one of the cheaper variants, expose it as a new
-      entry in
+      group-level deviation through `optionalRulesRegistry`.** _v1 shipped:_ every cost in
+      `improvementUtils.ts` now matches the SR4A advancement table (wiki:
+      `rules/character-improvement.md`) by default. Group-level deviations remain a
+      future hook through
       [`optionalRulesRegistry.ts`](../../src/system/featureFlags/optionalRulesRegistry.ts)
       (e.g. `cheaperSkillGroupAdvancement: createFlag<boolean>({ defaultValue: false, … })`)
-      and branch on it inside `getImprovementCost`.
-  - Fix: `skillGroupIncrease` per-step → **`× 5`** (was `× 2`)
-  - Fix: `skillIncrease` for Knowledge / Language → **`× 1`** (was `× 2`)
-  - Fix: `learnSkillGroup` per-step raise → **`× 5`**
-  - Fix: `learnKnowledgeSkill` / `learnLanguageSkill` per-step raise → **`× 1`**
-  - Fix: `learnComplexForm` → **flat `2`** (was `5`)
-  - Add: `complexFormIncrease` entry type — `new rating × 1` per step
+      branched on inside `getImprovementCost`.
+  - ✅ Fixed: `skillGroupIncrease` per-step → **`× 5`** (was `× 2`)
+  - ✅ Fixed: `skillIncrease` for Knowledge / Language → **`× 1`** (was `× 2`)
+  - ✅ Fixed: `learnSkillGroup` per-step raise → **`× 5`**
+  - ✅ Fixed: `learnKnowledgeSkill` / `learnLanguageSkill` per-step raise → **`× 1`**
+  - ✅ Fixed: `learnComplexForm` → **flat `2`** (was `5`)
+  - ✅ Added: `complexFormIncrease` entry type — `new rating × 1` per step
   - (Already correct: attribute `× 5` — including Magic / Resonance / Edge, which SR4A also
       prices at `× 5`; active-skill `× 2`; new-skill bases of `4` / `10` / `2`; specialization
       flat `2`; new spell flat `5`.)
@@ -69,36 +67,56 @@ Integration](#optional-rules-integration) below.
       [Karma Ledger → Undo (deferred to v2)](#undo-deferred-to-v2).
 
 - [x] **Rating 6, Aptitude, and attribute caps — enforce SR4A defaults at the queue layer.**
-      The dialog should block any `ImprovementEntry` that would exceed the cap *before* it
-      lands in the queue (not at Save). Caps to enforce, per the wiki
-      `rules/character-improvement.md`:
-  - Active skill cap at 6 unless the character has the **Aptitude** quality for that skill
+      _v1 shipped:_ all caps are centralized in
+      [`improvementCaps.ts`](../../src/system/karma/improvements/improvementCaps.ts) and
+      consulted from each list before queueing. The dialog blocks any `ImprovementEntry` that
+      would exceed the cap *before* it lands in the queue (not at Save). Caps enforced, per
+      the wiki `rules/character-improvement.md`:
+  - ✅ Active skill cap at 6 unless the character has the **Aptitude** quality for that skill
       (wiki: `qualities/aptitude.md`); with Aptitude, the cap is 7 and raises beyond 6 cost
-      **double Karma per step**.
-  - Attribute cap = metatype maximum (`+1` to one attribute with **Exceptional Attribute**;
+      **double Karma per step** (`boostedByAptitude` flag on `SkillIncreaseEntry`).
+  - ✅ Skill-group cap at 6 (no Aptitude analogue).
+  - ✅ Knowledge / Language skill cap at 6.
+  - ✅ Attribute cap = metatype maximum (`+1` to one attribute with **Exceptional Attribute**;
       wiki: `qualities/exceptional-attribute.md`).
-  - Magic / Resonance cap = `6 + initiation/submersion grade`.
+  - ✅ Magic / Resonance cap = awakening max (today: 6). The full `6 + initiation/submersion
+      grade` rule arrives with the initiation / submersion slices when grade tracking lands.
   - A future "soft caps" optional rule could relax these, but the default matches the book.
 
+  _Aptitude / Exceptional Attribute detection_ today uses a name-pattern match on the
+  character's qualities (`"Aptitude (Pistols)"`, `"Exceptional Attribute (Logic)"`).
+  A structured cap-boost effect type can replace it later without touching callers.
+
 - [x] **v1 scope — MUST (correctness + ledger) + SHOULD (spell UI); DEFER everything that
-      needs a new domain surface.**
-  - **MUST land in v1** — blocks correctness or fulfills a resolved question above: cost-
-      formula bug fixes (5 deviations), `complexFormIncrease` entry type + apply path, cap
-      enforcement at the queue layer, native-language suppression, `karma.log` field +
-      migration + writes, `source` enum reserving `"undo"`
-  - **SHOULD land in v1** — small and closes a visible UX gap: spell-learning UI replacing
-      the `<Typography>Spell learning coming soon</Typography>` placeholder (entry type and
-      apply path already work; only the picker is missing)
+      needs a new domain surface.** _v1 shipped:_
+  - ✅ **MUST landed in v1:** cost-formula bug fixes (5 deviations), `complexFormIncrease`
+      entry type + apply path, cap enforcement at the queue layer (`improvementCaps.ts`),
+      native-language suppression, `karma.log` field + migration + writes, `source` enum
+      reserving `"undo"`.
+  - ✅ **SHOULD landed in v1:** spell-learning UI replacing the
+      `<Typography>Spell learning coming soon</Typography>` placeholder — see
+      `improvementSpellList.tsx`.
+  - ✅ **Bonus, surfaced during implementation:** a focused **specialization picker dialog**
+      (`specializationPickerDialog.tsx`) replaces the queue-time hardcoded `"New Spec"`
+      string. Active skills use the SR4A specialization list as a dropdown + custom input;
+      knowledge skills get a free-text spec; languages get a free-text **Lingo** (the same
+      entry type, stored to the `lingo` field by `applySpecialization`).
+  - ✅ **Bug fix, also during implementation:** `breakSkillGroup` now no-ops when the
+      character doesn't have the targeted group on the sheet (e.g. raising a standalone
+      `Banishing` no longer crashes because the character has no `Conjuring` group).
   - **DEFER to follow-up slices** — each needs its own domain surface or design pass:
       complex-form picker UI (technomancer-only), positive-quality (new), negative-quality
       buy-off, focus bonding (`bondFocus` per CONTEXT.md), initiation grade, submersion
-      grade, specialization change (`changeSpecialization` — SR4A allows swapping a spec for
-      2 karma)
+      grade, long-term spirit binding, metamagic-driven karma spends (Quickening / Anchoring
+      / Cannibalize).
 
-- [x] **Native-language pricing — suppress.** Per SR4A, native languages cannot be learned
-      with Karma. The UI must not surface native as an option in `learnLanguageSkill`; the
-      current "treat as rating 1" fallback is dead code paths. If a group wants to allow it,
-      that's a future optional rule (`allowKarmaForNativeLanguage`); defaults to off.
+- [x] **Native-language pricing — suppress.** _v1 shipped:_ `LearnLanguageSkillEntry.skill`
+      is now narrowed to a numeric-rating type (`LearnableLanguageSkillData`), the silent
+      "treat as rating 1" fallback in `getImprovementCost` is gone, and the learn-language
+      UI guards against native before queueing. Note: a queued **Lingo** entry on an
+      already-native language is still allowed (per SR4A, lingos cost 2 karma regardless of
+      rating). If a group wants to allow native to be karma-learnable in the future, that's
+      a `allowKarmaForNativeLanguage` optional rule (defaults to off).
 
 ## Constraints
 
@@ -116,8 +134,10 @@ Integration](#optional-rules-integration) below.
   Save disabled.)
 - **Skill-group breaking is mandatory** (SR4A p. 86): increasing or specialising a single
   skill that belongs to a group automatically breaks the group, splitting it into its
-  constituent active skills at the group's rating. This is already implemented in
-  `breakSkillGroup()` but must hold for any new entry types that touch a grouped skill.
+  constituent active skills at the group's rating. Implemented in `breakSkillGroup()`,
+  which is a no-op when the character doesn't have the targeted group (e.g. the skill was
+  learned standalone, or the group was already broken). Must hold for any new entry types
+  that touch a grouped skill.
 - **The improvement queue is dialog-scoped and transient.** It must not persist across dialog
   open/close cycles, and must not leak partial state onto the character sheet if the user
   cancels or refreshes mid-edit.
@@ -149,39 +169,45 @@ Integration](#optional-rules-integration) below.
 ## Karma Ledger
 
 A per-character append-only audit trail of every karma earn and spend, stored on
-`CharacterSheet.karma.log`. v1 ships the field, the migration, and the writes — **not** the
-display UI or undo (both deferred to follow-up slices).
+`CharacterSheet.karma.log`. **v1 ships the field, the migration, and the writes** — the
+display UI and post-Save undo are deferred to follow-up slices.
 
-### Shape
+### Shape (shipped)
+
+Defined in [`karmaLedgerEntry.ts`](../../src/system/karma/karmaLedgerEntry.ts):
 
 ```ts
 karma: {
   current: number
   total: number
-  log: KarmaLedgerEntry[]    // new — empty array on existing characters via migration
+  log: KarmaLedgerEntry[]    // backfilled to [] on existing characters via migration
 }
 
 interface KarmaLedgerEntry {
   id: UUID
   timestamp: string                            // ISO 8601
   amount: number                               // negative = spend, positive = earn / refund
-  description: string                          // human-friendly, e.g. "Raised Agility 4 → 5"
+  description: string                          // human-friendly, e.g. "Raised AGI 4 → 5"
   source: "addKarma" | "spendKarma" | "undo"   // "undo" reserved for v2 — unused in v1
   improvement?: ImprovementEntry               // present when source=spendKarma — enables v2 undo / export / replay
   undoes?: UUID                                // present when source=undo (v2)
 }
 ```
 
-### Writes (v1)
-- **`applyImprovements()`** — appends one entry per `ImprovementEntry` in the queue (not one
-  per Save batch — keeps the audit trail useful and matches the future undo unit)
-- **`addKarmaDialog`** — appends one positive-amount entry per submit
+### Writes (v1, shipped)
+- ✅ **`applyImprovements()`** — appends one entry per `ImprovementEntry` in the queue (not
+  one per Save batch — keeps the audit trail useful and matches the future undo unit).
+  Description is rendered by `describeImprovement()` in
+  [`improvementDescription.ts`](../../src/system/karma/improvements/improvementDescription.ts).
+- ✅ **`KarmaStore.addKarma()`** — appends one positive-amount `source: "addKarma"` entry per
+  submit from the Add Karma dialog.
 
-### Migration
-A new migration (e.g. `<YYYYMMDD>_addKarmaLog.ts`) backfills `log: []` on every existing
-character — same pattern as
+### Migration (shipped)
+
+[`20260521_addKarmaLog.ts`](../../src/character/migrations/20260521_addKarmaLog.ts)
+backfills `log: []` on every existing character — same pattern as
 [`20260517_addFeatureFlags.ts`](../../src/character/migrations/20260517_addFeatureFlags.ts)
-from #297. Zod schema on `karma` updated to require `log` going forward.
+from #297. The schema on `karma` now requires `log` going forward.
 
 ### Undo (deferred to v2)
 Not implemented in v1. The spec is locked here so the future implementer doesn't re-litigate:
@@ -246,24 +272,30 @@ Concrete candidates surfaced by the resolved open questions:
 None of these are added by this feature on speculation — they enter the registry only when a
 group explicitly wants the deviation.
 
-## Rough Interface Sketches
+## Interfaces (shipped)
+
+These are no longer sketches — the v1 shapes live in
+[`improvementEntry.ts`](../../src/system/karma/improvements/improvementEntry.ts),
+[`improvementStore.ts`](../../src/system/karma/improvements/improvementStore.ts), and
+[`improvementUtils.ts`](../../src/system/karma/improvements/improvementUtils.ts):
 
 ```ts
 // One entry per planned spend. Discriminated by `type`.
 type ImprovementEntry =
   | AttrIncreaseEntry
-  | SkillIncreaseEntry            // active, knowledge, or language — disambiguated by skillType
-  | SkillSpecializationEntry
+  | SkillIncreaseEntry            // active, knowledge, or language — disambiguated by skillType;
+                                  //   carries optional `boostedByAptitude` for the rating-7 double-cost rule
+  | SkillSpecializationEntry      // also used for language Lingo (stored to skill.lingo by apply path)
   | SkillGroupIncreaseEntry
   | LearnActiveSkillEntry
   | LearnSkillGroupEntry
   | LearnKnowledgeSkillEntry
-  | LearnLanguageSkillEntry
+  | LearnLanguageSkillEntry       // skill.rating narrowed to number — no native via karma
   | LearnSpellEntry
   | LearnComplexFormEntry
-  | ComplexFormIncreaseEntry      // new in v1 — cost: new rating × 1 (parallels Knowledge/Language)
+  | ComplexFormIncreaseEntry      // v1 — cost: new rating × 1 (parallels Knowledge/Language)
   // Future (deferred slices): BondFocusEntry, LearnPositiveQualityEntry,
-  //   BuyOffNegativeQualityEntry, InitiateEntry, SubmergeEntry, ChangeSpecializationEntry
+  //   BuyOffNegativeQualityEntry, InitiateEntry, SubmergeEntry
 
 // Dialog-scoped store, created fresh by SpendKarmaDialogProvider.
 class ImprovementStore {
@@ -275,7 +307,8 @@ class ImprovementStore {
 // Pure cost lookup driven entirely by entry shape — no character-sheet access needed.
 function getImprovementCost(entry: ImprovementEntry): number
 
-// Single application path. Iterates the queue, mutates the sheet, deducts karma.
+// Single application path. Iterates the queue, applies each entry, deducts karma,
+// and appends one karma.log entry per ImprovementEntry — all inside one produce() block.
 function applyImprovements(
   improvementsStore: ImprovementStore,
   characterStore: CharacterSheetStore,
@@ -284,8 +317,8 @@ function applyImprovements(
 
 ## Out of Scope
 
-- **Karma earnings** — adding karma (`addKarmaDialog`) is unchanged and not part of this
-  feature (it gets the ledger write, but the dialog itself isn't being redesigned)
+- **Karma earnings** — adding karma (`addKarmaDialog`) was unchanged by this feature, beyond
+  the ledger write `KarmaStore.addKarma` now produces. The dialog itself wasn't redesigned.
 - **Downtime pacing rules** — SR4A allows one improvement of each kind per downtime, gated by
   an Extended `Intuition + skill` Test (threshold `new rating × 2`, interval 1 week / 1 month
   for groups), and improvements aren't usable until the end of the next adventure. The app
@@ -295,12 +328,12 @@ function applyImprovements(
   post-chargen only
 - **GM-driven karma adjustments** — out-of-band edits to `karma.current` (corrections, GM
   awards) are not modelled as `ImprovementEntry`s
-- **Karma ledger display UI** — the `karma.log` field and writes ship in v1; the on-screen
-  history view is a follow-up slice (see [Karma Ledger](#karma-ledger))
+- **Karma ledger display UI** — the `karma.log` field and writes shipped in v1; the
+  on-screen history view is a follow-up slice (see [Karma Ledger](#karma-ledger)).
 - **Undo after Save** — deferred to v2; spec locked in
-  [Karma Ledger → Undo (deferred to v2)](#undo-deferred-to-v2)
-- **Complex-form picker UI** — `complexFormIncrease` entry type lands in v1 (for
-  cost-formula coherence) but the technomancer-facing picker UI is a follow-up slice
+  [Karma Ledger → Undo (deferred to v2)](#undo-deferred-to-v2).
+- **Complex-form picker UI** — `complexFormIncrease` entry type and apply path shipped in
+  v1 for cost-formula coherence, but the technomancer-facing picker UI is a follow-up slice.
 - **Positive qualities (new) and negative-quality buy-off** — need a quality picker, BP×2
   cost surface, and the SR4A "karma debt" rule (when a GM-awarded positive quality exceeds
   current karma, **all subsequent karma earnings** auto-pay the debt until cleared — see
@@ -315,10 +348,11 @@ function applyImprovements(
   landing first.
 - **Long-term spirit binding** (Street Magic p. 94) — Force karma to lock a spirit into
   semi-permanent service. Lives with the spirit-management slice, not here.
-- ~~**Specialization change** (`changeSpecialization`)~~ — **no longer separate**: the wiki
-  treats new vs swapped specs as a single 2-karma spend, and `applySpecialization` already
-  overwrites the existing `specialization` / `lingo` on the skill, so renaming is implicit
-  in the existing `skillSpecialization` entry type.
+- **Specialization change is _not_ a separate entry type.** The wiki treats new vs swapped
+  specs as a single 2-karma spend, and `applySpecialization` already overwrites the existing
+  `specialization` / `lingo` on the skill, so renaming is implicit in the existing
+  `skillSpecialization` entry type. The v1 specialization picker dialog exposes this via a
+  "click the chip to rename" affordance on queued specs.
 - **Lifestyle / group / foundation expenditures** — all separate features
 
 ## Related Features
