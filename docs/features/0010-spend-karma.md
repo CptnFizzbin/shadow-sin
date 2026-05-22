@@ -27,13 +27,12 @@ explain what's still in the air. **Any decision recorded as a house-rule deviati
 routed through the optional-rules registry** — see [Optional Rules
 Integration](#optional-rules-integration) below.
 
-- [ ] **Do we need a persistent karma ledger?** #273 proposed `karma.log` as a per-character
-      audit trail of every advancement purchased ("Raised Agility 3 → 4 on 2025-08-14, −20k").
-      #274 ships without one — staged entries vanish on Save and only `karma.current` records
-      that anything was spent. Without a ledger there is no in-app "what did I buy last
-      session?" view and no foundation for an Undo-Last-Purchase feature. If we want it, where
-      does it live (CharacterSheet vs RunnerData session tier vs a new store) and when does it
-      land — this slice, a follow-up slice, or a separate feature?
+- [x] **Persistent karma ledger — yes, minimal append-only on `CharacterSheet.karma.log`.**
+      One `KarmaLedgerEntry` per applied improvement and per `addKarma` submit. Append-only,
+      no edit, no delete (counter-entries instead of removal). The full `ImprovementEntry` is
+      preserved on each spend entry so v2 undo / export / replay are cheap. **No UI in v1** —
+      the display surface is a follow-up slice. See [Karma Ledger](#karma-ledger) for the
+      shape, writes, and migration.
 
 - [x] **`mode: 'chargen' | 'advancement'` field on the character sheet — not needed.** The
       implicit split holds: BP controls live in the **builder** view; the Spend Karma dialog
@@ -62,10 +61,12 @@ Integration](#optional-rules-integration) below.
       prices at `× 5`; active-skill `× 2`; new-skill bases of `4` / `10` / `2`; specialization
       flat `2`; new spell flat `5`.)
 
-- [ ] **What happens to an applied improvement we want to take back?** No undo path exists
-      after Save — `karma.current` is decremented and the character-sheet change is permanent.
-      Acceptable for v1, or do we need a way to reverse the last batch (e.g. by replaying the
-      inverse of each entry in the queue)? A persistent ledger would make this trivial.
+- [x] **Undo after Save — defer to v2; ledger writes only in v1.** Pre-Save Cancel already
+      covers the most common misclick. The post-Save recovery path lands as a focused v2 PR
+      with strict-last-spend-only semantics (no skipping over later entries, no batch undo)
+      to sidestep dependency analysis entirely. The v1 ledger schema is forward-compatible:
+      reserve `"undo"` in the `source` enum now even though it goes unused. Full v2 spec in
+      [Karma Ledger → Undo (deferred to v2)](#undo-deferred-to-v2).
 
 - [x] **Rating 6, Aptitude, and attribute caps — enforce SR4A defaults at the queue layer.**
       The dialog should block any `ImprovementEntry` that would exceed the cap *before* it
@@ -79,12 +80,20 @@ Integration](#optional-rules-integration) below.
   - Magic / Resonance cap = `6 + initiation/submersion grade`.
   - A future "soft caps" optional rule could relax these, but the default matches the book.
 
-- [ ] **Scope of "Spend Karma" v1** — which improvement types must ship in the first merged
-      PR vs. follow-up slices? Currently shipped: attribute, active skill increase + learn,
-      skill group increase + learn, knowledge skill increase + learn, language skill increase +
-      learn, specialization. Not yet shipped: spells (UI placeholder, entry type exists),
-      complex forms (no `complexFormIncrease` entry type), positive qualities, negative-quality
-      buy-off, focus bonding, initiation, submersion.
+- [x] **v1 scope — MUST (correctness + ledger) + SHOULD (spell UI); DEFER everything that
+      needs a new domain surface.**
+  - **MUST land in v1** — blocks correctness or fulfills a resolved question above: cost-
+      formula bug fixes (5 deviations), `complexFormIncrease` entry type + apply path, cap
+      enforcement at the queue layer, native-language suppression, `karma.log` field +
+      migration + writes, `source` enum reserving `"undo"`
+  - **SHOULD land in v1** — small and closes a visible UX gap: spell-learning UI replacing
+      the `<Typography>Spell learning coming soon</Typography>` placeholder (entry type and
+      apply path already work; only the picker is missing)
+  - **DEFER to follow-up slices** — each needs its own domain surface or design pass:
+      complex-form picker UI (technomancer-only), positive-quality (new), negative-quality
+      buy-off, focus bonding (`bondFocus` per CONTEXT.md), initiation grade, submersion
+      grade, specialization change (`changeSpecialization` — SR4A allows swapping a spec for
+      2 karma)
 
 - [x] **Native-language pricing — suppress.** Per SR4A, native languages cannot be learned
       with Karma. The UI must not surface native as an option in `learnLanguageSkill`; the
@@ -138,6 +147,73 @@ Integration](#optional-rules-integration) below.
   `ImprovementEntry`. Bonding is not in `ImprovementType` yet — a future slice should add it
   here rather than inventing a parallel mechanism.
 
+## Karma Ledger
+
+A per-character append-only audit trail of every karma earn and spend, stored on
+`CharacterSheet.karma.log`. v1 ships the field, the migration, and the writes — **not** the
+display UI or undo (both deferred to follow-up slices).
+
+### Shape
+
+```ts
+karma: {
+  current: number
+  total: number
+  log: KarmaLedgerEntry[]    // new — empty array on existing characters via migration
+}
+
+interface KarmaLedgerEntry {
+  id: UUID
+  timestamp: string                            // ISO 8601
+  amount: number                               // negative = spend, positive = earn / refund
+  description: string                          // human-friendly, e.g. "Raised Agility 4 → 5"
+  source: "addKarma" | "spendKarma" | "undo"   // "undo" reserved for v2 — unused in v1
+  improvement?: ImprovementEntry               // present when source=spendKarma — enables v2 undo / export / replay
+  undoes?: UUID                                // present when source=undo (v2)
+}
+```
+
+### Writes (v1)
+- **`applyImprovements()`** — appends one entry per `ImprovementEntry` in the queue (not one
+  per Save batch — keeps the audit trail useful and matches the future undo unit)
+- **`addKarmaDialog`** — appends one positive-amount entry per submit
+
+### Migration
+A new migration (e.g. `<YYYYMMDD>_addKarmaLog.ts`) backfills `log: []` on every existing
+character — same pattern as
+[`20260517_addFeatureFlags.ts`](../../src/character/migrations/20260517_addFeatureFlags.ts)
+from #297. Zod schema on `karma` updated to require `log` going forward.
+
+### Undo (deferred to v2)
+Not implemented in v1. The spec is locked here so the future implementer doesn't re-litigate:
+
+- **Scope**: strictly the most recent ledger entry whose `source === "spendKarma"` — no
+  skipping over later entries, no batch undo. The strict-last-spend rule eliminates
+  dependency analysis entirely (nothing came after by definition).
+- **Affordance**: an "Undo last spend" control in the character-sheet Karma section, enabled
+  iff the most recent ledger entry's `source === "spendKarma"` (disabled after an `addKarma`,
+  after a prior `undo`, until the next spend lands).
+- **Effect — three writes in one atomic `produce()` block**:
+  1. Replay the inverse of the original `ImprovementEntry` on the character sheet
+  2. Add the original karma cost back to `karma.current`
+  3. Append a counter-entry to `karma.log` (do not remove the original — append-only):
+     ```ts
+     {
+       id: <new UUID>,
+       timestamp: <now>,
+       amount: <abs(original.amount)>,           // positive — refund
+       description: `Undid: ${original.description}`,
+       source: "undo",
+       undoes: original.id,
+     }
+     ```
+- **No re-do.** Re-applying is just a fresh trip through the normal Spend Karma dialog.
+
+### Intentionally out of scope (even for v2)
+- Ledger trimming or archival for long-running characters (YAGNI)
+- Filtering, search, or grouping in the display
+- Per-entry edit — the ledger is immutable; corrections happen via counter-entries
+
 ## Optional Rules Integration
 
 Any deliberate deviation from SR4A (cheaper skill groups, no rating caps, karma-learnable
@@ -186,8 +262,9 @@ type ImprovementEntry =
   | LearnLanguageSkillEntry
   | LearnSpellEntry
   | LearnComplexFormEntry
-  // Future: BondFocusEntry, LearnQualityEntry, BuyOffNegativeQualityEntry, InitiateEntry,
-  //         SpecialAttrIncreaseEntry
+  | ComplexFormIncreaseEntry      // new in v1 — cost: new rating × 1 (parallels Knowledge/Language)
+  // Future (deferred slices): BondFocusEntry, LearnPositiveQualityEntry,
+  //   BuyOffNegativeQualityEntry, InitiateEntry, SubmergeEntry, ChangeSpecializationEntry
 
 // Dialog-scoped store, created fresh by SpendKarmaDialogProvider.
 class ImprovementStore {
@@ -209,7 +286,7 @@ function applyImprovements(
 ## Out of Scope
 
 - **Karma earnings** — adding karma (`addKarmaDialog`) is unchanged and not part of this
-  feature
+  feature (it gets the ledger write, but the dialog itself isn't being redesigned)
 - **Downtime pacing rules** — SR4A allows one improvement of each kind per downtime, gated by
   an Extended `Intuition + skill` Test (threshold `new rating × 2`, interval 1 week / 1 month
   for groups), and improvements aren't usable until the end of the next adventure. The app
@@ -219,10 +296,19 @@ function applyImprovements(
   post-chargen only
 - **GM-driven karma adjustments** — out-of-band edits to `karma.current` (corrections, GM
   awards) are not modelled as `ImprovementEntry`s
-- **Persistent advancement history** — until the [karma-ledger question](#open-questions)
-  resolves, applied entries are not retained
-- **Initiation / submersion grades, focus bonding, group / foundation rules, lifestyle
-  expenditures** — all separate features
+- **Karma ledger display UI** — the `karma.log` field and writes ship in v1; the on-screen
+  history view is a follow-up slice (see [Karma Ledger](#karma-ledger))
+- **Undo after Save** — deferred to v2; spec locked in
+  [Karma Ledger → Undo (deferred to v2)](#undo-deferred-to-v2)
+- **Complex-form picker UI** — `complexFormIncrease` entry type lands in v1 (for
+  cost-formula coherence) but the technomancer-facing picker UI is a follow-up slice
+- **Positive qualities (new) and negative-quality buy-off** — need a quality picker, BP×2
+  cost surface, and (for new positives) the SR4A "karma debt" rule. Their own slice.
+- **Focus bonding (`bondFocus`), initiation grades, submersion grades** — each cross-cuts a
+  separate magical-advancement feature surface. Their own slices.
+- **Specialization change** (`changeSpecialization`) — SR4A allows swapping a spec for 2
+  karma; small but separate scope
+- **Lifestyle / group / foundation expenditures** — all separate features
 
 ## Related Features
 
