@@ -149,8 +149,11 @@ export const AddNoteDialog: FC<DialogApiDialogProps> = ({ open, onClose, onClose
 
 ### Inline `useState` dialog (no `DialogApi`)
 
-Prefer this pattern when the dialog needs access to `CharacterSheetProvider`
-or other React context (since `DialogApi` renders outside the provider tree).
+Use this pattern only when the consumer truly has no `DialogApi` available —
+uncommon in production code. `DialogApiProvider` is mounted inside
+`CharacterSheetProvider` in the app routes and the builder root, so the
+`useDialogApi`-based hook pattern shown above already has access to React
+context and is the project default.
 
 ```tsx
 import Button from "@mui/material/Button"
@@ -184,9 +187,11 @@ export const ExamplePage = () => {
 
 ## Guidelines
 
-- **Prefer inline `useState` dialogs** over `DialogApi` when the dialog needs
-  access to `CharacterSheetProvider` or other React context — `DialogApi`
-  renders outside the provider tree. See `AGENTS.md` → *Dialog patterns*.
+- **Prefer the `useDialogApi` + `use*Dialog` hook pattern** for new dialogs —
+  it's the project default and React context (including
+  `CharacterSheetProvider`) propagates normally because `DialogApiProvider`
+  is mounted inside the relevant providers. See the `DialogApi`-based
+  examples above and `AGENTS.md` → *Dialog patterns*.
 - **`onClosed` vs `onClose`**: `onClose` triggers the close animation;
   `onClosed` fires after it finishes. Reset form state in `onClosed` to avoid
   a flash of empty fields while the animation runs.
