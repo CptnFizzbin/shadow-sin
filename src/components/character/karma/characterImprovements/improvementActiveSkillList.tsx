@@ -36,12 +36,23 @@ import {
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 import { ImprovementActiveSkillRow } from "./improvementActiveSkillRow.tsx"
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
+
+function getActiveSkillSpecOptions(skill: SkillKey) {
+  const specs = skillList[skill]?.specializations ?? []
+  return {
+    fixedOptions: specs.filter((s): s is string => typeof s === "string"),
+    customPlaceholders: specs
+      .filter((s): s is { custom: true, placeholder: string } => typeof s === "object" && s !== null)
+      .map((s) => s.placeholder),
+  }
+}
 
 interface SkillRow {
   name: SkillKey
@@ -122,7 +133,10 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
       improvementStore.remove(queuedEntry.id)
       return
     }
-    const specialization = await specializationDialog.open({ skill: skill.name })
+    const specialization = await specializationDialog.open({
+      skillLabel: skill.name,
+      ...getActiveSkillSpecOptions(skill.name),
+    })
     if (!specialization) return
     const newEntry: Omit<SkillSpecializationEntry, "id"> = {
       type: ImprovementType.skillSpecialization,
@@ -137,7 +151,8 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
     const queuedEntry = queuedSpecs.find((entry) => entry.skill === skill.name) ?? null
     if (!queuedEntry) return
     const specialization = await specializationDialog.open({
-      skill: skill.name,
+      skillLabel: skill.name,
+      ...getActiveSkillSpecOptions(skill.name),
       initialValue: queuedEntry.specialization,
     })
     if (!specialization) return

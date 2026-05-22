@@ -3,27 +3,32 @@ import { describe, expect, it } from "vitest"
 
 import { DialogApi } from "#/components/dialogs/api/dialogApi.tsx"
 import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
 
-// Wrapper that exposes a button to trigger the dialog so we can test the result.
-function OpenButton({
-  skill,
-  initialValue,
-  onResult,
-}: {
-  skill: SkillKey
+interface OpenButtonProps {
+  skillLabel: string
+  fieldLabel?: string
+  fixedOptions?: readonly string[]
   initialValue?: string
   onResult: (value: string | undefined) => void
-}) {
+}
+
+// Wrapper that exposes a button to trigger the dialog so we can test the result.
+function OpenButton({
+  skillLabel,
+  fieldLabel,
+  fixedOptions,
+  initialValue,
+  onResult,
+}: OpenButtonProps) {
   const dialog = useSpecializationPickerDialog()
   return (
     <button
       type="button"
       onClick={async () => {
-        const result = await dialog.open({ skill, initialValue })
+        const result = await dialog.open({ skillLabel, fieldLabel, fixedOptions, initialValue })
         onResult(result)
       }}
     >
@@ -32,7 +37,7 @@ function OpenButton({
   )
 }
 
-function renderDialogHarness(skill: SkillKey, initialValue?: string) {
+function renderDialogHarness(props: Omit<OpenButtonProps, "onResult">) {
   const dialogApi = new DialogApi()
   let result: string | undefined = "__unset__"
   const onResult = (v: string | undefined) => {
@@ -41,7 +46,7 @@ function renderDialogHarness(skill: SkillKey, initialValue?: string) {
 
   renderWithProviders(
     <DialogApiProvider dialogApi={dialogApi}>
-      <OpenButton skill={skill} initialValue={initialValue} onResult={onResult} />
+      <OpenButton {...props} onResult={onResult} />
     </DialogApiProvider>,
   )
 
@@ -51,7 +56,7 @@ function renderDialogHarness(skill: SkillKey, initialValue?: string) {
 describe("SpecializationPickerDialog", () => {
   it("renders with the skill name in the title", async () => {
     // Arrange
-    renderDialogHarness(SkillKey.pistols)
+    renderDialogHarness({ skillLabel: "Pistols", fixedOptions: ["Revolvers"] })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Open" }))
@@ -60,22 +65,37 @@ describe("SpecializationPickerDialog", () => {
     await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
   })
 
+  it("uses a custom fieldLabel in the title (e.g. 'Lingo' for languages)", async () => {
+    // Arrange
+    renderDialogHarness({ skillLabel: "Sperethiel", fieldLabel: "Lingo" })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Open" }))
+
+    // Assert
+    await screen.findByText(/lingo\s*[—-]\s*Sperethiel/i)
+  })
+
   it("disables Save until a specialization is chosen", async () => {
     // Arrange
-    renderDialogHarness(SkillKey.pistols)
+    renderDialogHarness({ skillLabel: "Pistols", fixedOptions: ["Revolvers"] })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Open" }))
     await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
 
-    // Assert — Save is disabled with no selection
+    // Assert
     const saveButton = screen.getAllByRole("button", { name: /save/i }).at(-1)!
     expect((saveButton as HTMLButtonElement).disabled).toBe(true)
   })
 
   it("returns the initial value via Save when one is pre-filled", async () => {
     // Arrange
-    const { getResult } = renderDialogHarness(SkillKey.pistols, "Revolvers")
+    const { getResult } = renderDialogHarness({
+      skillLabel: "Pistols",
+      fixedOptions: ["Revolvers"],
+      initialValue: "Revolvers",
+    })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Open" }))
@@ -91,7 +111,11 @@ describe("SpecializationPickerDialog", () => {
 
   it("returns undefined when Cancel is clicked", async () => {
     // Arrange
-    const { getResult } = renderDialogHarness(SkillKey.pistols, "Revolvers")
+    const { getResult } = renderDialogHarness({
+      skillLabel: "Pistols",
+      fixedOptions: ["Revolvers"],
+      initialValue: "Revolvers",
+    })
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Open" }))
@@ -103,5 +127,18 @@ describe("SpecializationPickerDialog", () => {
     await waitFor(() => {
       expect(getResult()).toBeUndefined()
     })
+  })
+
+  it("shows a plain text input (no dropdown) when no fixedOptions are provided", async () => {
+    // Arrange — mirrors how knowledge/language skills will use it
+    renderDialogHarness({ skillLabel: "Ancient History" })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Open" }))
+    await screen.findByText(/specialization\s*[—-]\s*Ancient History/i)
+
+    // Assert — exactly one textbox, no combobox
+    expect(screen.getAllByRole("textbox")).toHaveLength(1)
+    expect(screen.queryByRole("combobox")).toBeNull()
   })
 })

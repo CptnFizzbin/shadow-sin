@@ -88,4 +88,45 @@ describe("ImprovementKnowledgeSkillList", () => {
     // Assert
     expect(improveButton.getAttribute("aria-pressed")).toBe("false")
   })
+
+  it("exposes an Add specialization button for each knowledge skill", () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.karma.current = 50
+    })
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /add specialization/i })).toBeTruthy()
+  })
+
+  it("clicking Add specialization opens the picker dialog with the knowledge skill name", async () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.karma.current = 50
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /add specialization/i }))
+
+    // Assert
+    expect(await screen.findByText(/specialization\s*[—-]\s*Ancient History/i)).toBeTruthy()
+  })
+
+  it("disables the Add specialization button when the character cannot afford 2 karma", () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.knowledgeSkills = [{ name: "Ancient History", rating: 3 }]
+      sheet.karma.current = 1 // < 2k for spec
+    })
+
+    // Act — nothing
+
+    // Assert
+    const specButton = screen.getByRole("button", { name: /add specialization/i })
+    expect((specButton as HTMLButtonElement).disabled).toBe(true)
+  })
 })

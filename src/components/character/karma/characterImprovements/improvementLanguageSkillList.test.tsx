@@ -87,4 +87,45 @@ describe("ImprovementLanguageSkillList", () => {
     // Assert
     expect(improveButton.getAttribute("aria-pressed")).toBe("true")
   })
+
+  it("exposes an Add lingo button for each language skill", () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
+      sheet.karma.current = 50
+    })
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /add lingo/i })).toBeTruthy()
+  })
+
+  it("clicking Add lingo opens the picker dialog titled with 'Lingo'", async () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
+      sheet.karma.current = 50
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /add lingo/i }))
+
+    // Assert
+    expect(await screen.findByText(/lingo\s*[—-]\s*Sperethiel/i)).toBeTruthy()
+  })
+
+  it("allows queuing a lingo for a native language", async () => {
+    // Arrange — natives can't be improved, but they CAN get a lingo
+    renderList((sheet) => {
+      sheet.skills.languageSkills = [{ name: "English", rating: "native" }]
+      sheet.karma.current = 50
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /add lingo/i }))
+
+    // Assert — dialog appears
+    expect(await screen.findByText(/lingo\s*[—-]\s*English/i)).toBeTruthy()
+  })
 })
