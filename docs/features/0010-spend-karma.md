@@ -303,11 +303,23 @@ function applyImprovements(
 - **Complex-form picker UI** — `complexFormIncrease` entry type lands in v1 (for
   cost-formula coherence) but the technomancer-facing picker UI is a follow-up slice
 - **Positive qualities (new) and negative-quality buy-off** — need a quality picker, BP×2
-  cost surface, and (for new positives) the SR4A "karma debt" rule. Their own slice.
+  cost surface, and the SR4A "karma debt" rule (when a GM-awarded positive quality exceeds
+  current karma, **all subsequent karma earnings** auto-pay the debt until cleared — see
+  [`rules/karma-spending.md`](../../../ShadowSinWiki/rules/karma-spending.md)). The picker
+  must also filter out **Awakened qualities** (Adept / Magician / Mystic Adept /
+  Technomancer) and **innate qualities** (Ambidexterity, etc.), which RAW says cannot be
+  acquired in play.
 - **Focus bonding (`bondFocus`), initiation grades, submersion grades** — each cross-cuts a
   separate magical-advancement feature surface. Their own slices.
-- **Specialization change** (`changeSpecialization`) — SR4A allows swapping a spec for 2
-  karma; small but separate scope
+- **Metamagic-driven karma spends** — Quickening (1 karma per Force per Combat Turn, lost
+  if dispelled), Anchoring, Cannibalize (Street Magic). All depend on the initiation slice
+  landing first.
+- **Long-term spirit binding** (Street Magic p. 94) — Force karma to lock a spirit into
+  semi-permanent service. Lives with the spirit-management slice, not here.
+- ~~**Specialization change** (`changeSpecialization`)~~ — **no longer separate**: the wiki
+  treats new vs swapped specs as a single 2-karma spend, and `applySpecialization` already
+  overwrites the existing `specialization` / `lingo` on the skill, so renaming is implicit
+  in the existing `skillSpecialization` entry type.
 - **Lifestyle / group / foundation expenditures** — all separate features
 
 ## Related Features
@@ -332,6 +344,11 @@ function applyImprovements(
 Rules references live in the sibling **ShadowSinWiki** repo (`../../../ShadowSinWiki/`),
 which is the canonical SR4A reference for this project:
 
+- [`rules/karma-spending.md`](../../../ShadowSinWiki/rules/karma-spending.md) — single-page
+  index of **every** documented way to spend karma (SR4A + Runner's Companion + Street
+  Magic). The deferred-slice list above is derived from this taxonomy; any new spend
+  category added to the wiki should reach this plan as either an in-scope item or a new
+  DEFER entry.
 - [`rules/character-improvement.md`](../../../ShadowSinWiki/rules/character-improvement.md) —
   SR4A p. 269–271; the advancement cost table this feature's formulas must match
 - [`rules/karma.md`](../../../ShadowSinWiki/rules/karma.md) — SR4A p. 71, 269; what Karma is
