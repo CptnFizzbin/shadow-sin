@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
@@ -9,6 +11,16 @@ export class KarmaStore extends StoreSlice<KarmaState> {
       ...prev,
       current: prev.current + amount,
       total: prev.total + amount,
+      log: [
+        ...prev.log,
+        {
+          id: crypto.randomUUID() as UUID,
+          timestamp: new Date().toISOString(),
+          amount,
+          description: `Added ${amount} karma`,
+          source: "addKarma" as const,
+        },
+      ],
     }))
   }
 

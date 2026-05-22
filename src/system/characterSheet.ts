@@ -7,6 +7,7 @@ import type { AwakeningType } from "./awakeningType.ts"
 import type { ContactData } from "./contactData.ts"
 import type { FeatureFlagsData } from "./featureFlags/featureFlagsData.ts"
 import type { ItemData } from "./itemData.ts"
+import type { KarmaLedgerEntry } from "./karma/karmaLedgerEntry.ts"
 import type { LifestyleType } from "./lifestyleType.ts"
 import type { LoanData } from "./loanData.ts"
 import type { ComplexFormData } from "./magic/complexFormData.ts"
@@ -76,6 +77,12 @@ export interface CharacterSheet {
   karma: {
     total: number
     current: number
+    /**
+     * Append-only audit trail of karma earns and spends. One entry per
+     * applied improvement and per Add Karma submit. Never edited or removed —
+     * corrections happen via counter-entries.
+     */
+    log: KarmaLedgerEntry[]
   }
 
   nuyen: {

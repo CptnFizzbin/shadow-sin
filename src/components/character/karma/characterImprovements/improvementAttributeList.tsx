@@ -13,7 +13,9 @@ import type { FC } from "react"
 import { useActiveAttributes } from "#/components/character/attributes/hooks/useActiveAttributes.ts"
 import { selectCurrentKarma } from "#/components/character/karma/karmaSelectors.ts"
 import { useKarmaStore } from "#/components/character/karma/useKarmaStore.ts"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { AttributeLabels } from "#/system/attributeKey.ts"
+import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isAttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -33,6 +35,7 @@ interface ImprovementAttributeListProps {
 export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const karmaStore = useKarmaStore()
+  const sheet = useCharacterSheet((s) => s)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
@@ -52,7 +55,9 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () =>
             const queuedEntry = queuedAttrIncreases.find(
               (entry) => entry.attr === attrInfo.attr,
             ) ?? null
-            const isAtMax = attrInfo.value >= attrInfo.max
+            // Use the karma-aware cap helper so Exceptional Attribute raises the ceiling.
+            const cap = getAttributeCap(sheet, attrInfo.attr)
+            const isAtMax = attrInfo.value >= cap
             const canAfford = queuedEntry !== null || karmaCost <= remainingKarma
 
             const handleToggle = () => {

@@ -9,4 +9,5 @@ export enum ImprovementType {
   learnLanguageSkill = "learnLanguageSkill",
   learnSpell = "learnSpell",
   learnComplexForm = "learnComplexForm",
+  complexFormIncrease = "complexFormIncrease",
 }

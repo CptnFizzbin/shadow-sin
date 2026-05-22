@@ -17,6 +17,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import {
   useLanguageSkillDialog,
 } from "#/components/character/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
+import { getLanguageSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnLanguageSkillEntry,
   SkillIncreaseEntry,
@@ -36,8 +37,6 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
-
-const MAX_SKILL_RATING = 6
 
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
@@ -76,7 +75,7 @@ export const ImprovementLanguageSkillList: FC = () => {
     if (saved.rating === "native") return // Native languages can't be learned via karma
     const newEntry: Omit<LearnLanguageSkillEntry, "id"> = {
       type: ImprovementType.learnLanguageSkill,
-      skill: saved,
+      skill: { name: saved.name, rating: saved.rating, lingo: saved.lingo },
     }
     improvementStore.add(newEntry)
   }
@@ -89,10 +88,11 @@ export const ImprovementLanguageSkillList: FC = () => {
         <Paper variant="outlined">
           <List disablePadding>
             {languageSkills.map((skill, index) => {
+              const cap = getLanguageSkillCap()
               const isNative = skill.rating === "native"
-              const numericRating: number = skill.rating === "native" ? MAX_SKILL_RATING : skill.rating
-              const karmaCost = (numericRating + 1) * 2
-              const isAtMax = isNative || numericRating >= MAX_SKILL_RATING
+              const numericRating: number = skill.rating === "native" ? cap : skill.rating
+              const karmaCost = (numericRating + 1) * 1
+              const isAtMax = isNative || numericRating >= cap
               const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
               const canAffordImprove = queuedEntry !== null || karmaCost <= remainingKarma
               const improveDisabled = isAtMax || (!canAffordImprove && !queuedEntry)
@@ -142,19 +142,16 @@ export const ImprovementLanguageSkillList: FC = () => {
                 </ListItem>
               )
             })}
-            {queuedLearns.map((entry, index) => {
-              const ratingDisplay = entry.skill.rating === "native" ? "Native" : `Rating ${entry.skill.rating}`
-              return (
-                <ImprovementQueuedLearnRow
-                  key={entry.id}
-                  primary={entry.skill.name}
-                  secondary={`New language · ${ratingDisplay}`}
-                  cost={getImprovementCost(entry)}
-                  isLastRow={index === queuedLearns.length - 1}
-                  onRemove={() => improvementStore.remove(entry.id)}
-                />
-              )
-            })}
+            {queuedLearns.map((entry, index) => (
+              <ImprovementQueuedLearnRow
+                key={entry.id}
+                primary={entry.skill.name}
+                secondary={`New language · Rating ${entry.skill.rating}`}
+                cost={getImprovementCost(entry)}
+                isLastRow={index === queuedLearns.length - 1}
+                onRemove={() => improvementStore.remove(entry.id)}
+              />
+            ))}
           </List>
         </Paper>
       )}

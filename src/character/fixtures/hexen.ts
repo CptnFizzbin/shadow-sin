@@ -28,6 +28,7 @@ export const Hexen: CharacterSheet = {
   karma: {
     total: 0,
     current: 0,
+    log: [],
   },
 
   nuyen: {

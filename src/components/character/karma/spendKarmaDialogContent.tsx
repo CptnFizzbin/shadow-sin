@@ -32,6 +32,7 @@ import { ImprovementAttributeList } from "./characterImprovements/improvementAtt
 import { ImprovementKnowledgeSkillList } from "./characterImprovements/improvementKnowledgeSkillList.tsx"
 import { ImprovementLanguageSkillList } from "./characterImprovements/improvementLanguageSkillList.tsx"
 import { ImprovementSkillGroupList } from "./characterImprovements/improvementSkillGroupList.tsx"
+import { ImprovementSpellList } from "./characterImprovements/improvementSpellList.tsx"
 import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "./characterImprovements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./characterImprovements/useImprovementSelector.ts"
 import { selectCurrentKarma } from "./karmaSelectors.ts"
@@ -157,14 +158,7 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
             {activeSection === "skillGroup" && <ImprovementSkillGroupList onBack={() => setActiveSection("attribute")} />}
             {activeSection === "knowledge" && <ImprovementKnowledgeSkillList />}
             {activeSection === "language" && <ImprovementLanguageSkillList />}
-            {activeSection === "spell" && (
-              <Stack sx={{ py: 4, alignItems: "center", gap: 1 }}>
-                <RiSparklingLine size={32} style={{ opacity: 0.3 }} />
-                <Typography variant="body2" color="text.secondary">
-                  Spell learning coming soon
-                </Typography>
-              </Stack>
-            )}
+            {activeSection === "spell" && <ImprovementSpellList />}
           </Box>
         </Box>
       </Dialog.Content>

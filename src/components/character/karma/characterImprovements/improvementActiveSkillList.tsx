@@ -15,6 +15,10 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import {
   useActiveSkillDialog,
 } from "#/components/character/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
+import {
+  getActiveSkillCap,
+  hasAptitudeFor,
+} from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
@@ -42,6 +46,8 @@ interface SkillRow {
   name: SkillKey
   rating: number
   isGrouped: boolean
+  cap: number
+  hasAptitude: boolean
 }
 
 // onBack kept for interface compatibility during dialog migration; not rendered
@@ -52,8 +58,9 @@ interface ImprovementActiveSkillListProps {
 export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const karmaStore = useKarmaStore()
-  const activeSkills = useCharacterSheet((sheet) => sheet.skills.activeSkills)
-  const skillGroups = useCharacterSheet((sheet) => sheet.skills.skillGroups)
+  const sheet = useCharacterSheet((s) => s)
+  const activeSkills = useCharacterSheet((s) => s.skills.activeSkills)
+  const skillGroups = useCharacterSheet((s) => s.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
@@ -73,6 +80,8 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
       name: skillKey,
       rating: group.rating,
       isGrouped: true,
+      cap: getActiveSkillCap(sheet, skillKey),
+      hasAptitude: hasAptitudeFor(sheet, skillKey),
     })),
   )
 
@@ -80,6 +89,8 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
     name: skill.name,
     rating: skill.rating,
     isGrouped: false,
+    cap: getActiveSkillCap(sheet, skill.name),
+    hasAptitude: hasAptitudeFor(sheet, skill.name),
   }))
 
   const allSkillRows: SkillRow[] = [...standaloneRows, ...groupedSkillRows]
@@ -88,16 +99,19 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
     const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
     if (queuedEntry) {
       improvementStore.remove(queuedEntry.id)
-    } else {
-      const newEntry: Omit<SkillIncreaseEntry, "id"> = {
-        type: ImprovementType.skillIncrease,
-        skillType: "ActiveSkill",
-        skill: skill.name,
-        baseRating: skill.rating,
-        newRating: skill.rating + 1,
-      }
-      improvementStore.add(newEntry)
+      return
     }
+    if (skill.rating >= skill.cap) return
+    const newRating = skill.rating + 1
+    const newEntry: Omit<SkillIncreaseEntry, "id"> = {
+      type: ImprovementType.skillIncrease,
+      skillType: "ActiveSkill",
+      skill: skill.name,
+      baseRating: skill.rating,
+      newRating,
+      ...(skill.hasAptitude && newRating > 6 ? { boostedByAptitude: true } : {}),
+    }
+    improvementStore.add(newEntry)
   }
 
   const handleToggleSpec = (skill: SkillRow) => {
@@ -153,6 +167,8 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
                 key={`${skill.name}-${String(skill.isGrouped)}`}
                 skillName={skill.name}
                 rating={skill.rating}
+                cap={skill.cap}
+                hasAptitude={skill.hasAptitude}
                 isGrouped={skill.isGrouped}
                 isLastRow={index === allSkillRows.length - 1 && queuedLearns.length === 0}
                 remainingKarma={remainingKarma}

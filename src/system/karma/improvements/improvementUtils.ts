@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import type { Draft } from "immer"
 import { produce } from "immer"
 
@@ -7,7 +9,9 @@ import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
+import { describeImprovement } from "./improvementDescription.ts"
 import type {
+  ComplexFormIncreaseEntry,
   ImprovementEntry,
   LearnActiveSkillEntry,
   LearnKnowledgeSkillEntry,
@@ -25,6 +29,14 @@ const NEW_ACTIVE_SKILL_COST = 4
 const NEW_SKILL_GROUP_COST = 10
 const NEW_KNOWLEDGE_SKILL_COST = 2
 const NEW_LANGUAGE_SKILL_COST = 2
+const NEW_COMPLEX_FORM_COST = 2
+
+// SR4A per-step karma multipliers (new rating × multiplier).
+const ACTIVE_SKILL_KARMA_MULT = 2
+const SKILL_GROUP_KARMA_MULT = 5
+const KNOWLEDGE_LANGUAGE_KARMA_MULT = 1
+const ATTRIBUTE_KARMA_MULT = 5
+const COMPLEX_FORM_KARMA_MULT = 1
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
@@ -34,7 +46,16 @@ export const applyImprovements = (
 
   characterStore.setState(produce((sheet) => {
     for (const entry of Object.values(improvementsState)) {
+      const cost = getImprovementCost(entry)
       applyImprovement(sheet, entry)
+      sheet.karma.log.push({
+        id: crypto.randomUUID() as UUID,
+        timestamp: new Date().toISOString(),
+        amount: -cost,
+        description: describeImprovement(entry),
+        source: "spendKarma",
+        improvement: entry,
+      })
     }
   }))
 }
@@ -42,28 +63,39 @@ export const applyImprovements = (
 export const getImprovementCost = (entry: ImprovementEntry) => {
   switch (entry.type) {
     case ImprovementType.attrIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, 5)
-    case ImprovementType.skillIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, 2)
+      return getRatingIncreaseCost(entry.baseRating, entry.newRating, ATTRIBUTE_KARMA_MULT)
+    case ImprovementType.skillIncrease: {
+      const mult = entry.skillType === "ActiveSkill"
+        ? ACTIVE_SKILL_KARMA_MULT
+        : KNOWLEDGE_LANGUAGE_KARMA_MULT
+      if (entry.boostedByAptitude && entry.skillType === "ActiveSkill") {
+        // SR4A p. 87: with Aptitude, raises past rating 6 cost double karma per step.
+        return getAptitudeBoostedActiveSkillCost(entry.baseRating, entry.newRating, mult)
+      }
+      return getRatingIncreaseCost(entry.baseRating, entry.newRating, mult)
+    }
     case ImprovementType.skillGroupIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, 2)
+      return getRatingIncreaseCost(entry.baseRating, entry.newRating, SKILL_GROUP_KARMA_MULT)
     case ImprovementType.skillSpecialization:
       return 2
     case ImprovementType.learnActiveSkill:
-      return NEW_ACTIVE_SKILL_COST + getRatingIncreaseCost(1, entry.skill.rating, 2)
+      return NEW_ACTIVE_SKILL_COST
+        + getRatingIncreaseCost(1, entry.skill.rating, ACTIVE_SKILL_KARMA_MULT)
     case ImprovementType.learnSkillGroup:
-      return NEW_SKILL_GROUP_COST + getRatingIncreaseCost(1, entry.group.rating, 2)
+      return NEW_SKILL_GROUP_COST
+        + getRatingIncreaseCost(1, entry.group.rating, SKILL_GROUP_KARMA_MULT)
     case ImprovementType.learnKnowledgeSkill:
-      return NEW_KNOWLEDGE_SKILL_COST + getRatingIncreaseCost(1, entry.skill.rating, 2)
-    case ImprovementType.learnLanguageSkill: {
-      // Native languages can't be learned via karma; treat as the base cost only.
-      const targetRating = entry.skill.rating === "native" ? 1 : entry.skill.rating
-      return NEW_LANGUAGE_SKILL_COST + getRatingIncreaseCost(1, targetRating, 2)
-    }
+      return NEW_KNOWLEDGE_SKILL_COST
+        + getRatingIncreaseCost(1, entry.skill.rating, KNOWLEDGE_LANGUAGE_KARMA_MULT)
+    case ImprovementType.learnLanguageSkill:
+      return NEW_LANGUAGE_SKILL_COST
+        + getRatingIncreaseCost(1, entry.skill.rating, KNOWLEDGE_LANGUAGE_KARMA_MULT)
     case ImprovementType.learnSpell:
       return 5
     case ImprovementType.learnComplexForm:
-      return 5
+      return NEW_COMPLEX_FORM_COST
+    case ImprovementType.complexFormIncrease:
+      return getRatingIncreaseCost(entry.baseRating, entry.newRating, COMPLEX_FORM_KARMA_MULT)
   }
 }
 
@@ -74,6 +106,23 @@ export const getRatingIncreaseCost = (baseRating: number, newRating: number, kar
   while (rating < newRating) {
     rating++
     totalKarma += rating * karmaMult
+  }
+
+  return totalKarma
+}
+
+const getAptitudeBoostedActiveSkillCost = (
+  baseRating: number,
+  newRating: number,
+  karmaMult: number,
+) => {
+  let totalKarma = 0
+  let rating = baseRating
+
+  while (rating < newRating) {
+    rating++
+    const stepMult = rating > 6 ? karmaMult * 2 : karmaMult
+    totalKarma += rating * stepMult
   }
 
   return totalKarma
@@ -110,9 +159,21 @@ export const applyImprovement = (sheet: Draft<CharacterSheet>, entry: Improvemen
     case ImprovementType.learnComplexForm:
       sheet.complexForms.push(entry.complexForm)
       break
+    case ImprovementType.complexFormIncrease:
+      applyComplexFormIncrease(sheet, entry)
+      break
   }
 
   sheet.karma.current -= getImprovementCost(entry)
+}
+
+const applyComplexFormIncrease = (
+  sheet: Draft<CharacterSheet>,
+  entry: ComplexFormIncreaseEntry,
+) => {
+  const complexForm = sheet.complexForms.find((cf) => cf.id === entry.complexFormId)
+  if (!complexForm) throw new Error(`Complex form ${entry.complexFormId} not found on character sheet`)
+  complexForm.rating = entry.newRating
 }
 
 const applySkillIncrease = (sheet: Draft<CharacterSheet>, entry: SkillIncreaseEntry) => {
@@ -157,7 +218,9 @@ const applySpecialization = (sheet: Draft<CharacterSheet>, entry: SkillSpecializ
 
 const breakSkillGroup = (sheet: Draft<CharacterSheet>, group: SkillGroupKey): void => {
   const groupData = sheet.skills.skillGroups.find((g) => g.name === group)
-  if (!groupData) throw new Error(`Skill group ${group} not found on character sheet`)
+  // No-op when the group isn't on the sheet — the skill being raised was
+  // either learned standalone or the group was already broken.
+  if (!groupData) return
 
   sheet.skills.skillGroups = sheet.skills.skillGroups.filter((g) => g.name !== group)
 

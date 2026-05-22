@@ -34,6 +34,11 @@ export interface SkillIncreaseEntry extends BaseImprovementEntry {
   skill: SkillKey
   baseRating: number
   newRating: number
+  /**
+   * When raising an Active Skill above 6 via the Aptitude quality, each step
+   * past rating 6 costs double Karma. Set by the queueing UI when applicable.
+   */
+  boostedByAptitude?: boolean
 }
 
 export function isSkillIncreaseEntry(entry: ImprovementEntry): entry is SkillIncreaseEntry {
@@ -80,6 +85,19 @@ export function isLearnComplexFormEntry(entry: ImprovementEntry): entry is Learn
   return entry.type === ImprovementType.learnComplexForm
 }
 
+export interface ComplexFormIncreaseEntry extends BaseImprovementEntry {
+  type: ImprovementType.complexFormIncrease
+  complexFormId: string
+  baseRating: number
+  newRating: number
+}
+
+export function isComplexFormIncreaseEntry(
+  entry: ImprovementEntry,
+): entry is ComplexFormIncreaseEntry {
+  return entry.type === ImprovementType.complexFormIncrease
+}
+
 export interface LearnActiveSkillEntry extends BaseImprovementEntry {
   type: ImprovementType.learnActiveSkill
   skill: ActiveSkillData
@@ -109,9 +127,13 @@ export function isLearnKnowledgeSkillEntry(
   return entry.type === ImprovementType.learnKnowledgeSkill
 }
 
+// Native languages cannot be learned with karma (SR4A); the entry's rating is
+// always numeric. This narrows `LanguageSkillData["rating"]` from `number | "native"`.
+export type LearnableLanguageSkillData = Omit<LanguageSkillData, "rating"> & { rating: number }
+
 export interface LearnLanguageSkillEntry extends BaseImprovementEntry {
   type: ImprovementType.learnLanguageSkill
-  skill: LanguageSkillData
+  skill: LearnableLanguageSkillData
 }
 
 export function isLearnLanguageSkillEntry(
@@ -131,3 +153,4 @@ export type ImprovementEntry =
   | LearnLanguageSkillEntry
   | LearnSpellEntry
   | LearnComplexFormEntry
+  | ComplexFormIncreaseEntry

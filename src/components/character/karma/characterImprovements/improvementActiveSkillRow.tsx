@@ -12,11 +12,13 @@ import type { FC } from "react"
 
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
-const MAX_SKILL_RATING = 6
-
 interface ImprovementActiveSkillRowProps {
   skillName: SkillKey
   rating: number
+  /** Maximum rating this skill can reach (6 normally, 7 with Aptitude). */
+  cap: number
+  /** Whether the character has the Aptitude quality for this skill — drives double-cost beyond 6. */
+  hasAptitude: boolean
   isGrouped: boolean
   isLastRow: boolean
   remainingKarma: number
@@ -29,6 +31,8 @@ interface ImprovementActiveSkillRowProps {
 export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
   skillName,
   rating,
+  cap,
+  hasAptitude,
   isGrouped,
   isLastRow,
   remainingKarma,
@@ -37,9 +41,11 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
   onToggleImprove,
   onToggleSpec,
 }) => {
-  const improveCost = (rating + 1) * 2
+  const nextRating = rating + 1
+  const baseStepCost = nextRating * 2
+  const improveCost = hasAptitude && nextRating > 6 ? baseStepCost * 2 : baseStepCost
   const specCost = 2
-  const isAtMax = rating >= MAX_SKILL_RATING
+  const isAtMax = rating >= cap
   const canAffordImprove = isImproveQueued || improveCost <= remainingKarma
   const canAffordSpec = isSpecQueued || specCost <= remainingKarma
   const improveDisabled = isAtMax || (!canAffordImprove && !isImproveQueued)

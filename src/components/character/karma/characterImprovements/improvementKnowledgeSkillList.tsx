@@ -17,6 +17,7 @@ import { useCharacterSheet } from "#/components/character/sheet/characterSheetPr
 import {
   useKnowledgeSkillDialog,
 } from "#/components/character/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
+import { getKnowledgeSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnKnowledgeSkillEntry,
   SkillIncreaseEntry,
@@ -36,8 +37,6 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
-
-const MAX_SKILL_RATING = 6
 
 export const ImprovementKnowledgeSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
@@ -88,8 +87,8 @@ export const ImprovementKnowledgeSkillList: FC = () => {
         <Paper variant="outlined">
           <List disablePadding>
             {knowledgeSkills.map((skill, index) => {
-              const karmaCost = (skill.rating + 1) * 2
-              const isAtMax = skill.rating >= MAX_SKILL_RATING
+              const karmaCost = (skill.rating + 1) * 1
+              const isAtMax = skill.rating >= getKnowledgeSkillCap()
               const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
               const canAffordImprove = queuedEntry !== null || karmaCost <= remainingKarma
               const improveDisabled = isAtMax || (!canAffordImprove && !queuedEntry)
