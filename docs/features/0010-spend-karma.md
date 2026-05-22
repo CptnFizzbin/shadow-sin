@@ -20,10 +20,12 @@ discarded. This differs from the immediate-spend model originally sketched in
 [#273](https://github.com/CptnFizzbin/shadow-sin/pull/273), and the trade-offs around that
 choice are captured in [Open Questions](#open-questions) below.
 
-## Open Questions
+## Open & Resolved Questions
 
-These are the design decisions that the queue model in #274 leaves on the table — most are
-deliberate deferrals, but each needs an explicit answer before the feature ships:
+Resolved items are marked `[x]` with the decision inline; unresolved ones keep `[ ]` and
+explain what's still in the air. **Any decision recorded as a house-rule deviation must be
+routed through the optional-rules registry** — see [Optional Rules
+Integration](#optional-rules-integration) below.
 
 - [ ] **Do we need a persistent karma ledger?** #273 proposed `karma.log` as a per-character
       audit trail of every advancement purchased ("Raised Agility 3 → 4 on 2025-08-14, −20k").
@@ -32,55 +34,75 @@ deliberate deferrals, but each needs an explicit answer before the feature ships
       session?" view and no foundation for an Undo-Last-Purchase feature. If we want it, where
       does it live (CharacterSheet vs RunnerData session tier vs a new store) and when does it
       land — this slice, a follow-up slice, or a separate feature?
-- [ ] **Do we need a `mode: 'chargen' | 'advancement'` field on the character sheet?** #273
-      proposed one to decide which currency and cost table is in play. #274 sidesteps the
-      question by placing the Spend Karma dialog in the character-sheet view (post-chargen) and
-      BP controls in the builder — chargen vs advancement is implicit in **which UI surface you
-      are using**. Is that good enough, or are there flows (e.g. mid-build karma earnings, GM
-      adjustments, retroactive sheet edits) where the implicit split breaks down?
-- [ ] **Cost-formula deviations from SR4A — bugs or intentional house rules?** Cross-checked
-      against the [ShadowSinWiki rules
-      page](../../../ShadowSinWiki/rules/character-improvement.md) (SR4A p. 270). Most
-      formulas in `improvementUtils.ts` match the table; these do not:
-  - `skillGroupIncrease` uses `× 2`; SR4A is **`× 5`**
-  - `skillIncrease` for `KnowledgeSkill` / `LanguageSkill` uses `× 2`; SR4A is **`× 1`**
-      (just "new rating")
-  - `learnSkillGroup` per-step raise uses `× 2`; should be `× 5` if the base+raise
-      composition stays
-  - `learnKnowledgeSkill` / `learnLanguageSkill` per-step raise uses `× 2`; should be `× 1`
-  - `learnComplexForm` is flat `5`; SR4A is **`2`**
-  - No `complexFormIncrease` entry type — improving an existing complex form (`new rating × 1`
-      per step) cannot be staged today
+
+- [x] **`mode: 'chargen' | 'advancement'` field on the character sheet — not needed.** The
+      implicit split holds: BP controls live in the **builder** view; the Spend Karma dialog
+      lives in the **character-sheet** view. Which UI surface you're on is the chargen-vs-
+      advancement marker. No `mode` field, no migration, no extra Zod schema field. If a flow
+      later proves the split insufficient (GM mid-game retroactive edits, etc.), reopen as a
+      separate decision.
+
+- [x] **Cost-formula deviations from SR4A — fix to SR4A defaults; route any intentional
+      group-level deviation through `optionalRulesRegistry`.** Each value in
+      `improvementUtils.ts` is treated as a bug against the
+      [SR4A advancement table](../../../ShadowSinWiki/rules/character-improvement.md) until
+      shown otherwise; the defaults below are what the code should compute when no optional
+      rule is set. If a group wants to keep one of the cheaper variants, expose it as a new
+      entry in
+      [`optionalRulesRegistry.ts`](../../src/system/featureFlags/optionalRulesRegistry.ts)
+      (e.g. `cheaperSkillGroupAdvancement: createFlag<boolean>({ defaultValue: false, … })`)
+      and branch on it inside `getImprovementCost`.
+  - Fix: `skillGroupIncrease` per-step → **`× 5`** (was `× 2`)
+  - Fix: `skillIncrease` for Knowledge / Language → **`× 1`** (was `× 2`)
+  - Fix: `learnSkillGroup` per-step raise → **`× 5`**
+  - Fix: `learnKnowledgeSkill` / `learnLanguageSkill` per-step raise → **`× 1`**
+  - Fix: `learnComplexForm` → **flat `2`** (was `5`)
+  - Add: `complexFormIncrease` entry type — `new rating × 1` per step
   - (Already correct: attribute `× 5` — including Magic / Resonance / Edge, which SR4A also
       prices at `× 5`; active-skill `× 2`; new-skill bases of `4` / `10` / `2`; specialization
       flat `2`; new spell flat `5`.)
+
 - [ ] **What happens to an applied improvement we want to take back?** No undo path exists
       after Save — `karma.current` is decremented and the character-sheet change is permanent.
       Acceptable for v1, or do we need a way to reverse the last batch (e.g. by replaying the
       inverse of each entry in the queue)? A persistent ledger would make this trivial.
-- [ ] **Should the queue enforce Rating 6, Aptitude, and attribute caps?** SR4A caps each
-      Active Skill at rating 6 unless the character has the [`Aptitude`
-      quality](../../../ShadowSinWiki/qualities/aptitude.md) for that skill — and raises
-      beyond 6 with Aptitude cost **double Karma per step**. Attributes cap at the metatype
-      maximum (`+1` with [`Exceptional Attribute`](../../../ShadowSinWiki/qualities/exceptional-attribute.md));
-      Magic and Resonance cap at `6 + initiation/submersion grade`. PR #274 does not appear to
-      enforce any of these. Block at the queue layer, at the UI layer, or punt to a future
-      validation pass?
+
+- [x] **Rating 6, Aptitude, and attribute caps — enforce SR4A defaults at the queue layer.**
+      The dialog should block any `ImprovementEntry` that would exceed the cap *before* it
+      lands in the queue (not at Save). Caps to enforce, per
+      [character-improvement](../../../ShadowSinWiki/rules/character-improvement.md):
+  - Active skill cap at 6 unless the character has the
+      [`Aptitude`](../../../ShadowSinWiki/qualities/aptitude.md) quality for that skill;
+      with Aptitude, the cap is 7 and raises beyond 6 cost **double Karma per step**.
+  - Attribute cap = metatype maximum (`+1` to one attribute with
+      [`Exceptional Attribute`](../../../ShadowSinWiki/qualities/exceptional-attribute.md)).
+  - Magic / Resonance cap = `6 + initiation/submersion grade`.
+  - A future "soft caps" optional rule could relax these, but the default matches the book.
+
 - [ ] **Scope of "Spend Karma" v1** — which improvement types must ship in the first merged
       PR vs. follow-up slices? Currently shipped: attribute, active skill increase + learn,
       skill group increase + learn, knowledge skill increase + learn, language skill increase +
       learn, specialization. Not yet shipped: spells (UI placeholder, entry type exists),
       complex forms (no `complexFormIncrease` entry type), positive qualities, negative-quality
       buy-off, focus bonding, initiation, submersion.
-- [ ] **Native-language pricing** — `learnLanguageSkill` for a native language is treated as
-      "rating 1" for cost purposes. Per SR4A, native languages can't be learned with karma at
-      all. Should the UI suppress this option, or is the current cost a safe fallback?
+
+- [x] **Native-language pricing — suppress.** Per SR4A, native languages cannot be learned
+      with Karma. The UI must not surface native as an option in `learnLanguageSkill`; the
+      current "treat as rating 1" fallback is dead code paths. If a group wants to allow it,
+      that's a future optional rule (`allowKarmaForNativeLanguage`); defaults to off.
 
 ## Constraints
 
-- **SR4A is the rulebook source of truth** — every cost formula traces back to the SR4A
-  advancement table (p. 270). Where the implementation diverges, the table wins unless we
-  record a deliberate house-rule decision.
+- **SR4A is the rulebook source of truth.** Every cost formula in `improvementUtils.ts`
+  must match the [SR4A advancement
+  table](../../../ShadowSinWiki/rules/character-improvement.md) by default. Group-level
+  deviations live in
+  [`optionalRulesRegistry`](../../src/system/featureFlags/optionalRulesRegistry.ts) and are
+  read at call time — they do not get hardcoded into `improvementUtils.ts`. See
+  [Optional Rules Integration](#optional-rules-integration).
+- **The Spend Karma dialog lives on the character-sheet view, not the builder.** The view
+  surface is the implicit chargen-vs-advancement marker — there is no `mode` field on the
+  character sheet.
 - **Karma is finite and never goes negative.** The dialog must block Save when the staged
   queue's total cost exceeds `karma.current`. (Already enforced via `remainingKarma < 0` →
   Save disabled.)
@@ -115,6 +137,39 @@ deliberate deferrals, but each needs an explicit answer before the feature ships
 - The CONTEXT.md entries for **Focus / Bonding** already describe `bondFocus` as an
   `ImprovementEntry`. Bonding is not in `ImprovementType` yet — a future slice should add it
   here rather than inventing a parallel mechanism.
+
+## Optional Rules Integration
+
+Any deliberate deviation from SR4A (cheaper skill groups, no rating caps, karma-learnable
+native languages, etc.) is expressed as an entry in
+[`src/system/featureFlags/optionalRulesRegistry.ts`](../../src/system/featureFlags/optionalRulesRegistry.ts)
+rather than hardcoded in `improvementUtils.ts`. The pattern from
+[#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) /
+[#298](https://github.com/CptnFizzbin/shadow-sin/pull/298):
+
+1. **Register the variant** — add a `createFlag<Value>({ name, description, source: { book,
+   page }, defaultValue })` entry. **`defaultValue` must produce stock SR4A behaviour** so
+   absence of the flag is indistinguishable from the rulebook (per [ADR
+   0002 — feature-flags-design](../adr/0002-feature-flags-design.md)).
+2. **Read at cost-calculation time** — `getImprovementCost` branches on
+   `useGameConfig().config.featureFlags?.optionalRules?.<key>` (with the runner-level
+   override at `characterSheet.featureFlags?.optionalRules?.<key>` taking precedence once
+   per-runner UI is wired).
+3. **Don't pollute the entry shape** — `ImprovementEntry` itself stays SR4A-typed; the
+   pricing branch is a pure function of `(entry, optionalRules)`.
+
+Concrete candidates surfaced by the resolved open questions:
+
+| Candidate key                        | Effect when on                                                          | Default |
+|--------------------------------------|-------------------------------------------------------------------------|--------:|
+| `cheaperSkillGroupAdvancement`       | Skill-group rating increase uses `× 2` instead of `× 5`                 |  off    |
+| `cheaperKnowledgeSkillAdvancement`   | Knowledge / Language rating increase uses `× 2` instead of `× 1`        |  off    |
+| `cheaperComplexFormLearning`         | New complex form costs `5` instead of `2`                               |  off    |
+| `allowKarmaForNativeLanguage`        | Surface native language as a `learnLanguageSkill` target                |  off    |
+| `noSkillRatingCap`                   | Don't enforce the rating-6 cap (or Aptitude double-cost beyond 6)       |  off    |
+
+None of these are added by this feature on speculation — they enter the registry only when a
+group explicitly wants the deviation.
 
 ## Rough Interface Sketches
 
@@ -177,8 +232,14 @@ function applyImprovements(
 - [`docs/features/0006-game-effect-resolution-model.md`](./0006-game-effect-resolution-model.md)
   — Focus bonding (a future `ImprovementType`) produces `GameEffect`s on activation
 - [`docs/features/0007-migration-system-improvement.md`](./0007-migration-system-improvement.md)
-  — if a persistent karma ledger or `mode` field is added, the new schema version scheme should
+  — if a persistent karma ledger is added later, the new schema version scheme should
   be in place first
+- [ADR 0002 — feature-flags-design](../adr/0002-feature-flags-design.md) — the namespaced
+  registry pattern that any house-rule cost / cap deviations for this feature plug into
+- [#297](https://github.com/CptnFizzbin/shadow-sin/pull/297) — `FeatureFlagsData`,
+  `optionalRulesRegistry`, GameConfig type
+- [#298](https://github.com/CptnFizzbin/shadow-sin/pull/298) — `GameConfigProvider`
+  (runtime home for the GM-layer config that house-rule toggles read from)
 
 ## Sources
 
