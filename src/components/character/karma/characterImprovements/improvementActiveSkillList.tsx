@@ -39,6 +39,7 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { ImprovementActiveSkillRow } from "./improvementActiveSkillRow.tsx"
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
+import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
@@ -65,6 +66,7 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
   const activeSkillDialog = useActiveSkillDialog()
+  const specializationDialog = useSpecializationPickerDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedSkillIncreases = allImprovements
@@ -114,19 +116,39 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
     improvementStore.add(newEntry)
   }
 
-  const handleToggleSpec = (skill: SkillRow) => {
+  const handleToggleSpec = async (skill: SkillRow) => {
     const queuedEntry = queuedSpecs.find((entry) => entry.skill === skill.name) ?? null
     if (queuedEntry) {
       improvementStore.remove(queuedEntry.id)
-    } else {
-      const newEntry: Omit<SkillSpecializationEntry, "id"> = {
-        type: ImprovementType.skillSpecialization,
-        skillType: "ActiveSkill",
-        skill: skill.name,
-        specialization: "New Spec",
-      }
-      improvementStore.add(newEntry)
+      return
     }
+    const specialization = await specializationDialog.open({ skill: skill.name })
+    if (!specialization) return
+    const newEntry: Omit<SkillSpecializationEntry, "id"> = {
+      type: ImprovementType.skillSpecialization,
+      skillType: "ActiveSkill",
+      skill: skill.name,
+      specialization,
+    }
+    improvementStore.add(newEntry)
+  }
+
+  const handleEditSpec = async (skill: SkillRow) => {
+    const queuedEntry = queuedSpecs.find((entry) => entry.skill === skill.name) ?? null
+    if (!queuedEntry) return
+    const specialization = await specializationDialog.open({
+      skill: skill.name,
+      initialValue: queuedEntry.specialization,
+    })
+    if (!specialization) return
+    const replacement: Omit<SkillSpecializationEntry, "id"> = {
+      type: ImprovementType.skillSpecialization,
+      skillType: "ActiveSkill",
+      skill: skill.name,
+      specialization,
+    }
+    improvementStore.remove(queuedEntry.id)
+    improvementStore.add(replacement)
   }
 
   const openLearnDialog = async () => {
@@ -162,22 +184,27 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
       {allSkillRows.length > 0 && (
         <Paper variant="outlined">
           <List disablePadding>
-            {allSkillRows.map((skill, index) => (
-              <ImprovementActiveSkillRow
-                key={`${skill.name}-${String(skill.isGrouped)}`}
-                skillName={skill.name}
-                rating={skill.rating}
-                cap={skill.cap}
-                hasAptitude={skill.hasAptitude}
-                isGrouped={skill.isGrouped}
-                isLastRow={index === allSkillRows.length - 1 && queuedLearns.length === 0}
-                remainingKarma={remainingKarma}
-                isImproveQueued={queuedSkillIncreases.some((entry) => entry.skill === skill.name)}
-                isSpecQueued={queuedSpecs.some((entry) => entry.skill === skill.name)}
-                onToggleImprove={() => handleToggleImprove(skill)}
-                onToggleSpec={() => handleToggleSpec(skill)}
-              />
-            ))}
+            {allSkillRows.map((skill, index) => {
+              const queuedSpec = queuedSpecs.find((entry) => entry.skill === skill.name)
+              return (
+                <ImprovementActiveSkillRow
+                  key={`${skill.name}-${String(skill.isGrouped)}`}
+                  skillName={skill.name}
+                  rating={skill.rating}
+                  cap={skill.cap}
+                  hasAptitude={skill.hasAptitude}
+                  isGrouped={skill.isGrouped}
+                  isLastRow={index === allSkillRows.length - 1 && queuedLearns.length === 0}
+                  remainingKarma={remainingKarma}
+                  isImproveQueued={queuedSkillIncreases.some((entry) => entry.skill === skill.name)}
+                  isSpecQueued={!!queuedSpec}
+                  queuedSpecName={queuedSpec?.specialization}
+                  onToggleImprove={() => handleToggleImprove(skill)}
+                  onToggleSpec={() => handleToggleSpec(skill)}
+                  onEditSpec={() => handleEditSpec(skill)}
+                />
+              )
+            })}
             {queuedLearns.map((entry, index) => (
               <ImprovementQueuedLearnRow
                 key={entry.id}

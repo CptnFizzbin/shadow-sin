@@ -24,8 +24,12 @@ interface ImprovementActiveSkillRowProps {
   remainingKarma: number
   isImproveQueued: boolean
   isSpecQueued: boolean
+  /** Name of the queued specialization, when one is queued. Shown next to the row. */
+  queuedSpecName?: string
   onToggleImprove: () => void
   onToggleSpec: () => void
+  /** Reopen the picker dialog on the queued spec so the user can rename it. */
+  onEditSpec: () => void
 }
 
 export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
@@ -38,8 +42,10 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
   remainingKarma,
   isImproveQueued,
   isSpecQueued,
+  queuedSpecName,
   onToggleImprove,
   onToggleSpec,
+  onEditSpec,
 }) => {
   const nextRating = rating + 1
   const baseStepCost = nextRating * 2
@@ -79,7 +85,19 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
           {isImproveQueued && (
             <RiCheckLine size={14} style={{ color: "var(--mui-palette-success-main)" }} />
           )}
-          <Tooltip title={`Specialization (${specCost}k)`}>
+          {isSpecQueued && queuedSpecName && (
+            <Tooltip title="Edit specialization name">
+              <Chip
+                label={queuedSpecName}
+                size="small"
+                color="success"
+                variant="outlined"
+                onClick={onEditSpec}
+                sx={{ cursor: "pointer", maxWidth: 160 }}
+              />
+            </Tooltip>
+          )}
+          <Tooltip title={isSpecQueued ? "Remove specialization" : `Specialization (${specCost}k)`}>
             <span>
               <IconButton
                 size="small"

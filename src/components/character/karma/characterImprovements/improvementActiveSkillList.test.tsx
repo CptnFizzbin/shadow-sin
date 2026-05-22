@@ -99,7 +99,7 @@ describe("ImprovementActiveSkillList", () => {
     expect(improveButton.getAttribute("aria-pressed")).toBe("false")
   })
 
-  it("clicking Spec queues a specialization (button becomes aria-pressed)", () => {
+  it("clicking Spec opens the picker dialog with the skill name in the title", async () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
@@ -111,8 +111,29 @@ describe("ImprovementActiveSkillList", () => {
     // Act
     fireEvent.click(specButton)
 
-    // Assert
-    expect(specButton.getAttribute("aria-pressed")).toBe("true")
+    // Assert — dialog mounts with the skill-specific title
+    const title = await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
+    expect(title).toBeTruthy()
+  })
+
+  it("cancelling the spec picker leaves no spec queued", async () => {
+    // Arrange
+    renderList((sheet) => {
+      sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
+      sheet.skills.skillGroups = []
+      sheet.karma.current = 50
+    })
+    const specButton = screen.getByRole("button", { name: /add specialization/i })
+
+    // Act — open then cancel
+    fireEvent.click(specButton)
+    await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
+    // The picker shares Cancel/Save with the parent dialog — use the picker's specifically
+    const cancelButtons = screen.getAllByRole("button", { name: /cancel/i })
+    fireEvent.click(cancelButtons[cancelButtons.length - 1])
+
+    // Assert — the spec button is no longer pressed
+    expect(specButton.getAttribute("aria-pressed")).toBe("false")
   })
 
   it("disables the Improve button when the character cannot afford it", () => {
