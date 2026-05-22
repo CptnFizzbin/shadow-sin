@@ -44,7 +44,7 @@ Integration](#optional-rules-integration) below.
 - [x] **Cost-formula deviations from SR4A — fix to SR4A defaults; route any intentional
       group-level deviation through `optionalRulesRegistry`.** Each value in
       `improvementUtils.ts` is treated as a bug against the
-      [SR4A advancement table](../../../ShadowSinWiki/rules/character-improvement.md) until
+      SR4A advancement table (wiki: `rules/character-improvement.md`) until
       shown otherwise; the defaults below are what the code should compute when no optional
       rule is set. If a group wants to keep one of the cheaper variants, expose it as a new
       entry in
@@ -70,13 +70,13 @@ Integration](#optional-rules-integration) below.
 
 - [x] **Rating 6, Aptitude, and attribute caps — enforce SR4A defaults at the queue layer.**
       The dialog should block any `ImprovementEntry` that would exceed the cap *before* it
-      lands in the queue (not at Save). Caps to enforce, per
-      [character-improvement](../../../ShadowSinWiki/rules/character-improvement.md):
-  - Active skill cap at 6 unless the character has the
-      [`Aptitude`](../../../ShadowSinWiki/qualities/aptitude.md) quality for that skill;
-      with Aptitude, the cap is 7 and raises beyond 6 cost **double Karma per step**.
-  - Attribute cap = metatype maximum (`+1` to one attribute with
-      [`Exceptional Attribute`](../../../ShadowSinWiki/qualities/exceptional-attribute.md)).
+      lands in the queue (not at Save). Caps to enforce, per the wiki
+      `rules/character-improvement.md`:
+  - Active skill cap at 6 unless the character has the **Aptitude** quality for that skill
+      (wiki: `qualities/aptitude.md`); with Aptitude, the cap is 7 and raises beyond 6 cost
+      **double Karma per step**.
+  - Attribute cap = metatype maximum (`+1` to one attribute with **Exceptional Attribute**;
+      wiki: `qualities/exceptional-attribute.md`).
   - Magic / Resonance cap = `6 + initiation/submersion grade`.
   - A future "soft caps" optional rule could relax these, but the default matches the book.
 
@@ -103,9 +103,8 @@ Integration](#optional-rules-integration) below.
 ## Constraints
 
 - **SR4A is the rulebook source of truth.** Every cost formula in `improvementUtils.ts`
-  must match the [SR4A advancement
-  table](../../../ShadowSinWiki/rules/character-improvement.md) by default. Group-level
-  deviations live in
+  must match the SR4A advancement table (wiki: `rules/character-improvement.md`) by
+  default. Group-level deviations live in
   [`optionalRulesRegistry`](../../src/system/featureFlags/optionalRulesRegistry.ts) and are
   read at call time — they do not get hardcoded into `improvementUtils.ts`. See
   [Optional Rules Integration](#optional-rules-integration).
@@ -305,7 +304,7 @@ function applyImprovements(
 - **Positive qualities (new) and negative-quality buy-off** — need a quality picker, BP×2
   cost surface, and the SR4A "karma debt" rule (when a GM-awarded positive quality exceeds
   current karma, **all subsequent karma earnings** auto-pay the debt until cleared — see
-  [`rules/karma-spending.md`](../../../ShadowSinWiki/rules/karma-spending.md)). The picker
+  the wiki `rules/karma-spending.md`). The picker
   must also filter out **Awakened qualities** (Adept / Magician / Mystic Adept /
   Technomancer) and **innate qualities** (Ambidexterity, etc.), which RAW says cannot be
   acquired in play.
@@ -341,21 +340,19 @@ function applyImprovements(
 
 ## Sources
 
-Rules references live in the sibling **ShadowSinWiki** repo (`../../../ShadowSinWiki/`),
-which is the canonical SR4A reference for this project:
+Rules references live in the **ShadowSinWiki** project, which is the canonical SR4A
+reference for this project. Pages are named below without paths — paths vary by where
+the wiki is checked out and shouldn't be hardcoded in this repo.
 
-- [`rules/karma-spending.md`](../../../ShadowSinWiki/rules/karma-spending.md) — single-page
-  index of **every** documented way to spend karma (SR4A + Runner's Companion + Street
-  Magic). The deferred-slice list above is derived from this taxonomy; any new spend
-  category added to the wiki should reach this plan as either an in-scope item or a new
-  DEFER entry.
-- [`rules/character-improvement.md`](../../../ShadowSinWiki/rules/character-improvement.md) —
-  SR4A p. 269–271; the advancement cost table this feature's formulas must match
-- [`rules/karma.md`](../../../ShadowSinWiki/rules/karma.md) — SR4A p. 71, 269; what Karma is
-  and the spending categories
-- [`rules/karma-chargen.md`](../../../ShadowSinWiki/rules/karma-chargen.md) — Karma-as-chargen
-  variant; informs the shared cost-formula question with feature
-  [0002](./0002-additional-build-modes.md)
+- `rules/karma-spending.md` — single-page index of **every** documented way to spend
+  karma (SR4A + Runner's Companion + Street Magic). The deferred-slice list above is
+  derived from this taxonomy; any new spend category added to the wiki should reach this
+  plan as either an in-scope item or a new DEFER entry.
+- `rules/character-improvement.md` — SR4A p. 269–271; the advancement cost table this
+  feature's formulas must match.
+- `rules/karma.md` — SR4A p. 71, 269; what Karma is and the spending categories.
+- `rules/karma-chargen.md` — Karma-as-chargen variant; informs the shared cost-formula
+  question with feature [0002](./0002-additional-build-modes.md).
 
 When the cost-formula questions above are settled, update the affected wiki pages too if any
 of our decisions are deliberate house-rule deviations from RAW.
