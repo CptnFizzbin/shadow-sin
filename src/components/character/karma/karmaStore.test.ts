@@ -74,8 +74,11 @@ describe("KarmaStore.spendKarma", () => {
     // Arrange
     const store = new KarmaStore(makeKarma({ current: 2, total: 5 }))
 
-    // Act + Assert
-    expect(() => store.spendKarma(10)).toThrow(/insufficient karma/i)
+    // Act
+    const overspend = () => store.spendKarma(10)
+
+    // Assert
+    expect(overspend).toThrow(/insufficient karma/i)
     // current is unchanged
     expect(store.state.current).toBe(2)
   })
@@ -84,9 +87,13 @@ describe("KarmaStore.spendKarma", () => {
     // Arrange
     const store = new KarmaStore(makeKarma({ current: 5, total: 5 }))
 
-    // Act + Assert
-    expect(() => store.spendKarma(0)).toThrow(/positive/i)
-    expect(() => store.spendKarma(-1)).toThrow(/positive/i)
+    // Act
+    const spendZero = () => store.spendKarma(0)
+    const spendNegative = () => store.spendKarma(-1)
+
+    // Assert
+    expect(spendZero).toThrow(/positive/i)
+    expect(spendNegative).toThrow(/positive/i)
   })
 })
 
@@ -95,9 +102,13 @@ describe("KarmaStore.addKarma — positive-amount guard", () => {
     // Arrange
     const store = new KarmaStore(makeKarma({ current: 5, total: 5 }))
 
-    // Act + Assert
-    expect(() => store.addKarma(0)).toThrow(/positive/i)
-    expect(() => store.addKarma(-3)).toThrow(/positive/i)
+    // Act
+    const addZero = () => store.addKarma(0)
+    const addNegative = () => store.addKarma(-3)
+
+    // Assert
+    expect(addZero).toThrow(/positive/i)
+    expect(addNegative).toThrow(/positive/i)
     // state untouched
     expect(store.state.current).toBe(5)
     expect(store.state.total).toBe(5)
