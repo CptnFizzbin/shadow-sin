@@ -7,12 +7,9 @@ import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  useCharacterSheet,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 type ProfileEditDialogProps = ControlledDialogProps<void>

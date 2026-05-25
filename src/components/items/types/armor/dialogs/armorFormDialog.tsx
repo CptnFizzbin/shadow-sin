@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
 import { armorFieldMap, useArmorForm } from "#/components/items/types/armor/forms/useArmorForm.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {

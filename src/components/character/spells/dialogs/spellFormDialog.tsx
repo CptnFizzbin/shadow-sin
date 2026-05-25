@@ -5,8 +5,8 @@ import type { FC } from "react"
 
 import { SpellFormFields } from "#/components/character/spells/form/spellFormFields.tsx"
 import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 

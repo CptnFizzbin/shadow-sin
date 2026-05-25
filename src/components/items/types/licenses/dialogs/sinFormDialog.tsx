@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useSinForm } from "#/components/items/types/licenses/forms/useSinForm.tsx"
 import { getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
 interface SinFormDialogProps {

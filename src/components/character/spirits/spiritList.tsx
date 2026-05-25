@@ -4,8 +4,8 @@ import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { ItemList } from "#/components/items/card/itemList.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 
