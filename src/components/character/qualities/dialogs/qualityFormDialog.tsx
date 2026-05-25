@@ -5,8 +5,8 @@ import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/character/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/character/qualities/form/useQualityForm.ts"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 

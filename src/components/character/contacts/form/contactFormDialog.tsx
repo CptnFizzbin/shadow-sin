@@ -4,8 +4,8 @@ import type { FC } from "react"
 import { useId } from "react"
 
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
 

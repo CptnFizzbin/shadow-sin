@@ -9,7 +9,7 @@ import { RiAddLine, RiFireLine, RiLoopLeftLine, RiSubtractLine } from "@remixico
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 
 import { selectEdgeCurrent, selectEdgeMax } from "./edgeSelectors.ts"

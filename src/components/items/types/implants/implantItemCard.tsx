@@ -2,22 +2,19 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
 import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
 import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
-import {
-  getImplantEffectiveEssenceCost,
-  getImplantEffectiveNuyenCost,
-} from "./implantUtils.ts"
+import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "./implantUtils.ts"
 
 interface ImplantItemCardProps extends Omit<ItemCardProps, "children"> {
   implant: ImplantData

@@ -5,12 +5,10 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  useCharacterSheet,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
