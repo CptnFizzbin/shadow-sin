@@ -2,11 +2,11 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useVehicleForm, vehicleFieldMap } from "#/components/items/types/vehicles/forms/useVehicleForm.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 

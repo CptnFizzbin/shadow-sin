@@ -23,10 +23,14 @@ interface OpenFactoryWrapperProps {
  * reactive — re-renders when `ctrl.store.open` changes so the dialog receives
  * `open=false` when `ctrl.close()` is called.
  */
-const OpenFactoryWrapper: FC<OpenFactoryWrapperProps> = ({ ctrl, factory }) => {
+const DialogWrapper: FC<OpenFactoryWrapperProps> = ({ ctrl, factory }) => {
   const isOpen = useSelector(ctrl.store, (state) => state.open)
 
-  return <>{factory(ctrl, isOpen)}</>
+  return (
+    <DialogErrorBoundary ctrl={ctrl}>
+      {factory(ctrl, isOpen)}
+    </DialogErrorBoundary>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -78,13 +82,12 @@ export class DialogApi {
     ctrl._setOpen()
     ctrl._setOnClosedCallback(() => this.removeDialog(dialogId))
 
-    const inner = (
-      <OpenFactoryWrapper
+    const element = (
+      <DialogWrapper
         ctrl={ctrl}
         factory={factory as (ctrl: AnyDialogCtrl, open: boolean) => ReactNode}
       />
     )
-    const element = <DialogErrorBoundary ctrl={ctrl}>{inner}</DialogErrorBoundary>
     this.addDialog(dialogId, element)
     return ctrl.result()
   }

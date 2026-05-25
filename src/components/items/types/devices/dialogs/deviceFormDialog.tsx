@@ -1,15 +1,10 @@
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
-import {
-  DeviceFormFields,
-} from "#/components/items/types/devices/forms/deviceFormFields.tsx"
-import {
-  deviceFieldMap,
-  useDeviceForm,
-} from "#/components/items/types/devices/forms/useDeviceForm.tsx"
+import { DeviceFormFields } from "#/components/items/types/devices/forms/deviceFormFields.tsx"
+import { deviceFieldMap, useDeviceForm } from "#/components/items/types/devices/forms/useDeviceForm.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 
 interface DeviceFormDialogProps {

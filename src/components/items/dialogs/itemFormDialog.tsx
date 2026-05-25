@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

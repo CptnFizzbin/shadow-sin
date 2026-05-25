@@ -4,8 +4,8 @@ import { createContext, useMemo } from "react"
 
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { DialogApi } from "#/components/dialogs/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
+import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import type { BuilderRootState } from "./builderRootState.ts"

@@ -2,14 +2,11 @@ import type { UUID } from "node:crypto"
 
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
-import {
-  programFieldMap,
-  useProgramForm,
-} from "#/components/items/types/devices/forms/useProgramForm.tsx"
+import { programFieldMap, useProgramForm } from "#/components/items/types/devices/forms/useProgramForm.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
