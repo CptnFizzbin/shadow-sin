@@ -22,9 +22,13 @@ export const SpiritList: FC = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingSpirit, setEditingSpirit] = useState<SpiritData | undefined>()
+  // Bumped on each Add so the dialog remounts between successive new spirits
+  // (otherwise useSpiritForm reuses the same generated id and the save overwrites).
+  const [addCounter, setAddCounter] = useState(0)
 
   const handleAdd = () => {
     setEditingSpirit(undefined)
+    setAddCounter((n) => n + 1)
     setDialogOpen(true)
   }
 
@@ -66,7 +70,7 @@ export const SpiritList: FC = () => {
       </Stack>
 
       <SpiritFormDialog
-        key={editingSpirit?.id ?? "new"}
+        key={editingSpirit?.id ?? `new-${addCounter}`}
         open={dialogOpen}
         spirit={editingSpirit}
         onClose={handleClose}
