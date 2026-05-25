@@ -52,6 +52,22 @@ export const SpiritTypeLabels: Record<SpiritType, string> = {
   [SpiritType.watcher]: "Watcher",
 }
 
+// Plural form used for Conjuring (Summoning/Binding/Banishing) specializations
+// where the skill targets a category of spirits rather than a single one.
+export const SpiritTypePluralLabels: Record<SpiritType, string> = {
+  [SpiritType.wind]: "Spirits of Air",
+  [SpiritType.beast]: "Spirits of Beasts",
+  [SpiritType.earth]: "Spirits of Earth",
+  [SpiritType.fire]: "Spirits of Fire",
+  [SpiritType.guidance]: "Guidance Spirits",
+  [SpiritType.guardian]: "Guardian Spirits",
+  [SpiritType.man]: "Spirits of Man",
+  [SpiritType.plant]: "Plant Spirits",
+  [SpiritType.task]: "Task Spirits",
+  [SpiritType.water]: "Spirits of Water",
+  [SpiritType.watcher]: "Watchers",
+}
+
 export interface SpiritData {
   id: UUID
   name: string
