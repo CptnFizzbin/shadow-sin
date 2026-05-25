@@ -5,8 +5,8 @@ import type { FC } from "react"
 
 import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
 import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { useAlertDialog } from "#/components/dialogs/alertDialog.tsx"
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"

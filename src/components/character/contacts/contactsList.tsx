@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"

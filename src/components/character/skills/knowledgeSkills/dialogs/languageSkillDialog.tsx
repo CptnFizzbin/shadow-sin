@@ -6,11 +6,9 @@ import type { FC } from "react"
 import {
   LanguageSkillFormFields,
 } from "#/components/character/skills/knowledgeSkills/forms/languageSkillFormFields.tsx"
-import {
-  useLanguageSkillForm,
-} from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { useLanguageSkillForm } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
