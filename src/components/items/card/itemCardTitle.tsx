@@ -6,5 +6,5 @@ interface ItemCardTitleProps {
 }
 
 export const ItemCardTitle: FC<ItemCardTitleProps> = ({ children }) => (
-  <Typography sx={{ flexGrow: 1 }}>{children}</Typography>
+  <Typography component="div" sx={{ flexGrow: 1 }}>{children}</Typography>
 )
