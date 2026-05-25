@@ -14,7 +14,7 @@ import { useNavigate, useRouter } from "@tanstack/react-router"
 
 import type { CharacterLoadError } from "#/character/characterLoadError.ts"
 import { useCharacterManager } from "#/character/characterManagerContext.tsx"
-import { useConfirmDialog } from "#/components/dialogs/confirmDialog.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"

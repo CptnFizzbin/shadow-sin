@@ -1,13 +1,10 @@
 import type { FC } from "react"
 
-import { useDialogApi } from "#/components/dialogs/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/dialogs/api/dialogCtrl.ts"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
-import {
-  weaponFieldMap,
-  useWeaponForm,
-} from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
+import { useWeaponForm, weaponFieldMap } from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
 import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponFormFields.tsx"
+import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {

@@ -3,9 +3,8 @@
 **Location:** `src/components/ui/dialog/dialog.tsx`
 **Import:** `import { Dialog } from "#/components/ui/dialog/dialog.tsx"`
 
-A compound modal dialog that wraps MUI's dialog family and enforces a
-consistent look across the application. Dialogs are always full-width;
-use `maxWidth` to control how wide they can grow.
+A compound modal dialog that wraps MUI's dialog family and enforces a consistent look across the application. Dialogs
+are always full-width; use `maxWidth` to control how wide they can grow.
 
 ## Slots
 
@@ -71,14 +70,14 @@ export const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
 
 ### With `DialogApiDialogProps` (via `DialogApi`)
 
-`Dialog` is directly compatible with `DialogApiDialogProps` — spread the props
-injected by `DialogApi.open(...)` straight onto the component.
+`Dialog` is directly compatible with `DialogApiDialogProps` — spread the props injected by `DialogApi.open(...)`
+straight onto the component.
 
 ```tsx
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import type { DialogApiDialogProps } from "#/components/ui/dialog/api/dialogApiDialog.ts"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 export const ConfirmDialog: FC<DialogApiDialogProps<boolean>> = (props) => (
@@ -99,14 +98,14 @@ const confirmed = await ctrl.result()
 
 ### With a form and cleanup on close
 
-Use `onClosed` (runs after the exit animation) to reset form state so the
-previous values are gone before the dialog can be opened again.
+Use `onClosed` (runs after the exit animation) to reset form state so the previous values are gone before the dialog can
+be opened again.
 
 ```tsx
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import type { DialogApiDialogProps } from "#/components/dialogs/api/dialogApiDialog.ts"
+import type { DialogApiDialogProps } from "#/components/ui/dialog/api/dialogApiDialog.ts"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
@@ -193,9 +192,9 @@ export const ExamplePage = () => {
   is mounted inside the relevant providers. See the `DialogApi`-based
   examples above and `AGENTS.md` → *Dialog patterns*.
 - **`onClosed` vs `onClose`**: `onClose` triggers the close animation;
-  `onClosed` fires after it finishes. Reset form state in `onClosed` to avoid
-  a flash of empty fields while the animation runs.
-- **`maxWidth`**: default is `"sm"`. Use `"xs"` for simple confirmation prompts
-  and `"md"` / `"lg"` for complex forms with many fields.
-- **Do not** pass `sx`, `className`, `slotProps`, or other MUI styling props —
-  they are intentionally not forwarded so dialog appearance stays consistent.
+  `onClosed` fires after it finishes. Reset form state in `onClosed` to avoid a flash of empty fields while the
+  animation runs.
+- **`maxWidth`**: default is `"sm"`. Use `"xs"` for simple confirmation prompts and `"md"` / `"lg"` for complex forms
+  with many fields.
+- **Do not** pass `sx`, `className`, `slotProps`, or other MUI styling props — they are intentionally not forwarded so
+  dialog appearance stays consistent.

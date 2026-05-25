@@ -72,20 +72,20 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 
 Each gear type follows a consistent three-layer pattern:
 
-1. **`useXxxForm` hook** (`forms/useXxxForm.tsx`) — wraps `useAppForm` with type-specific default values and maps
-   the flat form state back to the typed `XxxData`. Generic items use `useItemForm` directly.
+1. **`useXxxForm` hook** (`forms/useXxxForm.tsx`) — wraps `useAppForm` with type-specific default values and maps the
+   flat form state back to the typed `XxxData`. Generic items use `useItemForm` directly.
 
 2. **`XxxFormFields` component** (`forms/xxxFormFields.tsx`) — renders the fields for the form using
-   `withFieldGroup`. Type-specific fields (e.g. weapon damage, firearm type) sit alongside the shared
-   availability, source, description, and effects groups.
+   `withFieldGroup`. Type-specific fields (e.g. weapon damage, firearm type) sit alongside the shared availability,
+   source, description, and effects groups.
 
 3. **`XxxFormDialog` component** (`dialogs/xxxFormDialog.tsx`) — combines the hook and fields into a
    `<Dialog>`. Uses `useItemFormSubmit` to handle the acquire / purchase / save decision automatically.
 
 Supporting utilities in `src/components/gear/`:
 
-- `useItemFormSubmit.ts` — centralises the builder-vs-viewer submit logic; in builder context or edit
-  mode it calls `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
+- `useItemFormSubmit.ts` — centralises the builder-vs-viewer submit logic; in builder context or edit mode it calls
+  `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
 - `gearSubmitMeta.ts` — `GearSubmitMeta` type (`submitAction: "acquire" | "purchase" | "save"`)
 - `useGearStore.ts` — `useGearStore()`, `useGearById()`, `useGearByType()`, `useGearFilter()` reactive hooks
 - `gearItemCard.tsx` — shared display card used across gear list views
@@ -98,17 +98,17 @@ Supporting utilities in `src/components/gear/`:
 
 Migrations live in `src/character/migrations/` and are registered in `src/character/migrations.ts`.
 
-**Never edit an existing migration file.** Once a migration has been committed it may already have run against
-real character data in user storage. Changing its logic would cause different behaviour on a re-run and could
-corrupt or silently mis-migrate characters.
+**Never edit an existing migration file.** Once a migration has been committed it may already have run against real
+character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
+silently mis-migrate characters.
 
 - **Schema changes always require a new migration** — when a `CharacterSheet` field is added, renamed, or removed,
   create a new migration file with a date-prefixed name (e.g. `YYYYMMDD_describeChange.ts`) and register it at the
   bottom of `migrations.ts`.
-- **Earlier migrations may reference the old field name** — migrations that run before the rename migration can
-  still reference the old field name because they operate on pre-rename data. Update them to handle *both* the old
-  and new field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for characters that were
-  already partially migrated.
+- **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
+  reference the old field name because they operate on pre-rename data. Update them to handle *both* the old and new
+  field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for characters that were already partially
+  migrated.
 - **New migration IDs must sort after all existing IDs** — migrations are applied in ascending string order by `id`.
   Using an ISO date prefix (without separators, e.g. `"20260510"`) keeps ordering unambiguous.
 - **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
@@ -175,8 +175,8 @@ checks entirely and hides real type incompatibilities.
 
 ## MUI style props
 
-Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**.
-Do not pass props that merely repeat a default — if the theme already sets `gap`, `padding`, `fontSize`, `variant`,
+Only specify MUI style props, variants, and layout values when **explicitly deviating from the theme defaults**. Do not
+pass props that merely repeat a default — if the theme already sets `gap`, `padding`, `fontSize`, `variant`,
 `size`, `color`, etc., omitting the prop produces the same result and keeps the code easier to read.
 
 ```tsx
@@ -190,8 +190,8 @@ Do not pass props that merely repeat a default — if the theme already sets `ga
 <Stack gap={2} variant="outlined">…</Stack>
 ```
 
-This rule applies to every MUI component: `Stack`, `Paper`, `Typography`, `Button`, `TextField`, `Chip`, etc.
-When in doubt, omit the prop and let the theme do the work.
+This rule applies to every MUI component: `Stack`, `Paper`, `Typography`, `Button`, `TextField`, `Chip`, etc. When in
+doubt, omit the prop and let the theme do the work.
 
 ## UI changes
 
@@ -213,7 +213,9 @@ commit
 ## Formatting and tooling
 
 - ESLint + @stylistic for formatting. 2 spaces indentation, double quotes for JS/TS strings.
-- Use the `#/` alias instead of parent-relative (`../`) paths — ESLint auto-enforces this via `@dword-design/import-alias/prefer-alias`. Sibling-relative (`./`) imports within the same directory are also permitted.
+- Use the `#/` alias instead of parent-relative (`../`) paths — ESLint auto-enforces this via
+  `@dword-design/import-alias/prefer-alias`. Sibling-relative (`./`) imports within the same directory are also
+  permitted.
 - After making changes, verify with `yarn fix` (auto-fix lint/format). Must pass before a change is complete.
 
 ## TanStack Store patterns
@@ -245,7 +247,7 @@ commit
   mounted inside `CharacterSheetProvider` (in the character routes and the builder root), so React context including
   `CharacterSheetProvider` propagates normally — no inline state is needed for context access. See
   `useAddKarmaDialog` and `useActiveSkillDialog` for minimal examples.
-- Use `useConfirmDialog()` from `#/components/dialogs/confirmDialog.tsx` for confirmation prompts before destructive
+- Use `useConfirmDialog()` from `#/components/ui/dialog/confirmDialog.tsx` for confirmation prompts before destructive
   actions.
 - Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces
   consistent sizing and wires up `onClosed` automatically. See `docs/ui/dialog.md` for examples.
@@ -288,8 +290,8 @@ yarn fallow fix --yes --format json
 ```
 
 - **Always `--dry-run` before `fix`**, then `fix --yes` to apply (required in non-TTY agent environments)
-- **Always run `yarn fallow dead-code --format json` after making code changes** to verify
-  that no dead code, unused exports, or unused types were introduced or left behind.
+- **Always run `yarn fallow dead-code --format json` after making code changes** to verify that no dead code, unused
+  exports, or unused types were introduced or left behind.
 - When the issues list reports open GitHub issues referencing Fallow findings, run `yarn fallow` to verify whether those
   findings have been resolved by the current change
 - See `.agents/skills/fallow/SKILL.md` for the full command reference
@@ -302,7 +304,8 @@ Issues live in GitHub Issues on `CptnFizzbin/shadow-sin`. See `docs/agents/issue
 
 ### Triage labels
 
-Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See
+`docs/agents/triage-labels.md`.
 
 ### Domain docs
 
