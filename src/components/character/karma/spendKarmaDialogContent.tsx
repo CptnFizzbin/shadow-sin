@@ -17,12 +17,9 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import {
-  useCharacterSheet,
-  useCharacterSheetContext,
-} from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { isMagician } from "#/components/character/spells/spellsUtils.ts"
-import type { ControlledDialogProps } from "#/components/dialogs/api/controlledDialogProps.ts"
+import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { selectHasImprovements, selectImprovementsTotalCost } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"
@@ -33,7 +30,10 @@ import { ImprovementKnowledgeSkillList } from "./characterImprovements/improveme
 import { ImprovementLanguageSkillList } from "./characterImprovements/improvementLanguageSkillList.tsx"
 import { ImprovementSkillGroupList } from "./characterImprovements/improvementSkillGroupList.tsx"
 import { ImprovementSpellList } from "./characterImprovements/improvementSpellList.tsx"
-import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "./characterImprovements/spendKarmaDialogContext.tsx"
+import {
+  SpendKarmaDialogProvider,
+  useSpendKarmaDialogContext,
+} from "./characterImprovements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./characterImprovements/useImprovementSelector.ts"
 import { selectCurrentKarma } from "./karmaSelectors.ts"
 import { useKarmaStore } from "./useKarmaStore.ts"
@@ -168,7 +168,8 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
           <Box sx={{ flex: 1, overflowY: "auto", p: 2 }}>
             {activeSection === "attribute" && <ImprovementAttributeList />}
             {activeSection === "skill" && <ImprovementActiveSkillList />}
-            {activeSection === "skillGroup" && <ImprovementSkillGroupList onBack={() => setActiveSection("attribute")} />}
+            {activeSection === "skillGroup"
+              && <ImprovementSkillGroupList onBack={() => setActiveSection("attribute")} />}
             {activeSection === "knowledge" && <ImprovementKnowledgeSkillList />}
             {activeSection === "language" && <ImprovementLanguageSkillList />}
             {activeSection === "spell" && <ImprovementSpellList />}

@@ -1,8 +1,8 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogApi } from "#/components/dialogs/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/dialogs/api/dialogApiProvider.tsx"
+import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
+import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
