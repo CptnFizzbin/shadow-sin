@@ -242,8 +242,11 @@ commit
 
 ## Dialog patterns
 
-- Prefer inline `useState`-managed dialogs (open/closed state in the parent component) over `dialogApi` for dialogs that
-  need access to `CharacterSheetProvider` or other React context, since `dialogApi` renders outside the provider tree.
+- Prefer the `dialogApi` + `use*Dialog` hook pattern for new dialogs: the hook calls `useDialogApi()` and returns
+  `{ open: (props) => dialogApi.open<TReturn>((ctrl) => <FooDialog ctrl={ctrl} {...props} />) }`. `DialogApiProvider` is
+  mounted inside `CharacterSheetProvider` (in the character routes and the builder root), so React context including
+  `CharacterSheetProvider` propagates normally — no inline state is needed for context access. See
+  `useAddKarmaDialog` and `useActiveSkillDialog` for minimal examples.
 - Use `useConfirmDialog()` from `#/components/ui/dialog/confirmDialog.tsx` for confirmation prompts before destructive
   actions.
 - Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces
