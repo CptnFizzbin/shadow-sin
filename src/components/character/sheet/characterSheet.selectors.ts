@@ -11,6 +11,9 @@ import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
+import type { SkillInfo } from "#/system/skills/skillInfo.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 import { useCharacterSheetContext } from "./characterSheetContext.ts"
 
@@ -57,6 +60,18 @@ export const selectKnowledgeSkills: CharacterDataSelector<KnowledgeSkillData[]> 
 export const selectLanguageSkills: CharacterDataSelector<LanguageSkillData[]> = (state) => {
   return state.skills.languageSkills
 }
+
+export const selectAllowedActiveSkills: CharacterDataSelector<Partial<Record<SkillKey, SkillInfo>>> = createSelector([
+  selectAwakeningType,
+], (awakeningType) => {
+  const skillEntries = Object.entries(skillList)
+    .filter(([_, info]) => {
+      if (!info.awakening) return true
+      return info.awakening.includes(awakeningType)
+    })
+
+  return Object.fromEntries(skillEntries)
+})
 
 export const selectCharacterPowers: CharacterDataSelector<PowerData[]> = (state) => {
   return state.powers

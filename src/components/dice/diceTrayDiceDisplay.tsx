@@ -4,7 +4,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
@@ -22,7 +22,7 @@ export const DiceTrayDiceDisplay: FC = () => {
   if (physicalMode) {
     return (
       <Stack sx={{ alignItems: "center", paddingY: 2 }}>
-        <CounterField
+        <CounterInput
           value={physicalHits}
           onChange={(newValue) => diceTrayApi.setPhysicalHits(newValue ?? 0)}
           min={0}

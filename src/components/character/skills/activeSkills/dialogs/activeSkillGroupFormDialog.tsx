@@ -37,8 +37,11 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
 }) => {
   const isEditMode = !!group
 
-  const [groupName, setGroupName] = useState<SkillGroupKey | null>(
-    group?.name ?? null,
+  // MUI Select requires `""` (not `null`) for the empty state — passing `null`
+  // logs an "out-of-range value" warning and flips the underlying input from
+  // uncontrolled to controlled the first time the user picks a group.
+  const [groupName, setGroupName] = useState<SkillGroupKey | "">(
+    group?.name ?? "",
   )
   const [rating, setRating] = useState<number>(group?.rating ?? 1)
   const [groupNameError, setGroupNameError] = useState(false)
@@ -55,7 +58,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   }
 
   const handleClosed = () => {
-    setGroupName(group?.name ?? null)
+    setGroupName(group?.name ?? "")
     setRating(group?.rating ?? 1)
     setGroupNameError(false)
   }
@@ -76,8 +79,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
               value={groupName}
               label="Skill Group"
               onChange={(e) => {
-                const selectedGroupName = e.target.value as SkillGroupKey | ""
-                setGroupName(selectedGroupName || null)
+                setGroupName(e.target.value as SkillGroupKey | "")
                 setGroupNameError(false)
               }}
             >

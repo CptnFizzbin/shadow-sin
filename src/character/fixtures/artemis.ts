@@ -52,6 +52,7 @@ export const Artemis: CharacterSheet = {
   karma: {
     total: 12,
     current: 12,
+    log: [],
   },
 
   nuyen: {

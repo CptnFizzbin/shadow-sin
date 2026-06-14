@@ -6,7 +6,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CounterField } from "#/components/ui/counter/counterField.tsx"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
 import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -42,7 +42,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
       <Dialog.Content>
         <Stack sx={{ paddingTop: 2 }}>
           <Stack direction="row">
-            <CounterField
+            <CounterInput
               label="Quantity"
               size="small"
               value={quantity}

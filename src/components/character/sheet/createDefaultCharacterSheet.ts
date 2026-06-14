@@ -66,6 +66,7 @@ export const createDefaultCharacterSheet = (): CharacterSheet => ({
   karma: {
     total: 0,
     current: 0,
+    log: [],
   },
 
   nuyen: {
