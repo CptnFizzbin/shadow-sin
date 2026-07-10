@@ -8,8 +8,6 @@ import { describe, expect, it } from "vitest"
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -70,17 +68,11 @@ describe("ImplantItemList", () => {
     })
 
     render(<ImplantItemList />, {
-      wrapper: ({ children }) => {
-        const dialogApi = new DialogApi()
-
-        return (
-          <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
-            <DialogApiProvider dialogApi={dialogApi}>
-              {children}
-            </DialogApiProvider>
-          </BuilderWrapperWithGear>
-        )
-      },
+      wrapper: ({ children }) => (
+        <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
+          {children}
+        </BuilderWrapperWithGear>
+      ),
     })
 
     // Act — click the accessory card to open the edit dialog

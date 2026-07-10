@@ -2,9 +2,9 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 
 type ImportConflictChoice = "overwrite" | "create-new" | "cancel"
@@ -69,18 +69,12 @@ interface UseImportConflictDialogProps {
   existingCharacter: CharacterSheet
 }
 
-export const useImportConflictDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseImportConflictDialogProps) => dialogApi.open<ImportConflictChoice>(
-      (ctrl) => (
-        <ImportConflictDialog
-          ctrl={ctrl}
-          incomingCharacter={props.incomingCharacter}
-          existingCharacter={props.existingCharacter}
-        />
-      ),
-    ),
-  }
-}
+export const useImportConflictDialog = () => useDialog<ImportConflictChoice, UseImportConflictDialogProps>(
+  (ctrl, props) => (
+    <ImportConflictDialog
+      ctrl={ctrl}
+      incomingCharacter={props.incomingCharacter}
+      existingCharacter={props.existingCharacter}
+    />
+  ),
+)

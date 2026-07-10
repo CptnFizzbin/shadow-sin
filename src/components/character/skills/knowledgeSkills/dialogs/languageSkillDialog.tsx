@@ -7,9 +7,9 @@ import {
   LanguageSkillFormFields,
 } from "#/components/character/skills/knowledgeSkills/forms/languageSkillFormFields.tsx"
 import { useLanguageSkillForm } from "#/components/character/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillDialogProps extends ControlledDialogProps<LanguageSkillData> {
@@ -74,12 +74,6 @@ type UseLanguageSkillDialogProps = Omit<
   keyof ControlledDialogProps<LanguageSkillData>
 >
 
-export const useLanguageSkillDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseLanguageSkillDialogProps) => dialogApi.open<LanguageSkillData>(
-      (ctrl) => <LanguageSkillDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useLanguageSkillDialog = () => useDialog<LanguageSkillData, UseLanguageSkillDialogProps | undefined>(
+  (ctrl, props) => <LanguageSkillDialog ctrl={ctrl} {...props} />,
+)

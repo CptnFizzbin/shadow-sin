@@ -98,6 +98,8 @@ export const ImprovementSpellList: FC = () => {
       >
         Learn New Spell
       </Button>
+
+      {spellFormDialog.dialog}
     </Stack>
   )
 }

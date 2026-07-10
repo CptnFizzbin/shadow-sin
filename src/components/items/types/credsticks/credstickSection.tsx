@@ -63,6 +63,8 @@ export const CredstickSection: FC = () => {
           Receive
         </Button>
       </Stack>
+
+      {credstickDialog.dialog}
     </Stack>
   )
 }

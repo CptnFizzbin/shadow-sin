@@ -132,6 +132,9 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
           ))}
         </ItemCard.Children>
       )}
+
+      {implantFormDialog.dialog}
+      {confirmDialog.dialog}
     </ItemCard>
   )
 }

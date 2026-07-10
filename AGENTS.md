@@ -242,21 +242,41 @@ commit
 
 ## Dialog patterns
 
-- Prefer the `dialogApi` + `use*Dialog` hook pattern for new dialogs: the hook calls `useDialogApi()` and returns
-  `{ open: (props) => dialogApi.open<TReturn>((ctrl) => <FooDialog ctrl={ctrl} {...props} />) }`. `DialogApiProvider` is
-  mounted inside `CharacterSheetProvider` (in the character routes and the builder root), so React context including
-  `CharacterSheetProvider` propagates normally — no inline state is needed for context access. See
-  `useAddKarmaDialog` and `useActiveSkillDialog` for minimal examples.
+- Prefer the `useDialog<TReturn, TProps>(render)` + `use*Dialog` hook pattern for new dialogs: the hook calls
+  `useDialog<TReturn, TProps>((ctrl, props) => <FooDialog ctrl={ctrl} {...props} />)` and returns `{ open, dialog }`.
+  There is no provider and no global registry — the caller must render the returned `dialog` node once, typically right
+  next to whatever trigger calls `open(props)`:
+  ```tsx
+  const { open, dialog } = useAddKarmaDialog()
+
+  return (
+    <>
+      <Button onClick={() => open()}>Add Karma</Button>
+      {dialog}
+    </>
+  )
+  ```
+  Because dialogs render at the caller's real tree position, React context (including
+  `CharacterSheetProvider`) propagates normally with no special provider scoping to get right. See `useAddKarmaDialog`
+  and `useWeaponFormDialog` for minimal examples.
+- `useDialog` remounts its rendered content fresh on every `open(props)` call (an internal key bump), matching the old
+  `DialogApi` behavior of a brand-new instance per call — see the "TanStack Form" note below for why this matters.
 - Use `useConfirmDialog()` from `#/components/ui/dialog/confirmDialog.tsx` for confirmation prompts before destructive
-  actions.
+  actions — it returns `{ confirm, dialog }`; render `dialog` alongside the trigger the same as any other `use*Dialog`
+  hook.
 - Use the compound `Dialog` component from `#/components/ui/dialog/dialog.tsx` for all new dialogs — it enforces
-  consistent sizing and wires up `onClosed` automatically. See `docs/ui/dialog.md` for examples.
+  consistent sizing. Reach for `ControlledDialog` (wires `ctrl` automatically) for the common case, or
+  `useDialogProps(ctrl)` spread onto raw `Dialog` when you need more manual control over `onClose`/`onClosed`. See
+  `docs/ui/dialog.md` for examples.
+- See `docs/adr/0004-dialog-api-goes-local-only.md` for why the old `DialogApi`/`DialogApiProvider` pattern was
+  removed.
 
 ## TanStack Form
 
-- `defaultValues` are frozen at first mount — the form does not reset when props change. For dialogs that reuse a single
-  mounted instance, add `key={item?.id ?? "new"}` to the dialog component element so it remounts (and re-initializes the
-  form) when the target item changes.
+- `defaultValues` are frozen at first mount — the form does not reset when props change. `useDialog`-based dialogs
+  remount fresh on every `open(props)` call, so this is a non-issue for them. It only matters for hand-rolled inline
+  `useState` dialogs that don't go through `useDialog` (e.g. `SpiritList`) — add `key={item?.id ?? "new"}` to the
+  dialog element so it remounts (and re-initializes the form) when the target item changes.
 - When the form's `onSubmit` is wired to a button, wrap it: `onClick={() => form.handleSubmit()}` rather than
   `onClick={form.handleSubmit}` to avoid forwarding the click event.
 

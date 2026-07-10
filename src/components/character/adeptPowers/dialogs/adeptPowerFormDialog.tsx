@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/character/adeptPowers/form/adeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/character/adeptPowers/form/useAdeptPowerForm.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 interface AdeptPowerFormDialogProps extends ControlledDialogProps<AdeptPowerData> {
@@ -70,18 +70,12 @@ interface UseAdeptPowerFormDialogProps {
   onDelete?: () => void
 }
 
-export const useAdeptPowerFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseAdeptPowerFormDialogProps) => dialogApi.open<AdeptPowerData>(
-      (ctrl) => (
-        <AdeptPowerFormDialog
-          ctrl={ctrl}
-          power={props?.power}
-          onDelete={props?.onDelete}
-        />
-      ),
-    ),
-  }
-}
+export const useAdeptPowerFormDialog = () => useDialog<AdeptPowerData, UseAdeptPowerFormDialogProps | undefined>(
+  (ctrl, props) => (
+    <AdeptPowerFormDialog
+      ctrl={ctrl}
+      power={props?.power}
+      onDelete={props?.onDelete}
+    />
+  ),
+)

@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useLicenseForm } from "#/components/items/types/licenses/forms/useLicenseForm.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -53,12 +53,6 @@ const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
 
 type UseLicenseFormDialogProps = Omit<LicenseFormDialogProps, "ctrl">
 
-export const useLicenseFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseLicenseFormDialogProps) => dialogApi.open<LicenseData>(
-      (ctrl) => <LicenseFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useLicenseFormDialog = () => useDialog<LicenseData, UseLicenseFormDialogProps | undefined>(
+  (ctrl, props) => <LicenseFormDialog ctrl={ctrl} {...props} />,
+)

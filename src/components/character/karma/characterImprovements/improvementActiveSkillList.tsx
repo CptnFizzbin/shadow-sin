@@ -244,6 +244,9 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
       >
         Learn New Skill
       </Button>
+
+      {activeSkillDialog.dialog}
+      {specializationDialog.dialog}
     </Stack>
   )
 }

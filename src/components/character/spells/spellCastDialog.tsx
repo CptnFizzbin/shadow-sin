@@ -5,9 +5,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -88,12 +88,6 @@ interface UseSpellCastDialogProps {
   spell: SpellData
 }
 
-export const useSpellCastDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseSpellCastDialogProps) => dialogApi.open<void>(
-      (ctrl) => <SpellCastDialog ctrl={ctrl} spell={props.spell} />,
-    ),
-  }
-}
+export const useSpellCastDialog = () => useDialog<void, UseSpellCastDialogProps>(
+  (ctrl, props) => <SpellCastDialog ctrl={ctrl} spell={props.spell} />,
+)

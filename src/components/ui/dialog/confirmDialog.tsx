@@ -2,9 +2,9 @@ import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
 
-import type { ControlledDialogProps } from "./api/controlledDialogProps.ts"
-import { useDialogApi } from "./api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "./dialog.tsx"
+import { useDialog } from "./useDialog.tsx"
 
 interface ConfirmDialogProps extends ControlledDialogProps<boolean> {
   title?: ReactNode
@@ -46,13 +46,12 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
 }
 
 export const useConfirmDialog = () => {
-  const dialogApi = useDialogApi()
+  const { open, dialog } = useDialog<boolean, Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>>(
+    (ctrl, props) => <ConfirmDialog ctrl={ctrl} {...props} />,
+  )
 
   return {
-    confirm: async (props: Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>): Promise<boolean> => {
-      return (await dialogApi.open<boolean>((ctrl) => (
-        <ConfirmDialog ctrl={ctrl} {...props} />
-      ))) ?? false
-    },
+    confirm: async (props: Omit<ConfirmDialogProps, keyof ControlledDialogProps<boolean>>) => (await open(props)) ?? false,
+    dialog,
   }
 }

@@ -181,6 +181,8 @@ export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ 
       >
         Learn New Group
       </Button>
+
+      {activeSkillGroupDialog.dialog}
     </Stack>
   )
 }

@@ -244,6 +244,9 @@ export const ImprovementKnowledgeSkillList: FC = () => {
       >
         Learn New Knowledge
       </Button>
+
+      {knowledgeSkillDialog.dialog}
+      {specializationDialog.dialog}
     </Stack>
   )
 }

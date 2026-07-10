@@ -4,10 +4,10 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 
 import type { ItemOptionKey } from "./useItemOptions.ts"
 
@@ -134,18 +134,14 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           )}
         </Stack>
       </Dialog.Content>
+
+      {confirmDialog.dialog}
     </ControlledDialog>
   )
 }
 
 type UseItemOptionsDialogProps = Omit<ItemOptionsDialogProps, "ctrl" | "onClose">
 
-export const useItemOptionsDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseItemOptionsDialogProps) => dialogApi.open<void>(
-      (ctrl) => <ItemOptionsDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useItemOptionsDialog = () => useDialog<void, UseItemOptionsDialogProps>(
+  (ctrl, props) => <ItemOptionsDialog ctrl={ctrl} {...props} />,
+)

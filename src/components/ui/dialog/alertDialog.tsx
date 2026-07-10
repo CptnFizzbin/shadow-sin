@@ -2,9 +2,9 @@ import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
 
-import type { ControlledDialogProps } from "./api/controlledDialogProps.ts"
-import { useDialogApi } from "./api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "./dialog.tsx"
+import { useDialog } from "./useDialog.tsx"
 
 interface AlertDialogProps extends ControlledDialogProps<void> {
   title?: ReactNode
@@ -38,14 +38,6 @@ const AlertDialog: FC<AlertDialogProps> = ({
   )
 }
 
-export const useAlertDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: async (props: Omit<AlertDialogProps, keyof ControlledDialogProps>): Promise<void> => {
-      await dialogApi.open<void>((ctrl) => (
-        <AlertDialog ctrl={ctrl} {...props} />
-      ))
-    },
-  }
-}
+export const useAlertDialog = () => useDialog<void, Omit<AlertDialogProps, keyof ControlledDialogProps>>(
+  (ctrl, props) => <AlertDialog ctrl={ctrl} {...props} />,
+)

@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
 import { armorFieldMap, useArmorForm } from "#/components/items/types/armor/forms/useArmorForm.tsx"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorFormDialogProps {
@@ -39,12 +39,6 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
 
 type UseArmorFormDialogProps = Omit<ArmorFormDialogProps, "ctrl">
 
-export const useArmorFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseArmorFormDialogProps) => dialogApi.open<ArmorData>(
-      (ctrl) => <ArmorFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useArmorFormDialog = () => useDialog<ArmorData, UseArmorFormDialogProps | undefined>(
+  (ctrl, props) => <ArmorFormDialog ctrl={ctrl} {...props} />,
+)

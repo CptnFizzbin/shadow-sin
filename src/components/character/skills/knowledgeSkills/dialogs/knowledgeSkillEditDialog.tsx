@@ -9,9 +9,9 @@ import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
@@ -137,12 +137,6 @@ type UseKnowledgeSkillDialogProps = Omit<
   keyof ControlledDialogProps<KnowledgeSkillData>
 >
 
-export const useKnowledgeSkillDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseKnowledgeSkillDialogProps) => dialogApi.open<KnowledgeSkillData>(
-      (ctrl) => <KnowledgeSkillEditDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useKnowledgeSkillDialog = () => useDialog<KnowledgeSkillData, UseKnowledgeSkillDialogProps | undefined>(
+  (ctrl, props) => <KnowledgeSkillEditDialog ctrl={ctrl} {...props} />,
+)

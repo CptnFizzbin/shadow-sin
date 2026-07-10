@@ -16,8 +16,6 @@ import { CharacterSheetStore } from "#/components/character/sheet/characterSheet
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { useDiceTray } from "#/components/dice/diceTrayContext.ts"
 import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
@@ -38,7 +36,6 @@ function CharacterRoute() {
   const character = Route.useLoaderData()
   const store = useMemo(() => new CharacterSheetStore(character), [character])
   const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
-  const characterDialogApi = useMemo(() => new DialogApi(), [])
   const characterManager = useCharacterManager()
 
   useEffect(() => {
@@ -56,9 +53,7 @@ function CharacterRoute() {
   return (
     <CharacterSheetProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>
-        <DialogApiProvider dialogApi={characterDialogApi}>
-          <CharacterSheetContent />
-        </DialogApiProvider>
+        <CharacterSheetContent />
       </DiceTrayProvider>
     </CharacterSheetProvider>
   )

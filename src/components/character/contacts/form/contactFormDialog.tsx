@@ -4,9 +4,9 @@ import type { FC } from "react"
 import { useId } from "react"
 
 import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
@@ -84,12 +84,6 @@ interface UseContactFormDialogProps {
   onSaved?: (contact: ContactData) => void
 }
 
-export const useContactFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseContactFormDialogProps) => dialogApi.open<void>(
-      (ctrl) => <ContactFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useContactFormDialog = () => useDialog<void, UseContactFormDialogProps | undefined>(
+  (ctrl, props) => <ContactFormDialog ctrl={ctrl} {...props} />,
+)

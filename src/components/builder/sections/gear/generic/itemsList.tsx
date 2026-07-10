@@ -66,6 +66,8 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
       >
         Add {itemLabel}
       </Button>
+
+      {itemFormDialog.dialog}
     </Stack>
   )
 }

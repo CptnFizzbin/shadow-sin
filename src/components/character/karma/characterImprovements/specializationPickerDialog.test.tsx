@@ -1,8 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
@@ -25,30 +23,28 @@ function OpenButton({
 }: OpenButtonProps) {
   const dialog = useSpecializationPickerDialog()
   return (
-    <button
-      type="button"
-      onClick={async () => {
-        const result = await dialog.open({ skillLabel, fieldLabel, fixedOptions, initialValue })
-        onResult(result)
-      }}
-    >
-      Open
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={async () => {
+          const result = await dialog.open({ skillLabel, fieldLabel, fixedOptions, initialValue })
+          onResult(result)
+        }}
+      >
+        Open
+      </button>
+      {dialog.dialog}
+    </>
   )
 }
 
 function renderDialogHarness(props: Omit<OpenButtonProps, "onResult">) {
-  const dialogApi = new DialogApi()
   let result: string | undefined = "__unset__"
   const onResult = (v: string | undefined) => {
     result = v
   }
 
-  renderWithProviders(
-    <DialogApiProvider dialogApi={dialogApi}>
-      <OpenButton {...props} onResult={onResult} />
-    </DialogApiProvider>,
-  )
+  renderWithProviders(<OpenButton {...props} onResult={onResult} />)
 
   return { getResult: () => result }
 }

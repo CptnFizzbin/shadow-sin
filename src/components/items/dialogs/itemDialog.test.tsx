@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { NuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
-import { DialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"

@@ -28,36 +28,41 @@ export const KarmaSection: FC = () => {
   }
 
   return (
-    <Grid container columns={2} spacing={1} sx={{ margin: "auto" }}>
-      <Grid size={1}>
-        <Stack sx={{ gap: 1, alignItems: "center" }}>
-          <Label label="Current" />
-          <Typography sx={{ fontWeight: "bold" }}>
-            {currentKarma}
-          </Typography>
-        </Stack>
+    <>
+      <Grid container columns={2} spacing={1} sx={{ margin: "auto" }}>
+        <Grid size={1}>
+          <Stack sx={{ gap: 1, alignItems: "center" }}>
+            <Label label="Current" />
+            <Typography sx={{ fontWeight: "bold" }}>
+              {currentKarma}
+            </Typography>
+          </Stack>
+        </Grid>
+
+        <Grid size={1}>
+          <Stack sx={{ gap: 1, alignItems: "center" }}>
+            <Label label="Total Earned" />
+            <Typography sx={{ fontWeight: "bold" }}>
+              {totalKarma}
+            </Typography>
+          </Stack>
+        </Grid>
+
+        <Grid size={1}>
+          <Button size="small" variant="outlined" onClick={handleOpenAddKarma} fullWidth>
+            Add Karma
+          </Button>
+        </Grid>
+
+        <Grid size={1}>
+          <Button size="small" variant="outlined" onClick={handleOpenSpendKarma} fullWidth>
+            Spend Karma
+          </Button>
+        </Grid>
       </Grid>
 
-      <Grid size={1}>
-        <Stack sx={{ gap: 1, alignItems: "center" }}>
-          <Label label="Total Earned" />
-          <Typography sx={{ fontWeight: "bold" }}>
-            {totalKarma}
-          </Typography>
-        </Stack>
-      </Grid>
-
-      <Grid size={1}>
-        <Button size="small" variant="outlined" onClick={handleOpenAddKarma} fullWidth>
-          Add Karma
-        </Button>
-      </Grid>
-
-      <Grid size={1}>
-        <Button size="small" variant="outlined" onClick={handleOpenSpendKarma} fullWidth>
-          Spend Karma
-        </Button>
-      </Grid>
-    </Grid>
+      {addKarmaDialog.dialog}
+      {spendKarmaDialog.dialog}
+    </>
   )
 }

@@ -6,9 +6,9 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { useTraditionForm } from "#/components/character/spells/form/useTraditionForm.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
@@ -117,17 +117,11 @@ interface UseTraditionFormDialogProps {
   tradition?: TraditionData
 }
 
-export const useTraditionFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseTraditionFormDialogProps) => dialogApi.open<TraditionData>(
-      (ctrl) => (
-        <TraditionFormDialog
-          ctrl={ctrl}
-          tradition={props?.tradition}
-        />
-      ),
-    ),
-  }
-}
+export const useTraditionFormDialog = () => useDialog<TraditionData, UseTraditionFormDialogProps | undefined>(
+  (ctrl, props) => (
+    <TraditionFormDialog
+      ctrl={ctrl}
+      tradition={props?.tradition}
+    />
+  ),
+)

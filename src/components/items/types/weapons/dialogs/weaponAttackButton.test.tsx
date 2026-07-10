@@ -8,8 +8,6 @@ import { CharacterSheetProvider } from "#/components/character/sheet/characterSh
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
 import { EquippedWeaponCard } from "#/components/items/types/weapons/equippedWeaponCard.tsx"
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { FirearmData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
@@ -39,16 +37,12 @@ const weapon: FirearmData = {
   },
 }
 
-// Production-like provider order: CharacterSheetProvider wraps DialogApiProvider
 const ProductionWrapper: FC<PropsWithChildren> = ({ children }) => {
   const store = useMemo(() => new CharacterSheetStore(createDefaultCharacterSheet()), [])
-  const dialogApi = useMemo(() => new DialogApi(), [])
   return (
     <ThemeProvider theme={theme}>
       <CharacterSheetProvider store={store}>
-        <DialogApiProvider dialogApi={dialogApi}>
-          {children}
-        </DialogApiProvider>
+        {children}
       </CharacterSheetProvider>
     </ThemeProvider>
   )

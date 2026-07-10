@@ -16,8 +16,8 @@ import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -253,6 +253,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
           )}
         </form.Subscribe>
       </Dialog.Actions>
+
+      {itemOptionsDialog.dialog}
+      {buyQuantityDialog.dialog}
     </ControlledDialog>
   )
 }

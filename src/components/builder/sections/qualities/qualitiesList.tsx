@@ -86,6 +86,8 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
               ))}
             </Stack>
           )}
+
+      {qualityFormDialog.dialog}
     </>
   )
 }

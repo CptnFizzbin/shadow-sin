@@ -65,6 +65,8 @@ function RouteComponent() {
 
       <SectionHeader>Karma</SectionHeader>
       <KarmaSection />
+
+      {profileEditDialog.dialog}
     </Stack>
   )
 }

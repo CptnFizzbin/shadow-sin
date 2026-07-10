@@ -59,6 +59,8 @@ export const EquippedWeaponCard: FC<EquippedWeaponCardProps> = ({ weapon }) => {
       <ItemCard.Action type="button" onClick={() => weaponAttackDialog.open({ weapon })}>
         Attack
       </ItemCard.Action>
+
+      {weaponAttackDialog.dialog}
     </ItemCard>
   )
 }

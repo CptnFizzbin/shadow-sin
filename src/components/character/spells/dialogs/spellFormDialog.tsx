@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { SpellFormFields } from "#/components/character/spells/form/spellFormFields.tsx"
 import { useSpellForm } from "#/components/character/spells/form/useSpellForm.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 interface SpellFormDialogProps extends ControlledDialogProps<SpellData> {
@@ -66,18 +66,12 @@ interface UseSpellFormDialogProps {
   onDelete?: () => void
 }
 
-export const useSpellFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseSpellFormDialogProps) => dialogApi.open<SpellData>(
-      (ctrl) => (
-        <SpellFormDialog
-          ctrl={ctrl}
-          spell={props?.spell}
-          onDelete={props?.onDelete}
-        />
-      ),
-    ),
-  }
-}
+export const useSpellFormDialog = () => useDialog<SpellData, UseSpellFormDialogProps | undefined>(
+  (ctrl, props) => (
+    <SpellFormDialog
+      ctrl={ctrl}
+      spell={props?.spell}
+      onDelete={props?.onDelete}
+    />
+  ),
+)

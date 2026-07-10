@@ -25,18 +25,21 @@ export const KnowledgeSkillsListItem: FC<KnowledgeSkillListItemProps> = ({ skill
   const viewSkillDialog = useViewSkillDialog()
 
   return (
-    <SkillListItem
-      name={skill.name}
-      rating={skill.rating}
-      specialization={skill.specialization}
-      attr={AttributeKey.logic}
-      onClick={() => viewSkillDialog.open({
-        name: skill.name,
-        dicePools: [
-          skillDicePool,
-          skill.specialization ? specializationDicePool : false,
-        ],
-      })}
-    />
+    <>
+      <SkillListItem
+        name={skill.name}
+        rating={skill.rating}
+        specialization={skill.specialization}
+        attr={AttributeKey.logic}
+        onClick={() => viewSkillDialog.open({
+          name: skill.name,
+          dicePools: [
+            skillDicePool,
+            skill.specialization ? specializationDicePool : false,
+          ],
+        })}
+      />
+      {viewSkillDialog.dialog}
+    </>
   )
 }

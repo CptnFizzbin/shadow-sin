@@ -81,6 +81,9 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
       >
         Add {categoryLabel}
       </Button>
+
+      {vehicleFormDialog.dialog}
+      {attachmentFormDialog.dialog}
     </Stack>
   )
 }

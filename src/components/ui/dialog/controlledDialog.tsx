@@ -1,7 +1,7 @@
 import { useSelector } from "@tanstack/react-store"
 import type { ReactNode } from "react"
 
-import type { ControlledDialogProps } from "./api/controlledDialogProps.ts"
+import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import type { DialogRootProps } from "./dialogRoot.tsx"
 import { DialogRoot } from "./dialogRoot.tsx"
 
@@ -12,8 +12,7 @@ type ControlledDialogOwnProps<TReturn> = ControlledDialogProps<TReturn> & {
 
 /**
  * Wraps `Dialog` and wires the ctrl lifecycle automatically.
- * Reads `ctrl.store` for the open state and calls `ctrl.onClosed()` after the
- * exit animation.
+ * Reads `ctrl.store` for the open state.
  *
  * @example Inline usage
  * ```tsx
@@ -53,16 +52,11 @@ export const ControlledDialog = <TReturn = void>({
           }
         }
 
-  const handleClosed = () => {
-    ctrl.onClosed()
-    onClosed?.()
-  }
-
   return (
     <DialogRoot
       open={isOpen}
       onClose={handleClose}
-      onClosed={handleClosed}
+      onClosed={onClosed}
       {...dialogProps}
     >
       {children}

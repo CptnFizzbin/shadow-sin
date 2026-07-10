@@ -59,6 +59,8 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
       >
         Add Armor
       </Button>
+
+      {armorFormDialog.dialog}
     </Stack>
   )
 }
