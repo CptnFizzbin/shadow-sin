@@ -8,15 +8,17 @@ import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
-interface AddKarmaDialogProps extends ControlledDialogProps<void> {
-  onSubmit: (amount: number) => void
-}
+import { useKarmaStore } from "./useKarmaStore.ts"
 
-const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl, onSubmit }) => {
+interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
+
+const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
+  const karmaStore = useKarmaStore()
+
   const form = useAppForm({
     defaultValues: { amount: 1 },
     onSubmit: ({ value }) => {
-      if (value.amount !== undefined) onSubmit(value.amount)
+      if (value.amount !== undefined) karmaStore.addKarma(value.amount)
       ctrl.close()
     },
   })
@@ -54,16 +56,12 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl, onSubmit }) => {
   )
 }
 
-interface UseAddKarmaDialogProps {
-  onSubmit: (amount: number) => void
-}
-
 export const useAddKarmaDialog = () => {
   const dialogApi = useDialogApi()
 
   return {
-    open: (props: UseAddKarmaDialogProps) => dialogApi.open<void>(
-      (ctrl) => <AddKarmaDialog ctrl={ctrl} {...props} />,
+    open: () => dialogApi.open<void>(
+      (ctrl) => <AddKarmaDialog ctrl={ctrl} />,
     ),
   }
 }

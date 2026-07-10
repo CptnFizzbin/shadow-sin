@@ -1,0 +1,160 @@
+import { describe, expect, it } from "vitest"
+
+import { NullUuid } from "#/lib/uuidUtils.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
+import { MetatypeType } from "#/system/metatypeData.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
+import { makeCharacterSheet } from "#testUtils/renderUtils.tsx"
+
+import {
+  APTITUDE_ACTIVE_SKILL_CAP,
+  BASE_ACTIVE_SKILL_CAP,
+  BASE_KNOWLEDGE_SKILL_CAP,
+  BASE_LANGUAGE_SKILL_CAP,
+  BASE_SKILL_GROUP_CAP,
+  getActiveSkillCap,
+  getAttributeCap,
+  getKnowledgeSkillCap,
+  getLanguageSkillCap,
+  getSkillGroupCap,
+  hasAptitudeFor,
+  hasExceptionalAttributeFor,
+} from "./improvementCaps.ts"
+
+describe("hasAptitudeFor", () => {
+  it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+    })
+
+    // Act + Assert
+    expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(true)
+  })
+
+  it("returns false when the quality targets a different skill", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [{ id: NullUuid, name: "Aptitude (Longarms)", type: "positive" }]
+    })
+
+    // Act + Assert
+    expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(false)
+  })
+
+  it("returns false when no Aptitude quality is present", () => {
+    // Arrange
+    const sheet = makeCharacterSheet()
+
+    // Act + Assert
+    expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(false)
+  })
+})
+
+describe("hasExceptionalAttributeFor", () => {
+  it("matches the attribute key", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [
+        { id: NullUuid, name: "Exceptional Attribute (Logic)", type: "positive" },
+      ]
+    })
+
+    // Act + Assert
+    expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(true)
+  })
+
+  it("matches the attribute abbreviation", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [{ id: NullUuid, name: "Exceptional (LOG)", type: "positive" }]
+    })
+
+    // Act + Assert
+    expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(true)
+  })
+
+  it("returns false for a different attribute", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [
+        { id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" },
+      ]
+    })
+
+    // Act + Assert
+    expect(hasExceptionalAttributeFor(sheet, AttributeKey.logic)).toBe(false)
+  })
+})
+
+describe("getActiveSkillCap", () => {
+  it("returns the base cap (6) without Aptitude", () => {
+    // Arrange
+    const sheet = makeCharacterSheet()
+
+    // Act + Assert
+    expect(getActiveSkillCap(sheet, SkillKey.pistols)).toBe(BASE_ACTIVE_SKILL_CAP)
+  })
+
+  it("returns the Aptitude cap (7) when the character has Aptitude for the skill", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+    })
+
+    // Act + Assert
+    expect(getActiveSkillCap(sheet, SkillKey.pistols)).toBe(APTITUDE_ACTIVE_SKILL_CAP)
+  })
+})
+
+describe("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => {
+  it("returns the SR4A defaults", () => {
+    expect(getSkillGroupCap()).toBe(BASE_SKILL_GROUP_CAP)
+    expect(getKnowledgeSkillCap()).toBe(BASE_KNOWLEDGE_SKILL_CAP)
+    expect(getLanguageSkillCap()).toBe(BASE_LANGUAGE_SKILL_CAP)
+  })
+})
+
+describe("getAttributeCap", () => {
+  it("returns the metatype max for a regular attribute (Human Body = 6)", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.biology.metatype = MetatypeType.Human
+    })
+
+    // Act + Assert
+    expect(getAttributeCap(sheet, AttributeKey.body)).toBe(6)
+  })
+
+  it("adds +1 when Exceptional Attribute targets the attribute", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.biology.metatype = MetatypeType.Human
+      draft.qualities = [{ id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" }]
+    })
+
+    // Act + Assert
+    expect(getAttributeCap(sheet, AttributeKey.body)).toBe(7)
+  })
+
+  it("uses the awakening max for Magic on a magician", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.biology.awakening = AwakeningType.Magician
+    })
+
+    // Act + Assert
+    expect(getAttributeCap(sheet, AttributeKey.magic)).toBeGreaterThan(0)
+  })
+
+  it("returns 0 for Magic on a mundane (it isn't a usable cap)", () => {
+    // Arrange
+    const sheet = makeCharacterSheet((draft) => {
+      draft.biology.awakening = AwakeningType.Mundane
+    })
+
+    // Act + Assert
+    expect(getAttributeCap(sheet, AttributeKey.magic)).toBe(0)
+  })
+})

@@ -72,9 +72,9 @@ export default defineConfig([
       },
 
       ...{ // @typescript-eslint rules
-        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/consistent-type-exports": "error",
         "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-unused-vars": ["error", {
           ignoreRestSiblings: true,
           argsIgnorePattern: "^_",
@@ -82,8 +82,15 @@ export default defineConfig([
           destructuredArrayIgnorePattern: "^_",
           varsIgnorePattern: "^_",
         }],
+        "@typescript-eslint/switch-exhaustiveness-check": ["error", {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
+        }],
 
-        "no-redeclare": "off", // conflicts with TypeScript's function overloads
+        // conflicts with TypeScript's function overloads
+        "no-redeclare": "off",
+        "default-case": "off",
       },
 
       ...{ // import-alias rules

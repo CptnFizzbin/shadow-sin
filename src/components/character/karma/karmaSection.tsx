@@ -5,22 +5,26 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { Label } from "#/components/ui/text/label"
+import { Label } from "#/components/ui/text/label.tsx"
 
 import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
 import { selectCurrentKarma, selectTotalKarma } from "./karmaSelectors.ts"
+import { useSpendKarmaDialog } from "./spendKarmaDialog.tsx"
 import { useKarmaStore } from "./useKarmaStore.ts"
 
 export const KarmaSection: FC = () => {
   const addKarmaDialog = useAddKarmaDialog()
+  const spendKarmaDialog = useSpendKarmaDialog()
   const karmaStore = useKarmaStore()
   const currentKarma = useSelector(karmaStore, selectCurrentKarma)
   const totalKarma = useSelector(karmaStore, selectTotalKarma)
 
   const handleOpenAddKarma = () => {
-    addKarmaDialog.open({
-      onSubmit: (amount) => karmaStore.addKarma(amount),
-    })
+    addKarmaDialog.open()
+  }
+
+  const handleOpenSpendKarma = () => {
+    spendKarmaDialog.open()
   }
 
   return (
@@ -50,7 +54,7 @@ export const KarmaSection: FC = () => {
       </Grid>
 
       <Grid size={1}>
-        <Button size="small" variant="outlined" disabled fullWidth>
+        <Button size="small" variant="outlined" onClick={handleOpenSpendKarma} fullWidth>
           Spend Karma
         </Button>
       </Grid>
