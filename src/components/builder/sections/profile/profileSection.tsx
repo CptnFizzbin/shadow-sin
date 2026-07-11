@@ -2,8 +2,8 @@ import MuiTextField from "@mui/material/TextField"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectProfile } from "#/components/character/profile/profileSelectors.ts"
-import { useProfileStore } from "#/components/character/profile/useProfileStore.ts"
+import { selectProfile } from "#/components/runner/profile/profileSelectors.ts"
+import { useProfileStore } from "#/components/runner/profile/useProfileStore.ts"
 
 export const ProfileSection: FC = () => {
   const profileStore = useProfileStore()

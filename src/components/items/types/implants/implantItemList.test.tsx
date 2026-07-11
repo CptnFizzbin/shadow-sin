@@ -6,8 +6,8 @@ import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
-import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
+import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -34,8 +34,8 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
   const [rootStore] = useState(
     () =>
       new Store<BuilderRootState>({
-        character: {
-          ...createDefaultCharacterSheet(),
+        runner: {
+          ...createDefaultRunnerData(),
           gear,
         },
         builder: { startingNuyen: undefined },
@@ -43,9 +43,9 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
   )
   return (
     <ThemeProvider theme={theme}>
-      <CharacterBuilderStoreProvider rootStore={rootStore}>
+      <RunnerBuilderStoreProvider rootStore={rootStore}>
         {children}
-      </CharacterBuilderStoreProvider>
+      </RunnerBuilderStoreProvider>
     </ThemeProvider>
   )
 }

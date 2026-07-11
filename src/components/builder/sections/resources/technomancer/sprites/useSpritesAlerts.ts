@@ -1,10 +1,10 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { isTechnomancer } from "#/components/character/technomancer/technomancerUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useSpritesAlerts = (): AlertInfo[] => {
-  const awakeningType = useCharacterSheet((s) => s.biology.awakening)
-  const sprites = useCharacterSheet((s) => s.sprites)
+  const awakeningType = useRunnerData((s) => s.biology.awakening)
+  const sprites = useRunnerData((s) => s.sprites)
 
   const statuses: AlertInfo[] = []
 

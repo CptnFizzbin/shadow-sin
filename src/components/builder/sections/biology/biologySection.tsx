@@ -8,12 +8,12 @@ import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import { getAttributesValues } from "#/components/character/attributes/getAttributesValues.ts"
-import { selectAwakening, selectMetatype } from "#/components/character/biology/biologySelectors.ts"
-import { InnatePowersDisplay } from "#/components/character/biology/innatePowersDisplay.tsx"
-import { MovementDisplay } from "#/components/character/biology/movementDisplay.tsx"
-import { useBiologyStore } from "#/components/character/biology/useBiologyStore.ts"
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
+import { selectAwakening, selectMetatype } from "#/components/runner/biology/biologySelectors.ts"
+import { InnatePowersDisplay } from "#/components/runner/biology/innatePowersDisplay.tsx"
+import { MovementDisplay } from "#/components/runner/biology/movementDisplay.tsx"
+import { useBiologyStore } from "#/components/runner/biology/useBiologyStore.ts"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
@@ -21,7 +21,7 @@ import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
-  const sheet = useCharacterSheetContext()
+  const sheet = useRunnerDataContext()
   const biologyStore = useBiologyStore()
   const metatypeKey = useSelector(biologyStore, selectMetatype)
   const awakeningType = useSelector(biologyStore, selectAwakening)

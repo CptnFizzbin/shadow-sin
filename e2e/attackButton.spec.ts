@@ -9,7 +9,7 @@ test("Weapon attack button opens dialog without crashing", async ({ page }) => {
     errors.push(error.message)
   })
 
-  // Visit root to seed localStorage with Artemis character
+  // Visit root to seed localStorage with Artemis runner
   await page.goto("/")
   await expect(page.getByRole("banner").getByText(/ShadowSIN/i)).toBeVisible()
 

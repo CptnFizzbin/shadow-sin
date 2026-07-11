@@ -1,7 +1,7 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { selectAllContacts } from "#/components/character/contacts/contactsSelectors.ts"
-import { useContactsStore } from "#/components/character/contacts/useContactsStore.ts"
+import { selectAllContacts } from "#/components/runner/contacts/contactsSelectors.ts"
+import { useContactsStore } from "#/components/runner/contacts/useContactsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {

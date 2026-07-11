@@ -1,0 +1,32 @@
+import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
+
+export type AdeptPowersStoreState = RunnerData["powers"]
+
+export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
+  setState(stateOrUpdater: AdeptPowersStoreState | ((prev: AdeptPowersStoreState) => AdeptPowersStoreState)) {
+    this.set(stateOrUpdater)
+  }
+
+  add(power: AdeptPowerData): void {
+    this.set((prev) => [...prev, power])
+  }
+
+  update(power: AdeptPowerData): void {
+    this.set((prev) => prev.map((p) => p.id === power.id ? power : p))
+  }
+
+  remove(powerId: string): void {
+    this.set((prev) => prev.filter((p) => p.id !== powerId))
+  }
+
+  save(power: AdeptPowerData): void {
+    if (!power.id || power.id === NullUuid) {
+      this.add({ ...power, id: crypto.randomUUID() })
+    } else {
+      this.update(power)
+    }
+  }
+}

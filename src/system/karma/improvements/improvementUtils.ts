@@ -4,8 +4,8 @@ import type { Draft } from "immer"
 import { produce } from "immer"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import type { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
@@ -40,11 +40,11 @@ const COMPLEX_FORM_KARMA_MULT = 1
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
-  characterStore: CharacterSheetStore,
+  runnerStore: RunnerDataStore,
 ): void => {
   const improvementsState = improvementsStore.store.state
 
-  characterStore.setState(produce((sheet) => {
+  runnerStore.setState(produce((sheet) => {
     for (const entry of Object.values(improvementsState)) {
       const cost = getImprovementCost(entry)
       applyImprovement(sheet, entry, cost)
@@ -134,7 +134,7 @@ const getAptitudeBoostedActiveSkillCost = (
  * directly, omit the argument and the cost is computed here.
  */
 export const applyImprovement = (
-  sheet: Draft<CharacterSheet>,
+  sheet: Draft<RunnerData>,
   entry: ImprovementEntry,
   precomputedCost?: number,
 ) => {
@@ -178,55 +178,55 @@ export const applyImprovement = (
 }
 
 const applyComplexFormIncrease = (
-  sheet: Draft<CharacterSheet>,
+  sheet: Draft<RunnerData>,
   entry: ComplexFormIncreaseEntry,
 ) => {
   const complexForm = sheet.complexForms.find((cf) => cf.id === entry.complexFormId)
-  if (!complexForm) throw new Error(`Complex form ${entry.complexFormId} not found on character sheet`)
+  if (!complexForm) throw new Error(`Complex form ${entry.complexFormId} not found on runner sheet`)
   complexForm.rating = entry.newRating
 }
 
-const applySkillIncrease = (sheet: Draft<CharacterSheet>, entry: SkillIncreaseEntry) => {
+const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {
   let skillData: undefined | { rating: number | "native" }
 
   if (entry.skillType === "ActiveSkill") {
     const skillGroup = skillList[entry.skill]
     if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
     skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Skill ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Skill ${entry.skill} not found on runner sheet`)
     skillData.rating = entry.newRating
   } else if (entry.skillType === "KnowledgeSkill") {
     skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on runner sheet`)
     skillData.rating = entry.newRating
   } else if (entry.skillType === "LanguageSkill") {
     skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Language ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Language ${entry.skill} not found on runner sheet`)
     skillData.rating = entry.newRating
   }
 }
 
-const applySpecialization = (sheet: Draft<CharacterSheet>, entry: SkillSpecializationEntry) => {
+const applySpecialization = (sheet: Draft<RunnerData>, entry: SkillSpecializationEntry) => {
   let skillData: undefined | { specialization?: string } | { lingo?: string }
 
   if (entry.skillType === "ActiveSkill") {
     const skillGroup = skillList[entry.skill]
     if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
     skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Skill ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Skill ${entry.skill} not found on runner sheet`)
     skillData.specialization = entry.specialization
   } else if (entry.skillType === "KnowledgeSkill") {
     skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on runner sheet`)
     skillData.specialization = entry.specialization
   } else if (entry.skillType === "LanguageSkill") {
     skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Language ${entry.skill} not found on character sheet`)
+    if (!skillData) throw new Error(`Language ${entry.skill} not found on runner sheet`)
     skillData.lingo = entry.specialization
   }
 }
 
-const breakSkillGroup = (sheet: Draft<CharacterSheet>, group: SkillGroupKey): void => {
+const breakSkillGroup = (sheet: Draft<RunnerData>, group: SkillGroupKey): void => {
   const groupData = sheet.skills.skillGroups.find((g) => g.name === group)
   // No-op when the group isn't on the sheet — the skill being raised was
   // either learned standalone or the group was already broken.
@@ -246,38 +246,38 @@ const breakSkillGroup = (sheet: Draft<CharacterSheet>, group: SkillGroupKey): vo
   }
 }
 
-const applySkillGroupIncrease = (sheet: Draft<CharacterSheet>, entry: SkillGroupIncreaseEntry) => {
+const applySkillGroupIncrease = (sheet: Draft<RunnerData>, entry: SkillGroupIncreaseEntry) => {
   const groupData = sheet.skills.skillGroups.find((g) => g.name === entry.group)
-  if (!groupData) throw new Error(`Skill group ${entry.group} not found on character sheet`)
+  if (!groupData) throw new Error(`Skill group ${entry.group} not found on runner sheet`)
   groupData.rating = entry.newRating
 }
 
-const applyLearnActiveSkill = (sheet: Draft<CharacterSheet>, entry: LearnActiveSkillEntry) => {
+const applyLearnActiveSkill = (sheet: Draft<RunnerData>, entry: LearnActiveSkillEntry) => {
   const exists = sheet.skills.activeSkills.some((skill) => skill.name === entry.skill.name)
-  if (exists) throw new Error(`Active skill ${entry.skill.name} already exists on character sheet`)
+  if (exists) throw new Error(`Active skill ${entry.skill.name} already exists on runner sheet`)
   sheet.skills.activeSkills.push({ ...entry.skill })
 }
 
-const applyLearnSkillGroup = (sheet: Draft<CharacterSheet>, entry: LearnSkillGroupEntry) => {
+const applyLearnSkillGroup = (sheet: Draft<RunnerData>, entry: LearnSkillGroupEntry) => {
   const exists = sheet.skills.skillGroups.some((group) => group.name === entry.group.name)
-  if (exists) throw new Error(`Skill group ${entry.group.name} already exists on character sheet`)
+  if (exists) throw new Error(`Skill group ${entry.group.name} already exists on runner sheet`)
   sheet.skills.skillGroups.push({ ...entry.group })
 }
 
 const applyLearnKnowledgeSkill = (
-  sheet: Draft<CharacterSheet>,
+  sheet: Draft<RunnerData>,
   entry: LearnKnowledgeSkillEntry,
 ) => {
   const exists = sheet.skills.knowledgeSkills.some((skill) => skill.name === entry.skill.name)
-  if (exists) throw new Error(`Knowledge skill ${entry.skill.name} already exists on character sheet`)
+  if (exists) throw new Error(`Knowledge skill ${entry.skill.name} already exists on runner sheet`)
   sheet.skills.knowledgeSkills.push({ ...entry.skill })
 }
 
 const applyLearnLanguageSkill = (
-  sheet: Draft<CharacterSheet>,
+  sheet: Draft<RunnerData>,
   entry: LearnLanguageSkillEntry,
 ) => {
   const exists = sheet.skills.languageSkills.some((skill) => skill.name === entry.skill.name)
-  if (exists) throw new Error(`Language skill ${entry.skill.name} already exists on character sheet`)
+  if (exists) throw new Error(`Language skill ${entry.skill.name} already exists on runner sheet`)
   sheet.skills.languageSkills.push({ ...entry.skill })
 }

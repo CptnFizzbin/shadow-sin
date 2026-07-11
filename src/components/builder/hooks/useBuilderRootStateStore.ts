@@ -2,23 +2,23 @@ import { Store } from "@tanstack/store"
 import { use, useCallback, useEffect, useMemo, useState } from "react"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
+import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import { mergeObjects } from "#/lib/mergeUtils.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 type UseBuilderRootStateStore = [
   store: Store<BuilderRootState>,
   reset: () => void,
-  loadCharacter: (importedCharacter: CharacterSheet) => void,
+  loadRunner: (importedRunner: RunnerData) => void,
 ]
 
 const builderStorage = LocalStorageProvider.getStorage().namespace("builder")
 
-function getBuilderKey(characterId: string): string {
-  return `character-form/${characterId}`
+function getBuilderKey(runnerId: string): string {
+  return `character-form/${runnerId}`
 }
 
 function useSavedBuilderState(storageKey: string): BuilderRootState | null {
@@ -27,19 +27,19 @@ function useSavedBuilderState(storageKey: string): BuilderRootState | null {
 }
 
 export const useBuilderRootStateStore = (
-  character?: CharacterSheet,
+  runner?: RunnerData,
 ): UseBuilderRootStateStore => {
-  const storageKey = getBuilderKey(character?.id ?? "new")
+  const storageKey = getBuilderKey(runner?.id ?? "new")
   const savedState = useSavedBuilderState(storageKey)
 
   const defaultBuilderValues = useMemo(
     (): BuilderRootState => ({
-      character: character || createDefaultCharacterSheet(),
+      runner: runner || createDefaultRunnerData(),
       builder: {
         startingNuyen: undefined,
       },
     }),
-    [character],
+    [runner],
   )
 
   const [store] = useState(
@@ -61,16 +61,16 @@ export const useBuilderRootStateStore = (
     store.setState(() => defaultBuilderValues)
   }, [store, storageKey, defaultBuilderValues])
 
-  const loadCharacter = useCallback(
-    (importedCharacter: CharacterSheet) => {
+  const loadRunner = useCallback(
+    (importedRunner: RunnerData) => {
       void builderStorage.removeItem(storageKey)
       store.setState(() => ({
-        character: importedCharacter,
+        runner: importedRunner,
         builder: { startingNuyen: undefined },
       }))
     },
     [store, storageKey],
   )
 
-  return [store, onReset, loadCharacter]
+  return [store, onReset, loadRunner]
 }

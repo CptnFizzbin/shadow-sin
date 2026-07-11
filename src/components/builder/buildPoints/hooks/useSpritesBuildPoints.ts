@@ -1,12 +1,12 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getSpriteTasksBp } from "#/components/builder/sections/resources/technomancer/sprites/spritesUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { useSprites } from "#/components/character/technomancer/spritesHooks.ts"
-import { isTechnomancer } from "#/components/character/technomancer/technomancerUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useSprites } from "#/components/runner/technomancer/spritesHooks.ts"
+import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 
 export const useSpritesBuildPoints = (): BpLineItem => {
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const sprites = useSprites()
 
   const spritesBp = sprites

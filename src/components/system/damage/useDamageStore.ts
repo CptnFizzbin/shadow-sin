@@ -1,7 +1,7 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
@@ -10,7 +10,7 @@ import { DamageStore } from "./damageStore.ts"
 import { selectWoundInterval } from "./damageUtils.ts"
 
 export const useDamageStore = (): DamageStore => {
-  const sheetStore = useCharacterSheetContext()
+  const sheetStore = useRunnerDataContext()
 
   return useMemo(() => {
     return new DamageStore(

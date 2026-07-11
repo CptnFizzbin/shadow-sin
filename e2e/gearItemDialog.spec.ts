@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test"
 
-import { Artemis } from "#/character/fixtures/artemis.ts"
+import { Artemis } from "#/runner/fixtures/artemis.ts"
 
 const GEAR_URL = `/#/${Artemis.id}/gear`
 
 test.describe("Gear page – misc item dialog", () => {
   test.beforeEach(async ({ page }) => {
-    // Visit the root to trigger ensureCharacters and seed localStorage
+    // Visit the root to trigger ensureRunners and seed localStorage
     await page.goto("/")
     await expect(page.getByRole("banner").getByText(/ShadowSIN/i)).toBeVisible()
 
@@ -62,7 +62,7 @@ test.describe("Gear page – misc item dialog", () => {
     // Fill in the name
     await dialog.getByRole("textbox", { name: /Name/i }).fill("Medkit")
 
-    // In character-sheet view (non-builder) new items use Acquire mode
+    // In runner-sheet view (non-builder) new items use Acquire mode
     await dialog.getByRole("button", { name: "Acquire" }).click()
 
     // Assert — dialog closes and new item is in the list

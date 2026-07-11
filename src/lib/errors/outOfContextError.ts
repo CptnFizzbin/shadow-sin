@@ -4,7 +4,7 @@
  *
  * @example
  * ```ts
- * throw new OutOfContextError("useCharacterSheetContext", "CharacterSheetProvider")
+ * throw new OutOfContextError("useRunnerDataContext", "RunnerDataProvider")
  * ```
  */
 export class OutOfContextError extends Error {

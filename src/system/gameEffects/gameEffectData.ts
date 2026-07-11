@@ -79,7 +79,7 @@ export interface ExtraInitiativeDiceEffect extends GameEffectData {
 
 /**
  * @deprecated Use `HighPainToleranceEffect` or `LowPainToleranceEffect` instead.
- * Retained only for parsing old character data before the 20260502 migration runs.
+ * Retained only for parsing old runner data before the 20260502 migration runs.
  */
 export interface PainToleranceEffect extends GameEffectData {
   type: GameEffectType.painTolerance
@@ -172,7 +172,7 @@ const ExtraInitiativeDiceSchema = z.object({
 
 /**
  * @deprecated Use `HighPainToleranceSchema` or `LowPainToleranceSchema` instead.
- * Retained for parsing old character data before the 20260502 migration runs.
+ * Retained for parsing old runner data before the 20260502 migration runs.
  */
 const PainToleranceSchema = z.object({
   type: z.literal(GameEffectType.painTolerance),

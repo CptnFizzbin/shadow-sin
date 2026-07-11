@@ -6,11 +6,11 @@ import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
-import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
-import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
+import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 import { theme } from "#/theme.ts"
 
 export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
@@ -18,8 +18,8 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export interface RenderWithProvidersOptions {
-  /** Mutate the default `CharacterSheet` before the store is created. */
-  updateCharacterSheet?: (characterSheet: CharacterSheet) => void
+  /** Mutate the default `RunnerData` before the store is created. */
+  updateRunnerData?: (runnerData: RunnerData) => void
 }
 
 export interface RenderInBuilderOptions {
@@ -33,13 +33,13 @@ export function renderWithProviders(
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     const store = useMemo(() => {
-      const characterSheet = createDefaultCharacterSheet()
-      options?.updateCharacterSheet?.(characterSheet)
-      return new CharacterSheetStore(characterSheet)
+      const runnerData = createDefaultRunnerData()
+      options?.updateRunnerData?.(runnerData)
+      return new RunnerDataStore(runnerData)
     }, [])
     return (
       <ThemeProvider theme={theme}>
-        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+        <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
       </ThemeProvider>
     )
   }
@@ -54,7 +54,7 @@ export function renderInBuilder(
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     const rootStore = useMemo(() => {
       const rootState: BuilderRootState = {
-        character: createDefaultCharacterSheet(),
+        runner: createDefaultRunnerData(),
         builder: { startingNuyen: undefined },
       }
       options?.updateRootState?.(rootState)
@@ -62,9 +62,9 @@ export function renderInBuilder(
     }, [])
     return (
       <ThemeProvider theme={theme}>
-        <CharacterBuilderStoreProvider rootStore={rootStore}>
+        <RunnerBuilderStoreProvider rootStore={rootStore}>
           {children}
-        </CharacterBuilderStoreProvider>
+        </RunnerBuilderStoreProvider>
       </ThemeProvider>
     )
   }
@@ -90,23 +90,23 @@ export function fillNameAndClickSave(nameValue: string) {
 afterEach(() => cleanup())
 
 /**
- * Creates a default CharacterSheet, optionally mutated by the provided callback.
+ * Creates a default RunnerData, optionally mutated by the provided callback.
  * Use this in unit tests to build a sheet with only the fields you care about set.
  */
-export function makeCharacterSheet(overrides?: (sheet: CharacterSheet) => void): CharacterSheet {
-  const sheet = createDefaultCharacterSheet()
+export function makeRunnerData(overrides?: (sheet: RunnerData) => void): RunnerData {
+  const sheet = createDefaultRunnerData()
   overrides?.(sheet)
   return sheet
 }
 
 /**
- * Returns a React wrapper component that provides a CharacterSheetStore populated
+ * Returns a React wrapper component that provides a RunnerDataStore populated
  * from the given sheet. Pass it directly to `renderHook(..., { wrapper })`.
  */
-export function makeCharacterSheetWrapper(characterSheet: CharacterSheet): FC<PropsWithChildren> {
-  const store = new CharacterSheetStore(characterSheet)
+export function makeRunnerDataWrapper(runnerData: RunnerData): FC<PropsWithChildren> {
+  const store = new RunnerDataStore(runnerData)
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+    <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
   )
   Wrapper.displayName = "TestWrapper"
   return Wrapper

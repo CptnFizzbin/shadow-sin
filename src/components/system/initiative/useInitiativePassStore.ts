@@ -2,7 +2,7 @@ import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import {
@@ -17,7 +17,7 @@ import { InitiativePassStore } from "./initiativePassStore.ts"
 export { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 
 export const useInitiativePassStore = (): InitiativePassStore => {
-  const sheetStore = useCharacterSheetContext()
+  const sheetStore = useRunnerDataContext()
 
   return useMemo(() => {
     const sliceAtom = createSliceAtom(

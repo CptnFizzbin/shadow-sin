@@ -372,21 +372,27 @@ _Avoid_: sheet view, player view, read mode
 
 ### Infrastructure
 
-**CharacterMeta**:
+**RunnerMeta**:
 Versioning metadata embedded in every `RunnerData` record. Tracks the schema version and the set
 of migration IDs already applied.
 
-**CharacterId**:
+**RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
 `local|3f8a…`). A plain UUID with no `|` defaults to the `"local"` source. Because the source is
 embedded in the ID, copying a Runner to a different storage location always produces a new
-`CharacterId` with a new UUID — a copy is a distinct Runner, not a replica.
-_Avoid_: UUID alone (ambiguous without source), character key
+`RunnerId` with a new UUID — a copy is a distinct Runner, not a replica.
+_Avoid_: UUID alone (ambiguous without source), character key, CharacterId
 
 **StorageSource**:
 A named, pluggable persistence backend (e.g. `"local"` for `localStorage`, `"gdrive"` for Google
 Drive). A Runner belongs to exactly one source at a time; moving it to another source requires
-generating a new `CharacterId`.
+generating a new `RunnerId`. The underlying `localStorage` key format (`characters/<uuid>`,
+`character-form/<uuid>`) is a fixed historical string and intentionally was **not** renamed
+alongside `CharacterId`/`CharacterManager` — changing it would orphan every already-saved Runner.
+`RunnerManager`, the migration system, and the legacy-format detection in
+`20250101_normalizeOldFormatCharacter.ts` (and its frozen test fixtures under
+`testUtils/fixtures/characters/`) all still reference `character`-shaped literal strings on
+purpose.
 
 **Session State**:
 Combat-round and in-session data stored directly on `RunnerData` (e.g. initiative rolls, passes
@@ -400,9 +406,12 @@ _Avoid_: temporary state, volatile state (all state is durable by design)
 A single, immutable schema-upgrade step that transforms one version of `RunnerData` into the
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
 commit — if a migration has a bug, a new migration fixes the output. The current system tracks
-applied migrations as an array of string IDs in `CharacterMeta.appliedMigrations`; this is
+applied migrations as an array of string IDs in `RunnerMeta.appliedMigrations`; this is
 planned to be replaced with a single integer **schema version** number checked against the
-ordered migration list.
+ordered migration list. Because migration files must never be edited, the shared
+`CharacterMigration<T>` type in `src/runner/characterMigration.ts` and the migration files
+themselves (`src/runner/migrations/`) were deliberately left out of the `character`→`runner`
+identifier rename — renaming the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
 ## Relationships
@@ -410,7 +419,7 @@ _Avoid_: upgrade, patch, update (use migration)
 - A **Player** manages one or more **Runners**; a **Game** groups multiple Players' Runners
   under a single GM _(Game not yet implemented)_
 - A **Runner** belongs to exactly one **StorageSource** at a time; copying to another source
-  generates a new **CharacterId** (new UUID + new source prefix) — the copy is a distinct Runner
+  generates a new **RunnerId** (new UUID + new source prefix) — the copy is a distinct Runner
 - **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
   expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
   nest recursively _(field names are pending migration from `childIds` / `parentId`)_
@@ -438,3 +447,10 @@ _Avoid_: upgrade, patch, update (use migration)
   alias.
 - `character` as a variable name was overloaded between Runner identity and `RunnerData` payload.
   Resolved: use `sheet` for the data payload variable; `runner` for identity/display contexts.
+- `CharacterId`, `CharacterManager`, `src/character/`, and the various `character`-named
+  components/hooks/builder files were renamed to `RunnerId`, `RunnerManager`, `src/runner/`, etc.
+  Resolved, with one deliberate exception: the `localStorage` key literals (`characters/<uuid>`,
+  `character-form/<uuid>`), the legacy YAML export's `characterId` field detection, and the
+  migration subsystem (`src/runner/migrations/`, `characterMigration.ts`,
+  `testUtils/fixtures/characters/`) were left untouched — see **StorageSource** and **Migration**
+  above.

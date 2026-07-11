@@ -1,15 +1,15 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { selectAllAdeptPowers } from "#/components/character/adeptPowers/adeptPowersSelectors.ts"
-import { isAdept } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
-import { useAdeptPowersStore } from "#/components/character/adeptPowers/useAdeptPowersStore.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { selectAllAdeptPowers } from "#/components/runner/adeptPowers/adeptPowersSelectors.ts"
+import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
+import { useAdeptPowersStore } from "#/components/runner/adeptPowers/useAdeptPowersStore.ts"
+import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const magicAttr = useAttr(AttributeKey.magic)
   const adeptPowersStore = useAdeptPowersStore()
   const adeptPowers = useSelector(adeptPowersStore, selectAllAdeptPowers)

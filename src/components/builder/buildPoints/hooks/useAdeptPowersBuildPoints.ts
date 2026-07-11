@@ -1,13 +1,13 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { isAdept } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
+import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
 import {
   selectAwakeningType,
-  useCharacterSheetSelector,
-} from "#/components/character/sheet/characterSheet.selectors.ts"
+  useRunnerDataSelector,
+} from "#/components/runner/sheet/runnerData.selectors.ts"
 
 export const useAdeptPowersBuildPoints = (): BpLineItem => {
-  const awakeningType = useCharacterSheetSelector(selectAwakeningType)
+  const awakeningType = useRunnerDataSelector(selectAwakeningType)
 
   return {
     sectionId: BuilderSectionId.adeptPowers,

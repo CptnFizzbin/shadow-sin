@@ -1,6 +1,6 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 
 interface QualitiesBuildPoints extends BpLineItem {
   positive: number
@@ -8,7 +8,7 @@ interface QualitiesBuildPoints extends BpLineItem {
 }
 
 export const useQualitiesBuildPoints = (): QualitiesBuildPoints => {
-  const qualities = useCharacterSheet((sheet) => sheet.qualities)
+  const qualities = useRunnerData((sheet) => sheet.qualities)
 
   const positiveQualities = qualities
     .filter((q) => q.type === "positive")

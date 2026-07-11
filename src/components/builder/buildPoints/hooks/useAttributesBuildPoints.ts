@@ -5,7 +5,7 @@ import {
 } from "#/components/builder/buildPoints/attributeUtils.ts"
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useActiveAttributes } from "#/components/character/attributes/hooks/useActiveAttributes.ts"
+import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
 import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 
 interface AttributesBuildPoints extends BpLineItem {

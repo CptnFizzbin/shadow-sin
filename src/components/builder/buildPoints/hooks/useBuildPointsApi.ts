@@ -1,5 +1,5 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { CharacterBuilderMaxBp } from "#/components/builder/characterBuilderUtils.ts"
+import { RunnerBuilderMaxBp } from "#/components/builder/runnerBuilderUtils.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import {
   calculateActiveSkillsBp,
@@ -7,7 +7,7 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/runner/runnerUtils.ts"
 import {
   selectActiveSkills,
   selectAwakening,
@@ -15,8 +15,8 @@ import {
   selectLanguageSkills,
   selectMetatype,
   selectSkillGroups,
-  useCharacterSheetSelector,
-} from "#/components/character/sheet/characterSheet.selectors.ts"
+  useRunnerDataSelector,
+} from "#/components/runner/sheet/runnerData.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
@@ -50,17 +50,17 @@ export const useBuilderBuildPointsApi = () => {
   const totalSpent = enabledLineItems.reduce((acc, item) => acc + item.spent, 0)
 
   return {
-    total: CharacterBuilderMaxBp,
+    total: RunnerBuilderMaxBp,
     spent: totalSpent,
-    remaining: CharacterBuilderMaxBp - totalSpent,
-    isOverBudget: totalSpent > CharacterBuilderMaxBp,
+    remaining: RunnerBuilderMaxBp - totalSpent,
+    isOverBudget: totalSpent > RunnerBuilderMaxBp,
     lineItems: enabledLineItems,
   }
 }
 
 const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeCost = useCharacterSheetSelector(selectMetatype).cost
-  const awakeningCost = useCharacterSheetSelector(selectAwakening).cost
+  const metatypeCost = useRunnerDataSelector(selectMetatype).cost
+  const awakeningCost = useRunnerDataSelector(selectAwakening).cost
 
   return {
     sectionId: BuilderSectionId.biology,
@@ -85,8 +85,8 @@ export const useBuilderSkillsBuildPoints = () => {
 }
 
 const useActiveSkillsBuildPoints = () => {
-  const activeSkills = useCharacterSheetSelector(selectActiveSkills)
-  const activeSkillGroups = useCharacterSheetSelector(selectSkillGroups)
+  const activeSkills = useRunnerDataSelector(selectActiveSkills)
+  const activeSkillGroups = useRunnerDataSelector(selectSkillGroups)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
@@ -104,8 +104,8 @@ const useKnowledgeSkillsBuildPoints = () => {
   const logicAttr = useAttr(AttributeKey.logic)
   const intuitionAttr = useAttr(AttributeKey.intuition)
 
-  const knowledgeSkills = useCharacterSheetSelector(selectKnowledgeSkills)
-  const languageSkills = useCharacterSheetSelector(selectLanguageSkills)
+  const knowledgeSkills = useRunnerDataSelector(selectKnowledgeSkills)
+  const languageSkills = useRunnerDataSelector(selectLanguageSkills)
 
   const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
     knowledgeSkills,

@@ -19,7 +19,7 @@ import { useAttributeAlerts } from "./useAttributeAlerts.ts"
 import { useContactsAlerts } from "./useContactsAlerts.ts"
 
 /**
- * Aggregates alert information from every character-builder section in a fixed order.
+ * Aggregates alert information from every runner-builder section in a fixed order.
  *
  * @returns An array of `AlertInfo` objects containing alerts from profile, biology, attributes, qualities, skills summary, skills, spells, adept powers, sprites, complex forms, gear, contacts, and build points, in that order.
  */

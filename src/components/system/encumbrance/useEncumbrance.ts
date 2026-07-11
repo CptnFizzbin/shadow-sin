@@ -1,5 +1,5 @@
-import { useAttr } from "#/components/character/characterUtils.ts"
 import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useAttr } from "#/components/runner/runnerUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/gear/encumbranceUtils.ts"

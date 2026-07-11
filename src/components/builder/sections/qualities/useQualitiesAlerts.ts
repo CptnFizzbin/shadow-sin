@@ -1,8 +1,8 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
-  const qualities = useCharacterSheet((sheet) => sheet.qualities)
+  const qualities = useRunnerData((sheet) => sheet.qualities)
 
   const statuses: AlertInfo[] = []
 

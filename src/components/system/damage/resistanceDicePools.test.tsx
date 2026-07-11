@@ -3,10 +3,10 @@ import { render, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { describe, expect, it } from "vitest"
 
-import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
-import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
+import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
 
@@ -19,29 +19,29 @@ import {
 } from "./resistanceDicePools.tsx"
 
 interface TestProvidersProps extends PropsWithChildren {
-  characterSheet: CharacterSheet
+  runnerData: RunnerData
 }
 
-const TestProviders: FC<TestProvidersProps> = ({ characterSheet, children }) => {
-  const store = new CharacterSheetStore(characterSheet)
+const TestProviders: FC<TestProvidersProps> = ({ runnerData, children }) => {
+  const store = new RunnerDataStore(runnerData)
 
   return (
     <ThemeProvider theme={theme}>
-      <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
+      <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
     </ThemeProvider>
   )
 }
 
-function renderWithCharacter(
+function renderWithRunner(
   element: ReactElement,
-  updateCharacterSheet?: (characterSheet: CharacterSheet) => void,
+  updateRunnerData?: (runnerData: RunnerData) => void,
 ) {
-  const characterSheet = createDefaultCharacterSheet()
-  updateCharacterSheet?.(characterSheet)
+  const runnerData = createDefaultRunnerData()
+  updateRunnerData?.(runnerData)
 
   const { container } = render(element, {
     wrapper: ({ children }) => (
-      <TestProviders characterSheet={characterSheet}>{children}</TestProviders>
+      <TestProviders runnerData={runnerData}>{children}</TestProviders>
     ),
   })
 
@@ -51,7 +51,7 @@ function renderWithCharacter(
 describe("MeleeDodgeDicePool", () => {
   it("shows a single defaulting entry when dodge rating is 0", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeDodgeDicePool />)
+    const view = renderWithRunner(<MeleeDodgeDicePool />)
 
     // Assert
     expect(view.getAllByText("Defaulting")).toHaveLength(1)
@@ -60,7 +60,7 @@ describe("MeleeDodgeDicePool", () => {
 
   it("shows no defaulting entry when dodge is trained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeDodgeDicePool />, (sheet) => {
+    const view = renderWithRunner(<MeleeDodgeDicePool />, (sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 3 }]
     })
 
@@ -72,7 +72,7 @@ describe("MeleeDodgeDicePool", () => {
 describe("MeleeFullDodgeDicePool", () => {
   it("shows a single defaulting entry when dodge rating is 0, even though dodge is used twice", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeFullDodgeDicePool />)
+    const view = renderWithRunner(<MeleeFullDodgeDicePool />)
 
     // Assert
     expect(view.getAllByText("Defaulting")).toHaveLength(1)
@@ -81,7 +81,7 @@ describe("MeleeFullDodgeDicePool", () => {
 
   it("shows no defaulting entry when dodge is trained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeFullDodgeDicePool />, (sheet) => {
+    const view = renderWithRunner(<MeleeFullDodgeDicePool />, (sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 4 }]
     })
 
@@ -93,7 +93,7 @@ describe("MeleeFullDodgeDicePool", () => {
 describe("RangedFullDefenseDicePool", () => {
   it("shows a single defaulting entry when dodge rating is 0", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<RangedFullDefenseDicePool />)
+    const view = renderWithRunner(<RangedFullDefenseDicePool />)
 
     // Assert
     expect(view.getAllByText("Defaulting")).toHaveLength(1)
@@ -101,7 +101,7 @@ describe("RangedFullDefenseDicePool", () => {
 
   it("shows no defaulting entry when dodge is trained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<RangedFullDefenseDicePool />, (sheet) => {
+    const view = renderWithRunner(<RangedFullDefenseDicePool />, (sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 2 }]
     })
 
@@ -113,7 +113,7 @@ describe("RangedFullDefenseDicePool", () => {
 describe("MeleeFullParryDicePool", () => {
   it("shows two defaulting entries when both weapon skill and dodge are untrained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeFullParryDicePool weaponSkill={SkillKey.blades} />)
+    const view = renderWithRunner(<MeleeFullParryDicePool weaponSkill={SkillKey.blades} />)
 
     // Assert
     expect(view.getAllByText("Defaulting")).toHaveLength(2)
@@ -121,7 +121,7 @@ describe("MeleeFullParryDicePool", () => {
 
   it("shows one defaulting entry when only dodge is untrained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(
+    const view = renderWithRunner(
       <MeleeFullParryDicePool weaponSkill={SkillKey.blades} />,
       (sheet) => {
         sheet.skills.activeSkills = [{ name: SkillKey.blades, rating: 3 }]
@@ -134,7 +134,7 @@ describe("MeleeFullParryDicePool", () => {
 
   it("shows no defaulting entries when both weapon skill and dodge are trained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(
+    const view = renderWithRunner(
       <MeleeFullParryDicePool weaponSkill={SkillKey.blades} />,
       (sheet) => {
         sheet.skills.activeSkills = [
@@ -152,7 +152,7 @@ describe("MeleeFullParryDicePool", () => {
 describe("MeleeFullBlockDicePool", () => {
   it("shows two defaulting entries when both unarmed combat and dodge are untrained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeFullBlockDicePool />)
+    const view = renderWithRunner(<MeleeFullBlockDicePool />)
 
     // Assert
     expect(view.getAllByText("Defaulting")).toHaveLength(2)
@@ -160,7 +160,7 @@ describe("MeleeFullBlockDicePool", () => {
 
   it("shows no defaulting entries when both skills are trained", () => {
     // Arrange / Act
-    const view = renderWithCharacter(<MeleeFullBlockDicePool />, (sheet) => {
+    const view = renderWithRunner(<MeleeFullBlockDicePool />, (sheet) => {
       sheet.skills.activeSkills = [
         { name: SkillKey.unarmedCombat, rating: 2 },
         { name: SkillKey.dodge, rating: 2 },

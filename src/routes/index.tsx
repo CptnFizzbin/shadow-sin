@@ -2,21 +2,21 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
-import { CharacterManager } from "#/character/characterManager.ts"
-import { Artemis } from "#/character/fixtures/artemis.ts"
-import { Hexen } from "#/character/fixtures/hexen.ts"
-import CharacterRosterList from "#/components/character/characterRosterList.tsx"
-import { ImportCharacterButton } from "#/components/character/exportImport/importCharacterButton.tsx"
+import { ImportRunnerButton } from "#/components/runner/exportImport/importRunnerButton.tsx"
+import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
 import { env } from "#/env.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
+import { Artemis } from "#/runner/fixtures/artemis.ts"
+import { Hexen } from "#/runner/fixtures/hexen.ts"
+import { RunnerManager } from "#/runner/runnerManager.ts"
 
 // Module-level manager for use in loaders (outside React context)
-const loaderManager = new CharacterManager({ local: LocalStorageProvider.getStorage() })
+const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })
 
 export const Route = createFileRoute("/")({
   loader: () => {
     const fixtures = (import.meta.env.DEV || env.VITE_SEED_FIXTURES) ? [Artemis, Hexen] : []
-    return loaderManager.ensureCharacters(fixtures)
+    return loaderManager.ensureRunners(fixtures)
   },
   component: IndexRoute,
 })
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 function IndexRoute() {
   const navigate = Route.useNavigate()
   const router = useRouter()
-  const { characters, errors } = Route.useLoaderData()
+  const { runners, errors } = Route.useLoaderData()
 
   return (
     <Stack sx={{ gap: 1, padding: 1 }}>
@@ -37,9 +37,9 @@ function IndexRoute() {
         >
           Create New
         </Button>
-        <ImportCharacterButton onImported={() => router.invalidate({ sync: true })} />
+        <ImportRunnerButton onImported={() => router.invalidate({ sync: true })} />
       </Stack>
-      <CharacterRosterList characters={characters} errors={errors} />
+      <RunnerRosterList runners={runners} errors={errors} />
     </Stack>
   )
 }

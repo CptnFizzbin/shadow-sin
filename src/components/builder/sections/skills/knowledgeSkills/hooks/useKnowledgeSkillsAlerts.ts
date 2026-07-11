@@ -1,8 +1,8 @@
 import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 
-import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/character/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
+import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/runner/skills/skillsSelectors.ts"
+import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 import {
@@ -59,7 +59,7 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
       section: "Skills",
       severity: "error",
       title: "Too many native languages",
-      message: `${nativeCount} native languages selected. Starting characters are limited to 1 native language.`,
+      message: `${nativeCount} native languages selected. Starting runners are limited to 1 native language.`,
     })
   }
 

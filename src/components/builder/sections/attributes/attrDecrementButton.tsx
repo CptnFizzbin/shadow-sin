@@ -7,8 +7,8 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
-import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useAttr, useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrDecrementButtonProps {
@@ -20,7 +20,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     throw new Error("Essence cannot be decremented")
   }
 
-  const store = useCharacterSheetContext()
+  const store = useRunnerDataContext()
   const attrApi = useAttrInfo(props.attr)
   const attrValue = useAttr(props.attr)
 

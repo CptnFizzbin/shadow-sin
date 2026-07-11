@@ -1,13 +1,13 @@
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { TraditionStore } from "./traditionStore.ts"
 
 export const useTraditionStore = (): TraditionStore => {
-  const store = useCharacterSheetContext()
+  const store = useRunnerDataContext()
 
   return useMemo((): TraditionStore => {
     const atom = createSliceAtom(

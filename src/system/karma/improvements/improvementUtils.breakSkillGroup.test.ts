@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeCharacterSheet } from "#testUtils/renderUtils.tsx"
+import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type {
   SkillIncreaseEntry,
@@ -18,7 +18,7 @@ const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
 describe("applyImprovement — grouped active skill without the group on sheet", () => {
   it("raises a standalone active skill that belongs to a group, without erroring", () => {
-    // Arrange — character has Banishing (a Conjuring-group skill) standalone, no Conjuring group
+    // Arrange — runner has Banishing (a Conjuring-group skill) standalone, no Conjuring group
     const entry: SkillIncreaseEntry = {
       id: FAKE_ID,
       type: ImprovementType.skillIncrease,
@@ -27,7 +27,7 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
@@ -50,7 +50,7 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       skill: SkillKey.banishing,
       specialization: "Spirits of Fire",
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
@@ -66,7 +66,7 @@ describe("applyImprovement — grouped active skill without the group on sheet",
   })
 
   it("still breaks the group when the group IS on the sheet", () => {
-    // Arrange — character has the Conjuring group, raises Banishing individually
+    // Arrange — runner has the Conjuring group, raises Banishing individually
     const entry: SkillIncreaseEntry = {
       id: FAKE_ID,
       type: ImprovementType.skillIncrease,
@@ -75,7 +75,7 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = [{ name: SkillGroupKey.Conjuring, rating: 3 }]
       draft.karma.current = 50

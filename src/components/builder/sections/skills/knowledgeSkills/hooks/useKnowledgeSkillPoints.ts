@@ -1,9 +1,9 @@
 import { useSelector } from "@tanstack/react-store"
 
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttr } from "#/components/character/characterUtils.ts"
-import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/character/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
+import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/runner/skills/skillsSelectors.ts"
+import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {

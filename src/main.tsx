@@ -4,9 +4,9 @@ import { RouterProvider } from "@tanstack/react-router"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
-import { CharacterManagerProvider } from "./character/characterManagerContext.tsx"
 import TanStackQueryProvider from "./integrations/tanstackQuery/rootProvider.tsx"
 import { getRouter } from "./router.ts"
+import { RunnerManagerProvider } from "./runner/runnerManagerContext.tsx"
 import { theme } from "./theme.ts"
 
 const router = getRouter()
@@ -20,10 +20,10 @@ createRoot(rootElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme} defaultMode="dark">
       <TanStackQueryProvider>
-        <CharacterManagerProvider>
+        <RunnerManagerProvider>
           <CssBaseline />
           <RouterProvider router={router} />
-        </CharacterManagerProvider>
+        </RunnerManagerProvider>
       </TanStackQueryProvider>
     </ThemeProvider>
   </React.StrictMode>,

@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import { useAttr } from "#/components/character/characterUtils.ts"
+import { useAttr } from "#/components/runner/runnerUtils.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"

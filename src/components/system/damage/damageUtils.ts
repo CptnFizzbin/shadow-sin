@@ -1,6 +1,6 @@
-import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 /**
  * Returns a selector that sums High Pain Tolerance ratings for a given damage
@@ -12,7 +12,7 @@ import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
  * @returns A selector `(sheet) => number`
  */
 function selectHighPainToleranceOffset(track: DamageTrackKey) {
-  return (sheet: CharacterSheet): number => {
+  return (sheet: RunnerData): number => {
     let offset = 0
 
     for (const quality of sheet.qualities) {
@@ -51,7 +51,7 @@ function selectHighPainToleranceOffset(track: DamageTrackKey) {
  * @returns A selector `(sheet) => number`
  */
 function selectLowPainToleranceModifier(track: DamageTrackKey) {
-  return (sheet: CharacterSheet): number => {
+  return (sheet: RunnerData): number => {
     let modifier = 0
 
     for (const quality of sheet.qualities) {
@@ -91,14 +91,14 @@ function selectLowPainToleranceModifier(track: DamageTrackKey) {
  * minimum of 1 to avoid division by zero.
  *
  * Usage:
- *   useCharacterSheet(selectWoundInterval(DamageTrackKey.physical))
+ *   useRunnerData(selectWoundInterval(DamageTrackKey.physical))
  *   useSelector(store, selectWoundInterval(DamageTrackKey.stun))
  *
  * @param track - The damage track to compute the interval for
  * @returns A selector `(sheet) => number` (result ≥ 1)
  */
 export function selectWoundInterval(track: DamageTrackKey) {
-  return (sheet: CharacterSheet): number => {
+  return (sheet: RunnerData): number => {
     const baseInterval = 3
     return Math.max(1, baseInterval + selectLowPainToleranceModifier(track)(sheet))
   }
@@ -112,13 +112,13 @@ export function selectWoundInterval(track: DamageTrackKey) {
  * Formula: `floor(max(0, damage - hptOffset) / interval)`
  *
  * Usage:
- *   useCharacterSheet(selectTrackWoundModifier(DamageTrackKey.physical))
+ *   useRunnerData(selectTrackWoundModifier(DamageTrackKey.physical))
  *
  * @param track - The damage track to compute the wound modifier for
  * @returns A selector `(sheet) => number`
  */
 export function selectTrackWoundModifier(track: DamageTrackKey) {
-  return (sheet: CharacterSheet): number => {
+  return (sheet: RunnerData): number => {
     const damage = sheet.damage[track]
     const hptOffset = selectHighPainToleranceOffset(track)(sheet)
     const interval = selectWoundInterval(track)(sheet)

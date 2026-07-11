@@ -14,7 +14,7 @@ export type KarmaLedgerSource = "addKarma" | "spendKarma" | "undo"
 /**
  * One immutable, append-only audit-trail entry for a karma earn or spend.
  *
- * Stored on `CharacterSheet.karma.log`. Entries are never edited or removed —
+ * Stored on `RunnerData.karma.log`. Entries are never edited or removed —
  * corrections happen via counter-entries (e.g. a post-Save `undo` writes a
  * positive refund entry pointing back to the original via `undoes`).
  */

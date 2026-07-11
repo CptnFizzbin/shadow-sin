@@ -68,7 +68,7 @@ const powers: Record<string, CritterPowerData> = {
   "aura masking": {
     name: "Aura Masking",
     description:
-      "Functions as both the Masking and Extended Masking initiate powers (type: Mana, Free Action, Self, Sustained). The spirit uses its Edge in place of initiate grade and can hide use of its own powers within the masked aura. Only characters who pierce the masking can detect those power uses.",
+      "Functions as both the Masking and Extended Masking initiate powers (type: Mana, Free Action, Self, Sustained). The spirit uses its Edge in place of initiate grade and can hide use of its own powers within the masked aura. Only runners who pierce the masking can detect those power uses.",
     source: { book: "SM", page: 98 },
   },
   "accident": {
@@ -92,13 +92,13 @@ const powers: Record<string, CritterPowerData> = {
   "armor": {
     name: "Armor",
     description:
-      "The critter has an extremely tough hide that offers protection from attacks (Type: P, Auto, Self, Always). It has a natural Armor rating cumulative with any external armor worn. Critter armor is divided into Ballistic and Impact components, the same as character armor.",
+      "The critter has an extremely tough hide that offers protection from attacks (Type: P, Auto, Self, Always). It has a natural Armor rating cumulative with any external armor worn. Critter armor is divided into Ballistic and Impact components, the same as runner armor.",
     source: { book: "SR20A", page: 293 },
   },
   "astral form": {
     name: "Astral Form",
     description:
-      "The critter exists in the astral plane only (Type: M, Auto, Self, Always). It cannot be damaged by physical attacks or physical spells; only astral attacks or mana spells may hurt it. It cannot affect other creatures in the material world, only dual-natured creatures or astrally perceiving characters. Critters with this power may manifest on the physical plane in the same way as astrally projecting magicians can.",
+      "The critter exists in the astral plane only (Type: M, Auto, Self, Always). It cannot be damaged by physical attacks or physical spells; only astral attacks or mana spells may hurt it. It cannot affect other creatures in the material world, only dual-natured creatures or astrally perceiving runners. Critters with this power may manifest on the physical plane in the same way as astrally projecting magicians can.",
     source: { book: "SR20A", page: 293 },
   },
   "banishing resistance": {
@@ -137,7 +137,7 @@ const powers: Record<string, CritterPowerData> = {
     spiritPool: { type: "force_plus", attribute: AttributeKey.willpower },
     targetPool: "Willpower",
     description:
-      "The critter befuddles a victim so that the target is unable to make decisions, loses its sense of direction, and can't remember what it was doing (Type: M, Complex, LOS, Sustained). Opposed Test: Magic + Willpower vs. target's Willpower. Net hits scored by the critter serve as a dice pool penalty to any action the character takes.",
+      "The critter befuddles a victim so that the target is unable to make decisions, loses its sense of direction, and can't remember what it was doing (Type: M, Complex, LOS, Sustained). Opposed Test: Magic + Willpower vs. target's Willpower. Net hits scored by the critter serve as a dice pool penalty to any action the runner takes.",
     source: { book: "SR20A", page: 293 },
   },
   "corrosive spit": {
@@ -184,7 +184,7 @@ const powers: Record<string, CritterPowerData> = {
   "endowment": {
     name: "Endowment",
     description:
-      "The spirit grants a subject the use of one of its powers (Complex Action, Touch, Sustained). The spirit does not lose the power while the subject holds it. The spirit may endow up to twice its Magic in subjects simultaneously. No character may hold more than one endowed power at a time.",
+      "The spirit grants a subject the use of one of its powers (Complex Action, Touch, Sustained). The spirit does not lose the power while the subject holds it. The spirit may endow up to twice its Magic in subjects simultaneously. No runner may hold more than one endowed power at a time.",
     source: { book: "SM", page: 99 },
   },
   "energy drain": {
@@ -221,7 +221,7 @@ const powers: Record<string, CritterPowerData> = {
     rollType: "Standard",
     spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
     description:
-      "The critter drains Essence from a target, adding it to its own (Type: P, Complex, Touch, Permanent). The target must be willing or subdued (restrained, unconscious, mentally controlled, etc.). Extended Test: Charisma + Magic (threshold = 10 − target's Essence, interval 1 minute); if disturbed before the test ends, no Essence is drained. The critter may drain up to as many points of Essence as it currently possesses (min 1). Lost Essence affects the victim's Magic or Resonance rating. If a victim's Essence reaches 0, the character dies. The transfer requires strong emotion (passion, terror, rage) focused personally on the critter. A victim being drained must make a Willpower (2) Test or become addicted (Mild Addiction quality, p. 93). The critter can siphon drained Essence into Physical or Mental attributes or Magic: every 2 Essence drained boosts one attribute by +1 (only one attribute at a time). The boost wears off after 12 hours, and half the Essence used to fuel the boost is lost.",
+      "The critter drains Essence from a target, adding it to its own (Type: P, Complex, Touch, Permanent). The target must be willing or subdued (restrained, unconscious, mentally controlled, etc.). Extended Test: Charisma + Magic (threshold = 10 − target's Essence, interval 1 minute); if disturbed before the test ends, no Essence is drained. The critter may drain up to as many points of Essence as it currently possesses (min 1). Lost Essence affects the victim's Magic or Resonance rating. If a victim's Essence reaches 0, the runner dies. The transfer requires strong emotion (passion, terror, rage) focused personally on the critter. A victim being drained must make a Willpower (2) Test or become addicted (Mild Addiction quality, p. 93). The critter can siphon drained Essence into Physical or Mental attributes or Magic: every 2 Essence drained boosts one attribute by +1 (only one attribute at a time). The boost wears off after 12 hours, and half the Essence used to fuel the boost is lost.",
     source: { book: "SR20A", page: 294 },
   },
   "inhabitation": {
@@ -248,7 +248,7 @@ const powers: Record<string, CritterPowerData> = {
   "guard": {
     name: "Guard",
     description:
-      "The critter prevents normal environmental accidents and hazards — both natural ones and those induced by the Accident power (Type: P, Complex, LOS, Sustained). This includes preventing targets from succumbing to heatstroke, drowning, and similar dangers. Guard may also be used to prevent a glitch from occurring. The critter may guard a number of characters simultaneously equal to its Magic attribute.",
+      "The critter prevents normal environmental accidents and hazards — both natural ones and those induced by the Accident power (Type: P, Complex, LOS, Sustained). This includes preventing targets from succumbing to heatstroke, drowning, and similar dangers. Guard may also be used to prevent a glitch from occurring. The critter may guard a number of runners simultaneously equal to its Magic attribute.",
     source: { book: "SR20A", page: 295 },
   },
   "hardened armor": {
@@ -269,7 +269,7 @@ const powers: Record<string, CritterPowerData> = {
     spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
     targetPool: "Body + Willpower",
     description:
-      "The critter infects any suitable creature it has drained to 0 Essence with the HMHVV virus it carries (Type: P, Auto, Touch, Permanent). Requires the Essence Drain power. Opposed Test: Magic + Charisma vs. Body + Willpower. If the critter wins, the victim is infected. The victim enters a state of near-death as physical, mental, and spiritual transformation begins. Within 24 hours the newly created critter revives at 1 Essence and must immediately drain Essence from another being. Player characters transformed through Infection automatically become NPCs upon their 'death' and are controlled by the GM thereafter.",
+      "The critter infects any suitable creature it has drained to 0 Essence with the HMHVV virus it carries (Type: P, Auto, Touch, Permanent). Requires the Essence Drain power. Opposed Test: Magic + Charisma vs. Body + Willpower. If the critter wins, the victim is infected. The victim enters a state of near-death as physical, mental, and spiritual transformation begins. Within 24 hours the newly created critter revives at 1 Essence and must immediately drain Essence from another being. Player runners transformed through Infection automatically become NPCs upon their 'death' and are controlled by the GM thereafter.",
     source: { book: "SR20A", page: 295 },
   },
   "influence": {
@@ -346,7 +346,7 @@ const powers: Record<string, CritterPowerData> = {
     spiritPool: { type: "force_plus", attribute: AttributeKey.charisma },
     targetPool: "Willpower",
     description:
-      "The critter emits a howl that affects everyone (friend or foe) able to hear it (Type: P, Complex, Special, Special). Opposed Test: Magic + Charisma vs. Willpower. Apply a dice pool modifier against the critter equal to the rating of any sound-dampening devices or hits scored by Hush/Silence spells. If the critter wins, each net hit reduces the target's Reaction by (Magic) minutes. If Reaction is reduced to 0, the character is paralyzed and cannot move (except to breathe). After paralysis ends, Reaction returns at the rate of 1 point per minute.",
+      "The critter emits a howl that affects everyone (friend or foe) able to hear it (Type: P, Complex, Special, Special). Opposed Test: Magic + Charisma vs. Willpower. Apply a dice pool modifier against the critter equal to the rating of any sound-dampening devices or hits scored by Hush/Silence spells. If the critter wins, each net hit reduces the target's Reaction by (Magic) minutes. If Reaction is reduced to 0, the runner is paralyzed and cannot move (except to breathe). After paralysis ends, Reaction returns at the rate of 1 point per minute.",
     source: { book: "SR20A", page: 296 },
   },
   "possession": {
@@ -389,7 +389,7 @@ const powers: Record<string, CritterPowerData> = {
   "sapience": {
     name: "Sapience",
     description:
-      "The critter is self-aware with a choice-making consciousness (Type: P, Auto, Self, Always). Sapient critters are considered Untrained (p. 119) in any skills they do not possess and can default normally. They are also capable of learning new skills. While most sapient critters are mundane, some may Awaken and possess a Magic attribute; Awakened sapient critters follow the same rules for magic as normal characters.",
+      "The critter is self-aware with a choice-making consciousness (Type: P, Auto, Self, Always). Sapient critters are considered Untrained (p. 119) in any skills they do not possess and can default normally. They are also capable of learning new skills. While most sapient critters are mundane, some may Awaken and possess a Magic attribute; Awakened sapient critters follow the same rules for magic as normal runners.",
     source: { book: "SR20A", page: 297 },
   },
   "shadow cloak": {
@@ -439,7 +439,7 @@ const powers: Record<string, CritterPowerData> = {
   "venom": {
     name: "Venom",
     description:
-      "The critter secretes a natural venom poisonous to characters and other critters (Type: P, Auto, Touch, Instant). Treat as a toxin (p. 254) with the following attributes: Vector injection, Speed 1 Combat Turn, Power 6, Effect Physical damage. Some critters may have toxins with different attributes, as noted in their individual descriptions.",
+      "The critter secretes a natural venom poisonous to runners and other critters (Type: P, Auto, Touch, Instant). Treat as a toxin (p. 254) with the following attributes: Vector injection, Speed 1 Combat Turn, Power 6, Effect Physical damage. Some critters may have toxins with different attributes, as noted in their individual descriptions.",
     source: { book: "SR20A", page: 297 },
   },
   "weather control": {

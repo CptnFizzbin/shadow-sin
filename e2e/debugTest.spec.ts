@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { Artemis } from "#/character/fixtures/artemis.ts"
+import { Artemis } from "#/runner/fixtures/artemis.ts"
 
 const OFFENSE_URL = `/#/${Artemis.id}/offense`
 
@@ -43,8 +43,8 @@ test("Click attack button - does it crash?", async ({ page }) => {
   console.log("Dialog count:", dialogCount)
   
   // Check for crash
-  const failedToLoad = await page.getByText("Failed to load character").count()
-  console.log("'Failed to load character' count:", failedToLoad)
+  const failedToLoad = await page.getByText("Failed to load runner").count()
+  console.log("'Failed to load runner' count:", failedToLoad)
   
   console.log("Page errors:", errors)
 })

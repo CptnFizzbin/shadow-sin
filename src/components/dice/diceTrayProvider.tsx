@@ -10,15 +10,15 @@ interface DiceTrayProviderProps extends PropsWithChildren {
 
 /**
  * Provides a {@link DiceTrayApi} instance to the subtree and renders the dice
- * tray dialog. Mount this inside {@link CharacterSheetProvider} so the dialog
- * can access edge and other character data.
+ * tray dialog. Mount this inside {@link RunnerDataProvider} so the dialog
+ * can access edge and other runner data.
  *
  * ```tsx
- * <CharacterSheetProvider store={store}>
+ * <RunnerDataProvider store={store}>
  *   <DiceTrayProvider diceTrayApi={diceTrayApi}>
  *     <App />
  *   </DiceTrayProvider>
- * </CharacterSheetProvider>
+ * </RunnerDataProvider>
  * ```
  */
 export const DiceTrayProvider: FC<DiceTrayProviderProps> = ({ diceTrayApi, children }) => {

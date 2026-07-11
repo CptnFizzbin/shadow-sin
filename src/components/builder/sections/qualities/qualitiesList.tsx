@@ -5,9 +5,9 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/useQualitiesBuildPoints.ts"
-import { useQualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
-import { selectAllQualities } from "#/components/character/qualities/qualitiesSelectors.ts"
-import { useQualitiesStore } from "#/components/character/qualities/useQualitiesStore.ts"
+import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
+import { selectAllQualities } from "#/components/runner/qualities/qualitiesSelectors.ts"
+import { useQualitiesStore } from "#/components/runner/qualities/useQualitiesStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 
 import { QualitiesListItem } from "./qualitiesListItem.tsx"

@@ -1,9 +1,9 @@
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getContactBpCost } from "#/components/builder/sections/contacts/contactsBuilderUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 
 export const useContactsBuildPoints = () => {
-  const contacts = useCharacterSheet((state) => state.contacts)
+  const contacts = useRunnerData((state) => state.contacts)
   return {
     sectionId: BuilderSectionId.contacts,
     label: "Contacts",

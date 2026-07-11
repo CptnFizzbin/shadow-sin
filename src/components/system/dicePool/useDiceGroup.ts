@@ -1,6 +1,6 @@
 import { useId } from "react"
 
-import { useActiveSkillRating, useAttr } from "#/components/character/characterUtils.ts"
+import { useActiveSkillRating, useAttr } from "#/components/runner/runnerUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"

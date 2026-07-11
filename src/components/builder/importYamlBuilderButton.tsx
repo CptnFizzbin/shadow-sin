@@ -5,19 +5,19 @@ import Snackbar from "@mui/material/Snackbar"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useYamlFileImport } from "#/components/character/exportImport/useYamlFileImport.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
+import { useYamlFileImport } from "#/components/runner/exportImport/useYamlFileImport.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 interface ImportYamlBuilderButtonProps {
-  onImport: (importedCharacter: CharacterSheet) => void
+  onImport: (importedRunner: RunnerData) => void
 }
 
 export const ImportYamlBuilderButton: FC<ImportYamlBuilderButtonProps> = ({ onImport }) => {
   const [importError, setImportError] = useState(false)
 
   const { inputProps, openFilePicker } = useYamlFileImport({
-    onParsed: (importedCharacter) => {
-      onImport(importedCharacter)
+    onParsed: (importedRunner) => {
+      onImport(importedRunner)
     },
     onError: (error) => {
       console.error("Failed to parse YAML file:", error)
@@ -48,7 +48,7 @@ export const ImportYamlBuilderButton: FC<ImportYamlBuilderButtonProps> = ({ onIm
           severity="error"
           onClose={() => setImportError(false)}
         >
-          Failed to import YAML file. Please make sure the file is a valid ShadowSIN character export.
+          Failed to import YAML file. Please make sure the file is a valid ShadowSIN runner export.
         </Alert>
       </Snackbar>
     </>
