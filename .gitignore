@@ -54,3 +54,15 @@ diff.txt
 
 # Fallow code quality
 .fallow/
+
+# Claude Sandbox files
+/.bash_profile
+/.bashrc
+/.gitconfig
+/.gitmodules
+/.mcp.json
+/.profile
+/.ripgreprc
+/.vscode
+/.zprofile
+/.zshrc
