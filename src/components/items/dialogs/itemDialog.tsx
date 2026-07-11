@@ -194,9 +194,9 @@ export const ItemDialog: FC<ItemDialogProps> = ({
                 enableQuantity={localOptions["multiple"]}
                 onBuyMore={(!isBuilder && !isNewItem)
                   ? () => buyQuantityDialog.open({
-                    defaultCost: form.state.values.cost ?? 0,
-                    onPurchase: handleBuyPurchase,
-                  })
+                      defaultCost: form.state.values.cost ?? 0,
+                      onPurchase: handleBuyPurchase,
+                    })
                   : undefined}
               />
             )}
