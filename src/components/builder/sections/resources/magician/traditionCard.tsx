@@ -21,30 +21,33 @@ export const TraditionCard: FC = () => {
   }
 
   return (
-    <Paper
-      sx={{
-        "padding": 1,
-        "border": "1px solid",
-        "borderColor": "divider",
-        "cursor": "pointer",
-        "&:hover": { bgcolor: "action.hover" },
-      }}
-      onClick={handleOpen}
-    >
-      {tradition
-        ? (
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-              <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
-              <Typography color="text.secondary">
-                WIL + {AttributeLabels[tradition.drainAttribute]}
+    <>
+      <Paper
+        sx={{
+          "padding": 1,
+          "border": "1px solid",
+          "borderColor": "divider",
+          "cursor": "pointer",
+          "&:hover": { bgcolor: "action.hover" },
+        }}
+        onClick={handleOpen}
+      >
+        {tradition
+          ? (
+              <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+                <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
+                <Typography color="text.secondary">
+                  WIL + {AttributeLabels[tradition.drainAttribute]}
+                </Typography>
+              </Stack>
+            )
+          : (
+              <Typography color="text.secondary" sx={{ textAlign: "center" }}>
+                Set Tradition
               </Typography>
-            </Stack>
-          )
-        : (
-            <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-              Set Tradition
-            </Typography>
-          )}
-    </Paper>
+            )}
+      </Paper>
+      {traditionFormDialog.dialog}
+    </>
   )
 }

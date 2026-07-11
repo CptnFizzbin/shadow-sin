@@ -1,8 +1,14 @@
 import { setImmediate } from "node:timers"
 
+import { cleanup } from "@testing-library/react"
 import { afterEach } from "vitest"
 
 const flushSetImmediate = () => new Promise<void>((resolve) => setImmediate(resolve))
+
+afterEach(() => {
+  // Clean up testing library environent
+  cleanup()
+})
 
 afterEach(async () => {
   // React's scheduler queues work via Node's setImmediate. In the happy-dom

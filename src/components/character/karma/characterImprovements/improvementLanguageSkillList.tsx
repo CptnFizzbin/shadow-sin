@@ -255,6 +255,9 @@ export const ImprovementLanguageSkillList: FC = () => {
       >
         Learn New Language
       </Button>
+
+      {languageSkillDialog.dialog}
+      {specializationDialog.dialog}
     </Stack>
   )
 }

@@ -12,9 +12,9 @@ import { useState } from "react"
 import { z } from "zod"
 
 import { ActiveSkillSelectInput } from "#/components/character/skills/forms/activeSkillSelectInput.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -49,7 +49,6 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   onDelete,
 }) => {
   const isEditMode = !!skill
-  const dialogKey = skill?.name ?? "new"
 
   // UI-only state: tracks whether the user has activated the free-text custom input
   const [customModeActive, setCustomModeActive] = useState<boolean>(
@@ -87,7 +86,6 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
   return (
     <ControlledDialog
-      key={dialogKey}
       ctrl={ctrl}
       maxWidth="sm"
       onClosed={() => {
@@ -268,19 +266,13 @@ type UseActiveSkillDialogProps = Omit<
   keyof ControlledDialogProps<ActiveSkillData>
 >
 
-export const useActiveSkillDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseActiveSkillDialogProps) => dialogApi.open<ActiveSkillData>(
-      (ctrl) => (
-        <ActiveSkillFormDialog
-          ctrl={ctrl}
-          skill={props?.skill}
-          disabledSkills={props?.disabledSkills}
-          onDelete={props?.onDelete}
-        />
-      ),
-    ),
-  }
-}
+export const useActiveSkillDialog = () => useDialog<ActiveSkillData, UseActiveSkillDialogProps | undefined>(
+  (ctrl, props) => (
+    <ActiveSkillFormDialog
+      ctrl={ctrl}
+      skill={props?.skill}
+      disabledSkills={props?.disabledSkills}
+      onDelete={props?.onDelete}
+    />
+  ),
+)

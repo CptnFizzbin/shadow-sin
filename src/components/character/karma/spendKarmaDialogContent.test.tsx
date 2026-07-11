@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { DialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"

@@ -101,6 +101,8 @@ export const ComplexFormsList: FC = () => {
       >
         Add Complex Form
       </Button>
+
+      {complexFormDialog.dialog}
     </Stack>
   )
 }

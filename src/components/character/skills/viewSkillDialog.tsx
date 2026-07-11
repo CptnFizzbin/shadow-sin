@@ -3,9 +3,9 @@ import type { FC, ReactNode } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 
 interface ViewSkillDialogProps extends ControlledDialogProps<void> {
   name: string
@@ -44,12 +44,6 @@ const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
 
 type UseViewSkillDialogProps = Omit<ViewSkillDialogProps, keyof ControlledDialogProps<void>>
 
-export const useViewSkillDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseViewSkillDialogProps) => dialogApi.open<void>(
-      (ctrl) => <ViewSkillDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useViewSkillDialog = () => useDialog<void, UseViewSkillDialogProps>(
+  (ctrl, props) => <ViewSkillDialog ctrl={ctrl} {...props} />,
+)

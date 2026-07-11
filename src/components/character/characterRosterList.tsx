@@ -169,6 +169,8 @@ export default function CharacterRosterList({
           </ListItem>
         ))}
       </List>
+
+      {confirmDialog.dialog}
     </Paper>
   )
 }

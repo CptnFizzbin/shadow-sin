@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -48,12 +48,6 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
 
 type UseItemFormDialogProps = Omit<ItemFormDialogProps, "ctrl">
 
-export const useItemFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseItemFormDialogProps) => dialogApi.open<ItemData>(
-      (ctrl) => <ItemFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useItemFormDialog = () => useDialog<ItemData, UseItemFormDialogProps | undefined>(
+  (ctrl, props) => <ItemFormDialog ctrl={ctrl} {...props} />,
+)

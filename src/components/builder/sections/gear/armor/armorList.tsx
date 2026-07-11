@@ -40,6 +40,8 @@ export const ArmorList: FC = () => {
       >
         Add Armor
       </Button>
+
+      {armorFormDialog.dialog}
     </Stack>
   )
 }

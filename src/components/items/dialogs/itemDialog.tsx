@@ -16,8 +16,8 @@ import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -137,122 +137,127 @@ export const ItemDialog: FC<ItemDialogProps> = ({
     .map((gear) => ({ label: gear.name, value: gear.id }))
 
   return (
-    <ControlledDialog ctrl={ctrl} onClosed={onClosed}>
-      <Dialog.Title>{title}</Dialog.Title>
+    <>
+      <ControlledDialog ctrl={ctrl} onClosed={onClosed}>
+        <Dialog.Title>{title}</Dialog.Title>
 
-      <Dialog.Content>
-        <Stack sx={{ gap: 1, padding: 1 }}>
-          {slots?.preForm?.()}
+        <Dialog.Content>
+          <Stack sx={{ gap: 1, padding: 1 }}>
+            {slots?.preForm?.()}
 
-          <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
-            <form.AppField
-              name="name"
-              validators={{ onChange: z.string().min(1, "Name is required") }}
-            >
-              {(field) => (
-                <field.TextField label="Name" size="small" sx={{ flex: 1 }} autoFocus />
-              )}
-            </form.AppField>
-
-            {localOptions["hasRating"] && (
-              <form.AppField name="rating">
+            <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+              <form.AppField
+                name="name"
+                validators={{ onChange: z.string().min(1, "Name is required") }}
+              >
                 {(field) => (
-                  <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                  <field.TextField label="Name" size="small" sx={{ flex: 1 }} autoFocus />
                 )}
               </form.AppField>
-            )}
-          </Stack>
 
-          <Divider />
+              {localOptions["hasRating"] && (
+                <form.AppField name="rating">
+                  {(field) => (
+                    <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                  )}
+                </form.AppField>
+              )}
+            </Stack>
 
-          <Stack direction="row" sx={{ alignItems: "center" }}>
-            {localOptions["equipable"] && (
-              <form.AppField name="equipped">
-                {(field) => <field.SwitchField label="Equipped" />}
-              </form.AppField>
-            )}
+            <Divider />
 
-            <IconButton
-              size="small"
-              sx={{ ml: "auto" }}
-              onClick={() => itemOptionsDialog.open({
-                initialOptions: localOptions,
-                forced,
-                onChange: handleOptionsChange,
-              })}
-              aria-label="Item options"
-            >
-              <RiSettings3Line size={18} />
-            </IconButton>
-          </Stack>
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              {localOptions["equipable"] && (
+                <form.AppField name="equipped">
+                  {(field) => <field.SwitchField label="Equipped" />}
+                </form.AppField>
+              )}
 
-          {localOptions["showCost"] && (
-            <GearCostFieldGroup
-              form={form}
-              fields={itemFieldMap}
-              enableQuantity={localOptions["multiple"]}
-              onBuyMore={(!isBuilder && !isNewItem)
-                ? () => buyQuantityDialog.open({
-                    defaultCost: form.state.values.cost ?? 0,
-                    onPurchase: handleBuyPurchase,
-                  })
-                : undefined}
-            />
-          )}
+              <IconButton
+                size="small"
+                sx={{ ml: "auto" }}
+                onClick={() => itemOptionsDialog.open({
+                  initialOptions: localOptions,
+                  forced,
+                  onChange: handleOptionsChange,
+                })}
+                aria-label="Item options"
+              >
+                <RiSettings3Line size={18} />
+              </IconButton>
+            </Stack>
 
-          {localOptions["showAvailability"] && (
-            <AvailabilityFieldGroup form={form} fields="availability" />
-          )}
-
-          {localOptions["isSubItem"] && (
-            <Stack sx={{ gap: 1 }}>
-              <Label label={parentItemLabel ?? "Attached To"} />
-
-              <GearAttachmentFieldGroup
+            {localOptions["showCost"] && (
+              <GearCostFieldGroup
                 form={form}
                 fields={itemFieldMap}
-                isFixed={localOptions["fixed"] ?? false}
-                parentItemOptions={parentItemOptions}
-                fieldLabel={parentItemLabel ?? "Parent Item"}
-                attachmentSlot={slots?.attachmentFields}
+                enableQuantity={localOptions["multiple"]}
+                onBuyMore={(!isBuilder && !isNewItem)
+                  ? () => buyQuantityDialog.open({
+                      defaultCost: form.state.values.cost ?? 0,
+                      onPurchase: handleBuyPurchase,
+                    })
+                  : undefined}
               />
-            </Stack>
-          )}
+            )}
 
-          {slots?.itemFields?.()}
+            {localOptions["showAvailability"] && (
+              <AvailabilityFieldGroup form={form} fields="availability" />
+            )}
 
-          <Label label="Description" />
+            {localOptions["isSubItem"] && (
+              <Stack sx={{ gap: 1 }}>
+                <Label label={parentItemLabel ?? "Attached To"} />
 
-          <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
+                <GearAttachmentFieldGroup
+                  form={form}
+                  fields={itemFieldMap}
+                  isFixed={localOptions["fixed"] ?? false}
+                  parentItemOptions={parentItemOptions}
+                  fieldLabel={parentItemLabel ?? "Parent Item"}
+                  attachmentSlot={slots?.attachmentFields}
+                />
+              </Stack>
+            )}
 
-          <Label label="Source" />
-          <SourceFieldGroup form={form} fields={itemFieldMap} />
+            {slots?.itemFields?.()}
 
-          {localOptions["hasEffects"] && (
-            <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
-          )}
-        </Stack>
-      </Dialog.Content>
+            <Label label="Description" />
 
-      <Dialog.Actions>
-        <form.Subscribe
-          selector={(state) => getCost
-            ? getCost(state.values)
-            : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
-        >
-          {(totalCost) => (
-            <ItemDialogActions
-              isAcquireMode={isAcquireMode}
-              totalCost={totalCost}
-              onClose={() => ctrl.close()}
-              onAcquire={() => handleSubmitWithAction("acquire")}
-              onPurchase={() => handleSubmitWithAction("purchase")}
-              onSave={() => handleSubmitWithAction("save")}
-              onDelete={onDelete}
-            />
-          )}
-        </form.Subscribe>
-      </Dialog.Actions>
-    </ControlledDialog>
+            <GearDescriptionFieldGroup form={form} fields={itemFieldMap} />
+
+            <Label label="Source" />
+            <SourceFieldGroup form={form} fields={itemFieldMap} />
+
+            {localOptions["hasEffects"] && (
+              <GameEffectsFieldGroup form={form} fields={{ effects: "effects" }} />
+            )}
+          </Stack>
+        </Dialog.Content>
+
+        <Dialog.Actions>
+          <form.Subscribe
+            selector={(state) => getCost
+              ? getCost(state.values)
+              : (state.values.cost ?? 0) * (state.values.quantity ?? 1)}
+          >
+            {(totalCost) => (
+              <ItemDialogActions
+                isAcquireMode={isAcquireMode}
+                totalCost={totalCost}
+                onClose={() => ctrl.close()}
+                onAcquire={() => handleSubmitWithAction("acquire")}
+                onPurchase={() => handleSubmitWithAction("purchase")}
+                onSave={() => handleSubmitWithAction("save")}
+                onDelete={onDelete}
+              />
+            )}
+          </form.Subscribe>
+        </Dialog.Actions>
+      </ControlledDialog>
+
+      {itemOptionsDialog.dialog}
+      {buyQuantityDialog.dialog}
+    </>
   )
 }

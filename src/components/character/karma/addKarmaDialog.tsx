@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { z } from "zod"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 
 import { useKarmaStore } from "./useKarmaStore.ts"
@@ -56,12 +56,4 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
   )
 }
 
-export const useAddKarmaDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: () => dialogApi.open<void>(
-      (ctrl) => <AddKarmaDialog ctrl={ctrl} />,
-    ),
-  }
-}
+export const useAddKarmaDialog = () => useDialog<void>((ctrl) => <AddKarmaDialog ctrl={ctrl} />)

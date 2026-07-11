@@ -59,20 +59,23 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
   )
 
   return (
-    <SkillListItem
-      name={skillKey}
-      rating={rating}
-      specialization={specialization}
-      attr={selectedAttr}
-      isDefaulted={isDefaulted}
-      onClick={() => viewSkillDialog.open({
-        name: skillKey,
-        body: attributeSelector,
-        dicePools: [
-          skillDicePool,
-          specialization ? specializationDicePool : false,
-        ],
-      })}
-    />
+    <>
+      <SkillListItem
+        name={skillKey}
+        rating={rating}
+        specialization={specialization}
+        attr={selectedAttr}
+        isDefaulted={isDefaulted}
+        onClick={() => viewSkillDialog.open({
+          name: skillKey,
+          body: attributeSelector,
+          dicePools: [
+            skillDicePool,
+            specialization ? specializationDicePool : false,
+          ],
+        })}
+      />
+      {viewSkillDialog.dialog}
+    </>
   )
 }

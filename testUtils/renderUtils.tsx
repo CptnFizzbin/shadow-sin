@@ -10,8 +10,6 @@ import { CharacterBuilderStoreProvider } from "#/components/builder/characterBui
 import { CharacterSheetProvider } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CharacterSheetStore } from "#/components/character/sheet/characterSheetStore.ts"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import type { CharacterSheet } from "#/system/characterSheet.ts"
 import { theme } from "#/theme.ts"
 
@@ -39,12 +37,9 @@ export function renderWithProviders(
       options?.updateCharacterSheet?.(characterSheet)
       return new CharacterSheetStore(characterSheet)
     }, [])
-    const dialogApi = useMemo(() => new DialogApi(), [])
     return (
       <ThemeProvider theme={theme}>
-        <DialogApiProvider dialogApi={dialogApi}>
-          <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
-        </DialogApiProvider>
+        <CharacterSheetProvider store={store}>{children}</CharacterSheetProvider>
       </ThemeProvider>
     )
   }
@@ -65,14 +60,11 @@ export function renderInBuilder(
       options?.updateRootState?.(rootState)
       return new Store<BuilderRootState>(rootState)
     }, [])
-    const dialogApi = useMemo(() => new DialogApi(), [])
     return (
       <ThemeProvider theme={theme}>
-        <DialogApiProvider dialogApi={dialogApi}>
-          <CharacterBuilderStoreProvider rootStore={rootStore}>
-            {children}
-          </CharacterBuilderStoreProvider>
-        </DialogApiProvider>
+        <CharacterBuilderStoreProvider rootStore={rootStore}>
+          {children}
+        </CharacterBuilderStoreProvider>
       </ThemeProvider>
     )
   }

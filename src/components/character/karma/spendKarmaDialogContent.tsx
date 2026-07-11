@@ -19,7 +19,7 @@ import { useState } from "react"
 
 import { useCharacterSheet, useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { isMagician } from "#/components/character/spells/spellsUtils.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { selectHasImprovements, selectImprovementsTotalCost } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"

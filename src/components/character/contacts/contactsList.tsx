@@ -60,6 +60,9 @@ export const ContactsList: FC<ContactsListProps> = ({
       >
         Add Contact
       </Button>
+
+      {confirmDialog.dialog}
+      {contactFormDialog.dialog}
     </Stack>
   )
 }

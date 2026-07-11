@@ -5,8 +5,8 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useVehicleForm, vehicleFieldMap } from "#/components/items/types/vehicles/forms/useVehicleForm.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
@@ -69,12 +69,6 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleC
 
 type UseVehicleFormDialogProps = Omit<VehicleFormDialogProps, "ctrl">
 
-export const useVehicleFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseVehicleFormDialogProps) => dialogApi.open<VehicleData>(
-      (ctrl) => <VehicleFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useVehicleFormDialog = () => useDialog<VehicleData, UseVehicleFormDialogProps | undefined>(
+  (ctrl, props) => <VehicleFormDialog ctrl={ctrl} {...props} />,
+)

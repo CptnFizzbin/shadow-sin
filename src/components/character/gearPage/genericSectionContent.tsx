@@ -60,6 +60,8 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
       >
         Add {itemLabel}
       </Button>
+
+      {itemFormDialog.dialog}
     </Stack>
   )
 }

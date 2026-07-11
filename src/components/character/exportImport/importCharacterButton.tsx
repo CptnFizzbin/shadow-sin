@@ -47,6 +47,7 @@ export const ImportCharacterButton: FC<ImportCharacterButtonProps> = ({ onImport
       >
         Import YAML
       </Button>
+      {importConflictDialog.dialog}
     </>
   )
 }

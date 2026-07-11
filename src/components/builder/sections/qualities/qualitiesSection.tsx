@@ -33,6 +33,8 @@ export const QualitiesSection: FC = () => {
       >
         Add Quality
       </Button>
+
+      {qualityFormDialog.dialog}
     </Stack>
   )
 }

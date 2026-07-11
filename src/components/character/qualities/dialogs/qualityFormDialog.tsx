@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/character/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/character/qualities/form/useQualityForm.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
 interface QualityFormDialogProps extends ControlledDialogProps<QualityData> {
@@ -72,18 +72,12 @@ type UseQualityFormDialogProps = Omit<
   keyof ControlledDialogProps<QualityData>
 >
 
-export const useQualityFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseQualityFormDialogProps) => dialogApi.open<QualityData>(
-      (ctrl) => (
-        <QualityFormDialog
-          ctrl={ctrl}
-          quality={props?.quality}
-          onDelete={props?.onDelete}
-        />
-      ),
-    ),
-  }
-}
+export const useQualityFormDialog = () => useDialog<QualityData, UseQualityFormDialogProps | undefined>(
+  (ctrl, props) => (
+    <QualityFormDialog
+      ctrl={ctrl}
+      quality={props?.quality}
+      onDelete={props?.onDelete}
+    />
+  ),
+)

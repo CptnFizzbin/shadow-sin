@@ -9,9 +9,9 @@ import MuiTextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 
 const CUSTOM_SENTINEL = "__custom__"
 
@@ -126,21 +126,15 @@ interface UseSpecializationPickerDialogProps {
   initialValue?: string
 }
 
-export const useSpecializationPickerDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseSpecializationPickerDialogProps) => dialogApi.open<string>(
-      (ctrl) => (
-        <SpecializationPickerDialog
-          ctrl={ctrl}
-          skillLabel={props.skillLabel}
-          fieldLabel={props.fieldLabel}
-          fixedOptions={props.fixedOptions}
-          customPlaceholders={props.customPlaceholders}
-          initialValue={props.initialValue}
-        />
-      ),
-    ),
-  }
-}
+export const useSpecializationPickerDialog = () => useDialog<string, UseSpecializationPickerDialogProps>(
+  (ctrl, props) => (
+    <SpecializationPickerDialog
+      ctrl={ctrl}
+      skillLabel={props.skillLabel}
+      fieldLabel={props.fieldLabel}
+      fixedOptions={props.fixedOptions}
+      customPlaceholders={props.customPlaceholders}
+      initialValue={props.initialValue}
+    />
+  ),
+)

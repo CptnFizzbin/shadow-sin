@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles"
 import { Store } from "@tanstack/store"
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
@@ -8,8 +8,6 @@ import { describe, expect, it } from "vitest"
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
 import { CharacterBuilderStoreProvider } from "#/components/builder/characterBuilderStoreProvider.tsx"
 import { createDefaultCharacterSheet } from "#/components/character/sheet/createDefaultCharacterSheet.ts"
-import { DialogApi } from "#/components/ui/dialog/api/dialogApi.tsx"
-import { DialogApiProvider } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -55,8 +53,8 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
 describe("ImplantItemList", () => {
   it("opens the edit dialog pre-filled with the accessory's data, not the parent's", async () => {
     // Arrange
-    const parentId = "aaaaaaaa-0000-0000-0000-000000000001" as ReturnType<typeof crypto.randomUUID>
-    const accessoryId = "aaaaaaaa-0000-0000-0000-000000000002" as ReturnType<typeof crypto.randomUUID>
+    const parentId = "aaaaaaaa-0000-0000-0000-000000000001"
+    const accessoryId = "aaaaaaaa-0000-0000-0000-000000000002"
 
     const parentImplant = makeImplant({
       id: parentId,
@@ -69,29 +67,18 @@ describe("ImplantItemList", () => {
       parentId,
     })
 
-    render(<ImplantItemList />, {
-      wrapper: ({ children }) => {
-        const dialogApi = new DialogApi()
+    render(
+      <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
+        <ImplantItemList />
+      </BuilderWrapperWithGear>,
+    )
 
-        return (
-          <BuilderWrapperWithGear gear={{ [parentId]: parentImplant, [accessoryId]: accessory }}>
-            <DialogApiProvider dialogApi={dialogApi}>
-              {children}
-            </DialogApiProvider>
-          </BuilderWrapperWithGear>
-        )
-      },
-    })
-
-    // Act — click the accessory card to open the edit dialog
+    // Act
     fireEvent.click(screen.getByText("Alphaware Upgrade"))
 
-    // Assert — the dialog should open with the accessory's name, not the parent's
-    await waitFor(() => {
-      const dialogs = screen.getAllByRole("dialog")
-      const dialog = dialogs[dialogs.length - 1]
-      const nameField = within(dialog).getByLabelText(/^name$/i)
-      expect((nameField as HTMLInputElement).value).toBe("Alphaware Upgrade")
-    })
+    // Assert
+    const dialog = await screen.findByRole("dialog")
+    const nameField = within(dialog).getByLabelText(/^name$/i)
+    expect((nameField as HTMLInputElement).value).toBe("Alphaware Upgrade")
   })
 })

@@ -98,6 +98,8 @@ export const SpritesList: FC = () => {
       >
         Add Sprite
       </Button>
+
+      {spriteDialog.dialog}
     </Stack>
   )
 }

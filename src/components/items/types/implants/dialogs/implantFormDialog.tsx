@@ -7,7 +7,7 @@ import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
 import { implantFieldMap, useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {
@@ -50,12 +50,6 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
 
 export type UseImplantFormProps = CyberwareFormDialogProps
 
-export const useImplantFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseImplantFormProps) => dialogApi.open<ImplantData>(
-      (ctrl) => <ImplantFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useImplantFormDialog = () => useDialog<ImplantData, UseImplantFormProps | undefined>(
+  (ctrl, props) => <ImplantFormDialog ctrl={ctrl} {...props} />,
+)

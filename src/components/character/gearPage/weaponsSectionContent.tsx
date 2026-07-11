@@ -68,6 +68,9 @@ export const WeaponsSectionContent: FC<WeaponsSectionContentProps> = ({
       >
         Add Weapon
       </Button>
+
+      {weaponFormDialog.dialog}
+      {accessoryFormDialog.dialog}
     </Stack>
   )
 }

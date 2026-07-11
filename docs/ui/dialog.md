@@ -1,10 +1,15 @@
 # Dialog
 
-**Location:** `src/components/ui/dialog/dialog.tsx`
-**Import:** `import { Dialog } from "#/components/ui/dialog/dialog.tsx"`
+**Location:** `src/components/ui/dialog/`
+**Import:** `import { Dialog, ControlledDialog } from "#/components/ui/dialog/dialog.tsx"`
 
 A compound modal dialog that wraps MUI's dialog family and enforces a consistent look across the application. Dialogs
 are always full-width; use `maxWidth` to control how wide they can grow.
+
+Dialogs are controlled by a `DialogCtrl<TReturn>` — a small object with `open()`, `close(value?)`, `save(value)`, and
+`result()`. There is no provider, no global registry, and no per-scope mounting to get right: a `ctrl` is created
+locally (via `useDialogCtrl()` or the `useDialog()` hook below) and the dialog it controls is rendered inline, right
+where it's used. See `docs/adr/0004-dialog-api-goes-local-only.md` for why this replaced the old `DialogApi` pattern.
 
 ## Slots
 
@@ -19,12 +24,21 @@ are always full-width; use `maxWidth` to control how wide they can grow.
 ### `Dialog` (root)
 
 | Prop         | Type                                            | Default | Description                                                                              |
-|--------------|-------------------------------------------------|---------|------------------------------------------------------------------------------------------|
+|--------------|--------------------------------------------------|---------|--------------------------------------------------------------------------------------|
 | `open`       | `boolean`                                       | —       | Whether the dialog is visible                                                            |
-| `onClose`    | `(value?: TReturn) => void`                     | —       | Called when the dialog should close (backdrop click, Escape key, or explicit button)     |
-| `onClosed`   | `() => void`                                    | —       | Called after the exit animation finishes — use this to unmount form state or run cleanup |
+| `onClose`    | `() => void`                                    | —       | Called when the dialog should close (backdrop click, Escape key, or explicit button)     |
+| `onClosed`   | `() => void`                                    | —       | Called after the exit animation finishes — use this to reset form state or run cleanup   |
 | `maxWidth`   | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| false` | `"sm"`  | Maximum width breakpoint                                                                 |
-| `fullScreen` | `boolean`                                       | —       | Render the dialog full-screen (useful on narrow viewports)                               |
+| `fullScreen` | `boolean`                                        | —       | Render the dialog full-screen (useful on narrow viewports)                               |
+
+### `ControlledDialog`
+
+| Prop         | Type                                       | Default | Description                                                                     |
+|--------------|---------------------------------------------|---------|-----------------------------------------------------------------------------|
+| `ctrl`       | `DialogCtrl<TReturn>`                      | —       | The control object driving `open`/`close`                                       |
+| `onClose`    | `false \| ((value?: TReturn) => void)`     | —       | Omit to call `ctrl.close()`; `false` disables backdrop/Escape close; a function overrides the default (e.g. to close with a specific value) |
+| `onClosed`   | `() => void`                               | —       | Called after the exit animation finishes — reset form state here                |
+| ...          | `DialogRootProps` (minus `open`/`onClose`) | —       | `maxWidth`, `fullScreen`, etc.                                                   |
 
 ### `Dialog.Content`
 
@@ -36,123 +50,165 @@ are always full-width; use `maxWidth` to control how wide they can grow.
 
 ## Usage
 
-### Simple confirmation dialog
+### Simple inline dialog
+
+The most direct pattern: create a `ctrl` with `useDialogCtrl()`, render `ControlledDialog` locally, and `await
+ctrl.open()` from wherever you want to trigger it.
 
 ```tsx
 import Button from "@mui/material/Button"
-import type { FC } from "react"
 
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialogCtrl } from "#/components/ui/dialog/useDialogCtrl.ts"
 
-interface ConfirmDeleteDialogProps {
-  open: boolean
-  onClose: () => void
-  onClosed: () => void
-  onConfirm: () => void
-}
+export const DeleteItemButton = ({ onConfirm }: { onConfirm: () => void }) => {
+  const ctrl = useDialogCtrl<boolean>()
 
-export const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
-  open,
-  onClose,
-  onClosed,
-  onConfirm,
-}) => (
-  <Dialog open={open} onClose={onClose} onClosed={onClosed} maxWidth="xs">
-    <Dialog.Title>Delete item?</Dialog.Title>
-    <Dialog.Content>This action cannot be undone.</Dialog.Content>
-    <Dialog.Actions>
-      <Button color="secondary" onClick={onClose}>Cancel</Button>
-      <Button color="error" variant="contained" onClick={onConfirm}>Delete</Button>
-    </Dialog.Actions>
-  </Dialog>
-)
-```
-
-### With `DialogApiDialogProps` (via `DialogApi`)
-
-`Dialog` is directly compatible with `DialogApiDialogProps` — spread the props injected by `DialogApi.open(...)`
-straight onto the component.
-
-```tsx
-import Button from "@mui/material/Button"
-import type { FC } from "react"
-
-import type { DialogApiDialogProps } from "#/components/ui/dialog/api/dialogApiDialog.ts"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-
-export const ConfirmDialog: FC<DialogApiDialogProps<boolean>> = (props) => (
-  <Dialog {...props} maxWidth="xs">
-    <Dialog.Title>Are you sure?</Dialog.Title>
-    <Dialog.Content>This cannot be undone.</Dialog.Content>
-    <Dialog.Actions>
-      <Button color="secondary" onClick={() => props.onClose(false)}>Cancel</Button>
-      <Button color="error" variant="contained" onClick={() => props.onClose(true)}>Delete</Button>
-    </Dialog.Actions>
-  </Dialog>
-)
-
-// Open it from any event handler — no JSX or local state required:
-const ctrl = dialogApi.open<boolean>(ConfirmDialog)
-const confirmed = await ctrl.result()
-```
-
-### With a form and cleanup on close
-
-Use `onClosed` (runs after the exit animation) to reset form state so the previous values are gone before the dialog can
-be opened again.
-
-```tsx
-import Button from "@mui/material/Button"
-import type { FC } from "react"
-
-import type { DialogApiDialogProps } from "#/components/ui/dialog/api/dialogApiDialog.ts"
-import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-
-export const AddNoteDialog: FC<DialogApiDialogProps> = ({ open, onClose, onClosed }) => {
-  const form = useAppForm({
-    defaultValues: { text: "" },
-    onSubmit: ({ value }) => {
-      saveNote(value.text)
-      onClose()
-    },
-  })
+  const handleClick = async () => {
+    if (await ctrl.open()) onConfirm()
+  }
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      onClosed={() => {
-        form.reset()
-        onClosed()
-      }}
-    >
-      <Dialog.Title>Add note</Dialog.Title>
-      <Dialog.Content dividers>
-        <form.AppForm>
-          {/* fields */}
-        </form.AppForm>
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Button color="secondary" onClick={() => onClose()}>Cancel</Button>
-        <Button variant="contained" onClick={() => form.handleSubmit()}>Save</Button>
-      </Dialog.Actions>
-    </Dialog>
+    <>
+      <Button color="error" onClick={handleClick}>Delete</Button>
+      <ControlledDialog ctrl={ctrl} maxWidth="xs">
+        <Dialog.Title>Delete item?</Dialog.Title>
+        <Dialog.Content>This action cannot be undone.</Dialog.Content>
+        <Dialog.Actions>
+          <Button color="secondary" onClick={() => ctrl.close(false)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={() => ctrl.close(true)}>Delete</Button>
+        </Dialog.Actions>
+      </ControlledDialog>
+    </>
   )
 }
 ```
 
-> **TanStack Form note:** `defaultValues` are frozen at first mount. For
-> dialogs that reuse a single mounted instance add `key={item?.id ?? "new"}` to
-> the `Dialog` element so the form re-initialises when the target item changes.
+### Reusable dialog hook — `useDialog`
 
-### Inline `useState` dialog (no `DialogApi`)
+For a dialog reused across many call sites (form dialogs, confirm/alert prompts), wrap it in a `use*Dialog()` hook
+built on `useDialog<TReturn, TProps>(render)`. It returns `{ open, dialog }`: `open(props)` opens the dialog and
+returns a promise of the result; `dialog` is a small node the caller must render once, anywhere in its own JSX.
 
-Use this pattern only when the consumer truly has no `DialogApi` available —
-uncommon in production code. `DialogApiProvider` is mounted inside
-`CharacterSheetProvider` in the app routes and the builder root, so the
-`useDialogApi`-based hook pattern shown above already has access to React
-context and is the project default.
+```tsx
+import Button from "@mui/material/Button"
+import type { FC } from "react"
+
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.ts"
+import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+
+interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
+
+const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
+  const form = useAppForm({
+    defaultValues: { amount: 1 },
+    onSubmit: ({ value }) => {
+      karmaStore.addKarma(value.amount)
+      ctrl.close()
+    },
+  })
+
+  return (
+    <ControlledDialog ctrl={ctrl} maxWidth="xs">
+      <Dialog.Title>Add Karma</Dialog.Title>
+      <Dialog.Content>{/* fields */}</Dialog.Content>
+      <Dialog.Actions>
+        <Button color="secondary" onClick={() => ctrl.close()}>Cancel</Button>
+        <Button variant="contained" onClick={() => form.handleSubmit()}>Add</Button>
+      </Dialog.Actions>
+    </ControlledDialog>
+  )
+}
+
+export const useAddKarmaDialog = () => useDialog<void, void>((ctrl) => <AddKarmaDialog ctrl={ctrl} />)
+```
+
+```tsx
+// At the call site:
+const { open, dialog } = useAddKarmaDialog()
+
+return (
+  <>
+    <Button onClick={() => open()}>Add Karma</Button>
+    {dialog}
+  </>
+)
+```
+
+For a dialog whose content varies per call (e.g. editing a specific item), add a `TProps` type — `useDialog` remounts
+the rendered content fresh on every `open(props)` call, so TanStack Form's frozen `defaultValues` are never stale even
+when the same hook instance is reused to edit different items:
+
+```tsx
+export const useWeaponFormDialog = () => useDialog<WeaponData, { weapon?: WeaponData }>(
+  (ctrl, props) => <WeaponFormDialog ctrl={ctrl} {...props} />,
+)
+
+// At the call site:
+const { open, dialog } = useWeaponFormDialog()
+
+const handleEdit = async (weapon: WeaponData) => {
+  const updated = await open({ weapon })
+  if (updated) gearStore.save(updated)
+}
+```
+
+### Confirm / alert prompts
+
+`useConfirmDialog()` and `useAlertDialog()` are `useDialog`-based hooks that ship with the app for the common
+confirm-before-destructive-action and error-alert cases. Both return a `dialog` node alongside their trigger function
+— render it once next to whatever calls the trigger:
+
+```tsx
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+
+const { confirm, dialog } = useConfirmDialog()
+
+const handleRemove = async () => {
+  if (await confirm({ title: "Remove implant?", body: "This cannot be undone." })) {
+    gearStore.remove(implant)
+  }
+}
+
+return (
+  <>
+    <MenuItem onClick={handleRemove}>Remove</MenuItem>
+    {dialog}
+  </>
+)
+```
+
+### Manual control — `useDialogProps`
+
+For cases needing more control than `ControlledDialog` offers (e.g. custom close values per interaction), spread
+`useDialogProps(ctrl)` directly onto the raw `Dialog` instead:
+
+```tsx
+import { useDialogProps } from "#/components/ui/dialog/useDialogProps.ts"
+
+const ctrl = useDialogCtrl<boolean>()
+const dialogProps = useDialogProps(ctrl)
+
+return (
+  <Dialog {...dialogProps} maxWidth="xs">
+    <Dialog.Title>Are you sure?</Dialog.Title>
+    <Dialog.Actions>
+      <Button onClick={() => ctrl.close(true)}>Yes</Button>
+    </Dialog.Actions>
+  </Dialog>
+)
+```
+
+`useDialogProps` returns a reactive `{ open, onClose }` (`onClose` defaults to `ctrl.close()`); add your own
+`onClosed` after the spread for feature-level cleanup, and override `onClose` after the spread if you need a
+non-default close value.
+
+### Fully inline `useState` dialog
+
+For a one-off dialog with no reusable `ctrl` semantics at all — e.g. no need to `await` a result — plain `useState`
+is still the simplest option:
 
 ```tsx
 import Button from "@mui/material/Button"
@@ -184,16 +240,19 @@ export const ExamplePage = () => {
 }
 ```
 
+If this pattern reuses a single mounted instance to edit different targets (like `SpiritList` does), add
+`key={item?.id ?? "new"}` to the `Dialog` element so it remounts (and re-initializes any form) when the target
+changes — see `AGENTS.md` → *TanStack Form*. `useDialog`-based dialogs don't need this since they remount
+automatically on every `open()` call.
+
 ## Guidelines
 
-- **Prefer the `useDialogApi` + `use*Dialog` hook pattern** for new dialogs —
-  it's the project default and React context (including
-  `CharacterSheetProvider`) propagates normally because `DialogApiProvider`
-  is mounted inside the relevant providers. See the `DialogApi`-based
-  examples above and `AGENTS.md` → *Dialog patterns*.
-- **`onClosed` vs `onClose`**: `onClose` triggers the close animation;
-  `onClosed` fires after it finishes. Reset form state in `onClosed` to avoid a flash of empty fields while the
-  animation runs.
+- **Prefer `useDialog` + a `use*Dialog` hook** for any dialog used from more than one place, or whose content varies
+  per call. Use the plain inline `ControlledDialog` pattern for genuinely one-off dialogs.
+- Every dialog renders at its caller's real position in the tree — React context (`CharacterSheetProvider`, etc.)
+  propagates normally with no provider or scoping to set up.
+- **`onClosed` vs `onClose`**: `onClose` triggers the close animation; `onClosed` fires after it finishes. Reset form
+  state in `onClosed` to avoid a flash of empty fields while the animation runs.
 - **`maxWidth`**: default is `"sm"`. Use `"xs"` for simple confirmation prompts and `"md"` / `"lg"` for complex forms
   with many fields.
 - **Do not** pass `sx`, `className`, `slotProps`, or other MUI styling props — they are intentionally not forwarded so

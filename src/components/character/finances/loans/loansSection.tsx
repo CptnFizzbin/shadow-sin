@@ -49,6 +49,8 @@ export const LoansSection: FC = () => {
       >
         Add Loan
       </Button>
+
+      {loanDialog.dialog}
     </Stack>
   )
 }

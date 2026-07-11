@@ -7,9 +7,9 @@ import { useState } from "react"
 
 import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -100,12 +100,6 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
 
 type UseBuyQuantityDialogProps = Omit<BuyQuantityDialogProps, keyof ControlledDialogProps<void>>
 
-export const useBuyQuantityDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseBuyQuantityDialogProps) => dialogApi.open<void>(
-      (ctrl) => <BuyQuantityDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useBuyQuantityDialog = () => useDialog<void, UseBuyQuantityDialogProps>(
+  (ctrl, props) => <BuyQuantityDialog ctrl={ctrl} {...props} />,
+)

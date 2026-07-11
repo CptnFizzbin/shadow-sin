@@ -10,9 +10,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillGroupRatingMax } from "#/system/skills/skillUtils.ts"
@@ -151,19 +151,13 @@ type UseActiveSkillGroupDialogProps = Omit<
   keyof ControlledDialogProps<SkillGroupData>
 >
 
-export const useActiveSkillGroupDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseActiveSkillGroupDialogProps) => dialogApi.open<SkillGroupData>(
-      (ctrl) => (
-        <ActiveSkillGroupFormDialog
-          ctrl={ctrl}
-          group={props?.group}
-          disabledGroups={props?.disabledGroups}
-          onDelete={props?.onDelete}
-        />
-      ),
-    ),
-  }
-}
+export const useActiveSkillGroupDialog = () => useDialog<SkillGroupData, UseActiveSkillGroupDialogProps | undefined>(
+  (ctrl, props) => (
+    <ActiveSkillGroupFormDialog
+      ctrl={ctrl}
+      group={props?.group}
+      disabledGroups={props?.disabledGroups}
+      onDelete={props?.onDelete}
+    />
+  ),
+)

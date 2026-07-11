@@ -10,9 +10,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useMaxSpriteTasks } from "#/components/character/technomancer/spritesHooks.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -119,12 +119,6 @@ interface UseSpriteDialogProps {
   sprite?: SpriteData
 }
 
-export const useSpriteDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseSpriteDialogProps) => dialogApi.open<SpriteData>(
-      (ctrl) => <SpriteDialog ctrl={ctrl} sprite={props?.sprite} />,
-    ),
-  }
-}
+export const useSpriteDialog = () => useDialog<SpriteData, UseSpriteDialogProps | undefined>(
+  (ctrl, props) => <SpriteDialog ctrl={ctrl} sprite={props?.sprite} />,
+)

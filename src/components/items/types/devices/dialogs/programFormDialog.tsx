@@ -5,8 +5,8 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
 import { programFieldMap, useProgramForm } from "#/components/items/types/devices/forms/useProgramForm.tsx"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -46,12 +46,6 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, p
 
 type UseProgramFormDialogProps = Omit<ProgramFormDialogProps, "ctrl">
 
-export const useProgramFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseProgramFormDialogProps) => dialogApi.open<ProgramData>(
-      (ctrl) => <ProgramFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useProgramFormDialog = () => useDialog<ProgramData, UseProgramFormDialogProps | undefined>(
+  (ctrl, props) => <ProgramFormDialog ctrl={ctrl} {...props} />,
+)

@@ -3,8 +3,8 @@ import type { FC } from "react"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { useWeaponForm, weaponFieldMap } from "#/components/items/types/weapons/forms/useWeaponForm.tsx"
 import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponFormFields.tsx"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
-import type { AnyDialogCtrl } from "#/components/ui/dialog/api/dialogCtrl.ts"
+import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 
 interface WeaponFormDialogProps {
@@ -39,12 +39,6 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) =>
 
 type UseWeaponFormDialogProps = Omit<WeaponFormDialogProps, "ctrl">
 
-export const useWeaponFormDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props?: UseWeaponFormDialogProps) => dialogApi.open<WeaponData>(
-      (ctrl) => <WeaponFormDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useWeaponFormDialog = () => useDialog<WeaponData, UseWeaponFormDialogProps | undefined>(
+  (ctrl, props) => <WeaponFormDialog ctrl={ctrl} {...props} />,
+)

@@ -8,9 +8,9 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import type { FirearmData, WeaponData } from "#/system/gear/weaponData.ts"
@@ -97,12 +97,6 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
 
 type UseWeaponAttackDialogProps = Omit<WeaponAttackDialogProps, keyof ControlledDialogProps<void>>
 
-export const useWeaponAttackDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseWeaponAttackDialogProps) => dialogApi.open<void>(
-      (ctrl) => <WeaponAttackDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useWeaponAttackDialog = () => useDialog<void, UseWeaponAttackDialogProps>(
+  (ctrl, props) => <WeaponAttackDialog ctrl={ctrl} {...props} />,
+)

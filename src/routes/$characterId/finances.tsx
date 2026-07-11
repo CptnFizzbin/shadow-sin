@@ -99,6 +99,8 @@ function RouteComponent() {
       <LoansSection />
 
       <LifestyleSection nuyenStore={nuyenStore} />
+
+      {endOfMonthDialog.dialog}
     </Stack>
   )
 }

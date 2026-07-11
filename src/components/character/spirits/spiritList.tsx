@@ -76,6 +76,8 @@ export const SpiritList: FC = () => {
         onClose={handleClose}
         onClosed={() => setEditingSpirit(undefined)}
       />
+
+      {confirmDialog.dialog}
     </Stack>
   )
 }

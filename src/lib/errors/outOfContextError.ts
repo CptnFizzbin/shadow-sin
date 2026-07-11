@@ -1,8 +1,6 @@
 /**
  * Thrown when a hook or component tries to consume a React context that is not
- * present in the current render tree. This commonly surfaces when a dialog is
- * opened via `DialogApi` whose outlet sits *outside* one of the required
- * context providers.
+ * present in the current render tree.
  *
  * @example
  * ```ts

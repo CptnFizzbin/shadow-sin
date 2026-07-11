@@ -5,9 +5,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 import { Fragment, useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -92,12 +92,6 @@ const GameEffectsDialog: FC<GameEffectsDialogProps> = ({
 
 type UseGameEffectsDialogProps = Omit<GameEffectsDialogProps, keyof ControlledDialogProps<GameEffectData[]>>
 
-export const useGameEffectsDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseGameEffectsDialogProps) => dialogApi.open<GameEffectData[]>(
-      (ctrl) => <GameEffectsDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useGameEffectsDialog = () => useDialog<GameEffectData[], UseGameEffectsDialogProps>(
+  (ctrl, props) => <GameEffectsDialog ctrl={ctrl} {...props} />,
+)

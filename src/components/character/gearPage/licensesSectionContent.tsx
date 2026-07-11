@@ -76,6 +76,9 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
       >
         Add SIN
       </Button>
+
+      {sinFormDialog.dialog}
+      {licenseFormDialog.dialog}
     </Stack>
   )
 }

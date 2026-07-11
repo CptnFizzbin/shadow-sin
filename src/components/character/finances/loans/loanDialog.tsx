@@ -9,9 +9,9 @@ import { useState } from "react"
 
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LoanData } from "#/system/loanData.ts"
@@ -220,12 +220,6 @@ const LoanDialog: FC<LoanDialogProps> = ({
 
 type UseLoanDialogProps = Omit<LoanDialogProps, keyof ControlledDialogProps<void>>
 
-export const useLoanDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseLoanDialogProps) => dialogApi.open<void>(
-      (ctrl) => <LoanDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useLoanDialog = () => useDialog<void, UseLoanDialogProps>(
+  (ctrl, props) => <LoanDialog ctrl={ctrl} {...props} />,
+)

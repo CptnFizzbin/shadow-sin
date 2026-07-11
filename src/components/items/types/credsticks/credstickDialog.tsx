@@ -14,9 +14,9 @@ import { useState } from "react"
 import { selectNuyenAmount } from "#/components/character/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/character/finances/nuyen/useNuyenStore.ts"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
@@ -271,12 +271,6 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
 
 type UseCredstickDialogProps = Omit<CredstickDialogProps, keyof ControlledDialogProps<void>>
 
-export const useCredstickDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseCredstickDialogProps) => dialogApi.open<void>(
-      (ctrl) => <CredstickDialog ctrl={ctrl} {...props} />,
-    ),
-  }
-}
+export const useCredstickDialog = () => useDialog<void, UseCredstickDialogProps>(
+  (ctrl, props) => <CredstickDialog ctrl={ctrl} {...props} />,
+)

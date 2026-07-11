@@ -36,12 +36,15 @@ export const LanguageSkillListItem: FC<LanguageSkillListItemProps> = ({ skill })
   }
 
   return (
-    <SkillListItem
-      name={skill.name}
-      rating={skill.rating}
-      specialization={skill.lingo}
-      attr={AttributeKey.intuition}
-      onClick={handleClick}
-    />
+    <>
+      <SkillListItem
+        name={skill.name}
+        rating={skill.rating}
+        specialization={skill.lingo}
+        attr={AttributeKey.intuition}
+        onClick={handleClick}
+      />
+      {viewSkillDialog.dialog}
+    </>
   )
 }

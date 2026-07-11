@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/api/controlledDialogProps.ts"
-import { useDialogApi } from "#/components/ui/dialog/api/dialogApiProvider.tsx"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 import { bookOptions } from "#/system/sourceData.ts"
@@ -80,12 +80,6 @@ interface UseQualityInfoDialogProps {
   quality: QualityData
 }
 
-export const useQualityInfoDialog = () => {
-  const dialogApi = useDialogApi()
-
-  return {
-    open: (props: UseQualityInfoDialogProps) => dialogApi.open<void>(
-      (ctrl) => <QualityInfoDialog ctrl={ctrl} quality={props.quality} />,
-    ),
-  }
-}
+export const useQualityInfoDialog = () => useDialog<void, UseQualityInfoDialogProps>(
+  (ctrl, props) => <QualityInfoDialog ctrl={ctrl} quality={props.quality} />,
+)

@@ -57,6 +57,8 @@ export const ImportCurrentCharacterButton: FC = () => {
       >
         Import YAML
       </Button>
+      {confirmDialog.dialog}
+      {alertDialog.dialog}
     </>
   )
 }

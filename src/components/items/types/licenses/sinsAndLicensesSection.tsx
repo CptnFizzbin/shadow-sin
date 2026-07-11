@@ -127,6 +127,10 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           </SinCard>
         )
       })}
+
+      {confirmDialog.dialog}
+      {sinFormDialog.dialog}
+      {licenseFormDialog.dialog}
     </>
   )
 }

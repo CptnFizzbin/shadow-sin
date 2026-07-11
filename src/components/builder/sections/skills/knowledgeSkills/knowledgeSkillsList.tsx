@@ -141,6 +141,9 @@ export const KnowledgeSkillsList: FC = () => {
           Add Language
         </Button>
       </Stack>
+
+      {knowledgeSkillDialog.dialog}
+      {languageSkillDialog.dialog}
     </Stack>
   )
 }
