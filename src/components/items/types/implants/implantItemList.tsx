@@ -23,32 +23,34 @@ export const ImplantItemList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={() => handleAddImplant()}
-        color="secondary"
-        fullWidth
-      >
-        Add Implant
-      </Button>
+    <>
+      <Stack sx={{ gap: 1 }}>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          onClick={() => handleAddImplant()}
+          color="secondary"
+          fullWidth
+        >
+          Add Implant
+        </Button>
 
-      {rootImplants.map((implant) => {
-        const accessories = implants.filter((i) => i.parentId === implant.id)
+        {rootImplants.map((implant) => {
+          const accessories = implants.filter((i) => i.parentId === implant.id)
 
-        return (
-          <ImplantItemCard
-            key={implant.id}
-            implant={implant}
-            onAddAccessory={() => handleAddImplant({ parentId: implant.id })}
-            accessories={accessories}
-          />
-        )
-      })}
+          return (
+            <ImplantItemCard
+              key={implant.id}
+              implant={implant}
+              onAddAccessory={() => handleAddImplant({ parentId: implant.id })}
+              accessories={accessories}
+            />
+          )
+        })}
+      </Stack>
 
       {implantFormDialog.dialog}
-    </Stack>
+    </>
   )
 }

@@ -62,79 +62,81 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   }
 
   return (
-    <ItemCard onClick={handleEdit} {...props}>
-      <ItemCard.Title>{implant.name}</ItemCard.Title>
+    <>
+      <ItemCard onClick={handleEdit} {...props}>
+        <ItemCard.Title>{implant.name}</ItemCard.Title>
 
-      <ItemCard.Meta type="cost">
-        <Typography sx={{ fontSize: "0.875rem", color: "text.secondary" }}>
-          {effectiveEssence.toFixed(2)} Ess
-        </Typography>
-      </ItemCard.Meta>
-
-      <ItemCard.Meta type="cost">
-        <Typography sx={{ fontSize: "0.875rem" }}>
-          <Nuyen amount={effectiveNuyen} />
-        </Typography>
-      </ItemCard.Meta>
-
-      {implant.implantType && (
-        <ItemCard.Meta type="stat">
-          <ItemStatChip label={typeLabel[implant.implantType] ?? implant.implantType} />
+        <ItemCard.Meta type="cost">
+          <Typography sx={{ fontSize: "0.875rem", color: "text.secondary" }}>
+            {effectiveEssence.toFixed(2)} Ess
+          </Typography>
         </ItemCard.Meta>
-      )}
 
-      {implant.location && (
-        <ItemCard.Meta type="stat">
-          <ItemStatChip label={implant.location} />
+        <ItemCard.Meta type="cost">
+          <Typography sx={{ fontSize: "0.875rem" }}>
+            <Nuyen amount={effectiveNuyen} />
+          </Typography>
         </ItemCard.Meta>
-      )}
 
-      {implant.grade && implant.grade !== ImplantGrade.standard && (
-        <ItemCard.Meta type="stat">
-          <ItemStatChip
-            label={gradeLabel[implant.grade] ?? implant.grade}
-            color="secondary"
-          />
-        </ItemCard.Meta>
-      )}
+        {implant.implantType && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={typeLabel[implant.implantType] ?? implant.implantType} />
+          </ItemCard.Meta>
+        )}
 
-      {availability && (
-        <ItemCard.Meta type="stat">
-          <AvailabilityChip
-            availability={availability}
-            color={
-              availability.rating > GearMaxAvailability ? "warning" : undefined
-            }
-          />
-        </ItemCard.Meta>
-      )}
+        {implant.location && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip label={implant.location} />
+          </ItemCard.Meta>
+        )}
 
-      {source && (
-        <ItemCard.Meta type="source">
-          <ItemStatChip label={`${source.book} p.${source.page}`} />
-        </ItemCard.Meta>
-      )}
+        {implant.grade && implant.grade !== ImplantGrade.standard && (
+          <ItemCard.Meta type="stat">
+            <ItemStatChip
+              label={gradeLabel[implant.grade] ?? implant.grade}
+              color="secondary"
+            />
+          </ItemCard.Meta>
+        )}
 
-      <ItemCard.Action type="icon" color="error" onClick={handleRemove}>
-        <RiDeleteBin6Line size={16} />
-      </ItemCard.Action>
+        {availability && (
+          <ItemCard.Meta type="stat">
+            <AvailabilityChip
+              availability={availability}
+              color={
+                availability.rating > GearMaxAvailability ? "warning" : undefined
+              }
+            />
+          </ItemCard.Meta>
+        )}
 
-      {onAddAccessory && (
-        <ItemCard.AddChildButton onClick={onAddAccessory}>
-          Add Accessory
-        </ItemCard.AddChildButton>
-      )}
+        {source && (
+          <ItemCard.Meta type="source">
+            <ItemStatChip label={`${source.book} p.${source.page}`} />
+          </ItemCard.Meta>
+        )}
 
-      {accessories.length > 0 && (
-        <ItemCard.Children>
-          {accessories.map((accessory) => (
-            <ImplantItemCard key={accessory.id} implant={accessory} variant="borderless" />
-          ))}
-        </ItemCard.Children>
-      )}
+        <ItemCard.Action type="icon" color="error" onClick={handleRemove}>
+          <RiDeleteBin6Line size={16} />
+        </ItemCard.Action>
+
+        {onAddAccessory && (
+          <ItemCard.AddChildButton onClick={onAddAccessory}>
+            Add Accessory
+          </ItemCard.AddChildButton>
+        )}
+
+        {accessories.length > 0 && (
+          <ItemCard.Children>
+            {accessories.map((accessory) => (
+              <ImplantItemCard key={accessory.id} implant={accessory} variant="borderless" />
+            ))}
+          </ItemCard.Children>
+        )}
+      </ItemCard>
 
       {implantFormDialog.dialog}
       {confirmDialog.dialog}
-    </ItemCard>
+    </>
   )
 }
