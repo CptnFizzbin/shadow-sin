@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectEdgeCurrent, selectEdgeMax } from "#/components/character/quickPanel/edgeSelectors.ts"
-import { useEdgeStore } from "#/components/character/quickPanel/useEdgeStore.ts"
+import { selectEdgeCurrent, selectEdgeMax } from "#/components/runner/quickPanel/edgeSelectors.ts"
+import { useEdgeStore } from "#/components/runner/quickPanel/useEdgeStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import {
   selectIsRolling,

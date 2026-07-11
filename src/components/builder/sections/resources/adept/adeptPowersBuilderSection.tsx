@@ -2,14 +2,14 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { AdeptPowersList } from "#/components/character/adeptPowers/adeptPowersList.tsx"
-import { isAdept } from "#/components/character/adeptPowers/adeptPowersUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { AdeptPowersList } from "#/components/runner/adeptPowers/adeptPowersList.tsx"
+import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 
 import { useAdeptPowersAlerts } from "./useAdeptPowersAlerts.ts"
 
 export const AdeptPowersBuilderSection: FC = () => {
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const alerts = useAdeptPowersAlerts()
 
   if (!isAdept(awakeningType)) return null

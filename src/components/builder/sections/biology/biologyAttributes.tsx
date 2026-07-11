@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { createAttrInfo } from "#/components/character/attributes/attributeInfo.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
@@ -29,12 +29,12 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const attrValues = useCharacterSheet((sheet) => sheet.attributes)
+  const attrValues = useRunnerData((sheet) => sheet.attributes)
 
-  const metatypeName = useCharacterSheet((sheet) => sheet.biology.metatype)
+  const metatypeName = useRunnerData((sheet) => sheet.biology.metatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys

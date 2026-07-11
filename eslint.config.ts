@@ -155,7 +155,7 @@ export default defineConfig([
   {
     files: [
       "src/routes/**",
-      "src/character/migrations/**",
+      "src/runner/migrations/**",
     ],
     rules: {
       "check-file/filename-naming-convention": "off",

@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 
 interface ItemDialogActionsProps {
@@ -24,7 +24,7 @@ export const ItemDialogActions: FC<ItemDialogActionsProps> = ({
   onSave,
   onDelete,
 }) => {
-  const currentNuyen = useCharacterSheet((s) => s.nuyen.current)
+  const currentNuyen = useRunnerData((s) => s.nuyen.current)
   const canAfford = currentNuyen >= totalCost
 
   if (!isAcquireMode) {

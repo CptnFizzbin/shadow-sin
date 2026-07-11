@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeCharacterSheet } from "#testUtils/renderUtils.tsx"
+import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type {
   LearnActiveSkillEntry,
@@ -99,14 +99,14 @@ describe("getImprovementCost — learn entries", () => {
 })
 
 describe("applyImprovement — learn entries", () => {
-  it("pushes the new active skill onto the character sheet", () => {
+  it("pushes the new active skill onto the runner sheet", () => {
     // Arrange
     const entry: LearnActiveSkillEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20
@@ -130,7 +130,7 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
     })
 
@@ -141,14 +141,14 @@ describe("applyImprovement — learn entries", () => {
     expect(act).toThrow(/already exists/i)
   })
 
-  it("pushes the new skill group onto the character sheet", () => {
+  it("pushes the new skill group onto the runner sheet", () => {
     // Arrange
     const entry: LearnSkillGroupEntry = {
       id: FAKE_ID,
       type: ImprovementType.learnSkillGroup,
       group: { name: SkillGroupKey.Firearms, rating: 1 },
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20

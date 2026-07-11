@@ -11,10 +11,10 @@ describe("ActiveSkillsList", () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
       updateRootState: (rootState) => {
-        rootState.character = {
-          ...rootState.character,
+        rootState.runner = {
+          ...rootState.runner,
           skills: {
-            ...rootState.character.skills,
+            ...rootState.runner.skills,
             activeSkills: [
               { name: SkillKey.pistols, rating: 3 },
               { name: SkillKey.automatics, rating: 4 },

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { useTraditionFormDialog } from "#/components/character/spells/dialogs/traditionFormDialog.tsx"
+import { useTraditionFormDialog } from "#/components/runner/spells/dialogs/traditionFormDialog.tsx"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
 import { selectTradition } from "./traditionSelectors.ts"

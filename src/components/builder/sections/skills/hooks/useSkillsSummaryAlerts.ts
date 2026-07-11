@@ -4,8 +4,8 @@ import {
   selectActiveSkills,
   selectKnowledgeSkills,
   selectLanguageSkills,
-} from "#/components/character/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
+} from "#/components/runner/skills/skillsSelectors.ts"
+import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {

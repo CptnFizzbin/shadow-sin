@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { SpellsBpPerSpell } from "#/components/character/spells/spellsUtils.ts"
+import { SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 

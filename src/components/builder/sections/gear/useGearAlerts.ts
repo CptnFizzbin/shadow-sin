@@ -5,7 +5,7 @@ import {
   GearNuyenAllowance,
   useGearBuildPoints,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
@@ -48,7 +48,7 @@ export const useGearAlerts = (): AlertInfo[] => {
     })
   }
 
-  const gear = useCharacterSheet((s) => s.gear)
+  const gear = useRunnerData((s) => s.gear)
   if (Object.keys(gear).length === 0) {
     alerts.push({
       section: "Gear",

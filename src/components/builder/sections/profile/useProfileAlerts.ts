@@ -1,7 +1,7 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { selectProfileAlias, selectProfileName } from "#/components/character/profile/profileSelectors.ts"
-import { useProfileStore } from "#/components/character/profile/useProfileStore.ts"
+import { selectProfileAlias, selectProfileName } from "#/components/runner/profile/profileSelectors.ts"
+import { useProfileStore } from "#/components/runner/profile/useProfileStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {

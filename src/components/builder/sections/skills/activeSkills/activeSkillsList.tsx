@@ -6,12 +6,12 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
-import { useActiveSkillDialog } from "#/components/character/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
+import { useActiveSkillDialog } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
 import {
   useActiveSkillGroupDialog,
-} from "#/components/character/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
-import { selectActiveSkills, selectSkillGroups } from "#/components/character/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/character/skills/useSkillsStore.ts"
+} from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
+import { selectActiveSkills, selectSkillGroups } from "#/components/runner/skills/skillsSelectors.ts"
+import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 

@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -28,7 +28,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const [costPerItem, setCostPerItem] = useState(defaultCost)
   const [discount, setDiscount] = useState(0)
 
-  const currentNuyen = useCharacterSheet((s) => s.nuyen.current)
+  const currentNuyen = useRunnerData((s) => s.nuyen.current)
   const discountPercent = (discount / 100)
   const subTotal = Math.max(0, costPerItem * quantity)
   const discountTotal = subTotal * discountPercent

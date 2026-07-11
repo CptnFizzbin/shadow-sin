@@ -14,7 +14,7 @@ describe("ProgramFormDialog", () => {
     const ctrl = new DialogCtrl<ProgramData>()
     ctrl.open()
     // ProgramFormDialog reads the gear store to populate the device dropdown,
-    // so it needs the full CharacterSheetProvider context.
+    // so it needs the full RunnerDataProvider context.
     renderInBuilder(<ProgramFormDialog ctrl={ctrl} />)
 
     // Act

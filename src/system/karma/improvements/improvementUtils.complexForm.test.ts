@@ -3,7 +3,7 @@ import type { UUID } from "node:crypto"
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
-import { makeCharacterSheet } from "#testUtils/renderUtils.tsx"
+import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type { ComplexFormIncreaseEntry } from "./improvementEntry.ts"
 import { ImprovementType } from "./improvementType.ts"
@@ -21,7 +21,7 @@ describe("applyImprovement — complexFormIncrease", () => {
       baseRating: 2,
       newRating: 3,
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 2 }]
       draft.karma.current = 20
     })
@@ -43,7 +43,7 @@ describe("applyImprovement — complexFormIncrease", () => {
       baseRating: 1,
       newRating: 2,
     }
-    const sheet = makeCharacterSheet((draft) => {
+    const sheet = makeRunnerData((draft) => {
       draft.complexForms = [{ id: "cf1", name: "Resonance Spike", rating: 1 }]
     })
 

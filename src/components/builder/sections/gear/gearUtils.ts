@@ -1,7 +1,7 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/items/types/licenses/licenseUtils.ts"
 import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -24,7 +24,7 @@ export const getTotalCost = (...items: ItemCostInfo[]) => {
 }
 
 export const useGearAvailabilityIssues = () => {
-  const gear = useCharacterSheet((state) => state.gear)
+  const gear = useRunnerData((state) => state.gear)
   const allGear = Object.values(gear)
 
   const invalidSections = new Set<SectionHeader>()

@@ -17,7 +17,7 @@ export interface DiceTrayState {
   edgeSpent: boolean
   threshold: number
   /**
-   * The character's current dice pool size. Decoupled from the underlying
+   * The runner's current dice pool size. Decoupled from the underlying
    * `DiceRoller` — when edge dice are added the roller may hold more dice
    * than this value; the surplus dice are presented as "Edge Dice".
    */

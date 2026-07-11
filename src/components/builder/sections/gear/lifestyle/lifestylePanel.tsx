@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/character/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
+import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/runner/profile/lifestyleSelectors.ts"
+import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 

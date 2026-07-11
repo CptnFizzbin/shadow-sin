@@ -1,0 +1,32 @@
+import { produce } from "immer"
+import { z } from "zod"
+
+import type { CharacterMigration } from "#/runner/characterMigration.ts"
+
+const migration: CharacterMigration<{
+  karma?: number | {
+    current?: number
+    total?: number
+  }
+}> = {
+  id: "20260423",
+  up: produce((draft) => {
+    switch (typeof draft.karma) {
+      case "number": {
+        const karmaValue = draft.karma
+        draft.karma = { current: karmaValue, total: karmaValue }
+        break
+      }
+      case "object":
+        draft.karma = z.object({
+          current: z.number().default(0),
+          total: z.number().default(0),
+        }).parse(draft.karma)
+        break
+      default:
+        draft.karma = { current: 0, total: 0 }
+    }
+  }),
+}
+
+export default migration

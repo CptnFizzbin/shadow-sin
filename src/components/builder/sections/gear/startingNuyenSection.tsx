@@ -11,7 +11,7 @@ import {
   GearNuyenPerBuildPoint,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
@@ -19,7 +19,7 @@ import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/sys
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const StartingNuyenSection: FC = () => {
-  const lifestyle = useCharacterSheet((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)
+  const lifestyle = useRunnerData((state) => state.profile.lifestyle?.quality ?? LifestyleType.Street)
   const { numDice, mult } = Lifestyles[lifestyle].starting
 
   const totalNuyen = useGearTotalCost()

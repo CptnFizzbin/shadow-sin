@@ -4,7 +4,7 @@ import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 import type { SourceData } from "./sourceData.ts"
 
 /**
- * Represents a quality (positive or negative) that a character can possess.
+ * Represents a quality (positive or negative) that a runner can possess.
  */
 export interface QualityData {
   id: UUID

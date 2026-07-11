@@ -15,12 +15,12 @@ import {
   useGearBuildPoints,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { selectLifestyleInfo, selectLifestyleMonthsPaid } from "#/components/character/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/character/profile/useLifestyleStore.ts"
 import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
+import { selectLifestyleInfo, selectLifestyleMonthsPaid } from "#/components/runner/profile/lifestyleSelectors.ts"
+import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"

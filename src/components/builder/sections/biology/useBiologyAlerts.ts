@@ -1,10 +1,10 @@
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useBiologyAlerts = (): AlertInfo[] => {
   const statuses: AlertInfo[] = []
 
-  const metatype = useCharacterSheet((s) => s.biology.metatype)
+  const metatype = useRunnerData((s) => s.biology.metatype)
   if (!metatype) {
     statuses.push({
       section: "Biology",
@@ -15,7 +15,7 @@ export const useBiologyAlerts = (): AlertInfo[] => {
     })
   }
 
-  const awakening = useCharacterSheet((s) => s.biology.awakening)
+  const awakening = useRunnerData((s) => s.biology.awakening)
   if (!awakening) {
     statuses.push({
       section: "Biology",

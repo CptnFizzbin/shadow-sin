@@ -6,7 +6,7 @@ import { batch, createStore } from "@tanstack/store"
 import { produce } from "immer"
 import { useMemo } from "react"
 
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -40,7 +40,7 @@ interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
 }
 
 export function useGearStore() {
-  const store = useCharacterSheetContext()
+  const store = useRunnerDataContext()
 
   return useMemo(() => {
     const gearAtom = createStore(() => store.state.gear)

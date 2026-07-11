@@ -1,24 +1,24 @@
 import { createSelector } from "reselect"
 
-import type { CharacterDataSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
-import { useCharacterSheetSelector } from "#/components/character/sheet/characterSheet.selectors.ts"
+import type { RunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
+import { useRunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
 import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
-import type { CharacterSheet } from "#/system/characterSheet.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] {
   return item.effects ?? []
 }
 
-export const selectAllGameEffects: CharacterDataSelector<GameEffectData[]> = createSelector(
+export const selectAllGameEffects: RunnerDataSelector<GameEffectData[]> = createSelector(
   [
-    (sheet: CharacterSheet) => sheet.qualities,
-    (sheet: CharacterSheet) => sheet.gear,
-    (sheet: CharacterSheet) => sheet.spells,
-    (sheet: CharacterSheet) => sheet.complexForms,
-    (sheet: CharacterSheet) => sheet.powers,
+    (sheet: RunnerData) => sheet.qualities,
+    (sheet: RunnerData) => sheet.gear,
+    (sheet: RunnerData) => sheet.spells,
+    (sheet: RunnerData) => sheet.complexForms,
+    (sheet: RunnerData) => sheet.powers,
   ],
   (qualities, gear, spells, complexForms, powers): GameEffectData[] => {
     const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped)
@@ -34,7 +34,7 @@ export const selectAllGameEffects: CharacterDataSelector<GameEffectData[]> = cre
 )
 
 interface TypedGameEffectSelector {
-  <TType extends GameEffectType>(type: TType): CharacterDataSelector<EffectByType[TType][]>
+  <TType extends GameEffectType>(type: TType): RunnerDataSelector<EffectByType[TType][]>
 }
 
 export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSelector(
@@ -48,9 +48,9 @@ export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSel
 )
 
 /**
- * Hook to retrieve all game effects of a specific type from the character sheet.
+ * Hook to retrieve all game effects of a specific type from the runner sheet.
  * This scans qualities, gear, spells, complex forms, and powers.
  */
 export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
-  return useCharacterSheetSelector(selectGameEffectsByType(type))
+  return useRunnerDataSelector(selectGameEffectsByType(type))
 }

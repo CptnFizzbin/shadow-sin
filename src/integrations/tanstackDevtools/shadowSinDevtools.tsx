@@ -4,44 +4,44 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { useCharacterManager } from "#/character/characterManagerContext.tsx"
-import { Artemis } from "#/character/fixtures/artemis.ts"
-import { Hexen } from "#/character/fixtures/hexen.ts"
+import { Artemis } from "#/runner/fixtures/artemis.ts"
+import { Hexen } from "#/runner/fixtures/hexen.ts"
+import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
 
 function ShadowSinDevtoolsPanel() {
   const router = useRouter()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
-  const characterManager = useCharacterManager()
+  const runnerManager = useRunnerManager()
 
-  async function clearAllCharacters() {
-    const characters = await characterManager.listCharacters()
+  async function clearAllRunners() {
+    const runners = await runnerManager.listRunners()
     await Promise.all(
-      characters.map((savedChar) =>
-        characterManager.deleteCharacter(savedChar.id),
+      runners.map((savedChar) =>
+        runnerManager.deleteRunner(savedChar.id),
       ),
     )
     await router.invalidate({ sync: true })
-    setStatusMessage(`Cleared ${characters.length} character(s).`)
+    setStatusMessage(`Cleared ${runners.length} runner(s).`)
   }
 
-  async function reloadFixtureCharacters() {
-    const fixtureCharacters = [Artemis, Hexen]
-    for (const character of fixtureCharacters) {
-      await characterManager.saveCharacter(character)
+  async function reloadFixtureRunners() {
+    const fixtureRunners = [Artemis, Hexen]
+    for (const runner of fixtureRunners) {
+      await runnerManager.saveRunner(runner)
     }
     await router.invalidate({ sync: true })
-    setStatusMessage(`Reloaded ${fixtureCharacters.length} fixture character(s).`)
+    setStatusMessage(`Reloaded ${fixtureRunners.length} fixture runner(s).`)
   }
 
   return (
     <Stack sx={{ padding: 2 }}>
       <Typography variant="h6">ShadowSIN</Typography>
       <Stack direction="row" sx={{ gap: 1 }}>
-        <Button variant="outlined" color="error" onClick={clearAllCharacters}>
-          Clear All Characters
+        <Button variant="outlined" color="error" onClick={clearAllRunners}>
+          Clear All Runners
         </Button>
-        <Button variant="outlined" onClick={reloadFixtureCharacters}>
-          Reload Fixture Characters
+        <Button variant="outlined" onClick={reloadFixtureRunners}>
+          Reload Fixture Runners
         </Button>
       </Stack>
       {statusMessage && (

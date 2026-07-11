@@ -1,16 +1,16 @@
 import { useSelector } from "@tanstack/react-store"
 
-import { useActiveSkill, useAttr } from "#/components/character/characterUtils.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { selectAllSpells } from "#/components/character/spells/spellsSelectors.ts"
-import { isMagician, SpellsBpPerSpell } from "#/components/character/spells/spellsUtils.ts"
-import { useSpellsStore } from "#/components/character/spells/useSpellsStore.ts"
+import { useActiveSkill, useAttr } from "#/components/runner/runnerUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { selectAllSpells } from "#/components/runner/spells/spellsSelectors.ts"
+import { isMagician, SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
+import { useSpellsStore } from "#/components/runner/spells/useSpellsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const magicAttribute = useAttr(AttributeKey.magic)
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)

@@ -14,7 +14,7 @@ export interface SkillInfo {
 
   /**
    * A list of available specializations for the skill.
-   * Not the character's selected specialization
+   * Not the runner's selected specialization
    */
   specializations?: (string | { custom: true, placeholder: string })[]
 }

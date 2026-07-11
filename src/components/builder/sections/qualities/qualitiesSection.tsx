@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useQualityFormDialog } from "#/components/character/qualities/dialogs/qualityFormDialog.tsx"
-import { useQualitiesStore } from "#/components/character/qualities/useQualitiesStore.ts"
+import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
+import { useQualitiesStore } from "#/components/runner/qualities/useQualitiesStore.ts"
 
 import { QualitiesList } from "./qualitiesList.tsx"
 

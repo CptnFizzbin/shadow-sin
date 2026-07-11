@@ -8,9 +8,9 @@ import {
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
-import { useHasMaxxedAttribute } from "#/components/character/attributes/hooks/useHasMaxxedAttribute.ts"
-import { useAttr, useAttrInfo } from "#/components/character/characterUtils.ts"
-import { useCharacterSheetContext } from "#/components/character/sheet/characterSheetProvider.tsx"
+import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
+import { useAttr, useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {
@@ -23,7 +23,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   }
   const { budget } = useAttributesBuildPoints()
 
-  const store = useCharacterSheetContext()
+  const store = useRunnerDataContext()
   const attrKey = props.attr
   const attrValue = useAttr(attrKey)
   const attrInfo = useAttrInfo(attrKey)

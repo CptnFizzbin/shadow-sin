@@ -2,8 +2,8 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useCharacterSheet } from "#/components/character/sheet/characterSheetProvider.tsx"
-import { isTechnomancer } from "#/components/character/technomancer/technomancerUtils.ts"
+import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 
 import { SpritesList } from "./spritesList.tsx"
 import {
@@ -11,7 +11,7 @@ import {
 } from "./useSpritesAlerts.ts"
 
 export const SpritesBuilderSection: FC = () => {
-  const awakeningType = useCharacterSheet((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
   const alerts = useSpritesAlerts()
 
   if (!isTechnomancer(awakeningType)) return null
