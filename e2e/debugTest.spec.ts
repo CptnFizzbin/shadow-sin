@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { Artemis } from "#/runner/fixtures/artemis.ts"
+import { Artemis } from "#/data/fixtures/artemis.ts"
 
 const OFFENSE_URL = `/#/${Artemis.id}/offense`
 

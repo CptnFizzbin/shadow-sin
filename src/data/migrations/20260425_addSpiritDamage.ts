@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
+import type { CharacterMigration } from "#/data/characterMigration.ts"
 
 const migration: CharacterMigration<{ spirits?: Array<Record<string, unknown>> }> = {
   id: "20260425",

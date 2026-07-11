@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { Artemis } from "#/runner/fixtures/artemis.ts"
+import { Artemis } from "#/data/fixtures/artemis.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"

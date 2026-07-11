@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
+import type { RunnerManager } from "#/runner/runnerManager.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,
@@ -14,8 +15,6 @@ import {
   TEST_OLD_FORMAT_SIN_ID,
 } from "#testUtils/fixtures/characters/runnerDataFixtures.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
-
-import type { RunnerManager } from "./runnerManager.ts"
 
 describe("runner migrations + yaml round-trip", () => {
   let manager: RunnerManager

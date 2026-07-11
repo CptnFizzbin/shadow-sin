@@ -1,4 +1,4 @@
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
+import type { CharacterMigration } from "#/data/characterMigration.ts"
 
 interface OldAttributeValue {
   value: number
