@@ -9,6 +9,7 @@ import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { DamageStore } from "./damageStore.ts"
 import { selectWoundInterval } from "./damageUtils.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectPhysicalTrack)`/`selectStunTrack`/`selectMatrixTrack` from `#/stores/runner/damage/damageSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useDamageStore = (): DamageStore => {
   const sheetStore = useRunnerDataContext()
 

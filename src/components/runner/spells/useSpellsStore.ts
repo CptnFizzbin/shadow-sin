@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { SpellsStore } from "./spellsStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectSpells)` from `#/stores/runner/spells/spellsSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useSpellsStore = (): SpellsStore => {
   const store = useRunnerDataContext()
 

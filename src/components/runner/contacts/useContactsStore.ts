@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { ContactsStore } from "./contactsStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectContacts)` from `#/stores/runner/contacts/contactsSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export function useContactsStore() {
   const store = useRunnerDataContext()
 

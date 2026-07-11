@@ -16,6 +16,7 @@ import { InitiativePassStore } from "./initiativePassStore.ts"
 
 export { InitiativePassStore } from "#/components/system/initiative/initiativePassStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectPassesCompleted)` etc. from `#/stores/runner/initiative/initiativeSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useInitiativePassStore = (): InitiativePassStore => {
   const sheetStore = useRunnerDataContext()
 

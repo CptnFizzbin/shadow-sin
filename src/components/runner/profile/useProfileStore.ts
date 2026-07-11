@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { ProfileStore } from "./profileStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectProfile)` from `#/stores/runner/profile/profileSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useProfileStore = (): ProfileStore => {
   const store = useRunnerDataContext()
 

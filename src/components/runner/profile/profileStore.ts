@@ -1,4 +1,13 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import {
+  profileSlice,
+  setProfileAlias,
+  setProfileArchetype,
+  setProfileDescription,
+  setProfileName,
+  setProfilePersonality,
+  setProfilePublicAwarenessModifier,
+} from "#/stores/runner/profile/profileSlice.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export type ProfileStoreState = RunnerData["profile"]
@@ -8,27 +17,33 @@ export class ProfileStore extends StoreSlice<ProfileStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `setProfileName` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setName(name: string): void {
-    this.set((prev) => ({ ...prev, name }))
+    this.set((prev) => profileSlice.reducer(prev, setProfileName(name)))
   }
 
+  /** @deprecated Dispatch `setProfileAlias` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setAlias(alias: string): void {
-    this.set((prev) => ({ ...prev, alias }))
+    this.set((prev) => profileSlice.reducer(prev, setProfileAlias(alias)))
   }
 
+  /** @deprecated Dispatch `setProfileArchetype` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setArchetype(archetype: string | undefined): void {
-    this.set((prev) => ({ ...prev, archetype }))
+    this.set((prev) => profileSlice.reducer(prev, setProfileArchetype(archetype)))
   }
 
+  /** @deprecated Dispatch `setProfileDescription` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setDescription(description: string | undefined): void {
-    this.set((prev) => ({ ...prev, description }))
+    this.set((prev) => profileSlice.reducer(prev, setProfileDescription(description)))
   }
 
+  /** @deprecated Dispatch `setProfilePersonality` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setPersonality(personality: string | undefined): void {
-    this.set((prev) => ({ ...prev, personality }))
+    this.set((prev) => profileSlice.reducer(prev, setProfilePersonality(personality)))
   }
 
+  /** @deprecated Dispatch `setProfilePublicAwarenessModifier` from `#/stores/runner/profile/profileSlice.ts` via `useRunnerStoreDispatch()` instead. */
   setPublicAwarenessModifier(publicAwarenessModifier: number | undefined): void {
-    this.set((prev) => ({ ...prev, publicAwarenessModifier }))
+    this.set((prev) => profileSlice.reducer(prev, setProfilePublicAwarenessModifier(publicAwarenessModifier)))
   }
 }

@@ -1,5 +1,5 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
+import { addComplexForm, complexFormsSlice, removeComplexForm, saveComplexForm, updateComplexForm } from "#/stores/runner/complexForms/complexFormsSlice.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -10,23 +10,23 @@ export class ComplexFormsStore extends StoreSlice<ComplexFormsStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `addComplexForm` from `#/stores/runner/complexForms/complexFormsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   add(form: ComplexFormData): void {
-    this.set((prev) => [...prev, form])
+    this.set((prev) => complexFormsSlice.reducer(prev, addComplexForm(form)))
   }
 
+  /** @deprecated Dispatch `updateComplexForm` from `#/stores/runner/complexForms/complexFormsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   update(form: ComplexFormData): void {
-    this.set((prev) => prev.map((f) => f.id === form.id ? form : f))
+    this.set((prev) => complexFormsSlice.reducer(prev, updateComplexForm(form)))
   }
 
+  /** @deprecated Dispatch `removeComplexForm` from `#/stores/runner/complexForms/complexFormsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   remove(formId: string): void {
-    this.set((prev) => prev.filter((f) => f.id !== formId))
+    this.set((prev) => complexFormsSlice.reducer(prev, removeComplexForm(formId)))
   }
 
+  /** @deprecated Dispatch `saveComplexForm` from `#/stores/runner/complexForms/complexFormsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   save(form: ComplexFormData): void {
-    if (!form.id || form.id === NullUuid) {
-      this.add({ ...form, id: crypto.randomUUID() })
-    } else {
-      this.update(form)
-    }
+    this.set((prev) => complexFormsSlice.reducer(prev, saveComplexForm(form)))
   }
 }

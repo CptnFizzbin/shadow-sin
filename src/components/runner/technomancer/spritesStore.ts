@@ -1,5 +1,5 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
+import { addSprite, removeSprite, saveSprite, spritesSlice, updateSprite } from "#/stores/runner/sprites/spritesSlice.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -10,23 +10,23 @@ export class SpritesStore extends StoreSlice<SpritesStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `addSprite` from `#/stores/runner/sprites/spritesSlice.ts` via `useRunnerStoreDispatch()` instead. */
   add(sprite: SpriteData): void {
-    this.set((prev) => [...prev, sprite])
+    this.set((prev) => spritesSlice.reducer(prev, addSprite(sprite)))
   }
 
+  /** @deprecated Dispatch `updateSprite` from `#/stores/runner/sprites/spritesSlice.ts` via `useRunnerStoreDispatch()` instead. */
   update(sprite: SpriteData): void {
-    this.set((prev) => prev.map((s) => s.id === sprite.id ? sprite : s))
+    this.set((prev) => spritesSlice.reducer(prev, updateSprite(sprite)))
   }
 
+  /** @deprecated Dispatch `removeSprite` from `#/stores/runner/sprites/spritesSlice.ts` via `useRunnerStoreDispatch()` instead. */
   remove(spriteId: string): void {
-    this.set((prev) => prev.filter((s) => s.id !== spriteId))
+    this.set((prev) => spritesSlice.reducer(prev, removeSprite(spriteId)))
   }
 
+  /** @deprecated Dispatch `saveSprite` from `#/stores/runner/sprites/spritesSlice.ts` via `useRunnerStoreDispatch()` instead. */
   save(sprite: SpriteData): void {
-    if (!sprite.id || sprite.id === NullUuid) {
-      this.add({ ...sprite, id: crypto.randomUUID() })
-    } else {
-      this.update(sprite)
-    }
+    this.set((prev) => spritesSlice.reducer(prev, saveSprite(sprite)))
   }
 }

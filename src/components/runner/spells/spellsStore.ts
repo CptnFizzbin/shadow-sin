@@ -1,7 +1,5 @@
-import { produce } from "immer"
-
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
+import { addSpell, removeSpell, saveSpell, spellsSlice, toggleSpellSustained, updateSpell } from "#/stores/runner/spells/spellsSlice.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -12,30 +10,28 @@ export class SpellsStore extends StoreSlice<SpellsStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `addSpell` from `#/stores/runner/spells/spellsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   add(spell: SpellData): void {
-    this.set((prev) => [...prev, spell])
+    this.set((prev) => spellsSlice.reducer(prev, addSpell(spell)))
   }
 
+  /** @deprecated Dispatch `updateSpell` from `#/stores/runner/spells/spellsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   update(spell: SpellData): void {
-    this.set((prev) => prev.map((s) => s.id === spell.id ? spell : s))
+    this.set((prev) => spellsSlice.reducer(prev, updateSpell(spell)))
   }
 
+  /** @deprecated Dispatch `removeSpell` from `#/stores/runner/spells/spellsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   remove(spellId: string): void {
-    this.set((prev) => prev.filter((s) => s.id !== spellId))
+    this.set((prev) => spellsSlice.reducer(prev, removeSpell(spellId)))
   }
 
+  /** @deprecated Dispatch `toggleSpellSustained` from `#/stores/runner/spells/spellsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   toggleSustained(spell: SpellData): void {
-    this.set(produce((prev) => {
-      const target = prev.find((s) => s.id === spell.id)
-      if (target) target.sustained = !target.sustained
-    }))
+    this.set((prev) => spellsSlice.reducer(prev, toggleSpellSustained(spell.id)))
   }
 
+  /** @deprecated Dispatch `saveSpell` from `#/stores/runner/spells/spellsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   save(spell: SpellData): void {
-    if (!spell.id || spell.id === NullUuid) {
-      this.add({ ...spell, id: crypto.randomUUID() })
-    } else {
-      this.update(spell)
-    }
+    this.set((prev) => spellsSlice.reducer(prev, saveSpell(spell)))
   }
 }

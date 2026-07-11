@@ -2,7 +2,6 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 
 import type { QualityData } from "#/system/qualityData.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
 
 const initialState: QualityData[] = []
 
@@ -24,7 +23,3 @@ export const qualitiesSlice = createSlice({
 })
 
 export const { add: addQuality, update: updateQuality, remove: removeQuality } = qualitiesSlice.actions
-
-export function selectQualities(state: RunnerData): QualityData[] {
-  return state.qualities
-}

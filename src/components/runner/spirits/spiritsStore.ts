@@ -1,27 +1,19 @@
 import type { UUID } from "node:crypto"
 
-import { produce } from "immer"
-
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { removeSpirit, saveSpirit, spiritsSlice } from "#/stores/runner/spirits/spiritsSlice.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 
 export type SpiritsStoreState = SpiritData[]
 
 export class SpiritsStore extends StoreSlice<SpiritsStoreState> {
+  /** @deprecated Dispatch `saveSpirit` from `#/stores/runner/spirits/spiritsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   save(spirit: SpiritData) {
-    this.setState((state: SpiritsStoreState) =>
-      produce(state, (draft) => {
-        const index = draft.findIndex((s) => s.id === spirit.id)
-        if (index >= 0) {
-          draft[index] = spirit
-        } else {
-          draft.push(spirit)
-        }
-      }),
-    )
+    this.set((prev) => spiritsSlice.reducer(prev, saveSpirit(spirit)))
   }
 
+  /** @deprecated Dispatch `removeSpirit` from `#/stores/runner/spirits/spiritsSlice.ts` via `useRunnerStoreDispatch()` instead. */
   remove(spiritId: UUID) {
-    this.setState((state: SpiritsStoreState) => state.filter((s) => s.id !== spiritId))
+    this.set((prev) => spiritsSlice.reducer(prev, removeSpirit(spiritId)))
   }
 }

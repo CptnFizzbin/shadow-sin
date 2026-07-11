@@ -8,6 +8,7 @@ import { NuyenStore } from "./nuyenStore.ts"
 
 export { NuyenStore } from "#/components/runner/finances/nuyen/nuyenStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectNuyen)` from `#/stores/runner/nuyen/nuyenSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export function useNuyenStore() {
   const store = useRunnerDataContext()
 

@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { SkillsStore } from "./skillsStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectActiveSkills)` etc. from `#/stores/runner/skills/skillsSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useSkillsStore = (): SkillsStore => {
   const store = useRunnerDataContext()
 

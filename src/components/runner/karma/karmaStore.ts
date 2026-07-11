@@ -1,37 +1,17 @@
-import type { UUID } from "node:crypto"
-
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { addKarma, karmaSlice, spendKarma } from "#/stores/runner/karma/karmaSlice.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export type KarmaState = RunnerData["karma"]
 
 export class KarmaStore extends StoreSlice<KarmaState> {
+  /** @deprecated Dispatch `addKarma` from `#/stores/runner/karma/karmaSlice.ts` via `useRunnerStoreDispatch()` instead. */
   addKarma(amount: number) {
-    if (amount <= 0) throw new Error(`addKarma requires a positive amount, got ${amount}`)
-    this.set((prev) => ({
-      ...prev,
-      current: prev.current + amount,
-      total: prev.total + amount,
-      log: [
-        ...prev.log,
-        {
-          id: crypto.randomUUID() as UUID,
-          timestamp: new Date().toISOString(),
-          amount,
-          description: `Added ${amount} karma`,
-          source: "addKarma" as const,
-        },
-      ],
-    }))
+    this.set((prev) => karmaSlice.reducer(prev, addKarma(amount)))
   }
 
+  /** @deprecated Dispatch `spendKarma` from `#/stores/runner/karma/karmaSlice.ts` via `useRunnerStoreDispatch()` instead. */
   spendKarma(amount: number) {
-    if (amount <= 0) throw new Error(`spendKarma requires a positive amount, got ${amount}`)
-    this.set((prev) => {
-      if (amount > prev.current) {
-        throw new Error(`Insufficient karma: requested ${amount}, have ${prev.current}`)
-      }
-      return { ...prev, current: prev.current - amount }
-    })
+    this.set((prev) => karmaSlice.reducer(prev, spendKarma(amount)))
   }
 }

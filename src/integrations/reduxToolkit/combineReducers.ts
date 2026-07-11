@@ -5,7 +5,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 export type SliceReducer<TKey extends keyof RunnerData> =
   (state: RunnerData[TKey], action: UnknownAction) => RunnerData[TKey]
 
-export type SliceReducerMap =
+export type RunnerReducerMap =
   { [TKey in keyof RunnerData]?: SliceReducer<TKey> }
 
 /**
@@ -15,7 +15,7 @@ export type SliceReducerMap =
  * migrated and unmigrated domains (still on the old `StoreSlice`/`createSliceAtom` stores) coexist
  * safely during the incremental migration.
  */
-export function combineReducers(sliceReducers: SliceReducerMap) {
+export function combineReducers(sliceReducers: RunnerReducerMap) {
   return function runnerRootReducer(state: RunnerData, action: UnknownAction): RunnerData {
     let next = state
 
