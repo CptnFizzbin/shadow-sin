@@ -12,13 +12,15 @@ import { useState } from "react"
 
 import { selectLoans } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
 import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
-import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/runner/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { Lifestyles } from "#/system/lifestyleType.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 
 interface EndOfMonthLineItem {
@@ -34,11 +36,12 @@ type Props = ControlledDialogProps<void>
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const nuyenStore = useNuyenStore()
-  const lifestyleStore = useLifestyleStore()
+  const runnerDataStore = useRunnerDataContext()
+  const dispatch = useRunnerStoreDispatch()
 
   const loans = useSelector(nuyenStore, selectLoans)
-  const quality = useSelector(lifestyleStore, selectLifestyleQuality)
-  const monthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
+  const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
+  const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
   const upkeep = Lifestyles[quality].upkeep
 
   const loanItems: EndOfMonthLineItem[] = loans
@@ -103,7 +106,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
 
     if (lifestyleItem && checkedIds.has(lifestyleItem.id)) {
       if (monthsPaid > 0) {
-        lifestyleStore.setMonthsPaid(monthsPaid - 1)
+        dispatch(Actions.profile.setLifestyleMonthsPaid(monthsPaid - 1))
       } else {
         nuyenStore.withdraw(upkeep)
       }
@@ -115,7 +118,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const handleTransitionExited = () => {
     // Read fresh state directly from stores so the reset always matches current data
     const freshLoans = nuyenStore.state.loans
-    const freshQuality = lifestyleStore.state.quality
+    const freshQuality = runnerDataStore.state.profile.lifestyle?.quality ?? LifestyleType.Street
     const freshUpkeep = Lifestyles[freshQuality].upkeep
     setCheckedIds(new Set([
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),

@@ -5,20 +5,20 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectLifestyleMonthsPaid, selectLifestyleQuality } from "#/components/runner/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const LifestylePanel: FC = () => {
-  const lifestyleStore = useLifestyleStore()
+  const dispatch = useRunnerStoreDispatch()
 
-  const quality = useSelector(lifestyleStore, selectLifestyleQuality)
+  const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
   const upkeep = Lifestyles[quality].upkeep
-  const monthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
+  const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
 
   const totalCost = upkeep * monthsPaid
 
@@ -29,7 +29,7 @@ export const LifestylePanel: FC = () => {
         <Select
           value={quality}
           label="Lifestyle"
-          onChange={(e) => lifestyleStore.setQuality(e.target.value)}
+          onChange={(e) => dispatch(Actions.profile.setLifestyleQuality(e.target.value))}
         >
           {Object.values(LifestyleType).map((lifestyleType) => (
             <MenuItem key={lifestyleType} value={lifestyleType}>
@@ -48,7 +48,7 @@ export const LifestylePanel: FC = () => {
         slotProps={{ htmlInput: { min: 1 } }}
         onChange={(event) => {
           const months = Math.max(1, parseInt(event.target.value, 10) || 1)
-          lifestyleStore.setMonthsPaid(months)
+          dispatch(Actions.profile.setLifestyleMonthsPaid(months))
         }}
       />
 

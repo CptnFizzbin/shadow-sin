@@ -19,11 +19,10 @@ import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import { selectLifestyleInfo, selectLifestyleMonthsPaid } from "#/components/runner/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
@@ -165,14 +164,13 @@ const GearSectionNuyen: FC<{
   const gearApi = useGearStore()
   const allGearItems = useSelector(gearApi, selectAllGear)
 
-  const lifestyleStore = useLifestyleStore()
-  const lifestyleInfo = useSelector(lifestyleStore, selectLifestyleInfo)
-  const lifestyleMonths = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
+  const lifestyleInfo = useRunnerStoreSelector(Selectors.profile.selectLifestyleInfo)
+  const lifestyleMonths = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
 
   if (section === SectionHeader.Lifestyle) {
     return (
       <Typography color="text.secondary">
-        <Nuyen amount={lifestyleInfo.upkeep * lifestyleMonths} />
+        <Nuyen amount={(lifestyleInfo?.upkeep ?? 0) * lifestyleMonths} />
       </Typography>
     )
   }
