@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
+import type { CharacterMigration } from "#/data/characterMigration.ts"
 
 type OldSpell = Record<string, unknown> & {
   drainBaseType?: string

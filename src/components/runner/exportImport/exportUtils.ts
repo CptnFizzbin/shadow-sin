@@ -2,7 +2,7 @@ import type { UUID } from "node:crypto"
 
 import jsYaml from "js-yaml"
 
-import { applyMigrations } from "#/runner/applyMigrations.ts"
+import { applyMigrations } from "#/data/applyMigrations.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 

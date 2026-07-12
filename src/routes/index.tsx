@@ -4,10 +4,10 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 
 import { ImportRunnerButton } from "#/components/runner/exportImport/importRunnerButton.tsx"
 import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
+import { Artemis } from "#/data/fixtures/artemis.ts"
+import { Hexen } from "#/data/fixtures/hexen.ts"
 import { env } from "#/env.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import { Artemis } from "#/runner/fixtures/artemis.ts"
-import { Hexen } from "#/runner/fixtures/hexen.ts"
 import { RunnerManager } from "#/runner/runnerManager.ts"
 
 // Module-level manager for use in loaders (outside React context)

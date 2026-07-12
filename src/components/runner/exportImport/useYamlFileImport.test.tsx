@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react"
 import type { ChangeEvent } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Artemis } from "#/runner/fixtures/artemis.ts"
+import { Artemis } from "#/data/fixtures/artemis.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { runnerDataToYaml } from "./exportUtils.ts"

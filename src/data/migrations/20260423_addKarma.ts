@@ -1,7 +1,7 @@
 import { produce } from "immer"
 import { z } from "zod"
 
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
+import type { CharacterMigration } from "#/data/characterMigration.ts"
 
 const migration: CharacterMigration<{
   karma?: number | {

@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
+import type { CharacterMigration } from "#/data/characterMigration.ts"
 import type { JsonObject } from "#/lib/jsonUtils.ts"
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
 
 interface OldShape {
   adeptPowers?: JsonObject[]

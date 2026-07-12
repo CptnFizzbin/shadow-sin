@@ -1,4 +1,4 @@
-import { migrationIds } from "#/runner/migrations.ts"
+import { migrationIds } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"

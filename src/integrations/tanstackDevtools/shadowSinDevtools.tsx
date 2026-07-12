@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
-import { Artemis } from "#/runner/fixtures/artemis.ts"
-import { Hexen } from "#/runner/fixtures/hexen.ts"
+import { Artemis } from "#/data/fixtures/artemis.ts"
+import { Hexen } from "#/data/fixtures/hexen.ts"
 import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
 
 function ShadowSinDevtoolsPanel() {
