@@ -10,9 +10,8 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { selectAllGear } from "#/components/items/gearSelectors.ts"
-import { useGearStore } from "#/components/items/useGearStore.ts"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 
 import { implantFormOpts } from "./useImplantForm.tsx"
@@ -66,8 +65,7 @@ interface CapacitySlotsChipProps extends ChipProps {
 }
 
 const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ...props }) => {
-  const gearStore = useGearStore()
-  const gear = useSelector(gearStore, selectAllGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
     .filter((item) => item.parentId === implantId)
