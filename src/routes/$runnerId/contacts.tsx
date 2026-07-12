@@ -1,14 +1,12 @@
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
-import { useSelector } from "@tanstack/react-store"
 import { useState } from "react"
 
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
-import { selectAllContacts } from "#/components/runner/contacts/contactsSelectors.ts"
-import { useContactsStore } from "#/components/runner/contacts/useContactsStore.ts"
 import { filterBySearch, SearchField } from "#/components/ui/search/searchField.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/contacts")({
   component: RouteComponent,
@@ -23,8 +21,7 @@ export const Route = createFileRoute("/$runnerId/contacts")({
  * @returns The route component's React elements containing the search control and the filtered contacts list.
  */
 function RouteComponent() {
-  const contactsStore = useContactsStore()
-  const allContacts = useSelector(contactsStore, selectAllContacts)
+  const allContacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
   const [searchQuery, setSearchQuery] = useState("")
 
   let filteredContacts = allContacts
