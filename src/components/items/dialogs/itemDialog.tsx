@@ -13,13 +13,14 @@ import { GearDescriptionFieldGroup } from "#/components/items/forms/gearDescript
 import type { AnyItemForm, ItemForm } from "#/components/items/forms/useItemForm.tsx"
 import { itemFieldMap } from "#/components/items/forms/useItemForm.tsx"
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useBuyQuantityDialog } from "./buyQuantityDialog.tsx"
@@ -82,7 +83,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   // components. ItemDialog only accesses ItemData fields from the form, so this is safe.
   const form = formArg as ItemForm
   const isBuilder = useIsBuilder()
-  const nuyenStore = useNuyenStore()
+  const dispatch = useRunnerStoreDispatch()
   const gearStore = useGearStore()
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
@@ -119,14 +120,14 @@ export const ItemDialog: FC<ItemDialogProps> = ({
       const totalCost = getCost
         ? getCost(values)
         : (values.cost ?? 0) * (values.quantity ?? 1)
-      nuyenStore.withdraw(totalCost)
+      dispatch(Actions.nuyen.withdrawNuyen(totalCost))
     }
   }
 
   const handleBuyPurchase = (quantity: number, totalCost: number) => {
     const currentQuantity = form.state.values.quantity ?? 0
     form.setFieldValue("quantity", currentQuantity + quantity)
-    nuyenStore.withdraw(totalCost)
+    dispatch(Actions.nuyen.withdrawNuyen(totalCost))
   }
 
   const allItems = gearStore.search([])

@@ -7,17 +7,17 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useGearStore } from "#/components/items/useGearStore.ts"
-import { selectNuyenAmount } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
-import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
   CredstickMaxBalance,
@@ -41,8 +41,8 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   credstick,
 }) => {
   const gearStore = useGearStore()
-  const nuyenStore = useNuyenStore()
-  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
+  const dispatch = useRunnerStoreDispatch()
+  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
 
   const isEditMode = mode === "edit"
   const isCertified = mode === "add-certified"
@@ -87,7 +87,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       gearStore.save(newCredstick)
       if (isCertified) {
         // Deduct purchase cost + loaded balance from nuyen
-        nuyenStore.withdraw(CredstickPurchaseCost + clampedBalance)
+        dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
       }
     }
 
@@ -97,7 +97,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   /** Withdraws the full balance from the credstick and deletes it. */
   const handleWithdraw = () => {
     if (!credstick) return
-    nuyenStore.deposit(credstick.balance)
+    dispatch(Actions.nuyen.depositNuyen(credstick.balance))
     gearStore.remove(credstick)
     setShowWithdrawConfirm(false)
     ctrl.close()

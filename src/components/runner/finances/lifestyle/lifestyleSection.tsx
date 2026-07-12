@@ -5,11 +5,8 @@ import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiInfinityLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectNuyenAmount } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
-import type { NuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -17,22 +14,18 @@ import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
-interface Props {
-  nuyenStore: NuyenStore
-}
-
-export const LifestyleSection: FC<Props> = ({ nuyenStore }) => {
+export const LifestyleSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
 
   const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
   const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
   const upkeep = Lifestyles[quality].upkeep
-  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
+  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
 
   const canPrepay = upkeep > 0 && currentNuyen >= upkeep
 
   const handlePrepay = () => {
-    nuyenStore.withdraw(upkeep)
+    dispatch(Actions.nuyen.withdrawNuyen(upkeep))
     dispatch(Actions.profile.setLifestyleMonthsPaid(monthsPaid + 1))
   }
 

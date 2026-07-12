@@ -6,12 +6,9 @@ import Divider from "@mui/material/Divider"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { selectLoans } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
-import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -35,11 +32,10 @@ interface EndOfMonthLineItem {
 type Props = ControlledDialogProps<void>
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
-  const nuyenStore = useNuyenStore()
   const runnerDataStore = useRunnerDataContext()
   const dispatch = useRunnerStoreDispatch()
 
-  const loans = useSelector(nuyenStore, selectLoans)
+  const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)
   const quality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
   const monthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
   const upkeep = Lifestyles[quality].upkeep
@@ -100,7 +96,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   const handleApply = () => {
     for (const item of loanItems) {
       if (checkedIds.has(item.id) && item.loanId) {
-        nuyenStore.applyInterestToLoan(item.loanId)
+        dispatch(Actions.nuyen.applyInterestToLoan(item.loanId))
       }
     }
 
@@ -108,7 +104,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
       if (monthsPaid > 0) {
         dispatch(Actions.profile.setLifestyleMonthsPaid(monthsPaid - 1))
       } else {
-        nuyenStore.withdraw(upkeep)
+        dispatch(Actions.nuyen.withdrawNuyen(upkeep))
       }
     }
 
@@ -117,7 +113,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
 
   const handleTransitionExited = () => {
     // Read fresh state directly from stores so the reset always matches current data
-    const freshLoans = nuyenStore.state.loans
+    const freshLoans = runnerDataStore.state.nuyen.loans
     const freshQuality = runnerDataStore.state.profile.lifestyle?.quality ?? LifestyleType.Street
     const freshUpkeep = Lifestyles[freshQuality].upkeep
     setCheckedIds(new Set([

@@ -4,8 +4,8 @@ import { useMemo } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { itemDefaults, useItemForm } from "#/components/items/forms/useItemForm.tsx"
-import { NuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { fillNameAndClickSave, renderInBuilder, renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -169,7 +169,7 @@ describe("ItemDialog", () => {
 
     it("calls onSave and deducts nuyen on successful purchase in viewer mode", async () => {
       // Arrange
-      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const withdrawSpy = vi.spyOn(Actions.nuyen, "withdrawNuyen")
       const onSave = vi.fn()
       renderWithProviders(
         <ItemDialogWrapper
@@ -202,7 +202,7 @@ describe("ItemDialog", () => {
 
     it("does not deduct nuyen when onSave throws on purchase", async () => {
       // Arrange
-      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const withdrawSpy = vi.spyOn(Actions.nuyen, "withdrawNuyen")
       const onSave = vi.fn().mockRejectedValue(new Error("save failed"))
       renderWithProviders(
         <ItemDialogWrapper
@@ -231,7 +231,7 @@ describe("ItemDialog", () => {
 
     it("does not deduct nuyen when form validation fails on purchase", async () => {
       // Arrange
-      const withdrawSpy = vi.spyOn(NuyenStore.prototype, "withdraw")
+      const withdrawSpy = vi.spyOn(Actions.nuyen, "withdrawNuyen")
       const onSave = vi.fn()
       renderWithProviders(
         <ItemDialogWrapper

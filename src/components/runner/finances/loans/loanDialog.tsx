@@ -3,17 +3,18 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { selectNuyenAmount } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
-import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import { isNewLoan } from "#/stores/runner/nuyen/nuyenSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 type LoanDialogMode = "add" | "edit"
@@ -35,9 +36,9 @@ const LoanDialog: FC<LoanDialogProps> = ({
   mode,
   loan,
 }) => {
-  const nuyenStore = useNuyenStore()
+  const dispatch = useRunnerStoreDispatch()
   const isEditMode = mode === "edit"
-  const currentNuyen = useSelector(nuyenStore, selectNuyenAmount)
+  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
 
   const [lender, setLender] = useState(loan?.lender ?? "")
   const [amount, setAmount] = useState<number>(loan?.amount ?? 0)
@@ -55,20 +56,20 @@ const LoanDialog: FC<LoanDialogProps> = ({
       interestRate,
       notes,
     }
-    nuyenStore.saveLoan(loanData)
+    dispatch(isNewLoan(loanData) ? Actions.nuyen.addLoan(loanData) : Actions.nuyen.updateLoan(loanData))
     ctrl.close()
   }
 
   const handlePayoff = () => {
     if (!loan) return
-    nuyenStore.payoffLoan(loan.id)
+    dispatch(Actions.nuyen.payoffLoan(loan.id))
     setShowPayoffConfirm(false)
     ctrl.close()
   }
 
   const handleRemove = () => {
     if (!loan) return
-    nuyenStore.removeLoan(loan.id)
+    dispatch(Actions.nuyen.removeLoan(loan.id))
     setShowRemoveConfirm(false)
     ctrl.close()
   }
