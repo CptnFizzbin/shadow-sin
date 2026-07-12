@@ -9,8 +9,8 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { Fragment, useMemo, useState } from "react"
 
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -30,7 +30,8 @@ const groupingModeLabels: Record<GroupingMode, string> = {
 const skillCategoryOrder = Object.values(SkillCategory)
 
 export const ActiveSkillsList: FC = () => {
-  const skillsStore = useSkillsStore()
+  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
 
   const [searchQuery, setSearchQuery] = useState("")
   const [groupingMode, setGroupingMode] = useState<GroupingMode>("type")
@@ -39,13 +40,15 @@ export const ActiveSkillsList: FC = () => {
     return Object.values(SkillKey)
       .map((skillKey) => {
         const skillInfo = skillList[skillKey]
-        const skillRating = skillsStore.activeSkills.getSkillValue(skillKey)
-        const skillSpecialization = skillsStore.activeSkills.getSpecialization(skillKey)
+        const groupRating = skillGroups.find((g) => g.name === skillInfo.group)?.rating ?? 0
+        const activeSkill = activeSkills.find((s) => s.name === skillKey)
+        const skillRating = Math.max(activeSkill?.rating ?? 0, groupRating, 0)
+        const skillSpecialization = activeSkill?.specialization
         return { key: skillKey, ...skillInfo, rating: skillRating, specialization: skillSpecialization }
       }).filter((skillInfo) => {
         return skillInfo.rating >= 1 || (skillInfo.defaultable ?? true)
       })
-  }, [skillsStore])
+  }, [activeSkills, skillGroups])
 
   const visibleSkills = sort(skillEntries)
     .by([

@@ -2,7 +2,6 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useBuilderSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
@@ -10,8 +9,9 @@ import { useActiveSkillDialog } from "#/components/runner/skills/activeSkills/di
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
-import { selectActiveSkills, selectSkillGroups } from "#/components/runner/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
@@ -26,9 +26,9 @@ import {
 
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
-  const skillsStore = useSkillsStore()
-  const activeSkills = useSelector(skillsStore, selectActiveSkills)
-  const skillGroups = useSelector(skillsStore, selectSkillGroups)
+  const dispatch = useRunnerStoreDispatch()
+  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
 
   const activeSkillDialog = useActiveSkillDialog()
   const activeSkillGroupDialog = useActiveSkillGroupDialog()
@@ -37,16 +37,14 @@ export const ActiveSkillsList: FC = () => {
     const disabledSkills = getDisabledSkills(activeSkills, skillGroups, skill?.name)
     const saved = await activeSkillDialog.open({ skill, disabledSkills })
     if (!saved) return
-    const skillName = skill?.name || saved.name
-    skillsStore.activeSkills.setState(skillName, () => saved)
+    dispatch(Actions.skills.setActiveSkill(saved))
   }
 
   const openSkillGroupDialog = async (group?: SkillGroupData) => {
     const disabledGroups = getDisabledGroups(skillGroups, group?.name)
     const saved = await activeSkillGroupDialog.open({ group, disabledGroups })
     if (!saved) return
-    const groupName = group?.name || saved.name
-    skillsStore.skillGroups.setState(groupName, () => saved)
+    dispatch(Actions.skills.setSkillGroup(saved))
   }
 
   return (
@@ -67,7 +65,7 @@ export const ActiveSkillsList: FC = () => {
               key={skill.name}
               skill={skill}
               onEdit={() => openActiveSkillDialog(skill)}
-              onDelete={() => skillsStore.activeSkills.remove(skill.name)}
+              onDelete={() => dispatch(Actions.skills.removeActiveSkill(skill.name))}
             />
           ))}
         </Stack>
@@ -86,7 +84,7 @@ export const ActiveSkillsList: FC = () => {
               key={group.name}
               group={group}
               onEdit={() => openSkillGroupDialog(group)}
-              onDelete={() => skillsStore.skillGroups.remove(group.name)}
+              onDelete={() => dispatch(Actions.skills.removeSkillGroup(group.name))}
             />
           ))}
         </Stack>
