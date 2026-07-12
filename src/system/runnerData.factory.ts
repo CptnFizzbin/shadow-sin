@@ -29,10 +29,10 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
     biology: {
       metatype: MetatypeType.Human,
       awakening: AwakeningType.Mundane,
-      gender: undefined,
-      age: undefined,
-      weight: undefined,
-      height: undefined,
+      gender: null,
+      age: null,
+      weight: null,
+      height: null,
     },
 
     qualities: [],
@@ -55,6 +55,12 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
       knowledgeSkills: [],
       languageSkills: [],
     },
+
+    initiative: {
+      passesCompleted: [],
+    },
+
+    tradition: null,
 
     spells: [],
     spirits: [],

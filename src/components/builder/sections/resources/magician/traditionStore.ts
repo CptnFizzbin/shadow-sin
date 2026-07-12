@@ -3,7 +3,7 @@ import { saveTradition } from "#/stores/runner/tradition/traditionSlice.actions.
 import { traditionReducer } from "#/stores/runner/tradition/traditionSlice.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 
-export type TraditionStoreState = TraditionData | undefined
+export type TraditionStoreState = TraditionData | null
 
 export class TraditionStore extends StoreSlice<TraditionStoreState> {
   /** @deprecated Dispatch `saveTradition` from `#/stores/runner/tradition/traditionSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */

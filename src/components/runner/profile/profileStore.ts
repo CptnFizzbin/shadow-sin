@@ -28,17 +28,17 @@ export class ProfileStore extends StoreSlice<ProfileStoreState> {
   }
 
   /** @deprecated Dispatch `setProfileArchetype` from `#/stores/runner/profile/profileSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
-  setArchetype(archetype: string | undefined): void {
+  setArchetype(archetype: string | null): void {
     this.set((prev) => profileReducer(prev, setProfileArchetype(archetype)))
   }
 
   /** @deprecated Dispatch `setProfileDescription` from `#/stores/runner/profile/profileSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
-  setDescription(description: string | undefined): void {
+  setDescription(description: string | null): void {
     this.set((prev) => profileReducer(prev, setProfileDescription(description)))
   }
 
   /** @deprecated Dispatch `setProfilePersonality` from `#/stores/runner/profile/profileSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
-  setPersonality(personality: string | undefined): void {
+  setPersonality(personality: string | null): void {
     this.set((prev) => profileReducer(prev, setProfilePersonality(personality)))
   }
 

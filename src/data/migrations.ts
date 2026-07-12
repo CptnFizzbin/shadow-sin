@@ -18,6 +18,7 @@ export const migrations: AnyCharacterMigration[] = [
   await import("#/data/migrations/20260511_addMissingWeaponSkill.ts"),
   await import("#/data/migrations/20260517_addFeatureFlags.ts"),
   await import("#/data/migrations/20260521_addKarmaLog.ts"),
+  await import("#/data/migrations/20260712_normalizeNullableFields.ts"),
 ].map((module) => module.default)
 
 export const migrationIds: readonly string[] = migrations.map((m) => m.id)
