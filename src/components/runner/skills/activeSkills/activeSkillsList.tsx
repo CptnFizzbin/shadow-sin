@@ -148,6 +148,7 @@ export const ActiveSkillsList: FC = () => {
             display: "grid",
             gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
             columnGap: 2,
+            rowGap: 1,
           }}
         >
           {groupedSkills.map(([group, groupSkills]) => (
