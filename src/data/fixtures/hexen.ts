@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/data/fixtures/hexen.ts
 import { migrationIds } from "#/data/migrations.ts"
+========
+import { migrationIds } from "#/runner/migrations.ts"
+>>>>>>>> shadowrun-4e:src/runner/fixtures/hexen.ts
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"

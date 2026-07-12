@@ -16,6 +16,11 @@ import {
 } from "#testUtils/fixtures/characters/runnerDataFixtures.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
+<<<<<<<< HEAD:src/data/migrations.test.ts
+========
+import type { RunnerManager } from "./runnerManager.ts"
+
+>>>>>>>> shadowrun-4e:src/runner/migrations.test.ts
 describe("runner migrations + yaml round-trip", () => {
   let manager: RunnerManager
   let storage: AsyncJsonStorage

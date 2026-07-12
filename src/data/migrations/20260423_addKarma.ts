@@ -1,7 +1,11 @@
 import { produce } from "immer"
 import { z } from "zod"
 
+<<<<<<<< HEAD:src/data/migrations/20260423_addKarma.ts
 import type { CharacterMigration } from "#/data/characterMigration.ts"
+========
+import type { CharacterMigration } from "#/runner/characterMigration.ts"
+>>>>>>>> shadowrun-4e:src/runner/migrations/20260423_addKarma.ts
 
 const migration: CharacterMigration<{
   karma?: number | {

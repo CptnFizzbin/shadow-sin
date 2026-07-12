@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/data/fixtures/artemis.ts
 import { migrationIds } from "#/data/migrations.ts"
+========
+import { migrationIds } from "#/runner/migrations.ts"
+>>>>>>>> shadowrun-4e:src/runner/fixtures/artemis.ts
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
