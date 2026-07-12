@@ -6,21 +6,20 @@ import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiFireLine, RiLoopLeftLine, RiSubtractLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-
-import { selectEdgeCurrent, selectEdgeMax } from "./edgeSelectors.ts"
-import { useEdgeStore } from "./useEdgeStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const QuickEdgeSection: FC = () => {
   const confirmDialog = useConfirmDialog()
-  const edgeStore = useEdgeStore()
+  const dispatch = useRunnerStoreDispatch()
 
-  const max = useSelector(edgeStore, selectEdgeMax)
-  const current = useSelector(edgeStore, selectEdgeCurrent)
+  const max = useRunnerStoreSelector(Selectors.edge.selectEdgeMax)
+  const current = useRunnerStoreSelector(Selectors.edge.selectEdgeCurrent)
 
   const onBurnClick = async () => {
     if (
@@ -40,15 +39,15 @@ export const QuickEdgeSection: FC = () => {
         },
       })
     ) {
-      edgeStore.burn()
+      dispatch(Actions.edge.burnEdge())
     }
   }
 
   const toggleCell = (cellValue: number) => {
     if (cellValue === current) {
-      edgeStore.setCurrent(cellValue - 1)
+      dispatch(Actions.edge.setCurrentEdge(cellValue - 1))
     } else {
-      edgeStore.setCurrent(cellValue)
+      dispatch(Actions.edge.setCurrentEdge(cellValue))
     }
   }
 
@@ -91,7 +90,7 @@ export const QuickEdgeSection: FC = () => {
           <Button
             color="warning"
             disabled={current <= 0}
-            onClick={() => edgeStore.setCurrent((c) => c - 1)}
+            onClick={() => dispatch(Actions.edge.setCurrentEdge(current - 1))}
             startIcon={<RiSubtractLine />}
             fullWidth
           >
@@ -100,7 +99,7 @@ export const QuickEdgeSection: FC = () => {
           <Button
             color="warning"
             disabled={current >= max}
-            onClick={() => edgeStore.setCurrent((c) => c + 1)}
+            onClick={() => dispatch(Actions.edge.setCurrentEdge(current + 1))}
             endIcon={<RiAddLine />}
             fullWidth
           >
@@ -113,7 +112,7 @@ export const QuickEdgeSection: FC = () => {
             <IconButton
               color="warning"
               disabled={current >= max}
-              onClick={() => edgeStore.restore()}
+              onClick={() => dispatch(Actions.edge.restoreAllEdge())}
               aria-label="Restore edge to maximum"
             >
               <RiLoopLeftLine />
