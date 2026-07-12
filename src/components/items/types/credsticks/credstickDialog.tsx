@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useGearStore } from "#/components/items/useGearStore.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
@@ -40,7 +39,6 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   mode,
   credstick,
 }) => {
-  const gearStore = useGearStore()
   const dispatch = useRunnerStoreDispatch()
   const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
 
@@ -75,7 +73,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
 
     if (isEditMode && credstick) {
       const updatedCredstick: CredstickData = { ...credstick, name: credstickName, balance: clampedBalance }
-      gearStore.save(updatedCredstick)
+      dispatch(Actions.gear.setItem(updatedCredstick))
     } else {
       const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
         name: credstickName,
@@ -84,7 +82,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
         balance: clampedBalance,
       }
       const [newCredstick] = createItem<CredstickData>(credstickItemData)
-      gearStore.save(newCredstick)
+      dispatch(Actions.gear.setItem(newCredstick))
       if (isCertified) {
         // Deduct purchase cost + loaded balance from nuyen
         dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
@@ -98,14 +96,14 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   const handleWithdraw = () => {
     if (!credstick) return
     dispatch(Actions.nuyen.depositNuyen(credstick.balance))
-    gearStore.remove(credstick)
+    dispatch(Actions.gear.removeItem({ id: credstick.id }))
     setShowWithdrawConfirm(false)
     ctrl.close()
   }
 
   const handleRemove = () => {
     if (!credstick) return
-    gearStore.remove(credstick)
+    dispatch(Actions.gear.removeItem({ id: credstick.id }))
     setShowRemoveConfirm(false)
     ctrl.close()
   }
