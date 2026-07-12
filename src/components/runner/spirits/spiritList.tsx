@@ -1,23 +1,23 @@
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { ItemList } from "#/components/items/card/itemList.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 
 import { SpiritFormDialog } from "./dialogs/spiritFormDialog.tsx"
 import { SpiritItemCard } from "./spiritItemCard.tsx"
-import { selectAllSpirits } from "./spiritsSelectors.ts"
 import { TraditionDisplay } from "./traditionDisplay.tsx"
-import { useSpiritsStore } from "./useSpiritsStore.ts"
 
 export const SpiritList: FC = () => {
-  const spiritsStore = useSpiritsStore()
-  const spirits = useSelector(spiritsStore, selectAllSpirits)
+  const dispatch = useRunnerStoreDispatch()
+  const spirits = useRunnerStoreSelector(Selectors.spirits.selectSpirits)
   const confirmDialog = useConfirmDialog()
 
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -38,7 +38,7 @@ export const SpiritList: FC = () => {
   }
 
   const handleClose = (result?: SpiritData) => {
-    if (result) spiritsStore.save(SpiritDataSchema.parse(result))
+    if (result) dispatch(Actions.spirits.saveSpirit(SpiritDataSchema.parse(result)))
     setDialogOpen(false)
   }
 
@@ -48,7 +48,7 @@ export const SpiritList: FC = () => {
       body: "Are you sure you want to dismiss this spirit? This action cannot be undone.",
       confirmLabel: "Dismiss",
     })) {
-      spiritsStore.remove(spirit.id)
+      dispatch(Actions.spirits.removeSpirit(spirit.id))
     }
   }
 
@@ -64,7 +64,7 @@ export const SpiritList: FC = () => {
             spirit={spirit}
             onEdit={() => handleEdit(spirit)}
             onRemove={() => handleRemove(spirit)}
-            onDamageChange={(damage) => spiritsStore.save(produce(spirit, (draft) => { draft.damage = damage }))}
+            onDamageChange={(damage) => dispatch(Actions.spirits.saveSpirit(produce(spirit, (draft) => { draft.damage = damage })))}
           />
         ))}
       </Stack>
