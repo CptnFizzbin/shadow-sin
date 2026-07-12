@@ -17,16 +17,22 @@ interface RemoveItemOptions {
 }
 
 interface GearStore extends BaseAtom<Record<UUID, ItemData>> {
+  /** @deprecated Dispatch `setItem` from `#/stores/runner/gear/gearSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   set(item: ItemData): ItemData
 
+  /** @deprecated Dispatch `addItem` from `#/stores/runner/gear/gearSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   add(item: Omit<ItemData, "id">): ItemData
 
+  /** @deprecated Dispatch `isNewItem(item) ? addItem(item) : setItem(item)` (see `#/stores/runner/gear/gearSlice.actions.ts`) via `useRunnerStoreDispatch()` instead. */
   save(item: ItemData): ItemData
 
+  /** @deprecated Dispatch `removeItem` from `#/stores/runner/gear/gearSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   remove(item: ItemData, options?: RemoveItemOptions): void
 
+  /** @deprecated Dispatch `setItem({ ...child, parentId: parent.id })` from `#/stores/runner/gear/gearSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   setParent(child: ItemData, parent: ItemData): ItemData
 
+  /** @deprecated Dispatch `setItem({ ...child, parentId: parent.id })` from `#/stores/runner/gear/gearSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   addChild(parent: ItemData, child: ItemData): ItemData
 
   /**

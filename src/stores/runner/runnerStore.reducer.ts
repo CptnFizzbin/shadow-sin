@@ -6,6 +6,7 @@ import { complexFormsReducer } from "./complexForms/complexFormsSlice.ts"
 import { contactsReducer } from "./contacts/contactsSlice.ts"
 import { damageReducer } from "./damage/damageSlice.ts"
 import { edgeReducer } from "./edge/edgeSlice.ts"
+import { gearReducer } from "./gear/gearSlice.ts"
 import { initiativeReducer } from "./initiative/initiativeSlice.ts"
 import { karmaReducer } from "./karma/karmaSlice.ts"
 import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
@@ -36,4 +37,5 @@ export const runnerRootReducer = combineReducers({
   edge: edgeReducer,
   damage: damageReducer,
   initiative: initiativeReducer,
+  gear: gearReducer,
 })

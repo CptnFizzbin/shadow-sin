@@ -4,6 +4,7 @@ import * as complexFormsActions from "./complexForms/complexFormsSlice.actions.t
 import * as contactsActions from "./contacts/contactsSlice.actions.ts"
 import * as damageActions from "./damage/damageSlice.actions.ts"
 import * as edgeActions from "./edge/edgeSlice.actions.ts"
+import * as gearActions from "./gear/gearSlice.actions.ts"
 import * as initiativeActions from "./initiative/initiativeSlice.actions.ts"
 import * as karmaActions from "./karma/karmaSlice.actions.ts"
 import * as nuyenActions from "./nuyen/nuyenSlice.actions.ts"
@@ -30,6 +31,7 @@ export const Actions = {
   contacts: contactsActions,
   damage: damageActions,
   edge: edgeActions,
+  gear: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,
   nuyen: nuyenActions,
