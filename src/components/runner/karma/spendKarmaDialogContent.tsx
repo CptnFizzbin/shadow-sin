@@ -13,7 +13,6 @@ import {
   RiMedal2Line,
   RiSparklingLine,
 } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
@@ -21,10 +20,10 @@ import { useRunnerData, useRunnerDataContext } from "#/components/runner/sheet/r
 import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { selectHasImprovements, selectImprovementsTotalCost } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"
 
-import { selectCurrentKarma } from "./karmaSelectors.ts"
 import { ImprovementActiveSkillList } from "./runnerImprovements/improvementActiveSkillList.tsx"
 import { ImprovementAttributeList } from "./runnerImprovements/improvementAttributeList.tsx"
 import { ImprovementKnowledgeSkillList } from "./runnerImprovements/improvementKnowledgeSkillList.tsx"
@@ -36,7 +35,6 @@ import {
   useSpendKarmaDialogContext,
 } from "./runnerImprovements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./runnerImprovements/useImprovementSelector.ts"
-import { useKarmaStore } from "./useKarmaStore.ts"
 
 type SectionKey = "attribute" | "skill" | "skillGroup" | "knowledge" | "language" | "spell"
 
@@ -60,12 +58,11 @@ const NAV_ITEMS: NavItemConfig[] = [
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const runnerDataStore = useRunnerDataContext()
-  const karmaStore = useKarmaStore()
   const awakening = useRunnerData((sheet) => sheet.biology.awakening)
 
   const [activeSection, setActiveSection] = useState<SectionKey>("attribute")
 
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const karmaCost = useImprovementSelector(selectImprovementsTotalCost)
   const hasImprovements = useImprovementSelector(selectHasImprovements)
   const remainingKarma = currentKarma - karmaCost

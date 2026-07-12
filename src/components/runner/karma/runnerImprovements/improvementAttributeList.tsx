@@ -7,13 +7,11 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiCheckLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
-import { selectCurrentKarma } from "#/components/runner/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/runner/karma/useKarmaStore.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -34,12 +32,11 @@ interface ImprovementAttributeListProps {
 
 export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const karmaStore = useKarmaStore()
   const sheet = useRunnerData((s) => s)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedAttrIncreases = allImprovements.filter(isAttrIncreaseEntry)

@@ -10,15 +10,13 @@ import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiChat4Line, RiCheckLine, RiStarLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectCurrentKarma } from "#/components/runner/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/runner/karma/useKarmaStore.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import {
   useLanguageSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { getLanguageSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnLanguageSkillEntry,
@@ -47,11 +45,10 @@ const LINGO_COST = 2
 
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const karmaStore = useKarmaStore()
   const languageSkills = useRunnerData((sheet) => sheet.skills.languageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const languageSkillDialog = useLanguageSkillDialog()
   const specializationDialog = useSpecializationPickerDialog()
 

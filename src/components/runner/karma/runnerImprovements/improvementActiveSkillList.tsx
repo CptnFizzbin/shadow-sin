@@ -5,16 +5,14 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { selectCurrentKarma } from "#/components/runner/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/runner/karma/useKarmaStore.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   getActiveSkillCap,
   hasAptitudeFor,
@@ -69,13 +67,12 @@ interface ImprovementActiveSkillListProps {
 
 export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const karmaStore = useKarmaStore()
   const sheet = useRunnerData((s) => s)
   const activeSkills = useRunnerData((s) => s.skills.activeSkills)
   const skillGroups = useRunnerData((s) => s.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const activeSkillDialog = useActiveSkillDialog()
   const specializationDialog = useSpecializationPickerDialog()
 
