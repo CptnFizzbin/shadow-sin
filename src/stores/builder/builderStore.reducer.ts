@@ -1,1 +1,1 @@
-export { builderReducer as builderRootReducer } from "./builderSlice.ts"
+export { nuyenReducer as builderRootReducer } from "./nuyen/nuyenSlice.ts"

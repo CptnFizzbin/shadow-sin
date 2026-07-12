@@ -49,7 +49,7 @@ export const StartingNuyenSection: FC = () => {
   const maxResult = (numDice * 6 + bonus) * mult
 
   const builderDispatch = useBuilderStoreDispatch()
-  const startingNuyen = useBuilderStoreSelector(BuilderSelectors.builder.selectStartingNuyen)
+  const startingNuyen = useBuilderStoreSelector(BuilderSelectors.nuyen.selectStartingNuyen)
 
   const runnerDispatch = useRunnerStoreDispatch()
   const currentNuyen = useRunnerStoreSelector(RunnerSelectors.nuyen.selectNuyenAmount)
@@ -58,7 +58,7 @@ export const StartingNuyenSection: FC = () => {
   // roller resetting) and back.
   useEffect(() => {
     if (rolledTotal !== null && rolledTotal !== startingNuyen) {
-      builderDispatch(BuilderActions.builder.setStartingNuyen(rolledTotal))
+      builderDispatch(BuilderActions.nuyen.setStartingNuyen(rolledTotal))
     }
   }, [rolledTotal, startingNuyen, builderDispatch])
 
@@ -69,7 +69,7 @@ export const StartingNuyenSection: FC = () => {
 
   const handleReset = () => {
     if (hasRolled) diceRoller.reset()
-    builderDispatch(BuilderActions.builder.setStartingNuyen(undefined))
+    builderDispatch(BuilderActions.nuyen.setStartingNuyen(undefined))
   }
 
   return (

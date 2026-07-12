@@ -1,9 +1,9 @@
-import * as builderActions from "./builderSlice.actions.ts"
+import * as nuyenActions from "./nuyen/nuyenSlice.actions.ts"
 
 /**
- * Namespaced access to `BuilderState`'s action creators (`Actions.builder.setStartingNuyen(...)`).
+ * Namespaced access to `BuilderState`'s action creators (`Actions.nuyen.setStartingNuyen(...)`).
  * Mirrors `Actions` in `runnerStore.actions.ts`.
  */
 export const Actions = {
-  builder: builderActions,
+  nuyen: nuyenActions,
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { setStartingNuyen } from "./builderSlice.actions.ts"
-import { builderReducer } from "./builderSlice.ts"
+import { setStartingNuyen } from "./nuyenSlice.actions.ts"
+import { nuyenReducer } from "./nuyenSlice.ts"
 
 describe("setStartingNuyen", () => {
   it("sets startingNuyen from undefined", () => {
@@ -9,7 +9,7 @@ describe("setStartingNuyen", () => {
     const state = { startingNuyen: undefined }
 
     // Act
-    const next = builderReducer(state, setStartingNuyen(5000))
+    const next = nuyenReducer(state, setStartingNuyen(5000))
 
     // Assert
     expect(next.startingNuyen).toBe(5000)
@@ -20,7 +20,7 @@ describe("setStartingNuyen", () => {
     const state = { startingNuyen: 1000 }
 
     // Act
-    const next = builderReducer(state, setStartingNuyen(6000))
+    const next = nuyenReducer(state, setStartingNuyen(6000))
 
     // Assert
     expect(next.startingNuyen).toBe(6000)
@@ -31,7 +31,7 @@ describe("setStartingNuyen", () => {
     const state = { startingNuyen: 6000 }
 
     // Act
-    const next = builderReducer(state, setStartingNuyen(undefined))
+    const next = nuyenReducer(state, setStartingNuyen(undefined))
 
     // Assert
     expect(next.startingNuyen).toBeUndefined()
