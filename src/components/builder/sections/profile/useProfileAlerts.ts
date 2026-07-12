@@ -1,19 +1,14 @@
-import { useSelector } from "@tanstack/react-store"
-
-import { selectProfileAlias, selectProfileName } from "#/components/runner/profile/profileSelectors.ts"
-import { useProfileStore } from "#/components/runner/profile/useProfileStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useProfileAlerts = (): AlertInfo[] => {
-  const profileStore = useProfileStore()
-
   const addAlert = (alert: Omit<AlertInfo, "section">) => {
     alerts.push({ section: "Profile", ...alert })
   }
 
   const alerts: AlertInfo[] = []
 
-  const alias = useSelector(profileStore, selectProfileAlias)
+  const alias = useRunnerStoreSelector(Selectors.profile.selectProfileAlias)
   if (!alias) {
     addAlert({
       severity: "error",
@@ -23,7 +18,7 @@ export const useProfileAlerts = (): AlertInfo[] => {
     })
   }
 
-  const name = useSelector(profileStore, selectProfileName)
+  const name = useRunnerStoreSelector(Selectors.profile.selectProfileName)
   if (!name) {
     addAlert({
       severity: "error",
