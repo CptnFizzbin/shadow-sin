@@ -4,7 +4,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
-import { useGearStore } from "#/components/items/useGearStore.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -20,12 +22,12 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
   items,
   getChildren,
 }) => {
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const armorFormDialog = useArmorFormDialog()
 
   const handleEditArmor = async (armor?: ArmorData) => {
     const saved = await armorFormDialog.open({ armor })
-    if (saved) gearStore.save(saved)
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (
@@ -36,14 +38,14 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
           item={item}
           subItems={getChildren(item.id)}
           onEdit={() => isArmorData(item) && handleEditArmor(item)}
-          onRemove={() => gearStore.remove(item, { removeChildren: true })}
+          onRemove={() => dispatch(Actions.gear.removeItem({ id: item.id, removeChildren: true }))}
           getSubItemCallbacks={(subItemId) => {
             const subItem = getChildren(item.id).find((child) => child.id === subItemId)
             return {
               onEdit: subItem && isArmorData(subItem)
                 ? () => handleEditArmor(subItem)
                 : undefined,
-              onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
+              onRemove: subItem ? () => dispatch(Actions.gear.removeItem({ id: subItem.id })) : undefined,
             }
           }}
         />

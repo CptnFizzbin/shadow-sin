@@ -3,9 +3,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -14,7 +16,7 @@ import { EquippedArmorCard } from "./equippedArmorCard.tsx"
 export const EquippedArmorSection: FC = () => {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
   const equippedArmor = allArmor.filter((armor) => armor.equipped)
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const { totalBallistic, totalImpact, threshold, penalty, isEncumbered } = useEncumbrance()
 
   const handleDamageChange = (armor: ArmorData, damage: NonNullable<ArmorData["damage"]>) => {
@@ -23,7 +25,7 @@ export const EquippedArmorSection: FC = () => {
       impact: Math.min(Math.max(0, damage.impact), armor.impact),
     }
     const updated: ArmorData = { ...armor, damage: clamped }
-    gearStore.save(updated)
+    dispatch(Actions.gear.setItem(updated))
   }
 
   if (equippedArmor.length === 0) {

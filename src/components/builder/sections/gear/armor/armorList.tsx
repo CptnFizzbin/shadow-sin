@@ -3,20 +3,23 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
-import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 export const ArmorList: FC = () => {
-  const gearApi = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const armorItems = useGearByType<ArmorData>(ItemType.armor)
   const armorFormDialog = useArmorFormDialog()
 
   const handleEditArmor = async (armor?: ArmorData) => {
     const saved = await armorFormDialog.open({ armor })
-    if (saved) gearApi.save(saved)
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (
@@ -26,7 +29,7 @@ export const ArmorList: FC = () => {
           key={armor.id}
           armor={armor}
           onEdit={() => handleEditArmor(armor)}
-          onRemove={() => gearApi.remove(armor)}
+          onRemove={() => dispatch(Actions.gear.removeItem({ id: armor.id }))}
         />
       ))}
 
