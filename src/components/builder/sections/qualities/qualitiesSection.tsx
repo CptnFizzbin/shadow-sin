@@ -5,12 +5,13 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
-import { useQualitiesStore } from "#/components/runner/qualities/useQualitiesStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 
 import { QualitiesList } from "./qualitiesList.tsx"
 
 export const QualitiesSection: FC = () => {
-  const qualitiesStore = useQualitiesStore()
+  const dispatch = useRunnerStoreDispatch()
   const qualityFormDialog = useQualityFormDialog()
 
   return (
@@ -27,7 +28,7 @@ export const QualitiesSection: FC = () => {
         startIcon={<RiAddLine />}
         onClick={async () => {
           const quality = await qualityFormDialog.open()
-          if (quality) qualitiesStore.add(quality)
+          if (quality) dispatch(Actions.qualities.addQuality(quality))
         }}
         size="small"
       >
