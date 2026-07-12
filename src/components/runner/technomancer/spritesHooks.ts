@@ -1,18 +1,12 @@
-import { useSelector } from "@tanstack/react-store"
-
 import { useActiveSkill, useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-import { selectAllSprites } from "./spritesSelectors.ts"
-import { useSpritesStore } from "./useSpritesStore.ts"
-
 export const useSprites = () => {
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
-  const spritesStore = useSpritesStore()
-  const sprites = useSelector(spritesStore, selectAllSprites)
+  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
+  const sprites = useRunnerStoreSelector(Selectors.sprites.selectSprites)
 
   if (awakeningType !== AwakeningType.Technomancer) {
     return []
