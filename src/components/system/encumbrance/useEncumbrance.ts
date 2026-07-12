@@ -1,4 +1,4 @@
-import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { useAttr } from "#/components/runner/runnerUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"

@@ -5,7 +5,6 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
@@ -15,10 +14,8 @@ import {
   useGearBuildPoints,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { selectAllGear } from "#/components/items/gearSelectors.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
-import { useGearStore } from "#/components/items/useGearStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
@@ -161,8 +158,7 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const gearApi = useGearStore()
-  const allGearItems = useSelector(gearApi, selectAllGear)
+  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectGear)
 
   const lifestyleInfo = useRunnerStoreSelector(Selectors.profile.selectLifestyleInfo)
   const lifestyleMonths = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1

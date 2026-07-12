@@ -4,12 +4,11 @@ import AccordionSummary from "@mui/material/AccordionSummary"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowDownSLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { selectAllGear } from "#/components/items/gearSelectors.ts"
-import { useGearStore } from "#/components/items/useGearStore.ts"
+import { searchGear } from "#/components/items/gearHooks.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"
@@ -23,14 +22,13 @@ interface GearViewSectionProps {
 
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
-  const gearStore = useGearStore()
-  const allGearItems = useSelector(gearStore, selectAllGear)
+  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectGear)
 
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0
 
   const sectionItems = isSearching
-    ? gearStore.search(searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
+    ? searchGear(allGearItems, searchTerms).filter((item) => allowedTypes.includes(item.itemType as ItemType))
     : Object.values(allGearItems).filter((item) => allowedTypes.includes(item.itemType as ItemType))
 
   if (isSearching && sectionItems.length === 0) return null
