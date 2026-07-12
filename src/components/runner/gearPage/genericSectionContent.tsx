@@ -4,7 +4,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useGearStore } from "#/components/items/useGearStore.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -23,12 +25,12 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
   itemLabel,
   itemType,
 }) => {
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
 
   const handleEdit = async (item?: ItemData) => {
     const saved = await itemFormDialog.open({ item, itemType, label: itemLabel })
-    if (saved) gearStore.save(saved)
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (
@@ -39,12 +41,12 @@ export const GenericSectionContent: FC<GenericSectionContentProps> = ({
           item={item}
           subItems={getChildren(item.id)}
           onEdit={() => handleEdit(item)}
-          onRemove={() => gearStore.remove(item, { removeChildren: true })}
+          onRemove={() => dispatch(Actions.gear.removeItem({ id: item.id, removeChildren: true }))}
           getSubItemCallbacks={(subItemId) => {
             const subItem = getChildren(item.id).find((child) => child.id === subItemId)
             return {
               onEdit: subItem ? () => handleEdit(subItem) : undefined,
-              onRemove: subItem ? () => gearStore.remove(subItem) : undefined,
+              onRemove: subItem ? () => dispatch(Actions.gear.removeItem({ id: subItem.id })) : undefined,
             }
           }}
         />
