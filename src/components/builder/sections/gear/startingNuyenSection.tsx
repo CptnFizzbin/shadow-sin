@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
+import { useEffect } from "react"
 
 import {
   GearNuyenPerBuildPoint,
@@ -15,6 +16,12 @@ import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions as BuilderActions } from "#/stores/builder/builderStore.actions.ts"
+import { useBuilderStoreDispatch } from "#/stores/builder/builderStore.dispatch.ts"
+import { Selectors as BuilderSelectors, useBuilderStoreSelector } from "#/stores/builder/builderStore.selectors.ts"
+import { Actions as RunnerActions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors as RunnerSelectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { selectSettledDice, selectWasRolled, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
@@ -40,6 +47,30 @@ export const StartingNuyenSection: FC = () => {
 
   const minResult = (numDice + bonus) * mult
   const maxResult = (numDice * 6 + bonus) * mult
+
+  const builderDispatch = useBuilderStoreDispatch()
+  const startingNuyen = useBuilderStoreSelector(BuilderSelectors.builder.selectStartingNuyen)
+
+  const runnerDispatch = useRunnerStoreDispatch()
+  const currentNuyen = useRunnerStoreSelector(RunnerSelectors.nuyen.selectNuyenAmount)
+
+  // Persist a completed roll so it survives navigating away from this section (and the dice
+  // roller resetting) and back.
+  useEffect(() => {
+    if (rolledTotal !== null && rolledTotal !== startingNuyen) {
+      builderDispatch(BuilderActions.builder.setStartingNuyen(rolledTotal))
+    }
+  }, [rolledTotal, startingNuyen, builderDispatch])
+
+  // A roll this session takes priority; otherwise fall back to a roll persisted earlier.
+  const resolvedNuyen = rolledTotal ?? startingNuyen ?? null
+  const isResolved = resolvedNuyen !== null
+  const isApplied = isResolved && currentNuyen === resolvedNuyen
+
+  const handleReset = () => {
+    if (hasRolled) diceRoller.reset()
+    builderDispatch(BuilderActions.builder.setStartingNuyen(undefined))
+  }
 
   return (
     <Stack sx={{ gap: 1.5 }}>
@@ -73,10 +104,10 @@ export const StartingNuyenSection: FC = () => {
               × <Nuyen amount={mult} />
             </Typography>
           </Stack>
-          {hasRolled && rolledTotal !== null
+          {resolvedNuyen !== null
             ? (
                 <Box component="span" sx={{ fontWeight: "bold" }}>
-                  {formatNuyen(rolledTotal)}
+                  {formatNuyen(resolvedNuyen)}
                 </Box>
               )
             : (
@@ -86,17 +117,35 @@ export const StartingNuyenSection: FC = () => {
               )}
         </Stack>
 
+        {isResolved && !hasRolled && (
+          <Typography color="text.secondary" variant="caption">
+            From an earlier roll
+          </Typography>
+        )}
+
         <ButtonGroup fullWidth>
           <Button size="small" variant="outlined" onClick={() => diceRoller.rollAll()}>
-            {hasRolled ? "Reroll" : "Roll"}
+            {isResolved ? "Reroll" : "Roll"}
           </Button>
 
-          {hasRolled && (
-            <Button size="small" variant="outlined" onClick={() => diceRoller.reset()}>
+          {isResolved && (
+            <Button size="small" variant="outlined" onClick={handleReset}>
               Reset
             </Button>
           )}
         </ButtonGroup>
+
+        {resolvedNuyen !== null && (
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            disabled={isApplied}
+            onClick={() => runnerDispatch(RunnerActions.nuyen.setNuyenAmount(resolvedNuyen))}
+          >
+            {isApplied ? "Applied to Nuyen" : "Apply to Nuyen"}
+          </Button>
+        )}
 
         {bonus > 0 && (
           <Typography color="text.secondary">

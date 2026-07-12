@@ -1,17 +1,17 @@
 import type { Store } from "@tanstack/store"
 import type { FC, PropsWithChildren } from "react"
-import { createContext, useMemo } from "react"
+import { useMemo } from "react"
 
 import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
+import { BuilderStoreContext, useBuilderDataContext } from "#/stores/builder/builderStore.context.ts"
 
 import type { BuilderRootState } from "./builderRootState.ts"
 import { BuilderStateStore } from "./builderStateStore.ts"
 import { IsBuilderContext } from "./isBuilderContext.ts"
 
-const RunnerBuilderContext =
-  createContext<BuilderStateStore | null>(null)
+export { useBuilderDataContext }
 
 interface RunnerBuilderStoreProviderProps extends PropsWithChildren {
   rootStore: Store<BuilderRootState>
@@ -39,11 +39,11 @@ export const RunnerBuilderStoreProvider: FC<RunnerBuilderStoreProviderProps> = (
 
   return (
     <IsBuilderContext.Provider value={true}>
-      <RunnerBuilderContext.Provider value={builderStateStore}>
+      <BuilderStoreContext.Provider value={builderStateStore}>
         <RunnerDataProvider store={runnerDataStore}>
           {children}
         </RunnerDataProvider>
-      </RunnerBuilderContext.Provider>
+      </BuilderStoreContext.Provider>
     </IsBuilderContext.Provider>
   )
 }
