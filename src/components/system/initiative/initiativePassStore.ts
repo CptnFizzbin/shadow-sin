@@ -2,12 +2,12 @@ import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
 import {
   clearRolledResults,
   gainExtraPass,
-  initiativeSlice,
   resetPasses,
   setGoingFirst,
   setRolledResults,
   togglePass,
-} from "#/stores/runner/initiative/initiativeSlice.ts"
+} from "#/stores/runner/initiative/initiativeSlice.actions.ts"
+import { initiativeReducer } from "#/stores/runner/initiative/initiativeSlice.ts"
 
 export interface InitiativePassState {
   passesCompleted: number[]
@@ -16,39 +16,39 @@ export interface InitiativePassState {
   extraPasses: number
 }
 
-/** The new slice's `extraPasses` is optional (mirrors `RunnerData["initiative"]`); the old store's isn't. */
-function normalize(state: ReturnType<typeof initiativeSlice.reducer>): InitiativePassState {
+/** Defaults `extraPasses` to 0 so consumers always get a number, even though it's optional on `RunnerData["initiative"]`. */
+function normalize(state: ReturnType<typeof initiativeReducer>): InitiativePassState {
   return { ...state, extraPasses: state.extraPasses ?? 0 }
 }
 
 export class InitiativePassStore extends StoreSlice<InitiativePassState> {
-  /** @deprecated Dispatch `togglePass` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `togglePass` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   togglePass(passIndex: number): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, togglePass(passIndex))))
+    this.set((state) => normalize(initiativeReducer(state, togglePass(passIndex))))
   }
 
-  /** @deprecated Dispatch `setRolledResults` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `setRolledResults` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   setRolledResults(results: number[]): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, setRolledResults(results))))
+    this.set((state) => normalize(initiativeReducer(state, setRolledResults(results))))
   }
 
-  /** @deprecated Dispatch `clearRolledResults` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `clearRolledResults` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   clearRolledResults(): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, clearRolledResults())))
+    this.set((state) => normalize(initiativeReducer(state, clearRolledResults())))
   }
 
-  /** @deprecated Dispatch `setGoingFirst` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `setGoingFirst` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   setGoingFirst(value: boolean): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, setGoingFirst(value))))
+    this.set((state) => normalize(initiativeReducer(state, setGoingFirst(value))))
   }
 
-  /** @deprecated Dispatch `gainExtraPass` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `gainExtraPass` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   gainExtraPass(): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, gainExtraPass())))
+    this.set((state) => normalize(initiativeReducer(state, gainExtraPass())))
   }
 
-  /** @deprecated Dispatch `resetPasses` from `#/stores/runner/initiative/initiativeSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `resetPasses` from `#/stores/runner/initiative/initiativeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   resetPasses(): void {
-    this.set((state) => normalize(initiativeSlice.reducer(state, resetPasses())))
+    this.set((state) => normalize(initiativeReducer(state, resetPasses())))
   }
 }

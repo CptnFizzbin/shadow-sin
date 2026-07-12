@@ -1,39 +1,39 @@
 import { combineReducers } from "#/integrations/reduxToolkit/combineReducers.ts"
 
-import { attributesSlice } from "./attributes/attributesSlice.ts"
-import { biologySlice } from "./biology/biologySlice.ts"
-import { complexFormsSlice } from "./complexForms/complexFormsSlice.ts"
-import { contactsSlice } from "./contacts/contactsSlice.ts"
-import { damageSlice } from "./damage/damageSlice.ts"
-import { edgeSlice } from "./edge/edgeSlice.ts"
-import { initiativeSlice } from "./initiative/initiativeSlice.ts"
-import { karmaSlice } from "./karma/karmaSlice.ts"
-import { nuyenSlice } from "./nuyen/nuyenSlice.ts"
-import { powersSlice } from "./powers/powersSlice.ts"
-import { profileSlice } from "./profile/profileSlice.ts"
-import { qualitiesSlice } from "./qualities/qualitiesSlice.ts"
-import { skillsSlice } from "./skills/skillsSlice.ts"
-import { spellsSlice } from "./spells/spellsSlice.ts"
-import { spiritsSlice } from "./spirits/spiritsSlice.ts"
-import { spritesSlice } from "./sprites/spritesSlice.ts"
-import { traditionSlice } from "./tradition/traditionSlice.ts"
+import { attributesReducer } from "./attributes/attributesSlice.ts"
+import { biologyReducer } from "./biology/biologySlice.ts"
+import { complexFormsReducer } from "./complexForms/complexFormsSlice.ts"
+import { contactsReducer } from "./contacts/contactsSlice.ts"
+import { damageReducer } from "./damage/damageSlice.ts"
+import { edgeReducer } from "./edge/edgeSlice.ts"
+import { initiativeReducer } from "./initiative/initiativeSlice.ts"
+import { karmaReducer } from "./karma/karmaSlice.ts"
+import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
+import { powersReducer } from "./powers/powersSlice.ts"
+import { profileReducer } from "./profile/profileSlice.ts"
+import { qualitiesReducer } from "./qualities/qualitiesSlice.ts"
+import { skillsReducer } from "./skills/skillsSlice.ts"
+import { spellsReducer } from "./spells/spellsSlice.ts"
+import { spiritsReducer } from "./spirits/spiritsSlice.ts"
+import { spritesReducer } from "./sprites/spritesSlice.ts"
+import { traditionReducer } from "./tradition/traditionSlice.ts"
 
 export const runnerRootReducer = combineReducers({
-  attributes: attributesSlice.reducer,
-  qualities: qualitiesSlice.reducer,
-  karma: karmaSlice.reducer,
-  nuyen: nuyenSlice.reducer,
-  profile: profileSlice.reducer,
-  biology: biologySlice.reducer,
-  contacts: contactsSlice.reducer,
-  skills: skillsSlice.reducer,
-  spells: spellsSlice.reducer,
-  spirits: spiritsSlice.reducer,
-  complexForms: complexFormsSlice.reducer,
-  sprites: spritesSlice.reducer,
-  powers: powersSlice.reducer,
-  tradition: traditionSlice.reducer,
-  edge: edgeSlice.reducer,
-  damage: damageSlice.reducer,
-  initiative: initiativeSlice.reducer,
+  attributes: attributesReducer,
+  qualities: qualitiesReducer,
+  karma: karmaReducer,
+  nuyen: nuyenReducer,
+  profile: profileReducer,
+  biology: biologyReducer,
+  contacts: contactsReducer,
+  skills: skillsReducer,
+  spells: spellsReducer,
+  spirits: spiritsReducer,
+  complexForms: complexFormsReducer,
+  sprites: spritesReducer,
+  powers: powersReducer,
+  tradition: traditionReducer,
+  edge: edgeReducer,
+  damage: damageReducer,
+  initiative: initiativeReducer,
 })

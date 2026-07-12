@@ -1,31 +1,69 @@
-import { useCallback } from "react"
+import type { ThunkAction, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit"
+import { useMemo } from "react"
 
-import type { AnyAction } from "#/integrations/reduxToolkit/dispatchActions.ts"
-import { applyActions } from "#/integrations/reduxToolkit/dispatchActions.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { useRunnerDataContext } from "./runnerStore.context.ts"
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
 
+export type RunnerDispatch = ThunkDispatch<RunnerData, undefined, UnknownAction>
+
+export type RunnerAction = UnknownAction | ThunkAction<unknown, RunnerData, undefined, UnknownAction>
+
 /**
- * The one write entry point for `RunnerData`. Accepts a single RTK action, an array of them, or a
- * `ActionChain` (see `applyActions` / compound action creators like `burnEdge` in
- * `edge/edgeSlice.actions.ts`) — either way, every resulting action is folded through the
- * migrated domains' combined reducer ({@link runnerRootReducer}) and the FINAL result is written
- * back to the existing `RunnerDataStore` via a single `setState` call, so the store's own
- * subscribers (autosave in `src/routes/$runnerId.tsx`, and every
- * `useRunnerStoreSelector`/`useSelector` reader) fire exactly once per dispatch — a multi-action
- * compound dispatch is atomic, not N separate writes. Works unchanged in both the Viewer (a real
- * root store) and the Builder (a `createSliceAtom` slice of `BuilderRootState`), since both are
- * reached via the same `useRunnerDataContext()`.
+ * Hand-rolled `redux-thunk` equivalent, since this app has no `configureStore`/middleware
+ * pipeline: a dispatched function (a plain thunk, or a `createAsyncThunk` action) is invoked with
+ * `dispatch`/`getState` instead of being reduced; a plain action is handed to `applyAction`. A
+ * thunk's own nested `dispatch` calls recurse back through this same function, so they're handled
+ * the same way.
  */
-export function useRunnerStoreDispatch() {
+function createThunkDispatch(getState: () => RunnerData, applyAction: (action: UnknownAction) => void): RunnerDispatch {
+  const dispatch = ((action: unknown) => {
+    if (typeof action === "function") {
+      return action(dispatch, getState, undefined)
+    }
+    applyAction(action as UnknownAction)
+    return action
+  }) as RunnerDispatch
+
+  return dispatch
+}
+
+/**
+ * The one write entry point for `RunnerData`. Applies dispatched actions through the combined
+ * domain reducer ({@link runnerRootReducer}) and writes the result back to the `RunnerDataStore`
+ * via `setState`, so the store's own subscribers (autosave in `src/routes/$runnerId.tsx`, and
+ * every `useRunnerStoreSelector`/`useSelector` reader) fire. Works unchanged in both the Viewer (a
+ * real root store) and the Builder (a `createSliceAtom` slice of `BuilderRootState`), since both
+ * are reached via the same `useRunnerDataContext()`.
+ */
+export function useRunnerStoreDispatch(): RunnerDispatch {
   const store = useRunnerDataContext()
 
-  return useCallback(
-    (actionOrActions: AnyAction<RunnerData>) => {
-      store.setState((prev) => applyActions(runnerRootReducer, prev, actionOrActions))
-    },
+  return useMemo(
+    () => createThunkDispatch(
+      () => store.state,
+      (action) => store.setState((prev) => runnerRootReducer(prev, action)),
+    ),
     [store],
   )
+}
+
+/**
+ * A one-shot, store-less version of {@link useRunnerStoreDispatch} for non-React contexts: tests,
+ * and deprecated per-domain `StoreSlice` compat classes (e.g. `EdgeStore`) that reconstruct a
+ * minimal "fake root" `RunnerData` from their own narrower local state to run real actions/thunks
+ * against. Applies `action` (and any thunks it dispatches) against `state` and resolves once the
+ * whole chain has settled.
+ */
+export async function dispatchThunk(state: RunnerData, action: RunnerAction): Promise<RunnerData> {
+  let current = state
+
+  const dispatch = createThunkDispatch(
+    () => current,
+    (a) => { current = runnerRootReducer(current, a) },
+  )
+
+  await dispatch(action)
+  return current
 }

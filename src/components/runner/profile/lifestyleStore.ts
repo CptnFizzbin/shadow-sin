@@ -1,5 +1,6 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { profileSlice, setLifestyleMonthsPaid, setLifestyleQuality } from "#/stores/runner/profile/profileSlice.ts"
+import { setLifestyleMonthsPaid, setLifestyleQuality } from "#/stores/runner/profile/profileSlice.actions.ts"
+import { profileReducer } from "#/stores/runner/profile/profileSlice.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -10,18 +11,18 @@ export class LifestyleStore extends StoreSlice<LifestyleStoreState> {
     this.set(stateOrUpdater)
   }
 
-  /** @deprecated Dispatch `setLifestyleQuality` from `#/stores/runner/profile/profileSlice.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `setLifestyleQuality` from `#/stores/runner/profile/profileSlice.actions.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
   setQuality(quality: LifestyleType): void {
     this.set((prev) => {
-      const profile = profileSlice.reducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleQuality(quality))
+      const profile = profileReducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleQuality(quality))
       return profile.lifestyle ?? { quality, monthsPaid: 1 }
     })
   }
 
-  /** @deprecated Dispatch `setLifestyleMonthsPaid` from `#/stores/runner/profile/profileSlice.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `setLifestyleMonthsPaid` from `#/stores/runner/profile/profileSlice.actions.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
   setMonthsPaid(months: number): void {
     this.set((prev) => {
-      const profile = profileSlice.reducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleMonthsPaid(months))
+      const profile = profileReducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleMonthsPaid(months))
       return profile.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: months }
     })
   }

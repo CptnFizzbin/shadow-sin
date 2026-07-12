@@ -1,8 +1,18 @@
-import type { PayloadAction } from "@reduxjs/toolkit"
-import { createSlice } from "@reduxjs/toolkit"
+import { createReducer } from "@reduxjs/toolkit"
 
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+
+import {
+  setLifestyleMonthsPaid,
+  setLifestyleQuality,
+  setProfileAlias,
+  setProfileArchetype,
+  setProfileDescription,
+  setProfileName,
+  setProfilePersonality,
+  setProfilePublicAwarenessModifier,
+} from "./profileSlice.actions.ts"
 
 const initialState: RunnerData["profile"] = {
   alias: "",
@@ -11,47 +21,33 @@ const initialState: RunnerData["profile"] = {
   notoriety: 0,
 }
 
-export const profileSlice = createSlice({
-  name: "profile",
-  initialState,
-  reducers: {
-    setName: (state, action: PayloadAction<string>) => {
+export const profileReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(setProfileName, (state, action) => {
       state.name = action.payload
-    },
-    setAlias: (state, action: PayloadAction<string>) => {
+    })
+    .addCase(setProfileAlias, (state, action) => {
       state.alias = action.payload
-    },
-    setArchetype: (state, action: PayloadAction<string | undefined>) => {
+    })
+    .addCase(setProfileArchetype, (state, action) => {
       state.archetype = action.payload
-    },
-    setDescription: (state, action: PayloadAction<string | undefined>) => {
+    })
+    .addCase(setProfileDescription, (state, action) => {
       state.description = action.payload
-    },
-    setPersonality: (state, action: PayloadAction<string | undefined>) => {
+    })
+    .addCase(setProfilePersonality, (state, action) => {
       state.personality = action.payload
-    },
-    setPublicAwarenessModifier: (state, action: PayloadAction<number | undefined>) => {
+    })
+    .addCase(setProfilePublicAwarenessModifier, (state, action) => {
       state.publicAwarenessModifier = action.payload
-    },
-    setLifestyleQuality: (state, action: PayloadAction<LifestyleType>) => {
+    })
+    .addCase(setLifestyleQuality, (state, action) => {
       state.lifestyle = { ...(state.lifestyle ?? { quality: action.payload, monthsPaid: 1 }), quality: action.payload }
-    },
-    setLifestyleMonthsPaid: (state, action: PayloadAction<number>) => {
+    })
+    .addCase(setLifestyleMonthsPaid, (state, action) => {
       state.lifestyle = {
         ...(state.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: action.payload }),
         monthsPaid: action.payload,
       }
-    },
-  },
+    })
 })
-
-export const {
-  setName: setProfileName,
-  setAlias: setProfileAlias,
-  setArchetype: setProfileArchetype,
-  setDescription: setProfileDescription,
-  setPersonality: setProfilePersonality,
-  setPublicAwarenessModifier: setProfilePublicAwarenessModifier,
-  setLifestyleQuality,
-  setLifestyleMonthsPaid,
-} = profileSlice.actions

@@ -1,25 +1,50 @@
-import type { ActionChain } from "#/integrations/reduxToolkit/dispatchActions.ts"
-import { setAttribute } from "#/stores/runner/attributes/attributesSlice.ts"
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
+
+import { NumberUtils } from "#/lib/numberUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { burnEdgeCurrent } from "./edgeSlice.ts"
+export const setCurrentEdge = createAsyncThunk<number, number, {
+  state: RunnerData
+}>("edge/set", (amount, { getState }) => {
+  const sheet = getState()
 
-/**
- * Compound/cross-domain actions owned by the `edge` domain but not expressible as a single
- * `edgeSlice` reducer — they also touch `attributes`. Dispatch the result via
- * `useRunnerStoreDispatch()` (or `applyActions` directly); resolved and applied atomically in one
- * `setState` call.
- */
+  return NumberUtils.clamp(amount, {
+    min: 0,
+    max: sheet.attributes[AttributeKey.edge],
+  })
+})
 
-/**
- * Permanently reduces max Edge by 1 (never below 1) and resets the current pool to 0. A
- * `ActionChain` rather than a plain array because the new max is computed from the *current* max —
- * unlike a plain compound action, this can't be built until apply-time.
- */
-export function burnEdge(): ActionChain<RunnerData> {
-  return (state) => [
-    burnEdgeCurrent(),
-    setAttribute({ key: AttributeKey.edge, value: Math.max(1, state.attributes[AttributeKey.edge] - 1) }),
-  ]
-}
+export const spendEdge = createAsyncThunk<void, number, {
+  state: RunnerData
+}>("edge/spend", (amount, { dispatch, getState }) => {
+  const sheet = getState()
+
+  dispatch(setCurrentEdge(
+    NumberUtils.clamp(amount, { max: sheet.edge.current }),
+  ))
+})
+
+export const restoreAllEdge = createAsyncThunk<void, void, {
+  state: RunnerData
+}>("edge/restoreAllEdge", (_, { dispatch, getState }) => {
+  const sheet = getState()
+
+  dispatch(
+    setCurrentEdge(sheet.attributes[AttributeKey.edge]),
+  )
+})
+
+export const restoreEdge = createAsyncThunk<void, number, {
+  state: RunnerData
+}>("edge/restore", (amount, { dispatch, getState }) => {
+  const sheet = getState()
+  const maxEdge = sheet.attributes[AttributeKey.edge]
+  const current = sheet.edge.current
+
+  dispatch(setCurrentEdge(
+    NumberUtils.clamp(amount, { max: maxEdge - current }),
+  ))
+})
+
+export const burnEdge = createAction("edge/burn")

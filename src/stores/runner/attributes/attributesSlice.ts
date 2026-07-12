@@ -1,25 +1,25 @@
-import type { PayloadAction } from "@reduxjs/toolkit"
-import { createSlice } from "@reduxjs/toolkit"
+import { createReducer } from "@reduxjs/toolkit"
 
-import type { AttributeKey } from "#/system/attributeKey.ts"
+import { burnEdge } from "#/stores/runner/edge/edgeSlice.actions.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+
+import { adjustAttribute, setAttribute } from "./attributesSlice.actions.ts"
 
 const initialState = {} as RunnerData["attributes"]
 
-export const attributesSlice = createSlice({
-  name: "attributes",
-  initialState,
-  reducers: {
-    set: (state, action: PayloadAction<{ key: AttributeKey, value: number }>) => {
+export const attributesReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(setAttribute, (state, action) => {
       state[action.payload.key] = action.payload.value
-    },
-    /** Relative adjustment, optionally clamped to a minimum (e.g. burning Edge never drops below 1). */
-    adjust: (state, action: PayloadAction<{ key: AttributeKey, delta: number, min?: number }>) => {
+    })
+    .addCase(adjustAttribute, (state, action) => {
       const { key, delta, min } = action.payload
       const next = state[key] + delta
       state[key] = min !== undefined ? Math.max(min, next) : next
-    },
-  },
+    })
+    // Burning Edge permanently reduces max Edge by 1, never below 1.
+    .addCase(burnEdge, (state) => {
+      state[AttributeKey.edge] = Math.max(1, state[AttributeKey.edge] - 1)
+    })
 })
-
-export const { set: setAttribute, adjust: adjustAttribute } = attributesSlice.actions

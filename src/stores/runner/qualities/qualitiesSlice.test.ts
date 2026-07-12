@@ -4,7 +4,8 @@ import { describe, expect, it } from "vitest"
 
 import type { QualityData } from "#/system/qualityData.ts"
 
-import { addQuality, qualitiesSlice, removeQuality, updateQuality } from "./qualitiesSlice.ts"
+import { addQuality, removeQuality, updateQuality } from "./qualitiesSlice.actions.ts"
+import { qualitiesReducer } from "./qualitiesSlice.ts"
 
 const makeQuality = (overrides: Partial<QualityData> = {}): QualityData => ({
   id: crypto.randomUUID() as UUID,
@@ -13,13 +14,13 @@ const makeQuality = (overrides: Partial<QualityData> = {}): QualityData => ({
   ...overrides,
 })
 
-describe("qualitiesSlice", () => {
+describe("qualitiesReducer", () => {
   it("add appends the given quality", () => {
     // Arrange
     const quality = makeQuality()
 
     // Act
-    const next = qualitiesSlice.reducer([], addQuality(quality))
+    const next = qualitiesReducer([], addQuality(quality))
 
     // Assert
     expect(next).toEqual([quality])
@@ -31,7 +32,7 @@ describe("qualitiesSlice", () => {
     const updated = makeQuality({ name: "Restricted Item", bpValue: 15 })
 
     // Act
-    const next = qualitiesSlice.reducer([original], updateQuality(updated))
+    const next = qualitiesReducer([original], updateQuality(updated))
 
     // Assert
     expect(next).toEqual([updated])
@@ -43,7 +44,7 @@ describe("qualitiesSlice", () => {
     const unrelated = makeQuality({ name: "Astral Chameleon" })
 
     // Act
-    const next = qualitiesSlice.reducer([existing], updateQuality(unrelated))
+    const next = qualitiesReducer([existing], updateQuality(unrelated))
 
     // Assert
     expect(next).toEqual([existing])
@@ -55,7 +56,7 @@ describe("qualitiesSlice", () => {
     const drop = makeQuality({ name: "Restricted Item" })
 
     // Act
-    const next = qualitiesSlice.reducer([keep, drop], removeQuality(drop.name))
+    const next = qualitiesReducer([keep, drop], removeQuality(drop.name))
 
     // Assert
     expect(next).toEqual([keep])

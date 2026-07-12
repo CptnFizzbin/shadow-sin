@@ -2,7 +2,8 @@ import { produce } from "immer"
 
 import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { damageSlice, setDamage } from "#/stores/runner/damage/damageSlice.ts"
+import { setDamage } from "#/stores/runner/damage/damageSlice.actions.ts"
+import { damageReducer } from "#/stores/runner/damage/damageSlice.ts"
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export interface DamageTrackState {
@@ -18,7 +19,7 @@ export interface DamageStoreState {
 }
 
 export class DamageStore extends StoreSlice<DamageStoreState> {
-  /** @deprecated Dispatch `setDamage` from `#/stores/runner/damage/damageSlice.ts` via `useRunnerStoreDispatch()` instead. */
+  /** @deprecated Dispatch `setDamage` from `#/stores/runner/damage/damageSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   setDamage(track: DamageTrackKey, valueOrUpdater: number | Recipe<number>): void {
     this.set(
       produce((state) => {
@@ -28,7 +29,7 @@ export class DamageStore extends StoreSlice<DamageStoreState> {
             : valueOrUpdater
 
         const rawDamage = { physical: state.physical.current, stun: state.stun.current, matrix: state.matrix.current }
-        const nextRawDamage = damageSlice.reducer(rawDamage, setDamage({ track, value: next }))
+        const nextRawDamage = damageReducer(rawDamage, setDamage({ track, value: next }))
         state[track].current = nextRawDamage[track]
       }),
     )

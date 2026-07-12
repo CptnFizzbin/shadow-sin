@@ -1,46 +1,44 @@
-import { attributesSlice } from "./attributes/attributesSlice.ts"
-import { biologySlice } from "./biology/biologySlice.ts"
-import { complexFormsSlice } from "./complexForms/complexFormsSlice.ts"
-import { contactsSlice } from "./contacts/contactsSlice.ts"
-import { damageSlice } from "./damage/damageSlice.ts"
-import { burnEdge } from "./edge/edgeSlice.actions.ts"
-import { edgeSlice } from "./edge/edgeSlice.ts"
-import { initiativeSlice } from "./initiative/initiativeSlice.ts"
-import { karmaSlice } from "./karma/karmaSlice.ts"
-import { nuyenSlice } from "./nuyen/nuyenSlice.ts"
-import { powersSlice } from "./powers/powersSlice.ts"
-import { profileSlice } from "./profile/profileSlice.ts"
-import { qualitiesSlice } from "./qualities/qualitiesSlice.ts"
-import { skillsSlice } from "./skills/skillsSlice.ts"
-import { spellsSlice } from "./spells/spellsSlice.ts"
-import { spiritsSlice } from "./spirits/spiritsSlice.ts"
-import { spritesSlice } from "./sprites/spritesSlice.ts"
-import { traditionSlice } from "./tradition/traditionSlice.ts"
+import * as attributesActions from "./attributes/attributesSlice.actions.ts"
+import * as biologyActions from "./biology/biologySlice.actions.ts"
+import * as complexFormsActions from "./complexForms/complexFormsSlice.actions.ts"
+import * as contactsActions from "./contacts/contactsSlice.actions.ts"
+import * as damageActions from "./damage/damageSlice.actions.ts"
+import * as edgeActions from "./edge/edgeSlice.actions.ts"
+import * as initiativeActions from "./initiative/initiativeSlice.actions.ts"
+import * as karmaActions from "./karma/karmaSlice.actions.ts"
+import * as nuyenActions from "./nuyen/nuyenSlice.actions.ts"
+import * as powersActions from "./powers/powersSlice.actions.ts"
+import * as profileActions from "./profile/profileSlice.actions.ts"
+import * as qualitiesActions from "./qualities/qualitiesSlice.actions.ts"
+import * as skillsActions from "./skills/skillsSlice.actions.ts"
+import * as spellsActions from "./spells/spellsSlice.actions.ts"
+import * as spiritsActions from "./spirits/spiritsSlice.actions.ts"
+import * as spritesActions from "./sprites/spritesSlice.actions.ts"
+import * as traditionActions from "./tradition/traditionSlice.actions.ts"
 
 /**
- * Namespaced access to every migrated domain's action creators, plus cross-domain compound
- * actions (e.g. `Actions.edge.burnEdge()`) alongside the single-slice ones they combine
- * (`Actions.edge.burnCurrent`, `Actions.attributes.adjust`). Prefer importing a specific action
- * creator directly (`import { addQuality } from ".../qualitiesSlice.ts"`) at real call sites —
- * this namespace is mainly useful for discoverability and for compound actions, which don't
- * belong to any one slice's own `.actions`.
+ * Namespaced access to every `RunnerData` domain's action creators — native and compound alike, all
+ * defined in each domain's `*Slice.actions.ts` (e.g. `Actions.edge.burnEdge()`,
+ * `Actions.edge.spendEdge(...)`). Prefer importing a specific action creator directly
+ * (`import { addQuality } from ".../qualitiesSlice.actions.ts"`) at real call sites — this
+ * namespace is mainly useful for discoverability.
  */
 export const Actions = {
-  attributes: attributesSlice.actions,
-  biology: biologySlice.actions,
-  complexForms: complexFormsSlice.actions,
-  contacts: contactsSlice.actions,
-  damage: damageSlice.actions,
-  edge: { ...edgeSlice.actions, burnEdge },
-  initiative: initiativeSlice.actions,
-  karma: karmaSlice.actions,
-  nuyen: nuyenSlice.actions,
-  powers: powersSlice.actions,
-  profile: profileSlice.actions,
-  qualities: qualitiesSlice.actions,
-  skills: skillsSlice.actions,
-  spells: spellsSlice.actions,
-  spirits: spiritsSlice.actions,
-  sprites: spritesSlice.actions,
-  tradition: traditionSlice.actions,
+  attributes: attributesActions,
+  biology: biologyActions,
+  complexForms: complexFormsActions,
+  contacts: contactsActions,
+  damage: damageActions,
+  edge: edgeActions,
+  initiative: initiativeActions,
+  karma: karmaActions,
+  nuyen: nuyenActions,
+  powers: powersActions,
+  profile: profileActions,
+  qualities: qualitiesActions,
+  skills: skillsActions,
+  spells: spellsActions,
+  spirits: spiritsActions,
+  sprites: spritesActions,
+  tradition: traditionActions,
 }
