@@ -6,6 +6,7 @@ import { LifestyleType } from "#/system/lifestyleType.ts"
 
 import { LifestyleStore } from "./lifestyleStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectLifestyle)` from `#/stores/runner/profile/profileSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useLifestyleStore = (): LifestyleStore => {
   const store = useRunnerDataContext()
 

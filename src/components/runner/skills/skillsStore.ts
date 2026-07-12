@@ -1,4 +1,15 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import {
+  removeActiveSkill,
+  removeKnowledgeSkill,
+  removeLanguageSkill,
+  removeSkillGroup,
+  setActiveSkill,
+  setKnowledgeSkill,
+  setLanguageSkill,
+  setSkillGroup,
+} from "#/stores/runner/skills/skillsSlice.actions.ts"
+import { skillsReducer } from "#/stores/runner/skills/skillsSlice.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
@@ -12,20 +23,17 @@ export type SkillsStoreState = RunnerData["skills"]
 
 export class SkillsStore extends StoreSlice<SkillsStoreState> {
   activeSkills = {
+    /** @deprecated Dispatch `setActiveSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     setState: (skillName: SkillKey, updater: (prev?: ActiveSkillData) => ActiveSkillData) => {
       this.set((prev) => {
-        const idx = prev.activeSkills.findIndex((s) => s.name === skillName)
-        const existing = idx >= 0 ? prev.activeSkills[idx] : undefined
-        const next = updater(existing)
-        if (idx === -1) return { ...prev, activeSkills: [...prev.activeSkills, next] }
-        const copy = prev.activeSkills.slice()
-        copy[idx] = next
-        return { ...prev, activeSkills: copy }
+        const existing = prev.activeSkills.find((s) => s.name === skillName)
+        return skillsReducer(prev, setActiveSkill(updater(existing)))
       })
     },
 
+    /** @deprecated Dispatch `removeActiveSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     remove: (skillName: SkillKey) => {
-      this.set((prev) => ({ ...prev, activeSkills: prev.activeSkills.filter((s) => s.name !== skillName) }))
+      this.set((prev) => skillsReducer(prev, removeActiveSkill(skillName)))
     },
 
     getSkillValue: (skillName: SkillKey) => {
@@ -42,53 +50,44 @@ export class SkillsStore extends StoreSlice<SkillsStoreState> {
   }
 
   skillGroups = {
+    /** @deprecated Dispatch `setSkillGroup` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     setState: (groupName: SkillGroupKey, updater: (prev?: SkillGroupData) => SkillGroupData) => {
       this.set((prev) => {
-        const idx = prev.skillGroups.findIndex((g) => g.name === groupName)
-        const existing = idx >= 0 ? prev.skillGroups[idx] : undefined
-        const next = updater(existing)
-        if (idx === -1) return { ...prev, skillGroups: [...prev.skillGroups, next] }
-        const copy = prev.skillGroups.slice()
-        copy[idx] = next
-        return { ...prev, skillGroups: copy }
+        const existing = prev.skillGroups.find((g) => g.name === groupName)
+        return skillsReducer(prev, setSkillGroup(updater(existing)))
       })
     },
+    /** @deprecated Dispatch `removeSkillGroup` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     remove: (groupName: SkillGroupKey) => {
-      this.set((prev) => ({ ...prev, skillGroups: prev.skillGroups.filter((g) => g.name !== groupName) }))
+      this.set((prev) => skillsReducer(prev, removeSkillGroup(groupName)))
     },
   }
 
   knowledgeSkills = {
+    /** @deprecated Dispatch `setKnowledgeSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     setState: (skillName: string, updater: (prev?: KnowledgeSkillData) => KnowledgeSkillData) => {
       this.set((prev) => {
-        const idx = prev.knowledgeSkills.findIndex((s) => s.name === skillName)
-        const existing = idx >= 0 ? prev.knowledgeSkills[idx] : undefined
-        const next = updater(existing)
-        if (idx === -1) return { ...prev, knowledgeSkills: [...prev.knowledgeSkills, next] }
-        const copy = prev.knowledgeSkills.slice()
-        copy[idx] = next
-        return { ...prev, knowledgeSkills: copy }
+        const existing = prev.knowledgeSkills.find((s) => s.name === skillName)
+        return skillsReducer(prev, setKnowledgeSkill(updater(existing)))
       })
     },
+    /** @deprecated Dispatch `removeKnowledgeSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     remove: (skillName: string) => {
-      this.set((prev) => ({ ...prev, knowledgeSkills: prev.knowledgeSkills.filter((s) => s.name !== skillName) }))
+      this.set((prev) => skillsReducer(prev, removeKnowledgeSkill(skillName)))
     },
   }
 
   languageSkills = {
+    /** @deprecated Dispatch `setLanguageSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     setState: (skillName: string, updater: (prev?: LanguageSkillData) => LanguageSkillData) => {
       this.set((prev) => {
-        const idx = prev.languageSkills.findIndex((s) => s.name === skillName)
-        const existing = idx >= 0 ? prev.languageSkills[idx] : undefined
-        const next = updater(existing)
-        if (idx === -1) return { ...prev, languageSkills: [...prev.languageSkills, next] }
-        const copy = prev.languageSkills.slice()
-        copy[idx] = next
-        return { ...prev, languageSkills: copy }
+        const existing = prev.languageSkills.find((s) => s.name === skillName)
+        return skillsReducer(prev, setLanguageSkill(updater(existing)))
       })
     },
+    /** @deprecated Dispatch `removeLanguageSkill` from `#/stores/runner/skills/skillsSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
     remove: (skillName: string) => {
-      this.set((prev) => ({ ...prev, languageSkills: prev.languageSkills.filter((s) => s.name !== skillName) }))
+      this.set((prev) => skillsReducer(prev, removeLanguageSkill(skillName)))
     },
   }
 

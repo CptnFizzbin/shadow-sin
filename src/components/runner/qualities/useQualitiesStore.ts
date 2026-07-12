@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { QualitiesStore } from "./qualitiesStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectQualities)` from `#/stores/runner/qualities/qualitiesSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useQualitiesStore = (): QualitiesStore => {
   const store = useRunnerDataContext()
 

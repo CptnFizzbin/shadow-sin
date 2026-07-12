@@ -1,8 +1,9 @@
-import { produce } from "immer"
-
 import type { Recipe } from "#/integrations/tanstackStore/atomUtils.ts"
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { NumberUtils } from "#/lib/numberUtils.ts"
+import { burnEdge, restoreAllEdge, setCurrentEdge } from "#/stores/runner/edge/edgeSlice.actions.ts"
+import { dispatchThunk } from "#/stores/runner/runnerStore.dispatch.ts"
+import { AttributeKey } from "#/system/attributeKey.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 export interface EdgeStoreState {
   max: number
@@ -10,29 +11,33 @@ export interface EdgeStoreState {
 }
 
 export class EdgeStore extends StoreSlice<EdgeStoreState> {
-  setCurrent(valueOrUpdater: number | Recipe<number>): void {
-    this.set(
-      produce((state) => {
-        const next = valueOrUpdater instanceof Function ? valueOrUpdater(state.current) : valueOrUpdater
-        state.current = NumberUtils.clamp(next, { min: 0, max: state.max })
-      }),
-    )
+  /**
+   * Reconstitutes just enough of a `RunnerData` "fake root" from this store's local
+   * `{max, current}` view to run real actions/thunks against via {@link dispatchThunk}.
+   */
+  private fakeRoot(): RunnerData {
+    const { max, current } = this.state
+    return { edge: { current }, attributes: { [AttributeKey.edge]: max } } as RunnerData
   }
 
-  restore(): void {
-    this.set(
-      produce((state) => {
-        state.current = state.max
-      }),
-    )
+  /** @deprecated Dispatch `setCurrentEdge` from `#/stores/runner/edge/edgeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
+  async setCurrent(valueOrUpdater: number | Recipe<number>): Promise<void> {
+    const { max, current } = this.state
+    const next = valueOrUpdater instanceof Function ? valueOrUpdater(current) : valueOrUpdater
+    const result = await dispatchThunk(this.fakeRoot(), setCurrentEdge(next))
+    this.set({ max, current: result.edge.current })
   }
 
-  burn(): void {
-    this.set(
-      produce((state) => {
-        state.max = Math.max(1, state.max - 1)
-        state.current = 0
-      }),
-    )
+  /** @deprecated Dispatch `restoreAllEdge` from `#/stores/runner/edge/edgeSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
+  async restore(): Promise<void> {
+    const { max } = this.state
+    const result = await dispatchThunk(this.fakeRoot(), restoreAllEdge())
+    this.set({ max, current: result.edge.current })
+  }
+
+  /** @deprecated Dispatch `Actions.edge.burnEdge()` from `#/stores/runner/runnerStore.actions.ts` via `useRunnerStoreDispatch()` instead. */
+  async burn(): Promise<void> {
+    const result = await dispatchThunk(this.fakeRoot(), burnEdge())
+    this.set({ max: result.attributes[AttributeKey.edge], current: result.edge.current })
   }
 }

@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { KarmaStore } from "./karmaStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectKarma)` from `#/stores/runner/karma/karmaSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export function useKarmaStore() {
   const store = useRunnerDataContext()
 

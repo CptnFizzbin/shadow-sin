@@ -1,4 +1,6 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { addQuality, removeQuality, updateQuality } from "#/stores/runner/qualities/qualitiesSlice.actions.ts"
+import { qualitiesReducer } from "#/stores/runner/qualities/qualitiesSlice.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -9,15 +11,18 @@ export class QualitiesStore extends StoreSlice<QualitiesStoreState> {
     this.set(updater)
   }
 
+  /** @deprecated Dispatch `addQuality` from `#/stores/runner/qualities/qualitiesSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   add(quality: QualityData): void {
-    this.set((prev) => [...prev, quality])
+    this.set((prev) => qualitiesReducer(prev, addQuality(quality)))
   }
 
+  /** @deprecated Dispatch `updateQuality` from `#/stores/runner/qualities/qualitiesSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   update(quality: QualityData): void {
-    this.set((prev) => prev.map((q) => q.name === quality.name ? quality : q))
+    this.set((prev) => qualitiesReducer(prev, updateQuality(quality)))
   }
 
+  /** @deprecated Dispatch `removeQuality` from `#/stores/runner/qualities/qualitiesSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   remove(qualityName: string): void {
-    this.set((prev) => prev.filter((q) => q.name !== qualityName))
+    this.set((prev) => qualitiesReducer(prev, removeQuality(qualityName)))
   }
 }

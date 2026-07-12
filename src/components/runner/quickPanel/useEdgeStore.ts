@@ -7,6 +7,7 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { EdgeStore } from "./edgeStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectEdgeCurrent)`/`selectEdgeMax` from `#/stores/runner/edge/edgeSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useEdgeStore = () => {
   const sheetStore = useRunnerDataContext()
 

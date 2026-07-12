@@ -1,5 +1,6 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
-import { NullUuid } from "#/lib/uuidUtils.ts"
+import { addPower, removePower, savePower, updatePower } from "#/stores/runner/powers/powersSlice.actions.ts"
+import { powersReducer } from "#/stores/runner/powers/powersSlice.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -10,23 +11,23 @@ export class AdeptPowersStore extends StoreSlice<AdeptPowersStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `addPower` from `#/stores/runner/powers/powersSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   add(power: AdeptPowerData): void {
-    this.set((prev) => [...prev, power])
+    this.set((prev) => powersReducer(prev, addPower(power)))
   }
 
+  /** @deprecated Dispatch `updatePower` from `#/stores/runner/powers/powersSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   update(power: AdeptPowerData): void {
-    this.set((prev) => prev.map((p) => p.id === power.id ? power : p))
+    this.set((prev) => powersReducer(prev, updatePower(power)))
   }
 
+  /** @deprecated Dispatch `removePower` from `#/stores/runner/powers/powersSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   remove(powerId: string): void {
-    this.set((prev) => prev.filter((p) => p.id !== powerId))
+    this.set((prev) => powersReducer(prev, removePower(powerId)))
   }
 
+  /** @deprecated Dispatch `savePower` from `#/stores/runner/powers/powersSlice.actions.ts` via `useRunnerStoreDispatch()` instead. */
   save(power: AdeptPowerData): void {
-    if (!power.id || power.id === NullUuid) {
-      this.add({ ...power, id: crypto.randomUUID() })
-    } else {
-      this.update(power)
-    }
+    this.set((prev) => powersReducer(prev, savePower(power)))
   }
 }

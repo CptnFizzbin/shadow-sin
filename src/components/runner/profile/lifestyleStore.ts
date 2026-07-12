@@ -1,4 +1,6 @@
 import { StoreSlice } from "#/integrations/tanstackStore/storeSlice.ts"
+import { setLifestyleMonthsPaid, setLifestyleQuality } from "#/stores/runner/profile/profileSlice.actions.ts"
+import { profileReducer } from "#/stores/runner/profile/profileSlice.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -9,11 +11,19 @@ export class LifestyleStore extends StoreSlice<LifestyleStoreState> {
     this.set(stateOrUpdater)
   }
 
+  /** @deprecated Dispatch `setLifestyleQuality` from `#/stores/runner/profile/profileSlice.actions.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
   setQuality(quality: LifestyleType): void {
-    this.set((prev) => ({ ...(prev ?? { quality, monthsPaid: 1 }), quality }))
+    this.set((prev) => {
+      const profile = profileReducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleQuality(quality))
+      return profile.lifestyle ?? { quality, monthsPaid: 1 }
+    })
   }
 
+  /** @deprecated Dispatch `setLifestyleMonthsPaid` from `#/stores/runner/profile/profileSlice.actions.ts` (a `profile`-slice action) via `useRunnerStoreDispatch()` instead. */
   setMonthsPaid(months: number): void {
-    this.set((prev) => ({ ...(prev ?? { quality: LifestyleType.Street, monthsPaid: months }), monthsPaid: months }))
+    this.set((prev) => {
+      const profile = profileReducer({ lifestyle: prev } as RunnerData["profile"], setLifestyleMonthsPaid(months))
+      return profile.lifestyle ?? { quality: LifestyleType.Street, monthsPaid: months }
+    })
   }
 }

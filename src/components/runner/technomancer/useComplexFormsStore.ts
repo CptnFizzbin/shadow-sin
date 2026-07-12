@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { ComplexFormsStore } from "./complexFormsStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectComplexForms)` from `#/stores/runner/complexForms/complexFormsSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useComplexFormsStore = (): ComplexFormsStore => {
   const store = useRunnerDataContext()
 

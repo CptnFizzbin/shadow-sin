@@ -6,6 +6,7 @@ import { createSliceAtom } from "#/integrations/tanstackStore/atomUtils.ts"
 
 import { AdeptPowersStore } from "./adeptPowersStore.ts"
 
+/** @deprecated Use `useRunnerStoreSelector(selectPowers)` from `#/stores/runner/powers/powersSlice.selectors.ts` + `useRunnerStoreDispatch()` instead. */
 export const useAdeptPowersStore = (): AdeptPowersStore => {
   const store = useRunnerDataContext()
 
