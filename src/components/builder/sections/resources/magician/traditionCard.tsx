@@ -1,23 +1,22 @@
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useTraditionFormDialog } from "#/components/runner/spells/dialogs/traditionFormDialog.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 
-import { selectTradition } from "./traditionSelectors.ts"
-import { useTraditionStore } from "./useTraditionStore.ts"
-
 export const TraditionCard: FC = () => {
-  const traditionStore = useTraditionStore()
-  const tradition = useSelector(traditionStore, selectTradition)
+  const dispatch = useRunnerStoreDispatch()
+  const tradition = useRunnerStoreSelector(Selectors.tradition.selectTradition)
   const traditionFormDialog = useTraditionFormDialog()
 
   const handleOpen = async () => {
     const saved = await traditionFormDialog.open({ tradition })
-    if (saved) traditionStore.save(saved)
+    if (saved) dispatch(Actions.tradition.saveTradition(saved))
   }
 
   return (
