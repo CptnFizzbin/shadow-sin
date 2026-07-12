@@ -30,6 +30,10 @@ export const Artemis: RunnerData = {
   biology: {
     metatype: MetatypeType.Elf,
     awakening: AwakeningType.Mundane,
+    gender: null,
+    age: null,
+    weight: null,
+    height: null,
   },
 
   profile: {
@@ -43,11 +47,20 @@ export const Artemis: RunnerData = {
       "Legacy contacts: James Serif (Drone Parts Dealer, C2/L2), Frank (Matrix Developer, C2/L2), George Crabtree (Lone Star officer, C2/L2).",
       "Legacy notes: Rigger focused on drones, engineering and piloting. Converted from legacy SR4A data; gear, weapons and augments migrated from legacy modules.",
     ].join("\n"),
+    personality: null,
     lifestyle: {
       quality: LifestyleType.Low,
       monthsPaid: 3,
     },
   },
+
+  initiative: {
+    passesCompleted: [],
+  },
+
+  tradition: null,
+
+  featureFlags: {},
 
   karma: {
     total: 12,
