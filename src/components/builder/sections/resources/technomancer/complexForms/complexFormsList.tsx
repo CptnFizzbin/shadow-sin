@@ -4,17 +4,16 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
 import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { useMaxComplexForms } from "#/components/runner/technomancer/complexFormsHooks.ts"
-import { selectAllComplexForms } from "#/components/runner/technomancer/complexFormsSelectors.ts"
+import { useComplexForms, useMaxComplexForms } from "#/components/runner/technomancer/complexFormsHooks.ts"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
-import { useComplexFormsStore } from "#/components/runner/technomancer/useComplexFormsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 
@@ -24,8 +23,8 @@ import {
 
 export const ComplexFormsList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
-  const complexFormsStore = useComplexFormsStore()
-  const complexForms = useSelector(complexFormsStore, selectAllComplexForms)
+  const dispatch = useRunnerStoreDispatch()
+  const complexForms = useComplexForms()
   const complexFormsBp = useComplexFormsBuildPoints()
   const maxComplexForms = useMaxComplexForms()
   const complexFormDialog = useComplexFormDialog()
@@ -34,7 +33,7 @@ export const ComplexFormsList: FC = () => {
 
   const handleAddForm = async () => {
     const saved = await complexFormDialog.open({ maxRating: resonance })
-    if (saved) complexFormsStore.save(saved)
+    if (saved) dispatch(Actions.complexForms.saveComplexForm(saved))
   }
 
   const handleEditForm = async (complexForm: ComplexFormData) => {
@@ -42,9 +41,9 @@ export const ComplexFormsList: FC = () => {
       .open({
         form: complexForm,
         maxRating: resonance,
-        onDelete: () => complexFormsStore.remove(complexForm.id),
+        onDelete: () => dispatch(Actions.complexForms.removeComplexForm(complexForm.id)),
       })
-    if (saved) complexFormsStore.save(saved)
+    if (saved) dispatch(Actions.complexForms.saveComplexForm(saved))
   }
 
   return (
@@ -85,7 +84,7 @@ export const ComplexFormsList: FC = () => {
               key={complexForm.id}
               form={complexForm}
               onEdit={() => handleEditForm(complexForm)}
-              onDelete={() => complexFormsStore.remove(complexForm.id)}
+              onDelete={() => dispatch(Actions.complexForms.removeComplexForm(complexForm.id))}
             />
           ))}
         </Stack>
