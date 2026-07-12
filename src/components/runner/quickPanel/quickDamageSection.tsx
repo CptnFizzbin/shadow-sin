@@ -1,18 +1,19 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
-import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 export const QuickDamageSection: FC = () => {
-  const damageStore = useDamageStore()
-  const physical = useSelector(damageStore, (state) => state.physical)
-  const stun = useSelector(damageStore, (state) => state.stun)
+  const dispatch = useRunnerStoreDispatch()
+  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
+  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
 
   return (
     <Stack sx={{ gap: 0.5 }}>
@@ -26,7 +27,7 @@ export const QuickDamageSection: FC = () => {
             current={physical.current}
             woundInterval={physical.woundInterval}
             allowOverflow
-            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.physical, newValue)}
+            onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.physical, value: newValue }))}
           />
         </Grid>
 
@@ -36,7 +37,7 @@ export const QuickDamageSection: FC = () => {
             max={stun.max}
             current={stun.current}
             woundInterval={stun.woundInterval}
-            onChange={(newValue) => damageStore.setDamage(DamageTrackKey.stun, newValue)}
+            onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
           />
         </Grid>
 

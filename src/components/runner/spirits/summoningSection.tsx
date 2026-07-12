@@ -5,20 +5,15 @@ import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useAttr } from "#/components/runner/runnerUtils.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { DrainResistanceDicePool } from "#/components/runner/spells/drainResistanceDicePool.tsx"
-import {
-  selectPhysicalCurrent,
-  selectPhysicalMax,
-  selectStunCurrent,
-  selectStunMax,
-} from "#/components/system/damage/damageSelectors.ts"
-import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpiritType } from "#/system/magic/spiritData.ts"
@@ -39,18 +34,22 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force,
   const isOverforce = force > magicAttr
   const drainIsPhysical = isOverforce
 
-  const damageStore = useDamageStore()
-  const physicalMax = useSelector(damageStore, selectPhysicalMax)
-  const physicalCurrent = useSelector(damageStore, selectPhysicalCurrent)
-  const stunMax = useSelector(damageStore, selectStunMax)
-  const stunCurrent = useSelector(damageStore, selectStunCurrent)
+  const dispatch = useRunnerStoreDispatch()
+  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
+  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return
     if (drainIsPhysical) {
-      damageStore.setDamage(DamageTrackKey.physical, Math.min(physicalMax, physicalCurrent + amount))
+      dispatch(Actions.damage.setDamage({
+        track: DamageTrackKey.physical,
+        value: Math.min(physical.max, physical.current + amount),
+      }))
     } else {
-      damageStore.setDamage(DamageTrackKey.stun, Math.min(stunMax, stunCurrent + amount))
+      dispatch(Actions.damage.setDamage({
+        track: DamageTrackKey.stun,
+        value: Math.min(stun.max, stun.current + amount),
+      }))
     }
   }
 
