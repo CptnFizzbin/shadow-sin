@@ -1,14 +1,9 @@
-import { useSelector } from "@tanstack/react-store"
-
 import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
-import { selectAllAdeptPowers } from "./adeptPowersSelectors.ts"
-import { useAdeptPowersStore } from "./useAdeptPowersStore.ts"
-
 export const usePowerPoints = () => {
-  const adeptPowersStore = useAdeptPowersStore()
-  const adeptPowers = useSelector(adeptPowersStore, selectAllAdeptPowers)
+  const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
   const magicAttr = useAttr(AttributeKey.magic)
 
   const used = adeptPowers

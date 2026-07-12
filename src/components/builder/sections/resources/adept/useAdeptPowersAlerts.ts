@@ -1,18 +1,13 @@
-import { useSelector } from "@tanstack/react-store"
-
-import { selectAllAdeptPowers } from "#/components/runner/adeptPowers/adeptPowersSelectors.ts"
 import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { useAdeptPowersStore } from "#/components/runner/adeptPowers/useAdeptPowersStore.ts"
 import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
   const magicAttr = useAttr(AttributeKey.magic)
-  const adeptPowersStore = useAdeptPowersStore()
-  const adeptPowers = useSelector(adeptPowersStore, selectAllAdeptPowers)
+  const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
 
   const statuses: AlertInfo[] = []
 
