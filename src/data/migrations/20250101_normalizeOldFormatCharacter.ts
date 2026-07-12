@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/data/migrations/20250101_normalizeOldFormatCharacter.ts
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-========
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
->>>>>>>> shadowrun-4e:src/runner/migrations/20250101_normalizeOldFormatCharacter.ts
 
 interface OldAttributeValue {
   value: number

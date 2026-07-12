@@ -1,11 +1,7 @@
 import { produce } from "immer"
 
-<<<<<<<< HEAD:src/data/migrations/20260510_renameAdeptPowersToPowers.ts
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-========
->>>>>>>> shadowrun-4e:src/runner/migrations/20260510_renameAdeptPowersToPowers.ts
 import type { JsonObject } from "#/lib/jsonUtils.ts"
-import type { CharacterMigration } from "#/runner/characterMigration.ts"
 
 interface OldShape {
   adeptPowers?: JsonObject[]

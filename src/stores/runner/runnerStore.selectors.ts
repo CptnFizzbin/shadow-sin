@@ -15,19 +15,11 @@ import type { SkillInfo } from "#/system/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
-<<<<<<<< HEAD:src/stores/runner/runnerStore.selectors.ts
 import { useRunnerDataContext } from "./runnerStore.context.ts"
 
 export type RunnerDataSelector<TData> = (state: RunnerData) => TData
 
 export function useRunnerStoreSelector<T>(
-========
-import { useRunnerDataContext } from "./runnerDataContext.ts"
-
-export type RunnerDataSelector<TData> = (state: RunnerData) => TData
-
-export function useRunnerDataSelector<T>(
->>>>>>>> shadowrun-4e:src/components/runner/sheet/runnerData.selectors.ts
   selector: RunnerDataSelector<T>,
   compare?: (prev: T, next: T) => boolean,
 ) {
