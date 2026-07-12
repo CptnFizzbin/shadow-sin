@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
@@ -131,7 +132,7 @@ export const ActiveSkillsList: FC = () => {
         </ToggleButtonGroup>
       </Stack>
 
-      <Stack>
+      <Box>
         {visibleSkills.length === 0 && (
           <Typography
 
@@ -142,19 +143,27 @@ export const ActiveSkillsList: FC = () => {
           </Typography>
         )}
 
-        {groupedSkills.map(([group, groupSkills]) => (
-          <Fragment key={group}>
-            <Label label={group} />
-            {groupSkills.map((skill) => (
-              <ActiveSkillsListItem
-                key={skill.key}
-                skillKey={skill.key}
-                rating={skill.rating}
-              />
-            ))}
-          </Fragment>
-        ))}
-      </Stack>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
+            columnGap: 2,
+          }}
+        >
+          {groupedSkills.map(([group, groupSkills]) => (
+            <Fragment key={group}>
+              <Label label={group} sx={{ gridColumn: "1 / -1" }} />
+              {groupSkills.map((skill) => (
+                <ActiveSkillsListItem
+                  key={skill.key}
+                  skillKey={skill.key}
+                  rating={skill.rating}
+                />
+              ))}
+            </Fragment>
+          ))}
+        </Box>
+      </Box>
     </>
   )
 }
