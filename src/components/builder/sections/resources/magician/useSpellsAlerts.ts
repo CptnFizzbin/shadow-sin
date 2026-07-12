@@ -1,21 +1,16 @@
-import { useSelector } from "@tanstack/react-store"
-
 import { useActiveSkill, useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
-import { selectAllSpells } from "#/components/runner/spells/spellsSelectors.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
-import { useSpellsStore } from "#/components/runner/spells/useSpellsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
   const magicAttribute = useAttr(AttributeKey.magic)
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
-  const spellsStore = useSpellsStore()
-  const spells = useSelector(spellsStore, selectAllSpells)
+  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
 
   const statuses: AlertInfo[] = []
 
