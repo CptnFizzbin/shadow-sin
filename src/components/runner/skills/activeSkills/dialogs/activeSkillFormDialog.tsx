@@ -42,7 +42,7 @@ type ActiveSkillFormData = {
   specialization: string
 }
 
-const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
+export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   ctrl,
   skill,
   disabledSkills,
@@ -116,7 +116,7 @@ const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
                   label="Skill"
                   size="small"
                   value={field.state.value ?? ""}
-                  filterOption={(key) => disabledSkills?.has(key) ?? true}
+                  filterOption={(key) => !disabledSkills?.has(key)}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={() => field.handleBlur()}
                 />
