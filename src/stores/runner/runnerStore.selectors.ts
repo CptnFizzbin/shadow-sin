@@ -1,21 +1,26 @@
 import { useSelector } from "@tanstack/react-store"
-import { createSelector } from "reselect"
 
-import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
-import { awakenings } from "#/system/awakeningType.ts"
-import type { MetatypeData, MetatypeType } from "#/system/metatypeData.ts"
-import { metatypes } from "#/system/metatypeData.ts"
-import type { PowerData } from "#/system/powers/powerData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
-import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
-import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
-import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
-import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
-import type { SkillInfo } from "#/system/skills/skillInfo.ts"
-import type { SkillKey } from "#/system/skills/skillKey.ts"
-import { skillList } from "#/system/skills/skillList.ts"
 
+import * as attributesSelectors from "./attributes/attributesSlice.selectors.ts"
+import * as biologySelectors from "./biology/biologySlice.selectors.ts"
+import * as complexFormsSelectors from "./complexForms/complexFormsSlice.selectors.ts"
+import * as contactsSelectors from "./contacts/contactsSlice.selectors.ts"
+import * as damageSelectors from "./damage/damageSlice.selectors.ts"
+import * as edgeSelectors from "./edge/edgeSlice.selectors.ts"
+import * as gearSelectors from "./gear/gearSlice.selectors.ts"
+import * as initiativeSelectors from "./initiative/initiativeSlice.selectors.ts"
+import * as karmaSelectors from "./karma/karmaSlice.selectors.ts"
+import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
+import * as powersSelectors from "./powers/powersSlice.selectors.ts"
+import * as profileSelectors from "./profile/profileSlice.selectors.ts"
+import * as qualitiesSelectors from "./qualities/qualitiesSlice.selectors.ts"
 import { useRunnerDataContext } from "./runnerStore.context.ts"
+import * as skillsSelectors from "./skills/skillsSlice.selectors.ts"
+import * as spellsSelectors from "./spells/spellsSlice.selectors.ts"
+import * as spiritsSelectors from "./spirits/spiritsSlice.selectors.ts"
+import * as spritesSelectors from "./sprites/spritesSlice.selectors.ts"
+import * as traditionSelectors from "./tradition/traditionSlice.selectors.ts"
 
 export type RunnerDataSelector<TData> = (state: RunnerData) => TData
 
@@ -27,52 +32,30 @@ export function useRunnerStoreSelector<T>(
   return useSelector(store, selector, { compare })
 }
 
-export const selectAwakeningType: RunnerDataSelector<AwakeningType> = (state) => {
-  return state.biology.awakening
-}
-
-export const selectAwakening: RunnerDataSelector<AwakeningData> = createSelector(
-  selectAwakeningType,
-  (awakening) => awakenings[awakening],
-)
-
-const selectMetatypeKey: RunnerDataSelector<MetatypeType> = (state) => {
-  return state.biology.metatype
-}
-
-export const selectMetatype: RunnerDataSelector<MetatypeData> = createSelector(
-  selectMetatypeKey,
-  (awakening) => metatypes[awakening],
-)
-
-export const selectActiveSkills: RunnerDataSelector<ActiveSkillData[]> = (state) => {
-  return state.skills.activeSkills
-}
-
-export const selectSkillGroups: RunnerDataSelector<SkillGroupData[]> = (state) => {
-  return state.skills.skillGroups
-}
-
-export const selectKnowledgeSkills: RunnerDataSelector<KnowledgeSkillData[]> = (state) => {
-  return state.skills.knowledgeSkills
-}
-
-export const selectLanguageSkills: RunnerDataSelector<LanguageSkillData[]> = (state) => {
-  return state.skills.languageSkills
-}
-
-export const selectAllowedActiveSkills: RunnerDataSelector<Partial<Record<SkillKey, SkillInfo>>> = createSelector([
-  selectAwakeningType,
-], (awakeningType) => {
-  const skillEntries = Object.entries(skillList)
-    .filter(([_, info]) => {
-      if (!info.awakening) return true
-      return info.awakening.includes(awakeningType)
-    })
-
-  return Object.fromEntries(skillEntries)
-})
-
-export const selectRunnerPowers: RunnerDataSelector<PowerData[]> = (state) => {
-  return state.powers
+/**
+ * Namespaced access to every `RunnerData` domain's selectors, all defined in each domain's
+ * `*Slice.selectors.ts` (e.g. `Selectors.biology.selectMetatype`, `Selectors.skills.selectActiveSkills`).
+ * Prefer importing a specific selector directly
+ * (`import { selectQualities } from ".../qualitiesSlice.selectors.ts"`) at real call sites — this
+ * namespace is mainly useful for discoverability.
+ */
+export const Selectors = {
+  attributes: attributesSelectors,
+  biology: biologySelectors,
+  complexForms: complexFormsSelectors,
+  contacts: contactsSelectors,
+  damage: damageSelectors,
+  edge: edgeSelectors,
+  gear: gearSelectors,
+  initiative: initiativeSelectors,
+  karma: karmaSelectors,
+  nuyen: nuyenSelectors,
+  powers: powersSelectors,
+  profile: profileSelectors,
+  qualities: qualitiesSelectors,
+  skills: skillsSelectors,
+  spells: spellsSelectors,
+  spirits: spiritsSelectors,
+  sprites: spritesSelectors,
+  tradition: traditionSelectors,
 }

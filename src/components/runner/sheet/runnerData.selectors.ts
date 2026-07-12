@@ -1,6 +1,8 @@
 import { useSelector } from "@tanstack/react-store"
 
-import * as selectors from "#/stores/runner/runnerStore.selectors.ts"
+import * as biologySelectors from "#/stores/runner/biology/biologySlice.selectors.ts"
+import * as powersSelectors from "#/stores/runner/powers/powersSlice.selectors.ts"
+import * as skillsSelectors from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
 import type { PowerData } from "#/system/powers/powerData.ts"
@@ -31,29 +33,29 @@ export function useRunnerDataSelector<T>(
   return useSelector(store, selector, { compare })
 }
 
-/** @deprecated Use `selectAwakeningType` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectAwakeningType: RunnerDataSelector<AwakeningType> = selectors.selectAwakeningType
+/** @deprecated Use `selectAwakening` from `#/stores/runner/biology/biologySlice.selectors.ts` instead (this is the raw `AwakeningType` key, not the denormalized data — that's `selectAwakeningData`). */
+export const selectAwakeningType: RunnerDataSelector<AwakeningType> = biologySelectors.selectAwakening
 
-/** @deprecated Use `selectAwakening` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectAwakening: RunnerDataSelector<AwakeningData> = selectors.selectAwakening
+/** @deprecated Use `selectAwakeningData` from `#/stores/runner/biology/biologySlice.selectors.ts` instead. */
+export const selectAwakening: RunnerDataSelector<AwakeningData> = biologySelectors.selectAwakeningData
 
-/** @deprecated Use `selectMetatype` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectMetatype: RunnerDataSelector<MetatypeData> = selectors.selectMetatype
+/** @deprecated Use `selectMetatypeData` from `#/stores/runner/biology/biologySlice.selectors.ts` instead. */
+export const selectMetatype: RunnerDataSelector<MetatypeData> = biologySelectors.selectMetatypeData
 
-/** @deprecated Use `selectActiveSkills` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectActiveSkills: RunnerDataSelector<ActiveSkillData[]> = selectors.selectActiveSkills
+/** @deprecated Use `selectActiveSkills` from `#/stores/runner/skills/skillsSlice.selectors.ts` instead. */
+export const selectActiveSkills: RunnerDataSelector<ActiveSkillData[]> = skillsSelectors.selectActiveSkills
 
-/** @deprecated Use `selectSkillGroups` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectSkillGroups: RunnerDataSelector<SkillGroupData[]> = selectors.selectSkillGroups
+/** @deprecated Use `selectSkillGroups` from `#/stores/runner/skills/skillsSlice.selectors.ts` instead. */
+export const selectSkillGroups: RunnerDataSelector<SkillGroupData[]> = skillsSelectors.selectSkillGroups
 
-/** @deprecated Use `selectKnowledgeSkills` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectKnowledgeSkills: RunnerDataSelector<KnowledgeSkillData[]> = selectors.selectKnowledgeSkills
+/** @deprecated Use `selectKnowledgeSkills` from `#/stores/runner/skills/skillsSlice.selectors.ts` instead. */
+export const selectKnowledgeSkills: RunnerDataSelector<KnowledgeSkillData[]> = skillsSelectors.selectKnowledgeSkills
 
-/** @deprecated Use `selectLanguageSkills` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectLanguageSkills: RunnerDataSelector<LanguageSkillData[]> = selectors.selectLanguageSkills
+/** @deprecated Use `selectLanguageSkills` from `#/stores/runner/skills/skillsSlice.selectors.ts` instead. */
+export const selectLanguageSkills: RunnerDataSelector<LanguageSkillData[]> = skillsSelectors.selectLanguageSkills
 
-/** @deprecated Use `selectAllowedActiveSkills` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectAllowedActiveSkills: RunnerDataSelector<Partial<Record<SkillKey, SkillInfo>>> = selectors.selectAllowedActiveSkills
+/** @deprecated Use `selectAllowedActiveSkills` from `#/stores/runner/skills/skillsSlice.selectors.ts` instead. */
+export const selectAllowedActiveSkills: RunnerDataSelector<Partial<Record<SkillKey, SkillInfo>>> = skillsSelectors.selectAllowedActiveSkills
 
-/** @deprecated Use `selectRunnerPowers` from `#/stores/runner/runnerStore.selectors.ts` instead. */
-export const selectRunnerPowers: RunnerDataSelector<PowerData[]> = selectors.selectRunnerPowers
+/** @deprecated Use `selectPowers` from `#/stores/runner/powers/powersSlice.selectors.ts` instead. */
+export const selectRunnerPowers: RunnerDataSelector<PowerData[]> = powersSelectors.selectPowers

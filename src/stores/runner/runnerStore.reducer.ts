@@ -1,4 +1,7 @@
-import { combineReducers } from "#/integrations/reduxToolkit/combineReducers.ts"
+import { combineReducers, createSlice } from "@reduxjs/toolkit"
+
+import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 import { attributesReducer } from "./attributes/attributesSlice.ts"
 import { biologyReducer } from "./biology/biologySlice.ts"
@@ -6,6 +9,7 @@ import { complexFormsReducer } from "./complexForms/complexFormsSlice.ts"
 import { contactsReducer } from "./contacts/contactsSlice.ts"
 import { damageReducer } from "./damage/damageSlice.ts"
 import { edgeReducer } from "./edge/edgeSlice.ts"
+import { featureFlagsReducer } from "./featureFlags/featureFlagsSlice.ts"
 import { gearReducer } from "./gear/gearSlice.ts"
 import { initiativeReducer } from "./initiative/initiativeSlice.ts"
 import { karmaReducer } from "./karma/karmaSlice.ts"
@@ -19,7 +23,24 @@ import { spiritsReducer } from "./spirits/spiritsSlice.ts"
 import { spritesReducer } from "./sprites/spritesSlice.ts"
 import { traditionReducer } from "./tradition/traditionSlice.ts"
 
+const idSlice = createSlice({
+  name: "id",
+  initialState: NullUuid as RunnerData["id"],
+  reducers: {},
+})
+
+const metaSlice = createSlice({
+  name: "_meta_",
+  initialState: {
+    version: 0,
+    appliedMigrations: [],
+  } as RunnerData["_meta_"],
+  reducers: {},
+})
+
 export const runnerRootReducer = combineReducers({
+  id: idSlice.reducer,
+  _meta_: metaSlice.reducer,
   attributes: attributesReducer,
   qualities: qualitiesReducer,
   karma: karmaReducer,
@@ -38,4 +59,5 @@ export const runnerRootReducer = combineReducers({
   damage: damageReducer,
   initiative: initiativeReducer,
   gear: gearReducer,
+  featureFlags: featureFlagsReducer,
 })

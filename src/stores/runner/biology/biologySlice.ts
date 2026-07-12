@@ -9,6 +9,10 @@ import { setBiology } from "./biologySlice.actions.ts"
 const initialState: RunnerData["biology"] = {
   metatype: MetatypeType.Human,
   awakening: AwakeningType.Mundane,
+  gender: null,
+  age: null,
+  weight: null,
+  height: null,
 }
 
 export const biologyReducer = createReducer(initialState, (builder) => {

@@ -19,6 +19,10 @@ const initialState: RunnerData["profile"] = {
   name: "",
   streetCred: 0,
   notoriety: 0,
+  archetype: null,
+  description: null,
+  personality: null,
+  lifestyle: null,
 }
 
 export const profileReducer = createReducer(initialState, (builder) => {
