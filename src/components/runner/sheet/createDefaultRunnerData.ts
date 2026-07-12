@@ -1,6 +1,6 @@
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
+import { migrationIds } from "#/data/migrations.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import { migrationIds } from "#/runner/migrations.ts"
 import { awakenings, AwakeningType } from "#/system/awakeningType.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
