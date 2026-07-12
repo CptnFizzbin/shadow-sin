@@ -37,7 +37,7 @@ export const BiologySection: FC = () => {
         <BiologyRow label="Metatype" value={biology.metatype} />
         <BiologyRow label="Awakening" value={biology.awakening} />
         {biology.gender && <BiologyRow label="Gender" value={biology.gender} />}
-        {biology.age !== undefined && <BiologyRow label="Age" value={biology.age} />}
+        {biology.age !== null && <BiologyRow label="Age" value={biology.age} />}
         {biology.height && <BiologyRow label="Height" value={biology.height} />}
         {biology.weight && <BiologyRow label="Weight" value={biology.weight} />}
       </Stack>

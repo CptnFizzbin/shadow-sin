@@ -14,7 +14,7 @@ import type { TraditionData } from "#/system/magic/traditionData.ts"
 import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
 
 interface TraditionFormDialogProps extends ControlledDialogProps<TraditionData> {
-  tradition?: TraditionData
+  tradition?: TraditionData | null
 }
 
 const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
@@ -114,7 +114,7 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
 }
 
 interface UseTraditionFormDialogProps {
-  tradition?: TraditionData
+  tradition?: TraditionData | null
 }
 
 export const useTraditionFormDialog = () => useDialog<TraditionData, UseTraditionFormDialogProps | undefined>(

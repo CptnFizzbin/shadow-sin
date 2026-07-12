@@ -34,13 +34,13 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
       produce((prev) => {
         prev.profile.alias = alias
         prev.profile.name = name
-        prev.profile.archetype = archetype || undefined
-        prev.profile.description = description || undefined
-        prev.profile.personality = personality || undefined
-        prev.biology.gender = gender || undefined
-        prev.biology.age = age ? Number(age) : undefined
-        prev.biology.height = height || undefined
-        prev.biology.weight = weight || undefined
+        prev.profile.archetype = archetype || null
+        prev.profile.description = description || null
+        prev.profile.personality = personality || null
+        prev.biology.gender = gender || null
+        prev.biology.age = age ? Number(age) : null
+        prev.biology.height = height || null
+        prev.biology.weight = weight || null
       }),
     )
     ctrl.close()

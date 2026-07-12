@@ -36,7 +36,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.archetype ?? ""}
         onChange={(event) =>
-          profileStore.setArchetype(event.target.value || undefined)}
+          profileStore.setArchetype(event.target.value || null)}
       />
 
       <MuiTextField
@@ -48,7 +48,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.description ?? ""}
         onChange={(event) =>
-          profileStore.setDescription(event.target.value || undefined)}
+          profileStore.setDescription(event.target.value || null)}
       />
 
       <MuiTextField
@@ -60,7 +60,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.personality ?? ""}
         onChange={(event) =>
-          profileStore.setPersonality(event.target.value || undefined)}
+          profileStore.setPersonality(event.target.value || null)}
       />
     </>
   )

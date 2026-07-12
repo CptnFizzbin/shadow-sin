@@ -19,7 +19,7 @@ const defaultTraditionValues: TraditionData = {
 }
 
 type TraditionFormOptions = {
-  tradition?: TraditionData
+  tradition?: TraditionData | null
   onSubmit: (tradition: TraditionData) => void
 }
 

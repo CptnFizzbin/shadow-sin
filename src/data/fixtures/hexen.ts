@@ -14,6 +14,10 @@ export const Hexen: RunnerData = {
   biology: {
     metatype: MetatypeType.Human,
     awakening: AwakeningType.Magician,
+    gender: null,
+    age: null,
+    weight: null,
+    height: null,
   },
 
   profile: {
@@ -23,7 +27,15 @@ export const Hexen: RunnerData = {
     streetCred: 0,
     notoriety: 0,
     description: "Hermetic mage specializing in combat and detection spells.",
+    personality: null,
+    lifestyle: null,
   },
+
+  initiative: {
+    passesCompleted: [],
+  },
+
+  featureFlags: {},
 
   karma: {
     total: 0,

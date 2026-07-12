@@ -48,6 +48,8 @@ export function applyMigrations(runner: object): RunnerData {
     draft.sprites ??= []
     draft.qualities ??= []
     draft.contacts ??= []
+    draft.tradition ??= null
+    draft.initiative ??= { passesCompleted: [] }
   })
 
   // Using `as` here as migrations are expected to produce a fully valid RunnerData, but the type system can't verify that.

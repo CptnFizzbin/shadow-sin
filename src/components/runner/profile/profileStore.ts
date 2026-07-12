@@ -16,15 +16,15 @@ export class ProfileStore extends StoreSlice<ProfileStoreState> {
     this.set((prev) => ({ ...prev, alias }))
   }
 
-  setArchetype(archetype: string | undefined): void {
+  setArchetype(archetype: string | null): void {
     this.set((prev) => ({ ...prev, archetype }))
   }
 
-  setDescription(description: string | undefined): void {
+  setDescription(description: string | null): void {
     this.set((prev) => ({ ...prev, description }))
   }
 
-  setPersonality(personality: string | undefined): void {
+  setPersonality(personality: string | null): void {
     this.set((prev) => ({ ...prev, personality }))
   }
 

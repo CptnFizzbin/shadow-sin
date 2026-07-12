@@ -14,7 +14,7 @@ import type { SpiritForm } from "./useSpiritForm.ts"
 
 interface SpiritFormFieldsProps {
   form: SpiritForm
-  tradition?: TraditionData
+  tradition?: TraditionData | null
 }
 
 export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition }) => {

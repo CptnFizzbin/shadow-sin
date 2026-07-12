@@ -27,10 +27,10 @@ export const createDefaultRunnerData = (): RunnerData => ({
   biology: {
     metatype: MetatypeType.Human,
     awakening: AwakeningType.Mundane,
-    gender: undefined,
-    age: undefined,
-    weight: undefined,
-    height: undefined,
+    gender: null,
+    age: null,
+    weight: null,
+    height: null,
   },
 
   qualities: [],
@@ -68,6 +68,12 @@ export const createDefaultRunnerData = (): RunnerData => ({
     current: 0,
     log: [],
   },
+
+  initiative: {
+    passesCompleted: [],
+  },
+
+  tradition: null,
 
   nuyen: {
     current: 0,

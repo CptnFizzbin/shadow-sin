@@ -50,16 +50,16 @@ export interface RunnerData {
   profile: {
     alias: string
     name: string
-    archetype?: string
+    archetype: null | string
 
     streetCred: number
     notoriety: number
     publicAwarenessModifier?: number
 
-    description?: string
-    personality?: string
+    description: null | string
+    personality: null | string
 
-    lifestyle?: {
+    lifestyle: null | {
       quality: LifestyleType
       monthsPaid: number
     }
@@ -68,10 +68,10 @@ export interface RunnerData {
   biology: {
     metatype: MetatypeType
     awakening: AwakeningType
-    gender?: string
-    age?: number
-    weight?: string
-    height?: string
+    gender: null | string
+    age: null | number
+    weight: null | string
+    height: null | string
   }
 
   karma: {
@@ -111,7 +111,7 @@ export interface RunnerData {
     languageSkills: LanguageSkillData[]
   }
 
-  initiative?: {
+  initiative: {
     passesCompleted: number[]
     rolledResults?: number[]
     goingFirst?: boolean
@@ -120,7 +120,7 @@ export interface RunnerData {
 
   qualities: QualityData[]
   contacts: ContactData[]
-  tradition?: TraditionData
+  tradition: TraditionData | null
   spells: SpellData[]
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
@@ -131,5 +131,5 @@ export interface RunnerData {
    * Per-runner feature flags. Optional so pre-migration runners remain
    * structurally valid; the migration backfills this on next load.
    */
-  featureFlags?: FeatureFlagsData
+  featureFlags: FeatureFlagsData
 }
