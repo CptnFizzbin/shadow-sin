@@ -8,11 +8,11 @@ import { useState } from "react"
 import { useYamlFileImport } from "#/components/runner/exportImport/useYamlFileImport.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-interface ImportYamlBuilderButtonProps {
+interface BuilderImportButtonProps {
   onImport: (importedRunner: RunnerData) => void
 }
 
-export const BuilderImportButton: FC<ImportYamlBuilderButtonProps> = ({ onImport }) => {
+export const BuilderImportButton: FC<BuilderImportButtonProps> = ({ onImport }) => {
   const [importError, setImportError] = useState(false)
 
   const { inputProps, openFilePicker } = useYamlFileImport({

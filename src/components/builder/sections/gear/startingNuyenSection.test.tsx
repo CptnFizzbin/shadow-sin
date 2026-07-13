@@ -67,7 +67,8 @@ describe("StartingNuyenSection", () => {
   })
 
   it("shows a starting nuyen persisted from an earlier roll without requiring a reroll", () => {
-    // Arrange / Act
+    // Arrange
+    // Act
     renderWithStreetLifestyle((rootState) => {
       rootState.builder.nuyen.starting = 250
     })
