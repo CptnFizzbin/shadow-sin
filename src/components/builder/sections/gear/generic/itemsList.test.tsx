@@ -1,9 +1,9 @@
-import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import type { FC } from "react"
 import { describe, expect, it } from "vitest"
 
 import { useGearByType } from "#/components/items/gearHooks.ts"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -29,7 +29,7 @@ describe("ItemsList", () => {
   it("shows items from the store", () => {
     // Arrange / Act
     renderInBuilder(<LiveItemsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [trodes.id]: trodes } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [trodes.id]: trodes } }))),
     })
 
     // Assert
@@ -51,7 +51,7 @@ describe("ItemsList", () => {
   it("removing an item dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<LiveItemsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [trodes.id]: trodes } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [trodes.id]: trodes } }))),
     })
     expect(screen.getByText("Trodes")).toBeDefined()
 

@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
@@ -12,7 +12,7 @@ describe("ActiveSkillsList", () => {
   it("opening a second skill to edit after saving the first shows the second skill's data, not the first skill's", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
@@ -55,7 +55,7 @@ describe("ActiveSkillsList", () => {
   it("removing an active skill dispatches removeActiveSkill and updates the store", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
@@ -78,7 +78,7 @@ describe("ActiveSkillsList", () => {
   it("editing and saving an active skill's specialization dispatches setActiveSkill and updates the store", async () => {
     // Arrange
     renderInBuilder(<ActiveSkillsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
         ...runner,
         skills: {
           ...runner.skills,
