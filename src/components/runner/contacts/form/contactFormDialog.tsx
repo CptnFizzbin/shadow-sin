@@ -53,7 +53,7 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClose={false} onClosed={handleClosed}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <form

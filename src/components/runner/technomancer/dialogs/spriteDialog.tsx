@@ -59,7 +59,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClose={false} onClosed={handleClosed}>
       <Dialog.Title>{isEditMode ? "Edit Sprite" : "Add Sprite"}</Dialog.Title>
 
       <Dialog.Content>

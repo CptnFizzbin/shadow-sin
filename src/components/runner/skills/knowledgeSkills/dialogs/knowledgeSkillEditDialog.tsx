@@ -56,7 +56,7 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={handleClosed}>
       <Dialog.Title>
         {isEditMode ? "Edit Knowledge Skill" : "Add Knowledge Skill"}
       </Dialog.Title>

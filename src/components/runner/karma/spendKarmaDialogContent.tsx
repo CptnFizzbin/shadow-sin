@@ -87,7 +87,7 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="md" onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} maxWidth="md" onClose={false} onClosed={handleClosed}>
       <Dialog.Title>Spend Karma</Dialog.Title>
 
       <Dialog.Content>

@@ -27,7 +27,7 @@ const TraditionFormDialog: FC<TraditionFormDialogProps> = ({
   })
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={() => form.reset()}>
       <Dialog.Title>Tradition</Dialog.Title>
       <Dialog.Content>
         <form.AppForm>

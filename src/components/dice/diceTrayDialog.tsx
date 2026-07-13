@@ -22,7 +22,6 @@ export const DiceTrayDialog: FC = () => {
   return (
     <Dialog
       open={open}
-      onClose={() => diceTrayApi.close()}
       onClosed={() => diceTrayApi.reset()}
     >
       <Dialog.Title>Dice Tray</Dialog.Title>

@@ -20,7 +20,7 @@ interface SpellCastDialogProps extends ControlledDialogProps<void> {
 
 const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm">
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false}>
       <Dialog.Title>{spell.name}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 1.5 }}>

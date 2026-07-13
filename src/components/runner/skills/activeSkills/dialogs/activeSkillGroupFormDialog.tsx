@@ -66,7 +66,7 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   const memberSkills = groupName ? getSkillsInGroup(groupName) : []
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={handleClosed}>
       <Dialog.Title>
         {isEditMode ? "Edit Skill Group" : "Add Skill Group"}
       </Dialog.Title>

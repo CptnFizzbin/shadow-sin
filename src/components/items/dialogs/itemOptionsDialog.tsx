@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Stack from "@mui/material/Stack"
@@ -52,7 +53,7 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl}>
+    <ControlledDialog ctrl={ctrl} onClose={false}>
       <Dialog.Title>Item Options</Dialog.Title>
 
       <Dialog.Content>
@@ -134,6 +135,10 @@ const ItemOptionsDialog: FC<ItemOptionsDialogProps> = ({
           )}
         </Stack>
       </Dialog.Content>
+
+      <Dialog.Actions>
+        <Button onClick={() => ctrl.close()}>Done</Button>
+      </Dialog.Actions>
 
       {confirmDialog.dialog}
     </ControlledDialog>

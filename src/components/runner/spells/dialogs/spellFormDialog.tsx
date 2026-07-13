@@ -28,7 +28,7 @@ const SpellFormDialog: FC<SpellFormDialogProps> = ({
   })
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={() => form.reset()}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <SpellFormFields form={form} />

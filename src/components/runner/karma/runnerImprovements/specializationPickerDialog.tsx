@@ -53,7 +53,7 @@ const SpecializationPickerDialog: FC<SpecializationPickerDialogProps> = ({
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm">
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false}>
       <Dialog.Title>{fieldLabel} — {skillLabel}</Dialog.Title>
 
       <Dialog.Content>

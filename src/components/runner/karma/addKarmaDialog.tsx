@@ -24,7 +24,7 @@ const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
   })
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="xs">
+    <ControlledDialog ctrl={ctrl} maxWidth="xs" onClose={false}>
       <Dialog.Title>Add Karma</Dialog.Title>
       <Dialog.Content>
         <form.AppForm>

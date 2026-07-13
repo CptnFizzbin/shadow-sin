@@ -31,7 +31,7 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
   const title = editMode ? "Edit Adept Power" : "Add Adept Power"
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={() => form.reset()}>
 
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
