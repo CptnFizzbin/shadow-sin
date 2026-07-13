@@ -1,16 +1,12 @@
-import Box from "@mui/material/Box"
-import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
-import TextField from "@mui/material/TextField"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Typography from "@mui/material/Typography"
-import { RiSearchLine } from "@remixicon/react"
 import { sort } from "fast-sort"
 import type { FC } from "react"
-import { Fragment, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 
-import { Label } from "#/components/ui/text/label.tsx"
+import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillCategory } from "#/system/skills/skillCategory.ts"
@@ -98,76 +94,39 @@ export const ActiveSkillsList: FC = () => {
   }, [visibleSkills, groupingMode])
 
   return (
-    <>
-      <TextField
-        size="small"
-        placeholder="Search skills…"
-        value={searchQuery}
-        onChange={(event) => setSearchQuery(event.target.value)}
-        slotProps={{
-          input: {
-            startAdornment: (
-              <InputAdornment position="start">
-                <RiSearchLine size={16} />
-              </InputAdornment>
-            ),
-          },
-        }}
-        fullWidth
-      />
-
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-          Group by:
-        </Typography>
-        <ToggleButtonGroup
-          value={groupingMode}
-          exclusive
-          onChange={(_, newMode) => newMode && setGroupingMode(newMode)}
-          size="small"
-          sx={{ flexWrap: "wrap" }}
-        >
-          {(Object.keys(groupingModeLabels) as GroupingMode[]).map((mode) => (
-            <ToggleButton key={mode} value={mode} sx={{ py: 0.25, px: 1, fontSize: "0.7rem" }}>
-              {groupingModeLabels[mode]}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </Stack>
-
-      <Box>
-        {visibleSkills.length === 0 && (
-          <Typography
-
-            color="text.secondary"
-            sx={{ textAlign: "center", py: 2 }}
-          >
-            No skills found
+    <SkillListPanel
+      searchPlaceholder="Search skills…"
+      searchQuery={searchQuery}
+      onSearchQueryChange={setSearchQuery}
+      groups={groupedSkills}
+      getKey={(skill) => skill.key}
+      renderItem={(skill) => (
+        <ActiveSkillsListItem
+          skillKey={skill.key}
+          rating={skill.rating}
+        />
+      )}
+      emptyMessage="No skills found"
+      headerControls={(
+        <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+            Group by:
           </Typography>
-        )}
-
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
-            columnGap: 2,
-            rowGap: 1,
-          }}
-        >
-          {groupedSkills.map(([group, groupSkills]) => (
-            <Fragment key={group}>
-              <Label label={group} sx={{ gridColumn: "1 / -1" }} />
-              {groupSkills.map((skill) => (
-                <ActiveSkillsListItem
-                  key={skill.key}
-                  skillKey={skill.key}
-                  rating={skill.rating}
-                />
-              ))}
-            </Fragment>
-          ))}
-        </Box>
-      </Box>
-    </>
+          <ToggleButtonGroup
+            value={groupingMode}
+            exclusive
+            onChange={(_, newMode) => newMode && setGroupingMode(newMode)}
+            size="small"
+            sx={{ flexWrap: "wrap" }}
+          >
+            {(Object.keys(groupingModeLabels) as GroupingMode[]).map((mode) => (
+              <ToggleButton key={mode} value={mode} sx={{ py: 0.25, px: 1, fontSize: "0.7rem" }}>
+                {groupingModeLabels[mode]}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Stack>
+      )}
+    />
   )
 }
