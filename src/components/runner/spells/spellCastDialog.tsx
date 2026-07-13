@@ -55,6 +55,13 @@ const SpellCastDialog: FC<SpellCastDialogProps> = ({ ctrl, spell }) => {
                 <Typography sx={{ textAlign: "center" }}>
                   {spell.damage}
                 </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: "block", textAlign: "center", fontStyle: "italic" }}
+                >
+                  DV = Force
+                </Typography>
               </Grid>
             )}
             <Grid size={1}>
