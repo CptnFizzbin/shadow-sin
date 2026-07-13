@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { DrainResistanceDicePool } from "#/components/runner/spells/drainResistanceDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"

@@ -8,7 +8,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"

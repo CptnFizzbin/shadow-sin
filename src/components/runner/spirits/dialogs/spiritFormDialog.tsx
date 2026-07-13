@@ -3,7 +3,7 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SpiritFormFields } from "#/components/runner/spirits/form/spiritFormFields.tsx"
 import { useSpiritForm } from "#/components/runner/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/runner/spirits/summoningSection.tsx"

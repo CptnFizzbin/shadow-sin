@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"

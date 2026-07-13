@@ -12,7 +12,7 @@ import {
   GearNuyenPerBuildPoint,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"

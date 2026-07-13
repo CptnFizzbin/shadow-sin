@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiLightbulbLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"

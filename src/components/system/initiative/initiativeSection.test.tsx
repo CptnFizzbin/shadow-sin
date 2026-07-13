@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { InitiativeSection } from "./initiativeSection.tsx"
@@ -16,7 +16,7 @@ function renderWithPasses(passesCompleted: number[]) {
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
 
   render(<InitiativeSection />, { wrapper: Wrapper })

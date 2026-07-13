@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
@@ -28,7 +28,7 @@ function renderWithSprites(sprites: SpriteData[]) {
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
 
   render(<SpritesList />, { wrapper: Wrapper })

@@ -16,7 +16,7 @@ import {
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { useRunnerData, useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData, useRunnerDataContext } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"

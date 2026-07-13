@@ -14,7 +14,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"

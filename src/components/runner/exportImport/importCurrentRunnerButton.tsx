@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useRunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
-import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerDataContext } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"

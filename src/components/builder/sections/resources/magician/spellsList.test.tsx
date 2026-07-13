@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
@@ -44,7 +44,7 @@ function renderWithSpells(spells: SpellData[]) {
   const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
 
   render(<SpellsList />, { wrapper: Wrapper })

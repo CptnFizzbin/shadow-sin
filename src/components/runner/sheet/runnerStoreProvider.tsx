@@ -19,7 +19,7 @@ interface RunnerDataProviderProps extends PropsWithChildren {
  * `store` instance, so `StoreSlice`-based hooks and `useRunnerStoreSelector`/`useRunnerStoreDispatch`
  * can coexist while call sites are migrated one domain at a time.
  */
-export const RunnerDataProvider: FC<RunnerDataProviderProps> = ({
+export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   store,
   children,
 }) => {

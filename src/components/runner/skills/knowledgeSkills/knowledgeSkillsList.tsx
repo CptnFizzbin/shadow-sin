@@ -7,7 +7,7 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 
 import { KnowledgeSkillsListItem } from "./knowledgeSkillsListItem.tsx"

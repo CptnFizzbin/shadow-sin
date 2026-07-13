@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { metatypes } from "#/system/metatypeData.ts"
 

@@ -3,9 +3,11 @@ import { createStore } from "@tanstack/store"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { afterEach } from "vitest"
-import { type BuilderState, builderStateFactory } from "#/components/builder/builderState.ts"
+
+import type { BuilderState } from "#/components/builder/builderState.ts"
+import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -50,7 +52,7 @@ export function renderWithProviders(
 
     return (
       <ThemeProvider theme={theme}>
-        <RunnerDataProvider store={runnerStore}>{children}</RunnerDataProvider>
+        <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
       </ThemeProvider>
     )
   }
@@ -128,7 +130,7 @@ export function makeRunnerDataWrapper(runnerData: RunnerData): FC<PropsWithChild
   const store = createStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+    <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
   )
   Wrapper.displayName = "TestWrapper"
 

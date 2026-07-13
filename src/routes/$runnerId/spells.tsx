@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SpellsViewerSection } from "#/components/runner/spells/spellsViewerSection.tsx"
 import { AwakeningType } from "#/system/awakeningType.ts"
 

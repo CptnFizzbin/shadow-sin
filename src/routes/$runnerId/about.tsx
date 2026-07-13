@@ -12,7 +12,7 @@ import { KarmaSection } from "#/components/runner/karma/karmaSection.tsx"
 import { useProfileEditDialog } from "#/components/runner/profile/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 

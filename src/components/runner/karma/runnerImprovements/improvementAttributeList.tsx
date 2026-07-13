@@ -10,7 +10,7 @@ import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
