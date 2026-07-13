@@ -1,0 +1,58 @@
+import { fireEvent, screen, waitFor } from "@testing-library/react"
+import { describe, expect, it } from "vitest"
+
+import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
+import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
+
+import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
+
+const fakeSin: SinData = {
+  id: "00000000-0000-0000-0000-000000000001",
+  name: "National ID (Fake)",
+  itemType: ItemType.sin,
+  rating: 4,
+}
+
+describe("SinsAndLicensesSection", () => {
+  it("shows SINs from the store", () => {
+    // Arrange / Act
+    renderInBuilder(<SinsAndLicensesSection />, {
+      updateRootState: (rootState) => {
+        rootState.runner = { ...rootState.runner, gear: { [fakeSin.id]: fakeSin } }
+      },
+    })
+
+    // Assert
+    expect(screen.getByText("National ID (Fake)")).toBeDefined()
+  })
+
+  it("adding a SIN dispatches addItem and updates the store", async () => {
+    // Arrange
+    renderInBuilder(<SinsAndLicensesSection />)
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /add sin/i }))
+    fillNameAndClickSave("Real SIN")
+
+    // Assert: the UI re-rendered off the updated store.
+    expect(await screen.findByText("Real SIN")).toBeDefined()
+  })
+
+  it("removing a SIN with no licenses dispatches removeItem and updates the store", async () => {
+    // Arrange
+    renderInBuilder(<SinsAndLicensesSection />, {
+      updateRootState: (rootState) => {
+        rootState.runner = { ...rootState.runner, gear: { [fakeSin.id]: fakeSin } }
+      },
+    })
+    expect(screen.getByText("National ID (Fake)")).toBeDefined()
+
+    // Act: the delete icon button has no accessible name.
+    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
+    fireEvent.click(removeButton!)
+
+    // Assert: the UI re-rendered off the updated store (SIN with no licenses removes without confirming).
+    await waitFor(() => expect(screen.queryByText("National ID (Fake)")).toBeNull())
+  })
+})

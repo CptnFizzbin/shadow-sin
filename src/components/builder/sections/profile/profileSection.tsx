@@ -1,13 +1,13 @@
 import MuiTextField from "@mui/material/TextField"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectProfile } from "#/components/runner/profile/profileSelectors.ts"
-import { useProfileStore } from "#/components/runner/profile/useProfileStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
-  const profileStore = useProfileStore()
-  const profile = useSelector(profileStore, selectProfile)
+  const dispatch = useRunnerStoreDispatch()
+  const profile = useRunnerStoreSelector(Selectors.profile.selectProfile)
 
   return (
     <>
@@ -17,7 +17,7 @@ export const ProfileSection: FC = () => {
         variant="outlined"
         size="small"
         value={profile.alias}
-        onChange={(event) => profileStore.setAlias(event.target.value)}
+        onChange={(event) => dispatch(Actions.profile.setProfileAlias(event.target.value))}
       />
 
       <MuiTextField
@@ -26,7 +26,7 @@ export const ProfileSection: FC = () => {
         variant="outlined"
         size="small"
         value={profile.name}
-        onChange={(event) => profileStore.setName(event.target.value)}
+        onChange={(event) => dispatch(Actions.profile.setProfileName(event.target.value))}
       />
 
       <MuiTextField
@@ -36,7 +36,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.archetype ?? ""}
         onChange={(event) =>
-          profileStore.setArchetype(event.target.value || null)}
+          dispatch(Actions.profile.setProfileArchetype(event.target.value || null))}
       />
 
       <MuiTextField
@@ -48,7 +48,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.description ?? ""}
         onChange={(event) =>
-          profileStore.setDescription(event.target.value || null)}
+          dispatch(Actions.profile.setProfileDescription(event.target.value || null))}
       />
 
       <MuiTextField
@@ -60,7 +60,7 @@ export const ProfileSection: FC = () => {
         size="small"
         value={profile.personality ?? ""}
         onChange={(event) =>
-          profileStore.setPersonality(event.target.value || null)}
+          dispatch(Actions.profile.setProfilePersonality(event.target.value || null))}
       />
     </>
   )

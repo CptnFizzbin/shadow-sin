@@ -1,5 +1,5 @@
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useGearByType } from "#/components/items/useGearStore.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"

@@ -2,17 +2,19 @@ import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
 
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+
 import { InitiativePassTracker } from "./initiativePassTracker.tsx"
 import { InitiativeScoreDisplay } from "./initiativeScoreDisplay.tsx"
 import { useInitiative } from "./useInitiative.ts"
-import { useInitiativePassStore } from "./useInitiativePassStore.ts"
 
 export const InitiativeSection: FC = () => {
   const initiative = useInitiative()
-  const initiativePassStore = useInitiativePassStore()
+  const dispatch = useRunnerStoreDispatch()
 
   const handleResetRound = () => {
-    initiativePassStore.resetPasses()
+    dispatch(Actions.initiative.resetPasses())
   }
 
   return (
@@ -35,7 +37,6 @@ export const InitiativeSection: FC = () => {
       <Grid size={1}>
         <InitiativePassTracker
           numPasses={initiative.initiativePasses}
-          store={initiativePassStore}
         />
       </Grid>
     </Grid>

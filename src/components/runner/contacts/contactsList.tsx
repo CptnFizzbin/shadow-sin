@@ -5,11 +5,12 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"
 import { useContactFormDialog } from "./form/contactFormDialog.tsx"
-import { useContactsStore } from "./useContactsStore.ts"
 
 interface ContactsListProps {
   contacts: ContactData[]
@@ -22,7 +23,7 @@ export const ContactsList: FC<ContactsListProps> = ({
 }) => {
   const confirmDialog = useConfirmDialog()
   const contactFormDialog = useContactFormDialog()
-  const contactsStore = useContactsStore()
+  const dispatch = useRunnerStoreDispatch()
 
   const onRemove = async (contact: ContactData) => {
     if (await confirmDialog.confirm({
@@ -30,7 +31,7 @@ export const ContactsList: FC<ContactsListProps> = ({
       body: "Are you sure you want to remove this contact? This action cannot be undone.",
       confirmLabel: "Remove",
     })) {
-      contactsStore.remove(contact)
+      dispatch(Actions.contacts.removeContact(contact.id))
     }
   }
 

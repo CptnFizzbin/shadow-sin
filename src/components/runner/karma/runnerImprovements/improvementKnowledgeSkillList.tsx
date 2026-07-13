@@ -10,15 +10,13 @@ import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiLightbulbLine, RiStarLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectCurrentKarma } from "#/components/runner/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/runner/karma/useKarmaStore.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { getKnowledgeSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnKnowledgeSkillEntry,
@@ -47,11 +45,10 @@ const SPEC_COST = 2
 
 export const ImprovementKnowledgeSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const karmaStore = useKarmaStore()
   const knowledgeSkills = useRunnerData((sheet) => sheet.skills.knowledgeSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const knowledgeSkillDialog = useKnowledgeSkillDialog()
   const specializationDialog = useSpecializationPickerDialog()
 

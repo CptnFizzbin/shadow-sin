@@ -4,9 +4,10 @@ import Stack from "@mui/material/Stack"
 import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectEdgeCurrent, selectEdgeMax } from "#/components/runner/quickPanel/edgeSelectors.ts"
-import { useEdgeStore } from "#/components/runner/quickPanel/useEdgeStore.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   selectIsRolling,
   selectWasRolled,
@@ -22,22 +23,22 @@ export const DiceTrayEdgeControls: FC = () => {
   const isRolling = useDiceRollerSelector(diceTrayApi.roller, selectIsRolling)
   const wasRolled = useDiceRollerSelector(diceTrayApi.roller, selectWasRolled)
 
-  const edgeStore = useEdgeStore()
-  const maxEdge = useSelector(edgeStore, selectEdgeMax)
-  const currentEdge = useSelector(edgeStore, selectEdgeCurrent)
+  const dispatch = useRunnerStoreDispatch()
+  const maxEdge = useRunnerStoreSelector(Selectors.edge.selectEdgeMax)
+  const currentEdge = useRunnerStoreSelector(Selectors.edge.selectEdgeCurrent)
 
   if (physicalMode) return null
 
   const handleRerollMisses = () => {
     if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rerollMisses()
-    edgeStore.setCurrent((current) => current - 1)
+    dispatch(Actions.edge.setCurrentEdge(currentEdge - 1))
   }
 
   const handleEdge = () => {
     if (diceTrayApi.store.state.edgeSpent) return
     diceTrayApi.rollEdge(maxEdge)
-    edgeStore.setCurrent((current) => current - 1)
+    dispatch(Actions.edge.setCurrentEdge(currentEdge - 1))
   }
 
   return (

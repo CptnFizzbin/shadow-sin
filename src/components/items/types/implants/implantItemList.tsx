@@ -3,7 +3,10 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -12,14 +15,14 @@ import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
 import { ImplantItemCard } from "./implantItemCard.tsx"
 
 export const ImplantItemList: FC = () => {
-  const gearApi = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const implants = useGearByType<ImplantData>(ItemType.implant)
   const rootImplants = implants.filter((implant) => !implant.parentId)
   const implantFormDialog = useImplantFormDialog()
 
   const handleAddImplant = async (props?: UseImplantFormProps) => {
     const saved = await implantFormDialog.open(props)
-    if (saved) gearApi.save(saved)
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (

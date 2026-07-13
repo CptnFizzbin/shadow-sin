@@ -7,9 +7,11 @@ import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
-import { useGearStore } from "#/components/items/useGearStore.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
@@ -44,7 +46,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const implantFormDialog = useImplantFormDialog()
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
 
   const handleRemove = async () => {
@@ -53,12 +55,12 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
       body: "Are you sure you want to remove this implant? This action cannot be undone.",
       confirmLabel: "Remove Implant",
     })
-    if (result) gearStore.remove(implant)
+    if (result) dispatch(Actions.gear.removeItem({ id: implant.id }))
   }
 
   const handleEdit = async () => {
     const saved = await implantFormDialog.open({ implant, parentId: implant.parentId })
-    if (saved) gearStore.save(saved)
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (

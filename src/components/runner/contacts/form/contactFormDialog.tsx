@@ -3,10 +3,12 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useId } from "react"
 
-import { useContactsStore } from "#/components/runner/contacts/useContactsStore.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { NullUuid } from "#/lib/uuidUtils.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
@@ -24,11 +26,19 @@ const ContactFormDialog: FC<ContactFormDialogProps> = ({
 }) => {
   const isEditMode = !!contact
   const title = isEditMode ? "Edit Contact" : "Add Contact"
-  const contactStore = useContactsStore()
+  const dispatch = useRunnerStoreDispatch()
   const formId = useId()
 
   const handleSubmit = (savedContact: ContactData) => {
-    const persistedContact = contactStore.save(savedContact)
+    let persistedContact: ContactData
+    if (!savedContact.id || savedContact.id === NullUuid) {
+      const action = Actions.contacts.addContact(savedContact)
+      dispatch(action)
+      persistedContact = action.payload
+    } else {
+      dispatch(Actions.contacts.updateContact(savedContact))
+      persistedContact = savedContact
+    }
     onSaved?.(persistedContact)
     ctrl.close()
   }

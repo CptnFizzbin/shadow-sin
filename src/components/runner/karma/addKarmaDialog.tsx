@@ -7,18 +7,18 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-
-import { useKarmaStore } from "./useKarmaStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 
 interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
 
 const AddKarmaDialog: FC<AddKarmaDialogProps> = ({ ctrl }) => {
-  const karmaStore = useKarmaStore()
+  const dispatch = useRunnerStoreDispatch()
 
   const form = useAppForm({
     defaultValues: { amount: 1 },
     onSubmit: ({ value }) => {
-      if (value.amount !== undefined) karmaStore.addKarma(value.amount)
+      if (value.amount !== undefined) dispatch(Actions.karma.addKarma(value.amount))
       ctrl.close()
     },
   })

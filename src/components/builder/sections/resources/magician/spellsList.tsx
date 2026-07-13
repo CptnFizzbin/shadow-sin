@@ -2,35 +2,35 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
 import { useSpellFormDialog } from "#/components/runner/spells/dialogs/spellFormDialog.tsx"
-import { selectAllSpells } from "#/components/runner/spells/spellsSelectors.ts"
-import { useSpellsStore } from "#/components/runner/spells/useSpellsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { SpellListItem } from "./spellListItem.tsx"
 import { TraditionCard } from "./traditionCard.tsx"
 
 export const SpellsList: FC = () => {
-  const spellsStore = useSpellsStore()
-  const spells = useSelector(spellsStore, selectAllSpells)
+  const dispatch = useRunnerStoreDispatch()
+  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
   const buildPoints = useSpellsBuildPoints()
   const spellFormDialog = useSpellFormDialog()
 
   const handleAddSpell = async () => {
     const saved = await spellFormDialog.open()
-    if (saved) spellsStore.save(saved)
+    if (saved) dispatch(Actions.spells.saveSpell(saved))
   }
 
   const handleEditSpell = async (spell: SpellData) => {
     const saved = await spellFormDialog
-      .open({ spell, onDelete: () => spellsStore.remove(spell.id) })
-    if (saved) spellsStore.save(saved)
+      .open({ spell, onDelete: () => dispatch(Actions.spells.removeSpell(spell.id)) })
+    if (saved) dispatch(Actions.spells.saveSpell(saved))
   }
 
   return (

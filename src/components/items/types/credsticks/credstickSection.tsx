@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"

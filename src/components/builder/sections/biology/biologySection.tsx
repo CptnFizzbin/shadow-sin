@@ -4,17 +4,15 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useSelector } from "@tanstack/react-store"
 import { produce } from "immer"
 import type { FC } from "react"
 
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
-import { selectAwakening, selectMetatype } from "#/components/runner/biology/biologySelectors.ts"
 import { InnatePowersDisplay } from "#/components/runner/biology/innatePowersDisplay.tsx"
 import { MovementDisplay } from "#/components/runner/biology/movementDisplay.tsx"
-import { useBiologyStore } from "#/components/runner/biology/useBiologyStore.ts"
 import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 
@@ -22,9 +20,8 @@ import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
   const sheet = useRunnerDataContext()
-  const biologyStore = useBiologyStore()
-  const metatypeKey = useSelector(biologyStore, selectMetatype)
-  const awakeningType = useSelector(biologyStore, selectAwakening)
+  const metatypeKey = useRunnerStoreSelector(Selectors.biology.selectMetatype)
+  const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
 
   const currentMetatype = metatypes[metatypeKey]
 

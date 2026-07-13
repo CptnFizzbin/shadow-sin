@@ -5,7 +5,9 @@ import type { FC } from "react"
 
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
-import { useGearStore } from "#/components/items/useGearStore.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 
@@ -20,18 +22,21 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
   sins,
   getLicenses,
 }) => {
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
 
+  const saveItem = (item: SinData | LicenseData) =>
+    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+
   const handleEditSin = async (sin?: SinData) => {
     const saved = await sinFormDialog.open({ sin })
-    if (saved) gearStore.save(saved)
+    if (saved) saveItem(saved)
   }
 
   const handleEditLicense = async (sin: SinData, license?: LicenseData) => {
     const saved = await licenseFormDialog.open({ sin, license })
-    if (saved) gearStore.save(saved)
+    if (saved) saveItem(saved)
   }
 
   return (
@@ -42,14 +47,14 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
             item={sin}
             subItems={getLicenses(sin.id)}
             onEdit={() => handleEditSin(sin)}
-            onRemove={() => gearStore.remove(sin, { removeChildren: true })}
+            onRemove={() => dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))}
             getSubItemCallbacks={(licenseId) => {
               const license = getLicenses(sin.id).find((l) => l.id === licenseId)
               return {
                 onEdit: license
                   ? () => handleEditLicense(sin, license)
                   : undefined,
-                onRemove: license ? () => gearStore.remove(license) : undefined,
+                onRemove: license ? () => dispatch(Actions.gear.removeItem({ id: license.id })) : undefined,
               }
             }}
           />

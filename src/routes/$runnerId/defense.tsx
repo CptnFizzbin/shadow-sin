@@ -1,11 +1,9 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
-import { useSelector } from "@tanstack/react-store"
 import { Fragment } from "react"
 
 import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
-import { selectPhysicalTrack, selectStunTrack } from "#/components/system/damage/damageSelectors.ts"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import {
   ManaSpellDefenseDicePool,
@@ -21,10 +19,12 @@ import {
   ResistBodyDicePool,
   ResistWillpowerDicePool,
 } from "#/components/system/damage/resistanceDicePools.tsx"
-import { useDamageStore } from "#/components/system/damage/useDamageStore.ts"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -33,9 +33,9 @@ export const Route = createFileRoute("/$runnerId/defense")({
 })
 
 function RouteComponent() {
-  const damageStore = useDamageStore()
-  const physical = useSelector(damageStore, selectPhysicalTrack)
-  const stun = useSelector(damageStore, selectStunTrack)
+  const dispatch = useRunnerStoreDispatch()
+  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
+  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
 
   return (
     <Stack>
@@ -50,7 +50,7 @@ function RouteComponent() {
               current={physical.current}
               woundInterval={physical.woundInterval}
               allowOverflow
-              onChange={(newValue) => damageStore.setDamage(DamageTrackKey.physical, newValue)}
+              onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.physical, value: newValue }))}
             />
           </Grid>
 
@@ -60,7 +60,7 @@ function RouteComponent() {
               max={stun.max}
               current={stun.current}
               woundInterval={stun.woundInterval}
-              onChange={(newValue) => damageStore.setDamage(DamageTrackKey.stun, newValue)}
+              onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
             />
           </Grid>
 

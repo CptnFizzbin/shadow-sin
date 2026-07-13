@@ -7,15 +7,15 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-
-import { useNuyenStore } from "./useNuyenStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const NuyenSection: FC = () => {
-  const currentNuyen = useRunnerData((s) => s.nuyen.current)
-  const nuyenStore = useNuyenStore()
+  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const dispatch = useRunnerStoreDispatch()
 
   const [adjustAmount, setAdjustAmount] = useState<string>("")
 
@@ -24,19 +24,19 @@ export const NuyenSection: FC = () => {
 
   const handleDeposit = () => {
     if (!isAdjustValid) return
-    nuyenStore.deposit(adjustValue)
+    dispatch(Actions.nuyen.depositNuyen(adjustValue))
     setAdjustAmount("")
   }
 
   const handleWithdraw = () => {
     if (!isAdjustValid) return
-    nuyenStore.withdraw(adjustValue)
+    dispatch(Actions.nuyen.withdrawNuyen(adjustValue))
     setAdjustAmount("")
   }
 
   const handleSet = () => {
     if (!isAdjustValid) return
-    nuyenStore.setAmount(adjustValue)
+    dispatch(Actions.nuyen.setNuyenAmount(adjustValue))
     setAdjustAmount("")
   }
 

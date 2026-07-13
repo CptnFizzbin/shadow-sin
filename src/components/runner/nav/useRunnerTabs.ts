@@ -1,10 +1,9 @@
-import { selectAwakening } from "#/components/runner/biology/biologySelectors.ts"
 import type { RunnerSection } from "#/components/runner/runnerSections.ts"
 import { runnerSectionOrder } from "#/components/runner/runnerSections.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export function useRunnerTabs(): RunnerSection[] {
-  const awakening = useRunnerData((sheet) => selectAwakening(sheet.biology))
+  const awakening = useRunnerStoreSelector(Selectors.biology.selectAwakening)
 
   return runnerSectionOrder.filter(
     (section) => !section.visibleFor || section.visibleFor.includes(awakening),

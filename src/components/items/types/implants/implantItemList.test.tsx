@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles"
 import { Store } from "@tanstack/store"
-import { fireEvent, render, screen, within } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
@@ -80,5 +80,26 @@ describe("ImplantItemList", () => {
     const dialog = await screen.findByRole("dialog")
     const nameField = within(dialog).getByLabelText(/^name$/i)
     expect((nameField as HTMLInputElement).value).toBe("Alphaware Upgrade")
+  })
+
+  it("removing an implant, once confirmed, dispatches removeItem and updates the store", async () => {
+    // Arrange
+    const implantId = "aaaaaaaa-0000-0000-0000-000000000003"
+    const implant = makeImplant({ id: implantId, name: "Wired Reflexes 1" })
+
+    render(
+      <BuilderWrapperWithGear gear={{ [implantId]: implant }}>
+        <ImplantItemList />
+      </BuilderWrapperWithGear>,
+    )
+    expect(screen.getByText("Wired Reflexes 1")).toBeDefined()
+
+    // Act: the remove icon button has no accessible name.
+    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
+    fireEvent.click(removeButton!)
+    fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
+
+    // Assert: the UI re-rendered off the updated store.
+    await waitFor(() => expect(screen.queryByText("Wired Reflexes 1")).toBeNull())
   })
 })

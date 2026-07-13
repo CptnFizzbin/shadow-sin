@@ -6,7 +6,10 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useGearFilter, useGearStore } from "#/components/items/useGearStore.ts"
+import { useGearFilter } from "#/components/items/gearHooks.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -19,9 +22,13 @@ interface VehiclesListProps {
 }
 
 export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
-  const gearApi = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const vehicleFormDialog = useVehicleFormDialog()
   const attachmentFormDialog = useItemFormDialog()
+
+  const saveItem = (item: ItemData) =>
+    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+  const removeItem = (item: ItemData) => dispatch(Actions.gear.removeItem({ id: item.id }))
 
   const vehicles = useGearFilter(
     (item): item is VehicleData =>
@@ -39,17 +46,17 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
   const handleEditVehicle = async (vehicle?: VehicleData) => {
     const saved = await vehicleFormDialog.open({ vehicle, vehicleCategory })
-    if (saved) gearApi.save(saved)
+    if (saved) saveItem(saved)
   }
 
   const handleAddAttachment = async (parentId: UUID) => {
     const saved = await attachmentFormDialog.open({ label: "Vehicle Attachment" })
-    if (saved) gearApi.save({ ...saved, parentId })
+    if (saved) saveItem({ ...saved, parentId })
   }
 
   const handleEditAttachment = async (attachment: ItemData) => {
     const saved = await attachmentFormDialog.open({ item: attachment, label: "Vehicle Attachment" })
-    if (saved) gearApi.save(saved)
+    if (saved) saveItem(saved)
   }
 
   return (
@@ -63,10 +70,10 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
             vehicle={vehicle}
             attachments={attachments}
             onEdit={() => handleEditVehicle(vehicle)}
-            onRemove={() => gearApi.remove(vehicle)}
+            onRemove={() => removeItem(vehicle)}
             onAddAttachment={() => handleAddAttachment(vehicle.id as UUID)}
             onEditAttachment={(attachment) => handleEditAttachment(attachment)}
-            onRemoveAttachment={(attachment) => gearApi.remove(attachment)}
+            onRemoveAttachment={(attachment) => removeItem(attachment)}
           />
         )
       })}

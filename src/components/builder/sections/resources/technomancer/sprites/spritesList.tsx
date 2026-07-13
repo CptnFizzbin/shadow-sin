@@ -4,18 +4,17 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
 import { useAttr } from "#/components/runner/runnerUtils.ts"
 import { useSpriteDialog } from "#/components/runner/technomancer/dialogs/spriteDialog.tsx"
-import { useMaxSpritesRegistered } from "#/components/runner/technomancer/spritesHooks.ts"
-import { selectAllSprites } from "#/components/runner/technomancer/spritesSelectors.ts"
-import { useSpritesStore } from "#/components/runner/technomancer/useSpritesStore.ts"
+import { useMaxSpritesRegistered, useSprites } from "#/components/runner/technomancer/spritesHooks.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
@@ -24,8 +23,8 @@ import { SpritesListItem } from "./spritesListItem.tsx"
 export const SpritesList: FC = () => {
   const resonance = useAttr(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
-  const spritesStore = useSpritesStore()
-  const sprites = useSelector(spritesStore, selectAllSprites)
+  const dispatch = useRunnerStoreDispatch()
+  const sprites = useSprites()
   const spritesBp = useSpritesBuildPoints()
   const spriteDialog = useSpriteDialog()
 
@@ -33,12 +32,12 @@ export const SpritesList: FC = () => {
 
   const handleAddSprite = async () => {
     const saved = await spriteDialog.open()
-    if (saved) spritesStore.save(saved)
+    if (saved) dispatch(Actions.sprites.saveSprite(saved))
   }
 
   const handleEditSprite = async (sprite: SpriteData) => {
     const saved = await spriteDialog.open({ sprite })
-    if (saved) spritesStore.save(saved)
+    if (saved) dispatch(Actions.sprites.saveSprite(saved))
   }
 
   return (
@@ -82,7 +81,7 @@ export const SpritesList: FC = () => {
               sprite={sprite}
               resonanceValue={resonance}
               onEdit={() => handleEditSprite(sprite)}
-              onDelete={() => spritesStore.remove(sprite.id)}
+              onDelete={() => dispatch(Actions.sprites.removeSprite(sprite.id))}
             />
           ))}
         </Stack>

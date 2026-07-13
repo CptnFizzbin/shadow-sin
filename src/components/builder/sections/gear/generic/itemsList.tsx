@@ -7,7 +7,9 @@ import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
-import { useGearStore } from "#/components/items/useGearStore.ts"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
@@ -18,8 +20,11 @@ interface ItemsListProps {
 }
 
 export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, items }) => {
-  const gearApi = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
+
+  const saveItem = (item: ItemData) =>
+    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
 
   const topLevelItems = items.filter((item) => !item.parentId)
   const getSubItems = (parentId: string) =>
@@ -28,13 +33,13 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   const handleAdd = async (parentId?: UUID) => {
     const label = parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ itemType, label })
-    if (saved) gearApi.save(parentId ? { ...saved, parentId } : saved)
+    if (saved) saveItem(parentId ? { ...saved, parentId } : saved)
   }
 
   const handleEdit = async (item: ItemData) => {
     const label = item.parentId ? `${itemLabel} sub-item` : itemLabel
     const saved = await itemFormDialog.open({ item, itemType, label })
-    if (saved) gearApi.save(saved)
+    if (saved) saveItem(saved)
   }
 
   return (
@@ -48,10 +53,10 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
             item={item}
             subItems={subItems}
             onEdit={() => handleEdit(item)}
-            onRemove={() => gearApi.remove(item)}
+            onRemove={() => dispatch(Actions.gear.removeItem({ id: item.id }))}
             onAddSubItem={() => handleAdd(item.id as UUID)}
             onEditSubItem={(subItem) => handleEdit(subItem)}
-            onRemoveSubItem={(subItem) => gearApi.remove(subItem)}
+            onRemoveSubItem={(subItem) => dispatch(Actions.gear.removeItem({ id: subItem.id }))}
           />
         )
       })}

@@ -1,19 +1,14 @@
-import { useSelector } from "@tanstack/react-store"
-
-import { selectAllContacts } from "#/components/runner/contacts/contactsSelectors.ts"
-import { useContactsStore } from "#/components/runner/contacts/useContactsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {
-  const contactsStore = useContactsStore()
-
   const alerts: AlertInfo[] = []
 
   const addAlert = (alert: Omit<AlertInfo, "section">) => {
     alerts.push({ section: "Contacts", ...alert })
   }
 
-  const contacts = useSelector(contactsStore, selectAllContacts)
+  const contacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)
 
   if (contacts.length === 0) {
     addAlert({

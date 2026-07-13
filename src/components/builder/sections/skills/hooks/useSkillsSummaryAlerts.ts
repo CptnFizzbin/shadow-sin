@@ -1,18 +1,10 @@
-import { useSelector } from "@tanstack/react-store"
-
-import {
-  selectActiveSkills,
-  selectKnowledgeSkills,
-  selectLanguageSkills,
-} from "#/components/runner/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useSkillsSummaryAlerts = (): AlertInfo[] => {
-  const skillsStore = useSkillsStore()
-  const active = useSelector(skillsStore, selectActiveSkills)
-  const knowledge = useSelector(skillsStore, selectKnowledgeSkills)
-  const language = useSelector(skillsStore, selectLanguageSkills)
+  const active = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const knowledge = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
+  const language = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
 
   if (active.length === 0 && knowledge.length === 0 && language.length === 0) {
     return [{

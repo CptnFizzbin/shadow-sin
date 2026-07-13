@@ -3,25 +3,26 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { useSpellCastDialog } from "./spellCastDialog.tsx"
 import { SpellViewerListItem } from "./spellViewerListItem.tsx"
-import { useSpellsStore } from "./useSpellsStore.ts"
 
 export const SpellsViewerSection: FC = () => {
-  const spells = useRunnerData((sheet) => sheet.spells)
+  const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
   const spellCastDialog = useSpellCastDialog()
-  const spellsStore = useSpellsStore()
+  const dispatch = useRunnerStoreDispatch()
 
   const handleOpenSpell = (spell: SpellData) => {
     spellCastDialog.open({ spell })
   }
 
   const handleToggleSustained = (spell: SpellData) => {
-    spellsStore.toggleSustained(spell)
+    dispatch(Actions.spells.toggleSpellSustained(spell.id))
   }
 
   const spellsByCategory = Object.groupBy(spells, (spell) => spell.category)

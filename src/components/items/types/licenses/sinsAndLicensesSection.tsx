@@ -2,8 +2,11 @@ import Button from "@mui/material/Button"
 import { RiAddLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
-import { useGearByType, useGearStore } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -26,11 +29,14 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   slots,
 }) => {
   const confirmDialog = useConfirmDialog()
-  const gearStore = useGearStore()
+  const dispatch = useRunnerStoreDispatch()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
+
+  const saveItem = (item: SinData | LicenseData) =>
+    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
 
   const handleRemoveSin = async (sin: SinData, hasLicenses: boolean) => {
     if (hasLicenses) {
@@ -41,11 +47,11 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
       })
       if (!confirmed) return
     }
-    gearStore.remove(sin, { removeChildren: true })
+    dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))
   }
 
   const handleRemoveLicense = (license: LicenseData) => {
-    gearStore.remove(license)
+    dispatch(Actions.gear.removeItem({ id: license.id }))
   }
 
   const handleEditSin = async (sin?: SinData) => {
@@ -58,7 +64,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
           }
         : undefined,
     })
-    if (saved) gearStore.save(saved)
+    if (saved) saveItem(saved)
   }
 
   const handleEditLicense = async (sin?: SinData, license?: LicenseData) => {
@@ -67,7 +73,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
       license,
       onDelete: license ? () => handleRemoveLicense(license) : undefined,
     })
-    if (saved) gearStore.save(saved)
+    if (saved) saveItem(saved)
   }
 
   return (

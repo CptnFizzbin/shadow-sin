@@ -1,14 +1,10 @@
-import { useSelector } from "@tanstack/react-store"
-
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { selectActiveSkills, selectSkillGroups } from "#/components/runner/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useActiveSkillsAlerts = (): AlertInfo[] => {
-  const skillsStore = useSkillsStore()
-  const activeSkills = useSelector(skillsStore, selectActiveSkills)
-  const skillGroups = useSelector(skillsStore, selectSkillGroups)
+  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
 
   const statuses: AlertInfo[] = []
 

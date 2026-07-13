@@ -51,4 +51,58 @@ describe("ActiveSkillsList", () => {
       expect(within(dialog).getByDisplayValue(SkillKey.pistols)).toBeTruthy()
     })
   })
+
+  it("removing an active skill dispatches removeActiveSkill and updates the store", async () => {
+    // Arrange
+    renderInBuilder(<ActiveSkillsList />, {
+      updateRootState: (rootState) => {
+        rootState.runner = {
+          ...rootState.runner,
+          skills: {
+            ...rootState.runner.skills,
+            activeSkills: [{ name: SkillKey.pistols, rating: 3 }],
+          },
+        }
+      },
+    })
+    expect(screen.getByText(SkillKey.pistols)).toBeTruthy()
+
+    // Act: the remove icon button has no accessible name.
+    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
+    fireEvent.click(removeButton!)
+
+    // Assert: the UI re-rendered off the updated store — the skill and its
+    // "Active Skills" section header are both gone, replaced by the empty state.
+    await waitFor(() => expect(screen.queryByText(SkillKey.pistols)).toBeNull())
+    expect(screen.getByText("No active skills added")).toBeTruthy()
+  })
+
+  it("editing and saving an active skill's specialization dispatches setActiveSkill and updates the store", async () => {
+    // Arrange
+    renderInBuilder(<ActiveSkillsList />, {
+      updateRootState: (rootState) => {
+        rootState.runner = {
+          ...rootState.runner,
+          skills: {
+            ...rootState.runner.skills,
+            activeSkills: [{ name: SkillKey.pistols, rating: 3 }],
+          },
+        }
+      },
+    })
+
+    // Act: the Skill and Specialization Selects don't wire an accessible name
+    // (no `labelId`), so they're only distinguishable by document order —
+    // Skill first, Specialization second.
+    fireEvent.click(screen.getByText(SkillKey.pistols))
+    const dialog = await screen.findByRole("dialog")
+    const [, specializationCombobox] = within(dialog).getAllByRole("combobox")
+    fireEvent.mouseDown(specializationCombobox)
+    fireEvent.click(await screen.findByRole("option", { name: "Revolvers" }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert: the UI re-rendered off the updated store.
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
+    expect(screen.getByText("Revolvers")).toBeTruthy()
+  })
 })

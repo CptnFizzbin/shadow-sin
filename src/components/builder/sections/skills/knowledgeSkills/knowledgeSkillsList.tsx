@@ -2,7 +2,6 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
@@ -10,10 +9,11 @@ import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
 import { useLanguageSkillDialog } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
-import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/runner/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
@@ -28,12 +28,12 @@ import {
 } from "./languageSkillsListItem.tsx"
 
 export const KnowledgeSkillsList: FC = () => {
-  const skillsStore = useSkillsStore()
+  const dispatch = useRunnerStoreDispatch()
   const skillPoints = useKnowledgeSkillPoints()
   const buildPoints = useKnowledgeSkillsBuildPoints()
 
-  const knowledgeSkills = useSelector(skillsStore, selectKnowledgeSkills)
-  const languageSkills = useSelector(skillsStore, selectLanguageSkills)
+  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
+  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
 
   const knowledgeSkillDialog = useKnowledgeSkillDialog()
   const languageSkillDialog = useLanguageSkillDialog()
@@ -41,15 +41,13 @@ export const KnowledgeSkillsList: FC = () => {
   const openKnowledgeSkillDialog = async (skill?: KnowledgeSkillData) => {
     const saved = await knowledgeSkillDialog.open({ skill })
     if (!saved) return
-    const skillName = skill?.name || saved.name
-    skillsStore.knowledgeSkills.setState(skillName, () => saved)
+    dispatch(Actions.skills.setKnowledgeSkill(saved))
   }
 
   const openLanguageSkillDialog = async (skill?: LanguageSkillData) => {
     const saved = await languageSkillDialog.open({ skill })
     if (!saved) return
-    const skillName = skill?.name || saved.name
-    skillsStore.languageSkills.setState(skillName, () => saved)
+    dispatch(Actions.skills.setLanguageSkill(saved))
   }
 
   return (
@@ -84,7 +82,7 @@ export const KnowledgeSkillsList: FC = () => {
               key={skill.name}
               skill={skill}
               onEdit={() => openKnowledgeSkillDialog(skill)}
-              onDelete={() => skillsStore.knowledgeSkills.remove(skill.name)}
+              onDelete={() => dispatch(Actions.skills.removeKnowledgeSkill(skill.name))}
             />
           ))}
         </Stack>
@@ -106,7 +104,7 @@ export const KnowledgeSkillsList: FC = () => {
               key={skill.name}
               skill={skill}
               onEdit={() => openLanguageSkillDialog(skill)}
-              onDelete={() => skillsStore.languageSkills.remove(skill.name)}
+              onDelete={() => dispatch(Actions.skills.removeLanguageSkill(skill.name))}
             />
           ))}
         </Stack>

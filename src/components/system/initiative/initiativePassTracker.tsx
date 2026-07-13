@@ -3,20 +3,19 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-
-import type { InitiativePassStore } from "./useInitiativePassStore.ts"
-import { useInitiativePassesCompleted } from "./useInitiativePassStore.ts"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 interface InitiativePassTrackerProps {
   numPasses: number
-  store: InitiativePassStore
 }
 
 export const InitiativePassTracker: FC<InitiativePassTrackerProps> = ({
   numPasses,
-  store,
 }) => {
-  const completedSet = useInitiativePassesCompleted(store)
+  const dispatch = useRunnerStoreDispatch()
+  const completedSet = useRunnerStoreSelector(Selectors.initiative.selectPassesCompleted)
 
   return (
     <Stack sx={{ alignItems: "center", gap: 0.5 }}>
@@ -29,7 +28,7 @@ export const InitiativePassTracker: FC<InitiativePassTrackerProps> = ({
               key={passIndex}
               variant={completed ? "contained" : "outlined"}
               color={completed ? "secondary" : "primary"}
-              onClick={() => store.togglePass(passIndex)}
+              onClick={() => dispatch(Actions.initiative.togglePass(passIndex))}
               sx={{ minWidth: 40, width: 40, height: 40, padding: 0 }}
             >
               {passIndex + 1}

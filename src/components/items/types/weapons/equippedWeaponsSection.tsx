@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useGearByType } from "#/components/items/useGearStore.ts"
+import { useGearByType } from "#/components/items/gearHooks.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"

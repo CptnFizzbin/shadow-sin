@@ -1,19 +1,14 @@
-import { useSelector } from "@tanstack/react-store"
-
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { selectKnowledgeSkills, selectLanguageSkills } from "#/components/runner/skills/skillsSelectors.ts"
-import { useSkillsStore } from "#/components/runner/skills/useSkillsStore.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {
-  const skillsStore = useSkillsStore()
-
   const logicAttr = useAttr(AttributeKey.logic)
   const intuitionAttr = useAttr(AttributeKey.intuition)
 
-  const knowledgeSkills = useSelector(skillsStore, selectKnowledgeSkills)
-  const languageSkills = useSelector(skillsStore, selectLanguageSkills)
+  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
+  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
 
   const knowledgeSp = knowledgeSkills.reduce((total, skill) => {
     return total + getKnowledgeSkillSp(skill)

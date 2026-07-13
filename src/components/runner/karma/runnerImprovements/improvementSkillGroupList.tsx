@@ -9,15 +9,13 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
-import { selectCurrentKarma } from "#/components/runner/karma/karmaSelectors.ts"
-import { useKarmaStore } from "#/components/runner/karma/useKarmaStore.ts"
 import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { getSkillGroupCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnSkillGroupEntry,
@@ -44,11 +42,10 @@ interface ImprovementSkillGroupListProps {
 
 export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ onBack }) => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const karmaStore = useKarmaStore()
   const skillGroups = useRunnerData((sheet) => sheet.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useSelector(karmaStore, selectCurrentKarma)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const activeSkillGroupDialog = useActiveSkillGroupDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

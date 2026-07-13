@@ -3,25 +3,18 @@ import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
-import { useSelector } from "@tanstack/react-store"
 
 import { CredstickSection } from "#/components/items/types/credsticks/credstickSection.tsx"
 import { useEndOfMonthDialog } from "#/components/runner/finances/endOfMonth/endOfMonthDialog.tsx"
 import { LifestyleSection } from "#/components/runner/finances/lifestyle/lifestyleSection.tsx"
 import { LoansSection } from "#/components/runner/finances/loans/loansSection.tsx"
 import { NuyenSection } from "#/components/runner/finances/nuyen/nuyenSection.tsx"
-import { selectNuyenAmount, selectLoans } from "#/components/runner/finances/nuyen/nuyenSelectors.ts"
 import { useNetWorth } from "#/components/runner/finances/nuyen/useNetWorth.tsx"
-import { useNuyenStore } from "#/components/runner/finances/nuyen/useNuyenStore.ts"
-import {
-  selectLifestyleQuality,
-  selectLifestyleMonthsPaid,
-} from "#/components/runner/profile/lifestyleSelectors.ts"
-import { useLifestyleStore } from "#/components/runner/profile/useLifestyleStore.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Lifestyles } from "#/system/lifestyleType.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 
 export const Route = createFileRoute("/$runnerId/finances")({
@@ -29,17 +22,15 @@ export const Route = createFileRoute("/$runnerId/finances")({
 })
 
 function RouteComponent() {
-  const nuyenStore = useNuyenStore()
-  const lifestyleStore = useLifestyleStore()
   const endOfMonthDialog = useEndOfMonthDialog()
 
   const netWorth = useNetWorth()
-  const nuyenBalance = useSelector(nuyenStore, selectNuyenAmount)
-  const loans = useSelector(nuyenStore, selectLoans)
+  const nuyenBalance = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)
   const loansBalance = loans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  const lifestyleQuality = useSelector(lifestyleStore, selectLifestyleQuality)
-  const lifestyleMonthsPaid = useSelector(lifestyleStore, selectLifestyleMonthsPaid)
+  const lifestyleQuality = useRunnerStoreSelector(Selectors.profile.selectLifestyleQuality) ?? LifestyleType.Street
+  const lifestyleMonthsPaid = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1
   const lifestyleUpkeep = Lifestyles[lifestyleQuality].upkeep
 
   const monthlyNuyenCost = lifestyleMonthsPaid === 0 ? lifestyleUpkeep : 0
@@ -98,7 +89,7 @@ function RouteComponent() {
 
       <LoansSection />
 
-      <LifestyleSection nuyenStore={nuyenStore} />
+      <LifestyleSection />
 
       {endOfMonthDialog.dialog}
     </Stack>
