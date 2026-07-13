@@ -1,6 +1,6 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useComplexForms } from "#/components/runner/technomancer/complexFormsHooks.ts"
 import { ComplexFormBpPerRating, isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 

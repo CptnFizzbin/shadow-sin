@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
-import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
 import { RunnerManager } from "./runnerManager.ts"
@@ -78,7 +78,7 @@ describe("RunnerManager.saveRunner / getRunner", () => {
 
   it("persists the runner so getRunner returns it immediately after saveRunner resolves", async () => {
     // Arrange
-    const runner = { ...createDefaultRunnerData(), id: crypto.randomUUID() }
+    const runner = { ...runnerDataFactory(), id: crypto.randomUUID() }
 
     // Act
     await manager.saveRunner(runner)
@@ -102,7 +102,7 @@ describe("RunnerManager.listRunners", () => {
   it("returns saved runner metadata from the index", async () => {
     // Arrange
     const { manager } = makeTestRunnerManager()
-    const runner = { ...createDefaultRunnerData(), id: crypto.randomUUID() }
+    const runner = { ...runnerDataFactory(), id: crypto.randomUUID() }
 
     // Act
     await manager.saveRunner(runner)
@@ -119,7 +119,7 @@ describe("RunnerManager.deleteRunner", () => {
   it("removes the runner so subsequent getRunner throws", async () => {
     // Arrange
     const { manager } = makeTestRunnerManager()
-    const runner = { ...createDefaultRunnerData(), id: crypto.randomUUID() }
+    const runner = { ...runnerDataFactory(), id: crypto.randomUUID() }
     await manager.saveRunner(runner)
 
     // Act
@@ -134,7 +134,7 @@ describe("RunnerManager.save (debounced)", () => {
   it("debounces rapid saves so only the last value is persisted to storage", async () => {
     // Arrange
     const { manager: writingManager, storage } = makeTestRunnerManager()
-    const runner = { ...createDefaultRunnerData(), id: crypto.randomUUID() }
+    const runner = { ...runnerDataFactory(), id: crypto.randomUUID() }
     const first = { ...runner, profile: { ...runner.profile, alias: "first" } }
     const second = { ...runner, profile: { ...runner.profile, alias: "second" } }
     const third = { ...runner, profile: { ...runner.profile, alias: "third" } }

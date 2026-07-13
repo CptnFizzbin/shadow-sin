@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"

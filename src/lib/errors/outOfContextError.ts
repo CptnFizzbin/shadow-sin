@@ -4,7 +4,7 @@
  *
  * @example
  * ```ts
- * throw new OutOfContextError("useRunnerDataContext", "RunnerDataProvider")
+ * throw new OutOfContextError("useRunnerStoreContext", "RunnerStoreProvider")
  * ```
  */
 export class OutOfContextError extends Error {

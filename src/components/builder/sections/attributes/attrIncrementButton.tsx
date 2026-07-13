@@ -10,7 +10,7 @@ import {
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
 import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
 import { useAttr, useAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {
@@ -23,7 +23,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   }
   const { budget } = useAttributesBuildPoints()
 
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
   const attrKey = props.attr
   const attrValue = useAttr(attrKey)
   const attrInfo = useAttrInfo(attrKey)

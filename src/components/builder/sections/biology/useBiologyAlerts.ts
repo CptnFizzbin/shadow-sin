@@ -1,4 +1,4 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 export const useBiologyAlerts = (): AlertInfo[] => {

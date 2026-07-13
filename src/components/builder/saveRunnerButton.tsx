@@ -3,14 +3,14 @@ import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { useRunnerDataContext } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 
 import { useAllAlerts } from "./alerts/hooks/useAllAlerts.ts"
 
 export const SaveRunnerButton: FC = () => {
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
   const navigate = useNavigate()
   const runnerManager = useRunnerManager()
 

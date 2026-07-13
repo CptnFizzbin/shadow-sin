@@ -10,7 +10,7 @@ export const useRunnerStoreContext = (): RunnerStore => {
   const store = useContext(RunnerStoreContext)
 
   if (!store) {
-    throw new OutOfContextError("useRunnerDataContext", "RunnerStoreProvider")
+    throw new OutOfContextError("useRunnerStoreContext", "RunnerStoreProvider")
   }
 
   return store

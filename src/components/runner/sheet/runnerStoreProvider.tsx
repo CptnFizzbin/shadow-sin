@@ -6,9 +6,6 @@ import type { RunnerData } from "#/system/runnerData.ts"
 
 import { RunnerAttributesProvider } from "./runnerAttributesProvider.tsx"
 import { useRunnerDataSelector } from "./runnerData.selectors.ts"
-import { useRunnerDataContext } from "./runnerDataContext.ts"
-
-export { useRunnerDataContext }
 
 interface RunnerDataProviderProps extends PropsWithChildren {
   store: RunnerStore

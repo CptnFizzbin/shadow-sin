@@ -35,7 +35,7 @@ function createThunkDispatch(getState: () => RunnerData, applyAction: (action: U
  * via `setState`, so the store's own subscribers (autosave in `src/routes/$runnerId.tsx`, and
  * every `useRunnerStoreSelector`/`useSelector` reader) fire. Works unchanged in both the Viewer (a
  * real root store) and the Builder (a `createSliceAtom` slice of `BuilderRootState`), since both
- * are reached via the same `useRunnerDataContext()`.
+ * are reached via the same `useRunnerStoreContext()`.
  */
 export function useRunnerStoreDispatch(): RunnerDispatch {
   const store = useRunnerStoreContext()
