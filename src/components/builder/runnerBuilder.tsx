@@ -8,9 +8,9 @@ import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunne
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
+import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
 import { useBuilderStores } from "./hooks/useBuilderStores.ts"
-import { ImportYamlBuilderButton } from "./importYamlBuilderButton.tsx"
-import { RunnerBuilderStoreProvider } from "./runnerBuilderStoreProvider.tsx"
+import { BuilderImportButton } from "./builderImportButton.tsx"
 import { SaveRunnerButton } from "./saveRunnerButton.tsx"
 import { AttributesBuilderSection } from "./sections/attributes/attributesBuilderSection.tsx"
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
@@ -46,7 +46,7 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
   }
 
   return (
-    <RunnerBuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
+    <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <Stack>
         <Stack
           sx={{
@@ -65,7 +65,7 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               Cancel
             </Button>
             <Stack direction="row" sx={{ gap: 1 }}>
-              <ImportYamlBuilderButton onImport={loadRunner} />
+              <BuilderImportButton onImport={loadRunner} />
               <ExportRunnerButton />
               <Button
                 variant="outlined"
@@ -97,6 +97,6 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
         <AllBuilderAlerts />
         <SaveRunnerButton />
       </Stack>
-    </RunnerBuilderStoreProvider>
+    </BuilderStoreProvider>
   )
 }

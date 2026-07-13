@@ -1,4 +1,4 @@
-import type { ThunkAction, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit"
+import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit"
 import { useMemo } from "react"
 
 import type { BuilderState } from "#/components/builder/builderState.ts"
@@ -7,8 +7,6 @@ import { useBuilderDataContext } from "./builderStore.context.ts"
 import { builderStoreReducer } from "./builderStore.reducer.ts"
 
 export type BuilderDispatch = ThunkDispatch<BuilderState, undefined, UnknownAction>
-
-export type BuilderAction = UnknownAction | ThunkAction<unknown, BuilderState, undefined, UnknownAction>
 
 /**
  * Hand-rolled `redux-thunk` equivalent, mirroring `useRunnerStoreDispatch` — see that hook's doc
@@ -41,17 +39,4 @@ export function useBuilderStoreDispatch(): BuilderDispatch {
     ),
     [store],
   )
-}
-
-/** A one-shot, store-less version of {@link useBuilderStoreDispatch} for non-React contexts (tests). */
-export async function dispatchBuilderThunk(state: BuilderState, action: BuilderAction): Promise<BuilderState> {
-  let current = state
-
-  const dispatch = createThunkDispatch(
-    () => current,
-    (a) => { current = builderStoreReducer(current, a) },
-  )
-
-  await dispatch(action)
-  return current
 }

@@ -5,8 +5,6 @@ import { BuilderStoreContext, useBuilderDataContext } from "#/stores/builder/bui
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 
-import { IsBuilderContext } from "./isBuilderContext.ts"
-
 export { useBuilderDataContext }
 
 interface RunnerBuilderStoreProviderProps extends PropsWithChildren {
@@ -14,18 +12,16 @@ interface RunnerBuilderStoreProviderProps extends PropsWithChildren {
   builderStore: BuilderStore
 }
 
-export const RunnerBuilderStoreProvider: FC<RunnerBuilderStoreProviderProps> = ({
+export const BuilderStoreProvider: FC<RunnerBuilderStoreProviderProps> = ({
   runnerStore,
   builderStore,
   children,
 }) => {
   return (
-    <IsBuilderContext.Provider value={true}>
-      <BuilderStoreContext.Provider value={builderStore}>
-        <RunnerDataProvider store={runnerStore}>
-          {children}
-        </RunnerDataProvider>
-      </BuilderStoreContext.Provider>
-    </IsBuilderContext.Provider>
+    <BuilderStoreContext.Provider value={builderStore}>
+      <RunnerDataProvider store={runnerStore}>
+        {children}
+      </RunnerDataProvider>
+    </BuilderStoreContext.Provider>
   )
 }

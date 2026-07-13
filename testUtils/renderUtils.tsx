@@ -3,10 +3,8 @@ import { createStore } from "@tanstack/store"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { afterEach } from "vitest"
-
-import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
-import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
+import { type BuilderState, builderStateFactory } from "#/components/builder/builderState.ts"
+import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
 import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
@@ -30,7 +28,10 @@ export interface RenderInBuilderOptions {
   builderStore?: BuilderStore
 
   /** @deprecated */
-  updateRootState?: (rootState: BuilderRootState) => void
+  updateRootState?: (rootState: {
+    runner: RunnerData
+    builder: BuilderState
+  }) => void
 }
 
 export function renderWithProviders(
@@ -81,9 +82,9 @@ export function renderInBuilder(
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
-        <RunnerBuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
+        <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
           {children}
-        </RunnerBuilderStoreProvider>
+        </BuilderStoreProvider>
       </ThemeProvider>
     )
   }

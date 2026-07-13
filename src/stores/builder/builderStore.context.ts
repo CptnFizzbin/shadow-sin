@@ -10,8 +10,13 @@ export const useBuilderDataContext = (): BuilderStore => {
   const store = useContext(BuilderStoreContext)
 
   if (!store) {
-    throw new OutOfContextError("useBuilderDataContext", "RunnerBuilderStoreProvider")
+    throw new OutOfContextError("useBuilderDataContext", "BuilderStoreProvider")
   }
 
   return store
+}
+
+export const useIsBuilder = (): boolean => {
+  const store = useContext(BuilderStoreContext)
+  return !!store
 }

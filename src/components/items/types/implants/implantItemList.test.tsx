@@ -6,7 +6,7 @@ import { useMemo } from "react"
 import { describe, expect, it } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
-import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
+import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -44,9 +44,9 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <RunnerBuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
+      <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
         {children}
-      </RunnerBuilderStoreProvider>
+      </BuilderStoreProvider>
     </ThemeProvider>
   )
 }
