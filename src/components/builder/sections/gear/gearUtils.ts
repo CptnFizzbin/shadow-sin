@@ -1,7 +1,7 @@
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { getLicenseAvailability } from "#/components/items/types/licenses/licenseUtils.ts"
 import { getSinAvailability } from "#/components/items/types/licenses/sinUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"

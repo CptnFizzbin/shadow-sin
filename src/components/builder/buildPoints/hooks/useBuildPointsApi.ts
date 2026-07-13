@@ -1,5 +1,4 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
-import { RunnerBuilderMaxBp } from "#/components/builder/runnerBuilderUtils.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import {
   calculateActiveSkillsBp,
@@ -27,6 +26,8 @@ import { useGearBuildPoints } from "./useGearBuildPoints.ts"
 import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
 import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
 import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
+
+export const RunnerBuilderMaxBp = 400
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [

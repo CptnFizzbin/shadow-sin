@@ -3,9 +3,9 @@ import { render, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { describe, expect, it } from "vitest"
 
-import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { theme } from "#/theme.ts"
@@ -27,7 +27,7 @@ const TestProviders: FC<TestProvidersProps> = ({ runnerData, children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+      <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
     </ThemeProvider>
   )
 }
@@ -36,7 +36,7 @@ function renderWithRunner(
   element: ReactElement,
   updateRunnerData?: (runnerData: RunnerData) => void,
 ) {
-  const runnerData = createDefaultRunnerData()
+  const runnerData = runnerDataFactory()
   updateRunnerData?.(runnerData)
 
   const { container } = render(element, {

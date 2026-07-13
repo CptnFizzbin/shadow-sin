@@ -7,15 +7,16 @@ import { produce } from "immer"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData, useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 
 type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
   const profile = useRunnerData((s) => s.profile)
   const biology = useRunnerData((s) => s.biology)
 

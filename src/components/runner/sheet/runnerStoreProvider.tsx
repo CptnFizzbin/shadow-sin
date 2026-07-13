@@ -1,17 +1,14 @@
 import type { FC, PropsWithChildren } from "react"
 
 import { RunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { RunnerAttributesProvider } from "./runnerAttributesProvider.tsx"
 import { useRunnerDataSelector } from "./runnerData.selectors.ts"
-import { RunnerDataContext, useRunnerDataContext } from "./runnerDataContext.ts"
-import type { RunnerDataStore } from "./runnerDataStore.ts"
-
-export { useRunnerDataContext }
 
 interface RunnerDataProviderProps extends PropsWithChildren {
-  store: RunnerDataStore
+  store: RunnerStore
 }
 
 /**
@@ -19,18 +16,16 @@ interface RunnerDataProviderProps extends PropsWithChildren {
  * `store` instance, so `StoreSlice`-based hooks and `useRunnerStoreSelector`/`useRunnerStoreDispatch`
  * can coexist while call sites are migrated one domain at a time.
  */
-export const RunnerDataProvider: FC<RunnerDataProviderProps> = ({
+export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   store,
   children,
 }) => {
   return (
-    <RunnerDataContext.Provider value={store}>
-      <RunnerStoreContext.Provider value={store}>
-        <RunnerAttributesProvider>
-          {children}
-        </RunnerAttributesProvider>
-      </RunnerStoreContext.Provider>
-    </RunnerDataContext.Provider>
+    <RunnerStoreContext.Provider value={store}>
+      <RunnerAttributesProvider>
+        {children}
+      </RunnerAttributesProvider>
+    </RunnerStoreContext.Provider>
   )
 }
 

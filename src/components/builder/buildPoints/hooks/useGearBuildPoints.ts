@@ -1,7 +1,7 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const GearBuildPointAllowance = 50

@@ -15,7 +15,7 @@ import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
 import * as powersSelectors from "./powers/powersSlice.selectors.ts"
 import * as profileSelectors from "./profile/profileSlice.selectors.ts"
 import * as qualitiesSelectors from "./qualities/qualitiesSlice.selectors.ts"
-import { useRunnerDataContext } from "./runnerStore.context.ts"
+import { useRunnerStoreContext } from "./runnerStore.context.ts"
 import * as skillsSelectors from "./skills/skillsSlice.selectors.ts"
 import * as spellsSelectors from "./spells/spellsSlice.selectors.ts"
 import * as spiritsSelectors from "./spirits/spiritsSlice.selectors.ts"
@@ -28,7 +28,7 @@ export function useRunnerStoreSelector<T>(
   selector: RunnerDataSelector<T>,
   compare?: (prev: T, next: T) => boolean,
 ) {
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
   return useSelector(store, selector, { compare })
 }
 

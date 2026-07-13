@@ -1,15 +1,16 @@
 import { createContext, useContext } from "react"
 
-import type { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-export const RunnerStoreContext = createContext<RunnerDataStore | null>(null)
+import type { RunnerStore } from "./runnerStore.ts"
 
-export const useRunnerDataContext = (): RunnerDataStore => {
+export const RunnerStoreContext = createContext<RunnerStore | null>(null)
+
+export const useRunnerStoreContext = (): RunnerStore => {
   const store = useContext(RunnerStoreContext)
 
   if (!store) {
-    throw new OutOfContextError("useRunnerDataContext", "RunnerStoreProvider")
+    throw new OutOfContextError("useRunnerStoreContext", "RunnerStoreProvider")
   }
 
   return store

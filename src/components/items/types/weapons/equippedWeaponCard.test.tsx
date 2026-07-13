@@ -2,14 +2,14 @@ import { fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { FirearmData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { EquippedWeaponCard } from "./equippedWeaponCard.tsx"
@@ -36,8 +36,8 @@ const weapon: FirearmData = {
 }
 
 const Wrapper: FC<PropsWithChildren> = ({ children }) => {
-  const runnerStore = new RunnerDataStore(createDefaultRunnerData())
-  return <RunnerDataProvider store={runnerStore}>{children}</RunnerDataProvider>
+  const runnerStore = new RunnerDataStore(runnerDataFactory())
+  return <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
 }
 
 describe("EquippedWeaponCard - Attack button", () => {

@@ -1,4 +1,4 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
 import { selectTrackWoundModifier } from "./damageUtils.ts"

@@ -4,7 +4,7 @@ import { BuilderSection } from "#/components/builder/sections/builderSection.tsx
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { AdeptPowersList } from "#/components/runner/adeptPowers/adeptPowersList.tsx"
 import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 
 import { useAdeptPowersAlerts } from "./useAdeptPowersAlerts.ts"
 

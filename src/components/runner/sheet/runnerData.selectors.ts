@@ -2,6 +2,7 @@ import { useSelector } from "@tanstack/react-store"
 
 import * as biologySelectors from "#/stores/runner/biology/biologySlice.selectors.ts"
 import * as powersSelectors from "#/stores/runner/powers/powersSlice.selectors.ts"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import * as skillsSelectors from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { AwakeningData, AwakeningType } from "#/system/awakeningType.ts"
 import type { MetatypeData } from "#/system/metatypeData.ts"
@@ -13,8 +14,6 @@ import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
 import type { SkillGroupData } from "#/system/skills/skillGroupData.ts"
 import type { SkillInfo } from "#/system/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
-
-import { useRunnerDataContext } from "./runnerDataContext.ts"
 
 export type RunnerDataSelector<TData> = (state: RunnerData) => TData
 
@@ -29,7 +28,7 @@ export function useRunnerDataSelector<T>(
   selector: RunnerDataSelector<T>,
   compare?: (prev: T, next: T) => boolean,
 ) {
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
   return useSelector(store, selector, { compare })
 }
 

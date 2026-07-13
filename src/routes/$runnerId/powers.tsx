@@ -5,7 +5,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { AdeptPowersViewerSection } from "#/components/runner/adeptPowers/adeptPowersViewerSection.tsx"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { AwakeningType } from "#/system/awakeningType.ts"
 

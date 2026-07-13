@@ -8,36 +8,24 @@ import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunne
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
-import { useBuilderRootStateStore } from "./hooks/useBuilderRootStateStore.ts"
-import { ImportYamlBuilderButton } from "./importYamlBuilderButton.tsx"
-import { RunnerBuilderStoreProvider } from "./runnerBuilderStoreProvider.tsx"
+import { BuilderImportButton } from "./builderImportButton.tsx"
+import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
+import { useBuilderStores } from "./hooks/useBuilderStores.ts"
 import { SaveRunnerButton } from "./saveRunnerButton.tsx"
-import {
-  AttributesBuilderSection,
-} from "./sections/attributes/attributesBuilderSection.tsx"
+import { AttributesBuilderSection } from "./sections/attributes/attributesBuilderSection.tsx"
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
 import { ContactsBuilderSection } from "./sections/contacts/contactsBuilderSection.tsx"
 import { GearBuilderSection } from "./sections/gear/gearBuilderSection.tsx"
 import { ProfileBuilderSection } from "./sections/profile/profileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "./sections/qualities/qualitiesBuilderSection.tsx"
-import {
-  AdeptPowersBuilderSection,
-} from "./sections/resources/adept/adeptPowersBuilderSection.tsx"
-import {
-  SpellsBuilderSection,
-} from "./sections/resources/magician/spellsBuilderSection.tsx"
+import { AdeptPowersBuilderSection } from "./sections/resources/adept/adeptPowersBuilderSection.tsx"
+import { SpellsBuilderSection } from "./sections/resources/magician/spellsBuilderSection.tsx"
 import {
   ComplexFormsBuilderSection,
 } from "./sections/resources/technomancer/complexForms/complexFormsBuilderSection.tsx"
-import {
-  SpritesBuilderSection,
-} from "./sections/resources/technomancer/sprites/spritesBuilderSection.tsx"
-import {
-  ActiveSkillsBuilderSection,
-} from "./sections/skills/activeSkills/activeSkillsBuilderSection.tsx"
-import {
-  KnowledgeSkillsBuilderSection,
-} from "./sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
+import { SpritesBuilderSection } from "./sections/resources/technomancer/sprites/spritesBuilderSection.tsx"
+import { ActiveSkillsBuilderSection } from "./sections/skills/activeSkills/activeSkillsBuilderSection.tsx"
+import { KnowledgeSkillsBuilderSection } from "./sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
 import { BpSummaryFooter } from "./sections/summary/bpSummaryFooter.tsx"
 
 interface RunnerFormProps {
@@ -46,7 +34,7 @@ interface RunnerFormProps {
 
 export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
   const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
-  const [rootStore, resetRootStore, loadRunner] = useBuilderRootStateStore(runner)
+  const { runnerStore, builderStore, reset, loadRunner } = useBuilderStores(runner)
   const navigate = useNavigate()
 
   const handleCancel = () => {
@@ -58,7 +46,7 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
   }
 
   return (
-    <RunnerBuilderStoreProvider rootStore={rootStore}>
+    <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <Stack>
         <Stack
           sx={{
@@ -77,13 +65,13 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               Cancel
             </Button>
             <Stack direction="row" sx={{ gap: 1 }}>
-              <ImportYamlBuilderButton onImport={loadRunner} />
+              <BuilderImportButton onImport={loadRunner} />
               <ExportRunnerButton />
               <Button
                 variant="outlined"
                 color="warning"
                 size="small"
-                onClick={() => resetRootStore()}
+                onClick={() => reset()}
               >
                 Reset
               </Button>
@@ -109,6 +97,6 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
         <AllBuilderAlerts />
         <SaveRunnerButton />
       </Stack>
-    </RunnerBuilderStoreProvider>
+    </BuilderStoreProvider>
   )
 }

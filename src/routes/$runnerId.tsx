@@ -12,8 +12,8 @@ import { RunnerNav } from "#/components/runner/nav/runnerNav.tsx"
 import { useRunnerNav } from "#/components/runner/nav/useRunnerNav.ts"
 import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessButton.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import { RunnerManager } from "#/runner/runnerManager.ts"
@@ -51,11 +51,11 @@ function RunnerRoute() {
   }, [store, runnerManager])
 
   return (
-    <RunnerDataProvider store={store}>
+    <RunnerStoreProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>
         <RunnerContent />
       </DiceTrayProvider>
-    </RunnerDataProvider>
+    </RunnerStoreProvider>
   )
 }
 

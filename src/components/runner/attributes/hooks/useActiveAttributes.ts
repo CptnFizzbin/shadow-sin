@@ -1,5 +1,5 @@
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"

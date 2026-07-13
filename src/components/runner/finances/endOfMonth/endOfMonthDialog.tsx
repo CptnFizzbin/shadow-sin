@@ -9,12 +9,12 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
@@ -32,7 +32,7 @@ interface EndOfMonthLineItem {
 type Props = ControlledDialogProps<void>
 
 const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
-  const runnerDataStore = useRunnerDataContext()
+  const runnerDataStore = useRunnerStoreContext()
   const dispatch = useRunnerStoreDispatch()
 
   const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)

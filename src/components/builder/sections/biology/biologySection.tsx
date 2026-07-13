@@ -10,8 +10,8 @@ import type { FC } from "react"
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
 import { InnatePowersDisplay } from "#/components/runner/biology/innatePowersDisplay.tsx"
 import { MovementDisplay } from "#/components/runner/biology/movementDisplay.tsx"
-import { useRunnerDataContext } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
@@ -19,7 +19,7 @@ import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 import { BiologyAttributes } from "./biologyAttributes.tsx"
 
 export const BiologySection: FC = () => {
-  const sheet = useRunnerDataContext()
+  const sheet = useRunnerStoreContext()
   const metatypeKey = useRunnerStoreSelector(Selectors.biology.selectMetatype)
   const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
 

@@ -10,7 +10,7 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attributesProvider.tsx"
-import { useRunnerData } from "./sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "./sheet/runnerStoreProvider.tsx"
 
 // Re-exported for convenience — see attributesProvider.tsx for full documentation.
 export { useAllAttrInfos, useAttrInfo }

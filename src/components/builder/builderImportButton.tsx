@@ -12,7 +12,7 @@ interface ImportYamlBuilderButtonProps {
   onImport: (importedRunner: RunnerData) => void
 }
 
-export const ImportYamlBuilderButton: FC<ImportYamlBuilderButtonProps> = ({ onImport }) => {
+export const BuilderImportButton: FC<ImportYamlBuilderButtonProps> = ({ onImport }) => {
   const [importError, setImportError] = useState(false)
 
   const { inputProps, openFilePicker } = useYamlFileImport({

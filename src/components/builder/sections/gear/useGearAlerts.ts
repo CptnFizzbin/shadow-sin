@@ -5,7 +5,7 @@ import {
   GearNuyenAllowance,
   useGearBuildPoints,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 

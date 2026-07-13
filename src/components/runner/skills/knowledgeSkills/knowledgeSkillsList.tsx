@@ -2,7 +2,7 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
 
 import { KnowledgeSkillsListItem } from "./knowledgeSkillsListItem.tsx"

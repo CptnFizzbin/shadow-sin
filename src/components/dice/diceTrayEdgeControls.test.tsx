@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
@@ -21,9 +21,9 @@ function renderWithEdge(max: number, current: number) {
   const diceTrayApi = new DiceTrayApi()
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
-    <RunnerDataProvider store={store}>
+    <RunnerStoreProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>{children}</DiceTrayProvider>
-    </RunnerDataProvider>
+    </RunnerStoreProvider>
   )
 
   render(<DiceTrayEdgeControls />, { wrapper: Wrapper })

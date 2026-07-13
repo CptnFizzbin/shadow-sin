@@ -5,7 +5,7 @@ import Select from "@mui/material/Select"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useActiveSkillDicePool } from "#/components/runner/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"

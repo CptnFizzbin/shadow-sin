@@ -1,4 +1,4 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 

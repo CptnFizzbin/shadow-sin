@@ -2,7 +2,7 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 
 import { SpritesList } from "./spritesList.tsx"

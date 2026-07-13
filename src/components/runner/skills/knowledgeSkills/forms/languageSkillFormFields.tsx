@@ -3,7 +3,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerDataProvider.tsx"
+import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import type { LanguageSkillForm } from "./useLanguageSkillForm.ts"
