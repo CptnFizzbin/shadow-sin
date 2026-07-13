@@ -88,6 +88,7 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
     <ControlledDialog
       ctrl={ctrl}
       maxWidth="sm"
+      onClose={false}
       onClosed={() => {
         form.reset()
         setCustomModeActive(

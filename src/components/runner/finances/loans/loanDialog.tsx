@@ -87,7 +87,7 @@ const LoanDialog: FC<LoanDialogProps> = ({
   const title = isEditMode ? "Edit Loan" : "Add Loan"
 
   return (
-    <ControlledDialog ctrl={ctrl} onClosed={handleClosed}>
+    <ControlledDialog ctrl={ctrl} onClose={false} onClosed={handleClosed}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>

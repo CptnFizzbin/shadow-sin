@@ -139,7 +139,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   return (
     <>
-      <ControlledDialog ctrl={ctrl} onClosed={onClosed}>
+      <ControlledDialog ctrl={ctrl} onClose={false} onClosed={onClosed}>
         <Dialog.Title>{title}</Dialog.Title>
 
         <Dialog.Content>

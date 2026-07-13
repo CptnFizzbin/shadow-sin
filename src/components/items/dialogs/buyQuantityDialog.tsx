@@ -36,7 +36,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const canAfford = currentNuyen >= totalCost
 
   return (
-    <ControlledDialog ctrl={ctrl}>
+    <ControlledDialog ctrl={ctrl} onClose={false}>
       <Dialog.Title>Buy More</Dialog.Title>
 
       <Dialog.Content>

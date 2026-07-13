@@ -123,7 +123,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
   }
 
   return (
-    <ControlledDialog ctrl={ctrl} onClosed={handleTransitionExited}>
+    <ControlledDialog ctrl={ctrl} onClose={false} onClosed={handleTransitionExited}>
       <Dialog.Title>End of Month</Dialog.Title>
       <Dialog.Content>
         <Stack sx={{ gap: 0.5, padding: 1 }}>

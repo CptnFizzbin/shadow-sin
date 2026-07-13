@@ -27,7 +27,7 @@ const LanguageSkillDialog: FC<LanguageSkillDialogProps> = ({
   const form = useLanguageSkillForm({ skill, onSubmit: (savedSkill) => ctrl.close(savedSkill) })
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClosed={() => form.reset()}>
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" onClose={false} onClosed={() => form.reset()}>
       <Dialog.Title>
         {isEditMode ? "Edit Language Skill" : "Add Language Skill"}
       </Dialog.Title>

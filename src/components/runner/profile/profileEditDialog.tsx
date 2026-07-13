@@ -48,7 +48,7 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   }
 
   return (
-    <ControlledDialog ctrl={ctrl}>
+    <ControlledDialog ctrl={ctrl} onClose={false}>
       <Dialog.Title>Edit Profile</Dialog.Title>
 
       <Dialog.Content>

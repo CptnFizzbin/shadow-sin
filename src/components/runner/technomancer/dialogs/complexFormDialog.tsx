@@ -45,6 +45,7 @@ const ComplexFormDialog: FC<ComplexFormDialogProps> = ({
     <ControlledDialog
       ctrl={ctrl}
       maxWidth="sm"
+      onClose={false}
       onClosed={() => appForm.reset()}
     >
       <Dialog.Title>

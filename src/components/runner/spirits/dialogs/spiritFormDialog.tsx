@@ -33,7 +33,6 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
   return (
     <Dialog
       open={open}
-      onClose={() => onClose()}
       onClosed={onClosed}
       maxWidth="sm"
     >
