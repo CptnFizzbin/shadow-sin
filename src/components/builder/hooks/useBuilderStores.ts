@@ -18,20 +18,20 @@ export interface UseBuilderRootStateStore {
   loadRunner: (runner: RunnerData) => void
 }
 
-const builderStorage = LocalStorageProvider.getStorage().namespace("builder")
+const runnerStorage = LocalStorageProvider.getStorage().namespace("builder")
 
-function getBuilderKey(runnerId: string): string {
+function getRunnerStorageKey(runnerId: string): string {
   return `character-form/${runnerId}`
 }
 
-async function getSavedBuilder(runnerStorageKey: string) {
-  const val = await builderStorage.getItem<JsonValue>(runnerStorageKey)
+async function getSavedRunner(runnerStorageKey: string) {
+  const val = await runnerStorage.getItem<JsonValue>(runnerStorageKey)
   return val as RunnerData | null
 }
 
 function useSavedRunnerData(runnerStorageKey: string): RunnerData | null {
   const promise = useMemo((): Promise<RunnerData | null> => {
-    return getSavedBuilder(runnerStorageKey)
+    return getSavedRunner(runnerStorageKey)
   }, [runnerStorageKey])
 
   return use(promise)
@@ -40,7 +40,7 @@ function useSavedRunnerData(runnerStorageKey: string): RunnerData | null {
 export const useBuilderStores = (
   runner?: RunnerData,
 ): UseBuilderRootStateStore => {
-  const runnerStorageKey = getBuilderKey(runner?.id ?? "new")
+  const runnerStorageKey = getRunnerStorageKey(runner?.id ?? "new")
   const savedRunner = useSavedRunnerData(runnerStorageKey)
 
   const runnerStore = useMemo(() => {
@@ -53,19 +53,19 @@ export const useBuilderStores = (
 
   useEffect(() => {
     const { unsubscribe } = runnerStore.subscribe((state) => {
-      void builderStorage.setItem(runnerStorageKey, toJsonValue(state))
+      void runnerStorage.setItem(runnerStorageKey, toJsonValue(state))
     })
     return () => unsubscribe()
   }, [runnerStore, runnerStorageKey])
 
   const onReset = useCallback(() => {
-    void builderStorage.removeItem(runnerStorageKey)
+    void runnerStorage.removeItem(runnerStorageKey)
     runnerStore.setState(() => runnerDataFactory())
     builderStore.setState(() => builderStateFactory())
   }, [runnerStorageKey, runnerStore, builderStore])
 
   const loadRunner = useCallback((importedRunner: RunnerData) => {
-    void builderStorage.removeItem(runnerStorageKey)
+    void runnerStorage.removeItem(runnerStorageKey)
     runnerStore.setState(() => importedRunner)
     builderStore.setState(() => builderStateFactory())
   }, [runnerStorageKey, runnerStore, builderStore])

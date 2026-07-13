@@ -1,13 +1,12 @@
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
-import { awakenings, MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
-import { metatypes } from "#/system/metatypeData.ts"
+import { MagicAwakeningTypes, TechAwakeningTypes } from "#/system/awakeningType.ts"
 
 export const useActiveAttributes = () => {
-  const attributes = useRunnerStoreSelector((sheet) => sheet.attributes)
-  const metatype = useRunnerStoreSelector((sheet) => metatypes[sheet.biology.metatype])
-  const awakening = useRunnerStoreSelector((sheet) => awakenings[sheet.biology.awakening])
+  const attributes = useRunnerStoreSelector(Selectors.attributes.selectAttributes)
+  const metatype = useRunnerStoreSelector(Selectors.biology.selectMetatypeData)
+  const awakening = useRunnerStoreSelector(Selectors.biology.selectAwakeningData)
 
   return Object.values(AttributeKey)
     .filter((attr) => {

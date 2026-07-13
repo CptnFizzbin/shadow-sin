@@ -27,7 +27,7 @@ interface SummoningSectionProps {
 
 export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force, isBound }) => {
   const magicAttr = useAttrValue(AttributeKey.magic)
-  const tradition = useRunnerStoreSelector((sheet) => sheet.tradition)
+  const tradition = useRunnerStoreSelector(Selectors.tradition.selectTradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const isOverforce = force > magicAttr

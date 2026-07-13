@@ -1,11 +1,11 @@
 import { useGearFilter } from "#/components/items/gearHooks.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isCredstickData } from "#/system/gear/credstickData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 export function useNetWorth(): number {
-  const currentNuyen = useRunnerStoreSelector((s) => s.nuyen.current)
-  const loans = useRunnerStoreSelector((s) => s.nuyen.loans)
+  const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)
+  const loans = useRunnerStoreSelector(Selectors.nuyen.selectLoans)
   const allGear = useGearFilter((_): _ is ItemData => true)
 
   const credstickTotal = allGear
