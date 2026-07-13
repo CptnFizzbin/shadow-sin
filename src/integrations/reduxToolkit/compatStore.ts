@@ -6,30 +6,28 @@ export type StateUpdater<TState> = (prev: TState) => TState
 export interface CompatStore<TState> {
   readonly dispatch: ThunkDispatch<TState, undefined, UnknownAction>
   getState: () => TState
-  /** @deprecated alias for {@link getState}, kept for call sites ported from `@tanstack/store`. */
+  /** @deprecated alias for {@link getState}. */
   get: () => TState
-  /** @deprecated snapshot alias for {@link getState}, kept for call sites ported from `@tanstack/store`. */
+  /** @deprecated snapshot alias for {@link getState}. */
   readonly state: TState
   setState: (updater: StateUpdater<TState>) => void
   subscribe: (listener: (state: TState) => void) => { unsubscribe: () => void }
 }
 
 /**
- * A real `configureStore` instance wrapped in the `get`/`state`/`setState`/`subscribe` shape this
- * app's stores exposed under `@tanstack/store`, so call sites didn't need to change when the
- * underlying engine did.
+ * A `configureStore` instance exposed through a `get`/`state`/`setState`/`subscribe` API, for call
+ * sites that want a plain "read a snapshot, write a next value" store instead of dispatching
+ * actions directly.
  *
  * `setState` dispatches a single internal action carrying the `(prev state) => next state)`
- * updater — an Immer `produce(recipe)` call and a plain `(prev) => next` function both work,
- * exactly as they did with `Store.setState`. `configureStore`'s `serializableCheck` is disabled
- * because that payload is a function by design, and `immutableStateInvariantMiddleware` is
- * disabled because `Store.get()`/`.state` callers (including deprecated test helpers that mutate a
- * fetched snapshot before writing it back via `setState`) were always free to hold and mutate a
- * live reference under `@tanstack/store`.
+ * updater — an Immer `produce(recipe)` call and a plain `(prev) => next` function both work.
+ * `configureStore`'s `serializableCheck` is disabled because that payload is a function by design,
+ * and `immutableStateInvariantMiddleware` is disabled because callers are free to hold a snapshot
+ * from `get()`/`.state`, mutate it, and write it back via `setState` (some test helpers do exactly
+ * this).
  *
- * Pass a real domain `reducer` (e.g. a `combineReducers` result) to back a store with dispatchable
- * actions/thunks; omit it for stores that are only ever written through `setState` (mirroring
- * `createStore(initialValue)`).
+ * Pass a domain `reducer` (e.g. a `combineReducers` result) to back a store with dispatchable
+ * actions/thunks; omit it for stores that are only ever written through `setState`.
  */
 export function createCompatStore<TState>(
   preloadedState: TState,

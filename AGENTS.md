@@ -227,12 +227,11 @@ commit
 
 ## Redux Toolkit store patterns
 
-Stores (`RunnerStore`, `BuilderStore`, `DiceRoller`, `DialogCtrl`, `ImprovementStore`, `DiceTrayApi`) are real
+Stores (`RunnerStore`, `BuilderStore`, `DiceRoller`, `DialogCtrl`, `ImprovementStore`, `DiceTrayApi`) are
 `configureStore` instances, created via `createCompatStore` (`src/integrations/reduxToolkit/compatStore.ts`) — a thin
-wrapper exposing `get`/`state`/`setState`/`subscribe` alongside the real `dispatch`/`getState`. Domain stores
-(`RunnerStore`, `BuilderStore`) back it with a real combined reducer (dispatchable actions/`createAsyncThunk`
-thunks); ad hoc UI-state stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever written through
-`setState`.
+wrapper exposing `get`/`state`/`setState`/`subscribe` alongside `dispatch`/`getState`. Domain stores (`RunnerStore`,
+`BuilderStore`) back it with a combined reducer (dispatchable actions/`createAsyncThunk` thunks); ad hoc UI-state
+stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever written through `setState`.
 
 - **Store objects are stable** — do not re-create store instances on every render. Use `useMemo` or module-level
   singletons.
@@ -249,9 +248,9 @@ thunks); ad hoc UI-state stores (`DiceRoller`, `DialogCtrl`, etc.) omit the redu
 - For the `RunnerStore`/`BuilderStore` domain stores specifically, prefer `useRunnerStoreSelector`/
   `useBuilderStoreSelector` (which wrap the same hook) over reaching into `store` directly, and dispatch through
   `useRunnerStoreDispatch()`/`useBuilderStoreDispatch()` rather than calling `store.setState()` — that keeps writes
-  going through the real domain reducers instead of bypassing them.
-- `@tanstack/react-store`'s `useSelector` is still used, but only for reading `@tanstack/react-form`'s own internal
-  form stores (`form.store`, `form.baseStore`, a field group's `.store`) — never for our own stores.
+  going through the domain reducers instead of bypassing them.
+- `@tanstack/react-store`'s `useSelector` is scoped to reading `@tanstack/react-form`'s own internal form stores
+  (`form.store`, `form.baseStore`, a field group's `.store`) — never for our own stores.
 
 ## MUI v9 CSS variables
 
