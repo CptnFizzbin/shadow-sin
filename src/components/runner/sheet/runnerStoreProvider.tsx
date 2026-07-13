@@ -12,9 +12,9 @@ interface RunnerDataProviderProps extends PropsWithChildren {
 }
 
 /**
- * Provides both the legacy `RunnerDataContext` and the new `RunnerStoreContext` off the same
- * `store` instance, so `StoreSlice`-based hooks and `useRunnerStoreSelector`/`useRunnerStoreDispatch`
- * can coexist while call sites are migrated one domain at a time.
+ * Provides `RunnerStoreContext` off the given `store` instance, so `useRunnerStoreSelector`/
+ * `useRunnerStoreDispatch` (and the deprecated `useRunnerData`/`useRunnerDataSelector` shims) can
+ * read and write runner state.
  */
 export const RunnerStoreProvider: FC<RunnerDataProviderProps> = ({
   store,

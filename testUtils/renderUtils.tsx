@@ -43,13 +43,13 @@ export function renderWithProviders(
     updateRunnerData,
   }: RenderWithProvidersOptions = {},
 ) {
-  const Wrapper: FC<PropsWithChildren> = ({ children }) => {
-    if (updateRunnerData) {
-      const runner = runnerStore.get()
-      updateRunnerData(runner)
-      runnerStore.setState(() => runner)
-    }
+  if (updateRunnerData) {
+    const runner = runnerStore.get()
+    updateRunnerData(runner)
+    runnerStore.setState(() => runner)
+  }
 
+  const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
         <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
