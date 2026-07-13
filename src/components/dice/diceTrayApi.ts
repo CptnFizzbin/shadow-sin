@@ -1,7 +1,7 @@
-import type { Store } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
+import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { selectWasRolled } from "#/system/dice/diceRoller.selectors.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
 
@@ -69,11 +69,11 @@ const createInitialState = (): DiceTrayState => ({
  * ```
  */
 export class DiceTrayApi {
-  public readonly store: Store<DiceTrayState>
+  public readonly store: CompatStore<DiceTrayState>
   public readonly roller: DiceRoller
 
   constructor() {
-    this.store = createStore<DiceTrayState>(createInitialState())
+    this.store = createCompatStore<DiceTrayState>(createInitialState())
     this.roller = new DiceRoller()
   }
 

@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -29,7 +29,7 @@ describe("VehiclesList", () => {
   it("shows vehicles matching the category from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
     })
 
     // Assert
@@ -51,7 +51,7 @@ describe("VehiclesList", () => {
   it("removing a vehicle dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
     })
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 

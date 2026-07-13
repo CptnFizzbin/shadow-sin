@@ -1,11 +1,12 @@
-import { createStore } from "@tanstack/store"
 import { use, useCallback, useEffect, useMemo } from "react"
 
-import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
+import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -43,12 +44,12 @@ export const useBuilderStores = (
   const runnerStorageKey = getRunnerStorageKey(runner?.id ?? "new")
   const savedRunner = useSavedRunnerData(runnerStorageKey)
 
-  const runnerStore = useMemo(() => {
-    return createStore<RunnerData>(runner || savedRunner || runnerDataFactory())
+  const runnerStore: RunnerStore = useMemo(() => {
+    return new RunnerDataStore(runner || savedRunner || runnerDataFactory())
   }, [runner, savedRunner])
 
   const builderStore = useMemo(() => {
-    return createStore<BuilderState>(builderStateFactory())
+    return createCompatStore(builderStateFactory(), builderStoreReducer)
   }, [])
 
   useEffect(() => {

@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import {
   SpellCategory,
   SpellDamage,
@@ -23,7 +23,7 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementSpellList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: createStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
         updateRunnerData?.(sheet)
         return sheet
       })),

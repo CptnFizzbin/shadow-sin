@@ -1,4 +1,4 @@
-import { useSelector } from "@tanstack/react-store"
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 import type { AnyDialogCtrl } from "./dialogCtrl.ts"
 

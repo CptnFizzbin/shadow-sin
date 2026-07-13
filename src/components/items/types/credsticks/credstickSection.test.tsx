@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { CredstickType } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -22,7 +22,7 @@ describe("CredstickSection", () => {
   it("shows credsticks from the store", () => {
     // Arrange / Act
     renderWithProviders(<CredstickSection />, {
-      runnerStore: createStore(runnerDataFactory((data) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory((data) => {
         data.gear = { [streetStick.id]: streetStick }
         return data
       })),
@@ -49,7 +49,7 @@ describe("CredstickSection", () => {
   it("withdrawing a credstick removes it, once confirmed, and deposits its balance to nuyen", async () => {
     // Arrange
     renderWithProviders(<CredstickSection />, {
-      runnerStore: createStore(runnerDataFactory((data) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory((data) => {
         data.gear = { [streetStick.id]: streetStick }
         data.nuyen.current = 100
         return data

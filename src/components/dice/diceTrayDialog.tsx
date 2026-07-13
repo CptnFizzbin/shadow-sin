@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 import { DiceTrayActions } from "./diceTrayActions.tsx"
 import { useDiceTray } from "./diceTrayContext.ts"

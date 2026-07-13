@@ -1,5 +1,6 @@
-import { useSelector } from "@tanstack/react-store"
 import type { ReactNode } from "react"
+
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import type { DialogRootProps } from "./dialogRoot.tsx"

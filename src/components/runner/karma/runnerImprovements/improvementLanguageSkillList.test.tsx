@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -15,7 +15,7 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
       <ImprovementLanguageSkillList />
     </SpendKarmaDialogProvider>,
     {
-      runnerStore: createStore(runnerDataFactory((sheet) => {
+      runnerStore: new RunnerDataStore(runnerDataFactory((sheet) => {
         updateRunnerData?.(sheet)
         return sheet
       })),

@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"

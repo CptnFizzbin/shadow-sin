@@ -9,7 +9,7 @@ A **Shadowrun 4th Edition character sheet**
 > **Contribution workflow:** See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for how features,
 > GitHub Issues, and ADRs relate to each other.
 
-SPA: React 19 + TanStack Router + TanStack Store + MUI v7.
+SPA: React 19 + TanStack Router + Redux Toolkit + MUI v7.
 
 ## Commands
 
@@ -32,12 +32,19 @@ yarn fallow       # Run Fallow codebase analysis (dead code, duplication, comple
 
 ## Architecture
 
-Character state lives in a `CharacterSheetStore extends StoreSlice<CharacterSheet>` (wrapping a `@tanstack/store`
-`Atom`) — not React state or Context values directly. Components subscribe via `useCharacterSheet(selector)` from
-`src/components/character/characterSheetProvider.tsx`.
+Runner state (`RunnerData`) lives in a Redux Toolkit store — not React state or Context values directly. Each domain
+(`attributes`, `biology`, `karma`, `skills`, etc., under `src/stores/runner/<domain>/`) follows a three-file pattern:
+`*Slice.actions.ts` (RTK `createAction`/`createAsyncThunk`), `*Slice.ts` (RTK `createReducer`), and
+`*Slice.selectors.ts` (plain selector functions). `src/stores/runner/runnerStore.reducer.ts` combines them with RTK's
+`combineReducers`. A store instance is created per runner (`RunnerDataStore`, `src/components/runner/sheet/runnerDataStore.ts`)
+and provided through React context via `RunnerStoreProvider`. Components subscribe reactively via
+`useRunnerStoreSelector(selector)` (`src/stores/runner/runnerStore.selectors.ts`) and dispatch via
+`useRunnerStoreDispatch()` (`src/stores/runner/runnerStore.dispatch.ts`) — never read `store.state`/`store.get()`
+directly in a component (see "Redux Toolkit store patterns" below). The Builder flow mirrors this with its own
+`BuilderState` store (`src/stores/builder/`).
 
-The `$characterId.tsx` route subscribes to store changes via `store.subscribe()` and immediately persists to
-`localCharacterManager.saveCharacter()` on every update (no dedicated persistence component).
+The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` and immediately persists to
+`runnerManager.save()` on every update (no dedicated persistence component).
 
 ### Key directories
 
@@ -218,12 +225,19 @@ commit
   permitted.
 - After making changes, verify with `yarn fix` (auto-fix lint/format). Must pass before a change is complete.
 
-## TanStack Store patterns
+## Redux Toolkit store patterns
+
+Stores (`RunnerStore`, `BuilderStore`, `DiceRoller`, `DialogCtrl`, `ImprovementStore`, `DiceTrayApi`) are
+`configureStore` instances, created via `createCompatStore` (`src/integrations/reduxToolkit/compatStore.ts`) — a thin
+wrapper exposing `get`/`state`/`setState`/`subscribe` alongside `dispatch`/`getState`. Domain stores (`RunnerStore`,
+`BuilderStore`) back it with a combined reducer (dispatchable actions/`createAsyncThunk` thunks); ad hoc UI-state
+stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever written through `setState`.
 
 - **Store objects are stable** — do not re-create store instances on every render. Use `useMemo` or module-level
   singletons.
-- **Reactivity requires `useSelector`** — reading directly off a store instance (e.g. `store.state.foo`) gives a
-  snapshot and will not trigger re-renders. Always use `useSelector(store, selector)` for reactive reads:
+- **Reactivity requires `useSelector`** — reading directly off a store instance (e.g. `store.state.foo` or
+  `store.get()`) gives a snapshot and will not trigger re-renders. Always use
+  `useSelector(store, selector)` (`src/integrations/reduxToolkit/useSelector.ts`) for reactive reads:
   ```ts
   // ✅ reactive
   const max = useSelector(edgeStore, (state) => state.max)
@@ -231,7 +245,12 @@ commit
   // ❌ snapshot only — stale after first render
   const max = edgeStore.state.max
   ```
-- `StoreSlice` instances work with `useSelector` the same way.
+- For the `RunnerStore`/`BuilderStore` domain stores specifically, prefer `useRunnerStoreSelector`/
+  `useBuilderStoreSelector` (which wrap the same hook) over reaching into `store` directly, and dispatch through
+  `useRunnerStoreDispatch()`/`useBuilderStoreDispatch()` rather than calling `store.setState()` — that keeps writes
+  going through the domain reducers instead of bypassing them.
+- `@tanstack/react-store`'s `useSelector` is scoped to reading `@tanstack/react-form`'s own internal form stores
+  (`form.store`, `form.baseStore`, a field group's `.store`) — never for our own stores.
 
 ## MUI v9 CSS variables
 

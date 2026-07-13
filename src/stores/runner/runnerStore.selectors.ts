@@ -1,5 +1,4 @@
-import { useSelector } from "@tanstack/react-store"
-
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import * as attributesSelectors from "./attributes/attributesSlice.selectors.ts"

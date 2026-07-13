@@ -1,7 +1,7 @@
-import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { FirearmData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
@@ -38,7 +38,7 @@ describe("WeaponsList", () => {
   it("shows weapons from the store", () => {
     // Arrange / Act
     renderInBuilder(<WeaponsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
     })
 
     // Assert
@@ -60,7 +60,7 @@ describe("WeaponsList", () => {
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<WeaponsList />, {
-      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 

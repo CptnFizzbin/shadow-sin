@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import {
   selectHits,
   selectIsRolling,

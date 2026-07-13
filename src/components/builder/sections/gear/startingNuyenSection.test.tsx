@@ -1,9 +1,11 @@
-import { createStore } from "@tanstack/store"
 import { act, fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -13,11 +15,11 @@ import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
 function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
   return renderInBuilder(<StartingNuyenSection />, {
-    runnerStore: createStore(runnerDataFactory((runner) => ({
+    runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({
       ...runner,
       profile: { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } },
     }))),
-    builderStore: createStore({ ...builderStateFactory(), ...builderOverrides }),
+    builderStore: createCompatStore({ ...builderStateFactory(), ...builderOverrides }, builderStoreReducer),
   })
 }
 

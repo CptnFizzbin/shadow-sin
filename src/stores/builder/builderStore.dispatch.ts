@@ -1,42 +1,12 @@
-import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit"
-import { useMemo } from "react"
-
-import type { BuilderState } from "#/components/builder/builderState.ts"
-
 import { useBuilderDataContext } from "./builderStore.context.ts"
-import { builderStoreReducer } from "./builderStore.reducer.ts"
+import type { BuilderStore } from "./builderStore.ts"
 
-export type BuilderDispatch = ThunkDispatch<BuilderState, undefined, UnknownAction>
-
-/**
- * Hand-rolled `redux-thunk` equivalent, mirroring `useRunnerStoreDispatch` — see that hook's doc
- * comment for why (no `configureStore`/middleware pipeline in this app).
- */
-function createThunkDispatch(getState: () => BuilderState, applyAction: (action: UnknownAction) => void): BuilderDispatch {
-  const dispatch = ((action: unknown) => {
-    if (typeof action === "function") {
-      return action(dispatch, getState, undefined)
-    }
-    applyAction(action as UnknownAction)
-    return action
-  }) as BuilderDispatch
-
-  return dispatch
-}
+export type BuilderDispatch = BuilderStore["dispatch"]
 
 /**
- * The one write entry point for `BuilderState`. Applies dispatched actions through
- * {@link builderStoreReducer} and writes the result back to the `BuilderStateStore` via `setState`,
- * so the store's own subscribers (localStorage autosave, `useBuilderStoreSelector`) fire.
+ * The one write entry point for `BuilderState`. Dispatches actions through the store's
+ * `configureStore` `dispatch`, mirroring `useRunnerStoreDispatch`.
  */
 export function useBuilderStoreDispatch(): BuilderDispatch {
-  const store = useBuilderDataContext()
-
-  return useMemo(
-    () => createThunkDispatch(
-      () => store.state,
-      (action) => store.setState((prev) => builderStoreReducer(prev, action)),
-    ),
-    [store],
-  )
+  return useBuilderDataContext().dispatch
 }
