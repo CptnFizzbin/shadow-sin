@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import type { FC, PropsWithChildren } from "react"
 import { describe, expect, it } from "vitest"
 
-import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ContactData } from "#/system/contactData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"

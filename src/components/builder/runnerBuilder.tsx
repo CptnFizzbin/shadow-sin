@@ -8,9 +8,9 @@ import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunne
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
+import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
 import { useBuilderStores } from "./hooks/useBuilderStores.ts"
-import { BuilderImportButton } from "./builderImportButton.tsx"
 import { SaveRunnerButton } from "./saveRunnerButton.tsx"
 import { AttributesBuilderSection } from "./sections/attributes/attributesBuilderSection.tsx"
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
