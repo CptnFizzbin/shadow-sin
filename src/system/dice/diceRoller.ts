@@ -1,6 +1,6 @@
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
 
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
 
 import { selectAllSettled, selectIsRolling } from "./diceRoller.selectors.ts"
@@ -15,7 +15,7 @@ interface RollOptions {
 }
 
 export class DiceRoller {
-  public readonly store = createStore<DiceRollerState>({ dice: [] })
+  public readonly store = createCompatStore<DiceRollerState>({ dice: [] })
   private rollingIntervalId: IntervalId | null = null
 
   static createDie(state: Partial<DieState> = {}): DieState {

@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import pluralize from "pluralize"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import {
   selectHits,
   selectRollState,

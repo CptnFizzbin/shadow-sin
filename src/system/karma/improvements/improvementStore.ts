@@ -1,18 +1,19 @@
 import type { UUID } from "node:crypto"
 
-import type { Store } from "@tanstack/store"
-import { createStore } from "@tanstack/store"
 import { produce } from "immer"
+
+import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 
 import type { ImprovementEntry } from "./improvementEntry.ts"
 
 export type ImprovementsState = Record<UUID, ImprovementEntry>
 
 export class ImprovementStore {
-  public readonly store: Store<ImprovementsState>
+  public readonly store: CompatStore<ImprovementsState>
 
   constructor(value: ImprovementsState = {}) {
-    this.store = createStore(value)
+    this.store = createCompatStore(value)
   }
 
   add(entry: Omit<ImprovementEntry, "id">): ImprovementEntry {

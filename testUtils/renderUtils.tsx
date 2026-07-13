@@ -1,12 +1,14 @@
 import { ThemeProvider } from "@mui/material/styles"
-import { createStore } from "@tanstack/store"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { afterEach } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
 import type { BuilderStore } from "#/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
@@ -29,7 +31,7 @@ export interface RenderInBuilderOptions {
 export function renderWithProviders(
   element: ReactElement,
   {
-    runnerStore = createStore(runnerDataFactory()),
+    runnerStore = new RunnerDataStore(runnerDataFactory()),
   }: RenderWithProvidersOptions = {},
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
@@ -46,8 +48,8 @@ export function renderWithProviders(
 export function renderInBuilder(
   element: ReactElement,
   {
-    runnerStore = createStore(runnerDataFactory()),
-    builderStore = createStore(builderStateFactory()),
+    runnerStore = new RunnerDataStore(runnerDataFactory()),
+    builderStore = createCompatStore(builderStateFactory(), builderStoreReducer),
   }: RenderInBuilderOptions = {},
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
@@ -85,7 +87,7 @@ afterEach(() => cleanup())
  * from the given sheet. Pass it directly to `renderHook(..., { wrapper })`.
  */
 export function makeRunnerDataWrapper(runnerData: RunnerData): FC<PropsWithChildren> {
-  const store = createStore(runnerData)
+  const store = new RunnerDataStore(runnerData)
 
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>

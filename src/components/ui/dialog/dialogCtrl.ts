@@ -1,4 +1,4 @@
-import { createStore } from "@tanstack/store"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 
 /**
  * Controls the lifecycle of a single dialog. Created locally via `useDialogCtrl()`
@@ -7,7 +7,7 @@ import { createStore } from "@tanstack/store"
  */
 export class DialogCtrl<TReturn> {
   /** Reactive store tracking whether the dialog is currently open. */
-  readonly store = createStore<{ open: boolean }>({ open: false })
+  readonly store = createCompatStore<{ open: boolean }>({ open: false })
 
   private promise: Promise<TReturn | undefined>
   private resolve: (value: TReturn | undefined) => void

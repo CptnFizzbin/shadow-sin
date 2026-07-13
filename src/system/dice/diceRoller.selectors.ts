@@ -1,5 +1,6 @@
-import { useSelector } from "@tanstack/react-store"
 import { createSelector } from "reselect"
+
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 import type { DiceRollerState } from "./diceRoller.state.ts"
 import type { DiceRoller } from "./diceRoller.ts"

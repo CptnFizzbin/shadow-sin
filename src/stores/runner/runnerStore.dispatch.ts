@@ -1,69 +1,33 @@
-import type { ThunkAction, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit"
-import { useMemo } from "react"
-
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { useRunnerStoreContext } from "./runnerStore.context.ts"
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
+import type { RunnerStore } from "./runnerStore.ts"
 
-export type RunnerDispatch = ThunkDispatch<RunnerData, undefined, UnknownAction>
+export type RunnerDispatch = RunnerStore["dispatch"]
 
-export type RunnerAction = UnknownAction | ThunkAction<unknown, RunnerData, undefined, UnknownAction>
-
-/**
- * Hand-rolled `redux-thunk` equivalent, since this app has no `configureStore`/middleware
- * pipeline: a dispatched function (a plain thunk, or a `createAsyncThunk` action) is invoked with
- * `dispatch`/`getState` instead of being reduced; a plain action is handed to `applyAction`. A
- * thunk's own nested `dispatch` calls recurse back through this same function, so they're handled
- * the same way.
- */
-function createThunkDispatch(getState: () => RunnerData, applyAction: (action: UnknownAction) => void): RunnerDispatch {
-  const dispatch = ((action: unknown) => {
-    if (typeof action === "function") {
-      return action(dispatch, getState, undefined)
-    }
-    applyAction(action as UnknownAction)
-    return action
-  }) as RunnerDispatch
-
-  return dispatch
-}
+export type RunnerAction = Parameters<RunnerDispatch>[0]
 
 /**
- * The one write entry point for `RunnerData`. Applies dispatched actions through the combined
- * domain reducer ({@link runnerRootReducer}) and writes the result back to the `RunnerDataStore`
- * via `setState`, so the store's own subscribers (autosave in `src/routes/$runnerId.tsx`, and
- * every `useRunnerStoreSelector`/`useSelector` reader) fire. Works unchanged in both the Viewer (a
- * real root store) and the Builder (a `createSliceAtom` slice of `BuilderRootState`), since both
- * are reached via the same `useRunnerStoreContext()`.
+ * The one write entry point for `RunnerData`. Dispatches actions through the store's real
+ * `configureStore` `dispatch` — plain actions run through the combined domain reducer
+ * ({@link runnerRootReducer}); thunks (including `createAsyncThunk` actions) run natively via
+ * `configureStore`'s default thunk middleware. Works unchanged in both the Viewer (a real root
+ * store) and the Builder, since both are reached via the same `useRunnerStoreContext()`.
  */
 export function useRunnerStoreDispatch(): RunnerDispatch {
-  const store = useRunnerStoreContext()
-
-  return useMemo(
-    () => createThunkDispatch(
-      () => store.state,
-      (action) => store.setState((prev) => runnerRootReducer(prev, action)),
-    ),
-    [store],
-  )
+  return useRunnerStoreContext().dispatch
 }
 
 /**
- * A one-shot, store-less version of {@link useRunnerStoreDispatch} for non-React contexts: tests,
- * and deprecated per-domain `StoreSlice` compat classes (e.g. `EdgeStore`) that reconstruct a
- * minimal "fake root" `RunnerData` from their own narrower local state to run real actions/thunks
- * against. Applies `action` (and any thunks it dispatches) against `state` and resolves once the
- * whole chain has settled.
+ * A one-shot, store-less version of {@link useRunnerStoreDispatch} for non-React contexts: tests
+ * that need to run a real action/thunk against a scratch `RunnerData` without mounting a provider.
+ * Applies `action` (and any thunks it dispatches) against `state` and resolves once the whole
+ * chain has settled.
  */
 export async function dispatchThunk(state: RunnerData, action: RunnerAction): Promise<RunnerData> {
-  let current = state
-
-  const dispatch = createThunkDispatch(
-    () => current,
-    (a) => { current = runnerRootReducer(current, a) },
-  )
-
-  await dispatch(action)
-  return current
+  const store = createCompatStore(state, runnerRootReducer)
+  await store.dispatch(action)
+  return store.getState()
 }

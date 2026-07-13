@@ -1,5 +1,4 @@
 import { ThemeProvider } from "@mui/material/styles"
-import { createStore } from "@tanstack/store"
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
 import { useMemo } from "react"
@@ -7,6 +6,9 @@ import { describe, expect, it } from "vitest"
 
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
+import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { builderStoreReducer } from "#/stores/builder/builderStore.reducer.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -32,14 +34,14 @@ interface WrapperProps extends PropsWithChildren {
 
 const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
   const runnerStore = useMemo(() => {
-    return createStore({
+    return new RunnerDataStore({
       ...runnerDataFactory(),
       gear,
     })
   }, [gear])
 
   const builderStore = useMemo(() => {
-    return createStore(builderStateFactory())
+    return createCompatStore(builderStateFactory(), builderStoreReducer)
   }, [])
 
   return (

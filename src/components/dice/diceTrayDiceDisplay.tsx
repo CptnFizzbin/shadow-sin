@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
 import { useDiceTray } from "./diceTrayContext.ts"

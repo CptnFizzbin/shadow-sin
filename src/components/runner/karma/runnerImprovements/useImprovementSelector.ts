@@ -1,5 +1,4 @@
-import { useSelector } from "@tanstack/react-store"
-
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import type { ImprovementsSelector } from "#/system/karma/improvements/improvementSelectors.ts"
 
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"

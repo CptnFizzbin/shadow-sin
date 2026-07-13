@@ -58,7 +58,7 @@ immediately without a full reload.
 |--------------------|-------------------------------|
 | UI framework       | React 19                      |
 | Routing            | TanStack Router (file-based)  |
-| State management   | TanStack Store (`StoreSlice`) |
+| State management   | Redux Toolkit                 |
 | Component library  | MUI v7                        |
 | Build tool         | Vite 8 + Rolldown             |
 | Language           | TypeScript 6                  |

@@ -5,8 +5,9 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
-import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
+
+import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 
 import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType, TestTypeLabels } from "./testType.ts"
