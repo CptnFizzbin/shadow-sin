@@ -1,4 +1,5 @@
-import { useActiveSkill, useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
@@ -16,7 +17,7 @@ export const useSprites = () => {
 }
 
 export const useMaxSpritesRegistered = () => {
-  return useAttr(AttributeKey.charisma)
+  return useAttrValue(AttributeKey.charisma)
 }
 
 export const useMaxSpriteTasks = () => {

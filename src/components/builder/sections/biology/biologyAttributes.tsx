@@ -3,8 +3,8 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { createAttrInfo } from "#/components/runner/attributes/attributeInfo.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
@@ -29,12 +29,12 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys }) => {
-  const attrValues = useRunnerData((sheet) => sheet.attributes)
+  const attrValues = useRunnerStoreSelector((sheet) => sheet.attributes)
 
-  const metatypeName = useRunnerData((sheet) => sheet.biology.metatype)
+  const metatypeName = useRunnerStoreSelector((sheet) => sheet.biology.metatype)
   const metatype = metatypes[metatypeName]
 
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const awakening = awakenings[awakeningType]
 
   const attributes = attrKeys

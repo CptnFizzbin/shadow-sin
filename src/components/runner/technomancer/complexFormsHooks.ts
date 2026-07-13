@@ -1,4 +1,4 @@
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
@@ -15,5 +15,5 @@ export const useComplexForms = () => {
 }
 
 export const useMaxComplexForms = () => {
-  return useAttr(AttributeKey.logic) * 2
+  return useAttrValue(AttributeKey.logic) * 2
 }

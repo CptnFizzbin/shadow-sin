@@ -6,16 +6,15 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { selectAwakeningData, selectMetatypeData } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
   selectActiveSkills,
-  selectAwakening,
   selectKnowledgeSkills,
   selectLanguageSkills,
-  selectMetatype,
   selectSkillGroups,
-  useRunnerDataSelector,
-} from "#/components/runner/sheet/runnerData.selectors.ts"
+} from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"
@@ -60,8 +59,8 @@ export const useBuilderBuildPointsApi = () => {
 }
 
 const useBuilderBiologyBuildPoints = (): BpLineItem => {
-  const metatypeCost = useRunnerDataSelector(selectMetatype).cost
-  const awakeningCost = useRunnerDataSelector(selectAwakening).cost
+  const metatypeCost = useRunnerStoreSelector(selectMetatypeData).cost
+  const awakeningCost = useRunnerStoreSelector(selectAwakeningData).cost
 
   return {
     sectionId: BuilderSectionId.biology,
@@ -86,8 +85,8 @@ export const useBuilderSkillsBuildPoints = () => {
 }
 
 const useActiveSkillsBuildPoints = () => {
-  const activeSkills = useRunnerDataSelector(selectActiveSkills)
-  const activeSkillGroups = useRunnerDataSelector(selectSkillGroups)
+  const activeSkills = useRunnerStoreSelector(selectActiveSkills)
+  const activeSkillGroups = useRunnerStoreSelector(selectSkillGroups)
 
   const activeSkillsBp = calculateActiveSkillsBp(
     activeSkills,
@@ -102,11 +101,11 @@ const useActiveSkillsBuildPoints = () => {
 }
 
 const useKnowledgeSkillsBuildPoints = () => {
-  const logicAttr = useAttr(AttributeKey.logic)
-  const intuitionAttr = useAttr(AttributeKey.intuition)
+  const logicAttr = useAttrValue(AttributeKey.logic)
+  const intuitionAttr = useAttrValue(AttributeKey.intuition)
 
-  const knowledgeSkills = useRunnerDataSelector(selectKnowledgeSkills)
-  const languageSkills = useRunnerDataSelector(selectLanguageSkills)
+  const knowledgeSkills = useRunnerStoreSelector(selectKnowledgeSkills)
+  const languageSkills = useRunnerStoreSelector(selectLanguageSkills)
 
   const totalSpUsed = calculateKnowledgeAndLanguageSpUsed(
     knowledgeSkills,

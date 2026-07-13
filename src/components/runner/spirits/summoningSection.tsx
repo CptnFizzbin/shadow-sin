@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { DrainResistanceDicePool } from "#/components/runner/spells/drainResistanceDicePool.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -26,7 +26,7 @@ interface SummoningSectionProps {
 }
 
 export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force, isBound }) => {
-  const magicAttr = useAttr(AttributeKey.magic)
+  const magicAttr = useAttrValue(AttributeKey.magic)
   const tradition = useRunnerStoreSelector(Selectors.tradition.selectTradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 

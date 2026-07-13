@@ -2,13 +2,13 @@ import { sort } from "fast-sort"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { LanguageSkillListItem } from "./languageSkillsListItem.tsx"
 
 export const LanguageSkillsList: FC = () => {
-  const languageSkills = useRunnerData((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
   const [searchQuery, setSearchQuery] = useState("")
 
   const visibleSkills = sort(languageSkills)

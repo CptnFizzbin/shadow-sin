@@ -1,5 +1,5 @@
 import { useGearByType } from "#/components/items/gearHooks.ts"
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/gear/encumbranceUtils.ts"
@@ -15,7 +15,7 @@ export interface EncumbranceInfo {
 
 export function useEncumbrance(): EncumbranceInfo {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
-  const body = useAttr(AttributeKey.body)
+  const body = useAttrValue(AttributeKey.body)
 
   const equippedArmor = allArmor.filter((a) => a.equipped)
   const { ballistic: totalBallistic, impact: totalImpact } = calculateArmorTotals(equippedArmor)

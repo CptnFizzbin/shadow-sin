@@ -5,9 +5,9 @@ import {
   GearNuyenAllowance,
   useGearBuildPoints,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
 
@@ -48,7 +48,7 @@ export const useGearAlerts = (): AlertInfo[] => {
     })
   }
 
-  const gear = useRunnerData((s) => s.gear)
+  const gear = useRunnerStoreSelector((s) => s.gear)
   if (Object.keys(gear).length === 0) {
     alerts.push({
       section: "Gear",

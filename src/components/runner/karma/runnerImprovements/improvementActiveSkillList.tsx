@@ -8,7 +8,6 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
@@ -67,9 +66,9 @@ interface ImprovementActiveSkillListProps {
 
 export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerData((s) => s)
-  const activeSkills = useRunnerData((s) => s.skills.activeSkills)
-  const skillGroups = useRunnerData((s) => s.skills.skillGroups)
+  const sheet = useRunnerStoreSelector((s) => s)
+  const activeSkills = useRunnerStoreSelector((s) => s.skills.activeSkills)
+  const skillGroups = useRunnerStoreSelector((s) => s.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

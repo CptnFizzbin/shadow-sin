@@ -3,7 +3,7 @@ import { useSelector } from "@tanstack/react-store"
 import type { FC } from "react"
 import { z } from "zod"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 import type { LanguageSkillForm } from "./useLanguageSkillForm.ts"
@@ -16,7 +16,7 @@ export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
   form,
 }) => {
   const skillName = useSelector(form.store, (state) => state.values.name)
-  const nativeLanguage = useRunnerData((sheet) => {
+  const nativeLanguage = useRunnerStoreSelector((sheet) => {
     return sheet.skills.languageSkills.find((skill) => skill.rating === "native")
   })
 

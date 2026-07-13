@@ -4,15 +4,15 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 import { LoanCard } from "./loanCard.tsx"
 import { useLoanDialog } from "./loanDialog.tsx"
 
 export const LoansSection: FC = () => {
-  const loans = useRunnerData((s) => s.nuyen.loans)
+  const loans = useRunnerStoreSelector((s) => s.nuyen.loans)
   const loanDialog = useLoanDialog()
 
   const handleCardClick = (loan: LoanData) => {

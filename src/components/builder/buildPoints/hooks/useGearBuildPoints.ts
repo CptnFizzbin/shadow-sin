@@ -1,7 +1,7 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 export const GearBuildPointAllowance = 50
@@ -9,14 +9,14 @@ export const GearNuyenPerBuildPoint = 5_000
 export const GearNuyenAllowance = GearNuyenPerBuildPoint * GearBuildPointAllowance
 
 export const useGearTotalCost = () => {
-  const gear = useRunnerData((state) => state.gear)
+  const gear = useRunnerStoreSelector((state) => state.gear)
   const allGear = Object.values(gear)
 
-  const lifestyle = useRunnerData((state) => {
+  const lifestyle = useRunnerStoreSelector((state) => {
     const lifestyleType = state.profile.lifestyle?.quality ?? LifestyleType.Street
     return Lifestyles[lifestyleType]
   })
-  const lifestyleMonths = useRunnerData(
+  const lifestyleMonths = useRunnerStoreSelector(
     (state) => state.profile.lifestyle?.monthsPaid ?? 1,
   )
 

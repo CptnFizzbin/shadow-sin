@@ -1,6 +1,8 @@
+import { createStore } from "@tanstack/store"
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { LanguageSkillsList } from "./languageSkillsList.tsx"
@@ -8,12 +10,13 @@ import { LanguageSkillsList } from "./languageSkillsList.tsx"
 describe("LanguageSkillsList", () => {
   it("renders skills with native badge and lingo label", () => {
     renderWithProviders(<LanguageSkillsList />, {
-      updateRunnerData: (runnerData) => {
+      runnerStore: createStore(runnerDataFactory((runnerData) => {
         runnerData.skills.languageSkills = [
           { name: "Sperethiel", rating: "native" },
           { name: "English", rating: 5, lingo: "Seattle Sprawl" },
         ]
-      },
+        return runnerData
+      })),
     })
 
     expect(screen.getByText("Languages")).toBeTruthy()

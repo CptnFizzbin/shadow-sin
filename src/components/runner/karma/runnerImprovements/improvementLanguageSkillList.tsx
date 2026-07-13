@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiChat4Line, RiCheckLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useLanguageSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
@@ -45,7 +44,7 @@ const LINGO_COST = 2
 
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const languageSkills = useRunnerData((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

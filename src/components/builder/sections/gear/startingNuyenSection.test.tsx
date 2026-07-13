@@ -1,23 +1,23 @@
+import { createStore } from "@tanstack/store"
 import { act, fireEvent, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { BuilderState } from "#/components/builder/builderState.ts"
+import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
 import { LifestyleType } from "#/system/lifestyleType.ts"
-import type { RunnerData } from "#/system/runnerData.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { StartingNuyenSection } from "./startingNuyenSection.tsx"
 
-function renderWithStreetLifestyle(updateExtra?: (rootState: {
-  runner: RunnerData
-  builder: BuilderState
-}) => void) {
+function renderWithStreetLifestyle(builderOverrides?: Partial<BuilderState>) {
   return renderInBuilder(<StartingNuyenSection />, {
-    updateRootState: (rootState) => {
-      rootState.runner.profile.lifestyle = { quality: LifestyleType.Street, monthsPaid: 1 }
-      updateExtra?.(rootState)
-    },
+    runnerStore: createStore(runnerDataFactory((runner) => ({
+      ...runner,
+      profile: { ...runner.profile, lifestyle: { quality: LifestyleType.Street, monthsPaid: 1 } },
+    }))),
+    builderStore: createStore({ ...builderStateFactory(), ...builderOverrides }),
   })
 }
 
@@ -67,11 +67,8 @@ describe("StartingNuyenSection", () => {
   })
 
   it("shows a starting nuyen persisted from an earlier roll without requiring a reroll", () => {
-    // Arrange
-    // Act
-    renderWithStreetLifestyle((rootState) => {
-      rootState.builder.nuyen.starting = 250
-    })
+    // Arrange / Act
+    renderWithStreetLifestyle({ nuyen: { starting: 250 } })
 
     // Assert
     expect(screen.getByText("250¥")).toBeDefined()
@@ -82,9 +79,7 @@ describe("StartingNuyenSection", () => {
 
   it("resetting clears the persisted starting nuyen and shows the roll range again", () => {
     // Arrange
-    renderWithStreetLifestyle((rootState) => {
-      rootState.builder.nuyen.starting = 250
-    })
+    renderWithStreetLifestyle({ nuyen: { starting: 250 } })
     expect(screen.getByText("250¥")).toBeDefined()
 
     // Act

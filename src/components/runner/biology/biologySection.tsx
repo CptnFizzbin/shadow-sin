@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
 import { InnatePowersDisplay } from "./innatePowersDisplay.tsx"
@@ -26,7 +26,7 @@ const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
 )
 
 export const BiologySection: FC = () => {
-  const biology = useRunnerData((s) => s.biology)
+  const biology = useRunnerStoreSelector((s) => s.biology)
   const metatype = metatypes[biology.metatype]
 
   return (

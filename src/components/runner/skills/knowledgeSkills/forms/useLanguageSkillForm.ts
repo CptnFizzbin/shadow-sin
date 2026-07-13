@@ -1,5 +1,5 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillFormOptions {
@@ -17,7 +17,7 @@ export const useLanguageSkillForm = ({
   skill,
   onSubmit,
 }: LanguageSkillFormOptions) => {
-  const nativeLanguage = useRunnerData((sheet) => {
+  const nativeLanguage = useRunnerStoreSelector((sheet) => {
     return sheet.skills.languageSkills.find((s) => s.rating === "native")
   })
 

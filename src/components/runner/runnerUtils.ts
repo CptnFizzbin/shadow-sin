@@ -1,6 +1,7 @@
 import { useGearByType } from "#/components/items/gearHooks.ts"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -10,7 +11,6 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attributesProvider.tsx"
-import { useRunnerData } from "./sheet/runnerStoreProvider.tsx"
 
 // Re-exported for convenience — see attributesProvider.tsx for full documentation.
 export { useAllAttrInfos, useAttrInfo }
@@ -34,32 +34,16 @@ export function resolveAlias(
 }
 
 /**
- * Hook to retrieve the current value of an attribute.
- * Reads from the nearest `AttributesProvider` in the tree.
- *
- * @deprecated Prefer `useAttrValue` from `attributesProvider.tsx` directly.
- *   This wrapper exists for backwards compatibility and adds an Essence guard.
- * @throws if called with `AttributeKey.essence` — use `useEssenceInfo` instead.
- */
-export const useAttr = (attribute: AttributeKey) => {
-  if (attribute === AttributeKey.essence) {
-    throw new Error("Use useEssenceInfo for the Essence attribute")
-  }
-
-  return useAttrValue(attribute)
-}
-
-/**
  * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
  */
 export const useActiveSkillRating = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
 
-  const skillRating = useRunnerData((sheet) => {
+  const skillRating = useRunnerStoreSelector((sheet) => {
     return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
   })
 
-  const groupRating = useRunnerData((sheet) => {
+  const groupRating = useRunnerStoreSelector((sheet) => {
     if (!skillInfo) return 0
     return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
   })
@@ -73,7 +57,7 @@ export const useActiveSkillRating = (skill: SkillKey) => {
 export const useActiveSkill = (skill: SkillKey) => {
   const skillInfo = skillList[skill]
   const rating = useActiveSkillRating(skill)
-  const attribute = useAttr(skillInfo.attr)
+  const attribute = useAttrValue(skillInfo.attr)
 
   const skillMods = useGameEffects(GameEffectType.skillMod)
   const totalMod = skillMods

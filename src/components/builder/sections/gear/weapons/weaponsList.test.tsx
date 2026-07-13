@@ -1,3 +1,4 @@
+import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
@@ -6,6 +7,7 @@ import type { FirearmData } from "#/system/gear/weaponData.ts"
 import { FirearmAttachmentPoint, WeaponType } from "#/system/gear/weaponData.ts"
 import { FirearmTypeKey } from "#/system/gear/weapons/firearms/firearmTypeKey.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
@@ -36,9 +38,7 @@ describe("WeaponsList", () => {
   it("shows weapons from the store", () => {
     // Arrange / Act
     renderInBuilder(<WeaponsList />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [pistol.id]: pistol } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
     })
 
     // Assert
@@ -60,9 +60,7 @@ describe("WeaponsList", () => {
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<WeaponsList />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [pistol.id]: pistol } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 

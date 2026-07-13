@@ -1,8 +1,10 @@
+import { createStore } from "@tanstack/store"
 import { fireEvent, screen, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -39,9 +41,10 @@ describe("ActiveSkillFormDialog", () => {
 
     // Act: a Mundane runner can't learn the Technomancer-only skill "compiling"
     renderWithProviders(<ActiveSkillFormDialog ctrl={ctrl} />, {
-      updateRunnerData: (sheet) => {
+      runnerStore: createStore(runnerDataFactory((sheet) => {
         sheet.biology.awakening = AwakeningType.Mundane
-      },
+        return sheet
+      })),
     })
     openSkillDropdown()
 

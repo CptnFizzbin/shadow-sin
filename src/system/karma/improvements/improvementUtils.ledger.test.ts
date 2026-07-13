@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type {
   AttrIncreaseEntry,
@@ -21,12 +21,13 @@ const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 describe("applyImprovements — karma ledger writes", () => {
   it("appends one ledger entry per applied improvement", () => {
     // Arrange — two improvements: Body 3→4 (20k) and learn Pistols rating 1 (4k)
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.attributes[AttributeKey.body] = 3
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 100
       draft.karma.total = 100
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()
@@ -59,10 +60,11 @@ describe("applyImprovements — karma ledger writes", () => {
 
   it("preserves the full ImprovementEntry on each ledger entry for v2 undo support", () => {
     // Arrange — Archery is not part of any skill group, so no group-break logic runs
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.archery, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()
@@ -85,9 +87,10 @@ describe("applyImprovements — karma ledger writes", () => {
 
   it("writes a description derived from the entry shape", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.attributes[AttributeKey.agility] = 4
       draft.karma.current = 50
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()
@@ -108,8 +111,9 @@ describe("applyImprovements — karma ledger writes", () => {
 
   it("does not append to the ledger when the improvement queue is empty", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.karma.current = 50
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()
@@ -123,9 +127,10 @@ describe("applyImprovements — karma ledger writes", () => {
 
   it("stamps each entry with an ISO 8601 timestamp", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.attributes[AttributeKey.body] = 3
       draft.karma.current = 50
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()
@@ -147,8 +152,9 @@ describe("applyImprovements — karma ledger writes", () => {
 
   it("ignores the FAKE_ID constant — entries are generated with fresh UUIDs", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.karma.current = 50
+      return draft
     })
     const runnerStore = new RunnerDataStore(sheet)
     const improvementStore = new ImprovementStore()

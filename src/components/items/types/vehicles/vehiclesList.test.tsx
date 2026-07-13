@@ -1,9 +1,11 @@
+import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { VehiclesList } from "./vehiclesList.tsx"
@@ -27,9 +29,7 @@ describe("VehiclesList", () => {
   it("shows vehicles matching the category from the store", () => {
     // Arrange / Act
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [bike.id]: bike } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
     })
 
     // Assert
@@ -51,9 +51,7 @@ describe("VehiclesList", () => {
   it("removing a vehicle dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [bike.id]: bike } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
     })
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 
