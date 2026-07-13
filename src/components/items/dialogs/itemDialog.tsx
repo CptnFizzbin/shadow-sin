@@ -5,7 +5,7 @@ import { RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { z } from "zod"
 
-import { useIsBuilder } from "#/components/builder/useIsBuilder.ts"
+import { useIsBuilder } from "#/components/builder/hooks/useIsBuilder.ts"
 import { AvailabilityFieldGroup } from "#/components/items/availability/availabilityFieldGroup.tsx"
 import { GearAttachmentFieldGroup } from "#/components/items/forms/gearAttachmentFieldGroup.tsx"
 import { GearCostFieldGroup } from "#/components/items/forms/gearCostFieldGroup.tsx"

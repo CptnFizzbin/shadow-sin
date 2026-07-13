@@ -34,7 +34,7 @@ export const ImportCurrentRunnerButton: FC = () => {
       })
 
       if (performOverwrite) {
-        store.set(runner)
+        store.setState(() => runner)
       }
     },
     onError: async (error) => {

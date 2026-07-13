@@ -4,10 +4,10 @@ import { RunnerAttributesProvider } from "#/components/runner/sheet/runnerAttrib
 import type { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { RunnerStoreContext, useRunnerDataContext } from "./runnerStore.context.ts"
+import { RunnerStoreContext, useRunnerStoreContext } from "./runnerStore.context.ts"
 import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
 
-export { useRunnerDataContext }
+export { useRunnerStoreContext }
 
 interface RunnerDataProviderProps extends PropsWithChildren {
   store: RunnerDataStore

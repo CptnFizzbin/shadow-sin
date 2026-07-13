@@ -4,7 +4,7 @@ import { useMemo } from "react"
 import type { BuilderState } from "#/components/builder/builderState.ts"
 
 import { useBuilderDataContext } from "./builderStore.context.ts"
-import { builderRootReducer } from "./builderStore.reducer.ts"
+import { builderStoreReducer } from "./builderStore.reducer.ts"
 
 export type BuilderDispatch = ThunkDispatch<BuilderState, undefined, UnknownAction>
 
@@ -28,7 +28,7 @@ function createThunkDispatch(getState: () => BuilderState, applyAction: (action:
 
 /**
  * The one write entry point for `BuilderState`. Applies dispatched actions through
- * {@link builderRootReducer} and writes the result back to the `BuilderStateStore` via `setState`,
+ * {@link builderStoreReducer} and writes the result back to the `BuilderStateStore` via `setState`,
  * so the store's own subscribers (localStorage autosave, `useBuilderStoreSelector`) fire.
  */
 export function useBuilderStoreDispatch(): BuilderDispatch {
@@ -37,7 +37,7 @@ export function useBuilderStoreDispatch(): BuilderDispatch {
   return useMemo(
     () => createThunkDispatch(
       () => store.state,
-      (action) => store.setState((prev) => builderRootReducer(prev, action)),
+      (action) => store.setState((prev) => builderStoreReducer(prev, action)),
     ),
     [store],
   )
@@ -49,7 +49,7 @@ export async function dispatchBuilderThunk(state: BuilderState, action: BuilderA
 
   const dispatch = createThunkDispatch(
     () => current,
-    (a) => { current = builderRootReducer(current, a) },
+    (a) => { current = builderStoreReducer(current, a) },
   )
 
   await dispatch(action)

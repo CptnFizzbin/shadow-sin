@@ -1,16 +1,16 @@
 import { ThemeProvider } from "@mui/material/styles"
-import { Store } from "@tanstack/store"
+import { createStore } from "@tanstack/store"
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import type { FC, PropsWithChildren } from "react"
-import { useState } from "react"
+import { useMemo } from "react"
 import { describe, expect, it } from "vitest"
 
-import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
+import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
-import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { theme } from "#/theme.ts"
 
 import { ImplantItemList } from "./implantItemList.tsx"
@@ -31,19 +31,20 @@ interface WrapperProps extends PropsWithChildren {
 }
 
 const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
-  const [rootStore] = useState(
-    () =>
-      new Store<BuilderRootState>({
-        runner: {
-          ...createDefaultRunnerData(),
-          gear,
-        },
-        builder: { startingNuyen: undefined },
-      }),
-  )
+  const runnerStore = useMemo(() => {
+    return createStore({
+      ...runnerDataFactory(),
+      gear,
+    })
+  }, [gear])
+
+  const builderStore = useMemo(() => {
+    return createStore(builderStateFactory())
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
-      <RunnerBuilderStoreProvider rootStore={rootStore}>
+      <RunnerBuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
         {children}
       </RunnerBuilderStoreProvider>
     </ThemeProvider>

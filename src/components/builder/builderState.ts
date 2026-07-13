@@ -1,3 +1,13 @@
 export interface BuilderState {
-  startingNuyen?: number
+  nuyen: {
+    starting: null | number
+  }
+}
+
+export const builderStateFactory = (): BuilderState => {
+  return {
+    nuyen: {
+      starting: null,
+    },
+  }
 }

@@ -65,7 +65,7 @@ describe("StartingNuyenSection", () => {
   it("shows a starting nuyen persisted from an earlier roll without requiring a reroll", () => {
     // Arrange / Act
     renderWithStreetLifestyle((rootState) => {
-      rootState.builder.startingNuyen = 250
+      rootState.builder.nuyen.starting = 250
     })
 
     // Assert
@@ -78,7 +78,7 @@ describe("StartingNuyenSection", () => {
   it("resetting clears the persisted starting nuyen and shows the roll range again", () => {
     // Arrange
     renderWithStreetLifestyle((rootState) => {
-      rootState.builder.startingNuyen = 250
+      rootState.builder.nuyen.starting = 250
     })
     expect(screen.getByText("250¥")).toBeDefined()
 

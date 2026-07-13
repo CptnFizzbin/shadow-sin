@@ -1,6 +1,6 @@
 import { useContext } from "react"
 
-import { IsBuilderContext } from "./isBuilderContext.ts"
+import { IsBuilderContext } from "#/components/builder/isBuilderContext.ts"
 
 /**
  * Returns true when rendered inside a RunnerBuilderStoreProvider.

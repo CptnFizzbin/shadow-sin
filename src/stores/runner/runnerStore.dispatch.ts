@@ -3,7 +3,7 @@ import { useMemo } from "react"
 
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { useRunnerDataContext } from "./runnerStore.context.ts"
+import { useRunnerStoreContext } from "./runnerStore.context.ts"
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
 
 export type RunnerDispatch = ThunkDispatch<RunnerData, undefined, UnknownAction>
@@ -38,7 +38,7 @@ function createThunkDispatch(getState: () => RunnerData, applyAction: (action: U
  * are reached via the same `useRunnerDataContext()`.
  */
 export function useRunnerStoreDispatch(): RunnerDispatch {
-  const store = useRunnerDataContext()
+  const store = useRunnerStoreContext()
 
   return useMemo(
     () => createThunkDispatch(

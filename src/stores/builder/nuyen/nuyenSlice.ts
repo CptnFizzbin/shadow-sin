@@ -4,12 +4,12 @@ import type { BuilderState } from "#/components/builder/builderState.ts"
 
 import { setStartingNuyen } from "./nuyenSlice.actions.ts"
 
-const initialState: BuilderState = {
-  startingNuyen: undefined,
+const initialState: BuilderState["nuyen"] = {
+  starting: null,
 }
 
 export const nuyenReducer = createReducer(initialState, (builder) => {
   builder.addCase(setStartingNuyen, (state, action) => {
-    state.startingNuyen = action.payload
+    state.starting = action.payload ?? null
   })
 })

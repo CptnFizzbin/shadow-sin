@@ -4,7 +4,6 @@ import type { Draft } from "immer"
 import { produce } from "immer"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
-import type { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
@@ -23,6 +22,7 @@ import type {
 } from "./improvementEntry.ts"
 import type { ImprovementStore } from "./improvementStore.ts"
 import { ImprovementType } from "./improvementType.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 
 // SR4A new-skill base karma costs (charged on top of any rating increases above 1).
 const NEW_ACTIVE_SKILL_COST = 4
@@ -40,7 +40,7 @@ const COMPLEX_FORM_KARMA_MULT = 1
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
-  runnerStore: RunnerDataStore,
+  runnerStore: RunnerStore,
 ): void => {
   const improvementsState = improvementsStore.store.state
 

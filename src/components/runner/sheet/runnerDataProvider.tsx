@@ -1,17 +1,17 @@
 import type { FC, PropsWithChildren } from "react"
 
 import { RunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { RunnerAttributesProvider } from "./runnerAttributesProvider.tsx"
 import { useRunnerDataSelector } from "./runnerData.selectors.ts"
-import { RunnerDataContext, useRunnerDataContext } from "./runnerDataContext.ts"
-import type { RunnerDataStore } from "./runnerDataStore.ts"
+import { useRunnerDataContext } from "./runnerDataContext.ts"
 
 export { useRunnerDataContext }
 
 interface RunnerDataProviderProps extends PropsWithChildren {
-  store: RunnerDataStore
+  store: RunnerStore
 }
 
 /**
@@ -24,13 +24,11 @@ export const RunnerDataProvider: FC<RunnerDataProviderProps> = ({
   children,
 }) => {
   return (
-    <RunnerDataContext.Provider value={store}>
-      <RunnerStoreContext.Provider value={store}>
-        <RunnerAttributesProvider>
-          {children}
-        </RunnerAttributesProvider>
-      </RunnerStoreContext.Provider>
-    </RunnerDataContext.Provider>
+    <RunnerStoreContext.Provider value={store}>
+      <RunnerAttributesProvider>
+        {children}
+      </RunnerAttributesProvider>
+    </RunnerStoreContext.Provider>
   )
 }
 

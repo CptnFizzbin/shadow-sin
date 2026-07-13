@@ -1,17 +1,7 @@
-import { createContext, useContext } from "react"
+import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 
-import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
-
-import type { RunnerDataStore } from "./runnerDataStore.ts"
-
-export const RunnerDataContext = createContext<RunnerDataStore | null>(null)
-
-export const useRunnerDataContext = (): RunnerDataStore => {
-  const store = useContext(RunnerDataContext)
-
-  if (!store) {
-    throw new OutOfContextError("useRunnerDataContext", "RunnerDataProvider")
-  }
-
-  return store
+/** @deprecated - use {@link useRunnerStoreContext} instead */
+export const useRunnerDataContext = (): RunnerStore => {
+  return useRunnerStoreContext()
 }

@@ -1,15 +1,16 @@
 import { ThemeProvider } from "@mui/material/styles"
-import { Store } from "@tanstack/store"
+import { createStore } from "@tanstack/store"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import type { FC, PropsWithChildren, ReactElement } from "react"
-import { useMemo } from "react"
 import { afterEach } from "vitest"
 
 import type { BuilderRootState } from "#/components/builder/builderRootState.ts"
+import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { RunnerBuilderStoreProvider } from "#/components/builder/runnerBuilderStoreProvider.tsx"
 import { RunnerDataProvider } from "#/components/runner/sheet/runnerDataProvider.tsx"
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
-import { createDefaultRunnerData } from "#/components/runner/sheet/createDefaultRunnerData.ts"
+import type { BuilderStore } from "#/stores/builder/builderStore.ts"
+import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { theme } from "#/theme.ts"
 
@@ -18,28 +19,37 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export interface RenderWithProvidersOptions {
-  /** Mutate the default `RunnerData` before the store is created. */
+  runnerStore?: RunnerStore
+
+  /** @deprecated */
   updateRunnerData?: (runnerData: RunnerData) => void
 }
 
 export interface RenderInBuilderOptions {
-  /** Mutate the default `BuilderRootState` before the root store is created. */
+  runnerStore?: RunnerStore
+  builderStore?: BuilderStore
+
+  /** @deprecated */
   updateRootState?: (rootState: BuilderRootState) => void
 }
 
 export function renderWithProviders(
   element: ReactElement,
-  options?: RenderWithProvidersOptions,
+  {
+    runnerStore = createStore(runnerDataFactory()),
+    updateRunnerData,
+  }: RenderWithProvidersOptions = {},
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
-    const store = useMemo(() => {
-      const runnerData = createDefaultRunnerData()
-      options?.updateRunnerData?.(runnerData)
-      return new RunnerDataStore(runnerData)
-    }, [])
+    if (updateRunnerData) {
+      const runner = runnerStore.get()
+      updateRunnerData(runner)
+      runnerStore.setState(() => runner)
+    }
+
     return (
       <ThemeProvider theme={theme}>
-        <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
+        <RunnerDataProvider store={runnerStore}>{children}</RunnerDataProvider>
       </ThemeProvider>
     )
   }
@@ -49,20 +59,29 @@ export function renderWithProviders(
 
 export function renderInBuilder(
   element: ReactElement,
-  options?: RenderInBuilderOptions,
+  {
+    runnerStore = createStore(runnerDataFactory()),
+    builderStore = createStore(builderStateFactory()),
+
+    updateRootState,
+  }: RenderInBuilderOptions = {},
 ) {
+  if (updateRootState) {
+    const rootState = {
+      runner: runnerStore.get(),
+      builder: builderStore.get(),
+    }
+
+    updateRootState(rootState)
+
+    runnerStore.setState(() => rootState.runner)
+    builderStore.setState(() => rootState.builder)
+  }
+
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
-    const rootStore = useMemo(() => {
-      const rootState: BuilderRootState = {
-        runner: createDefaultRunnerData(),
-        builder: { startingNuyen: undefined },
-      }
-      options?.updateRootState?.(rootState)
-      return new Store<BuilderRootState>(rootState)
-    }, [])
     return (
       <ThemeProvider theme={theme}>
-        <RunnerBuilderStoreProvider rootStore={rootStore}>
+        <RunnerBuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
           {children}
         </RunnerBuilderStoreProvider>
       </ThemeProvider>
@@ -92,9 +111,10 @@ afterEach(() => cleanup())
 /**
  * Creates a default RunnerData, optionally mutated by the provided callback.
  * Use this in unit tests to build a sheet with only the fields you care about set.
+ * @deprecated - use {@link runnerDataFactory} instead
  */
 export function makeRunnerData(overrides?: (sheet: RunnerData) => void): RunnerData {
-  const sheet = createDefaultRunnerData()
+  const sheet = runnerDataFactory()
   overrides?.(sheet)
   return sheet
 }
@@ -104,10 +124,12 @@ export function makeRunnerData(overrides?: (sheet: RunnerData) => void): RunnerD
  * from the given sheet. Pass it directly to `renderHook(..., { wrapper })`.
  */
 export function makeRunnerDataWrapper(runnerData: RunnerData): FC<PropsWithChildren> {
-  const store = new RunnerDataStore(runnerData)
+  const store = createStore(runnerData)
+
   const Wrapper: FC<PropsWithChildren> = ({ children }) => (
     <RunnerDataProvider store={store}>{children}</RunnerDataProvider>
   )
   Wrapper.displayName = "TestWrapper"
+
   return Wrapper
 }

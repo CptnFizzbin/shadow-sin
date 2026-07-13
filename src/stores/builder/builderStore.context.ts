@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react"
 
-import type { BuilderStateStore } from "#/components/builder/builderStateStore.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-export const BuilderStoreContext = createContext<BuilderStateStore | null>(null)
+import type { BuilderStore } from "./builderStore.ts"
 
-export const useBuilderDataContext = (): BuilderStateStore => {
+export const BuilderStoreContext = createContext<BuilderStore | null>(null)
+
+export const useBuilderDataContext = (): BuilderStore => {
   const store = useContext(BuilderStoreContext)
 
   if (!store) {
