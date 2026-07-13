@@ -4,7 +4,6 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { afterEach } from "vitest"
 
-import type { BuilderState } from "#/components/builder/builderState.ts"
 import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
@@ -20,36 +19,20 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 
 export interface RenderWithProvidersOptions {
   runnerStore?: RunnerStore
-
-  /** @deprecated */
-  updateRunnerData?: (runnerData: RunnerData) => void
 }
 
 export interface RenderInBuilderOptions {
   runnerStore?: RunnerStore
   builderStore?: BuilderStore
-
-  /** @deprecated */
-  updateRootState?: (rootState: {
-    runner: RunnerData
-    builder: BuilderState
-  }) => void
 }
 
 export function renderWithProviders(
   element: ReactElement,
   {
     runnerStore = createStore(runnerDataFactory()),
-    updateRunnerData,
   }: RenderWithProvidersOptions = {},
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
-    if (updateRunnerData) {
-      const runner = runnerStore.get()
-      updateRunnerData(runner)
-      runnerStore.setState(() => runner)
-    }
-
     return (
       <ThemeProvider theme={theme}>
         <RunnerStoreProvider store={runnerStore}>{children}</RunnerStoreProvider>
@@ -65,22 +48,8 @@ export function renderInBuilder(
   {
     runnerStore = createStore(runnerDataFactory()),
     builderStore = createStore(builderStateFactory()),
-
-    updateRootState,
   }: RenderInBuilderOptions = {},
 ) {
-  if (updateRootState) {
-    const rootState = {
-      runner: runnerStore.get(),
-      builder: builderStore.get(),
-    }
-
-    updateRootState(rootState)
-
-    runnerStore.setState(() => rootState.runner)
-    builderStore.setState(() => rootState.builder)
-  }
-
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
@@ -110,17 +79,6 @@ export function fillNameAndClickSave(nameValue: string) {
 
 // Ensure MUI Dialog portals rendered into document.body are cleaned up between tests.
 afterEach(() => cleanup())
-
-/**
- * Creates a default RunnerData, optionally mutated by the provided callback.
- * Use this in unit tests to build a sheet with only the fields you care about set.
- * @deprecated - use {@link runnerDataFactory} instead
- */
-export function makeRunnerData(overrides?: (sheet: RunnerData) => void): RunnerData {
-  const sheet = runnerDataFactory()
-  overrides?.(sheet)
-  return sheet
-}
 
 /**
  * Returns a React wrapper component that provides a RunnerDataStore populated

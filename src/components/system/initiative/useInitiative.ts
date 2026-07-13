@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -12,8 +12,8 @@ interface InitiativeInfo {
 }
 
 export const useInitiative = (): InitiativeInfo => {
-  const reactionAttr = useAttr(AttributeKey.reaction)
-  const intuitionAttr = useAttr(AttributeKey.intuition)
+  const reactionAttr = useAttrValue(AttributeKey.reaction)
+  const intuitionAttr = useAttrValue(AttributeKey.intuition)
   const initiativeBonuses = useGameEffects(GameEffectType.initiativeBonus)
   const extraPassEffects = useGameEffects(GameEffectType.extraInitiativePasses)
   const extraDiceEffects = useGameEffects(GameEffectType.extraInitiativeDice)

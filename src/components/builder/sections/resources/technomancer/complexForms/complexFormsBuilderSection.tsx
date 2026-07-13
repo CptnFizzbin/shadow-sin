@@ -2,8 +2,8 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import {
   ComplexFormsList,
@@ -13,7 +13,7 @@ import {
 } from "./useComplexFormsAlerts.ts"
 
 export const ComplexFormsBuilderSection: FC = () => {
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const alerts = useComplexFormsAlerts()
 
   if (!isTechnomancer(awakeningType)) return null

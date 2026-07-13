@@ -1,4 +1,5 @@
-import { useActiveSkill, useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import { isMagician, SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -7,7 +8,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
-  const magicAttribute = useAttr(AttributeKey.magic)
+  const magicAttribute = useAttrValue(AttributeKey.magic)
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)

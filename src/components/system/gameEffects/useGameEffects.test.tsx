@@ -14,7 +14,8 @@ import {
   SpellRange,
   SpellType,
 } from "#/system/magic/spellData.ts"
-import { makeRunnerData, makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
+import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { selectAllGameEffects, selectGameEffectsByType, useGameEffects } from "./useGameEffects.ts"
 
@@ -25,7 +26,7 @@ import { selectAllGameEffects, selectGameEffectsByType, useGameEffects } from ".
 describe("selectAllGameEffects", () => {
   it("returns an empty array when no source has effects", () => {
     // Arrange
-    const sheet = makeRunnerData()
+    const sheet = runnerDataFactory()
 
     // Act
     const effects = selectAllGameEffects(sheet)
@@ -36,7 +37,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from qualities", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -45,6 +46,7 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -63,8 +65,9 @@ describe("selectAllGameEffects", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.gear = createItemMap([synapticBooster])
+      return s
     })
 
     // Act
@@ -83,8 +86,9 @@ describe("selectAllGameEffects", () => {
       equipped: false,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.gear = createItemMap([synapticBooster])
+      return s
     })
 
     // Act
@@ -96,7 +100,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from spells", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.spells = [
         {
           id: NullUuid,
@@ -112,6 +116,7 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.initiativeBonus, value: 2 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -124,7 +129,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from complex forms", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.complexForms = [
         {
           id: NullUuid,
@@ -133,6 +138,7 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.resonance, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -145,7 +151,7 @@ describe("selectAllGameEffects", () => {
 
   it("collects effects from adept powers", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.powers = [
         {
           type: "adeptPower",
@@ -156,6 +162,7 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.strength, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -174,7 +181,7 @@ describe("selectAllGameEffects", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -194,6 +201,7 @@ describe("selectAllGameEffects", () => {
           effects: [{ type: GameEffectType.recoilReduction, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -205,9 +213,10 @@ describe("selectAllGameEffects", () => {
 
   it("handles sources with no effects field gracefully", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [{ id: NullUuid, name: "Toughness", type: "positive" }]
       s.powers = [{ type: "adeptPower", id: NullUuid, name: "Killing Hands", rating: 1, costPerRating: 0.5 }]
+      return s
     })
 
     // Act
@@ -225,7 +234,7 @@ describe("selectAllGameEffects", () => {
 describe("selectGameEffectsByType", () => {
   it("returns an empty array when there are no effects of that type", () => {
     // Arrange
-    const sheet = makeRunnerData()
+    const sheet = runnerDataFactory()
 
     // Act
     const effects = selectGameEffectsByType(GameEffectType.attrMod)(sheet)
@@ -236,7 +245,7 @@ describe("selectGameEffectsByType", () => {
 
   it("returns only effects matching the requested type", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -248,6 +257,7 @@ describe("selectGameEffectsByType", () => {
           ],
         },
       ]
+      return s
     })
 
     // Act
@@ -266,7 +276,7 @@ describe("selectGameEffectsByType", () => {
       equipped: true,
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.spells = [
         {
           id: NullUuid,
@@ -283,6 +293,7 @@ describe("selectGameEffectsByType", () => {
         },
       ]
       s.gear = createItemMap([implant])
+      return s
     })
 
     // Act
@@ -301,7 +312,7 @@ describe("selectGameEffectsByType", () => {
 describe("useGameEffects", () => {
   it("returns an empty array when there are no matching effects on the sheet", () => {
     // Arrange
-    const sheet = makeRunnerData()
+    const sheet = runnerDataFactory()
 
     // Act
     const { result } = renderHook(() => useGameEffects(GameEffectType.attrMod), {
@@ -314,7 +325,7 @@ describe("useGameEffects", () => {
 
   it("returns effects of the requested type from the runner sheet", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -323,6 +334,7 @@ describe("useGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act
@@ -337,7 +349,7 @@ describe("useGameEffects", () => {
 
   it("does not return effects of other types", () => {
     // Arrange
-    const sheet = makeRunnerData((s) => {
+    const sheet = runnerDataFactory((s) => {
       s.qualities = [
         {
           id: NullUuid,
@@ -346,6 +358,7 @@ describe("useGameEffects", () => {
           effects: [{ type: GameEffectType.attrMod, target: AttributeKey.logic, value: 1 }],
         },
       ]
+      return s
     })
 
     // Act

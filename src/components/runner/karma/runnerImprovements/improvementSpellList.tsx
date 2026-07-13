@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiSparklingLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useSpellFormDialog } from "#/components/runner/spells/dialogs/spellFormDialog.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnSpellEntry,
@@ -24,7 +24,7 @@ import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export const ImprovementSpellList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const knownSpells = useRunnerData((sheet) => sheet.spells)
+  const knownSpells = useRunnerStoreSelector((sheet) => sheet.spells)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const spellFormDialog = useSpellFormDialog()
 

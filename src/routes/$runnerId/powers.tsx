@@ -5,14 +5,14 @@ import { createFileRoute } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { AdeptPowersViewerSection } from "#/components/runner/adeptPowers/adeptPowersViewerSection.tsx"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
 interface Props {}
 
 export const RouteComponent: FC<Props> = () => {
-  const awakening = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const isAdept =
     awakening === AwakeningType.Adept || awakening === AwakeningType.MysticAdept
 

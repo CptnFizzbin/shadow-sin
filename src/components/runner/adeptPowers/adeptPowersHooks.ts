@@ -1,10 +1,10 @@
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const usePowerPoints = () => {
   const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
-  const magicAttr = useAttr(AttributeKey.magic)
+  const magicAttr = useAttrValue(AttributeKey.magic)
 
   const used = adeptPowers
     .map((power) => power.costPerRating * power.rating)

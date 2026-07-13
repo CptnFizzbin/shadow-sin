@@ -3,9 +3,9 @@ import type { UUID } from "node:crypto"
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type {
   LearnActiveSkillEntry,
@@ -106,10 +106,11 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20
+      return draft
     })
 
     // Act
@@ -130,8 +131,9 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.pistols, rating: 2 }]
+      return draft
     })
 
     // Act
@@ -148,10 +150,11 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnSkillGroup,
       group: { name: SkillGroupKey.Firearms, rating: 1 },
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = []
       draft.karma.current = 20
+      return draft
     })
 
     // Act

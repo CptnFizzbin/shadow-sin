@@ -7,7 +7,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useSpritesBuildPoints } from "#/components/builder/buildPoints/hooks/useSpritesBuildPoints.ts"
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useSpriteDialog } from "#/components/runner/technomancer/dialogs/spriteDialog.tsx"
 import { useMaxSpritesRegistered, useSprites } from "#/components/runner/technomancer/spritesHooks.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
@@ -21,7 +21,7 @@ import type { SpriteData } from "#/system/magic/spriteData.ts"
 import { SpritesListItem } from "./spritesListItem.tsx"
 
 export const SpritesList: FC = () => {
-  const resonance = useAttr(AttributeKey.resonance)
+  const resonance = useAttrValue(AttributeKey.resonance)
   const maxSpritesRegistered = useMaxSpritesRegistered()
   const dispatch = useRunnerStoreDispatch()
   const sprites = useSprites()

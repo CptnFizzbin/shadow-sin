@@ -6,10 +6,8 @@ import Typography from "@mui/material/Typography"
 import { sort } from "fast-sort"
 import type { FC } from "react"
 
-import {
-  selectAllowedActiveSkills,
-  useRunnerDataSelector,
-} from "#/components/runner/sheet/runnerData.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { selectAllowedActiveSkills } from "#/stores/runner/skills/skillsSlice.selectors.ts"
 import type { SkillInfo } from "#/system/skills/skillInfo.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
@@ -21,7 +19,7 @@ export const ActiveSkillSelectInput: FC<ActiveSkillSelectInputProps> = ({
   filterOption = () => true,
   ...selectProps
 }) => {
-  const availableSkills = useRunnerDataSelector(selectAllowedActiveSkills)
+  const availableSkills = useRunnerStoreSelector(selectAllowedActiveSkills)
   const options = Object.entries(availableSkills)
     .filter(([key, info]) => filterOption(key as SkillKey, info))
 

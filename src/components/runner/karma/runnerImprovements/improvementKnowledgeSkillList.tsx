@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiLightbulbLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
@@ -45,7 +44,7 @@ const SPEC_COST = 2
 
 export const ImprovementKnowledgeSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const knowledgeSkills = useRunnerData((sheet) => sheet.skills.knowledgeSkills)
+  const knowledgeSkills = useRunnerStoreSelector((sheet) => sheet.skills.knowledgeSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

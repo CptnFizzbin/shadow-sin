@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SpellsViewerSection } from "#/components/runner/spells/spellsViewerSection.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
 export const Route = createFileRoute("/$runnerId/spells")({
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/$runnerId/spells")({
 })
 
 function RouteComponent() {
-  const awakening = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const canCastSpells =
     awakening === AwakeningType.Magician || awakening === AwakeningType.MysticAdept
 

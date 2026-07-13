@@ -2,10 +2,9 @@ import type { FC, PropsWithChildren } from "react"
 import { useMemo } from "react"
 
 import { AttributesProvider } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"
-
-import { useRunnerDataSelector } from "./runnerData.selectors.ts"
 
 /**
  * Reads attribute data from the runner sheet and provides it via
@@ -13,9 +12,9 @@ import { useRunnerDataSelector } from "./runnerData.selectors.ts"
  * any additional wiring.
  */
 export const RunnerAttributesProvider: FC<PropsWithChildren> = ({ children }) => {
-  const metatype = useRunnerDataSelector((sheet) => metatypes[sheet.biology.metatype])
-  const awakening = useRunnerDataSelector((sheet) => awakenings[sheet.biology.awakening])
-  const values = useRunnerDataSelector((sheet) => sheet.attributes)
+  const metatype = useRunnerStoreSelector((sheet) => metatypes[sheet.biology.metatype])
+  const awakening = useRunnerStoreSelector((sheet) => awakenings[sheet.biology.awakening])
+  const values = useRunnerStoreSelector((sheet) => sheet.attributes)
 
   const infos = useMemo(
     () => ({ ...metatype.attributes, ...awakening.attributes }),

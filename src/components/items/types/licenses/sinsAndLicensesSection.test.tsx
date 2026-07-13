@@ -1,8 +1,10 @@
+import { createStore } from "@tanstack/store"
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { fillNameAndClickSave, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { SinsAndLicensesSection } from "./sinsAndLicensesSection.tsx"
@@ -18,9 +20,7 @@ describe("SinsAndLicensesSection", () => {
   it("shows SINs from the store", () => {
     // Arrange / Act
     renderInBuilder(<SinsAndLicensesSection />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [fakeSin.id]: fakeSin } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [fakeSin.id]: fakeSin } }))),
     })
 
     // Assert
@@ -42,9 +42,7 @@ describe("SinsAndLicensesSection", () => {
   it("removing a SIN with no licenses dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<SinsAndLicensesSection />, {
-      updateRootState: (rootState) => {
-        rootState.runner = { ...rootState.runner, gear: { [fakeSin.id]: fakeSin } }
-      },
+      runnerStore: createStore(runnerDataFactory((runner) => ({ ...runner, gear: { [fakeSin.id]: fakeSin } }))),
     })
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
 

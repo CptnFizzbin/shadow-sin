@@ -1,10 +1,10 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useComplexFormsAlerts = (): AlertInfo[] => {
-  const awakeningType = useRunnerData((s) => s.biology.awakening)
-  const complexForms = useRunnerData((s) => s.complexForms)
+  const awakeningType = useRunnerStoreSelector((s) => s.biology.awakening)
+  const complexForms = useRunnerStoreSelector((s) => s.complexForms)
 
   const statuses: AlertInfo[] = []
 

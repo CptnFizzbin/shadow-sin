@@ -3,9 +3,9 @@ import type { UUID } from "node:crypto"
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import type {
   SkillIncreaseEntry,
@@ -27,10 +27,11 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
+      return draft
     })
 
     // Act
@@ -50,10 +51,11 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       skill: SkillKey.banishing,
       specialization: "Spirits of Fire",
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
       draft.skills.skillGroups = []
       draft.karma.current = 50
+      return draft
     })
 
     // Act
@@ -75,10 +77,11 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.skills.activeSkills = []
       draft.skills.skillGroups = [{ name: SkillGroupKey.Conjuring, rating: 3 }]
       draft.karma.current = 50
+      return draft
     })
 
     // Act

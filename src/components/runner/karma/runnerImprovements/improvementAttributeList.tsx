@@ -10,7 +10,6 @@ import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
@@ -32,7 +31,7 @@ interface ImprovementAttributeListProps {
 
 export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerData((s) => s)
+  const sheet = useRunnerStoreSelector((s) => s)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)

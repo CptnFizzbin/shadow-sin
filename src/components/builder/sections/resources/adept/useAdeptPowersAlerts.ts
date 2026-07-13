@@ -1,12 +1,12 @@
 import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useAdeptPowersAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerStoreSelector(Selectors.biology.selectAwakening)
-  const magicAttr = useAttr(AttributeKey.magic)
+  const magicAttr = useAttrValue(AttributeKey.magic)
   const adeptPowers = useRunnerStoreSelector(Selectors.powers.selectPowers)
 
   const statuses: AlertInfo[] = []
