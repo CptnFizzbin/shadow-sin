@@ -5,7 +5,6 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -13,6 +12,7 @@ import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 interface BuyQuantityDialogProps extends ControlledDialogProps<void> {
   defaultCost: number
@@ -28,7 +28,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const [costPerItem, setCostPerItem] = useState(defaultCost)
   const [discount, setDiscount] = useState(0)
 
-  const currentNuyen = useRunnerData((s) => s.nuyen.current)
+  const currentNuyen = useRunnerStoreSelector((s) => s.nuyen.current)
   const discountPercent = (discount / 100)
   const subTotal = Math.max(0, costPerItem * quantity)
   const discountTotal = subTotal * discountPercent

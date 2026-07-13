@@ -7,7 +7,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useComplexFormsBuildPoints } from "#/components/builder/buildPoints/hooks/useComplexFormsBuildPoints.ts"
-import { useAttr } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useComplexForms, useMaxComplexForms } from "#/components/runner/technomancer/complexFormsHooks.ts"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
@@ -22,7 +22,7 @@ import {
 } from "./complexFormsListItem.tsx"
 
 export const ComplexFormsList: FC = () => {
-  const resonance = useAttr(AttributeKey.resonance)
+  const resonance = useAttrValue(AttributeKey.resonance)
   const dispatch = useRunnerStoreDispatch()
   const complexForms = useComplexForms()
   const complexFormsBp = useComplexFormsBuildPoints()

@@ -1,10 +1,10 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useBiologyAlerts = (): AlertInfo[] => {
   const statuses: AlertInfo[] = []
 
-  const metatype = useRunnerData((s) => s.biology.metatype)
+  const metatype = useRunnerStoreSelector((s) => s.biology.metatype)
   if (!metatype) {
     statuses.push({
       section: "Biology",
@@ -15,7 +15,7 @@ export const useBiologyAlerts = (): AlertInfo[] => {
     })
   }
 
-  const awakening = useRunnerData((s) => s.biology.awakening)
+  const awakening = useRunnerStoreSelector((s) => s.biology.awakening)
   if (!awakening) {
     statuses.push({
       section: "Biology",

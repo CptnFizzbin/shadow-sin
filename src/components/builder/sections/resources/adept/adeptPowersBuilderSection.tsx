@@ -4,12 +4,12 @@ import { BuilderSection } from "#/components/builder/sections/builderSection.tsx
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { AdeptPowersList } from "#/components/runner/adeptPowers/adeptPowersList.tsx"
 import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useAdeptPowersAlerts } from "./useAdeptPowersAlerts.ts"
 
 export const AdeptPowersBuilderSection: FC = () => {
-  const awakeningType = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const alerts = useAdeptPowersAlerts()
 
   if (!isAdept(awakeningType)) return null

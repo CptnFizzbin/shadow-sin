@@ -3,11 +3,11 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
-  const profile = useRunnerData((s) => s.profile)
+  const profile = useRunnerStoreSelector((s) => s.profile)
 
   return (
     <Stack divider={<Divider />} sx={{ gap: 1 }}>

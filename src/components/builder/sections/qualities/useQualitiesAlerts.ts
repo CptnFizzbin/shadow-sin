@@ -1,8 +1,8 @@
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
-  const qualities = useRunnerData((sheet) => sheet.qualities)
+  const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
 
   const statuses: AlertInfo[] = []
 

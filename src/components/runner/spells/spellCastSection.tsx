@@ -13,8 +13,7 @@ import { darken, lighten } from "@mui/material/styles"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useAttr } from "#/components/runner/runnerUtils.ts"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
@@ -33,8 +32,8 @@ interface SpellCastSectionProps {
 }
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
-  const magicAttr = useAttr(AttributeKey.magic)
-  const tradition = useRunnerData((sheet) => sheet.tradition)
+  const magicAttr = useAttrValue(AttributeKey.magic)
+  const tradition = useRunnerStoreSelector((sheet) => sheet.tradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const [force, setForce] = useState<number>(Math.max(1, magicAttr))

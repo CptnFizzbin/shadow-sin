@@ -1,8 +1,10 @@
+import { createStore } from "@tanstack/store"
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
@@ -19,7 +21,12 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   const ctrl = makeOpenCtrl()
   return renderWithProviders(
     <SpendKarmaDialogContent ctrl={ctrl} />,
-    { updateRunnerData },
+    {
+      runnerStore: createStore(runnerDataFactory((sheet) => {
+        updateRunnerData?.(sheet)
+        return sheet
+      })),
+    },
   )
 }
 

@@ -8,8 +8,9 @@ import {
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
-import { useAttr, useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -25,7 +26,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
 
   const store = useRunnerStoreContext()
   const attrKey = props.attr
-  const attrValue = useAttr(attrKey)
+  const attrValue = useAttrValue(attrKey)
   const attrInfo = useAttrInfo(attrKey)
   const hasMaxxedAttr = useHasMaxxedAttribute()
 

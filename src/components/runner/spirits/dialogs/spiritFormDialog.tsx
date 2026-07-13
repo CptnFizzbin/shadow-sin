@@ -3,11 +3,11 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { SpiritFormFields } from "#/components/runner/spirits/form/spiritFormFields.tsx"
 import { useSpiritForm } from "#/components/runner/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/runner/spirits/summoningSection.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {
@@ -23,7 +23,7 @@ export const SpiritFormDialog: FC<SpiritFormDialogProps> = ({
   onClosed,
   spirit,
 }) => {
-  const tradition = useRunnerData((s) => s.tradition)
+  const tradition = useRunnerStoreSelector((s) => s.tradition)
 
   const form = useSpiritForm({
     spirit,

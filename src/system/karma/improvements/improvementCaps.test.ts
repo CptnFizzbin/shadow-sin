@@ -4,8 +4,8 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { MetatypeType } from "#/system/metatypeData.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
-import { makeRunnerData } from "#testUtils/renderUtils.tsx"
 
 import {
   APTITUDE_ACTIVE_SKILL_CAP,
@@ -25,8 +25,9 @@ import {
 describe("hasAptitudeFor", () => {
   it("returns true for a parenthesized quality name matching the skill (case-insensitive)", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      return draft
     })
 
     // Act + Assert
@@ -35,8 +36,9 @@ describe("hasAptitudeFor", () => {
 
   it("returns false when the quality targets a different skill", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [{ id: NullUuid, name: "Aptitude (Longarms)", type: "positive" }]
+      return draft
     })
 
     // Act + Assert
@@ -45,7 +47,7 @@ describe("hasAptitudeFor", () => {
 
   it("returns false when no Aptitude quality is present", () => {
     // Arrange
-    const sheet = makeRunnerData()
+    const sheet = runnerDataFactory()
 
     // Act + Assert
     expect(hasAptitudeFor(sheet, SkillKey.pistols)).toBe(false)
@@ -55,10 +57,11 @@ describe("hasAptitudeFor", () => {
 describe("hasExceptionalAttributeFor", () => {
   it("matches the attribute key", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [
         { id: NullUuid, name: "Exceptional Attribute (Logic)", type: "positive" },
       ]
+      return draft
     })
 
     // Act + Assert
@@ -67,8 +70,9 @@ describe("hasExceptionalAttributeFor", () => {
 
   it("matches the attribute abbreviation", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [{ id: NullUuid, name: "Exceptional (LOG)", type: "positive" }]
+      return draft
     })
 
     // Act + Assert
@@ -77,10 +81,11 @@ describe("hasExceptionalAttributeFor", () => {
 
   it("returns false for a different attribute", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [
         { id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" },
       ]
+      return draft
     })
 
     // Act + Assert
@@ -91,7 +96,7 @@ describe("hasExceptionalAttributeFor", () => {
 describe("getActiveSkillCap", () => {
   it("returns the base cap (6) without Aptitude", () => {
     // Arrange
-    const sheet = makeRunnerData()
+    const sheet = runnerDataFactory()
 
     // Act + Assert
     expect(getActiveSkillCap(sheet, SkillKey.pistols)).toBe(BASE_ACTIVE_SKILL_CAP)
@@ -99,8 +104,9 @@ describe("getActiveSkillCap", () => {
 
   it("returns the Aptitude cap (7) when the runner has Aptitude for the skill", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      return draft
     })
 
     // Act + Assert
@@ -119,8 +125,9 @@ describe("getSkillGroupCap / getKnowledgeSkillCap / getLanguageSkillCap", () => 
 describe("getAttributeCap", () => {
   it("returns the metatype max for a regular attribute (Human Body = 6)", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.biology.metatype = MetatypeType.Human
+      return draft
     })
 
     // Act + Assert
@@ -129,9 +136,10 @@ describe("getAttributeCap", () => {
 
   it("adds +1 when Exceptional Attribute targets the attribute", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.biology.metatype = MetatypeType.Human
       draft.qualities = [{ id: NullUuid, name: "Exceptional Attribute (Body)", type: "positive" }]
+      return draft
     })
 
     // Act + Assert
@@ -140,8 +148,9 @@ describe("getAttributeCap", () => {
 
   it("uses the awakening max for Magic on a magician", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.biology.awakening = AwakeningType.Magician
+      return draft
     })
 
     // Act + Assert
@@ -150,8 +159,9 @@ describe("getAttributeCap", () => {
 
   it("returns 0 for Magic on a mundane (it isn't a usable cap)", () => {
     // Arrange
-    const sheet = makeRunnerData((draft) => {
+    const sheet = runnerDataFactory((draft) => {
       draft.biology.awakening = AwakeningType.Mundane
+      return draft
     })
 
     // Act + Assert

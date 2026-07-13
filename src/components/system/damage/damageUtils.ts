@@ -91,7 +91,7 @@ function selectLowPainToleranceModifier(track: DamageTrackKey) {
  * minimum of 1 to avoid division by zero.
  *
  * Usage:
- *   useRunnerData(selectWoundInterval(DamageTrackKey.physical))
+ *   useRunnerStoreSelector(selectWoundInterval(DamageTrackKey.physical))
  *   useSelector(store, selectWoundInterval(DamageTrackKey.stun))
  *
  * @param track - The damage track to compute the interval for
@@ -112,7 +112,7 @@ export function selectWoundInterval(track: DamageTrackKey) {
  * Formula: `floor(max(0, damage - hptOffset) / interval)`
  *
  * Usage:
- *   useRunnerData(selectTrackWoundModifier(DamageTrackKey.physical))
+ *   useRunnerStoreSelector(selectTrackWoundModifier(DamageTrackKey.physical))
  *
  * @param track - The damage track to compute the wound modifier for
  * @returns A selector `(sheet) => number`

@@ -1,8 +1,8 @@
 import { createSelector } from "reselect"
 
-import type { RunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
-import { useRunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
 import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
+import type { RunnerDataSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
@@ -52,5 +52,5 @@ export const selectGameEffectsByType: TypedGameEffectSelector = createCurriedSel
  * This scans qualities, gear, spells, complex forms, and powers.
  */
 export function useGameEffects<T extends keyof EffectByType>(type: T): EffectByType[T][] {
-  return useRunnerDataSelector(selectGameEffectsByType(type))
+  return useRunnerStoreSelector(selectGameEffectsByType(type))
 }

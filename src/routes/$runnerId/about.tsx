@@ -12,9 +12,9 @@ import { KarmaSection } from "#/components/runner/karma/karmaSection.tsx"
 import { useProfileEditDialog } from "#/components/runner/profile/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const Route = createFileRoute("/$runnerId/about")({
   component: RouteComponent,
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/$runnerId/about")({
 
 function RouteComponent() {
   const profileEditDialog = useProfileEditDialog()
-  const profile = useRunnerData((s) => s.profile)
+  const profile = useRunnerStoreSelector((s) => s.profile)
 
   const publicAwareness = Math.max(
     0,

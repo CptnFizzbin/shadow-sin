@@ -5,10 +5,10 @@ import Select from "@mui/material/Select"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { useActiveSkillDicePool } from "#/components/runner/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
@@ -30,7 +30,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
 
   const skillDicePool = useActiveSkillDicePool({ skillKey, attrOverride: selectedAttr })
 
-  const specialization = useRunnerData((sheet) => {
+  const specialization = useRunnerStoreSelector((sheet) => {
     return sheet.skills
       .activeSkills
       .find((s) => s.name === skillKey)

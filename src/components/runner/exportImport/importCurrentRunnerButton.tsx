@@ -3,17 +3,17 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerDataSelector } from "#/components/runner/sheet/runnerData.selectors.ts"
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 
 export const ImportCurrentRunnerButton: FC = () => {
   const store = useRunnerStoreContext()
-  const runnerName = useRunnerDataSelector((s) => s.profile.alias || s.profile.name)
+  const runnerName = useRunnerStoreSelector((s) => s.profile.alias || s.profile.name)
 
   const confirmDialog = useConfirmDialog()
   const alertDialog = useAlertDialog()

@@ -7,7 +7,8 @@ import {
   AttributeBpCostBase,
   AttributeBpCostMaxOut,
 } from "#/components/builder/buildPoints/attributeUtils.ts"
-import { useAttr, useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -22,7 +23,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
 
   const store = useRunnerStoreContext()
   const attrApi = useAttrInfo(props.attr)
-  const attrValue = useAttr(props.attr)
+  const attrValue = useAttrValue(props.attr)
 
   let disabled = false
   let refund = AttributeBpCostBase

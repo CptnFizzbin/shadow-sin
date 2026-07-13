@@ -16,7 +16,6 @@ import {
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
@@ -59,7 +58,7 @@ const NAV_ITEMS: NavItemConfig[] = [
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const runnerDataStore = useRunnerStoreContext()
-  const awakening = useRunnerData((sheet) => sheet.biology.awakening)
+  const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
 
   const [activeSection, setActiveSection] = useState<SectionKey>("attribute")
 

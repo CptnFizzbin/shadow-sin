@@ -4,8 +4,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
 import { useQualityInfoDialog } from "./dialogs/qualityInfoDialog.tsx"
@@ -39,7 +39,7 @@ const QualityViewerRow: FC<QualityViewerRowProps> = ({ quality, onClick }) => {
 }
 
 export const QualitiesViewerSection: FC = () => {
-  const qualities = useRunnerData((sheet) => sheet.qualities)
+  const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
   const qualityInfoDialog = useQualityInfoDialog()
 
   const positiveQualities = qualities.filter((q) => q.type === "positive")

@@ -1,3 +1,4 @@
+import { createStore } from "@tanstack/store"
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
@@ -9,6 +10,7 @@ import {
   SpellRange,
   SpellType,
 } from "#/system/magic/spellData.ts"
+import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
@@ -20,7 +22,12 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
     <SpendKarmaDialogProvider>
       <ImprovementSpellList />
     </SpendKarmaDialogProvider>,
-    { updateRunnerData },
+    {
+      runnerStore: createStore(runnerDataFactory((sheet) => {
+        updateRunnerData?.(sheet)
+        return sheet
+      })),
+    },
   )
 }
 

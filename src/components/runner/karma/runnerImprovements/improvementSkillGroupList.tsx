@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useRunnerData } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
@@ -42,7 +41,7 @@ interface ImprovementSkillGroupListProps {
 
 export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ onBack }) => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const skillGroups = useRunnerData((sheet) => sheet.skills.skillGroups)
+  const skillGroups = useRunnerStoreSelector((sheet) => sheet.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
