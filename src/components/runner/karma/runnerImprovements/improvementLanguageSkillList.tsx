@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiChat4Line, RiCheckLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
+import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useLanguageSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
@@ -158,8 +160,8 @@ export const ImprovementLanguageSkillList: FC = () => {
                       {isAtMax
                         ? <Chip label={isNative ? "Native" : "Max"} size="small" />
                         : (
-                            <Chip
-                              label={`${karmaCost}k`}
+                            <KarmaChip
+                              amount={karmaCost}
                               size="small"
                               color={queuedEntry ? "success" : canAffordImprove ? "default" : "warning"}
                             />
@@ -179,7 +181,16 @@ export const ImprovementLanguageSkillList: FC = () => {
                           />
                         </Tooltip>
                       )}
-                      <Tooltip title={queuedSpec ? "Remove lingo" : `Lingo (${LINGO_COST}k)`}>
+                      <Tooltip
+                        title={queuedSpec
+                          ? "Remove lingo"
+                          : (
+                              <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+                                Lingo
+                                <KarmaValue amount={LINGO_COST} />
+                              </Stack>
+                            )}
+                      >
                         <span>
                           <IconButton
                             size="small"
