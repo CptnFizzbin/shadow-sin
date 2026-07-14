@@ -8,7 +8,7 @@ export interface RunnerRef {
   lastModified: string // ISO 8601 timestamp
 }
 
-export const SavedRunnerSchema = z.object({
+const SavedRunnerSchema = z.object({
   id: z.string().transform((val) => val as RunnerId),
   name: z.string(),
   lastModified: z.string(),

@@ -26,6 +26,8 @@ const SpiritPoolFormulaSchema: z.ZodType<SpiritPoolFormula> = z.discriminatedUni
   z.object({ type: z.literal("force_plus"), attribute: z.nativeEnum(AttributeKey) }),
 ])
 
+// Not yet wired into a form validator (see SpellDataSchema/AdeptPowerDataSchema for the pattern) — kept for parity with sibling item-data schemas
+// fallow-ignore-next-line unused-export
 export const CritterPowerDataSchema = z.object({
   name: z.string(),
   rollType: z.enum(["Opposed", "Standard", "Hidden"]).optional(),
@@ -461,12 +463,14 @@ export function lookupCritterPower(name: string): CritterPowerData | undefined {
   return powers[baseName]
 }
 
-export interface CritterWeaknessData {
+interface CritterWeaknessData {
   name: string
   description: string
   source?: SourceData
 }
 
+// Not yet wired into a form validator (see SpellDataSchema/AdeptPowerDataSchema for the pattern) — kept for parity with sibling item-data schemas
+// fallow-ignore-next-line unused-export
 export const CritterWeaknessDataSchema = z.object({
   name: z.string(),
   description: z.string(),
@@ -506,6 +510,8 @@ const weaknesses: Record<string, CritterWeaknessData> = {
   },
 }
 
+// No consuming UI yet (mirrors lookupCritterPower/critterPowerChip.tsx, which is wired up) — kept for a future critter-weakness display
+// fallow-ignore-next-line unused-export
 export function lookupCritterWeakness(name: string): CritterWeaknessData | undefined {
   const exact = weaknesses[name.toLowerCase()]
   if (exact) return exact

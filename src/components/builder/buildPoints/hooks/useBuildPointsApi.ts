@@ -26,7 +26,7 @@ import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
 import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
 import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
 
-export const RunnerBuilderMaxBp = 400
+const RunnerBuilderMaxBp = 400
 
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [

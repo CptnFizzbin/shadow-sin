@@ -63,9 +63,7 @@ const createInitialState = (): DiceTrayState => ({
  *
  * // Open the tray so the user can adjust the count before rolling
  * diceTray.setDice(pool.size)
- *
- * // Open the tray and immediately roll
- * diceTray.roll(pool.size)
+ * diceTray.rollStandard()
  * ```
  */
 export class DiceTrayApi {
@@ -99,12 +97,16 @@ export class DiceTrayApi {
     this.roller.setPoolSize(safeCount)
   }
 
+  // called on the useDiceTray() instance in diceTrayInputs.tsx
+  // fallow-ignore-next-line unused-class-member
   setThreshold(count: number): void {
     this.store.setState(produce((state) => {
       state.threshold = count
     }))
   }
 
+  // called on the useDiceTray() instance in diceTrayInputs.tsx
+  // fallow-ignore-next-line unused-class-member
   setOpposedHits(count: number): void {
     this.store.setState(produce((state) => {
       state.opposedHits = count
@@ -127,18 +129,24 @@ export class DiceTrayApi {
     this.roller.reset().setPoolSize(poolSize)
   }
 
+  // called on the useDiceTray() instance in diceTrayInputs.tsx
+  // fallow-ignore-next-line unused-class-member
   setExtendedInterval(interval: ExtendedInterval): void {
     this.store.setState(produce((state) => {
       state.extendedInterval = interval
     }))
   }
 
+  // called on the useDiceTray() instance in diceTrayInputs.tsx
+  // fallow-ignore-next-line unused-class-member
   setShrinkingPool(value: boolean): void {
     this.store.setState(produce((state) => {
       state.shrinkingPool = value
     }))
   }
 
+  // called on the useDiceTray() instance in diceTrayHeader.tsx
+  // fallow-ignore-next-line unused-class-member
   setPhysicalMode(value: boolean): void {
     this.store.setState(produce((state) => {
       state.physicalMode = value
@@ -155,6 +163,8 @@ export class DiceTrayApi {
     }
   }
 
+  // called on the useDiceTray() instance in diceTrayDiceDisplay.tsx / diceTrayActions.tsx
+  // fallow-ignore-next-line unused-class-member
   setPhysicalHits(count: number): void {
     this.store.setState(produce((state) => {
       state.physicalHits = Math.max(0, count)
@@ -166,6 +176,8 @@ export class DiceTrayApi {
    * roller for the next intermediate roll. Edge availability resets so it can
    * be applied separately to each roll.
    */
+  // called on the useDiceTray() instance in diceTrayActions.tsx
+  // fallow-ignore-next-line unused-class-member
   recordExtendedRoll(currentHits: number): void {
     const { edgeSpent, shrinkingPool, poolSize } = this.store.get()
 
@@ -183,26 +195,6 @@ export class DiceTrayApi {
     } else {
       this.roller.setPoolSize(this.store.get().poolSize)
     }
-  }
-
-  /** Reset the extended-test history without affecting other state. */
-  resetExtendedHistory(): void {
-    this.store.setState(produce((state) => {
-      state.extendedHistory = []
-    }))
-  }
-
-  /**
-   * Open the tray and immediately roll `count` dice. The dialog animates the
-   * roll and shows results automatically.
-   */
-  roll(count?: number): void {
-    if (count !== undefined) {
-      this.setPoolSize(count)
-    }
-    this.open()
-
-    this.roller.rollAll({ timeout: 1500 })
   }
 
   open(): void {
@@ -230,6 +222,8 @@ export class DiceTrayApi {
    * Roll the current dice count using standard d6 (no exploding).
    * Starts the rolling animation and stores results when it completes.
    */
+  // called on the useDiceTray() instance in diceTrayActions.tsx
+  // fallow-ignore-next-line unused-class-member
   rollStandard(): void {
     // Drop any leftover edge dice from a previous roll so the user starts
     // from the configured pool size.

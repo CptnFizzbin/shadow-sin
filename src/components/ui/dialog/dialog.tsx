@@ -28,5 +28,4 @@ Dialog.Title = DialogTitle
 Dialog.Content = DialogContent
 Dialog.Actions = DialogActions
 
-export type { DialogRootProps as DialogProps } from "#/components/ui/dialog/dialogRoot.tsx"
 export { ControlledDialog } from "./controlledDialog.tsx"

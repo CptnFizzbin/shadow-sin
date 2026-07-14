@@ -81,21 +81,11 @@ export interface LearnComplexFormEntry extends BaseImprovementEntry {
   complexForm: ComplexFormData
 }
 
-export function isLearnComplexFormEntry(entry: ImprovementEntry): entry is LearnComplexFormEntry {
-  return entry.type === ImprovementType.learnComplexForm
-}
-
 export interface ComplexFormIncreaseEntry extends BaseImprovementEntry {
   type: ImprovementType.complexFormIncrease
   complexFormId: string
   baseRating: number
   newRating: number
-}
-
-export function isComplexFormIncreaseEntry(
-  entry: ImprovementEntry,
-): entry is ComplexFormIncreaseEntry {
-  return entry.type === ImprovementType.complexFormIncrease
 }
 
 export interface LearnActiveSkillEntry extends BaseImprovementEntry {
