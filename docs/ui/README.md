@@ -11,3 +11,4 @@ stays uniform across the application.
 | File | Component(s) | Description |
 |------|-------------|-------------|
 | [`dialog/`](./dialog.md) | `Dialog`, `Dialog.Title`, `Dialog.Content`, `Dialog.Actions` | Compound modal dialog |
+| [`prototype/`](./prototype.md) | `Prototype`, `Prototype.Item` | Tab switcher for comparing in-progress prototypes |
