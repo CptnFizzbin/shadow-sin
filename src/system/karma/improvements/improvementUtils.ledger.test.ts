@@ -18,6 +18,22 @@ import { applyImprovements } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
+function applyBodyIncrease(sheet: ReturnType<typeof runnerDataFactory>) {
+  const runnerStore = new RunnerDataStore(sheet)
+  const improvementStore = new ImprovementStore()
+  const entry: Omit<AttrIncreaseEntry, "id"> = {
+    type: ImprovementType.attrIncrease,
+    attr: AttributeKey.body,
+    baseRating: 3,
+    newRating: 4,
+  }
+  improvementStore.add(entry)
+
+  applyImprovements(improvementStore, runnerStore)
+
+  return runnerStore
+}
+
 describe("applyImprovements — karma ledger writes", () => {
   it("appends one ledger entry per applied improvement", () => {
     // Arrange — two improvements: Body 3→4 (20k) and learn Pistols rating 1 (4k)
@@ -132,18 +148,9 @@ describe("applyImprovements — karma ledger writes", () => {
       draft.karma.current = 50
       return draft
     })
-    const runnerStore = new RunnerDataStore(sheet)
-    const improvementStore = new ImprovementStore()
-    const entry: Omit<AttrIncreaseEntry, "id"> = {
-      type: ImprovementType.attrIncrease,
-      attr: AttributeKey.body,
-      baseRating: 3,
-      newRating: 4,
-    }
-    improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    const runnerStore = applyBodyIncrease(sheet)
 
     // Assert — ISO 8601 round-trips cleanly to a valid Date
     const timestamp = runnerStore.state.karma.log[0].timestamp
@@ -156,18 +163,9 @@ describe("applyImprovements — karma ledger writes", () => {
       draft.karma.current = 50
       return draft
     })
-    const runnerStore = new RunnerDataStore(sheet)
-    const improvementStore = new ImprovementStore()
-    const entry: Omit<AttrIncreaseEntry, "id"> = {
-      type: ImprovementType.attrIncrease,
-      attr: AttributeKey.body,
-      baseRating: 3,
-      newRating: 4,
-    }
-    improvementStore.add(entry)
 
     // Act
-    applyImprovements(improvementStore, runnerStore)
+    const runnerStore = applyBodyIncrease(sheet)
 
     // Assert — ledger entry has its own id, distinct from FAKE_ID
     expect(runnerStore.state.karma.log[0].id).not.toBe(FAKE_ID)

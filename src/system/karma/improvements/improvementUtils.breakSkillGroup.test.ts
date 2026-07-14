@@ -16,6 +16,17 @@ import { applyImprovement } from "./improvementUtils.ts"
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
+const standaloneBanishingSheet = () =>
+  runnerDataFactory((draft) => {
+    draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
+    draft.skills.skillGroups = []
+    draft.karma.current = 50
+    return draft
+  })
+
+const applyToStandaloneBanishing = (entry: SkillIncreaseEntry | SkillSpecializationEntry) =>
+  produce(standaloneBanishingSheet(), (draft) => applyImprovement(draft, entry))
+
 describe("applyImprovement — grouped active skill without the group on sheet", () => {
   it("raises a standalone active skill that belongs to a group, without erroring", () => {
     // Arrange — runner has Banishing (a Conjuring-group skill) standalone, no Conjuring group
@@ -27,15 +38,9 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       baseRating: 3,
       newRating: 4,
     }
-    const sheet = runnerDataFactory((draft) => {
-      draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
-      draft.skills.skillGroups = []
-      draft.karma.current = 50
-      return draft
-    })
 
     // Act
-    const next = produce(sheet, (draft) => applyImprovement(draft, entry))
+    const next = applyToStandaloneBanishing(entry)
 
     // Assert
     expect(next.skills.activeSkills.find((s) => s.name === SkillKey.banishing)?.rating).toBe(4)
@@ -51,15 +56,9 @@ describe("applyImprovement — grouped active skill without the group on sheet",
       skill: SkillKey.banishing,
       specialization: "Spirits of Fire",
     }
-    const sheet = runnerDataFactory((draft) => {
-      draft.skills.activeSkills = [{ name: SkillKey.banishing, rating: 3 }]
-      draft.skills.skillGroups = []
-      draft.karma.current = 50
-      return draft
-    })
 
     // Act
-    const next = produce(sheet, (draft) => applyImprovement(draft, entry))
+    const next = applyToStandaloneBanishing(entry)
 
     // Assert
     expect(

@@ -21,6 +21,14 @@ import {
 
 const FAKE_ID = "00000000-0000-0000-0000-000000000000" as UUID
 
+const emptySkillsSheet = (karma: number) =>
+  runnerDataFactory((draft) => {
+    draft.skills.activeSkills = []
+    draft.skills.skillGroups = []
+    draft.karma.current = karma
+    return draft
+  })
+
 describe("getImprovementCost — learn entries", () => {
   it("charges 4k for a new active skill at rating 1", () => {
     // Arrange
@@ -106,12 +114,7 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnActiveSkill,
       skill: { name: SkillKey.pistols, rating: 1 },
     }
-    const sheet = runnerDataFactory((draft) => {
-      draft.skills.activeSkills = []
-      draft.skills.skillGroups = []
-      draft.karma.current = 20
-      return draft
-    })
+    const sheet = emptySkillsSheet(20)
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
@@ -150,12 +153,7 @@ describe("applyImprovement — learn entries", () => {
       type: ImprovementType.learnSkillGroup,
       group: { name: SkillGroupKey.Firearms, rating: 1 },
     }
-    const sheet = runnerDataFactory((draft) => {
-      draft.skills.activeSkills = []
-      draft.skills.skillGroups = []
-      draft.karma.current = 20
-      return draft
-    })
+    const sheet = emptySkillsSheet(20)
 
     // Act
     const next = produce(sheet, (draft) => applyImprovement(draft, entry))
