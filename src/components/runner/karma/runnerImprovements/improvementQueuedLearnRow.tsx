@@ -1,4 +1,3 @@
-import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
@@ -6,6 +5,8 @@ import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import { RiCheckLine, RiDeleteBin6Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
+
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 
 interface ImprovementQueuedLearnRowProps {
   primary: ReactNode
@@ -33,7 +34,7 @@ export const ImprovementQueuedLearnRow: FC<ImprovementQueuedLearnRowProps> = ({
       divider={!isLastRow}
       secondaryAction={(
         <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
-          <Chip label={`${cost}k`} size="small" color="success" />
+          <KarmaChip amount={cost} size="small" color="success" />
           <RiCheckLine size={14} style={{ color: "var(--mui-palette-success-main)" }} />
           <Tooltip title="Remove">
             <IconButton size="small" aria-label="Remove queued" onClick={onRemove}>

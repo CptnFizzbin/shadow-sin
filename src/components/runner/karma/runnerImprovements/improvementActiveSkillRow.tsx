@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography"
 import { RiCheckLine, RiFlashlightLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
+import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 interface ImprovementActiveSkillRowProps {
@@ -76,8 +78,8 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
           {isAtMax
             ? <Chip label="Max" size="small" />
             : (
-                <Chip
-                  label={`${improveCost}k`}
+                <KarmaChip
+                  amount={improveCost}
                   size="small"
                   color={isImproveQueued ? "success" : canAffordImprove ? "default" : "warning"}
                 />
@@ -97,7 +99,16 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
               />
             </Tooltip>
           )}
-          <Tooltip title={isSpecQueued ? "Remove specialization" : `Specialization (${specCost}k)`}>
+          <Tooltip
+            title={isSpecQueued
+              ? "Remove specialization"
+              : (
+                  <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+                    Specialization
+                    <KarmaValue amount={specCost} />
+                  </Stack>
+                )}
+          >
             <span>
               <IconButton
                 size="small"

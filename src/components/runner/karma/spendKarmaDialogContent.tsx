@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Chip from "@mui/material/Chip"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
@@ -10,7 +9,6 @@ import {
   RiFlashlightLine,
   RiHeartPulseLine,
   RiLightbulbLine,
-  RiMedal2Line,
   RiSparklingLine,
 } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
@@ -24,6 +22,8 @@ import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.s
 import { selectHasImprovements, selectImprovementsTotalCost } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"
 
+import { KarmaChip } from "./karmaChip.tsx"
+import { KarmaValue } from "./karmaValue.tsx"
 import { ImprovementActiveSkillList } from "./runnerImprovements/improvementActiveSkillList.tsx"
 import { ImprovementAttributeList } from "./runnerImprovements/improvementAttributeList.tsx"
 import { ImprovementKnowledgeSkillList } from "./runnerImprovements/improvementKnowledgeSkillList.tsx"
@@ -177,18 +177,16 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
       <Dialog.Actions>
         <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%", alignItems: "center" }}>
           <Stack direction="row" sx={{ gap: 1.5, alignItems: "center" }}>
-            <RiMedal2Line size={16} />
             <Typography variant="caption" color="text.secondary">Remaining</Typography>
-            <Chip
-              label={`${remainingKarma}k`}
-              size="small"
+            <KarmaChip
+              amount={remainingKarma}
               color={isOverBudget ? "error" : karmaCost > 0 ? "primary" : "default"}
             />
             {karmaCost > 0 && (
               <>
                 <Divider orientation="vertical" flexItem />
                 <Typography variant="caption" color="text.secondary">Cost</Typography>
-                <Typography variant="body2" sx={{ fontWeight: "bold" }}>{karmaCost}k</Typography>
+                <KarmaValue amount={karmaCost} sx={{ fontWeight: "bold" }} />
               </>
             )}
           </Stack>

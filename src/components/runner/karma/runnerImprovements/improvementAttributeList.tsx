@@ -10,6 +10,7 @@ import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
@@ -79,8 +80,8 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () =>
                   <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
                     {isAtMax && <Chip label="Max" size="small" />}
                     {!isAtMax && (
-                      <Chip
-                        label={`${karmaCost}k`}
+                      <KarmaChip
+                        amount={karmaCost}
                         size="small"
                         color={queuedEntry ? "success" : canAfford ? "default" : "warning"}
                       />

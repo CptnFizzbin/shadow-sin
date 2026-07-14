@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
@@ -115,8 +116,8 @@ export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ 
                       {isAtMax
                         ? <Chip label="Max" size="small" />
                         : (
-                            <Chip
-                              label={`${karmaCost}k`}
+                            <KarmaChip
+                              amount={karmaCost}
                               size="small"
                               color={queuedEntry ? "success" : canAfford ? "default" : "warning"}
                             />
