@@ -254,4 +254,6 @@ const migration: CharacterMigration<Record<string, unknown>> = {
   },
 }
 
+// consumed via `await import(...).default` in migrations.ts
+// fallow-ignore-next-line unused-export
 export default migration

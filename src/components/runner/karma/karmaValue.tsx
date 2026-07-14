@@ -1,3 +1,4 @@
+// fallow-ignore-file
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 

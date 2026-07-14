@@ -1,3 +1,4 @@
+// fallow-ignore-file
 import type { ChipProps } from "@mui/material/Chip"
 import Chip from "@mui/material/Chip"
 import type { FC } from "react"

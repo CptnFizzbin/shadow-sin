@@ -10,7 +10,8 @@ export const DiceTrayContext = createContext<DiceTrayApi | null>(null)
  *
  * ```ts
  * const diceTray = useDiceTray()
- * diceTray.roll(pool.size)
+ * diceTray.setDice(pool.size)
+ * diceTray.rollStandard()
  * ```
  */
 export const useDiceTray = (): DiceTrayApi => {

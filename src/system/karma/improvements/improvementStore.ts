@@ -27,6 +27,8 @@ export class ImprovementStore {
     return newEntry
   }
 
+  // called widely on improvementStore instances (e.g. improvementActiveSkillList.tsx)
+  // fallow-ignore-next-line unused-class-member
   remove(entry: UUID | ImprovementEntry) {
     const id = typeof entry === "string" ? entry : entry.id
 
@@ -35,6 +37,8 @@ export class ImprovementStore {
     }))
   }
 
+  // called in spendKarmaDialogContent.tsx
+  // fallow-ignore-next-line unused-class-member
   removeAll() {
     this.store.setState(() => ({}))
   }

@@ -4,7 +4,7 @@ import type { MovementData } from "./movementData.ts"
 import type { CritterPowerData } from "./powers/critterPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
 
-export enum MetatypeGroup {
+enum MetatypeGroup {
   metahuman = "metahuman",
   critter = "critter",
   exotic = "exotic",

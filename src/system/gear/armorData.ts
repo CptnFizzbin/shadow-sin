@@ -17,6 +17,8 @@ export interface ArmorData extends ItemData {
   }
 }
 
+// Not yet wired into a form validator (see SpellDataSchema/AdeptPowerDataSchema for the pattern) — kept for parity with sibling item-data schemas
+// fallow-ignore-next-line unused-export
 export const ArmorDataSchema = z.object({
   id: z.uuid() as z.ZodType<UUID>,
   name: z.string(),

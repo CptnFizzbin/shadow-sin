@@ -44,6 +44,8 @@ export class RunnerManager {
     })
   }
 
+  // called on the RunnerManagerContext instance in src/routes/$runnerId.tsx
+  // fallow-ignore-next-line unused-class-member
   public save(runner: RunnerData): Promise<void> {
     return this.getOrCreateDebouncer(runner.id).maybeExecute(runner) as Promise<void>
   }
@@ -72,6 +74,8 @@ export class RunnerManager {
     return migrated
   }
 
+  // called on the RunnerManagerContext instance in importRunnerButton.tsx
+  // fallow-ignore-next-line unused-class-member
   public async findRunner(id: RunnerId | RunnerRefLegacyPlaceholder): Promise<RunnerData | null> {
     try {
       return await this.getRunner(id)
@@ -81,6 +85,8 @@ export class RunnerManager {
     }
   }
 
+  // called on the RunnerManagerContext instance in runnerErrorRoute.tsx
+  // fallow-ignore-next-line unused-class-member
   public getRawRunner(runnerId: string): Promise<JsonValue | null> {
     const ref = parseRunnerId(runnerId)
     const storage = this.requireSource(ref.source)

@@ -2,7 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "entry": [
     "src/index.{ts,tsx,js,jsx}",
-    "src/main.{ts,tsx,js,jsx}"
+    "src/main.{ts,tsx,js,jsx}",
+    "testUtils/setup.ts"
   ],
   "rules": {
     "unused-dependencies": "warn"
@@ -16,5 +17,31 @@
     "@tanstack/router-core",
     "babel-plugin-react-compiler",
     "jiti"
+  ],
+  "ignoreExports": [
+    {
+      "file": "src/stores/builder/builderStore.actions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/stores/runner/runnerStore.actions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/ui/form/fields/nuyenField.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/integrations/tanstackForm/fields/nuyenField.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/stores/builder/builderStore.selectors.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/stores/runner/runnerStore.selectors.ts",
+      "exports": ["*"]
+    }
   ]
 }

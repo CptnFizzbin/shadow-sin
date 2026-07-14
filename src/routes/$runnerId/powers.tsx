@@ -11,7 +11,7 @@ import { AwakeningType } from "#/system/awakeningType.ts"
 
 interface Props {}
 
-export const RouteComponent: FC<Props> = () => {
+const RouteComponent: FC<Props> = () => {
   const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const isAdept =
     awakening === AwakeningType.Adept || awakening === AwakeningType.MysticAdept

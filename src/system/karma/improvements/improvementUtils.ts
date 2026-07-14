@@ -99,7 +99,7 @@ export const getImprovementCost = (entry: ImprovementEntry) => {
   }
 }
 
-export const getRatingIncreaseCost = (baseRating: number, newRating: number, karmaMult: number) => {
+const getRatingIncreaseCost = (baseRating: number, newRating: number, karmaMult: number) => {
   let totalKarma = 0
   let rating = baseRating
 

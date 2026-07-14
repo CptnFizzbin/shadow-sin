@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export interface ErrorLike {
+interface ErrorLike {
   message: string
   stack?: string
 }
