@@ -1,12 +1,10 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
+import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import type { ItemCardProps } from "#/components/items/card/itemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
@@ -65,7 +63,13 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
 
   return (
     <>
-      <ItemCard onClick={handleEdit} {...props}>
+      <GearItemCard
+        availability={availability}
+        source={source}
+        onClick={handleEdit}
+        onRemove={handleRemove}
+        {...props}
+      >
         <ItemCard.Title>{implant.name}</ItemCard.Title>
 
         <ItemCard.Meta type="cost">
@@ -101,27 +105,6 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
           </ItemCard.Meta>
         )}
 
-        {availability && (
-          <ItemCard.Meta type="stat">
-            <AvailabilityChip
-              availability={availability}
-              color={
-                availability.rating > GearMaxAvailability ? "warning" : undefined
-              }
-            />
-          </ItemCard.Meta>
-        )}
-
-        {source && (
-          <ItemCard.Meta type="source">
-            <ItemStatChip label={`${source.book} p.${source.page}`} />
-          </ItemCard.Meta>
-        )}
-
-        <ItemCard.Action type="icon" color="error" onClick={handleRemove}>
-          <RiDeleteBin6Line size={16} />
-        </ItemCard.Action>
-
         {onAddAccessory && (
           <ItemCard.AddChildButton onClick={onAddAccessory}>
             Add Accessory
@@ -135,7 +118,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
             ))}
           </ItemCard.Children>
         )}
-      </ItemCard>
+      </GearItemCard>
 
       {implantFormDialog.dialog}
       {confirmDialog.dialog}
