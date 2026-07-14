@@ -7,6 +7,7 @@ import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSki
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
+import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import { describeImprovement } from "./improvementDescription.ts"
@@ -186,43 +187,43 @@ const applyComplexFormIncrease = (
   complexForm.rating = entry.newRating
 }
 
-const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {
-  let skillData: undefined | { rating: number | "native" }
+const findActiveSkillEntry = (sheet: Draft<RunnerData>, skill: SkillKey) => {
+  const skillGroup = skillList[skill]
+  if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
+  const skillData = sheet.skills.activeSkills.find((s) => skill === s.name)
+  if (!skillData) throw new Error(`Skill ${skill} not found on runner sheet`)
+  return skillData
+}
 
+const findKnowledgeSkillEntry = (sheet: Draft<RunnerData>, skill: string) => {
+  const skillData = sheet.skills.knowledgeSkills.find((s) => skill === s.name)
+  if (!skillData) throw new Error(`Knowledge ${skill} not found on runner sheet`)
+  return skillData
+}
+
+const findLanguageSkillEntry = (sheet: Draft<RunnerData>, skill: string) => {
+  const skillData = sheet.skills.languageSkills.find((s) => skill === s.name)
+  if (!skillData) throw new Error(`Language ${skill} not found on runner sheet`)
+  return skillData
+}
+
+const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {
   if (entry.skillType === "ActiveSkill") {
-    const skillGroup = skillList[entry.skill]
-    if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
-    skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Skill ${entry.skill} not found on runner sheet`)
-    skillData.rating = entry.newRating
+    findActiveSkillEntry(sheet, entry.skill).rating = entry.newRating
   } else if (entry.skillType === "KnowledgeSkill") {
-    skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on runner sheet`)
-    skillData.rating = entry.newRating
+    findKnowledgeSkillEntry(sheet, entry.skill).rating = entry.newRating
   } else if (entry.skillType === "LanguageSkill") {
-    skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Language ${entry.skill} not found on runner sheet`)
-    skillData.rating = entry.newRating
+    findLanguageSkillEntry(sheet, entry.skill).rating = entry.newRating
   }
 }
 
 const applySpecialization = (sheet: Draft<RunnerData>, entry: SkillSpecializationEntry) => {
-  let skillData: undefined | { specialization?: string } | { lingo?: string }
-
   if (entry.skillType === "ActiveSkill") {
-    const skillGroup = skillList[entry.skill]
-    if (skillGroup.group) breakSkillGroup(sheet, skillGroup.group)
-    skillData = sheet.skills.activeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Skill ${entry.skill} not found on runner sheet`)
-    skillData.specialization = entry.specialization
+    findActiveSkillEntry(sheet, entry.skill).specialization = entry.specialization
   } else if (entry.skillType === "KnowledgeSkill") {
-    skillData = sheet.skills.knowledgeSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Knowledge ${entry.skill} not found on runner sheet`)
-    skillData.specialization = entry.specialization
+    findKnowledgeSkillEntry(sheet, entry.skill).specialization = entry.specialization
   } else if (entry.skillType === "LanguageSkill") {
-    skillData = sheet.skills.languageSkills.find((skill) => entry.skill === skill.name)
-    if (!skillData) throw new Error(`Language ${entry.skill} not found on runner sheet`)
-    skillData.lingo = entry.specialization
+    findLanguageSkillEntry(sheet, entry.skill).lingo = entry.specialization
   }
 }
 
