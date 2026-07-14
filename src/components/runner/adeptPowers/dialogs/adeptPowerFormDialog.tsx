@@ -1,12 +1,10 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { AdeptPowerFormFields } from "#/components/runner/adeptPowers/form/adeptPowerFormFields.tsx"
 import { useAdeptPowerForm } from "#/components/runner/adeptPowers/form/useAdeptPowerForm.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { FormDialogActions } from "#/components/ui/dialog/formDialogActions.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
@@ -38,28 +36,14 @@ const AdeptPowerFormDialog: FC<AdeptPowerFormDialogProps> = ({
         <AdeptPowerFormFields form={form} />
       </Dialog.Content>
       <Dialog.Actions>
-        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
-          <Box>
-            {onDelete && (
-              <Button
-                color="error"
-                onClick={() => {
-                  onDelete()
-                  ctrl.close()
-                }}
-              >
-                Delete
-              </Button>
-            )}
-          </Box>
-
-          <Box>
-            <Button onClick={() => ctrl.close()}>Cancel</Button>
-            <Button variant="contained" onClick={() => form.handleSubmit()}>
-              Save
-            </Button>
-          </Box>
-        </Stack>
+        <FormDialogActions
+          onCancel={() => ctrl.close()}
+          onSave={() => form.handleSubmit()}
+          onDelete={onDelete && (() => {
+            onDelete()
+            ctrl.close()
+          })}
+        />
       </Dialog.Actions>
     </ControlledDialog>
   )

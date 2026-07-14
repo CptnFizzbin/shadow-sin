@@ -1,5 +1,3 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -10,8 +8,10 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { RatingSelectField } from "#/components/runner/skills/ratingSelectField.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { FormDialogActions } from "#/components/ui/dialog/formDialogActions.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
@@ -100,47 +100,20 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
             </Typography>
           )}
 
-          <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
-            <Select
-              value={rating}
-              label="Rating"
-              onChange={(e) => setRating(Number(e.target.value))}
-            >
-              {ratingOptions.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <RatingSelectField rating={rating} options={ratingOptions} onChange={setRating} />
         </Stack>
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
-          <Box>
-            {onDelete && (
-              <Button
-                color="error"
-                onClick={() => {
-                  onDelete()
-                  ctrl.close()
-                }}
-              >
-                Delete
-              </Button>
-            )}
-          </Box>
-          <Box>
-            <Button color="secondary" onClick={() => ctrl.close()}>
-              Cancel
-            </Button>
-            <Button variant="contained" color="secondary" onClick={handleSave}>
-              Save
-            </Button>
-          </Box>
-        </Stack>
+        <FormDialogActions
+          color="secondary"
+          onCancel={() => ctrl.close()}
+          onSave={handleSave}
+          onDelete={onDelete && (() => {
+            onDelete()
+            ctrl.close()
+          })}
+        />
       </Dialog.Actions>
     </ControlledDialog>
   )

@@ -1,10 +1,10 @@
-import { fireEvent, screen, waitFor, within } from "@testing-library/react"
+import { fireEvent, waitFor, within } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { renderInBuilder } from "#testUtils/renderUtils.tsx"
+import { getLastDialog, renderInBuilder } from "#testUtils/renderUtils.tsx"
 
 import { WeaponFormDialog } from "./weaponFormDialog.tsx"
 
@@ -15,8 +15,7 @@ describe("WeaponFormDialog", () => {
     ctrl.open()
     renderInBuilder(<WeaponFormDialog ctrl={ctrl} />)
 
-    const dialogs = screen.getAllByRole("dialog")
-    const dialog = dialogs[dialogs.length - 1]
+    const dialog = getLastDialog()
 
     // Act
     fireEvent.change(within(dialog).getByLabelText(/^name$/i), {

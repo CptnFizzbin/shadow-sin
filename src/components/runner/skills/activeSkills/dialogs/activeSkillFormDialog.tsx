@@ -1,5 +1,3 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -14,6 +12,7 @@ import { z } from "zod"
 import { ActiveSkillSelectInput } from "#/components/runner/skills/forms/activeSkillSelectInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { FormDialogActions } from "#/components/ui/dialog/formDialogActions.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
@@ -234,29 +233,15 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
-          <Box>
-            {onDelete && (
-              <Button
-                color="error"
-                onClick={() => {
-                  onDelete()
-                  ctrl.close()
-                }}
-              >
-                Delete
-              </Button>
-            )}
-          </Box>
-          <Box>
-            <Button color="secondary" onClick={() => ctrl.close()}>
-              Cancel
-            </Button>
-            <Button variant="contained" color="secondary" onClick={() => form.handleSubmit()}>
-              Save
-            </Button>
-          </Box>
-        </Stack>
+        <FormDialogActions
+          color="secondary"
+          onCancel={() => ctrl.close()}
+          onSave={() => form.handleSubmit()}
+          onDelete={onDelete && (() => {
+            onDelete()
+            ctrl.close()
+          })}
+        />
       </Dialog.Actions>
     </ControlledDialog>
   )
