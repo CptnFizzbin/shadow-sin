@@ -1,11 +1,8 @@
-import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { SkillListItem } from "#/components/builder/sections/skills/skillListItem.tsx"
 import { getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
@@ -25,28 +22,14 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
   const isNative = skill.rating === "native"
 
   return (
-    <Box
-      sx={{
-        "p": 1,
-        "borderRadius": 1,
-        "border": "1px solid",
-        "borderColor": "divider",
-        "cursor": "pointer",
-        "&:hover": { bgcolor: "action.hover" },
-      }}
-      onClick={onEdit}
-    >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <Typography sx={{ flexGrow: 1 }}>
-          {skill.name}
+    <SkillListItem
+      name={skill.name}
+      secondaryText={skill.lingo && (
+        <Typography color="text.secondary">
+          Lingo: {skill.lingo}
         </Typography>
-
-        {skill.lingo && (
-          <Typography color="text.secondary">
-            Lingo: {skill.lingo}
-          </Typography>
-        )}
-
+      )}
+      chip={(
         <Chip
           label={isNative ? "N" : skill.rating}
           size="small"
@@ -54,22 +37,10 @@ export const LanguageSkillsListItem: FC<LanguageSkillsListItemProps> = ({
           color={isNative ? "success" : "default"}
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <SkillPoints
-
-          value={spCost}
-          sx={{ minWidth: 40, textAlign: "right" }}
-        />
-        <IconButton
-          size="small"
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete()
-          }}
-        >
-          <RiDeleteBin6Line size={14} />
-        </IconButton>
-      </Stack>
-    </Box>
+      )}
+      cost={<SkillPoints value={spCost} sx={{ minWidth: 40, textAlign: "right" }} />}
+      onEdit={onEdit}
+      onDelete={onDelete}
+    />
   )
 }
