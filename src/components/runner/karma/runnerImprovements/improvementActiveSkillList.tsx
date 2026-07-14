@@ -36,7 +36,7 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import { ImprovementActiveSkillRow } from "./improvementActiveSkillRow.tsx"
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
+import { QueuedLearnRows } from "./improvementQueuedLearnRow.tsx"
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
@@ -216,16 +216,12 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
                 />
               )
             })}
-            {queuedLearns.map((entry, index) => (
-              <ImprovementQueuedLearnRow
-                key={entry.id}
-                primary={entry.skill.name}
-                secondary={`New skill · Rating ${entry.skill.rating}`}
-                cost={getImprovementCost(entry)}
-                isLastRow={index === queuedLearns.length - 1}
-                onRemove={() => improvementStore.remove(entry.id)}
-              />
-            ))}
+            <QueuedLearnRows
+              entries={queuedLearns}
+              label="skill"
+              getCost={getImprovementCost}
+              onRemove={(id) => improvementStore.remove(id)}
+            />
           </List>
         </Paper>
       )}

@@ -1,3 +1,5 @@
+import type { UUID } from "node:crypto"
+
 import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
@@ -46,5 +48,45 @@ export const ImprovementQueuedLearnRow: FC<ImprovementQueuedLearnRowProps> = ({
     >
       <ListItemText primary={primary} secondary={secondary} />
     </ListItem>
+  )
+}
+
+interface QueuedLearnEntry {
+  id: UUID
+  skill: { name: string, rating: number | "native" }
+}
+
+interface QueuedLearnRowsProps<TEntry extends QueuedLearnEntry> {
+  entries: TEntry[]
+  /** Noun shown in each row's secondary text: "New {label} · Rating N". */
+  label: string
+  getCost: (entry: TEntry) => number
+  onRemove: (id: UUID) => void
+}
+
+/**
+ * Renders one `ImprovementQueuedLearnRow` per queued "learn new X" entry —
+ * shared across the active/knowledge/language skill improvement lists,
+ * which otherwise repeated this exact `.map` verbatim.
+ */
+export function QueuedLearnRows<TEntry extends QueuedLearnEntry>({
+  entries,
+  label,
+  getCost,
+  onRemove,
+}: QueuedLearnRowsProps<TEntry>) {
+  return (
+    <>
+      {entries.map((entry, index) => (
+        <ImprovementQueuedLearnRow
+          key={entry.id}
+          primary={entry.skill.name}
+          secondary={`New ${label} · Rating ${entry.skill.rating}`}
+          cost={getCost(entry)}
+          isLastRow={index === entries.length - 1}
+          onRemove={() => onRemove(entry.id)}
+        />
+      ))}
+    </>
   )
 }
