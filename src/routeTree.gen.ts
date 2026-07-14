@@ -13,7 +13,6 @@ import { Route as RunnerIdRouteImport } from './routes/$runnerId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewIndexRouteImport } from './routes/new/index'
 import { Route as RunnerIdIndexRouteImport } from './routes/$runnerId/index'
-import { Route as TestPrototypeRouteImport } from './routes/test/prototype'
 import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
 import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
 import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
@@ -52,11 +51,6 @@ const RunnerIdIndexRoute = RunnerIdIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => RunnerIdRoute,
-} as any)
-const TestPrototypeRoute = TestPrototypeRouteImport.update({
-  id: '/test/prototype',
-  path: '/test/prototype',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
   id: '/vehicles',
@@ -169,7 +163,6 @@ export interface FileRoutesByFullPath {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
-  '/test/prototype': typeof TestPrototypeRoute
   '/$runnerId/': typeof RunnerIdIndexRoute
   '/new/': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
@@ -193,7 +186,6 @@ export interface FileRoutesByTo {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
-  '/test/prototype': typeof TestPrototypeRoute
   '/$runnerId': typeof RunnerIdIndexRoute
   '/new': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
@@ -219,7 +211,6 @@ export interface FileRoutesById {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
-  '/test/prototype': typeof TestPrototypeRoute
   '/$runnerId/': typeof RunnerIdIndexRoute
   '/new/': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
@@ -246,7 +237,6 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/test/prototype'
     | '/$runnerId/'
     | '/new/'
     | '/test/theme/typography'
@@ -270,7 +260,6 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/test/prototype'
     | '/$runnerId'
     | '/new'
     | '/test/theme/typography'
@@ -295,7 +284,6 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/test/prototype'
     | '/$runnerId/'
     | '/new/'
     | '/test/theme/typography'
@@ -304,7 +292,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RunnerIdRoute: typeof RunnerIdRouteWithChildren
-  TestPrototypeRoute: typeof TestPrototypeRoute
   NewIndexRoute: typeof NewIndexRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
 }
@@ -338,13 +325,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/$runnerId/'
       preLoaderRoute: typeof RunnerIdIndexRouteImport
       parentRoute: typeof RunnerIdRoute
-    }
-    '/test/prototype': {
-      id: '/test/prototype'
-      path: '/test/prototype'
-      fullPath: '/test/prototype'
-      preLoaderRoute: typeof TestPrototypeRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/$runnerId/vehicles': {
       id: '/$runnerId/vehicles'
@@ -524,7 +504,6 @@ const RunnerIdRouteWithChildren = RunnerIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RunnerIdRoute: RunnerIdRouteWithChildren,
-  TestPrototypeRoute: TestPrototypeRoute,
   NewIndexRoute: NewIndexRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
 }
