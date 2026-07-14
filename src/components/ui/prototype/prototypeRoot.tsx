@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box"
-import Tab from "@mui/material/Tab"
-import Tabs from "@mui/material/Tabs"
+import IconButton from "@mui/material/IconButton"
+import Paper from "@mui/material/Paper"
+import Typography from "@mui/material/Typography"
+import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react"
 import type { FC, ReactElement, ReactNode } from "react"
 import { Children, isValidElement, useState } from "react"
 
@@ -21,23 +23,41 @@ export const PrototypeRoot: FC<PrototypeRootProps> = ({ children }) => {
   const activeIndex = items.length === 0 ? 0 : Math.min(selectedIndex, items.length - 1)
   const selected = items[activeIndex]
 
+  const goToPrevious = () => setSelectedIndex((activeIndex - 1 + items.length) % items.length)
+  const goToNext = () => setSelectedIndex((activeIndex + 1) % items.length)
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
-      <Tabs
-        value={activeIndex}
-        onChange={(_, index: number) => setSelectedIndex(index)}
-        variant="scrollable"
-        allowScrollButtonsMobile
-        scrollButtons="auto"
-      >
-        {items.map((item, index) => (
-          <Tab key={index} label={item.props.title} value={index} />
-        ))}
-      </Tabs>
-      <Box sx={{ flex: 1, minHeight: 0, overflow: "auto" }}>
+    <>
+      <Box sx={{ border: "1px solid", borderColor: "divider" }}>
         {selected}
       </Box>
-    </Box>
+
+      <Paper
+        elevation={4}
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          padding: 0.5,
+          borderRadius: 999,
+          zIndex: (theme) => theme.zIndex.tooltip,
+        }}
+      >
+        <IconButton onClick={goToPrevious} aria-label="Previous prototype" size="small">
+          <RiArrowLeftSLine />
+        </IconButton>
+        <Typography variant="body2" sx={{ px: 1, whiteSpace: "nowrap" }}>
+          {activeIndex + 1} / {items.length} — {selected?.props.title}
+        </Typography>
+        <IconButton onClick={goToNext} aria-label="Next prototype" size="small">
+          <RiArrowRightSLine />
+        </IconButton>
+      </Paper>
+    </>
   )
 }
 

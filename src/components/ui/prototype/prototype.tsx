@@ -10,8 +10,10 @@ interface PrototypeComponent {
 
 /**
  * Compound `Prototype` component for switching between multiple in-progress
- * prototypes/mockups without leaving the page. Renders a tab bar of titles
- * above the content of whichever `Prototype.Item` is currently selected.
+ * prototypes/mockups without leaving the page. Wraps the selected
+ * `Prototype.Item`'s content in a thin, padding-free border and overlays a
+ * floating prev/next bar, so it can be dropped in around any component with
+ * minimal layout impact.
  *
  * See `docs/ui/prototype.md` for usage examples.
  */

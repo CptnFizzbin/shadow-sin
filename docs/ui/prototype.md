@@ -3,9 +3,10 @@
 **Location:** `src/components/ui/prototype/`
 **Import:** `import { Prototype } from "#/components/ui/prototype/prototype.tsx"`
 
-A compound component for switching between several in-progress prototypes/mockups on the same page. It renders a
-scrollable tab bar of titles; the content of whichever `Prototype.Item` is selected is shown below it. Useful when
-exploring a few different UI approaches for the same feature side by side without wiring up separate routes.
+A compound component for switching between several in-progress prototypes/mockups in place. It's designed to be
+dropped in anywhere with minimal layout impact: the selected `Prototype.Item`'s content is wrapped in a thin,
+padding-free border (so removing `Prototype` later leaves the layout essentially unchanged), and a floating
+prev/next bar overlays the page to switch between options.
 
 ## Slots
 
@@ -31,4 +32,5 @@ export const CardLayoutPrototypes = () => (
 ```
 
 The first item is selected by default. Selection is local component state — it resets whenever the `Prototype`
-unmounts.
+unmounts. The floating bar shows the current item's position (`1 / 2`) and title between the prev/next buttons, and
+wraps around at either end.
