@@ -1,3 +1,4 @@
+// fallow-ignore-file
 import type { FC, ReactNode } from "react"
 
 export interface PrototypeItemProps {

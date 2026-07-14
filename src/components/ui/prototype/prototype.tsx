@@ -1,3 +1,4 @@
+// fallow-ignore-file
 import type { PrototypeItemProps } from "./prototypeItem.tsx"
 import { PrototypeItem } from "./prototypeItem.tsx"
 import type { PrototypeRootProps } from "./prototypeRoot.tsx"
