@@ -1,13 +1,13 @@
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useAddKarmaDialog } from "./addKarmaDialog.tsx"
+import { KarmaValue } from "./karmaValue.tsx"
 import { useSpendKarmaDialog } from "./spendKarmaDialog.tsx"
 
 export const KarmaSection: FC = () => {
@@ -30,18 +30,14 @@ export const KarmaSection: FC = () => {
         <Grid size={1}>
           <Stack sx={{ gap: 1, alignItems: "center" }}>
             <Label label="Current" />
-            <Typography sx={{ fontWeight: "bold" }}>
-              {currentKarma}
-            </Typography>
+            <KarmaValue amount={currentKarma} sx={{ fontWeight: "bold" }} />
           </Stack>
         </Grid>
 
         <Grid size={1}>
           <Stack sx={{ gap: 1, alignItems: "center" }}>
             <Label label="Total Earned" />
-            <Typography sx={{ fontWeight: "bold" }}>
-              {totalKarma}
-            </Typography>
+            <KarmaValue amount={totalKarma} sx={{ fontWeight: "bold" }} />
           </Stack>
         </Grid>
 

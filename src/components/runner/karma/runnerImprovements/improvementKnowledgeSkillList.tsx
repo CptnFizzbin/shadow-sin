@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiLightbulbLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
+import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
@@ -151,8 +153,8 @@ export const ImprovementKnowledgeSkillList: FC = () => {
                       {isAtMax
                         ? <Chip label="Max" size="small" />
                         : (
-                            <Chip
-                              label={`${karmaCost}k`}
+                            <KarmaChip
+                              amount={karmaCost}
                               size="small"
                               color={queuedEntry ? "success" : canAffordImprove ? "default" : "warning"}
                             />
@@ -172,7 +174,16 @@ export const ImprovementKnowledgeSkillList: FC = () => {
                           />
                         </Tooltip>
                       )}
-                      <Tooltip title={queuedSpec ? "Remove specialization" : `Specialization (${SPEC_COST}k)`}>
+                      <Tooltip
+                        title={queuedSpec
+                          ? "Remove specialization"
+                          : (
+                              <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+                                Specialization
+                                <KarmaValue amount={SPEC_COST} />
+                              </Stack>
+                            )}
+                      >
                         <span>
                           <IconButton
                             size="small"
