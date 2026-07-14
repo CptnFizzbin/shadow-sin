@@ -10,6 +10,11 @@ import { ItemType } from "#/system/itemType.ts"
 import type { GearTreeNode } from "./exportUtils.ts"
 import { runnerDataToYaml, gearFromTree, gearToTree, yamlToRunnerData } from "./exportUtils.ts"
 
+const sinWithLicenses = (...licenseNames: string[]) =>
+  createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
+    ...licenseNames.map((name) => createItem<LicenseData>({ name, itemType: ItemType.license, rating: 4 })),
+  ])
+
 describe("gearToTree", () => {
   it("returns an empty array when gear is empty", () => {
     // Arrange & Act
@@ -81,13 +86,7 @@ describe("gearToTree", () => {
 
   it("nests multiple licenses under a single SIN", () => {
     // Arrange
-    const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Cyberware License", itemType: ItemType.license, rating: 4 }),
-      ]),
-    )
+    const gear = createItemMap(sinWithLicenses("Driver License", "Firearms License", "Cyberware License"))
 
     // Act
     const result = gearToTree(gear)
@@ -106,9 +105,7 @@ describe("gearToTree", () => {
     // Arrange
     const gear = createItemMap(
       createItem<SinData>({ name: "Clean SIN", itemType: ItemType.sin, rating: 6 }),
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-      ]),
+      sinWithLicenses("Driver License"),
       createItem<SinData>({ name: "Burner SIN", itemType: ItemType.sin, rating: 2 }),
     )
 
@@ -134,11 +131,7 @@ describe("gearToTree", () => {
 
   it("omits parentId and childIds from every exported node", () => {
     // Arrange
-    const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-      ]),
-    )
+    const gear = createItemMap(sinWithLicenses("Driver License"))
 
     // Act
     const result = gearToTree(gear)
@@ -161,11 +154,7 @@ describe("gearToTree", () => {
 
   it("does not include child items at the root level", () => {
     // Arrange
-    const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-      ]),
-    )
+    const gear = createItemMap(sinWithLicenses("Driver License"))
 
     // Act
     const result = gearToTree(gear)
@@ -225,11 +214,7 @@ describe("gearFromTree", () => {
   })
 
   it("round-trips parent/child relationships", () => {
-    const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-      ]),
-    )
+    const gear = createItemMap(sinWithLicenses("Driver License"))
 
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
@@ -280,12 +265,7 @@ describe("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   })
 
   it("round-trips a runner with nested gear (SIN + licenses)", () => {
-    const gear = createItemMap(
-      createItem<SinData>({ name: "Runner SIN", itemType: ItemType.sin, rating: 4 }, [
-        createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 }),
-        createItem<LicenseData>({ name: "Firearms License", itemType: ItemType.license, rating: 4 }),
-      ]),
-    )
+    const gear = createItemMap(sinWithLicenses("Driver License", "Firearms License"))
     const original = { ...Artemis, gear }
 
     const yaml = runnerDataToYaml(original)
@@ -327,10 +307,7 @@ describe("yamlToRunnerData / runnerDataToYaml round-trip", () => {
   })
 
   it("preserves parent/child IDs exactly through a round-trip", () => {
-    const [sinItem, ...licenses] = createItem<SinData>(
-      { name: "Runner SIN", itemType: ItemType.sin, rating: 4 },
-      [createItem<LicenseData>({ name: "Driver License", itemType: ItemType.license, rating: 4 })],
-    )
+    const [sinItem, ...licenses] = sinWithLicenses("Driver License")
     const gear = createItemMap([sinItem, ...licenses])
     const original = { ...Artemis, gear }
 
