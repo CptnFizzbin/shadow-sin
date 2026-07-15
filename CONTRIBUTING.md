@@ -79,7 +79,7 @@ questions, and the domain terms — not the implementation.
 - A feature will span multiple PRs and needs a shared reference point
 - You want to capture open design questions before they get lost
 
-**What goes in it:** Use [`docs/features/TEMPLATE.md`](./features/TEMPLATE.md) as your starting point. The key sections
+**What goes in it:** Use [`docs/features/0000-TEMPLATE.md`](./features/0000-TEMPLATE.md) as your starting point. The key sections
 are:
 
 | Section                  | Purpose                                                               |
