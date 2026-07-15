@@ -4,17 +4,11 @@ import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import {
-  RiChat4Line,
-  RiFlashlightLine,
-  RiHeartPulseLine,
-  RiLightbulbLine,
-  RiSparklingLine,
-} from "@remixicon/react"
+import { RiChat4Line, RiFlashlightLine, RiHeartPulseLine, RiLightbulbLine, RiSparklingLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
+import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
@@ -30,10 +24,7 @@ import { ImprovementKnowledgeSkillList } from "./runnerImprovements/improvementK
 import { ImprovementLanguageSkillList } from "./runnerImprovements/improvementLanguageSkillList.tsx"
 import { ImprovementSkillGroupList } from "./runnerImprovements/improvementSkillGroupList.tsx"
 import { ImprovementSpellList } from "./runnerImprovements/improvementSpellList.tsx"
-import {
-  SpendKarmaDialogProvider,
-  useSpendKarmaDialogContext,
-} from "./runnerImprovements/spendKarmaDialogContext.tsx"
+import { SpendKarmaDialogProvider, useSpendKarmaDialogContext } from "./runnerImprovements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./runnerImprovements/useImprovementSelector.ts"
 
 type SectionKey = "attribute" | "skill" | "skillGroup" | "knowledge" | "language" | "spell"
