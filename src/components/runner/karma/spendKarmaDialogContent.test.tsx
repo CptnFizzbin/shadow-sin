@@ -31,7 +31,7 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
 }
 
 describe("SpendKarmaDialogContent", () => {
-  it("renders the nav rail with category tabs", () => {
+  it("opens on the hub with a row per category", () => {
     // Arrange
     renderDialog((sheet) => {
       sheet.karma.current = 0
@@ -39,12 +39,12 @@ describe("SpendKarmaDialogContent", () => {
 
     // Act — nothing
 
-    // Assert — at least Attributes and Skills tabs are present
+    // Assert — at least Attributes and Skills categories are present
     expect(screen.getByRole("button", { name: /attributes/i })).toBeTruthy()
-    expect(screen.getByRole("button", { name: /skills/i })).toBeTruthy()
+    expect(screen.getByRole("button", { name: /skill groups/i })).toBeTruthy()
   })
 
-  it("does not show the Spell tab for a non-spellcaster", () => {
+  it("does not show the Spells category for a non-spellcaster", () => {
     // Arrange
     renderDialog()
 
@@ -81,6 +81,22 @@ describe("SpendKarmaDialogContent", () => {
     expect((saveButton as HTMLButtonElement).disabled).toBe(true)
   })
 
+  it("drills into a section and returns to the hub via the back button", () => {
+    // Arrange
+    renderDialog((sheet) => {
+      sheet.karma.current = 50
+    })
+
+    // Act — drill into Attributes, then go back
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
+    const backButton = screen.getByRole("button", { name: /back to categories/i })
+    fireEvent.click(backButton)
+
+    // Assert — hub rows are visible again
+    expect(screen.getByRole("button", { name: /skill groups/i })).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /back to categories/i })).toBeNull()
+  })
+
   it("Save button is disabled when queued improvements exceed available karma", () => {
     // Arrange — Body 3 costs (3+1)*5 = 20k, but only 5 karma
     renderDialog((sheet) => {
@@ -88,28 +104,42 @@ describe("SpendKarmaDialogContent", () => {
       sheet.karma.current = 5
     })
 
-    // Act — click Attributes nav, queue Body
+    // Act — drill into Attributes, queue Body
     fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
-    // The list is visible (attrs tab is default), queue BOD
-    const bodButton = screen.getByRole("button", { name: /bod/i })
-    fireEvent.click(bodButton)
+    fireEvent.click(screen.getByRole("button", { name: /bod/i }))
 
     // Assert
     const saveButton = screen.getByRole("button", { name: /save/i })
     expect((saveButton as HTMLButtonElement).disabled).toBe(true)
   })
 
-  it("switching nav tabs displays the corresponding list section", () => {
+  it("shows a queued badge on the hub row after queueing an improvement", () => {
+    // Arrange
+    renderDialog((sheet) => {
+      sheet.attributes[AttributeKey.body] = 3
+      sheet.karma.current = 50
+    })
+
+    // Act — queue Body, then return to the hub
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }))
+    fireEvent.click(screen.getByRole("button", { name: /bod/i }))
+    fireEvent.click(screen.getByRole("button", { name: /back to categories/i }))
+
+    // Assert — the Attributes hub row shows the queued count
+    expect(screen.getByText("1 queued")).toBeTruthy()
+  })
+
+  it("drilling into a section displays the corresponding list", () => {
     // Arrange
     renderDialog((sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
       sheet.karma.current = 50
     })
 
-    // Act — switch to Skills tab
+    // Act — drill into Skills
     fireEvent.click(screen.getByRole("button", { name: /^skills$/i }))
 
-    // Assert — Pistols visible in skills section
+    // Assert — Pistols visible in the skills section
     expect(screen.getByText("Pistols")).toBeTruthy()
   })
 })

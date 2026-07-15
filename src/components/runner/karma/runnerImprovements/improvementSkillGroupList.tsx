@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
@@ -8,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiAddLine, RiArrowLeftLine, RiCheckLine } from "@remixicon/react"
+import { RiAddLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
@@ -36,11 +35,7 @@ import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
-interface ImprovementSkillGroupListProps {
-  onBack: () => void
-}
-
-export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ onBack }) => {
+export const ImprovementSkillGroupList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const skillGroups = useRunnerStoreSelector((sheet) => sheet.skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
@@ -68,15 +63,6 @@ export const ImprovementSkillGroupList: FC<ImprovementSkillGroupListProps> = ({ 
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-        <IconButton size="small" onClick={onBack} aria-label="Back to categories">
-          <RiArrowLeftLine size={16} />
-        </IconButton>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", flex: 1 }}>
-          Skill Groups
-        </Typography>
-      </Stack>
-
       {(skillGroups.length > 0 || queuedLearns.length > 0) && (
         <Paper variant="outlined">
           <List disablePadding>

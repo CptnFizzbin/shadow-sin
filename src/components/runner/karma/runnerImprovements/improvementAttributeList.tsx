@@ -5,7 +5,6 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
@@ -25,12 +24,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
-// onBack kept for interface compatibility during dialog migration; not rendered
-interface ImprovementAttributeListProps {
-  onBack?: () => void
-}
-
-export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () => {
+export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const sheet = useRunnerStoreSelector((s) => s)
   const activeAttributes = useActiveAttributes()
@@ -43,8 +37,6 @@ export const ImprovementAttributeList: FC<ImprovementAttributeListProps> = () =>
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Typography variant="overline" color="text.secondary">Attributes</Typography>
-
       <Paper variant="outlined">
         <List disablePadding>
           {activeAttributes.map((attrInfo, index) => {

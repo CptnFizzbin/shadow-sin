@@ -1,18 +1,17 @@
-// PROTOTYPE — see spendKarmaDialogPrototypes.tsx; delete alongside it.
-import { useImprovementSelector } from "#/components/runner/karma/runnerImprovements/useImprovementSelector.ts"
 import type { ImprovementEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { selectAllImprovements } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 
 import type { SpendKarmaSectionKey } from "./spendKarmaSections.tsx"
+import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export interface SectionQueuedSummary {
   count: number
   cost: number
 }
 
-function sectionForEntry(entry: ImprovementEntry): SpendKarmaSectionKey {
+export function sectionForEntry(entry: ImprovementEntry): SpendKarmaSectionKey {
   switch (entry.type) {
     case ImprovementType.attrIncrease:
       return "attribute"
@@ -37,7 +36,7 @@ function sectionForEntry(entry: ImprovementEntry): SpendKarmaSectionKey {
   }
 }
 
-/** Queued improvement count and karma cost per dialog section, for nav badges. */
+/** Queued improvement count and karma cost per dialog section, for hub badges. */
 export const useSectionQueuedSummaries = (): Record<SpendKarmaSectionKey, SectionQueuedSummary> => {
   const allImprovements = useImprovementSelector(selectAllImprovements)
 

@@ -1,4 +1,3 @@
-// PROTOTYPE — see spendKarmaDialogPrototypes.tsx; delete alongside it.
 import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 

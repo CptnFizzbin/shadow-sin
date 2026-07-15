@@ -59,12 +59,7 @@ interface SkillRow {
   hasAptitude: boolean
 }
 
-// onBack kept for interface compatibility during dialog migration; not rendered
-interface ImprovementActiveSkillListProps {
-  onBack?: () => void
-}
-
-export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = () => {
+export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const sheet = useRunnerStoreSelector((s) => s)
   const activeSkills = useRunnerStoreSelector((s) => s.skills.activeSkills)
@@ -182,8 +177,6 @@ export const ImprovementActiveSkillList: FC<ImprovementActiveSkillListProps> = (
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Typography variant="overline" color="text.secondary">Active Skills</Typography>
-
       {skillGroups.length > 0 && (
         <Alert severity="info" sx={{ py: 0.25 }}>
           <Typography variant="caption">

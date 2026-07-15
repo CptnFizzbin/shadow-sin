@@ -1,4 +1,3 @@
-// PROTOTYPE — see spendKarmaDialogPrototypes.tsx; delete alongside it.
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import Stack from "@mui/material/Stack"
@@ -10,16 +9,16 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 
 import { useSpendKarmaSummary } from "./useSpendKarmaSummary.ts"
 
-interface SpendKarmaPrototypeFooterProps {
+interface SpendKarmaDialogFooterProps {
   onCancel: () => void
   onSave: () => void
 }
 
 /**
- * Budget summary + Cancel/Save row shared by the prototype variants. Wraps to
- * two rows when horizontal space runs out instead of overflowing.
+ * Budget summary + Cancel/Save row for the Spend Karma dialog. Wraps to two
+ * rows when horizontal space runs out instead of overflowing.
  */
-export const SpendKarmaPrototypeFooter: FC<SpendKarmaPrototypeFooterProps> = ({ onCancel, onSave }) => {
+export const SpendKarmaDialogFooter: FC<SpendKarmaDialogFooterProps> = ({ onCancel, onSave }) => {
   const { remainingKarma, karmaCost, isOverBudget, canSave } = useSpendKarmaSummary()
 
   return (

@@ -44,8 +44,6 @@ export const ImprovementSpellList: FC = () => {
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Typography variant="overline" color="text.secondary">Spells</Typography>
-
       {hasContent && (
         <Paper variant="outlined">
           <List disablePadding>

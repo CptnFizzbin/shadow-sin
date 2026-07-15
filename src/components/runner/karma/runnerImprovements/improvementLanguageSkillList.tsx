@@ -131,8 +131,6 @@ export const ImprovementLanguageSkillList: FC = () => {
 
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Typography variant="overline" color="text.secondary">Languages</Typography>
-
       {(languageSkills.length > 0 || queuedLearns.length > 0) && (
         <Paper variant="outlined">
           <List disablePadding>

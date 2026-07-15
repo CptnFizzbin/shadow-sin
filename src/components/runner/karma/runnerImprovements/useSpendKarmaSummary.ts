@@ -1,6 +1,3 @@
-// PROTOTYPE — see spendKarmaDialogPrototypes.tsx; delete alongside it.
-import { useSpendKarmaDialogContext } from "#/components/runner/karma/runnerImprovements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/components/runner/karma/runnerImprovements/useImprovementSelector.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import {
@@ -8,6 +5,9 @@ import {
   selectImprovementsTotalCost,
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"
+
+import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export interface SpendKarmaSummary {
   currentKarma: number
@@ -19,7 +19,7 @@ export interface SpendKarmaSummary {
   saveImprovements: () => void
 }
 
-/** Karma budget numbers + save action shared by every dialog prototype variant. */
+/** Karma budget numbers + save action for the Spend Karma dialog. */
 export const useSpendKarmaSummary = (): SpendKarmaSummary => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const runnerDataStore = useRunnerStoreContext()
