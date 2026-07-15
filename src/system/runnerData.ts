@@ -43,7 +43,6 @@ export const RunnerMetaSchema = z.object({
  * The root structure of a Shadowrun 4e runner sheet.
  */
 export interface RunnerData {
-
   id: UUID
   _meta_: RunnerMeta
 
