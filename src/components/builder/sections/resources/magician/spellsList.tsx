@@ -5,7 +5,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useSpellsBuildPoints } from "#/components/builder/buildPoints/hooks/useSpellsBuildPoints.ts"
-import { useSpellFormDialog } from "#/components/runner/spells/dialogs/spellFormDialog.tsx"
+import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"

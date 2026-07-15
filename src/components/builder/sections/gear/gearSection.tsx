@@ -9,11 +9,10 @@ import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
 import {
-  GearBuildPointAllowance,
-  GearNuyenAllowance,
   useGearBuildPoints,
   useGearTotalCost,
 } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
@@ -57,14 +56,16 @@ export const GearSection: FC = () => {
           sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
           <Typography>
-            <Nuyen amount={totalNuyen} /> / <Nuyen amount={GearNuyenAllowance} />
+            <Nuyen amount={totalNuyen} />
+            {" / "}
+            <Nuyen amount={BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance} />
           </Typography>
           <BuildPoints value={buildPoints.spent} total={buildPoints.allowance} />
         </Stack>
 
         <LinearProgress
           variant="determinate"
-          value={getProgress(buildPoints.spent, GearBuildPointAllowance)}
+          value={getProgress(buildPoints.spent, BuilderConfig.gear.bpAllowance)}
           color={buildPoints.isOverBudget ? "error" : "primary"}
         />
       </Stack>

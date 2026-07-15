@@ -1,10 +1,7 @@
 import pluralize from "pluralize"
 
-import {
-  GearBuildPointAllowance,
-  GearNuyenAllowance,
-  useGearBuildPoints,
-} from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
+import { useGearBuildPoints } from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -23,7 +20,7 @@ export const useGearAlerts = (): AlertInfo[] => {
       section: "Gear",
       severity: "error",
       title: "Budget Exceeded",
-      message: `Gear budget exceeded! Maximum is ${GearNuyenAllowance.toLocaleString()} (${GearBuildPointAllowance} BP).`,
+      message: `Gear budget exceeded! Maximum is ${(BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance).toLocaleString()} (${BuilderConfig.gear.bpAllowance} BP).`,
     })
   }
 

@@ -3,10 +3,7 @@ import { RiArrowLeftBoxLine } from "@remixicon/react"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import {
-  AttributeBpCostBase,
-  AttributeBpCostMaxOut,
-} from "#/components/builder/buildPoints/attributeUtils.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
@@ -26,11 +23,11 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   const attrValue = useAttrValue(props.attr)
 
   let disabled = false
-  let refund = AttributeBpCostBase
+  let refund = BuilderConfig.attributes.bpCost.base
   let label = `${refund} BP`
 
   if (attrValue >= attrApi.max) {
-    refund = AttributeBpCostMaxOut
+    refund = BuilderConfig.attributes.bpCost.maxOut
     label = `${refund} BP`
   }
 
