@@ -79,7 +79,7 @@ questions, and the domain terms — not the implementation.
 - A feature will span multiple PRs and needs a shared reference point
 - You want to capture open design questions before they get lost
 
-**What goes in it:** Use [`docs/features/TEMPLATE.md`](./features/TEMPLATE.md) as your starting point. The key sections
+**What goes in it:** Use [`docs/features/0000-TEMPLATE.md`](./docs/features/0000-TEMPLATE.md) as your starting point. The key sections
 are:
 
 | Section                  | Purpose                                                               |
@@ -157,7 +157,7 @@ If any of the three is missing, skip the ADR.
 
 **What goes in it:** Short and punchy — one to three sentences of context, decision, and rationale. Optional sections
 for considered alternatives and consequences when they add genuine value. See [
-`docs/adr/0001-runner-data-not-character-sheet.md`](./adr/0001-runner-data-not-character-sheet.md)
+`docs/adr/0001-runner-data-not-character-sheet.md`](./docs/adr/0001-runner-data-not-character-sheet.md)
 as an example.
 
 **Naming:** `docs/adr/NNNN-slug.md` — sequential, starting from the next available number.

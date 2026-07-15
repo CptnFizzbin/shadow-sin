@@ -113,7 +113,7 @@ A Player-triggered action on the finances page that processes all outstanding Lo
 interest from `nuyen.current` and compounding any shortfall into each Loan's principal.
 _Avoid_: monthly tick, interest sweep
 
-
+**Build Mode**:
 The ruleset used to create a Runner. Determines which resources are available and how they are
 allocated. Three modes are planned:
 
@@ -319,7 +319,7 @@ A rating + restriction code on an Item describing how hard it is to obtain and w
 is legal. Restriction codes: none (legal), **Restricted** (`R`, requires Licence), **Forbidden**
 (`F`, illegal to own). Displayed via `AvailabilityChip`.
 
-
+**GameEffect**:
 A mechanical modifier that changes a derived stat — e.g. an attribute bonus, dice pool modifier,
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
 (cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Adept Powers**, drugs,
@@ -367,7 +367,7 @@ _Avoid_: editor, creator, creation mode
 
 **Viewer**:
 The play-time mode for an existing Runner. Used to track damage, roll dice, spend Edge, and
-manage active resources during a session. Accessed via `src/components/character/`.
+manage active resources during a session. Accessed via `src/components/runner/`.
 _Avoid_: sheet view, player view, read mode
 
 ### Infrastructure
@@ -409,8 +409,8 @@ commit — if a migration has a bug, a new migration fixes the output. The curre
 applied migrations as an array of string IDs in `RunnerMeta.appliedMigrations`; this is
 planned to be replaced with a single integer **schema version** number checked against the
 ordered migration list. Because migration files must never be edited, the shared
-`CharacterMigration<T>` type in `src/runner/characterMigration.ts` and the migration files
-themselves (`src/runner/migrations/`) were deliberately left out of the `character`→`runner`
+`CharacterMigration<T>` type in `src/data/characterMigration.ts` and the migration files
+themselves (`src/data/migrations/`) were deliberately left out of the `character`→`runner`
 identifier rename — renaming the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
@@ -451,6 +451,6 @@ _Avoid_: upgrade, patch, update (use migration)
   components/hooks/builder files were renamed to `RunnerId`, `RunnerManager`, `src/runner/`, etc.
   Resolved, with one deliberate exception: the `localStorage` key literals (`characters/<uuid>`,
   `character-form/<uuid>`), the legacy YAML export's `characterId` field detection, and the
-  migration subsystem (`src/runner/migrations/`, `characterMigration.ts`,
+  migration subsystem (`src/data/migrations/`, `characterMigration.ts`,
   `testUtils/fixtures/characters/`) were left untouched — see **StorageSource** and **Migration**
   above.
