@@ -9,7 +9,7 @@ A **Shadowrun 4th Edition character sheet**
 > **Contribution workflow:** See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for how features,
 > GitHub Issues, and ADRs relate to each other.
 
-SPA: React 19 + TanStack Router + Redux Toolkit + MUI v7.
+SPA: React 19 + TanStack Router + Redux Toolkit + MUI v9.
 
 ## Commands
 
@@ -26,7 +26,7 @@ yarn test:e2e:ui  # Playwright with browser UI
 yarn fix          # Runs all "*:fix" scripts (npm-run-all) — auto-fix lint/format steps
 yarn lint         # Runs all lint tasks (eslint checks via npm-run-all)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
-yarn tsc          # TypeScript type check (no emit)
+yarn tsc          # TypeScript type check (no emit; runs tsgo --noEmit via @typescript/native-preview)
 yarn fallow       # Run Fallow codebase analysis (dead code, duplication, complexity)
 ```
 
@@ -48,27 +48,39 @@ The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` an
 
 ### Key directories
 
-- `src/system/` — All domain types (`CharacterSheet` is the root, in `characterSheet.ts`)
+- `src/system/` — All domain types (`RunnerData` is the root, in `runnerData.ts`)
 - `src/system/gear/` — Gear sub-types keyed by `ItemType` enum
 - `src/system/magic/` — Magic sub-types: `spellData.ts`, `adeptPowerData.ts`, `complexFormData.ts`,
   `spriteData.ts`, `traditionData.ts`, etc.
 - `src/system/gameEffects/` — `GameEffectData` and related types; effects attach to gear items via
   `ItemData.effects`
+- `src/system/karma/improvements/` — Karma-spend staging: `ImprovementStore`, improvement entries, caps, and cost
+  utilities; staged by the Spend Karma dialog (`src/components/runner/karma/`) and logged to `karma.log` on save
+- `src/system/dice/` — `DiceRoller` store; paired with `src/components/dice/` (`DiceTrayApi`) for the dice tray UI
 - `src/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`,
   `SpecialAttributes` grouping constants
-- `src/character/fixtures/` — Static character fixtures; `artemis.ts` is the primary example
-- `src/character/migrations/` — Character schema migration steps (`CharacterMigration<TInput, TOutput>`)
+- `src/data/fixtures/` — Static runner fixtures (`artemis.ts`, `hexen.ts`)
+- `src/data/migrations/` — Runner schema migration steps, registered in `src/data/migrations.ts`; shared
+  `CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` (name kept deliberately, see
+  `CONTEXT.md`)
 - `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager`)
-- `src/character/characterManager.ts` — `CharacterManager`: loads, saves, migrates characters via `StorageManager`
-- `src/components/character/` — Character sheet UI components and `CharacterSheetProvider`
-  (`characterSheetProvider.tsx`); subscribe with `useCharacterSheet(selector)`
-- `src/components/characterBuilder/` — Character creation/edit form (store-based); `StorePersister` for localStorage
-  draft persistence
-- `src/components/gear/` — Generic gear infrastructure (see **Gear item forms & dialogs** below)
+- `src/runner/runnerManager.ts` — `RunnerManager`: loads, saves, migrates runners via `StorageManager` (plus
+  `runnerId.ts`, `runnerIndex.ts`, `runnerLoadError.ts`, `runnerManagerContext.tsx`)
+- `src/components/runner/` — Viewer (play-time) UI components; store context via `runnerStoreProvider.tsx`
+  (`src/components/runner/sheet/`)
+- `src/components/builder/` — Character creation/edit form (store-based); `builderStoreProvider.tsx` and
+  `hooks/useBuilderStores.ts` provide the builder store
+- `src/components/items/` — Generic item ("gear") infrastructure (see **Gear item forms & dialogs** below)
 - `src/routes/` — TanStack file-based routes
-- `src/integrations/` — TanStack Query/Form setup, Google Drive stub
-- `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples)
+- `src/integrations/` — Third-party integration wrappers: `mui/`, `reduxToolkit/`, `reselect/`, and the
+  `tanstackDevtools/`, `tanstackForm/`, `tanstackPacer/`, `tanstackQuery/`, `tanstackRouter/` subdirs
+- `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples), including
+  `src/components/ui/prototype/` for switching between in-progress UI variants (see `docs/ui/prototype.md` and the
+  `.agents/skills/prototype/` skill)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
+- `e2e/` — Playwright end-to-end specs (`playwright.config.ts` at repo root); visiting `/` seeds `localStorage`
+  with the Artemis fixture (`src/data/fixtures/artemis.ts`)
+- `env.node.ts` — Node-side env validation, alongside `src/env.ts` for client-side env vars
 
 ### Routing
 
@@ -77,7 +89,8 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 
 ### Gear item forms & dialogs
 
-Each gear type follows a consistent three-layer pattern:
+Each item type lives under `src/components/items/types/<type>/` (`weapons`, `armor`, `implants`, `devices`,
+`vehicles`, `licenses`) and follows a consistent three-layer pattern:
 
 1. **`useXxxForm` hook** (`forms/useXxxForm.tsx`) — wraps `useAppForm` with type-specific default values and maps the
    flat form state back to the typed `XxxData`. Generic items use `useItemForm` directly.
@@ -87,29 +100,30 @@ Each gear type follows a consistent three-layer pattern:
    source, description, and effects groups.
 
 3. **`XxxFormDialog` component** (`dialogs/xxxFormDialog.tsx`) — combines the hook and fields into a
-   `<Dialog>`. Uses `useItemFormSubmit` to handle the acquire / purchase / save decision automatically.
+   `<Dialog>`. Submit logic (the acquire / purchase / save decision) lives in
+   `src/components/items/dialogs/itemFormDialog.tsx`.
 
-Supporting utilities in `src/components/gear/`:
+Supporting utilities in `src/components/items/`:
 
-- `useItemFormSubmit.ts` — centralises the builder-vs-viewer submit logic; in builder context or edit mode it calls
-  `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
+- `dialogs/itemFormDialog.tsx` — centralises the builder-vs-viewer submit logic; in builder context or edit mode it
+  calls `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
 - `gearSubmitMeta.ts` — `GearSubmitMeta` type (`submitAction: "acquire" | "purchase" | "save"`)
-- `useGearStore.ts` — `useGearStore()`, `useGearById()`, `useGearByType()`, `useGearFilter()` reactive hooks
-- `gearItemCard.tsx` — shared display card used across gear list views
-- `availabilityChip.tsx` — `AvailabilityChip` for restricted/forbidden badges
+- `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive hooks
+- `card/gearItemCard.tsx` — shared display card used across gear list views
+- `availability/availabilityChip.tsx` — `AvailabilityChip` for restricted/forbidden badges
 
 **Adding a new item type** — create `forms/useMyItemForm.tsx`, `forms/myItemFormFields.tsx`, and
 `dialogs/myItemFormDialog.tsx` following the weapons or cyberware examples.
 
 ## Character migrations
 
-Migrations live in `src/character/migrations/` and are registered in `src/character/migrations.ts`.
+Migrations live in `src/data/migrations/` and are registered in `src/data/migrations.ts`.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
 silently mis-migrate characters.
 
-- **Schema changes always require a new migration** — when a `CharacterSheet` field is added, renamed, or removed,
+- **Schema changes always require a new migration** — when a `RunnerData` field is added, renamed, or removed,
   create a new migration file with a date-prefixed name (e.g. `YYYYMMDD_describeChange.ts`) and register it at the
   bottom of `migrations.ts`.
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
@@ -129,9 +143,9 @@ silently mis-migrate characters.
 - **All local imports must include the file extension** (`.ts` or `.tsx`):
   ```ts
   // ✅
-  import { useCharacterSheet } from "#/components/character/characterSheetProvider.tsx"
+  import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
   // ❌
-  import { useCharacterSheet } from "#/components/character/characterSheetProvider"
+  import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors"
   ```
 - New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env.ts"`.
@@ -145,7 +159,6 @@ silently mis-migrate characters.
 
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
   `npm-run-all`) to ensure formatting, linting, and types are clean before pushing.
-- Google Drive integration (`src/integrations/googleDrive/api.ts`) is a placeholder stub — not implemented.
 
 ## Testing conventions
 
@@ -276,7 +289,7 @@ stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever wri
   )
   ```
   Because dialogs render at the caller's real tree position, React context (including
-  `CharacterSheetProvider`) propagates normally with no special provider scoping to get right. See `useAddKarmaDialog`
+  `RunnerStoreProvider`) propagates normally with no special provider scoping to get right. See `useAddKarmaDialog`
   and `useWeaponFormDialog` for minimal examples.
 - `useDialog` remounts its rendered content fresh on every `open(props)` call (an internal key bump), matching the old
   `DialogApi` behavior of a brand-new instance per call — see the "TanStack Form" note below for why this matters.
@@ -348,4 +361,12 @@ Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `r
 
 ### Domain docs
 
-Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`. `docs/adr/`
+currently holds 4 ADRs, notably `0001-runner-data-not-character-sheet.md` (the `Character`→`Runner` rename this
+document assumes). Open design problems for in-progress features live in `docs/features/`.
+
+### Skills inventory
+
+`.agents/skills/` — `fallow` (dead code/duplication/complexity audit), `prototype` (switchable in-app UI variants,
+see `docs/ui/prototype.md`), `grill-me` / `grill-with-docs` (Socratic design review), `handoff`, `to-issues`,
+`to-prd`, `write-a-skill`, `setup-matt-pocock-skills`.
