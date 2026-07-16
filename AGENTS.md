@@ -23,10 +23,10 @@ yarn test:unit:ui # Vitest with browser UI
 yarn test:all     # unit + e2e in parallel
 yarn test:e2e     # Playwright end-to-end tests
 yarn test:e2e:ui  # Playwright with browser UI
-yarn fix          # Runs all "*:fix" scripts (npm-run-all) — auto-fix lint/format steps
-yarn lint         # Runs all lint tasks (eslint checks via npm-run-all)
+yarn fix          # Runs all "*:fix" scripts (npm-run-all2) — auto-fix lint/format steps
+yarn lint         # Runs all lint tasks (eslint checks via npm-run-all2)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
-yarn tsc          # TypeScript type check via tsgo (@typescript/native-preview), no emit
+yarn tsc          # TypeScript type check (no emit; runs tsgo --noEmit via @typescript/native-preview)
 yarn fallow       # Run Fallow codebase analysis (dead code, duplication, complexity)
 ```
 
@@ -52,35 +52,45 @@ localStorage key literals.
 
 ### Key directories
 
-- `src/system/` — All domain types; `RunnerData` is the root, in `runnerData.ts`
+- `src/system/` — All domain types (`RunnerData` is the root, in `runnerData.ts`)
 - `src/system/gear/` — Gear sub-types keyed by `ItemType` enum
 - `src/system/magic/` — Magic sub-types: `spellData.ts`, `adeptPowerData.ts`, `complexFormData.ts`,
   `spriteData.ts`, `traditionData.ts`, etc.
 - `src/system/gameEffects/` — `GameEffectData` and related types; effects attach to gear items via
   `ItemData.effects`
+- `src/system/dice/` — `DiceRoller` store; paired with `src/components/dice/` (`DiceTrayApi`) for the dice tray UI
 - `src/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`,
   `SpecialAttributes` grouping constants
-- `src/system/karma/improvements/` — Post-chargen advancement: `ImprovementStore` stages `ImprovementEntry` objects
-  (attribute/skill raises, new skills, spells, etc.) plus cap and cost helpers; staged via the Spend Karma dialog
-  (`src/components/runner/karma/`) and applied to `karma.log` on save — see `docs/features/0010-spend-karma.md`
-- `src/system/dice/` — `DiceRoller`; paired with `src/components/dice/` (`DiceTrayApi`) for the in-app dice tray
-- `src/data/fixtures/` — Static runner fixtures; `artemis.ts` is the primary example
-- `src/data/migrations/` — Schema migration steps (`CharacterMigration<TInput, TOutput>`, from `characterMigration.ts`)
+- `src/system/karma/improvements/` — Karma-spend staging: `ImprovementStore` stages `ImprovementEntry` objects
+  (attribute/skill raises, new skills, Qualities, Initiation/Submersion grades, etc.) plus cap and cost helpers;
+  staged via the Spend Karma dialog (`src/components/runner/karma/`) and applied to `karma.log` on save — costs
+  come from `ImprovementsConfig` (`src/components/improvements/improvementsConfig.ts`); see
+  `docs/features/0010-spend-karma.md`
+- `src/data/fixtures/` — Static runner fixtures (`artemis.ts`, `hexen.ts`)
+- `src/data/migrations/` — Runner schema migration steps, registered in `src/data/migrations.ts`; shared
+  `CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` (name kept deliberately, see
+  `CONTEXT.md`)
 - `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager`)
-- `src/runner/runnerManager.ts` — `RunnerManager`: loads, saves, migrates runners via `StorageManager`
-- `src/components/runner/` — Runner sheet (Viewer) UI components; `runnerStoreProvider.tsx` provides the
-  per-runner `RunnerStore` via context
-- `src/components/builder/` — Character creation/edit form (Builder; store-based)
-- `src/components/items/` — Generic gear infrastructure (see **Gear item forms & dialogs** below)
+- `src/runner/runnerManager.ts` — `RunnerManager`: loads, saves, migrates runners via `StorageManager` (plus
+  `runnerId.ts`, `runnerIndex.ts`, `runnerLoadError.ts`, `runnerManagerContext.tsx`)
+- `src/components/runner/` — Viewer (play-time) UI components; `runnerStoreProvider.tsx`
+  (`src/components/runner/sheet/`) provides the per-runner `RunnerStore` via context
+- `src/components/builder/` — Character creation/edit form (Builder; store-based); `builderStoreProvider.tsx` and
+  `hooks/useBuilderStores.ts` provide the builder store
+- `src/components/items/` — Generic item ("gear") infrastructure (see **Gear item forms & dialogs** below)
 - `src/routes/` — TanStack file-based routes
-- `src/integrations/` — Cross-cutting integration glue: `reduxToolkit/` (`createCompatStore`, `useSelector`),
-  `mui/`, `reselect/`, and TanStack Query/Form/Router/Pacer/Devtools setup
-- `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples, including `Dialog` and `Prototype`)
+- `src/integrations/` — Third-party integration wrappers: `reduxToolkit/` (`createCompatStore`, `useSelector`),
+  `mui/`, `reselect/`, and the `tanstackDevtools/`, `tanstackForm/`, `tanstackPacer/`, `tanstackQuery/`,
+  `tanstackRouter/` subdirs
+- `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples), including
+  `src/components/ui/prototype/` for switching between in-progress UI variants (see `docs/ui/prototype.md` and the
+  `.agents/skills/prototype/` skill)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
 - `e2e/` — Playwright end-to-end specs (`playwright.config.ts` at repo root); visiting `/` seeds `localStorage`
   with the Artemis fixture (`#/data/fixtures/artemis.ts`) for tests to build on
 - `docs/adr/` — Architecture Decision Records, including `0001-runner-data-not-character-sheet.md`
 - `docs/features/` — Feature design docs (see `CONTRIBUTING.md` for the lifecycle)
+- `env.node.ts` — Node-side env validation, alongside `src/env.ts` for client-side env vars
 
 ### Routing
 
@@ -89,7 +99,8 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 
 ### Gear item forms & dialogs
 
-Each gear type follows a consistent three-layer pattern:
+Each item type lives under `src/components/items/types/<type>/` (`weapons`, `armor`, `implants`, `devices`,
+`vehicles`, `licenses`) and follows a consistent three-layer pattern:
 
 1. **`useXxxForm` hook** (`forms/useXxxForm.tsx`) — wraps `useAppForm` with type-specific default values and maps the
    flat form state back to the typed `XxxData`. Generic items use `useItemForm` directly.
@@ -99,13 +110,16 @@ Each gear type follows a consistent three-layer pattern:
    source, description, and effects groups.
 
 3. **`XxxFormDialog` component** (`dialogs/xxxFormDialog.tsx`) — combines the hook and fields into a
-   `<Dialog>`, passing a `GearSubmitMeta` (`submitAction: "acquire" | "purchase" | "save"`) to `onSubmit` so the
-   caller can decide whether to withdraw nuyen.
+   `<Dialog>`, passing a `GearSubmitMeta` (`submitAction: "acquire" | "purchase" | "save"`) to `onSubmit`. Submit
+   logic (the acquire / purchase / save decision) lives in `src/components/items/dialogs/itemFormDialog.tsx` — in
+   builder context or edit mode it calls `onSave` directly; in viewer create mode it also withdraws nuyen on
+   "purchase".
 
 Each type's files live under `src/components/items/types/<type>/` (e.g. `types/weapons/forms/useWeaponForm.tsx`,
 `types/weapons/forms/weaponFormFields.tsx`, `types/weapons/dialogs/weaponFormDialog.tsx`). Supporting utilities in
 `src/components/items/`:
 
+- `dialogs/itemFormDialog.tsx` — centralises the builder-vs-viewer submit logic (see above)
 - `gearSubmitMeta.ts` — the shared `GearSubmitMeta` type
 - `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive helpers
 - `card/gearItemCard.tsx` — shared display card used across gear list views
@@ -145,14 +159,14 @@ silently mis-migrate characters.
 - **All local imports must include the file extension** (`.ts` or `.tsx`):
   ```ts
   // ✅
-  import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+  import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
   // ❌
-  import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider"
+  import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors"
   ```
 - New client-side environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
   `import { env } from "#/env.ts"`. A separate `env.node.ts` at the repo root covers Node-side tooling env vars.
-- `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the
-  case.
+- React Compiler is active (via `@vitejs/plugin-react-swc`'s `reactCompiler` transform) — avoid manual
+  `useMemo`/`useCallback` unless the compiler can't handle the case.
 - **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using
   `satisfies z.ZodType<Type>`:
   ```ts
@@ -363,11 +377,13 @@ Default label vocabulary — `needs-triage`, `needs-info`, `ready-for-agent`, `r
 
 ### Domain docs
 
-Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+Single-context repo — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`. `docs/adr/`
+currently holds 4 ADRs, notably `0001-runner-data-not-character-sheet.md` (the `Character`→`Runner` rename this
+document assumes). Open design problems for in-progress features live in `docs/features/`.
 
-### Other skills
+### Skills inventory
 
-`.agents/skills/` also has: `fallow` (codebase health, above), `prototype` (throwaway UI/logic prototypes — see
-`docs/ui/prototype.md` for the `Prototype` component it produces), `grill-me` / `grill-with-docs` (interrogate a plan
-before committing to it), `handoff` (conversation compaction), `to-issues` / `to-prd` (turn a plan into GitHub Issues
-or a feature PRD), and `write-a-skill` (authoring new skills).
+`.agents/skills/` — `fallow` (dead code/duplication/complexity audit, above), `prototype` (switchable in-app UI
+variants — see `docs/ui/prototype.md`), `grill-me` / `grill-with-docs` (Socratic design review before committing to
+a plan), `handoff` (conversation compaction), `to-issues` / `to-prd` (turn a plan into GitHub Issues or a feature
+PRD), `write-a-skill` (authoring new skills), `setup-matt-pocock-skills` (wires up `docs/agents/`).
