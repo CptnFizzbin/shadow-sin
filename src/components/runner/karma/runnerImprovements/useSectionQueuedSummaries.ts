@@ -29,10 +29,18 @@ export function sectionForEntry(entry: ImprovementEntry): SpendKarmaSectionKey {
       return "knowledge"
     case ImprovementType.learnLanguageSkill:
       return "language"
+    case ImprovementType.learnQuality:
+    case ImprovementType.qualityBuyOff:
+      return "quality"
     case ImprovementType.learnSpell:
+      return "spell"
     case ImprovementType.learnComplexForm:
     case ImprovementType.complexFormIncrease:
-      return "spell"
+      return "complexForm"
+    case ImprovementType.initiationIncrease:
+      return "initiation"
+    case ImprovementType.submersionIncrease:
+      return "submersion"
   }
 }
 
@@ -46,7 +54,11 @@ export const useSectionQueuedSummaries = (): Record<SpendKarmaSectionKey, Sectio
     skillGroup: { count: 0, cost: 0 },
     knowledge: { count: 0, cost: 0 },
     language: { count: 0, cost: 0 },
+    quality: { count: 0, cost: 0 },
     spell: { count: 0, cost: 0 },
+    complexForm: { count: 0, cost: 0 },
+    initiation: { count: 0, cost: 0 },
+    submersion: { count: 0, cost: 0 },
   }
 
   for (const entry of allImprovements) {

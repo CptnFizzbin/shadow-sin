@@ -17,26 +17,28 @@ import type {
   LearnKnowledgeSkillEntry,
   LearnLanguageSkillEntry,
   LearnSkillGroupEntry,
+  QualityBuyOffEntry,
   SkillGroupIncreaseEntry,
   SkillIncreaseEntry,
   SkillSpecializationEntry,
 } from "./improvementEntry.ts"
 import type { ImprovementStore } from "./improvementStore.ts"
 import { ImprovementType } from "./improvementType.ts"
+import { improvementsConfig } from "./improvementsConfig.ts"
 
 // SR4A new-skill base karma costs (charged on top of any rating increases above 1).
-const NEW_ACTIVE_SKILL_COST = 4
-const NEW_SKILL_GROUP_COST = 10
-const NEW_KNOWLEDGE_SKILL_COST = 2
-const NEW_LANGUAGE_SKILL_COST = 2
-const NEW_COMPLEX_FORM_COST = 2
+const NEW_ACTIVE_SKILL_COST = improvementsConfig.activeSkill.newSkillCost
+const NEW_SKILL_GROUP_COST = improvementsConfig.skillGroup.newGroupCost
+const NEW_KNOWLEDGE_SKILL_COST = improvementsConfig.knowledgeSkill.newSkillCost
+const NEW_LANGUAGE_SKILL_COST = improvementsConfig.languageSkill.newSkillCost
+const NEW_COMPLEX_FORM_COST = improvementsConfig.complexForm.newFormCost
 
 // SR4A per-step karma multipliers (new rating × multiplier).
-const ACTIVE_SKILL_KARMA_MULT = 2
-const SKILL_GROUP_KARMA_MULT = 5
-const KNOWLEDGE_LANGUAGE_KARMA_MULT = 1
-const ATTRIBUTE_KARMA_MULT = 5
-const COMPLEX_FORM_KARMA_MULT = 1
+const ACTIVE_SKILL_KARMA_MULT = improvementsConfig.activeSkill.karmaMultiplier
+const SKILL_GROUP_KARMA_MULT = improvementsConfig.skillGroup.karmaMultiplier
+const KNOWLEDGE_LANGUAGE_KARMA_MULT = improvementsConfig.knowledgeSkill.karmaMultiplier
+const ATTRIBUTE_KARMA_MULT = improvementsConfig.attribute.karmaMultiplier
+const COMPLEX_FORM_KARMA_MULT = improvementsConfig.complexForm.karmaMultiplier
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
@@ -77,7 +79,7 @@ export const getImprovementCost = (entry: ImprovementEntry) => {
     case ImprovementType.skillGroupIncrease:
       return getRatingIncreaseCost(entry.baseRating, entry.newRating, SKILL_GROUP_KARMA_MULT)
     case ImprovementType.skillSpecialization:
-      return 2
+      return improvementsConfig.specialization.cost
     case ImprovementType.learnActiveSkill:
       return NEW_ACTIVE_SKILL_COST
         + getRatingIncreaseCost(1, entry.skill.rating, ACTIVE_SKILL_KARMA_MULT)
@@ -91,13 +93,26 @@ export const getImprovementCost = (entry: ImprovementEntry) => {
       return NEW_LANGUAGE_SKILL_COST
         + getRatingIncreaseCost(1, entry.skill.rating, KNOWLEDGE_LANGUAGE_KARMA_MULT)
     case ImprovementType.learnSpell:
-      return 5
+      return improvementsConfig.spell.newSpellCost
     case ImprovementType.learnComplexForm:
       return NEW_COMPLEX_FORM_COST
     case ImprovementType.complexFormIncrease:
       return getRatingIncreaseCost(entry.baseRating, entry.newRating, COMPLEX_FORM_KARMA_MULT)
+    case ImprovementType.learnQuality:
+      return Math.round((entry.quality.bpValue ?? 0) * improvementsConfig.quality.karmaPerBp)
+    case ImprovementType.qualityBuyOff:
+      return Math.round(entry.bpValue * improvementsConfig.quality.karmaPerBp)
+    case ImprovementType.initiationIncrease:
+      return getGradeIncreaseCost(entry.newGrade, improvementsConfig.initiateGrade)
+    case ImprovementType.submersionIncrease:
+      return getGradeIncreaseCost(entry.newGrade, improvementsConfig.submersionGrade)
   }
 }
+
+const getGradeIncreaseCost = (
+  newGrade: number,
+  gradeConfig: { base: number, perGrade: number },
+) => gradeConfig.base + newGrade * gradeConfig.perGrade
 
 const getRatingIncreaseCost = (baseRating: number, newRating: number, karmaMult: number) => {
   let totalKarma = 0
@@ -172,6 +187,18 @@ export const applyImprovement = (
     case ImprovementType.complexFormIncrease:
       applyComplexFormIncrease(sheet, entry)
       break
+    case ImprovementType.learnQuality:
+      sheet.qualities.push(entry.quality)
+      break
+    case ImprovementType.qualityBuyOff:
+      applyQualityBuyOff(sheet, entry)
+      break
+    case ImprovementType.initiationIncrease:
+      sheet.initiateGrade = entry.newGrade
+      break
+    case ImprovementType.submersionIncrease:
+      sheet.submersionGrade = entry.newGrade
+      break
   }
 
   sheet.karma.current -= precomputedCost ?? getImprovementCost(entry)
@@ -184,6 +211,12 @@ const applyComplexFormIncrease = (
   const complexForm = sheet.complexForms.find((cf) => cf.id === entry.complexFormId)
   if (!complexForm) throw new Error(`Complex form ${entry.complexFormId} not found on runner sheet`)
   complexForm.rating = entry.newRating
+}
+
+const applyQualityBuyOff = (sheet: Draft<RunnerData>, entry: QualityBuyOffEntry) => {
+  const exists = sheet.qualities.some((quality) => quality.id === entry.qualityId)
+  if (!exists) throw new Error(`Quality ${entry.qualityId} not found on runner sheet`)
+  sheet.qualities = sheet.qualities.filter((quality) => quality.id !== entry.qualityId)
 }
 
 const applySkillIncrease = (sheet: Draft<RunnerData>, entry: SkillIncreaseEntry) => {

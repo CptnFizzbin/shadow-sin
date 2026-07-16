@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import { AwakeningType } from "#/system/awakeningType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -44,14 +45,70 @@ describe("SpendKarmaDialogContent", () => {
     expect(screen.getByRole("button", { name: /skill groups/i })).toBeTruthy()
   })
 
-  it("does not show the Spells category for a non-spellcaster", () => {
+  it("shows the Qualities category regardless of Awakening", () => {
     // Arrange
     renderDialog()
 
     // Act — nothing
 
     // Assert
-    expect(screen.queryByRole("button", { name: /spells/i })).toBeNull()
+    expect(screen.getByRole("button", { name: /qualities/i })).toBeTruthy()
+  })
+
+  it("shows only Awakening-appropriate categories for a Mundane runner", () => {
+    // Arrange — Mundane is the factory default
+    renderDialog()
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.queryByRole("button", { name: /^spells$/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /complex forms/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /^initiation$/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /^submersion$/i })).toBeNull()
+  })
+
+  it("shows Spells and Initiation, but not Complex Forms or Submersion, for a Magician", () => {
+    // Arrange
+    renderDialog((sheet) => {
+      sheet.biology.awakening = AwakeningType.Magician
+    })
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /^spells$/i })).toBeTruthy()
+    expect(screen.getByRole("button", { name: /^initiation$/i })).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /complex forms/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /^submersion$/i })).toBeNull()
+  })
+
+  it("shows Initiation but not Spells for an Adept (Magical but not a spellcaster)", () => {
+    // Arrange
+    renderDialog((sheet) => {
+      sheet.biology.awakening = AwakeningType.Adept
+    })
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /^initiation$/i })).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /^spells$/i })).toBeNull()
+  })
+
+  it("shows Complex Forms and Submersion, but not Spells or Initiation, for a Technomancer", () => {
+    // Arrange
+    renderDialog((sheet) => {
+      sheet.biology.awakening = AwakeningType.Technomancer
+    })
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /complex forms/i })).toBeTruthy()
+    expect(screen.getByRole("button", { name: /^submersion$/i })).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /^spells$/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /^initiation$/i })).toBeNull()
   })
 
   it("shows only remaining karma in the footer (not total cost separately)", () => {

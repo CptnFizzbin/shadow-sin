@@ -125,6 +125,11 @@ export interface RunnerData {
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
   spirits: SpiritData[]
+
+  /** Magician/Adept/Mystic Adept initiate grade. 0 until first Initiation. */
+  initiateGrade: number
+  /** Technomancer submersion grade. 0 until first Submersion. */
+  submersionGrade: number
   powers: AdeptPowerData[]
 
   /**

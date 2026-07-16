@@ -10,4 +10,8 @@ export enum ImprovementType {
   learnSpell = "learnSpell",
   learnComplexForm = "learnComplexForm",
   complexFormIncrease = "complexFormIncrease",
+  learnQuality = "learnQuality",
+  qualityBuyOff = "qualityBuyOff",
+  initiationIncrease = "initiationIncrease",
+  submersionIncrease = "submersionIncrease",
 }

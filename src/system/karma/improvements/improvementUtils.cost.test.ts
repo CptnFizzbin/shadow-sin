@@ -9,13 +9,17 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import type {
   AttrIncreaseEntry,
   ComplexFormIncreaseEntry,
+  InitiationIncreaseEntry,
   LearnComplexFormEntry,
   LearnKnowledgeSkillEntry,
   LearnLanguageSkillEntry,
+  LearnQualityEntry,
   LearnSkillGroupEntry,
   LearnSpellEntry,
+  QualityBuyOffEntry,
   SkillGroupIncreaseEntry,
   SkillIncreaseEntry,
+  SubmersionIncreaseEntry,
 } from "./improvementEntry.ts"
 import { ImprovementType } from "./improvementType.ts"
 import { getImprovementCost } from "./improvementUtils.ts"
@@ -283,5 +287,104 @@ describe("getImprovementCost — magic and resonance entries", () => {
 
     // Assert
     expect(cost).toBe(7)
+  })
+})
+
+describe("getImprovementCost — qualities", () => {
+  it("a new positive quality costs BP value × 2 in karma", () => {
+    // Arrange
+    const entry: LearnQualityEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.learnQuality,
+      quality: { id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(30)
+  })
+
+  it("a new positive quality with no BP value costs 0 (pending GM review)", () => {
+    // Arrange
+    const entry: LearnQualityEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.learnQuality,
+      quality: { id: FAKE_ID, name: "Home-brewed Quality", type: "positive" },
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(0)
+  })
+
+  it("buying off a negative quality costs BP value × 2 in karma", () => {
+    // Arrange
+    const entry: QualityBuyOffEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.qualityBuyOff,
+      qualityId: FAKE_ID,
+      qualityName: "Uneducated",
+      bpValue: 20,
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(40)
+  })
+})
+
+describe("getImprovementCost — Initiation and Submersion grades", () => {
+  it("raising Initiate Grade costs 10 + (new grade × 3)", () => {
+    // Arrange — grade 0 → 1: 10 + 1*3 = 13
+    const entry: InitiationIncreaseEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.initiationIncrease,
+      baseGrade: 0,
+      newGrade: 1,
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(13)
+  })
+
+  it("raising Initiate Grade at a higher grade scales with the new grade", () => {
+    // Arrange — grade 3 → 4: 10 + 4*3 = 22
+    const entry: InitiationIncreaseEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.initiationIncrease,
+      baseGrade: 3,
+      newGrade: 4,
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(22)
+  })
+
+  it("raising Submersion Grade uses the same formula as Initiation", () => {
+    // Arrange — grade 0 → 1: 10 + 1*3 = 13
+    const entry: SubmersionIncreaseEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.submersionIncrease,
+      baseGrade: 0,
+      newGrade: 1,
+    }
+
+    // Act
+    const cost = getImprovementCost(entry)
+
+    // Assert
+    expect(cost).toBe(13)
   })
 })

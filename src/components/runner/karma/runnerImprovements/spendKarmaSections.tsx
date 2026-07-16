@@ -1,28 +1,52 @@
 import type { RemixiconComponentType } from "@remixicon/react"
 import {
+  RiAwardLine,
   RiChat4Line,
   RiFlashlightLine,
   RiHeartPulseLine,
   RiLightbulbLine,
+  RiSeedlingLine,
   RiSparklingLine,
   RiStackLine,
+  RiTerminalBoxLine,
+  RiWaterFlashLine,
 } from "@remixicon/react"
 import type { FC } from "react"
 
+import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
+import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
+import type { AwakeningType } from "#/system/awakeningType.ts"
+import { isMagical } from "#/system/awakeningType.ts"
+
 import { ImprovementActiveSkillList } from "./improvementActiveSkillList.tsx"
 import { ImprovementAttributeList } from "./improvementAttributeList.tsx"
+import { ImprovementComplexFormList } from "./improvementComplexFormList.tsx"
+import { ImprovementInitiationList } from "./improvementInitiationList.tsx"
 import { ImprovementKnowledgeSkillList } from "./improvementKnowledgeSkillList.tsx"
 import { ImprovementLanguageSkillList } from "./improvementLanguageSkillList.tsx"
+import { ImprovementQualityList } from "./improvementQualityList.tsx"
 import { ImprovementSkillGroupList } from "./improvementSkillGroupList.tsx"
 import { ImprovementSpellList } from "./improvementSpellList.tsx"
+import { ImprovementSubmersionList } from "./improvementSubmersionList.tsx"
 
-export type SpendKarmaSectionKey = "attribute" | "skill" | "skillGroup" | "knowledge" | "language" | "spell"
+export type SpendKarmaSectionKey =
+  | "attribute"
+  | "skill"
+  | "skillGroup"
+  | "knowledge"
+  | "language"
+  | "quality"
+  | "spell"
+  | "complexForm"
+  | "initiation"
+  | "submersion"
 
 export interface SpendKarmaSection {
   key: SpendKarmaSectionKey
   label: string
   Icon: RemixiconComponentType
-  spellcasterOnly?: boolean
+  /** Omit to show for every runner regardless of Awakening. */
+  visibleFor?: (awakening: AwakeningType) => boolean
 }
 
 /** Category registry for the Spend Karma dialog's hub list. */
@@ -32,7 +56,11 @@ export const SPEND_KARMA_SECTIONS: SpendKarmaSection[] = [
   { key: "skillGroup", label: "Skill Groups", Icon: RiStackLine },
   { key: "knowledge", label: "Knowledge", Icon: RiLightbulbLine },
   { key: "language", label: "Languages", Icon: RiChat4Line },
-  { key: "spell", label: "Spells", Icon: RiSparklingLine, spellcasterOnly: true },
+  { key: "quality", label: "Qualities", Icon: RiAwardLine },
+  { key: "spell", label: "Spells", Icon: RiSparklingLine, visibleFor: isMagician },
+  { key: "complexForm", label: "Complex Forms", Icon: RiTerminalBoxLine, visibleFor: isTechnomancer },
+  { key: "initiation", label: "Initiation", Icon: RiSeedlingLine, visibleFor: isMagical },
+  { key: "submersion", label: "Submersion", Icon: RiWaterFlashLine, visibleFor: isTechnomancer },
 ]
 
 interface SpendKarmaSectionContentProps {
@@ -52,7 +80,15 @@ export const SpendKarmaSectionContent: FC<SpendKarmaSectionContentProps> = ({ se
       return <ImprovementKnowledgeSkillList />
     case "language":
       return <ImprovementLanguageSkillList />
+    case "quality":
+      return <ImprovementQualityList />
     case "spell":
       return <ImprovementSpellList />
+    case "complexForm":
+      return <ImprovementComplexFormList />
+    case "initiation":
+      return <ImprovementInitiationList />
+    case "submersion":
+      return <ImprovementSubmersionList />
   }
 }

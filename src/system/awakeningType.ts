@@ -18,6 +18,11 @@ export const MagicAwakeningTypes: AwakeningType[] = [
 
 export const TechAwakeningTypes: AwakeningType[] = [AwakeningType.Technomancer]
 
+/** True for Adept, Magician, and Mystic Adept — the Awakened types with a Magic attribute. */
+export const isMagical = (awakeningType: AwakeningType): boolean => {
+  return MagicAwakeningTypes.includes(awakeningType)
+}
+
 export const awakenings: Record<AwakeningType, AwakeningData> = {
   "Mundane": {
     name: AwakeningType.Mundane,

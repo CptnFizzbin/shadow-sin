@@ -78,7 +78,7 @@ describe("sectionForEntry", () => {
     expect(section).toBe("skillGroup")
   })
 
-  it("maps complex form entries to the spell section", () => {
+  it("maps complex form entries to the complex form section", () => {
     // Arrange
     const entry: ImprovementEntry = {
       id: FAKE_ID,
@@ -92,6 +92,54 @@ describe("sectionForEntry", () => {
     const section = sectionForEntry(entry)
 
     // Assert
-    expect(section).toBe("spell")
+    expect(section).toBe("complexForm")
+  })
+
+  it("maps quality entries to the quality section", () => {
+    // Arrange
+    const learnEntry: ImprovementEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.learnQuality,
+      quality: { id: FAKE_ID, name: "Toughness", type: "positive", bpValue: 15 },
+    }
+    const buyOffEntry: ImprovementEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.qualityBuyOff,
+      qualityId: FAKE_ID,
+      qualityName: "Uneducated",
+      bpValue: 20,
+    }
+
+    // Act
+    const learnSection = sectionForEntry(learnEntry)
+    const buyOffSection = sectionForEntry(buyOffEntry)
+
+    // Assert
+    expect(learnSection).toBe("quality")
+    expect(buyOffSection).toBe("quality")
+  })
+
+  it("maps Initiation and Submersion entries to their own sections", () => {
+    // Arrange
+    const initiationEntry: ImprovementEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.initiationIncrease,
+      baseGrade: 0,
+      newGrade: 1,
+    }
+    const submersionEntry: ImprovementEntry = {
+      id: FAKE_ID,
+      type: ImprovementType.submersionIncrease,
+      baseGrade: 0,
+      newGrade: 1,
+    }
+
+    // Act
+    const initiationSection = sectionForEntry(initiationEntry)
+    const submersionSection = sectionForEntry(submersionEntry)
+
+    // Assert
+    expect(initiationSection).toBe("initiation")
+    expect(submersionSection).toBe("submersion")
   })
 })
