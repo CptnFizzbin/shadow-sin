@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
@@ -26,7 +26,7 @@ export const SpellListItem: FC<SpellListItemProps> = ({ spell, onEdit }) => {
     >
       <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1 }}>{spell.name}</Typography>
-        <BuildPoints value={SpellsBpPerSpell} />
+        <BuildPoints value={BuilderConfig.magic.spells.bpCost} />
       </Stack>
     </Paper>
   )

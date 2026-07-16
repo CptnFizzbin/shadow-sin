@@ -1,9 +1,5 @@
-import {
-  AttributeBpAllowance,
-  AttributeBpCostBase,
-  AttributeBpCostMaxOut,
-} from "#/components/builder/buildPoints/attributeUtils.ts"
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
 import { MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
@@ -23,11 +19,11 @@ export const useAttributesBuildPoints = (): AttributesBuildPoints => {
   const activeAttributeCosts = useActiveAttributes()
     .map((attrData) => {
       let spent = 0
-      spent += (attrData.value - attrData.min) * AttributeBpCostBase
+      spent += (attrData.value - attrData.min) * BuilderConfig.attributes.bpCost.base
 
       const isMaxedOut = attrData.max >= 1 && attrData.value >= attrData.max
       if (isMaxedOut) {
-        spent += AttributeBpCostMaxOut - AttributeBpCostBase
+        spent += BuilderConfig.attributes.bpCost.maxOut - BuilderConfig.attributes.bpCost.base
       }
 
       return { ...attrData, spent }
@@ -56,8 +52,8 @@ export const useAttributesBuildPoints = (): AttributesBuildPoints => {
     specialBp: specialBpSpent,
     budget: {
       spent: budgetedBpSpent,
-      remaining: AttributeBpAllowance - budgetedBpSpent,
-      limit: AttributeBpAllowance,
+      remaining: BuilderConfig.attributes.bpAllowance - budgetedBpSpent,
+      limit: BuilderConfig.attributes.bpAllowance,
     },
   }
 }

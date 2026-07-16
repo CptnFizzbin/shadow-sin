@@ -1,12 +1,16 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
-export const GearBuildPointAllowance = 50
-export const GearNuyenPerBuildPoint = 5_000
-export const GearNuyenAllowance = GearNuyenPerBuildPoint * GearBuildPointAllowance
+/** @deprecated Use `BuilderConfig.gear.bpAllowance` instead. */
+export const GearBuildPointAllowance = BuilderConfig.gear.bpAllowance
+/** @deprecated Use `BuilderConfig.gear.nuyenPerBp` instead. */
+export const GearNuyenPerBuildPoint = BuilderConfig.gear.nuyenPerBp
+/** @deprecated Use `BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance` instead. */
+export const GearNuyenAllowance = BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance
 
 export const useGearTotalCost = () => {
   const gear = useRunnerStoreSelector((state) => state.gear)
@@ -27,12 +31,12 @@ export const useGearTotalCost = () => {
 
 export const useGearBuildPoints = (): BpLineItem => {
   const gearNuyenCost = useGearTotalCost()
-  const gearBuildPoints = Math.ceil(gearNuyenCost / GearNuyenPerBuildPoint)
+  const gearBuildPoints = Math.ceil(gearNuyenCost / BuilderConfig.gear.nuyenPerBp)
 
   return {
     sectionId: BuilderSectionId.gear,
     spent: gearBuildPoints,
-    allowance: GearBuildPointAllowance,
-    isOverBudget: gearBuildPoints > GearBuildPointAllowance,
+    allowance: BuilderConfig.gear.bpAllowance,
+    isOverBudget: gearBuildPoints > BuilderConfig.gear.bpAllowance,
   }
 }

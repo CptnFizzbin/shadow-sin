@@ -1,8 +1,7 @@
 /// <reference types="vitest/config" />
-import babel from "@rolldown/plugin-babel"
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
-import react, { reactCompilerPreset } from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
 import { nodeEnv } from "./env.node.ts"
@@ -22,8 +21,14 @@ const config = defineConfig({
   plugins: [
     devtools(),
     tanstackRouter({ autoCodeSplitting: true }),
-    react(),
-    babel({ presets: [reactCompilerPreset()] }),
+    react({
+      useAtYourOwnRisk_mutateSwcOptions(options) {
+        // Workaround to enable React Compiler in SWC
+        options.jsc ??= {}
+        options.jsc.transform ??= {}
+        options.jsc.transform.reactCompiler = true
+      },
+    }),
   ],
 
   test: {

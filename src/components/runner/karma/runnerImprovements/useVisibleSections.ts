@@ -1,4 +1,4 @@
-import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
+import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import type { SpendKarmaSection } from "./spendKarmaSections.tsx"

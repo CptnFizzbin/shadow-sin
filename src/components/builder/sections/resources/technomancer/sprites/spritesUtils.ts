@@ -1,6 +1,6 @@
-import { SpriteBpPerTask } from "#/components/runner/technomancer/technomancerUtils.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 
 export const getSpriteTasksBp = (sprite: SpriteData): number => {
-  return sprite.services.max * SpriteBpPerTask
+  return sprite.services.max * BuilderConfig.technomancer.sprites.bpCost.perTask
 }

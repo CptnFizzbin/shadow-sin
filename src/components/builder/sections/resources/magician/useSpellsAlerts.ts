@@ -1,6 +1,7 @@
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
-import { isMagician, SpellsBpPerSpell } from "#/components/runner/spells/spellsUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
@@ -17,8 +18,8 @@ export const useSpellsAlerts = (): AlertInfo[] => {
 
   if (!isMagician(awakeningType)) return statuses
 
-  const allowance = Math.max(spellcasting, ritualSpellcasting) * 2 * SpellsBpPerSpell
-  const spent = spells.length * SpellsBpPerSpell
+  const allowance = Math.max(spellcasting, ritualSpellcasting) * 2 * BuilderConfig.magic.spells.bpCost
+  const spent = spells.length * BuilderConfig.magic.spells.bpCost
 
   if (spellcasting === 0 && ritualSpellcasting === 0) {
     statuses.push({

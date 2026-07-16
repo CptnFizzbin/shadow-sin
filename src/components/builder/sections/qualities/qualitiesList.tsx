@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/useQualitiesBuildPoints.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -11,7 +12,6 @@ import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { QualitiesListItem } from "./qualitiesListItem.tsx"
-import { QualitiesMaxNegativeBpBonus } from "./qualitiesUtils.ts"
 
 interface QualitiesListProps {
   type?: "positive" | "negative" | "all"
@@ -59,9 +59,9 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
         </Typography>
       </Stack>
 
-      {type === "negative" && qualitiesBuildPoints.negative < -QualitiesMaxNegativeBpBonus && (
+      {type === "negative" && qualitiesBuildPoints.negative < -BuilderConfig.qualities.maxNegativeBpBonus && (
         <Alert severity="warning" sx={{ py: 0 }}>
-          Negative qualities exceed the {QualitiesMaxNegativeBpBonus} BP bonus limit.
+          Negative qualities exceed the {BuilderConfig.qualities.maxNegativeBpBonus} BP bonus limit.
         </Alert>
       )}
 

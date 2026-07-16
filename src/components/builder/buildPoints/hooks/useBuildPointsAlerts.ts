@@ -1,3 +1,4 @@
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
 
 import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
@@ -7,7 +8,7 @@ export const useBuildPointsAlerts = (): AlertInfo[] => {
 
   const alerts: AlertInfo[] = []
 
-  if (summary.remaining > 5) {
+  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold) {
     alerts.push({
       section: "Build Points",
       severity: "warning",
