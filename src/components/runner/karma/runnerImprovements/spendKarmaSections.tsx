@@ -13,7 +13,7 @@ import {
 } from "@remixicon/react"
 import type { FC } from "react"
 
-import { isMagician } from "#/components/runner/spells/spellsUtils.ts"
+import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import type { AwakeningType } from "#/system/awakeningType.ts"
 import { isMagical } from "#/system/awakeningType.ts"

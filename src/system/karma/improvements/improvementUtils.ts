@@ -4,6 +4,7 @@ import type { Draft } from "immer"
 import { produce } from "immer"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
@@ -24,21 +25,6 @@ import type {
 } from "./improvementEntry.ts"
 import type { ImprovementStore } from "./improvementStore.ts"
 import { ImprovementType } from "./improvementType.ts"
-import { improvementsConfig } from "./improvementsConfig.ts"
-
-// SR4A new-skill base karma costs (charged on top of any rating increases above 1).
-const NEW_ACTIVE_SKILL_COST = improvementsConfig.activeSkill.newSkillCost
-const NEW_SKILL_GROUP_COST = improvementsConfig.skillGroup.newGroupCost
-const NEW_KNOWLEDGE_SKILL_COST = improvementsConfig.knowledgeSkill.newSkillCost
-const NEW_LANGUAGE_SKILL_COST = improvementsConfig.languageSkill.newSkillCost
-const NEW_COMPLEX_FORM_COST = improvementsConfig.complexForm.newFormCost
-
-// SR4A per-step karma multipliers (new rating × multiplier).
-const ACTIVE_SKILL_KARMA_MULT = improvementsConfig.activeSkill.karmaMultiplier
-const SKILL_GROUP_KARMA_MULT = improvementsConfig.skillGroup.karmaMultiplier
-const KNOWLEDGE_LANGUAGE_KARMA_MULT = improvementsConfig.knowledgeSkill.karmaMultiplier
-const ATTRIBUTE_KARMA_MULT = improvementsConfig.attribute.karmaMultiplier
-const COMPLEX_FORM_KARMA_MULT = improvementsConfig.complexForm.karmaMultiplier
 
 export const applyImprovements = (
   improvementsStore: ImprovementStore,
@@ -65,62 +51,78 @@ export const applyImprovements = (
 export const getImprovementCost = (entry: ImprovementEntry) => {
   switch (entry.type) {
     case ImprovementType.attrIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, ATTRIBUTE_KARMA_MULT)
+      return getRatingIncreaseCost(
+        entry.baseRating,
+        entry.newRating,
+        ImprovementsConfig.attibutes.karmaCost.improve,
+      )
     case ImprovementType.skillIncrease: {
-      const mult = entry.skillType === "ActiveSkill"
-        ? ACTIVE_SKILL_KARMA_MULT
-        : KNOWLEDGE_LANGUAGE_KARMA_MULT
+      const costFn = entry.skillType === "ActiveSkill"
+        ? ImprovementsConfig.skills.active.karmaCost.improve
+        : ImprovementsConfig.skills.knowledge.karmaCost.improve
       if (entry.boostedByAptitude && entry.skillType === "ActiveSkill") {
         // SR4A p. 87: with Aptitude, raises past rating 6 cost double karma per step.
-        return getAptitudeBoostedActiveSkillCost(entry.baseRating, entry.newRating, mult)
+        return getAptitudeBoostedActiveSkillCost(entry.baseRating, entry.newRating, costFn)
       }
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, mult)
+      return getRatingIncreaseCost(entry.baseRating, entry.newRating, costFn)
     }
     case ImprovementType.skillGroupIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, SKILL_GROUP_KARMA_MULT)
+      return getRatingIncreaseCost(
+        entry.baseRating,
+        entry.newRating,
+        ImprovementsConfig.skills.group.karmaCost.improve,
+      )
     case ImprovementType.skillSpecialization:
-      return improvementsConfig.specialization.cost
+      return ImprovementsConfig.skills.active.karmaCost.specialization
     case ImprovementType.learnActiveSkill:
-      return NEW_ACTIVE_SKILL_COST
-        + getRatingIncreaseCost(1, entry.skill.rating, ACTIVE_SKILL_KARMA_MULT)
+      return ImprovementsConfig.skills.active.karmaCost.learnNew
+        + getRatingIncreaseCost(1, entry.skill.rating, ImprovementsConfig.skills.active.karmaCost.improve)
     case ImprovementType.learnSkillGroup:
-      return NEW_SKILL_GROUP_COST
-        + getRatingIncreaseCost(1, entry.group.rating, SKILL_GROUP_KARMA_MULT)
+      return ImprovementsConfig.skills.group.karmaCost.learnNew
+        + getRatingIncreaseCost(1, entry.group.rating, ImprovementsConfig.skills.group.karmaCost.improve)
     case ImprovementType.learnKnowledgeSkill:
-      return NEW_KNOWLEDGE_SKILL_COST
-        + getRatingIncreaseCost(1, entry.skill.rating, KNOWLEDGE_LANGUAGE_KARMA_MULT)
+      return ImprovementsConfig.skills.knowledge.karmaCost.learnNew
+        + getRatingIncreaseCost(1, entry.skill.rating, ImprovementsConfig.skills.knowledge.karmaCost.improve)
     case ImprovementType.learnLanguageSkill:
-      return NEW_LANGUAGE_SKILL_COST
-        + getRatingIncreaseCost(1, entry.skill.rating, KNOWLEDGE_LANGUAGE_KARMA_MULT)
+      return ImprovementsConfig.skills.language.karmaCost.learnNew
+        + getRatingIncreaseCost(1, entry.skill.rating, ImprovementsConfig.skills.language.karmaCost.improve)
     case ImprovementType.learnSpell:
-      return improvementsConfig.spell.newSpellCost
+      return ImprovementsConfig.magic.spells.karmaCost.learnNew
     case ImprovementType.learnComplexForm:
-      return NEW_COMPLEX_FORM_COST
+      return ImprovementsConfig.technomancer.complexForms.karamCost.learnNew
     case ImprovementType.complexFormIncrease:
-      return getRatingIncreaseCost(entry.baseRating, entry.newRating, COMPLEX_FORM_KARMA_MULT)
+      return getRatingIncreaseCost(
+        entry.baseRating,
+        entry.newRating,
+        ImprovementsConfig.technomancer.complexForms.karamCost.increase,
+      )
     case ImprovementType.learnQuality:
-      return Math.round((entry.quality.bpValue ?? 0) * improvementsConfig.quality.karmaPerBp)
+      return ImprovementsConfig.qualities.positive.karmaCost.addQuality(entry.quality)
     case ImprovementType.qualityBuyOff:
-      return Math.round(entry.bpValue * improvementsConfig.quality.karmaPerBp)
+      return ImprovementsConfig.qualities.negative.karamaCost.removeQuality({
+        id: entry.qualityId,
+        name: entry.qualityName,
+        type: "negative",
+        bpValue: entry.bpValue,
+      })
     case ImprovementType.initiationIncrease:
-      return getGradeIncreaseCost(entry.newGrade, improvementsConfig.initiateGrade)
+      return ImprovementsConfig.magic.initiaition.karamaCost.improve(entry.newGrade)
     case ImprovementType.submersionIncrease:
-      return getGradeIncreaseCost(entry.newGrade, improvementsConfig.submersionGrade)
+      return ImprovementsConfig.technomancer.submersion.karamCost.improve(entry.newGrade)
   }
 }
 
-const getGradeIncreaseCost = (
-  newGrade: number,
-  gradeConfig: { base: number, perGrade: number },
-) => gradeConfig.base + newGrade * gradeConfig.perGrade
-
-const getRatingIncreaseCost = (baseRating: number, newRating: number, karmaMult: number) => {
+const getRatingIncreaseCost = (
+  baseRating: number,
+  newRating: number,
+  costFn: (rating: number) => number,
+) => {
   let totalKarma = 0
   let rating = baseRating
 
   while (rating < newRating) {
     rating++
-    totalKarma += rating * karmaMult
+    totalKarma += costFn(rating)
   }
 
   return totalKarma
@@ -129,15 +131,14 @@ const getRatingIncreaseCost = (baseRating: number, newRating: number, karmaMult:
 const getAptitudeBoostedActiveSkillCost = (
   baseRating: number,
   newRating: number,
-  karmaMult: number,
+  costFn: (rating: number) => number,
 ) => {
   let totalKarma = 0
   let rating = baseRating
 
   while (rating < newRating) {
     rating++
-    const stepMult = rating > 6 ? karmaMult * 2 : karmaMult
-    totalKarma += rating * stepMult
+    totalKarma += rating > 6 ? costFn(rating) * 2 : costFn(rating)
   }
 
   return totalKarma

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -21,7 +22,6 @@ import {
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
-import { improvementsConfig } from "#/system/karma/improvements/improvementsConfig.ts"
 
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
@@ -69,7 +69,7 @@ export const ImprovementQualityList: FC = () => {
             <Paper variant="outlined">
               <List disablePadding>
                 {negativeQualities.map((quality, index) => {
-                  const cost = Math.round((quality.bpValue ?? 0) * improvementsConfig.quality.karmaPerBp)
+                  const cost = ImprovementsConfig.qualities.negative.karamaCost.removeQuality(quality)
                   const queuedEntry = queuedBuyOffs.find(
                     (entry) => entry.qualityId === quality.id,
                   ) ?? null

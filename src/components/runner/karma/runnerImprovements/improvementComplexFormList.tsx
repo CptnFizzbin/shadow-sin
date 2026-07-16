@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine, RiTerminalBoxLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -28,7 +29,6 @@ import {
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
-import { improvementsConfig } from "#/system/karma/improvements/improvementsConfig.ts"
 
 import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
@@ -66,7 +66,9 @@ export const ImprovementComplexFormList: FC = () => {
         <Paper variant="outlined">
           <List disablePadding>
             {knownComplexForms.map((complexForm, index) => {
-              const karmaCost = (complexForm.rating + 1) * improvementsConfig.complexForm.karmaMultiplier
+              const karmaCost = ImprovementsConfig.technomancer.complexForms.karamCost.increase(
+                complexForm.rating + 1,
+              )
               const isAtMax = complexForm.rating >= maxRating
               const queuedEntry = queuedIncreases.find(
                 (entry) => entry.complexFormId === complexForm.id,

@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -17,7 +18,6 @@ import {
   selectImprovementsTotalCost,
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
-import { improvementsConfig } from "#/system/karma/improvements/improvementsConfig.ts"
 
 import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
@@ -32,7 +32,7 @@ export const ImprovementSubmersionList: FC = () => {
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedEntry = allImprovements.filter(isSubmersionIncreaseEntry)[0] ?? null
   const nextGrade = currentGrade + 1
-  const cost = improvementsConfig.submersionGrade.base + nextGrade * improvementsConfig.submersionGrade.perGrade
+  const cost = ImprovementsConfig.technomancer.submersion.karamCost.improve(nextGrade)
   const canAfford = queuedEntry !== null || cost <= remainingKarma
 
   const handleToggle = () => {
