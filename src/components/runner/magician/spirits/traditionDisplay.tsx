@@ -21,28 +21,36 @@ export const TraditionDisplay: FC = () => {
   }
 
   return (
-    <Paper sx={{ p: { xs: 1.5, sm: 2 }, background: "linear-gradient(135deg, var(--mui-palette-background-paper) 0%, var(--mui-palette-background-default) 100%)" }}>
+    <Paper sx={{
+      p: { xs: 1.5, sm: 2 },
+      background: "linear-gradient(135deg, var(--mui-palette-background-paper) 0%, var(--mui-palette-background-default) 100%)",
+    }}
+    >
       <Stack sx={{ gap: 2 }}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
           sx={{ justifyContent: "space-between", alignItems: "flex-start", gap: 1 }}
         >
-          <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Box>
             <Typography variant="overline" color="primary" sx={{ fontWeight: "bold" }}>
               Tradition
             </Typography>
-            <Typography variant="h6" sx={{ lineHeight: 1.3 }}>{tradition.name}</Typography>
+            <Typography>
+              {tradition.name}
+            </Typography>
             {tradition.concept && (
               <Typography variant="body2" color="text.secondary">
                 {tradition.concept}
               </Typography>
             )}
           </Box>
-          <Box sx={{ flexShrink: 0 }}>
+          <Box>
             <Typography variant="overline" color="text.secondary">
               Drain Attribute
             </Typography>
-            <Typography variant="h6">{AttributeLabels[tradition.drainAttribute]}</Typography>
+            <Typography>
+              {AttributeLabels[tradition.drainAttribute]}
+            </Typography>
           </Box>
         </Stack>
 
@@ -50,7 +58,12 @@ export const TraditionDisplay: FC = () => {
           <Typography variant="overline" color="text.secondary" sx={{ mb: 1, display: "block" }}>
             Spirit Associations
           </Typography>
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(5, 1fr)" }, gap: 1 }}>
+          <Box sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(5, 1fr)" },
+            gap: 1,
+          }}
+          >
             {(Object.entries(tradition.spiritTypes) as [string, SpiritType][]).map(([category, type]) => (
               <Box
                 key={category}

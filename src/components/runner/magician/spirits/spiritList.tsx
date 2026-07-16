@@ -13,7 +13,6 @@ import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 
 import { SpiritFormDialog } from "./dialogs/spiritFormDialog.tsx"
 import { SpiritItemCard } from "./spiritItemCard.tsx"
-import { TraditionDisplay } from "./traditionDisplay.tsx"
 
 export const SpiritList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
@@ -53,9 +52,7 @@ export const SpiritList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 2 }}>
-      <TraditionDisplay />
-
+    <>
       <Stack sx={{ gap: 1 }}>
         <ItemList.AddItemButton onClick={handleAdd}>Summon Spirit</ItemList.AddItemButton>
         {spirits.map((spirit) => (
@@ -78,6 +75,6 @@ export const SpiritList: FC = () => {
       />
 
       {confirmDialog.dialog}
-    </Stack>
+    </>
   )
 }

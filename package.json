@@ -67,7 +67,6 @@
     "@dword-design/eslint-plugin-import-alias": "^8.1.8",
     "@eslint/js": "^9.0.0",
     "@playwright/test": "^1.61.1",
-    "@rolldown/plugin-babel": "^0.2.3",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tanstack/devtools-vite": "^0.8.1",
     "@tanstack/react-devtools": "^0.10.8",
@@ -83,6 +82,7 @@
     "@types/use-sync-external-store": "^1.5.0",
     "@typescript/native-preview": "7.0.0-dev.20260421.2",
     "@vitejs/plugin-react": "^6.0.3",
+    "@vitejs/plugin-react-swc": "^4.3.1",
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/ui": "^4.1.10",
     "babel-plugin-react-compiler": "^1.0.0",
@@ -102,5 +102,5 @@
     "vite": "^8.1.4",
     "vitest": "^4.1.10"
   },
-  "packageManager": "yarn@4.16.0+sha512.5374c94eb4ef6aa8188fb112f20c1aa6569f248d676c5e576e1fd2a1a4d8d87a96df65d9dfe1c2a0252cbe38bda46cf18d955005b81b43cc7607a5c9d56fd2b6"
+  "packageManager": "yarn@4.17.1+sha512.ccbfabf7d7b6b32075088be9386fb9a2e00bb6887ef07fa56effabc890a56d53da1ccc4128d62db245fcbd3961b236d75335bdf7d5320ed6eafb7588b7ad4697"
 }

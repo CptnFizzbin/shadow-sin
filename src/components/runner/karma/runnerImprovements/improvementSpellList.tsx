@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiSparklingLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useSpellFormDialog } from "#/components/runner/spells/dialogs/spellFormDialog.tsx"
+import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {

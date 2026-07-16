@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useTraditionForm } from "#/components/runner/spells/form/useTraditionForm.ts"
+import { useTraditionForm } from "#/components/runner/magician/spells/form/useTraditionForm.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
