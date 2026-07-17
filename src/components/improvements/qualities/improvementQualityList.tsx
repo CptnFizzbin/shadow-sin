@@ -10,7 +10,10 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -22,10 +25,6 @@ import {
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
-
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export const ImprovementQualityList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

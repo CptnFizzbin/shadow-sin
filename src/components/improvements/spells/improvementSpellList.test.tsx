@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { SpendKarmaDialogProvider } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import {
   SpellCategory,
@@ -15,7 +16,6 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementSpellList } from "./improvementSpellList.tsx"
-import { SpendKarmaDialogProvider } from "./spendKarmaDialogContext.tsx"
 
 function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(

@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { SpendKarmaDialogProvider } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -9,7 +10,6 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementActiveSkillList } from "./improvementActiveSkillList.tsx"
-import { SpendKarmaDialogProvider } from "./spendKarmaDialogContext.tsx"
 
 function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(

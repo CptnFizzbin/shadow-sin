@@ -12,6 +12,9 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiChat4Line, RiCheckLine, RiStarLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
@@ -37,10 +40,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
 import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 const LINGO_COST = 2
 

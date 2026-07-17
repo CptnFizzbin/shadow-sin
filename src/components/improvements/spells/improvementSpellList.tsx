@@ -8,6 +8,9 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine, RiSparklingLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -17,10 +20,6 @@ import {
 import { selectAllImprovements } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
-
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export const ImprovementSpellList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

@@ -7,7 +7,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementLanguageSkillList } from "./improvementLanguageSkillList.tsx"
-import { SpendKarmaDialogProvider } from "./spendKarmaDialogContext.tsx"
+import { SpendKarmaDialogProvider } from "../spendKarmaDialogContext.tsx"
 
 function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(

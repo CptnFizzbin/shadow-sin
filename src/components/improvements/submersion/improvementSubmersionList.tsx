@@ -8,31 +8,30 @@ import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import type { InitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
-import { isInitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
+import type { SubmersionIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
+import { isSubmersionIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   selectAllImprovements,
   selectImprovementsTotalCost,
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
-
-export const ImprovementInitiationList: FC = () => {
+export const ImprovementSubmersionList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const currentGrade = useRunnerStoreSelector((sheet) => sheet.initiateGrade)
+  const currentGrade = useRunnerStoreSelector((sheet) => sheet.submersionGrade)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
 
   const remainingKarma = currentKarma - totalQueuedCost
-  const queuedEntry = allImprovements.filter(isInitiationIncreaseEntry)[0] ?? null
+  const queuedEntry = allImprovements.filter(isSubmersionIncreaseEntry)[0] ?? null
   const nextGrade = currentGrade + 1
-  const cost = ImprovementsConfig.magic.initiaition.karamaCost.improve(nextGrade)
+  const cost = ImprovementsConfig.technomancer.submersion.karamCost.improve(nextGrade)
   const canAfford = queuedEntry !== null || cost <= remainingKarma
 
   const handleToggle = () => {
@@ -40,8 +39,8 @@ export const ImprovementInitiationList: FC = () => {
       improvementStore.remove(queuedEntry.id)
       return
     }
-    const newEntry: Omit<InitiationIncreaseEntry, "id"> = {
-      type: ImprovementType.initiationIncrease,
+    const newEntry: Omit<SubmersionIncreaseEntry, "id"> = {
+      type: ImprovementType.submersionIncrease,
       baseGrade: currentGrade,
       newGrade: nextGrade,
     }
@@ -76,15 +75,15 @@ export const ImprovementInitiationList: FC = () => {
                 opacity: !canAfford && !queuedEntry ? 0.45 : 1,
               }}
             >
-              <ListItemText primary="Initiate Grade" secondary={`${currentGrade} → ${nextGrade}`} />
+              <ListItemText primary="Submersion Grade" secondary={`${currentGrade} → ${nextGrade}`} />
             </ListItemButton>
           </ListItem>
         </List>
       </Paper>
 
       <UnderConstruction
-        title="Metamagics coming soon"
-        description="Picking a metamagic when you initiate isn't supported yet — for now this just raises your Initiate Grade."
+        title="Echoes coming soon"
+        description="Picking an Echo when you submerge isn't supported yet — for now this just raises your Submersion Grade."
       />
     </Stack>
   )

@@ -8,6 +8,8 @@ import Stack from "@mui/material/Stack"
 import { RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -20,9 +22,6 @@ import {
   selectImprovementsTotalCost,
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
-
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

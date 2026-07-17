@@ -7,19 +7,18 @@ import { RiArrowLeftLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-
 import {
   SpendKarmaDialogProvider,
   useSpendKarmaDialogContext,
-} from "./runnerImprovements/spendKarmaDialogContext.tsx"
-import { SpendKarmaDialogFooter } from "./runnerImprovements/spendKarmaDialogFooter.tsx"
-import { SpendKarmaHubList } from "./runnerImprovements/spendKarmaHubList.tsx"
-import type { SpendKarmaSectionKey } from "./runnerImprovements/spendKarmaSections.tsx"
-import { SpendKarmaSectionContent } from "./runnerImprovements/spendKarmaSections.tsx"
-import { useSpendKarmaSummary } from "./runnerImprovements/useSpendKarmaSummary.ts"
-import { useVisibleSections } from "./runnerImprovements/useVisibleSections.ts"
+} from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { SpendKarmaDialogFooter } from "#/components/improvements/spendKarmaDialogFooter.tsx"
+import { SpendKarmaHubList } from "#/components/improvements/spendKarmaHubList.tsx"
+import type { SpendKarmaSectionKey } from "#/components/improvements/spendKarmaSections.tsx"
+import { SpendKarmaSectionContent } from "#/components/improvements/spendKarmaSections.tsx"
+import { useSpendKarmaSummary } from "#/components/improvements/useSpendKarmaSummary.ts"
+import { useVisibleSections } from "#/components/improvements/useVisibleSections.ts"
+import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
+import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 
 // Inner component that consumes SpendKarmaDialogProvider context
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {

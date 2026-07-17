@@ -30,9 +30,9 @@ import {
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
+import { ImprovementQueuedLearnRow } from "../improvementQueuedLearnRow.tsx"
+import { useSpendKarmaDialogContext } from "../spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "../useImprovementSelector.ts"
 
 export const ImprovementComplexFormList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

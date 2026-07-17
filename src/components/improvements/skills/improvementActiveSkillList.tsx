@@ -8,6 +8,10 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { useSpecializationPickerDialog } from "#/components/improvements/skills/specializationPickerDialog.tsx"
+import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
@@ -36,10 +40,6 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import { ImprovementActiveSkillRow } from "./improvementActiveSkillRow.tsx"
-import { ImprovementQueuedLearnRow } from "./improvementQueuedLearnRow.tsx"
-import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 function getActiveSkillSpecOptions(skill: SkillKey) {
   const specs = skillList[skill]?.specializations ?? []
