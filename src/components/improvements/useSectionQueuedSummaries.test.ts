@@ -6,6 +6,7 @@ import { AttributeKey } from "#/system/attributeKey.ts"
 import type {
   ImprovementEntry,
   SkillIncreaseEntry,
+  SkillSpecializationEntry,
 } from "#/system/karma/improvements/improvementEntry.ts"
 import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
@@ -59,6 +60,29 @@ describe("sectionForEntry", () => {
     expect(activeSection).toBe("skill")
     expect(knowledgeSection).toBe("knowledge")
     expect(languageSection).toBe("language")
+  })
+
+  it("maps skill specializations to the specialization section regardless of skill type", () => {
+    // Arrange
+    function makeSpec(skillType: SkillSpecializationEntry["skillType"]): SkillSpecializationEntry {
+      return {
+        id: FAKE_ID,
+        type: ImprovementType.skillSpecialization,
+        skillType,
+        skill: SkillKey.pistols,
+        specialization: "Revolvers",
+      }
+    }
+
+    // Act
+    const activeSection = sectionForEntry(makeSpec("ActiveSkill"))
+    const knowledgeSection = sectionForEntry(makeSpec("KnowledgeSkill"))
+    const languageSection = sectionForEntry(makeSpec("LanguageSkill"))
+
+    // Assert
+    expect(activeSection).toBe("specialization")
+    expect(knowledgeSection).toBe("specialization")
+    expect(languageSection).toBe("specialization")
   })
 
   it("maps group increases to the skill group section", () => {

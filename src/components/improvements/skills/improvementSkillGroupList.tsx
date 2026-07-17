@@ -6,14 +6,17 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
+import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { RiAddLine, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
+import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
@@ -153,16 +156,19 @@ export const ImprovementSkillGroupList: FC = () => {
         </Typography>
       )}
 
-      <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={openLearnDialog}
-        sx={{ alignSelf: "flex-start" }}
-      >
-        Learn New Group
-      </Button>
+      <Tooltip title="Cost for rating 1 — a higher starting rating costs more">
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          endIcon={<KarmaValue amount={ImprovementsConfig.skills.group.karmaCost.learnNew} />}
+          onClick={openLearnDialog}
+          sx={{ alignSelf: "flex-start" }}
+        >
+          Learn New Group
+        </Button>
+      </Tooltip>
 
       {activeSkillGroupDialog.dialog}
     </Stack>

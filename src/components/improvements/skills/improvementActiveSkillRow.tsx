@@ -1,17 +1,15 @@
 import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import { RiCheckLine, RiFlashlightLine, RiStarLine } from "@remixicon/react"
+import { RiCheckLine, RiFlashlightLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
-import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 interface ImprovementActiveSkillRowProps {
@@ -25,13 +23,7 @@ interface ImprovementActiveSkillRowProps {
   isLastRow: boolean
   remainingKarma: number
   isImproveQueued: boolean
-  isSpecQueued: boolean
-  /** Name of the queued specialization, when one is queued. Shown next to the row. */
-  queuedSpecName?: string
   onToggleImprove: () => void
-  onToggleSpec: () => void
-  /** Reopen the picker dialog on the queued spec so the user can rename it. */
-  onEditSpec: () => void
 }
 
 export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
@@ -43,19 +35,13 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
   isLastRow,
   remainingKarma,
   isImproveQueued,
-  isSpecQueued,
-  queuedSpecName,
   onToggleImprove,
-  onToggleSpec,
-  onEditSpec,
 }) => {
   const nextRating = rating + 1
   const baseStepCost = nextRating * 2
   const improveCost = hasAptitude && nextRating > 6 ? baseStepCost * 2 : baseStepCost
-  const specCost = 2
   const isAtMax = rating >= cap
   const canAffordImprove = isImproveQueued || improveCost <= remainingKarma
-  const canAffordSpec = isSpecQueued || specCost <= remainingKarma
   const improveDisabled = isAtMax || (!canAffordImprove && !isImproveQueued)
 
   const primaryLabel = (
@@ -87,41 +73,6 @@ export const ImprovementActiveSkillRow: FC<ImprovementActiveSkillRowProps> = ({
           {isImproveQueued && (
             <RiCheckLine size={14} style={{ color: "var(--mui-palette-success-main)" }} />
           )}
-          {isSpecQueued && queuedSpecName && (
-            <Tooltip title="Edit specialization name">
-              <Chip
-                label={queuedSpecName}
-                size="small"
-                color="success"
-                variant="outlined"
-                onClick={onEditSpec}
-                sx={{ cursor: "pointer", maxWidth: 160 }}
-              />
-            </Tooltip>
-          )}
-          <Tooltip
-            title={isSpecQueued
-              ? "Remove specialization"
-              : (
-                  <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
-                    Specialization
-                    <KarmaValue amount={specCost} />
-                  </Stack>
-                )}
-          >
-            <span>
-              <IconButton
-                size="small"
-                aria-label="Add specialization"
-                aria-pressed={isSpecQueued}
-                color={isSpecQueued ? "success" : "default"}
-                disabled={!canAffordSpec && !isSpecQueued}
-                onClick={onToggleSpec}
-              >
-                <RiStarLine size={16} />
-              </IconButton>
-            </span>
-          </Tooltip>
         </Stack>
       )}
     >

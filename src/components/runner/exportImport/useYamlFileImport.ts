@@ -24,8 +24,8 @@ interface UseYamlFileImportResult {
 }
 
 type ParseResult =
-  | { ok: true; runner: RunnerData }
-  | { ok: false; error: unknown }
+  | { ok: true, runner: RunnerData }
+  | { ok: false, error: unknown }
 
 /**
  * Parses YAML content into a RunnerData, capturing any thrown error instead

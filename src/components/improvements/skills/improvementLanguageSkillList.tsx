@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button"
 import Chip from "@mui/material/Chip"
-import IconButton from "@mui/material/IconButton"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
@@ -9,10 +8,11 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import { RiAddLine, RiChat4Line, RiCheckLine, RiStarLine } from "@remixicon/react"
+import { RiAddLine, RiChat4Line, RiCheckLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
@@ -25,12 +25,10 @@ import { getLanguageSkillCap } from "#/system/karma/improvements/improvementCaps
 import type {
   LearnLanguageSkillEntry,
   SkillIncreaseEntry,
-  SkillSpecializationEntry,
 } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnLanguageSkillEntry,
   isSkillIncreaseEntry,
-  isSkillSpecializationEntry,
 } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   selectAllImprovements,
@@ -40,10 +38,6 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 import { getImprovementCost } from "#/system/karma/improvements/improvementUtils.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 
-import { useSpecializationPickerDialog } from "./specializationPickerDialog.tsx"
-
-const LINGO_COST = 2
-
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
@@ -51,56 +45,12 @@ export const ImprovementLanguageSkillList: FC = () => {
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const languageSkillDialog = useLanguageSkillDialog()
-  const specializationDialog = useSpecializationPickerDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedSkillIncreases = allImprovements
     .filter(isSkillIncreaseEntry)
     .filter((entry) => entry.skillType === "LanguageSkill")
-  const queuedSpecs = allImprovements
-    .filter(isSkillSpecializationEntry)
-    .filter((entry) => entry.skillType === "LanguageSkill")
   const queuedLearns = allImprovements.filter(isLearnLanguageSkillEntry)
-
-  const handleToggleSpec = async (skillName: string, currentLingo?: string) => {
-    const queuedEntry = queuedSpecs.find((entry) => entry.skill === skillName) ?? null
-    if (queuedEntry) {
-      improvementStore.remove(queuedEntry.id)
-      return
-    }
-    const lingo = await specializationDialog.open({
-      skillLabel: skillName,
-      fieldLabel: "Lingo",
-      initialValue: currentLingo,
-    })
-    if (!lingo) return
-    const newEntry: Omit<SkillSpecializationEntry, "id"> = {
-      type: ImprovementType.skillSpecialization,
-      skillType: "LanguageSkill",
-      skill: skillName as SkillKey,
-      specialization: lingo,
-    }
-    improvementStore.add(newEntry)
-  }
-
-  const handleEditSpec = async (skillName: string, currentLingo: string) => {
-    const queuedEntry = queuedSpecs.find((entry) => entry.skill === skillName) ?? null
-    if (!queuedEntry) return
-    const lingo = await specializationDialog.open({
-      skillLabel: skillName,
-      fieldLabel: "Lingo",
-      initialValue: currentLingo,
-    })
-    if (!lingo) return
-    const replacement: Omit<SkillSpecializationEntry, "id"> = {
-      type: ImprovementType.skillSpecialization,
-      skillType: "LanguageSkill",
-      skill: skillName as SkillKey,
-      specialization: lingo,
-    }
-    improvementStore.remove(queuedEntry.id)
-    improvementStore.add(replacement)
-  }
 
   const handleToggleImprove = (skillName: SkillKey, numericRating: number) => {
     const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skillName) ?? null
@@ -143,9 +93,6 @@ export const ImprovementLanguageSkillList: FC = () => {
               const queuedEntry = queuedSkillIncreases.find((entry) => entry.skill === skill.name) ?? null
               const canAffordImprove = queuedEntry !== null || karmaCost <= remainingKarma
               const improveDisabled = isAtMax || (!canAffordImprove && !queuedEntry)
-              const queuedSpec = queuedSpecs.find((entry) => entry.skill === skill.name) ?? null
-              // Native languages can still get a lingo — it's just the karma cost that matters.
-              const canAffordSpec = queuedSpec !== null || LINGO_COST <= remainingKarma
               const isLast = index === languageSkills.length - 1 && queuedLearns.length === 0
 
               return (
@@ -167,41 +114,6 @@ export const ImprovementLanguageSkillList: FC = () => {
                       {queuedEntry && (
                         <RiCheckLine size={14} style={{ color: "var(--mui-palette-success-main)" }} />
                       )}
-                      {queuedSpec && (
-                        <Tooltip title="Edit lingo">
-                          <Chip
-                            label={queuedSpec.specialization}
-                            size="small"
-                            color="success"
-                            variant="outlined"
-                            onClick={() => handleEditSpec(skill.name, queuedSpec.specialization)}
-                            sx={{ cursor: "pointer", maxWidth: 160 }}
-                          />
-                        </Tooltip>
-                      )}
-                      <Tooltip
-                        title={queuedSpec
-                          ? "Remove lingo"
-                          : (
-                              <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
-                                Lingo
-                                <KarmaValue amount={LINGO_COST} />
-                              </Stack>
-                            )}
-                      >
-                        <span>
-                          <IconButton
-                            size="small"
-                            aria-label={queuedSpec ? "Remove lingo" : "Add lingo"}
-                            aria-pressed={queuedSpec !== null}
-                            color={queuedSpec ? "success" : "default"}
-                            disabled={!canAffordSpec && !queuedSpec}
-                            onClick={() => handleToggleSpec(skill.name, skill.lingo)}
-                          >
-                            <RiStarLine size={16} />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
                     </Stack>
                   )}
                 >
@@ -250,19 +162,21 @@ export const ImprovementLanguageSkillList: FC = () => {
         </Stack>
       )}
 
-      <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
-        startIcon={<RiAddLine size={14} />}
-        onClick={openLearnDialog}
-        sx={{ alignSelf: "flex-start" }}
-      >
-        Learn New Language
-      </Button>
+      <Tooltip title="Cost for rating 1 — a higher starting rating costs more">
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          startIcon={<RiAddLine size={14} />}
+          endIcon={<KarmaValue amount={ImprovementsConfig.skills.language.karmaCost.learnNew} />}
+          onClick={openLearnDialog}
+          sx={{ alignSelf: "flex-start" }}
+        >
+          Learn New Language
+        </Button>
+      </Tooltip>
 
       {languageSkillDialog.dialog}
-      {specializationDialog.dialog}
     </Stack>
   )
 }

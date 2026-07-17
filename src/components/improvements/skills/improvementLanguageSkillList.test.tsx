@@ -1,13 +1,13 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { SpendKarmaDialogProvider } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
 import { ImprovementLanguageSkillList } from "./improvementLanguageSkillList.tsx"
-import { SpendKarmaDialogProvider } from "../spendKarmaDialogContext.tsx"
 
 function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
   return renderWithProviders(
@@ -93,46 +93,5 @@ describe("ImprovementLanguageSkillList", () => {
 
     // Assert
     expect(improveButton.getAttribute("aria-pressed")).toBe("true")
-  })
-
-  it("exposes an Add lingo button for each language skill", () => {
-    // Arrange
-    renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
-      sheet.karma.current = 50
-    })
-
-    // Act — nothing
-
-    // Assert
-    expect(screen.getByRole("button", { name: /add lingo/i })).toBeTruthy()
-  })
-
-  it("clicking Add lingo opens the picker dialog titled with 'Lingo'", async () => {
-    // Arrange
-    renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "Sperethiel", rating: 3 }]
-      sheet.karma.current = 50
-    })
-
-    // Act
-    fireEvent.click(screen.getByRole("button", { name: /add lingo/i }))
-
-    // Assert
-    expect(await screen.findByText(/lingo\s*[—-]\s*Sperethiel/i)).toBeTruthy()
-  })
-
-  it("allows queuing a lingo for a native language", async () => {
-    // Arrange — natives can't be improved, but they CAN get a lingo
-    renderList((sheet) => {
-      sheet.skills.languageSkills = [{ name: "English", rating: "native" }]
-      sheet.karma.current = 50
-    })
-
-    // Act
-    fireEvent.click(screen.getByRole("button", { name: /add lingo/i }))
-
-    // Assert — dialog appears
-    expect(await screen.findByText(/lingo\s*[—-]\s*English/i)).toBeTruthy()
   })
 })

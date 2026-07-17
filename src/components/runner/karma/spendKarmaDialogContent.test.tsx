@@ -55,6 +55,16 @@ describe("SpendKarmaDialogContent", () => {
     expect(screen.getByRole("button", { name: /qualities/i })).toBeTruthy()
   })
 
+  it("shows the Specialization category regardless of Awakening", () => {
+    // Arrange
+    renderDialog()
+
+    // Act — nothing
+
+    // Assert
+    expect(screen.getByRole("button", { name: /specialization/i })).toBeTruthy()
+  })
+
   it("shows only Awakening-appropriate categories for a Mundane runner", () => {
     // Arrange — Mundane is the factory default
     renderDialog()

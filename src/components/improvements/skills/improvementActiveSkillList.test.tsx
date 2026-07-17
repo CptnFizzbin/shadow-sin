@@ -26,7 +26,7 @@ function renderList(updateRunnerData?: (sheet: RunnerData) => void) {
 }
 
 describe("ImprovementActiveSkillList", () => {
-  it("renders standalone active skills with Improve and Spec buttons", () => {
+  it("renders standalone active skills with an Improve button", () => {
     // Arrange
     renderList((sheet) => {
       sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
@@ -39,7 +39,6 @@ describe("ImprovementActiveSkillList", () => {
     // Assert
     expect(screen.getByText("Pistols")).toBeTruthy()
     expect(screen.getByRole("button", { name: /improve rating/i })).toBeTruthy()
-    expect(screen.getByRole("button", { name: /add specialization/i })).toBeTruthy()
   })
 
   it("shows skills from skill groups with a ⚠ warning indicator", () => {
@@ -104,43 +103,6 @@ describe("ImprovementActiveSkillList", () => {
 
     // Assert
     expect(improveButton.getAttribute("aria-pressed")).toBe("false")
-  })
-
-  it("clicking Spec opens the picker dialog with the skill name in the title", async () => {
-    // Arrange
-    renderList((sheet) => {
-      sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      sheet.skills.skillGroups = []
-      sheet.karma.current = 50
-    })
-    const specButton = screen.getByRole("button", { name: /add specialization/i })
-
-    // Act
-    fireEvent.click(specButton)
-
-    // Assert — dialog mounts with the skill-specific title
-    const title = await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
-    expect(title).toBeTruthy()
-  })
-
-  it("cancelling the spec picker leaves no spec queued", async () => {
-    // Arrange
-    renderList((sheet) => {
-      sheet.skills.activeSkills = [{ name: SkillKey.pistols, rating: 3 }]
-      sheet.skills.skillGroups = []
-      sheet.karma.current = 50
-    })
-    const specButton = screen.getByRole("button", { name: /add specialization/i })
-
-    // Act — open then cancel
-    fireEvent.click(specButton)
-    await screen.findByText(/specialization\s*[—-]\s*Pistols/i)
-    // The picker shares Cancel/Save with the parent dialog — use the picker's specifically
-    const cancelButtons = screen.getAllByRole("button", { name: /cancel/i })
-    fireEvent.click(cancelButtons[cancelButtons.length - 1])
-
-    // Assert — the spec button is no longer pressed
-    expect(specButton.getAttribute("aria-pressed")).toBe("false")
   })
 
   it("disables the Improve button when the runner cannot afford it", () => {

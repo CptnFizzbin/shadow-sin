@@ -9,8 +9,10 @@ import { RiAddLine, RiSparklingLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
+import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
+import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -90,6 +92,7 @@ export const ImprovementSpellList: FC = () => {
         color="secondary"
         size="small"
         startIcon={<RiAddLine size={14} />}
+        endIcon={<KarmaValue amount={ImprovementsConfig.magic.spells.karmaCost.learnNew} />}
         onClick={openLearnDialog}
         sx={{ alignSelf: "flex-start" }}
       >

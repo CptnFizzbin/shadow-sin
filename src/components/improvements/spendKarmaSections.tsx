@@ -8,6 +8,7 @@ import {
   RiSeedlingLine,
   RiSparklingLine,
   RiStackLine,
+  RiStarLine,
   RiTerminalBoxLine,
   RiWaterFlashLine,
 } from "@remixicon/react"
@@ -26,6 +27,7 @@ import { ImprovementActiveSkillList } from "./skills/improvementActiveSkillList.
 import { ImprovementKnowledgeSkillList } from "./skills/improvementKnowledgeSkillList.tsx"
 import { ImprovementLanguageSkillList } from "./skills/improvementLanguageSkillList.tsx"
 import { ImprovementSkillGroupList } from "./skills/improvementSkillGroupList.tsx"
+import { ImprovementSpecializationList } from "./skills/improvementSpecializationList.tsx"
 import { ImprovementSpellList } from "./spells/improvementSpellList.tsx"
 import { ImprovementSubmersionList } from "./submersion/improvementSubmersionList.tsx"
 
@@ -35,6 +37,7 @@ export type SpendKarmaSectionKey =
   | "skillGroup"
   | "knowledge"
   | "language"
+  | "specialization"
   | "quality"
   | "spell"
   | "complexForm"
@@ -56,6 +59,7 @@ export const SPEND_KARMA_SECTIONS: SpendKarmaSection[] = [
   { key: "skillGroup", label: "Skill Groups", Icon: RiStackLine },
   { key: "knowledge", label: "Knowledge", Icon: RiLightbulbLine },
   { key: "language", label: "Languages", Icon: RiChat4Line },
+  { key: "specialization", label: "Specialization", Icon: RiStarLine },
   { key: "quality", label: "Qualities", Icon: RiAwardLine },
   { key: "spell", label: "Spells", Icon: RiSparklingLine, visibleFor: isMagician },
   { key: "complexForm", label: "Complex Forms", Icon: RiTerminalBoxLine, visibleFor: isTechnomancer },
@@ -80,6 +84,8 @@ export const SpendKarmaSectionContent: FC<SpendKarmaSectionContentProps> = ({ se
       return <ImprovementKnowledgeSkillList />
     case "language":
       return <ImprovementLanguageSkillList />
+    case "specialization":
+      return <ImprovementSpecializationList />
     case "quality":
       return <ImprovementQualityList />
     case "spell":

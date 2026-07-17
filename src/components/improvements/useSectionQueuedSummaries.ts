@@ -16,10 +16,11 @@ export function sectionForEntry(entry: ImprovementEntry): SpendKarmaSectionKey {
     case ImprovementType.attrIncrease:
       return "attribute"
     case ImprovementType.skillIncrease:
-    case ImprovementType.skillSpecialization:
       if (entry.skillType === "KnowledgeSkill") return "knowledge"
       if (entry.skillType === "LanguageSkill") return "language"
       return "skill"
+    case ImprovementType.skillSpecialization:
+      return "specialization"
     case ImprovementType.learnActiveSkill:
       return "skill"
     case ImprovementType.skillGroupIncrease:
@@ -54,6 +55,7 @@ export const useSectionQueuedSummaries = (): Record<SpendKarmaSectionKey, Sectio
     skillGroup: { count: 0, cost: 0 },
     knowledge: { count: 0, cost: 0 },
     language: { count: 0, cost: 0 },
+    specialization: { count: 0, cost: 0 },
     quality: { count: 0, cost: 0 },
     spell: { count: 0, cost: 0 },
     complexForm: { count: 0, cost: 0 },
