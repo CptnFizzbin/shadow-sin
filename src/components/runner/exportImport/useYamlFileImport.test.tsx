@@ -67,7 +67,9 @@ describe("useYamlFileImport", () => {
     fireChange(result, event)
 
     // Assert
-    await waitFor(() => { expect(onParsed).toHaveBeenCalledTimes(1) })
+    await waitFor(() => {
+      expect(onParsed).toHaveBeenCalledTimes(1)
+    })
     expect(onError).not.toHaveBeenCalled()
     expect((onParsed.mock.calls[0] as [RunnerData])[0].id).toBe(Artemis.id)
   })
@@ -84,7 +86,9 @@ describe("useYamlFileImport", () => {
     // Assert
     // The reset happens synchronously, before the file is even read.
     expect(event.target.value).toBe("")
-    await waitFor(() => { expect(onParsed).toHaveBeenCalledTimes(1) })
+    await waitFor(() => {
+      expect(onParsed).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("calls onError when the YAML cannot be parsed", async () => {
@@ -96,7 +100,9 @@ describe("useYamlFileImport", () => {
     fireChange(result, event)
 
     // Assert
-    await waitFor(() => { expect(onError).toHaveBeenCalledTimes(1) })
+    await waitFor(() => {
+      expect(onError).toHaveBeenCalledTimes(1)
+    })
     expect(onParsed).not.toHaveBeenCalled()
   })
 
@@ -147,7 +153,9 @@ describe("useYamlFileImport", () => {
     const { result } = makeHookWithMocks()
 
     // Act / Assert — should not throw
-    expect(() => { result.current.openFilePicker() }).not.toThrow()
+    expect(() => {
+      result.current.openFilePicker()
+    }).not.toThrow()
   })
 
   it("exposes file-input props with the expected type and accept filter", () => {
