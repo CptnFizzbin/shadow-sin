@@ -1,4 +1,5 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import {
   calculateActiveSkillsBp,
@@ -26,8 +27,6 @@ import { useQualitiesBuildPoints } from "./useQualitiesBuildPoints.ts"
 import { useSpellsBuildPoints } from "./useSpellsBuildPoints.ts"
 import { useSpritesBuildPoints } from "./useSpritesBuildPoints.ts"
 
-const RunnerBuilderMaxBp = 400
-
 export const useBuilderBuildPointsApi = () => {
   const lineItems: BpLineItem[] = [
     { sectionId: BuilderSectionId.profile, spent: 0 },
@@ -50,10 +49,10 @@ export const useBuilderBuildPointsApi = () => {
   const totalSpent = enabledLineItems.reduce((acc, item) => acc + item.spent, 0)
 
   return {
-    total: RunnerBuilderMaxBp,
+    total: BuilderConfig.buildPoints.total,
     spent: totalSpent,
-    remaining: RunnerBuilderMaxBp - totalSpent,
-    isOverBudget: totalSpent > RunnerBuilderMaxBp,
+    remaining: BuilderConfig.buildPoints.total - totalSpent,
+    isOverBudget: totalSpent > BuilderConfig.buildPoints.total,
     lineItems: enabledLineItems,
   }
 }

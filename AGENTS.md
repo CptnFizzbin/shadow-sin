@@ -23,8 +23,8 @@ yarn test:unit:ui # Vitest with browser UI
 yarn test:all     # unit + e2e in parallel
 yarn test:e2e     # Playwright end-to-end tests
 yarn test:e2e:ui  # Playwright with browser UI
-yarn fix          # Runs all "*:fix" scripts (npm-run-all) — auto-fix lint/format steps
-yarn lint         # Runs all lint tasks (eslint checks via npm-run-all)
+yarn fix          # Runs all "*:fix" scripts (npm-run-all2) — auto-fix lint/format steps
+yarn lint         # Runs all lint tasks (eslint checks via npm-run-all2)
 yarn eslint       # Run ESLint against src (check or write via :lint/:fix variants)
 yarn tsc          # TypeScript type check (no emit; runs tsgo --noEmit via @typescript/native-preview)
 yarn fallow       # Run Fallow codebase analysis (dead code, duplication, complexity)
@@ -46,6 +46,10 @@ directly in a component (see "Redux Toolkit store patterns" below). The Builder 
 The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` and immediately persists to
 `runnerManager.save()` on every update (no dedicated persistence component).
 
+The root domain type is `RunnerData` — see `docs/adr/0001-runner-data-not-character-sheet.md` for the
+`character` → `runner` rename; the old naming deliberately survives only in the migration subsystem and
+localStorage key literals.
+
 ### Key directories
 
 - `src/system/` — All domain types (`RunnerData` is the root, in `runnerData.ts`)
@@ -54,11 +58,14 @@ The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` an
   `spriteData.ts`, `traditionData.ts`, etc.
 - `src/system/gameEffects/` — `GameEffectData` and related types; effects attach to gear items via
   `ItemData.effects`
-- `src/system/karma/improvements/` — Karma-spend staging: `ImprovementStore`, improvement entries, caps, and cost
-  utilities; staged by the Spend Karma dialog (`src/components/runner/karma/`) and logged to `karma.log` on save
 - `src/system/dice/` — `DiceRoller` store; paired with `src/components/dice/` (`DiceTrayApi`) for the dice tray UI
 - `src/system/attributeKey.ts` — `AttributeKey` enum + `PhysicalAttributes`, `MentalAttributes`,
   `SpecialAttributes` grouping constants
+- `src/system/karma/improvements/` — Karma-spend staging: `ImprovementStore` stages `ImprovementEntry` objects
+  (attribute/skill raises, new skills, Qualities, Initiation/Submersion grades, etc.) plus cap and cost helpers;
+  staged via the Spend Karma dialog (`src/components/runner/karma/`) and applied to `karma.log` on save — costs
+  come from `ImprovementsConfig` (`src/components/improvements/improvementsConfig.ts`); see
+  `docs/features/0010-spend-karma.md`
 - `src/data/fixtures/` — Static runner fixtures (`artemis.ts`, `hexen.ts`)
 - `src/data/migrations/` — Runner schema migration steps, registered in `src/data/migrations.ts`; shared
   `CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` (name kept deliberately, see
@@ -66,20 +73,23 @@ The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` an
 - `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager`)
 - `src/runner/runnerManager.ts` — `RunnerManager`: loads, saves, migrates runners via `StorageManager` (plus
   `runnerId.ts`, `runnerIndex.ts`, `runnerLoadError.ts`, `runnerManagerContext.tsx`)
-- `src/components/runner/` — Viewer (play-time) UI components; store context via `runnerStoreProvider.tsx`
-  (`src/components/runner/sheet/`)
-- `src/components/builder/` — Character creation/edit form (store-based); `builderStoreProvider.tsx` and
+- `src/components/runner/` — Viewer (play-time) UI components; `runnerStoreProvider.tsx`
+  (`src/components/runner/sheet/`) provides the per-runner `RunnerStore` via context
+- `src/components/builder/` — Character creation/edit form (Builder; store-based); `builderStoreProvider.tsx` and
   `hooks/useBuilderStores.ts` provide the builder store
 - `src/components/items/` — Generic item ("gear") infrastructure (see **Gear item forms & dialogs** below)
 - `src/routes/` — TanStack file-based routes
-- `src/integrations/` — Third-party integration wrappers: `mui/`, `reduxToolkit/`, `reselect/`, and the
-  `tanstackDevtools/`, `tanstackForm/`, `tanstackPacer/`, `tanstackQuery/`, `tanstackRouter/` subdirs
+- `src/integrations/` — Third-party integration wrappers: `reduxToolkit/` (`createCompatStore`, `useSelector`),
+  `mui/`, `reselect/`, and the `tanstackDevtools/`, `tanstackForm/`, `tanstackPacer/`, `tanstackQuery/`,
+  `tanstackRouter/` subdirs
 - `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples), including
   `src/components/ui/prototype/` for switching between in-progress UI variants (see `docs/ui/prototype.md` and the
   `.agents/skills/prototype/` skill)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
 - `e2e/` — Playwright end-to-end specs (`playwright.config.ts` at repo root); visiting `/` seeds `localStorage`
-  with the Artemis fixture (`src/data/fixtures/artemis.ts`)
+  with the Artemis fixture (`#/data/fixtures/artemis.ts`) for tests to build on
+- `docs/adr/` — Architecture Decision Records, including `0001-runner-data-not-character-sheet.md`
+- `docs/features/` — Feature design docs (see `CONTRIBUTING.md` for the lifecycle)
 - `env.node.ts` — Node-side env validation, alongside `src/env.ts` for client-side env vars
 
 ### Routing
@@ -100,24 +110,30 @@ Each item type lives under `src/components/items/types/<type>/` (`weapons`, `arm
    source, description, and effects groups.
 
 3. **`XxxFormDialog` component** (`dialogs/xxxFormDialog.tsx`) — combines the hook and fields into a
-   `<Dialog>`. Submit logic (the acquire / purchase / save decision) lives in
-   `src/components/items/dialogs/itemFormDialog.tsx`.
+   `<Dialog>`, passing a `GearSubmitMeta` (`submitAction: "acquire" | "purchase" | "save"`) to `onSubmit`. Submit
+   logic (the acquire / purchase / save decision) lives in `src/components/items/dialogs/itemFormDialog.tsx` — in
+   builder context or edit mode it calls `onSave` directly; in viewer create mode it also withdraws nuyen on
+   "purchase".
 
-Supporting utilities in `src/components/items/`:
+Each type's files live under `src/components/items/types/<type>/` (e.g. `types/weapons/forms/useWeaponForm.tsx`,
+`types/weapons/forms/weaponFormFields.tsx`, `types/weapons/dialogs/weaponFormDialog.tsx`). Supporting utilities in
+`src/components/items/`:
 
-- `dialogs/itemFormDialog.tsx` — centralises the builder-vs-viewer submit logic; in builder context or edit mode it
-  calls `onSave` directly; in viewer create mode it also withdraws nuyen on "purchase"
-- `gearSubmitMeta.ts` — `GearSubmitMeta` type (`submitAction: "acquire" | "purchase" | "save"`)
-- `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive hooks
+- `dialogs/itemFormDialog.tsx` — centralises the builder-vs-viewer submit logic (see above)
+- `gearSubmitMeta.ts` — the shared `GearSubmitMeta` type
+- `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive helpers
 - `card/gearItemCard.tsx` — shared display card used across gear list views
 - `availability/availabilityChip.tsx` — `AvailabilityChip` for restricted/forbidden badges
 
-**Adding a new item type** — create `forms/useMyItemForm.tsx`, `forms/myItemFormFields.tsx`, and
-`dialogs/myItemFormDialog.tsx` following the weapons or cyberware examples.
+**Adding a new item type** — create `types/myItem/forms/useMyItemForm.tsx`, `types/myItem/forms/myItemFormFields.tsx`,
+and `types/myItem/dialogs/myItemFormDialog.tsx` following the weapons or implants examples.
 
 ## Character migrations
 
-Migrations live in `src/data/migrations/` and are registered in `src/data/migrations.ts`.
+Migrations live in `src/data/migrations/` and are registered in `src/data/migrations.ts`. The shared
+`CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` — the `character` naming was
+deliberately kept here through the `character` → `runner` rename (see `docs/adr/0001-runner-data-not-character-sheet.md`)
+since renaming the type would have forced an edit into every migration file.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
@@ -128,7 +144,7 @@ silently mis-migrate characters.
   bottom of `migrations.ts`.
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
   reference the old field name because they operate on pre-rename data. Update them to handle *both* the old and new
-  field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for characters that were already partially
+  field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for runners that were already partially
   migrated.
 - **New migration IDs must sort after all existing IDs** — migrations are applied in ascending string order by `id`.
   Using an ISO date prefix (without separators, e.g. `"20260510"`) keeps ordering unambiguous.
@@ -147,10 +163,10 @@ silently mis-migrate characters.
   // ❌
   import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors"
   ```
-- New environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
-  `import { env } from "#/env.ts"`.
-- `babel-plugin-react-compiler` is active — avoid manual `useMemo`/`useCallback` unless the compiler can't handle the
-  case.
+- New client-side environment variables go in `src/env.ts` via `@t3-oss/env-core` with a `VITE_` prefix; import as
+  `import { env } from "#/env.ts"`. A separate `env.node.ts` at the repo root covers Node-side tooling env vars.
+- React Compiler is active (via `@vitejs/plugin-react-swc`'s `reactCompiler` transform) — avoid manual
+  `useMemo`/`useCallback` unless the compiler can't handle the case.
 - **Zod schemas**: pair runtime-validated data types with a `{TypeName}Schema` constant using
   `satisfies z.ZodType<Type>`:
   ```ts
@@ -158,7 +174,7 @@ silently mis-migrate characters.
   ```
 
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
-  `npm-run-all`) to ensure formatting, linting, and types are clean before pushing.
+  `npm-run-all2`) to ensure formatting, linting, and types are clean before pushing.
 
 ## Testing conventions
 
@@ -367,6 +383,7 @@ document assumes). Open design problems for in-progress features live in `docs/f
 
 ### Skills inventory
 
-`.agents/skills/` — `fallow` (dead code/duplication/complexity audit), `prototype` (switchable in-app UI variants,
-see `docs/ui/prototype.md`), `grill-me` / `grill-with-docs` (Socratic design review), `handoff`, `to-issues`,
-`to-prd`, `write-a-skill`, `setup-matt-pocock-skills`.
+`.agents/skills/` — `fallow` (dead code/duplication/complexity audit, above), `prototype` (switchable in-app UI
+variants — see `docs/ui/prototype.md`), `grill-me` / `grill-with-docs` (Socratic design review before committing to
+a plan), `handoff` (conversation compaction), `to-issues` / `to-prd` (turn a plan into GitHub Issues or a feature
+PRD), `write-a-skill` (authoring new skills), `setup-matt-pocock-skills` (wires up `docs/agents/`).

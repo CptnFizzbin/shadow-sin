@@ -69,6 +69,9 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
     sprites: [],
     contacts: [],
 
+    initiateGrade: 0,
+    submersionGrade: 0,
+
     gear: {},
 
     karma: {

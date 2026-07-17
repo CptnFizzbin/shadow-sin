@@ -43,7 +43,6 @@ export const RunnerMetaSchema = z.object({
  * The root structure of a Shadowrun 4e runner sheet.
  */
 export interface RunnerData {
-
   id: UUID
   _meta_: RunnerMeta
 
@@ -125,6 +124,11 @@ export interface RunnerData {
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
   spirits: SpiritData[]
+
+  /** Magician/Adept/Mystic Adept initiate grade. 0 until first Initiation. */
+  initiateGrade: number
+  /** Technomancer submersion grade. 0 until first Submersion. */
+  submersionGrade: number
   powers: AdeptPowerData[]
 
   /**

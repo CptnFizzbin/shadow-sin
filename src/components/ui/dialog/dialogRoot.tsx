@@ -65,7 +65,9 @@ export const DialogRoot = ({
       fullScreen={fullScreen}
       slotProps={{ transition: { onExited: onClosed } }}
     >
-      <Stack divider={<Divider />} sx={{ gap: 0 }}>
+      {/* In full-screen mode the Stack must stretch to the paper's full
+          height so the content area grows and the actions pin to the bottom. */}
+      <Stack divider={<Divider />} sx={{ gap: 0, ...(fullScreen && { flex: 1, minHeight: 0 }) }}>
         {title}
         {content}
         {actions}

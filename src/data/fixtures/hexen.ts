@@ -220,4 +220,7 @@ export const Hexen: RunnerData = {
   complexForms: [],
   sprites: [],
   spirits: [],
+
+  initiateGrade: 0,
+  submersionGrade: 0,
 }

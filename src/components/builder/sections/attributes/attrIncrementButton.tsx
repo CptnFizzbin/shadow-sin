@@ -3,11 +3,8 @@ import { RiArrowRightBoxLine } from "@remixicon/react"
 import { produce } from "immer"
 import type { FC } from "react"
 
-import {
-  AttributeBpCostBase,
-  AttributeBpCostMaxOut,
-} from "#/components/builder/buildPoints/attributeUtils.ts"
 import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
@@ -31,13 +28,13 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
   const hasMaxxedAttr = useHasMaxxedAttribute()
 
   let disabled = false
-  let cost = AttributeBpCostBase
+  let cost = BuilderConfig.attributes.bpCost.base
   let label = `${cost} BP`
 
   const willMaxAttr = attrValue + 1 >= attrInfo.max
 
   if (willMaxAttr) {
-    cost = AttributeBpCostMaxOut
+    cost = BuilderConfig.attributes.bpCost.maxOut
     label = `${cost} BP`
   }
 

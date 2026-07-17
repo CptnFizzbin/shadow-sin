@@ -31,5 +31,13 @@ export const describeImprovement = (entry: ImprovementEntry): string => {
       return `Learned complex form ${entry.complexForm.name}`
     case ImprovementType.complexFormIncrease:
       return `Raised complex form ${entry.complexFormId} ${entry.baseRating} → ${entry.newRating}`
+    case ImprovementType.learnQuality:
+      return `Added quality ${entry.quality.name}`
+    case ImprovementType.qualityBuyOff:
+      return `Bought off quality ${entry.qualityName}`
+    case ImprovementType.initiationIncrease:
+      return `Raised Initiate Grade ${entry.baseGrade} → ${entry.newGrade}`
+    case ImprovementType.submersionIncrease:
+      return `Raised Submersion Grade ${entry.baseGrade} → ${entry.newGrade}`
   }
 }

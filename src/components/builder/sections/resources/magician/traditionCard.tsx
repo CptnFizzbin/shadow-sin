@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useTraditionFormDialog } from "#/components/runner/spells/dialogs/traditionFormDialog.tsx"
+import { useTraditionFormDialog } from "#/components/runner/magician/spells/dialogs/traditionFormDialog.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"

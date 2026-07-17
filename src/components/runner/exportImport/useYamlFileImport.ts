@@ -23,6 +23,24 @@ interface UseYamlFileImportResult {
   openFilePicker: () => void
 }
 
+type ParseResult =
+  | { ok: true, runner: RunnerData }
+  | { ok: false, error: unknown }
+
+/**
+ * Parses YAML content into a RunnerData, capturing any thrown error instead
+ * of letting it propagate. Kept as a plain (non-hook) function outside
+ * `useYamlFileImport` because the React Compiler transform mishandles a
+ * try/catch nested directly inside a hook's returned closures.
+ */
+function parseYamlContent(yamlContent: string): ParseResult {
+  try {
+    return { ok: true, runner: yamlToRunnerData(yamlContent) }
+  } catch (error) {
+    return { ok: false, error }
+  }
+}
+
 /**
  * Shared file input handling for YAML runner imports.
  *
@@ -45,16 +63,14 @@ export function useYamlFileImport({
     event.target.value = ""
 
     const yamlContent = await file.text()
+    const result = parseYamlContent(yamlContent)
 
-    let runner: RunnerData
-    try {
-      runner = yamlToRunnerData(yamlContent)
-    } catch (error) {
-      onError?.(error)
+    if (!result.ok) {
+      onError?.(result.error)
       return
     }
 
-    await onParsed(runner)
+    await onParsed(result.runner)
   }
 
   const inputProps = {

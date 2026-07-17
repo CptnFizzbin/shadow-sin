@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
+import type { QualityData } from "#/system/qualityData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
@@ -81,11 +82,19 @@ export interface LearnComplexFormEntry extends BaseImprovementEntry {
   complexForm: ComplexFormData
 }
 
+export function isLearnComplexFormEntry(entry: ImprovementEntry): entry is LearnComplexFormEntry {
+  return entry.type === ImprovementType.learnComplexForm
+}
+
 export interface ComplexFormIncreaseEntry extends BaseImprovementEntry {
   type: ImprovementType.complexFormIncrease
   complexFormId: string
   baseRating: number
   newRating: number
+}
+
+export function isComplexFormIncreaseEntry(entry: ImprovementEntry): entry is ComplexFormIncreaseEntry {
+  return entry.type === ImprovementType.complexFormIncrease
 }
 
 export interface LearnActiveSkillEntry extends BaseImprovementEntry {
@@ -132,6 +141,51 @@ export function isLearnLanguageSkillEntry(
   return entry.type === ImprovementType.learnLanguageSkill
 }
 
+export interface LearnQualityEntry extends BaseImprovementEntry {
+  type: ImprovementType.learnQuality
+  quality: QualityData
+}
+
+export function isLearnQualityEntry(entry: ImprovementEntry): entry is LearnQualityEntry {
+  return entry.type === ImprovementType.learnQuality
+}
+
+/**
+ * Buys off (removes) an existing negative Quality. `qualityName`/`bpValue`
+ * snapshot the quality at queue time so cost and ledger description don't
+ * need to re-read the sheet after the quality has been removed.
+ */
+export interface QualityBuyOffEntry extends BaseImprovementEntry {
+  type: ImprovementType.qualityBuyOff
+  qualityId: UUID
+  qualityName: string
+  bpValue: number
+}
+
+export function isQualityBuyOffEntry(entry: ImprovementEntry): entry is QualityBuyOffEntry {
+  return entry.type === ImprovementType.qualityBuyOff
+}
+
+export interface InitiationIncreaseEntry extends BaseImprovementEntry {
+  type: ImprovementType.initiationIncrease
+  baseGrade: number
+  newGrade: number
+}
+
+export function isInitiationIncreaseEntry(entry: ImprovementEntry): entry is InitiationIncreaseEntry {
+  return entry.type === ImprovementType.initiationIncrease
+}
+
+export interface SubmersionIncreaseEntry extends BaseImprovementEntry {
+  type: ImprovementType.submersionIncrease
+  baseGrade: number
+  newGrade: number
+}
+
+export function isSubmersionIncreaseEntry(entry: ImprovementEntry): entry is SubmersionIncreaseEntry {
+  return entry.type === ImprovementType.submersionIncrease
+}
+
 export type ImprovementEntry =
   | AttrIncreaseEntry
   | SkillIncreaseEntry
@@ -144,3 +198,7 @@ export type ImprovementEntry =
   | LearnSpellEntry
   | LearnComplexFormEntry
   | ComplexFormIncreaseEntry
+  | LearnQualityEntry
+  | QualityBuyOffEntry
+  | InitiationIncreaseEntry
+  | SubmersionIncreaseEntry
