@@ -1,6 +1,6 @@
 import type { UUID } from "node:crypto"
 
-import jsYaml from "js-yaml"
+import { dump, load } from "js-yaml"
 
 import { applyMigrations } from "#/data/applyMigrations.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -52,7 +52,7 @@ export function runnerDataToYaml(
     gear: gearToTree(gear),
   }
 
-  return jsYaml.dump(exportPayload, { lineWidth: 120 })
+  return dump(exportPayload, { lineWidth: 120 })
 }
 
 /**
@@ -101,7 +101,7 @@ export function gearFromTree(
 export function yamlToRunnerData(
   yamlContent: string,
 ): RunnerData {
-  const parsed = jsYaml.load(yamlContent) as Record<string, unknown>
+  const parsed = load(yamlContent) as Record<string, unknown>
   const isOldFormat = "characterId" in parsed
 
   const payload: Record<string, unknown> = isOldFormat
