@@ -1,3 +1,6 @@
+import type { RemixiconComponentType } from "@remixicon/react"
+import { RiFlashlightLine, RiFootprintLine, RiSwordLine, RiTimerFlashLine } from "@remixicon/react"
+
 export type CombatActionCategory = "free" | "simple" | "complex" | "interrupt"
 
 export interface CombatActionData {
@@ -11,6 +14,7 @@ export interface CombatActionCategoryInfo {
   label: string
   costHint: string
   color: "success" | "info" | "warning" | "error"
+  Icon: RemixiconComponentType
 }
 
 export const combatActionCategories: CombatActionCategoryInfo[] = [
@@ -19,24 +23,28 @@ export const combatActionCategories: CombatActionCategoryInfo[] = [
     label: "Free Action",
     costHint: "Unlimited — but each still needs an Action Phase to use",
     color: "success",
+    Icon: RiFlashlightLine,
   },
   {
     category: "simple",
     label: "Simple Action",
     costHint: "2 per Action Phase",
     color: "info",
+    Icon: RiFootprintLine,
   },
   {
     category: "complex",
     label: "Complex Action",
     costHint: "1 per Action Phase — uses the whole phase",
     color: "warning",
+    Icon: RiSwordLine,
   },
   {
     category: "interrupt",
     label: "Interrupt Action",
     costHint: "Costs 1 Edge — acts immediately at Initiative Score −5",
     color: "error",
+    Icon: RiTimerFlashLine,
   },
 ]
 
