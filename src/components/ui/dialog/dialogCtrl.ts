@@ -1,5 +1,7 @@
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 
+import { markOverlayClosed, markOverlayOpened } from "./openOverlayTracker.ts"
+
 /**
  * Controls the lifecycle of a single dialog. Created locally via `useDialogCtrl()`
  * (or internally by `useDialog()`) and handed to `ControlledDialog`, or spread via
@@ -32,6 +34,9 @@ export class DialogCtrl<TReturn> {
     this.promise = promise
     this.resolve = resolve
     this.savedValue = undefined
+    if (!this.store.getState().open) {
+      markOverlayOpened()
+    }
     this.store.setState(() => ({ open: true }))
     return this.promise
   }
@@ -55,12 +60,27 @@ export class DialogCtrl<TReturn> {
       this.savedValue = value
     }
     this.resolve(this.savedValue)
+    if (this.store.getState().open) {
+      markOverlayClosed()
+    }
     this.store.setState(() => ({ open: false }))
   }
 
   /** Resolves when the dialog is closed. */
   result(): Promise<TReturn | undefined> {
     return this.promise
+  }
+
+  /**
+   * Release overlay-tracking state without resolving the result promise. Call
+   * from an unmount cleanup so a dialog torn down without an explicit
+   * `close()` (e.g. its page unmounts from navigating away) doesn't
+   * permanently count as "open".
+   */
+  dispose(): void {
+    if (this.store.getState().open) {
+      markOverlayClosed()
+    }
   }
 }
 

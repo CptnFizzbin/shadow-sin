@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "react"
+import { useEffect } from "react"
 
 import type { DiceTrayApi } from "./diceTrayApi.ts"
 import { DiceTrayContext } from "./diceTrayContext.ts"
@@ -22,6 +23,8 @@ interface DiceTrayProviderProps extends PropsWithChildren {
  * ```
  */
 export const DiceTrayProvider: FC<DiceTrayProviderProps> = ({ diceTrayApi, children }) => {
+  useEffect(() => () => diceTrayApi.dispose(), [diceTrayApi])
+
   return (
     <DiceTrayContext.Provider value={diceTrayApi}>
       {children}
