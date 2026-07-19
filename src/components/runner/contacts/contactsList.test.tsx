@@ -74,14 +74,26 @@ describe("ContactsList", () => {
     // Arrange
     const store = renderWithContacts([fixer])
 
-    // Act: the remove icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    fireEvent.click(removeButton!)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
     await waitFor(() => expect(store.state.contacts).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
+  })
+
+  it("opens the legwork dialog with the GM and Player test information", async () => {
+    // Arrange
+    renderWithContacts([fixer])
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Legwork" }))
+    const dialog = await screen.findByRole("dialog", { name: "Legwork: Mr. Johnson" })
+
+    // Assert
+    expect(within(dialog).getByText("Contact Knowledge Test: Connection + Connection")).toBeDefined()
+    expect(within(dialog).getByText("Legwork Test: Charisma + Etiquette + Loyalty")).toBeDefined()
   })
 })

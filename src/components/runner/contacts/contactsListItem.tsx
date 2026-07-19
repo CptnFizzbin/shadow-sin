@@ -2,7 +2,7 @@ import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiSearchLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import type { ContactData } from "#/system/contactData.ts"
@@ -10,12 +10,14 @@ import type { ContactData } from "#/system/contactData.ts"
 interface ContactRowProps {
   contact: ContactData
   onClick: () => void
+  onLegwork?: () => void
   onRemove?: () => void
 }
 
 export const ContactRow: FC<ContactRowProps> = ({
   contact,
   onClick,
+  onLegwork,
   onRemove,
 }) => {
   return (
@@ -35,10 +37,25 @@ export const ContactRow: FC<ContactRowProps> = ({
         <Stack direction="row">
           <Typography sx={{ flexGrow: 1 }}>{contact.name}</Typography>
 
+          {onLegwork && (
+            <IconButton
+              size="small"
+              color="secondary"
+              aria-label="Legwork"
+              onClick={(e) => {
+                e.stopPropagation()
+                onLegwork()
+              }}
+            >
+              <RiSearchLine size={16} />
+            </IconButton>
+          )}
+
           {onRemove && (
             <IconButton
               size="small"
               color="error"
+              aria-label="Remove"
               onClick={(e) => {
                 e.stopPropagation()
                 onRemove()
