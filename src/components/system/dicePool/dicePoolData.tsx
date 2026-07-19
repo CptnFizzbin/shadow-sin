@@ -17,6 +17,6 @@ export const getPoolSize = (groups: DiceGroupList): number => {
 
   return Math.max(
     1,
-    diceGroups.reduce((sum, group) => sum + group.size, 0),
+    diceGroups.reduce((sum, group) => sum + Number(group.size), 0),
   )
 }
