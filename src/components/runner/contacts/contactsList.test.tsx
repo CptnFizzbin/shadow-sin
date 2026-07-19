@@ -84,7 +84,7 @@ describe("ContactsList", () => {
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
   })
 
-  it("opens the legwork dialog with the GM and Player test information", async () => {
+  it("opens the legwork dialog with the GM and Player dice pools", async () => {
     // Arrange
     renderWithContacts([fixer])
 
@@ -92,8 +92,14 @@ describe("ContactsList", () => {
     fireEvent.click(screen.getByRole("button", { name: "Legwork" }))
     const dialog = await screen.findByRole("dialog", { name: "Legwork: Mr. Johnson" })
 
-    // Assert
-    expect(within(dialog).getByText("Contact Knowledge Test: Connection + Connection")).toBeDefined()
-    expect(within(dialog).getByText("Legwork Test: Charisma + Etiquette + Loyalty")).toBeDefined()
+    // Assert: GM pool is Connection + Connection
+    expect(within(dialog).getByText("Contact Knowledge Test")).toBeDefined()
+    expect(within(dialog).getAllByText("Connection")).toHaveLength(2)
+
+    // Assert: Player pool is Charisma + Etiquette + Loyalty
+    expect(within(dialog).getByText("Legwork Test")).toBeDefined()
+    expect(within(dialog).getByText("CHA")).toBeDefined()
+    expect(within(dialog).getByText("Etiquette")).toBeDefined()
+    expect(within(dialog).getByText("Loyalty")).toBeDefined()
   })
 })

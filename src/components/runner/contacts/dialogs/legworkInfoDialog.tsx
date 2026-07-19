@@ -7,11 +7,16 @@ import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
+import { useActiveSkillDiceGroup, useAttrDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ContactData } from "#/system/contactData.ts"
+import { SkillKey } from "#/system/skills/skillKey.ts"
 
 const hitLevels: [string, string][] = [
   ["0 hits", "Nothing relevant"],
@@ -27,6 +32,17 @@ interface LegworkInfoDialogProps extends ControlledDialogProps<void> {
 }
 
 const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
+  const gmPool = createDicePool("legwork.gm", "Contact Knowledge Test", [
+    { name: "Connection", size: contact.connection },
+    { name: "Connection", size: contact.connection },
+  ])
+
+  const playerPool = createDicePool("legwork.player", "Legwork Test", [
+    useAttrDiceGroup(AttributeKey.charisma),
+    useActiveSkillDiceGroup(SkillKey.etiquette),
+    { name: "Loyalty", size: contact.loyalty },
+  ])
+
   return (
     <ControlledDialog ctrl={ctrl} maxWidth="sm">
       <Dialog.Title>{`Legwork: ${contact.name}`}</Dialog.Title>
@@ -34,7 +50,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
         <Stack sx={{ gap: 1.5 }}>
           <Stack sx={{ gap: 0.5 }}>
             <Label label="GM" variant="outlined" />
-            <Typography>Contact Knowledge Test: Connection + Connection</Typography>
+            <DicePool name={gmPool.name} groups={gmPool.groups} />
             <Typography color="text.secondary">
               Each hit is how much the contact knows.
             </Typography>
@@ -42,7 +58,7 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
 
           <Stack sx={{ gap: 0.5 }}>
             <Label label="Player" variant="outlined" />
-            <Typography>Legwork Test: Charisma + Etiquette + Loyalty</Typography>
+            <DicePool name={playerPool.name} groups={playerPool.groups} />
             <Typography color="text.secondary">
               Each hit is how much the contact will offer for free.
             </Typography>
