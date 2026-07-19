@@ -21,28 +21,28 @@ export const combatActionCategories: CombatActionCategoryInfo[] = [
   {
     category: "free",
     label: "Free Action",
-    costHint: "Unlimited — but each still needs an Action Phase to use",
+    costHint: "Unlimited during your Action Phase or later in the pass — but none before your first Action Phase",
     color: "success",
     Icon: RiFlashlightLine,
   },
   {
     category: "simple",
     label: "Simple Action",
-    costHint: "2 per Action Phase",
+    costHint: "Two per Action Phase (or one Complex Action instead), plus a Free Action either way",
     color: "info",
     Icon: RiFootprintLine,
   },
   {
     category: "complex",
     label: "Complex Action",
-    costHint: "1 per Action Phase — uses the whole phase",
+    costHint: "One per Action Phase, plus a Free Action — no Simple Actions allowed that phase",
     color: "warning",
     Icon: RiSwordLine,
   },
   {
     category: "interrupt",
     label: "Interrupt Action",
-    costHint: "Costs 1 Edge — acts immediately at Initiative Score −5",
+    costHint: "Taken before your Action Phase, even ahead of next Combat Turn — but costs your next available action",
     color: "error",
     Icon: RiTimerFlashLine,
   },
@@ -53,86 +53,152 @@ export const combatActions: CombatActionData[] = [
     name: "Call a Shot",
     category: "free",
     description:
-      "Declare a targeted called shot before your next attack this phase, trading a dice pool penalty for a specific effect (bypass armor, disarm, and so on).",
-  },
-  {
-    name: "Drop Prone",
-    category: "free",
-    description: "Drop instantly from standing or crouching to lying prone.",
-  },
-  {
-    name: "Drop Object",
-    category: "free",
-    description: "Release whatever you're currently holding.",
-  },
-  {
-    name: "Gesture / Shout",
-    category: "free",
-    description: "Trigger a readied spell, signal an ally, or issue a one-word command.",
+      "Aim for a vulnerable spot on your target. Must be followed immediately by a Take Aim, Fire Weapon, Throw Weapon, or Melee/Unarmed Attack.",
   },
   {
     name: "Change Linked Device Mode",
     category: "free",
-    description: "Flip a weapon's fire-mode selector, toggle a smartlink setting, or make a similar single-step device change.",
+    description:
+      "Activate, deactivate, or switch modes on any device you're linked to neurally or wirelessly — cyberware, a smartgun's fire mode, thermographic vision, a commlink's hidden mode, wireless toggles, and the like.",
+  },
+  {
+    name: "Drop Object",
+    category: "free",
+    description: "Release whatever you're holding. Holding something in each hand? Drop both as a single Free Action.",
+  },
+  {
+    name: "Drop Prone",
+    category: "free",
+    description: "Kneel or drop prone at any time, as long as you're not surprised.",
+  },
+  {
+    name: "Eject Smartgun Clip",
+    category: "free",
+    description: "Mentally command a held, linked smartgun to eject its clip. Loading a fresh one still takes a Simple Action.",
+  },
+  {
+    name: "Gesture",
+    category: "free",
+    description: "Make a single gesture — a silent hand signal in a combat situation, for instance.",
+  },
+  {
+    name: "Intercept",
+    category: "free",
+    description: "Intercept an opponent trying to move past you or break away from melee combat.",
+  },
+  {
+    name: "Run",
+    category: "free",
+    description: "Move faster than your Walking Rate, applying Running modifiers.",
+  },
+  {
+    name: "Speak/Text Phrase",
+    category: "free",
+    description:
+      "Say one phrase or sentence, or send a short text message over a neural commlink connection. Saying more costs another Free Action per phrase.",
+  },
+  {
+    name: "Change Gun Mode",
+    category: "simple",
+    description: "Switch a held, ready firearm's firing mode, or a shotgun's choke. A linked smartgun only needs a Free Action for this.",
   },
   {
     name: "Fire Weapon",
     category: "simple",
-    description: "Make one ranged attack in Single Shot or Semi-Automatic mode.",
+    description:
+      "Fire a ready firearm in single-shot, semi-automatic, or burst-fire mode. Wielding two weapons lets you fire both for one Simple Action.",
+  },
+  {
+    name: "Insert Clip",
+    category: "simple",
+    description: "Load a fresh clip into a ready firearm, after the old one's been removed.",
+  },
+  {
+    name: "Observe in Detail",
+    category: "simple",
+    description: "Make a Perception Test to closely study a target, object, or scene.",
+  },
+  {
+    name: "Pick Up/Put Down Object",
+    category: "simple",
+    description: "Pick up an object within reach, or set down something you're holding.",
+  },
+  {
+    name: "Quick Draw",
+    category: "simple",
+    description:
+      "Draw a pistol-sized weapon and fire it immediately with a Pistols + Reaction Test. A quick-draw holster lowers the threshold.",
+  },
+  {
+    name: "Ready Weapon",
+    category: "simple",
+    description: "Draw, pick up, or otherwise prepare a weapon for use — a firearm, melee weapon, thrown weapon, bow, or mounted weapon.",
+  },
+  {
+    name: "Remove Clip",
+    category: "simple",
+    description: "Remove a clip from a ready firearm. A linked smartgun's wielder can eject the clip instead with a Free Action.",
+  },
+  {
+    name: "Sprint",
+    category: "simple",
+    description: "Push past your Running rate with a Running Test.",
+  },
+  {
+    name: "Stand Up",
+    category: "simple",
+    description: "Rise from lying down or prone. If wounded, requires a Body + Willpower Test.",
   },
   {
     name: "Take Aim",
     category: "simple",
-    description: "Line up a shot for a cumulative +1 die bonus to your next ranged attack this phase.",
+    description:
+      "Aim a ready ranged weapon for a cumulative +1 bonus to your next Attack Test. Lost the moment you take any other action, even a Free Action.",
   },
   {
-    name: "Get Up",
+    name: "Throw Weapon",
     category: "simple",
-    description: "Move from prone to standing.",
+    description: "Throw a ready throwing weapon.",
   },
   {
-    name: "Reload Weapon",
+    name: "Use Simple Object",
     category: "simple",
-    description: "Swap a magazine, speed-load a cylinder, or chamber fresh ammunition.",
+    description: "Operate a simple device or mechanism — push a button, turn a knob, pull a lever, open an unlocked door, use a pill or patch.",
   },
   {
-    name: "Draw / Ready Weapon",
-    category: "simple",
-    description: "Draw a holstered or sheathed weapon, or ready a held item for use.",
-  },
-  {
-    name: "Attack (Melee or Ranged)",
+    name: "Fire Automatic Weapon",
     category: "complex",
-    description: "Make a single melee or ranged attack roll against one target.",
+    description: "Fire a ready firearm in full-auto mode.",
   },
   {
-    name: "Multiple Attacks",
+    name: "Fire Mounted or Vehicle Weapon",
     category: "complex",
-    description: "Split your attack dice pool across several targets, each attack taking a cumulative penalty.",
+    description: "Fire a ready mounted or vehicle-mounted weapon.",
   },
   {
-    name: "Full Auto Burst",
+    name: "Melee or Unarmed Attack",
     category: "complex",
-    description: "Fire a long automatic burst for a larger dice pool at the cost of ammo and recoil control.",
+    description: "Make a melee or unarmed attack, potentially against multiple targets within melee range.",
   },
   {
-    name: "Sprint",
+    name: "Reload Firearm",
     category: "complex",
-    description: "Move at your Sprint rate, rolling a Running Test for extra distance covered.",
+    description: "Reload a weapon that doesn't use a clip.",
   },
   {
-    name: "Observe in Detail",
+    name: "Use Complex Object",
     category: "complex",
-    description: "Make a Perception Test to closely study a target, object, or scene.",
+    description: "Operate a complex object — a computer, vehicle, or mechanical tool — such as running a program, giving detailed instructions, or driving.",
+  },
+  {
+    name: "Use Skill",
+    category: "complex",
+    description: "Use an appropriate skill.",
   },
   {
     name: "Full Defense",
     category: "interrupt",
-    description: "Interrupt the attacker's turn to add your Willpower to your defense pool against the triggering attack.",
-  },
-  {
-    name: "Intercept",
-    category: "interrupt",
-    description: "Act immediately, ahead of your normal Initiative Pass, to respond to a triggering event (block a door, catch a thrown object, and so on).",
+    description:
+      "Dedicate your full attention to avoiding incoming attacks. Can be used as an interrupt — even before your Action Phase, as long as you're not surprised — but it uses up your next available action, even your very first action of the next Combat Turn if none remain this one.",
   },
 ]
