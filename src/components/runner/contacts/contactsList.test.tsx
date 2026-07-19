@@ -6,6 +6,7 @@ import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import type { ContactData } from "#/system/contactData.ts"
+import { FavourDirection } from "#/system/favourData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { ContactsList } from "./contactsList.tsx"
@@ -70,18 +71,68 @@ describe("ContactsList", () => {
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
 
+  it("adding a knowledge skill and a favour on the contact form persists both", async () => {
+    // Arrange
+    const store = renderWithContacts([])
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /add contact/i }))
+    const dialog = await screen.findByRole("dialog", { name: "Add Contact" })
+    fireEvent.change(within(dialog).getByLabelText(/^name/i), {
+      target: { value: "Fixer Sam" },
+    })
+
+    fireEvent.click(within(dialog).getByRole("button", { name: /add skill/i }))
+    fireEvent.change(within(dialog).getByLabelText(/^skill/i), {
+      target: { value: "Street Gangs" },
+    })
+
+    fireEvent.click(within(dialog).getByRole("button", { name: /add favour/i }))
+    fireEvent.change(within(dialog).getByLabelText(/^description/i), {
+      target: { value: "Owes for a smuggling run" },
+    })
+
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert
+    await waitFor(() => expect(store.state.contacts).toHaveLength(1))
+    const [contact] = store.state.contacts
+    expect(contact.knowledgeSkills).toEqual([{ name: "Street Gangs", rating: 1 }])
+    expect(contact.favours).toEqual([
+      { description: "Owes for a smuggling run", direction: FavourDirection.contactOwes },
+    ])
+  })
+
   it("removing a contact, once confirmed, dispatches removeContact and updates the store", async () => {
     // Arrange
     const store = renderWithContacts([fixer])
 
-    // Act: the remove icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    fireEvent.click(removeButton!)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
     await waitFor(() => expect(store.state.contacts).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
+  })
+
+  it("opens the legwork dialog with the GM and Player dice pools", async () => {
+    // Arrange
+    renderWithContacts([fixer])
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Legwork" }))
+    const dialog = await screen.findByRole("dialog", { name: "Legwork: Mr. Johnson" })
+
+    // Assert: GM pool is Connection + Connection
+    expect(within(dialog).getByText("Contact Knowledge Test")).toBeDefined()
+    expect(within(dialog).getAllByText("Connection")).toHaveLength(2)
+
+    // Assert: Player pool is Charisma + Etiquette + Loyalty
+    expect(within(dialog).getByText("Legwork Test")).toBeDefined()
+    expect(within(dialog).getByText("CHA")).toBeDefined()
+    expect(within(dialog).getByText("Etiquette")).toBeDefined()
+    expect(within(dialog).getByText("Loyalty")).toBeDefined()
   })
 })

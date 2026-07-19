@@ -10,6 +10,7 @@ import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactRow } from "./contactsListItem.tsx"
+import { useLegworkInfoDialog } from "./dialogs/legworkInfoDialog.tsx"
 import { useContactFormDialog } from "./form/contactFormDialog.tsx"
 
 interface ContactsListProps {
@@ -23,6 +24,7 @@ export const ContactsList: FC<ContactsListProps> = ({
 }) => {
   const confirmDialog = useConfirmDialog()
   const contactFormDialog = useContactFormDialog()
+  const legworkInfoDialog = useLegworkInfoDialog()
   const dispatch = useRunnerStoreDispatch()
 
   const onRemove = async (contact: ContactData) => {
@@ -48,6 +50,7 @@ export const ContactsList: FC<ContactsListProps> = ({
           key={contact.id}
           contact={contact}
           onClick={() => contactFormDialog.open({ contact })}
+          onLegwork={() => legworkInfoDialog.open({ contact })}
           onRemove={() => onRemove(contact)}
         />
       ))}
@@ -64,6 +67,7 @@ export const ContactsList: FC<ContactsListProps> = ({
 
       {confirmDialog.dialog}
       {contactFormDialog.dialog}
+      {legworkInfoDialog.dialog}
     </Stack>
   )
 }
