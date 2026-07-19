@@ -53,7 +53,7 @@ export const combatActions: CombatActionData[] = [
     name: "Call a Shot",
     category: "free",
     description:
-      "Aim for a vulnerable spot on your target. Must be followed immediately by a Take Aim, Fire Weapon, Throw Weapon, or Melee/Unarmed Attack.",
+      "Aim for a vulnerable spot on your target, trading a dice pool penalty for a specific effect (bypassing armor, disarming, and so on). Must be followed immediately by a Take Aim, Fire Weapon, Throw Weapon, or Melee/Unarmed Attack.",
   },
   {
     name: "Change Linked Device Mode",
@@ -89,7 +89,7 @@ export const combatActions: CombatActionData[] = [
   {
     name: "Run",
     category: "free",
-    description: "Move faster than your Walking Rate, applying Running modifiers.",
+    description: "Move faster than your Walking Rate. Running applies dice pool modifiers to other actions taken while moving.",
   },
   {
     name: "Speak/Text Phrase",
@@ -106,7 +106,7 @@ export const combatActions: CombatActionData[] = [
     name: "Fire Weapon",
     category: "simple",
     description:
-      "Fire a ready firearm in single-shot, semi-automatic, or burst-fire mode. Wielding two weapons lets you fire both for one Simple Action.",
+      "Fire a ready firearm in single-shot, semi-automatic, or burst-fire mode — single-shot weapons and long bursts can only be fired once per Action Phase. Wielding two weapons lets you fire both for one Simple Action.",
   },
   {
     name: "Insert Clip",
@@ -127,12 +127,13 @@ export const combatActions: CombatActionData[] = [
     name: "Quick Draw",
     category: "simple",
     description:
-      "Draw a pistol-sized weapon and fire it immediately with a Pistols + Reaction Test. A quick-draw holster lowers the threshold.",
+      "Draw a pistol-sized weapon and fire it immediately with a Pistols + Reaction (3) Test — threshold 2 with a quick-draw holster. Fail and the gun clears the holster but can't fire this action; glitch and it's stuck or dropped; critical glitch and it's flung across the room or misfires still holstered. Quick-drawing two pistols at once raises the threshold to 4 (3 with quick-draw holsters), tested separately for each.",
   },
   {
     name: "Ready Weapon",
     category: "simple",
-    description: "Draw, pick up, or otherwise prepare a weapon for use — a firearm, melee weapon, thrown weapon, bow, or mounted weapon.",
+    description:
+      "Draw, pick up, or otherwise prepare a weapon for use — a firearm, melee weapon, thrown weapon, bow, or mounted weapon. Small thrown weapons like knives or shuriken can be readied in batches of up to half your Agility (rounded down) per action.",
   },
   {
     name: "Remove Clip",
@@ -147,13 +148,13 @@ export const combatActions: CombatActionData[] = [
   {
     name: "Stand Up",
     category: "simple",
-    description: "Rise from lying down or prone. If wounded, requires a Body + Willpower Test.",
+    description: "Rise from lying down or prone. If wounded, requires a Body + Willpower (2) Test, with wound modifiers applying.",
   },
   {
     name: "Take Aim",
     category: "simple",
     description:
-      "Aim a ready ranged weapon for a cumulative +1 bonus to your next Attack Test. Lost the moment you take any other action, even a Free Action.",
+      "Aim a ready ranged weapon for a cumulative +1 dice pool bonus to your next Attack Test, up to a maximum number of stacked actions equal to half your skill with that weapon (rounded down). Lost the moment you take any other action, even a Free Action. Used to line up a shot with an image magnification system, it neutralizes range modifiers instead of granting the +1.",
   },
   {
     name: "Throw Weapon",
@@ -199,6 +200,6 @@ export const combatActions: CombatActionData[] = [
     name: "Full Defense",
     category: "interrupt",
     description:
-      "Dedicate your full attention to avoiding incoming attacks. Can be used as an interrupt — even before your Action Phase, as long as you're not surprised — but it uses up your next available action, even your very first action of the next Combat Turn if none remain this one.",
+      "Dedicate your full attention to avoiding incoming attacks, adding your Willpower to your defense pool against the triggering attack. Can be used as an interrupt — even before your Action Phase, as long as you're not surprised — but it uses up your next available action, even your very first action of the next Combat Turn if none remain this one.",
   },
 ]
