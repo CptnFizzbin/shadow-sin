@@ -1,5 +1,6 @@
 import { produce } from "immer"
 
+import { markOverlayClosed, markOverlayOpened } from "#/components/ui/dialog/openOverlayTracker.ts"
 import type { CompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { selectWasRolled } from "#/system/dice/diceRoller.selectors.ts"
@@ -198,15 +199,32 @@ export class DiceTrayApi {
   }
 
   open(): void {
+    if (!this.store.get().open) {
+      markOverlayOpened()
+    }
     this.store.setState(produce((state) => {
       state.open = true
     }))
   }
 
   close(): void {
+    if (this.store.get().open) {
+      markOverlayClosed()
+    }
     this.store.setState(produce((state) => {
       state.open = false
     }))
+  }
+
+  /**
+   * Release overlay-tracking state without changing `store.open`. Call from
+   * an unmount cleanup so a tray left open when its provider unmounts doesn't
+   * permanently count as "open".
+   */
+  dispose(): void {
+    if (this.store.get().open) {
+      markOverlayClosed()
+    }
   }
 
   reset(): void {

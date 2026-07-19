@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { DialogCtrl } from "./dialogCtrl.ts"
+import { isAnyOverlayOpen } from "./openOverlayTracker.ts"
 
 describe("DialogCtrl", () => {
   it("result() resolves with the value passed to close()", async () => {
@@ -77,5 +78,35 @@ describe("DialogCtrl", () => {
 
     await expect(first).resolves.toBeUndefined()
     await expect(second).resolves.toBe("second-result")
+  })
+
+  it("open() marks the shared overlay tracker open; close() clears it", () => {
+    const baseline = isAnyOverlayOpen()
+    const ctrl = new DialogCtrl<void>()
+
+    ctrl.open()
+    expect(isAnyOverlayOpen()).toBe(true)
+
+    ctrl.close()
+    expect(isAnyOverlayOpen()).toBe(baseline)
+  })
+
+  it("dispose() clears overlay tracking for a dialog left open without close()", () => {
+    const baseline = isAnyOverlayOpen()
+    const ctrl = new DialogCtrl<void>()
+
+    ctrl.open()
+    expect(isAnyOverlayOpen()).toBe(true)
+
+    ctrl.dispose()
+    expect(isAnyOverlayOpen()).toBe(baseline)
+  })
+
+  it("dispose() is a safe no-op when the dialog is already closed", () => {
+    const baseline = isAnyOverlayOpen()
+    const ctrl = new DialogCtrl<void>()
+
+    ctrl.dispose()
+    expect(isAnyOverlayOpen()).toBe(baseline)
   })
 })

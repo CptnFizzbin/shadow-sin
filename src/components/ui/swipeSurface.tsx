@@ -2,6 +2,8 @@ import Box from "@mui/material/Box"
 import type { FC, ReactNode, TouchEvent as ReactTouchEvent } from "react"
 import { useCallback, useRef } from "react"
 
+import { isAnyOverlayOpen } from "./dialog/openOverlayTracker.ts"
+
 const SWIPE_MIN_DISTANCE = 50
 
 interface SwipeSurfaceProps {
@@ -14,6 +16,11 @@ export const SwipeSurface: FC<SwipeSurfaceProps> = ({ onSwipeRightToLeft, onSwip
   const touchStartRef = useRef<{ x: number, y: number } | null>(null)
 
   const handleTouchStart = useCallback((event: ReactTouchEvent) => {
+    if (isAnyOverlayOpen()) {
+      touchStartRef.current = null
+      return
+    }
+
     const touch = event.touches[0]
     if (touch) {
       touchStartRef.current = { x: touch.clientX, y: touch.clientY }
@@ -23,6 +30,11 @@ export const SwipeSurface: FC<SwipeSurfaceProps> = ({ onSwipeRightToLeft, onSwip
   const handleTouchEnd = useCallback(
     (event: ReactTouchEvent) => {
       if (!touchStartRef.current) return
+
+      if (isAnyOverlayOpen()) {
+        touchStartRef.current = null
+        return
+      }
 
       const touch = event.changedTouches[0]
       if (!touch) {
