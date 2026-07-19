@@ -32,6 +32,11 @@ export const useContactForm = (options: ContactFormOptions) => {
       ...defaultValues,
       ...options.contact,
     },
-    onSubmit: ({ value }) => options.onSubmit(value),
+    onSubmit: ({ value }) => options.onSubmit({
+      ...value,
+      // SelectField stores values as strings, so ratings need converting back to numbers
+      connection: Number(value.connection),
+      loyalty: Number(value.loyalty),
+    }),
   })
 }
