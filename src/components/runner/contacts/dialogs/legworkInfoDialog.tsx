@@ -64,16 +64,19 @@ const LegworkInfoDialog: FC<LegworkInfoDialogProps> = ({ ctrl, contact }) => {
             </Typography>
           </Stack>
 
-          <Table size="small">
-            <TableBody>
-              {hitLevels.map(([hits, description]) => (
-                <TableRow key={hits}>
-                  <TableCell sx={{ whiteSpace: "nowrap" }}>{hits}</TableCell>
-                  <TableCell>{description}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Stack sx={{ gap: 0.5 }}>
+            <Label label="Hits" variant="outlined" />
+            <Table size="small">
+              <TableBody>
+                {hitLevels.map(([hits, description]) => (
+                  <TableRow key={hits}>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>{hits}</TableCell>
+                    <TableCell>{description}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Stack>
         </Stack>
       </Dialog.Content>
       <Dialog.Actions>
