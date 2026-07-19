@@ -10,6 +10,8 @@ const defaultValues: ContactData = {
   connection: 1,
   loyalty: 1,
   notes: "",
+  knowledgeSkills: [],
+  favours: [],
 }
 
 export const contactFieldMap = createFieldMap(defaultValues)
