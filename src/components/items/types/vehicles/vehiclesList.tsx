@@ -15,6 +15,7 @@ import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
+import { VehicleStatBlockPrototype } from "./prototypes/vehicleStatBlockPrototype.tsx"
 import { VehicleItemCard } from "./vehicleItemCard.tsx"
 
 interface VehiclesListProps {
@@ -91,6 +92,9 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
       {vehicleFormDialog.dialog}
       {attachmentFormDialog.dialog}
+
+      {/* MODE (not DEV) so this stays out of the test environment's DOM too */}
+      {import.meta.env.MODE === "development" && <VehicleStatBlockPrototype vehicleCategory={vehicleCategory} />}
     </Stack>
   )
 }
