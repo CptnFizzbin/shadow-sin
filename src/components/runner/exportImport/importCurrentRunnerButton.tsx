@@ -55,7 +55,7 @@ export const ImportCurrentRunnerButton: FC = () => {
         startIcon={<UploadIcon />}
         onClick={openFilePicker}
       >
-        Import YAML
+        Import
       </Button>
       {confirmDialog.dialog}
       {alertDialog.dialog}

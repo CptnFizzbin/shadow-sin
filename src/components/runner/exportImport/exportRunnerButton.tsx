@@ -18,7 +18,7 @@ export const ExportRunnerButton: FC = () => {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "")
 
-    downloadTextFile(yamlContent, `${sanitizedName}.yaml`)
+    downloadTextFile(yamlContent, `${sanitizedName}.sin`)
   }
 
   return (
@@ -29,7 +29,7 @@ export const ExportRunnerButton: FC = () => {
       startIcon={<DownloadIcon />}
       onClick={handleExport}
     >
-      Export YAML
+      Export
     </Button>
   )
 }

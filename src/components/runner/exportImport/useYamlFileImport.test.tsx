@@ -164,7 +164,7 @@ describe("useYamlFileImport", () => {
 
     // Assert
     expect(result.current.inputProps.type).toBe("file")
-    expect(result.current.inputProps.accept).toBe(".yaml,.yml")
+    expect(result.current.inputProps.accept).toBe(".sin,.yaml,.yml")
     expect(result.current.inputProps.ref).toBe(result.current.inputRef)
   })
 })
