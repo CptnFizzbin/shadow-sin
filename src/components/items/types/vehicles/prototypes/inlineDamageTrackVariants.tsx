@@ -96,7 +96,18 @@ export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange
               const borderRight = colIndex === MAX_PER_ROW - 1 ? "none" : "1px solid"
 
               if (value > max) {
-                return <Box key={colIndex} sx={{ height: 32, borderRight, borderColor: "divider" }} />
+                return (
+                  <Box
+                    key={colIndex}
+                    sx={(theme) => ({
+                      height: 32,
+                      borderRight,
+                      borderColor: "divider",
+                      background: `repeating-linear-gradient(45deg, transparent, transparent 4px, `
+                        + `${theme.palette.divider} 4px, ${theme.palette.divider} 5px)`,
+                    })}
+                  />
+                )
               }
 
               return (
