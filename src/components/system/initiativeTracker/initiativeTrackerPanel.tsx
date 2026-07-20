@@ -60,14 +60,14 @@ export const InitiativeTrackerPanel: FC = () => {
             >
               <CombatantAvatar name={combatant.name} isPC={combatant.isPC} />
 
-              <Stack sx={{ width: 140, flexShrink: 0 }}>
+              <Stack sx={{ flexGrow: 1, minWidth: 0 }}>
                 <Typography noWrap sx={{ fontWeight: isCurrent ? "bold" : "normal" }}>
                   {combatant.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">Score: {combatant.score}</Typography>
               </Stack>
 
-              <Stack direction="row" sx={{ flexGrow: 1 }}>
+              <Stack direction="row" sx={{ width: 130, flexShrink: 0 }}>
                 <PassPips
                   total={combatant.totalPasses}
                   completed={combatant.passesCompleted}
@@ -84,6 +84,7 @@ export const InitiativeTrackerPanel: FC = () => {
                   event.stopPropagation()
                   removeCombatant(combatant.id)
                 }}
+                sx={{ width: 32, flexShrink: 0 }}
               >
                 <RiDeleteBin6Line size={16} />
               </IconButton>
