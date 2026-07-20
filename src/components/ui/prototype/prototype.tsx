@@ -11,10 +11,10 @@ interface PrototypeComponent {
 
 /**
  * Compound `Prototype` component for switching between multiple in-progress
- * prototypes/mockups without leaving the page. Wraps the selected
- * `Prototype.Item`'s content in a thin, padding-free border and overlays a
- * floating prev/next bar, so it can be dropped in around any component with
- * minimal layout impact.
+ * prototypes/mockups without leaving the page. `Prototype.Item`s can be
+ * nested arbitrarily deep in the tree; items sharing the same `name` are
+ * shown or hidden together. A prev/next bar fixed to the bottom of the
+ * screen switches between the named groups.
  *
  * See `docs/ui/prototype.md` for usage examples.
  */
