@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RunnerIdRouteImport } from './routes/$runnerId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewIndexRouteImport } from './routes/new/index'
+import { Route as GmIndexRouteImport } from './routes/gm/index'
 import { Route as RunnerIdIndexRouteImport } from './routes/$runnerId/index'
+import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
+import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
+import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
 import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
 import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
 import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
@@ -47,10 +51,30 @@ const NewIndexRoute = NewIndexRouteImport.update({
   path: '/new/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GmIndexRoute = GmIndexRouteImport.update({
+  id: '/gm/',
+  path: '/gm/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RunnerIdIndexRoute = RunnerIdIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => RunnerIdRoute,
+} as any)
+const GmNpcBuilderRoute = GmNpcBuilderRouteImport.update({
+  id: '/gm/npc-builder',
+  path: '/gm/npc-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmInitiativeTrackerRoute = GmInitiativeTrackerRouteImport.update({
+  id: '/gm/initiative-tracker',
+  path: '/gm/initiative-tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmEncounterBuilderRoute = GmEncounterBuilderRouteImport.update({
+  id: '/gm/encounter-builder',
+  path: '/gm/encounter-builder',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
   id: '/vehicles',
@@ -163,7 +187,11 @@ export interface FileRoutesByFullPath {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/gm/encounter-builder': typeof GmEncounterBuilderRoute
+  '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
+  '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/$runnerId/': typeof RunnerIdIndexRoute
+  '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
@@ -186,7 +214,11 @@ export interface FileRoutesByTo {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/gm/encounter-builder': typeof GmEncounterBuilderRoute
+  '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
+  '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/$runnerId': typeof RunnerIdIndexRoute
+  '/gm': typeof GmIndexRoute
   '/new': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
@@ -211,7 +243,11 @@ export interface FileRoutesById {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/gm/encounter-builder': typeof GmEncounterBuilderRoute
+  '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
+  '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/$runnerId/': typeof RunnerIdIndexRoute
+  '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
@@ -237,7 +273,11 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/gm/encounter-builder'
+    | '/gm/initiative-tracker'
+    | '/gm/npc-builder'
     | '/$runnerId/'
+    | '/gm/'
     | '/new/'
     | '/test/theme/typography'
   fileRoutesByTo: FileRoutesByTo
@@ -260,7 +300,11 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/gm/encounter-builder'
+    | '/gm/initiative-tracker'
+    | '/gm/npc-builder'
     | '/$runnerId'
+    | '/gm'
     | '/new'
     | '/test/theme/typography'
   id:
@@ -284,7 +328,11 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/gm/encounter-builder'
+    | '/gm/initiative-tracker'
+    | '/gm/npc-builder'
     | '/$runnerId/'
+    | '/gm/'
     | '/new/'
     | '/test/theme/typography'
   fileRoutesById: FileRoutesById
@@ -292,6 +340,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RunnerIdRoute: typeof RunnerIdRouteWithChildren
+  GmEncounterBuilderRoute: typeof GmEncounterBuilderRoute
+  GmInitiativeTrackerRoute: typeof GmInitiativeTrackerRoute
+  GmNpcBuilderRoute: typeof GmNpcBuilderRoute
+  GmIndexRoute: typeof GmIndexRoute
   NewIndexRoute: typeof NewIndexRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
 }
@@ -319,12 +371,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gm/': {
+      id: '/gm/'
+      path: '/gm'
+      fullPath: '/gm/'
+      preLoaderRoute: typeof GmIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$runnerId/': {
       id: '/$runnerId/'
       path: '/'
       fullPath: '/$runnerId/'
       preLoaderRoute: typeof RunnerIdIndexRouteImport
       parentRoute: typeof RunnerIdRoute
+    }
+    '/gm/npc-builder': {
+      id: '/gm/npc-builder'
+      path: '/gm/npc-builder'
+      fullPath: '/gm/npc-builder'
+      preLoaderRoute: typeof GmNpcBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/initiative-tracker': {
+      id: '/gm/initiative-tracker'
+      path: '/gm/initiative-tracker'
+      fullPath: '/gm/initiative-tracker'
+      preLoaderRoute: typeof GmInitiativeTrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/encounter-builder': {
+      id: '/gm/encounter-builder'
+      path: '/gm/encounter-builder'
+      fullPath: '/gm/encounter-builder'
+      preLoaderRoute: typeof GmEncounterBuilderRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/$runnerId/vehicles': {
       id: '/$runnerId/vehicles'
@@ -504,6 +584,10 @@ const RunnerIdRouteWithChildren = RunnerIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RunnerIdRoute: RunnerIdRouteWithChildren,
+  GmEncounterBuilderRoute: GmEncounterBuilderRoute,
+  GmInitiativeTrackerRoute: GmInitiativeTrackerRoute,
+  GmNpcBuilderRoute: GmNpcBuilderRoute,
+  GmIndexRoute: GmIndexRoute,
   NewIndexRoute: NewIndexRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
 }

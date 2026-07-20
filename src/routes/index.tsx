@@ -2,6 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
+import { LandingModeSwitch } from "#/components/landing/landingModeSwitch.tsx"
 import { ImportRunnerButton } from "#/components/runner/exportImport/importRunnerButton.tsx"
 import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
 import { Artemis } from "#/data/fixtures/artemis.ts"
@@ -28,6 +29,8 @@ function IndexRoute() {
 
   return (
     <Stack sx={{ gap: 1, padding: 1 }}>
+      <LandingModeSwitch />
+
       <Stack direction="row" sx={{ gap: 1 }}>
         <Button
           variant="outlined"
