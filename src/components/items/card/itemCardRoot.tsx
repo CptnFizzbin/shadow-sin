@@ -97,7 +97,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
         )}
 
         {detailMetas.length > 0 && (
-          <Stack sx={{ width: "100%", gap: 1 }}>
+          <Stack sx={{ width: "100%", gap: 1 }} onClick={(e) => e.stopPropagation()}>
             {detailMetas}
           </Stack>
         )}

@@ -15,7 +15,6 @@ import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
-import { InlineDamageTrackPrototype } from "./prototypes/inlineDamageTrackPrototype.tsx"
 import { VehicleItemCard } from "./vehicleItemCard.tsx"
 
 interface VehiclesListProps {
@@ -60,6 +59,12 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
     if (saved) saveItem(saved)
   }
 
+  const handleDamageChange = (vehicle: VehicleData, current: number) => {
+    const max = vehicle.damage?.physical.max || vehicle.body
+    const updated: VehicleData = { ...vehicle, damage: { physical: { current, max } } }
+    saveItem(updated)
+  }
+
   return (
     <Stack sx={{ gap: 1 }}>
       {vehicles.map((vehicle) => {
@@ -75,6 +80,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
             onAddAttachment={() => handleAddAttachment(vehicle.id as UUID)}
             onEditAttachment={(attachment) => handleEditAttachment(attachment)}
             onRemoveAttachment={(attachment) => removeItem(attachment)}
+            onDamageChange={(value) => handleDamageChange(vehicle, value)}
           />
         )
       })}
@@ -92,9 +98,6 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
       {vehicleFormDialog.dialog}
       {attachmentFormDialog.dialog}
-
-      {/* MODE (not DEV) so this stays out of the test environment's DOM too */}
-      {import.meta.env.MODE === "development" && <InlineDamageTrackPrototype vehicleCategory={vehicleCategory} />}
     </Stack>
   )
 }

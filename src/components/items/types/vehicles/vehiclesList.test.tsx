@@ -37,6 +37,20 @@ describe("VehiclesList", () => {
     expect(screen.getByText("Handling 5")).toBeDefined()
     expect(screen.getByText("Body 4")).toBeDefined()
     expect(screen.getByRole("button", { name: /equipment/i })).toBeDefined()
+    expect(screen.getByText("Damage 0/4")).toBeDefined()
+  })
+
+  it("toggling a damage box dispatches setItem and updates the store", () => {
+    // Arrange
+    renderInBuilder(<VehiclesList vehicleCategory={VehicleCategory.vehicle} />, {
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
+    })
+
+    // Act: box 3 (of 4, falling back to body since the fixture has no damage.max) is a wound marker
+    fireEvent.click(screen.getByRole("button", { name: "-1" }))
+
+    // Assert: the UI re-rendered off the updated store.
+    expect(screen.getByText("Damage 3/4")).toBeDefined()
   })
 
   it("adding a vehicle dispatches addItem and updates the store", async () => {
