@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Fragment, useRef, useState } from "react"
+import { Fragment, useId, useRef, useState } from "react"
 
 import type { DialogCtrl } from "./dialogCtrl.ts"
 import { useDialogCtrl } from "./useDialogCtrl.ts"
@@ -34,6 +34,7 @@ export function useDialog<TReturn, TProps = void>(
 ): { open: (props?: TProps) => Promise<TReturn | undefined>, dialog: ReactNode } {
   const ctrl = useDialogCtrl<TReturn>()
   const [instance, setInstance] = useState<DialogInstance<TProps> | null>(null)
+  const instanceId = useId()
   const nextKey = useRef(0)
 
   const open = (props?: TProps) => {
@@ -43,6 +44,6 @@ export function useDialog<TReturn, TProps = void>(
 
   return {
     open,
-    dialog: instance ? <Fragment key={instance.key}>{render(ctrl, instance.props)}</Fragment> : null,
+    dialog: instance ? <Fragment key={`${instanceId}-${instance.key}`}>{render(ctrl, instance.props)}</Fragment> : null,
   }
 }

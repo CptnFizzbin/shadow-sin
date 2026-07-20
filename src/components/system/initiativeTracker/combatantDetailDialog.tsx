@@ -7,9 +7,9 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import type { Combatant } from "#/stores/initiativeTracker/initiativeTrackerData.ts"
 import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
-import type { Combatant } from "./initiativeTrackerTypes.ts"
 import { PassPips } from "./passPips.tsx"
 
 interface CombatantDetailDialogProps extends ControlledDialogProps<void> {

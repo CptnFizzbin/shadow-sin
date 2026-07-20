@@ -2,14 +2,14 @@ import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line, RiSkipForwardLine } from "@remixicon/react"
+import { RiAddLine, RiDeleteBin6Line, RiSkipForwardLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { AddCombatantRow } from "./addCombatantRow.tsx"
 import { CombatantAvatar } from "./combatantAvatar.tsx"
 import { useCombatantDetailDialog } from "./combatantDetailDialog.tsx"
+import { useCombatantFormDialog } from "./form/combatantFormDialog.tsx"
 import { PassPips } from "./passPips.tsx"
-import { useInitiativeTrackerState } from "./useInitiativeTrackerState.ts"
+import { useInitiativeTracker } from "./useInitiativeTracker.ts"
 
 /**
  * A dense, manageable combatant queue: everyone visible at once, sorted by
@@ -19,8 +19,9 @@ import { useInitiativeTrackerState } from "./useInitiativeTrackerState.ts"
  */
 export const InitiativeTrackerPanel: FC = () => {
   const { sortedCombatants, round, currentTurnId, addCombatant, removeCombatant, togglePass, nextTurn, endRound } =
-    useInitiativeTrackerState()
+    useInitiativeTracker()
   const combatantDetailDialog = useCombatantDetailDialog()
+  const combatantFormDialog = useCombatantFormDialog()
 
   return (
     <Stack sx={{ gap: 1, padding: 1 }}>
@@ -33,6 +34,12 @@ export const InitiativeTrackerPanel: FC = () => {
       </Stack>
 
       <Stack sx={{ gap: 1 }}>
+        {sortedCombatants.length === 0 && (
+          <Typography color="text.secondary" sx={{ pl: 1 }}>
+            No combatants yet — add one to begin.
+          </Typography>
+        )}
+
         {sortedCombatants.map((combatant) => {
           const isCurrent = combatant.id === currentTurnId
           return (
@@ -53,16 +60,19 @@ export const InitiativeTrackerPanel: FC = () => {
             >
               <CombatantAvatar name={combatant.name} isPC={combatant.isPC} />
 
-              <Stack sx={{ minWidth: 96 }}>
-                <Typography sx={{ fontWeight: isCurrent ? "bold" : "normal" }}>{combatant.name}</Typography>
+              <Stack sx={{ width: 140, flexShrink: 0 }}>
+                <Typography noWrap sx={{ fontWeight: isCurrent ? "bold" : "normal" }}>
+                  {combatant.name}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">Score: {combatant.score}</Typography>
               </Stack>
 
-              <Stack direction="row" sx={{ gap: 0.5, flexGrow: 1, justifyContent: "center" }}>
+              <Stack direction="row" sx={{ flexGrow: 1 }}>
                 <PassPips
                   total={combatant.totalPasses}
                   completed={combatant.passesCompleted}
                   onToggle={(passIndex) => togglePass(combatant.id, passIndex)}
+                  highlightCurrent
                 />
               </Stack>
 
@@ -82,9 +92,21 @@ export const InitiativeTrackerPanel: FC = () => {
         })}
       </Stack>
 
-      <AddCombatantRow onAdd={addCombatant} />
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        startIcon={<RiAddLine />}
+        onClick={async () => {
+          const combatant = await combatantFormDialog.open()
+          if (combatant) addCombatant(combatant)
+        }}
+      >
+        Add Unit
+      </Button>
 
       {combatantDetailDialog.dialog}
+      {combatantFormDialog.dialog}
     </Stack>
   )
 }
