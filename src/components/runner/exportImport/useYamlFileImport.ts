@@ -45,7 +45,7 @@ function parseYamlContent(yamlContent: string): ParseResult {
  * Shared file input handling for YAML runner imports.
  *
  * Encapsulates the hidden-input + ref + read-and-reset behaviour used by the
- * various "Import YAML" buttons across the app. Callers provide success /
+ * various "Import" buttons across the app. Callers provide success /
  * error handlers, spread `inputProps` onto a hidden file input, and call
  * `openFilePicker` from their own trigger button.
  */
@@ -76,7 +76,7 @@ export function useYamlFileImport({
   const inputProps = {
     ref: inputRef,
     type: "file",
-    accept: ".yaml,.yml",
+    accept: ".sin,.yaml,.yml",
     style: { display: "none" },
     onChange: (event: ChangeEvent<HTMLInputElement>) => { void handleFileChange(event) },
   }

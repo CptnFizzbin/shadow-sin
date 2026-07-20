@@ -45,7 +45,7 @@ export const ImportRunnerButton: FC<ImportRunnerButtonProps> = ({ onImported }) 
         startIcon={<UploadIcon />}
         onClick={openFilePicker}
       >
-        Import YAML
+        Import
       </Button>
       {importConflictDialog.dialog}
     </>

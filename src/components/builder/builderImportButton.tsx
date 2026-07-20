@@ -35,7 +35,7 @@ export const BuilderImportButton: FC<BuilderImportButtonProps> = ({ onImport }) 
         startIcon={<UploadIcon />}
         onClick={openFilePicker}
       >
-        Import YAML
+        Import
       </Button>
 
       <Snackbar
