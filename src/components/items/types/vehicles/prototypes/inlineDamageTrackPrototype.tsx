@@ -15,6 +15,12 @@ import { VariantFillBar, VariantNumberedBoxes, VariantWoundTicks } from "./inlin
 // next to real vehicle/drone data. Dev-only. Delete this directory once a
 // winner is folded into VehicleItemCard.
 
+const versions = [
+  { key: "numbered-boxes", name: "Numbered boxes" },
+  { key: "wound-ticks", name: "Wound ticks" },
+  { key: "fill-bar", name: "Fill bar" },
+]
+
 interface InlineDamageTrackPrototypeProps {
   vehicleCategory: VehicleCategory
 }
@@ -32,36 +38,18 @@ export const InlineDamageTrackPrototype: FC<InlineDamageTrackPrototypeProps> = (
         Prototype — inline damage track
       </Typography>
 
-      <Prototype>
-        <Prototype.Item title="Numbered boxes">
-          <DamageCardList vehicles={vehicles} Variant={VariantNumberedBoxes} />
-        </Prototype.Item>
-        <Prototype.Item title="Wound ticks">
-          <DamageCardList vehicles={vehicles} Variant={VariantWoundTicks} />
-        </Prototype.Item>
-        <Prototype.Item title="Fill bar">
-          <DamageCardList vehicles={vehicles} Variant={VariantFillBar} />
-        </Prototype.Item>
+      <Prototype versions={versions}>
+        <Stack sx={{ gap: 1, padding: 1 }}>
+          {vehicles.map((vehicle) => (
+            <DamageCard key={vehicle.id} vehicle={vehicle} />
+          ))}
+        </Stack>
       </Prototype>
     </Stack>
   )
 }
 
-interface VariantComponent {
-  (props: { label: string, max: number, current: number, onChange: (value: number) => void }): ReturnType<FC>
-}
-
-function DamageCardList({ vehicles, Variant }: { vehicles: VehicleData[], Variant: VariantComponent }) {
-  return (
-    <Stack sx={{ gap: 1, padding: 1 }}>
-      {vehicles.map((vehicle) => (
-        <DamageCard key={vehicle.id} vehicle={vehicle} Variant={Variant} />
-      ))}
-    </Stack>
-  )
-}
-
-function DamageCard({ vehicle, Variant }: { vehicle: VehicleData, Variant: VariantComponent }) {
+function DamageCard({ vehicle }: { vehicle: VehicleData }) {
   const [current, setCurrent] = useState(vehicle.damage?.physical.current ?? 0)
   const max = vehicle.damage?.physical.max || vehicle.body
 
@@ -69,7 +57,16 @@ function DamageCard({ vehicle, Variant }: { vehicle: VehicleData, Variant: Varia
     <Box sx={{ border: "1px solid", borderColor: "primary.dark", padding: 1 }}>
       <Stack sx={{ gap: 1 }}>
         <Typography sx={{ fontWeight: 700 }}>{vehicle.name}</Typography>
-        <Variant label="Damage" max={max} current={current} onChange={setCurrent} />
+
+        <Prototype.Item version="numbered-boxes">
+          <VariantNumberedBoxes label="Damage" max={max} current={current} onChange={setCurrent} />
+        </Prototype.Item>
+        <Prototype.Item version="wound-ticks">
+          <VariantWoundTicks label="Damage" max={max} current={current} onChange={setCurrent} />
+        </Prototype.Item>
+        <Prototype.Item version="fill-bar">
+          <VariantFillBar label="Damage" max={max} current={current} onChange={setCurrent} />
+        </Prototype.Item>
       </Stack>
     </Box>
   )

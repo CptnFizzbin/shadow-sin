@@ -6,17 +6,17 @@ import { PrototypeSelectionContext } from "./prototypeContext.ts"
 
 export interface PrototypeItemProps {
   /**
-   * Unique key for this prototype option. Every `Prototype.Item` sharing the
-   * same `name` is shown or hidden together, no matter how deeply each one is
-   * nested under the enclosing `Prototype`.
+   * `key` of the version (from the enclosing `Prototype`'s `versions` list)
+   * this renders for. Renders `children` only while that version is
+   * selected, no matter how deeply nested under the enclosing `Prototype`.
    */
-  name: string
+  version: string
   children: ReactNode
 }
 
-export const PrototypeItem: FC<PrototypeItemProps> = ({ name, children }) => {
-  const selectedName = useContext(PrototypeSelectionContext)
-  return selectedName === name ? <>{children}</> : null
+export const PrototypeItem: FC<PrototypeItemProps> = ({ version, children }) => {
+  const selectedKey = useContext(PrototypeSelectionContext)
+  return selectedKey === version ? <>{children}</> : null
 }
 
 PrototypeItem.displayName = "Prototype.Item"
