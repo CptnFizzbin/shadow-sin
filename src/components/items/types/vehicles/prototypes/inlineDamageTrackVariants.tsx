@@ -70,11 +70,7 @@ export const VariantWoundTicks: FC<VariantProps> = ({ label, max, current, onCha
 export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange }) => {
   const ratio = current / max
   const fillColor = ratio >= 0.8 ? "error.main" : ratio >= 0.5 ? "warning.main" : "primary.main"
-
-  const rows: number[][] = []
-  for (let start = 0; start < max; start += MAX_PER_ROW) {
-    rows.push(Array.from({ length: Math.min(MAX_PER_ROW, max - start) }, (_, i) => start + i + 1))
-  }
+  const rowCount = Math.ceil(max / MAX_PER_ROW)
 
   return (
     <Stack sx={{ gap: 0.5 }}>
@@ -83,9 +79,9 @@ export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange
       </Typography>
 
       <Stack sx={{ gap: "2px" }}>
-        {rows.map((row) => (
+        {Array.from({ length: rowCount }, (_, rowIndex) => (
           <Box
-            key={row[0]}
+            key={rowIndex}
             sx={{
               display: "grid",
               gridTemplateColumns: `repeat(${MAX_PER_ROW}, minmax(32px, 1fr))`,
@@ -93,19 +89,29 @@ export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange
               borderColor: "divider",
             }}
           >
-            {row.map((value) => (
-              <ButtonBase
-                key={value}
-                onClick={() => onChange(value === current ? value - 1 : value)}
-                sx={{
-                  "height": 32,
-                  "backgroundColor": value <= current ? fillColor : "transparent",
-                  "borderRight": "1px solid",
-                  "borderColor": "divider",
-                  "&:last-of-type": { borderRight: "none" },
-                }}
-              />
-            ))}
+            {Array.from({ length: MAX_PER_ROW }, (__, colIndex) => {
+              const value = rowIndex * MAX_PER_ROW + colIndex + 1
+              // Every row renders all 10 slots (blank past `max`) so the right border always
+              // lands on the true last column, instead of bleeding the last real box into it.
+              const borderRight = colIndex === MAX_PER_ROW - 1 ? "none" : "1px solid"
+
+              if (value > max) {
+                return <Box key={colIndex} sx={{ height: 32, borderRight, borderColor: "divider" }} />
+              }
+
+              return (
+                <ButtonBase
+                  key={colIndex}
+                  onClick={() => onChange(value === current ? value - 1 : value)}
+                  sx={{
+                    height: 32,
+                    backgroundColor: value <= current ? fillColor : "transparent",
+                    borderRight,
+                    borderColor: "divider",
+                  }}
+                />
+              )
+            })}
           </Box>
         ))}
       </Stack>
