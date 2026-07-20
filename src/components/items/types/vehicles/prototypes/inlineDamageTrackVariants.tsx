@@ -84,14 +84,21 @@ export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange
 
       <Stack sx={{ gap: "2px" }}>
         {rows.map((row) => (
-          <Stack key={row[0]} direction="row" sx={{ height: 14, border: "1px solid", borderColor: "divider" }}>
+          <Box
+            key={row[0]}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${MAX_PER_ROW}, minmax(32px, 1fr))`,
+              border: "1px solid",
+              borderColor: "divider",
+            }}
+          >
             {row.map((value) => (
               <ButtonBase
                 key={value}
                 onClick={() => onChange(value === current ? value - 1 : value)}
                 sx={{
-                  "flex": 1,
-                  "height": "100%",
+                  "height": 32,
                   "backgroundColor": value <= current ? fillColor : "transparent",
                   "borderRight": "1px solid",
                   "borderColor": "divider",
@@ -99,7 +106,7 @@ export const VariantFillBar: FC<VariantProps> = ({ label, max, current, onChange
                 }}
               />
             ))}
-          </Stack>
+          </Box>
         ))}
       </Stack>
     </Stack>
