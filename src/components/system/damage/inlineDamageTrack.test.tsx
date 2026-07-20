@@ -15,6 +15,13 @@ describe("InlineDamageTrack", () => {
     expect(screen.getByRole("button", { name: "1" }).className).toMatch(/MuiButton-contained/)
     expect(screen.getByRole("button", { name: "3" }).className).toMatch(/MuiButton-contained/)
     expect(screen.getByRole("button", { name: "4" }).className).toMatch(/MuiButton-outlined/)
+
+    // Assert: grid stays fixed at 10 columns even with fewer than 10 boxes, so cell size
+    // (and tap target) stays uniform whether a track has a partial or full row
+    const grid = screen.getAllByRole("button")[0].parentElement as HTMLElement
+    const gridStyle = getComputedStyle(grid)
+    expect(gridStyle.gridTemplateColumns).toBe("repeat(10, 1fr)")
+    expect(gridStyle.gridAutoRows).toBe("32px")
   })
 
   it("wraps onto additional rows past 10 boxes", () => {

@@ -1,10 +1,9 @@
 import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-const MAX_BOXES_PER_ROW = 10
+import { DamageTrackCell } from "./damageTrack.tsx"
 
 interface InlineDamageTrackProps {
   label?: string
@@ -15,12 +14,12 @@ interface InlineDamageTrackProps {
 
 /**
  * Compact, single-line damage track for contexts too tight for the full
- * DamageTrack (e.g. an item card). Mirrors the edge tracker's grid-of-cells
- * interaction, wrapping onto additional rows past 10 boxes.
+ * DamageTrack (e.g. an item card). Reuses DamageTrack's own cell for visual
+ * consistency, laid out on a fixed 10-column grid so cells stay uniformly
+ * sized (and tappable) regardless of how many boxes are in a partial row;
+ * extra boxes wrap onto additional rows automatically.
  */
 export const InlineDamageTrack: FC<InlineDamageTrackProps> = ({ label, max, current, onChange }) => {
-  const columns = Math.min(max, MAX_BOXES_PER_ROW)
-
   const toggleCell = (value: number) => {
     onChange(value === current ? value - 1 : value)
   }
@@ -36,22 +35,16 @@ export const InlineDamageTrack: FC<InlineDamageTrackProps> = ({ label, max, curr
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gridTemplateColumns: "repeat(10, 1fr)",
+          gridAutoRows: "32px",
           gap: 0.5,
+          flex: 1,
         }}
       >
         {Array.from({ length: max }, (_, index) => index + 1).map((value) => (
-          <Button
-            key={value}
-            variant={value <= current ? "contained" : "outlined"}
-            onClick={(event) => {
-              toggleCell(value)
-              event.currentTarget.blur()
-            }}
-            sx={{ minWidth: 0, width: 20, height: 20, padding: 0, fontSize: "0.6rem" }}
-          >
+          <DamageTrackCell key={value} filled={value <= current} onClick={() => toggleCell(value)}>
             {value}
-          </Button>
+          </DamageTrackCell>
         ))}
       </Box>
     </Stack>

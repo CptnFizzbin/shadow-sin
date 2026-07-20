@@ -32,7 +32,7 @@ export default function DamageTrack({
     <Stack sx={{ gap: 0.5 }}>
       <Label label={label} />
 
-      <TrackCell onClick={() => onChange(0)}>Reset</TrackCell>
+      <DamageTrackCell onClick={() => onChange(0)}>Reset</DamageTrackCell>
 
       <Box
         sx={{
@@ -83,30 +83,30 @@ function DamageCell({
   const penalty = Math.floor(value / woundInterval)
 
   return (
-    <TrackCell
+    <DamageTrackCell
       filled={filled}
       isOverflow={isOverflow}
       onClick={() => toggleCell(value)}
     >
       {/* Use non-breaking space to keep cells uniform size when empty */}
       {isWoundMarker ? penalty * -1 : <>&nbsp;</>}
-    </TrackCell>
+    </DamageTrackCell>
   )
 }
 
-interface TrackCellProps {
+interface DamageTrackCellProps {
   children: ReactNode
   onClick: () => void
   filled?: boolean
   isOverflow?: boolean
 }
 
-function TrackCell({
+export function DamageTrackCell({
   children,
   onClick,
   filled = false,
   isOverflow = false,
-}: TrackCellProps) {
+}: DamageTrackCellProps) {
   return (
     <Button
       variant={filled ? "contained" : "outlined"}
