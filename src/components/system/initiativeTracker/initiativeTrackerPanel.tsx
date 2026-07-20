@@ -12,13 +12,12 @@ import { PassPips } from "./passPips.tsx"
 import { useInitiativeTrackerState } from "./useInitiativeTrackerState.ts"
 
 /**
- * Variant A — a dense, manageable queue. Optimized for the GM actively
- * running the roster: everyone visible at once, sorted by score, current
- * turn called out with a highlight rather than pulled out of the flow.
- * Tapping a row opens the full stat block in a dialog rather than expanding
- * the row itself, so the roster always stays this compact.
+ * A dense, manageable combatant queue: everyone visible at once, sorted by
+ * score, current turn called out with a highlight. Tapping a row opens the
+ * full stat block in a dialog rather than expanding the row itself, so the
+ * roster always stays this compact.
  */
-export const InitiativeTrackerListVariant: FC = () => {
+export const InitiativeTrackerPanel: FC = () => {
   const { sortedCombatants, round, currentTurnId, addCombatant, removeCombatant, togglePass, nextTurn, endRound } =
     useInitiativeTrackerState()
   const combatantDetailDialog = useCombatantDetailDialog()
