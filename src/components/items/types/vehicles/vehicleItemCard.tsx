@@ -9,6 +9,8 @@ import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
+import { VehicleStatGroups } from "./vehicleStatGroups.tsx"
+
 interface VehicleItemCardProps {
   vehicle: VehicleData
   attachments?: ItemData[]
@@ -49,14 +51,15 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
 
       <ItemCard.Meta type="stat">
         <ItemStatChip label={vehicle.vehicleType} />
-        <ItemStatChip label={`Spd: ${vehicle.speed}`} />
-        <ItemStatChip label={`Bod: ${vehicle.body}`} />
-        <ItemStatChip label={`Pilot: ${vehicle.pilot}`} />
+      </ItemCard.Meta>
+
+      <ItemCard.Meta type="detail">
+        <VehicleStatGroups vehicle={vehicle} />
       </ItemCard.Meta>
 
       {onAddAttachment && (
         <ItemCard.AddChildButton onClick={onAddAttachment}>
-          Add Attachment
+          Equipment
         </ItemCard.AddChildButton>
       )}
 

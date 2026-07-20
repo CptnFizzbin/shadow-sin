@@ -15,7 +15,7 @@ import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
-import { VehicleStatBlockPrototype } from "./prototypes/vehicleStatBlockPrototype.tsx"
+import { InlineDamageTrackPrototype } from "./prototypes/inlineDamageTrackPrototype.tsx"
 import { VehicleItemCard } from "./vehicleItemCard.tsx"
 
 interface VehiclesListProps {
@@ -51,12 +51,12 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   }
 
   const handleAddAttachment = async (parentId: UUID) => {
-    const saved = await attachmentFormDialog.open({ label: "Vehicle Attachment" })
+    const saved = await attachmentFormDialog.open({ label: "Equipment" })
     if (saved) saveItem({ ...saved, parentId })
   }
 
   const handleEditAttachment = async (attachment: ItemData) => {
-    const saved = await attachmentFormDialog.open({ item: attachment, label: "Vehicle Attachment" })
+    const saved = await attachmentFormDialog.open({ item: attachment, label: "Equipment" })
     if (saved) saveItem(saved)
   }
 
@@ -94,7 +94,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
       {attachmentFormDialog.dialog}
 
       {/* MODE (not DEV) so this stays out of the test environment's DOM too */}
-      {import.meta.env.MODE === "development" && <VehicleStatBlockPrototype vehicleCategory={vehicleCategory} />}
+      {import.meta.env.MODE === "development" && <InlineDamageTrackPrototype vehicleCategory={vehicleCategory} />}
     </Stack>
   )
 }

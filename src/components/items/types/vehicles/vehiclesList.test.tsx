@@ -34,6 +34,9 @@ describe("VehiclesList", () => {
 
     // Assert
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
+    expect(screen.getByText("Handling 5")).toBeDefined()
+    expect(screen.getByText("Body 4")).toBeDefined()
+    expect(screen.getByRole("button", { name: /equipment/i })).toBeDefined()
   })
 
   it("adding a vehicle dispatches addItem and updates the store", async () => {

@@ -35,6 +35,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
   const costMetas = metaNodes.filter((el) => el.props.type === "cost")
   const statMetas = metaNodes.filter((el) => el.props.type === "stat")
   const sourceMetas = metaNodes.filter((el) => el.props.type === "source")
+  const detailMetas = metaNodes.filter((el) => el.props.type === "detail")
 
   const iconActions = actionNodes.filter((el) => el.props.type === "icon")
   const buttonActions = actionNodes.filter((el) => el.props.type === "button")
@@ -92,6 +93,12 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             <Stack direction="row" sx={{ gap: 0.5 }}>
               {sourceMetas}
             </Stack>
+          </Stack>
+        )}
+
+        {detailMetas.length > 0 && (
+          <Stack sx={{ width: "100%", gap: 1 }}>
+            {detailMetas}
           </Stack>
         )}
       </Wrapper>
