@@ -7,6 +7,7 @@ import type { FC } from "react"
 
 import { AddCombatantRow } from "./addCombatantRow.tsx"
 import { CombatantAvatar } from "./combatantAvatar.tsx"
+import { useCombatantDetailDialog } from "./combatantDetailDialog.tsx"
 import { PassPips } from "./passPips.tsx"
 import { useInitiativeTrackerState } from "./useInitiativeTrackerState.ts"
 
@@ -14,10 +15,13 @@ import { useInitiativeTrackerState } from "./useInitiativeTrackerState.ts"
  * Variant A — a dense, manageable queue. Optimized for the GM actively
  * running the roster: everyone visible at once, sorted by score, current
  * turn called out with a highlight rather than pulled out of the flow.
+ * Tapping a row opens the full stat block in a dialog rather than expanding
+ * the row itself, so the roster always stays this compact.
  */
 export const InitiativeTrackerListVariant: FC = () => {
   const { sortedCombatants, round, currentTurnId, addCombatant, removeCombatant, togglePass, nextTurn, endRound } =
     useInitiativeTrackerState()
+  const combatantDetailDialog = useCombatantDetailDialog()
 
   return (
     <Stack sx={{ gap: 1, padding: 1 }}>
@@ -36,13 +40,16 @@ export const InitiativeTrackerListVariant: FC = () => {
             <Stack
               key={combatant.id}
               direction="row"
+              onClick={() => combatantDetailDialog.open({ combatant })}
               sx={{
-                gap: 1,
-                alignItems: "center",
-                padding: 1,
-                border: "1px solid",
-                borderColor: isCurrent ? "primary.main" : "divider",
-                bgcolor: isCurrent ? "action.selected" : "transparent",
+                "gap": 1,
+                "alignItems": "center",
+                "padding": 1,
+                "border": "1px solid",
+                "borderColor": isCurrent ? "primary.main" : "divider",
+                "bgcolor": isCurrent ? "action.selected" : "transparent",
+                "cursor": "pointer",
+                "&:hover": { bgcolor: isCurrent ? "action.selected" : "action.hover" },
               }}
             >
               <CombatantAvatar name={combatant.name} isPC={combatant.isPC} />
@@ -64,7 +71,10 @@ export const InitiativeTrackerListVariant: FC = () => {
                 size="small"
                 color="error"
                 aria-label={`Remove ${combatant.name}`}
-                onClick={() => removeCombatant(combatant.id)}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  removeCombatant(combatant.id)
+                }}
               >
                 <RiDeleteBin6Line size={16} />
               </IconButton>
@@ -74,6 +84,8 @@ export const InitiativeTrackerListVariant: FC = () => {
       </Stack>
 
       <AddCombatantRow onAdd={addCombatant} />
+
+      {combatantDetailDialog.dialog}
     </Stack>
   )
 }

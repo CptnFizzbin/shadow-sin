@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
-import type { FC } from "react"
+import type { FC, MouseEvent } from "react"
 
 interface PassPipsProps {
   total: number
@@ -16,7 +16,12 @@ export const PassPips: FC<PassPipsProps> = ({ total, completed, onToggle }) => (
         <Box
           key={passIndex}
           component={onToggle ? "button" : "div"}
-          onClick={onToggle ? () => onToggle(passIndex) : undefined}
+          onClick={onToggle
+            ? (event: MouseEvent) => {
+                event.stopPropagation()
+                onToggle(passIndex)
+              }
+            : undefined}
           sx={{
             "width": 22,
             "height": 22,
