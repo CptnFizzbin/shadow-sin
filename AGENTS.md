@@ -84,7 +84,9 @@ localStorage key literals.
   `tanstackRouter/` subdirs
 - `src/components/ui/` — Reusable UI primitives (see `docs/ui/` for examples), including
   `src/components/ui/prototype/` for switching between in-progress UI variants (see `docs/ui/prototype.md` and the
-  `.agents/skills/prototype/` skill)
+  `.agents/skills/prototype/` skill). `Prototype` takes an explicit `versions: { key, name }[]` prop — selection is
+  resolved via context at render time (not by walking the JSX tree), so `Prototype.Item version="key"` works from
+  any depth, including inside components that only render later (e.g. one item per row in a `.map()`)
 - `testUtils/` — Shared test helpers; `storage/memoryStorage.ts` implements `Storage` for unit tests
 - `e2e/` — Playwright end-to-end specs (`playwright.config.ts` at repo root); visiting `/` seeds `localStorage`
   with the Artemis fixture (`#/data/fixtures/artemis.ts`) for tests to build on
