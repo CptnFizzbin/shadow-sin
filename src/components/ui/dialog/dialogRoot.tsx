@@ -63,11 +63,19 @@ export const DialogRoot = ({
       maxWidth={maxWidth}
       fullWidth
       fullScreen={fullScreen}
-      slotProps={{ transition: { onExited: onClosed } }}
+      slotProps={{
+        transition: { onExited: onClosed },
+        // MUI's default paper margin is 32px (top/bottom), keep 40px on
+        // non-mobile so the dialog never touches the viewport edges.
+        paper: fullScreen
+          ? undefined
+          : { sx: { marginTop: "40px", marginBottom: "40px", maxHeight: "calc(100% - 80px)" } },
+      }}
     >
-      {/* In full-screen mode the Stack must stretch to the paper's full
-          height so the content area grows and the actions pin to the bottom. */}
-      <Stack divider={<Divider />} sx={{ gap: 0, ...(fullScreen && { flex: 1, minHeight: 0 }) }}>
+      {/* The Stack must always stretch to the paper's full (possibly capped)
+          height so Dialog.Content can shrink and scroll while the title and
+          actions stay pinned in view. */}
+      <Stack divider={<Divider />} sx={{ gap: 0, flex: 1, minHeight: 0 }}>
         {title}
         {content}
         {actions}
