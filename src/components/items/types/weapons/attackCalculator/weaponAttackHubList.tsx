@@ -5,67 +5,51 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import type { RemixiconComponentType } from "@remixicon/react"
-import { RiArrowRightSLine, RiAwardLine, RiEqualizerLine, RiSwordLine, RiTargetLine } from "@remixicon/react"
+import { RiFireLine, RiFocusLine, RiArrowRightSLine, RiSwordLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import type { SkillKey } from "#/system/skills/skillKey.ts"
-
-import type { WeaponAttackCalculatorStep } from "./weaponAttackCalculatorTypes.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import { WeaponType } from "#/system/gear/weaponData.ts"
 
 interface WeaponAttackHubListProps {
-  weaponName: string
-  skill: SkillKey
-  skillRating: number
-  attackModifierTotal: number
-  defenseModifierTotal: number
-  poolTotal: number
-  onSelectStep: (step: WeaponAttackCalculatorStep) => void
+  weapons: WeaponData[]
+  onSelectWeapon: (weaponId: string) => void
 }
 
-const formatSigned = (value: number) => value >= 0 ? `+${value}` : `${value}`
+const iconByWeaponType: Record<WeaponType, RemixiconComponentType> = {
+  [WeaponType.melee]: RiSwordLine,
+  [WeaponType.firearm]: RiFireLine,
+  [WeaponType.thrown]: RiFocusLine,
+  [WeaponType.projectile]: RiFocusLine,
+  [WeaponType.exotic]: RiFocusLine,
+  [WeaponType.other]: RiFocusLine,
+}
 
-export const WeaponAttackHubList: FC<WeaponAttackHubListProps> = ({
-  weaponName,
-  skill,
-  skillRating,
-  attackModifierTotal,
-  defenseModifierTotal,
-  poolTotal,
-  onSelectStep,
-}) => {
-  const rows: { step: WeaponAttackCalculatorStep, label: string, secondary: string, Icon: RemixiconComponentType }[] = [
-    { step: "weapon", label: "Weapon", secondary: weaponName, Icon: RiSwordLine },
-    { step: "skill", label: "Skill", secondary: `${skill} (${skillRating})`, Icon: RiAwardLine },
-    {
-      step: "modifiers",
-      label: "Modifiers",
-      secondary: `Attack ${formatSigned(attackModifierTotal)} · Defense ${formatSigned(defenseModifierTotal)}`,
-      Icon: RiEqualizerLine,
-    },
-    { step: "result", label: "Result", secondary: `Attack pool: ${poolTotal}`, Icon: RiTargetLine },
-  ]
+/** Landing view of the Attack Calculator: one row per equipped weapon. */
+export const WeaponAttackHubList: FC<WeaponAttackHubListProps> = ({ weapons, onSelectWeapon }) => (
+  <Paper>
+    <List disablePadding>
+      {weapons.map((weapon, index) => {
+        const Icon = iconByWeaponType[weapon.weaponType] ?? RiFocusLine
 
-  return (
-    <Paper>
-      <List disablePadding>
-        {rows.map(({ step, label, secondary, Icon }, index) => (
+        return (
           <ListItem
-            key={step}
+            key={weapon.id}
             disablePadding
-            divider={index < rows.length - 1}
+            divider={index < weapons.length - 1}
             secondaryAction={(
               <RiArrowRightSLine size={18} style={{ color: "var(--mui-palette-text-secondary)" }} />
             )}
           >
-            <ListItemButton onClick={() => onSelectStep(step)} sx={{ minHeight: 56 }}>
+            <ListItemButton onClick={() => onSelectWeapon(weapon.id)} sx={{ minHeight: 56 }}>
               <ListItemIcon sx={{ minWidth: 36 }}>
                 <Icon size={20} />
               </ListItemIcon>
-              <ListItemText primary={label} secondary={secondary} />
+              <ListItemText primary={weapon.name} secondary={`${weapon.skill} · DV ${weapon.dmg}`} />
             </ListItemButton>
           </ListItem>
-        ))}
-      </List>
-    </Paper>
-  )
-}
+        )
+      })}
+    </List>
+  </Paper>
+)

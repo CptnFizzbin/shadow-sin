@@ -59,7 +59,6 @@ describe("EquippedWeaponCard - Attack button", () => {
     fireEvent.click(screen.getByRole("button", { name: /attack/i }))
 
     const dialog = await screen.findByRole("dialog", { name: "Test Pistol" })
-    fireEvent.click(await within(dialog).findByRole("button", { name: /^weapon/i }))
     fireEvent.click(await within(dialog).findByRole("button", { name: /sa/i }))
 
     // Assert
