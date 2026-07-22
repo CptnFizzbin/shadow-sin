@@ -5,9 +5,12 @@ import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
+import { InlineDamageTrack } from "#/components/system/damage/inlineDamageTrack.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+import { VehicleStatGroups } from "./vehicleStatGroups.tsx"
 
 interface VehicleItemCardProps {
   vehicle: VehicleData
@@ -17,6 +20,7 @@ interface VehicleItemCardProps {
   onAddAttachment?: () => void
   onEditAttachment?: (item: ItemData) => void
   onRemoveAttachment?: (item: ItemData) => void
+  onDamageChange?: (value: number) => void
 }
 
 export const VehicleItemCard: FC<VehicleItemCardProps> = ({
@@ -27,8 +31,10 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
   onAddAttachment,
   onEditAttachment,
   onRemoveAttachment,
+  onDamageChange,
 }) => {
   const { availability, source } = vehicle
+  const damageMax = vehicle.damage?.physical.max || vehicle.body
 
   return (
     <GearItemCard
@@ -49,14 +55,26 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
 
       <ItemCard.Meta type="stat">
         <ItemStatChip label={vehicle.vehicleType} />
-        <ItemStatChip label={`Spd: ${vehicle.speed}`} />
-        <ItemStatChip label={`Bod: ${vehicle.body}`} />
-        <ItemStatChip label={`Pilot: ${vehicle.pilot}`} />
       </ItemCard.Meta>
+
+      <ItemCard.Meta type="detail">
+        <VehicleStatGroups vehicle={vehicle} />
+      </ItemCard.Meta>
+
+      {onDamageChange && (
+        <ItemCard.Meta type="detail">
+          <InlineDamageTrack
+            label="Damage"
+            max={damageMax}
+            current={vehicle.damage?.physical.current ?? 0}
+            onChange={onDamageChange}
+          />
+        </ItemCard.Meta>
+      )}
 
       {onAddAttachment && (
         <ItemCard.AddChildButton onClick={onAddAttachment}>
-          Add Attachment
+          Equipment
         </ItemCard.AddChildButton>
       )}
 

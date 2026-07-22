@@ -50,13 +50,19 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   }
 
   const handleAddAttachment = async (parentId: UUID) => {
-    const saved = await attachmentFormDialog.open({ label: "Vehicle Attachment" })
+    const saved = await attachmentFormDialog.open({ label: "Equipment" })
     if (saved) saveItem({ ...saved, parentId })
   }
 
   const handleEditAttachment = async (attachment: ItemData) => {
-    const saved = await attachmentFormDialog.open({ item: attachment, label: "Vehicle Attachment" })
+    const saved = await attachmentFormDialog.open({ item: attachment, label: "Equipment" })
     if (saved) saveItem(saved)
+  }
+
+  const handleDamageChange = (vehicle: VehicleData, current: number) => {
+    const max = vehicle.damage?.physical.max || vehicle.body
+    const updated: VehicleData = { ...vehicle, damage: { physical: { current, max } } }
+    saveItem(updated)
   }
 
   return (
@@ -74,6 +80,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
             onAddAttachment={() => handleAddAttachment(vehicle.id as UUID)}
             onEditAttachment={(attachment) => handleEditAttachment(attachment)}
             onRemoveAttachment={(attachment) => removeItem(attachment)}
+            onDamageChange={(value) => handleDamageChange(vehicle, value)}
           />
         )
       })}

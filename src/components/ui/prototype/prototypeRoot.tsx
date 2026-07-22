@@ -5,46 +5,33 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
-import { Children, isValidElement, useMemo, useState } from "react"
+import { useState } from "react"
 
 import { PrototypeSelectionContext } from "./prototypeContext.ts"
-import type { PrototypeItemProps } from "./prototypeItem.tsx"
-import { PrototypeItem } from "./prototypeItem.tsx"
 
-/** Walks the tree (through any wrapping elements) collecting `Prototype.Item` names in first-seen order. */
-function collectNames(node: ReactNode, names: string[] = []): string[] {
-  Children.forEach(node, (child) => {
-    if (!isValidElement(child)) return
-
-    if (child.type === PrototypeItem) {
-      const { name, children } = child.props as PrototypeItemProps
-      if (!names.includes(name)) names.push(name)
-      collectNames(children, names)
-      return
-    }
-
-    const { children } = child.props as { children?: ReactNode }
-    if (children !== undefined) collectNames(children, names)
-  })
-
-  return names
+export interface PrototypeVersion {
+  /** Unique key. `Prototype.Item version="key"` matches against this. */
+  key: string
+  /** Display label shown in the switcher bar. */
+  name: string
 }
 
 export interface PrototypeRootProps {
+  /** The available versions, in switcher order. The first is selected by default. */
+  versions: PrototypeVersion[]
   children: ReactNode
 }
 
-export const PrototypeRoot: FC<PrototypeRootProps> = ({ children }) => {
-  const names = useMemo(() => collectNames(children), [children])
+export const PrototypeRoot: FC<PrototypeRootProps> = ({ versions, children }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const activeIndex = names.length === 0 ? 0 : Math.min(selectedIndex, names.length - 1)
-  const selectedName = names[activeIndex] ?? null
+  const activeIndex = versions.length === 0 ? 0 : Math.min(selectedIndex, versions.length - 1)
+  const selected = versions[activeIndex] ?? null
 
-  const goToPrevious = () => setSelectedIndex((activeIndex - 1 + names.length) % names.length)
-  const goToNext = () => setSelectedIndex((activeIndex + 1) % names.length)
+  const goToPrevious = () => setSelectedIndex((activeIndex - 1 + versions.length) % versions.length)
+  const goToNext = () => setSelectedIndex((activeIndex + 1) % versions.length)
 
   return (
-    <PrototypeSelectionContext.Provider value={selectedName}>
+    <PrototypeSelectionContext.Provider value={selected?.key ?? null}>
       <Box sx={{ border: "1px solid", borderColor: "divider" }}>
         {children}
       </Box>
@@ -69,7 +56,7 @@ export const PrototypeRoot: FC<PrototypeRootProps> = ({ children }) => {
           <RiArrowLeftSLine />
         </IconButton>
         <Typography variant="body2" sx={{ px: 1, whiteSpace: "nowrap" }}>
-          {names.length === 0 ? "0 / 0" : `${activeIndex + 1} / ${names.length} — ${selectedName}`}
+          {versions.length === 0 ? "0 / 0" : `${activeIndex + 1} / ${versions.length} — ${selected?.name}`}
         </Typography>
         <IconButton onClick={goToNext} aria-label="Next prototype" size="small">
           <RiArrowRightSLine />

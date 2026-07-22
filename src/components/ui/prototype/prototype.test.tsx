@@ -5,16 +5,21 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { Prototype } from "./prototype.tsx"
 
+const versions = [
+  { key: "grid", name: "grid" },
+  { key: "list", name: "list" },
+]
+
 const renderPrototype = () =>
   render(
-    <Prototype>
+    <Prototype versions={versions}>
       <div>
         <div>
           <div>
-            <Prototype.Item name="grid">
+            <Prototype.Item version="grid">
               <div>Grid content</div>
             </Prototype.Item>
-            <Prototype.Item name="list">
+            <Prototype.Item version="list">
               <div>List content</div>
             </Prototype.Item>
           </div>
@@ -62,24 +67,26 @@ describe("Prototype", () => {
     expect(screen.getByText("Grid content")).toBeDefined()
   })
 
-  it("groups items sharing the same name and shows/hides them together", () => {
+  it("groups items sharing the same version and shows/hides them together, even from a later-rendered component", () => {
+    const GridFooter = () => (
+      <div>
+        <Prototype.Item version="grid">
+          <div>Grid footer</div>
+        </Prototype.Item>
+        <Prototype.Item version="list">
+          <div>List body</div>
+        </Prototype.Item>
+      </div>
+    )
+
     render(
-      <Prototype>
+      <Prototype versions={versions}>
         <div>
-          <Prototype.Item name="grid">
+          <Prototype.Item version="grid">
             <div>Grid header</div>
           </Prototype.Item>
         </div>
-        <div>
-          <div>
-            <Prototype.Item name="grid">
-              <div>Grid footer</div>
-            </Prototype.Item>
-            <Prototype.Item name="list">
-              <div>List body</div>
-            </Prototype.Item>
-          </div>
-        </div>
+        <GridFooter />
       </Prototype>,
       { wrapper: ThemeWrapper },
     )

@@ -32,7 +32,7 @@ export default function DamageTrack({
     <Stack sx={{ gap: 0.5 }}>
       <Label label={label} />
 
-      <TrackCell onClick={() => onChange(0)}>Reset</TrackCell>
+      <DamageTrackCell onClick={() => onChange(0)}>Reset</DamageTrackCell>
 
       <Box
         sx={{
@@ -79,34 +79,39 @@ function DamageCell({
   woundInterval,
   toggleCell,
 }: DamageCellProps) {
-  const isWoundMarker = value > 0 && value % woundInterval === 0
-  const penalty = Math.floor(value / woundInterval)
-
   return (
-    <TrackCell
+    <DamageTrackCell
       filled={filled}
       isOverflow={isOverflow}
       onClick={() => toggleCell(value)}
     >
-      {/* Use non-breaking space to keep cells uniform size when empty */}
-      {isWoundMarker ? penalty * -1 : <>&nbsp;</>}
-    </TrackCell>
+      {getWoundModifierLabel(value, woundInterval)}
+    </DamageTrackCell>
   )
 }
 
-interface TrackCellProps {
+/** The wound penalty a cell marks (e.g. -1 every 3rd box), or a blank cell to keep cells uniform size. */
+export function getWoundModifierLabel(value: number, woundInterval: number): ReactNode {
+  const isWoundMarker = value > 0 && value % woundInterval === 0
+  if (!isWoundMarker) return <>&nbsp;</>
+
+  const penalty = Math.floor(value / woundInterval)
+  return penalty * -1
+}
+
+interface DamageTrackCellProps {
   children: ReactNode
   onClick: () => void
   filled?: boolean
   isOverflow?: boolean
 }
 
-function TrackCell({
+export function DamageTrackCell({
   children,
   onClick,
   filled = false,
   isOverflow = false,
-}: TrackCellProps) {
+}: DamageTrackCellProps) {
   return (
     <Button
       variant={filled ? "contained" : "outlined"}
