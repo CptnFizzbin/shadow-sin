@@ -13,7 +13,7 @@ import { useState } from "react"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { useActiveSkillDicePool } from "#/components/runner/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
-import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
+import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
 import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
@@ -108,6 +108,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
   const skillPool = useActiveSkillDicePool({ skillKey: resolvedSkill, attrOverride: weapon.attribute })
   const encumbranceGroup = useEncumbranceDiceGroup()
+  const woundMod = useWoundModifier()
 
   const modifierGroups: DiceGroupList = isMelee
     ? meleeAttackModifiers.map((modifier) => {
@@ -249,7 +250,12 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
       {currentStep === "modifiers" && (
         <Stack sx={{ gap: 1 }}>
-          <WoundModLabel />
+          {woundMod >= 1 && (
+            <FormControlLabel
+              control={<Checkbox checked disabled />}
+              label={`Wounded (-${woundMod})`}
+            />
+          )}
 
           {!isMelee && (
             <Typography variant="body2" color="text.secondary">
