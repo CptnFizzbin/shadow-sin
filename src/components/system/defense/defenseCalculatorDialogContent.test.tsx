@@ -120,12 +120,40 @@ describe("DefenseCalculatorDialogContent", () => {
       })
 
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-      fireEvent.click(screen.getByRole("button", { name: /dodge/i }))
+      // "Dodge" and "Full Dodge" both match /dodge/i — anchor to the plain row's accessible name.
+      fireEvent.click(screen.getByRole("button", { name: /^\d+ dodge\b/i }))
       goNext()
       goNext()
 
       const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
       expect(poolContainer.textContent).toContain(SkillKey.dodge)
+    })
+
+    it("Full Dodge counts Dodge twice and notes the action-economy cost", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 4 }]
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      expect(screen.getByText(/consumes your next action phase/i)).toBeTruthy()
+
+      fireEvent.click(screen.getByRole("button", { name: /^\d+ dodge\b/i }))
+      goNext()
+      goNext()
+      const plainPool = screen.getByText(/^Defense$/).parentElement!.parentElement!.textContent
+
+      // Total → Modifiers → Defense Skill
+      fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
+      fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
+      fireEvent.click(screen.getByRole("button", { name: /full dodge/i }))
+      goNext()
+      goNext()
+
+      const fullDodgePool = screen.getByText(/^Defense$/).parentElement!.parentElement!.textContent
+      expect(fullDodgePool).not.toBe(plainPool)
+
+      const dodgeOccurrences = fullDodgePool!.match(new RegExp(SkillKey.dodge, "g")) ?? []
+      expect(dodgeOccurrences.length).toBe(2)
     })
   })
 

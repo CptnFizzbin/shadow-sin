@@ -170,6 +170,11 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ? spellDefaultingGroup
     : (selectedSkillEntry?.defaultingGroup ?? null)
 
+  // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
+  const doubledSkillGroup: DiceGroup | null = attackType !== "spell" && selectedOption.doubleSkill && selectedSkillEntry?.diceGroup
+    ? { ...selectedSkillEntry.diceGroup, id: `${selectedSkillEntry.diceGroup.id ?? selectedOption.key}-double` }
+    : null
+
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
       if (!toggleValues[modifier.id]) return null
@@ -207,6 +212,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const groups: DiceGroupList = [
     attributeGroup,
     skillGroupForTotal,
+    doubledSkillGroup,
     defaultingGroupForTotal,
     woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
@@ -330,6 +336,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                             >
                               <SkillListItem
                                 name={option.label}
+                                specialization={option.note}
                                 rating={rating}
                                 attr={baseAttr}
                                 isDefaulted={isDefaulted}

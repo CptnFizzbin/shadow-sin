@@ -50,6 +50,10 @@ export interface DefenseSkillOption {
   group: DefenseSkillGroup
   /** Omitted for the baseline "no skill" option (attribute alone). */
   skill?: SkillKey
+  /** When true, the skill's dice are added a second time (e.g. Full Dodge doubles Dodge). */
+  doubleSkill?: boolean
+  /** Rules note shown under the option, e.g. an action-economy cost. */
+  note?: string
 }
 
 /** Selectable defense skills per attack type, grouped by maneuver. */
@@ -57,6 +61,14 @@ export const defenseSkillOptionsByAttackType: Record<DefenseAttackType, DefenseS
   melee: [
     { key: "none", label: "Basic", group: "Basic" },
     { key: "dodge", label: "Dodge", group: "Dodge", skill: SkillKey.dodge },
+    {
+      key: "full-dodge",
+      label: "Full Dodge",
+      group: "Dodge",
+      skill: SkillKey.dodge,
+      doubleSkill: true,
+      note: "Reaction + Dodge + Dodge. Consumes your next action phase.",
+    },
     { key: "block-unarmed", label: "Unarmed Combat", group: "Block", skill: SkillKey.unarmedCombat },
     { key: "parry-blades", label: "Blades", group: "Parry", skill: SkillKey.blades },
     { key: "parry-clubs", label: "Clubs", group: "Parry", skill: SkillKey.clubs },
