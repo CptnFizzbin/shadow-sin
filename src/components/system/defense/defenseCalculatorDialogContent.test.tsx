@@ -73,116 +73,266 @@ describe("DefenseCalculatorDialogContent", () => {
     expect(screen.getByText(/step 3 of 4/i)).toBeTruthy()
   })
 
-  it("only offers ranged-only modifiers (like Cover) when the attack type is Ranged", () => {
-    renderDialog()
+  describe("Defense Skill step", () => {
+    it("groups melee options under Basic, Dodge, Parry, and Block headers", () => {
+      renderDialog()
 
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    goNext()
-    expect(screen.queryByText(/^cover$/i)).toBeNull()
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      // Untrained groups are hidden until this is on — flip it to see all four.
+      fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
 
-    fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
-    fireEvent.click(screen.getByRole("button", { name: /back to attack types/i }))
-    fireEvent.click(screen.getByRole("button", { name: /ranged/i }))
-    goNext()
-    expect(screen.getByText(/^cover$/i)).toBeTruthy()
-  })
-
-  it("hides an untrained skill from the picker until Show Defaulting Skills is enabled", () => {
-    renderDialog((sheet) => {
-      sheet.skills.activeSkills = []
+      // "Basic" and "Dodge" each appear twice: once as the group header, once as
+      // that group's lone row (which shares the header's name).
+      expect(screen.getAllByText("Basic").length).toBeGreaterThan(0)
+      expect(screen.getAllByText("Dodge").length).toBeGreaterThan(0)
+      expect(screen.getByText("Parry")).toBeTruthy()
+      expect(screen.getByText("Block")).toBeTruthy()
+      expect(screen.getByRole("button", { name: /^0 blades/i })).toBeTruthy()
     })
 
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.queryByRole("button", { name: /parry \(blades\)/i })).toBeNull()
+    it("only shows Basic and Dodge headers for a ranged attack (no Parry/Block)", () => {
+      renderDialog()
 
-    fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
-    expect(screen.getByRole("button", { name: /parry \(blades\)/i })).toBeTruthy()
-  })
+      fireEvent.click(screen.getByRole("button", { name: /ranged/i }))
+      fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
 
-  it("adds a trained skill's dice to the total once selected", () => {
-    renderDialog((sheet) => {
-      sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 4 }]
+      expect(screen.getAllByText("Basic").length).toBeGreaterThan(0)
+      expect(screen.getAllByText("Dodge").length).toBeGreaterThan(0)
+      expect(screen.queryByText("Parry")).toBeNull()
+      expect(screen.queryByText("Block")).toBeNull()
     })
 
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    fireEvent.click(screen.getByRole("button", { name: /dodge/i }))
-    goNext()
-    goNext()
+    it("hides an untrained skill from the picker until Show Defaulting Skills is enabled", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = []
+      })
 
-    const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-    expect(poolContainer.textContent).toContain(SkillKey.dodge)
-  })
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      expect(screen.queryByRole("button", { name: /blades/i })).toBeNull()
 
-  it("applies a checked modifier's value to the total", () => {
-    renderDialog()
-
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    goNext()
-    fireEvent.click(screen.getByRole("checkbox", { name: /you're prone/i }))
-    goNext()
-
-    const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-    expect(poolContainer.textContent).toContain("You're prone")
-  })
-
-  it("includes the worn effective armor value in the Resist Damage step for a physical attack", () => {
-    renderDialog((sheet) => {
-      const jacket: ArmorData = {
-        id: "00000000-0000-0000-0000-000000000001",
-        name: "Test Jacket",
-        itemType: ItemType.armor,
-        equipped: true,
-        ballistic: 8,
-        impact: 6,
-        damage: { ballistic: 2, impact: 1 },
-      }
-      sheet.gear[jacket.id] = jacket
+      fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
+      expect(screen.getByRole("button", { name: /blades/i })).toBeTruthy()
     })
 
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    goNext()
-    goNext()
-    goNext()
+    it("adds a trained skill's dice to the total once selected", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.dodge, rating: 4 }]
+      })
 
-    const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
-    expect(poolContainer.textContent).toContain("Armor (Ballistic)6")
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      fireEvent.click(screen.getByRole("button", { name: /dodge/i }))
+      goNext()
+      goNext()
 
-    fireEvent.click(screen.getByRole("button", { name: /^impact$/i }))
-    expect(poolContainer.textContent).toContain("Armor (Impact)5")
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain(SkillKey.dodge)
+    })
   })
 
-  it("does not apply armor to the Resist Damage step for a spell attack", () => {
-    renderDialog((sheet) => {
-      const jacket: ArmorData = {
-        id: "00000000-0000-0000-0000-000000000001",
-        name: "Test Jacket",
-        itemType: ItemType.armor,
-        equipped: true,
-        ballistic: 8,
-        impact: 6,
-      }
-      sheet.gear[jacket.id] = jacket
+  describe("Spell Counterspelling picker", () => {
+    it("contributes nothing until Counterspelling is checked", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.counterspelling, rating: 5 }]
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      goNext()
+      goNext()
+
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).not.toContain("Counterspelling")
     })
 
-    fireEvent.click(screen.getByRole("button", { name: /spell/i }))
-    goNext()
-    goNext()
-    goNext()
+    it("uses the runner's own rating for From Yourself", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.counterspelling, rating: 5 }]
+      })
 
-    expect(screen.queryByRole("button", { name: /ballistic/i })).toBeNull()
-    const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
-    expect(poolContainer.textContent).not.toContain("Armor")
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      fireEvent.click(screen.getByRole("checkbox", { name: /counterspelling/i }))
+      expect(screen.getByText(/from yourself \(5\)/i)).toBeTruthy()
+
+      goNext()
+      goNext()
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain(SkillKey.counterspelling)
+    })
+
+    it("uses a manually entered rating for From Another", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      fireEvent.click(screen.getByRole("checkbox", { name: /counterspelling/i }))
+      fireEvent.click(screen.getByRole("radio", { name: /from another/i }))
+
+      const counter = screen.getByRole("textbox")
+      fireEvent.focus(counter)
+      fireEvent.change(counter, { target: { value: "6" } })
+      fireEvent.blur(counter)
+
+      goNext()
+      goNext()
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain("Counterspelling (Other)6")
+    })
   })
 
-  it("shows a warning and no total when unaware of the attack", () => {
-    renderDialog()
+  describe("Modifiers step", () => {
+    it("shows a fixed, checked Wounded checkbox only when the wound modifier is at least 1", () => {
+      renderDialog((sheet) => {
+        sheet.damage.physical = 3
+      })
 
-    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    goNext()
-    fireEvent.click(screen.getByRole("checkbox", { name: /unaware of the attack/i }))
-    goNext()
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
 
-    expect(screen.getByText(/no defense is possible/i)).toBeTruthy()
-    expect(screen.queryByText(/^Defense$/)).toBeNull()
+      const wounded = screen.getByRole("checkbox", { name: /wounded/i })
+      expect((wounded as HTMLInputElement).checked).toBe(true)
+      expect((wounded as HTMLInputElement).disabled).toBe(true)
+    })
+
+    it("hides the Wounded checkbox when undamaged", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+
+      expect(screen.queryByRole("checkbox", { name: /wounded/i })).toBeNull()
+    })
+
+    it("applies a checked toggle modifier's value to the total", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+      fireEvent.click(screen.getByRole("checkbox", { name: /you're prone/i }))
+      goNext()
+
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain("You're prone")
+    })
+
+    it("reveals a # of Attacks counter only once the previous-defenses checkbox is checked", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+
+      expect(screen.queryByText(/# of attacks/i)).toBeNull()
+
+      fireEvent.click(screen.getByRole("checkbox", { name: /defended against previous attacks/i }))
+      expect(screen.getByText(/# of attacks/i)).toBeTruthy()
+
+      goNext()
+      const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain("(1)")
+    })
+
+    it("only offers ranged-only modifiers (like Cover) when the attack type is Ranged", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+      expect(screen.queryByText(/^cover$/i)).toBeNull()
+
+      fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
+      fireEvent.click(screen.getByRole("button", { name: /back to attack types/i }))
+      fireEvent.click(screen.getByRole("button", { name: /ranged/i }))
+      goNext()
+      expect(screen.getByText(/^cover$/i)).toBeTruthy()
+    })
+
+    it("shows Cover and firing method as exclusive radio groups defaulting to No Cover / Normal Attack", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /ranged/i }))
+      goNext()
+
+      const noCover = screen.getByRole("radio", { name: /no cover/i })
+      const goodCover = screen.getByRole("radio", { name: /good cover/i })
+      expect((noCover as HTMLInputElement).checked).toBe(true)
+
+      fireEvent.click(goodCover)
+      expect((goodCover as HTMLInputElement).checked).toBe(true)
+      expect((noCover as HTMLInputElement).checked).toBe(false)
+
+      expect(screen.getByRole("radio", { name: /normal attack/i })).toBeTruthy()
+    })
+
+    it("shows a warning and no total when unaware of the attack", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+      fireEvent.click(screen.getByRole("checkbox", { name: /unaware of the attack/i }))
+      goNext()
+
+      expect(screen.getByText(/no defense is possible/i)).toBeTruthy()
+      expect(screen.queryByText(/^Defense$/)).toBeNull()
+    })
+  })
+
+  describe("Resist Damage step", () => {
+    it("includes the worn effective armor value for a physical attack", () => {
+      renderDialog((sheet) => {
+        const jacket: ArmorData = {
+          id: "00000000-0000-0000-0000-000000000001",
+          name: "Test Jacket",
+          itemType: ItemType.armor,
+          equipped: true,
+          ballistic: 8,
+          impact: 6,
+          damage: { ballistic: 2, impact: 1 },
+        }
+        sheet.gear[jacket.id] = jacket
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+      goNext()
+      goNext()
+
+      const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain("Armor (Ballistic)6")
+
+      fireEvent.click(screen.getByRole("button", { name: /^impact$/i }))
+      expect(poolContainer.textContent).toContain("Armor (Impact)5")
+    })
+
+    it("does not apply armor for a spell attack", () => {
+      renderDialog((sheet) => {
+        const jacket: ArmorData = {
+          id: "00000000-0000-0000-0000-000000000001",
+          name: "Test Jacket",
+          itemType: ItemType.armor,
+          equipped: true,
+          ballistic: 8,
+          impact: 6,
+        }
+        sheet.gear[jacket.id] = jacket
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      goNext()
+      goNext()
+      goNext()
+
+      expect(screen.queryByRole("button", { name: /ballistic/i })).toBeNull()
+      const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).not.toContain("Armor")
+    })
+
+    it("shows both the Physical and Stun damage tracks for quick adjustment", () => {
+      renderDialog()
+
+      fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+      goNext()
+      goNext()
+      goNext()
+
+      expect(screen.getByText("Physical")).toBeTruthy()
+      expect(screen.getByText("Stun")).toBeTruthy()
+      expect(screen.getAllByRole("button", { name: /^reset$/i })).toHaveLength(2)
+    })
   })
 })

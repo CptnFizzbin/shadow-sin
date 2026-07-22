@@ -38,30 +38,37 @@ export const defenseAttackTypes: DefenseAttackTypeInfo[] = [
   },
 ]
 
+/** Section a defense skill option is grouped under in the skill picker. */
+export type DefenseSkillGroup = "Basic" | "Dodge" | "Parry" | "Block"
+
+export const defenseSkillGroupOrder: DefenseSkillGroup[] = ["Basic", "Dodge", "Parry", "Block"]
+
 export interface DefenseSkillOption {
   /** Unique within its attack type's list. */
   key: string
   label: string
+  group: DefenseSkillGroup
   /** Omitted for the baseline "no skill" option (attribute alone). */
   skill?: SkillKey
 }
 
-/** Selectable defense skills per attack type. The first entry is always the no-skill baseline. */
+/** Selectable defense skills per attack type, grouped by maneuver. */
 export const defenseSkillOptionsByAttackType: Record<DefenseAttackType, DefenseSkillOption[]> = {
   melee: [
-    { key: "none", label: "None (Reaction only)" },
-    { key: "dodge", label: "Dodge", skill: SkillKey.dodge },
-    { key: "unarmedCombat", label: "Block/Parry (Unarmed Combat)", skill: SkillKey.unarmedCombat },
-    { key: "blades", label: "Parry (Blades)", skill: SkillKey.blades },
-    { key: "clubs", label: "Parry (Clubs)", skill: SkillKey.clubs },
+    { key: "none", label: "Basic", group: "Basic" },
+    { key: "dodge", label: "Dodge", group: "Dodge", skill: SkillKey.dodge },
+    { key: "block-unarmed", label: "Unarmed Combat", group: "Block", skill: SkillKey.unarmedCombat },
+    { key: "parry-blades", label: "Blades", group: "Parry", skill: SkillKey.blades },
+    { key: "parry-clubs", label: "Clubs", group: "Parry", skill: SkillKey.clubs },
+    { key: "parry-unarmed", label: "Unarmed Combat", group: "Parry", skill: SkillKey.unarmedCombat },
   ],
   ranged: [
-    { key: "none", label: "None (Reaction only)" },
-    { key: "dodge", label: "Full Dodge", skill: SkillKey.dodge },
+    { key: "none", label: "Basic", group: "Basic" },
+    { key: "dodge", label: "Dodge", group: "Dodge", skill: SkillKey.dodge },
   ],
+  // Spell defense uses a bespoke Counterspelling picker instead of this grouped list.
   spell: [
-    { key: "none", label: "None (attribute only)" },
-    { key: "counterspelling", label: "Counterspelling", skill: SkillKey.counterspelling },
+    { key: "none", label: "Basic", group: "Basic" },
   ],
 }
 
@@ -121,7 +128,7 @@ export const defenseModifiers: DefenseModifierDatum[] = [
     label: "You've defended against previous attacks since your last action",
     perUnit: -1,
     unitLabel: "additional defense",
-    min: 0,
+    min: 1,
     max: 10,
   },
   {
@@ -144,7 +151,7 @@ export const defenseModifiers: DefenseModifierDatum[] = [
     label: "Cover",
     attackTypes: ["ranged"],
     options: [
-      { key: "none", label: "None", value: 0 },
+      { key: "none", label: "No Cover", value: 0 },
       { key: "partial", label: "Partial Cover", value: 2 },
       { key: "good", label: "Good Cover", value: 4 },
     ],
@@ -155,7 +162,7 @@ export const defenseModifiers: DefenseModifierDatum[] = [
     label: "Attacker's firing method",
     attackTypes: ["ranged"],
     options: [
-      { key: "none", label: "None", value: 0 },
+      { key: "none", label: "Normal Attack", value: 0 },
       { key: "wideBurst", label: "Wide Burst", value: -2 },
       { key: "longWideBurst", label: "Long Wide Burst", value: -5 },
       { key: "fullAutoWideBurst", label: "Full-Auto Wide Burst", value: -9 },

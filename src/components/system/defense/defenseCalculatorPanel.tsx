@@ -4,7 +4,11 @@ import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Checkbox from "@mui/material/Checkbox"
 import Divider from "@mui/material/Divider"
+import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
+import Grid from "@mui/material/Grid"
+import Radio from "@mui/material/Radio"
+import RadioGroup from "@mui/material/RadioGroup"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
@@ -13,7 +17,8 @@ import { useState } from "react"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
-import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
+import DamageTrack from "#/components/system/damage/damageTrack.tsx"
+import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import {
@@ -25,12 +30,20 @@ import {
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { Actions } from "#/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
 
 import type { DefenseAttackType } from "./defenseCalculatorData.ts"
-import { defenseModifiersForAttackType, defenseSkillOptionsByAttackType } from "./defenseCalculatorData.ts"
+import {
+  defenseModifiersForAttackType,
+  defenseSkillGroupOrder,
+  defenseSkillOptionsByAttackType,
+} from "./defenseCalculatorData.ts"
 
 interface DefenseCalculatorPanelProps {
   attackType: DefenseAttackType
@@ -38,6 +51,7 @@ interface DefenseCalculatorPanelProps {
 
 type SpellAttribute = "physical" | "mana"
 type ArmorType = "ballistic" | "impact"
+type CounterspellingSource = "self" | "other"
 type WizardStep = "skill" | "modifiers" | "total" | "resist"
 
 const wizardSteps: { step: WizardStep, label: string }[] = [
@@ -62,11 +76,18 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const [selectedKey, setSelectedKey] = useState(skillOptions[0].key)
   const [includeDefaultingSkills, setIncludeDefaultingSkills] = useState(false)
   const [spellAttribute, setSpellAttribute] = useState<SpellAttribute>("physical")
+  const [counterspellingEnabled, setCounterspellingEnabled] = useState(false)
+  const [counterspellingSource, setCounterspellingSource] = useState<CounterspellingSource>("self")
+  const [otherRating, setOtherRating] = useState(0)
   const [unaware, setUnaware] = useState(false)
   const [toggleValues, setToggleValues] = useState<Record<string, boolean>>({})
   const [stepperValues, setStepperValues] = useState<Record<string, number>>({})
   const [choiceValues, setChoiceValues] = useState<Record<string, string>>({})
   const [armorType, setArmorType] = useState<ArmorType>("ballistic")
+
+  const dispatch = useRunnerStoreDispatch()
+  const physicalTrack = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
+  const stunTrack = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
@@ -106,6 +127,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     },
   }
 
+  const woundMod = useWoundModifier()
   const woundGroup = useWoundDiceGroup()
   const encumbranceGroup = useEncumbranceDiceGroup()
   const armorTotals = useEncumbrance()
@@ -131,6 +153,23 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     size: attackType === "spell" ? (spellAttribute === "physical" ? body : willpower) : reaction,
   }
 
+  const spellSkillGroup: DiceGroup | null = attackType === "spell" && counterspellingEnabled
+    ? (counterspellingSource === "self"
+        ? counterspellingGroup
+        : { id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating })
+    : null
+
+  const spellDefaultingGroup: DiceGroup | null = attackType === "spell"
+    && counterspellingEnabled
+    && counterspellingSource === "self"
+    ? counterspellingDefaulting
+    : null
+
+  const skillGroupForTotal = attackType === "spell" ? spellSkillGroup : (selectedSkillEntry?.diceGroup ?? null)
+  const defaultingGroupForTotal = attackType === "spell"
+    ? spellDefaultingGroup
+    : (selectedSkillEntry?.defaultingGroup ?? null)
+
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
       if (!toggleValues[modifier.id]) return null
@@ -143,8 +182,9 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     }
 
     if (modifier.kind === "stepper") {
+      const enabled = toggleValues[modifier.id] ?? false
       const count = stepperValues[modifier.id] ?? 0
-      if (count === 0) return null
+      if (!enabled || count === 0) return null
       return {
         id: modifier.id,
         name: `${modifier.label} (${count})`,
@@ -166,8 +206,8 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const groups: DiceGroupList = [
     attributeGroup,
-    selectedSkillEntry?.diceGroup ?? null,
-    selectedSkillEntry?.defaultingGroup ?? null,
+    skillGroupForTotal,
+    defaultingGroupForTotal,
     woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
@@ -194,6 +234,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const currentStep = wizardSteps[stepIndex].step
   const isFirstStep = stepIndex === 0
   const isLastStep = stepIndex === wizardSteps.length - 1
+
+  const groupedSkillOptions = defenseSkillGroupOrder
+    .map((group) => ({ group, options: visibleSkillOptions.filter((option) => option.group === group) }))
+    .filter(({ options }) => options.length > 0)
 
   return (
     <Stack sx={{ gap: 1.5 }}>
@@ -223,44 +267,92 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             </Stack>
           )}
 
-          <Stack sx={{ gap: 1 }}>
-            {visibleSkillOptions.map((option) => {
-              const isSelected = option.key === selectedOption.key
-              const rating = option.skill ? skillDataByKey[option.skill]?.rating ?? 0 : 0
-              const defaultable = option.skill ? (skillList[option.skill].defaultable ?? true) : false
-              const isDefaulted = rating === 0 && defaultable
-
-              return (
-                <Box
-                  key={option.key}
-                  sx={{
-                    borderRadius: 1,
-                    border: "1px solid",
-                    borderColor: isSelected ? "secondary.main" : "divider",
-                    backgroundColor: isSelected ? "action.selected" : undefined,
-                  }}
-                >
-                  <SkillListItem
-                    name={option.label}
-                    rating={rating}
-                    attr={baseAttr}
-                    isDefaulted={isDefaulted}
-                    onClick={() => setSelectedKey(option.key)}
+          {attackType === "spell"
+            ? (
+                <Stack sx={{ gap: 0.5 }}>
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        checked={counterspellingEnabled}
+                        onChange={(event) => setCounterspellingEnabled(event.target.checked)}
+                      />
+                    )}
+                    label="Counterspelling"
                   />
-                </Box>
-              )
-            })}
-          </Stack>
 
-          <FormControlLabel
-            control={(
-              <Checkbox
-                checked={includeDefaultingSkills}
-                onChange={(event) => setIncludeDefaultingSkills(event.target.checked)}
-              />
-            )}
-            label="Show Defaulting Skills"
-          />
+                  {counterspellingEnabled && (
+                    <Box sx={{ pl: 4 }}>
+                      <RadioGroup
+                        value={counterspellingSource}
+                        onChange={(event) => setCounterspellingSource(event.target.value as CounterspellingSource)}
+                      >
+                        <FormControlLabel value="self" control={<Radio />} label={`From Yourself (${counterspellingRating})`} />
+                        <FormControlLabel value="other" control={<Radio />} label="From Another" />
+                      </RadioGroup>
+
+                      {counterspellingSource === "other" && (
+                        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+                          <Typography variant="body2" sx={{ flex: 1 }}>Their Counterspelling rating</Typography>
+                          <CounterInput
+                            value={otherRating}
+                            onChange={(value) => setOtherRating(value ?? 0)}
+                            min={0}
+                            max={20}
+                            size="small"
+                          />
+                        </Stack>
+                      )}
+                    </Box>
+                  )}
+                </Stack>
+              )
+            : (
+                <Stack sx={{ gap: 1.5 }}>
+                  {groupedSkillOptions.map(({ group, options }) => (
+                    <Stack key={group} sx={{ gap: 0.5 }}>
+                      <Label label={group} />
+                      <Stack sx={{ gap: 1 }}>
+                        {options.map((option) => {
+                          const isSelected = option.key === selectedOption.key
+                          const rating = option.skill ? skillDataByKey[option.skill]?.rating ?? 0 : 0
+                          const defaultable = option.skill ? (skillList[option.skill].defaultable ?? true) : false
+                          const isDefaulted = rating === 0 && defaultable
+
+                          return (
+                            <Box
+                              key={option.key}
+                              sx={{
+                                borderRadius: 1,
+                                border: "1px solid",
+                                borderColor: isSelected ? "secondary.main" : "divider",
+                                backgroundColor: isSelected ? "action.selected" : undefined,
+                              }}
+                            >
+                              <SkillListItem
+                                name={option.label}
+                                rating={rating}
+                                attr={baseAttr}
+                                isDefaulted={isDefaulted}
+                                onClick={() => setSelectedKey(option.key)}
+                              />
+                            </Box>
+                          )
+                        })}
+                      </Stack>
+                    </Stack>
+                  ))}
+
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        checked={includeDefaultingSkills}
+                        onChange={(event) => setIncludeDefaultingSkills(event.target.checked)}
+                      />
+                    )}
+                    label="Show Defaulting Skills"
+                  />
+                </Stack>
+              )}
         </Stack>
       )}
 
@@ -277,7 +369,12 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             label="You're unaware of the attack (no defense possible)"
           />
 
-          <WoundModLabel />
+          {woundMod >= 1 && (
+            <FormControlLabel
+              control={<Checkbox checked disabled />}
+              label={`Wounded (-${woundMod})`}
+            />
+          )}
 
           {modifiers.map((modifier) => {
             if (modifier.kind === "toggle") {
@@ -299,17 +396,41 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             }
 
             if (modifier.kind === "stepper") {
+              const enabled = toggleValues[modifier.id] ?? false
+
               return (
-                <Stack key={modifier.id} direction="row" sx={{ gap: 1, alignItems: "center" }}>
-                  <Typography variant="body2" sx={{ flex: 1 }}>{modifier.label}</Typography>
-                  <CounterInput
-                    value={stepperValues[modifier.id] ?? 0}
-                    onChange={(value) => setStepperValues((prev) => ({ ...prev, [modifier.id]: value ?? 0 }))}
-                    min={modifier.min}
-                    max={modifier.max}
+                <Stack key={modifier.id} sx={{ gap: 0.5 }}>
+                  <FormControlLabel
                     disabled={unaware}
-                    size="small"
+                    control={(
+                      <Checkbox
+                        checked={enabled}
+                        onChange={(event) => {
+                          const checked = event.target.checked
+                          setToggleValues((prev) => ({ ...prev, [modifier.id]: checked }))
+                          if (checked && !stepperValues[modifier.id]) {
+                            setStepperValues((prev) => ({ ...prev, [modifier.id]: modifier.min }))
+                          }
+                        }}
+                        disabled={unaware}
+                      />
+                    )}
+                    label={modifier.label}
                   />
+
+                  {enabled && (
+                    <Stack direction="row" sx={{ gap: 1, alignItems: "center", pl: 4 }}>
+                      <Typography variant="body2" sx={{ flex: 1 }}># of Attacks</Typography>
+                      <CounterInput
+                        value={stepperValues[modifier.id] ?? modifier.min}
+                        onChange={(value) => setStepperValues((prev) => ({ ...prev, [modifier.id]: value ?? modifier.min }))}
+                        min={modifier.min}
+                        max={modifier.max}
+                        disabled={unaware}
+                        size="small"
+                      />
+                    </Stack>
+                  )}
                 </Stack>
               )
             }
@@ -317,26 +438,24 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
             const chosenKey = choiceValues[modifier.id] ?? modifier.options[0].key
 
             return (
-              <Stack key={modifier.id} sx={{ gap: 0 }}>
+              <FormControl key={modifier.id} disabled={unaware}>
                 <Typography variant="body2" color="text.secondary">{modifier.label}</Typography>
-                {modifier.options.slice(1).map((option) => (
-                  <FormControlLabel
-                    key={option.key}
-                    disabled={unaware}
-                    control={(
-                      <Checkbox
-                        checked={chosenKey === option.key}
-                        onChange={(event) => setChoiceValues((prev) => ({
-                          ...prev,
-                          [modifier.id]: event.target.checked ? option.key : modifier.options[0].key,
-                        }))}
-                        disabled={unaware}
-                      />
-                    )}
-                    label={`${option.label} (${option.value >= 0 ? "+" : ""}${option.value})`}
-                  />
-                ))}
-              </Stack>
+                <RadioGroup
+                  value={chosenKey}
+                  onChange={(event) =>
+                    setChoiceValues((prev) => ({ ...prev, [modifier.id]: event.target.value }))}
+                >
+                  {modifier.options.map((option) => (
+                    <FormControlLabel
+                      key={option.key}
+                      value={option.key}
+                      disabled={unaware}
+                      control={<Radio disabled={unaware} />}
+                      label={`${option.label}${option.value !== 0 ? ` (${option.value >= 0 ? "+" : ""}${option.value})` : ""}`}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
             )
           })}
         </Stack>
@@ -371,6 +490,32 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
           )}
 
           <DicePool name="Resist Damage" groups={resistGroups} />
+
+          <Divider />
+
+          <Label label="Damage Taken" />
+          <Grid container columns={2} spacing={1}>
+            <Grid size={1}>
+              <DamageTrack
+                label="Physical"
+                max={physicalTrack.max}
+                current={physicalTrack.current}
+                woundInterval={physicalTrack.woundInterval}
+                allowOverflow
+                onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.physical, value: newValue }))}
+              />
+            </Grid>
+
+            <Grid size={1}>
+              <DamageTrack
+                label="Stun"
+                max={stunTrack.max}
+                current={stunTrack.current}
+                woundInterval={stunTrack.woundInterval}
+                onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
+              />
+            </Grid>
+          </Grid>
         </Stack>
       )}
 
