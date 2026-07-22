@@ -65,6 +65,30 @@ describe("ArmorFormDialog", () => {
     })
   })
 
+  it("defaults to Base and submits isModifier: true when Modifier is selected", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<ArmorData>()
+    ctrl.open()
+    renderInBuilder(<ArmorFormDialog ctrl={ctrl} />)
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+
+    // Act
+    fireEvent.change(within(dialog).getByLabelText(/^name$/i), {
+      target: { value: "Helmet" },
+    })
+    fireEvent.click(within(dialog).getByRole("button", { name: /^modifier$/i }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert
+    const savedItem = await ctrl.result()
+    await waitFor(() => {
+      expect(savedItem?.name).toBe("Helmet")
+      expect(savedItem?.isModifier).toBe(true)
+    })
+  })
+
   it("populates fields when editing an existing armor item", () => {
     // Arrange
     const existingArmor: ArmorData = {
