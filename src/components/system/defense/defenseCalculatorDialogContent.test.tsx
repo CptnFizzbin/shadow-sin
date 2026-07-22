@@ -135,7 +135,7 @@ describe("DefenseCalculatorDialogContent", () => {
       })
 
       fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-      expect(screen.getByText(/consumes your next action phase/i)).toBeTruthy()
+      expect(screen.getByText(/consumes next action phase/i)).toBeTruthy()
 
       fireEvent.click(screen.getByRole("button", { name: /^\d+ dodge\b/i }))
       goNext()

@@ -67,7 +67,7 @@ export const defenseSkillOptionsByAttackType: Record<DefenseAttackType, DefenseS
       group: "Dodge",
       skill: SkillKey.dodge,
       doubleSkill: true,
-      note: "Reaction + Dodge + Dodge. Consumes your next action phase.",
+      note: "(consumes next action phase)",
     },
     { key: "block-unarmed", label: "Unarmed Combat", group: "Block", skill: SkillKey.unarmedCombat },
     { key: "parry-blades", label: "Blades", group: "Parry", skill: SkillKey.blades },
