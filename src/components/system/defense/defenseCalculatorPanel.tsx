@@ -22,6 +22,7 @@ import {
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
@@ -36,12 +37,14 @@ interface DefenseCalculatorPanelProps {
 }
 
 type SpellAttribute = "physical" | "mana"
-type WizardStep = "skill" | "modifiers" | "total"
+type ArmorType = "ballistic" | "impact"
+type WizardStep = "skill" | "modifiers" | "total" | "resist"
 
 const wizardSteps: { step: WizardStep, label: string }[] = [
   { step: "skill", label: "Defense Skill" },
   { step: "modifiers", label: "Modifiers" },
   { step: "total", label: "Total" },
+  { step: "resist", label: "Resist Damage" },
 ]
 
 interface SkillDefenseEntry {
@@ -63,6 +66,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const [toggleValues, setToggleValues] = useState<Record<string, boolean>>({})
   const [stepperValues, setStepperValues] = useState<Record<string, number>>({})
   const [choiceValues, setChoiceValues] = useState<Record<string, string>>({})
+  const [armorType, setArmorType] = useState<ArmorType>("ballistic")
 
   // Every skill any attack type can reference gets a fixed hook call, regardless of what the
   // user has selected, so the hook order never changes when the selection does.
@@ -104,6 +108,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const woundGroup = useWoundDiceGroup()
   const encumbranceGroup = useEncumbranceDiceGroup()
+  const armorTotals = useEncumbrance()
 
   const visibleSkillOptions = skillOptions.filter((option) => {
     if (!option.skill) return true
@@ -166,6 +171,24 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
+  ]
+
+  // Spells bypass armor in SR4e — only melee/ranged damage gets the worn armor's protection.
+  const resistAttr = attackType === "spell"
+    ? (spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower)
+    : AttributeKey.body
+
+  const resistAttrValue = attackType === "spell"
+    ? (spellAttribute === "physical" ? body : willpower)
+    : body
+
+  const armorValue = armorType === "ballistic" ? armorTotals.totalBallistic : armorTotals.totalImpact
+
+  const resistGroups: DiceGroupList = [
+    { name: AttributeLabels[resistAttr], size: resistAttrValue },
+    attackType !== "spell"
+      ? { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" }
+      : null,
   ]
 
   const currentStep = wizardSteps[stepIndex].step
@@ -323,6 +346,32 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
         unaware
           ? <Alert severity="warning">No defense is possible — you're unaware of the attack.</Alert>
           : <DicePool name="Defense" groups={groups} />
+      )}
+
+      {currentStep === "resist" && (
+        <Stack sx={{ gap: 1.5 }}>
+          {attackType !== "spell" && (
+            <Stack sx={{ gap: 0.5 }}>
+              <Label label="Armor Type" />
+              <ButtonGroup size="small" variant="outlined" fullWidth>
+                <Button
+                  variant={armorType === "ballistic" ? "contained" : "outlined"}
+                  onClick={() => setArmorType("ballistic")}
+                >
+                  Ballistic
+                </Button>
+                <Button
+                  variant={armorType === "impact" ? "contained" : "outlined"}
+                  onClick={() => setArmorType("impact")}
+                >
+                  Impact
+                </Button>
+              </ButtonGroup>
+            </Stack>
+          )}
+
+          <DicePool name="Resist Damage" groups={resistGroups} />
+        </Stack>
       )}
 
       <Divider />

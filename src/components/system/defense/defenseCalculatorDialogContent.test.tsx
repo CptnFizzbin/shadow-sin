@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { DialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
+import type { ArmorData } from "#/system/gear/armorData.ts"
+import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -44,7 +46,7 @@ describe("DefenseCalculatorDialogContent", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.getByText(/step 1 of 3.*defense skill/i)).toBeTruthy()
+    expect(screen.getByText(/step 1 of 4.*defense skill/i)).toBeTruthy()
 
     fireEvent.click(screen.getByRole("button", { name: /back to attack types/i }))
     expect(screen.getByRole("button", { name: /ranged/i })).toBeTruthy()
@@ -55,17 +57,20 @@ describe("DefenseCalculatorDialogContent", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.getByText(/step 1 of 3/i)).toBeTruthy()
+    expect(screen.getByText(/step 1 of 4/i)).toBeTruthy()
 
     goNext()
-    expect(screen.getByText(/step 2 of 3.*modifiers/i)).toBeTruthy()
+    expect(screen.getByText(/step 2 of 4.*modifiers/i)).toBeTruthy()
 
     goNext()
-    expect(screen.getByText(/step 3 of 3.*total/i)).toBeTruthy()
+    expect(screen.getByText(/step 3 of 4.*total/i)).toBeTruthy()
+
+    goNext()
+    expect(screen.getByText(/step 4 of 4.*resist damage/i)).toBeTruthy()
     expect(screen.queryByRole("button", { name: /^next$/i })).toBeNull()
 
     fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
-    expect(screen.getByText(/step 2 of 3/i)).toBeTruthy()
+    expect(screen.getByText(/step 3 of 4/i)).toBeTruthy()
   })
 
   it("only offers ranged-only modifiers (like Cover) when the attack type is Ranged", () => {
@@ -118,6 +123,55 @@ describe("DefenseCalculatorDialogContent", () => {
 
     const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
     expect(poolContainer.textContent).toContain("You're prone")
+  })
+
+  it("includes the worn effective armor value in the Resist Damage step for a physical attack", () => {
+    renderDialog((sheet) => {
+      const jacket: ArmorData = {
+        id: "00000000-0000-0000-0000-000000000001",
+        name: "Test Jacket",
+        itemType: ItemType.armor,
+        equipped: true,
+        ballistic: 8,
+        impact: 6,
+        damage: { ballistic: 2, impact: 1 },
+      }
+      sheet.gear[jacket.id] = jacket
+    })
+
+    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+    goNext()
+    goNext()
+    goNext()
+
+    const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+    expect(poolContainer.textContent).toContain("Armor (Ballistic)6")
+
+    fireEvent.click(screen.getByRole("button", { name: /^impact$/i }))
+    expect(poolContainer.textContent).toContain("Armor (Impact)5")
+  })
+
+  it("does not apply armor to the Resist Damage step for a spell attack", () => {
+    renderDialog((sheet) => {
+      const jacket: ArmorData = {
+        id: "00000000-0000-0000-0000-000000000001",
+        name: "Test Jacket",
+        itemType: ItemType.armor,
+        equipped: true,
+        ballistic: 8,
+        impact: 6,
+      }
+      sheet.gear[jacket.id] = jacket
+    })
+
+    fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+    goNext()
+    goNext()
+    goNext()
+
+    expect(screen.queryByRole("button", { name: /ballistic/i })).toBeNull()
+    const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+    expect(poolContainer.textContent).not.toContain("Armor")
   })
 
   it("shows a warning and no total when unaware of the attack", () => {
