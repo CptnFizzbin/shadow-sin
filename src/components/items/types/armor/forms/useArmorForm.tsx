@@ -17,6 +17,7 @@ const defaultFormValues: ArmorData = {
   name: "",
   ballistic: 0,
   impact: 0,
+  isModifier: false,
   cost: 0,
   quantity: 1,
   description: "",

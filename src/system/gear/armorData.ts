@@ -15,6 +15,11 @@ export interface ArmorData extends ItemData {
     ballistic: number
     impact: number
   }
+  /**
+   * Base armor doesn't stack — only the highest-rated base armor applies.
+   * Modifier armor (e.g. helmets, shields) stacks additively on top of the base.
+   */
+  isModifier?: boolean
 }
 
 // Not yet wired into a form validator (see SpellDataSchema/AdeptPowerDataSchema for the pattern) — kept for parity with sibling item-data schemas
@@ -55,6 +60,7 @@ export const ArmorDataSchema = z.object({
     ballistic: z.number().int().min(0),
     impact: z.number().int().min(0),
   }).optional(),
+  isModifier: z.boolean().optional(),
 }) satisfies z.ZodType<ArmorData>
 
 export function isArmorData(item: ItemData): item is ArmorData {
