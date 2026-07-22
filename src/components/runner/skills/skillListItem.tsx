@@ -39,7 +39,7 @@ export const SkillListItem: FC<SkillListItemProps> = ({
       direction="row"
       onClick={onClick}
       component={ButtonBase}
-      sx={{ alignItems: "center", textAlign: "left", padding: 0 }}
+      sx={{ alignItems: "center", textAlign: "left", padding: 0, width: "100%" }}
     >
       <Chip
         label={isNative ? "N" : rating}

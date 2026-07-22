@@ -20,6 +20,7 @@ import {
   ResistWillpowerDicePool,
 } from "#/components/system/damage/resistanceDicePools.tsx"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
+import { DefenseCalculatorButton } from "#/components/system/defense/defenseCalculatorButton.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -40,6 +41,8 @@ function RouteComponent() {
   return (
     <Stack>
       <SectionHeader>Defense</SectionHeader>
+
+      <DefenseCalculatorButton />
 
       <Grid container columns={{ sm: 1, md: 2 }} spacing={1}>
         <Grid container columns={2} size={2} spacing={1} sx={{ width: { sm: "100%", md: "50%" }, margin: "auto" }}>
