@@ -4,7 +4,7 @@ import { NullUuid } from "#/lib/uuidUtils.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import type { ArmorData } from "./armorData.ts"
-import { calculateArmorTotals, calculateEncumbrancePenalty } from "./encumbranceUtils.ts"
+import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "./encumbranceUtils.ts"
 
 function armor(overrides: Partial<ArmorData>): ArmorData {
   return {
@@ -76,6 +76,41 @@ describe("calculateArmorTotals", () => {
 
   it("returns zero totals when nothing is equipped", () => {
     expect(calculateArmorTotals([])).toEqual({ ballistic: 0, impact: 0 })
+  })
+})
+
+describe("calculateArmorBulk", () => {
+  it("sums every equipped item's rating regardless of Base/Modifier", () => {
+    // Arrange
+    const equipped = [
+      armor({ name: "Armor 1", ballistic: 8, impact: 6 }),
+      armor({ name: "Armor 2", ballistic: 5, impact: 7 }),
+      armor({ name: "Armor 3", ballistic: 2, impact: 0, isModifier: true }),
+      armor({ name: "Armor 4", ballistic: 0, impact: 3, isModifier: true }),
+    ]
+
+    // Act
+    const bulk = calculateArmorBulk(equipped)
+
+    // Assert
+    expect(bulk).toEqual({ ballistic: 15, impact: 16 })
+  })
+
+  it("does not subtract damage, since damage doesn't reduce bulk", () => {
+    // Arrange
+    const equipped = [
+      armor({ name: "Full Body Armor", ballistic: 8, impact: 6, damage: { ballistic: 5, impact: 0 } }),
+    ]
+
+    // Act
+    const bulk = calculateArmorBulk(equipped)
+
+    // Assert
+    expect(bulk).toEqual({ ballistic: 8, impact: 6 })
+  })
+
+  it("returns zero bulk when nothing is equipped", () => {
+    expect(calculateArmorBulk([])).toEqual({ ballistic: 0, impact: 0 })
   })
 })
 
