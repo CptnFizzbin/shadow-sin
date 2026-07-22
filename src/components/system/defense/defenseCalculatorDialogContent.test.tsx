@@ -29,6 +29,8 @@ function renderDialog(updateRunnerData?: (sheet: RunnerData) => void) {
   )
 }
 
+const goNext = () => fireEvent.click(screen.getByRole("button", { name: /^next$/i }))
+
 describe("DefenseCalculatorDialogContent", () => {
   it("opens on the hub with a row per attack type", () => {
     renderDialog()
@@ -38,26 +40,46 @@ describe("DefenseCalculatorDialogContent", () => {
     expect(screen.getByRole("button", { name: /spell/i })).toBeTruthy()
   })
 
-  it("drills into an attack type and returns to the hub via the back button", () => {
+  it("drills into an attack type onto the Defense Skill step, and returns to the hub via the back button", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.getByRole("combobox", { name: /defense skill/i })).toBeTruthy()
+    expect(screen.getByText(/step 1 of 3.*defense skill/i)).toBeTruthy()
 
     fireEvent.click(screen.getByRole("button", { name: /back to attack types/i }))
     expect(screen.getByRole("button", { name: /ranged/i })).toBeTruthy()
     expect(screen.queryByRole("button", { name: /back to attack types/i })).toBeNull()
   })
 
+  it("pages forward through the wizard and back again", () => {
+    renderDialog()
+
+    fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+    expect(screen.getByText(/step 1 of 3/i)).toBeTruthy()
+
+    goNext()
+    expect(screen.getByText(/step 2 of 3.*modifiers/i)).toBeTruthy()
+
+    goNext()
+    expect(screen.getByText(/step 3 of 3.*total/i)).toBeTruthy()
+    expect(screen.queryByRole("button", { name: /^next$/i })).toBeNull()
+
+    fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
+    expect(screen.getByText(/step 2 of 3/i)).toBeTruthy()
+  })
+
   it("only offers ranged-only modifiers (like Cover) when the attack type is Ranged", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.queryByRole("combobox", { name: /cover/i })).toBeNull()
+    goNext()
+    expect(screen.queryByText(/^cover$/i)).toBeNull()
 
+    fireEvent.click(screen.getByRole("button", { name: /^back$/i }))
     fireEvent.click(screen.getByRole("button", { name: /back to attack types/i }))
     fireEvent.click(screen.getByRole("button", { name: /ranged/i }))
-    expect(screen.getByRole("combobox", { name: /cover/i })).toBeTruthy()
+    goNext()
+    expect(screen.getByText(/^cover$/i)).toBeTruthy()
   })
 
   it("hides an untrained skill from the picker until Show Defaulting Skills is enabled", () => {
@@ -66,15 +88,10 @@ describe("DefenseCalculatorDialogContent", () => {
     })
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    expect(screen.queryByRole("option", { name: /parry \(blades\)/i })).toBeNull()
+    expect(screen.queryByRole("button", { name: /parry \(blades\)/i })).toBeNull()
 
-    fireEvent.mouseDown(screen.getByRole("combobox", { name: /defense skill/i }))
-    expect(screen.queryByRole("option", { name: /parry \(blades\)/i })).toBeNull()
-    fireEvent.keyDown(screen.getByRole("listbox"), { key: "Escape" })
-
-    fireEvent.click(screen.getByRole("switch", { name: /show defaulting skills/i }))
-    fireEvent.mouseDown(screen.getByRole("combobox", { name: /defense skill/i }))
-    expect(screen.getByRole("option", { name: /parry \(blades\)/i })).toBeTruthy()
+    fireEvent.click(screen.getByRole("checkbox", { name: /show defaulting skills/i }))
+    expect(screen.getByRole("button", { name: /parry \(blades\)/i })).toBeTruthy()
   })
 
   it("adds a trained skill's dice to the total once selected", () => {
@@ -83,30 +100,33 @@ describe("DefenseCalculatorDialogContent", () => {
     })
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
+    fireEvent.click(screen.getByRole("button", { name: /dodge/i }))
+    goNext()
+    goNext()
+
     const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
-    const baseline = poolContainer.textContent
-
-    fireEvent.mouseDown(screen.getByRole("combobox", { name: /defense skill/i }))
-    fireEvent.click(screen.getByRole("option", { name: "Dodge" }))
-
-    expect(poolContainer.textContent).not.toBe(baseline)
     expect(poolContainer.textContent).toContain(SkillKey.dodge)
   })
 
-  it("applies a toggled modifier's value to the total", () => {
+  it("applies a checked modifier's value to the total", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    fireEvent.click(screen.getByRole("switch", { name: /defender prone/i }))
+    goNext()
+    fireEvent.click(screen.getByRole("checkbox", { name: /you're prone/i }))
+    goNext()
 
-    expect(screen.getByText("Defender prone")).toBeTruthy()
+    const poolContainer = screen.getByText(/^Defense$/).parentElement!.parentElement!
+    expect(poolContainer.textContent).toContain("You're prone")
   })
 
-  it("shows a warning and no total when the defender is unaware", () => {
+  it("shows a warning and no total when unaware of the attack", () => {
     renderDialog()
 
     fireEvent.click(screen.getByRole("button", { name: /melee/i }))
-    fireEvent.click(screen.getByRole("switch", { name: /unaware of attack/i }))
+    goNext()
+    fireEvent.click(screen.getByRole("checkbox", { name: /unaware of the attack/i }))
+    goNext()
 
     expect(screen.getByText(/no defense is possible/i)).toBeTruthy()
     expect(screen.queryByText(/^Defense$/)).toBeNull()

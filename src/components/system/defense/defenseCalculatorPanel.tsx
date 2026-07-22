@@ -1,20 +1,18 @@
 import Alert from "@mui/material/Alert"
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
+import Checkbox from "@mui/material/Checkbox"
 import Divider from "@mui/material/Divider"
-import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
-import Switch from "@mui/material/Switch"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
+import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import type { DiceGroup, DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
@@ -28,6 +26,7 @@ import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+import { skillList } from "#/system/skills/skillList.ts"
 
 import type { DefenseAttackType } from "./defenseCalculatorData.ts"
 import { defenseModifiersForAttackType, defenseSkillOptionsByAttackType } from "./defenseCalculatorData.ts"
@@ -37,6 +36,13 @@ interface DefenseCalculatorPanelProps {
 }
 
 type SpellAttribute = "physical" | "mana"
+type WizardStep = "skill" | "modifiers" | "total"
+
+const wizardSteps: { step: WizardStep, label: string }[] = [
+  { step: "skill", label: "Defense Skill" },
+  { step: "modifiers", label: "Modifiers" },
+  { step: "total", label: "Total" },
+]
 
 interface SkillDefenseEntry {
   rating: number
@@ -44,11 +50,12 @@ interface SkillDefenseEntry {
   defaultingGroup: DiceGroup | null
 }
 
-/** Drilled-down view of the Defense Calculator: skill, modifiers, and running total for one attack type. */
+/** Drilled-down view of the Defense Calculator: a paginated wizard for one attack type. */
 export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attackType }) => {
   const skillOptions = defenseSkillOptionsByAttackType[attackType]
   const modifiers = defenseModifiersForAttackType(attackType)
 
+  const [stepIndex, setStepIndex] = useState(0)
   const [selectedKey, setSelectedKey] = useState(skillOptions[0].key)
   const [includeDefaultingSkills, setIncludeDefaultingSkills] = useState(false)
   const [spellAttribute, setSpellAttribute] = useState<SpellAttribute>("physical")
@@ -110,12 +117,14 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const selectedSkillEntry = selectedOption.skill ? skillDataByKey[selectedOption.skill] : undefined
 
-  const attributeGroup: DiceGroup = attackType === "spell"
-    ? {
-        name: AttributeLabels[spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower],
-        size: spellAttribute === "physical" ? body : willpower,
-      }
-    : { name: AttributeLabels[AttributeKey.reaction], size: reaction }
+  const baseAttr = attackType === "spell"
+    ? (spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower)
+    : AttributeKey.reaction
+
+  const attributeGroup: DiceGroup = {
+    name: AttributeLabels[baseAttr],
+    size: attackType === "spell" ? (spellAttribute === "physical" ? body : willpower) : reaction,
+  }
 
   const modifierGroups: DiceGroupList = modifiers.map((modifier) => {
     if (modifier.kind === "toggle") {
@@ -159,134 +168,176 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     ...modifierGroups,
   ]
 
+  const currentStep = wizardSteps[stepIndex].step
+  const isFirstStep = stepIndex === 0
+  const isLastStep = stepIndex === wizardSteps.length - 1
+
   return (
     <Stack sx={{ gap: 1.5 }}>
-      <Stack direction="row" sx={{ gap: 1, alignItems: "center", flexWrap: "wrap" }}>
-        <FormControl size="small" sx={{ flex: 1, minWidth: 180 }}>
-          <InputLabel id="defense-skill-label">Defense Skill</InputLabel>
-          <Select
-            labelId="defense-skill-label"
-            label="Defense Skill"
-            value={selectedOption.key}
-            onChange={(event) => setSelectedKey(event.target.value)}
-          >
-            {visibleSkillOptions.map((option) => (
-              <MenuItem key={option.key} value={option.key}>{option.label}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <Typography variant="overline" color="text.secondary">
+        Step {stepIndex + 1} of {wizardSteps.length} — {wizardSteps[stepIndex].label}
+      </Typography>
 
-        <FormControlLabel
-          control={(
-            <Switch
-              checked={includeDefaultingSkills}
-              onChange={(event) => setIncludeDefaultingSkills(event.target.checked)}
-            />
+      {currentStep === "skill" && (
+        <Stack sx={{ gap: 1.5 }}>
+          {attackType === "spell" && (
+            <Stack sx={{ gap: 0.5 }}>
+              <Label label="Spell Type" />
+              <ButtonGroup size="small" variant="outlined" fullWidth>
+                <Button
+                  variant={spellAttribute === "physical" ? "contained" : "outlined"}
+                  onClick={() => setSpellAttribute("physical")}
+                >
+                  Physical (Body)
+                </Button>
+                <Button
+                  variant={spellAttribute === "mana" ? "contained" : "outlined"}
+                  onClick={() => setSpellAttribute("mana")}
+                >
+                  Mana (Willpower)
+                </Button>
+              </ButtonGroup>
+            </Stack>
           )}
-          label="Show Defaulting Skills"
-        />
-      </Stack>
 
-      {attackType === "spell" && (
-        <Stack sx={{ gap: 0.5 }}>
-          <Label label="Spell Type" />
-          <ButtonGroup size="small" variant="outlined" fullWidth>
-            <Button
-              variant={spellAttribute === "physical" ? "contained" : "outlined"}
-              onClick={() => setSpellAttribute("physical")}
-            >
-              Physical (Body)
-            </Button>
-            <Button
-              variant={spellAttribute === "mana" ? "contained" : "outlined"}
-              onClick={() => setSpellAttribute("mana")}
-            >
-              Mana (Willpower)
-            </Button>
-          </ButtonGroup>
+          <Stack sx={{ gap: 1 }}>
+            {visibleSkillOptions.map((option) => {
+              const isSelected = option.key === selectedOption.key
+              const rating = option.skill ? skillDataByKey[option.skill]?.rating ?? 0 : 0
+              const defaultable = option.skill ? (skillList[option.skill].defaultable ?? true) : false
+              const isDefaulted = rating === 0 && defaultable
+
+              return (
+                <Box
+                  key={option.key}
+                  sx={{
+                    borderRadius: 1,
+                    border: "1px solid",
+                    borderColor: isSelected ? "secondary.main" : "divider",
+                    backgroundColor: isSelected ? "action.selected" : undefined,
+                  }}
+                >
+                  <SkillListItem
+                    name={option.label}
+                    rating={rating}
+                    attr={baseAttr}
+                    isDefaulted={isDefaulted}
+                    onClick={() => setSelectedKey(option.key)}
+                  />
+                </Box>
+              )
+            })}
+          </Stack>
+
+          <FormControlLabel
+            control={(
+              <Checkbox
+                checked={includeDefaultingSkills}
+                onChange={(event) => setIncludeDefaultingSkills(event.target.checked)}
+              />
+            )}
+            label="Show Defaulting Skills"
+          />
         </Stack>
+      )}
+
+      {currentStep === "modifiers" && (
+        <Stack sx={{ gap: 1 }}>
+          <FormControlLabel
+            control={(
+              <Checkbox
+                checked={unaware}
+                onChange={(event) => setUnaware(event.target.checked)}
+                color="error"
+              />
+            )}
+            label="You're unaware of the attack (no defense possible)"
+          />
+
+          <WoundModLabel />
+
+          {modifiers.map((modifier) => {
+            if (modifier.kind === "toggle") {
+              return (
+                <FormControlLabel
+                  key={modifier.id}
+                  disabled={unaware}
+                  control={(
+                    <Checkbox
+                      checked={toggleValues[modifier.id] ?? false}
+                      onChange={(event) =>
+                        setToggleValues((prev) => ({ ...prev, [modifier.id]: event.target.checked }))}
+                      disabled={unaware}
+                    />
+                  )}
+                  label={`${modifier.label} (${modifier.value >= 0 ? "+" : ""}${modifier.value})`}
+                />
+              )
+            }
+
+            if (modifier.kind === "stepper") {
+              return (
+                <Stack key={modifier.id} direction="row" sx={{ gap: 1, alignItems: "center" }}>
+                  <Typography variant="body2" sx={{ flex: 1 }}>{modifier.label}</Typography>
+                  <CounterInput
+                    value={stepperValues[modifier.id] ?? 0}
+                    onChange={(value) => setStepperValues((prev) => ({ ...prev, [modifier.id]: value ?? 0 }))}
+                    min={modifier.min}
+                    max={modifier.max}
+                    disabled={unaware}
+                    size="small"
+                  />
+                </Stack>
+              )
+            }
+
+            const chosenKey = choiceValues[modifier.id] ?? modifier.options[0].key
+
+            return (
+              <Stack key={modifier.id} sx={{ gap: 0 }}>
+                <Typography variant="body2" color="text.secondary">{modifier.label}</Typography>
+                {modifier.options.slice(1).map((option) => (
+                  <FormControlLabel
+                    key={option.key}
+                    disabled={unaware}
+                    control={(
+                      <Checkbox
+                        checked={chosenKey === option.key}
+                        onChange={(event) => setChoiceValues((prev) => ({
+                          ...prev,
+                          [modifier.id]: event.target.checked ? option.key : modifier.options[0].key,
+                        }))}
+                        disabled={unaware}
+                      />
+                    )}
+                    label={`${option.label} (${option.value >= 0 ? "+" : ""}${option.value})`}
+                  />
+                ))}
+              </Stack>
+            )
+          })}
+        </Stack>
+      )}
+
+      {currentStep === "total" && (
+        unaware
+          ? <Alert severity="warning">No defense is possible — you're unaware of the attack.</Alert>
+          : <DicePool name="Defense" groups={groups} />
       )}
 
       <Divider />
 
-      <Stack sx={{ gap: 1 }}>
-        <Label label="Modifiers" />
+      <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Button disabled={isFirstStep} onClick={() => setStepIndex((index) => index - 1)}>
+          Back
+        </Button>
 
-        <FormControlLabel
-          control={(
-            <Switch
-              checked={unaware}
-              onChange={(event) => setUnaware(event.target.checked)}
-              color="error"
-            />
-          )}
-          label="Defender unaware of attack (no defense possible)"
-        />
-
-        <WoundModLabel />
-
-        {modifiers.map((modifier) => {
-          if (modifier.kind === "toggle") {
-            return (
-              <FormControlLabel
-                key={modifier.id}
-                disabled={unaware}
-                control={(
-                  <Switch
-                    checked={toggleValues[modifier.id] ?? false}
-                    onChange={(event) =>
-                      setToggleValues((prev) => ({ ...prev, [modifier.id]: event.target.checked }))}
-                    disabled={unaware}
-                  />
-                )}
-                label={`${modifier.label} (${modifier.value >= 0 ? "+" : ""}${modifier.value})`}
-              />
-            )
-          }
-
-          if (modifier.kind === "stepper") {
-            return (
-              <Stack key={modifier.id} direction="row" sx={{ gap: 1, alignItems: "center" }}>
-                <Typography variant="body2" sx={{ flex: 1 }}>{modifier.label}</Typography>
-                <CounterInput
-                  value={stepperValues[modifier.id] ?? 0}
-                  onChange={(value) => setStepperValues((prev) => ({ ...prev, [modifier.id]: value ?? 0 }))}
-                  min={modifier.min}
-                  max={modifier.max}
-                  disabled={unaware}
-                  size="small"
-                />
-              </Stack>
-            )
-          }
-
-          return (
-            <FormControl key={modifier.id} size="small" fullWidth disabled={unaware}>
-              <InputLabel id={`defense-modifier-${modifier.id}-label`}>{modifier.label}</InputLabel>
-              <Select
-                labelId={`defense-modifier-${modifier.id}-label`}
-                label={modifier.label}
-                value={choiceValues[modifier.id] ?? modifier.options[0].key}
-                onChange={(event) =>
-                  setChoiceValues((prev) => ({ ...prev, [modifier.id]: event.target.value }))}
-              >
-                {modifier.options.map((option) => (
-                  <MenuItem key={option.key} value={option.key}>
-                    {option.label}
-                    {option.value !== 0 ? ` (${option.value >= 0 ? "+" : ""}${option.value})` : ""}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )
-        })}
+        {!isLastStep && (
+          <Button variant="contained" color="secondary" onClick={() => setStepIndex((index) => index + 1)}>
+            Next
+          </Button>
+        )}
       </Stack>
-
-      <Divider />
-
-      {unaware
-        ? <Alert severity="warning">No defense is possible — the defender is unaware of the attack.</Alert>
-        : <DicePool name="Defense" groups={groups} />}
     </Stack>
   )
 }
