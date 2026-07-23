@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
@@ -35,7 +35,7 @@ export const GenericItemCard: FC<GenericItemCardProps> = ({
   const { availability, source, description } = item
 
   return (
-    <ItemCard variant={variant} onClick={onEdit}>
+    <ItemCard variant={variant}>
       <ItemCard.Title>{item.name}</ItemCard.Title>
 
       {(item.quantity ?? 1) > 1 && (
@@ -87,7 +87,11 @@ export const GenericItemCard: FC<GenericItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+      <ItemCard.Action type="icon" aria-label="Edit" onClick={onEdit}>
+        <RiEdit2Line size={16} />
+      </ItemCard.Action>
+
+      <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onRemove}>
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
 

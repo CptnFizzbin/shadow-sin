@@ -1,5 +1,6 @@
 import Chip from "@mui/material/Chip"
 import Typography from "@mui/material/Typography"
+import { RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
@@ -17,7 +18,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
   const fillPercent = maxBalance > 0 ? (credstick.balance / maxBalance) * 100 : 0
 
   return (
-    <ItemCard onClick={() => onClick(credstick)}>
+    <ItemCard>
       <ItemCard.Title>
         {credstick.name || CredstickTypeLabel[credstick.credstickType]}
       </ItemCard.Title>
@@ -38,6 +39,10 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onClick }) =>
           {fillPercent.toFixed(0)}% full
         </Typography>
       </ItemCard.Meta>
+
+      <ItemCard.Action type="icon" aria-label="Edit" onClick={() => onClick(credstick)}>
+        <RiEdit2Line size={16} />
+      </ItemCard.Action>
     </ItemCard>
   )
 }

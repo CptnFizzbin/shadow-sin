@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -65,7 +65,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
 
   return (
     <>
-      <ItemCard onClick={handleEdit} {...props}>
+      <ItemCard {...props}>
         <ItemCard.Title>{implant.name}</ItemCard.Title>
 
         <ItemCard.Meta type="cost">
@@ -118,7 +118,11 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
           </ItemCard.Meta>
         )}
 
-        <ItemCard.Action type="icon" color="error" onClick={handleRemove}>
+        <ItemCard.Action type="icon" aria-label="Edit" onClick={handleEdit}>
+          <RiEdit2Line size={16} />
+        </ItemCard.Action>
+
+        <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={handleRemove}>
           <RiDeleteBin6Line size={16} />
         </ItemCard.Action>
 

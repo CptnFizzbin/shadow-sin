@@ -64,9 +64,8 @@ describe("WeaponsList", () => {
     })
     expect(screen.getByText("Ares Predator")).toBeDefined()
 
-    // Act: the remove icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    removeButton!.click()
+    // Act
+    screen.getByRole("button", { name: "Remove" }).click()
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Ares Predator")).toBeNull())

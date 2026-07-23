@@ -55,9 +55,8 @@ describe("ItemsList", () => {
     })
     expect(screen.getByText("Trodes")).toBeDefined()
 
-    // Act: the remove icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    fireEvent.click(removeButton!)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Trodes")).toBeNull())

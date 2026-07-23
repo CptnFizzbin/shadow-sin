@@ -46,9 +46,8 @@ describe("SinsAndLicensesSection", () => {
     })
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
 
-    // Act: the delete icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    fireEvent.click(removeButton!)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store (SIN with no licenses removes without confirming).
     await waitFor(() => expect(screen.queryByText("National ID (Fake)")).toBeNull())

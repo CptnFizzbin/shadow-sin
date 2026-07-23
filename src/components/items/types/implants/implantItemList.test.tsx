@@ -76,8 +76,9 @@ describe("ImplantItemList", () => {
       </BuilderWrapperWithGear>,
     )
 
-    // Act
-    fireEvent.click(screen.getByText("Alphaware Upgrade"))
+    // Act: the accessory's Edit button is the second one rendered (after the parent's).
+    const editButtons = screen.getAllByRole("button", { name: "Edit" })
+    fireEvent.click(editButtons[1])
 
     // Assert
     const dialog = await screen.findByRole("dialog")
@@ -97,9 +98,8 @@ describe("ImplantItemList", () => {
     )
     expect(screen.getByText("Wired Reflexes 1")).toBeDefined()
 
-    // Act: the remove icon button has no accessible name.
-    const removeButton = screen.getAllByRole("button").find((button) => button.textContent === "")
-    fireEvent.click(removeButton!)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 
     // Assert: the UI re-rendered off the updated store.

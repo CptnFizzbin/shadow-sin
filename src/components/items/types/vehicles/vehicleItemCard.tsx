@@ -40,7 +40,7 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
     <GearItemCard
       availability={availability}
       source={source}
-      onClick={onEdit}
+      onEdit={onEdit}
       onRemove={onRemove}
     >
       <ItemCard.Title>{vehicle.name}</ItemCard.Title>
