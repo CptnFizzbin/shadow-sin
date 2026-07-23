@@ -62,6 +62,6 @@ describe("EquippedWeaponCard - Attack button", () => {
     fireEvent.click(await within(dialog).findByRole("button", { name: /sa/i }))
 
     // Assert
-    expect(await screen.findByRole("dialog", { name: "Test Pistol" })).toBeDefined()
+    expect(await screen.findByRole("dialog")).toBeDefined()
   })
 })

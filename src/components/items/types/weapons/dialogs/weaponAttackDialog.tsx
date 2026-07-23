@@ -1,96 +1,72 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import ButtonGroup from "@mui/material/ButtonGroup"
-import Divider from "@mui/material/Divider"
-import Grid from "@mui/material/Grid"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
-import Typography from "@mui/material/Typography"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { RiArrowLeftLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { AttackDicePool } from "#/components/system/dicePool/dicePools/attackDicePool.tsx"
+import { useGearByType } from "#/components/items/gearHooks.ts"
+import { WeaponAttackHubList } from "#/components/items/types/weapons/attackCalculator/weaponAttackHubList.tsx"
+import { WeaponAttackPanel } from "#/components/items/types/weapons/attackCalculator/weaponAttackPanel.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
-import { Label } from "#/components/ui/text/label.tsx"
-import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import type { FirearmData, WeaponData } from "#/system/gear/weaponData.ts"
-import { isFirearmData } from "#/system/gear/weaponData.ts"
+import type { WeaponData } from "#/system/gear/weaponData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 interface WeaponAttackDialogProps extends ControlledDialogProps<void> {
   weapon: WeaponData
 }
 
-const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({
-  ctrl,
-  weapon,
-}) => {
-  const isFirearm = isFirearmData(weapon)
-  const firearm = isFirearm ? (weapon as FirearmData) : undefined
+const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({ ctrl, weapon }) => {
+  const theme = useTheme()
+  const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
 
-  const [selectedFiremode, setSelectedFiremode] = useState<string | null>(
-    firearm?.firemodes?.[0] ?? null,
-  )
+  const equippedWeapons = useGearByType<WeaponData>(ItemType.weapon)
+    .filter((item) => !item.parentId && item.equipped)
+  const weapons = equippedWeapons.some((item) => item.id === weapon.id)
+    ? equippedWeapons
+    : [weapon, ...equippedWeapons]
+
+  // null = the hub (weapon list); a weapon id = that weapon's wizard is drilled into. Starts
+  // on the weapon that was clicked rather than the hub, since the Attack button already
+  // picked one — the back button still reaches the hub to attack with a different weapon.
+  const [activeWeaponId, setActiveWeaponId] = useState<string | null>(weapon.id)
+  const activeWeapon = weapons.find((item) => item.id === activeWeaponId) ?? null
+
+  const goToHub = () => setActiveWeaponId(null)
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm">
-      <Dialog.Title>{weapon.name}</Dialog.Title>
-      <Dialog.Content>
-        <Stack sx={{ gap: 1.5 }}>
-          {isFirearm && firearm && (firearm.firemodes?.length ?? 0) > 0 && (
-            <Stack sx={{ gap: 0.5 }}>
-              <Label label="Fire Mode" />
-              <ButtonGroup size="small" variant="outlined" fullWidth>
-                {firearm.firemodes!.map((mode) => (
-                  <Button
-                    key={mode}
-                    variant={selectedFiremode === mode ? "contained" : "outlined"}
-                    onClick={() => setSelectedFiremode(mode)}
-                  >
-                    {mode}
-                  </Button>
-                ))}
-              </ButtonGroup>
-              {selectedFiremode && (
-                <UnderConstruction
-                  title="Fire Mode Effects"
-                  description="Fire mode modifiers (recoil, burst fire DV bonus, suppressive fire) are not yet implemented."
-                />
-              )}
-            </Stack>
-          )}
+    <ControlledDialog ctrl={ctrl} maxWidth="sm" fullScreen={isNarrowViewport} onClosed={goToHub}>
+      <Dialog.Title>
+        {activeWeapon
+          ? (
+              <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+                <IconButton aria-label="Back to weapons" onClick={goToHub}>
+                  <RiArrowLeftLine size={20} />
+                </IconButton>
+                <Box sx={{ flex: 1 }}>{activeWeapon.name}</Box>
+                {/* Spacer mirrors the back button so the title stays centered. */}
+                <Box sx={{ width: 36 }} />
+              </Stack>
+            )
+          : "Attack Calculator"}
+      </Dialog.Title>
 
-          <Grid container spacing={1} columns={2}>
-            {weapon.dmg && (
-              <Grid size={1}>
-                <Label label="DV" variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>{weapon.dmg}</Typography>
-              </Grid>
-            )}
-            {weapon.ap !== undefined && weapon.ap !== 0 && (
-              <Grid size={1}>
-                <Label label="AP" variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>{weapon.ap}</Typography>
-              </Grid>
-            )}
-            {isFirearm && firearm?.ammo && (
-              <Grid size={1}>
-                <Label label="Ammo" variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>
-                  {firearm.ammo.remaining}/{firearm.ammo.size}
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
-
-          <Divider />
-
-          <AttackDicePool weapon={weapon} />
-
-          <Button onClick={() => ctrl.close()} color="secondary" size="small">
-            Close
-          </Button>
-        </Stack>
+      <Dialog.Content dividers>
+        <Box sx={{ minHeight: isNarrowViewport ? undefined : 420 }}>
+          {activeWeapon === null
+            ? <WeaponAttackHubList weapons={weapons} onSelectWeapon={setActiveWeaponId} />
+            : <WeaponAttackPanel key={activeWeapon.id} weapon={activeWeapon} />}
+        </Box>
       </Dialog.Content>
+
+      <Dialog.Actions>
+        <Button onClick={() => ctrl.close()}>Close</Button>
+      </Dialog.Actions>
     </ControlledDialog>
   )
 }
