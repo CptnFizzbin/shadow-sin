@@ -19,15 +19,29 @@ defense calculator, the legwork dialog, spirit summoning, and the two example po
 change together, wherever you navigate. See "Consuming the selection directly" in
 `docs/ui/prototype.md` for the pattern.
 
-- **A — Ledger + Roll Footer**: today's ledger, unchanged, with a roll footer appended below.
-  Safest, most incremental option.
 - **B — Hero Dial + Chips**: total becomes a big tappable dial; modifiers become a chip row.
   Rolling happens by tapping the dial itself; the number inside swaps to hits rolled.
 - **C — Compact Row, Expand for Detail**: collapsed to one dense line (name, total, roll icon)
   by default; breakdown hides behind a caret. Best density for a page with many pools.
-- **D — Split Panel**: ledger and a standing roll module side by side as equal partners.
 - **E — Minimal HUD Pill**: as small as it gets — a pill with a roll icon and a colored-dot
   result cluster; breakdown hidden behind tapping the name.
+
+**Round 1 feedback (from reviewing the gallery):** rejected the full-width `Roll` button and the
+side-by-side split panel outright; the small die-icon trigger (as used in C and E) "makes the most
+sense." Round 1's **A — Ledger + Roll Footer** and **D — Split Panel** were deleted as a result.
+Round 2 explores more shapes that keep the full breakdown ledger always visible (unlike C/E, which
+hide it by default) while still using a small die icon — never a full-width button or a second
+panel — as the roll trigger:
+
+- **F — Full Ledger, Icon in Header**: the complete ledger stays visible; a small die-icon button
+  sits in the header row next to the total. Rolling opens a thin result strip between the header
+  and the breakdown.
+- **G — Corner Roll Badge**: ledger completely untouched; the die icon is a small circular badge
+  floating over the card's top-right corner, overlapping the border like a notification badge —
+  claims no row of its own at all.
+- **H — Icon Fused Into Total**: no new element whatsoever — the die icon is fused directly onto
+  the existing total-number badge in the header, which becomes the roll trigger itself and
+  recolors in place to show hits.
 
 **Verdict:** _pending — fill in once a design is picked (or picked-and-remixed)._
 
