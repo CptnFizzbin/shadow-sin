@@ -1,4 +1,7 @@
 // fallow-ignore-file
+import { useContext } from "react"
+
+import { PrototypeSelectionContext } from "./prototypeContext.ts"
 import type { PrototypeItemProps } from "./prototypeItem.tsx"
 import { PrototypeItem } from "./prototypeItem.tsx"
 import type { PrototypeRootProps, PrototypeVersion } from "./prototypeRoot.tsx"
@@ -21,5 +24,18 @@ interface PrototypeComponent {
  */
 export const Prototype = PrototypeRoot as unknown as PrototypeComponent
 Prototype.Item = PrototypeItem
+
+/**
+ * The `key` of the version selected by the nearest enclosing `Prototype`, or
+ * `null` if there isn't one. Use this instead of `Prototype.Item` when a
+ * component needs a *default* rendering rather than being hidden outright —
+ * e.g. a shared component that should keep working (rendering its normal
+ * output) everywhere it's used today, and only switch designs where an
+ * ancestor `Prototype` happens to wrap it. See "Consuming the selection
+ * directly" in `docs/ui/prototype.md`.
+ */
+export function usePrototypeVersion(): string | null {
+  return useContext(PrototypeSelectionContext)
+}
 
 export type { PrototypeItemProps, PrototypeRootProps, PrototypeVersion }

@@ -10,9 +10,14 @@ rows. Rolling is bolted on separately by each caller (see `weaponAttackPanel.tsx
 `<Button>` next to the pool. Every one of the 12+ dice pools on the Defense tab
 (`resistanceDicePools.tsx`) has no roll button at all today.
 
-**Variants**, mounted live on `/​:runnerId/defense` via the shared `Prototype` switcher
-(`#/components/ui/prototype/prototype.tsx`), rendering two real pools (Ranged Full Defense,
-Melee Full Block) built from the same live attribute/skill hooks the rest of the page uses:
+**Variants**, live app-wide. `DicePool` itself (`../dicePool.tsx`) now calls `usePrototypeVersion()`
+and swaps in the matching variant, falling through to today's design when there's no ancestor
+`Prototype` (every existing test). `__root.tsx` wraps the entire app in
+`<Prototype versions={dicePoolPrototypeVersions}>`, so the bottom switcher bar and every real
+`DicePool` in the app — the Defense tab's 12+ resistance pools, the weapon attack calculator, the
+defense calculator, the legwork dialog, spirit summoning, and the two example pools below —
+change together, wherever you navigate. See "Consuming the selection directly" in
+`docs/ui/prototype.md` for the pattern.
 
 - **A — Ledger + Roll Footer**: today's ledger, unchanged, with a roll footer appended below.
   Safest, most incremental option.
@@ -27,8 +32,12 @@ Melee Full Block) built from the same live attribute/skill hooks the rest of the
 **Verdict:** _pending — fill in once a design is picked (or picked-and-remixed)._
 
 **Cleanup, once decided:**
-1. Delete the losing `dicePoolVariant*.tsx` files and `dicePoolPrototypeDemo.tsx`.
-2. Remove the `<DicePoolPrototypeDemo />` line from `defense.tsx`.
-3. Fold the winning shape into `dicePool.tsx` itself (giving it its own `useDiceRoller` +
-   roll affordance) so every caller — including `resistanceDicePools.tsx` and the attack/defense
-   calculators — gets digital rolling for free instead of wiring it up by hand.
+1. Delete the losing `dicePoolVariant*.tsx` files.
+2. Remove the `<Prototype>` wrapping (and the `usePrototypeVersion()` switch) from `dicePool.tsx`,
+   folding the winning shape's markup directly into it — giving it its own `useDiceRoller` + roll
+   affordance permanently, no switch required. Every caller (`resistanceDicePools.tsx`, the
+   attack/defense calculators, the legwork dialog, spirit summoning) gets digital rolling for free.
+3. Remove the `<Prototype>` wrapping from `__root.tsx` and delete `dicePoolPrototypeVersions.ts`.
+4. Delete `dicePoolPrototypeDemo.tsx` and the `<DicePoolPrototypeDemo />` line from `defense.tsx`.
+5. Consider whether `usePrototypeVersion()` (added to `#/components/ui/prototype/prototype.tsx`
+   for this) is worth keeping as a general capability, or should go too if unused elsewhere.
