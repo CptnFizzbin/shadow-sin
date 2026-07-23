@@ -1,8 +1,6 @@
 import Box from "@mui/material/Box"
-import ButtonBase from "@mui/material/ButtonBase"
 import Stack from "@mui/material/Stack"
-import type { SxProps } from "@mui/material/styles"
-import type { ElementType, FC, PropsWithChildren, ReactElement, ReactNode } from "react"
+import type { FC, ReactElement, ReactNode } from "react"
 import { Children, isValidElement } from "react"
 
 import { ItemCardAction } from "./itemCardAction.tsx"
@@ -12,7 +10,6 @@ import { ItemCardMeta } from "./itemCardMeta.tsx"
 import { ItemCardTitle } from "./itemCardTitle.tsx"
 
 export interface ItemCardRootProps {
-  onClick?: () => void
   children: ReactNode
   variant?: "borderless" | "outlined"
 }
@@ -23,7 +20,7 @@ function isElementType<TProps>(type: FC<TProps>) {
   }
 }
 
-export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant = "outlined" }) => {
+export const ItemCardRoot: FC<ItemCardRootProps> = ({ children, variant = "outlined" }) => {
   const childArray = Children.toArray(children)
 
   const titleNode = childArray.find(isElementType(ItemCardTitle))
@@ -42,13 +39,9 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
 
   const hasMiddleRow = statMetas.length > 0 || sourceMetas.length > 0
 
-  const Wrapper: FC<PropsWithChildren<{ onClick?: () => void, sx: SxProps, component?: ElementType }>> = onClick ? ButtonBase : Box
-
   return (
     <Stack direction="column" sx={{ gap: 0 }}>
-      <Wrapper
-        component="div"
-        onClick={onClick}
+      <Box
         sx={{
           padding: 1,
           border: variant === "outlined" ? "1px solid" : "none",
@@ -76,7 +69,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
             {costMetas}
           </Stack>
 
-          <Stack direction="row" sx={{ gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
+          <Stack direction="row" sx={{ gap: 0.5 }}>
             {iconActions}
           </Stack>
         </Stack>
@@ -97,17 +90,16 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ onClick, children, variant
         )}
 
         {detailMetas.length > 0 && (
-          <Stack sx={{ width: "100%", gap: 1 }} onClick={(e) => e.stopPropagation()}>
+          <Stack sx={{ width: "100%", gap: 1 }}>
             {detailMetas}
           </Stack>
         )}
-      </Wrapper>
+      </Box>
 
       {buttonActions.length > 0 && (
         <Stack
           direction="row"
           sx={{ flexWrap: "wrap", border: "1px solid", borderColor: "divider" }}
-          onClick={(e) => e.stopPropagation()}
         >
           {buttonActions}
         </Stack>

@@ -1,4 +1,4 @@
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
@@ -25,7 +25,7 @@ export const SinCard: FC<SinCardProps> = ({
   children,
 }) => {
   return (
-    <ItemCard onClick={onClick}>
+    <ItemCard>
       <ItemCard.Title>{sin.name}</ItemCard.Title>
 
       {slots?.trailingContent && (
@@ -36,15 +36,14 @@ export const SinCard: FC<SinCardProps> = ({
         <RatingChip rating={sin.rating} />
       </ItemCard.Meta>
 
+      {onClick && (
+        <ItemCard.Action type="icon" aria-label="Edit" onClick={onClick}>
+          <RiEdit2Line size={16} />
+        </ItemCard.Action>
+      )}
+
       {onDelete && (
-        <ItemCard.Action
-          type="icon"
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete()
-          }}
-        >
+        <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onDelete}>
           <RiDeleteBin6Line size={16} />
         </ItemCard.Action>
       )}

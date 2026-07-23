@@ -9,7 +9,6 @@ import { ItemCardRoot } from "./itemCardRoot.tsx"
 import { ItemCardTitle } from "./itemCardTitle.tsx"
 
 export interface ItemCardProps extends ItemCardRootProps {
-  onClick?: () => void
   children: ReactNode
 }
 

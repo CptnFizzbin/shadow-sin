@@ -36,7 +36,7 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
     <GearItemCard
       availability={availability}
       source={source}
-      onClick={onEdit}
+      onEdit={onEdit}
       onRemove={onRemove}
     >
       <ItemCard.Title>{weapon.name}</ItemCard.Title>

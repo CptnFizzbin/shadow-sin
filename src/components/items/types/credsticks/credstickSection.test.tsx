@@ -57,7 +57,7 @@ describe("CredstickSection", () => {
     })
 
     // Act
-    fireEvent.click(screen.getByText("Street Cred"))
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }))
     await screen.findByRole("dialog", { name: "Edit Credstick" })
     fireEvent.click(screen.getByRole("button", { name: /withdraw/i }))
     fireEvent.click(await screen.findByRole("button", { name: /confirm withdrawal/i }))

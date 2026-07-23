@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -20,7 +20,7 @@ export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onEdit, onRemove 
   const { availability, source } = armor
 
   return (
-    <ItemCard onClick={onEdit}>
+    <ItemCard>
       <ItemCard.Title>{armor.name}</ItemCard.Title>
 
       {armor.equipped && (
@@ -57,7 +57,11 @@ export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onEdit, onRemove 
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+      <ItemCard.Action type="icon" aria-label="Edit" onClick={onEdit}>
+        <RiEdit2Line size={16} />
+      </ItemCard.Action>
+
+      <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onRemove}>
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
     </ItemCard>

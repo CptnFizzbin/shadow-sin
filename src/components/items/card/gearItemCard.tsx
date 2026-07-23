@@ -1,4 +1,4 @@
-import { RiDeleteBin6Line } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -13,27 +13,27 @@ import { ItemStatChip } from "./itemStatChip.tsx"
 interface GearItemCardProps extends Pick<ItemCardRootProps, "variant"> {
   availability?: AvailabilityInfo
   source?: SourceData
-  onClick: () => void
+  onEdit: () => void
   onRemove: () => void
   children: ReactNode
 }
 
 /**
  * Wrapper around ItemCard that appends the shared gear metadata footer:
- * availability chip, source reference, and delete action.
+ * availability chip, source reference, and edit/delete actions.
  *
  * Specific card components supply their unique stats as children.
  */
 export const GearItemCard: FC<GearItemCardProps> = ({
   availability,
   source,
-  onClick,
+  onEdit,
   onRemove,
   variant,
   children,
 }) => {
   return (
-    <ItemCard variant={variant} onClick={onClick}>
+    <ItemCard variant={variant}>
       {children}
 
       {availability && (
@@ -51,7 +51,11 @@ export const GearItemCard: FC<GearItemCardProps> = ({
         </ItemCard.Meta>
       )}
 
-      <ItemCard.Action type="icon" color="error" onClick={onRemove}>
+      <ItemCard.Action type="icon" aria-label="Edit" onClick={onEdit}>
+        <RiEdit2Line size={16} />
+      </ItemCard.Action>
+
+      <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onRemove}>
         <RiDeleteBin6Line size={16} />
       </ItemCard.Action>
     </ItemCard>

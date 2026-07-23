@@ -46,7 +46,7 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({
     <GearItemCard
       availability={availability}
       source={source}
-      onClick={onEdit}
+      onEdit={onEdit}
       onRemove={onRemove}
     >
       <ItemCard.Title>{device.name}</ItemCard.Title>

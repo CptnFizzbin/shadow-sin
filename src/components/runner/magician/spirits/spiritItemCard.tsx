@@ -35,7 +35,7 @@ export const SpiritItemCard: FC<SpiritItemCardProps> = ({ spirit, onEdit, onRemo
   const registry = SpiritRegistry[spirit.spiritType]
 
   return (
-    <ItemCard onClick={onEdit}>
+    <ItemCard>
       <ItemCard.Title>
         <Stack direction="row" sx={{ alignItems: "baseline", gap: 1 }}>
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>{title}</Typography>
