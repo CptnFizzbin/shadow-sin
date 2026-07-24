@@ -17,6 +17,7 @@ import { Route as RunnerIdIndexRouteImport } from './routes/$runnerId/index'
 import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
 import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
 import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
+import { Route as EditRunnerIdRouteImport } from './routes/edit/$runnerId'
 import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
 import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
 import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
@@ -74,6 +75,11 @@ const GmInitiativeTrackerRoute = GmInitiativeTrackerRouteImport.update({
 const GmEncounterBuilderRoute = GmEncounterBuilderRouteImport.update({
   id: '/gm/encounter-builder',
   path: '/gm/encounter-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditRunnerIdRoute = EditRunnerIdRouteImport.update({
+  id: '/edit/$runnerId',
+  path: '/edit/$runnerId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
@@ -273,6 +282,7 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/edit/$runnerId'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -300,6 +310,7 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/edit/$runnerId'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -328,6 +339,7 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/edit/$runnerId'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RunnerIdRoute: typeof RunnerIdRouteWithChildren
+  EditRunnerIdRoute: typeof EditRunnerIdRoute
   GmEncounterBuilderRoute: typeof GmEncounterBuilderRoute
   GmInitiativeTrackerRoute: typeof GmInitiativeTrackerRoute
   GmNpcBuilderRoute: typeof GmNpcBuilderRoute
@@ -404,6 +417,13 @@ declare module '@tanstack/react-router' {
       path: '/gm/encounter-builder'
       fullPath: '/gm/encounter-builder'
       preLoaderRoute: typeof GmEncounterBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edit/$runnerId': {
+      id: '/edit/$runnerId'
+      path: '/edit/$runnerId'
+      fullPath: '/edit/$runnerId'
+      preLoaderRoute: typeof EditRunnerIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$runnerId/vehicles': {
@@ -584,6 +604,7 @@ const RunnerIdRouteWithChildren = RunnerIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RunnerIdRoute: RunnerIdRouteWithChildren,
+  EditRunnerIdRoute: EditRunnerIdRoute,
   GmEncounterBuilderRoute: GmEncounterBuilderRoute,
   GmInitiativeTrackerRoute: GmInitiativeTrackerRoute,
   GmNpcBuilderRoute: GmNpcBuilderRoute,

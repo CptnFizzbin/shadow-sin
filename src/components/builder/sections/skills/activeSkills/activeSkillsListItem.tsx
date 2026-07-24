@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getActiveSkillBp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 
 interface ActiveSkillsListItemProps {
@@ -51,13 +52,14 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        <Typography
-
-          color="secondary.main"
-          sx={{ minWidth: 40, textAlign: "right" }}
-        >
-          {bpCost} BP
-        </Typography>
+        <EditorMode.IsBuilder>
+          <Typography
+            color="secondary.main"
+            sx={{ minWidth: 40, textAlign: "right" }}
+          >
+            {bpCost} BP
+          </Typography>
+        </EditorMode.IsBuilder>
         <IconButton
           size="small"
           color="error"

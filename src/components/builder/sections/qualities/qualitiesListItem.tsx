@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
 interface QualityRowProps {
@@ -36,9 +37,11 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
           {quality.name}
           {rating !== undefined && ` (Rating ${rating})`}
         </Typography>
-        <Typography color="secondary.main">
-          {bpLabel}
-        </Typography>
+        <EditorMode.IsBuilder>
+          <Typography color="secondary.main">
+            {bpLabel}
+          </Typography>
+        </EditorMode.IsBuilder>
         {onRemove && (
           <IconButton
             color="error"

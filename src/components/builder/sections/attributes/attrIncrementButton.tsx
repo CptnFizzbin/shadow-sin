@@ -8,6 +8,7 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -20,6 +21,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     throw new Error("Essence can not be incremented")
   }
   const { budget } = useAttributesBuildPoints()
+  const editorMode = useEditorMode()
 
   const store = useRunnerStoreContext()
   const attrKey = props.attr
@@ -38,7 +40,11 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = `${cost} BP`
   }
 
-  if (willMaxAttr && hasMaxxedAttr) {
+  if (editorMode.isEdit) {
+    label = ""
+  }
+
+  if (willMaxAttr && hasMaxxedAttr && editorMode.isBuilder) {
     disabled = true
     label = "---"
   }
@@ -48,7 +54,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = "MAX"
   }
 
-  if (budget.remaining < cost) {
+  if (budget.remaining < cost && editorMode.isBuilder) {
     disabled = true
   }
 

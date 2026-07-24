@@ -9,7 +9,13 @@ import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 
 import { useAllAlerts } from "./alerts/hooks/useAllAlerts.ts"
 
-export const SaveRunnerButton: FC = () => {
+interface SaveRunnerButtonProps {
+  // Character creation enforces build-point validity; editing an existing runner should not
+  // be blocked by build-point budget errors that only make sense at creation time.
+  requireValid?: boolean
+}
+
+export const SaveRunnerButton: FC<SaveRunnerButtonProps> = ({ requireValid = true }) => {
   const store = useRunnerStoreContext()
   const navigate = useNavigate()
   const runnerManager = useRunnerManager()
@@ -27,9 +33,8 @@ export const SaveRunnerButton: FC = () => {
     },
   })
 
-  const isValid = useAllAlerts()
-    .filter((status) => status.severity === "error")
-    .length === 0
+  const hasErrors = useAllAlerts().some((status) => status.severity === "error")
+  const isValid = !requireValid || !hasErrors
 
   return (
     <Button

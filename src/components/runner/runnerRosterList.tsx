@@ -1,16 +1,21 @@
 import DeleteIcon from "@mui/icons-material/Delete"
 import DownloadIcon from "@mui/icons-material/Download"
+import EditIcon from "@mui/icons-material/Edit"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutlined"
+import MoreVertIcon from "@mui/icons-material/MoreVert"
 import IconButton from "@mui/material/IconButton"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
 import Paper from "@mui/material/Paper"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import { useNavigate, useRouter } from "@tanstack/react-router"
+import { useState } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { RunnerLoadError } from "#/runner/runnerLoadError.ts"
@@ -32,6 +37,7 @@ export default function RunnerRosterList({
   const router = useRouter()
   const confirmDialog = useConfirmDialog()
   const runnerManager = useRunnerManager()
+  const [menuState, setMenuState] = useState<{ anchorEl: HTMLElement, runner: RunnerData } | null>(null)
 
   const sortedRunners = Object.values(runners).sort((a, b) =>
     a.profile.alias.localeCompare(b.profile.alias),
@@ -71,6 +77,18 @@ export default function RunnerRosterList({
     }
   }
 
+  const closeMenu = () => setMenuState(null)
+
+  const handleEditRunner = (runner: RunnerData) => {
+    closeMenu()
+    navigate({ to: "/edit/$runnerId", params: { runnerId: runner.id } })
+  }
+
+  const handleDeleteRunner = (runner: RunnerData) => {
+    closeMenu()
+    void confirmAndDeleteRunner(runner)
+  }
+
   return (
     <Paper>
       <List disablePadding>
@@ -79,17 +97,16 @@ export default function RunnerRosterList({
             key={runner.id}
             divider={index < totalItems - 1}
             secondaryAction={(
-              <Tooltip title="Delete runner">
+              <Tooltip title="Runner actions">
                 <IconButton
                   edge="end"
-                  aria-label="delete runner"
-                  color="error"
+                  aria-label="runner actions"
                   onClick={(event) => {
                     event.stopPropagation()
-                    void confirmAndDeleteRunner(runner)
+                    setMenuState({ anchorEl: event.currentTarget, runner })
                   }}
                 >
-                  <DeleteIcon />
+                  <MoreVertIcon />
                 </IconButton>
               </Tooltip>
             )}
@@ -169,6 +186,21 @@ export default function RunnerRosterList({
           </ListItem>
         ))}
       </List>
+
+      <Menu
+        anchorEl={menuState?.anchorEl}
+        open={menuState !== null}
+        onClose={closeMenu}
+      >
+        <MenuItem onClick={() => menuState && handleEditRunner(menuState.runner)}>
+          <ListItemIcon><EditIcon fontSize="small" /></ListItemIcon>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => menuState && handleDeleteRunner(menuState.runner)} sx={{ color: "error.main" }}>
+          <ListItemIcon sx={{ color: "error.main" }}><DeleteIcon fontSize="small" /></ListItemIcon>
+          Delete
+        </MenuItem>
+      </Menu>
 
       {confirmDialog.dialog}
     </Paper>

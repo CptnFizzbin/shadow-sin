@@ -7,6 +7,7 @@ import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -53,16 +54,20 @@ export const QualitiesList: FC<QualitiesListProps> = ({ type = "all" }) => {
     <>
       <Label label={label} variant="outlined" />
 
-      <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
-        <Typography color="secondary.main">
-          {bpLabel}: {bpValue} BP
-        </Typography>
-      </Stack>
+      <EditorMode.IsBuilder>
+        <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
+          <Typography color="secondary.main">
+            {bpLabel}: {bpValue} BP
+          </Typography>
+        </Stack>
+      </EditorMode.IsBuilder>
 
       {type === "negative" && qualitiesBuildPoints.negative < -BuilderConfig.qualities.maxNegativeBpBonus && (
-        <Alert severity="warning" sx={{ py: 0 }}>
-          Negative qualities exceed the {BuilderConfig.qualities.maxNegativeBpBonus} BP bonus limit.
-        </Alert>
+        <EditorMode.IsBuilder>
+          <Alert severity="warning" sx={{ py: 0 }}>
+            Negative qualities exceed the {BuilderConfig.qualities.maxNegativeBpBonus} BP bonus limit.
+          </Alert>
+        </EditorMode.IsBuilder>
       )}
 
       {filteredQualities.length === 0

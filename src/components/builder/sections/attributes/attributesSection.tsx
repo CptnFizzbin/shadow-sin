@@ -7,6 +7,7 @@ import { useAllAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import {
   AttributeKey,
   AttributeOrder,
@@ -33,15 +34,17 @@ export const AttributesSection: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      <Stack direction="row" sx={{ alignSelf: "flex-end", gap: 1 }}>
-        <BuildPoints value={budget.spent} total={budget.limit} /> + <BuildPoints value={specialBp} />
-      </Stack>
+      <EditorMode.IsBuilder>
+        <Stack direction="row" sx={{ alignSelf: "flex-end", gap: 1 }}>
+          <BuildPoints value={budget.spent} total={budget.limit} /> + <BuildPoints value={specialBp} />
+        </Stack>
 
-      <LinearProgress
-        variant="determinate"
-        value={getProgress(budget.spent, budget.limit)}
-        sx={{ height: 8, borderRadius: 1, width: "100%" }}
-      />
+        <LinearProgress
+          variant="determinate"
+          value={getProgress(budget.spent, budget.limit)}
+          sx={{ height: 8, borderRadius: 1, width: "100%" }}
+        />
+      </EditorMode.IsBuilder>
 
       <Label label="Pysical" variant="outlined" />
       <AttributesList attributeKeys={physicalAttrs} />
@@ -50,7 +53,9 @@ export const AttributesSection: FC = () => {
       <AttributesList attributeKeys={mentalAttrs} />
 
       <Label label="Special" variant="outlined" />
-      <Label label="Does not count towards BP limit" variant="text" />
+      <EditorMode.IsBuilder>
+        <Label label="Does not count towards BP limit" variant="text" />
+      </EditorMode.IsBuilder>
       <AttributesList attributeKeys={specialAttrs} />
 
     </Stack>

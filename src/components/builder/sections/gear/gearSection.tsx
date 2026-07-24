@@ -18,6 +18,7 @@ import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAn
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
@@ -50,25 +51,27 @@ export const GearSection: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      <Stack sx={{ gap: 0.5 }}>
-        <Stack
-          direction="row"
-          sx={{ justifyContent: "space-between", alignItems: "center" }}
-        >
-          <Typography>
-            <Nuyen amount={totalNuyen} />
-            {" / "}
-            <Nuyen amount={BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance} />
-          </Typography>
-          <BuildPoints value={buildPoints.spent} total={buildPoints.allowance} />
-        </Stack>
+      <EditorMode.IsBuilder>
+        <Stack sx={{ gap: 0.5 }}>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between", alignItems: "center" }}
+          >
+            <Typography>
+              <Nuyen amount={totalNuyen} />
+              {" / "}
+              <Nuyen amount={BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance} />
+            </Typography>
+            <BuildPoints value={buildPoints.spent} total={buildPoints.allowance} />
+          </Stack>
 
-        <LinearProgress
-          variant="determinate"
-          value={getProgress(buildPoints.spent, BuilderConfig.gear.bpAllowance)}
-          color={buildPoints.isOverBudget ? "error" : "primary"}
-        />
-      </Stack>
+          <LinearProgress
+            variant="determinate"
+            value={getProgress(buildPoints.spent, BuilderConfig.gear.bpAllowance)}
+            color={buildPoints.isOverBudget ? "error" : "primary"}
+          />
+        </Stack>
+      </EditorMode.IsBuilder>
 
       {Object.values(SectionHeader).map((sectionName) => (
         <Accordion
@@ -120,7 +123,9 @@ export const GearSection: FC = () => {
         </Accordion>
       ))}
 
-      <StartingNuyenSection />
+      <EditorMode.IsBuilder>
+        <StartingNuyenSection />
+      </EditorMode.IsBuilder>
     </Stack>
   )
 }

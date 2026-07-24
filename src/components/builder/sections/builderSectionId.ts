@@ -31,3 +31,5 @@ export const builderSections: Record<BuilderSectionId, BuilderSectionInfo> = {
   [BuilderSectionId.gear]: { label: "Gear" },
   [BuilderSectionId.contacts]: { label: "Contacts" },
 }
+
+export const builderSectionOrder = Object.values(BuilderSectionId)

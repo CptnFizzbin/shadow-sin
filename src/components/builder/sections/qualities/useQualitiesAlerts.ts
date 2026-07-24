@@ -1,12 +1,14 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
   const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
+  const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []
 
-  if (qualities.length === 0) {
+  if (qualities.length === 0 && editorMode.isBuilder) {
     statuses.push({
       section: "Qualities",
       severity: "warning",
