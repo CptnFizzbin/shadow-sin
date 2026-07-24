@@ -319,9 +319,11 @@ _Avoid_: permit, registration
 
 **Licence Quick-Buy**:
 A Player action on a Restricted, unlicensed gear item (Builder and Viewer both) that opens a
-dialog to purchase a Licence for it: pick or create a SIN, set a rating (defaulted from the
-item's Availability rating), and optionally extend coverage to other unlicensed items sharing
-the same name and `ItemType`. Not offered for **Forbidden** items — Forbidden gear has no legal
+dialog to purchase a Licence for it: pick or create a SIN, then optionally extend coverage to
+other unlicensed items sharing the same name and `ItemType`. The Licence's rating always matches
+its SIN's reality — the Real SIN produces a free, unrestricted Real Licence with no rating to
+set; a Fake SIN produces a Fake Licence with an adjustable rating, defaulting to 3
+(`DefaultFakeLicenseRating`). Not offered for **Forbidden** items — Forbidden gear has no legal
 Licence path. In the Builder the Licence is simply added (its cost counts toward the Gear BP
 budget like any other item); in the Viewer, Nuyen is withdrawn unless the Player chooses
 "Acquire" (free, matching the existing acquire/purchase distinction on new gear).

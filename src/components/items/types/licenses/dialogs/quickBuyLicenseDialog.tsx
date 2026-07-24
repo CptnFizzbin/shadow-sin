@@ -14,9 +14,9 @@ import { useState } from "react"
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
 import { useGearByType } from "#/components/items/gearHooks.ts"
 import {
+  DefaultFakeLicenseRating,
   findLicenseableSiblings,
   getLicenseCost,
-  suggestLicenseRating,
 } from "#/components/items/types/licenses/licenseUtils.ts"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
@@ -49,7 +49,7 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
   const sinFormDialog = useSinFormDialog()
 
   const [selectedSinId, setSelectedSinId] = useState(sins[0]?.id ?? "")
-  const [fakeRating, setFakeRating] = useState(() => suggestLicenseRating(item.availability?.rating ?? 0))
+  const [fakeRating, setFakeRating] = useState(DefaultFakeLicenseRating)
   const [coverSiblings, setCoverSiblings] = useState(true)
 
   // A Licence's reality always matches its SIN's — a Fake SIN can only carry Fake licences,

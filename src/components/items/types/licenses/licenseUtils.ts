@@ -19,14 +19,8 @@ export const getLicenseCost = (rating: LicenseData["rating"]): number => {
   return Number(rating) * 100
 }
 
-/**
- * Suggests a default Licence rating for a Restricted item, as the inverse of
- * `getLicenseAvailability` (availability rating = licence rating × 3). Clamped to the 1–6
- * range Licences support.
- */
-export const suggestLicenseRating = (availabilityRating: number): number => {
-  return Math.min(6, Math.max(1, Math.ceil(availabilityRating / 3)))
-}
+/** Default rating for a newly-created Fake Licence. */
+export const DefaultFakeLicenseRating = 3
 
 /**
  * A gear item can be Licence quick-bought when it is Restricted (not Forbidden — Forbidden

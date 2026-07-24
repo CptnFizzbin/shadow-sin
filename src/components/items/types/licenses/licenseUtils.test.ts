@@ -7,50 +7,12 @@ import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
 import {
+  DefaultFakeLicenseRating,
   findLicenseableSiblings,
-  getLicenseAvailability,
   getLicenseCost,
   isItemLicensed,
   isLicenseQuickBuyEligible,
-  suggestLicenseRating,
 } from "./licenseUtils.ts"
-
-describe("suggestLicenseRating", () => {
-  it("derives the licence rating as the inverse of getLicenseAvailability", () => {
-    // Arrange
-    const rating = 4
-
-    // Act
-    const suggested = suggestLicenseRating(getLicenseAvailability(rating).rating)
-
-    // Assert
-    expect(suggested).toBe(rating)
-  })
-
-  it("clamps low availability ratings up to a minimum of 1", () => {
-    // Arrange / Act
-    const suggested = suggestLicenseRating(1)
-
-    // Assert
-    expect(suggested).toBe(1)
-  })
-
-  it("clamps high availability ratings down to a maximum of 6", () => {
-    // Arrange / Act
-    const suggested = suggestLicenseRating(20)
-
-    // Assert
-    expect(suggested).toBe(6)
-  })
-
-  it("rounds up availability ratings that fall between rating steps", () => {
-    // Arrange / Act
-    const suggested = suggestLicenseRating(7)
-
-    // Assert
-    expect(suggested).toBe(3)
-  })
-})
 
 describe("isLicenseQuickBuyEligible", () => {
   const baseItem: ItemData = {
@@ -204,5 +166,12 @@ describe("getLicenseCost", () => {
   it("scales with rating for a fake licence", () => {
     // Arrange / Act / Assert
     expect(getLicenseCost(4)).toBe(400)
+  })
+})
+
+describe("DefaultFakeLicenseRating", () => {
+  it("is rating 3", () => {
+    // Arrange / Act / Assert
+    expect(DefaultFakeLicenseRating).toBe(3)
   })
 })
