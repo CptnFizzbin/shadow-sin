@@ -7,6 +7,7 @@ import { useState } from "react"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { NumberUtils } from "#/lib/numberUtils.ts"
+import { EditModeContext } from "#/stores/builder/editMode.context.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
@@ -30,7 +31,6 @@ import {
 import { SpritesBuilderSection } from "./sections/resources/technomancer/sprites/spritesBuilderSection.tsx"
 import { ActiveSkillsBuilderSection } from "./sections/skills/activeSkills/activeSkillsBuilderSection.tsx"
 import { KnowledgeSkillsBuilderSection } from "./sections/skills/knowledgeSkills/knowledgeSkillsBuilderSection.tsx"
-import { BpSummaryFooter } from "./sections/summary/bpSummaryFooter.tsx"
 
 interface RunnerEditorProps {
   runner: RunnerData
@@ -52,7 +52,6 @@ const sectionComponents: Record<BuilderSectionId, FC> = {
 }
 
 export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
-  const [isBpPanelExpanded, setIsBpPanelExpanded] = useState(false)
   const [activeSection, setActiveSection] = useState<BuilderSectionId>(BuilderSectionId.profile)
   const { runnerStore, builderStore, loadRunner } = useBuilderStores(runner)
   const navigate = useNavigate()
@@ -81,14 +80,8 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
 
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
-      <Stack>
-        <Stack
-          sx={{
-            opacity: isBpPanelExpanded ? 0.6 : 1,
-            transition: "opacity 0.2s ease",
-            pointerEvents: isBpPanelExpanded ? "none" : "auto",
-          }}
-        >
+      <EditModeContext.Provider value={true}>
+        <Stack>
           <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
             <Button
               variant="outlined"
@@ -117,13 +110,11 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
           <SwipeSurface onSwipeRightToLeft={nextSection} onSwipeLeftToRight={prevSection}>
             <ActiveSection />
           </SwipeSurface>
+
+          <AllBuilderAlerts />
+          <SaveRunnerButton requireValid={false} />
         </Stack>
-
-        <BpSummaryFooter onExpandedChange={setIsBpPanelExpanded} onSelectSection={setActiveSection} />
-
-        <AllBuilderAlerts />
-        <SaveRunnerButton requireValid={false} />
-      </Stack>
+      </EditModeContext.Provider>
     </BuilderStoreProvider>
   )
 }

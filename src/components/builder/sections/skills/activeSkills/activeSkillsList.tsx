@@ -9,6 +9,7 @@ import { useActiveSkillDialog } from "#/components/runner/skills/activeSkills/di
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
+import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -26,6 +27,7 @@ import {
 
 export const ActiveSkillsList: FC = () => {
   const skillsBuildPoints = useBuilderSkillsBuildPoints()
+  const isEditMode = useIsEditMode()
   const dispatch = useRunnerStoreDispatch()
   const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
   const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
@@ -49,9 +51,11 @@ export const ActiveSkillsList: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      <Typography color="secondary.main">
-        {skillsBuildPoints.activeSkills.bpSpent} BP
-      </Typography>
+      {!isEditMode && (
+        <Typography color="secondary.main">
+          {skillsBuildPoints.activeSkills.bpSpent} BP
+        </Typography>
+      )}
 
       {activeSkills.length > 0 && (
         <Stack sx={{ gap: 0.5 }}>

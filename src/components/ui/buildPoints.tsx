@@ -5,6 +5,7 @@ import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
+import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
 
 interface BuildPointsProps {
   value: number
@@ -21,6 +22,9 @@ export const BuildPoints: FC<BuildPointsProps> = ({
   sx,
   error = false,
 }) => {
+  const isEditMode = useIsEditMode()
+  if (isEditMode) return null
+
   const displayText =
     total !== undefined ? `${value} / ${total} BP` : `${value} BP`
 

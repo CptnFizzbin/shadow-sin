@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
+import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
 import type { QualityData } from "#/system/qualityData.ts"
 
 interface QualityRowProps {
@@ -18,6 +19,7 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
   onClick,
   onRemove,
 }) => {
+  const isEditMode = useIsEditMode()
   const { bpValue = 0, rating } = quality
   const bpLabel = bpValue >= 1 ? `${quality.bpValue} BP` : "FREE"
 
@@ -36,9 +38,11 @@ export const QualitiesListItem: FC<QualityRowProps> = ({
           {quality.name}
           {rating !== undefined && ` (Rating ${rating})`}
         </Typography>
-        <Typography color="secondary.main">
-          {bpLabel}
-        </Typography>
+        {!isEditMode && (
+          <Typography color="secondary.main">
+            {bpLabel}
+          </Typography>
+        )}
         {onRemove && (
           <IconButton
             color="error"

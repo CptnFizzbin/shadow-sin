@@ -6,6 +6,7 @@ import type { FC } from "react"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
@@ -21,6 +22,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   const store = useRunnerStoreContext()
   const attrApi = useAttrInfo(props.attr)
   const attrValue = useAttrValue(props.attr)
+  const isEditMode = useIsEditMode()
 
   let disabled = false
   let refund = BuilderConfig.attributes.bpCost.base
@@ -29,6 +31,10 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   if (attrValue >= attrApi.max) {
     refund = BuilderConfig.attributes.bpCost.maxOut
     label = `${refund} BP`
+  }
+
+  if (isEditMode) {
+    label = ""
   }
 
   if (attrValue <= attrApi.min) {
