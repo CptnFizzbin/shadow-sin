@@ -1,10 +1,9 @@
-import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
@@ -22,57 +21,51 @@ const QualityInfoDialog: FC<QualityInfoDialogProps> = ({ ctrl, quality }) => {
     : undefined
 
   return (
-    <ControlledDialog ctrl={ctrl} maxWidth="sm">
-      <Dialog.Title>{quality.name}</Dialog.Title>
-      <Dialog.Content>
-        <Stack sx={{ gap: 1.5 }}>
-          <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-            <Stack sx={{ minWidth: 80 }}>
-              <Label label="Type" variant="outlined" />
-              <Typography sx={{ textAlign: "center", textTransform: "capitalize" }}>
-                {quality.type}
-              </Typography>
-            </Stack>
-
-            {quality.bpValue !== undefined && (
-              <Stack sx={{ minWidth: 80 }}>
-                <Label label={bpLabel} variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>
-                  {quality.bpValue}
-                </Typography>
-              </Stack>
-            )}
-
-            {quality.rating !== undefined && (
-              <Stack sx={{ minWidth: 80 }}>
-                <Label label="Rating" variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>
-                  {quality.rating}
-                </Typography>
-              </Stack>
-            )}
-
-            {quality.source && (
-              <Stack sx={{ minWidth: 80 }}>
-                <Label label="Source" variant="outlined" />
-                <Typography sx={{ textAlign: "center" }}>
-                  {bookLabel} p.{quality.source.page}
-                </Typography>
-              </Stack>
-            )}
+    <DetailDialog ctrl={ctrl} title={quality.name}>
+      <Stack sx={{ gap: 1.5 }}>
+        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+          <Stack sx={{ minWidth: 80 }}>
+            <Label label="Type" variant="outlined" />
+            <Typography sx={{ textAlign: "center", textTransform: "capitalize" }}>
+              {quality.type}
+            </Typography>
           </Stack>
 
-          {quality.description && (
-            <Typography color="text.secondary">
-              {quality.description}
-            </Typography>
+          {quality.bpValue !== undefined && (
+            <Stack sx={{ minWidth: 80 }}>
+              <Label label={bpLabel} variant="outlined" />
+              <Typography sx={{ textAlign: "center" }}>
+                {quality.bpValue}
+              </Typography>
+            </Stack>
+          )}
+
+          {quality.rating !== undefined && (
+            <Stack sx={{ minWidth: 80 }}>
+              <Label label="Rating" variant="outlined" />
+              <Typography sx={{ textAlign: "center" }}>
+                {quality.rating}
+              </Typography>
+            </Stack>
+          )}
+
+          {quality.source && (
+            <Stack sx={{ minWidth: 80 }}>
+              <Label label="Source" variant="outlined" />
+              <Typography sx={{ textAlign: "center" }}>
+                {bookLabel} p.{quality.source.page}
+              </Typography>
+            </Stack>
           )}
         </Stack>
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Button onClick={() => ctrl.close()}>Close</Button>
-      </Dialog.Actions>
-    </ControlledDialog>
+
+        {quality.description && (
+          <Typography color="text.secondary">
+            {quality.description}
+          </Typography>
+        )}
+      </Stack>
+    </DetailDialog>
   )
 }
 
