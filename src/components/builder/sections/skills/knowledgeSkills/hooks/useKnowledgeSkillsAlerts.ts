@@ -1,7 +1,7 @@
 import pluralize from "pluralize"
 
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import {
@@ -12,9 +12,9 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
-  const isEditMode = useIsEditMode()
+  const { isEdit } = useEditorMode()
 
-  if (isEditMode) return []
+  if (isEdit) return []
 
   const statuses: AlertInfo[] = []
 

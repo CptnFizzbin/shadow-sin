@@ -1,16 +1,16 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 
 import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
 
 export const useBuildPointsAlerts = (): AlertInfo[] => {
   const summary = useBuilderBuildPointsApi()
-  const isEditMode = useIsEditMode()
+  const { isEdit } = useEditorMode()
 
   const alerts: AlertInfo[] = []
 
-  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && !isEditMode) {
+  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && !isEdit) {
     alerts.push({
       section: "Build Points",
       severity: "warning",

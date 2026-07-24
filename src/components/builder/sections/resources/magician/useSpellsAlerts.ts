@@ -3,7 +3,7 @@ import { useAttrValue } from "#/components/runner/attributes/attributesProvider.
 import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
@@ -14,7 +14,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
-  const isEditMode = useIsEditMode()
+  const { isEdit } = useEditorMode()
 
   const statuses: AlertInfo[] = []
 
@@ -43,7 +43,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
     })
   }
 
-  if (spent > allowance && !isEditMode) {
+  if (spent > allowance && !isEdit) {
     statuses.push({
       section: "Spells",
       severity: "error",

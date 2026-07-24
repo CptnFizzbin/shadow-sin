@@ -4,7 +4,7 @@ import { useGearBuildPoints } from "#/components/builder/buildPoints/hooks/useGe
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { useEditorMode } from "#/stores/builder/editorMode.tsx"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
@@ -13,11 +13,11 @@ export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()
   const { isOverBudget } = useGearBuildPoints()
   const { isEncumbered, penalty, totalBallistic, totalImpact, threshold } = useEncumbrance()
-  const isEditMode = useIsEditMode()
+  const { isEdit } = useEditorMode()
 
   const alerts: AlertInfo[] = []
 
-  if (isOverBudget && !isEditMode) {
+  if (isOverBudget && !isEdit) {
     alerts.push({
       section: "Gear",
       severity: "error",

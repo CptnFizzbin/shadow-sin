@@ -7,7 +7,7 @@ import { useState } from "react"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { NumberUtils } from "#/lib/numberUtils.ts"
-import { EditModeContext } from "#/stores/builder/editMode.context.ts"
+import { EditorModeProvider } from "#/stores/builder/editorMode.tsx"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
@@ -80,7 +80,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
 
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
-      <EditModeContext.Provider value={true}>
+      <EditorModeProvider mode="edit">
         <Stack>
           <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
             <Button
@@ -114,7 +114,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
           <AllBuilderAlerts />
           <SaveRunnerButton requireValid={false} />
         </Stack>
-      </EditModeContext.Provider>
+      </EditorModeProvider>
     </BuilderStoreProvider>
   )
 }

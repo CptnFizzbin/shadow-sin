@@ -18,7 +18,7 @@ import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAn
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
@@ -40,7 +40,6 @@ export const GearSection: FC = () => {
   const totalNuyen = useGearTotalCost()
   const buildPoints = useGearBuildPoints()
   const { invalidSections } = useGearAvailabilityIssues()
-  const isEditMode = useIsEditMode()
 
   const [activeSection, setActiveSection] = useState<SectionHeader | null>(null)
 
@@ -52,7 +51,7 @@ export const GearSection: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      {!isEditMode && (
+      <EditorMode.IsBuilder>
         <Stack sx={{ gap: 0.5 }}>
           <Stack
             direction="row"
@@ -72,7 +71,7 @@ export const GearSection: FC = () => {
             color={buildPoints.isOverBudget ? "error" : "primary"}
           />
         </Stack>
-      )}
+      </EditorMode.IsBuilder>
 
       {Object.values(SectionHeader).map((sectionName) => (
         <Accordion
@@ -124,7 +123,9 @@ export const GearSection: FC = () => {
         </Accordion>
       ))}
 
-      {!isEditMode && <StartingNuyenSection />}
+      <EditorMode.IsBuilder>
+        <StartingNuyenSection />
+      </EditorMode.IsBuilder>
     </Stack>
   )
 }

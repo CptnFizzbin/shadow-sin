@@ -11,7 +11,7 @@ import {
 import { useLanguageSkillDialog } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
@@ -32,7 +32,6 @@ export const KnowledgeSkillsList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
   const skillPoints = useKnowledgeSkillPoints()
   const buildPoints = useKnowledgeSkillsBuildPoints()
-  const isEditMode = useIsEditMode()
 
   const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
@@ -62,7 +61,9 @@ export const KnowledgeSkillsList: FC = () => {
             <SkillPoints value={skillPoints.spent.extra} />
           </Stack>
 
-          {!isEditMode && <Typography>Extra SP costs 2 BP each</Typography>}
+          <EditorMode.IsBuilder>
+            <Typography>Extra SP costs 2 BP each</Typography>
+          </EditorMode.IsBuilder>
         </Stack>
 
         <BuildPoints value={buildPoints.spent} />

@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { getActiveSkillGroupBp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useIsEditMode } from "#/stores/builder/editMode.context.ts"
+import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
 import { getSkillsInGroup } from "./skillGroupUtils.ts"
@@ -25,7 +25,6 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
 }) => {
   const bpCost = getActiveSkillGroupBp(group)
   const memberSkills = getSkillsInGroup(group.name)
-  const isEditMode = useIsEditMode()
 
   return (
     <Box
@@ -49,14 +48,14 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
           variant="outlined"
           sx={{ height: 20, fontSize: "0.75rem", minWidth: 28 }}
         />
-        {!isEditMode && (
+        <EditorMode.IsBuilder>
           <Typography
             color="secondary.main"
             sx={{ minWidth: 40, textAlign: "right" }}
           >
             {bpCost} BP
           </Typography>
-        )}
+        </EditorMode.IsBuilder>
         <IconButton
           size="small"
           color="error"
