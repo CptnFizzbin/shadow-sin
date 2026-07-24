@@ -25,6 +25,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import {
+  selectAllSettled,
   selectHits,
   selectIsCriticalGlitch,
   selectIsGlitch,
@@ -145,6 +146,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
   const rolledHits = useDiceRollerSelector(diceRoller, selectHits)
   const isGlitch = useDiceRollerSelector(diceRoller, selectIsGlitch)
   const isCriticalGlitch = useDiceRollerSelector(diceRoller, selectIsCriticalGlitch)
+  const isSettled = useDiceRollerSelector(diceRoller, selectAllSettled)
 
   const netHits = hasRolled ? rolledHits - defenseHits : null
   const totalDV = netHits === null ? null : (netHits > 0 ? applyNetHitsToDamage(weapon.dmg, netHits) : "Miss")
@@ -304,8 +306,12 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
           <Stack sx={{ alignItems: "center", gap: 1 }}>
             <DiceResult roller={diceRoller} iconSize={32} />
 
-            {isCriticalGlitch && <Label label="CRITICAL GLITCH!" color="error.main" variant="contained" />}
-            {!isCriticalGlitch && isGlitch && <Label label="Glitch!" color="error.main" variant="text" />}
+            {isSettled && isCriticalGlitch && (
+              <Label label="CRITICAL GLITCH!" color="error.main" variant="contained" />
+            )}
+            {isSettled && !isCriticalGlitch && isGlitch && (
+              <Label label="Glitch!" color="error.main" variant="text" />
+            )}
 
             <Button
               variant="contained"
