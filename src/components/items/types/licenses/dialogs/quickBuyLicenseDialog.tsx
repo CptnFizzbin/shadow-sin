@@ -6,6 +6,8 @@ import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
+import ToggleButton from "@mui/material/ToggleButton"
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
@@ -48,9 +50,11 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
   const sinFormDialog = useSinFormDialog()
 
   const [selectedSinId, setSelectedSinId] = useState(sins[0]?.id ?? "")
-  const [rating, setRating] = useState(() => suggestLicenseRating(item.availability?.rating ?? 0))
+  const [isReal, setIsReal] = useState(() => sins[0]?.rating === "real")
+  const [fakeRating, setFakeRating] = useState(() => suggestLicenseRating(item.availability?.rating ?? 0))
   const [coverSiblings, setCoverSiblings] = useState(true)
 
+  const rating: LicenseData["rating"] = isReal ? "real" : fakeRating
   const cost = getLicenseCost(rating)
   const canAfford = currentNuyen >= cost
   const siblings = findLicenseableSiblings(item, Object.values(allGear), licenses)
@@ -111,14 +115,26 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
           </Stack>
 
           <Stack direction="row" sx={{ gap: 2, alignItems: "center" }}>
-            <CounterInput
-              label="Rating"
+            <ToggleButtonGroup
               size="small"
-              value={rating}
-              onChange={(value) => setRating(value ?? 1)}
-              min={1}
-              max={6}
-            />
+              exclusive
+              value={isReal ? "real" : "fake"}
+              onChange={(_, value) => { if (value) setIsReal(value === "real") }}
+            >
+              <ToggleButton value="fake">Fake</ToggleButton>
+              <ToggleButton value="real">Real</ToggleButton>
+            </ToggleButtonGroup>
+
+            {!isReal && (
+              <CounterInput
+                label="Rating"
+                size="small"
+                value={fakeRating}
+                onChange={(value) => setFakeRating(value ?? 1)}
+                min={1}
+                max={6}
+              />
+            )}
 
             <Typography color="text.secondary">
               Cost:
