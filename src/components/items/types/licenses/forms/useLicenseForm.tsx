@@ -2,7 +2,7 @@ import type { UUID } from "node:crypto"
 
 import { useItemForm, itemDefaults } from "#/components/items/forms/useItemForm.tsx"
 import type { GearSubmitMeta } from "#/components/items/gearSubmitMeta.ts"
-import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
+import { DefaultFakeLicenseRating, getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -18,7 +18,7 @@ const defaultValues: LicenseData = {
   itemType: ItemType.license,
   id: NullUuid,
   name: "",
-  rating: 1,
+  rating: DefaultFakeLicenseRating,
   cost: 0,
   parentId: NullUuid,
 }
