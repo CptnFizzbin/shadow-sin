@@ -310,9 +310,21 @@ _Avoid_: ID, identity (use SIN)
 
 **Licence**:
 An Item (`ItemType.license`) granting legal permission to carry a Restricted piece of gear.
-Currently freeform — no mechanical link to the gear it covers or the SIN it belongs to.
-Planned: a quick-buy flow that creates one or more Licences attached to a chosen SIN.
+Belongs to a SIN via the existing Attachment mechanism (`Licence.parentId` = the SIN's id). A
+Licence may cover multiple gear items — typically several instances of the same item, since a
+Licence generally certifies a gear type rather than a single serial number — via each covered
+Item's `licenseId` field; an item is covered by at most one Licence. Manually-created Licences
+remain freeform (no covered items) unless created through the quick-buy flow below.
 _Avoid_: permit, registration
+
+**Licence Quick-Buy**:
+A Player action on a Restricted, unlicensed gear item (Builder and Viewer both) that opens a
+dialog to purchase a Licence for it: pick or create a SIN, set a rating (defaulted from the
+item's Availability rating), and optionally extend coverage to other unlicensed items sharing
+the same name and `ItemType`. Not offered for **Forbidden** items — Forbidden gear has no legal
+Licence path. In the Builder the Licence is simply added (its cost counts toward the Gear BP
+budget like any other item); in the Viewer, Nuyen is withdrawn unless the Player chooses
+"Acquire" (free, matching the existing acquire/purchase distinction on new gear).
 
 **Availability**:
 A rating + restriction code on an Item describing how hard it is to obtain and whether ownership

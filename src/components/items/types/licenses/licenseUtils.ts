@@ -1,5 +1,7 @@
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export const getLicenseAvailability = (
   rating: LicenseData["rating"],
@@ -15,4 +17,48 @@ export const getLicenseAvailability = (
 export const getLicenseCost = (rating: LicenseData["rating"]): number => {
   if (rating === "real") return 0
   return Number(rating) * 100
+}
+
+/**
+ * Suggests a default Licence rating for a Restricted item, as the inverse of
+ * `getLicenseAvailability` (availability rating = licence rating × 3). Clamped to the 1–6
+ * range Licences support.
+ */
+export const suggestLicenseRating = (availabilityRating: number): number => {
+  return Math.min(6, Math.max(1, Math.ceil(availabilityRating / 3)))
+}
+
+/**
+ * A gear item can be Licence quick-bought when it is Restricted (not Forbidden — Forbidden
+ * items have no legal licence path) and isn't a SIN or Licence itself.
+ */
+export const isLicenseQuickBuyEligible = (item: ItemData): boolean => {
+  if (item.itemType === ItemType.license || item.itemType === ItemType.sin) return false
+  return item.availability?.restricted === true && !item.availability?.forbidden
+}
+
+/**
+ * True when `item.licenseId` points at a Licence that still exists in gear. A dangling
+ * reference (its Licence was since removed) is treated the same as unlicensed.
+ */
+export const isItemLicensed = (item: ItemData, licenses: LicenseData[]): boolean => {
+  return item.licenseId !== undefined && licenses.some((license) => license.id === item.licenseId)
+}
+
+/**
+ * Other gear items eligible to share the same Licence as `item` — same name and item type,
+ * not already licensed, excluding `item` itself. Licences generally cover a gear type rather
+ * than a single serial number, so multiple identical items (e.g. three Ares Predators) can
+ * share one Licence.
+ */
+export const findLicenseableSiblings = (
+  item: ItemData,
+  allGear: ItemData[],
+  licenses: LicenseData[],
+): ItemData[] => {
+  return allGear.filter((candidate) =>
+    candidate.id !== item.id
+    && candidate.name === item.name
+    && candidate.itemType === item.itemType
+    && !isItemLicensed(candidate, licenses))
 }
