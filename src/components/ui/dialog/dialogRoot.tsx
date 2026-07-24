@@ -8,6 +8,7 @@ import { Children, isValidElement } from "react"
 import { DialogActions } from "./dialogActions.tsx"
 import { DialogContent } from "./dialogContent.tsx"
 import { DialogTitle } from "./dialogTitle.tsx"
+import { useCloseOnBrowserBack } from "./useCloseOnBrowserBack.ts"
 
 function isElementType<TProps>(type: FC<TProps>) {
   return (item: ReactNode): item is ReactElement<TProps> => {
@@ -46,6 +47,8 @@ export const DialogRoot = ({
   fullScreen,
   children,
 }: DialogRootProps) => {
+  useCloseOnBrowserBack(open, onClose)
+
   const childArray = Children.toArray(children)
 
   const title = childArray.find(isElementType(DialogTitle))
