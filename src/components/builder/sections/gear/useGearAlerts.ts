@@ -13,11 +13,11 @@ export const useGearAlerts = (): AlertInfo[] => {
   const { totalInvalidCount } = useGearAvailabilityIssues()
   const { isOverBudget } = useGearBuildPoints()
   const { isEncumbered, penalty, totalBallistic, totalImpact, threshold } = useEncumbrance()
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const alerts: AlertInfo[] = []
 
-  if (isOverBudget && !isEdit) {
+  if (isOverBudget && !editorMode.isEdit) {
     alerts.push({
       section: "Gear",
       severity: "error",

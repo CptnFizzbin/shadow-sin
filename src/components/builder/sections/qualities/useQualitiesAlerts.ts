@@ -4,11 +4,11 @@ import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts
 
 export const useQualitiesAlerts = (): AlertInfo[] => {
   const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []
 
-  if (qualities.length === 0 && !isEdit) {
+  if (qualities.length === 0 && !editorMode.isEdit) {
     statuses.push({
       section: "Qualities",
       severity: "warning",

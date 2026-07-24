@@ -6,14 +6,14 @@ import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.s
 export const useActiveSkillsAlerts = (): AlertInfo[] => {
   const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
   const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []
 
   const r6Count = activeSkills.filter((s) => s.rating >= 6).length
   const r5Count = skillGroups.filter((s) => s.rating === 5).length
 
-  if ((r6Count > 1 || r5Count > 2 || (r6Count === 1 && r5Count > 0)) && !isEdit) {
+  if ((r6Count > 1 || r5Count > 2 || (r6Count === 1 && r5Count > 0)) && !editorMode.isEdit) {
     statuses.push({
       section: "Skills",
       severity: "error",

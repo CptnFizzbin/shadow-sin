@@ -22,7 +22,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
   const store = useRunnerStoreContext()
   const attrApi = useAttrInfo(props.attr)
   const attrValue = useAttrValue(props.attr)
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   let disabled = false
   let refund = BuilderConfig.attributes.bpCost.base
@@ -33,7 +33,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     label = `${refund} BP`
   }
 
-  if (isEdit) {
+  if (editorMode.isEdit) {
     label = ""
   }
 

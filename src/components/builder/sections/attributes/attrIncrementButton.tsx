@@ -21,7 +21,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     throw new Error("Essence can not be incremented")
   }
   const { budget } = useAttributesBuildPoints()
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const store = useRunnerStoreContext()
   const attrKey = props.attr
@@ -40,11 +40,11 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = `${cost} BP`
   }
 
-  if (isEdit) {
+  if (editorMode.isEdit) {
     label = ""
   }
 
-  if (willMaxAttr && hasMaxxedAttr && !isEdit) {
+  if (willMaxAttr && hasMaxxedAttr && !editorMode.isEdit) {
     disabled = true
     label = "---"
   }
@@ -54,7 +54,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = "MAX"
   }
 
-  if (budget.remaining < cost && !isEdit) {
+  if (budget.remaining < cost && !editorMode.isEdit) {
     disabled = true
   }
 

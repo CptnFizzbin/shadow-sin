@@ -26,13 +26,13 @@ export const useEditorMode = (): EditorModeInfo => {
 }
 
 const IsBuilder: FC<PropsWithChildren> = ({ children }) => {
-  const { isBuilder } = useEditorMode()
-  return isBuilder ? children : null
+  const editorMode = useEditorMode()
+  return editorMode.isBuilder ? children : null
 }
 
 const IsEdit: FC<PropsWithChildren> = ({ children }) => {
-  const { isEdit } = useEditorMode()
-  return isEdit ? children : null
+  const editorMode = useEditorMode()
+  return editorMode.isEdit ? children : null
 }
 
 export const EditorMode = { IsBuilder, IsEdit }

@@ -12,9 +12,9 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
-  if (isEdit) return []
+  if (editorMode.isEdit) return []
 
   const statuses: AlertInfo[] = []
 

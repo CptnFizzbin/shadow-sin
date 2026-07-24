@@ -6,11 +6,11 @@ import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
 
 export const useBuildPointsAlerts = (): AlertInfo[] => {
   const summary = useBuilderBuildPointsApi()
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const alerts: AlertInfo[] = []
 
-  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && !isEdit) {
+  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && !editorMode.isEdit) {
     alerts.push({
       section: "Build Points",
       severity: "warning",

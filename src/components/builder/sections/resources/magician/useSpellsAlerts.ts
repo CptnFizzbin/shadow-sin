@@ -14,7 +14,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
   const spellcasting = useActiveSkill(SkillKey.spellcasting)
   const ritualSpellcasting = useActiveSkill(SkillKey.ritualSpellcasting)
   const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
-  const { isEdit } = useEditorMode()
+  const editorMode = useEditorMode()
 
   const statuses: AlertInfo[] = []
 
@@ -43,7 +43,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
     })
   }
 
-  if (spent > allowance && !isEdit) {
+  if (spent > allowance && !editorMode.isEdit) {
     statuses.push({
       section: "Spells",
       severity: "error",
