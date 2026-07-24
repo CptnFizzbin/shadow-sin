@@ -12,6 +12,14 @@ interface DamageTrackProps {
   onChange: (value: number) => void
   allowOverflow?: boolean
   woundInterval?: number
+  /**
+   * Number of grid columns to lay cells out in. Defaults to `woundInterval`,
+   * which groups cells into rows that line up with wound markers. Pass this
+   * explicitly when `woundInterval` doesn't reflect a sensible row width
+   * (e.g. it's been inflated to suppress markers), so cells still wrap
+   * instead of being squeezed below their minimum width.
+   */
+  columns?: number
 }
 
 export default function DamageTrack({
@@ -21,6 +29,7 @@ export default function DamageTrack({
   onChange,
   allowOverflow,
   woundInterval = 3,
+  columns,
 }: DamageTrackProps) {
   let numCells = Math.max(max, current)
   if (allowOverflow && current >= max) {
@@ -37,7 +46,7 @@ export default function DamageTrack({
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `repeat(${woundInterval}, 1fr)`,
+          gridTemplateColumns: `repeat(${columns ?? woundInterval}, 1fr)`,
           gap: 0.5,
         }}
       >

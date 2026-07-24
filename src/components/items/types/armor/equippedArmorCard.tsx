@@ -44,6 +44,7 @@ export const EquippedArmorCard: FC<EquippedArmorCardProps> = ({ armor, onDamageC
                     max={armor.ballistic}
                     current={damage.ballistic}
                     woundInterval={armor.ballistic + 1}
+                    columns={Math.min(armor.ballistic, 4)}
                     onChange={(value) => onDamageChange({ ...damage, ballistic: value })}
                   />
                 </Grid>
@@ -55,6 +56,7 @@ export const EquippedArmorCard: FC<EquippedArmorCardProps> = ({ armor, onDamageC
                     max={armor.impact}
                     current={damage.impact}
                     woundInterval={armor.impact + 1}
+                    columns={Math.min(armor.impact, 4)}
                     onChange={(value) => onDamageChange({ ...damage, impact: value })}
                   />
                 </Grid>
