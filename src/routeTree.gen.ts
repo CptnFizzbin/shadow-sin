@@ -35,6 +35,7 @@ import { Route as RunnerIdComplexFormsRouteImport } from './routes/$runnerId/com
 import { Route as RunnerIdAdeptPowersRouteImport } from './routes/$runnerId/adept-powers'
 import { Route as RunnerIdAboutRouteImport } from './routes/$runnerId/about'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
+import { Route as TestThemeGalleryRouteImport } from './routes/test/theme/gallery'
 
 const RunnerIdRoute = RunnerIdRouteImport.update({
   id: '/$runnerId',
@@ -166,6 +167,11 @@ const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
   path: '/test/theme/typography',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestThemeGalleryRoute = TestThemeGalleryRouteImport.update({
+  id: '/test/theme/gallery',
+  path: '/test/theme/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/$runnerId/': typeof RunnerIdIndexRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/test/theme/gallery': typeof TestThemeGalleryRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
 export interface FileRoutesByTo {
@@ -220,6 +227,7 @@ export interface FileRoutesByTo {
   '/$runnerId': typeof RunnerIdIndexRoute
   '/gm': typeof GmIndexRoute
   '/new': typeof NewIndexRoute
+  '/test/theme/gallery': typeof TestThemeGalleryRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
 export interface FileRoutesById {
@@ -249,6 +257,7 @@ export interface FileRoutesById {
   '/$runnerId/': typeof RunnerIdIndexRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/test/theme/gallery': typeof TestThemeGalleryRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
 }
 export interface FileRouteTypes {
@@ -279,6 +288,7 @@ export interface FileRouteTypes {
     | '/$runnerId/'
     | '/gm/'
     | '/new/'
+    | '/test/theme/gallery'
     | '/test/theme/typography'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/$runnerId'
     | '/gm'
     | '/new'
+    | '/test/theme/gallery'
     | '/test/theme/typography'
   id:
     | '__root__'
@@ -334,6 +345,7 @@ export interface FileRouteTypes {
     | '/$runnerId/'
     | '/gm/'
     | '/new/'
+    | '/test/theme/gallery'
     | '/test/theme/typography'
   fileRoutesById: FileRoutesById
 }
@@ -345,6 +357,7 @@ export interface RootRouteChildren {
   GmNpcBuilderRoute: typeof GmNpcBuilderRoute
   GmIndexRoute: typeof GmIndexRoute
   NewIndexRoute: typeof NewIndexRoute
+  TestThemeGalleryRoute: typeof TestThemeGalleryRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
 }
 
@@ -532,6 +545,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestThemeTypographyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/test/theme/gallery': {
+      id: '/test/theme/gallery'
+      path: '/test/theme/gallery'
+      fullPath: '/test/theme/gallery'
+      preLoaderRoute: typeof TestThemeGalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -589,6 +609,7 @@ const rootRouteChildren: RootRouteChildren = {
   GmNpcBuilderRoute: GmNpcBuilderRoute,
   GmIndexRoute: GmIndexRoute,
   NewIndexRoute: NewIndexRoute,
+  TestThemeGalleryRoute: TestThemeGalleryRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
 }
 export const routeTree = rootRouteImport
