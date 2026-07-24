@@ -1,7 +1,11 @@
+export type DiceGroupType = "attribute" | "skill" | "bonus" | "defaulting" | "penalty"
+
 export interface DiceGroup {
   id?: string
   name: string
   size: number
+  type?: DiceGroupType
+  /** Explicit color override. Prefer `type` where the group fits one of the standard categories. */
   color?: string
 }
 
