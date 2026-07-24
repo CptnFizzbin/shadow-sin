@@ -1,7 +1,12 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { selectAllDice, selectIsGlitch, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
+import {
+  selectAllDice,
+  selectAllSettled,
+  selectIsGlitch,
+  useDiceRollerSelector,
+} from "#/system/dice/diceRoller.selectors.ts"
 import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
 import { getDiceOffset } from "./diceUtils.ts"
@@ -28,11 +33,12 @@ export const DiceResult: FC<DiceResultProps> = ({
 }) => {
   const allDice = useDiceRollerSelector(roller, selectAllDice)
   const isGlitch = useDiceRollerSelector(roller, selectIsGlitch)
+  const allSettled = useDiceRollerSelector(roller, selectAllSettled)
   const dice = (startIndex !== undefined || endIndex !== undefined)
     ? allDice.slice(startIndex ?? 0, endIndex)
     : allDice
 
-  const diceDefaultColor = (isGlitch && highlightGlitches) ? "error.main" : "secondary.main"
+  const diceDefaultColor = (allSettled && isGlitch && highlightGlitches) ? "error.main" : "secondary.main"
 
   return (
     <Stack
@@ -49,8 +55,8 @@ export const DiceResult: FC<DiceResultProps> = ({
         <DieFace
           key={index}
           value={die.value}
-          highlightHit={highlightHits}
-          highlightGlitch={highlightGlitches}
+          highlightHit={highlightHits && !die.isRolling}
+          highlightGlitch={highlightGlitches && !die.isRolling}
           style={getDiceOffset(die.isRolling)}
           size={iconSize}
         />
