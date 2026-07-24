@@ -1,12 +1,9 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
 import { QualityFormFields } from "#/components/runner/qualities/form/qualityFormFields.tsx"
 import { useQualityForm } from "#/components/runner/qualities/form/useQualityForm.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
-import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import { FormDialog } from "#/components/ui/dialog/formDialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import type { QualityData } from "#/system/qualityData.ts"
 
@@ -27,44 +24,16 @@ const QualityFormDialog: FC<QualityFormDialogProps> = ({
     onSubmit: (savedQuality) => ctrl.close(savedQuality),
   })
 
-  const title = editMode ? "Edit Quality" : "Add Quality"
-
   return (
-    <ControlledDialog
+    <FormDialog
       ctrl={ctrl}
-      maxWidth="sm"
-      onClose={false}
+      title={editMode ? "Edit Quality" : "Add Quality"}
       onClosed={() => form.reset()}
+      onDelete={onDelete}
+      onSubmit={() => form.handleSubmit()}
     >
-      <Dialog.Title>{title}</Dialog.Title>
-      <Dialog.Content>
-        <QualityFormFields form={form} />
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
-          <Box>
-            {onDelete && (
-              <Button
-                color="error"
-                onClick={() => {
-                  onDelete()
-                  ctrl.close()
-                }}
-              >
-                Delete
-              </Button>
-            )}
-          </Box>
-
-          <Box>
-            <Button onClick={() => ctrl.close()}>Cancel</Button>
-            <Button variant="contained" onClick={() => form.handleSubmit()}>
-              Save
-            </Button>
-          </Box>
-        </Stack>
-      </Dialog.Actions>
-    </ControlledDialog>
+      <QualityFormFields form={form} />
+    </FormDialog>
   )
 }
 

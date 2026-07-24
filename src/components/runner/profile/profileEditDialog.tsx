@@ -13,6 +13,9 @@ import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
 import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
+import type { ProfileFieldsValue } from "./profileFields.tsx"
+import { ProfileFields } from "./profileFields.tsx"
+
 type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
@@ -20,24 +23,30 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   const profile = useRunnerStoreSelector((s) => s.profile)
   const biology = useRunnerStoreSelector((s) => s.biology)
 
-  const [alias, setAlias] = useState(profile.alias)
-  const [name, setName] = useState(profile.name)
-  const [archetype, setArchetype] = useState(profile.archetype ?? "")
-  const [description, setDescription] = useState(profile.description ?? "")
-  const [personality, setPersonality] = useState(profile.personality ?? "")
+  const [profileFields, setProfileFields] = useState<ProfileFieldsValue>({
+    alias: profile.alias,
+    name: profile.name,
+    archetype: profile.archetype ?? "",
+    description: profile.description ?? "",
+    personality: profile.personality ?? "",
+  })
   const [gender, setGender] = useState(biology.gender ?? "")
   const [age, setAge] = useState(biology.age?.toString() ?? "")
   const [height, setHeight] = useState(biology.height ?? "")
   const [weight, setWeight] = useState(biology.weight ?? "")
 
+  const handleProfileFieldChange = (field: keyof ProfileFieldsValue, value: string) => {
+    setProfileFields((prev) => ({ ...prev, [field]: value }))
+  }
+
   const handleSave = () => {
     store.setState(
       produce((prev) => {
-        prev.profile.alias = alias
-        prev.profile.name = name
-        prev.profile.archetype = archetype || null
-        prev.profile.description = description || null
-        prev.profile.personality = personality || null
+        prev.profile.alias = profileFields.alias
+        prev.profile.name = profileFields.name
+        prev.profile.archetype = profileFields.archetype || null
+        prev.profile.description = profileFields.description || null
+        prev.profile.personality = profileFields.personality || null
         prev.biology.gender = gender || null
         prev.biology.age = age ? Number(age) : null
         prev.biology.height = height || null
@@ -55,51 +64,7 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
         <Stack divider={<Divider />} sx={{ gap: 2, padding: 1 }}>
           <Stack sx={{ gap: 1 }}>
             <Typography variant="subtitle2">Profile</Typography>
-            <MuiTextField
-              label="Alias"
-              fullWidth
-              variant="outlined"
-              size="small"
-              autoFocus
-              value={alias}
-              onChange={(e) => setAlias(e.target.value)}
-            />
-            <MuiTextField
-              label="Name"
-              fullWidth
-              variant="outlined"
-              size="small"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <MuiTextField
-              label="Archetype"
-              fullWidth
-              variant="outlined"
-              size="small"
-              value={archetype}
-              onChange={(e) => setArchetype(e.target.value)}
-            />
-            <MuiTextField
-              label="Description"
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-              size="small"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <MuiTextField
-              label="Personality"
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-              size="small"
-              value={personality}
-              onChange={(e) => setPersonality(e.target.value)}
-            />
+            <ProfileFields value={profileFields} onChange={handleProfileFieldChange} autoFocus />
           </Stack>
 
           <Stack sx={{ gap: 1 }}>

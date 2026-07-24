@@ -1,7 +1,7 @@
 import type { ChipProps } from "@mui/material/Chip"
-import Chip from "@mui/material/Chip"
 import type { FC } from "react"
 
+import { StatChip } from "#/components/ui/statChip.tsx"
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import { availabilityToString } from "#/system/availabilityInfo.ts"
 
@@ -17,13 +17,5 @@ export const AvailabilityChip: FC<AvailabilityChipProps> = ({
 
   if (availability.rating === 0) return null
 
-  return (
-    <Chip
-      size="small"
-      variant="outlined"
-      sx={{ height: 20, fontSize: "0.7rem" }}
-      {...props}
-      label={`Avail: ${rating}`}
-    />
-  )
+  return <StatChip label={`Avail: ${rating}`} {...props} />
 }
