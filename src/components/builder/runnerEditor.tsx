@@ -1,5 +1,8 @@
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
+import { RiMenuLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 import { useState } from "react"
@@ -10,15 +13,18 @@ import { NumberUtils } from "#/lib/numberUtils.ts"
 import { EditorModeProvider } from "#/stores/builder/editorMode.tsx"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
+import { FinalizeSection } from "./finalizeSection.tsx"
 import { useBuilderStores } from "./hooks/useBuilderStores.ts"
-import { BuilderTabs } from "./nav/builderTabs.tsx"
-import { SaveRunnerButton } from "./saveRunnerButton.tsx"
+import { EditorNavDrawer } from "./nav/editorNavDrawer.tsx"
+import { EditorPageNav } from "./nav/editorPageNav.tsx"
+import type { EditorTabId } from "./nav/editorTabId.ts"
+import { editorTabOrder, FINALIZE_TAB_ID } from "./nav/editorTabId.ts"
+import { EditorTabs } from "./nav/editorTabs.tsx"
 import { AttributesBuilderSection } from "./sections/attributes/attributesBuilderSection.tsx"
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
-import { BuilderSectionId, builderSectionOrder } from "./sections/builderSectionId.ts"
+import { BuilderSectionId } from "./sections/builderSectionId.ts"
 import { ContactsBuilderSection } from "./sections/contacts/contactsBuilderSection.tsx"
 import { GearBuilderSection } from "./sections/gear/gearBuilderSection.tsx"
 import { ProfileBuilderSection } from "./sections/profile/profileBuilderSection.tsx"
@@ -36,7 +42,7 @@ interface RunnerEditorProps {
   runner: RunnerData
 }
 
-const sectionComponents: Record<BuilderSectionId, FC> = {
+const tabComponents: Record<EditorTabId, FC> = {
   [BuilderSectionId.profile]: ProfileBuilderSection,
   [BuilderSectionId.biology]: BiologyBuilderSection,
   [BuilderSectionId.attributes]: AttributesBuilderSection,
@@ -49,24 +55,28 @@ const sectionComponents: Record<BuilderSectionId, FC> = {
   [BuilderSectionId.sprites]: SpritesBuilderSection,
   [BuilderSectionId.gear]: GearBuilderSection,
   [BuilderSectionId.contacts]: ContactsBuilderSection,
+  [FINALIZE_TAB_ID]: FinalizeSection,
 }
 
 export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
-  const [activeSection, setActiveSection] = useState<BuilderSectionId>(BuilderSectionId.profile)
+  const [activeTab, setActiveTab] = useState<EditorTabId>(BuilderSectionId.profile)
+  const [navDrawerOpen, setNavDrawerOpen] = useState(false)
   const { runnerStore, builderStore, loadRunner } = useBuilderStores(runner)
   const navigate = useNavigate()
 
-  const currentIndex = builderSectionOrder.indexOf(activeSection)
+  const currentIndex = editorTabOrder.indexOf(activeTab)
 
-  const nextSection = () => {
-    const nextIndex = NumberUtils.clamp(currentIndex + 1, { max: builderSectionOrder.length - 1 })
-    setActiveSection(builderSectionOrder[nextIndex])
+  const nextTab = () => {
+    const nextIndex = NumberUtils.clamp(currentIndex + 1, { max: editorTabOrder.length - 1 })
+    setActiveTab(editorTabOrder[nextIndex])
   }
 
-  const prevSection = () => {
+  const prevTab = () => {
     const prevIndex = NumberUtils.clamp(currentIndex - 1, { min: 0 })
-    setActiveSection(builderSectionOrder[prevIndex])
+    setActiveTab(editorTabOrder[prevIndex])
   }
+
+  const goToFinalize = () => setActiveTab(FINALIZE_TAB_ID)
 
   const handleCancel = () => {
     navigate({ to: "/$runnerId/about", params: { runnerId: runner.id } })
@@ -76,7 +86,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
     runnerStore.setState(() => runner)
   }
 
-  const ActiveSection = sectionComponents[activeSection]
+  const ActiveTabComponent = tabComponents[activeTab]
 
   return (
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
@@ -105,14 +115,39 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
             </Stack>
           </Stack>
 
-          <BuilderTabs value={activeSection} onChange={setActiveSection} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <EditorTabs value={activeTab} onChange={setActiveTab} />
 
-          <SwipeSurface onSwipeRightToLeft={nextSection} onSwipeLeftToRight={prevSection}>
-            <ActiveSection />
+            <IconButton
+              onClick={() => setNavDrawerOpen(true)}
+              aria-label="Open page menu"
+              sx={{ flexShrink: 0 }}
+            >
+              <RiMenuLine />
+            </IconButton>
+          </Box>
+
+          <EditorNavDrawer
+            open={navDrawerOpen}
+            onClose={() => setNavDrawerOpen(false)}
+            value={activeTab}
+            onSelect={setActiveTab}
+          />
+
+          <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
+            <Stack sx={{ gap: 1 }}>
+              <EditorPageNav
+                value={activeTab}
+                isFirst={currentIndex === 0}
+                isLast={currentIndex === editorTabOrder.length - 1}
+                onPrev={prevTab}
+                onNext={nextTab}
+                onFinalize={goToFinalize}
+              />
+
+              <ActiveTabComponent />
+            </Stack>
           </SwipeSurface>
-
-          <AllBuilderAlerts />
-          <SaveRunnerButton requireValid={false} />
         </Stack>
       </EditorModeProvider>
     </BuilderStoreProvider>
