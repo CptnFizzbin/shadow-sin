@@ -1,10 +1,10 @@
-import { act, fireEvent, render, screen } from "@testing-library/react"
 import {
   createMemoryHistory,
   createRootRoute,
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router"
+import { act, fireEvent, render, screen } from "@testing-library/react"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 
@@ -37,7 +37,7 @@ describe("useCloseOnBrowserBack", () => {
     expect(history.length).toBeGreaterThan(1)
     expect((history.location.state as { dialogBackGuard?: boolean }).dialogBackGuard).toBe(true)
 
-    await act(async () => {
+    await act(() => {
       fireEvent.click(screen.getByRole("button", { name: "close" }))
     })
 
@@ -53,7 +53,7 @@ describe("useCloseOnBrowserBack", () => {
 
     expect(screen.getByText("open")).toBeTruthy()
 
-    await act(async () => {
+    await act(() => {
       router.history.back()
     })
 
