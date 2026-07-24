@@ -11,9 +11,23 @@ import { useContext, useState } from "react"
 import { DiceTrayContext } from "#/components/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 
-import type { DiceGroupList } from "./diceGroup.tsx"
+import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
 import { isDiceGroup } from "./diceGroup.tsx"
 import { getPoolSize } from "./dicePoolData.tsx"
+
+const typeColors: Record<DiceGroupType, string> = {
+  attribute: "primary.main",
+  skill: "secondary.main",
+  bonus: "success.main",
+  defaulting: "warning.main",
+  penalty: "error.main",
+}
+
+function getGroupColor(group: DiceGroup): string {
+  if (group.color) return group.color
+  if (group.type) return typeColors[group.type]
+  return group.size < 0 ? typeColors.penalty : typeColors.bonus
+}
 
 interface DicePoolProps {
   name: string
@@ -27,7 +41,6 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
   const diceGroups = groups.flat().filter(isDiceGroup)
   const total = getPoolSize(diceGroups)
   const penalties = diceGroups.filter((group) => group.size < 0)
-  const contributions = diceGroups.filter((group) => group.size >= 0)
 
   return (
     <ButtonBase
@@ -83,34 +96,38 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
 
           {penalties.length > 0 && (
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5 }}>
-              {penalties.map((group) => (
-                <Stack
-                  key={group.id ?? group.name}
-                  direction="row"
-                  sx={{
-                    gap: 0.5,
-                    paddingX: 0.75,
-                    paddingY: 0.25,
-                    border: "1px solid",
-                    borderColor: group.color ?? "error.main",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    component="span"
-                    sx={{ fontWeight: "bold", color: group.color ?? "error.main" }}
+              {penalties.map((group) => {
+                const groupColor = getGroupColor(group)
+
+                return (
+                  <Stack
+                    key={group.id ?? group.name}
+                    direction="row"
+                    sx={{
+                      gap: 0.5,
+                      paddingX: 0.75,
+                      paddingY: 0.25,
+                      border: "1px solid",
+                      borderColor: groupColor,
+                    }}
                   >
-                    {group.name}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    component="span"
-                    sx={{ fontWeight: "bold", color: group.color ?? "error.main" }}
-                  >
-                    {group.size}
-                  </Typography>
-                </Stack>
-              ))}
+                    <Typography
+                      variant="caption"
+                      component="span"
+                      sx={{ fontWeight: "bold", color: groupColor }}
+                    >
+                      {group.name}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      component="span"
+                      sx={{ fontWeight: "bold", color: groupColor }}
+                    >
+                      {group.size}
+                    </Typography>
+                  </Stack>
+                )
+              })}
             </Stack>
           )}
         </Stack>
@@ -118,18 +135,25 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
 
       <Collapse in={isOpen}>
         <Stack sx={{ gap: 0.5, paddingTop: 1 }} onClick={(event) => event.stopPropagation()}>
-          {contributions.map((group) => (
-            <Stack
-              key={group.id ?? group.name}
-              direction="row"
-              sx={{ justifyContent: "space-between" }}
-            >
-              <Typography variant="body2">{group.name}</Typography>
-              <Typography variant="body2" sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums" }}>
-                {group.size}
-              </Typography>
-            </Stack>
-          ))}
+          {diceGroups.map((group) => {
+            const groupColor = getGroupColor(group)
+
+            return (
+              <Stack
+                key={group.id ?? group.name}
+                direction="row"
+                sx={{ justifyContent: "space-between" }}
+              >
+                <Typography variant="body2" sx={{ color: groupColor }}>{group.name}</Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums", color: groupColor }}
+                >
+                  {group.size}
+                </Typography>
+              </Stack>
+            )
+          })}
 
           <Divider />
 

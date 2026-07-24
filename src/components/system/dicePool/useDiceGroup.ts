@@ -15,7 +15,7 @@ import type { DiceGroup } from "./diceGroup.tsx"
 
 export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   const label = AttributeLabels[attrKey]
-  return { name: label, size: useAttrValue(attrKey) }
+  return { name: label, size: useAttrValue(attrKey), type: "attribute" }
 }
 
 export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
@@ -28,22 +28,22 @@ export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
     .reduce((sum, e) => sum + e.value, 0)
 
   if (skillRating >= 1) {
-    return { id: groupId, name: skillKey, size: skillRating + totalMod }
+    return { id: groupId, name: skillKey, size: skillRating + totalMod, type: "skill" }
   }
 
-  return { id: groupId, name: skillKey, size: totalMod }
+  return { id: groupId, name: skillKey, size: totalMod, type: "skill" }
 }
 
 export function useWoundDiceGroup(): DiceGroup | null {
   const woundMod = useWoundModifier()
   if (woundMod === 0) return null
-  return { name: "Wound", size: woundMod * -1, color: "error.main" }
+  return { name: "Wound", size: woundMod * -1, type: "penalty" }
 }
 
 export function useEncumbranceDiceGroup(): DiceGroup | null {
   const { penalty } = useEncumbrance()
   if (penalty === 0) return null
-  return { name: "Encumbrance", size: penalty * -1, color: "warning.main" }
+  return { name: "Encumbrance", size: penalty * -1, type: "penalty" }
 }
 
 export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
@@ -51,5 +51,5 @@ export function useDefaultingDiceGroup(skillKey: SkillKey): DiceGroup | null {
   const { defaultable } = skillList[skillKey]
   const isDefaulted = skillRating === 0 && (defaultable ?? true)
   if (!isDefaulted) return null
-  return { id: `${skillKey}-defaulting`, name: "Defaulting", size: -1, color: "warning.main" }
+  return { id: `${skillKey}-defaulting`, name: "Defaulting", size: -1, type: "defaulting" }
 }
