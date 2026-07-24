@@ -11,25 +11,23 @@ the fake credentials backing them hold up. The design converged over four rounds
 prototyping (screenshots below) — this doc captures the mechanics and resolved design decisions
 to hand off to implementation.
 
-**Prototype record** (screenshots of four rounds of interactive Claude Artifact prototyping;
-originals were private Artifacts, captured here as static images so the record doesn't depend on
-those links staying alive):
+**Prototype record** (screenshots of the converged Round 4 design — "4-Lane Console" — walking the
+full flow; the original was a private Claude Artifact, captured here as static images so the
+record doesn't depend on that link staying alive. Earlier rounds 1–3 were superseded and are not
+included):
 
-Round 4, converged design — 4-Lane Console:
+1. Setup — rating picker and per-item checklist, grouped into SIN / Unlicensed / Forbidden lanes:
 
-![Round 4 — 4-Lane Console](./images/0011-license-check-round4-4-lane-console.png)
+![Setup — rating and checklist](./images/0011-license-check-1-setup.png)
 
-Round 3 — Slot Bay Gallery:
+2. Scan in progress — all four lanes resolving concurrently, dice mid-roll:
 
-![Round 3 — Slot Bay Gallery](./images/0011-license-check-round3-slot-bay-gallery.png)
+![Scan in progress — four lanes concurrently](./images/0011-license-check-2-scanning.png)
 
-Round 2 — Interrogation Gallery:
+3. Result — Question Further state, listing every flagged item and reason (including the
+   multi-SIN alert):
 
-![Round 2 — Interrogation Gallery](./images/0011-license-check-round2-interrogation-gallery.png)
-
-Round 1 — Dialog Prototypes:
-
-![Round 1 — Dialog Prototypes](./images/0011-license-check-round1-dialog-prototypes.png)
+![Result — Question Further with flagged items](./images/0011-license-check-3-result.png)
 
 ## Mechanics (settled)
 
