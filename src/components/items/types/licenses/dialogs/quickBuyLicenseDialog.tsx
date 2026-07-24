@@ -1,13 +1,12 @@
 import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
+import Chip from "@mui/material/Chip"
 import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
-import ToggleButton from "@mui/material/ToggleButton"
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
@@ -50,10 +49,13 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
   const sinFormDialog = useSinFormDialog()
 
   const [selectedSinId, setSelectedSinId] = useState(sins[0]?.id ?? "")
-  const [isReal, setIsReal] = useState(() => sins[0]?.rating === "real")
   const [fakeRating, setFakeRating] = useState(() => suggestLicenseRating(item.availability?.rating ?? 0))
   const [coverSiblings, setCoverSiblings] = useState(true)
 
+  // A Licence's reality always matches its SIN's — a Fake SIN can only carry Fake licences,
+  // and only the Real SIN can carry a Real (free, unrestricted) licence.
+  const selectedSin = sins.find((sin) => sin.id === selectedSinId)
+  const isReal = selectedSin?.rating === "real"
   const rating: LicenseData["rating"] = isReal ? "real" : fakeRating
   const cost = getLicenseCost(rating)
   const canAfford = currentNuyen >= cost
@@ -114,47 +116,6 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
             {item.availability && <AvailabilityChip availability={item.availability} />}
           </Stack>
 
-          <Stack direction="row" sx={{ gap: 2, alignItems: "center" }}>
-            <ToggleButtonGroup
-              size="small"
-              exclusive
-              value={isReal ? "real" : "fake"}
-              onChange={(_, value) => { if (value) setIsReal(value === "real") }}
-            >
-              <ToggleButton value="fake">Fake</ToggleButton>
-              <ToggleButton value="real">Real</ToggleButton>
-            </ToggleButtonGroup>
-
-            {!isReal && (
-              <CounterInput
-                label="Rating"
-                size="small"
-                value={fakeRating}
-                onChange={(value) => setFakeRating(value ?? 1)}
-                min={1}
-                max={6}
-              />
-            )}
-
-            <Typography color="text.secondary">
-              Cost:
-              {" "}
-              <Nuyen amount={cost} />
-            </Typography>
-          </Stack>
-
-          {siblings.length > 0 && (
-            <FormControlLabel
-              label={`Also cover ${siblings.length} other unlicensed "${item.name}"`}
-              control={(
-                <Checkbox
-                  checked={coverSiblings}
-                  onChange={(e) => setCoverSiblings(e.target.checked)}
-                />
-              )}
-            />
-          )}
-
           {sins.length === 0
             ? (
                 <Stack sx={{ gap: 1 }}>
@@ -186,6 +147,43 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
                   </Button>
                 </Stack>
               )}
+
+          <Stack direction="row" sx={{ gap: 2, alignItems: "center" }}>
+            <Chip
+              size="small"
+              color={isReal ? "success" : "secondary"}
+              label={isReal ? "Real" : "Fake"}
+            />
+
+            {!isReal && (
+              <CounterInput
+                label="Rating"
+                size="small"
+                value={fakeRating}
+                onChange={(value) => setFakeRating(value ?? 1)}
+                min={1}
+                max={6}
+              />
+            )}
+
+            <Typography color="text.secondary">
+              Cost:
+              {" "}
+              <Nuyen amount={cost} />
+            </Typography>
+          </Stack>
+
+          {siblings.length > 0 && (
+            <FormControlLabel
+              label={`Also cover ${siblings.length} other unlicensed "${item.name}"`}
+              control={(
+                <Checkbox
+                  checked={coverSiblings}
+                  onChange={(e) => setCoverSiblings(e.target.checked)}
+                />
+              )}
+            />
+          )}
 
           {!isBuilder && !canAfford && (
             <Typography color="error.main">
