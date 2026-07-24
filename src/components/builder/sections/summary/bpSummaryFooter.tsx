@@ -15,16 +15,19 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { useBuilderBuildPointsApi } from "#/components/builder/buildPoints/hooks/useBuildPointsApi.ts"
+import type { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { builderSections } from "#/components/builder/sections/builderSectionId.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
 
 interface BpSummaryFooterProps {
   onExpandedChange?: (expanded: boolean) => void
+  onSelectSection?: (sectionId: BuilderSectionId) => void
 }
 
 export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
   onExpandedChange,
+  onSelectSection,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const summary = useBuilderBuildPointsApi()
@@ -34,8 +37,14 @@ export const BpSummaryFooter: FC<BpSummaryFooterProps> = ({
     onExpandedChange?.(expanded)
   }
 
-  const handleSectionClick = (sectionId: string | undefined) => {
+  const handleSectionClick = (sectionId: BuilderSectionId | undefined) => {
     if (!sectionId) return
+
+    if (onSelectSection) {
+      onSelectSection(sectionId)
+      handleExpandedChange(false)
+      return
+    }
 
     const targetElement = document.getElementById(sectionId)
     if (!targetElement) {
