@@ -13,7 +13,7 @@ export const useActiveSkillsAlerts = (): AlertInfo[] => {
   const r6Count = activeSkills.filter((s) => s.rating >= 6).length
   const r5Count = skillGroups.filter((s) => s.rating === 5).length
 
-  if ((r6Count > 1 || r5Count > 2 || (r6Count === 1 && r5Count > 0)) && !editorMode.isEdit) {
+  if ((r6Count > 1 || r5Count > 2 || (r6Count === 1 && r5Count > 0)) && editorMode.isBuilder) {
     statuses.push({
       section: "Skills",
       severity: "error",

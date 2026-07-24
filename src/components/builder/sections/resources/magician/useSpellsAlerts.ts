@@ -43,7 +43,7 @@ export const useSpellsAlerts = (): AlertInfo[] => {
     })
   }
 
-  if (spent > allowance && !editorMode.isEdit) {
+  if (spent > allowance && editorMode.isBuilder) {
     statuses.push({
       section: "Spells",
       severity: "error",

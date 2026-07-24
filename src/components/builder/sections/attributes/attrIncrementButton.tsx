@@ -44,7 +44,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = ""
   }
 
-  if (willMaxAttr && hasMaxxedAttr && !editorMode.isEdit) {
+  if (willMaxAttr && hasMaxxedAttr && editorMode.isBuilder) {
     disabled = true
     label = "---"
   }
@@ -54,7 +54,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     label = "MAX"
   }
 
-  if (budget.remaining < cost && !editorMode.isEdit) {
+  if (budget.remaining < cost && editorMode.isBuilder) {
     disabled = true
   }
 

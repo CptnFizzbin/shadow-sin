@@ -8,7 +8,7 @@ export const useQualitiesAlerts = (): AlertInfo[] => {
 
   const statuses: AlertInfo[] = []
 
-  if (qualities.length === 0 && !editorMode.isEdit) {
+  if (qualities.length === 0 && editorMode.isBuilder) {
     statuses.push({
       section: "Qualities",
       severity: "warning",

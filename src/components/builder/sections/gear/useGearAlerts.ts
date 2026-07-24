@@ -17,7 +17,7 @@ export const useGearAlerts = (): AlertInfo[] => {
 
   const alerts: AlertInfo[] = []
 
-  if (isOverBudget && !editorMode.isEdit) {
+  if (isOverBudget && editorMode.isBuilder) {
     alerts.push({
       section: "Gear",
       severity: "error",

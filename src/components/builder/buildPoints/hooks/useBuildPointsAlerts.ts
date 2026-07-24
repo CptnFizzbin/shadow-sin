@@ -10,7 +10,7 @@ export const useBuildPointsAlerts = (): AlertInfo[] => {
 
   const alerts: AlertInfo[] = []
 
-  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && !editorMode.isEdit) {
+  if (summary.remaining > BuilderConfig.buildPoints.unspentWarningThreshold && editorMode.isBuilder) {
     alerts.push({
       section: "Build Points",
       severity: "warning",
