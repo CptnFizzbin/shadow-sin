@@ -58,9 +58,11 @@ gear is shown, not just inside one dialog.
 
 ## Domain Notes
 
-- **Stash** — marking a carried item as unavailable for the current context ("left at the
-  safehouse"), via a persisted `ItemData.stashed` flag. Distinct from `equipped`: `equipped` says
-  an item is actively worn/wielded; `stashed` says it isn't with the Runner at all right now.
+**Stash** and **Equipped** are now defined in `CONTEXT.md` (added alongside this doc). Summary:
+`Equipped` (`ItemData.equipped`, pre-existing) says a *present* item is actively worn/wielded;
+`Stash` (`ItemData.stashed`, this feature) says an item isn't with the Runner at all right now. An
+item can be present, unequipped, and not stashed all at once (e.g. a spare pistol in a holster) —
+the two flags are independent axes, not a spectrum.
 
 ## Rough Interface Sketches
 

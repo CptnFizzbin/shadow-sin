@@ -98,14 +98,11 @@ included):
 - Item eligibility for the "stashed" checklist state depends on
   [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — that feature must exist (or
   ship alongside this one) before License Check can read/write `ItemData.stashed`.
-- **`items.licenseCheck.ratingPlusRating` deliberately breaks from `docs/adr/0002-feature-flags-design.md`.**
-  That ADR's registry pattern (`optionalRulesRegistry`) requires a `SourceData` book/page citation
-  and defaults every rule to disabled, since an Optional Rule is a published SR4e variant a table
-  opts into. `rating × 2` is not from a sourcebook — it's a house-rule pacing choice from
-  prototyping — so it doesn't fit that pattern: it ships as a separate, non-cited flag defaulting
-  to **enabled**. This is an accepted, temporary shortcut (only one table uses the app right now);
-  no ADR amendment is being made for it yet. Revisit once a general house-rule/table-settings
-  system exists.
+- `rating × 2` is a **House Rule**, not an Optional Rule — it's a prototyping pacing choice, not a
+  published SR4e variant, so it carries no `Source` citation and lives in `featureFlags.houseRules`
+  rather than `featureFlags.optionalRules`. See
+  [`docs/adr/0005-house-rules-feature-flag-namespace.md`](../adr/0005-house-rules-feature-flag-namespace.md)
+  for why this is a separate registry rather than a misuse of `optionalRulesRegistry`.
 - Implementation must follow the established dialog pattern (`useDialog` + compound `Dialog`
   component, per `docs/ui/dialog.md`) and MUI style-prop discipline (no restating theme
   defaults) — the prototypes are bespoke HTML/CSS mockups, not real MUI components, and should
@@ -114,17 +111,21 @@ included):
 ## Domain Notes
 
 Existing terms in play: **SIN**, **Licence**, **Availability**, **Restricted**, **Forbidden**,
-**Hit**, **Dice Pool**, **Optional Rule**.
+**Hit**, **Dice Pool**, **Opposed Test**, **Optional Rule**.
 
-New terms this feature would introduce to `CONTEXT.md` if implemented as designed:
+`Opposed Test` already exists (`TestType.Opposed` in the dice tray, `src/components/dice/testType.ts`)
+but there only one side is rolled digitally — the opposing Hit count is entered manually, since
+the dice tray doesn't track an opposing character. License Check is a second consumer of the same
+concept: it rolls both sides digitally in one place, since both pools (credential rating,
+Verification System Rating) are values the app already tracks. `CONTEXT.md`'s `Opposed Test` entry
+was broadened to cover both call sites — this feature does not introduce a new term for its dice
+mechanic, it reuses the existing one.
+
+New terms this feature introduces to `CONTEXT.md`:
 
 - **License Check** — the simulated verification flow itself.
 - **Verification System Rating** — the 1–6 rating representing the scanning system's strength for
   one License Check run; forms one side of each Opposed Test.
-- **Opposed Test** — not currently a named glossary term; CONTEXT.md defines `Hit` and `Dice Pool`
-  but not the general pattern of two pools rolled against each other with the higher Hit count
-  winning. Worth promoting to a shared term now that a second consumer (beyond combat, if any)
-  exists.
 
 `Stash` is defined by [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md), not by
 this feature — License Check is a consumer of that flag, not its origin.
