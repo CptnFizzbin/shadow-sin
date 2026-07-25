@@ -72,12 +72,8 @@ describe("buildVerificationLanes", () => {
 
     const lanes = buildVerificationLanes(gearMap(sin, license, forbidden))
 
+    // The SIN has no licensed gear (the forbidden item is structurally excluded), so it's not checked.
     expect(lanes).toEqual([
-      {
-        key: sinId,
-        title: "John Smith",
-        checks: [{ itemId: sinId, kind: "sin", credentialRating: 3 }],
-      },
       {
         key: "forbidden",
         title: "Forbidden Gear",
@@ -90,5 +86,40 @@ describe("buildVerificationLanes", () => {
     const mundane: ItemData = { id: itemId, name: "Backpack", itemType: ItemType.other, availability: { rating: 0 } }
 
     expect(buildVerificationLanes(gearMap(mundane))).toEqual([])
+  })
+
+  it("excludes a SIN with no licensed gear submitted for verification — it's not checked", () => {
+    const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+
+    expect(buildVerificationLanes(gearMap(sin))).toEqual([])
+  })
+
+  it("excludes a SIN whose Licence has no gear pointing at it", () => {
+    const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+
+    expect(buildVerificationLanes(gearMap(sin, license))).toEqual([])
+  })
+
+  it("checks only the SIN with licensed gear when a second SIN carries none", () => {
+    const checkedSin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+    const weapon: ItemData = { id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+
+    const emptySinId = "00000000-0000-0000-0000-000000000005" as UUID
+    const emptySin: SinData = { id: emptySinId, name: "Jane Doe", itemType: ItemType.sin, rating: 2 }
+
+    const lanes = buildVerificationLanes(gearMap(checkedSin, license, weapon, emptySin))
+
+    expect(lanes).toEqual([
+      {
+        key: sinId,
+        title: "John Smith",
+        checks: [
+          { itemId: sinId, kind: "sin", credentialRating: 3 },
+          { itemId, kind: "licensed-gear", credentialRating: 3 },
+        ],
+      },
+    ])
   })
 })

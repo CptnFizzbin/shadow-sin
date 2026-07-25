@@ -44,11 +44,12 @@ included):
   prototyped. No new entity, no persistence — this is not tied to a location/checkpoint concept.
 - **Setup step:** a 1–6 button group sets the Verification System Rating. A checklist lists every
   eligible item, grouped as:
-  - **SINs** — every owned `SinData` item, unconditionally. A SIN is a held identity, not
-    carried gear, so it has no equip/carry state and no eligibility filter — unlike weapons or
-    armor, there is nothing to "leave at the safehouse." Each SIN is a group header, with the
-    Restricted gear covered by a Licence attached to that SIN nested underneath it (via
-    `Licence.parentId` → SIN, `ItemData.licenseId` → Licence).
+  - **SINs** — every owned `SinData` item that has at least one item of licensed gear submitted
+    for verification. A SIN is a held identity, not carried gear, so it has no equip/carry state
+    and no eligibility filter of its own — but a SIN with nothing checked under it (no Licence, or
+    a Licence no gear points at) has nothing to verify and is omitted entirely. Each SIN is a group
+    header, with the Restricted gear covered by a Licence attached to that SIN nested underneath it
+    (via `Licence.parentId` → SIN, `ItemData.licenseId` → Licence).
   - **Unlicensed Gear** — Restricted items with no `licenseId` at all. Confirmed reachable today:
     `isItemLicensed` (`licenseUtils.ts`) treats a missing or dangling `licenseId` as unlicensed,
     and `0001-license-quick-buy.md`'s own Resolved Questions note there is no SIN-burning
