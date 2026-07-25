@@ -276,6 +276,25 @@ _Avoid_: ally, NPC (too broad)
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
 implant, software, vehicle, etc.).
 
+**Equipped**:
+`ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
+owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
+(`equipable: { forced: true }`); other item types don't offer it.
+`docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
+`ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
+into one action menu.
+
+**Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
+`ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
+safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
+worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `equipped:
+true, stashed: true` at once. Stash overrides Equipped's mechanical effect without clearing its
+stored value (so un-stashing needs no separate restore step). A stashed item is greyed out and
+sorted to the bottom of gear listings, and cascades to its child items (stashing a weapon stashes
+its attachments too).
+_Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
+unequipped, and not stashed, e.g. a spare pistol in a holster)
+
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
 track) and requires a **StatusSheet** during play.
@@ -305,7 +324,10 @@ _Avoid_: child item, accessory (too weapon-specific), mod
 **SIN** _(System Identification Number)_:
 A matrix identity stored as an Item (`ItemType.sin`). Runners typically carry one or more fake
 SINs. Licences are logically tied to a SIN — owning a Restricted item legally requires a Licence
-on an active SIN.
+on a SIN. There is no "active"/"in use" distinction between a Runner's SINs — every owned SIN is
+equally valid and equally eligible (e.g. for **License Check**), since a SIN is a held identity,
+not carried gear with a state of its own.
+_Avoid_: active SIN (there is no activity state — see above)
 _Avoid_: ID, identity (use SIN)
 
 **Licence**:
@@ -333,6 +355,17 @@ A rating + restriction code on an Item describing how hard it is to obtain and w
 is legal. Restriction codes: none (legal), **Restricted** (`R`, requires Licence), **Forbidden**
 (`F`, illegal to own). Displayed via `AvailabilityChip`.
 
+**License Check** _(not yet implemented — see `docs/features/0011-license-check-dialog.md`)_:
+A simulated security scan of a Runner's carried gear: every owned SIN and every Restricted item is
+Opposed-Tested against a **Verification System Rating** to see whether its credentials hold up.
+Player self-check only — there is no GM-triggered variant.
+_Avoid_: security check, license scan (use License Check)
+
+**Verification System Rating** _(not yet implemented — see `docs/features/0011-license-check-dialog.md`)_:
+The 1–6 rating representing a scanning system's strength for one **License Check** run; a fresh
+Player-chosen value each run, not persisted or tied to any location. Forms one side of each
+Opposed Test in that check.
+
 **GameEffect**:
 A mechanical modifier that changes a derived stat — e.g. an attribute bonus, dice pool modifier,
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
@@ -347,9 +380,20 @@ A reference to the rulebook and page number where a rule or item is defined
 
 **Optional Rule**:
 A published variant rule from a Shadowrun source book that modifies core SR4e mechanics and must
-be explicitly opted into. Optional Rules are stored as `featureFlags.optionalRules` on a Runner
-and are disabled by default. Known Optional Rules are defined in the `optionalRulesRegistry`.
-_Avoid_: house rule (a house rule is GM-invented; an Optional Rule is from a source book)
+be explicitly opted into. Optional Rules are stored as `featureFlags.optionalRules` on a Runner,
+carry a `Source` citation, and are disabled by default. Known Optional Rules are defined in the
+`optionalRulesRegistry`. See `docs/adr/0002-feature-flags-design.md`.
+_Avoid_: house rule (a House Rule is app-invented; an Optional Rule is from a source book — see
+below)
+
+**House Rule** _(not yet implemented — see `docs/adr/0005-house-rules-feature-flag-namespace.md`)_:
+An app-invented mechanical choice that isn't from a Shadowrun source book — so it carries no
+`Source` citation — but still needs to be toggleable per table. Stored as `featureFlags.houseRules`
+(dotted, feature-namespaced keys, e.g. `items.licenseCheck.ratingPlusRating`), in a
+`houseRulesRegistry` parallel to `optionalRulesRegistry`. Each House Rule sets its own default
+(often enabled, since it's usually core to how a feature was designed to behave) rather than
+uniformly defaulting to disabled like Optional Rules.
+_Avoid_: optional rule (reserve for published sourcebook variants — see above)
 
 ### Dice
 
@@ -358,7 +402,34 @@ The number of d6s rolled for a test. Assembled from Attribute + Skill (or Progra
 tests) plus any active **GameEffect** modifiers. The Wound Modifier subtracts from the pool.
 
 **Hit**:
-A die result of 5 or 6. Hits are counted against a threshold to determine success.
+A die result of 5 or 6. Hits are counted against a **Threshold** to determine success.
+
+**Threshold**:
+The target Hit count a test must meet or exceed to succeed (`DiceTrayState.threshold`). Set
+directly for a **Standard Test**, or accumulated toward across multiple rolls for an **Extended
+Test**. An **Opposed Test** has no Threshold — the two pools are compared to each other instead.
+
+**Standard Test**:
+A single **Dice Pool** rolled against a fixed **Threshold** (a target Hit count); meeting or
+exceeding it succeeds. The default `TestType` in the dice tray (`testType.ts`).
+
+**Opposed Test**:
+Two Dice Pools compared against each other; the side with more Hits wins (net Hits = difference).
+In the dice tray (`TestType.Opposed`), only the Player's own pool is rolled digitally — the
+opposing side's Hit count (`opposedHits`) is entered manually, since the app does not track the
+opposing character. **License Check** (`docs/features/0011-license-check-dialog.md`) is a second
+consumer of the same concept, but rolls both sides digitally in one place since both pools belong
+to values the app already tracks.
+
+**Extended Test**:
+A **Standard Test** repeated across multiple rolls, accumulating Hits toward the Threshold over
+time (`extendedInterval`); each intermediate roll is logged (`extendedHistory`), and
+`shrinkingPool` optionally removes a die from the pool each subsequent roll.
+
+**Hidden Test**:
+_Not yet implemented — `TestType.Hidden` exists in `testType.ts` but has no dice-tray behavior
+wired to it yet._ In SR4e, a Hidden Test is rolled without revealing the Hit count to the Player
+(typically Perception-type tests), so a failure can't be distinguished from nothing to notice.
 
 **Glitch**:
 Triggered when half or more of the dice in the pool show 1s. A **Critical Glitch** occurs when

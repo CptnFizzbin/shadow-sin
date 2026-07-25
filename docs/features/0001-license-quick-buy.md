@@ -61,7 +61,7 @@ The feature adds:
 - Forbidden items — no licence path exists for `F`-rated gear
 - Legal consequences of unlicensed gear — managed by the GM outside the app
 - Automatic SIN expiry or SIN burning mechanics
-- A Viewer warning for Restricted/Forbidden gear with no matching Licence on any active SIN
+- A Viewer warning for Restricted/Forbidden gear with no matching Licence on any SIN
 
 ## Related Features
 
