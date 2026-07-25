@@ -1,9 +1,14 @@
 # License Check Dialog
 
-> **Status:** Draft
+> **Status:** Ready to Implement
 >
 > **GitHub Issues / PRs:**
-> <!-- Add links once the feature is ready to implement. A feature may have multiple. -->
+> - [#389 — House Rules feature-flag namespace](https://github.com/CptnFizzbin/shadow-sin/issues/389)
+> - [#391 — Trigger + Setup screen](https://github.com/CptnFizzbin/shadow-sin/issues/391)
+> - [#393 — Scan mechanics](https://github.com/CptnFizzbin/shadow-sin/issues/393)
+> - [#394 — Alerts + result screen](https://github.com/CptnFizzbin/shadow-sin/issues/394)
+> - Depends on [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md)'s
+>   [#388](https://github.com/CptnFizzbin/shadow-sin/issues/388) for `ItemData.stashed`
 
 A simulated security scan of a Runner's carried gear: a **Verification System Rating** (1–6) is
 set, then every carried SIN and every Restricted item is opposed-tested against it to see whether

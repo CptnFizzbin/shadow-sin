@@ -1,9 +1,13 @@
 # Item Stashing
 
-> **Status:** Draft
+> **Status:** Ready to Implement
 >
 > **GitHub Issues / PRs:**
-> <!-- Add links once the feature is ready to implement. A feature may have multiple. -->
+> - [#388 — Stashed field + isActivelyEquipped everywhere it matters](https://github.com/CptnFizzbin/shadow-sin/issues/388)
+> - [#390 — Unified per-item action menu; Equip becomes universal](https://github.com/CptnFizzbin/shadow-sin/issues/390)
+> - [#392 — Multi-select bulk actions](https://github.com/CptnFizzbin/shadow-sin/issues/392)
+> - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) depends on
+>   #388 for `ItemData.stashed`
 
 A general, persisted way to mark a piece of carried gear as unavailable for a given run — "left at
 the safehouse" — without deleting it or leaving the Builder. Discovered as a dependency while
