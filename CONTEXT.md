@@ -277,21 +277,28 @@ Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (a
 implant, software, vehicle, etc.).
 
 **Equipped**:
-`ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
-owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
+`ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
+merely owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
 (`equipable: { forced: true }`); other item types don't offer it.
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
+Read via `isEquipped(item)` from `src/system/items/itemUtils.ts` wherever the raw value is needed
+— the leading underscore on `_state` marks it as internal storage, same convention as
+`RunnerData._meta_`. There is deliberately no combined "actively equipped" helper: call sites that
+care whether an item's Equipped effect is actually active check `isEquipped(item) &&
+!isStashed(item)` directly. `_state` holds only **Equipped** and **Stash** — the other per-item
+booleans (`fixed`, `wireless`) stay top-level on `ItemData` since they don't combine with anything
+else the way Equipped and Stash do.
 
 **Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
-`ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
+`ItemData._state.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `equipped:
-true, stashed: true` at once. Stash overrides Equipped's mechanical effect without clearing its
-stored value (so un-stashing needs no separate restore step). A stashed item is greyed out and
-sorted to the bottom of gear listings, and cascades to its child items (stashing a weapon stashes
-its attachments too).
+worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `_state: {
+equipped: true, stashed: true }` at once. Stash overrides Equipped's mechanical effect without
+clearing its stored value (so un-stashing needs no separate restore step). A stashed item is
+greyed out and sorted to the bottom of gear listings, and cascades to its child items (stashing a
+weapon stashes its attachments too).
 _Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
 unequipped, and not stashed, e.g. a spare pistol in a holster)
 
