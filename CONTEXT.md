@@ -283,11 +283,13 @@ merely owned. Currently opt-in per `ItemType`: only weapons and armor forms expo
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
-Read via the `isActivelyEquipped(item)` selector wherever the mechanical effect matters (raw
-`_state.equipped` reads are for the edit form only) — the leading underscore on `_state` marks it
-as internal storage, same convention as `RunnerData._meta_`. `_state` holds only **Equipped** and
-**Stash** — the other per-item booleans (`fixed`, `wireless`) stay top-level on `ItemData` since
-they don't combine with anything else the way Equipped and Stash do (via `isActivelyEquipped`).
+Read via `isEquipped(item)` from `src/system/items/itemUtils.ts` wherever the raw value is needed
+— the leading underscore on `_state` marks it as internal storage, same convention as
+`RunnerData._meta_`. There is deliberately no combined "actively equipped" helper: call sites that
+care whether an item's Equipped effect is actually active check `isEquipped(item) &&
+!isStashed(item)` directly. `_state` holds only **Equipped** and **Stash** — the other per-item
+booleans (`fixed`, `wireless`) stay top-level on `ItemData` since they don't combine with anything
+else the way Equipped and Stash do.
 
 **Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
 `ItemData._state.stashed` — whether an item is with the Runner at all right now ("left at the
