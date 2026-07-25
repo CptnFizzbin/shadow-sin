@@ -75,9 +75,38 @@ that code) closes a pre-existing gap where item removal has no confirmation step
 
 ### Bulk actions
 
-- A new multi-select mode at the top of each gear list, with a bulk action bar supporting
-  Stash/Unstash, Equip/Unequip, and Remove (same confirmation as single Remove) applied to every
-  selected item at once.
+Both Builder (`gearSection.tsx`) and Viewer (`gearViewSection.tsx`) already render gear as a stack
+of independent `Accordion` sections, one per gear type — Builder keeps only one section expanded
+at a time (`activeSection` state), Viewer allows several open at once. Selection deliberately does
+not follow that structure:
+
+- **Selection is global**, spanning every gear-type section at once — including sections currently
+  collapsed. A Player can select some Weapons, close that accordion, open Armor, and add to the
+  same selection.
+- **Entry:** an explicit "Select" toggle button (near the search bar in Viewer's `gear.tsx`, near
+  the BP/Nuyen summary in Builder's `gearSection.tsx`). Off by default — checkboxes only appear on
+  cards once selection mode is active.
+- **Card interaction while selecting:** the whole card becomes the tap target for select/deselect
+  (checkbox shown, but not the only clickable area) — `GearViewItem`'s current
+  `onClick={onEdit}` on the card body is suppressed while selection mode is active. The per-item
+  overflow menu (see above) is hidden entirely during selection mode, rather than staying
+  clickable alongside it — one interaction model on the card at a time.
+- **Sub-items:** selecting a parent auto-selects its children (individually toggleable off
+  afterward). This is a selection-UI convenience, distinct from Stash's own cascade rule (which
+  forces children stashed regardless of what was selected when the action actually runs).
+- **No select-all.** Given selection already spans sections the Player may not currently be
+  looking at, a blanket select-all risks silently sweeping in forgotten items — selection stays
+  manual, per item.
+- **Bar placement:** a sticky bottom bar that *replaces* the existing sticky-bottom
+  dice-tray/quick-access `ButtonGroup` (`src/routes/$runnerId.tsx:76-84`) in the same slot while
+  selection mode is active, styled with a distinct color so the mode change is unmistakable. Shows
+  the bulk action bar supporting Stash/Unstash, Equip/Unequip, and Remove (same confirmation as
+  single Remove).
+- **Bulk Equip on a mixed selection:** applies only to selected items that have Equip enabled for
+  that instance, silently skipping the rest — the same "just works on whatever applies" behavior
+  Stash and Remove already have, since both apply to every item type unconditionally.
+- **After a bulk action completes, selection mode auto-exits** back to normal browsing (rather
+  than staying active for another round).
 
 ## Constraints
 
