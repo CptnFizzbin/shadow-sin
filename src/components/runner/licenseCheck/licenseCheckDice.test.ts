@@ -2,7 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
 
-import { getOpposedPoolSize, getRollTimeout, isRealCredential, rollOpposedTest } from "./licenseCheckDice.ts"
+import { getOpposedPoolSize, getRollTimeout, isRealCredential, resolveVerificationCheck, rollOpposedTest } from "./licenseCheckDice.ts"
+import type { VerificationCheck } from "./licenseCheckTypes.ts"
 
 describe("getOpposedPoolSize", () => {
   it("doubles the rating when ratingPlusRating is enabled", () => {
@@ -96,5 +97,55 @@ describe("rollOpposedTest", () => {
 
     expect(credentialRoller.store.get().dice).toHaveLength(6)
     expect(scannerRoller.store.get().dice).toHaveLength(8)
+  })
+})
+
+describe("resolveVerificationCheck", () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+
+  it("flags unlicensed gear without rolling", async () => {
+    const check: VerificationCheck = { itemId: "item-1", kind: "unlicensed-gear" }
+    const outcome = await resolveVerificationCheck(check, new DiceRoller(), new DiceRoller(), 3, false)
+
+    expect(outcome).toEqual({ itemId: "item-1", status: "flagged" })
+  })
+
+  it("flags forbidden gear without rolling", async () => {
+    const check: VerificationCheck = { itemId: "item-2", kind: "forbidden-gear" }
+    const outcome = await resolveVerificationCheck(check, new DiceRoller(), new DiceRoller(), 3, false)
+
+    expect(outcome).toEqual({ itemId: "item-2", status: "flagged" })
+  })
+
+  it("clears a real credential without rolling", async () => {
+    const check: VerificationCheck = { itemId: "sin-1", kind: "sin", credentialRating: "real" }
+    const outcome = await resolveVerificationCheck(check, new DiceRoller(), new DiceRoller(), 3, false)
+
+    expect(outcome).toEqual({ itemId: "sin-1", status: "clear" })
+  })
+
+  it("clears a check with no credential rating without rolling", async () => {
+    const check: VerificationCheck = { itemId: "item-3", kind: "licensed-gear" }
+    const outcome = await resolveVerificationCheck(check, new DiceRoller(), new DiceRoller(), 3, false)
+
+    expect(outcome).toEqual({ itemId: "item-3", status: "clear" })
+  })
+
+  it("rolls an Opposed Test for a fake numeric-rating credential", async () => {
+    const credentialRoller = new DiceRoller()
+    const scannerRoller = new DiceRoller()
+    vi.spyOn(credentialRoller, "rollD6").mockReturnValue(6)
+    vi.spyOn(scannerRoller, "rollD6").mockReturnValue(1)
+    const check: VerificationCheck = { itemId: "sin-2", kind: "sin", credentialRating: 3 }
+
+    const outcomePromise = resolveVerificationCheck(check, credentialRoller, scannerRoller, 3, false)
+    await vi.runAllTimersAsync()
+    const outcome = await outcomePromise
+
+    expect(outcome).toEqual({ itemId: "sin-2", status: "clear", credentialHits: 3, scannerHits: 0 })
   })
 })

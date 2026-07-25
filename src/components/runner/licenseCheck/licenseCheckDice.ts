@@ -2,7 +2,7 @@ import { NumberUtils } from "#/lib/numberUtils.ts"
 import { selectHits } from "#/system/dice/diceRoller.selectors.ts"
 import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
-import type { CredentialRating } from "./licenseCheckTypes.ts"
+import type { CredentialRating, VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
 
 export function getOpposedPoolSize(rating: number, ratingPlusRating: boolean): number {
   return ratingPlusRating ? rating * 2 : rating
@@ -56,4 +56,37 @@ export async function rollOpposedTest(
 
 export function isRealCredential(rating: CredentialRating): rating is "real" {
   return rating === "real"
+}
+
+/**
+ * Resolves one `VerificationCheck`: a real credential or already-flagged item resolves instantly,
+ * everything else runs the Opposed Test. Split out of `LicenseCheckLane` so the lane component
+ * stays focused on sequencing/rendering rather than per-item resolution rules.
+ */
+export async function resolveVerificationCheck(
+  check: VerificationCheck,
+  credentialRoller: DiceRoller,
+  scannerRoller: DiceRoller,
+  scannerRating: number,
+  ratingPlusRating: boolean,
+): Promise<VerificationOutcome> {
+  if (check.kind === "unlicensed-gear" || check.kind === "forbidden-gear") {
+    return { itemId: check.itemId, status: "flagged" }
+  }
+
+  const rating = check.credentialRating
+  if (rating === undefined || isRealCredential(rating)) {
+    return { itemId: check.itemId, status: "clear" }
+  }
+
+  credentialRoller.reset()
+  scannerRoller.reset()
+  const { credentialHits, scannerHits, status } = await rollOpposedTest(
+    credentialRoller,
+    scannerRoller,
+    rating,
+    scannerRating,
+    ratingPlusRating,
+  )
+  return { itemId: check.itemId, status, credentialHits, scannerHits }
 }
