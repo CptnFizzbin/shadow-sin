@@ -12,57 +12,105 @@ feature originally prototyped "stashing" as local, single-dialog state, but the 
 belongs on the item itself, since a stashed item should read as unavailable everywhere a Runner's
 gear is shown, not just inside one dialog.
 
-## Resolved Decisions
+Grilling this feature surfaced that a clean implementation touches more than just the new field —
+it also unifies gear cards' scattered direct-icon actions into one menu, and (while already in
+that code) closes a pre-existing gap where item removal has no confirmation step.
 
-- **Persistence:** a new optional field, `ItemData.stashed?: boolean`. Not local dialog state —
-  it lasts until explicitly toggled back.
-- **Equip interaction:** a stashed item cannot be equipped. (Exact enforcement point — form
-  validation, disabled control, or both — is an implementation detail, not a design open
-  question.)
+## Resolved Questions
+
+- **Persistence:** a new field, `ItemData.stashed?: boolean`. Not local dialog state — it lasts
+  until explicitly toggled back. Available on every `ItemData`, unconditionally (unlike
+  `equipped`'s history of being gated per `ItemType`) — any gear, including a SIN's covered
+  Licences, can be left behind.
+- **`stashed` and `equipped` are independent, coexisting flags, not mutually exclusive.**
+  `stashed` *overrides* `equipped` — it does not clear it. A weapon can be `equipped: true,
+  stashed: true` at the same time; while stashed it behaves as not-actively-equipped, but the
+  underlying `equipped` value is preserved, so un-stashing "just works" with no separate restore
+  step needed.
+- **`isActivelyEquipped(item)` helper** — a new derived function/selector,
+  `item.equipped && !item.stashed`, that replaces every existing raw `.equipped` read that drives
+  real mechanical behavior, rather than adding `&& !stashed` at each call site individually (see
+  Constraints for the full list). Prevents a missed call site from silently letting a stashed item
+  keep contributing encumbrance, GameEffects, wound modifiers, etc.
 - **Gear-list presentation:** a stashed item is greyed out and sorted to the bottom of its gear
-  listing, rather than hidden.
+  listing, rather than hidden. The existing "Equipped" display chips (`genericItemCard.tsx`,
+  `gearViewItem.tsx`, `weaponItemCard.tsx`, `armorItemCard.tsx`) switch from raw `item.equipped` to
+  `isActivelyEquipped(item)` too, so a stashed-but-equipped item doesn't misleadingly show as
+  Equipped.
 - **Parent/child cascade:** stashing a parent item (e.g. a weapon with attachments) cascades to
   all of its children — you can't stash the gun but keep the scope active. A child cannot be
   independently un-stashed while its parent is stashed, since the whole assembly is already
   excluded. A child *can* be stashed independently of an active (non-stashed) parent — e.g.
   stashing just the scope while keeping the gun in play.
+- **No Builder/Viewer split.** `GenericItemCard` is already shared, unmodified, between Builder
+  (`itemsList.tsx`) and Viewer contexts, and already surfaces `equipped` state in both today. Stash
+  and the new menu/bulk actions below work identically everywhere the shared cards render — no new
+  gating logic.
+- **No Nuyen/BP interaction.** Builder's gear-cost totaling (`gearUtils.ts`) never reads `equipped`
+  today, so stashing an item doesn't change how it counts toward BP or Nuyen budgets either —
+  consistent with existing precedent, not a new rule.
 - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) consumes this
   flag directly: its per-run checklist reflects (and can toggle) `stashed` rather than keeping its
   own local exclusion state.
 
-## Open Questions
+### Per-item action menu
 
-- [ ] **Where does the toggle live?** A control on the item card itself (e.g. next to the existing
-      `equipped` toggle), a kebab-menu action, or a bulk action from the gear list? No UI location
-      has been chosen yet.
-- [ ] **Builder vs. Viewer:** does stashing apply in both modes, or only the Viewer (in-play)? A
-      Builder is assembling a Runner's full loadout, where "left at the safehouse" arguably doesn't
-      apply yet — but License Check itself is Viewer-only (see 0011), which may mean stashing only
-      needs to exist in the Viewer for v1.
-- [ ] **Encumbrance interaction:** `encumbranceUtils.ts` currently derives penalties from
-      `equipped` armor. Should a stashed item be force-excluded from encumbrance/weight
-      calculations (since it's not being carried), independent of its `equipped` value, or does
-      `equipped` already imply that and `stashed` never needs to interact with it?
-- [ ] **Nuyen/BP interaction:** does stashing an item change how it's counted in Builder budgets,
-      or does stash only ever apply in the Viewer, making this moot (see the Builder/Viewer
-      question above)?
+- `GenericItemCard` and `GearViewItem`'s current direct icon-button actions (Edit, Remove, Buy
+  License) are replaced by a single overflow menu (plain MUI `Menu`/`MenuItem`, same pattern
+  already used by `runnerRosterList.tsx`'s roster kebab menu — no bespoke menu component exists
+  yet). The menu holds **all** per-item actions: Edit, Equip/Unequip, Stash/Unstash, Remove, Buy
+  License.
+- **Equip becomes available on every item type**, not just weapons/armor. The existing
+  "Equippable" checkbox (`itemOptionsDialog.tsx`, driven by `useItemOptions`'s
+  `ItemOptionsDefaults`) loses its per-`ItemType` forcing — weapons/armor's `equipable: { forced:
+  true }` and implants' `equipable: { forced: true, enabled: false }` are removed, so every item
+  type gets the same free-choice opt-in a Player sets per item instance. The quick-menu's
+  Equip/Unequip entry is shown using the same "has this item been configured with an equip value"
+  heuristic `useItemOptions` already applies in edit mode (`initialValues.equipped !== undefined`).
+- **Remove gains a confirmation step**, for both the per-item menu action and bulk Remove (below).
+  This changes existing behavior — single-item Remove currently has none — but the app has no undo
+  feature yet, so an accidental single removal is exactly as unrecoverable as an accidental bulk
+  one. Uses the existing `useConfirmDialog()` pattern (already used by `itemOptionsDialog.tsx`'s
+  "make item removable?" prompt).
+
+### Bulk actions
+
+- A new multi-select mode at the top of each gear list, with a bulk action bar supporting
+  Stash/Unstash, Equip/Unequip, and Remove (same confirmation as single Remove) applied to every
+  selected item at once.
 
 ## Constraints
 
-- `ItemData.equipped` is an existing, per-item-type opt-in field (only weapons and armor forms
-  currently set `equipable: { forced: true }`). `stashed` is a separate field and is not gated by
-  the same per-item-type opt-in — it should be available on every `ItemData`, since any gear
-  (including SINs' covered Licences, per 0011) can be left behind.
-- Must not conflict with or duplicate `equipped` — a stashed item should not also need to be
-  explicitly un-equipped by the Player; stashing forces the equip state, not the other way around.
+- `.equipped` is currently read directly (not through a shared helper) at these sites, all of
+  which must switch to `isActivelyEquipped(item)`:
+  - `src/components/system/encumbrance/useEncumbrance.ts`
+  - `src/components/system/gameEffects/useGameEffects.ts`
+  - `src/components/system/damage/damageUtils.ts` (two call sites)
+  - `src/components/items/types/armor/equippedArmorSection.tsx`
+  - `src/components/items/types/weapons/equippedWeaponsSection.tsx`
+  - `src/components/items/types/weapons/dialogs/weaponAttackDialog.tsx`
+  - Display chips: `src/components/items/genericItemCard.tsx`,
+    `src/components/runner/gearPage/gearViewItem.tsx`,
+    `src/components/items/types/weapons/weaponItemCard.tsx`,
+    `src/components/items/types/armor/armorItemCard.tsx`
+  - `useItemOptions.ts`'s own `.equipped` checks are about the edit-form's field-presence logic,
+    not "is this item mechanically active" — those stay as raw `.equipped` reads, unrelated to
+    this helper.
+- **A new migration is required**, even though `stashed` is purely additive and optional. This
+  repo's convention adds a migration for every schema change regardless of triviality — see
+  `20260517_addFeatureFlags.ts` and `20260521_addKarmaLog.ts` for recent precedent of migrations
+  for similarly additive fields. Never edit an existing migration file (see `AGENTS.md`).
+- Must not conflict with or duplicate `equipped` at the data level — see "independent, coexisting
+  flags" above; this replaces an earlier, incorrect assumption that stashing would force
+  `equipped` to `false`.
 
 ## Domain Notes
 
 **Stash** and **Equipped** are now defined in `CONTEXT.md` (added alongside this doc). Summary:
-`Equipped` (`ItemData.equipped`, pre-existing) says a *present* item is actively worn/wielded;
-`Stash` (`ItemData.stashed`, this feature) says an item isn't with the Runner at all right now. An
-item can be present, unequipped, and not stashed all at once (e.g. a spare pistol in a holster) —
-the two flags are independent axes, not a spectrum.
+`Equipped` (`ItemData.equipped`) says a *present* item is actively worn/wielded; `Stash`
+(`ItemData.stashed`) says an item isn't with the Runner at all right now, and overrides Equipped's
+effect without clearing its stored value. An item can be present, unequipped, and not stashed all
+at once (e.g. a spare pistol in a holster) — the two flags are independent axes, not a spectrum.
 
 ## Rough Interface Sketches
 
@@ -73,17 +121,21 @@ interface ItemData {
   // ...existing fields
   stashed?: boolean
 }
+
+// Replaces raw `item.equipped` reads everywhere mechanical behavior depends on it
+function isActivelyEquipped(item: ItemData): boolean {
+  return item.equipped === true && item.stashed !== true
+}
 ```
 
 ## Out of Scope
 
-- Any UI location decision (item card control vs. kebab menu vs. bulk action) — pending the "where
-  does the toggle live?" open question above.
-- Interaction with Builder budgets (BP, Nuyen, Availability) — pending the Builder/Viewer open
-  question above.
 - Any License-Check-specific behavior — that lives entirely in
   [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md); this feature
   only defines and persists the flag itself.
+- An undo feature for Remove (or anything else) — Remove's new confirmation step is a stopgap
+  given no undo exists, not a substitute for one.
+- Extending the bulk action bar beyond Stash/Equip/Remove (e.g. bulk edit, bulk Buy License).
 
 ## Related Features
 
