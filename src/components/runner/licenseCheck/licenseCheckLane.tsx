@@ -32,8 +32,8 @@ interface LicenseCheckLaneProps {
 function DiceGroup({ label, dice }: { label: string, dice: DieState[] }) {
   if (dice.length === 0) return null
 
-  // Settled dice sort low → high; while still rolling, keep pool order so dice don't jump around.
-  const ordered = dice.every((die) => die.value !== null) ? [...dice].sort((a, b) => (a.value ?? 0) - (b.value ?? 0)) : dice
+  // Settled dice sort high → low; while still rolling, keep pool order so dice don't jump around.
+  const ordered = dice.every((die) => die.value !== null) ? [...dice].sort((a, b) => (b.value ?? 0) - (a.value ?? 0)) : dice
 
   return (
     <Stack direction="row" sx={{ gap: 0.75, alignItems: "center" }}>
