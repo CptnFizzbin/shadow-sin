@@ -277,20 +277,22 @@ Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (a
 implant, software, vehicle, etc.).
 
 **Equipped**:
-`ItemData._flags.equipped` — whether an item is actively worn/wielded right now, as opposed to
+`ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
 merely owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
 (`equipable: { forced: true }`); other item types don't offer it.
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
 Read via the `isActivelyEquipped(item)` selector wherever the mechanical effect matters (raw
-`_flags.equipped` reads are for the edit form only) — the leading underscore on `_flags` marks it
-as internal storage, same convention as `RunnerData._meta_`.
+`_state.equipped` reads are for the edit form only) — the leading underscore on `_state` marks it
+as internal storage, same convention as `RunnerData._meta_`. `_state` holds only **Equipped** and
+**Stash** — the other per-item booleans (`fixed`, `wireless`) stay top-level on `ItemData` since
+they don't combine with anything else the way Equipped and Stash do (via `isActivelyEquipped`).
 
 **Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
-`ItemData._flags.stashed` — whether an item is with the Runner at all right now ("left at the
+`ItemData._state.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `_flags: {
+worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `_state: {
 equipped: true, stashed: true }` at once. Stash overrides Equipped's mechanical effect without
 clearing its stored value (so un-stashing needs no separate restore step). A stashed item is
 greyed out and sorted to the bottom of gear listings, and cascades to its child items (stashing a
