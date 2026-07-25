@@ -2,6 +2,7 @@ import Box from "@mui/material/Box"
 import Checkbox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiErrorWarningLine, RiForbidLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -23,9 +24,9 @@ interface LicenseCheckChecklistRowProps {
   nested?: boolean
 }
 
-const tagByKind: Partial<Record<VerificationCheck["kind"], { label: string, color: "warning" | "error" }>> = {
-  "unlicensed-gear": { label: "W", color: "warning" },
-  "forbidden-gear": { label: "E", color: "error" },
+const tagByKind: Partial<Record<VerificationCheck["kind"], { Icon: typeof RiErrorWarningLine, color: "warning" | "error" }>> = {
+  "unlicensed-gear": { Icon: RiErrorWarningLine, color: "warning" },
+  "forbidden-gear": { Icon: RiForbidLine, color: "error" },
 }
 
 function getRatingBadge(check: VerificationCheck): string | null {
@@ -54,13 +55,11 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
               aria-label={`Stashed: ${item.name}`}
               checked={isStashed(item)}
               onChange={() => {
-                // TODO(#388): stub dispatch only — does not persist a stashed state anywhere.
-                // Item-stashing (docs/features/0012-item-stashing.md) will add a real
-                // `_state.stashed` field; until then this dispatches `setItem` with the item
-                // unchanged so the wiring exists but nothing is actually saved. `checked` stays
-                // `isStashed(item)` (always false), so this checkbox will visually appear not to
-                // respond — that's intentional per the ticket.
-                dispatch(Actions.gear.setItem({ ...item }))
+                // TODO(#388): stashItem is itself a stub (see its doc comment) until Item-stashing
+                // (docs/features/0012-item-stashing.md) adds a real `_state.stashed` field.
+                // `checked` stays `isStashed(item)` (always false), so this checkbox will visually
+                // appear not to respond — that's intentional per the ticket.
+                dispatch(Actions.gear.stashItem({ id: item.id }))
               }}
             />
           )
@@ -76,11 +75,7 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
 
       <Stack direction="row" sx={{ alignItems: "center", gap: 1, minWidth: 0, flexGrow: 1 }}>
         {tag && (
-          <Typography component="span" variant="caption" color={`${tag.color}.main`} sx={{ fontWeight: "bold" }}>
-            [
-            {tag.label}
-            ]
-          </Typography>
+          <tag.Icon size={16} style={{ color: `var(--mui-palette-${tag.color}-main)`, flexShrink: 0 }} />
         )}
         <Typography variant="body2" noWrap>{item.name}</Typography>
         {item.availability && <AvailabilityChip availability={item.availability} />}

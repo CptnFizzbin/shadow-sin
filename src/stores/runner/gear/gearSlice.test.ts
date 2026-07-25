@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { addItem, removeItem, setItem } from "./gearSlice.actions.ts"
+import { addItem, removeItem, setItem, stashItem } from "./gearSlice.actions.ts"
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -168,6 +168,17 @@ describe("gearReducer", () => {
 
     // Act
     const next = gearReducer({ [item.id]: item }, removeItem({ id: crypto.randomUUID() as UUID }))
+
+    // Assert
+    expect(next).toEqual({ [item.id]: item })
+  })
+
+  it("stash is a no-op stub pending a real _state.stashed field (#388)", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
 
     // Assert
     expect(next).toEqual({ [item.id]: item })
