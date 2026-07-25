@@ -8,6 +8,7 @@ import * as contactsSelectors from "./contacts/contactsSlice.selectors.ts"
 import * as damageSelectors from "./damage/damageSlice.selectors.ts"
 import * as edgeSelectors from "./edge/edgeSlice.selectors.ts"
 import * as gearSelectors from "./gear/gearSlice.selectors.ts"
+import * as houseRulesSelectors from "./houseRules/houseRulesSlice.selectors.ts"
 import * as initiativeSelectors from "./initiative/initiativeSlice.selectors.ts"
 import * as karmaSelectors from "./karma/karmaSlice.selectors.ts"
 import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
@@ -46,6 +47,7 @@ export const Selectors = {
   damage: damageSelectors,
   edge: edgeSelectors,
   gear: gearSelectors,
+  houseRules: houseRulesSelectors,
   initiative: initiativeSelectors,
   karma: karmaSelectors,
   nuyen: nuyenSelectors,
