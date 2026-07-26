@@ -83,15 +83,16 @@ const LicenseCheckDialog: FC<LicenseCheckDialogProps> = ({ ctrl }) => {
         </Dialog.Content>
 
         <Dialog.Actions>
-          {step === "setup" && (
-            <>
-              <Button onClick={() => ctrl.close()}>Cancel</Button>
-              <Button variant="contained" onClick={handleStartScan}>Start Scan</Button>
-            </>
-          )}
-          {step === "result" && (
-            <Button variant="contained" onClick={() => ctrl.close()}>Close</Button>
-          )}
+          {step === "setup"
+            ? (
+                <>
+                  <Button onClick={() => ctrl.close()}>Cancel</Button>
+                  <Button variant="contained" onClick={handleStartScan}>Start Scan</Button>
+                </>
+              )
+            : (
+                <Button variant="contained" onClick={() => ctrl.close()}>Close</Button>
+              )}
         </Dialog.Actions>
       </ControlledDialog>
     </LicenseCheckProvider>

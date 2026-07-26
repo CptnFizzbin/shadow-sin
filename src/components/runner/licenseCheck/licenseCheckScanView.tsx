@@ -6,9 +6,9 @@ import type { ItemData } from "#/system/itemData.ts"
 
 import { createVerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
-import { LicenseCheckWorkerSlot } from "#/components/runner/licenseCheck/licenseCheckWorkerSlot.tsx"
+import { LicenseCheckWorkerSlot } from "./licenseCheckWorkerSlot.tsx"
 
-const WORKER_COUNT = 4
+const WORKER_COUNT = 1
 
 interface LicenseCheckScanViewProps {
   checks: VerificationCheck[]

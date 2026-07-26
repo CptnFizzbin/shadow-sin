@@ -6,6 +6,8 @@ import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
 import type { CredentialRating, VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
 
+const ROLL_TIMEOUT = milliseconds({ seconds: 2 })
+
 export function getOpposedPoolSize(rating: number, ratingPlusRating: boolean): number {
   return ratingPlusRating ? rating * 2 : rating
 }
@@ -42,14 +44,13 @@ export async function rollOpposedTest(
 ): Promise<OpposedTestResult> {
   const credentialPool = getOpposedPoolSize(credentialRating, ratingPlusRating)
   const scannerPool = getOpposedPoolSize(scannerRating, ratingPlusRating)
-  const timeout = milliseconds({ seconds: 5 })
 
   credentialRoller.setPoolSize(credentialPool)
   scannerRoller.setPoolSize(scannerPool)
 
   await Promise.all([
-    credentialRoller.rollAll({ timeout }),
-    scannerRoller.rollAll({ timeout }),
+    credentialRoller.rollAll({ timeout: ROLL_TIMEOUT }),
+    scannerRoller.rollAll({ timeout: ROLL_TIMEOUT }),
   ])
 
   const credentialHits = selectHits(credentialRoller.store.get())

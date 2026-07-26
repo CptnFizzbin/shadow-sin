@@ -79,8 +79,12 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
                 <Typography variant="caption" color="text.secondary">{kindLabel[currentCheck.kind]}</Typography>
               </Stack>
 
-              <LicenseCheckDiceGroup label="You" dice={credentialDice} />
-              <LicenseCheckDiceGroup label="Scanner" dice={scannerDice} />
+              {currentCheck.kind !== "forbidden-gear" && currentCheck.kind !== "unlicensed-gear" && (
+                <>
+                  <LicenseCheckDiceGroup label="You" dice={credentialDice} />
+                  <LicenseCheckDiceGroup label="Scanner" dice={scannerDice} />
+                </>
+              )}
 
               <Typography variant="caption" color={getOutcomeColor(currentOutcome)}>
                 {getOutcomeLabel(currentOutcome)}
