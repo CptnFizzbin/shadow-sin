@@ -3,7 +3,7 @@ import { createReducer } from "@reduxjs/toolkit"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { addItem, patchItem, removeItem, setItem } from "./gearSlice.actions.ts"
+import { addItem, patchItem, removeItem, setItem, stashItem } from "./gearSlice.actions.ts"
 
 const initialState: RunnerData["gear"] = {}
 
@@ -85,4 +85,6 @@ export const gearReducer = createReducer(initialState, (builder) => {
         removeItemById(state, id)
       }
     })
+    // TODO(#388): stub — see stashItem's doc comment in gearSlice.actions.ts.
+    .addCase(stashItem, () => {})
 })

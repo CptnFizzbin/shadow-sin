@@ -2,11 +2,23 @@ import type { UUID } from "node:crypto"
 
 import { describe, expect, it } from "vitest"
 
+import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
-import { licenses, selectAllGear, selectById, selectGearOfType } from "./gearSlice.selectors.ts"
+import {
+  licenses,
+  selectAllGear,
+  selectAvailable,
+  selectById,
+  selectEquipped,
+  selectGear,
+  selectGearOfType,
+  selectStashed,
+} from "./gearSlice.selectors.ts"
+
+const item = { id: NullUuid, name: "Test Item", itemType: ItemType.other }
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
   id: crypto.randomUUID() as UUID,
@@ -17,15 +29,70 @@ const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
 
 const withGear = (...items: ItemData[]) =>
   runnerDataFactory((data) => {
-    data.gear = Object.fromEntries(items.map((item) => [item.id, item]))
+    data.gear = Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem]))
     return data
   })
+
+describe("selectGear", () => {
+  it("returns the gear record", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = { [item.id]: item }
+      return s
+    })
+
+    expect(selectGear(sheet)).toBe(sheet.gear)
+  })
+})
+
+describe("selectEquipped", () => {
+  it("returns only items with equipped === true", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, equipped: true },
+      }
+      return s
+    })
+
+    expect(selectEquipped(sheet)).toEqual([{ ...item, equipped: true }])
+  })
+
+  it("excludes items with equipped false or absent", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = { [item.id]: item }
+      return s
+    })
+
+    expect(selectEquipped(sheet)).toEqual([])
+  })
+})
+
+describe("selectStashed", () => {
+  it("always returns an empty array (stubbed pending #388)", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = { [item.id]: item }
+      return s
+    })
+
+    expect(selectStashed(sheet)).toEqual([])
+  })
+})
+
+describe("selectAvailable", () => {
+  it("always returns every gear item (stubbed pending #388)", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = { [item.id]: item }
+      return s
+    })
+
+    expect(selectAvailable(sheet)).toEqual([item])
+  })
+})
 
 describe("selectAllGear", () => {
   it("returns the gear record", () => {
     // Arrange
-    const item = makeItem()
-    const runner = withGear(item)
+    const gearItem = makeItem()
+    const runner = withGear(gearItem)
 
     // Act / Assert
     expect(selectAllGear(runner)).toBe(runner.gear)
@@ -35,11 +102,11 @@ describe("selectAllGear", () => {
 describe("selectById", () => {
   it("finds an item by id", () => {
     // Arrange
-    const item = makeItem()
-    const runner = withGear(item)
+    const gearItem = makeItem()
+    const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(selectById(item.id)(runner)).toEqual(item)
+    expect(selectById(gearItem.id)(runner)).toEqual(gearItem)
   })
 
   it("returns undefined for an unknown id", () => {
@@ -84,11 +151,11 @@ describe("licenses.selectById", () => {
 
   it("does not return a non-licence item even with a matching id", () => {
     // Arrange
-    const item = makeItem({ itemType: ItemType.weapon })
-    const runner = withGear(item)
+    const gearItem = makeItem({ itemType: ItemType.weapon })
+    const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(licenses.selectById(item.id)(runner)).toBeUndefined()
+    expect(licenses.selectById(gearItem.id)(runner)).toBeUndefined()
   })
 })
 
@@ -96,29 +163,29 @@ describe("licenses.selectForItem", () => {
   it("returns the licence an item points at", () => {
     // Arrange
     const license = makeItem({ itemType: ItemType.license, rating: 3 })
-    const item = makeItem({ licenseId: license.id })
-    const runner = withGear(license, item)
+    const gearItem = makeItem({ licenseId: license.id })
+    const runner = withGear(license, gearItem)
 
     // Act / Assert
-    expect(licenses.selectForItem(item.id)(runner)).toEqual(license)
+    expect(licenses.selectForItem(gearItem.id)(runner)).toEqual(license)
   })
 
   it("returns null when the item has no licenceId", () => {
     // Arrange
-    const item = makeItem()
-    const runner = withGear(item)
+    const gearItem = makeItem()
+    const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(licenses.selectForItem(item.id)(runner)).toBeNull()
+    expect(licenses.selectForItem(gearItem.id)(runner)).toBeNull()
   })
 
   it("returns undefined for a dangling licenceId whose licence no longer exists", () => {
     // Arrange
-    const item = makeItem({ licenseId: crypto.randomUUID() as UUID })
-    const runner = withGear(item)
+    const gearItem = makeItem({ licenseId: crypto.randomUUID() as UUID })
+    const runner = withGear(gearItem)
 
     // Act / Assert
-    expect(licenses.selectForItem(item.id)(runner)).toBeUndefined()
+    expect(licenses.selectForItem(gearItem.id)(runner)).toBeUndefined()
   })
 })
 
@@ -141,8 +208,8 @@ describe("licenses.selectItemsForId", () => {
 
   it("returns an empty array when nothing points at the licence", () => {
     // Arrange
-    const item = makeItem()
-    const runner = withGear(item)
+    const gearItem = makeItem()
+    const runner = withGear(gearItem)
 
     // Act / Assert
     expect(licenses.selectItemsForId(crypto.randomUUID() as UUID)(runner)).toEqual([])

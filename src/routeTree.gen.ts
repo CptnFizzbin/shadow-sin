@@ -9,52 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RunnerIdRouteImport } from './routes/$runnerId'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as NewIndexRouteImport } from './routes/new/index'
-import { Route as GmIndexRouteImport } from './routes/gm/index'
+import { Route as RunnerIdRouteImport } from './routes/$runnerId'
 import { Route as RunnerIdIndexRouteImport } from './routes/$runnerId/index'
-import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
-import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
-import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
-import { Route as EditRunnerIdRouteImport } from './routes/edit/$runnerId'
-import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
-import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
-import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
-import { Route as RunnerIdSpellsRouteImport } from './routes/$runnerId/spells'
-import { Route as RunnerIdSkillsRouteImport } from './routes/$runnerId/skills'
-import { Route as RunnerIdPowersRouteImport } from './routes/$runnerId/powers'
-import { Route as RunnerIdOffenseRouteImport } from './routes/$runnerId/offense'
-import { Route as RunnerIdNotesRouteImport } from './routes/$runnerId/notes'
-import { Route as RunnerIdLicensesRouteImport } from './routes/$runnerId/licenses'
-import { Route as RunnerIdGearRouteImport } from './routes/$runnerId/gear'
-import { Route as RunnerIdFinancesRouteImport } from './routes/$runnerId/finances'
-import { Route as RunnerIdDronesRouteImport } from './routes/$runnerId/drones'
-import { Route as RunnerIdDefenseRouteImport } from './routes/$runnerId/defense'
-import { Route as RunnerIdContactsRouteImport } from './routes/$runnerId/contacts'
-import { Route as RunnerIdComplexFormsRouteImport } from './routes/$runnerId/complex-forms'
-import { Route as RunnerIdAdeptPowersRouteImport } from './routes/$runnerId/adept-powers'
 import { Route as RunnerIdAboutRouteImport } from './routes/$runnerId/about'
+import { Route as RunnerIdAdeptPowersRouteImport } from './routes/$runnerId/adept-powers'
+import { Route as RunnerIdComplexFormsRouteImport } from './routes/$runnerId/complex-forms'
+import { Route as RunnerIdContactsRouteImport } from './routes/$runnerId/contacts'
+import { Route as RunnerIdDefenseRouteImport } from './routes/$runnerId/defense'
+import { Route as RunnerIdDronesRouteImport } from './routes/$runnerId/drones'
+import { Route as RunnerIdFinancesRouteImport } from './routes/$runnerId/finances'
+import { Route as RunnerIdGearRouteImport } from './routes/$runnerId/gear'
+import { Route as RunnerIdLicensesRouteImport } from './routes/$runnerId/licenses'
+import { Route as RunnerIdNotesRouteImport } from './routes/$runnerId/notes'
+import { Route as RunnerIdOffenseRouteImport } from './routes/$runnerId/offense'
+import { Route as RunnerIdPowersRouteImport } from './routes/$runnerId/powers'
+import { Route as RunnerIdSkillsRouteImport } from './routes/$runnerId/skills'
+import { Route as RunnerIdSpellsRouteImport } from './routes/$runnerId/spells'
+import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
+import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
+import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
+import { Route as EditRunnerIdRouteImport } from './routes/edit/$runnerId'
+import { Route as GmIndexRouteImport } from './routes/gm/index'
+import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
+import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
+import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
+import { Route as NewIndexRouteImport } from './routes/new/index'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
 
-const RunnerIdRoute = RunnerIdRouteImport.update({
-  id: '/$runnerId',
-  path: '/$runnerId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NewIndexRoute = NewIndexRouteImport.update({
-  id: '/new/',
-  path: '/new/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GmIndexRoute = GmIndexRouteImport.update({
-  id: '/gm/',
-  path: '/gm/',
+const RunnerIdRoute = RunnerIdRouteImport.update({
+  id: '/$runnerId',
+  path: '/$runnerId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RunnerIdIndexRoute = RunnerIdIndexRouteImport.update({
@@ -62,99 +52,9 @@ const RunnerIdIndexRoute = RunnerIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => RunnerIdRoute,
 } as any)
-const GmNpcBuilderRoute = GmNpcBuilderRouteImport.update({
-  id: '/gm/npc-builder',
-  path: '/gm/npc-builder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GmInitiativeTrackerRoute = GmInitiativeTrackerRouteImport.update({
-  id: '/gm/initiative-tracker',
-  path: '/gm/initiative-tracker',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GmEncounterBuilderRoute = GmEncounterBuilderRouteImport.update({
-  id: '/gm/encounter-builder',
-  path: '/gm/encounter-builder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EditRunnerIdRoute = EditRunnerIdRouteImport.update({
-  id: '/edit/$runnerId',
-  path: '/edit/$runnerId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
-  id: '/vehicles',
-  path: '/vehicles',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpritesRoute = RunnerIdSpritesRouteImport.update({
-  id: '/sprites',
-  path: '/sprites',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpiritsRoute = RunnerIdSpiritsRouteImport.update({
-  id: '/spirits',
-  path: '/spirits',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpellsRoute = RunnerIdSpellsRouteImport.update({
-  id: '/spells',
-  path: '/spells',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSkillsRoute = RunnerIdSkillsRouteImport.update({
-  id: '/skills',
-  path: '/skills',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdPowersRoute = RunnerIdPowersRouteImport.update({
-  id: '/powers',
-  path: '/powers',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdOffenseRoute = RunnerIdOffenseRouteImport.update({
-  id: '/offense',
-  path: '/offense',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdNotesRoute = RunnerIdNotesRouteImport.update({
-  id: '/notes',
-  path: '/notes',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdLicensesRoute = RunnerIdLicensesRouteImport.update({
-  id: '/licenses',
-  path: '/licenses',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdGearRoute = RunnerIdGearRouteImport.update({
-  id: '/gear',
-  path: '/gear',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdFinancesRoute = RunnerIdFinancesRouteImport.update({
-  id: '/finances',
-  path: '/finances',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdDronesRoute = RunnerIdDronesRouteImport.update({
-  id: '/drones',
-  path: '/drones',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdDefenseRoute = RunnerIdDefenseRouteImport.update({
-  id: '/defense',
-  path: '/defense',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdContactsRoute = RunnerIdContactsRouteImport.update({
-  id: '/contacts',
-  path: '/contacts',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdComplexFormsRoute = RunnerIdComplexFormsRouteImport.update({
-  id: '/complex-forms',
-  path: '/complex-forms',
+const RunnerIdAboutRoute = RunnerIdAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => RunnerIdRoute,
 } as any)
 const RunnerIdAdeptPowersRoute = RunnerIdAdeptPowersRouteImport.update({
@@ -162,10 +62,110 @@ const RunnerIdAdeptPowersRoute = RunnerIdAdeptPowersRouteImport.update({
   path: '/adept-powers',
   getParentRoute: () => RunnerIdRoute,
 } as any)
-const RunnerIdAboutRoute = RunnerIdAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const RunnerIdComplexFormsRoute = RunnerIdComplexFormsRouteImport.update({
+  id: '/complex-forms',
+  path: '/complex-forms',
   getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdContactsRoute = RunnerIdContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdDefenseRoute = RunnerIdDefenseRouteImport.update({
+  id: '/defense',
+  path: '/defense',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdDronesRoute = RunnerIdDronesRouteImport.update({
+  id: '/drones',
+  path: '/drones',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdFinancesRoute = RunnerIdFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdGearRoute = RunnerIdGearRouteImport.update({
+  id: '/gear',
+  path: '/gear',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdLicensesRoute = RunnerIdLicensesRouteImport.update({
+  id: '/licenses',
+  path: '/licenses',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdNotesRoute = RunnerIdNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdOffenseRoute = RunnerIdOffenseRouteImport.update({
+  id: '/offense',
+  path: '/offense',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdPowersRoute = RunnerIdPowersRouteImport.update({
+  id: '/powers',
+  path: '/powers',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdSkillsRoute = RunnerIdSkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdSpellsRoute = RunnerIdSpellsRouteImport.update({
+  id: '/spells',
+  path: '/spells',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdSpiritsRoute = RunnerIdSpiritsRouteImport.update({
+  id: '/spirits',
+  path: '/spirits',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdSpritesRoute = RunnerIdSpritesRouteImport.update({
+  id: '/sprites',
+  path: '/sprites',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
+  id: '/vehicles',
+  path: '/vehicles',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const EditRunnerIdRoute = EditRunnerIdRouteImport.update({
+  id: '/edit/$runnerId',
+  path: '/edit/$runnerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmIndexRoute = GmIndexRouteImport.update({
+  id: '/gm/',
+  path: '/gm/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmEncounterBuilderRoute = GmEncounterBuilderRouteImport.update({
+  id: '/gm/encounter-builder',
+  path: '/gm/encounter-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmInitiativeTrackerRoute = GmInitiativeTrackerRouteImport.update({
+  id: '/gm/initiative-tracker',
+  path: '/gm/initiative-tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GmNpcBuilderRoute = GmNpcBuilderRouteImport.update({
+  id: '/gm/npc-builder',
+  path: '/gm/npc-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewIndexRoute = NewIndexRouteImport.update({
+  id: '/new/',
+  path: '/new/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
   id: '/test/theme/typography',
@@ -363,13 +363,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/$runnerId': {
-      id: '/$runnerId'
-      path: '/$runnerId'
-      fullPath: '/$runnerId'
-      preLoaderRoute: typeof RunnerIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -377,18 +370,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/new/': {
-      id: '/new/'
-      path: '/new'
-      fullPath: '/new/'
-      preLoaderRoute: typeof NewIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gm/': {
-      id: '/gm/'
-      path: '/gm'
-      fullPath: '/gm/'
-      preLoaderRoute: typeof GmIndexRouteImport
+    '/$runnerId': {
+      id: '/$runnerId'
+      path: '/$runnerId'
+      fullPath: '/$runnerId'
+      preLoaderRoute: typeof RunnerIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$runnerId/': {
@@ -398,137 +384,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunnerIdIndexRouteImport
       parentRoute: typeof RunnerIdRoute
     }
-    '/gm/npc-builder': {
-      id: '/gm/npc-builder'
-      path: '/gm/npc-builder'
-      fullPath: '/gm/npc-builder'
-      preLoaderRoute: typeof GmNpcBuilderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gm/initiative-tracker': {
-      id: '/gm/initiative-tracker'
-      path: '/gm/initiative-tracker'
-      fullPath: '/gm/initiative-tracker'
-      preLoaderRoute: typeof GmInitiativeTrackerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gm/encounter-builder': {
-      id: '/gm/encounter-builder'
-      path: '/gm/encounter-builder'
-      fullPath: '/gm/encounter-builder'
-      preLoaderRoute: typeof GmEncounterBuilderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/edit/$runnerId': {
-      id: '/edit/$runnerId'
-      path: '/edit/$runnerId'
-      fullPath: '/edit/$runnerId'
-      preLoaderRoute: typeof EditRunnerIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$runnerId/vehicles': {
-      id: '/$runnerId/vehicles'
-      path: '/vehicles'
-      fullPath: '/$runnerId/vehicles'
-      preLoaderRoute: typeof RunnerIdVehiclesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/sprites': {
-      id: '/$runnerId/sprites'
-      path: '/sprites'
-      fullPath: '/$runnerId/sprites'
-      preLoaderRoute: typeof RunnerIdSpritesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/spirits': {
-      id: '/$runnerId/spirits'
-      path: '/spirits'
-      fullPath: '/$runnerId/spirits'
-      preLoaderRoute: typeof RunnerIdSpiritsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/spells': {
-      id: '/$runnerId/spells'
-      path: '/spells'
-      fullPath: '/$runnerId/spells'
-      preLoaderRoute: typeof RunnerIdSpellsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/skills': {
-      id: '/$runnerId/skills'
-      path: '/skills'
-      fullPath: '/$runnerId/skills'
-      preLoaderRoute: typeof RunnerIdSkillsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/powers': {
-      id: '/$runnerId/powers'
-      path: '/powers'
-      fullPath: '/$runnerId/powers'
-      preLoaderRoute: typeof RunnerIdPowersRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/offense': {
-      id: '/$runnerId/offense'
-      path: '/offense'
-      fullPath: '/$runnerId/offense'
-      preLoaderRoute: typeof RunnerIdOffenseRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/notes': {
-      id: '/$runnerId/notes'
-      path: '/notes'
-      fullPath: '/$runnerId/notes'
-      preLoaderRoute: typeof RunnerIdNotesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/licenses': {
-      id: '/$runnerId/licenses'
-      path: '/licenses'
-      fullPath: '/$runnerId/licenses'
-      preLoaderRoute: typeof RunnerIdLicensesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/gear': {
-      id: '/$runnerId/gear'
-      path: '/gear'
-      fullPath: '/$runnerId/gear'
-      preLoaderRoute: typeof RunnerIdGearRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/finances': {
-      id: '/$runnerId/finances'
-      path: '/finances'
-      fullPath: '/$runnerId/finances'
-      preLoaderRoute: typeof RunnerIdFinancesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/drones': {
-      id: '/$runnerId/drones'
-      path: '/drones'
-      fullPath: '/$runnerId/drones'
-      preLoaderRoute: typeof RunnerIdDronesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/defense': {
-      id: '/$runnerId/defense'
-      path: '/defense'
-      fullPath: '/$runnerId/defense'
-      preLoaderRoute: typeof RunnerIdDefenseRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/contacts': {
-      id: '/$runnerId/contacts'
-      path: '/contacts'
-      fullPath: '/$runnerId/contacts'
-      preLoaderRoute: typeof RunnerIdContactsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/complex-forms': {
-      id: '/$runnerId/complex-forms'
-      path: '/complex-forms'
-      fullPath: '/$runnerId/complex-forms'
-      preLoaderRoute: typeof RunnerIdComplexFormsRouteImport
+    '/$runnerId/about': {
+      id: '/$runnerId/about'
+      path: '/about'
+      fullPath: '/$runnerId/about'
+      preLoaderRoute: typeof RunnerIdAboutRouteImport
       parentRoute: typeof RunnerIdRoute
     }
     '/$runnerId/adept-powers': {
@@ -538,12 +398,152 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunnerIdAdeptPowersRouteImport
       parentRoute: typeof RunnerIdRoute
     }
-    '/$runnerId/about': {
-      id: '/$runnerId/about'
-      path: '/about'
-      fullPath: '/$runnerId/about'
-      preLoaderRoute: typeof RunnerIdAboutRouteImport
+    '/$runnerId/complex-forms': {
+      id: '/$runnerId/complex-forms'
+      path: '/complex-forms'
+      fullPath: '/$runnerId/complex-forms'
+      preLoaderRoute: typeof RunnerIdComplexFormsRouteImport
       parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/contacts': {
+      id: '/$runnerId/contacts'
+      path: '/contacts'
+      fullPath: '/$runnerId/contacts'
+      preLoaderRoute: typeof RunnerIdContactsRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/defense': {
+      id: '/$runnerId/defense'
+      path: '/defense'
+      fullPath: '/$runnerId/defense'
+      preLoaderRoute: typeof RunnerIdDefenseRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/drones': {
+      id: '/$runnerId/drones'
+      path: '/drones'
+      fullPath: '/$runnerId/drones'
+      preLoaderRoute: typeof RunnerIdDronesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/finances': {
+      id: '/$runnerId/finances'
+      path: '/finances'
+      fullPath: '/$runnerId/finances'
+      preLoaderRoute: typeof RunnerIdFinancesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/gear': {
+      id: '/$runnerId/gear'
+      path: '/gear'
+      fullPath: '/$runnerId/gear'
+      preLoaderRoute: typeof RunnerIdGearRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/licenses': {
+      id: '/$runnerId/licenses'
+      path: '/licenses'
+      fullPath: '/$runnerId/licenses'
+      preLoaderRoute: typeof RunnerIdLicensesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/notes': {
+      id: '/$runnerId/notes'
+      path: '/notes'
+      fullPath: '/$runnerId/notes'
+      preLoaderRoute: typeof RunnerIdNotesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/offense': {
+      id: '/$runnerId/offense'
+      path: '/offense'
+      fullPath: '/$runnerId/offense'
+      preLoaderRoute: typeof RunnerIdOffenseRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/powers': {
+      id: '/$runnerId/powers'
+      path: '/powers'
+      fullPath: '/$runnerId/powers'
+      preLoaderRoute: typeof RunnerIdPowersRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/skills': {
+      id: '/$runnerId/skills'
+      path: '/skills'
+      fullPath: '/$runnerId/skills'
+      preLoaderRoute: typeof RunnerIdSkillsRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/spells': {
+      id: '/$runnerId/spells'
+      path: '/spells'
+      fullPath: '/$runnerId/spells'
+      preLoaderRoute: typeof RunnerIdSpellsRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/spirits': {
+      id: '/$runnerId/spirits'
+      path: '/spirits'
+      fullPath: '/$runnerId/spirits'
+      preLoaderRoute: typeof RunnerIdSpiritsRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/sprites': {
+      id: '/$runnerId/sprites'
+      path: '/sprites'
+      fullPath: '/$runnerId/sprites'
+      preLoaderRoute: typeof RunnerIdSpritesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/vehicles': {
+      id: '/$runnerId/vehicles'
+      path: '/vehicles'
+      fullPath: '/$runnerId/vehicles'
+      preLoaderRoute: typeof RunnerIdVehiclesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/edit/$runnerId': {
+      id: '/edit/$runnerId'
+      path: '/edit/$runnerId'
+      fullPath: '/edit/$runnerId'
+      preLoaderRoute: typeof EditRunnerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/': {
+      id: '/gm/'
+      path: '/gm'
+      fullPath: '/gm/'
+      preLoaderRoute: typeof GmIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/encounter-builder': {
+      id: '/gm/encounter-builder'
+      path: '/gm/encounter-builder'
+      fullPath: '/gm/encounter-builder'
+      preLoaderRoute: typeof GmEncounterBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/initiative-tracker': {
+      id: '/gm/initiative-tracker'
+      path: '/gm/initiative-tracker'
+      fullPath: '/gm/initiative-tracker'
+      preLoaderRoute: typeof GmInitiativeTrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gm/npc-builder': {
+      id: '/gm/npc-builder'
+      path: '/gm/npc-builder'
+      fullPath: '/gm/npc-builder'
+      preLoaderRoute: typeof GmNpcBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new/': {
+      id: '/new/'
+      path: '/new'
+      fullPath: '/new/'
+      preLoaderRoute: typeof NewIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/test/theme/typography': {
       id: '/test/theme/typography'

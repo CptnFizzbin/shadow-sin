@@ -17,7 +17,9 @@ test.describe("Gear page – misc item dialog", () => {
 
   test("can edit an existing misc item and the change persists", async ({ page }) => {
     // Arrange — expand the Misc accordion to reveal items
-    const miscAccordion = page.getByRole("button", { name: /^Misc$/i })
+    // The accordion's accessible name is prefixed with its item count (e.g. "3 Misc"), so match on
+    // the section label rather than requiring an exact "Misc".
+    const miscAccordion = page.getByRole("button", { name: /Misc$/i })
     await miscAccordion.click()
 
     // The Artemis fixture contains a misc item named "Engineering Shop"
@@ -41,13 +43,16 @@ test.describe("Gear page – misc item dialog", () => {
 
     // Assert — dialog should close and the renamed item appears in the list
     await expect(dialog).not.toBeVisible()
-    await expect(page.getByText("Medkit")).toBeVisible()
+    // exact: true — the fixture also carries an unrelated "Medkit (Rating 6)" item.
+    await expect(page.getByText("Medkit", { exact: true })).toBeVisible()
     await expect(page.getByText("Engineering Shop")).not.toBeVisible()
   })
 
   test("can add a new misc item and it appears in the list", async ({ page }) => {
     // Arrange — expand the Misc accordion
-    const miscAccordion = page.getByRole("button", { name: /^Misc$/i })
+    // The accordion's accessible name is prefixed with its item count (e.g. "3 Misc"), so match on
+    // the section label rather than requiring an exact "Misc".
+    const miscAccordion = page.getByRole("button", { name: /Misc$/i })
     await miscAccordion.click()
 
     // Act — click the Add Item button
@@ -67,6 +72,7 @@ test.describe("Gear page – misc item dialog", () => {
 
     // Assert — dialog closes and new item is in the list
     await expect(dialog).not.toBeVisible()
-    await expect(page.getByText("Medkit")).toBeVisible()
+    // exact: true — the fixture also carries an unrelated "Medkit (Rating 6)" item.
+    await expect(page.getByText("Medkit", { exact: true })).toBeVisible()
   })
 })
