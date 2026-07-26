@@ -6,7 +6,21 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { licenses } from "./gearSlice.actions.ts"
+import {
+  armor,
+  credsticks,
+  devices,
+  firearmAccessories,
+  firearms,
+  implants,
+  licenses,
+  other,
+  programs,
+  sins,
+  software,
+  vehicles,
+  weapons,
+} from "./gearSlice.actions.ts"
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -118,5 +132,48 @@ describe("licenses.clearLicenseForItem", () => {
 
     // Assert
     expect(next[item.id]).toEqual({ ...item, licenseId: null })
+  })
+})
+
+describe.each([
+  { name: "armor", namespace: armor, itemType: ItemType.armor },
+  { name: "implants", namespace: implants, itemType: ItemType.implant },
+  { name: "firearms", namespace: firearms, itemType: ItemType.firearm },
+  { name: "software", namespace: software, itemType: ItemType.software },
+  { name: "vehicles", namespace: vehicles, itemType: ItemType.vehicle },
+  { name: "weapons", namespace: weapons, itemType: ItemType.weapon },
+  { name: "devices", namespace: devices, itemType: ItemType.device },
+  { name: "firearmAccessories", namespace: firearmAccessories, itemType: ItemType.firearmAccessory },
+  { name: "sins", namespace: sins, itemType: ItemType.sin },
+  { name: "credsticks", namespace: credsticks, itemType: ItemType.credstick },
+  { name: "programs", namespace: programs, itemType: ItemType.program },
+  { name: "other", namespace: other, itemType: ItemType.other },
+])("$name", ({ namespace, itemType }) => {
+  describe("create", () => {
+    it("adds the item under a freshly generated id", () => {
+      // Arrange
+      const draft = { itemType, name: "Test Item" }
+
+      // Act
+      const next = gearReducer({}, namespace.create(draft as never))
+
+      // Assert
+      const [stored] = Object.values(next)
+      expect(stored).toMatchObject(draft)
+      expect(stored.id).toBeDefined()
+    })
+  })
+
+  describe("destroy", () => {
+    it("removes the item", () => {
+      // Arrange
+      const item = makeItem({ itemType })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, namespace.destroy(item.id))
+
+      // Assert
+      expect(next[item.id]).toBeUndefined()
+    })
   })
 })

@@ -8,7 +8,15 @@ import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import {
+  armor,
+  credsticks,
+  devices,
+  firearmAccessories,
+  firearms,
+  implants,
   licenses,
+  other,
+  programs,
   selectAllGear,
   selectAvailable,
   selectById,
@@ -16,6 +24,10 @@ import {
   selectGear,
   selectGearOfType,
   selectStashed,
+  sins,
+  software,
+  vehicles,
+  weapons,
 } from "./gearSlice.selectors.ts"
 
 const item = { id: NullUuid, name: "Test Item", itemType: ItemType.other }
@@ -122,8 +134,8 @@ describe("selectGearOfType", () => {
   it("filters gear down to the given item type", () => {
     // Arrange
     const weapon = makeItem({ itemType: ItemType.weapon })
-    const armor = makeItem({ itemType: ItemType.armor })
-    const runner = withGear(weapon, armor)
+    const armorItem = makeItem({ itemType: ItemType.armor })
+    const runner = withGear(weapon, armorItem)
 
     // Act / Assert
     expect(selectGearOfType(ItemType.weapon)(runner)).toEqual({ [weapon.id]: weapon })
@@ -213,5 +225,39 @@ describe("licenses.selectItemsForId", () => {
 
     // Act / Assert
     expect(licenses.selectItemsForId(crypto.randomUUID() as UUID)(runner)).toEqual([])
+  })
+})
+
+describe.each([
+  { name: "armor", namespace: armor, itemType: ItemType.armor },
+  { name: "implants", namespace: implants, itemType: ItemType.implant },
+  { name: "firearms", namespace: firearms, itemType: ItemType.firearm },
+  { name: "software", namespace: software, itemType: ItemType.software },
+  { name: "vehicles", namespace: vehicles, itemType: ItemType.vehicle },
+  { name: "weapons", namespace: weapons, itemType: ItemType.weapon },
+  { name: "devices", namespace: devices, itemType: ItemType.device },
+  { name: "firearmAccessories", namespace: firearmAccessories, itemType: ItemType.firearmAccessory },
+  { name: "sins", namespace: sins, itemType: ItemType.sin },
+  { name: "credsticks", namespace: credsticks, itemType: ItemType.credstick },
+  { name: "programs", namespace: programs, itemType: ItemType.program },
+  { name: "other", namespace: other, itemType: ItemType.other },
+])("$name.selectById", ({ namespace, itemType }) => {
+  it("finds an item of the matching type by id", () => {
+    // Arrange
+    const typedItem = makeItem({ itemType })
+    const runner = withGear(typedItem)
+
+    // Act / Assert
+    expect(namespace.selectById(typedItem.id)(runner)).toEqual(typedItem)
+  })
+
+  it("does not return an item of a different type even with a matching id", () => {
+    // Arrange
+    const otherType = itemType === ItemType.weapon ? ItemType.armor : ItemType.weapon
+    const gearItem = makeItem({ itemType: otherType })
+    const runner = withGear(gearItem)
+
+    // Act / Assert
+    expect(namespace.selectById(gearItem.id)(runner)).toBeUndefined()
   })
 })
