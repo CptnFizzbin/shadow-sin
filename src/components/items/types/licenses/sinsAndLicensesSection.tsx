@@ -51,7 +51,7 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
   }
 
   const handleRemoveLicense = (license: LicenseData) => {
-    dispatch(Actions.gear.removeItem({ id: license.id }))
+    dispatch(Actions.gear.licenses.destroy(license.id))
   }
 
   const handleEditSin = async (sin?: SinData) => {
