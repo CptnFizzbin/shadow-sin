@@ -6,7 +6,7 @@ import type { ItemData } from "#/system/itemData.ts"
 
 import { createVerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
-import { LicenseCheckWorker } from "./licenseCheckWorker.tsx"
+import { LicenseCheckWorkerSlot } from "#/components/runner/licenseCheck/licenseCheckWorkerSlot.tsx"
 
 const WORKER_COUNT = 4
 
@@ -51,8 +51,7 @@ export const LicenseCheckScanView: FC<LicenseCheckScanViewProps> = ({
     <Grid container spacing={2}>
       {Array.from({ length: WORKER_COUNT }, (_, workerIndex) => (
         <Grid key={workerIndex} size={{ xs: 12, sm: 6 }}>
-          <LicenseCheckWorker
-            label={`Terminal ${workerIndex + 1}`}
+          <LicenseCheckWorkerSlot
             queue={queue}
             gear={gear}
             scannerRating={scannerRating}

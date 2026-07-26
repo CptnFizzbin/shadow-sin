@@ -1,3 +1,4 @@
+import { milliseconds } from "date-fns"
 import { useEffect, useMemo, useRef, useState } from "react"
 
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
@@ -8,7 +9,7 @@ import { resolveVerificationCheck } from "./licenseCheckDice.ts"
 import type { VerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
 
-const RESOLVED_HOLD_MS = 500
+const RESOLVED_HOLD_MS = milliseconds({ seconds: 1 })
 
 interface UseLicenseCheckWorkerArgs {
   queue: VerificationQueue
