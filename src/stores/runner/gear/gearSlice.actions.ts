@@ -22,7 +22,7 @@ export function isNewItem(item: ItemData): boolean {
 }
 
 export const licenses = {
-  create: (license: LicenseData) => {
+  create: (license: Omit<LicenseData, "id">) => {
     return addItem(license)
   },
 

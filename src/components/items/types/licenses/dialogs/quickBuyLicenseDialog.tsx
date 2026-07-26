@@ -23,7 +23,6 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { NullUuid } from "#/lib/uuidUtils.ts"
 import { useIsBuilder } from "#/stores/builder/builderStore.context.ts"
 import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
@@ -79,8 +78,7 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
   const handleAcquire = () => {
     if (!selectedSinId) return
 
-    const licenseDraft: LicenseData = {
-      id: NullUuid,
+    const licenseDraft: Omit<LicenseData, "id"> = {
       itemType: ItemType.license,
       name: `License: ${item.name}`,
       rating,
