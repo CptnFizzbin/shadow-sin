@@ -67,7 +67,10 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
             borderColor: "divider",
           }}
         >
-          <Typography>{section}</Typography>
+          <Stack direction="row">
+            <Typography color="secondary" sx={{ width: 24, textAlign: "right" }}>{sectionItems.length}</Typography>
+            <Typography>{section}</Typography>
+          </Stack>
           {section === GearSection.Cyberware && <CyberwareSectionHeader />}
         </Stack>
       </AccordionSummary>

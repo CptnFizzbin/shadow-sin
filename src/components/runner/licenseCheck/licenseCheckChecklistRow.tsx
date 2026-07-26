@@ -1,16 +1,14 @@
-import Box from "@mui/material/Box"
 import Checkbox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiErrorWarningLine, RiForbidLine } from "@remixicon/react"
 import type { FC } from "react"
+import { useState } from "react"
 
-import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
 import { StatChip } from "#/components/ui/statChip.tsx"
+import { mergeSx } from "#/integrations/mui/muiUtils.ts"
 import { Actions } from "#/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import { isStashed } from "#/system/items/itemUtils.ts"
 
 import { isRealCredential } from "./licenseCheckDice.ts"
 import type { VerificationCheck } from "./licenseCheckTypes.ts"
@@ -20,66 +18,64 @@ interface LicenseCheckChecklistRowProps {
   check: VerificationCheck
   /** SINs have no equip/carry state, so their row is not stash-eligible. */
   showStashToggle?: boolean
-  /** Licensed gear nested under its covering SIN — shown with a connector glyph. */
-  nested?: boolean
-}
-
-const tagByKind: Partial<Record<VerificationCheck["kind"], { Icon: typeof RiErrorWarningLine, color: "warning" | "error" }>> = {
-  "unlicensed-gear": { Icon: RiErrorWarningLine, color: "warning" },
-  "forbidden-gear": { Icon: RiForbidLine, color: "error" },
 }
 
 function getRatingBadge(check: VerificationCheck): string | null {
   if (check.kind === "unlicensed-gear") return "Unlicensed"
   if (check.kind === "forbidden-gear") return "Forbidden"
   if (check.credentialRating === undefined) return null
-  return isRealCredential(check.credentialRating) ? "Real" : `Rating ${check.credentialRating}`
+  return isRealCredential(check.credentialRating) ? "Real" : `Fake License | R${check.credentialRating}`
 }
 
 export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
   item,
   check,
   showStashToggle = true,
-  nested = false,
 }) => {
   const dispatch = useRunnerStoreDispatch()
-  const tag = tagByKind[check.kind]
   const ratingBadge = getRatingBadge(check)
 
-  return (
-    <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
-      {showStashToggle
-        ? (
-            <Checkbox
-              size="small"
-              aria-label={`Stashed: ${item.name}`}
-              checked={isStashed(item)}
-              onChange={() => {
-                // TODO(#388): stashItem is itself a stub (see its doc comment) until Item-stashing
-                // (docs/features/0012-item-stashing.md) adds a real `_state.stashed` field.
-                // `checked` stays `isStashed(item)` (always false), so this checkbox will visually
-                // appear not to respond — that's intentional per the ticket.
-                dispatch(Actions.gear.stashItem({ id: item.id }))
-              }}
-            />
-          )
-        : (
-            <Box sx={{ width: 42, flexShrink: 0 }} />
-          )}
+  const [isStashed, setIsStashed] = useState(false)
 
-      {nested && (
-        <Typography component="span" color="text.disabled" sx={{ flexShrink: 0 }}>
-          ↳
-        </Typography>
+  const handleRowClick = () => {
+    if (!showStashToggle) return
+
+    setIsStashed(!isStashed)
+
+    if (isStashed) {
+      dispatch(Actions.gear.unstashItem({ id: item.id }))
+    } else {
+      dispatch(Actions.gear.stashItem({ id: item.id }))
+    }
+  }
+
+  return (
+    <Stack
+      direction="row"
+      sx={{ alignItems: "center", gap: 1 }}
+      onClick={handleRowClick}
+    >
+      {showStashToggle && (
+        <Checkbox
+          size="small"
+          aria-label={`Stashed: ${item.name}`}
+          checked={!isStashed}
+        />
       )}
 
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1, minWidth: 0, flexGrow: 1 }}>
-        {tag && (
-          <tag.Icon size={16} style={{ color: `var(--mui-palette-${tag.color}-main)`, flexShrink: 0 }} />
+      <Stack
+        direction="column"
+        sx={mergeSx(
+          { gap: 0.5 },
+          isStashed && { opacity: 0.25 },
         )}
-        <Typography variant="body2" noWrap>{item.name}</Typography>
-        {item.availability && <AvailabilityChip availability={item.availability} />}
-        {ratingBadge && <StatChip label={ratingBadge} />}
+      >
+        <Stack direction="row">
+          <Typography variant="body2" noWrap>{item.name}</Typography>
+        </Stack>
+        <Stack direction="row" sx={{ alignItems: "center", gap: 0.5 }}>
+          {ratingBadge && <StatChip label={ratingBadge} />}
+        </Stack>
       </Stack>
     </Stack>
   )

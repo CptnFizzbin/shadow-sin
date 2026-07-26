@@ -85,7 +85,7 @@ export function buildVerificationLanes(
     lanes.push({
       key: "unlicensed",
       title: "Unlicensed Gear",
-      checks: ArrayUtils.shuffle(unlicensedItems).map((item) => ({ itemId: item.id, kind: "unlicensed-gear" })),
+      checks: unlicensedItems.map((item) => ({ itemId: item.id, kind: "unlicensed-gear" })),
     })
   }
 
@@ -96,7 +96,7 @@ export function buildVerificationLanes(
     lanes.push({
       key: "forbidden",
       title: "Forbidden Gear",
-      checks: ArrayUtils.shuffle(forbiddenItems).map((item) => ({ itemId: item.id, kind: "forbidden-gear" })),
+      checks: forbiddenItems.map((item) => ({ itemId: item.id, kind: "forbidden-gear" })),
     })
   }
 

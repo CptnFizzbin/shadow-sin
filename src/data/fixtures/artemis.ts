@@ -23,6 +23,30 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
+// Licenses are hoisted above the fixture object so their generated ids can be wired into a
+// licensed item's `licenseId` below, while still being attached under their owning SIN.
+const sarahFirearmsLicense = createItem<LicenseData>({
+  name: "Firearms License",
+  itemType: ItemType.license,
+  rating: 4,
+})
+const sarahArmorLicense = createItem<LicenseData>({
+  name: "Armor License",
+  itemType: ItemType.license,
+  rating: 5,
+})
+const driverLicenseSemiTruck = createItem<LicenseData>({
+  name: "Driver License (Semi-Truck)",
+  itemType: ItemType.license,
+  fixed: true,
+  rating: 5,
+})
+const janeMeleeLicense = createItem<LicenseData>({
+  name: "Melee Weapon License",
+  itemType: ItemType.license,
+  rating: 3,
+})
+
 export const Artemis: RunnerData = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
   _meta_: { version: 1, appliedMigrations: [...migrationIds] },
@@ -119,26 +143,26 @@ export const Artemis: RunnerData = {
       itemType: ItemType.sin,
       notes: "General use SIN.",
       rating: 6,
-    }),
+    }, [
+      sarahFirearmsLicense,
+      sarahArmorLicense,
+    ]),
     createItem<SinData>({
       name: "Jadzia Dax",
       itemType: ItemType.sin,
       notes: "Runner SIN.",
       rating: 4,
     }, [
-      createItem<LicenseData>({
-        name: "Driver License (Semi-Truck)",
-        itemType: ItemType.license,
-        fixed: true,
-        rating: 5,
-      }),
+      driverLicenseSemiTruck,
     ]),
     createItem<SinData>({
       name: "Jane Smith",
       itemType: ItemType.sin,
       notes: "Burner SIN.",
       rating: 2,
-    }),
+    }, [
+      janeMeleeLicense,
+    ]),
     createItem<FirearmData>({
       name: "FN P93 Predator",
       itemType: ItemType.weapon,
@@ -431,6 +455,127 @@ export const Artemis: RunnerData = {
       name: "Engineering Shop",
       itemType: ItemType.other,
       cost: 5000,
+    }),
+
+    // Unrestricted gear — no availability restrictions, never appears in a License Check lane.
+    createItem<ItemData>({
+      name: "Survival Kit",
+      itemType: ItemType.other,
+      cost: 500,
+    }),
+    createItem<ItemData>({
+      name: "Micro-Recorder",
+      itemType: ItemType.other,
+      cost: 100,
+    }),
+    createItem<ItemData>({
+      name: "Grapple Gun",
+      itemType: ItemType.other,
+      cost: 400,
+    }),
+    createItem<ItemData>({
+      name: "Medkit (Rating 6)",
+      itemType: ItemType.other,
+      cost: 1000,
+      rating: 6,
+    }),
+
+    // Restricted gear licensed to a SIN — one lane check per SIN below.
+    createItem<ItemData>({
+      name: "Ares Alpha Combat Gun",
+      itemType: ItemType.other,
+      cost: 22000,
+      availability: { rating: 11, restricted: true },
+      licenseId: sarahFirearmsLicense[0].id,
+      notes: "Full-auto assault rifle w/ underslung grenade launcher. Licensed to Sara McCabe.",
+    }),
+    createItem<ArmorData>({
+      name: "Secure Tech Full-Body Armor",
+      itemType: ItemType.armor,
+      ballistic: 12,
+      impact: 10,
+      cost: 14000,
+      availability: { rating: 14, restricted: true },
+      licenseId: sarahArmorLicense[0].id,
+      notes: "Licensed to Sara McCabe.",
+    }),
+    createItem<VehicleData>({
+      name: "Freightliner Superhauler",
+      itemType: ItemType.vehicle,
+      vehicleCategory: VehicleCategory.vehicle,
+      vehicleType: "truck",
+      handling: 2,
+      accel: "8/20",
+      speed: 90,
+      pilot: 1,
+      body: 18,
+      armor: 6,
+      sensor: 2,
+      cost: 90000,
+      availability: { rating: 8, restricted: true },
+      licenseId: driverLicenseSemiTruck[0].id,
+      notes: "Licensed under Jadzia Dax's Semi-Truck driver license.",
+    }),
+    createItem<ItemData>({
+      name: "Collapsible Stun Baton",
+      itemType: ItemType.other,
+      cost: 400,
+      availability: { rating: 6, restricted: true },
+      licenseId: janeMeleeLicense[0].id,
+      notes: "Licensed to Jane Smith.",
+    }),
+
+    // Restricted gear with no license on file — routes to the Unlicensed Gear lane.
+    createItem<ItemData>({
+      name: "Sawed-Off Shotgun",
+      itemType: ItemType.other,
+      cost: 300,
+      availability: { rating: 4, restricted: true },
+    }),
+    createItem<ItemData>({
+      name: "Sound Suppressor",
+      itemType: ItemType.other,
+      cost: 500,
+      availability: { rating: 6, restricted: true },
+    }),
+    createItem<ItemData>({
+      name: "Black-Market Cyberdeck Firmware",
+      itemType: ItemType.other,
+      cost: 2000,
+      availability: { rating: 10, restricted: true },
+    }),
+
+    // Forbidden gear — always routes to the Forbidden Gear lane, no license path exists.
+    createItem<ItemData>({
+      name: "Fragmentation Grenades (x3)",
+      itemType: ItemType.other,
+      quantity: 3,
+      cost: 900,
+      availability: { rating: 11, forbidden: true },
+    }),
+    createItem<ItemData>({
+      name: "Full-Auto Assault Cannon",
+      itemType: ItemType.other,
+      cost: 32000,
+      availability: { rating: 14, forbidden: true },
+    }),
+    createItem<ImplantData>({
+      name: "Move-by-Wire System",
+      itemType: ItemType.implant,
+      implantType: "cyberware",
+      grade: ImplantGrade.standard,
+      essenceCost: 3,
+      rating: 2,
+      cost: 480000,
+      availability: { rating: 20, forbidden: true },
+      notes: "Military-grade; illegal for civilian use.",
+    }),
+    createItem<ItemData>({
+      name: "Anthrax Culture Sample",
+      itemType: ItemType.other,
+      cost: 5000,
+      availability: { rating: 24, forbidden: true },
+      notes: "Bioweapon precursor.",
     }),
   ),
 

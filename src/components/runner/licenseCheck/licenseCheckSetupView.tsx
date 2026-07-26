@@ -1,12 +1,12 @@
-import FormControlLabel from "@mui/material/FormControlLabel"
+import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
 import Stack from "@mui/material/Stack"
-import Switch from "@mui/material/Switch"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
+import { Label } from "#/components/ui/text/label.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
@@ -25,12 +25,10 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
   scannerRating,
   onScannerRatingChange,
 }) => {
-  const [showAllItems, setShowAllItems] = useState(false)
-
   // Display-only — the scan itself always builds fresh, stash-excluded lanes at Start Scan time.
   const lanes = useMemo(
-    () => buildVerificationLanes(gear, { includeStashed: showAllItems }),
-    [gear, showAllItems],
+    () => buildVerificationLanes(gear),
+    [gear],
   )
 
   const sinLanes = lanes.filter((lane) => lane.checks[0]?.kind === "sin")
@@ -40,7 +38,7 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
   return (
     <Stack sx={{ gap: 2 }}>
       <Stack sx={{ gap: 1 }}>
-        <Typography variant="subtitle2">Verification System Rating</Typography>
+        <Label>Verification System Rating</Label>
         <ToggleButtonGroup
           exclusive
           size="small"
@@ -50,38 +48,27 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
           }}
         >
           {ratingOptions.map((rating) => (
-            <ToggleButton key={rating} value={rating} sx={{ px: 1.5 }}>
+            <ToggleButton key={rating} value={rating} sx={{ px: 1.5, flexGrow: 1 }}>
               {rating}
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
       </Stack>
 
-      <FormControlLabel
-        label="Show all items"
-        sx={{ alignSelf: "flex-start" }}
-        control={(
-          <Switch
-            size="small"
-            checked={showAllItems}
-            onChange={(e) => setShowAllItems(e.target.checked)}
-          />
-        )}
-      />
-
       {sinLanes.length > 0 && (
         <Stack sx={{ gap: 1 }}>
-          <Typography variant="subtitle2">SINs</Typography>
+          <Label>Licensed Gear</Label>
           {sinLanes.map((lane) => {
             const [sinCheck, ...gearChecks] = lane.checks
+
             return (
-              <Stack key={lane.key} sx={{ gap: 0.5 }}>
+              <Stack key={lane.key} sx={{ gap: 0.5, border: "1px solid", borderColor: "divider", padding: 1 }}>
                 <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} showStashToggle={false} />
+
                 {gearChecks.length > 0 && (
                   <Stack
                     sx={{
                       gap: 0.5,
-                      marginLeft: 3,
                       paddingLeft: 1,
                       borderLeft: "2px solid",
                       borderColor: "divider",
@@ -91,7 +78,7 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
                     }}
                   >
                     {gearChecks.map((check) => (
-                      <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} nested />
+                      <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} />
                     ))}
                   </Stack>
                 )}
@@ -103,19 +90,55 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
 
       {unlicensedLane && (
         <Stack sx={{ gap: 0.5 }}>
-          <Typography variant="subtitle2">Unlicensed Gear</Typography>
-          {unlicensedLane.checks.map((check) => (
-            <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} />
-          ))}
+          <Label>Unlicensed Gear</Label>
+
+          <Alert variant="outlined" severity="warning">
+            <AlertTitle>Unlicensed items detected</AlertTitle>
+            These items will be questioned by officials. A good reason will needed.
+          </Alert>
+
+          <Stack
+            sx={{
+              gap: 0.5,
+              paddingLeft: 1,
+              borderLeft: "2px solid",
+              borderColor: "divider",
+              bgcolor: "action.hover",
+              borderRadius: 1,
+              paddingY: 0.5,
+            }}
+          >
+            {unlicensedLane.checks.map((check) => (
+              <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} />
+            ))}
+          </Stack>
         </Stack>
       )}
 
       {forbiddenLane && (
         <Stack sx={{ gap: 0.5 }}>
-          <Typography variant="subtitle2">Forbidden Gear</Typography>
-          {forbiddenLane.checks.map((check) => (
-            <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} />
-          ))}
+          <Label>Forbidden Gear</Label>
+
+          <Alert variant="outlined" severity="error">
+            <AlertTitle>Forbidden items detected</AlertTitle>
+            These items will be questioned by officials. You better have a <em>really</em> good story for them.
+          </Alert>
+
+          <Stack
+            sx={{
+              gap: 0.5,
+              paddingLeft: 1,
+              borderLeft: "2px solid",
+              borderColor: "divider",
+              bgcolor: "action.hover",
+              borderRadius: 1,
+              paddingY: 0.5,
+            }}
+          >
+            {forbiddenLane.checks.map((check) => (
+              <LicenseCheckChecklistRow key={check.itemId} item={gear[check.itemId]} check={check} />
+            ))}
+          </Stack>
         </Stack>
       )}
     </Stack>

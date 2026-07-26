@@ -30,13 +30,6 @@ function RouteComponent() {
 
       <NuyenSection />
 
-      {!isBuilder && (
-        <Button size="small" variant="outlined" onClick={() => licenseCheckDialog.open()}>
-          License Check
-        </Button>
-      )}
-      {licenseCheckDialog.dialog}
-
       <Divider />
 
       <TextField
@@ -59,6 +52,17 @@ function RouteComponent() {
       {Object.values(GearSection).map((section) => (
         <GearViewSection key={section} section={section} searchTerms={searchTerms} />
       ))}
+
+
+      {!isBuilder && (
+        <>
+          <Divider />
+          <Button size="small" variant="outlined" onClick={() => licenseCheckDialog.open()}>
+            License Check
+          </Button>
+          {licenseCheckDialog.dialog}
+        </>
+      )}
     </Stack>
   )
 }
