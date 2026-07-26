@@ -11,7 +11,7 @@ export interface LicenseCheckState {
   removeItem: (item: ItemData) => void
 }
 
-export const LicenseCheckContext = createContext<LicenseCheckState>({
+const LicenseCheckContext = createContext<LicenseCheckState>({
   items: [],
 
   setItems: () => {},

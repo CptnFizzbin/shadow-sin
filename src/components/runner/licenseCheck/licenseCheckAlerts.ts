@@ -1,8 +1,9 @@
+import type { ItemData } from "#/system/itemData.ts"
+
 import type {
   LicenseCheckAlert,
   LicenseCheckResult,
   VerificationCheck,
-  VerificationLane,
   VerificationOutcome,
 } from "./licenseCheckTypes.ts"
 
@@ -13,18 +14,17 @@ function getOutcomeReason(outcome: VerificationOutcome, kind: VerificationCheck[
 }
 
 /**
- * Assembles the final `LicenseCheckResult` from every lane's resolved outcomes: per-item alerts
- * for flagged results, plus the multi-SIN alert, which fires whenever 2+ SIN lanes were scanned —
+ * Assembles the final `LicenseCheckResult` from the scan's resolved outcomes: per-item alerts for
+ * flagged results, plus the multi-SIN alert, which fires whenever 2+ SINs were scanned this run —
  * independent of how the individual rolls went.
  */
 export function buildLicenseCheckResult(
   scannerRating: number,
-  lanes: VerificationLane[],
+  gear: Record<string, ItemData>,
+  checks: VerificationCheck[],
   outcomes: VerificationOutcome[],
 ): LicenseCheckResult {
-  const kindByItemId = new Map(
-    lanes.flatMap((lane) => lane.checks).map((check) => [check.itemId, check.kind]),
-  )
+  const kindByItemId = new Map(checks.map((check) => [check.itemId, check.kind]))
 
   const alerts: LicenseCheckAlert[] = outcomes
     .filter((outcome) => outcome.status === "flagged")
@@ -33,9 +33,10 @@ export function buildLicenseCheckResult(
       reason: getOutcomeReason(outcome, kindByItemId.get(outcome.itemId) ?? "sin"),
     }))
 
-  const sinLanes = lanes.filter((lane) => lane.checks[0]?.kind === "sin")
-  if (sinLanes.length >= 2) {
-    alerts.push({ itemId: "multiple-sins", reason: sinLanes.map((lane) => lane.title).join(" + ") })
+  const sinChecks = checks.filter((check) => check.kind === "sin")
+  if (sinChecks.length >= 2) {
+    const names = sinChecks.map((check) => gear[check.itemId]?.name ?? check.itemId)
+    alerts.push({ itemId: "multiple-sins", reason: names.join(" + ") })
   }
 
   return { scannerRating, outcomes, alerts }

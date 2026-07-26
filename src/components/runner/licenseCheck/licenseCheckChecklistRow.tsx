@@ -2,22 +2,20 @@ import Checkbox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
-import { useState } from "react"
 
 import { StatChip } from "#/components/ui/statChip.tsx"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { isRealCredential } from "./licenseCheckDice.ts"
 import type { VerificationCheck } from "./licenseCheckTypes.ts"
 
 interface LicenseCheckChecklistRowProps {
   item: ItemData
   check: VerificationCheck
-  /** SINs have no equip/carry state, so their row is not stash-eligible. */
-  showStashToggle?: boolean
+  /** SINs have no equip/carry state, so their row is never individually checked/unchecked. */
+  showCheckbox?: boolean
 }
 
 function getRatingBadge(check: VerificationCheck): string | null {
@@ -30,22 +28,19 @@ function getRatingBadge(check: VerificationCheck): string | null {
 export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
   item,
   check,
-  showStashToggle = true,
+  showCheckbox = true,
 }) => {
-  const dispatch = useRunnerStoreDispatch()
+  const { items, addItem, removeItem } = useLicenseCheck()
   const ratingBadge = getRatingBadge(check)
-
-  const [isStashed, setIsStashed] = useState(false)
+  const isChecked = items.some((checkedItem) => checkedItem.id === item.id)
 
   const handleRowClick = () => {
-    if (!showStashToggle) return
+    if (!showCheckbox) return
 
-    setIsStashed(!isStashed)
-
-    if (isStashed) {
-      dispatch(Actions.gear.unstashItem({ id: item.id }))
+    if (isChecked) {
+      removeItem(item)
     } else {
-      dispatch(Actions.gear.stashItem({ id: item.id }))
+      addItem(item)
     }
   }
 
@@ -55,11 +50,11 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
       sx={{ alignItems: "center", gap: 1 }}
       onClick={handleRowClick}
     >
-      {showStashToggle && (
+      {showCheckbox && (
         <Checkbox
           size="small"
-          aria-label={`Stashed: ${item.name}`}
-          checked={!isStashed}
+          checked={isChecked}
+          slotProps={{ input: { "aria-label": `Include in scan: ${item.name}` } }}
         />
       )}
 
@@ -67,7 +62,7 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
         direction="column"
         sx={mergeSx(
           { gap: 0.5 },
-          isStashed && { opacity: 0.25 },
+          showCheckbox && !isChecked && { opacity: 0.25 },
         )}
       >
         <Stack direction="row">

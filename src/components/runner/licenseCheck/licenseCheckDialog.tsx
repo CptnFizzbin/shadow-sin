@@ -9,13 +9,13 @@ import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.s
 import type { ItemData } from "#/system/itemData.ts"
 
 import { buildLicenseCheckResult } from "./licenseCheckAlerts.ts"
+import { buildVerificationChecks } from "./licenseCheckChecks.ts"
 import type { LicenseCheckState } from "./licenseCheckContext.tsx"
 import { LicenseCheckProvider } from "./licenseCheckContext.tsx"
-import { buildVerificationLanes } from "./licenseCheckLanes.ts"
 import { LicenseCheckResultView } from "./licenseCheckResultView.tsx"
 import { LicenseCheckScanView } from "./licenseCheckScanView.tsx"
 import { LicenseCheckSetupView } from "./licenseCheckSetupView.tsx"
-import type { LicenseCheckResult, VerificationLane, VerificationOutcome } from "./licenseCheckTypes.ts"
+import type { LicenseCheckResult, VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
 
 type LicenseCheckStep = "setup" | "scanning" | "result"
 
@@ -42,18 +42,18 @@ const LicenseCheckDialog: FC<LicenseCheckDialogProps> = ({ ctrl }) => {
 
   const [step, setStep] = useState<LicenseCheckStep>("setup")
   const [scannerRating, setScannerRating] = useState(3)
-  const [lanes, setLanes] = useState<VerificationLane[]>([])
+  const [checks, setChecks] = useState<VerificationCheck[]>([])
   const [result, setResult] = useState<LicenseCheckResult | null>(null)
 
   const handleStartScan = () => {
-    // Built fresh here (never including stashed items) rather than reusing the Setup screen's
-    // own "Show all items" display lanes, which may include stashed items for review only.
-    setLanes(buildVerificationLanes(allGear))
+    // Built fresh here from the Setup checklist's current checked selection, flattened and
+    // shuffled into one queue the worker pool pulls from — unchecked items are never scanned.
+    setChecks(buildVerificationChecks(allGear, selectedGear))
     setStep("scanning")
   }
 
   const handleScanComplete = (outcomes: VerificationOutcome[]) => {
-    setResult(buildLicenseCheckResult(scannerRating, lanes, outcomes))
+    setResult(buildLicenseCheckResult(scannerRating, allGear, checks, outcomes))
     setStep("result")
   }
 
@@ -72,7 +72,7 @@ const LicenseCheckDialog: FC<LicenseCheckDialogProps> = ({ ctrl }) => {
           )}
           {step === "scanning" && (
             <LicenseCheckScanView
-              lanes={lanes}
+              checks={checks}
               gear={allGear}
               scannerRating={scannerRating}
               ratingPlusRating={ratingPlusRating}

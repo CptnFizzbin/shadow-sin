@@ -1,46 +1,55 @@
+import type { UUID } from "node:crypto"
+
 import { describe, expect, it } from "vitest"
 
+import type { SinData } from "#/system/gear/sinData.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
+
 import { buildLicenseCheckResult } from "./licenseCheckAlerts.ts"
-import type { VerificationLane, VerificationOutcome } from "./licenseCheckTypes.ts"
+import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
+
+const sinId1 = "00000000-0000-0000-0000-000000000001" as UUID
+const sinId2 = "00000000-0000-0000-0000-000000000002" as UUID
+
+function gearMap(...items: ItemData[]): Record<string, ItemData> {
+  return Object.fromEntries(items.map((item) => [item.id, item]))
+}
 
 describe("buildLicenseCheckResult", () => {
-  it("produces no alerts when a single SIN lane clears entirely", () => {
-    const lanes: VerificationLane[] = [
-      { key: "sin-1", title: "John Smith", checks: [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }] },
-    ]
+  it("produces no alerts when a single SIN check clears entirely", () => {
+    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }]
     const outcomes: VerificationOutcome[] = [
       { itemId: "sin-1", status: "clear", credentialHits: 2, scannerHits: 1 },
     ]
 
-    const result = buildLicenseCheckResult(3, lanes, outcomes)
+    const result = buildLicenseCheckResult(3, {}, checks, outcomes)
 
     expect(result).toEqual({ scannerRating: 3, outcomes, alerts: [] })
   })
 
   it("uses the exact 'you N vs scanner M' reason for a flagged rolled item", () => {
-    const lanes: VerificationLane[] = [
-      { key: "sin-1", title: "John Smith", checks: [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }] },
-    ]
+    const checks: VerificationCheck[] = [{ itemId: "sin-1", kind: "sin", credentialRating: 3 }]
     const outcomes: VerificationOutcome[] = [
       { itemId: "sin-1", status: "flagged", credentialHits: 1, scannerHits: 4 },
     ]
 
-    const result = buildLicenseCheckResult(3, lanes, outcomes)
+    const result = buildLicenseCheckResult(3, {}, checks, outcomes)
 
     expect(result.alerts).toEqual([{ itemId: "sin-1", reason: "you 1 vs scanner 4" }])
   })
 
   it("gives unlicensed and forbidden items their own short mechanical reasons", () => {
-    const lanes: VerificationLane[] = [
-      { key: "unlicensed", title: "Unlicensed Gear", checks: [{ itemId: "item-1", kind: "unlicensed-gear" }] },
-      { key: "forbidden", title: "Forbidden Gear", checks: [{ itemId: "item-2", kind: "forbidden-gear" }] },
+    const checks: VerificationCheck[] = [
+      { itemId: "item-1", kind: "unlicensed-gear" },
+      { itemId: "item-2", kind: "forbidden-gear" },
     ]
     const outcomes: VerificationOutcome[] = [
       { itemId: "item-1", status: "flagged" },
       { itemId: "item-2", status: "flagged" },
     ]
 
-    const result = buildLicenseCheckResult(3, lanes, outcomes)
+    const result = buildLicenseCheckResult(3, {}, checks, outcomes)
 
     expect(result.alerts).toEqual([
       { itemId: "item-1", reason: "unlicensed — no registration on file" },
@@ -48,17 +57,21 @@ describe("buildLicenseCheckResult", () => {
     ])
   })
 
-  it("adds a multiple-sins alert naming every active SIN, even if every outcome clears", () => {
-    const lanes: VerificationLane[] = [
-      { key: "sin-1", title: "John Smith", checks: [{ itemId: "sin-1", kind: "sin", credentialRating: "real" }] },
-      { key: "sin-2", title: "Jane Doe", checks: [{ itemId: "sin-2", kind: "sin", credentialRating: "real" }] },
+  it("adds a multiple-sins alert naming every scanned SIN, even if every outcome clears", () => {
+    const johnSmith: SinData = { id: sinId1, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const janeDoe: SinData = { id: sinId2, name: "Jane Doe", itemType: ItemType.sin, rating: 3 }
+    const gear = gearMap(johnSmith, janeDoe)
+
+    const checks: VerificationCheck[] = [
+      { itemId: sinId1, kind: "sin", credentialRating: "real" },
+      { itemId: sinId2, kind: "sin", credentialRating: "real" },
     ]
     const outcomes: VerificationOutcome[] = [
-      { itemId: "sin-1", status: "clear" },
-      { itemId: "sin-2", status: "clear" },
+      { itemId: sinId1, status: "clear" },
+      { itemId: sinId2, status: "clear" },
     ]
 
-    const result = buildLicenseCheckResult(3, lanes, outcomes)
+    const result = buildLicenseCheckResult(3, gear, checks, outcomes)
 
     expect(result.alerts).toEqual([{ itemId: "multiple-sins", reason: "John Smith + Jane Doe" }])
   })

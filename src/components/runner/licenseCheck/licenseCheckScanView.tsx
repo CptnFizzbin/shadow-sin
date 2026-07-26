@@ -1,52 +1,64 @@
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import type { ItemData } from "#/system/itemData.ts"
 
-import { LicenseCheckLane } from "./licenseCheckLane.tsx"
-import type { VerificationLane, VerificationOutcome } from "./licenseCheckTypes.ts"
+import { createVerificationQueue } from "./licenseCheckQueue.ts"
+import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
+import { LicenseCheckWorker } from "./licenseCheckWorker.tsx"
+
+const WORKER_COUNT = 4
 
 interface LicenseCheckScanViewProps {
-  lanes: VerificationLane[]
+  checks: VerificationCheck[]
   gear: Record<string, ItemData>
   scannerRating: number
   ratingPlusRating: boolean
   onComplete: (outcomes: VerificationOutcome[]) => void
 }
 
+/** Runs the scan as a pool of workers pulling checks off one shuffled, shared queue. */
 export const LicenseCheckScanView: FC<LicenseCheckScanViewProps> = ({
-  lanes,
+  checks,
   gear,
   scannerRating,
   ratingPlusRating,
   onComplete,
 }) => {
-  const [outcomesByLane, setOutcomesByLane] = useState<Record<string, VerificationOutcome[]>>({})
+  const queue = useMemo(() => createVerificationQueue(checks), [checks])
+  const outcomesRef = useRef<VerificationOutcome[]>([])
+  const [idleWorkers, setIdleWorkers] = useState<ReadonlySet<number>>(new Set())
   const hasCompletedRef = useRef(false)
 
-  const handleLaneComplete = useCallback((laneKey: string, outcomes: VerificationOutcome[]) => {
-    setOutcomesByLane((prev) => ({ ...prev, [laneKey]: outcomes }))
+  const handleOutcome = useCallback((outcome: VerificationOutcome) => {
+    outcomesRef.current = [...outcomesRef.current, outcome]
+  }, [])
+
+  const handleIdle = useCallback((workerIndex: number) => {
+    setIdleWorkers((prev) => (prev.has(workerIndex) ? prev : new Set(prev).add(workerIndex)))
   }, [])
 
   useEffect(() => {
     if (hasCompletedRef.current) return
-    if (lanes.length === 0 || Object.keys(outcomesByLane).length === lanes.length) {
+    if (checks.length === 0 || idleWorkers.size === WORKER_COUNT) {
       hasCompletedRef.current = true
-      onComplete(Object.values(outcomesByLane).flat())
+      onComplete(outcomesRef.current)
     }
-  }, [lanes.length, outcomesByLane, onComplete])
+  }, [checks.length, idleWorkers, onComplete])
 
   return (
     <Grid container spacing={2}>
-      {lanes.map((lane) => (
-        <Grid key={lane.key} size={{ xs: 12, sm: 6 }}>
-          <LicenseCheckLane
-            lane={lane}
+      {Array.from({ length: WORKER_COUNT }, (_, workerIndex) => (
+        <Grid key={workerIndex} size={{ xs: 12, sm: 6 }}>
+          <LicenseCheckWorker
+            label={`Terminal ${workerIndex + 1}`}
+            queue={queue}
             gear={gear}
             scannerRating={scannerRating}
             ratingPlusRating={ratingPlusRating}
-            onLaneComplete={(outcomes) => handleLaneComplete(lane.key, outcomes)}
+            onOutcome={handleOutcome}
+            onIdle={() => handleIdle(workerIndex)}
           />
         </Grid>
       ))}

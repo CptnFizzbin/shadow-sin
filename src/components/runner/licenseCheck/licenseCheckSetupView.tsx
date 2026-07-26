@@ -63,7 +63,7 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
 
             return (
               <Stack key={lane.key} sx={{ gap: 0.5, border: "1px solid", borderColor: "divider", padding: 1 }}>
-                <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} showStashToggle={false} />
+                <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} showCheckbox={false} />
 
                 {gearChecks.length > 0 && (
                   <Stack

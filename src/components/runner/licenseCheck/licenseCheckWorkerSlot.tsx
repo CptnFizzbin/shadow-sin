@@ -30,7 +30,7 @@ function getOutcomeLabel(currentOutcome: VerificationOutcome | null): string {
   return currentOutcome.status === "clear" ? "Clear" : "Flagged"
 }
 
-interface LicenseCheckLaneSlotProps {
+interface LicenseCheckWorkerSlotProps {
   currentCheck: VerificationCheck | undefined
   currentOutcome: VerificationOutcome | null
   gear: Record<string, ItemData>
@@ -38,8 +38,8 @@ interface LicenseCheckLaneSlotProps {
   scannerDice: DieState[]
 }
 
-/** The single active/settled check slot within a lane: item name, dice, and the clear/flagged status. */
-export const LicenseCheckLaneSlot: FC<LicenseCheckLaneSlotProps> = ({
+/** The single active/settled check slot within a worker: item name, dice, and the clear/flagged status. */
+export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
   currentCheck,
   currentOutcome,
   gear,
