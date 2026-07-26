@@ -1,33 +1,25 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
-import type { ItemData } from "#/system/itemData.ts"
+import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 
-export interface LicenseCheckState {
-  items: ItemData[]
+import type { LicenseCheckState } from "./licenseCheckState.ts"
+import { useLicenseCheckState } from "./licenseCheckState.ts"
 
-  setItems: (items: ItemData[]) => void
-  addItem: (item: ItemData) => void
-  removeItem: (item: ItemData) => void
-}
+const LicenseCheckContext = createContext<LicenseCheckState | null>(null)
 
-const LicenseCheckContext = createContext<LicenseCheckState>({
-  items: [],
+export const LicenseCheckProvider: FC<PropsWithChildren> = ({ children }) => {
+  const state = useLicenseCheckState()
 
-  setItems: () => {},
-  addItem: () => {},
-  removeItem: () => {},
-})
-
-export const LicenseCheckProvider: FC<PropsWithChildren<{ value: LicenseCheckState }>> = ({
-  value,
-  children,
-}) => {
   return (
-    <LicenseCheckContext.Provider value={value}>
+    <LicenseCheckContext.Provider value={state}>
       {children}
     </LicenseCheckContext.Provider>
   )
 }
 
-export const useLicenseCheck = () => useContext(LicenseCheckContext)
+export const useLicenseCheck = (): LicenseCheckState => {
+  const contextValue = useContext(LicenseCheckContext)
+  if (!contextValue) throw new OutOfContextError("useLicenseCheck", "LicenseCheckProvider")
+  return contextValue
+}

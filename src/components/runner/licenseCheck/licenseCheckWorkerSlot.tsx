@@ -2,8 +2,9 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ItemData } from "#/system/itemData.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"
 import type { VerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
@@ -33,9 +34,6 @@ function getOutcomeLabel(currentOutcome: VerificationOutcome | null): string {
 
 interface LicenseCheckWorkerSlotProps {
   queue: VerificationQueue
-  gear: Record<string, ItemData>
-  scannerRating: number
-  ratingPlusRating: boolean
   onOutcome: (outcome: VerificationOutcome) => void
   onIdle: () => void
 }
@@ -43,12 +41,15 @@ interface LicenseCheckWorkerSlotProps {
 /** The single active/settled check slot within a worker: item name, dice, and the clear/flagged status. */
 export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
   queue,
-  gear,
-  scannerRating,
-  ratingPlusRating,
   onOutcome,
   onIdle,
 }) => {
+  const { scannerRating } = useLicenseCheck()
+  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const ratingPlusRating = useRunnerStoreSelector(
+    Selectors.houseRules.select("items.licenseCheck.ratingPlusRating"),
+  )
+
   const { currentCheck, currentOutcome, credentialDice, scannerDice } = useLicenseCheckWorker({
     queue,
     scannerRating,

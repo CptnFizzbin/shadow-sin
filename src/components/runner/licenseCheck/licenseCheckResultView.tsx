@@ -4,16 +4,16 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ItemData } from "#/system/itemData.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
-import type { LicenseCheckResult } from "./licenseCheckTypes.ts"
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 
-interface LicenseCheckResultViewProps {
-  result: LicenseCheckResult
-  gear: Record<string, ItemData>
-}
+export const LicenseCheckResultView: FC = () => {
+  const { result } = useLicenseCheck()
+  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
 
-export const LicenseCheckResultView: FC<LicenseCheckResultViewProps> = ({ result, gear }) => {
+  if (!result) return null
+
   const hasAlerts = result.alerts.length > 0
 
   return (

@@ -7,24 +7,18 @@ import type { FC } from "react"
 import { useMemo } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import type { ItemData } from "#/system/itemData.ts"
+import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
+import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { buildVerificationLanes } from "./licenseCheckLanes.ts"
-
-interface LicenseCheckSetupViewProps {
-  gear: Record<string, ItemData>
-  scannerRating: number
-  onScannerRatingChange: (rating: number) => void
-}
 
 const ratingOptions = [1, 2, 3, 4, 5, 6]
 
-export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
-  gear,
-  scannerRating,
-  onScannerRatingChange,
-}) => {
+export const LicenseCheckSetupView: FC = () => {
+  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const { scannerRating, setScannerRating } = useLicenseCheck()
+
   // Display-only — Start Scan builds its own checked-items-only queue from these lanes.
   const lanes = useMemo(
     () => buildVerificationLanes(gear),
@@ -44,7 +38,7 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
           size="small"
           value={scannerRating}
           onChange={(_, value: number | null) => {
-            if (value !== null) onScannerRatingChange(value)
+            if (value !== null) setScannerRating(value)
           }}
         >
           {ratingOptions.map((rating) => (
