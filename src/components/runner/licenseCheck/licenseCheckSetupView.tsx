@@ -25,7 +25,7 @@ export const LicenseCheckSetupView: FC<LicenseCheckSetupViewProps> = ({
   scannerRating,
   onScannerRatingChange,
 }) => {
-  // Display-only — the scan itself always builds fresh, stash-excluded lanes at Start Scan time.
+  // Display-only — Start Scan builds its own checked-items-only queue from these lanes.
   const lanes = useMemo(
     () => buildVerificationLanes(gear),
     [gear],

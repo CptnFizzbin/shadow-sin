@@ -65,6 +65,23 @@ describe("buildVerificationChecks", () => {
     expect(checks).toHaveLength(2)
   })
 
+  it("drops a SIN with multiple licensed gear items when every one of them is unchecked", () => {
+    const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+    const firstWeapon: ItemData = { id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const secondWeapon: ItemData = { id: itemId2, name: "Defiance EX Shocker", itemType: ItemType.weapon, licenseId }
+
+    // Something else stays checked, proving this isn't just "nothing at all is checked".
+    const unrelatedId = "00000000-0000-0000-0000-000000000005" as UUID
+    const unrelatedUnlicensed: ItemData = { id: unrelatedId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
+    const gear = gearMap(sin, license, firstWeapon, secondWeapon, unrelatedUnlicensed)
+
+    const checks = buildVerificationChecks(gear, [unrelatedUnlicensed])
+
+    expect(checks).toEqual([{ itemId: unrelatedId, kind: "unlicensed-gear" }])
+    expect(checks.some((check) => check.itemId === sinId)).toBe(false)
+  })
+
   it("drops an unchecked Unlicensed or Forbidden item but keeps a checked one", () => {
     const checkedUnlicensed: ItemData = { id: itemId, name: "No License", itemType: ItemType.weapon, availability: { rating: 4, restricted: true } }
     const uncheckedForbidden: ItemData = { id: itemId2, name: "Forbidden Gun", itemType: ItemType.weapon, availability: { rating: 12, forbidden: true } }

@@ -60,8 +60,8 @@ export function isRealCredential(rating: CredentialRating): rating is "real" {
 
 /**
  * Resolves one `VerificationCheck`: a real credential or already-flagged item resolves instantly,
- * everything else runs the Opposed Test. Split out of `LicenseCheckLane` so the lane component
- * stays focused on sequencing/rendering rather than per-item resolution rules.
+ * everything else runs the Opposed Test. Kept separate from `useLicenseCheckWorker` so the worker
+ * hook stays focused on queue sequencing/rendering rather than per-item resolution rules.
  */
 export async function resolveVerificationCheck(
   check: VerificationCheck,

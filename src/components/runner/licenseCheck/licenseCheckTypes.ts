@@ -9,7 +9,7 @@ export interface VerificationCheck {
 export interface VerificationLane {
   key: string // a SIN's id, or "unlicensed" / "forbidden"
   title: string // the SIN's display name, or "Unlicensed Gear" / "Forbidden Gear"
-  checks: VerificationCheck[] // processed strictly in sequence within the lane
+  checks: VerificationCheck[] // Setup checklist display order — the scan itself runs a separately shuffled, flattened queue
 }
 
 export interface VerificationOutcome {

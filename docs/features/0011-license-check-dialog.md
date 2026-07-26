@@ -7,8 +7,8 @@
 > - [#391 — Trigger + Setup screen](https://github.com/CptnFizzbin/shadow-sin/issues/391)
 > - [#393 — Scan mechanics](https://github.com/CptnFizzbin/shadow-sin/issues/393)
 > - [#394 — Alerts + result screen](https://github.com/CptnFizzbin/shadow-sin/issues/394)
-> - Depends on [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md)'s
->   [#388](https://github.com/CptnFizzbin/shadow-sin/issues/388) for `ItemData.stashed`
+> - Does *not* depend on [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md)'s
+>   [#388](https://github.com/CptnFizzbin/shadow-sin/issues/388) after all — see Domain Notes below
 
 A simulated security scan of a Runner's carried gear: a **Verification System Rating** (1–6) is
 set, then every carried SIN and every Restricted item is opposed-tested against it to see whether
@@ -56,13 +56,15 @@ included):
     mechanic to clean up a dangling reference after a Licence is deleted.
   - **Forbidden Gear** — items with restriction code `F`.
   - Unrestricted gear is never listed — there's nothing to check.
-  - Every row reflects the item's `stashed` flag (see
-    [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md)) — a stashed item is excluded
-    from the run entirely, not verified. License Check reads this flag; it does not introduce its
-    own local stash state.
-- **Scan step:** four lanes run concurrently — one per active (non-stashed) SIN, one for
-  Unlicensed Gear, one for Forbidden Gear. Each lane processes its own items strictly in sequence
-  (a SIN lane checks the SIN itself, then each of its licensed gear items, one at a time).
+  - Every row (other than a SIN's own) has a checkbox, checked by default; unchecking one excludes
+    just that item from this run without touching any persisted state — a dialog-local selection
+    (`LicenseCheckContext`), not the item's `stashed` flag from
+    [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md). A SIN with none of its
+    licensed gear checked isn't scanned either — nothing to verify.
+- **Scan step:** every checked item — across every SIN, Unlicensed Gear, and Forbidden Gear — is
+  flattened into one shuffled queue. Four worker "terminals" run concurrently, each pulling the
+  next check off that shared queue as soon as it finishes its current one, until the queue is
+  drained.
 - **Per-item resolution:**
   - A **real** SIN or Licence clears instantly — no roll.
   - A **fake** SIN or Licence rolls an Opposed Test: `rating × 2` d6 for the credential vs.
@@ -73,8 +75,8 @@ included):
     this doesn't use the existing `optionalRules` mechanism.
   - **Unlicensed** and **Forbidden** items have nothing to oppose — they're flagged immediately,
     no roll.
-  - A resolved result (dice + verdict) holds on screen for exactly 500ms before the lane starts
-    its next queued item. Settled dice are displayed sorted low → high on both sides.
+  - A resolved result (dice + verdict) holds on screen for exactly 500ms before the worker pulls
+    its next queued item. Settled dice are displayed sorted high → low on both sides.
   - Scan duration for a rolled item is not fixed — it scales with the total dice pool size, so a
     higher-rated fake credential visibly takes longer to resolve than a low-rated one.
 - **Alerts:** two active SINs at once is *always* an alert, independent of how the individual
@@ -101,9 +103,11 @@ included):
   needed to build the lane groupings.
 - `Hit` (die result of 5 or 6) is the existing dice-pool definition and must be reused, not
   redefined, for the Opposed Test.
-- Item eligibility for the "stashed" checklist state depends on
-  [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — that feature must exist (or
-  ship alongside this one) before License Check can read/write `ItemData.stashed`.
+- The checklist's per-item checked/unchecked state is a dialog-local selection
+  (`LicenseCheckContext`), not `ItemData.stashed` — it doesn't depend on
+  [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) landing first. `gear/stashItem`
+  exists as a stub action ahead of that field for a future persisted-stash affordance, but License
+  Check itself never dispatches it.
 - `rating × 2` is a **House Rule**, not an Optional Rule — it's a prototyping pacing choice, not a
   published SR4e variant, so it carries no `Source` citation and lives in `featureFlags.houseRules`
   rather than `featureFlags.optionalRules`. See
@@ -134,7 +138,8 @@ New terms this feature introduces to `CONTEXT.md`:
   one License Check run; forms one side of each Opposed Test.
 
 `Stash` is defined by [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md), not by
-this feature — License Check is a consumer of that flag, not its origin.
+this feature. License Check ended up not consuming that flag at all — its checklist tracks its own
+ephemeral checked/unchecked selection instead (see Resolved Design Decisions above).
 
 ## Rough Interface Sketches
 
@@ -146,7 +151,7 @@ type CredentialRating = "real" | number // matches existing SinData/LicenseData.
 interface VerificationLane {
   key: string // a SIN's id, or "unlicensed" / "forbidden"
   title: string // the SIN's display name, or "Unlicensed Gear" / "Forbidden Gear"
-  checks: VerificationCheck[] // processed strictly in sequence within the lane
+  checks: VerificationCheck[] // Setup checklist display order — the scan runs its own shuffled, flattened queue
 }
 
 interface VerificationCheck {
@@ -182,8 +187,8 @@ interface LicenseCheckResult {
 - Real-time or multiplayer presentation of a check (e.g. a GM watching a Player's scan live).
 - The general item-stashing mechanic itself (flag definition, equip-blocking, gear-list
   presentation) — that lives in
-  [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md); License Check only consumes
-  the resulting flag.
+  [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md); License Check doesn't consume
+  it, per the pivot noted in Domain Notes above.
 
 ## Related Features
 
@@ -191,5 +196,6 @@ interface LicenseCheckResult {
   Licence ↔ gear data model is the foundation the lane grouping is built on
 - [`docs/features/0003-gm-game.md`](./0003-gm-game.md) — relevant to the "who triggers this?"
   decision above; still Draft, no GM view exists yet
-- [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — License Check's "stashed"
-  checklist state is a consumer of this feature's `ItemData.stashed` flag, not its own mechanic
+- [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — License Check ended up not
+  depending on this; its checklist's checked/unchecked state is its own ephemeral mechanic, not a
+  consumer of `ItemData.stashed`
