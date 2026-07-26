@@ -54,7 +54,7 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
                 onEdit: license
                   ? () => handleEditLicense(sin, license)
                   : undefined,
-                onRemove: license ? () => dispatch(Actions.gear.removeItem({ id: license.id })) : undefined,
+                onRemove: license ? () => dispatch(Actions.gear.licenses.destroy(license.id)) : undefined,
               }
             }}
           />
