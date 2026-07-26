@@ -1,8 +1,12 @@
+import { milliseconds } from "date-fns"
+
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import { selectHits } from "#/system/dice/diceRoller.selectors.ts"
 import type { DiceRoller } from "#/system/dice/diceRoller.ts"
 
 import type { CredentialRating, VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
+
+const ROLL_TIMEOUT = milliseconds({ seconds: 2 })
 
 export function getOpposedPoolSize(rating: number, ratingPlusRating: boolean): number {
   return ratingPlusRating ? rating * 2 : rating
@@ -14,7 +18,10 @@ export function getOpposedPoolSize(rating: number, ratingPlusRating: boolean): n
  * existing `DiceRoller.rollAll` rather than changing the dice engine itself.
  */
 export function getRollTimeout(totalDicePool: number): number {
-  return NumberUtils.clamp(300 + totalDicePool * 120, { min: 600, max: 3000 })
+  return NumberUtils.clamp(300 + totalDicePool * 120, {
+    min: 600,
+    max: 3000,
+  })
 }
 
 export interface OpposedTestResult {
@@ -37,14 +44,13 @@ export async function rollOpposedTest(
 ): Promise<OpposedTestResult> {
   const credentialPool = getOpposedPoolSize(credentialRating, ratingPlusRating)
   const scannerPool = getOpposedPoolSize(scannerRating, ratingPlusRating)
-  const timeout = getRollTimeout(credentialPool + scannerPool)
 
   credentialRoller.setPoolSize(credentialPool)
   scannerRoller.setPoolSize(scannerPool)
 
   await Promise.all([
-    credentialRoller.rollAll({ timeout }),
-    scannerRoller.rollAll({ timeout }),
+    credentialRoller.rollAll({ timeout: ROLL_TIMEOUT }),
+    scannerRoller.rollAll({ timeout: ROLL_TIMEOUT }),
   ])
 
   const credentialHits = selectHits(credentialRoller.store.get())

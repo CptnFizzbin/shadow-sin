@@ -1,3 +1,5 @@
+import Alert from "@mui/material/Alert"
+import AlertTitle from "@mui/material/AlertTitle"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
@@ -16,26 +18,28 @@ export const LicenseCheckResultView: FC<LicenseCheckResultViewProps> = ({ result
 
   return (
     <Stack sx={{ gap: 2 }}>
-      <Typography variant="h6" color={hasAlerts ? "error.main" : "success.main"}>
+      <Typography color={hasAlerts ? "error.main" : "success.main"}>
         {hasAlerts ? "Question Further" : "All Clear"}
       </Typography>
 
       {hasAlerts && (
         <Stack sx={{ gap: 1 }}>
           {result.alerts.map((alert) => {
-            const name = alert.itemId === "multiple-sins"
-              ? "Multiple SINs"
-              : (gear[alert.itemId]?.name ?? alert.itemId)
+            if (alert.itemId === "multiple-sins") {
+              return (
+                <Alert key={alert.itemId} severity="error">
+                  <AlertTitle>Multiple SINs Found</AlertTitle>
+                  {alert.reason}
+                </Alert>
+              )
+            }
 
+            const licenseName = gear[alert.itemId]?.name ?? alert.itemId
             return (
-              <Stack
-                key={alert.itemId}
-                direction={{ xs: "column", sm: "row" }}
-                sx={{ justifyContent: "space-between", gap: { xs: 0, sm: 1 } }}
-              >
-                <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
-                <Typography color="text.secondary">{alert.reason}</Typography>
-              </Stack>
+              <Alert key={alert.itemId} severity="error">
+                <AlertTitle>Invalid License: {licenseName}</AlertTitle>
+                {alert.reason}
+              </Alert>
             )
           })}
         </Stack>
