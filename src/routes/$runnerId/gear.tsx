@@ -53,7 +53,6 @@ function RouteComponent() {
         <GearViewSection key={section} section={section} searchTerms={searchTerms} />
       ))}
 
-
       {!isBuilder && (
         <>
           <Divider />
