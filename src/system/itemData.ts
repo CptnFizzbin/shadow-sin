@@ -23,8 +23,12 @@ export interface ItemData {
   parentId?: UUID
   childIds?: UUID[]
 
-  /** The Licence (`ItemType.license`) authorizing this Restricted item. A Licence may cover multiple items — typically several instances of the same gear — but each item is covered by at most one Licence. */
-  licenseId?: UUID
+  /**
+   * The Licence (`ItemType.license`) authorizing this Restricted item.
+   * A Licence may cover multiple items — typically several instances of the
+   * same gear — but each item is covered by at most one Licence.
+   */
+  licenseId?: UUID | null
 
   notes?: string
   equipped?: boolean

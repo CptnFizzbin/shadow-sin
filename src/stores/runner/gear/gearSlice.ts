@@ -3,7 +3,7 @@ import { createReducer } from "@reduxjs/toolkit"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { addItem, removeItem, setItem } from "./gearSlice.actions.ts"
+import { addItem, patchItem, removeItem, setItem } from "./gearSlice.actions.ts"
 
 const initialState: RunnerData["gear"] = {}
 
@@ -68,6 +68,14 @@ export const gearReducer = createReducer(initialState, (builder) => {
     .addCase(setItem, (state, action) => {
       state[action.payload.id] = action.payload
       relinkItem(state, action.payload)
+    })
+    .addCase(patchItem, (state, action) => {
+      const item = state[action.payload.itemId]
+      if (!item) return
+      state[action.payload.itemId] = {
+        ...item,
+        ...action.payload.data,
+      }
     })
     .addCase(removeItem, (state, action) => {
       const { id, removeChildren } = action.payload
