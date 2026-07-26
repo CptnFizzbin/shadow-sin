@@ -85,14 +85,14 @@ const QuickBuyLicenseDialog: FC<QuickBuyLicenseDialogProps> = ({ ctrl, item }) =
       cost,
       parentId: selectedSinId as LicenseData["parentId"],
     }
-    const addLicenseAction = Actions.gear.addItem(licenseDraft)
+    const addLicenseAction = Actions.gear.licenses.create(licenseDraft)
     dispatch(addLicenseAction)
     const licenseId = addLicenseAction.payload.id
 
-    dispatch(Actions.gear.setItem({ ...item, licenseId }))
+    dispatch(Actions.gear.licenses.setLicenseForItem({ itemId: item.id, licenseId }))
     if (coverSiblings) {
       for (const sibling of siblings) {
-        dispatch(Actions.gear.setItem({ ...sibling, licenseId }))
+        dispatch(Actions.gear.licenses.setLicenseForItem({ itemId: sibling.id, licenseId }))
       }
     }
 
