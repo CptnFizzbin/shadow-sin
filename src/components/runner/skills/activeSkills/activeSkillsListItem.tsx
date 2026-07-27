@@ -2,11 +2,12 @@ import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
+import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useState } from "react"
 
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
-import { useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
+import { DicePoolsStack, useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
 import { useActiveSkillDicePool } from "#/lib/hooks/runner/skills/skillDicePools.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey, AttributeLabels } from "#/system/attributeKey.ts"
@@ -22,13 +23,51 @@ const selectableAttributes = Object.values(AttributeKey).filter(
   (key) => key !== AttributeKey.essence,
 )
 
-export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
+/**
+ * Owns the attribute-selection state itself so the dialog's dice pools stay live as the
+ * user changes the attribute, rather than being frozen at the props passed when the dialog
+ * was opened.
+ */
+const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }> = ({
+  skillKey,
+  specialization,
+}) => {
   const skillInfo = skillList[skillKey]
-  const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
-
   const [selectedAttr, setSelectedAttr] = useState<AttributeKey>(skillInfo.attr)
 
   const skillDicePool = useActiveSkillDicePool({ skillKey, attrOverride: selectedAttr })
+  const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
+
+  return (
+    <Stack spacing={1}>
+      <FormControl size="small" fullWidth>
+        <InputLabel>Attribute</InputLabel>
+        <Select
+          label="Attribute"
+          value={selectedAttr}
+          onChange={(event) => setSelectedAttr(event.target.value as AttributeKey)}
+        >
+          {selectableAttributes.map((attrKey) => (
+            <MenuItem key={attrKey} value={attrKey}>
+              {AttributeLabels[attrKey]} — {attrKey}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <DicePoolsStack
+        dicePools={[
+          skillDicePool,
+          specialization ? specializationDicePool : false,
+        ]}
+      />
+    </Stack>
+  )
+}
+
+export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, rating }) => {
+  const skillInfo = skillList[skillKey]
+  const isDefaulted = rating === 0 && (skillInfo.defaultable ?? true)
 
   const specialization = useRunnerStoreSelector((sheet) => {
     return sheet.skills
@@ -37,26 +76,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
       ?.specialization
   })
 
-  const specializationDicePool = useActiveSkillDicePool({ skillKey, specialization, attrOverride: selectedAttr })
-
   const viewSkillDialog = useViewSkillDialog()
-
-  const attributeSelector = (
-    <FormControl size="small" fullWidth>
-      <InputLabel>Attribute</InputLabel>
-      <Select
-        label="Attribute"
-        value={selectedAttr}
-        onChange={(event) => setSelectedAttr(event.target.value as AttributeKey)}
-      >
-        {selectableAttributes.map((attrKey) => (
-          <MenuItem key={attrKey} value={attrKey}>
-            {AttributeLabels[attrKey]} — {attrKey}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  )
 
   return (
     <>
@@ -64,15 +84,11 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({ skillKey, 
         name={skillKey}
         rating={rating}
         specialization={specialization}
-        attr={selectedAttr}
+        attr={skillInfo.attr}
         isDefaulted={isDefaulted}
         onClick={() => viewSkillDialog.open({
           name: skillKey,
-          body: attributeSelector,
-          dicePools: [
-            skillDicePool,
-            specialization ? specializationDicePool : false,
-          ],
+          body: <ActiveSkillDialogBody skillKey={skillKey} specialization={specialization} />,
         })}
       />
       {viewSkillDialog.dialog}
