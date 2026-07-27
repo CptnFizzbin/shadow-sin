@@ -13,6 +13,20 @@ interface ViewSkillDialogProps extends ControlledDialogProps<void> {
   dicePools?: (false | DicePoolData)[]
 }
 
+/** Renders dice pools side by side, stacking into a column on narrow (mobile) viewports. */
+export const DicePoolsStack: FC<{ dicePools: (false | DicePoolData)[] }> = ({ dicePools }) => (
+  <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+    {dicePools
+      .filter((item): item is DicePoolData => Boolean(item))
+      .map((pool) => (
+        <DicePool
+          key={pool.name}
+          {...pool}
+        />
+      ))}
+  </Stack>
+)
+
 const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
   ctrl,
   name,
@@ -26,16 +40,7 @@ const ViewSkillDialog: FC<ViewSkillDialogProps> = ({
         <Stack spacing={1}>
           {body}
 
-          <Stack direction="row">
-            {dicePools
-              .filter((item): item is DicePoolData => Boolean(item))
-              .map((pool) => (
-                <DicePool
-                  key={pool.name}
-                  {...pool}
-                />
-              ))}
-          </Stack>
+          <DicePoolsStack dicePools={dicePools} />
         </Stack>
       </Dialog.Content>
     </ControlledDialog>
