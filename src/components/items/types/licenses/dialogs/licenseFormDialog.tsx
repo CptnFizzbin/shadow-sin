@@ -1,10 +1,10 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
-import { useLicenseForm } from "#/components/items/types/licenses/forms/useLicenseForm.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useLicenseForm } from "#/lib/hooks/items/types/licenses/forms/useLicenseForm.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"

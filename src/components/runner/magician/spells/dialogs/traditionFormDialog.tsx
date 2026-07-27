@@ -5,11 +5,11 @@ import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useTraditionForm } from "#/components/runner/magician/spells/form/useTraditionForm.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { useTraditionForm } from "#/lib/hooks/runner/magician/spells/form/useTraditionForm.ts"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 import { drainAttributeSelectOptions, spiritTypeSelectOptions } from "#/system/magic/traditionData.ts"
 

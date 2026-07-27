@@ -4,13 +4,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
+import { usePowerPoints } from "#/lib/hooks/runner/adeptPowers/adeptPowersHooks.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 import { AdeptPowerListItem } from "./adeptPowerListItem.tsx"
-import { usePowerPoints } from "./adeptPowersHooks.ts"
 import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
 
 export const AdeptPowersViewerSection: FC = () => {

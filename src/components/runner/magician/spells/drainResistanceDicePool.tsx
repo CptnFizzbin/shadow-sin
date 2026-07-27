@@ -4,7 +4,7 @@ import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import {
   useAttrDiceGroup,
   useWoundDiceGroup,
-} from "#/components/system/dicePool/useDiceGroup.ts"
+} from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface DrainResistanceDicePoolProps {

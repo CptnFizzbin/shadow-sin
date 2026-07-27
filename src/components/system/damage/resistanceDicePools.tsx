@@ -7,7 +7,7 @@ import {
   useDefaultingDiceGroup,
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
-} from "#/components/system/dicePool/useDiceGroup.ts"
+} from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 

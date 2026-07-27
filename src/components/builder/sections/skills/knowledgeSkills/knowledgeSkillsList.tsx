@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useKnowledgeSkillsBuildPoints } from "#/components/builder/buildPoints/hooks/useKnowledgeSkillsBuildPoints.ts"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
@@ -12,15 +11,16 @@ import { useLanguageSkillDialog } from "#/components/runner/skills/knowledgeSkil
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { SkillPoints } from "#/components/ui/skillPoints.tsx"
 import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { useKnowledgeSkillsBuildPoints } from "#/lib/hooks/builder/buildPoints/useKnowledgeSkillsBuildPoints.ts"
+import {
+  useKnowledgeSkillPoints,
+} from "#/lib/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillPoints.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
-import {
-  useKnowledgeSkillPoints,
-} from "./hooks/useKnowledgeSkillPoints.ts"
 import {
   KnowledgeSkillsListItem,
 } from "./knowledgeSkillsListItem.tsx"

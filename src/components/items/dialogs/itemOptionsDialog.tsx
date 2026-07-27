@@ -8,9 +8,8 @@ import { useState } from "react"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
-
-import type { ItemOptionKey } from "./useItemOptions.ts"
+import type { ItemOptionKey } from "#/lib/hooks/items/dialogs/useItemOptions.ts"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 
 interface ItemOptionsDialogProps extends ControlledDialogProps<void> {
   initialOptions: Record<ItemOptionKey, boolean>

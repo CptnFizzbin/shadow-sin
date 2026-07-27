@@ -10,8 +10,8 @@ import {
   getImplantEffectiveEssenceCost,
   getImplantEffectiveNuyenCost,
 } from "#/components/items/types/implants/implantUtils.ts"
-import { useQuickBuyLicenseAction } from "#/components/items/types/licenses/useQuickBuyLicenseAction.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { useQuickBuyLicenseAction } from "#/lib/hooks/items/types/licenses/useQuickBuyLicenseAction.ts"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import { ImplantGrade, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"

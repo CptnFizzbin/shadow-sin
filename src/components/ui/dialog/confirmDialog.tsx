@@ -2,9 +2,10 @@ import type { ButtonProps } from "@mui/material/Button"
 import Button from "@mui/material/Button"
 import type { FC, ReactNode } from "react"
 
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+
 import type { ControlledDialogProps } from "./controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "./dialog.tsx"
-import { useDialog } from "./useDialog.tsx"
 
 interface ConfirmDialogProps extends ControlledDialogProps<boolean> {
   title?: ReactNode

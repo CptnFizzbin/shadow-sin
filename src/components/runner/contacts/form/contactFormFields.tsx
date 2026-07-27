@@ -12,9 +12,8 @@ import { z } from "zod"
 import { createRatingOptions } from "#/components/system/ratings/ratingUtils.ts"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { contactFormOpts } from "#/lib/hooks/runner/contacts/form/useContactForm.tsx"
 import { FavourDirection } from "#/system/favourData.ts"
-
-import { contactFormOpts } from "./useContactForm.tsx"
 
 const ratingOptions = createRatingOptions({ min: 1, max: 6 })
 

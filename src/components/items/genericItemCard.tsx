@@ -3,6 +3,7 @@ import { RiDeleteBin6Line, RiEdit2Line, RiFileShieldLine } from "@remixicon/reac
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { useQuickBuyLicenseAction } from "#/lib/hooks/items/types/licenses/useQuickBuyLicenseAction.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { AvailabilityChip } from "./availability/availabilityChip.tsx"
@@ -11,7 +12,6 @@ import type { ItemCardRootProps } from "./card/itemCardRoot.tsx"
 import { ItemStatChip } from "./card/itemStatChip.tsx"
 import { EquippedChip } from "./equippedChip.tsx"
 import { GearMaxAvailability } from "./gearUtils.ts"
-import { useQuickBuyLicenseAction } from "./types/licenses/useQuickBuyLicenseAction.ts"
 
 interface GenericItemCardProps extends Pick<ItemCardRootProps, "variant"> {
   item: ItemData

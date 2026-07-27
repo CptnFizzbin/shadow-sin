@@ -12,7 +12,6 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
-import { useGearByType } from "#/components/items/gearHooks.ts"
 import {
   DefaultFakeLicenseRating,
   findLicenseableSiblings,
@@ -21,9 +20,10 @@ import {
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useIsBuilder } from "#/lib/contexts/builder/builderStore.context.ts"
+import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"

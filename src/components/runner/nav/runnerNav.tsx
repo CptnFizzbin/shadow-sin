@@ -8,10 +8,10 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { runnerSections } from "#/components/runner/runnerSections.ts"
+import { useCurrentRunnerSection } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
+import { useRunnerTabs } from "#/lib/hooks/runner/nav/useRunnerTabs.ts"
 
 import { NavMenuDrawer } from "./navMenuDrawer.tsx"
-import { useCurrentRunnerSection } from "./useRunnerNav.ts"
-import { useRunnerTabs } from "./useRunnerTabs.ts"
 
 export const RunnerNav: FC = () => {
   const navigate = useNavigate({ from: "/$runnerId" })

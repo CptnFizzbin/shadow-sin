@@ -3,10 +3,10 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
-import { useVehicleForm, vehicleFieldMap } from "#/components/items/types/vehicles/forms/useVehicleForm.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useVehicleForm, vehicleFieldMap } from "#/lib/hooks/items/types/vehicles/forms/useVehicleForm.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 

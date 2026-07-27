@@ -9,9 +9,8 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import type { CombatantForm } from "#/lib/hooks/system/initiativeTracker/form/useCombatantForm.ts"
 import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
-
-import type { CombatantForm } from "./useCombatantForm.ts"
 
 interface CombatantFormFieldsProps {
   form: CombatantForm

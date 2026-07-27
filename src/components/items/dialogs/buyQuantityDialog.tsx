@@ -8,10 +8,10 @@ import { useState } from "react"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface BuyQuantityDialogProps extends ControlledDialogProps<void> {

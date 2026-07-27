@@ -6,7 +6,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useGearFilter } from "#/components/items/gearHooks.ts"
+import { useGearFilter } from "#/lib/hooks/items/gearHooks.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"

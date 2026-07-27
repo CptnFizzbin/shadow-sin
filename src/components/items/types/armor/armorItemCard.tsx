@@ -6,8 +6,8 @@ import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { EquippedChip } from "#/components/items/equippedChip.tsx"
-import { useQuickBuyLicenseAction } from "#/components/items/types/licenses/useQuickBuyLicenseAction.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { useQuickBuyLicenseAction } from "#/lib/hooks/items/types/licenses/useQuickBuyLicenseAction.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorItemCardProps {

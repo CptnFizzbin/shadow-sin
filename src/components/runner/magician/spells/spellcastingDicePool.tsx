@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 

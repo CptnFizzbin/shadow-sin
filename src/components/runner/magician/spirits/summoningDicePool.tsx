@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
-import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/components/system/dicePool/useDiceGroup.ts"
-import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
+import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
+import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"

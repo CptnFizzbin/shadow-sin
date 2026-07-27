@@ -1,11 +1,11 @@
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useContactsAlerts } from "#/components/builder/alerts/hooks/useContactsAlerts.ts"
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { ContactsList } from "#/components/runner/contacts/contactsList.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
+import { useContactsAlerts } from "#/lib/hooks/builder/alerts/useContactsAlerts.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { getContactBpCost } from "./contactsBuilderUtils.ts"

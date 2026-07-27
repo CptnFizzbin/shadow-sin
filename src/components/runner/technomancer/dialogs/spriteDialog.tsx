@@ -9,10 +9,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { useMaxSpriteTasks } from "#/components/runner/technomancer/spritesHooks.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useMaxSpriteTasks } from "#/lib/hooks/runner/technomancer/spritesHooks.ts"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 

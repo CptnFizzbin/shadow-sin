@@ -5,9 +5,9 @@ import type { FC } from "react"
 import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
-import { implantFieldMap, useImplantForm } from "#/components/items/types/implants/forms/useImplantForm.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { implantFieldMap, useImplantForm } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 
 interface CyberwareFormDialogProps {

@@ -6,12 +6,12 @@ import { useState } from "react"
 
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { EditorModeProvider } from "#/lib/contexts/builder/editorMode.tsx"
+import { useBuilderStores } from "#/lib/hooks/builder/useBuilderStores.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"
 import { BuilderImportButton } from "./builderImportButton.tsx"
 import { BuilderStoreProvider } from "./builderStoreProvider.tsx"
-import { useBuilderStores } from "./hooks/useBuilderStores.ts"
 import { SaveRunnerButton } from "./saveRunnerButton.tsx"
 import { AttributesBuilderSection } from "./sections/attributes/attributesBuilderSection.tsx"
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"

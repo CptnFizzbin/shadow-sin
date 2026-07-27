@@ -3,8 +3,7 @@ import type { FC } from "react"
 
 import { GameEffectsFieldGroup } from "#/components/system/gameEffects/gameEffectsFieldGroup.tsx"
 import { SourceFieldGroup } from "#/components/system/sources/sourceFieldGroup.tsx"
-
-import type { AdeptPowerForm } from "./useAdeptPowerForm.ts"
+import type { AdeptPowerForm } from "#/lib/hooks/runner/adeptPowers/form/useAdeptPowerForm.ts"
 
 interface AdeptPowerFormFieldsProps {
   form: AdeptPowerForm

@@ -8,16 +8,16 @@ import { RiArrowDownSLine, RiErrorWarningLine } from "@remixicon/react"
 import type { FC, SyntheticEvent } from "react"
 import { useState } from "react"
 
-import {
-  useGearBuildPoints,
-  useGearTotalCost,
-} from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
 import { SinsAndLicensesSection } from "#/components/items/types/licenses/sinsAndLicensesSection.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import {
+  useGearBuildPoints,
+  useGearTotalCost,
+} from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { isImplant } from "#/system/gear/implantData.ts"

@@ -4,8 +4,7 @@ import { z } from "zod"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-
-import { vehicleFormOpts } from "./useVehicleForm.tsx"
+import { vehicleFormOpts } from "#/lib/hooks/items/types/vehicles/forms/useVehicleForm.tsx"
 
 const accelPattern = /^\d+\/\d+$/
 

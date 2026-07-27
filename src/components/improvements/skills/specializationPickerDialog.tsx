@@ -11,7 +11,7 @@ import { useState } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 
 const CUSTOM_SENTINEL = "__custom__"
 

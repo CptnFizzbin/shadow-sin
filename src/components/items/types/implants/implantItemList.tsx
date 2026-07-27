@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useGearByType } from "#/components/items/gearHooks.ts"
+import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"

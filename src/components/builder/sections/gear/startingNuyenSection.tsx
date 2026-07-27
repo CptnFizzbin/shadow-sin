@@ -8,13 +8,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useEffect } from "react"
 
+import { DiceResult } from "#/components/system/dice/diceResult.tsx"
+import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
 import {
   GearNuyenPerBuildPoint,
   useGearTotalCost,
-} from "#/components/builder/buildPoints/hooks/useGearBuildPoints.ts"
-import { DiceResult } from "#/components/system/dice/diceResult.tsx"
-import { useDiceRoller } from "#/components/system/dice/useDiceRoller.ts"
-import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
+} from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useDiceRoller } from "#/lib/hooks/system/dice/useDiceRoller.ts"
 import { Actions as BuilderActions } from "#/lib/stores/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/lib/stores/builder/builderStore.dispatch.ts"
 import { Selectors as BuilderSelectors, useBuilderStoreSelector } from "#/lib/stores/builder/builderStore.selectors.ts"
