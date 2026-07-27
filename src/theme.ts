@@ -66,40 +66,58 @@ export const theme = createTheme({
     h1: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 48,
+      fontSize: 34,
     },
     h2: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 32,
+      fontSize: 26,
     },
     h3: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 24,
+      fontSize: 20,
     },
     h4: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 20,
+      fontSize: 17,
     },
     h5: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 18,
+      fontSize: 15,
     },
     h6: {
       fontFamily: DISPLAY_FONT,
       fontWeight: 700,
-      fontSize: 14,
+      fontSize: 13,
+    },
+    subtitle1: {
+      fontSize: 13,
+    },
+    subtitle2: {
+      fontSize: 12,
+    },
+    body1: {
+      fontSize: 13,
+    },
+    body2: {
+      fontSize: 12,
+    },
+    caption: {
+      fontFamily: BODY_FONT,
+      fontSize: 11,
     },
     overline: {
       fontFamily: BODY_FONT,
       fontWeight: 700,
+      fontSize: 10,
     },
     button: {
       fontFamily: BODY_FONT,
       fontWeight: 700,
+      fontSize: 12,
     },
   },
 
