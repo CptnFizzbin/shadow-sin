@@ -4,8 +4,8 @@ import { Suspense } from "react"
 
 import { RunnerEditor } from "#/components/builder/runnerEditor.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
+import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import { RunnerManager } from "#/runner/runnerManager.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)

@@ -16,8 +16,8 @@ import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvid
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
+import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import { RunnerManager } from "#/runner/runnerManager.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 // Module-level manager for use in loaders (outside React context)
