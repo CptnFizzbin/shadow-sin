@@ -68,7 +68,7 @@ export const licenses = {
       (state, itemId: UUID) => selectById(itemId)(state),
     ],
     (licenseGear, item): null | LicenseData => {
-      if (!item.licenseId) return null
+      if (!item?.licenseId) return null
       return licenseGear[item.licenseId]
     },
   ),

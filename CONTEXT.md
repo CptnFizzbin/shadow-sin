@@ -342,20 +342,19 @@ An Item (`ItemType.license`) granting legal permission to carry a Restricted pie
 Belongs to a SIN via the existing Attachment mechanism (`Licence.parentId` = the SIN's id). A
 Licence may cover multiple gear items — typically several instances of the same item, since a
 Licence generally certifies a gear type rather than a single serial number — via each covered
-Item's `licenseId` field; an item is covered by at most one Licence. Manually-created Licences
-remain freeform (no covered items) unless created through the quick-buy flow below.
-_Avoid_: permit, registration
-
-**Licence Quick-Buy**:
-A Player action on a Restricted, unlicensed gear item (Builder and Viewer both) that opens a
-dialog to purchase a Licence for it: pick or create a SIN, then optionally extend coverage to
-other unlicensed items sharing the same name and `ItemType`. The Licence's rating always matches
-its SIN's reality — the Real SIN produces a free, unrestricted Real Licence with no rating to
-set; a Fake SIN produces a Fake Licence with an adjustable rating, defaulting to 3
-(`DefaultFakeLicenseRating`). Not offered for **Forbidden** items — Forbidden gear has no legal
-Licence path. In the Builder the Licence is simply added (its cost counts toward the Gear BP
-budget like any other item); in the Viewer, Nuyen is withdrawn unless the Player chooses
-"Acquire" (free, matching the existing acquire/purchase distinction on new gear).
+Item's `licenseId` field; an item is covered by at most one Licence, so assigning an already-
+covered item to a different Licence silently moves it. Acquiring, changing, or removing the
+Licence covering a Restricted item is done from that item's own edit form (Builder and Viewer
+both); adding or removing the items a Licence covers is done from the Licence's own edit form.
+Not offered for **Forbidden** items — Forbidden gear has no legal Licence path. The Licence's
+rating always matches its SIN's reality — the Real SIN produces a free, unrestricted Real
+Licence with no rating to set; a Fake SIN produces a Fake Licence with an adjustable rating,
+defaulting to 3 (`DefaultFakeLicenseRating`). In the Builder the Licence is simply added (its
+cost counts toward the Gear BP budget like any other item); in the Viewer, Nuyen is withdrawn
+unless the Player chooses "Acquire" (free, matching the existing acquire/purchase distinction on
+new gear). _(Formerly acquired through a standalone Quick-Buy dialog; see
+`docs/adr/0007-license-management-moves-into-item-form.md`.)_
+_Avoid_: permit, registration; Licence Quick-Buy (retired term — see ADR-0007)
 
 **Availability**:
 A rating + restriction code on an Item describing how hard it is to obtain and whether ownership

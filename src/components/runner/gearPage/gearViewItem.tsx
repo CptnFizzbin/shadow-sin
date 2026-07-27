@@ -2,7 +2,7 @@ import Chip from "@mui/material/Chip"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line, RiFileShieldLine } from "@remixicon/react"
+import { RiDeleteBin6Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -11,7 +11,6 @@ import {
   getImplantEffectiveNuyenCost,
 } from "#/components/items/types/implants/implantUtils.ts"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useQuickBuyLicenseAction } from "#/lib/hooks/items/types/licenses/useQuickBuyLicenseAction.ts"
 import { isArmorData } from "#/system/gear/armorData.ts"
 import { ImplantGrade, ImplantType, isImplant } from "#/system/gear/implantData.ts"
 import { isLicenseData } from "#/system/gear/licenseData.ts"
@@ -52,7 +51,6 @@ export const GearViewItem: FC<GearViewItemProps> = ({
   getSubItemCallbacks,
 }) => {
   const { availability, source, description } = item
-  const licenseQuickBuy = useQuickBuyLicenseAction(item)
 
   const displayCost = isImplant(item)
     ? getImplantEffectiveNuyenCost(item)
@@ -112,19 +110,6 @@ export const GearViewItem: FC<GearViewItemProps> = ({
           <Typography>
             <Nuyen amount={displayCost} />
           </Typography>
-
-          {licenseQuickBuy.eligible && (
-            <IconButton
-              size="small"
-              aria-label="Buy License"
-              onClick={(e) => {
-                e.stopPropagation()
-                licenseQuickBuy.open()
-              }}
-            >
-              <RiFileShieldLine size={16} />
-            </IconButton>
-          )}
 
           {onRemove && (
             <IconButton
@@ -270,8 +255,6 @@ export const GearViewItem: FC<GearViewItemProps> = ({
           })}
         </Stack>
       )}
-
-      {licenseQuickBuy.dialog}
     </Stack>
   )
 }

@@ -52,7 +52,6 @@ export interface ItemDialogProps {
   }
   options?: {
     equipable?: ItemDialogOptionConfig
-    licenseRequired?: ItemDialogOptionConfig
     hasRating?: ItemDialogOptionConfig
     multiple?: ItemDialogOptionConfig
     isSubItem?: ItemDialogOptionConfig
@@ -90,7 +89,6 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
-    licenseRequired: resolveForced(optionsProp?.licenseRequired),
     hasRating: resolveForced(optionsProp?.hasRating),
     multiple: resolveForced(optionsProp?.multiple),
     isSubItem: resolveForced(optionsProp?.isSubItem),

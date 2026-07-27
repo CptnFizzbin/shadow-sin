@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ProgramFormFields } from "#/components/items/types/devices/forms/programFormFields.tsx"
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { programFieldMap, useProgramForm } from "#/lib/hooks/items/types/devices/forms/useProgramForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -38,7 +39,12 @@ export const ProgramFormDialog: FC<ProgramFormDialogProps> = ({ ctrl, program, p
         isSubItem: { forced: true },
       }}
       slots={{
-        itemFields: () => <ProgramFormFields form={form} fields={programFieldMap} />,
+        itemFields: () => (
+          <>
+            <ProgramFormFields form={form} fields={programFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
       }}
     />
   )

@@ -1,5 +1,6 @@
 import type { FC } from "react"
 
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { itemDefaults, useItemForm } from "#/lib/hooks/items/forms/useItemForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -41,6 +42,9 @@ export const ItemFormDialog: FC<ItemFormDialogProps> = ({
       options={{
         hasRating: { enabled: true },
         multiple: { enabled: true },
+      }}
+      slots={{
+        itemFields: () => <GearFormLicenseSection form={form} />,
       }}
     />
   )
