@@ -3,7 +3,16 @@ import type { UUID } from "node:crypto"
 import { createAction } from "@reduxjs/toolkit"
 
 import { NullUuid } from "#/lib/uuidUtils.ts"
+import type { ArmorData } from "#/system/gear/armorData.ts"
+import type { CredstickData } from "#/system/gear/credstickData.ts"
+import type { DeviceData } from "#/system/gear/deviceData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
+import type { ProgramData } from "#/system/gear/programData.ts"
+import type { SinData } from "#/system/gear/sinData.ts"
+import type { SoftwareData } from "#/system/gear/softwareData.ts"
+import type { VehicleData } from "#/system/gear/vehicleData.ts"
+import type { FirearmAccessoryData, WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 export const addItem = createAction("gear/add", (item: Omit<ItemData, "id">) => {
@@ -53,3 +62,28 @@ export const licenses = {
     return patchItem({ itemId, data: { licenseId: null } })
   },
 }
+
+function makeTypeActions<TItem extends ItemData>() {
+  return {
+    create: (item: Omit<TItem, "id">) => {
+      return addItem(item)
+    },
+
+    destroy: (id: TItem["id"]) => {
+      return removeItem({ id })
+    },
+  }
+}
+
+export const armor = makeTypeActions<ArmorData>()
+export const implants = makeTypeActions<ImplantData>()
+export const firearms = makeTypeActions<ItemData>()
+export const software = makeTypeActions<SoftwareData>()
+export const vehicles = makeTypeActions<VehicleData>()
+export const weapons = makeTypeActions<WeaponData>()
+export const devices = makeTypeActions<DeviceData>()
+export const firearmAccessories = makeTypeActions<FirearmAccessoryData>()
+export const sins = makeTypeActions<SinData>()
+export const credsticks = makeTypeActions<CredstickData>()
+export const programs = makeTypeActions<ProgramData>()
+export const other = makeTypeActions<ItemData>()

@@ -84,3 +84,26 @@ export const licenses = {
     },
   ),
 }
+
+function makeSelectByIdOfType(type: ItemType) {
+  return createCurriedSelector(
+    [
+      selectGearOfType(type),
+      (_, id: UUID) => id,
+    ],
+    (itemsOfType, id) => itemsOfType[id],
+  )
+}
+
+export const armor = { selectById: makeSelectByIdOfType(ItemType.armor) }
+export const implants = { selectById: makeSelectByIdOfType(ItemType.implant) }
+export const firearms = { selectById: makeSelectByIdOfType(ItemType.firearm) }
+export const software = { selectById: makeSelectByIdOfType(ItemType.software) }
+export const vehicles = { selectById: makeSelectByIdOfType(ItemType.vehicle) }
+export const weapons = { selectById: makeSelectByIdOfType(ItemType.weapon) }
+export const devices = { selectById: makeSelectByIdOfType(ItemType.device) }
+export const firearmAccessories = { selectById: makeSelectByIdOfType(ItemType.firearmAccessory) }
+export const sins = { selectById: makeSelectByIdOfType(ItemType.sin) }
+export const credsticks = { selectById: makeSelectByIdOfType(ItemType.credstick) }
+export const programs = { selectById: makeSelectByIdOfType(ItemType.program) }
+export const other = { selectById: makeSelectByIdOfType(ItemType.other) }
