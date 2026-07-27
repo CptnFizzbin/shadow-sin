@@ -1,7 +1,7 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { getKnowledgeSkillSp, getLanguageSkillSp } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 export const useKnowledgeSkillPoints = () => {

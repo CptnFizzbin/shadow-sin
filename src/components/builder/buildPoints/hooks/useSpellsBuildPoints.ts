@@ -3,7 +3,7 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const useSpellsBuildPoints = (): BpLineItem => {

@@ -12,8 +12,8 @@ import { useComplexForms, useMaxComplexForms } from "#/components/runner/technom
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ComplexFormData } from "#/system/magic/complexFormData.ts"
 

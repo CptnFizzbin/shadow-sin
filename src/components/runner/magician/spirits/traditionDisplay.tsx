@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import type { SpiritType } from "#/system/magic/spiritData.ts"
 import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"

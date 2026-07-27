@@ -9,9 +9,9 @@ import { useState } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const NuyenSection: FC = () => {
   const currentNuyen = useRunnerStoreSelector(Selectors.nuyen.selectNuyenAmount)

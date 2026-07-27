@@ -1,6 +1,6 @@
 import { createSelector } from "reselect"
 
-import { selectAwakening } from "#/stores/runner/biology/biologySlice.selectors.ts"
+import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData.ts"

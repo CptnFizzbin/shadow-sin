@@ -1,4 +1,4 @@
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import type { SpendKarmaSection } from "./spendKarmaSections.tsx"
 import { SPEND_KARMA_SECTIONS } from "./spendKarmaSections.tsx"

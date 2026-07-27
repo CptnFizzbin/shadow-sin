@@ -11,7 +11,7 @@ import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSki
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isSkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {

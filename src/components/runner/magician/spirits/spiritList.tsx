@@ -5,9 +5,9 @@ import { useState } from "react"
 
 import { ItemList } from "#/components/items/card/itemList.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 

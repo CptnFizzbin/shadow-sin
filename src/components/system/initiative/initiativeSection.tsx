@@ -2,8 +2,8 @@ import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import type { FC } from "react"
 
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 
 import { InitiativePassTracker } from "./initiativePassTracker.tsx"
 import { InitiativeScoreDisplay } from "./initiativeScoreDisplay.tsx"

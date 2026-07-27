@@ -17,7 +17,7 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   getActiveSkillCap,
   hasAptitudeFor,

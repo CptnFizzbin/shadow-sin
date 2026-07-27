@@ -20,7 +20,7 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useKnowledgeSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/knowledgeSkillEditDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { getKnowledgeSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnKnowledgeSkillEntry,

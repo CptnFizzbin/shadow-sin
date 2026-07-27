@@ -1,6 +1,6 @@
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { runnerRootReducer } from "#/stores/runner/runnerStore.reducer.ts"
-import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
+import { runnerRootReducer } from "#/lib/stores/runner/runnerStore.reducer.ts"
+import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export class RunnerDataStore implements RunnerStore {

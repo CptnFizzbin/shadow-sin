@@ -1,5 +1,5 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useBiologyAlerts = (): AlertInfo[] => {
   const statuses: AlertInfo[] = []

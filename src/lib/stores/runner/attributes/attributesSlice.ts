@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 
-import { burnEdge } from "#/stores/runner/edge/edgeSlice.actions.ts"
+import { burnEdge } from "#/lib/stores/runner/edge/edgeSlice.actions.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 

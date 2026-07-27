@@ -8,8 +8,8 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useHasMaxxedAttribute } from "#/components/runner/attributes/hooks/useHasMaxxedAttribute.ts"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
-import { useEditorMode } from "#/stores/builder/editorMode.tsx"
-import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttrIncrementButtonProps {

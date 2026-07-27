@@ -3,7 +3,7 @@ import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { useComplexForms } from "#/components/runner/technomancer/complexFormsHooks.ts"
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useComplexFormsBuildPoints = (): BpLineItem => {
   const awakeningType = useRunnerStoreSelector((sheet) => sheet.biology.awakening)

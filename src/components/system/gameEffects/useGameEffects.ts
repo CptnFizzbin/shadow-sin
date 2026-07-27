@@ -1,8 +1,8 @@
 import { createSelector } from "reselect"
 
 import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
-import type { RunnerDataSelector } from "#/stores/runner/runnerStore.selectors.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import type { RunnerDataSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"

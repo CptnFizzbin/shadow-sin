@@ -1,5 +1,5 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import type { Combatant, SkillEntry, WeaponEntry } from "#/stores/initiativeTracker/initiativeTrackerData.ts"
+import type { Combatant, SkillEntry, WeaponEntry } from "#/lib/stores/initiativeTracker/initiativeTrackerData.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeOrder } from "#/system/attributeKey.ts"
 

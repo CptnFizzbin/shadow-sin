@@ -14,9 +14,9 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import {
   CredstickMaxBalance,

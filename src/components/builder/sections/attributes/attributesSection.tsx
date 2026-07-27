@@ -6,8 +6,8 @@ import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks
 import { useAllAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import {
   AttributeKey,
   AttributeOrder,

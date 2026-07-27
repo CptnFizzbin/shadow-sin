@@ -4,8 +4,8 @@ import { useGearBuildPoints } from "#/components/builder/buildPoints/hooks/useGe
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/stores/builder/editorMode.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { useGearAvailabilityIssues } from "./gearUtils.ts"
 

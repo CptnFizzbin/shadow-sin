@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   selectIsRolling,
   selectWasRolled,

@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { useAlertDialog } from "#/components/ui/dialog/alertDialog.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"
-import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { useYamlFileImport } from "./useYamlFileImport.ts"
 

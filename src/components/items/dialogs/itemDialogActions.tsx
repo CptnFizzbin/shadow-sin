@@ -3,7 +3,7 @@ import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface ItemDialogActionsProps {
   isAcquireMode: boolean

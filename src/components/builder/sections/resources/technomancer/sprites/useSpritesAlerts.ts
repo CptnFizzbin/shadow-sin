@@ -1,6 +1,6 @@
 import { isTechnomancer } from "#/components/runner/technomancer/technomancerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useSpritesAlerts = (): AlertInfo[] => {
   const awakeningType = useRunnerStoreSelector((s) => s.biology.awakening)

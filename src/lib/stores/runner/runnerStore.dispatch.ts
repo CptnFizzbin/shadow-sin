@@ -1,7 +1,7 @@
 import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { useRunnerStoreContext } from "./runnerStore.context.ts"
 import { runnerRootReducer } from "./runnerStore.reducer.ts"
 import type { RunnerStore } from "./runnerStore.ts"
 

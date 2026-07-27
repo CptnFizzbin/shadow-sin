@@ -7,7 +7,7 @@ import { SpiritFormFields } from "#/components/runner/magician/spirits/form/spir
 import { useSpiritForm } from "#/components/runner/magician/spirits/form/useSpiritForm.ts"
 import { SummoningSection } from "#/components/runner/magician/spirits/summoningSection.tsx"
 import { Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SpiritData, SpiritType } from "#/system/magic/spiritData.ts"
 
 interface SpiritFormDialogProps {

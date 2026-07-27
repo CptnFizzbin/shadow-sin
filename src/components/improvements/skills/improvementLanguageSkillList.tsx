@@ -20,7 +20,7 @@ import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useLanguageSkillDialog,
 } from "#/components/runner/skills/knowledgeSkills/dialogs/languageSkillDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { getLanguageSkillCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnLanguageSkillEntry,

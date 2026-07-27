@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"

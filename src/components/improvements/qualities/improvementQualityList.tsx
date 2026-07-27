@@ -16,7 +16,7 @@ import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarma
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LearnQualityEntry, QualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isLearnQualityEntry, isQualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {

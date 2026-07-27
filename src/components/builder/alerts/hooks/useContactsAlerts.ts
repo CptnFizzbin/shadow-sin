@@ -1,5 +1,5 @@
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useContactsAlerts = (): AlertInfo[] => {
   const alerts: AlertInfo[] = []

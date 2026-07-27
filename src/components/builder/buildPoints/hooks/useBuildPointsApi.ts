@@ -8,14 +8,14 @@ import {
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
 import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
-import { selectAwakeningData, selectMetatypeData } from "#/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { selectAwakeningData, selectMetatypeData } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   selectActiveSkills,
   selectKnowledgeSkills,
   selectLanguageSkills,
   selectSkillGroups,
-} from "#/stores/runner/skills/skillsSlice.selectors.ts"
+} from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
 import { useAdeptPowersBuildPoints } from "./useAdeptPowersBuildPoints.ts"

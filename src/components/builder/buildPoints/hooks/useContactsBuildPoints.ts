@@ -1,6 +1,6 @@
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getContactBpCost } from "#/components/builder/sections/contacts/contactsBuilderUtils.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const useContactsBuildPoints = () => {
   const contacts = useRunnerStoreSelector(Selectors.contacts.selectContacts)

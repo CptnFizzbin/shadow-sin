@@ -1,4 +1,5 @@
-import { useBuilderDataContext } from "./builderStore.context.ts"
+import { useBuilderDataContext } from "#/lib/contexts/builder/builderStore.context.ts"
+
 import type { BuilderStore } from "./builderStore.ts"
 
 export type BuilderDispatch = BuilderStore["dispatch"]

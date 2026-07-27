@@ -1,7 +1,7 @@
 import type { BuilderState } from "#/components/builder/builderState.ts"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { useBuilderDataContext } from "#/lib/contexts/builder/builderStore.context.ts"
 
-import { useBuilderDataContext } from "./builderStore.context.ts"
 import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
 
 export type BuilderStateSelector<T> = (state: BuilderState) => T

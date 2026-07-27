@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
-import { EditorModeProvider } from "#/stores/builder/editorMode.tsx"
+import { EditorModeProvider } from "#/lib/contexts/builder/editorMode.tsx"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { AllBuilderAlerts } from "./alerts/allBuilderAlerts.tsx"

@@ -1,6 +1,6 @@
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/stores/builder/editorMode.tsx"
+import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 
 import { useBuilderBuildPointsApi } from "./useBuildPointsApi.ts"
 

@@ -4,9 +4,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useGearByType } from "#/components/items/gearHooks.ts"
-import { isNewItem } from "#/stores/runner/gear/gearSlice.actions.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 

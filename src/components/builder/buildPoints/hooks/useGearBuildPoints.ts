@@ -2,7 +2,7 @@ import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
 /** @deprecated Use `BuilderConfig.gear.bpAllowance` instead. */

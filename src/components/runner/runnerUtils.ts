@@ -1,7 +1,7 @@
 import { useGearByType } from "#/components/items/gearHooks.ts"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"

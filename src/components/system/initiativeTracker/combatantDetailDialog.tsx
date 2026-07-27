@@ -6,7 +6,7 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import type { Combatant } from "#/stores/initiativeTracker/initiativeTrackerData.ts"
+import type { Combatant } from "#/lib/stores/initiativeTracker/initiativeTrackerData.ts"
 import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
 
 import { PassPips } from "./passPips.tsx"

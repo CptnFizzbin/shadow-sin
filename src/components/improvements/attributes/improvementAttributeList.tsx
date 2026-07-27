@@ -12,7 +12,7 @@ import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarma
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { useActiveAttributes } from "#/components/runner/attributes/hooks/useActiveAttributes.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"

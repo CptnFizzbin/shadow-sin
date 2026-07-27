@@ -13,8 +13,8 @@ import { useMaxSpritesRegistered, useSprites } from "#/components/runner/technom
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { SpriteData } from "#/system/magic/spriteData.ts"
 

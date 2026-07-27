@@ -5,9 +5,9 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
 import { AdeptPowerListItem } from "./adeptPowerListItem.tsx"

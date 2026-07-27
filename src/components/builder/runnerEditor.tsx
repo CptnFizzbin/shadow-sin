@@ -9,8 +9,8 @@ import { useState } from "react"
 
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
+import { EditorModeProvider } from "#/lib/contexts/builder/editorMode.tsx"
 import { NumberUtils } from "#/lib/numberUtils.ts"
-import { EditorModeProvider } from "#/stores/builder/editorMode.tsx"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { BuilderImportButton } from "./builderImportButton.tsx"

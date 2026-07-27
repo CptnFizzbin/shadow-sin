@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { dispatchThunk } from "#/stores/runner/runnerStore.dispatch.ts"
-import { runnerRootReducer } from "#/stores/runner/runnerStore.reducer.ts"
+import { dispatchThunk } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { runnerRootReducer } from "#/lib/stores/runner/runnerStore.reducer.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 

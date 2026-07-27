@@ -1,8 +1,7 @@
 import { createContext, useContext } from "react"
 
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
-
-import type { RunnerStore } from "./runnerStore.ts"
+import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
 
 export const RunnerStoreContext = createContext<RunnerStore | null>(null)
 

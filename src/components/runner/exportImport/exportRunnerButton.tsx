@@ -2,7 +2,7 @@ import DownloadIcon from "@mui/icons-material/Download"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 
 import { runnerDataToYaml, downloadTextFile } from "./exportUtils.ts"
 

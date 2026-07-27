@@ -12,7 +12,7 @@ import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarma
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { InitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isInitiationIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {

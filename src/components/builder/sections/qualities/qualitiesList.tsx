@@ -7,10 +7,10 @@ import { useQualitiesBuildPoints } from "#/components/builder/buildPoints/hooks/
 import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qualityFormDialog.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
-import { EditorMode } from "#/stores/builder/editorMode.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { QualitiesListItem } from "./qualitiesListItem.tsx"
 

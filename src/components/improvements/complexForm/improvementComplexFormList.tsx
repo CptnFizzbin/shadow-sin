@@ -17,7 +17,7 @@ import { useImprovementSelector } from "#/components/improvements/useImprovement
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type {
   ComplexFormIncreaseEntry,

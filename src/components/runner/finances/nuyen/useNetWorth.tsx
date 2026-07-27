@@ -1,5 +1,5 @@
 import { useGearFilter } from "#/components/items/gearHooks.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { isCredstickData } from "#/system/gear/credstickData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 

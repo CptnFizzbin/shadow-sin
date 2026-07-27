@@ -7,7 +7,7 @@ import type { FC } from "react"
 import { useMemo } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { LicenseCheckChecklistRow } from "./licenseCheckChecklistRow.tsx"
 import { useLicenseCheck } from "./licenseCheckContext.tsx"

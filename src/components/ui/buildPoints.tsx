@@ -5,7 +5,7 @@ import type { SxProps, Theme } from "@mui/material/styles"
 import type { FC } from "react"
 
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
-import { EditorMode } from "#/stores/builder/editorMode.tsx"
+import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
 
 interface BuildPointsProps {
   value: number

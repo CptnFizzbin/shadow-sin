@@ -3,7 +3,7 @@ import type { FC } from "react"
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
 import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import { SpellsList } from "./spellsList.tsx"
 import { useSpellsAlerts } from "./useSpellsAlerts.ts"

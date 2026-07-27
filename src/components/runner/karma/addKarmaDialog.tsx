@@ -7,8 +7,8 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 
 interface AddKarmaDialogProps extends ControlledDialogProps<void> {}
 

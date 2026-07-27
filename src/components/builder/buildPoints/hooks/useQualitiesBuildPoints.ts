@@ -1,6 +1,6 @@
 import type { BpLineItem } from "#/components/builder/buildPoints/bpLineItem.ts"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface QualitiesBuildPoints extends BpLineItem {
   positive: number

@@ -14,7 +14,7 @@ import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarma
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnSpellEntry,

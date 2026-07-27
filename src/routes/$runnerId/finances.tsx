@@ -13,7 +13,7 @@ import { useNetWorth } from "#/components/runner/finances/nuyen/useNetWorth.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 

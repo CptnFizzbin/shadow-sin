@@ -9,10 +9,10 @@ import { useActiveSkillDialog } from "#/components/runner/skills/activeSkills/di
 import {
   useActiveSkillGroupDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
-import { EditorMode } from "#/stores/builder/editorMode.tsx"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ActiveSkillData } from "#/system/skills/activeSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 

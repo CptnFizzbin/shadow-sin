@@ -3,8 +3,8 @@ import { useAttrValue } from "#/components/runner/attributes/attributesProvider.
 import { isMagician } from "#/components/runner/magician/magicianUtils.ts"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
-import { useEditorMode } from "#/stores/builder/editorMode.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useEditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
