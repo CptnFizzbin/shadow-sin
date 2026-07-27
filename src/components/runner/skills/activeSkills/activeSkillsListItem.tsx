@@ -23,11 +23,6 @@ const selectableAttributes = Object.values(AttributeKey).filter(
   (key) => key !== AttributeKey.essence,
 )
 
-/**
- * Owns the attribute-selection state itself so the dialog's dice pools stay live as the
- * user changes the attribute, rather than being frozen at the props passed when the dialog
- * was opened.
- */
 const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }> = ({
   skillKey,
   specialization,
@@ -45,7 +40,7 @@ const ActiveSkillDialogBody: FC<{ skillKey: SkillKey, specialization?: string }>
         <Select
           label="Attribute"
           value={selectedAttr}
-          onChange={(event) => setSelectedAttr(event.target.value as AttributeKey)}
+          onChange={(event) => setSelectedAttr(event.target.value)}
         >
           {selectableAttributes.map((attrKey) => (
             <MenuItem key={attrKey} value={attrKey}>
