@@ -34,6 +34,141 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { useSinFormDialog } from "./sinFormDialog.tsx"
 
+interface ExistingLicenseSectionProps {
+  licenses: LicenseData[]
+  sins: SinData[]
+  selectedLicenseId: string
+  onSelect: (licenseId: string) => void
+}
+
+const ExistingLicenseSection: FC<ExistingLicenseSectionProps> = ({
+  licenses,
+  sins,
+  selectedLicenseId,
+  onSelect,
+}) => (
+  <FormControl size="small" fullWidth>
+    <InputLabel>License</InputLabel>
+    <Select
+      label="License"
+      value={selectedLicenseId}
+      onChange={(e) => onSelect(e.target.value)}
+    >
+      {licenses.map((license) => {
+        const sin = sins.find((s) => s.id === license.parentId)
+        return (
+          <MenuItem key={license.id} value={license.id}>
+            {license.name}
+            {sin && ` — ${sin.name}`}
+            {" "}
+            (
+            {license.rating === "real" ? "Real" : `Rating ${license.rating}`}
+            )
+          </MenuItem>
+        )
+      })}
+    </Select>
+  </FormControl>
+)
+
+interface NewLicenseSectionProps {
+  sins: SinData[]
+  selectedSinId: string
+  onSelectSin: (sinId: string) => void
+  onCreateSin: () => void
+  isReal: boolean
+  fakeRating: number
+  onFakeRatingChange: (rating: number) => void
+  cost: number
+  isBuilder: boolean
+  canAfford: boolean
+  currentNuyen: number
+}
+
+const NewLicenseSection: FC<NewLicenseSectionProps> = ({
+  sins,
+  selectedSinId,
+  onSelectSin,
+  onCreateSin,
+  isReal,
+  fakeRating,
+  onFakeRatingChange,
+  cost,
+  isBuilder,
+  canAfford,
+  currentNuyen,
+}) => (
+  <>
+    {sins.length === 0
+      ? (
+          <Stack sx={{ gap: 1 }}>
+            <Typography color="text.secondary">
+              This Runner has no SIN yet. Create one to attach the licence to.
+            </Typography>
+            <Button variant="outlined" color="secondary" onClick={onCreateSin}>
+              Create SIN
+            </Button>
+          </Stack>
+        )
+      : (
+          <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+            <FormControl size="small" sx={{ flex: 1 }}>
+              <InputLabel>SIN</InputLabel>
+              <Select
+                label="SIN"
+                value={selectedSinId}
+                onChange={(e) => onSelectSin(e.target.value)}
+              >
+                {sins.map((sin) => (
+                  <MenuItem key={sin.id} value={sin.id}>{sin.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Button size="small" color="secondary" onClick={onCreateSin}>
+              New SIN
+            </Button>
+          </Stack>
+        )}
+
+    <Stack direction="row" sx={{ gap: 2, alignItems: "center" }}>
+      <Chip
+        size="small"
+        color={isReal ? "success" : "secondary"}
+        label={isReal ? "Real" : "Fake"}
+      />
+
+      {!isReal && (
+        <CounterInput
+          label="Rating"
+          size="small"
+          value={fakeRating}
+          onChange={(value) => onFakeRatingChange(value ?? 1)}
+          min={1}
+          max={6}
+        />
+      )}
+
+      <Typography color="text.secondary">
+        Cost:
+        {" "}
+        <Nuyen amount={cost} />
+      </Typography>
+    </Stack>
+
+    {!isBuilder && !canAfford && (
+      <Typography color="error.main">
+        Need
+        {" "}
+        <Nuyen amount={cost} />
+        , have
+        {" "}
+        <Nuyen amount={currentNuyen} />
+      </Typography>
+    )}
+  </>
+)
+
 interface AssignLicenseDialogProps extends ControlledDialogProps<boolean> {
   item: ItemData
 }
@@ -49,8 +184,8 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
   const assignableLicenses = licenses.filter((license) => license.id !== item.licenseId)
 
   const [mode, setMode] = useState<"existing" | "new">(assignableLicenses.length > 0 ? "existing" : "new")
-  const [selectedLicenseId, setSelectedLicenseId] = useState(assignableLicenses[0]?.id ?? "")
-  const [selectedSinId, setSelectedSinId] = useState(sins[0]?.id ?? "")
+  const [selectedLicenseId, setSelectedLicenseId] = useState<string>(assignableLicenses[0]?.id ?? "")
+  const [selectedSinId, setSelectedSinId] = useState<string>(sins[0]?.id ?? "")
   const [fakeRating, setFakeRating] = useState(DefaultFakeLicenseRating)
 
   const title = item.licenseId ? "Change License" : "Assign License"
@@ -137,99 +272,27 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
 
           {mode === "existing"
             ? (
-                <FormControl size="small" fullWidth>
-                  <InputLabel>License</InputLabel>
-                  <Select
-                    label="License"
-                    value={selectedLicenseId}
-                    onChange={(e) => setSelectedLicenseId(e.target.value)}
-                  >
-                    {assignableLicenses.map((license) => {
-                      const sin = sins.find((s) => s.id === license.parentId)
-                      return (
-                        <MenuItem key={license.id} value={license.id}>
-                          {license.name}
-                          {sin && ` — ${sin.name}`}
-                          {" "}
-                          (
-                          {license.rating === "real" ? "Real" : `Rating ${license.rating}`}
-                          )
-                        </MenuItem>
-                      )
-                    })}
-                  </Select>
-                </FormControl>
+                <ExistingLicenseSection
+                  licenses={assignableLicenses}
+                  sins={sins}
+                  selectedLicenseId={selectedLicenseId}
+                  onSelect={setSelectedLicenseId}
+                />
               )
             : (
-                <>
-                  {sins.length === 0
-                    ? (
-                        <Stack sx={{ gap: 1 }}>
-                          <Typography color="text.secondary">
-                            This Runner has no SIN yet. Create one to attach the licence to.
-                          </Typography>
-                          <Button variant="outlined" color="secondary" onClick={handleCreateSin}>
-                            Create SIN
-                          </Button>
-                        </Stack>
-                      )
-                    : (
-                        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
-                          <FormControl size="small" sx={{ flex: 1 }}>
-                            <InputLabel>SIN</InputLabel>
-                            <Select
-                              label="SIN"
-                              value={selectedSinId}
-                              onChange={(e) => setSelectedSinId(e.target.value)}
-                            >
-                              {sins.map((sin) => (
-                                <MenuItem key={sin.id} value={sin.id}>{sin.name}</MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-
-                          <Button size="small" color="secondary" onClick={handleCreateSin}>
-                            New SIN
-                          </Button>
-                        </Stack>
-                      )}
-
-                  <Stack direction="row" sx={{ gap: 2, alignItems: "center" }}>
-                    <Chip
-                      size="small"
-                      color={isReal ? "success" : "secondary"}
-                      label={isReal ? "Real" : "Fake"}
-                    />
-
-                    {!isReal && (
-                      <CounterInput
-                        label="Rating"
-                        size="small"
-                        value={fakeRating}
-                        onChange={(value) => setFakeRating(value ?? 1)}
-                        min={1}
-                        max={6}
-                      />
-                    )}
-
-                    <Typography color="text.secondary">
-                      Cost:
-                      {" "}
-                      <Nuyen amount={cost} />
-                    </Typography>
-                  </Stack>
-
-                  {!isBuilder && !canAfford && (
-                    <Typography color="error.main">
-                      Need
-                      {" "}
-                      <Nuyen amount={cost} />
-                      , have
-                      {" "}
-                      <Nuyen amount={currentNuyen} />
-                    </Typography>
-                  )}
-                </>
+                <NewLicenseSection
+                  sins={sins}
+                  selectedSinId={selectedSinId}
+                  onSelectSin={setSelectedSinId}
+                  onCreateSin={handleCreateSin}
+                  isReal={isReal}
+                  fakeRating={fakeRating}
+                  onFakeRatingChange={setFakeRating}
+                  cost={cost}
+                  isBuilder={isBuilder}
+                  canAfford={canAfford}
+                  currentNuyen={currentNuyen}
+                />
               )}
         </Stack>
       </Dialog.Content>
