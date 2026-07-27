@@ -1,10 +1,10 @@
 import { useId } from "react"
 
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { useWoundModifier } from "#/components/system/damage/useWoundModifier.ts"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"

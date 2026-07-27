@@ -1,8 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { SpendKarmaDialogProvider } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { SpendKarmaDialogProvider } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { SkillGroupKey } from "#/system/skills/skillGroupKey.ts"

@@ -1,6 +1,6 @@
 import { isAdept } from "#/components/runner/adeptPowers/adeptPowersUtils.ts"
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import type { AlertInfo } from "#/components/ui/alerts/alertInfo.ts"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 

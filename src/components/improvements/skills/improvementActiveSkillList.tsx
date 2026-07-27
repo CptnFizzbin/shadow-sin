@@ -11,12 +11,12 @@ import type { FC } from "react"
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
-import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import {
   useActiveSkillDialog,
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
+import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   getActiveSkillCap,

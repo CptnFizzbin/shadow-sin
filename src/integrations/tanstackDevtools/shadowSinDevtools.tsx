@@ -6,7 +6,7 @@ import { useState } from "react"
 
 import { Artemis } from "#/data/fixtures/artemis.ts"
 import { Hexen } from "#/data/fixtures/hexen.ts"
-import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
 
 function ShadowSinDevtoolsPanel() {
   const router = useRouter()

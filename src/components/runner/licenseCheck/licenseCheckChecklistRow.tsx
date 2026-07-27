@@ -5,9 +5,9 @@ import type { FC } from "react"
 
 import { StatChip } from "#/components/ui/statChip.tsx"
 import { mergeSx } from "#/integrations/mui/muiUtils.ts"
+import { useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
-import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { isRealCredential } from "./licenseCheckDice.ts"
 import type { VerificationCheck } from "./licenseCheckTypes.ts"
 

@@ -7,7 +7,7 @@ import {
   calculateKnowledgeAndLanguageSpUsed,
   getFreeSkillPoints,
 } from "#/components/builder/sections/skills/skillsBuilderUtils.ts"
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { selectAwakeningData, selectMetatypeData } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {

@@ -1,3 +1,4 @@
+import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
@@ -6,7 +7,6 @@ import {
 } from "#/system/karma/improvements/improvementSelectors.ts"
 import { applyImprovements } from "#/system/karma/improvements/improvementUtils.ts"
 
-import { useSpendKarmaDialogContext } from "./spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "./useImprovementSelector.ts"
 
 export interface SpendKarmaSummary {

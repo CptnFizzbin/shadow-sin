@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import type { DiceTrayApi } from "./diceTrayApi.ts"
+import type { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 
 export const DiceTrayContext = createContext<DiceTrayApi | null>(null)
 

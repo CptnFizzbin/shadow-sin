@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 import { useMemo } from "react"
 
-import { AttributesProvider } from "#/components/runner/attributes/attributesProvider.tsx"
+import { AttributesProvider } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes } from "#/system/metatypeData.ts"

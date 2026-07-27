@@ -1,5 +1,5 @@
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useActiveSkill } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"

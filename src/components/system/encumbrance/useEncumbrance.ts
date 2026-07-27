@@ -1,5 +1,5 @@
 import { useGearByType } from "#/components/items/gearHooks.ts"
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { calculateArmorBulk, calculateArmorTotals, calculateEncumbrancePenalty } from "#/system/gear/encumbranceUtils.ts"

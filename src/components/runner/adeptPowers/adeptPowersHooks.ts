@@ -1,4 +1,4 @@
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 

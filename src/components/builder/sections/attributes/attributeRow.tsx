@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useAttrInfo } from "#/components/runner/runnerUtils.ts"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 

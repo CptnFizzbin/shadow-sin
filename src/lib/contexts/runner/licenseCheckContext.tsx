@@ -1,10 +1,9 @@
 import type { FC, PropsWithChildren } from "react"
 import { createContext, useContext } from "react"
 
+import type { LicenseCheckState } from "#/components/runner/licenseCheck/licenseCheckState.ts"
+import { useLicenseCheckState } from "#/components/runner/licenseCheck/licenseCheckState.ts"
 import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
-
-import type { LicenseCheckState } from "./licenseCheckState.ts"
-import { useLicenseCheckState } from "./licenseCheckState.ts"
 
 const LicenseCheckContext = createContext<LicenseCheckState | null>(null)
 

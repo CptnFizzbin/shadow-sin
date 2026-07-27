@@ -7,7 +7,7 @@ import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { useState } from "react"
 
-import { PrototypeSelectionContext } from "./prototypeContext.ts"
+import { PrototypeSelectionContext } from "#/lib/contexts/ui/prototypeContext.ts"
 
 export interface PrototypeVersion {
   /** Unique key. `Prototype.Item version="key"` matches against this. */

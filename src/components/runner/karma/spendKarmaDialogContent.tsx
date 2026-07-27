@@ -7,10 +7,6 @@ import { RiArrowLeftLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import {
-  SpendKarmaDialogProvider,
-  useSpendKarmaDialogContext,
-} from "#/components/improvements/spendKarmaDialogContext.tsx"
 import { SpendKarmaDialogFooter } from "#/components/improvements/spendKarmaDialogFooter.tsx"
 import { SpendKarmaHubList } from "#/components/improvements/spendKarmaHubList.tsx"
 import type { SpendKarmaSectionKey } from "#/components/improvements/spendKarmaSections.tsx"
@@ -19,6 +15,10 @@ import { useSpendKarmaSummary } from "#/components/improvements/useSpendKarmaSum
 import { useVisibleSections } from "#/components/improvements/useVisibleSections.ts"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
+import {
+  SpendKarmaDialogProvider,
+  useSpendKarmaDialogContext,
+} from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 
 // Inner component that consumes SpendKarmaDialogProvider context
 const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {

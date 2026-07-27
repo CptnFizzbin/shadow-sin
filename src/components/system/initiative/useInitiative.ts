@@ -1,8 +1,8 @@
 import { useMemo } from "react"
 
-import { useAttrValue } from "#/components/runner/attributes/attributesProvider.tsx"
 import { useEncumbrance } from "#/components/system/encumbrance/useEncumbrance.ts"
 import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
+import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 

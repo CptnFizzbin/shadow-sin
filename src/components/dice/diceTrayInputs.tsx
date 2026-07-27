@@ -9,9 +9,9 @@ import type { FC } from "react"
 
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { selectIsRolling, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
 
-import { useDiceTray } from "./diceTrayContext.ts"
 import { ExtendedInterval, ExtendedIntervalLabels, TestType } from "./testType.ts"
 
 export const DiceTrayInputs: FC = () => {

@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import {
   selectHits,
   selectRollState,
@@ -12,7 +13,6 @@ import {
 } from "#/system/dice/diceRoller.selectors.ts"
 import { RollState } from "#/system/dice/rollState.ts"
 
-import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType } from "./testType.ts"
 
 export const DiceTrayResultLabels: FC = () => {
