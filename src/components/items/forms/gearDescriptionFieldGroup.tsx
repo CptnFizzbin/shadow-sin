@@ -1,6 +1,5 @@
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-
-import { itemFormOpts } from "./useItemForm.tsx"
+import { itemFormOpts } from "#/lib/hooks/items/forms/useItemForm.tsx"
 
 export const GearDescriptionFieldGroup = withFieldGroup({
   ...itemFormOpts,

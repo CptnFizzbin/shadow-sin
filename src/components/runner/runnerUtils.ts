@@ -1,7 +1,8 @@
-import { useGearByType } from "#/components/items/gearHooks.ts"
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { useGameEffects } from "#/components/system/gameEffects/useGameEffects.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useAllAttrInfos, useAttrInfo, useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
+import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -9,8 +10,6 @@ import { ImplantType } from "#/system/gear/implantData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { SkillKey } from "#/system/skills/skillKey.ts"
 import { skillList } from "#/system/skills/skillList.ts"
-
-import { useAllAttrInfos, useAttrInfo, useAttrValue } from "./attributes/attributesProvider.tsx"
 
 // Re-exported for convenience — see attributesProvider.tsx for full documentation.
 export { useAllAttrInfos, useAttrInfo }

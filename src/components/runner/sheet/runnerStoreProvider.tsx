@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react"
 
-import { RunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
-import type { RunnerStore } from "#/stores/runner/runnerStore.ts"
+import { RunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
 
 import { RunnerAttributesProvider } from "./runnerAttributesProvider.tsx"
 

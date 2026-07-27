@@ -5,16 +5,15 @@ import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import {
   selectIsRolling,
   selectWasRolled,
   useDiceRollerSelector,
 } from "#/system/dice/diceRoller.selectors.ts"
-
-import { useDiceTray } from "./diceTrayContext.ts"
 
 export const DiceTrayEdgeControls: FC = () => {
   const diceTrayApi = useDiceTray()

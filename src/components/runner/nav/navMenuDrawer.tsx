@@ -11,8 +11,8 @@ import { RiCloseLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { useCurrentRunnerSection } from "./useRunnerNav.ts"
-import { useRunnerTabs } from "./useRunnerTabs.ts"
+import { useCurrentRunnerSection } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
+import { useRunnerTabs } from "#/lib/hooks/runner/nav/useRunnerTabs.ts"
 
 interface NavMenuDrawerProps {
   open: boolean

@@ -2,7 +2,7 @@ import Button from "@mui/material/Button"
 import { RiSwordLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { useDialogCtrl } from "#/components/ui/dialog/useDialogCtrl.ts"
+import { useDialogCtrl } from "#/lib/hooks/ui/dialog/useDialogCtrl.ts"
 
 import { CombatActionsCheatSheetDialogContent } from "./combatActionsCheatSheetDialogContent.tsx"
 

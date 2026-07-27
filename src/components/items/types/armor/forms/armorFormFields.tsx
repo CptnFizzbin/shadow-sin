@@ -4,8 +4,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-
-import { armorFormOpts } from "./useArmorForm.tsx"
+import { armorFormOpts } from "#/lib/hooks/items/types/armor/forms/useArmorForm.tsx"
 
 export const ArmorFormFields = withFieldGroup({
   ...armorFormOpts,

@@ -9,9 +9,9 @@ import { useState } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
-import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import type { ProfileFieldsValue } from "./profileFields.tsx"
 import { ProfileFields } from "./profileFields.tsx"

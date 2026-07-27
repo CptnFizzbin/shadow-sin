@@ -8,8 +8,8 @@ import RunnerRosterList from "#/components/runner/runnerRosterList.tsx"
 import { Artemis } from "#/data/fixtures/artemis.ts"
 import { Hexen } from "#/data/fixtures/hexen.ts"
 import { env } from "#/env.ts"
+import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
-import { RunnerManager } from "#/runner/runnerManager.ts"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })

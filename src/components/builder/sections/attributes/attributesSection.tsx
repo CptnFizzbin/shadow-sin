@@ -2,12 +2,12 @@ import LinearProgress from "@mui/material/LinearProgress"
 import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 
-import { useAttributesBuildPoints } from "#/components/builder/buildPoints/hooks/useAttributesBuildPoints.ts"
 import { useAllAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
+import { EditorMode } from "#/lib/contexts/builder/editorMode.tsx"
+import { useAttributesBuildPoints } from "#/lib/hooks/builder/buildPoints/useAttributesBuildPoints.ts"
 import { getProgress } from "#/lib/progressUtils.ts"
-import { EditorMode } from "#/stores/builder/editorMode.tsx"
 import {
   AttributeKey,
   AttributeOrder,

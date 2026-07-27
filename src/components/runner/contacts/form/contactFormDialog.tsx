@@ -5,14 +5,14 @@ import { useId } from "react"
 
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { contactFieldMap, useContactForm } from "#/lib/hooks/runner/contacts/form/useContactForm.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
-import { Actions } from "#/stores/runner/runnerStore.actions.ts"
-import { useRunnerStoreDispatch } from "#/stores/runner/runnerStore.dispatch.ts"
 import type { ContactData } from "#/system/contactData.ts"
 
 import { ContactFormFields } from "./contactFormFields.tsx"
-import { contactFieldMap, useContactForm } from "./useContactForm.tsx"
 
 interface ContactFormDialogProps extends ControlledDialogProps<void> {
   contact?: ContactData

@@ -10,11 +10,11 @@ import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
-import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useSpellFormDialog } from "#/components/runner/magician/spells/dialogs/spellFormDialog.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LearnSpellEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
   isLearnSpellEntry,

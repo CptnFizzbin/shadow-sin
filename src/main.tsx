@@ -5,8 +5,8 @@ import React from "react"
 import { createRoot } from "react-dom/client"
 
 import TanStackQueryProvider from "./integrations/tanstackQuery/rootProvider.tsx"
+import { RunnerManagerProvider } from "./lib/contexts/runner/runnerManagerContext.tsx"
 import { getRouter } from "./router.ts"
-import { RunnerManagerProvider } from "./runner/runnerManagerContext.tsx"
 import { theme } from "./theme.ts"
 
 const router = getRouter()

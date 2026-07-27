@@ -1,8 +1,7 @@
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-
-import { useWoundModifier } from "./useWoundModifier.ts"
+import { useWoundModifier } from "#/lib/hooks/system/damage/useWoundModifier.ts"
 
 export const WoundModLabel: FC = () => {
   const woundMod = useWoundModifier()

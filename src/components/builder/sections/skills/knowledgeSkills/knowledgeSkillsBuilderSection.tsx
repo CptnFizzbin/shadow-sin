@@ -2,10 +2,10 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-
 import {
   useKnowledgeSkillsAlerts,
-} from "./hooks/useKnowledgeSkillsAlerts.ts"
+} from "#/lib/hooks/builder/sections/skills/knowledgeSkills/useKnowledgeSkillsAlerts.ts"
+
 import {
   KnowledgeSkillsList,
 } from "./knowledgeSkillsList.tsx"

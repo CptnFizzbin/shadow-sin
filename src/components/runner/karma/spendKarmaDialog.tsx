@@ -1,4 +1,4 @@
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 
 import { SpendKarmaDialogContent } from "./spendKarmaDialogContent.tsx"
 

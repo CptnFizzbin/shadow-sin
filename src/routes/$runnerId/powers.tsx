@@ -6,7 +6,7 @@ import type { FC } from "react"
 
 import { AdeptPowersViewerSection } from "#/components/runner/adeptPowers/adeptPowersViewerSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
 interface Props {}

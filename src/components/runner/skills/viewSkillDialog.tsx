@@ -5,7 +5,7 @@ import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
-import { useDialog } from "#/components/ui/dialog/useDialog.tsx"
+import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 
 interface ViewSkillDialogProps extends ControlledDialogProps<void> {
   name: string

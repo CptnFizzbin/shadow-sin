@@ -11,8 +11,8 @@ import { getAttributesValues } from "#/components/runner/attributes/getAttribute
 import { InnatePowersDisplay } from "#/components/runner/biology/innatePowersDisplay.tsx"
 import { MovementDisplay } from "#/components/runner/biology/movementDisplay.tsx"
 import { BuildPoints } from "#/components/ui/buildPoints.tsx"
-import { useRunnerStoreContext } from "#/stores/runner/runnerStore.context.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { awakenings } from "#/system/awakeningType.ts"
 import { metatypes, MetatypeType } from "#/system/metatypeData.ts"
 

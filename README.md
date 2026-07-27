@@ -73,12 +73,18 @@ immediately without a full reload.
 
 ```
 src/
-  character/        Character loading, saving, and migrations
-  components/       React components (character sheet, builder, gear, UI)
+  components/       React display components (runner sheet, builder, gear, UI), grouped by feature
+  data/             Runner fixtures and schema migrations
   integrations/     TanStack Query/Router/Form wiring, MUI theme setup
-  lib/              Generic utilities (storage, number/merge helpers)
+  lib/
+    hooks/          Custom React hooks (useXyz), grouped by feature
+    stores/         Redux Toolkit store slices, grouped by feature
+    contexts/       createContext definitions, grouped by feature
+    persistence/    RunnerManager: loads, saves, and migrates runner files
+    storage/        Pluggable persistence layer (IStorageProvider + StorageManager)
+                    ...plus generic utilities at the lib/ root (arrayUtils, numberUtils, etc.)
   routes/           File-based TanStack Router routes
-  system/           Domain types — CharacterSheet, gear, magic, skills, etc.
+  system/           Domain types — RunnerData, gear, magic, skills, etc.
   env.ts            Environment variable declarations (@t3-oss/env-core)
   main.tsx          App entry point
 
@@ -90,7 +96,8 @@ Key conventions:
 
 - **Path alias `#/`** → `src/` (configured in `tsconfig.json`)
 - **All local imports must include the file extension** (`.ts` or `.tsx`)
-- Character state lives in `CharacterSheetStore` — subscribe reactively via `useCharacterSheet(selector)`
+- Runner state lives in a Redux Toolkit store (`RunnerStore`) — subscribe reactively via
+  `useRunnerStoreSelector(selector)`
 
 ---
 

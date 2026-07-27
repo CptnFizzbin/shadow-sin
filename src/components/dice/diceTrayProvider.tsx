@@ -1,8 +1,9 @@
 import type { FC, PropsWithChildren } from "react"
 import { useEffect } from "react"
 
+import { DiceTrayContext } from "#/lib/contexts/dice/diceTrayContext.ts"
+
 import type { DiceTrayApi } from "./diceTrayApi.ts"
-import { DiceTrayContext } from "./diceTrayContext.ts"
 import { DiceTrayDialog } from "./diceTrayDialog.tsx"
 
 interface DiceTrayProviderProps extends PropsWithChildren {

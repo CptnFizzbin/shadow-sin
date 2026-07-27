@@ -2,12 +2,12 @@ import UploadIcon from "@mui/icons-material/Upload"
 import Button from "@mui/material/Button"
 import type { FC } from "react"
 
-import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
+import { useYamlFileImport } from "#/lib/hooks/runner/exportImport/useYamlFileImport.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { useImportConflictDialog } from "./importConflictDialog.tsx"
 import { resolveConflictedRunner } from "./importUtils.ts"
-import { useYamlFileImport } from "./useYamlFileImport.ts"
 
 interface ImportRunnerButtonProps {
   onImported?: () => void | Promise<void>

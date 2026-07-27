@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { useLanguageSkillDicePool } from "#/components/runner/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
+import { useLanguageSkillDicePool } from "#/lib/hooks/runner/skills/skillDicePools.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { DetailDialog } from "#/components/ui/dialog/detailDialog.tsx"
-import { useDialogCtrl } from "#/components/ui/dialog/useDialogCtrl.ts"
+import { useDialogCtrl } from "#/lib/hooks/ui/dialog/useDialogCtrl.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import type { RollType } from "#/system/magic/critterPowerData.ts"
 import {

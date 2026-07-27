@@ -5,7 +5,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LoanData } from "#/system/loanData.ts"
 
 import { LoanCard } from "./loanCard.tsx"

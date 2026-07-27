@@ -12,12 +12,12 @@ import type { FC } from "react"
 
 import { ImprovementQueuedLearnRow } from "#/components/improvements/improvementQueuedLearnRow.tsx"
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
-import { useSpendKarmaDialogContext } from "#/components/improvements/spendKarmaDialogContext.tsx"
-import { useImprovementSelector } from "#/components/improvements/useImprovementSelector.ts"
 import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { KarmaValue } from "#/components/runner/karma/karmaValue.tsx"
 import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/complexFormDialog.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
+import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type {
   ComplexFormIncreaseEntry,

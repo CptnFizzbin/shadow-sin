@@ -8,8 +8,8 @@ import { RiArrowDownSLine, RiDice6Line } from "@remixicon/react"
 import type { FC } from "react"
 import { useContext, useState } from "react"
 
-import { DiceTrayContext } from "#/components/dice/diceTrayContext.ts"
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
+import { DiceTrayContext } from "#/lib/contexts/dice/diceTrayContext.ts"
 
 import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
 import { isDiceGroup } from "./diceGroup.tsx"

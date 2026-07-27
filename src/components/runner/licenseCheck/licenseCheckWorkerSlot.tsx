@@ -2,13 +2,13 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { useLicenseCheck } from "#/lib/contexts/runner/licenseCheckContext.tsx"
+import { useLicenseCheckWorker } from "#/lib/hooks/runner/licenseCheck/useLicenseCheckWorker.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
-import { useLicenseCheck } from "./licenseCheckContext.tsx"
 import { LicenseCheckDiceGroup } from "./licenseCheckDiceGroup.tsx"
 import type { VerificationQueue } from "./licenseCheckQueue.ts"
 import type { VerificationCheck, VerificationOutcome } from "./licenseCheckTypes.ts"
-import { useLicenseCheckWorker } from "./useLicenseCheckWorker.ts"
 
 const kindLabel: Record<VerificationCheck["kind"], string> = {
   "sin": "SIN",

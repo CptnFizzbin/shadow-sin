@@ -1,6 +1,6 @@
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
 import { createMemoryStorage } from "#/lib/storage/providers/memoryStorageProvider.ts"
-import { RunnerManager } from "#/runner/runnerManager.ts"
+import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 
 export function makeTestRunnerManager(): {
   manager: RunnerManager

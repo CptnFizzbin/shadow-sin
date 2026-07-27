@@ -2,11 +2,11 @@ import type { FC } from "react"
 
 import { BuilderSection } from "#/components/builder/sections/builderSection.tsx"
 import { BuilderSectionId } from "#/components/builder/sections/builderSectionId.ts"
-
-import { ActiveSkillsList } from "./activeSkillsList.tsx"
 import {
   useActiveSkillsAlerts,
-} from "./hooks/useActiveSkillsAlerts.ts"
+} from "#/lib/hooks/builder/sections/skills/activeSkills/useActiveSkillsAlerts.ts"
+
+import { ActiveSkillsList } from "./activeSkillsList.tsx"
 
 export const ActiveSkillsBuilderSection: FC = () => {
   return (

@@ -4,12 +4,12 @@ import { z } from "zod"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
+import { weaponFieldMap, weaponFormOpts } from "#/lib/hooks/items/types/weapons/forms/useWeaponForm.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { MeleeWeaponType, WeaponType } from "#/system/gear/weaponData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 import { FirearmFormFields } from "./firearmFormFields.tsx"
-import { weaponFieldMap, weaponFormOpts } from "./useWeaponForm.tsx"
 import { WeaponDamageFormFields } from "./weaponDamageFormFields.tsx"
 import { WeaponSkillFormFields } from "./weaponSkillFormFields.tsx"
 

@@ -18,8 +18,8 @@ import { useNavigate, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import type { RunnerLoadError } from "#/runner/runnerLoadError.ts"
-import { useRunnerManager } from "#/runner/runnerManagerContext.tsx"
+import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
+import type { RunnerLoadError } from "#/lib/persistence/runnerLoadError.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"

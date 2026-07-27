@@ -1,8 +1,8 @@
 import type { FC } from "react"
 
-import { useKnowledgeSkillDicePool } from "#/components/runner/skills/skillDicePools.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { useViewSkillDialog } from "#/components/runner/skills/viewSkillDialog.tsx"
+import { useKnowledgeSkillDicePool } from "#/lib/hooks/runner/skills/skillDicePools.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 

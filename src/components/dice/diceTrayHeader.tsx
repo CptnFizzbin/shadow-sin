@@ -8,8 +8,8 @@ import Switch from "@mui/material/Switch"
 import type { FC } from "react"
 
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 
-import { useDiceTray } from "./diceTrayContext.ts"
 import { TestType, TestTypeLabels } from "./testType.ts"
 
 export const DiceTrayHeader: FC = () => {

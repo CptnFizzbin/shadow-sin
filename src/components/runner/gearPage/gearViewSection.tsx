@@ -7,8 +7,8 @@ import { RiArrowDownSLine } from "@remixicon/react"
 import type { FC } from "react"
 import { useState } from "react"
 
-import { searchGear } from "#/components/items/gearHooks.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { searchGear } from "#/lib/hooks/items/gearHooks.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 import { CyberwareSectionHeader } from "./cyberwareSectionHeader.tsx"

@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest"
 
 import { runnerDataToYaml, yamlToRunnerData } from "#/components/runner/exportImport/exportUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
+import type { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import type { AsyncJsonStorage } from "#/lib/storage/asyncStorage.ts"
-import type { RunnerManager } from "#/runner/runnerManager.ts"
 import BlurYaml from "#testUtils/fixtures/characters/blur.yaml?raw"
 import {
   characterV0,

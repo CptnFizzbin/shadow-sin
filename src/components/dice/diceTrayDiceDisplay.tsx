@@ -6,9 +6,8 @@ import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
+import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { selectAllDice, useDiceRollerSelector } from "#/system/dice/diceRoller.selectors.ts"
-
-import { useDiceTray } from "./diceTrayContext.ts"
 
 export const DiceTrayDiceDisplay: FC = () => {
   const diceTrayApi = useDiceTray()

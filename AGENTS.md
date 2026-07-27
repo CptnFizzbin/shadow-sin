@@ -33,15 +33,15 @@ yarn fallow       # Run Fallow codebase analysis (dead code, duplication, comple
 ## Architecture
 
 Runner state (`RunnerData`) lives in a Redux Toolkit store — not React state or Context values directly. Each domain
-(`attributes`, `biology`, `karma`, `skills`, etc., under `src/stores/runner/<domain>/`) follows a three-file pattern:
+(`attributes`, `biology`, `karma`, `skills`, etc., under `src/lib/stores/runner/<domain>/`) follows a three-file pattern:
 `*Slice.actions.ts` (RTK `createAction`/`createAsyncThunk`), `*Slice.ts` (RTK `createReducer`), and
-`*Slice.selectors.ts` (plain selector functions). `src/stores/runner/runnerStore.reducer.ts` combines them with RTK's
+`*Slice.selectors.ts` (plain selector functions). `src/lib/stores/runner/runnerStore.reducer.ts` combines them with RTK's
 `combineReducers`. A store instance is created per runner (`RunnerDataStore`, `src/components/runner/sheet/runnerDataStore.ts`)
-and provided through React context via `RunnerStoreProvider`. Components subscribe reactively via
-`useRunnerStoreSelector(selector)` (`src/stores/runner/runnerStore.selectors.ts`) and dispatch via
-`useRunnerStoreDispatch()` (`src/stores/runner/runnerStore.dispatch.ts`) — never read `store.state`/`store.get()`
-directly in a component (see "Redux Toolkit store patterns" below). The Builder flow mirrors this with its own
-`BuilderState` store (`src/stores/builder/`).
+and provided through React context via `RunnerStoreProvider` (context in `src/lib/contexts/runner/runnerStore.context.ts`).
+Components subscribe reactively via `useRunnerStoreSelector(selector)` (`src/lib/stores/runner/runnerStore.selectors.ts`)
+and dispatch via `useRunnerStoreDispatch()` (`src/lib/stores/runner/runnerStore.dispatch.ts`) — never read
+`store.state`/`store.get()` directly in a component (see "Redux Toolkit store patterns" below). The Builder flow
+mirrors this with its own `BuilderState` store (`src/lib/stores/builder/`).
 
 The `$runnerId.tsx` route subscribes to store changes via `store.subscribe()` and immediately persists to
 `runnerManager.save()` on every update (no dedicated persistence component).
@@ -70,13 +70,21 @@ localStorage key literals.
 - `src/data/migrations/` — Runner schema migration steps, registered in `src/data/migrations.ts`; shared
   `CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` (name kept deliberately, see
   `CONTEXT.md`)
-- `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager`)
-- `src/runner/runnerManager.ts` — `RunnerManager`: loads, saves, migrates runners via `StorageManager` (plus
-  `runnerId.ts`, `runnerIndex.ts`, `runnerLoadError.ts`, `runnerManagerContext.tsx`)
+- `src/lib/` — Non-UI application code, split into:
+  - `src/lib/hooks/<feature>/` — Custom React hooks (`useXyz`), grouped by the same feature names as
+    `src/components/`
+  - `src/lib/stores/<feature>/` — Redux Toolkit store slices (see "Architecture" above)
+  - `src/lib/contexts/<feature>/` — `createContext` definitions, kept together with their Provider component and
+    accessor hook in one file per context
+  - `src/lib/persistence/` — `RunnerManager`: loads, saves, migrates runners via `StorageManager` (plus `runnerId.ts`,
+    `runnerIndex.ts`, `runnerLoadError.ts`); its context, `runnerManagerContext.tsx`, lives in
+    `src/lib/contexts/runner/`
+  - `src/lib/storage/` — Pluggable persistence layer (`IStorageProvider` + `StorageManager`)
+  - Generic utilities at the `src/lib/` root (`arrayUtils.ts`, `numberUtils.ts`, etc.) and `src/lib/errors/`
 - `src/components/runner/` — Viewer (play-time) UI components; `runnerStoreProvider.tsx`
   (`src/components/runner/sheet/`) provides the per-runner `RunnerStore` via context
-- `src/components/builder/` — Character creation/edit form (Builder; store-based); `builderStoreProvider.tsx` and
-  `hooks/useBuilderStores.ts` provide the builder store
+- `src/components/builder/` — Character creation/edit form (Builder; store-based); `builderStoreProvider.tsx`
+  provides the builder store (`useBuilderStores` hook lives in `src/lib/hooks/builder/useBuilderStores.ts`)
 - `src/components/items/` — Generic item ("gear") infrastructure (see **Gear item forms & dialogs** below)
 - `src/routes/` — TanStack file-based routes
 - `src/integrations/` — Third-party integration wrappers: `reduxToolkit/` (`createCompatStore`, `useSelector`),
@@ -104,31 +112,36 @@ on `yarn dev`/`yarn build`. Add new routes by creating files under `src/routes/`
 Each item type lives under `src/components/items/types/<type>/` (`weapons`, `armor`, `implants`, `devices`,
 `vehicles`, `licenses`) and follows a consistent three-layer pattern:
 
-1. **`useXxxForm` hook** (`forms/useXxxForm.tsx`) — wraps `useAppForm` with type-specific default values and maps the
-   flat form state back to the typed `XxxData`. Generic items use `useItemForm` directly.
+1. **`useXxxForm` hook** (`src/lib/hooks/items/types/<type>/forms/useXxxForm.tsx`) — wraps `useAppForm` with
+   type-specific default values and maps the flat form state back to the typed `XxxData`. Generic items use
+   `useItemForm` (`src/lib/hooks/items/forms/useItemForm.tsx`) directly.
 
-2. **`XxxFormFields` component** (`forms/xxxFormFields.tsx`) — renders the fields for the form using
-   `withFieldGroup`. Type-specific fields (e.g. weapon damage, firearm type) sit alongside the shared availability,
-   source, description, and effects groups.
+2. **`XxxFormFields` component** (`src/components/items/types/<type>/forms/xxxFormFields.tsx`) — renders the fields
+   for the form using `withFieldGroup`. Type-specific fields (e.g. weapon damage, firearm type) sit alongside the
+   shared availability, source, description, and effects groups.
 
-3. **`XxxFormDialog` component** (`dialogs/xxxFormDialog.tsx`) — combines the hook and fields into a
-   `<Dialog>`, passing a `GearSubmitMeta` (`submitAction: "acquire" | "purchase" | "save"`) to `onSubmit`. Submit
-   logic (the acquire / purchase / save decision) lives in `src/components/items/dialogs/itemFormDialog.tsx` — in
-   builder context or edit mode it calls `onSave` directly; in viewer create mode it also withdraws nuyen on
-   "purchase".
+3. **`XxxFormDialog` component** (`src/components/items/types/<type>/dialogs/xxxFormDialog.tsx`) — combines the hook
+   and fields into a `<Dialog>`, passing a `GearSubmitMeta` (`submitAction: "acquire" | "purchase" | "save"`) to
+   `onSubmit`. Submit logic (the acquire / purchase / save decision) lives in
+   `src/components/items/dialogs/itemFormDialog.tsx` — in builder context or edit mode it calls `onSave` directly; in
+   viewer create mode it also withdraws nuyen on "purchase".
 
-Each type's files live under `src/components/items/types/<type>/` (e.g. `types/weapons/forms/useWeaponForm.tsx`,
-`types/weapons/forms/weaponFormFields.tsx`, `types/weapons/dialogs/weaponFormDialog.tsx`). Supporting utilities in
-`src/components/items/`:
+Each type's hook lives under `src/lib/hooks/items/types/<type>/forms/` (e.g. `useWeaponForm.tsx`), while its fields
+and dialog components stay under `src/components/items/types/<type>/` (e.g. `types/weapons/forms/weaponFormFields.tsx`,
+`types/weapons/dialogs/weaponFormDialog.tsx`). Supporting utilities in `src/components/items/`:
 
 - `dialogs/itemFormDialog.tsx` — centralises the builder-vs-viewer submit logic (see above)
 - `gearSubmitMeta.ts` — the shared `GearSubmitMeta` type
-- `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive helpers
 - `card/gearItemCard.tsx` — shared display card used across gear list views
 - `availability/availabilityChip.tsx` — `AvailabilityChip` for restricted/forbidden badges
 
-**Adding a new item type** — create `types/myItem/forms/useMyItemForm.tsx`, `types/myItem/forms/myItemFormFields.tsx`,
-and `types/myItem/dialogs/myItemFormDialog.tsx` following the weapons or implants examples.
+Supporting hooks in `src/lib/hooks/items/`:
+
+- `gearHooks.ts` — `useGearByType()`, `useGearFilter()`, `searchGear()` reactive helpers
+
+**Adding a new item type** — create `src/lib/hooks/items/types/myItem/forms/useMyItemForm.tsx`,
+`src/components/items/types/myItem/forms/myItemFormFields.tsx`, and
+`src/components/items/types/myItem/dialogs/myItemFormDialog.tsx` following the weapons or implants examples.
 
 ## Character migrations
 

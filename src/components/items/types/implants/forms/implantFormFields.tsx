@@ -11,10 +11,9 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
-import { Selectors, useRunnerStoreSelector } from "#/stores/runner/runnerStore.selectors.ts"
+import { implantFormOpts } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { ImplantGrade, ImplantLocation, ImplantType, isImplant } from "#/system/gear/implantData.ts"
-
-import { implantFormOpts } from "./useImplantForm.tsx"
 
 const implantTypeOptions = [
   { label: "Cyberware", value: ImplantType.cyberware },
