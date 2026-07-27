@@ -199,6 +199,14 @@ describe("licenses.selectForItem", () => {
     // Act / Assert
     expect(licenses.selectForItem(gearItem.id)(runner)).toBeUndefined()
   })
+
+  it("returns null for an item id that isn't in gear at all", () => {
+    // Arrange
+    const runner = withGear()
+
+    // Act / Assert
+    expect(licenses.selectForItem(crypto.randomUUID() as UUID)(runner)).toBeNull()
+  })
 })
 
 describe("licenses.selectItemsForId", () => {

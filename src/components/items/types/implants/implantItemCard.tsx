@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography"
-import { RiDeleteBin6Line, RiEdit2Line, RiFileShieldLine } from "@remixicon/react"
+import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
 import type { FC } from "react"
 
 import { AvailabilityChip } from "#/components/items/availability/availabilityChip.tsx"
@@ -9,7 +9,6 @@ import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
 import { GearMaxAvailability } from "#/components/items/gearUtils.ts"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { useQuickBuyLicenseAction } from "#/lib/hooks/items/types/licenses/useQuickBuyLicenseAction.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -49,7 +48,6 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
   const implantFormDialog = useImplantFormDialog()
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
-  const licenseQuickBuy = useQuickBuyLicenseAction(implant)
 
   const handleRemove = async () => {
     const result = await confirmDialog.confirm({
@@ -128,12 +126,6 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
           <RiDeleteBin6Line size={16} />
         </ItemCard.Action>
 
-        {licenseQuickBuy.eligible && (
-          <ItemCard.Action type="icon" aria-label="Buy License" onClick={licenseQuickBuy.open}>
-            <RiFileShieldLine size={16} />
-          </ItemCard.Action>
-        )}
-
         {onAddAccessory && (
           <ItemCard.AddChildButton onClick={onAddAccessory}>
             Add Accessory
@@ -151,7 +143,6 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({
 
       {implantFormDialog.dialog}
       {confirmDialog.dialog}
-      {licenseQuickBuy.dialog}
     </>
   )
 }

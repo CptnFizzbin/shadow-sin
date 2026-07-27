@@ -6,6 +6,7 @@ import type { ItemDialogProps } from "#/components/items/dialogs/itemDialog.tsx"
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ImplantFormFields } from "#/components/items/types/implants/forms/implantFormFields.tsx"
 import { getImplantEffectiveNuyenCost } from "#/components/items/types/implants/implantUtils.ts"
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { implantFieldMap, useImplantForm } from "#/lib/hooks/items/types/implants/forms/useImplantForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -42,7 +43,12 @@ export const ImplantFormDialog: FC<CyberwareFormDialogProps & Omit<ItemDialogPro
         hasEffects: { forced: true },
       }}
       slots={{
-        itemFields: () => <ImplantFormFields form={form} fields={implantFieldMap} />,
+        itemFields: () => (
+          <>
+            <ImplantFormFields form={form} fields={implantFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
       }}
     />
   )

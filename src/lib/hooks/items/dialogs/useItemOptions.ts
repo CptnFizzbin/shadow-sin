@@ -11,8 +11,6 @@ export interface ItemDialogOptionConfig {
 
 export type ItemOptionKey =
   | "equipable"
-  | "licenseRequired"
-  | "licenseAlwaysShow"
   | "hasRating"
   | "multiple"
   | "isSubItem"
@@ -23,7 +21,6 @@ export type ItemOptionKey =
 
 export interface ItemOptionsDefaults {
   equipable?: ItemDialogOptionConfig
-  licenseRequired?: ItemDialogOptionConfig
   hasRating?: ItemDialogOptionConfig
   multiple?: ItemDialogOptionConfig
   isSubItem?: ItemDialogOptionConfig
@@ -61,8 +58,6 @@ export function initializeOptions(
     equipable:
       resolveEnabled(defaults?.equipable)
       || (!isForceDisabled(defaults?.equipable) && isEditMode && initialValues.equipped !== undefined),
-    licenseRequired: resolveEnabled(defaults?.licenseRequired),
-    licenseAlwaysShow: false,
     // rating: 0 is not a meaningful value so is treated the same as undefined.
     hasRating:
       resolveEnabled(defaults?.hasRating)
@@ -126,7 +121,7 @@ function clearStaleOptionField(
       break
     }
     default:
-      // No form field to clear for licenseRequired, licenseAlwaysShow, fixed
+      // No form field to clear for fixed
       break
   }
 }
