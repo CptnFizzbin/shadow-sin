@@ -106,16 +106,16 @@ export const theme = createTheme({
       fontSize: 12,
     },
     caption: {
-      fontFamily: BODY_FONT,
-      fontSize: 10,
+      "fontFamily": BODY_FONT,
+      "fontSize": 10,
       "@media (min-width:600px)": {
         fontSize: 12,
       },
     },
     overline: {
-      fontFamily: BODY_FONT,
-      fontWeight: 700,
-      fontSize: 10,
+      "fontFamily": BODY_FONT,
+      "fontWeight": 700,
+      "fontSize": 10,
       "@media (min-width:600px)": {
         fontSize: 12,
       },
