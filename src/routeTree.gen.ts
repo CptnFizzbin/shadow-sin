@@ -21,6 +21,7 @@ import { Route as RunnerIdDronesRouteImport } from './routes/$runnerId/drones'
 import { Route as RunnerIdFinancesRouteImport } from './routes/$runnerId/finances'
 import { Route as RunnerIdGearRouteImport } from './routes/$runnerId/gear'
 import { Route as RunnerIdLicensesRouteImport } from './routes/$runnerId/licenses'
+import { Route as RunnerIdMatrixRouteImport } from './routes/$runnerId/matrix'
 import { Route as RunnerIdNotesRouteImport } from './routes/$runnerId/notes'
 import { Route as RunnerIdOffenseRouteImport } from './routes/$runnerId/offense'
 import { Route as RunnerIdPowersRouteImport } from './routes/$runnerId/powers'
@@ -95,6 +96,11 @@ const RunnerIdGearRoute = RunnerIdGearRouteImport.update({
 const RunnerIdLicensesRoute = RunnerIdLicensesRouteImport.update({
   id: '/licenses',
   path: '/licenses',
+  getParentRoute: () => RunnerIdRoute,
+} as any)
+const RunnerIdMatrixRoute = RunnerIdMatrixRouteImport.update({
+  id: '/matrix',
+  path: '/matrix',
   getParentRoute: () => RunnerIdRoute,
 } as any)
 const RunnerIdNotesRoute = RunnerIdNotesRouteImport.update({
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/$runnerId/finances': typeof RunnerIdFinancesRoute
   '/$runnerId/gear': typeof RunnerIdGearRoute
   '/$runnerId/licenses': typeof RunnerIdLicensesRoute
+  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
   '/$runnerId/notes': typeof RunnerIdNotesRoute
   '/$runnerId/offense': typeof RunnerIdOffenseRoute
   '/$runnerId/powers': typeof RunnerIdPowersRoute
@@ -213,6 +220,7 @@ export interface FileRoutesByTo {
   '/$runnerId/finances': typeof RunnerIdFinancesRoute
   '/$runnerId/gear': typeof RunnerIdGearRoute
   '/$runnerId/licenses': typeof RunnerIdLicensesRoute
+  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
   '/$runnerId/notes': typeof RunnerIdNotesRoute
   '/$runnerId/offense': typeof RunnerIdOffenseRoute
   '/$runnerId/powers': typeof RunnerIdPowersRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/$runnerId/finances': typeof RunnerIdFinancesRoute
   '/$runnerId/gear': typeof RunnerIdGearRoute
   '/$runnerId/licenses': typeof RunnerIdLicensesRoute
+  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
   '/$runnerId/notes': typeof RunnerIdNotesRoute
   '/$runnerId/offense': typeof RunnerIdOffenseRoute
   '/$runnerId/powers': typeof RunnerIdPowersRoute
@@ -274,6 +283,7 @@ export interface FileRouteTypes {
     | '/$runnerId/finances'
     | '/$runnerId/gear'
     | '/$runnerId/licenses'
+    | '/$runnerId/matrix'
     | '/$runnerId/notes'
     | '/$runnerId/offense'
     | '/$runnerId/powers'
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
     | '/$runnerId/finances'
     | '/$runnerId/gear'
     | '/$runnerId/licenses'
+    | '/$runnerId/matrix'
     | '/$runnerId/notes'
     | '/$runnerId/offense'
     | '/$runnerId/powers'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/$runnerId/finances'
     | '/$runnerId/gear'
     | '/$runnerId/licenses'
+    | '/$runnerId/matrix'
     | '/$runnerId/notes'
     | '/$runnerId/offense'
     | '/$runnerId/powers'
@@ -445,6 +457,13 @@ declare module '@tanstack/react-router' {
       path: '/licenses'
       fullPath: '/$runnerId/licenses'
       preLoaderRoute: typeof RunnerIdLicensesRouteImport
+      parentRoute: typeof RunnerIdRoute
+    }
+    '/$runnerId/matrix': {
+      id: '/$runnerId/matrix'
+      path: '/matrix'
+      fullPath: '/$runnerId/matrix'
+      preLoaderRoute: typeof RunnerIdMatrixRouteImport
       parentRoute: typeof RunnerIdRoute
     }
     '/$runnerId/notes': {
@@ -565,6 +584,7 @@ interface RunnerIdRouteChildren {
   RunnerIdFinancesRoute: typeof RunnerIdFinancesRoute
   RunnerIdGearRoute: typeof RunnerIdGearRoute
   RunnerIdLicensesRoute: typeof RunnerIdLicensesRoute
+  RunnerIdMatrixRoute: typeof RunnerIdMatrixRoute
   RunnerIdNotesRoute: typeof RunnerIdNotesRoute
   RunnerIdOffenseRoute: typeof RunnerIdOffenseRoute
   RunnerIdPowersRoute: typeof RunnerIdPowersRoute
@@ -586,6 +606,7 @@ const RunnerIdRouteChildren: RunnerIdRouteChildren = {
   RunnerIdFinancesRoute: RunnerIdFinancesRoute,
   RunnerIdGearRoute: RunnerIdGearRoute,
   RunnerIdLicensesRoute: RunnerIdLicensesRoute,
+  RunnerIdMatrixRoute: RunnerIdMatrixRoute,
   RunnerIdNotesRoute: RunnerIdNotesRoute,
   RunnerIdOffenseRoute: RunnerIdOffenseRoute,
   RunnerIdPowersRoute: RunnerIdPowersRoute,
