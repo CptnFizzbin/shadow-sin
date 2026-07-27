@@ -27,8 +27,6 @@ describe("initializeOptions", () => {
 
       // Assert
       expect(options.equipable).toBe(false)
-      expect(options.licenseRequired).toBe(false)
-      expect(options.licenseAlwaysShow).toBe(false)
       expect(options.hasRating).toBe(false)
       expect(options.multiple).toBe(false)
       expect(options.isSubItem).toBe(false)
@@ -61,14 +59,6 @@ describe("initializeOptions", () => {
 
       // Assert
       expect(options.equipable).toBe(true)
-    })
-
-    it("enables licenseRequired when forced=true", () => {
-      // Arrange & Act
-      const options = initializeOptions(newItem, false, { licenseRequired: { forced: true } })
-
-      // Assert
-      expect(options.licenseRequired).toBe(true)
     })
 
     it("enables hasRating when enabled=true", () => {
@@ -292,18 +282,6 @@ describe("initializeOptions", () => {
       expect(options.multiple).toBe(false)
       expect(options.isSubItem).toBe(false)
       expect(options.hasEffects).toBe(false)
-    })
-  })
-
-  describe("licenseAlwaysShow", () => {
-    it("is always false regardless of defaults or edit mode", () => {
-      // Arrange & Act
-      const optionsNew = initializeOptions(newItem, false)
-      const optionsEdit = initializeOptions(baseItem, true)
-
-      // Assert
-      expect(optionsNew.licenseAlwaysShow).toBe(false)
-      expect(optionsEdit.licenseAlwaysShow).toBe(false)
     })
   })
 

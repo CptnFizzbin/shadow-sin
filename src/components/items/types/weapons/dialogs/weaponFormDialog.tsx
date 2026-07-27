@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { WeaponFormFields } from "#/components/items/types/weapons/forms/weaponFormFields.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useWeaponForm, weaponFieldMap } from "#/lib/hooks/items/types/weapons/forms/useWeaponForm.tsx"
@@ -31,7 +32,12 @@ export const WeaponFormDialog: FC<WeaponFormDialogProps> = ({ ctrl, weapon }) =>
         multiple: { forced: true, enabled: false },
       }}
       slots={{
-        itemFields: () => <WeaponFormFields form={form} fields={weaponFieldMap} />,
+        itemFields: () => (
+          <>
+            <WeaponFormFields form={form} fields={weaponFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
       }}
     />
   )

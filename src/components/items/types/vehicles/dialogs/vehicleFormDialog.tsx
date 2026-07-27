@@ -3,6 +3,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import { VehicleFormFields } from "#/components/items/types/vehicles/forms/vehicleFormFields.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useVehicleForm, vehicleFieldMap } from "#/lib/hooks/items/types/vehicles/forms/useVehicleForm.tsx"
@@ -61,7 +62,12 @@ const VehicleFormDialog: FC<VehicleFormDialogProps> = ({ ctrl, vehicle, vehicleC
             )}
           </form.Subscribe>
         ),
-        itemFields: () => <VehicleFormFields form={form} fields={vehicleFieldMap} />,
+        itemFields: () => (
+          <>
+            <VehicleFormFields form={form} fields={vehicleFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
       }}
     />
   )

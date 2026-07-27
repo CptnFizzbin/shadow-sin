@@ -1,6 +1,7 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
+import { LicenseCoveredItemsSection } from "#/components/items/types/licenses/licenseCoveredItemsSection.tsx"
 import { getLicenseCost } from "#/components/items/types/licenses/licenseUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useLicenseForm } from "#/lib/hooks/items/types/licenses/forms/useLicenseForm.tsx"
@@ -17,7 +18,7 @@ interface LicenseFormDialogProps {
   sin?: SinData
 }
 
-const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
+export const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
   ctrl,
   onDelete,
   license,
@@ -46,6 +47,9 @@ const LicenseFormDialog: FC<LicenseFormDialogProps> = ({
         isSubItem: { forced: true },
         showCost: { forced: true, enabled: false },
         showAvailability: { forced: true, enabled: false },
+      }}
+      slots={{
+        itemFields: () => license ? <LicenseCoveredItemsSection license={license} /> : undefined,
       }}
     />
   )

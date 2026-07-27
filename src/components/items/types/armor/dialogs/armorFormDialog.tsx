@@ -2,6 +2,7 @@ import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
 import { ArmorFormFields } from "#/components/items/types/armor/forms/armorFormFields.tsx"
+import { GearFormLicenseSection } from "#/components/items/types/licenses/gearFormLicenseSection.tsx"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { armorFieldMap, useArmorForm } from "#/lib/hooks/items/types/armor/forms/useArmorForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -31,7 +32,12 @@ export const ArmorFormDialog: FC<ArmorFormDialogProps> = ({ ctrl, armor }) => {
         multiple: { forced: true, enabled: false },
       }}
       slots={{
-        itemFields: () => <ArmorFormFields form={form} fields={armorFieldMap} />,
+        itemFields: () => (
+          <>
+            <ArmorFormFields form={form} fields={armorFieldMap} />
+            <GearFormLicenseSection form={form} />
+          </>
+        ),
       }}
     />
   )
