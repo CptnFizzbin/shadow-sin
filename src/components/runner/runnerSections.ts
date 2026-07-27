@@ -8,6 +8,7 @@ import { Route as DronesRoute } from "#/routes/$runnerId/drones.tsx"
 import { Route as FinancesRoute } from "#/routes/$runnerId/finances.tsx"
 import { Route as GearRoute } from "#/routes/$runnerId/gear.tsx"
 import { Route as LicensesRoute } from "#/routes/$runnerId/licenses.tsx"
+import { Route as MatrixRoute } from "#/routes/$runnerId/matrix.tsx"
 import { Route as NotesRoute } from "#/routes/$runnerId/notes.tsx"
 import { Route as OffenseRoute } from "#/routes/$runnerId/offense.tsx"
 import { Route as AdeptPowersRoute } from "#/routes/$runnerId/powers.tsx"
@@ -23,6 +24,7 @@ enum SectionKey {
   licenses = "licenses",
   defense = "defense",
   offense = "offense",
+  matrix = "matrix",
   gear = "gear",
   skills = "skills",
   spells = "spells",
@@ -67,6 +69,11 @@ export const runnerSections: Readonly<Record<SectionKey, SectionInfo>> = {
     id: SectionKey.offense,
     label: "Offense",
     route: OffenseRoute,
+  },
+  [SectionKey.matrix]: {
+    id: SectionKey.matrix,
+    label: "Matrix",
+    route: MatrixRoute,
   },
   [SectionKey.gear]: {
     id: SectionKey.gear,
