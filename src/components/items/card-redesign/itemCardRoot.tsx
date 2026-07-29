@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import type { Theme } from "@mui/material/styles"
+import { alpha } from "@mui/material/styles"
 import type { FC, KeyboardEvent, ReactElement, ReactNode } from "react"
 import { Children, isValidElement } from "react"
 
@@ -27,6 +29,13 @@ function isElementType<TProps>(elementType: FC<TProps>) {
   }
 }
 
+/** Tinted top/bottom bands that bracket the stat/sub-item body. */
+const bandSx = {
+  px: 1,
+  py: 0.75,
+  bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+}
+
 export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, onOpen, children }) => {
   const childArray = Children.toArray(children)
 
@@ -36,7 +45,8 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, o
   const damageTrackNode = childArray.find(isElementType(ItemCardDamageTrack))
   const footerNode = childArray.find(isElementType(ItemCardFooter))
 
-  const hasStatRow = statNodes.length > 0 || Boolean(sourceNode)
+  const hasBody = statNodes.length > 0 || Boolean(damageTrackNode) || subitemNodes.length > 0
+  const hasFooterBand = Boolean(sourceNode) || Boolean(footerNode)
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!onOpen) return
@@ -52,12 +62,8 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, o
       onClick={onOpen}
       onKeyDown={handleKeyDown}
       sx={{
-        padding: 1,
         border: "1px solid",
         borderColor: "primary.dark",
-        display: "flex",
-        flexDirection: "column",
-        gap: 0.5,
         width: "100%",
         textAlign: "left",
         ...(onOpen && {
@@ -66,7 +72,10 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, o
         }),
       }}
     >
-      <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between", gap: 0.5 }}>
+      <Stack
+        direction="row"
+        sx={{ ...bandSx, alignItems: "flex-start", justifyContent: "space-between", gap: 0.5 }}
+      >
         <Stack sx={{ gap: 0, minWidth: 0 }}>
           {type && (
             <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>
@@ -79,35 +88,46 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, o
         {statusIcons && <ItemCardStatusIcons {...statusIcons} />}
       </Stack>
 
-      {hasStatRow && (
+      {hasBody && (
+        <Stack sx={{ p: 1, gap: 1 }}>
+          {statNodes.length > 0 && (
+            <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
+              {statNodes}
+            </Stack>
+          )}
+
+          {damageTrackNode}
+
+          {subitemNodes.length > 0 && (
+            <Stack
+              sx={{
+                gap: 0.25,
+                paddingLeft: 1,
+                borderLeft: "2px solid",
+                borderColor: "secondary.dark",
+              }}
+            >
+              {subitemNodes}
+            </Stack>
+          )}
+        </Stack>
+      )}
+
+      {hasFooterBand && (
         <Stack
           direction="row"
-          sx={{ gap: 0.5, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}
-        >
-          <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
-            {statNodes}
-          </Stack>
-
-          {sourceNode}
-        </Stack>
-      )}
-
-      {damageTrackNode}
-
-      {subitemNodes.length > 0 && (
-        <Stack
           sx={{
-            gap: 0.25,
-            paddingLeft: 1,
-            borderLeft: "2px solid",
-            borderColor: "secondary.dark",
+            ...bandSx,
+            alignItems: "center",
+            gap: 1,
+            borderTop: "1px solid",
+            borderColor: "divider",
           }}
         >
-          {subitemNodes}
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>{sourceNode}</Box>
+          {footerNode}
         </Stack>
       )}
-
-      {footerNode}
     </Box>
   )
 }

@@ -109,6 +109,28 @@ describe("ItemCard", () => {
     expect(screen.getByText("1,200¥")).toBeDefined()
   })
 
+  it("renders the footer band when only Source is present", () => {
+    render(
+      <ItemCard name="Ares Predator V">
+        <ItemCard.Source>Core p.427</ItemCard.Source>
+      </ItemCard>,
+      { wrapper: ThemeWrapper },
+    )
+
+    expect(screen.getByText("Core p.427")).toBeDefined()
+  })
+
+  it("renders the footer band when only Footer is present", () => {
+    render(
+      <ItemCard name="Ares Predator V">
+        <ItemCard.Footer><span>350¥</span></ItemCard.Footer>
+      </ItemCard>,
+      { wrapper: ThemeWrapper },
+    )
+
+    expect(screen.getByText("350¥")).toBeDefined()
+  })
+
   it("ignores children that are not a recognized slot", () => {
     render(
       <ItemCard name="Ares Predator V">
