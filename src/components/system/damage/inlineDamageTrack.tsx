@@ -5,7 +5,7 @@ import type { FC } from "react"
 
 import { DamageTrackCell, getWoundModifierLabel } from "./damageTrack.tsx"
 
-interface InlineDamageTrackProps {
+export interface InlineDamageTrackProps {
   label?: string
   max: number
   current: number
