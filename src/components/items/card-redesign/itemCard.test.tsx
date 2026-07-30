@@ -117,7 +117,7 @@ describe("ItemCard", () => {
       { wrapper: ThemeWrapper },
     )
 
-    expect(screen.getByText("Core p.427")).toBeDefined()
+    expect(screen.getByText("SR4A p.427")).toBeDefined()
   })
 
   it("renders the footer band when only Footer is present", () => {
