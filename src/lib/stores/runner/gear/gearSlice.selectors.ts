@@ -1,8 +1,12 @@
+import type { Selector } from "reselect"
+import { createSelector } from "reselect"
+
 import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import type { ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
 import { isAvailable, isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -27,29 +31,55 @@ export function selectStashed(state: RunnerData): ItemData[] {
   return Object.values(state.gear).filter(isStashed)
 }
 
-export const selectById = createCurriedSelector(
+export const selectById: (id: UUID) => Selector<RunnerData, ItemData> = createCurriedSelector(
   [
     selectAllGear,
-    (_, id: UUID) => id,
+    (_: RunnerData, id: UUID) => id,
   ],
   (gear, id) => gear[id],
 )
 
-export const selectGearOfType = createCurriedSelector(
+type ItemDataSelector<TData extends ItemData> = Selector<
+  RunnerData,
+  Record<UUID, TData>
+>
+
+const gearSelectorsByType: Partial<Record<
+  ItemType,
+  ItemDataSelector<ItemData>
+>> = {}
+
+export const selectGearOfType = <T extends ItemType>(type: T): ItemDataSelector<ItemDataFor<T>> => {
+  if (gearSelectorsByType) {
+    gearSelectorsByType[type] = createSelector(
+      [
+        selectAllGear,
+      ],
+      (allGear) => {
+        const filteredEntries = Object.entries(allGear)
+          .filter(([_id, item]) => item.itemType === type)
+
+        return Object.fromEntries(filteredEntries)
+      },
+    )
+  }
+
+  return gearSelectorsByType[type] as ItemDataSelector<ItemDataFor<T>>
+}
+
+export const selectChildrenOf: (itemId: UUID) => Selector<RunnerData, ItemDataRecord> = createCurriedSelector(
   [
     selectAllGear,
-    (_, type: ItemType) => type,
+    (state, itemId: UUID) => selectById(itemId)(state),
   ],
-  (allGear, type) => {
-    const licenses: Record<UUID, ItemData> = {}
+  (allGear, parentItem) => {
+    const children: ItemDataRecord = {}
 
-    for (const gear of Object.values(allGear)) {
-      if (gear.itemType === type) {
-        licenses[gear.id] = gear
-      }
+    for (const childId of parentItem.childIds ?? []) {
+      children[childId] = allGear[childId]
     }
 
-    return licenses
+    return children
   },
 )
 

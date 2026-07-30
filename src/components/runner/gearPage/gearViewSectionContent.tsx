@@ -27,7 +27,7 @@ export const GearViewSectionContent: FC<GearViewSectionContentProps> = ({
     case GearSection.Cyberware:
       return <ImplantItemList />
     case GearSection.Weapons:
-      return <WeaponsSectionContent items={rootItems} getChildren={getChildItems} />
+      return <WeaponsSectionContent />
     case GearSection.Licenses: {
       const sins = rootItems.filter(isSinData)
       const getLicenses = (sinId: string) =>

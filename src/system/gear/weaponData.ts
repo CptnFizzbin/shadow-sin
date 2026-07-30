@@ -71,6 +71,12 @@ export interface FirearmAccessoryData extends ItemData {
   parentSlot?: FirearmAttachmentPoint
 }
 
+export type AnyWeaponData =
+  | FirearmData
+  | MeleeWeaponData
+
+export type WeaponDataFor<T extends WeaponType> = Extract<AnyWeaponData, { weaponType: T }>
+
 export function isWeaponData(item: ItemData): item is WeaponData {
   return item.itemType === ItemType.weapon
 }
