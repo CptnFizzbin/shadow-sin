@@ -1,17 +1,18 @@
 import type { FC } from "react"
 
-import { ItemCardDamageTrack } from "./itemCardDamageTrack.tsx"
-import { ItemCardFooter } from "./itemCardFooter.tsx"
-import type { ItemCardRootProps } from "./itemCardRoot.tsx"
-import { ItemCardRoot } from "./itemCardRoot.tsx"
-import { ItemCardSource } from "./itemCardSource.tsx"
-import { ItemCardStat } from "./itemCardStat.tsx"
-import { ItemCardSubitem } from "./itemCardSubitem.tsx"
+import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
+import { ItemCardFooter } from "./itemCard.Footer.tsx"
+import type { ItemCardRootProps } from "./itemCard.Root.tsx"
+import { ItemCardRoot } from "./itemCard.Root.tsx"
+import { ItemCardSource } from "./itemCard.Source.tsx"
+import { ItemCardStat } from "./itemCard.Stat.tsx"
+import { ItemCardStatusIcons } from "./itemCard.StatusIcons.tsx"
+import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
 
-export type { ItemCardRootProps } from "./itemCardRoot.tsx"
-export type { ItemCardStatProps, ItemCardStatType } from "./itemCardStat.tsx"
-export type { ItemCardStatusIconsProps } from "./itemCardStatusIcons.tsx"
-export type { ItemCardSubitemProps, ItemCardSubitemStat } from "./itemCardSubitem.tsx"
+export type { ItemCardRootProps } from "./itemCard.Root.tsx"
+export type { ItemCardStatProps, ItemCardStatType } from "./itemCard.Stat.tsx"
+export type { ItemCardStatusIconsProps } from "./itemCard.StatusIcons.tsx"
+export type { ItemCardSubitemProps, ItemCardSubitemStat } from "./itemCard.Subitem.tsx"
 
 export type ItemCardProps = ItemCardRootProps
 
@@ -21,6 +22,7 @@ interface ItemCardComponent extends FC<ItemCardProps> {
   Source: typeof ItemCardSource
   DamageTrack: typeof ItemCardDamageTrack
   Footer: typeof ItemCardFooter
+  StatusIcons: typeof ItemCardStatusIcons
 }
 
 const ItemCardBase: FC<ItemCardProps> = ({ ...props }) => <ItemCardRoot {...props} />
@@ -36,3 +38,4 @@ ItemCard.Subitem = ItemCardSubitem
 ItemCard.Source = ItemCardSource
 ItemCard.DamageTrack = ItemCardDamageTrack
 ItemCard.Footer = ItemCardFooter
+ItemCard.StatusIcons = ItemCardStatusIcons

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { ItemCardStat } from "./itemCardStat.tsx"
+import { ItemCardStat } from "./itemCard.Stat.tsx"
 
 describe("ItemCardStat", () => {
   it("renders label and value together", () => {

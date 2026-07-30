@@ -3,16 +3,18 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
-import type { FC, KeyboardEvent, ReactElement, ReactNode } from "react"
-import { Children, isValidElement } from "react"
+import type { FC, KeyboardEvent, ReactNode } from "react"
+import { Children } from "react"
 
-import { ItemCardDamageTrack } from "./itemCardDamageTrack.tsx"
-import { ItemCardFooter } from "./itemCardFooter.tsx"
-import { ItemCardSource } from "./itemCardSource.tsx"
-import { ItemCardStat } from "./itemCardStat.tsx"
-import type { ItemCardStatusIconsProps } from "./itemCardStatusIcons.tsx"
-import { ItemCardStatusIcons } from "./itemCardStatusIcons.tsx"
-import { ItemCardSubitem } from "./itemCardSubitem.tsx"
+import { isElementType } from "#/lib/slotUtils.ts"
+
+import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
+import { ItemCardFooter } from "./itemCard.Footer.tsx"
+import { ItemCardSource } from "./itemCard.Source.tsx"
+import { ItemCardStat } from "./itemCard.Stat.tsx"
+import type { ItemCardStatusIconsProps } from "./itemCard.StatusIcons.tsx"
+import { ItemCardStatusIcons } from "./itemCard.StatusIcons.tsx"
+import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
 
 export interface ItemCardRootProps {
   name: ReactNode
@@ -23,16 +25,10 @@ export interface ItemCardRootProps {
   children: ReactNode
 }
 
-function isElementType<TProps>(elementType: FC<TProps>) {
-  return (item: ReactNode): item is ReactElement<TProps> => {
-    return isValidElement(item) && item.type === elementType
-  }
-}
-
 /** Tinted top/bottom bands that bracket the stat/sub-item body. */
 const bandSx = {
-  px: 1,
-  py: 0.75,
+  paddingX: 1,
+  paddingY: 0.75,
   bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
 }
 

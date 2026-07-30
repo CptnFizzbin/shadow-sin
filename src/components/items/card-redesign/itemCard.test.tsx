@@ -91,7 +91,7 @@ describe("ItemCard", () => {
     render(
       <ItemCard name="Bulldog Step-Van">
         <ItemCard.Stat label="Handling" value="3" />
-        <ItemCard.Source>Rigger 5.0 p.123</ItemCard.Source>
+        <ItemCard.Source source={{ book: "SR4A", page: 427 }} />
         <ItemCard.DamageTrack label="Damage" max={12} current={2} onChange={onDamageChange} />
         <ItemCard.Subitem name="GPS Jammer" stats={[{ label: "Rating", value: "4" }]} />
         <ItemCard.Footer>
@@ -102,7 +102,7 @@ describe("ItemCard", () => {
     )
 
     expect(screen.getByText("Handling: 3")).toBeDefined()
-    expect(screen.getByText("Rigger 5.0 p.123")).toBeDefined()
+    expect(screen.getByText("SR4A p.427")).toBeDefined()
     expect(screen.getByText("Damage 2/12")).toBeDefined()
     expect(screen.getByText("GPS Jammer")).toBeDefined()
     expect(screen.getByText("Rating: 4")).toBeDefined()
@@ -112,7 +112,7 @@ describe("ItemCard", () => {
   it("renders the footer band when only Source is present", () => {
     render(
       <ItemCard name="Ares Predator V">
-        <ItemCard.Source>Core p.427</ItemCard.Source>
+        <ItemCard.Source source={{ book: "SR4A", page: 427 }} />
       </ItemCard>,
       { wrapper: ThemeWrapper },
     )

@@ -2,8 +2,8 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import type { ItemCardStatProps } from "./itemCardStat.tsx"
-import { ItemCardStat } from "./itemCardStat.tsx"
+import type { ItemCardStatProps } from "./itemCard.Stat.tsx"
+import { ItemCardStat } from "./itemCard.Stat.tsx"
 
 export interface ItemCardSubitemStat extends Omit<ItemCardStatProps, "value"> {
   value: string

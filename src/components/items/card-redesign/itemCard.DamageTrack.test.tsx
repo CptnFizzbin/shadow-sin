@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { ItemCardDamageTrack } from "./itemCardDamageTrack.tsx"
+import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
 
 describe("ItemCardDamageTrack", () => {
   it("forwards props to InlineDamageTrack", () => {

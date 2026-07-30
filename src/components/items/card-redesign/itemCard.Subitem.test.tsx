@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { ItemCardSubitem } from "./itemCardSubitem.tsx"
+import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
 
 describe("ItemCardSubitem", () => {
   it("renders the name with no stats", () => {
