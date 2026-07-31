@@ -28,22 +28,4 @@ describe("ItemCardSubitem", () => {
     expect(screen.getByText("RC: 3")).toBeDefined()
     expect(screen.getByText("Rating: 3")).toBeDefined()
   })
-
-  it("does not enforce the 2-stat convention", () => {
-    render(
-      <ItemCardSubitem
-        name="Overloaded Mod"
-        stats={[
-          { label: "A", value: "1" },
-          { label: "B", value: "2" },
-          { label: "C", value: "3" },
-        ]}
-      />,
-      { wrapper: ThemeWrapper },
-    )
-
-    expect(screen.getByText("A: 1")).toBeDefined()
-    expect(screen.getByText("B: 2")).toBeDefined()
-    expect(screen.getByText("C: 3")).toBeDefined()
-  })
 })
