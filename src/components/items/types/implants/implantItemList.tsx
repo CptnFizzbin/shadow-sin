@@ -43,12 +43,32 @@ export const ImplantItemList: FC = () => {
           const accessories = implants.filter((i) => i.parentId === implant.id)
 
           return (
-            <ImplantItemCard
-              key={implant.id}
-              implant={implant}
-              onAddAccessory={() => handleAddImplant({ parentId: implant.id })}
-              accessories={accessories}
-            />
+            <Stack key={implant.id} sx={{ gap: 1 }}>
+              <ImplantItemCard implant={implant} onOpen={() => handleAddImplant({ implant })} />
+
+              {accessories.length > 0 && (
+                <Stack sx={{ gap: 1, pl: 2 }}>
+                  {accessories.map((accessory) => (
+                    <ImplantItemCard
+                      key={accessory.id}
+                      implant={accessory}
+                      onOpen={() => handleAddImplant({ implant: accessory, parentId: implant.id })}
+                    />
+                  ))}
+                </Stack>
+              )}
+
+              <Button
+                variant="text"
+                color="secondary"
+                size="small"
+                startIcon={<RiAddLine size={14} />}
+                onClick={() => handleAddImplant({ parentId: implant.id })}
+                fullWidth
+              >
+                Add Accessory
+              </Button>
+            </Stack>
           )
         })}
       </Stack>

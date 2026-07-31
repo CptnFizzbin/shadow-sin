@@ -1,54 +1,59 @@
-import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
-import type { FC, ReactNode } from "react"
+import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { RatingChip } from "#/components/ui/ratingChip.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
+import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
-
-interface SinCardSlots {
-  trailingContent?: ReactNode
-}
 
 interface SinCardProps {
   sin: SinData
-  slots?: SinCardSlots
-  onClick?: () => void
-  onDelete?: () => void
-  children?: ReactNode
+  onOpen?: () => void
 }
 
-export const SinCard: FC<SinCardProps> = ({
-  sin,
-  slots,
-  onClick,
-  onDelete,
-  children,
-}) => {
+/**
+ * Licenses are shown as their own interactive cards nested below the SIN by
+ * the containing section (see SinsAndLicensesSection / LicensesSectionContent),
+ * not as read-only subitems here — unlike accessories on other item types,
+ * each license needs to stay individually tappable to edit.
+ */
+export const SinCard: FC<SinCardProps> = ({ sin, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const confirmDialog = useConfirmDialog()
+  const licenses = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(sin.id))
+  const hasLicenses = Object.keys(licenses).length > 0
+
+  const removeSin = async () => {
+    if (hasLicenses) {
+      const confirmed = await confirmDialog.confirm({
+        title: `Remove SIN "${sin.name}"?`,
+        body: "This will also remove all associated licenses.",
+        confirmLabel: "Remove SIN",
+      })
+      if (!confirmed) return
+    }
+    dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))
+  }
+
   return (
-    <ItemCard>
-      <ItemCard.Title>{sin.name}</ItemCard.Title>
+    <>
+      <BasicItemCard item={sin} onOpen={onOpen} onRemove={removeSin}>
+        <ItemCardSlot.Stat
+          value={sin.rating === "real" ? "Real" : `Rating: ${sin.rating}`}
+          type="rating"
+        />
 
-      {slots?.trailingContent && (
-        <ItemCard.Meta type="cost">{slots.trailingContent}</ItemCard.Meta>
-      )}
+        {sin.cost !== undefined && (
+          <ItemCardSlot.Footer>
+            <Nuyen amount={sin.cost} />
+          </ItemCardSlot.Footer>
+        )}
+      </BasicItemCard>
 
-      <ItemCard.Meta type="cost">
-        <RatingChip rating={sin.rating} />
-      </ItemCard.Meta>
-
-      {onClick && (
-        <ItemCard.Action type="icon" aria-label="Edit" onClick={onClick}>
-          <RiEdit2Line size={16} />
-        </ItemCard.Action>
-      )}
-
-      {onDelete && (
-        <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onDelete}>
-          <RiDeleteBin6Line size={16} />
-        </ItemCard.Action>
-      )}
-
-      {children && <ItemCard.Children>{children}</ItemCard.Children>}
-    </ItemCard>
+      {confirmDialog.dialog}
+    </>
   )
 }

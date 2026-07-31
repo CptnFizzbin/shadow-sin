@@ -1,52 +1,32 @@
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import type { ItemCardRootProps } from "#/components/items/card/itemCardRoot.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 
-interface ProgramItemCardProps extends Pick<ItemCardRootProps, "variant"> {
+interface ProgramItemCardProps {
   program: ProgramData
-  onEdit: () => void
-  onRemove: () => void
+  onOpen?: () => void
 }
 
-export const ProgramItemCard: FC<ProgramItemCardProps> = ({
-  program,
-  variant,
-  onEdit,
-  onRemove,
-}) => {
-  const { availability, source } = program
+export const ProgramItemCard: FC<ProgramItemCardProps> = ({ program, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
+
+  const removeProgram = () => dispatch(Actions.gear.programs.destroy(program.id))
 
   return (
-    <GearItemCard
-      availability={availability}
-      source={source}
-      onEdit={onEdit}
-      onRemove={onRemove}
-      variant={variant}
-    >
-      <ItemCard.Title>{program.name}</ItemCard.Title>
-
-      <ItemCard.Meta type="cost">
-        <ItemStatChip label={`Rating: ${program.rating}`} />
-      </ItemCard.Meta>
+    <BasicItemCard item={program} onOpen={onOpen} onRemove={removeProgram}>
+      <ItemCardSlot.Stat label="Rating" value={program.rating} type="rating" />
+      <ItemCardSlot.Stat value={program.programType} />
 
       {program.cost !== undefined && (
-        <ItemCard.Meta type="cost">
-          <Typography sx={{ fontSize: "0.875rem" }}>
-            <Nuyen amount={program.cost} />
-          </Typography>
-        </ItemCard.Meta>
+        <ItemCardSlot.Footer>
+          <Nuyen amount={program.cost} />
+        </ItemCardSlot.Footer>
       )}
-
-      <ItemCard.Meta type="stat">
-        <ItemStatChip label={program.programType} color="primary" />
-      </ItemCard.Meta>
-    </GearItemCard>
+    </BasicItemCard>
   )
 }

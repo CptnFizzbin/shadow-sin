@@ -5,24 +5,20 @@ import type { FC } from "react"
 
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
+import { LicenseCard } from "#/components/items/types/licenses/licenseCard.tsx"
+import { SinCard } from "#/components/items/types/licenses/sinCard.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
-import { GearViewItem } from "./gearViewItem.tsx"
-
-interface LicensesSectionContentProps {
-  sins: SinData[]
-  getLicenses: (sinId: string) => LicenseData[]
-}
-
-export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
-  sins,
-  getLicenses,
-}) => {
+export const LicensesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const sins = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.sin))
+  const licenses = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.license))
   const sinFormDialog = useSinFormDialog()
   const licenseFormDialog = useLicenseFormDialog()
 
@@ -34,42 +30,45 @@ export const LicensesSectionContent: FC<LicensesSectionContentProps> = ({
     if (saved) saveItem(saved)
   }
 
-  const handleEditLicense = async (sin: SinData, license?: LicenseData) => {
+  const handleEditLicense = async (sin?: SinData, license?: LicenseData) => {
     const saved = await licenseFormDialog.open({ sin, license })
     if (saved) saveItem(saved)
   }
 
   return (
     <Stack sx={{ gap: 1 }}>
-      {sins.map((sin) => (
-        <Stack key={sin.id} sx={{ gap: 1 }}>
-          <GearViewItem
-            item={sin}
-            subItems={getLicenses(sin.id)}
-            onEdit={() => handleEditSin(sin)}
-            onRemove={() => dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))}
-            getSubItemCallbacks={(licenseId) => {
-              const license = getLicenses(sin.id).find((l) => l.id === licenseId)
-              return {
-                onEdit: license
-                  ? () => handleEditLicense(sin, license)
-                  : undefined,
-                onRemove: license ? () => dispatch(Actions.gear.licenses.destroy(license.id)) : undefined,
-              }
-            }}
-          />
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<RiAddLine size={14} />}
-            onClick={() => handleEditLicense(sin)}
-            color="secondary"
-            fullWidth
-          >
-            Add License to {sin.name}
-          </Button>
-        </Stack>
-      ))}
+      {Object.values(sins).map((sin) => {
+        const sinLicenses = Object.values(licenses).filter((license) => license.parentId === sin.id)
+
+        return (
+          <Stack key={sin.id} sx={{ gap: 1 }}>
+            <SinCard sin={sin} onOpen={() => handleEditSin(sin)} />
+
+            {sinLicenses.length > 0 && (
+              <Stack sx={{ gap: 1, pl: 2 }}>
+                {sinLicenses.map((license) => (
+                  <LicenseCard
+                    key={license.id}
+                    license={license}
+                    onOpen={() => handleEditLicense(sin, license)}
+                  />
+                ))}
+              </Stack>
+            )}
+
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<RiAddLine size={14} />}
+              onClick={() => handleEditLicense(sin)}
+              color="secondary"
+              fullWidth
+            >
+              Add License to {sin.name}
+            </Button>
+          </Stack>
+        )
+      })}
 
       <Button
         variant="outlined"

@@ -28,8 +28,7 @@ export const ArmorList: FC = () => {
         <ArmorItemCard
           key={armor.id}
           armor={armor}
-          onEdit={() => handleEditArmor(armor)}
-          onRemove={() => dispatch(Actions.gear.removeItem({ id: armor.id }))}
+          onOpen={() => handleEditArmor(armor)}
         />
       ))}
 

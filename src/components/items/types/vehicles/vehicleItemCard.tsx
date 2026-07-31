@@ -1,96 +1,48 @@
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { ItemCardDamageTrack } from "#/components/items/card-redesign/itemCard.DamageTrack.tsx"
-import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
-import type { ItemData } from "#/system/itemData.ts"
-
-import { VehicleStatGroups } from "./vehicleStatGroups.tsx"
 
 interface VehicleItemCardProps {
   vehicle: VehicleData
-  attachments?: ItemData[]
-  onEdit: () => void
-  onRemove: () => void
-  onAddAttachment?: () => void
-  onEditAttachment?: (item: ItemData) => void
-  onRemoveAttachment?: (item: ItemData) => void
-  onDamageChange?: (value: number) => void
+  onOpen?: () => void
 }
 
-export const VehicleItemCard: FC<VehicleItemCardProps> = ({
-  vehicle,
-  attachments = [],
-  onEdit,
-  onRemove,
-  onAddAttachment,
-  onEditAttachment,
-  onRemoveAttachment,
-  onDamageChange,
-}) => {
-  const { availability, source } = vehicle
+export const VehicleItemCard: FC<VehicleItemCardProps> = ({ vehicle, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
   const damageMax = vehicle.damage?.physical.max || vehicle.body
 
+  const removeVehicle = () => dispatch(Actions.gear.removeItem({ id: vehicle.id, removeChildren: true }))
+
+  const handleDamageChange = (current: number) => {
+    const updated: VehicleData = { ...vehicle, damage: { physical: { current, max: damageMax } } }
+    dispatch(Actions.gear.setItem(updated))
+  }
+
   return (
-    <GearItemCard
-      availability={availability}
-      source={source}
-      onEdit={onEdit}
-      onRemove={onRemove}
-    >
-      <ItemCard.Title>{vehicle.name}</ItemCard.Title>
+    <BasicItemCard item={vehicle} type={vehicle.vehicleType} onOpen={onOpen} onRemove={removeVehicle}>
+      <ItemCardSlot.Stat label="Handling" value={vehicle.handling} type="rating" />
+      <ItemCardSlot.Stat label="Accel" value={vehicle.accel} type="rating" />
+      <ItemCardSlot.Stat label="Speed" value={vehicle.speed} type="rating" />
+      <ItemCardSlot.Stat label="Armor" value={vehicle.armor} type="damage" />
+      <ItemCardSlot.Stat label="Body" value={vehicle.body} type="damage" />
+
+      <ItemCardSlot.DamageTrack
+        label="Damage"
+        max={damageMax}
+        current={vehicle.damage?.physical.current ?? 0}
+        onChange={handleDamageChange}
+      />
 
       {vehicle.cost !== undefined && (
-        <ItemCard.Meta type="cost">
-          <Typography sx={{ fontSize: "0.875rem" }}>
-            <Nuyen amount={vehicle.cost} />
-          </Typography>
-        </ItemCard.Meta>
+        <ItemCardSlot.Footer>
+          <Nuyen amount={vehicle.cost} />
+        </ItemCardSlot.Footer>
       )}
-
-      <ItemCard.Meta type="stat">
-        <ItemStatChip label={vehicle.vehicleType} />
-      </ItemCard.Meta>
-
-      <ItemCard.Meta type="detail">
-        <VehicleStatGroups vehicle={vehicle} />
-      </ItemCard.Meta>
-
-      {onDamageChange && (
-        <ItemCard.Meta type="detail">
-          <ItemCardDamageTrack
-            label="Damage"
-            max={damageMax}
-            current={vehicle.damage?.physical.current ?? 0}
-            onChange={onDamageChange}
-          />
-        </ItemCard.Meta>
-      )}
-
-      {onAddAttachment && (
-        <ItemCard.AddChildButton onClick={onAddAttachment}>
-          Equipment
-        </ItemCard.AddChildButton>
-      )}
-
-      {attachments.length > 0 && (
-        <ItemCard.Children>
-          {attachments.map((attachment) => (
-            <GenericItemCard
-              key={attachment.id}
-              item={attachment}
-              variant="borderless"
-              onEdit={() => onEditAttachment?.(attachment)}
-              onRemove={() => onRemoveAttachment?.(attachment)}
-            />
-          ))}
-        </ItemCard.Children>
-      )}
-    </GearItemCard>
+    </BasicItemCard>
   )
 }
