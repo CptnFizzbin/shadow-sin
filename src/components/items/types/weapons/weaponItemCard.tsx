@@ -1,4 +1,4 @@
-import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
+import { RiCheckboxCircleLine, RiCloseCircleLine, RiDeleteBinLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
@@ -22,6 +22,7 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
 
   const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
+  const removeWeapon = () => dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
     <BasicItemCard
@@ -62,6 +63,12 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
               onClick={toggleEquipped}
             />
           )}
+
+      <ItemCardSlot.QuickAction
+        label="Remove"
+        icon={<RiDeleteBinLine size={16} />}
+        onClick={removeWeapon}
+      />
     </BasicItemCard>
   )
 }

@@ -65,7 +65,8 @@ describe("WeaponsList", () => {
     expect(screen.getByText("Ares Predator")).toBeDefined()
 
     // Act
-    screen.getByRole("button", { name: "Remove" }).click()
+    fireEvent.contextMenu(screen.getByText("Ares Predator"))
+    screen.getByRole("menuitem", { name: "Remove" }).click()
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Ares Predator")).toBeNull())

@@ -54,4 +54,12 @@ describe("WeaponItemCard", () => {
 
     expect(runnerStore.getState().gear[weapon.id].equipped).toBe(true)
   })
+
+  it("offers a Remove quick action", () => {
+    renderWeaponCard(weapon)
+
+    fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+
+    expect(screen.getByRole("menuitem", { name: "Remove" })).toBeDefined()
+  })
 })
