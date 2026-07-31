@@ -8,21 +8,16 @@ import { Children } from "react"
 
 import { isElementType } from "#/lib/slotUtils.ts"
 
-import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
-import { ItemCardFooter } from "./itemCard.Footer.tsx"
-import { ItemCardSource } from "./itemCard.Source.tsx"
-import { ItemCardStat } from "./itemCard.Stat.tsx"
 import type { ItemCardStatusIconsProps } from "./itemCard.StatusIcons.tsx"
-import { ItemCardStatusIcons } from "./itemCard.StatusIcons.tsx"
-import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
+import { ItemCardSlot } from "./itemCardSlot.tsx"
 
-export interface ItemCardRootProps {
+export interface BasicItemCardProps {
   name: ReactNode
   type?: ReactNode
   statusIcons?: ItemCardStatusIconsProps
   /** When provided, the whole card becomes tappable/keyboard-activatable and routes to a detail view. */
   onOpen?: () => void
-  children: ReactNode
+  children?: ReactNode
 }
 
 /** Tinted top/bottom bands that bracket the stat/sub-item body. */
@@ -32,14 +27,26 @@ const bandSx = {
   bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
 }
 
-export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, onOpen, children }) => {
+/**
+ * Generic, no-smarts ItemCard body: renders name/type/status-icons plus
+ * whichever `ItemCardSlot.*` children are passed in. Typed cards (e.g.
+ * `WeaponItemCard`) wrap this to add item-type-specific slots; the `ItemCard`
+ * dispatcher falls back to this directly for item types without a typed card.
+ */
+export const BasicItemCard: FC<BasicItemCardProps> = ({
+  name,
+  type,
+  statusIcons,
+  onOpen,
+  children,
+}) => {
   const childArray = Children.toArray(children)
 
-  const statNodes = childArray.filter(isElementType(ItemCardStat))
-  const subitemNodes = childArray.filter(isElementType(ItemCardSubitem))
-  const sourceNode = childArray.find(isElementType(ItemCardSource))
-  const damageTrackNode = childArray.find(isElementType(ItemCardDamageTrack))
-  const footerNode = childArray.find(isElementType(ItemCardFooter))
+  const statNodes = childArray.filter(isElementType(ItemCardSlot.Stat))
+  const subitemNodes = childArray.filter(isElementType(ItemCardSlot.Subitem))
+  const sourceNode = childArray.find(isElementType(ItemCardSlot.Source))
+  const damageTrackNode = childArray.find(isElementType(ItemCardSlot.DamageTrack))
+  const footerNode = childArray.find(isElementType(ItemCardSlot.Footer))
 
   const hasBody = statNodes.length > 0 || Boolean(damageTrackNode) || subitemNodes.length > 0
   const hasFooterBand = Boolean(sourceNode) || Boolean(footerNode)
@@ -81,7 +88,7 @@ export const ItemCardRoot: FC<ItemCardRootProps> = ({ name, type, statusIcons, o
           <Typography sx={{ fontWeight: 500 }}>{name}</Typography>
         </Stack>
 
-        {statusIcons && <ItemCardStatusIcons {...statusIcons} />}
+        {statusIcons && <ItemCardSlot.StatusIcons {...statusIcons} />}
       </Stack>
 
       {hasBody && (
