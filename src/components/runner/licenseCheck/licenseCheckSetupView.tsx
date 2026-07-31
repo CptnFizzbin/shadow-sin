@@ -16,7 +16,7 @@ import { buildVerificationLanes } from "./licenseCheckLanes.ts"
 const ratingOptions = [1, 2, 3, 4, 5, 6]
 
 export const LicenseCheckSetupView: FC = () => {
-  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const { scannerRating, setScannerRating } = useLicenseCheck()
 
   // Display-only — Start Scan builds its own checked-items-only queue from these lanes.

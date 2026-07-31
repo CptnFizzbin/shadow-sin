@@ -35,7 +35,7 @@ export class DiceRoller {
   }
 
   public setPoolSize(numDice: number) {
-    const { dice } = this.store.get()
+    const { dice } = this.store.getState()
 
     const difference = Math.abs(dice.length - numDice)
     if (difference === 0) return this
@@ -51,7 +51,7 @@ export class DiceRoller {
 
   public settled(): Promise<this> {
     return new Promise((resolve) => {
-      if (selectAllSettled(this.store.get())) {
+      if (selectAllSettled(this.store.getState())) {
         resolve(this)
         return
       }
@@ -118,7 +118,7 @@ export class DiceRoller {
       }))
 
       if (options.explodes && value === 6) {
-        const { dice } = this.store.get()
+        const { dice } = this.store.getState()
         this.rollDie(dice.length - 1, { timeout: 500, explodes: true })
       }
     }, timeout)
@@ -131,7 +131,7 @@ export class DiceRoller {
   }
 
   public rollDice(startIndex: number = 0, endIndex: number = Infinity, options?: RollOptions) {
-    const { dice } = this.store.get()
+    const { dice } = this.store.getState()
 
     if (startIndex < 0) {
       startIndex = dice.length - Math.abs(startIndex)
@@ -152,7 +152,7 @@ export class DiceRoller {
       })
     }))
 
-    this.store.get()
+    this.store.getState()
       .dice
       .map((die, index) => ({ die, index }))
       .forEach(({ index }) => this.rollDie(index, options))
@@ -161,7 +161,7 @@ export class DiceRoller {
   }
 
   public rerollOnes(options: RollOptions = {}) {
-    this.store.get()
+    this.store.getState()
       .dice
       .map((die, index) => ({ die, index }))
       .filter(({ die }) => die.value === 1)
@@ -171,7 +171,7 @@ export class DiceRoller {
   }
 
   public rollMisses() {
-    this.store.get()
+    this.store.getState()
       .dice
       .map((die, index) => ({ die, index }))
       .filter(({ die }) => die.value === null || die.value <= 4)
@@ -184,7 +184,7 @@ export class DiceRoller {
     if (this.rollingIntervalId !== null) return
 
     this.rollingIntervalId = setInterval(() => {
-      const isRolling = selectIsRolling(this.store.get())
+      const isRolling = selectIsRolling(this.store.getState())
       if (!isRolling) {
         this.clearRollingInterval()
         return

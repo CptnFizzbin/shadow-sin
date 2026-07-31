@@ -75,6 +75,6 @@ describe("SpellsViewerSection", () => {
     fireEvent.click(screen.getByText("Sustained"))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.spells[0].sustained).toBe(true))
+    await waitFor(() => expect(store.getState().spells[0].sustained).toBe(true))
   })
 })

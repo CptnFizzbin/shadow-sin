@@ -59,8 +59,8 @@ describe("ComplexFormsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.complexForms).toHaveLength(1))
-    expect(store.state.complexForms[0].name).toBe("Puppeteer")
+    await waitFor(() => expect(store.getState().complexForms).toHaveLength(1))
+    expect(store.getState().complexForms[0].name).toBe("Puppeteer")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Puppeteer")).toBeDefined()
   })
@@ -74,7 +74,7 @@ describe("ComplexFormsList", () => {
     fireEvent.click(deleteButton!)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.complexForms).toHaveLength(0))
+    await waitFor(() => expect(store.getState().complexForms).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Diagnostics")).toBeNull()
   })

@@ -30,7 +30,7 @@ export const applyImprovements = (
   improvementsStore: ImprovementStore,
   runnerStore: RunnerStore,
 ): void => {
-  const improvementsState = improvementsStore.store.state
+  const improvementsState = improvementsStore.store.getState()
 
   runnerStore.setState(produce((sheet) => {
     for (const entry of Object.values(improvementsState)) {

@@ -74,8 +74,8 @@ describe("SpellsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.spells).toHaveLength(1))
-    expect(store.state.spells[0].name).toBe("Fireball")
+    await waitFor(() => expect(store.getState().spells).toHaveLength(1))
+    expect(store.getState().spells[0].name).toBe("Fireball")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fireball")).toBeDefined()
   })
@@ -90,7 +90,7 @@ describe("SpellsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Delete" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.spells).toHaveLength(0))
+    await waitFor(() => expect(store.getState().spells).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Manabolt")).toBeNull()
   })

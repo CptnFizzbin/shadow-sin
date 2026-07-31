@@ -71,7 +71,7 @@ describe("TraditionCard", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.tradition?.name).toBe("Shamanic"), { timeout: 3000 })
+    await waitFor(() => expect(store.getState().tradition?.name).toBe("Shamanic"), { timeout: 3000 })
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Shamanic")).toBeDefined()
     expect(screen.queryByText("Hermetic")).toBeNull()

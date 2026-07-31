@@ -7,7 +7,7 @@ export interface UseSelectorOptions<TSelected> {
 }
 
 /**
- * Reactive read of a {@link CompatStore}. Reading directly off `store.state`/`store.get()` gives a
+ * Reactive read of a {@link CompatStore}. Reading directly off `store.getState()` gives a
  * snapshot and will not trigger re-renders — always use this for reactive reads.
  */
 export function useSelector<TState, TSelected>(

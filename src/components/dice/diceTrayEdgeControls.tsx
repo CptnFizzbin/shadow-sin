@@ -29,13 +29,13 @@ export const DiceTrayEdgeControls: FC = () => {
   if (physicalMode) return null
 
   const handleRerollMisses = () => {
-    if (diceTrayApi.store.state.edgeSpent) return
+    if (diceTrayApi.store.getState().edgeSpent) return
     diceTrayApi.rerollMisses()
     dispatch(Actions.edge.setCurrentEdge(currentEdge - 1))
   }
 
   const handleEdge = () => {
-    if (diceTrayApi.store.state.edgeSpent) return
+    if (diceTrayApi.store.getState().edgeSpent) return
     diceTrayApi.rollEdge(maxEdge)
     dispatch(Actions.edge.setCurrentEdge(currentEdge - 1))
   }

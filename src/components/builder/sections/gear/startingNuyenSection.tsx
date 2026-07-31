@@ -8,12 +8,10 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useEffect } from "react"
 
+import { BuilderConfig } from "#/components/builder/builderConfig.ts"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import { formatNuyen, Nuyen } from "#/components/ui/nuyen.tsx"
-import {
-  GearNuyenPerBuildPoint,
-  useGearTotalCost,
-} from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
+import { useGearTotalCost } from "#/lib/hooks/builder/buildPoints/useGearBuildPoints.ts"
 import { useDiceRoller } from "#/lib/hooks/system/dice/useDiceRoller.ts"
 import { Actions as BuilderActions } from "#/lib/stores/builder/builderStore.actions.ts"
 import { useBuilderStoreDispatch } from "#/lib/stores/builder/builderStore.dispatch.ts"
@@ -31,8 +29,8 @@ export const StartingNuyenSection: FC = () => {
   const totalNuyen = useGearTotalCost()
   // Unspent nuyen is the leftover from the last BP purchased.
   // e.g. spent 24,700¥ → buys 5 BP (25,000¥) → 300¥ unspent → +3 bonus
-  const bpsPurchased = Math.ceil(totalNuyen / GearNuyenPerBuildPoint)
-  const nuyenAllocated = bpsPurchased * GearNuyenPerBuildPoint
+  const bpsPurchased = Math.ceil(totalNuyen / BuilderConfig.gear.nuyenPerBp)
+  const nuyenAllocated = bpsPurchased * BuilderConfig.gear.nuyenPerBp
   const unspentNuyen = totalNuyen === 0 ? 0 : nuyenAllocated - totalNuyen
   const maxBonus = numDice * 3
   const bonus = Math.min(Math.floor(unspentNuyen / 100), maxBonus)

@@ -48,14 +48,14 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert
-    const log = runnerStore.state.karma.log
+    const log = runnerStore.getState().karma.log
     expect(log).toHaveLength(2)
     expect(log.every((entry) => entry.source === "spendKarma")).toBe(true)
     expect(log.every((entry) => entry.amount < 0)).toBe(true)
     // Total amount in ledger matches karma deducted
     const totalDeducted = log.reduce((sum, entry) => sum + entry.amount, 0)
     expect(totalDeducted).toBe(-(20 + 4))
-    expect(runnerStore.state.karma.current).toBe(100 - 20 - 4)
+    expect(runnerStore.getState().karma.current).toBe(100 - 20 - 4)
   })
 
   it("preserves the full ImprovementEntry on each ledger entry for v2 undo support", () => {
@@ -81,7 +81,7 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert — improvement payload round-trips onto the ledger entry
-    const logged = runnerStore.state.karma.log[0]
+    const logged = runnerStore.getState().karma.log[0]
     expect(logged.improvement).toEqual(added)
   })
 
@@ -106,7 +106,7 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert
-    expect(runnerStore.state.karma.log[0].description).toBe("Raised AGI 4 → 5")
+    expect(runnerStore.getState().karma.log[0].description).toBe("Raised AGI 4 → 5")
   })
 
   it("does not append to the ledger when the improvement queue is empty", () => {
@@ -122,7 +122,7 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert
-    expect(runnerStore.state.karma.log).toEqual([])
+    expect(runnerStore.getState().karma.log).toEqual([])
   })
 
   it("stamps each entry with an ISO 8601 timestamp", () => {
@@ -146,7 +146,7 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert — ISO 8601 round-trips cleanly to a valid Date
-    const timestamp = runnerStore.state.karma.log[0].timestamp
+    const timestamp = runnerStore.getState().karma.log[0].timestamp
     expect(new Date(timestamp).toISOString()).toBe(timestamp)
   })
 
@@ -170,8 +170,8 @@ describe("applyImprovements — karma ledger writes", () => {
     applyImprovements(improvementStore, runnerStore)
 
     // Assert — ledger entry has its own id, distinct from FAKE_ID
-    expect(runnerStore.state.karma.log[0].id).not.toBe(FAKE_ID)
-    expect(runnerStore.state.karma.log[0].id).toMatch(
+    expect(runnerStore.getState().karma.log[0].id).not.toBe(FAKE_ID)
+    expect(runnerStore.getState().karma.log[0].id).toMatch(
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
     )
   })

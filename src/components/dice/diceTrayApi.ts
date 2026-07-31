@@ -118,7 +118,7 @@ export class DiceTrayApi {
     // Reset all values except for the dice pool size and the digital/physical
     // mode. Switching test type starts a fresh test from the user's chosen
     // dice count.
-    const { poolSize, physicalMode, open } = this.store.get()
+    const { poolSize, physicalMode, open } = this.store.getState()
     const fresh = createInitialState()
     this.store.setState(() => ({
       ...fresh,
@@ -180,7 +180,7 @@ export class DiceTrayApi {
   // called on the useDiceTray() instance in diceTrayActions.tsx
   // fallow-ignore-next-line unused-class-member
   recordExtendedRoll(currentHits: number): void {
-    const { edgeSpent, shrinkingPool, poolSize } = this.store.get()
+    const { edgeSpent, shrinkingPool, poolSize } = this.store.getState()
 
     this.store.setState(produce((state) => {
       state.extendedHistory.push({ hits: currentHits, edgeUsed: edgeSpent })
@@ -194,12 +194,12 @@ export class DiceTrayApi {
     if (shrinkingPool && poolSize > 1) {
       this.setPoolSize(poolSize - 1)
     } else {
-      this.roller.setPoolSize(this.store.get().poolSize)
+      this.roller.setPoolSize(this.store.getState().poolSize)
     }
   }
 
   open(): void {
-    if (!this.store.get().open) {
+    if (!this.store.getState().open) {
       markOverlayOpened()
     }
     this.store.setState(produce((state) => {
@@ -208,7 +208,7 @@ export class DiceTrayApi {
   }
 
   close(): void {
-    if (this.store.get().open) {
+    if (this.store.getState().open) {
       markOverlayClosed()
     }
     this.store.setState(produce((state) => {
@@ -222,13 +222,13 @@ export class DiceTrayApi {
    * permanently count as "open".
    */
   dispose(): void {
-    if (this.store.get().open) {
+    if (this.store.getState().open) {
       markOverlayClosed()
     }
   }
 
   reset(): void {
-    const { poolSize } = this.store.get()
+    const { poolSize } = this.store.getState()
     this.roller.reset().setPoolSize(poolSize)
     this.store.setState(produce((state) => {
       state.edgeSpent = false
@@ -245,7 +245,7 @@ export class DiceTrayApi {
   rollStandard(): void {
     // Drop any leftover edge dice from a previous roll so the user starts
     // from the configured pool size.
-    const { poolSize } = this.store.get()
+    const { poolSize } = this.store.getState()
     this.roller.setPoolSize(poolSize)
     this.roller.rollAll()
   }
@@ -255,14 +255,14 @@ export class DiceTrayApi {
    * Starts the rolling animation and stores results when it completes.
    */
   rollEdge(edge: number): void {
-    const { edgeSpent } = this.store.get()
+    const { edgeSpent } = this.store.getState()
     if (edgeSpent || edge <= 0) return
 
     this.store.setState(produce((state) => {
       state.edgeSpent = true
     }))
 
-    const wasRolled = selectWasRolled(this.roller.store.get())
+    const wasRolled = selectWasRolled(this.roller.store.getState())
     if (wasRolled) {
       this.roller.addDice(edge).rollDice(edge * -1, Infinity, { explodes: true })
     } else {
@@ -271,7 +271,7 @@ export class DiceTrayApi {
   }
 
   rerollMisses(): void {
-    const { edgeSpent } = this.store.get()
+    const { edgeSpent } = this.store.getState()
     if (edgeSpent) return
 
     this.store.setState(produce((state) => {

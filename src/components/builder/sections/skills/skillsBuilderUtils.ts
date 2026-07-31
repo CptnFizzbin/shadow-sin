@@ -4,23 +4,6 @@ import type { KnowledgeSkillData } from "#/system/skills/knowledgeSkillData"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 import type { SkillGroupData } from "#/system/skills/skillGroupData"
 
-/** @deprecated Use `BuilderConfig.skills.active.bpCost.perRating` instead. */
-export const ActiveSkillBpPerRating = BuilderConfig.skills.active.bpCost.perRating
-/** @deprecated Use `BuilderConfig.skills.group.bpCost.perRating` instead. */
-export const ActiveSkillGroupBpPerRating = BuilderConfig.skills.group.bpCost.perRating
-/** @deprecated Use `BuilderConfig.skills.active.bpCost.specialization` instead. */
-export const ActiveSkillSpecializationBp = BuilderConfig.skills.active.bpCost.specialization
-/** @deprecated Use `BuilderConfig.skills.knowledge.spCost.perRating` instead. */
-export const KnowledgeSkillSpPerRating = BuilderConfig.skills.knowledge.spCost.perRating
-/** @deprecated Use `BuilderConfig.skills.language.spCost.perRating` instead. */
-export const LanguageSkillSpPerRating = BuilderConfig.skills.language.spCost.perRating
-/** @deprecated Use `BuilderConfig.skills.knowledge.spCost.specialization` instead. */
-export const KnowledgeSpecializationSp = BuilderConfig.skills.knowledge.spCost.specialization
-/** @deprecated Use `BuilderConfig.skills.language.spCost.specialization` instead. */
-export const LanguageSpecializationSp = BuilderConfig.skills.language.spCost.specialization
-/** @deprecated Use `BuilderConfig.skills.knowledge.bpCost.extraSkillPoint` instead. */
-export const ExtraSkillPointBpCost = BuilderConfig.skills.knowledge.bpCost.extraSkillPoint
-
 export const getFreeSkillPoints = (
   logic: number,
   intuition: number,

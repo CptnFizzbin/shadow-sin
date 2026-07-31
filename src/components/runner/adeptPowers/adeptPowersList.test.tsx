@@ -64,8 +64,8 @@ describe("AdeptPowersList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.powers).toHaveLength(1))
-    expect(store.state.powers[0].name).toBe("Combat Sense")
+    await waitFor(() => expect(store.getState().powers).toHaveLength(1))
+    expect(store.getState().powers[0].name).toBe("Combat Sense")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Combat Sense")).toBeDefined()
   })

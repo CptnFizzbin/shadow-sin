@@ -24,10 +24,10 @@ describe("DialogCtrl", () => {
     const ctrl = new DialogCtrl<number>()
 
     ctrl.open()
-    expect(ctrl.store.state.open).toBe(true)
+    expect(ctrl.store.getState().open).toBe(true)
 
     ctrl.close(42)
-    expect(ctrl.store.state.open).toBe(false)
+    expect(ctrl.store.getState().open).toBe(false)
   })
 
   it("result() resolves only once even if close() is called multiple times", async () => {
@@ -65,7 +65,7 @@ describe("DialogCtrl", () => {
     ctrl.close()
 
     await expect(ctrl.result()).resolves.toBe("first")
-    expect(ctrl.store.state.open).toBe(false)
+    expect(ctrl.store.getState().open).toBe(false)
   })
 
   it("calling open() again before a previous open() resolves does not hang the first caller", async () => {

@@ -53,9 +53,9 @@ describe("LoansSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.nuyen.loans).toHaveLength(1))
-    expect(store.state.nuyen.loans[0].lender).toBe("Fixer Sam")
-    expect(store.state.nuyen.loans[0].id).not.toBe("")
+    await waitFor(() => expect(store.getState().nuyen.loans).toHaveLength(1))
+    expect(store.getState().nuyen.loans[0].lender).toBe("Fixer Sam")
+    expect(store.getState().nuyen.loans[0].id).not.toBe("")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
@@ -71,7 +71,7 @@ describe("LoansSection", () => {
     fireEvent.click(await within(dialog).findByRole("button", { name: /confirm remove/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.nuyen.loans).toHaveLength(0))
+    await waitFor(() => expect(store.getState().nuyen.loans).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
   })

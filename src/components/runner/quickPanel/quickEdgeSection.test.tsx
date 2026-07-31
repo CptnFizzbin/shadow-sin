@@ -54,7 +54,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Spend 1" }))
 
     // Assert: state updated (setCurrentEdge is an async thunk)...
-    await waitFor(() => expect(store.state.edge.current).toBe(0))
+    await waitFor(() => expect(store.getState().edge.current).toBe(0))
     // ...and the UI re-rendered off that same state.
     expect((screen.getByRole("button", { name: "Spend 1" }) as HTMLButtonElement).disabled).toBe(true)
   })
@@ -67,7 +67,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Regain 1" }))
 
     // Assert
-    await waitFor(() => expect(store.state.edge.current).toBe(3))
+    await waitFor(() => expect(store.getState().edge.current).toBe(3))
   })
 
   it("clicking an edge cell above current sets current to that cell's value", async () => {
@@ -78,7 +78,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "4" }))
 
     // Assert
-    await waitFor(() => expect(store.state.edge.current).toBe(4))
+    await waitFor(() => expect(store.getState().edge.current).toBe(4))
   })
 
   it("clicking the cell matching current toggles it back by one", async () => {
@@ -89,7 +89,7 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "2" }))
 
     // Assert
-    await waitFor(() => expect(store.state.edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().edge.current).toBe(1))
   })
 
   it("disables the burn button when max edge is 1", () => {
@@ -109,8 +109,8 @@ describe("QuickEdgeSection", () => {
     fireEvent.click(await screen.findByRole("button", { name: "BURN IT" }))
 
     // Assert
-    await waitFor(() => expect(store.state.attributes[AttributeKey.edge]).toBe(3))
-    expect(store.state.edge.current).toBe(0)
+    await waitFor(() => expect(store.getState().attributes[AttributeKey.edge]).toBe(3))
+    expect(store.getState().edge.current).toBe(0)
     expect(await screen.findByRole("button", { name: "3" })).toBeDefined()
   })
 
@@ -124,7 +124,7 @@ describe("QuickEdgeSection", () => {
 
     // Assert: dialog closes without dispatching burnEdge
     await waitFor(() => expect(screen.queryByRole("button", { name: "BURN IT" })).toBeNull())
-    expect(store.state.attributes[AttributeKey.edge]).toBe(4)
-    expect(store.state.edge.current).toBe(2)
+    expect(store.getState().attributes[AttributeKey.edge]).toBe(4)
+    expect(store.getState().edge.current).toBe(2)
   })
 })

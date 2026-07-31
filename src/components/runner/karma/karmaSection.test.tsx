@@ -45,8 +45,8 @@ describe("KarmaSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /add/i }))
 
     // Assert: state updated (default Amount is 1)...
-    await waitFor(() => expect(store.state.karma.current).toBe(6))
-    expect(store.state.karma.total).toBe(21)
+    await waitFor(() => expect(store.getState().karma.current).toBe(6))
+    expect(store.getState().karma.total).toBe(21)
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("6")).toBeDefined()
     expect(screen.getByText("21")).toBeDefined()

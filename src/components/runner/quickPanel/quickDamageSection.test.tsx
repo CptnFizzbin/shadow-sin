@@ -32,16 +32,16 @@ describe("QuickDamageSection", () => {
   it("resetting physical damage dispatches setDamage and updates the store", async () => {
     // Arrange: seeded with damage taken on both tracks
     const store = renderWithDamage(3, 2)
-    expect(store.state.damage.physical).toBe(3)
+    expect(store.getState().damage.physical).toBe(3)
 
     // Act: the Physical track's Reset button is the first of the two.
     const [resetPhysical] = screen.getAllByRole("button", { name: "Reset" })
     fireEvent.click(resetPhysical)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.damage.physical).toBe(0))
+    await waitFor(() => expect(store.getState().damage.physical).toBe(0))
     // ...and the stun track (untouched) is unaffected.
-    expect(store.state.damage.stun).toBe(2)
+    expect(store.getState().damage.stun).toBe(2)
   })
 
   it("resetting stun damage dispatches setDamage and updates the store", async () => {
@@ -53,7 +53,7 @@ describe("QuickDamageSection", () => {
     fireEvent.click(resetStun)
 
     // Assert
-    await waitFor(() => expect(store.state.damage.stun).toBe(0))
-    expect(store.state.damage.physical).toBe(3)
+    await waitFor(() => expect(store.getState().damage.stun).toBe(0))
+    expect(store.getState().damage.physical).toBe(3)
   })
 })

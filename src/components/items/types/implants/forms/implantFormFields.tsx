@@ -64,7 +64,7 @@ interface CapacitySlotsChipProps extends ChipProps {
 }
 
 const CapacitySlotsChip: FC<CapacitySlotsChipProps> = ({ implantId, capacity, ...props }) => {
-  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const usedCapacity = Object.values(gear)
     .filter(isImplant)
     .filter((item) => item.parentId === implantId)

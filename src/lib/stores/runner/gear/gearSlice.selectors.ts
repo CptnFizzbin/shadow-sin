@@ -10,11 +10,6 @@ import type { ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
 import { isAvailable, isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-/** @deprecated - use {@link selectAllGear} instead **/
-export function selectGear(state: RunnerData): Record<string, ItemData> {
-  return state.gear
-}
-
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
   return state.gear
 }

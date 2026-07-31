@@ -10,7 +10,7 @@ export const ExportRunnerButton: FC = () => {
   const store = useRunnerStoreContext()
 
   const handleExport = () => {
-    const runnerData = store.get()
+    const runnerData = store.getState()
     const yamlContent = runnerDataToYaml(runnerData)
     const sanitizedName =
       (runnerData.profile.alias || runnerData.profile.name || "runner")

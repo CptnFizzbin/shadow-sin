@@ -33,7 +33,7 @@ export interface LicenseCheckState {
  * instead of receiving it as drilled props.
  */
 export function useLicenseCheckState(): LicenseCheckState {
-  const allGear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
 
   const [step, setStep] = useState<LicenseCheckStep>("setup")
   const [scannerRating, setScannerRating] = useState(3)

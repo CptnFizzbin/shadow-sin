@@ -53,8 +53,8 @@ export async function rollOpposedTest(
     scannerRoller.rollAll({ timeout: ROLL_TIMEOUT }),
   ])
 
-  const credentialHits = selectHits(credentialRoller.store.get())
-  const scannerHits = selectHits(scannerRoller.store.get())
+  const credentialHits = selectHits(credentialRoller.store.getState())
+  const scannerHits = selectHits(scannerRoller.store.getState())
   const status = credentialHits >= scannerHits ? "clear" as const : "flagged" as const
 
   return { credentialHits, scannerHits, status }

@@ -113,8 +113,8 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
 
   const handleTransitionExited = () => {
     // Read fresh state directly from stores so the reset always matches current data
-    const freshLoans = runnerDataStore.state.nuyen.loans
-    const freshQuality = runnerDataStore.state.profile.lifestyle?.quality ?? LifestyleType.Street
+    const freshLoans = runnerDataStore.getState().nuyen.loans
+    const freshQuality = runnerDataStore.getState().profile.lifestyle?.quality ?? LifestyleType.Street
     const freshUpkeep = Lifestyles[freshQuality].upkeep
     setCheckedIds(new Set([
       ...freshLoans.filter((l) => l.interestRate > 0).map((l) => l.id),

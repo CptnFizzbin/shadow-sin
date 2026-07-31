@@ -34,7 +34,7 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Deposit" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.nuyen.current).toBe(150))
+    await waitFor(() => expect(store.getState().nuyen.current).toBe(150))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("150¥")).toBeDefined()
   })
@@ -48,7 +48,7 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Withdraw" }))
 
     // Assert
-    await waitFor(() => expect(store.state.nuyen.current).toBe(70))
+    await waitFor(() => expect(store.getState().nuyen.current).toBe(70))
   })
 
   it("setting dispatches setNuyenAmount and replaces the balance", async () => {
@@ -60,6 +60,6 @@ describe("NuyenSection", () => {
     fireEvent.click(screen.getByRole("button", { name: "Set" }))
 
     // Assert
-    await waitFor(() => expect(store.state.nuyen.current).toBe(42))
+    await waitFor(() => expect(store.getState().nuyen.current).toBe(42))
   })
 })

@@ -45,7 +45,7 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
   onIdle,
 }) => {
   const { scannerRating } = useLicenseCheck()
-  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const ratingPlusRating = useRunnerStoreSelector(
     Selectors.houseRules.select("items.licenseCheck.ratingPlusRating"),
   )

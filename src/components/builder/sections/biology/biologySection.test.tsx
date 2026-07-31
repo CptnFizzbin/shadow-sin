@@ -54,7 +54,7 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /Troll/ }))
 
     // Assert: state updated...
-    expect(store.state.biology.metatype).toBe(MetatypeType.Troll)
+    expect(store.getState().biology.metatype).toBe(MetatypeType.Troll)
     // ...and the UI re-rendered off that same state.
     expect(metatypeCombobox().textContent).toContain("Troll")
   })
@@ -77,7 +77,7 @@ describe("BiologySection", () => {
     fireEvent.click(screen.getByRole("option", { name: /Magician/ }))
 
     // Assert
-    expect(store.state.biology.awakening).toBe(AwakeningType.Magician)
+    expect(store.getState().biology.awakening).toBe(AwakeningType.Magician)
     expect(awakeningCombobox().textContent).toContain("Magician")
   })
 })

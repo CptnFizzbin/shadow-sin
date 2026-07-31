@@ -53,7 +53,7 @@ describe("LifestylePanel", () => {
     fireEvent.click(screen.getByRole("option", { name: LifestyleType.Middle }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.profile.lifestyle?.quality).toBe(LifestyleType.Middle))
+    await waitFor(() => expect(store.getState().profile.lifestyle?.quality).toBe(LifestyleType.Middle))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByRole("combobox").textContent).toBe(LifestyleType.Middle)
   })
@@ -66,6 +66,6 @@ describe("LifestylePanel", () => {
     fireEvent.change(screen.getByLabelText("Months prepaid"), { target: { value: "5" } })
 
     // Assert
-    await waitFor(() => expect(store.state.profile.lifestyle?.monthsPaid).toBe(5))
+    await waitFor(() => expect(store.getState().profile.lifestyle?.monthsPaid).toBe(5))
   })
 })
