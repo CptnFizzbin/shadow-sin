@@ -1,10 +1,12 @@
 import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
 import { ItemCardFooter } from "./itemCard.Footer.tsx"
+import { ItemCardQuickAction } from "./itemCard.QuickAction.tsx"
 import { ItemCardSource } from "./itemCard.Source.tsx"
 import { ItemCardStat } from "./itemCard.Stat.tsx"
 import { ItemCardStatusIcons } from "./itemCard.StatusIcons.tsx"
 import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
 
+export type { ItemCardQuickActionProps } from "./itemCard.QuickAction.tsx"
 export type { ItemCardStatProps, ItemCardStatType } from "./itemCard.Stat.tsx"
 export type { ItemCardStatusIconsProps } from "./itemCard.StatusIcons.tsx"
 export type { ItemCardSubitemProps, ItemCardSubitemStat } from "./itemCard.Subitem.tsx"
@@ -22,4 +24,5 @@ export const ItemCardSlot = {
   DamageTrack: ItemCardDamageTrack,
   Footer: ItemCardFooter,
   StatusIcons: ItemCardStatusIcons,
+  QuickAction: ItemCardQuickAction,
 }

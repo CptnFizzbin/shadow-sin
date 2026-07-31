@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react"
-import { describe, expect, it, vi } from "vitest"
+import { act, fireEvent, render, screen } from "@testing-library/react"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
@@ -147,5 +147,137 @@ describe("BasicItemCard", () => {
     )
 
     expect(screen.queryByText("unexpected child")).toBeNull()
+  })
+
+  describe("quick action context menu", () => {
+    it("does not open a menu on right-click when there are no quick actions", () => {
+      render(
+        <BasicItemCard name="Ares Predator V">
+          <ItemCardSlot.Stat value="8P" />
+        </BasicItemCard>,
+        { wrapper: ThemeWrapper },
+      )
+
+      fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+
+      expect(screen.queryByRole("menu")).toBeNull()
+    })
+
+    it("opens a context menu of quick actions on right-click", () => {
+      const onEquip = vi.fn()
+      render(
+        <BasicItemCard name="Ares Predator V">
+          <ItemCardSlot.QuickAction label="Equip" onClick={onEquip} />
+        </BasicItemCard>,
+        { wrapper: ThemeWrapper },
+      )
+
+      fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+
+      expect(screen.getByRole("menu")).toBeDefined()
+      expect(screen.getByRole("menuitem", { name: "Equip" })).toBeDefined()
+    })
+
+    it("invokes the action and closes the menu when a quick action is clicked", () => {
+      const onEquip = vi.fn()
+      render(
+        <BasicItemCard name="Ares Predator V">
+          <ItemCardSlot.QuickAction label="Equip" onClick={onEquip} />
+        </BasicItemCard>,
+        { wrapper: ThemeWrapper },
+      )
+
+      fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+      fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
+
+      expect(onEquip).toHaveBeenCalledOnce()
+      expect(screen.queryByRole("menu")).toBeNull()
+    })
+
+    it("does not trigger onOpen when right-clicking to open the menu", () => {
+      const onOpen = vi.fn()
+      render(
+        <BasicItemCard name="Ares Predator V" onOpen={onOpen}>
+          <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
+        </BasicItemCard>,
+        { wrapper: ThemeWrapper },
+      )
+
+      fireEvent.contextMenu(screen.getByRole("button"))
+
+      expect(onOpen).not.toHaveBeenCalled()
+    })
+
+    describe("long-press on touch devices", () => {
+      beforeEach(() => vi.useFakeTimers())
+      afterEach(() => vi.useRealTimers())
+
+      it("opens the menu after holding for the long-press duration", () => {
+        render(
+          <BasicItemCard name="Ares Predator V">
+            <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
+          </BasicItemCard>,
+          { wrapper: ThemeWrapper },
+        )
+
+        const card = screen.getByText("Ares Predator V")
+        fireEvent.touchStart(card, { touches: [{ clientX: 10, clientY: 10 }] })
+        act(() => vi.advanceTimersByTime(500))
+
+        expect(screen.getByRole("menu")).toBeDefined()
+      })
+
+      it("does not open the menu for a short tap", () => {
+        const onOpen = vi.fn()
+        render(
+          <BasicItemCard name="Ares Predator V" onOpen={onOpen}>
+            <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
+          </BasicItemCard>,
+          { wrapper: ThemeWrapper },
+        )
+
+        const card = screen.getByRole("button")
+        fireEvent.touchStart(card, { touches: [{ clientX: 10, clientY: 10 }] })
+        fireEvent.touchEnd(card)
+        fireEvent.click(card)
+
+        expect(screen.queryByRole("menu")).toBeNull()
+        expect(onOpen).toHaveBeenCalledOnce()
+      })
+
+      it("cancels the long-press when the touch moves beyond the tolerance", () => {
+        render(
+          <BasicItemCard name="Ares Predator V">
+            <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
+          </BasicItemCard>,
+          { wrapper: ThemeWrapper },
+        )
+
+        const card = screen.getByText("Ares Predator V")
+        fireEvent.touchStart(card, { touches: [{ clientX: 10, clientY: 10 }] })
+        fireEvent.touchMove(card, { touches: [{ clientX: 40, clientY: 40 }] })
+        act(() => vi.advanceTimersByTime(500))
+
+        expect(screen.queryByRole("menu")).toBeNull()
+      })
+
+      it("suppresses the trailing click's onOpen after a long-press opens the menu", () => {
+        const onOpen = vi.fn()
+        render(
+          <BasicItemCard name="Ares Predator V" onOpen={onOpen}>
+            <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
+          </BasicItemCard>,
+          { wrapper: ThemeWrapper },
+        )
+
+        const card = screen.getByRole("button")
+        fireEvent.touchStart(card, { touches: [{ clientX: 10, clientY: 10 }] })
+        act(() => vi.advanceTimersByTime(500))
+        fireEvent.touchEnd(card)
+        fireEvent.click(card)
+
+        expect(onOpen).not.toHaveBeenCalled()
+      })
+    })
   })
 })

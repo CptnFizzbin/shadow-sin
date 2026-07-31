@@ -1,7 +1,10 @@
+import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
 import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
@@ -15,7 +18,10 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   weapon,
   onOpen,
 }) => {
+  const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
+
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
 
   return (
     <BasicItemCard
@@ -40,6 +46,22 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
       {Object.values(accessories).map((accessory) => (
         <ItemCardSlot.Subitem key={accessory.id} name={accessory.name} />
       ))}
+
+      {weapon.equipped
+        ? (
+            <ItemCardSlot.QuickAction
+              label="Unequip"
+              icon={<RiCloseCircleLine size={16} />}
+              onClick={toggleEquipped}
+            />
+          )
+        : (
+            <ItemCardSlot.QuickAction
+              label="Equip"
+              icon={<RiCheckboxCircleLine size={16} />}
+              onClick={toggleEquipped}
+            />
+          )}
     </BasicItemCard>
   )
 }
