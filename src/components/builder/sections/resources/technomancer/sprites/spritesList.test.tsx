@@ -59,8 +59,8 @@ describe("SpritesList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.sprites).toHaveLength(1))
-    expect(store.state.sprites[0].name).toBe("Fault")
+    await waitFor(() => expect(store.getState().sprites).toHaveLength(1))
+    expect(store.getState().sprites[0].name).toBe("Fault")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fault")).toBeDefined()
   })
@@ -74,7 +74,7 @@ describe("SpritesList", () => {
     fireEvent.click(deleteButton!)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.sprites).toHaveLength(0))
+    await waitFor(() => expect(store.getState().sprites).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Courier")).toBeNull()
   })

@@ -15,13 +15,6 @@ export class RunnerDataStore implements RunnerStore {
   }
 
   getState = (): RunnerData => this.compatStore.getState()
-  // required by the CompatStore/RunnerStore interface
-  // fallow-ignore-next-line unused-class-member
-  get = (): RunnerData => this.compatStore.getState()
-
-  get state(): RunnerData {
-    return this.compatStore.getState()
-  }
 
   setState = (updater: (prev: RunnerData) => RunnerData): void => this.compatStore.setState(updater)
   subscribe = (listener: (state: RunnerData) => void) => this.compatStore.subscribe(listener)

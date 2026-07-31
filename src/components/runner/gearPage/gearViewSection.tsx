@@ -22,7 +22,7 @@ interface GearViewSectionProps {
 
 export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms }) => {
   const [isManuallyOpen, setIsManuallyOpen] = useState(false)
-  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectAllGear)
 
   const allowedTypes = sectionGearTypes[section]
   const isSearching = searchTerms.length > 0

@@ -16,7 +16,7 @@ describe("DiceRoller", () => {
       const diceRoller = new DiceRoller()
 
       // Assert
-      expect(diceRoller.store.state.dice).toEqual([])
+      expect(diceRoller.store.getState().dice).toEqual([])
     })
   })
 
@@ -50,8 +50,8 @@ describe("DiceRoller", () => {
       diceRoller.addDice(3)
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(3)
-      expect(diceRoller.store.state.dice.every((die) => die.value === null && !die.isRolling)).toBe(true)
+      expect(diceRoller.store.getState().dice).toHaveLength(3)
+      expect(diceRoller.store.getState().dice.every((die) => die.value === null && !die.isRolling)).toBe(true)
     })
 
     it("appends to existing dice rather than replacing them", () => {
@@ -63,7 +63,7 @@ describe("DiceRoller", () => {
       diceRoller.addDice(1)
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(3)
+      expect(diceRoller.store.getState().dice).toHaveLength(3)
     })
 
     it("throws when count is zero", () => {
@@ -103,8 +103,8 @@ describe("DiceRoller", () => {
       diceRoller.removeDice(2)
 
       // Assert — first three dice are kept, last two are dropped
-      expect(diceRoller.store.state.dice).toHaveLength(3)
-      expect(diceRoller.store.state.dice.map((die) => die.value)).toEqual([1, 2, 3])
+      expect(diceRoller.store.getState().dice).toHaveLength(3)
+      expect(diceRoller.store.getState().dice.map((die) => die.value)).toEqual([1, 2, 3])
     })
 
     it("throws when count is zero", () => {
@@ -136,7 +136,7 @@ describe("DiceRoller", () => {
       diceRoller.setPoolSize(5)
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(5)
+      expect(diceRoller.store.getState().dice).toHaveLength(5)
     })
 
     it("removes dice when the pool is larger than the target", () => {
@@ -148,20 +148,20 @@ describe("DiceRoller", () => {
       diceRoller.setPoolSize(2)
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(2)
+      expect(diceRoller.store.getState().dice).toHaveLength(2)
     })
 
     it("does nothing when the pool is already the right size", () => {
       // Arrange
       const diceRoller = new DiceRoller()
       diceRoller.addDice(4)
-      const diceSnapshot = diceRoller.store.get().dice
+      const diceSnapshot = diceRoller.store.getState().dice
 
       // Act
       diceRoller.setPoolSize(4)
 
       // Assert
-      expect(diceRoller.store.state.dice).toBe(diceSnapshot)
+      expect(diceRoller.store.getState().dice).toBe(diceSnapshot)
     })
 
     it("can set the pool size to zero", () => {
@@ -173,7 +173,7 @@ describe("DiceRoller", () => {
       diceRoller.setPoolSize(0)
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(0)
+      expect(diceRoller.store.getState().dice).toHaveLength(0)
     })
   })
 
@@ -190,7 +190,7 @@ describe("DiceRoller", () => {
       diceRoller.reset()
 
       // Assert
-      expect(diceRoller.store.state.dice.every((die) => die.value === null && !die.isRolling)).toBe(true)
+      expect(diceRoller.store.getState().dice.every((die) => die.value === null && !die.isRolling)).toBe(true)
     })
 
     it("preserves the number of dice in the pool", () => {
@@ -202,7 +202,7 @@ describe("DiceRoller", () => {
       diceRoller.reset()
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(4)
+      expect(diceRoller.store.getState().dice).toHaveLength(4)
     })
   })
 
@@ -258,15 +258,15 @@ describe("DiceRoller", () => {
       const rollPromise = diceRoller.rollDie(0)
 
       // Assert — isRolling set synchronously before any timers fire
-      expect(diceRoller.store.state.dice[0].isRolling).toBe(true)
-      expect(diceRoller.store.state.dice[0].value).toBeNull()
+      expect(diceRoller.store.getState().dice[0].isRolling).toBe(true)
+      expect(diceRoller.store.getState().dice[0].value).toBeNull()
 
       vi.runAllTimers()
       await rollPromise
 
       // Assert — settled after timer fires
-      expect(diceRoller.store.state.dice[0].isRolling).toBe(false)
-      expect(diceRoller.store.state.dice[0].value).toBe(6)
+      expect(diceRoller.store.getState().dice[0].isRolling).toBe(false)
+      expect(diceRoller.store.getState().dice[0].value).toBe(6)
     })
 
     it("adds an extra die and rolls it when explodes is true and value is 6", async () => {
@@ -285,7 +285,7 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert — original die + 1 extra from explosion
-      expect(diceRoller.store.state.dice.length).toBeGreaterThan(1)
+      expect(diceRoller.store.getState().dice.length).toBeGreaterThan(1)
     })
 
     it("does NOT add an extra die when explodes is true but value is not 6", async () => {
@@ -300,8 +300,8 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      expect(diceRoller.store.state.dice).toHaveLength(1)
-      expect(diceRoller.store.state.dice[0].value).toBe(1)
+      expect(diceRoller.store.getState().dice).toHaveLength(1)
+      expect(diceRoller.store.getState().dice[0].value).toBe(1)
     })
   })
 
@@ -324,8 +324,8 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      expect(diceRoller.store.state.dice.every((die) => die.value !== null)).toBe(true)
-      expect(diceRoller.store.state.dice.every((die) => !die.isRolling)).toBe(true)
+      expect(diceRoller.store.getState().dice.every((die) => die.value !== null)).toBe(true)
+      expect(diceRoller.store.getState().dice.every((die) => !die.isRolling)).toBe(true)
     })
   })
 
@@ -348,7 +348,7 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      const diceStates = diceRoller.store.state.dice
+      const diceStates = diceRoller.store.getState().dice
       expect(diceStates[0].value).toBeNull() // not rolled
       expect(diceStates[1].value).toBe(2)
       expect(diceStates[2].value).toBe(2)
@@ -367,7 +367,7 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      expect(diceRoller.store.state.dice.every((die) => die.value === 4)).toBe(true)
+      expect(diceRoller.store.getState().dice.every((die) => die.value === 4)).toBe(true)
     })
 
     it("treats a negative startIndex as an offset from the end of the pool", async () => {
@@ -382,7 +382,7 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      const diceStates = diceRoller.store.state.dice
+      const diceStates = diceRoller.store.getState().dice
       expect(diceStates[0].value).toBeNull() // not rolled
       expect(diceStates[1].value).toBeNull() // not rolled
       expect(diceStates[2].value).toBe(6) // rolled
@@ -417,7 +417,7 @@ describe("DiceRoller", () => {
       await rollPromise
 
       // Assert
-      const diceStates = diceRoller.store.state.dice
+      const diceStates = diceRoller.store.getState().dice
       expect(diceStates[0].value).toBe(6) // unchanged
       expect(diceStates[1].value).toBe(6) // re-rolled 1 → 6
       expect(diceStates[2].value).toBe(5) // unchanged
@@ -441,7 +441,7 @@ describe("DiceRoller", () => {
       await settledPromise
 
       // Assert — values are unchanged
-      const diceStates = diceRoller.store.state.dice
+      const diceStates = diceRoller.store.getState().dice
       expect(diceStates[0].value).toBe(5)
       expect(diceStates[1].value).toBe(6)
     })
@@ -484,7 +484,7 @@ describe("DiceRoller", () => {
 
       // Assert
       expect(result).toBe(diceRoller)
-      expect(diceRoller.store.state.dice.every((die) => !die.isRolling)).toBe(true)
+      expect(diceRoller.store.getState().dice.every((die) => !die.isRolling)).toBe(true)
     })
   })
 })

@@ -21,7 +21,6 @@ import {
   selectAvailable,
   selectById,
   selectEquipped,
-  selectGear,
   selectGearOfType,
   selectStashed,
   sins,
@@ -44,17 +43,6 @@ const withGear = (...items: ItemData[]) =>
     data.gear = Object.fromEntries(items.map((gearItem) => [gearItem.id, gearItem]))
     return data
   })
-
-describe("selectGear", () => {
-  it("returns the gear record", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = { [item.id]: item }
-      return s
-    })
-
-    expect(selectGear(sheet)).toBe(sheet.gear)
-  })
-})
 
 describe("selectEquipped", () => {
   it("returns only items with equipped === true", () => {

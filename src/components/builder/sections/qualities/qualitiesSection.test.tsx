@@ -25,7 +25,7 @@ describe("QualitiesSection", () => {
   it("adding a quality dispatches addQuality and updates the store", async () => {
     // Arrange
     const store = renderSection()
-    expect(store.state.qualities).toHaveLength(0)
+    expect(store.getState().qualities).toHaveLength(0)
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: /add quality/i }))
@@ -36,8 +36,8 @@ describe("QualitiesSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.qualities).toHaveLength(1))
-    expect(store.state.qualities[0].name).toBe("Danger Sense")
+    await waitFor(() => expect(store.getState().qualities).toHaveLength(1))
+    expect(store.getState().qualities[0].name).toBe("Danger Sense")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Danger Sense")).toBeDefined()
   })

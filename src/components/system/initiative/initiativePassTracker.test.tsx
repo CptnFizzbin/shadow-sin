@@ -42,7 +42,7 @@ describe("InitiativePassTracker", () => {
     fireEvent.click(screen.getByRole("button", { name: "1" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.initiative.passesCompleted).toEqual([0]))
+    await waitFor(() => expect(store.getState().initiative.passesCompleted).toEqual([0]))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByRole("button", { name: "1" }).className).toContain("MuiButton-contained")
   })
@@ -55,6 +55,6 @@ describe("InitiativePassTracker", () => {
     fireEvent.click(screen.getByRole("button", { name: "1" }))
 
     // Assert
-    await waitFor(() => expect(store.state.initiative.passesCompleted).toEqual([]))
+    await waitFor(() => expect(store.getState().initiative.passesCompleted).toEqual([]))
   })
 })

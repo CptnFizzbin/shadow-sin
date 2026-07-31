@@ -5,13 +5,6 @@ import { getTotalCost } from "#/components/builder/sections/gear/gearUtils.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 
-/** @deprecated Use `BuilderConfig.gear.bpAllowance` instead. */
-export const GearBuildPointAllowance = BuilderConfig.gear.bpAllowance
-/** @deprecated Use `BuilderConfig.gear.nuyenPerBp` instead. */
-export const GearNuyenPerBuildPoint = BuilderConfig.gear.nuyenPerBp
-/** @deprecated Use `BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance` instead. */
-export const GearNuyenAllowance = BuilderConfig.gear.nuyenPerBp * BuilderConfig.gear.bpAllowance
-
 export const useGearTotalCost = () => {
   const gear = useRunnerStoreSelector((state) => state.gear)
   const allGear = Object.values(gear)

@@ -66,7 +66,7 @@ describe("DiceTrayEdgeControls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
 
     // Assert: state updated (setCurrentEdge is an async thunk)...
-    await waitFor(() => expect(store.state.edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().edge.current).toBe(1))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("Edge (1/4)")).toBeDefined()
   })
@@ -77,9 +77,9 @@ describe("DiceTrayEdgeControls", () => {
 
     // Act
     fireEvent.click(screen.getByRole("button", { name: "Roll Edge" }))
-    await waitFor(() => expect(store.state.edge.current).toBe(1))
+    await waitFor(() => expect(store.getState().edge.current).toBe(1))
 
     // Assert: rollEdge() marked the dice tray as edgeSpent, so a second click is a no-op
-    expect(diceTrayApi.store.state.edgeSpent).toBe(true)
+    expect(diceTrayApi.store.getState().edgeSpent).toBe(true)
   })
 })

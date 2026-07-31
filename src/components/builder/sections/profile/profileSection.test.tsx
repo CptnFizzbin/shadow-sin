@@ -43,7 +43,7 @@ describe("ProfileSection", () => {
     fireEvent.change(screen.getByLabelText("Alias"), { target: { value: "Wraith" } })
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.profile.alias).toBe("Wraith"))
+    await waitFor(() => expect(store.getState().profile.alias).toBe("Wraith"))
     // ...and the UI re-rendered off that same state.
     expect((screen.getByLabelText("Alias") as HTMLInputElement).value).toBe("Wraith")
   })
@@ -52,12 +52,12 @@ describe("ProfileSection", () => {
     // Arrange
     const store = renderSection()
     fireEvent.change(screen.getByLabelText("Archetype"), { target: { value: "Street Samurai" } })
-    await waitFor(() => expect(store.state.profile.archetype).toBe("Street Samurai"))
+    await waitFor(() => expect(store.getState().profile.archetype).toBe("Street Samurai"))
 
     // Act
     fireEvent.change(screen.getByLabelText("Archetype"), { target: { value: "" } })
 
     // Assert
-    await waitFor(() => expect(store.state.profile.archetype).toBeNull())
+    await waitFor(() => expect(store.getState().profile.archetype).toBeNull())
   })
 })

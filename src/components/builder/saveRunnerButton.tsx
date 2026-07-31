@@ -21,7 +21,7 @@ export const SaveRunnerButton: FC<SaveRunnerButtonProps> = ({ requireValid = tru
 
   const saveRunner = useMutation({
     mutationFn: async () => {
-      let runner = store.get()
+      let runner = store.getState()
 
       if (runner.id === NullUuid) {
         runner = { ...runner, id: crypto.randomUUID() }

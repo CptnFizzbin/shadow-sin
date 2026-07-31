@@ -24,15 +24,15 @@ describe("DiceTrayApi", () => {
 
       api.setDice(8)
 
-      expect(api.store.state.open).toBe(true)
-      expect(api.store.state.poolSize).toBe(8)
-      expect(api.store.state.edgeSpent).toBe(false)
+      expect(api.store.getState().open).toBe(true)
+      expect(api.store.getState().poolSize).toBe(8)
+      expect(api.store.getState().edgeSpent).toBe(false)
     })
 
     it("clamps pool size to a minimum of 0", () => {
       api.setDice(0)
 
-      expect(api.store.state.poolSize).toBe(0)
+      expect(api.store.getState().poolSize).toBe(0)
     })
   })
 
@@ -42,7 +42,7 @@ describe("DiceTrayApi", () => {
     it("marks edge as spent and delegates to the roller", () => {
       api.rollEdge(3)
 
-      expect(api.store.state.edgeSpent).toBe(true)
+      expect(api.store.getState().edgeSpent).toBe(true)
       expect(vi.mocked(api.roller.addDice)).toHaveBeenCalledWith(3)
     })
 
@@ -57,7 +57,7 @@ describe("DiceTrayApi", () => {
     it("is a no-op when edge count is 0 or less", () => {
       api.rollEdge(0)
 
-      expect(api.store.state.edgeSpent).toBe(false)
+      expect(api.store.getState().edgeSpent).toBe(false)
       expect(vi.mocked(api.roller.addDice)).not.toHaveBeenCalled()
     })
   })
@@ -68,7 +68,7 @@ describe("DiceTrayApi", () => {
     it("marks edge as spent and delegates to the roller", () => {
       api.rerollMisses()
 
-      expect(api.store.state.edgeSpent).toBe(true)
+      expect(api.store.getState().edgeSpent).toBe(true)
       expect(vi.mocked(api.roller.rollMisses)).toHaveBeenCalled()
     })
 
@@ -88,7 +88,7 @@ describe("DiceTrayApi", () => {
       api.open()
       api.close()
 
-      expect(api.store.state.open).toBe(false)
+      expect(api.store.getState().open).toBe(false)
     })
   })
 
@@ -104,8 +104,8 @@ describe("DiceTrayApi", () => {
 
       api.reset()
 
-      expect(api.store.state.edgeSpent).toBe(false)
-      expect(api.store.state.extendedHistory).toHaveLength(0)
+      expect(api.store.getState().edgeSpent).toBe(false)
+      expect(api.store.getState().extendedHistory).toHaveLength(0)
     })
   })
 
@@ -118,11 +118,11 @@ describe("DiceTrayApi", () => {
 
       api.setTestType(TestType.Extended)
 
-      expect(api.store.state.testType).toBe(TestType.Extended)
-      expect(api.store.state.poolSize).toBe(10)
-      expect(api.store.state.physicalMode).toBe(true)
-      expect(api.store.state.open).toBe(true)
-      expect(api.store.state.edgeSpent).toBe(false)
+      expect(api.store.getState().testType).toBe(TestType.Extended)
+      expect(api.store.getState().poolSize).toBe(10)
+      expect(api.store.getState().physicalMode).toBe(true)
+      expect(api.store.getState().open).toBe(true)
+      expect(api.store.getState().edgeSpent).toBe(false)
     })
   })
 })

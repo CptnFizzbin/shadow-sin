@@ -6,16 +6,12 @@ export type StateUpdater<TState> = (prev: TState) => TState
 export interface CompatStore<TState> {
   readonly dispatch: ThunkDispatch<TState, undefined, UnknownAction>
   getState: () => TState
-  /** @deprecated alias for {@link getState}. */
-  get: () => TState
-  /** @deprecated snapshot alias for {@link getState}. */
-  readonly state: TState
   setState: (updater: StateUpdater<TState>) => void
   subscribe: (listener: (state: TState) => void) => { unsubscribe: () => void }
 }
 
 /**
- * A `configureStore` instance exposed through a `get`/`state`/`setState`/`subscribe` API, for call
+ * A `configureStore` instance exposed through a `getState`/`setState`/`subscribe` API, for call
  * sites that want a plain "read a snapshot, write a next value" store instead of dispatching
  * actions directly.
  *
@@ -23,7 +19,7 @@ export interface CompatStore<TState> {
  * updater — an Immer `produce(recipe)` call and a plain `(prev) => next` function both work.
  * `configureStore`'s `serializableCheck` is disabled because that payload is a function by design,
  * and `immutableStateInvariantMiddleware` is disabled because callers are free to hold a snapshot
- * from `get()`/`.state`, mutate it, and write it back via `setState` (some test helpers do exactly
+ * from `getState()`, mutate it, and write it back via `setState` (some test helpers do exactly
  * this).
  *
  * Pass a domain `reducer` (e.g. a `combineReducers` result) to back a store with dispatchable
@@ -54,10 +50,6 @@ export function createCompatStore<TState>(
   return {
     dispatch: store.dispatch,
     getState: () => store.getState(),
-    get: () => store.getState(),
-    get state() {
-      return store.getState()
-    },
     setState: (updater) => {
       store.dispatch(applyUpdater(updater))
     },

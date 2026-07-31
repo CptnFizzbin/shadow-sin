@@ -59,7 +59,7 @@ describe("SpiritList", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Dismiss" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.spirits).toHaveLength(0))
+    await waitFor(() => expect(store.getState().spirits).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Ember")).toBeNull()
   })
@@ -67,7 +67,7 @@ describe("SpiritList", () => {
   it("resetting physical damage dispatches saveSpirit and updates the store", async () => {
     // Arrange: seeded with 2 boxes of physical damage taken
     const store = renderWithSpirits([fireSpirit])
-    expect(store.state.spirits[0].damage.physical).toBe(2)
+    expect(store.getState().spirits[0].damage.physical).toBe(2)
 
     // Act: the Physical damage track's Reset button is the first of the two
     // ("Reset" for Physical, then "Reset" for Stun).
@@ -75,8 +75,8 @@ describe("SpiritList", () => {
     fireEvent.click(resetPhysical)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.spirits[0].damage.physical).toBe(0))
+    await waitFor(() => expect(store.getState().spirits[0].damage.physical).toBe(0))
     // ...and the UI re-rendered off that same state (only Reset buttons remain, no filled cells).
-    expect(store.state.spirits[0].damage.stun).toBe(0)
+    expect(store.getState().spirits[0].damage.stun).toBe(0)
   })
 })

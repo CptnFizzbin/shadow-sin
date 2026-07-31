@@ -51,7 +51,7 @@ describe("QualitiesList", () => {
     fireEvent.click(screen.getByRole("button", { name: "Remove quality Toughness" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.qualities).toHaveLength(0))
+    await waitFor(() => expect(store.getState().qualities).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Toughness")).toBeNull()
     expect(screen.getByText("No Qualities qualities added")).toBeDefined()
@@ -71,7 +71,7 @@ describe("QualitiesList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.qualities[0].bpValue).toBe(15))
+    await waitFor(() => expect(store.getState().qualities[0].bpValue).toBe(15))
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("15 BP")).toBeDefined()
     expect(screen.queryByText("10 BP")).toBeNull()

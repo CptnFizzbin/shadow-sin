@@ -147,7 +147,7 @@ const GearSectionContent: FC<{
 const GearSectionNuyen: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const allGearItems = useRunnerStoreSelector(Selectors.gear.selectAllGear)
 
   const lifestyleInfo = useRunnerStoreSelector(Selectors.profile.selectLifestyleInfo)
   const lifestyleMonths = useRunnerStoreSelector(Selectors.profile.selectLifestyleMonthsPaid) ?? 1

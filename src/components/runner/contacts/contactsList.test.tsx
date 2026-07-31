@@ -64,9 +64,9 @@ describe("ContactsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.contacts).toHaveLength(1))
-    expect(store.state.contacts[0].name).toBe("Fixer Sam")
-    expect(store.state.contacts[0].id).not.toBe("")
+    await waitFor(() => expect(store.getState().contacts).toHaveLength(1))
+    expect(store.getState().contacts[0].name).toBe("Fixer Sam")
+    expect(store.getState().contacts[0].id).not.toBe("")
     // ...and the UI re-rendered off that same state.
     expect(await screen.findByText("Fixer Sam")).toBeDefined()
   })
@@ -95,8 +95,8 @@ describe("ContactsList", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert
-    await waitFor(() => expect(store.state.contacts).toHaveLength(1))
-    const [contact] = store.state.contacts
+    await waitFor(() => expect(store.getState().contacts).toHaveLength(1))
+    const [contact] = store.getState().contacts
     expect(contact.knowledgeSkills).toEqual([{ name: "Street Gangs", rating: 1 }])
     expect(contact.favours).toEqual([
       { description: "Owes for a smuggling run", direction: FavourDirection.contactOwes },
@@ -112,7 +112,7 @@ describe("ContactsList", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.contacts).toHaveLength(0))
+    await waitFor(() => expect(store.getState().contacts).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.queryByText("Mr. Johnson")).toBeNull()
   })

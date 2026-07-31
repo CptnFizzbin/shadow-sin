@@ -54,7 +54,7 @@ describe("AdeptPowersViewerSection", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Delete" }))
 
     // Assert: state updated...
-    await waitFor(() => expect(store.state.powers).toHaveLength(0))
+    await waitFor(() => expect(store.getState().powers).toHaveLength(0))
     // ...and the UI re-rendered off that same state.
     expect(screen.getByText("No adept powers learned")).toBeDefined()
   })

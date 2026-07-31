@@ -95,8 +95,8 @@ describe("rollOpposedTest", () => {
     await vi.runAllTimersAsync()
     await resultPromise
 
-    expect(credentialRoller.store.get().dice).toHaveLength(6)
-    expect(scannerRoller.store.get().dice).toHaveLength(8)
+    expect(credentialRoller.store.getState().dice).toHaveLength(6)
+    expect(scannerRoller.store.getState().dice).toHaveLength(8)
   })
 })
 

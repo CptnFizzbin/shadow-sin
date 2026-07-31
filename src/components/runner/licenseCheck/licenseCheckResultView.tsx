@@ -9,7 +9,7 @@ import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerSto
 
 export const LicenseCheckResultView: FC = () => {
   const { result } = useLicenseCheck()
-  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
 
   if (!result) return null
 

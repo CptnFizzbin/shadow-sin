@@ -83,7 +83,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   const form = formArg as ItemForm
   const isBuilder = useIsBuilder()
   const dispatch = useRunnerStoreDispatch()
-  const allGear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
 
   type OptionKey = keyof Required<NonNullable<typeof optionsProp>>
 
