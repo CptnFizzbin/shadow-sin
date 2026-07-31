@@ -1,15 +1,16 @@
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import type { ItemType } from "#/system/itemType.ts"
 
 /**
  * Reactively read all gear items of a given itemType.
  */
-export function useGearByType<TItem extends ItemData>(itemType: string): TItem[] {
+export function useGearByType<TItem extends ItemData>(itemType: ItemType): TItem[] {
   return useGearFilter((item): item is TItem => item.itemType === itemType)
 }
 
 export function useGearFilter<TReturn extends ItemData>(filter: (item: ItemData) => item is TReturn): TReturn[] {
-  const gear = useRunnerStoreSelector(Selectors.gear.selectGear)
+  const gear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   return Object.values(gear).filter(filter)
 }
 

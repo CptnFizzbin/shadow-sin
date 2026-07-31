@@ -57,6 +57,19 @@ describe("WeaponsList", () => {
     expect(await screen.findByText("Colt Manhunter")).toBeDefined()
   })
 
+  it("tapping a weapon opens the edit dialog", () => {
+    // Arrange
+    renderInBuilder(<WeaponsList />, {
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [pistol.id]: pistol } }))),
+    })
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: /ares predator/i }))
+
+    // Assert: the weapon form dialog opened, pre-filled for editing.
+    expect(screen.getByRole("dialog", { name: /edit weapon/i })).toBeDefined()
+  })
+
   it("removing a weapon dispatches removeItem and updates the store", async () => {
     // Arrange
     renderInBuilder(<WeaponsList />, {
@@ -65,7 +78,8 @@ describe("WeaponsList", () => {
     expect(screen.getByText("Ares Predator")).toBeDefined()
 
     // Act
-    screen.getByRole("button", { name: "Remove" }).click()
+    fireEvent.contextMenu(screen.getByText("Ares Predator"))
+    screen.getByRole("menuitem", { name: "Remove" }).click()
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Ares Predator")).toBeNull())

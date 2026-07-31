@@ -4,8 +4,8 @@ import type { FC } from "react"
 import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
 import { ItemCard } from "#/components/items/card/itemCard.tsx"
 import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
+import { ItemCardDamageTrack } from "#/components/items/card-redesign/itemCard.DamageTrack.tsx"
 import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
-import { InlineDamageTrack } from "#/components/system/damage/inlineDamageTrack.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
@@ -63,7 +63,7 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({
 
       {onDamageChange && (
         <ItemCard.Meta type="detail">
-          <InlineDamageTrack
+          <ItemCardDamageTrack
             label="Damage"
             max={damageMax}
             current={vehicle.damage?.physical.current ?? 0}

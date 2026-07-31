@@ -1,94 +1,64 @@
-import Typography from "@mui/material/Typography"
+import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { EquippedChip } from "#/components/items/equippedChip.tsx"
-import { GenericItemCard } from "#/components/items/genericItemCard.tsx"
-import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
-import type { ItemData } from "#/system/itemData.ts"
 
 interface WeaponItemCardProps {
   weapon: WeaponData
-  accessories?: ItemData[]
-  onEdit: () => void
-  onRemove: () => void
-  onAddAccessory?: () => void
-  onEditAccessory?: (item: ItemData) => void
-  onRemoveAccessory?: (item: ItemData) => void
+  onOpen?: () => void
 }
 
 export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   weapon,
-  accessories = [],
-  onEdit,
-  onRemove,
-  onAddAccessory,
-  onEditAccessory,
-  onRemoveAccessory,
+  onOpen,
 }) => {
-  const { availability, source } = weapon
+  const dispatch = useRunnerStoreDispatch()
+  const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
+
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
+  const removeWeapon = () => dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
-    <GearItemCard
-      availability={availability}
-      source={source}
-      onEdit={onEdit}
-      onRemove={onRemove}
-    >
-      <ItemCard.Title>{weapon.name}</ItemCard.Title>
-
-      {weapon.equipped && (
-        <ItemCard.Meta type="cost">
-          <EquippedChip />
-        </ItemCard.Meta>
-      )}
-
-      {weapon.cost !== undefined && (
-        <ItemCard.Meta type="cost">
-          <Typography sx={{ fontSize: "0.875rem" }}>
-            <Nuyen amount={weapon.cost} />
-          </Typography>
-        </ItemCard.Meta>
-      )}
-
-      <ItemCard.Meta type="stat">
-        <ItemStatChip label={`DV: ${weapon.dmg}`} color="secondary" />
-        {weapon.ap !== undefined && <ItemStatChip label={`AP: ${weapon.ap}`} />}
-        <ItemStatChip label={weapon.skill} color="primary" />
-      </ItemCard.Meta>
+    <BasicItemCard item={weapon} onOpen={onOpen} onRemove={removeWeapon}>
+      <ItemCardSlot.Stat label="DV" value={weapon.dmg} type="damage" />
+      {weapon.ap && <ItemCardSlot.Stat label="AP" value={weapon.ap} type="damage" />}
+      <ItemCardSlot.Stat value={weapon.skill} type="rating" />
 
       {isFirearmData(weapon) && (
-        <ItemCard.Meta type="stat">
-          <ItemStatChip label={weapon.firearmType} />
-          {(weapon.firemodes?.length ?? 0) > 0 && (
-            <ItemStatChip label={weapon.firemodes!.join("/")} />
+        <>
+          <ItemCardSlot.Stat value={weapon.firearmType} type="rating" />
+
+          {weapon.firemodes && (
+            <ItemCardSlot.Stat value={weapon.firemodes.join("/")} type="rating" />
           )}
-        </ItemCard.Meta>
+        </>
       )}
 
-      {onAddAccessory && (
-        <ItemCard.AddChildButton onClick={onAddAccessory}>
-          Add Accessory
-        </ItemCard.AddChildButton>
-      )}
+      {Object.values(accessories).map((accessory) => (
+        <ItemCardSlot.Subitem key={accessory.id} name={accessory.name} />
+      ))}
 
-      {accessories.length > 0 && (
-        <ItemCard.Children>
-          {accessories.map((accessory) => (
-            <GenericItemCard
-              key={accessory.id}
-              item={accessory}
-              variant="borderless"
-              onEdit={() => onEditAccessory?.(accessory)}
-              onRemove={() => onRemoveAccessory?.(accessory)}
+      {weapon.equipped
+        ? (
+            <ItemCardSlot.QuickAction
+              label="Unequip"
+              icon={<RiCloseCircleLine size={16} />}
+              onClick={toggleEquipped}
             />
-          ))}
-        </ItemCard.Children>
-      )}
-    </GearItemCard>
+          )
+        : (
+            <ItemCardSlot.QuickAction
+              label="Equip"
+              icon={<RiCheckboxCircleLine size={16} />}
+              onClick={toggleEquipped}
+            />
+          )}
+    </BasicItemCard>
   )
 }

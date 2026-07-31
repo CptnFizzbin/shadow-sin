@@ -1,13 +1,11 @@
-import type { UUID } from "node:crypto"
-
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
-import { WeaponItemCard } from "#/components/items/types/weapons/weaponItemCard.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -24,45 +22,19 @@ export const WeaponsList: FC = () => {
 
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
-  const removeItem = (item: ItemData) => dispatch(Actions.gear.removeItem({ id: item.id }))
 
   const topLevelWeapons = weapons.filter((weapon) => !weapon.parentId)
-  const getAccessories = (parentId: string) =>
-    weapons.filter((weapon) => weapon.parentId === parentId)
 
   const handleEditWeapon = async (weapon?: WeaponData) => {
     const saved = await weaponFormDialog.open({ weapon })
     if (saved) saveItem(saved)
   }
 
-  const handleAddAccessory = async (parentId: UUID) => {
-    const saved = await accessoryFormDialog.open({ label: "Weapon Accessory" })
-    if (saved) saveItem({ ...saved, parentId })
-  }
-
-  const handleEditAccessory = async (accessory: ItemData) => {
-    const saved = await accessoryFormDialog.open({ item: accessory, label: "Weapon Accessory" })
-    if (saved) saveItem(saved)
-  }
-
   return (
     <Stack sx={{ gap: 1 }}>
-      {topLevelWeapons.map((weapon) => {
-        const accessories = getAccessories(weapon.id)
-
-        return (
-          <WeaponItemCard
-            key={weapon.id}
-            weapon={weapon}
-            accessories={accessories}
-            onEdit={() => handleEditWeapon(weapon)}
-            onRemove={() => removeItem(weapon)}
-            onAddAccessory={() => handleAddAccessory(weapon.id as UUID)}
-            onEditAccessory={(accessory) => handleEditAccessory(accessory)}
-            onRemoveAccessory={(accessory) => removeItem(accessory)}
-          />
-        )
-      })}
+      {topLevelWeapons.map((weapon) => (
+        <ItemCard key={weapon.id} item={weapon} onOpen={() => handleEditWeapon(weapon)} />
+      ))}
 
       <Button
         variant="outlined"
