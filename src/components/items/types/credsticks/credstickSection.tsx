@@ -37,7 +37,7 @@ export const CredstickSection: FC = () => {
                 <CredstickCard
                   key={credstick.id}
                   credstick={credstick}
-                  onClick={handleCardClick}
+                  onOpen={() => handleCardClick(credstick)}
                 />
               ))}
             </Stack>

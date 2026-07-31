@@ -126,6 +126,7 @@ export function DamageTrackCell({
       variant={filled ? "contained" : "outlined"}
       color={isOverflow ? "error" : "primary"}
       onClick={(e) => {
+        e.stopPropagation()
         onClick()
         e.currentTarget.blur()
       }}

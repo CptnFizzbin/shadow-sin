@@ -1,107 +1,52 @@
-import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
-import type { ProgramData } from "#/system/gear/programData.ts"
-
-import { ProgramItemCard } from "./programItemCard.tsx"
 
 interface DeviceItemCardProps {
   device: DeviceData
-  programs?: ProgramData[]
-  onEdit: () => void
-  onRemove: () => void
-  onAddProgram?: () => void
-  onEditProgram?: (program: ProgramData) => void
-  onRemoveProgram?: (program: ProgramData) => void
+  onOpen?: () => void
 }
 
-export const DeviceItemCard: FC<DeviceItemCardProps> = ({
-  device,
-  programs = [],
-  onEdit,
-  onRemove,
-  onAddProgram,
-  onEditProgram,
-  onRemoveProgram,
-}) => {
-  const { availability, source } = device
+export const DeviceItemCard: FC<DeviceItemCardProps> = ({ device, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const programs = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(device.id))
 
   const deviceTypeLabel =
     device.deviceType === "commlink"
       ? (device.deviceModel ?? "Commlink")
       : (device.customDeviceType ?? "Device")
 
-  const hasStats =
-    device.response !== undefined
-    || device.signal !== undefined
-    || device.system !== undefined
-    || device.firewall !== undefined
+  const removeDevice = () => dispatch(Actions.gear.removeItem({ id: device.id, removeChildren: true }))
 
   return (
-    <GearItemCard
-      availability={availability}
-      source={source}
-      onEdit={onEdit}
-      onRemove={onRemove}
-    >
-      <ItemCard.Title>{device.name}</ItemCard.Title>
+    <BasicItemCard item={device} type={deviceTypeLabel} onOpen={onOpen} onRemove={removeDevice}>
+      {device.deviceRating !== undefined && (
+        <ItemCardSlot.Stat label="Rating" value={device.deviceRating} type="rating" />
+      )}
+      {device.response !== undefined && <ItemCardSlot.Stat label="Res" value={device.response} />}
+      {device.signal !== undefined && <ItemCardSlot.Stat label="Sig" value={device.signal} />}
+      {device.system !== undefined && <ItemCardSlot.Stat label="Sys" value={device.system} />}
+      {device.firewall !== undefined && <ItemCardSlot.Stat label="FW" value={device.firewall} />}
+
+      {Object.values(programs).map((program) => (
+        <ItemCardSlot.Subitem
+          key={program.id}
+          name={program.name}
+          stats={program.rating !== undefined ? [{ label: "Rating", value: String(program.rating) }] : []}
+        />
+      ))}
 
       {device.cost !== undefined && (
-        <ItemCard.Meta type="cost">
-          <Typography sx={{ fontSize: "0.875rem" }}>
-            <Nuyen amount={device.cost} />
-          </Typography>
-        </ItemCard.Meta>
+        <ItemCardSlot.Footer>
+          <Nuyen amount={device.cost} />
+        </ItemCardSlot.Footer>
       )}
-
-      <ItemCard.Meta type="stat">
-        <ItemStatChip label={deviceTypeLabel} />
-        {device.deviceRating !== undefined && (
-          <ItemStatChip label={`Rating: ${device.deviceRating}`} />
-        )}
-      </ItemCard.Meta>
-
-      {hasStats && (
-        <ItemCard.Meta type="stat">
-          {device.response !== undefined && (
-            <ItemStatChip label={`Res: ${device.response}`} />
-          )}
-          {device.signal !== undefined && (
-            <ItemStatChip label={`Sig: ${device.signal}`} />
-          )}
-          {device.system !== undefined && (
-            <ItemStatChip label={`Sys: ${device.system}`} />
-          )}
-          {device.firewall !== undefined && (
-            <ItemStatChip label={`FW: ${device.firewall}`} />
-          )}
-        </ItemCard.Meta>
-      )}
-
-      {onAddProgram && (
-        <ItemCard.AddChildButton onClick={onAddProgram}>
-          Add Program
-        </ItemCard.AddChildButton>
-      )}
-
-      {programs.length > 0 && (
-        <ItemCard.Children>
-          {programs.map((program) => (
-            <ProgramItemCard
-              key={program.id}
-              program={program}
-              variant="borderless"
-              onEdit={() => onEditProgram?.(program)}
-              onRemove={() => onRemoveProgram?.(program)}
-            />
-          ))}
-        </ItemCard.Children>
-      )}
-    </GearItemCard>
+    </BasicItemCard>
   )
 }

@@ -3,26 +3,18 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
+import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
-import { isArmorData } from "#/system/gear/armorData.ts"
-import type { ItemData } from "#/system/itemData.ts"
+import { ItemType } from "#/system/itemType.ts"
 
-import { GearViewItem } from "./gearViewItem.tsx"
-
-interface ArmorSectionContentProps {
-  items: ItemData[]
-  getChildren: (id: string) => ItemData[]
-}
-
-export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
-  items,
-  getChildren,
-}) => {
+export const ArmorSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const armorItems = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.armor))
   const armorFormDialog = useArmorFormDialog()
 
   const handleEditArmor = async (armor?: ArmorData) => {
@@ -32,23 +24,8 @@ export const ArmorSectionContent: FC<ArmorSectionContentProps> = ({
 
   return (
     <Stack sx={{ gap: 1 }}>
-      {items.map((item) => (
-        <GearViewItem
-          key={item.id}
-          item={item}
-          subItems={getChildren(item.id)}
-          onEdit={() => isArmorData(item) && handleEditArmor(item)}
-          onRemove={() => dispatch(Actions.gear.removeItem({ id: item.id, removeChildren: true }))}
-          getSubItemCallbacks={(subItemId) => {
-            const subItem = getChildren(item.id).find((child) => child.id === subItemId)
-            return {
-              onEdit: subItem && isArmorData(subItem)
-                ? () => handleEditArmor(subItem)
-                : undefined,
-              onRemove: subItem ? () => dispatch(Actions.gear.removeItem({ id: subItem.id })) : undefined,
-            }
-          }}
-        />
+      {Object.values(armorItems).map((item) => (
+        <ArmorItemCard key={item.id} armor={item} onOpen={() => handleEditArmor(item)} />
       ))}
 
       <Button

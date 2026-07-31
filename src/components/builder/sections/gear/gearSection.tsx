@@ -133,24 +133,7 @@ export const GearSection: FC = () => {
 const GearSectionContent: FC<{
   section: SectionHeader
 }> = ({ section }) => {
-  if (section === SectionHeader.Licenses) {
-    return (
-      <SinsAndLicensesSection
-        slots={{
-          sinTrailingContent: (sin) => (
-            <Typography color="text.secondary">
-              <Nuyen amount={sin.cost} />
-            </Typography>
-          ),
-          licenseTrailingContent: (license) => (
-            <Typography color="text.secondary">
-              <Nuyen amount={license.cost} />
-            </Typography>
-          ),
-        }}
-      />
-    )
-  }
+  if (section === SectionHeader.Licenses) return <SinsAndLicensesSection />
   if (section === SectionHeader.Cyberware) return <ImplantsPanel />
   if (section === SectionHeader.Weapons) return <WeaponsPanel />
   if (section === SectionHeader.Armor) return <ArmorPanel />

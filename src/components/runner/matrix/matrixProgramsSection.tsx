@@ -25,12 +25,7 @@ export const MatrixProgramsSection: FC = () => {
       <ItemList.AddItemButton onClick={() => handleEdit()}>Add Program</ItemList.AddItemButton>
 
       {programs.map((program) => (
-        <ProgramItemCard
-          key={program.id}
-          program={program}
-          onEdit={() => handleEdit(program)}
-          onRemove={() => dispatch(Actions.gear.removeItem({ id: program.id }))}
-        />
+        <ProgramItemCard key={program.id} program={program} onOpen={() => handleEdit(program)} />
       ))}
 
       {programFormDialog.dialog}

@@ -9,27 +9,26 @@ import { DeviceItemCard } from "#/components/items/types/devices/deviceItemCard.
 import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
 import { useProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
 import { ProgramItemCard } from "#/components/items/types/devices/programItemCard.tsx"
-import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-export const DevicesList: FC = () => {
+export const DevicesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
-  const devices = useGearByType<DeviceData>(ItemType.device)
-  const programs = useGearByType<ProgramData>(ItemType.program)
+  const devices = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.device))
+  const programs = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.program))
   const deviceFormDialog = useDeviceFormDialog()
   const programFormDialog = useProgramFormDialog()
 
   const saveItem = (item: DeviceData | ProgramData) =>
     dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
 
-  const rootDevices = devices.filter((device) => !device.parentId)
   const getProgramsForDevice = (deviceId: string) =>
-    programs.filter((program) => program.parentId === deviceId)
+    Object.values(programs).filter((program) => program.parentId === deviceId)
 
   const handleEditDevice = async (device?: DeviceData) => {
     const saved = await deviceFormDialog.open({ device })
@@ -43,7 +42,7 @@ export const DevicesList: FC = () => {
 
   return (
     <Stack sx={{ gap: 1 }}>
-      {rootDevices.map((device) => {
+      {Object.values(devices).map((device) => {
         const devicePrograms = getProgramsForDevice(device.id)
 
         return (

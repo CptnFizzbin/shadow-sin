@@ -1,44 +1,49 @@
-import Typography from "@mui/material/Typography"
+import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { GearItemCard } from "#/components/items/card/gearItemCard.tsx"
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { ItemStatChip } from "#/components/items/card/itemStatChip.tsx"
-import { EquippedChip } from "#/components/items/equippedChip.tsx"
-import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 
 interface ArmorItemCardProps {
   armor: ArmorData
-  onEdit: () => void
-  onRemove: () => void
+  onOpen?: () => void
 }
 
-export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onEdit, onRemove }) => {
-  const { availability, source } = armor
+export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
+  const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
+
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...armor, equipped: !armor.equipped }))
+  const removeArmor = () => dispatch(Actions.gear.removeItem({ id: armor.id, removeChildren: true }))
 
   return (
-    <GearItemCard availability={availability} source={source} onEdit={onEdit} onRemove={onRemove}>
-      <ItemCard.Title>{armor.name}</ItemCard.Title>
+    <BasicItemCard item={armor} onOpen={onOpen} onRemove={removeArmor}>
+      <ItemCardSlot.Stat label="B" value={armor.ballistic} type="damage" />
+      <ItemCardSlot.Stat label="I" value={armor.impact} type="damage" />
 
-      {armor.equipped && (
-        <ItemCard.Meta type="cost">
-          <EquippedChip />
-        </ItemCard.Meta>
-      )}
+      {Object.values(mods).map((mod) => (
+        <ItemCardSlot.Subitem key={mod.id} name={mod.name} />
+      ))}
 
-      {armor.cost !== undefined && (
-        <ItemCard.Meta type="cost">
-          <Typography sx={{ fontSize: "0.875rem" }}>
-            <Nuyen amount={armor.cost} />
-          </Typography>
-        </ItemCard.Meta>
-      )}
-
-      <ItemCard.Meta type="stat">
-        <ItemStatChip label={`B: ${armor.ballistic}`} />
-        <ItemStatChip label={`I: ${armor.impact}`} />
-      </ItemCard.Meta>
-    </GearItemCard>
+      {armor.equipped
+        ? (
+            <ItemCardSlot.QuickAction
+              label="Unequip"
+              icon={<RiCloseCircleLine size={16} />}
+              onClick={toggleEquipped}
+            />
+          )
+        : (
+            <ItemCardSlot.QuickAction
+              label="Equip"
+              icon={<RiCheckboxCircleLine size={16} />}
+              onClick={toggleEquipped}
+            />
+          )}
+    </BasicItemCard>
   )
 }

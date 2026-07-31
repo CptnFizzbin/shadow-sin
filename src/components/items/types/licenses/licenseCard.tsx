@@ -1,50 +1,34 @@
-import { RiDeleteBin6Line, RiEdit2Line } from "@remixicon/react"
-import type { FC, ReactNode } from "react"
+import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card/itemCard.tsx"
-import { RatingChip } from "#/components/ui/ratingChip.tsx"
+import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
+import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
+import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
-
-interface LicenseCardSlots {
-  trailingContent?: ReactNode
-}
 
 interface LicenseCardProps {
   license: LicenseData
-  slots?: LicenseCardSlots
-  onClick?: () => void
-  onDelete?: () => void
+  onOpen?: () => void
 }
 
-export const LicenseCard: FC<LicenseCardProps> = ({
-  license,
-  slots,
-  onClick,
-  onDelete,
-}) => {
+export const LicenseCard: FC<LicenseCardProps> = ({ license, onOpen }) => {
+  const dispatch = useRunnerStoreDispatch()
+
+  const removeLicense = () => dispatch(Actions.gear.licenses.destroy(license.id))
+
   return (
-    <ItemCard>
-      <ItemCard.Title>{license.name}</ItemCard.Title>
+    <BasicItemCard item={license} onOpen={onOpen} onRemove={removeLicense}>
+      <ItemCardSlot.Stat
+        value={license.rating === "real" ? "Real" : `Rating: ${license.rating}`}
+        type="rating"
+      />
 
-      {slots?.trailingContent && (
-        <ItemCard.Meta type="cost">{slots.trailingContent}</ItemCard.Meta>
+      {license.cost !== undefined && (
+        <ItemCardSlot.Footer>
+          <Nuyen amount={license.cost} />
+        </ItemCardSlot.Footer>
       )}
-
-      <ItemCard.Meta type="cost">
-        <RatingChip rating={license.rating} />
-      </ItemCard.Meta>
-
-      {onClick && (
-        <ItemCard.Action type="icon" aria-label="Edit" onClick={onClick}>
-          <RiEdit2Line size={16} />
-        </ItemCard.Action>
-      )}
-
-      {onDelete && (
-        <ItemCard.Action type="icon" color="error" aria-label="Remove" onClick={onDelete}>
-          <RiDeleteBin6Line size={16} />
-        </ItemCard.Action>
-      )}
-    </ItemCard>
+    </BasicItemCard>
   )
 }

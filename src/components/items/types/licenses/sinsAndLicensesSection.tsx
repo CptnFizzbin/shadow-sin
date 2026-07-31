@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
-import type { FC, ReactNode } from "react"
+import type { FC } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
@@ -16,18 +17,7 @@ import { useSinFormDialog } from "./dialogs/sinFormDialog.tsx"
 import { LicenseCard } from "./licenseCard.tsx"
 import { SinCard } from "./sinCard.tsx"
 
-interface SinsAndLicensesSectionSlots {
-  sinTrailingContent?: (sin: SinData) => ReactNode
-  licenseTrailingContent?: (license: LicenseData) => ReactNode
-}
-
-interface SinsAndLicensesSectionProps {
-  slots?: SinsAndLicensesSectionSlots
-}
-
-export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
-  slots,
-}) => {
+export const SinsAndLicensesSection: FC = () => {
   const confirmDialog = useConfirmDialog()
   const dispatch = useRunnerStoreDispatch()
   const sins = useGearByType<SinData>(ItemType.sin)
@@ -93,44 +83,34 @@ export const SinsAndLicensesSection: FC<SinsAndLicensesSectionProps> = ({
         const sinLicenses = licenses.filter(
           (license) => license.parentId === sin.id,
         )
-        const hasLicenses = sinLicenses.length > 0
 
         return (
-          <SinCard
-            key={sin.id}
-            sin={sin}
-            slots={{
-              trailingContent: slots?.sinTrailingContent?.(sin),
-            }}
-            onClick={() => handleEditSin(sin)}
-            onDelete={() => handleRemoveSin(sin, hasLicenses)}
-          >
-            {sinLicenses.map((license) => (
-              <LicenseCard
-                key={license.id}
-                license={license}
-                slots={{
-                  trailingContent: slots?.licenseTrailingContent?.(license),
-                }}
-                onClick={() => handleEditLicense(sin, license)}
-                onDelete={() => handleRemoveLicense(license)}
-              />
-            ))}
+          <Stack key={sin.id} sx={{ gap: 1 }}>
+            <SinCard sin={sin} onOpen={() => handleEditSin(sin)} />
+
+            {sinLicenses.length > 0 && (
+              <Stack sx={{ gap: 1, pl: 2 }}>
+                {sinLicenses.map((license) => (
+                  <LicenseCard
+                    key={license.id}
+                    license={license}
+                    onOpen={() => handleEditLicense(sin, license)}
+                  />
+                ))}
+              </Stack>
+            )}
 
             <Button
               variant="text"
               color="secondary"
               size="small"
               startIcon={<RiAddLine size={14} />}
-              onClick={(e) => {
-                e.stopPropagation()
-                void handleEditLicense(sin)
-              }}
+              onClick={() => handleEditLicense(sin)}
               fullWidth
             >
               Add License
             </Button>
-          </SinCard>
+          </Stack>
         )
       })}
 

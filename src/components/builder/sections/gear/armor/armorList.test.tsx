@@ -48,7 +48,8 @@ describe("ArmorList", () => {
     expect(screen.getByText("Armor Jacket")).toBeDefined()
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
+    fireEvent.contextMenu(screen.getByText("Armor Jacket"))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Armor Jacket")).toBeNull())

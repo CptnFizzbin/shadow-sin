@@ -34,8 +34,8 @@ describe("VehiclesList", () => {
 
     // Assert
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
-    expect(screen.getByText("Handling 5")).toBeDefined()
-    expect(screen.getByText("Body 4")).toBeDefined()
+    expect(screen.getByText("Handling: 5")).toBeDefined()
+    expect(screen.getByText("Body: 4")).toBeDefined()
     expect(screen.getByRole("button", { name: /equipment/i })).toBeDefined()
     expect(screen.getByText("Damage 0/4")).toBeDefined()
   })
@@ -73,7 +73,8 @@ describe("VehiclesList", () => {
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
+    fireEvent.contextMenu(screen.getByText("Suzuki Mirage"))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.
     await waitFor(() => expect(screen.queryByText("Suzuki Mirage")).toBeNull())

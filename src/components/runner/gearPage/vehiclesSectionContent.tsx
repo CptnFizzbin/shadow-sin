@@ -7,46 +7,31 @@ import type { FC } from "react"
 
 import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
-import { useGearFilter } from "#/lib/hooks/items/gearHooks.ts"
+import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
+import { VehicleItemCard } from "#/components/items/types/vehicles/vehicleItemCard.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
-import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
+import { isVehicleData } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
-import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
-import { VehicleItemCard } from "./vehicleItemCard.tsx"
-
-interface VehiclesListProps {
-  vehicleCategory: VehicleCategory
-}
-
-export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
+export const VehiclesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const vehicleFormDialog = useVehicleFormDialog()
   const attachmentFormDialog = useItemFormDialog()
 
   const saveItem = (item: ItemData) =>
     dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
-  const removeItem = (item: ItemData) => dispatch(Actions.gear.removeItem({ id: item.id }))
 
-  const vehicles = useGearFilter(
-    (item): item is VehicleData =>
-      isVehicleData(item) && item.vehicleCategory === vehicleCategory,
-  )
-
-  const allAttachments = useGearFilter(
-    (item): item is ItemData => !isVehicleData(item) && !!item.parentId,
-  )
-
+  const vehicles = Object.values(allGear).filter(isVehicleData)
   const getAttachments = (vehicleId: string) =>
-    allAttachments.filter((item) => item.parentId === vehicleId)
-
-  const categoryLabel = vehicleCategory === VehicleCategory.drone ? "Drone" : "Vehicle"
+    Object.values(allGear).filter((item) => !isVehicleData(item) && item.parentId === vehicleId)
 
   const handleEditVehicle = async (vehicle?: VehicleData) => {
-    const saved = await vehicleFormDialog.open({ vehicle, vehicleCategory })
+    const saved = await vehicleFormDialog.open({ vehicle })
     if (saved) saveItem(saved)
   }
 
@@ -76,7 +61,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
                     key={attachment.id}
                     item={attachment}
                     onOpen={() => handleEditAttachment(attachment)}
-                    onRemove={() => removeItem(attachment)}
+                    onRemove={() => dispatch(Actions.gear.removeItem({ id: attachment.id }))}
                   />
                 ))}
               </Stack>
@@ -104,7 +89,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
         color="secondary"
         fullWidth
       >
-        Add {categoryLabel}
+        Add Vehicle
       </Button>
 
       {vehicleFormDialog.dialog}
