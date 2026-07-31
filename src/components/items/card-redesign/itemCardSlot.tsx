@@ -1,7 +1,6 @@
 import { ItemCardDamageTrack } from "./itemCard.DamageTrack.tsx"
 import { ItemCardFooter } from "./itemCard.Footer.tsx"
 import { ItemCardQuickAction } from "./itemCard.QuickAction.tsx"
-import { ItemCardSource } from "./itemCard.Source.tsx"
 import { ItemCardStat } from "./itemCard.Stat.tsx"
 import { ItemCardStatusIcons } from "./itemCard.StatusIcons.tsx"
 import { ItemCardSubitem } from "./itemCard.Subitem.tsx"
@@ -16,11 +15,13 @@ export type { ItemCardSubitemProps, ItemCardSubitemStat } from "./itemCard.Subit
  * card wrapping it). Kept separate from the `ItemCard` dispatcher so typed
  * cards can depend on slots without depending on `ItemCard` itself, which
  * would otherwise import every typed card and create a cycle.
+ *
+ * `Source` isn't here: BasicItemCard renders it directly from `item.source`
+ * since every `ItemData` carries one, so it's no longer a composable slot.
  */
 export const ItemCardSlot = {
   Stat: ItemCardStat,
   Subitem: ItemCardSubitem,
-  Source: ItemCardSource,
   DamageTrack: ItemCardDamageTrack,
   Footer: ItemCardFooter,
   StatusIcons: ItemCardStatusIcons,

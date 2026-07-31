@@ -1,9 +1,11 @@
 import Box from "@mui/material/Box"
+import Divider from "@mui/material/Divider"
 import Menu from "@mui/material/Menu"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
+import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
 import type {
   FC,
   KeyboardEvent,
@@ -14,16 +16,19 @@ import type {
 import { Children, cloneElement, useRef, useState } from "react"
 
 import { isElementType } from "#/lib/slotUtils.ts"
+import type { ItemData } from "#/system/itemData.ts"
+import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
-import type { ItemCardStatusIconsProps } from "./itemCard.StatusIcons.tsx"
+import { ItemCardSource } from "./itemCard.Source.tsx"
 import { ItemCardSlot } from "./itemCardSlot.tsx"
 
 export interface BasicItemCardProps {
-  name: ReactNode
+  item: ItemData
   type?: ReactNode
-  statusIcons?: ItemCardStatusIconsProps
-  /** When provided, the whole card becomes tappable/keyboard-activatable and routes to a detail view. */
+  /** When provided, the whole card becomes tappable/keyboard-activatable and doubles as the "Edit" quick action. */
   onOpen?: () => void
+  /** When provided, adds a "Remove" quick action. */
+  onRemove?: () => void
   children?: ReactNode
 }
 
@@ -43,30 +48,32 @@ interface MenuPosition {
 }
 
 /**
- * Generic, no-smarts ItemCard body: renders name/type/status-icons plus
- * whichever `ItemCardSlot.*` children are passed in. Typed cards (e.g.
- * `WeaponItemCard`) wrap this to add item-type-specific slots; the `ItemCard`
- * dispatcher falls back to this directly for item types without a typed card.
+ * Generic ItemCard body: renders the fields common to every `ItemData`
+ * (name, source, equipped/stashed/wireless-off status, an Edit/Remove quick
+ * action pair) plus whichever `ItemCardSlot.*` children are passed in for
+ * item-type-specific content. Typed cards (e.g. `WeaponItemCard`) wrap this;
+ * the `ItemCard` dispatcher falls back to this directly for item types
+ * without a typed card.
  */
 export const BasicItemCard: FC<BasicItemCardProps> = ({
-  name,
+  item,
   type,
-  statusIcons,
   onOpen,
+  onRemove,
   children,
 }) => {
   const childArray = Children.toArray(children)
 
   const statNodes = childArray.filter(isElementType(ItemCardSlot.Stat))
   const subitemNodes = childArray.filter(isElementType(ItemCardSlot.Subitem))
-  const sourceNode = childArray.find(isElementType(ItemCardSlot.Source))
   const damageTrackNode = childArray.find(isElementType(ItemCardSlot.DamageTrack))
   const footerNode = childArray.find(isElementType(ItemCardSlot.Footer))
-  const quickActionNodes = childArray.filter(isElementType(ItemCardSlot.QuickAction))
+  const customQuickActionNodes = childArray.filter(isElementType(ItemCardSlot.QuickAction))
 
+  const hasSource = Boolean(item.source)
   const hasBody = statNodes.length > 0 || Boolean(damageTrackNode) || subitemNodes.length > 0
-  const hasFooterBand = Boolean(sourceNode) || Boolean(footerNode)
-  const hasQuickActions = quickActionNodes.length > 0
+  const hasFooterBand = hasSource || Boolean(footerNode)
+  const hasQuickActions = customQuickActionNodes.length > 0 || Boolean(onOpen) || Boolean(onRemove)
 
   const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -159,10 +166,14 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
                 {type}
               </Typography>
             )}
-            <Typography sx={{ fontWeight: 500 }}>{name}</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{item.name}</Typography>
           </Stack>
 
-          {statusIcons && <ItemCardSlot.StatusIcons {...statusIcons} />}
+          <ItemCardSlot.StatusIcons
+            equipped={isEquipped(item)}
+            stashed={isStashed(item)}
+            wirelessOff={item.wireless?.enabled === false}
+          />
         </Stack>
 
         {hasBody && (
@@ -201,7 +212,9 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
               borderColor: "divider",
             }}
           >
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>{sourceNode}</Box>
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+              {hasSource && <ItemCardSource source={item.source} />}
+            </Box>
             {footerNode}
           </Stack>
         )}
@@ -217,12 +230,36 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
           }
           slotProps={{ paper: { onClick: (event: ReactMouseEvent<HTMLDivElement>) => event.stopPropagation() } }}
         >
-          {quickActionNodes.map((node) => cloneElement(node, {
+          {customQuickActionNodes.map((node) => cloneElement(node, {
             onClick: () => {
               node.props.onClick()
               handleCloseMenu()
             },
           }))}
+
+          {customQuickActionNodes.length > 0 && (onOpen || onRemove) && <Divider />}
+
+          {onOpen && (
+            <ItemCardSlot.QuickAction
+              label="Edit"
+              icon={<RiEditLine size={16} />}
+              onClick={() => {
+                onOpen()
+                handleCloseMenu()
+              }}
+            />
+          )}
+
+          {onRemove && (
+            <ItemCardSlot.QuickAction
+              label="Remove"
+              icon={<RiDeleteBinLine size={16} />}
+              onClick={() => {
+                onRemove()
+                handleCloseMenu()
+              }}
+            />
+          )}
         </Menu>
       )}
     </>
