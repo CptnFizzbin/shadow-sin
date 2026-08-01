@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { ItemList } from "#/components/items/card/itemList.tsx"
@@ -12,6 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const MatrixProgramsSection: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const programs = useGearByType<ProgramData>(ItemType.program)
   const programFormDialog = useProgramFormDialog()
 
@@ -25,7 +27,12 @@ export const MatrixProgramsSection: FC = () => {
       <ItemList.AddItemButton onClick={() => handleEdit()}>Add Program</ItemList.AddItemButton>
 
       {programs.map((program) => (
-        <ProgramItemCard key={program.id} program={program} onOpen={() => handleEdit(program)} />
+        <ProgramItemCard
+          key={program.id}
+          program={program}
+          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: program.id } })}
+          onEdit={() => handleEdit(program)}
+        />
       ))}
 
       {programFormDialog.dialog}

@@ -14,6 +14,7 @@ import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "./
 interface ImplantItemCardProps {
   implant: ImplantData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
 const gradeLabel: Partial<Record<string, string>> = {
@@ -28,7 +29,7 @@ const typeLabel: Partial<Record<string, string>> = {
   [ImplantType.bioware]: "Bio",
 }
 
-export const ImplantItemCard: FC<ImplantItemCardProps> = ({ implant, onOpen }) => {
+export const ImplantItemCard: FC<ImplantItemCardProps> = ({ implant, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
@@ -49,6 +50,7 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({ implant, onOpen }) =
         item={implant}
         type={implant.implantType ? (typeLabel[implant.implantType] ?? implant.implantType) : undefined}
         onOpen={onOpen}
+        onEdit={onEdit}
         onRemove={removeImplant}
       >
         <ItemCardSlot.Stat label="Ess" value={effectiveEssence.toFixed(2)} type="modifier" />

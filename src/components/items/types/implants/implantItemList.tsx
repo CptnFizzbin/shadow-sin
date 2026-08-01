@@ -4,6 +4,7 @@ import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useOpenItemDetails } from "#/lib/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -16,6 +17,7 @@ import { ImplantItemCard } from "./implantItemCard.tsx"
 
 export const ImplantItemList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const openItemDetails = useOpenItemDetails()
   const implants = useGearByType<ImplantData>(ItemType.implant)
   const rootImplants = implants.filter((implant) => !implant.parentId)
   const implantFormDialog = useImplantFormDialog()
@@ -44,7 +46,13 @@ export const ImplantItemList: FC = () => {
 
           return (
             <Stack key={implant.id} sx={{ gap: 1 }}>
-              <ImplantItemCard implant={implant} onOpen={() => handleAddImplant({ implant })} />
+              <ImplantItemCard
+                implant={implant}
+                onOpen={openItemDetails
+                  ? () => openItemDetails(implant.id)
+                  : () => handleAddImplant({ implant })}
+                onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
+              />
 
               {accessories.length > 0 && (
                 <Stack sx={{ gap: 1, pl: 2 }}>
@@ -52,7 +60,12 @@ export const ImplantItemList: FC = () => {
                     <ImplantItemCard
                       key={accessory.id}
                       implant={accessory}
-                      onOpen={() => handleAddImplant({ implant: accessory, parentId: implant.id })}
+                      onOpen={openItemDetails
+                        ? () => openItemDetails(accessory.id)
+                        : () => handleAddImplant({ implant: accessory, parentId: implant.id })}
+                      onEdit={openItemDetails
+                        ? () => handleAddImplant({ implant: accessory, parentId: implant.id })
+                        : undefined}
                     />
                   ))}
                 </Stack>

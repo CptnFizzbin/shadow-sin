@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { DeviceItemCard } from "#/components/items/types/devices/deviceItemCard.tsx"
@@ -19,6 +20,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const DevicesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const devices = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.device))
   const programs = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.program))
   const deviceFormDialog = useDeviceFormDialog()
@@ -47,7 +49,11 @@ export const DevicesSectionContent: FC = () => {
 
         return (
           <Stack key={device.id} sx={{ gap: 1 }}>
-            <DeviceItemCard device={device} onOpen={() => handleEditDevice(device)} />
+            <DeviceItemCard
+              device={device}
+              onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: device.id } })}
+              onEdit={() => handleEditDevice(device)}
+            />
 
             {devicePrograms.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
@@ -55,7 +61,8 @@ export const DevicesSectionContent: FC = () => {
                   <ProgramItemCard
                     key={program.id}
                     program={program}
-                    onOpen={() => handleEditProgram(program)}
+                    onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: program.id } })}
+                    onEdit={() => handleEditProgram(program)}
                   />
                 ))}
               </Stack>

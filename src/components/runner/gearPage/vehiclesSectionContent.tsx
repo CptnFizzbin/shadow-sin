@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
@@ -19,6 +20,7 @@ import type { ItemData } from "#/system/itemData.ts"
 
 export const VehiclesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const allGear = useRunnerStoreSelector(Selectors.gear.selectAllGear)
   const vehicleFormDialog = useVehicleFormDialog()
   const attachmentFormDialog = useItemFormDialog()
@@ -52,7 +54,11 @@ export const VehiclesSectionContent: FC = () => {
 
         return (
           <Stack key={vehicle.id} sx={{ gap: 1 }}>
-            <VehicleItemCard vehicle={vehicle} onOpen={() => handleEditVehicle(vehicle)} />
+            <VehicleItemCard
+              vehicle={vehicle}
+              onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: vehicle.id } })}
+              onEdit={() => handleEditVehicle(vehicle)}
+            />
 
             {attachments.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
@@ -60,7 +66,8 @@ export const VehiclesSectionContent: FC = () => {
                   <ItemCard
                     key={attachment.id}
                     item={attachment}
-                    onOpen={() => handleEditAttachment(attachment)}
+                    onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}
+                    onEdit={() => handleEditAttachment(attachment)}
                     onRemove={() => dispatch(Actions.gear.removeItem({ id: attachment.id }))}
                   />
                 ))}

@@ -44,7 +44,7 @@ export class RunnerManager {
     })
   }
 
-  // called on the RunnerManagerContext instance in src/routes/_viewer/$runnerId.tsx
+  // called on the RunnerManagerContext instance in src/routes/$runnerId.tsx
   // fallow-ignore-next-line unused-class-member
   public save(runner: RunnerData): Promise<void> {
     return this.getOrCreateDebouncer(runner.id).maybeExecute(runner) as Promise<void>
