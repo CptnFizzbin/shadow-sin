@@ -23,7 +23,7 @@ import type { RunnerData } from "#/system/runnerData.ts"
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })
 
-export const Route = createFileRoute("/$runnerId")({
+export const Route = createFileRoute("/_viewer/$runnerId")({
   component: RunnerRoute,
   errorComponent: RunnerErrorRoute,
   loader: async ({ params }): Promise<RunnerData> => {

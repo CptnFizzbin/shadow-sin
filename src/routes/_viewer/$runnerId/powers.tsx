@@ -35,6 +35,6 @@ const RouteComponent: FC<Props> = () => {
   )
 }
 
-export const Route = createFileRoute("/$runnerId/powers")({
+export const Route = createFileRoute("/_viewer/$runnerId/powers")({
   component: RouteComponent,
 })

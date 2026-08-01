@@ -12,7 +12,7 @@ import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
 type SkillsTabValue = "active" | "knowledge" | "languages"
 
-export const Route = createFileRoute("/$runnerId/skills")({
+export const Route = createFileRoute("/_viewer/$runnerId/skills")({
   component: RouteComponent,
 })
 

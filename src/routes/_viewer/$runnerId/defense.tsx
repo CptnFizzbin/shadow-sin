@@ -29,7 +29,7 @@ import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerSto
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export const Route = createFileRoute("/$runnerId/defense")({
+export const Route = createFileRoute("/_viewer/$runnerId/defense")({
   component: RouteComponent,
 })
 
