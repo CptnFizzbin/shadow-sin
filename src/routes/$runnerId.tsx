@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import { RiDice6Line } from "@remixicon/react"
-import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
@@ -19,6 +19,8 @@ import { useRunnerNav } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
 import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
+
+import { Route as ItemDetailsRoute } from "./$runnerId/item.$itemId.tsx"
 
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })
@@ -62,6 +64,21 @@ function RunnerRoute() {
 function RunnerContent() {
   const { nextPage, prevPage } = useRunnerNav()
   const diceTray = useDiceTray()
+  const matches = useMatches()
+
+  // The item details page is a drill-down, not a peer tab: `useRunnerNav`
+  // has no entry for it (it falls back to "about"), so the tab bar and
+  // swipe-between-sections chrome would misbehave here. Render it
+  // full-screen instead — see ADR-0009.
+  const isFullScreenRoute = matches.some((match) => match.routeId === ItemDetailsRoute.id)
+
+  if (isFullScreenRoute) {
+    return (
+      <Box sx={{ padding: 1 }}>
+        <Outlet />
+      </Box>
+    )
+  }
 
   return (
     <>

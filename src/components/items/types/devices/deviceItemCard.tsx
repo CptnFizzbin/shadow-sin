@@ -11,9 +11,10 @@ import type { DeviceData } from "#/system/gear/deviceData.ts"
 interface DeviceItemCardProps {
   device: DeviceData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const DeviceItemCard: FC<DeviceItemCardProps> = ({ device, onOpen }) => {
+export const DeviceItemCard: FC<DeviceItemCardProps> = ({ device, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const programs = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(device.id))
 
@@ -25,7 +26,7 @@ export const DeviceItemCard: FC<DeviceItemCardProps> = ({ device, onOpen }) => {
   const removeDevice = () => dispatch(Actions.gear.removeItem({ id: device.id, removeChildren: true }))
 
   return (
-    <BasicItemCard item={device} type={deviceTypeLabel} onOpen={onOpen} onRemove={removeDevice}>
+    <BasicItemCard item={device} type={deviceTypeLabel} onOpen={onOpen} onEdit={onEdit} onRemove={removeDevice}>
       {device.deviceRating !== undefined && (
         <ItemCardSlot.Stat label="Rating" value={device.deviceRating} type="rating" />
       )}

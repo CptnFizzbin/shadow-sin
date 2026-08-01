@@ -11,7 +11,7 @@ import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOption
 
 import { useGameEffectsDialog } from "./gameEffectsDialog.tsx"
 
-function getEffectLabel(effect: GameEffectData): string {
+export function getEffectLabel(effect: GameEffectData): string {
   const typeOption = GameEffectTypeOptions.find((o) => o.value === effect.type)
   const typeLabel = typeOption?.label ?? effect.type
 

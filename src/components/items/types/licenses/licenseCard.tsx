@@ -10,15 +10,16 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 interface LicenseCardProps {
   license: LicenseData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const LicenseCard: FC<LicenseCardProps> = ({ license, onOpen }) => {
+export const LicenseCard: FC<LicenseCardProps> = ({ license, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
 
   const removeLicense = () => dispatch(Actions.gear.licenses.destroy(license.id))
 
   return (
-    <BasicItemCard item={license} onOpen={onOpen} onRemove={removeLicense}>
+    <BasicItemCard item={license} onOpen={onOpen} onEdit={onEdit} onRemove={removeLicense}>
       <ItemCardSlot.Stat
         value={license.rating === "real" ? "Real" : `Rating: ${license.rating}`}
         type="rating"

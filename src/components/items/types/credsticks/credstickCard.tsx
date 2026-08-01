@@ -9,9 +9,10 @@ import { CredstickMaxBalance, CredstickTypeLabel } from "#/system/gear/credstick
 interface CredstickCardProps {
   credstick: CredstickData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onOpen }) => {
+export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onOpen, onEdit }) => {
   const maxBalance = CredstickMaxBalance[credstick.credstickType]
   const fillPercent = maxBalance > 0 ? (credstick.balance / maxBalance) * 100 : 0
 
@@ -20,6 +21,7 @@ export const CredstickCard: FC<CredstickCardProps> = ({ credstick, onOpen }) => 
       item={credstick.name ? credstick : { ...credstick, name: CredstickTypeLabel[credstick.credstickType] }}
       type={CredstickTypeLabel[credstick.credstickType]}
       onOpen={onOpen}
+      onEdit={onEdit}
     >
       <ItemCardSlot.Stat value={formatNuyen(credstick.balance)} type="rating" />
       <ItemCardSlot.Stat value={`${fillPercent.toFixed(0)}% full`} />

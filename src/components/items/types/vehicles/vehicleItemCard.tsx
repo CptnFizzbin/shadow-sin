@@ -10,9 +10,10 @@ import type { VehicleData } from "#/system/gear/vehicleData.ts"
 interface VehicleItemCardProps {
   vehicle: VehicleData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const VehicleItemCard: FC<VehicleItemCardProps> = ({ vehicle, onOpen }) => {
+export const VehicleItemCard: FC<VehicleItemCardProps> = ({ vehicle, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const damageMax = vehicle.damage?.physical.max || vehicle.body
 
@@ -24,7 +25,7 @@ export const VehicleItemCard: FC<VehicleItemCardProps> = ({ vehicle, onOpen }) =
   }
 
   return (
-    <BasicItemCard item={vehicle} type={vehicle.vehicleType} onOpen={onOpen} onRemove={removeVehicle}>
+    <BasicItemCard item={vehicle} type={vehicle.vehicleType} onOpen={onOpen} onEdit={onEdit} onRemove={removeVehicle}>
       <ItemCardSlot.Stat label="Handling" value={vehicle.handling} type="rating" />
       <ItemCardSlot.Stat label="Accel" value={vehicle.accel} type="rating" />
       <ItemCardSlot.Stat label="Speed" value={vehicle.speed} type="rating" />

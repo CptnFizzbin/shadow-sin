@@ -8,6 +8,7 @@ import type { FC } from "react"
 import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearFilter } from "#/lib/hooks/items/gearHooks.ts"
+import { useOpenItemDetails } from "#/lib/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -24,6 +25,7 @@ interface VehiclesListProps {
 
 export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   const dispatch = useRunnerStoreDispatch()
+  const openItemDetails = useOpenItemDetails()
   const vehicleFormDialog = useVehicleFormDialog()
   const attachmentFormDialog = useItemFormDialog()
 
@@ -67,7 +69,13 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
         return (
           <Stack key={vehicle.id} sx={{ gap: 1 }}>
-            <VehicleItemCard vehicle={vehicle} onOpen={() => handleEditVehicle(vehicle)} />
+            <VehicleItemCard
+              vehicle={vehicle}
+              onOpen={openItemDetails
+                ? () => openItemDetails(vehicle.id)
+                : () => handleEditVehicle(vehicle)}
+              onEdit={openItemDetails ? () => handleEditVehicle(vehicle) : undefined}
+            />
 
             {attachments.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
@@ -75,7 +83,10 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
                   <ItemCard
                     key={attachment.id}
                     item={attachment}
-                    onOpen={() => handleEditAttachment(attachment)}
+                    onOpen={openItemDetails
+                      ? () => openItemDetails(attachment.id)
+                      : () => handleEditAttachment(attachment)}
+                    onEdit={openItemDetails ? () => handleEditAttachment(attachment) : undefined}
                     onRemove={() => removeItem(attachment)}
                   />
                 ))}

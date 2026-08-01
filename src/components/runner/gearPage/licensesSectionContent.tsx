@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
@@ -17,6 +18,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const LicensesSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const sins = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.sin))
   const licenses = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.license))
   const sinFormDialog = useSinFormDialog()
@@ -42,7 +44,11 @@ export const LicensesSectionContent: FC = () => {
 
         return (
           <Stack key={sin.id} sx={{ gap: 1 }}>
-            <SinCard sin={sin} onOpen={() => handleEditSin(sin)} />
+            <SinCard
+              sin={sin}
+              onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: sin.id } })}
+              onEdit={() => handleEditSin(sin)}
+            />
 
             {sinLicenses.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
@@ -50,7 +56,8 @@ export const LicensesSectionContent: FC = () => {
                   <LicenseCard
                     key={license.id}
                     license={license}
-                    onOpen={() => handleEditLicense(sin, license)}
+                    onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: license.id } })}
+                    onEdit={() => handleEditLicense(sin, license)}
                   />
                 ))}
               </Stack>

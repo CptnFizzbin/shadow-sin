@@ -205,7 +205,7 @@ describe("BasicItemCard", () => {
     it("does not trigger onOpen when right-clicking to open the menu", () => {
       const onOpen = vi.fn()
       render(
-        <BasicItemCard item={baseItem} onOpen={onOpen}>
+        <BasicItemCard item={baseItem} onOpen={onOpen} onEdit={vi.fn()}>
           <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
         </BasicItemCard>,
         { wrapper: ThemeWrapper },
@@ -216,15 +216,25 @@ describe("BasicItemCard", () => {
       expect(onOpen).not.toHaveBeenCalled()
     })
 
-    it("adds an Edit quick action that calls onOpen and closes the menu", () => {
+    it("adds an Edit quick action that calls onEdit (not onOpen) and closes the menu", () => {
       const onOpen = vi.fn()
-      render(<BasicItemCard item={baseItem} onOpen={onOpen} />, { wrapper: ThemeWrapper })
+      const onEdit = vi.fn()
+      render(<BasicItemCard item={baseItem} onOpen={onOpen} onEdit={onEdit} />, { wrapper: ThemeWrapper })
 
       fireEvent.contextMenu(screen.getByRole("button"))
       fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
-      expect(onOpen).toHaveBeenCalledOnce()
+      expect(onEdit).toHaveBeenCalledOnce()
+      expect(onOpen).not.toHaveBeenCalled()
       expect(screen.queryByRole("menu")).toBeNull()
+    })
+
+    it("does not show an Edit quick action without onEdit", () => {
+      render(<BasicItemCard item={baseItem} onOpen={vi.fn()} onRemove={vi.fn()} />, { wrapper: ThemeWrapper })
+
+      fireEvent.contextMenu(screen.getByRole("button"))
+
+      expect(screen.queryByRole("menuitem", { name: "Edit" })).toBeNull()
     })
 
     it("adds a Remove quick action that calls onRemove and closes the menu", () => {
@@ -240,7 +250,7 @@ describe("BasicItemCard", () => {
 
     it("separates type-specific quick actions from Edit/Remove with a divider", () => {
       render(
-        <BasicItemCard item={baseItem} onOpen={vi.fn()} onRemove={vi.fn()}>
+        <BasicItemCard item={baseItem} onEdit={vi.fn()} onRemove={vi.fn()}>
           <ItemCardSlot.QuickAction label="Equip" onClick={vi.fn()} />
         </BasicItemCard>,
         { wrapper: ThemeWrapper },

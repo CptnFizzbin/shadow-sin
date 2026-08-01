@@ -5,6 +5,7 @@ import type { FC } from "react"
 
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { useOpenItemDetails } from "#/lib/hooks/items/useOpenItemDetails.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -20,6 +21,7 @@ import { SinCard } from "./sinCard.tsx"
 export const SinsAndLicensesSection: FC = () => {
   const confirmDialog = useConfirmDialog()
   const dispatch = useRunnerStoreDispatch()
+  const openItemDetails = useOpenItemDetails()
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
   const sinFormDialog = useSinFormDialog()
@@ -86,7 +88,11 @@ export const SinsAndLicensesSection: FC = () => {
 
         return (
           <Stack key={sin.id} sx={{ gap: 1 }}>
-            <SinCard sin={sin} onOpen={() => handleEditSin(sin)} />
+            <SinCard
+              sin={sin}
+              onOpen={openItemDetails ? () => openItemDetails(sin.id) : () => handleEditSin(sin)}
+              onEdit={openItemDetails ? () => handleEditSin(sin) : undefined}
+            />
 
             {sinLicenses.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
@@ -94,7 +100,10 @@ export const SinsAndLicensesSection: FC = () => {
                   <LicenseCard
                     key={license.id}
                     license={license}
-                    onOpen={() => handleEditLicense(sin, license)}
+                    onOpen={openItemDetails
+                      ? () => openItemDetails(license.id)
+                      : () => handleEditLicense(sin, license)}
+                    onEdit={openItemDetails ? () => handleEditLicense(sin, license) : undefined}
                   />
                 ))}
               </Stack>

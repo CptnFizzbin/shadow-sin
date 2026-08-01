@@ -10,15 +10,16 @@ import type { ProgramData } from "#/system/gear/programData.ts"
 interface ProgramItemCardProps {
   program: ProgramData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const ProgramItemCard: FC<ProgramItemCardProps> = ({ program, onOpen }) => {
+export const ProgramItemCard: FC<ProgramItemCardProps> = ({ program, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
 
   const removeProgram = () => dispatch(Actions.gear.programs.destroy(program.id))
 
   return (
-    <BasicItemCard item={program} onOpen={onOpen} onRemove={removeProgram}>
+    <BasicItemCard item={program} onOpen={onOpen} onEdit={onEdit} onRemove={removeProgram}>
       <ItemCardSlot.Stat label="Rating" value={program.rating} type="rating" />
       <ItemCardSlot.Stat value={program.programType} />
 

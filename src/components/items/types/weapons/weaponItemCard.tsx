@@ -12,11 +12,13 @@ import { isFirearmData } from "#/system/gear/weaponData.ts"
 interface WeaponItemCardProps {
   weapon: WeaponData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
 export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   weapon,
   onOpen,
+  onEdit,
 }) => {
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
@@ -25,7 +27,7 @@ export const WeaponItemCard: FC<WeaponItemCardProps> = ({
   const removeWeapon = () => dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
-    <BasicItemCard item={weapon} onOpen={onOpen} onRemove={removeWeapon}>
+    <BasicItemCard item={weapon} onOpen={onOpen} onEdit={onEdit} onRemove={removeWeapon}>
       <ItemCardSlot.Stat label="DV" value={weapon.dmg} type="damage" />
       {weapon.ap && <ItemCardSlot.Stat label="AP" value={weapon.ap} type="damage" />}
       <ItemCardSlot.Stat value={weapon.skill} type="rating" />

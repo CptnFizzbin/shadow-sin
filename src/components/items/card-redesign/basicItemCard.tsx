@@ -25,8 +25,10 @@ import { ItemCardSlot } from "./itemCardSlot.tsx"
 export interface BasicItemCardProps {
   item: ItemData
   type?: ReactNode
-  /** When provided, the whole card becomes tappable/keyboard-activatable and doubles as the "Edit" quick action. */
+  /** When provided, the whole card becomes tappable/keyboard-activatable and navigates to the item's details page. */
   onOpen?: () => void
+  /** When provided, adds an "Edit" quick action (long-press/right-click menu) that opens the item's edit dialog. */
+  onEdit?: () => void
   /** When provided, adds a "Remove" quick action. */
   onRemove?: () => void
   children?: ReactNode
@@ -59,6 +61,7 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
   item,
   type,
   onOpen,
+  onEdit,
   onRemove,
   children,
 }) => {
@@ -73,7 +76,7 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
   const hasSource = Boolean(item.source)
   const hasBody = statNodes.length > 0 || Boolean(damageTrackNode) || subitemNodes.length > 0
   const hasFooterBand = hasSource || Boolean(footerNode)
-  const hasQuickActions = customQuickActionNodes.length > 0 || Boolean(onOpen) || Boolean(onRemove)
+  const hasQuickActions = customQuickActionNodes.length > 0 || Boolean(onEdit) || Boolean(onRemove)
 
   const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -239,12 +242,12 @@ export const BasicItemCard: FC<BasicItemCardProps> = ({
 
           {customQuickActionNodes.length > 0 && (onOpen || onRemove) && <Divider />}
 
-          {onOpen && (
+          {onEdit && (
             <ItemCardSlot.QuickAction
               label="Edit"
               icon={<RiEditLine size={16} />}
               onClick={() => {
-                onOpen()
+                onEdit()
                 handleCloseMenu()
               }}
             />

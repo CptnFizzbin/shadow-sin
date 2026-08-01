@@ -12,6 +12,7 @@ import type { SinData } from "#/system/gear/sinData.ts"
 interface SinCardProps {
   sin: SinData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
 /**
@@ -20,7 +21,7 @@ interface SinCardProps {
  * not as read-only subitems here — unlike accessories on other item types,
  * each license needs to stay individually tappable to edit.
  */
-export const SinCard: FC<SinCardProps> = ({ sin, onOpen }) => {
+export const SinCard: FC<SinCardProps> = ({ sin, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
   const licenses = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(sin.id))
@@ -40,7 +41,7 @@ export const SinCard: FC<SinCardProps> = ({ sin, onOpen }) => {
 
   return (
     <>
-      <BasicItemCard item={sin} onOpen={onOpen} onRemove={removeSin}>
+      <BasicItemCard item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
         <ItemCardSlot.Stat
           value={sin.rating === "real" ? "Real" : `Rating: ${sin.rating}`}
           type="rating"

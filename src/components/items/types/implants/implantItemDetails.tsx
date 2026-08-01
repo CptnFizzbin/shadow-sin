@@ -1,37 +1,38 @@
 import type { FC } from "react"
 
-import { BasicItemCard } from "#/components/items/card-redesign/basicItemCard.tsx"
-import { ItemCardSlot } from "#/components/items/card-redesign/itemCardSlot.tsx"
+import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
-import { Nuyen } from "#/components/ui/nuyen.tsx"
+import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
+import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
 import { getImplantEffectiveEssenceCost, getImplantEffectiveNuyenCost } from "./implantUtils.ts"
 
-interface ImplantItemCardProps {
+export interface ImplantItemDetailsProps {
   implant: ImplantData
-  onOpen?: () => void
-  onEdit?: () => void
+  onRemoved?: () => void
 }
 
 const gradeLabel: Partial<Record<string, string>> = {
-  [ImplantGrade.standard]: "Std",
+  [ImplantGrade.standard]: "Standard",
   [ImplantGrade.alpha]: "Alpha",
   [ImplantGrade.beta]: "Beta",
   [ImplantGrade.delta]: "Delta",
 }
 
 const typeLabel: Partial<Record<string, string>> = {
-  [ImplantType.cyberware]: "Cyber",
-  [ImplantType.bioware]: "Bio",
+  [ImplantType.cyberware]: "Cyberware",
+  [ImplantType.bioware]: "Bioware",
 }
 
-export const ImplantItemCard: FC<ImplantItemCardProps> = ({ implant, onOpen, onEdit }) => {
+export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRemoved }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
+  const implantFormDialog = useImplantFormDialog()
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
 
@@ -41,32 +42,36 @@ export const ImplantItemCard: FC<ImplantItemCardProps> = ({ implant, onOpen, onE
       body: "Are you sure you want to remove this implant? This action cannot be undone.",
       confirmLabel: "Remove Implant",
     })
-    if (result) dispatch(Actions.gear.removeItem({ id: implant.id, removeChildren: true }))
+    if (result) {
+      dispatch(Actions.gear.removeItem({ id: implant.id, removeChildren: true }))
+      onRemoved?.()
+    }
+  }
+
+  const handleEdit = async () => {
+    const saved = await implantFormDialog.open({ implant })
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
   return (
     <>
-      <BasicItemCard
-        item={implant}
+      <BasicItemDetails
+        item={{ ...implant, cost: effectiveNuyen }}
         type={implant.implantType ? (typeLabel[implant.implantType] ?? implant.implantType) : undefined}
-        onOpen={onOpen}
-        onEdit={onEdit}
+        onEdit={handleEdit}
         onRemove={removeImplant}
       >
-        <ItemCardSlot.Stat label="Ess" value={effectiveEssence.toFixed(2)} type="modifier" />
+        <ItemDetailsSlot.Stat label="Essence" value={effectiveEssence.toFixed(2)} type="modifier" />
 
-        {implant.location && <ItemCardSlot.Stat value={implant.location} type="rating" />}
+        {implant.location && <ItemDetailsSlot.Stat label="Location" value={implant.location} type="rating" />}
 
         {implant.grade && implant.grade !== ImplantGrade.standard && (
-          <ItemCardSlot.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
+          <ItemDetailsSlot.Stat label="Grade" value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
         )}
-
-        <ItemCardSlot.Footer>
-          <Nuyen amount={effectiveNuyen} />
-        </ItemCardSlot.Footer>
-      </BasicItemCard>
+      </BasicItemDetails>
 
       {confirmDialog.dialog}
+      {implantFormDialog.dialog}
     </>
   )
 }

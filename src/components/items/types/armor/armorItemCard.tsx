@@ -11,9 +11,10 @@ import type { ArmorData } from "#/system/gear/armorData.ts"
 interface ArmorItemCardProps {
   armor: ArmorData
   onOpen?: () => void
+  onEdit?: () => void
 }
 
-export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onOpen }) => {
+export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
 
@@ -21,7 +22,7 @@ export const ArmorItemCard: FC<ArmorItemCardProps> = ({ armor, onOpen }) => {
   const removeArmor = () => dispatch(Actions.gear.removeItem({ id: armor.id, removeChildren: true }))
 
   return (
-    <BasicItemCard item={armor} onOpen={onOpen} onRemove={removeArmor}>
+    <BasicItemCard item={armor} onOpen={onOpen} onEdit={onEdit} onRemove={removeArmor}>
       <ItemCardSlot.Stat label="B" value={armor.ballistic} type="damage" />
       <ItemCardSlot.Stat label="I" value={armor.impact} type="damage" />
 

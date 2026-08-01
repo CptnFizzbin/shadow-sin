@@ -1,4 +1,5 @@
 import Stack from "@mui/material/Stack"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
@@ -12,6 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const WeaponsSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const weapons = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.weapon))
   const weaponFormDialog = useWeaponFormDialog()
 
@@ -23,7 +25,12 @@ export const WeaponsSectionContent: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {Object.values(weapons).map((item) => (
-        <ItemCard key={item.id} item={item} onOpen={() => handleEditWeapon(item)} />
+        <ItemCard
+          key={item.id}
+          item={item}
+          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: item.id } })}
+          onEdit={() => handleEditWeapon(item)}
+        />
       ))}
 
       {weaponFormDialog.dialog}

@@ -54,4 +54,16 @@ describe("ItemCard", () => {
 
     expect(onOpen).toHaveBeenCalledOnce()
   })
+
+  it("passes onEdit through to the rendered card's quick-action menu", () => {
+    const onEdit = vi.fn()
+    renderWithProviders(<ItemCard item={weapon} onEdit={onEdit} />, {
+      runnerStore: runnerStoreWithWeapon(),
+    })
+
+    fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
+
+    expect(onEdit).toHaveBeenCalledOnce()
+  })
 })
