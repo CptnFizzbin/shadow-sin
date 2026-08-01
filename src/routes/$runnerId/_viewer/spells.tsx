@@ -7,7 +7,7 @@ import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsV
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
-export const Route = createFileRoute("/$runnerId/spells")({
+export const Route = createFileRoute("/$runnerId/_viewer/spells")({
   component: RouteComponent,
 })
 

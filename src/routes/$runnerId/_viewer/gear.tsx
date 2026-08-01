@@ -14,7 +14,7 @@ import { useLicenseCheckDialog } from "#/components/runner/licenseCheck/licenseC
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useIsBuilder } from "#/lib/contexts/builder/builderStore.context.ts"
 
-export const Route = createFileRoute("/$runnerId/gear")({
+export const Route = createFileRoute("/$runnerId/_viewer/gear")({
   component: RouteComponent,
 })
 

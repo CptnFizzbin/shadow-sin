@@ -5,16 +5,16 @@ import { VehiclesList } from "#/components/items/types/vehicles/vehiclesList.tsx
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
-export const Route = createFileRoute("/$runnerId/vehicles")({
+export const Route = createFileRoute("/$runnerId/_viewer/drones")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
     <Stack>
-      <SectionHeader>Vehicles</SectionHeader>
+      <SectionHeader>Drones</SectionHeader>
 
-      <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
+      <VehiclesList vehicleCategory={VehicleCategory.drone} />
     </Stack>
   )
 }

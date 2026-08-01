@@ -7,7 +7,7 @@ import { CombatActionsCheatSheetButton } from "#/components/system/combat/combat
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 
-export const Route = createFileRoute("/$runnerId/offense")({
+export const Route = createFileRoute("/$runnerId/_viewer/offense")({
   component: RouteComponent,
 })
 

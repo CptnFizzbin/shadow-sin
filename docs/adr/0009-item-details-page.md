@@ -28,13 +28,18 @@ of the surrounding system and shaped the options:
 on `item.itemType`, mirroring the existing `ItemCard` dispatcher, instead of a detail route
 per section. This matches the flat storage model and avoids duplicating dispatch logic.
 
-**Full-screen, not a tab.** The route opts out of `RunnerNav`/the swipe surface — a drill-down page
-isn't a peer section, and `useRunnerNav`'s section lookup would silently treat it as "about"
-(wrong tab highlighted, wrong swipe target) if left in the tab shell. For now this is a conditional
-in `RunnerContent` that skips the chrome for this route. The more idiomatic fix — splitting
-`$runnerId.tsx` into a pathless layout so tab routes and drill-down routes are siblings by
-construction — is real, but touches all 17 existing section route files; it's deliberately being
-done as its own follow-up branch, not bundled here.
+**Full-screen, not a tab, via a pathless-layout split.** A drill-down page isn't a peer section,
+and `useRunnerNav`'s section lookup would silently treat it as "about" (wrong tab highlighted,
+wrong swipe target) if left in the tab shell. `src/routes/$runnerId.tsx` loads the Runner and sets
+up its store/dice-tray context only — it has no chrome of its own. Two pathless layouts sit under
+it as siblings, neither adding a URL segment: `$runnerId/_viewer.tsx` (the `RunnerNav`/swipe-surface
+chrome, wrapping the 17 existing section routes) and `$runnerId/_details.tsx` (bare — each page
+under it, like the item details route, owns its own back navigation). `/$runnerId/gear` and
+`/$runnerId/item/$itemId` are both direct children of `$runnerId`, differing only in which sibling
+layout renders them. This split was originally going to be deferred to its own follow-up branch
+(it touches all 17 section route files) but landed concurrently in #426 as a rough placeholder;
+this PR reconciles the two into the shape described here rather than carrying a temporary
+`RunnerContent` chrome-opt-out hack.
 
 **Bespoke slots, not reused ones.** `ItemDetailsSlot` (`Stat`, `Subitem`, `DamageTrack`, `Footer`,
 `StatusIcons`, `QuickAction`) is a new, parallel module to `ItemCardSlot` — not built on top of it,
@@ -68,8 +73,10 @@ directly — that coupling has to break for tap and edit to point at different d
 - Every `onOpen` call site across the app changes meaning; call sites that only ever meant "edit"
   (never gave the user a details view before) now need both an `onOpen` (navigate) and an `onEdit`
   (dialog) wired.
-- The details route inherits `RunnerNav`/swipe chrome until the deferred `_shell` route-tree split
-  lands on its own branch — an accepted interim state, not a bug.
+- Every existing section route file's `createFileRoute` id shifted (e.g.
+  `/_viewer/$runnerId/gear` → `/$runnerId/_viewer/gear`) as part of reconciling with #426; the
+  actual URL paths users see (`/$runnerId/gear`, `/$runnerId/item/$itemId`) are unchanged, since
+  pathless layouts never contribute a URL segment.
 - A compound `EditItemDialog`, built with a similar slot system to `ItemDetails`, is planned as
   future work to replace the current per-type `use*FormDialog()` hooks — out of scope here.
 
@@ -79,7 +86,8 @@ directly — that coupling has to break for tap and edit to point at different d
   so the details page is linkable/back-button-navigable like every other runner section.
 - **Reuse `ItemCardSlot` components under new names** — rejected; the density mismatch between
   card and details rendering would have meant immediately overriding most of what was reused.
-- **Route tree split bundled into this PR** — rejected; correct but high-blast-radius (17 files)
-  relative to this feature; deferred to its own branch.
+- **Keep the temporary `RunnerContent` chrome-opt-out hack instead of reconciling with #426** —
+  rejected once #426's pathless-layout split landed on the base branch; carrying a redundant,
+  more fragile mechanism alongside the real fix would have been worse than integrating it.
 - **Staged rollout (foundation first, typed wrappers later), matching ADR-0008's migration** —
   rejected in favor of a big-bang implementation for this feature.

@@ -8,7 +8,7 @@ import { filterBySearch, SearchField } from "#/components/ui/search/searchField.
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
-export const Route = createFileRoute("/$runnerId/contacts")({
+export const Route = createFileRoute("/$runnerId/_viewer/contacts")({
   component: RouteComponent,
 })
 

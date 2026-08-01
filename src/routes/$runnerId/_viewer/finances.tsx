@@ -17,7 +17,7 @@ import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerSto
 import { Lifestyles, LifestyleType } from "#/system/lifestyleType.ts"
 import { calculateMonthlyInterest } from "#/system/loanData.ts"
 
-export const Route = createFileRoute("/$runnerId/finances")({
+export const Route = createFileRoute("/$runnerId/_viewer/finances")({
   component: RouteComponent,
 })
 

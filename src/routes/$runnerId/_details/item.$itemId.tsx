@@ -10,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
 
-export const Route = createFileRoute("/$runnerId/item/$itemId")({
+export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
   component: ItemDetailsRoute,
 })
 
@@ -18,8 +18,8 @@ export const Route = createFileRoute("/$runnerId/item/$itemId")({
  * One shared route for every item type (mirrors the `ItemCard` dispatcher):
  * items are stored flat (`RunnerData.gear`), not partitioned by section, so
  * there's no per-section detail route to duplicate the dispatch logic in.
- * Renders full-screen — see the `RunnerContent` chrome opt-out in
- * `$runnerId.tsx` — since a drill-down page isn't a peer tab (ADR-0009).
+ * Renders full-screen via the `_details` layout — a drill-down page isn't a
+ * peer tab (ADR-0009).
  */
 function ItemDetailsRoute() {
   const { itemId } = Route.useParams()
