@@ -16,7 +16,7 @@ import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
-export const Route = createFileRoute("/$runnerId/about")({
+export const Route = createFileRoute("/_viewer/$runnerId/about")({
   component: RouteComponent,
 })
 

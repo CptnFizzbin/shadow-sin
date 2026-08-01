@@ -10,32 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RunnerIdRouteImport } from './routes/$runnerId'
-import { Route as RunnerIdIndexRouteImport } from './routes/$runnerId/index'
-import { Route as RunnerIdAboutRouteImport } from './routes/$runnerId/about'
-import { Route as RunnerIdAdeptPowersRouteImport } from './routes/$runnerId/adept-powers'
-import { Route as RunnerIdComplexFormsRouteImport } from './routes/$runnerId/complex-forms'
-import { Route as RunnerIdContactsRouteImport } from './routes/$runnerId/contacts'
-import { Route as RunnerIdDefenseRouteImport } from './routes/$runnerId/defense'
-import { Route as RunnerIdDronesRouteImport } from './routes/$runnerId/drones'
-import { Route as RunnerIdFinancesRouteImport } from './routes/$runnerId/finances'
-import { Route as RunnerIdGearRouteImport } from './routes/$runnerId/gear'
-import { Route as RunnerIdLicensesRouteImport } from './routes/$runnerId/licenses'
-import { Route as RunnerIdMatrixRouteImport } from './routes/$runnerId/matrix'
-import { Route as RunnerIdNotesRouteImport } from './routes/$runnerId/notes'
-import { Route as RunnerIdOffenseRouteImport } from './routes/$runnerId/offense'
-import { Route as RunnerIdPowersRouteImport } from './routes/$runnerId/powers'
-import { Route as RunnerIdSkillsRouteImport } from './routes/$runnerId/skills'
-import { Route as RunnerIdSpellsRouteImport } from './routes/$runnerId/spells'
-import { Route as RunnerIdSpiritsRouteImport } from './routes/$runnerId/spirits'
-import { Route as RunnerIdSpritesRouteImport } from './routes/$runnerId/sprites'
-import { Route as RunnerIdVehiclesRouteImport } from './routes/$runnerId/vehicles'
+import { Route as DetailsRouteImport } from './routes/_details'
+import { Route as ViewerRouteImport } from './routes/_viewer'
+import { Route as ViewerRunnerIdRouteImport } from './routes/_viewer/$runnerId'
 import { Route as EditRunnerIdRouteImport } from './routes/edit/$runnerId'
 import { Route as GmIndexRouteImport } from './routes/gm/index'
 import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-builder'
 import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
 import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
 import { Route as NewIndexRouteImport } from './routes/new/index'
+import { Route as DetailsItemItemidRouteImport } from './routes/_details/item.$itemid'
+import { Route as ViewerRunnerIdIndexRouteImport } from './routes/_viewer/$runnerId/index'
+import { Route as ViewerRunnerIdAboutRouteImport } from './routes/_viewer/$runnerId/about'
+import { Route as ViewerRunnerIdAdeptPowersRouteImport } from './routes/_viewer/$runnerId/adept-powers'
+import { Route as ViewerRunnerIdComplexFormsRouteImport } from './routes/_viewer/$runnerId/complex-forms'
+import { Route as ViewerRunnerIdContactsRouteImport } from './routes/_viewer/$runnerId/contacts'
+import { Route as ViewerRunnerIdDefenseRouteImport } from './routes/_viewer/$runnerId/defense'
+import { Route as ViewerRunnerIdDronesRouteImport } from './routes/_viewer/$runnerId/drones'
+import { Route as ViewerRunnerIdFinancesRouteImport } from './routes/_viewer/$runnerId/finances'
+import { Route as ViewerRunnerIdGearRouteImport } from './routes/_viewer/$runnerId/gear'
+import { Route as ViewerRunnerIdLicensesRouteImport } from './routes/_viewer/$runnerId/licenses'
+import { Route as ViewerRunnerIdMatrixRouteImport } from './routes/_viewer/$runnerId/matrix'
+import { Route as ViewerRunnerIdNotesRouteImport } from './routes/_viewer/$runnerId/notes'
+import { Route as ViewerRunnerIdOffenseRouteImport } from './routes/_viewer/$runnerId/offense'
+import { Route as ViewerRunnerIdPowersRouteImport } from './routes/_viewer/$runnerId/powers'
+import { Route as ViewerRunnerIdSkillsRouteImport } from './routes/_viewer/$runnerId/skills'
+import { Route as ViewerRunnerIdSpellsRouteImport } from './routes/_viewer/$runnerId/spells'
+import { Route as ViewerRunnerIdSpiritsRouteImport } from './routes/_viewer/$runnerId/spirits'
+import { Route as ViewerRunnerIdSpritesRouteImport } from './routes/_viewer/$runnerId/sprites'
+import { Route as ViewerRunnerIdVehiclesRouteImport } from './routes/_viewer/$runnerId/vehicles'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
 
 const IndexRoute = IndexRouteImport.update({
@@ -43,105 +46,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RunnerIdRoute = RunnerIdRouteImport.update({
-  id: '/$runnerId',
-  path: '/$runnerId',
+const DetailsRoute = DetailsRouteImport.update({
+  id: '/_details',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RunnerIdIndexRoute = RunnerIdIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => RunnerIdRoute,
+const ViewerRoute = ViewerRouteImport.update({
+  id: '/_viewer',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const RunnerIdAboutRoute = RunnerIdAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdAdeptPowersRoute = RunnerIdAdeptPowersRouteImport.update({
-  id: '/adept-powers',
-  path: '/adept-powers',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdComplexFormsRoute = RunnerIdComplexFormsRouteImport.update({
-  id: '/complex-forms',
-  path: '/complex-forms',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdContactsRoute = RunnerIdContactsRouteImport.update({
-  id: '/contacts',
-  path: '/contacts',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdDefenseRoute = RunnerIdDefenseRouteImport.update({
-  id: '/defense',
-  path: '/defense',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdDronesRoute = RunnerIdDronesRouteImport.update({
-  id: '/drones',
-  path: '/drones',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdFinancesRoute = RunnerIdFinancesRouteImport.update({
-  id: '/finances',
-  path: '/finances',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdGearRoute = RunnerIdGearRouteImport.update({
-  id: '/gear',
-  path: '/gear',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdLicensesRoute = RunnerIdLicensesRouteImport.update({
-  id: '/licenses',
-  path: '/licenses',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdMatrixRoute = RunnerIdMatrixRouteImport.update({
-  id: '/matrix',
-  path: '/matrix',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdNotesRoute = RunnerIdNotesRouteImport.update({
-  id: '/notes',
-  path: '/notes',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdOffenseRoute = RunnerIdOffenseRouteImport.update({
-  id: '/offense',
-  path: '/offense',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdPowersRoute = RunnerIdPowersRouteImport.update({
-  id: '/powers',
-  path: '/powers',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSkillsRoute = RunnerIdSkillsRouteImport.update({
-  id: '/skills',
-  path: '/skills',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpellsRoute = RunnerIdSpellsRouteImport.update({
-  id: '/spells',
-  path: '/spells',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpiritsRoute = RunnerIdSpiritsRouteImport.update({
-  id: '/spirits',
-  path: '/spirits',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdSpritesRoute = RunnerIdSpritesRouteImport.update({
-  id: '/sprites',
-  path: '/sprites',
-  getParentRoute: () => RunnerIdRoute,
-} as any)
-const RunnerIdVehiclesRoute = RunnerIdVehiclesRouteImport.update({
-  id: '/vehicles',
-  path: '/vehicles',
-  getParentRoute: () => RunnerIdRoute,
+const ViewerRunnerIdRoute = ViewerRunnerIdRouteImport.update({
+  id: '/$runnerId',
+  path: '/$runnerId',
+  getParentRoute: () => ViewerRoute,
 } as any)
 const EditRunnerIdRoute = EditRunnerIdRouteImport.update({
   id: '/edit/$runnerId',
@@ -173,6 +89,108 @@ const NewIndexRoute = NewIndexRouteImport.update({
   path: '/new/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DetailsItemItemidRoute = DetailsItemItemidRouteImport.update({
+  id: '/item/$itemid',
+  path: '/item/$itemid',
+  getParentRoute: () => DetailsRoute,
+} as any)
+const ViewerRunnerIdIndexRoute = ViewerRunnerIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdAboutRoute = ViewerRunnerIdAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdAdeptPowersRoute =
+  ViewerRunnerIdAdeptPowersRouteImport.update({
+    id: '/adept-powers',
+    path: '/adept-powers',
+    getParentRoute: () => ViewerRunnerIdRoute,
+  } as any)
+const ViewerRunnerIdComplexFormsRoute =
+  ViewerRunnerIdComplexFormsRouteImport.update({
+    id: '/complex-forms',
+    path: '/complex-forms',
+    getParentRoute: () => ViewerRunnerIdRoute,
+  } as any)
+const ViewerRunnerIdContactsRoute = ViewerRunnerIdContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdDefenseRoute = ViewerRunnerIdDefenseRouteImport.update({
+  id: '/defense',
+  path: '/defense',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdDronesRoute = ViewerRunnerIdDronesRouteImport.update({
+  id: '/drones',
+  path: '/drones',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdFinancesRoute = ViewerRunnerIdFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdGearRoute = ViewerRunnerIdGearRouteImport.update({
+  id: '/gear',
+  path: '/gear',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdLicensesRoute = ViewerRunnerIdLicensesRouteImport.update({
+  id: '/licenses',
+  path: '/licenses',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdMatrixRoute = ViewerRunnerIdMatrixRouteImport.update({
+  id: '/matrix',
+  path: '/matrix',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdNotesRoute = ViewerRunnerIdNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdOffenseRoute = ViewerRunnerIdOffenseRouteImport.update({
+  id: '/offense',
+  path: '/offense',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdPowersRoute = ViewerRunnerIdPowersRouteImport.update({
+  id: '/powers',
+  path: '/powers',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdSkillsRoute = ViewerRunnerIdSkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdSpellsRoute = ViewerRunnerIdSpellsRouteImport.update({
+  id: '/spells',
+  path: '/spells',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdSpiritsRoute = ViewerRunnerIdSpiritsRouteImport.update({
+  id: '/spirits',
+  path: '/spirits',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdSpritesRoute = ViewerRunnerIdSpritesRouteImport.update({
+  id: '/sprites',
+  path: '/sprites',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
+const ViewerRunnerIdVehiclesRoute = ViewerRunnerIdVehiclesRouteImport.update({
+  id: '/vehicles',
+  path: '/vehicles',
+  getParentRoute: () => ViewerRunnerIdRoute,
+} as any)
 const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
   id: '/test/theme/typography',
   path: '/test/theme/typography',
@@ -181,99 +199,111 @@ const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$runnerId': typeof RunnerIdRouteWithChildren
-  '/$runnerId/about': typeof RunnerIdAboutRoute
-  '/$runnerId/adept-powers': typeof RunnerIdAdeptPowersRoute
-  '/$runnerId/complex-forms': typeof RunnerIdComplexFormsRoute
-  '/$runnerId/contacts': typeof RunnerIdContactsRoute
-  '/$runnerId/defense': typeof RunnerIdDefenseRoute
-  '/$runnerId/drones': typeof RunnerIdDronesRoute
-  '/$runnerId/finances': typeof RunnerIdFinancesRoute
-  '/$runnerId/gear': typeof RunnerIdGearRoute
-  '/$runnerId/licenses': typeof RunnerIdLicensesRoute
-  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
-  '/$runnerId/notes': typeof RunnerIdNotesRoute
-  '/$runnerId/offense': typeof RunnerIdOffenseRoute
-  '/$runnerId/powers': typeof RunnerIdPowersRoute
-  '/$runnerId/skills': typeof RunnerIdSkillsRoute
-  '/$runnerId/spells': typeof RunnerIdSpellsRoute
-  '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
-  '/$runnerId/sprites': typeof RunnerIdSpritesRoute
-  '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/$runnerId': typeof ViewerRunnerIdRouteWithChildren
   '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
-  '/$runnerId/': typeof RunnerIdIndexRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/item/$itemid': typeof DetailsItemItemidRoute
+  '/$runnerId/about': typeof ViewerRunnerIdAboutRoute
+  '/$runnerId/adept-powers': typeof ViewerRunnerIdAdeptPowersRoute
+  '/$runnerId/complex-forms': typeof ViewerRunnerIdComplexFormsRoute
+  '/$runnerId/contacts': typeof ViewerRunnerIdContactsRoute
+  '/$runnerId/defense': typeof ViewerRunnerIdDefenseRoute
+  '/$runnerId/drones': typeof ViewerRunnerIdDronesRoute
+  '/$runnerId/finances': typeof ViewerRunnerIdFinancesRoute
+  '/$runnerId/gear': typeof ViewerRunnerIdGearRoute
+  '/$runnerId/licenses': typeof ViewerRunnerIdLicensesRoute
+  '/$runnerId/matrix': typeof ViewerRunnerIdMatrixRoute
+  '/$runnerId/notes': typeof ViewerRunnerIdNotesRoute
+  '/$runnerId/offense': typeof ViewerRunnerIdOffenseRoute
+  '/$runnerId/powers': typeof ViewerRunnerIdPowersRoute
+  '/$runnerId/skills': typeof ViewerRunnerIdSkillsRoute
+  '/$runnerId/spells': typeof ViewerRunnerIdSpellsRoute
+  '/$runnerId/spirits': typeof ViewerRunnerIdSpiritsRoute
+  '/$runnerId/sprites': typeof ViewerRunnerIdSpritesRoute
+  '/$runnerId/vehicles': typeof ViewerRunnerIdVehiclesRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
+  '/$runnerId/': typeof ViewerRunnerIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$runnerId/about': typeof RunnerIdAboutRoute
-  '/$runnerId/adept-powers': typeof RunnerIdAdeptPowersRoute
-  '/$runnerId/complex-forms': typeof RunnerIdComplexFormsRoute
-  '/$runnerId/contacts': typeof RunnerIdContactsRoute
-  '/$runnerId/defense': typeof RunnerIdDefenseRoute
-  '/$runnerId/drones': typeof RunnerIdDronesRoute
-  '/$runnerId/finances': typeof RunnerIdFinancesRoute
-  '/$runnerId/gear': typeof RunnerIdGearRoute
-  '/$runnerId/licenses': typeof RunnerIdLicensesRoute
-  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
-  '/$runnerId/notes': typeof RunnerIdNotesRoute
-  '/$runnerId/offense': typeof RunnerIdOffenseRoute
-  '/$runnerId/powers': typeof RunnerIdPowersRoute
-  '/$runnerId/skills': typeof RunnerIdSkillsRoute
-  '/$runnerId/spells': typeof RunnerIdSpellsRoute
-  '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
-  '/$runnerId/sprites': typeof RunnerIdSpritesRoute
-  '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
   '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
-  '/$runnerId': typeof RunnerIdIndexRoute
   '/gm': typeof GmIndexRoute
   '/new': typeof NewIndexRoute
+  '/item/$itemid': typeof DetailsItemItemidRoute
+  '/$runnerId/about': typeof ViewerRunnerIdAboutRoute
+  '/$runnerId/adept-powers': typeof ViewerRunnerIdAdeptPowersRoute
+  '/$runnerId/complex-forms': typeof ViewerRunnerIdComplexFormsRoute
+  '/$runnerId/contacts': typeof ViewerRunnerIdContactsRoute
+  '/$runnerId/defense': typeof ViewerRunnerIdDefenseRoute
+  '/$runnerId/drones': typeof ViewerRunnerIdDronesRoute
+  '/$runnerId/finances': typeof ViewerRunnerIdFinancesRoute
+  '/$runnerId/gear': typeof ViewerRunnerIdGearRoute
+  '/$runnerId/licenses': typeof ViewerRunnerIdLicensesRoute
+  '/$runnerId/matrix': typeof ViewerRunnerIdMatrixRoute
+  '/$runnerId/notes': typeof ViewerRunnerIdNotesRoute
+  '/$runnerId/offense': typeof ViewerRunnerIdOffenseRoute
+  '/$runnerId/powers': typeof ViewerRunnerIdPowersRoute
+  '/$runnerId/skills': typeof ViewerRunnerIdSkillsRoute
+  '/$runnerId/spells': typeof ViewerRunnerIdSpellsRoute
+  '/$runnerId/spirits': typeof ViewerRunnerIdSpiritsRoute
+  '/$runnerId/sprites': typeof ViewerRunnerIdSpritesRoute
+  '/$runnerId/vehicles': typeof ViewerRunnerIdVehiclesRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
+  '/$runnerId': typeof ViewerRunnerIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$runnerId': typeof RunnerIdRouteWithChildren
-  '/$runnerId/about': typeof RunnerIdAboutRoute
-  '/$runnerId/adept-powers': typeof RunnerIdAdeptPowersRoute
-  '/$runnerId/complex-forms': typeof RunnerIdComplexFormsRoute
-  '/$runnerId/contacts': typeof RunnerIdContactsRoute
-  '/$runnerId/defense': typeof RunnerIdDefenseRoute
-  '/$runnerId/drones': typeof RunnerIdDronesRoute
-  '/$runnerId/finances': typeof RunnerIdFinancesRoute
-  '/$runnerId/gear': typeof RunnerIdGearRoute
-  '/$runnerId/licenses': typeof RunnerIdLicensesRoute
-  '/$runnerId/matrix': typeof RunnerIdMatrixRoute
-  '/$runnerId/notes': typeof RunnerIdNotesRoute
-  '/$runnerId/offense': typeof RunnerIdOffenseRoute
-  '/$runnerId/powers': typeof RunnerIdPowersRoute
-  '/$runnerId/skills': typeof RunnerIdSkillsRoute
-  '/$runnerId/spells': typeof RunnerIdSpellsRoute
-  '/$runnerId/spirits': typeof RunnerIdSpiritsRoute
-  '/$runnerId/sprites': typeof RunnerIdSpritesRoute
-  '/$runnerId/vehicles': typeof RunnerIdVehiclesRoute
+  '/_details': typeof DetailsRouteWithChildren
+  '/_viewer': typeof ViewerRouteWithChildren
+  '/_viewer/$runnerId': typeof ViewerRunnerIdRouteWithChildren
   '/edit/$runnerId': typeof EditRunnerIdRoute
   '/gm/encounter-builder': typeof GmEncounterBuilderRoute
   '/gm/initiative-tracker': typeof GmInitiativeTrackerRoute
   '/gm/npc-builder': typeof GmNpcBuilderRoute
-  '/$runnerId/': typeof RunnerIdIndexRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/_details/item/$itemid': typeof DetailsItemItemidRoute
+  '/_viewer/$runnerId/about': typeof ViewerRunnerIdAboutRoute
+  '/_viewer/$runnerId/adept-powers': typeof ViewerRunnerIdAdeptPowersRoute
+  '/_viewer/$runnerId/complex-forms': typeof ViewerRunnerIdComplexFormsRoute
+  '/_viewer/$runnerId/contacts': typeof ViewerRunnerIdContactsRoute
+  '/_viewer/$runnerId/defense': typeof ViewerRunnerIdDefenseRoute
+  '/_viewer/$runnerId/drones': typeof ViewerRunnerIdDronesRoute
+  '/_viewer/$runnerId/finances': typeof ViewerRunnerIdFinancesRoute
+  '/_viewer/$runnerId/gear': typeof ViewerRunnerIdGearRoute
+  '/_viewer/$runnerId/licenses': typeof ViewerRunnerIdLicensesRoute
+  '/_viewer/$runnerId/matrix': typeof ViewerRunnerIdMatrixRoute
+  '/_viewer/$runnerId/notes': typeof ViewerRunnerIdNotesRoute
+  '/_viewer/$runnerId/offense': typeof ViewerRunnerIdOffenseRoute
+  '/_viewer/$runnerId/powers': typeof ViewerRunnerIdPowersRoute
+  '/_viewer/$runnerId/skills': typeof ViewerRunnerIdSkillsRoute
+  '/_viewer/$runnerId/spells': typeof ViewerRunnerIdSpellsRoute
+  '/_viewer/$runnerId/spirits': typeof ViewerRunnerIdSpiritsRoute
+  '/_viewer/$runnerId/sprites': typeof ViewerRunnerIdSpritesRoute
+  '/_viewer/$runnerId/vehicles': typeof ViewerRunnerIdVehiclesRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
+  '/_viewer/$runnerId/': typeof ViewerRunnerIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$runnerId'
+    | '/edit/$runnerId'
+    | '/gm/encounter-builder'
+    | '/gm/initiative-tracker'
+    | '/gm/npc-builder'
+    | '/gm/'
+    | '/new/'
+    | '/item/$itemid'
     | '/$runnerId/about'
     | '/$runnerId/adept-powers'
     | '/$runnerId/complex-forms'
@@ -292,17 +322,18 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/edit/$runnerId'
-    | '/gm/encounter-builder'
-    | '/gm/initiative-tracker'
-    | '/gm/npc-builder'
-    | '/$runnerId/'
-    | '/gm/'
-    | '/new/'
     | '/test/theme/typography'
+    | '/$runnerId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/edit/$runnerId'
+    | '/gm/encounter-builder'
+    | '/gm/initiative-tracker'
+    | '/gm/npc-builder'
+    | '/gm'
+    | '/new'
+    | '/item/$itemid'
     | '/$runnerId/about'
     | '/$runnerId/adept-powers'
     | '/$runnerId/complex-forms'
@@ -321,49 +352,47 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/edit/$runnerId'
-    | '/gm/encounter-builder'
-    | '/gm/initiative-tracker'
-    | '/gm/npc-builder'
-    | '/$runnerId'
-    | '/gm'
-    | '/new'
     | '/test/theme/typography'
+    | '/$runnerId'
   id:
     | '__root__'
     | '/'
-    | '/$runnerId'
-    | '/$runnerId/about'
-    | '/$runnerId/adept-powers'
-    | '/$runnerId/complex-forms'
-    | '/$runnerId/contacts'
-    | '/$runnerId/defense'
-    | '/$runnerId/drones'
-    | '/$runnerId/finances'
-    | '/$runnerId/gear'
-    | '/$runnerId/licenses'
-    | '/$runnerId/matrix'
-    | '/$runnerId/notes'
-    | '/$runnerId/offense'
-    | '/$runnerId/powers'
-    | '/$runnerId/skills'
-    | '/$runnerId/spells'
-    | '/$runnerId/spirits'
-    | '/$runnerId/sprites'
-    | '/$runnerId/vehicles'
+    | '/_details'
+    | '/_viewer'
+    | '/_viewer/$runnerId'
     | '/edit/$runnerId'
     | '/gm/encounter-builder'
     | '/gm/initiative-tracker'
     | '/gm/npc-builder'
-    | '/$runnerId/'
     | '/gm/'
     | '/new/'
+    | '/_details/item/$itemid'
+    | '/_viewer/$runnerId/about'
+    | '/_viewer/$runnerId/adept-powers'
+    | '/_viewer/$runnerId/complex-forms'
+    | '/_viewer/$runnerId/contacts'
+    | '/_viewer/$runnerId/defense'
+    | '/_viewer/$runnerId/drones'
+    | '/_viewer/$runnerId/finances'
+    | '/_viewer/$runnerId/gear'
+    | '/_viewer/$runnerId/licenses'
+    | '/_viewer/$runnerId/matrix'
+    | '/_viewer/$runnerId/notes'
+    | '/_viewer/$runnerId/offense'
+    | '/_viewer/$runnerId/powers'
+    | '/_viewer/$runnerId/skills'
+    | '/_viewer/$runnerId/spells'
+    | '/_viewer/$runnerId/spirits'
+    | '/_viewer/$runnerId/sprites'
+    | '/_viewer/$runnerId/vehicles'
     | '/test/theme/typography'
+    | '/_viewer/$runnerId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  RunnerIdRoute: typeof RunnerIdRouteWithChildren
+  DetailsRoute: typeof DetailsRouteWithChildren
+  ViewerRoute: typeof ViewerRouteWithChildren
   EditRunnerIdRoute: typeof EditRunnerIdRoute
   GmEncounterBuilderRoute: typeof GmEncounterBuilderRoute
   GmInitiativeTrackerRoute: typeof GmInitiativeTrackerRoute
@@ -382,145 +411,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$runnerId': {
-      id: '/$runnerId'
-      path: '/$runnerId'
-      fullPath: '/$runnerId'
-      preLoaderRoute: typeof RunnerIdRouteImport
+    '/_details': {
+      id: '/_details'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DetailsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$runnerId/': {
-      id: '/$runnerId/'
-      path: '/'
-      fullPath: '/$runnerId/'
-      preLoaderRoute: typeof RunnerIdIndexRouteImport
-      parentRoute: typeof RunnerIdRoute
+    '/_viewer': {
+      id: '/_viewer'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ViewerRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/$runnerId/about': {
-      id: '/$runnerId/about'
-      path: '/about'
-      fullPath: '/$runnerId/about'
-      preLoaderRoute: typeof RunnerIdAboutRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/adept-powers': {
-      id: '/$runnerId/adept-powers'
-      path: '/adept-powers'
-      fullPath: '/$runnerId/adept-powers'
-      preLoaderRoute: typeof RunnerIdAdeptPowersRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/complex-forms': {
-      id: '/$runnerId/complex-forms'
-      path: '/complex-forms'
-      fullPath: '/$runnerId/complex-forms'
-      preLoaderRoute: typeof RunnerIdComplexFormsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/contacts': {
-      id: '/$runnerId/contacts'
-      path: '/contacts'
-      fullPath: '/$runnerId/contacts'
-      preLoaderRoute: typeof RunnerIdContactsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/defense': {
-      id: '/$runnerId/defense'
-      path: '/defense'
-      fullPath: '/$runnerId/defense'
-      preLoaderRoute: typeof RunnerIdDefenseRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/drones': {
-      id: '/$runnerId/drones'
-      path: '/drones'
-      fullPath: '/$runnerId/drones'
-      preLoaderRoute: typeof RunnerIdDronesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/finances': {
-      id: '/$runnerId/finances'
-      path: '/finances'
-      fullPath: '/$runnerId/finances'
-      preLoaderRoute: typeof RunnerIdFinancesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/gear': {
-      id: '/$runnerId/gear'
-      path: '/gear'
-      fullPath: '/$runnerId/gear'
-      preLoaderRoute: typeof RunnerIdGearRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/licenses': {
-      id: '/$runnerId/licenses'
-      path: '/licenses'
-      fullPath: '/$runnerId/licenses'
-      preLoaderRoute: typeof RunnerIdLicensesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/matrix': {
-      id: '/$runnerId/matrix'
-      path: '/matrix'
-      fullPath: '/$runnerId/matrix'
-      preLoaderRoute: typeof RunnerIdMatrixRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/notes': {
-      id: '/$runnerId/notes'
-      path: '/notes'
-      fullPath: '/$runnerId/notes'
-      preLoaderRoute: typeof RunnerIdNotesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/offense': {
-      id: '/$runnerId/offense'
-      path: '/offense'
-      fullPath: '/$runnerId/offense'
-      preLoaderRoute: typeof RunnerIdOffenseRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/powers': {
-      id: '/$runnerId/powers'
-      path: '/powers'
-      fullPath: '/$runnerId/powers'
-      preLoaderRoute: typeof RunnerIdPowersRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/skills': {
-      id: '/$runnerId/skills'
-      path: '/skills'
-      fullPath: '/$runnerId/skills'
-      preLoaderRoute: typeof RunnerIdSkillsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/spells': {
-      id: '/$runnerId/spells'
-      path: '/spells'
-      fullPath: '/$runnerId/spells'
-      preLoaderRoute: typeof RunnerIdSpellsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/spirits': {
-      id: '/$runnerId/spirits'
-      path: '/spirits'
-      fullPath: '/$runnerId/spirits'
-      preLoaderRoute: typeof RunnerIdSpiritsRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/sprites': {
-      id: '/$runnerId/sprites'
-      path: '/sprites'
-      fullPath: '/$runnerId/sprites'
-      preLoaderRoute: typeof RunnerIdSpritesRouteImport
-      parentRoute: typeof RunnerIdRoute
-    }
-    '/$runnerId/vehicles': {
-      id: '/$runnerId/vehicles'
-      path: '/vehicles'
-      fullPath: '/$runnerId/vehicles'
-      preLoaderRoute: typeof RunnerIdVehiclesRouteImport
-      parentRoute: typeof RunnerIdRoute
+    '/_viewer/$runnerId': {
+      id: '/_viewer/$runnerId'
+      path: '/$runnerId'
+      fullPath: '/$runnerId'
+      preLoaderRoute: typeof ViewerRunnerIdRouteImport
+      parentRoute: typeof ViewerRoute
     }
     '/edit/$runnerId': {
       id: '/edit/$runnerId'
@@ -564,6 +474,146 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_details/item/$itemid': {
+      id: '/_details/item/$itemid'
+      path: '/item/$itemid'
+      fullPath: '/item/$itemid'
+      preLoaderRoute: typeof DetailsItemItemidRouteImport
+      parentRoute: typeof DetailsRoute
+    }
+    '/_viewer/$runnerId/': {
+      id: '/_viewer/$runnerId/'
+      path: '/'
+      fullPath: '/$runnerId/'
+      preLoaderRoute: typeof ViewerRunnerIdIndexRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/about': {
+      id: '/_viewer/$runnerId/about'
+      path: '/about'
+      fullPath: '/$runnerId/about'
+      preLoaderRoute: typeof ViewerRunnerIdAboutRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/adept-powers': {
+      id: '/_viewer/$runnerId/adept-powers'
+      path: '/adept-powers'
+      fullPath: '/$runnerId/adept-powers'
+      preLoaderRoute: typeof ViewerRunnerIdAdeptPowersRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/complex-forms': {
+      id: '/_viewer/$runnerId/complex-forms'
+      path: '/complex-forms'
+      fullPath: '/$runnerId/complex-forms'
+      preLoaderRoute: typeof ViewerRunnerIdComplexFormsRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/contacts': {
+      id: '/_viewer/$runnerId/contacts'
+      path: '/contacts'
+      fullPath: '/$runnerId/contacts'
+      preLoaderRoute: typeof ViewerRunnerIdContactsRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/defense': {
+      id: '/_viewer/$runnerId/defense'
+      path: '/defense'
+      fullPath: '/$runnerId/defense'
+      preLoaderRoute: typeof ViewerRunnerIdDefenseRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/drones': {
+      id: '/_viewer/$runnerId/drones'
+      path: '/drones'
+      fullPath: '/$runnerId/drones'
+      preLoaderRoute: typeof ViewerRunnerIdDronesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/finances': {
+      id: '/_viewer/$runnerId/finances'
+      path: '/finances'
+      fullPath: '/$runnerId/finances'
+      preLoaderRoute: typeof ViewerRunnerIdFinancesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/gear': {
+      id: '/_viewer/$runnerId/gear'
+      path: '/gear'
+      fullPath: '/$runnerId/gear'
+      preLoaderRoute: typeof ViewerRunnerIdGearRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/licenses': {
+      id: '/_viewer/$runnerId/licenses'
+      path: '/licenses'
+      fullPath: '/$runnerId/licenses'
+      preLoaderRoute: typeof ViewerRunnerIdLicensesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/matrix': {
+      id: '/_viewer/$runnerId/matrix'
+      path: '/matrix'
+      fullPath: '/$runnerId/matrix'
+      preLoaderRoute: typeof ViewerRunnerIdMatrixRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/notes': {
+      id: '/_viewer/$runnerId/notes'
+      path: '/notes'
+      fullPath: '/$runnerId/notes'
+      preLoaderRoute: typeof ViewerRunnerIdNotesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/offense': {
+      id: '/_viewer/$runnerId/offense'
+      path: '/offense'
+      fullPath: '/$runnerId/offense'
+      preLoaderRoute: typeof ViewerRunnerIdOffenseRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/powers': {
+      id: '/_viewer/$runnerId/powers'
+      path: '/powers'
+      fullPath: '/$runnerId/powers'
+      preLoaderRoute: typeof ViewerRunnerIdPowersRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/skills': {
+      id: '/_viewer/$runnerId/skills'
+      path: '/skills'
+      fullPath: '/$runnerId/skills'
+      preLoaderRoute: typeof ViewerRunnerIdSkillsRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/spells': {
+      id: '/_viewer/$runnerId/spells'
+      path: '/spells'
+      fullPath: '/$runnerId/spells'
+      preLoaderRoute: typeof ViewerRunnerIdSpellsRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/spirits': {
+      id: '/_viewer/$runnerId/spirits'
+      path: '/spirits'
+      fullPath: '/$runnerId/spirits'
+      preLoaderRoute: typeof ViewerRunnerIdSpiritsRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/sprites': {
+      id: '/_viewer/$runnerId/sprites'
+      path: '/sprites'
+      fullPath: '/$runnerId/sprites'
+      preLoaderRoute: typeof ViewerRunnerIdSpritesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
+    '/_viewer/$runnerId/vehicles': {
+      id: '/_viewer/$runnerId/vehicles'
+      path: '/vehicles'
+      fullPath: '/$runnerId/vehicles'
+      preLoaderRoute: typeof ViewerRunnerIdVehiclesRouteImport
+      parentRoute: typeof ViewerRunnerIdRoute
+    }
     '/test/theme/typography': {
       id: '/test/theme/typography'
       path: '/test/theme/typography'
@@ -574,57 +624,80 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface RunnerIdRouteChildren {
-  RunnerIdAboutRoute: typeof RunnerIdAboutRoute
-  RunnerIdAdeptPowersRoute: typeof RunnerIdAdeptPowersRoute
-  RunnerIdComplexFormsRoute: typeof RunnerIdComplexFormsRoute
-  RunnerIdContactsRoute: typeof RunnerIdContactsRoute
-  RunnerIdDefenseRoute: typeof RunnerIdDefenseRoute
-  RunnerIdDronesRoute: typeof RunnerIdDronesRoute
-  RunnerIdFinancesRoute: typeof RunnerIdFinancesRoute
-  RunnerIdGearRoute: typeof RunnerIdGearRoute
-  RunnerIdLicensesRoute: typeof RunnerIdLicensesRoute
-  RunnerIdMatrixRoute: typeof RunnerIdMatrixRoute
-  RunnerIdNotesRoute: typeof RunnerIdNotesRoute
-  RunnerIdOffenseRoute: typeof RunnerIdOffenseRoute
-  RunnerIdPowersRoute: typeof RunnerIdPowersRoute
-  RunnerIdSkillsRoute: typeof RunnerIdSkillsRoute
-  RunnerIdSpellsRoute: typeof RunnerIdSpellsRoute
-  RunnerIdSpiritsRoute: typeof RunnerIdSpiritsRoute
-  RunnerIdSpritesRoute: typeof RunnerIdSpritesRoute
-  RunnerIdVehiclesRoute: typeof RunnerIdVehiclesRoute
-  RunnerIdIndexRoute: typeof RunnerIdIndexRoute
+interface DetailsRouteChildren {
+  DetailsItemItemidRoute: typeof DetailsItemItemidRoute
 }
 
-const RunnerIdRouteChildren: RunnerIdRouteChildren = {
-  RunnerIdAboutRoute: RunnerIdAboutRoute,
-  RunnerIdAdeptPowersRoute: RunnerIdAdeptPowersRoute,
-  RunnerIdComplexFormsRoute: RunnerIdComplexFormsRoute,
-  RunnerIdContactsRoute: RunnerIdContactsRoute,
-  RunnerIdDefenseRoute: RunnerIdDefenseRoute,
-  RunnerIdDronesRoute: RunnerIdDronesRoute,
-  RunnerIdFinancesRoute: RunnerIdFinancesRoute,
-  RunnerIdGearRoute: RunnerIdGearRoute,
-  RunnerIdLicensesRoute: RunnerIdLicensesRoute,
-  RunnerIdMatrixRoute: RunnerIdMatrixRoute,
-  RunnerIdNotesRoute: RunnerIdNotesRoute,
-  RunnerIdOffenseRoute: RunnerIdOffenseRoute,
-  RunnerIdPowersRoute: RunnerIdPowersRoute,
-  RunnerIdSkillsRoute: RunnerIdSkillsRoute,
-  RunnerIdSpellsRoute: RunnerIdSpellsRoute,
-  RunnerIdSpiritsRoute: RunnerIdSpiritsRoute,
-  RunnerIdSpritesRoute: RunnerIdSpritesRoute,
-  RunnerIdVehiclesRoute: RunnerIdVehiclesRoute,
-  RunnerIdIndexRoute: RunnerIdIndexRoute,
+const DetailsRouteChildren: DetailsRouteChildren = {
+  DetailsItemItemidRoute: DetailsItemItemidRoute,
 }
 
-const RunnerIdRouteWithChildren = RunnerIdRoute._addFileChildren(
-  RunnerIdRouteChildren,
+const DetailsRouteWithChildren =
+  DetailsRoute._addFileChildren(DetailsRouteChildren)
+
+interface ViewerRunnerIdRouteChildren {
+  ViewerRunnerIdAboutRoute: typeof ViewerRunnerIdAboutRoute
+  ViewerRunnerIdAdeptPowersRoute: typeof ViewerRunnerIdAdeptPowersRoute
+  ViewerRunnerIdComplexFormsRoute: typeof ViewerRunnerIdComplexFormsRoute
+  ViewerRunnerIdContactsRoute: typeof ViewerRunnerIdContactsRoute
+  ViewerRunnerIdDefenseRoute: typeof ViewerRunnerIdDefenseRoute
+  ViewerRunnerIdDronesRoute: typeof ViewerRunnerIdDronesRoute
+  ViewerRunnerIdFinancesRoute: typeof ViewerRunnerIdFinancesRoute
+  ViewerRunnerIdGearRoute: typeof ViewerRunnerIdGearRoute
+  ViewerRunnerIdLicensesRoute: typeof ViewerRunnerIdLicensesRoute
+  ViewerRunnerIdMatrixRoute: typeof ViewerRunnerIdMatrixRoute
+  ViewerRunnerIdNotesRoute: typeof ViewerRunnerIdNotesRoute
+  ViewerRunnerIdOffenseRoute: typeof ViewerRunnerIdOffenseRoute
+  ViewerRunnerIdPowersRoute: typeof ViewerRunnerIdPowersRoute
+  ViewerRunnerIdSkillsRoute: typeof ViewerRunnerIdSkillsRoute
+  ViewerRunnerIdSpellsRoute: typeof ViewerRunnerIdSpellsRoute
+  ViewerRunnerIdSpiritsRoute: typeof ViewerRunnerIdSpiritsRoute
+  ViewerRunnerIdSpritesRoute: typeof ViewerRunnerIdSpritesRoute
+  ViewerRunnerIdVehiclesRoute: typeof ViewerRunnerIdVehiclesRoute
+  ViewerRunnerIdIndexRoute: typeof ViewerRunnerIdIndexRoute
+}
+
+const ViewerRunnerIdRouteChildren: ViewerRunnerIdRouteChildren = {
+  ViewerRunnerIdAboutRoute: ViewerRunnerIdAboutRoute,
+  ViewerRunnerIdAdeptPowersRoute: ViewerRunnerIdAdeptPowersRoute,
+  ViewerRunnerIdComplexFormsRoute: ViewerRunnerIdComplexFormsRoute,
+  ViewerRunnerIdContactsRoute: ViewerRunnerIdContactsRoute,
+  ViewerRunnerIdDefenseRoute: ViewerRunnerIdDefenseRoute,
+  ViewerRunnerIdDronesRoute: ViewerRunnerIdDronesRoute,
+  ViewerRunnerIdFinancesRoute: ViewerRunnerIdFinancesRoute,
+  ViewerRunnerIdGearRoute: ViewerRunnerIdGearRoute,
+  ViewerRunnerIdLicensesRoute: ViewerRunnerIdLicensesRoute,
+  ViewerRunnerIdMatrixRoute: ViewerRunnerIdMatrixRoute,
+  ViewerRunnerIdNotesRoute: ViewerRunnerIdNotesRoute,
+  ViewerRunnerIdOffenseRoute: ViewerRunnerIdOffenseRoute,
+  ViewerRunnerIdPowersRoute: ViewerRunnerIdPowersRoute,
+  ViewerRunnerIdSkillsRoute: ViewerRunnerIdSkillsRoute,
+  ViewerRunnerIdSpellsRoute: ViewerRunnerIdSpellsRoute,
+  ViewerRunnerIdSpiritsRoute: ViewerRunnerIdSpiritsRoute,
+  ViewerRunnerIdSpritesRoute: ViewerRunnerIdSpritesRoute,
+  ViewerRunnerIdVehiclesRoute: ViewerRunnerIdVehiclesRoute,
+  ViewerRunnerIdIndexRoute: ViewerRunnerIdIndexRoute,
+}
+
+const ViewerRunnerIdRouteWithChildren = ViewerRunnerIdRoute._addFileChildren(
+  ViewerRunnerIdRouteChildren,
 )
+
+interface ViewerRouteChildren {
+  ViewerRunnerIdRoute: typeof ViewerRunnerIdRouteWithChildren
+}
+
+const ViewerRouteChildren: ViewerRouteChildren = {
+  ViewerRunnerIdRoute: ViewerRunnerIdRouteWithChildren,
+}
+
+const ViewerRouteWithChildren =
+  ViewerRoute._addFileChildren(ViewerRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  RunnerIdRoute: RunnerIdRouteWithChildren,
+  DetailsRoute: DetailsRouteWithChildren,
+  ViewerRoute: ViewerRouteWithChildren,
   EditRunnerIdRoute: EditRunnerIdRoute,
   GmEncounterBuilderRoute: GmEncounterBuilderRoute,
   GmInitiativeTrackerRoute: GmInitiativeTrackerRoute,

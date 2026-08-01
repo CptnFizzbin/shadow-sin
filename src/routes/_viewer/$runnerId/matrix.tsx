@@ -10,7 +10,7 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 
-export const Route = createFileRoute("/$runnerId/matrix")({
+export const Route = createFileRoute("/_viewer/$runnerId/matrix")({
   component: RouteComponent,
 })
 

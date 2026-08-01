@@ -5,7 +5,7 @@ import { VehiclesList } from "#/components/items/types/vehicles/vehiclesList.tsx
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
-export const Route = createFileRoute("/$runnerId/drones")({
+export const Route = createFileRoute("/_viewer/$runnerId/drones")({
   component: RouteComponent,
 })
 
