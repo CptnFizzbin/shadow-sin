@@ -13,7 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import type { UseImplantFormProps } from "./dialogs/implantFormDialog.tsx"
 import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
-import { ImplantItemCard } from "./implantItemCard.tsx"
+import { ImplantDataCard } from "./implantDataCard.tsx"
 
 export const ImplantItemList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
@@ -46,7 +46,7 @@ export const ImplantItemList: FC = () => {
 
           return (
             <Stack key={implant.id} sx={{ gap: 1 }}>
-              <ImplantItemCard
+              <ImplantDataCard
                 implant={implant}
                 onOpen={openItemDetails
                   ? () => openItemDetails(implant.id)
@@ -57,7 +57,7 @@ export const ImplantItemList: FC = () => {
               {accessories.length > 0 && (
                 <Stack sx={{ gap: 1, pl: 2 }}>
                   {accessories.map((accessory) => (
-                    <ImplantItemCard
+                    <ImplantDataCard
                       key={accessory.id}
                       implant={accessory}
                       onOpen={openItemDetails

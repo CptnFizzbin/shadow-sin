@@ -1,16 +1,20 @@
+import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
+import { Icons } from "#/lib/icons.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { EquippedWeaponCard } from "./equippedWeaponCard.tsx"
+import { useWeaponAttackDialog } from "./dialogs/weaponAttackDialog.tsx"
+import { WeaponDataCard } from "./weaponDataCard.tsx"
 
 export const EquippedWeaponsSection: FC = () => {
+  const weaponAttackDialog = useWeaponAttackDialog()
   const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
 
   const equippedWeapons = allWeapons.filter(
@@ -36,8 +40,19 @@ export const EquippedWeaponsSection: FC = () => {
     <Stack sx={{ gap: 1 }}>
       <Label label="Weapons" />
       {equippedWeapons.map((weapon) => (
-        <EquippedWeaponCard key={weapon.id} weapon={weapon} />
+        <Stack direction="row" key={weapon.id} sx={{ gap: 0.5 }}>
+          <Box
+            sx={{ padding: 1, backgroundColor: "primary.light" }}
+            role="button"
+            onClick={() => weaponAttackDialog.open({ weapon })}
+          >
+            <Icons.item.attack />
+          </Box>
+          <WeaponDataCard weapon={weapon} />
+        </Stack>
       ))}
+
+      {weaponAttackDialog.dialog}
     </Stack>
   )
 }

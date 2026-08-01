@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
+import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useGearFilter } from "#/lib/hooks/items/gearHooks.ts"
 import { useOpenItemDetails } from "#/lib/hooks/items/useOpenItemDetails.ts"
@@ -17,7 +17,7 @@ import { isVehicleData, VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useVehicleFormDialog } from "./dialogs/vehicleFormDialog.tsx"
-import { VehicleItemCard } from "./vehicleItemCard.tsx"
+import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
 interface VehiclesListProps {
   vehicleCategory: VehicleCategory
@@ -69,7 +69,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
 
         return (
           <Stack key={vehicle.id} sx={{ gap: 1 }}>
-            <VehicleItemCard
+            <VehicleDataCard
               vehicle={vehicle}
               onOpen={openItemDetails
                 ? () => openItemDetails(vehicle.id)
@@ -80,7 +80,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
             {attachments.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
                 {attachments.map((attachment) => (
-                  <ItemCard
+                  <ItemDataCard
                     key={attachment.id}
                     item={attachment}
                     onOpen={openItemDetails

@@ -9,7 +9,7 @@ export interface ItemDetailsQuickActionProps {
 }
 
 /**
- * A single action button on the ItemDetails page. Unlike ItemCard's
+ * A single action button on the ItemDetails page. Unlike DataCard's
  * long-press/right-click menu (a space-saving affordance for a compact
  * card), the details page has room for actions to be persistently visible
  * buttons in the header action row.

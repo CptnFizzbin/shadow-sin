@@ -12,7 +12,7 @@ export interface CredstickItemDetailsProps {
   credstick: CredstickData
 }
 
-/** No Remove action, matching CredstickCard — credsticks don't offer one today. */
+/** No Remove action, matching CredstickDataCard — credsticks don't offer one today. */
 export const CredstickItemDetails: FC<CredstickItemDetailsProps> = ({ credstick }) => {
   const maxBalance = CredstickMaxBalance[credstick.credstickType]
   const fillPercent = maxBalance > 0 ? (credstick.balance / maxBalance) * 100 : 0

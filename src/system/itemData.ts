@@ -32,6 +32,7 @@ export interface ItemData {
 
   notes?: string
   equipped?: boolean
+  stashed?: boolean
   fixed?: boolean
 
   wireless?: {

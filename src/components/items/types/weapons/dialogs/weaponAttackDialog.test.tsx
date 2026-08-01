@@ -1,7 +1,8 @@
+import Button from "@mui/material/Button"
 import { act, fireEvent, screen, within } from "@testing-library/react"
+import type { FC } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { EquippedWeaponCard } from "#/components/items/types/weapons/equippedWeaponCard.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DiceRoller } from "#/system/dice/diceRoller.ts"
@@ -11,6 +12,8 @@ import { ItemType } from "#/system/itemType.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+
+import { useWeaponAttackDialog } from "./weaponAttackDialog.tsx"
 
 const pistol: FirearmData = {
   id: "00000000-0000-0000-0000-000000000001",
@@ -58,7 +61,17 @@ function buildRunnerStore() {
 }
 
 function openCalculator() {
-  renderWithProviders(<EquippedWeaponCard weapon={pistol} />, { runnerStore: buildRunnerStore() })
+  const Wrapper: FC = () => {
+    const weaponAttackDialog = useWeaponAttackDialog()
+    return (
+      <>
+        <Button onClick={() => weaponAttackDialog.open({ weapon: pistol })}>Attack</Button>
+        {weaponAttackDialog.dialog}
+      </>
+    )
+  }
+
+  renderWithProviders(<Wrapper />, { runnerStore: buildRunnerStore() })
   fireEvent.click(screen.getByRole("button", { name: /attack/i }))
   return screen.findByRole("dialog", { name: "Test Pistol" })
 }

@@ -6,8 +6,8 @@ import type { FC } from "react"
 
 import { useLicenseFormDialog } from "#/components/items/types/licenses/dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "#/components/items/types/licenses/dialogs/sinFormDialog.tsx"
-import { LicenseCard } from "#/components/items/types/licenses/licenseCard.tsx"
-import { SinCard } from "#/components/items/types/licenses/sinCard.tsx"
+import { LicenseDataCard } from "#/components/items/types/licenses/licenseDataCard.tsx"
+import { SinDataCard } from "#/components/items/types/licenses/sinDataCard.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -44,7 +44,7 @@ export const LicensesSectionContent: FC = () => {
 
         return (
           <Stack key={sin.id} sx={{ gap: 1 }}>
-            <SinCard
+            <SinDataCard
               sin={sin}
               onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: sin.id } })}
               onEdit={() => handleEditSin(sin)}
@@ -53,7 +53,7 @@ export const LicensesSectionContent: FC = () => {
             {sinLicenses.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
                 {sinLicenses.map((license) => (
-                  <LicenseCard
+                  <LicenseDataCard
                     key={license.id}
                     license={license}
                     onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: license.id } })}

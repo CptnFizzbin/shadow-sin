@@ -6,10 +6,10 @@ import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { DeviceItemCard } from "#/components/items/types/devices/deviceItemCard.tsx"
+import { DeviceDataCard } from "#/components/items/types/devices/deviceDataCard.tsx"
 import { useDeviceFormDialog } from "#/components/items/types/devices/dialogs/deviceFormDialog.tsx"
 import { useProgramFormDialog } from "#/components/items/types/devices/dialogs/programFormDialog.tsx"
-import { ProgramItemCard } from "#/components/items/types/devices/programItemCard.tsx"
+import { ProgramDataCard } from "#/components/items/types/devices/programDataCard.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -49,7 +49,7 @@ export const DevicesSectionContent: FC = () => {
 
         return (
           <Stack key={device.id} sx={{ gap: 1 }}>
-            <DeviceItemCard
+            <DeviceDataCard
               device={device}
               onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: device.id } })}
               onEdit={() => handleEditDevice(device)}
@@ -58,7 +58,7 @@ export const DevicesSectionContent: FC = () => {
             {devicePrograms.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
                 {devicePrograms.map((program) => (
-                  <ProgramItemCard
+                  <ProgramDataCard
                     key={program.id}
                     program={program}
                     onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: program.id } })}

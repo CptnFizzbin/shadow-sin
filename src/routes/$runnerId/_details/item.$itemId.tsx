@@ -15,7 +15,7 @@ export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
 })
 
 /**
- * One shared route for every item type (mirrors the `ItemCard` dispatcher):
+ * One shared route for every item type (mirrors the `ItemDataCard` dispatcher):
  * items are stored flat (`RunnerData.gear`), not partitioned by section, so
  * there's no per-section detail route to duplicate the dispatch logic in.
  * Renders full-screen via the `_details` layout — a drill-down page isn't a

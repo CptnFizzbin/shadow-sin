@@ -11,7 +11,7 @@ export interface ItemDetailsStatusIconsProps {
 
 /**
  * Status chip row for ItemDetails: equipped, stashed, wireless-off. Labeled
- * chips rather than ItemCard's bare icon cluster, since the details page has
+ * chips rather than DataCard's bare icon cluster, since the details page has
  * room to spell status out.
  */
 export const ItemDetailsStatusIcons: FC<ItemDetailsStatusIconsProps> = ({

@@ -6,10 +6,10 @@ import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
+import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useVehicleFormDialog } from "#/components/items/types/vehicles/dialogs/vehicleFormDialog.tsx"
-import { VehicleItemCard } from "#/components/items/types/vehicles/vehicleItemCard.tsx"
+import { VehicleDataCard } from "#/components/items/types/vehicles/vehicleDataCard.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -54,7 +54,7 @@ export const VehiclesSectionContent: FC = () => {
 
         return (
           <Stack key={vehicle.id} sx={{ gap: 1 }}>
-            <VehicleItemCard
+            <VehicleDataCard
               vehicle={vehicle}
               onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: vehicle.id } })}
               onEdit={() => handleEditVehicle(vehicle)}
@@ -63,7 +63,7 @@ export const VehiclesSectionContent: FC = () => {
             {attachments.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
                 {attachments.map((attachment) => (
-                  <ItemCard
+                  <ItemDataCard
                     key={attachment.id}
                     item={attachment}
                     onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}

@@ -4,7 +4,7 @@ import { RiAddLine } from "@remixicon/react"
 import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
+import { ArmorDataCard } from "#/components/items/types/armor/armorDataCard.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -27,7 +27,7 @@ export const ArmorSectionContent: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {Object.values(armorItems).map((item) => (
-        <ArmorItemCard
+        <ArmorDataCard
           key={item.id}
           armor={item}
           onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: item.id } })}

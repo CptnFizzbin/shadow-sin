@@ -1,0 +1,50 @@
+import { DataCardSlotAvailability } from "./dataCardSlot.Availability.tsx"
+import { DataCardSlotContent } from "./dataCardSlot.Content.tsx"
+import { DataCardSlotContextAction } from "./dataCardSlot.ContextAction.tsx"
+import { DataCardSlotCost } from "./dataCardSlot.Cost.tsx"
+import { DataCardSlotDamageTrack } from "./dataCardSlot.DamageTrack.tsx"
+import { DataCardSlotFooter } from "./dataCardSlot.Footer.tsx"
+import { DataCardSlotQuantity } from "./dataCardSlot.Quantity.tsx"
+import { DataCardSlotRating } from "./dataCardSlot.Rating.tsx"
+import { DataCardSlotSource } from "./dataCardSlot.Source.tsx"
+import { DataCardSlotStat } from "./dataCardSlot.Stat.tsx"
+import { DataCardSlotStatusIcon } from "./dataCardSlot.StatusIcon.tsx"
+import { DataCardSlotSubitem } from "./dataCardSlot.Subitem.tsx"
+import { DataCardSlotTitle } from "./dataCardSlot.Title.tsx"
+import { DataCardSlotType } from "./dataCardSlot.Type.tsx"
+
+export type { DataCardAvailabilityProps } from "./dataCardSlot.Availability.tsx"
+export type { DataCardContentProps } from "./dataCardSlot.Content.tsx"
+export type { DataCardQuickActionProps } from "./dataCardSlot.ContextAction.tsx"
+export type { DataCardCostProps } from "./dataCardSlot.Cost.tsx"
+export type { DataCardQuantityProps } from "./dataCardSlot.Quantity.tsx"
+export type { DataCardRatingProps } from "./dataCardSlot.Rating.tsx"
+export type { DataCardStatProps, DataCardStatType } from "./dataCardSlot.Stat.tsx"
+export type { DataCardStatusIconProps } from "./dataCardSlot.StatusIcon.tsx"
+export type { DataCardSubitemProps, DataCardSubitemStat } from "./dataCardSlot.Subitem.tsx"
+export type { DataCardTitleProps } from "./dataCardSlot.Title.tsx"
+export type { DataCardTypeProps } from "./dataCardSlot.Type.tsx"
+
+/**
+ * Slot components composing a DataCard's body, attached onto the `DataCard`
+ * export itself (`DataCard.Title`, `DataCard.Stat`, ...) rather than kept as
+ * a separate namespace. DataCard itself carries no domain knowledge — typed
+ * wrappers (e.g. `ItemDataCardRoot` for `ItemData`, or a domain's own
+ * `*DataCard`) decide which slots to populate from their own data.
+ */
+export const DataCardSlot = {
+  Title: DataCardSlotTitle,
+  Type: DataCardSlotType,
+  Source: DataCardSlotSource,
+  Availability: DataCardSlotAvailability,
+  Quantity: DataCardSlotQuantity,
+  Cost: DataCardSlotCost,
+  Rating: DataCardSlotRating,
+  StatusIcon: DataCardSlotStatusIcon,
+  Stat: DataCardSlotStat,
+  Subitem: DataCardSlotSubitem,
+  DamageTrack: DataCardSlotDamageTrack,
+  Footer: DataCardSlotFooter,
+  Content: DataCardSlotContent,
+  QuickAction: DataCardSlotContextAction,
+}

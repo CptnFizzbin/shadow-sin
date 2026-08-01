@@ -17,7 +17,7 @@ export interface SinItemDetailsProps {
 }
 
 /**
- * Licenses belonging to this SIN aren't rendered here — mirrors SinCard,
+ * Licenses belonging to this SIN aren't rendered here — mirrors SinDataCard,
  * which leaves them to the containing section so each stays individually
  * tappable rather than becoming a read-only subitem row.
  */

@@ -15,8 +15,8 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { useLicenseFormDialog } from "./dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "./dialogs/sinFormDialog.tsx"
-import { LicenseCard } from "./licenseCard.tsx"
-import { SinCard } from "./sinCard.tsx"
+import { LicenseDataCard } from "./licenseDataCard.tsx"
+import { SinDataCard } from "./sinDataCard.tsx"
 
 export const SinsAndLicensesSection: FC = () => {
   const confirmDialog = useConfirmDialog()
@@ -88,7 +88,7 @@ export const SinsAndLicensesSection: FC = () => {
 
         return (
           <Stack key={sin.id} sx={{ gap: 1 }}>
-            <SinCard
+            <SinDataCard
               sin={sin}
               onOpen={openItemDetails ? () => openItemDetails(sin.id) : () => handleEditSin(sin)}
               onEdit={openItemDetails ? () => handleEditSin(sin) : undefined}
@@ -97,7 +97,7 @@ export const SinsAndLicensesSection: FC = () => {
             {sinLicenses.length > 0 && (
               <Stack sx={{ gap: 1, pl: 2 }}>
                 {sinLicenses.map((license) => (
-                  <LicenseCard
+                  <LicenseDataCard
                     key={license.id}
                     license={license}
                     onOpen={openItemDetails
