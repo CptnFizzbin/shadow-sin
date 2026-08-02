@@ -1,6 +1,7 @@
 export enum BuilderSectionId {
   profile = "profile",
   biology = "biology",
+  reputation = "reputation",
   attributes = "attributes",
   qualities = "qualities",
   activeSkills = "active-skills",
@@ -11,6 +12,8 @@ export enum BuilderSectionId {
   sprites = "sprites",
   gear = "gear",
   contacts = "contacts",
+  karma = "karma",
+  finances = "finances",
 }
 
 interface BuilderSectionInfo {
@@ -20,6 +23,7 @@ interface BuilderSectionInfo {
 export const builderSections: Record<BuilderSectionId, BuilderSectionInfo> = {
   [BuilderSectionId.profile]: { label: "Profile" },
   [BuilderSectionId.biology]: { label: "Biology" },
+  [BuilderSectionId.reputation]: { label: "Reputation" },
   [BuilderSectionId.attributes]: { label: "Attributes" },
   [BuilderSectionId.qualities]: { label: "Qualities" },
   [BuilderSectionId.activeSkills]: { label: "Active Skills" },
@@ -30,6 +34,8 @@ export const builderSections: Record<BuilderSectionId, BuilderSectionInfo> = {
   [BuilderSectionId.sprites]: { label: "Sprites" },
   [BuilderSectionId.gear]: { label: "Gear" },
   [BuilderSectionId.contacts]: { label: "Contacts" },
+  [BuilderSectionId.karma]: { label: "Karma" },
+  [BuilderSectionId.finances]: { label: "Finances" },
 }
 
 export const builderSectionOrder = Object.values(BuilderSectionId)

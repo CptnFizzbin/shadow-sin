@@ -8,5 +8,7 @@ export const setProfileArchetype = createAction<string | null>("profile/setArche
 export const setProfileDescription = createAction<string | null>("profile/setDescription")
 export const setProfilePersonality = createAction<string | null>("profile/setPersonality")
 export const setProfilePublicAwarenessModifier = createAction<number | undefined>("profile/setPublicAwarenessModifier")
+export const setStreetCred = createAction<number>("profile/setStreetCred")
+export const setNotoriety = createAction<number>("profile/setNotoriety")
 export const setLifestyleQuality = createAction<LifestyleType>("profile/setLifestyleQuality")
 export const setLifestyleMonthsPaid = createAction<number>("profile/setLifestyleMonthsPaid")
