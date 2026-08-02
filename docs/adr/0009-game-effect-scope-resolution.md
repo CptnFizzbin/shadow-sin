@@ -31,6 +31,12 @@ consumer has to re-implement tree-walking.
   weapon, ...); the tree only enumerates the *branch shape*, generating instance leaves from
   existing canonical lists (`skillList`) or per-Runner data at read time instead.
 
+- `GameEffectData.target` becomes `string | string[]` uniformly across every effect type
+  (`attrMod`, `skillMod`, `skillSpecializationMod`, `dicePoolMod`, pain tolerance), so a single
+  effect can target several Pool Ids/Attributes/Skills at once. The union keeps every existing
+  persisted `target: "body"` value valid as-is — no migration needed — since resolution logic
+  normalizes to an array before matching (`toArray(e.target).includes(x)`).
+
 ## Consequences
 
 - `selectAllGameEffects`/`useGameEffects` currently discard which source (Item/Quality/Spell/...)
