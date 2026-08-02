@@ -73,8 +73,11 @@ the `EntityData → ItemData → WeaponData` inheritance already established, bu
 
 **`EntityDetailsRoot` (the details-page analog) is out of scope here.** ADR-0009 deliberately
 gave `ItemDetails` its own bespoke slots rather than reusing `ItemCard`'s, due to a density
-mismatch between card and details rendering. Whether that reasoning still holds once `Entity`
-broadens past Item is an open question for a future ADR, not this one.
+mismatch between card and details rendering. The expectation is that Details will follow an
+analogous tiered-elements structure to the one decided here, once it's designed. There's also an
+open aspiration to combine Card and Details into a single shared system rather than two parallel
+tiered hierarchies — deliberately not decided or designed here; a future ADR should address both
+questions together once Details work actually starts.
 
 ## Consequences
 
