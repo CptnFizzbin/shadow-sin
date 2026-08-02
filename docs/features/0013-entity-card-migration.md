@@ -40,6 +40,14 @@ the first time (none exists currently). Spell and Adept Power cards are new work
   forcing some staging regardless; and validating the new flat-elements/`EntityCard` foundation
   on simple types before the ones needing brand-new elements (Weapon's `Ammo`) mirrors what
   worked in ADR-0008's own rollout (start with License/SIN/Credstick, tackle complex types last).
+- [x] **A `DicePool` element wraps the existing `src/components/system/dicePool/dicePool.tsx`
+  component, passing its props straight through** — no new dice-pool logic, no reimplementing
+  pool math. That component is already mature and reused across Weapon attacks, Spell
+  casting/drain resistance, and Spirit summoning today, just outside any card. Each typed card
+  that has a linked test computes its own `groups` via the existing hooks (`useDiceGroup`,
+  `skillDicePools.ts`, etc.) and hands them to the element. Which typed cards actually assemble
+  it isn't a fixed list — decided per type during migration, based on whether that type has a
+  linked test (Weapon's attack pool, Spell's casting/drain pools are the known examples so far).
 
 ## Constraints
 
@@ -81,14 +89,16 @@ EntityCard: { Header, Body, Footer, Title, Rating, Source, Effects, Stat, Action
 ItemCard (assembles EntityCard's elements plus):
   { Availability, Cost, Quantity, DamageTrack, Subitem, SubType,
     StatusIcon<Equipped | Stashed | Fixed | Wireless> }
-  WeaponCard additionally assembles: Ammo (custom, dedicated — not a DamageTrack variant)
+  WeaponCard additionally assembles: Ammo (custom, dedicated — not a DamageTrack variant),
+    DicePool (attack pool)
 
 SpiritCard (assembles EntityCard's elements plus; SpriteCard shares this shape):
   { SkillList, PowerList, AttributeBlock, DamageTrack (shared with ItemCard, see above), Notes }
 
 SpellCard (assembles EntityCard's elements plus):
   { rendered via generic Stat: Category, Range, Duration, Drain, DamageType;
-    a Sustained status icon }
+    a Sustained status icon; DicePool (casting pool, drain resistance pool — shared with
+    WeaponCard, see above) }
 
 PowerCard (assembles EntityCard's elements plus):
   { rendered via generic Stat: Rating, CostPerRating }
