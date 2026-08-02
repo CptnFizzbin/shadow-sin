@@ -24,8 +24,12 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
 
 - [ ] **Shared abstraction?** Should Entities and Vehicles share a common "thing with a
       StatusSheet" interface, or are they modelled independently?
-- [ ] **Where does damage live?** Persisted on the data record in `RunnerData`, or in Session
-      State (cleared when the tab closes)?
+- [x] **Where does damage live?** Persisted directly on the data record, not Session State —
+      matching `SpiritData.damage` precedent (not cleared on tab close, behaves like any other
+      persisted stat). **Sprite needs the same treatment: `SpriteData` gets a persisted damage
+      container matching `SpiritData`'s shape.** Decided as part of
+      [`docs/features/0013-entity-card-migration.md`](./0013-entity-card-migration.md); not yet
+      implemented — requires a migration, no code changes made yet.
 - [ ] **Spirit services** — is "services owed" a simple integer counter, or does each service
       need a description (e.g. "Guard the safehouse")?
 - [ ] **Drone distinction** — how does a Player indicate a Vehicle Item is a Drone? Tag, name

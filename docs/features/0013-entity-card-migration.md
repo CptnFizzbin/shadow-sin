@@ -15,11 +15,11 @@ the first time (none exists currently). Spell and Adept Power cards are new work
 
 ## Open Questions
 
-- [ ] **`SpriteData` has no `damage` field**, but `CONTEXT.md`'s Matrix Damage Track entry states
-  Sprites have "their primary damage track." Is `SpriteData` missing a field (needs a migration
-  to add `damage{physical,stun}` or similar, mirroring `SpiritData`), or is that glossary line
-  aspirational and Sprites don't actually track matrix damage yet? Blocks building
-  `SpriteCard`'s condition-monitor element.
+- [x] **`SpriteData` has no `damage` field.** Not a fresh gap — already tracked as an open
+  question in [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md)
+  ("where does damage live?"), now resolved there: both `SpriteData` and `SpiritData` get a
+  persisted damage container directly on the record (matching `SpiritData`'s existing shape),
+  not Session State. Decision only — no migration written yet, no code changes made.
 - [ ] Does `ConditionMonitor` (Spirit/Sprite) reuse `DamageTrack` outright (same
   current/max shape), or does it need its own element? Leaning reuse, not confirmed.
 - [ ] Is a dedicated **Ammo** element (size/remaining/type, counter-like) worth building now, or
@@ -99,6 +99,8 @@ PowerCard (extends EntityCard's elements):
 - [`docs/adr/0008-item-card-redesign.md`](../adr/0008-item-card-redesign.md),
   [`docs/adr/0009-item-details-page.md`](../adr/0009-item-details-page.md) — prior card/details
   architecture this supersedes (card) or leaves untouched for now (details).
+- [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md) — owns the
+  Spirit/Sprite persisted-damage-container decision this doc depends on for `ConditionMonitor`.
 - [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — introduces
   `ItemData._state.equipped`/`.stashed`, which the `StatusIcon` element must read via
   `isEquipped`/`isStashed` once that migration lands.
