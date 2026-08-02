@@ -90,6 +90,13 @@ export const ContactFormFields = withFieldGroup({
                       value={skill.name}
                       onChange={(e) => field.replaceValue(index, { ...skill, name: e.target.value })}
                     />
+                    <TextField
+                      label="Specialization (optional)"
+                      size="small"
+                      fullWidth
+                      value={skill.specialization ?? ""}
+                      onChange={(e) => field.replaceValue(index, { ...skill, specialization: e.target.value })}
+                    />
                     <FormControl size="small" sx={{ minWidth: 90 }}>
                       <InputLabel>Rating</InputLabel>
                       <Select
