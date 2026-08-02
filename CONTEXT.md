@@ -182,52 +182,22 @@ own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
 _Avoid_: creature, critter (same reasoning as Spirit)
 
 **Entity**:
-The umbrella term for anything a Runner can possess that carries ratings/stats and may
-contribute a **GameEffect**. Currently covers **Item**, **Quality**, **Spell**, and **Adept
-Power**, with **Drug** planned once it exists as its own type — this mirrors the existing
-source list on the **GameEffect** entry below, minus matrix connection mode (a state the Runner
-is in, not a possessed thing).
-
-Deliberately *not* a general "has stats" test: **Spirit**, **Sprite**, and **Agent**
-_(Agent not yet implemented)_ are independently-tracked beings with their own **StatusSheet**
-and are *not* classified as Entities, even though they clearly have stat blocks too — they were
-formerly grouped under this same term, but that grouping was dropped since Spirit/Sprite/Agent
-are never displayed alongside Entities and don't yet need a shared name. This is a pragmatic
-grouping around the existing `GameEffect`-sourcing shape, not a strict conceptual boundary —
-revisit if Spirit/Sprite/Agent ever need to share data shape or display with Entities.
+The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
+stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
+**Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and **Agent** _(planned)_.
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
-**EntityData** _(not yet implemented — planned)_:
-The concrete interface underlying **Entity**: `{ id, name, description?, source?, effects?,
-rating? }` — the fields shared by every current category (`ItemData`, `QualityData`,
-`SpellData`, `AdeptPowerData`). Each category-level type extends it with its own additional
-fields (e.g. `ItemData` adds `cost`/`quantity`/`availability`/`equipped`/`stashed`; `SpellData`
-adds `drain`/`duration`/`category`/`range`). `PowerData` (`src/system/powers/powerData.ts`)
-already implements close to this exact shape today, scoped to the power family only.
-
-**EntityCard** _(not yet implemented — planned; see `docs/adr/0010-entity-card-composition.md`)_:
-The top compound-component tier for rendering an **Entity**, replacing today's `DataCard`.
-Category tiers (**ItemCard**, **SpiritCard**, **SpellCard**, **PowerCard**) build on it, each
-adding their own category-specific elements. The item-type dispatcher is named **AnyItemCard**
-(renamed from `ItemDataCard`) specifically so it doesn't compete with `ItemCard` for the same
-identifier — see the ADR for why that naming split matters.
+**EntityCard** _(not yet implemented — planned)_:
+The shared card-rendering system for Entities, replacing today's `DataCard`. See
+`docs/adr/0010-entity-card-composition.md` for the architecture.
 
 **Rating**:
-An optional field on **EntityData** representing the strength or level of anything that has
-one — e.g. Armor's protection rating, an Adept Power's rating, software/Complex Form/Device
-ratings. Not every Entity populates it (Spells have none). Typed via a shared, parameterized
-`Rating<TSentinel extends string = never> = number | TSentinel` (planned location:
-`src/system/rating.ts`, kept neutral rather than living in `entityData.ts`, since non-Entity
-consumers use it too — see below). `EntityData.rating?: Rating` defaults to plain `number`.
-`SinData`/`LicenseData` (both Items, so both Entities) declare `rating: Rating<"real">` for the
-Real SIN/Licence case; `LanguageSkillData` (not an Entity — Skill isn't in scope) declares
-`rating: Rating<"native">`. Each consumer only accepts the sentinel meaningful to it, rather than
-one global union every Rating field would nominally accept.
-_Avoid_: `ItemData.rating`'s current `number | string` (used by Armor) — this was never a real
-Armor need, just `ItemData`'s loose base type leaking into `ArmorDataSchema` through
-inheritance; `ArmorData` doesn't even declare its own `rating` (its real stats are
-`ballistic`/`impact`). Tighten to plain `Rating` (i.e. `number`) once the rename lands.
+An optional numeric field representing the strength or level of an Entity — e.g. Armor's
+protection rating, an Adept Power's rating, a Spirit's Force, software/Complex Form/Device
+ratings. Not every Entity populates it (Spells have none). A few ratings use a special sentinel
+instead of a number for an unrated/default case (e.g. a Real SIN or Licence, a native Language
+skill) — see `docs/adr/0010-entity-card-composition.md` for the type design.
 
 ### Magic & Matrix
 
@@ -357,10 +327,7 @@ unequipped, and not stashed, e.g. a spare pistol in a holster)
 
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
-track) and requires a **StatusSheet** during play. As an Item, Vehicle is also an **Entity** —
-independently of its StatusSheet, which tracks a separate concern (in-play state) that only
-Vehicle, Spirit, and Sprite currently need. No conflict: Entity membership and StatusSheet
-membership are orthogonal, not the same axis.
+track) and requires a **StatusSheet** during play, same as Spirit and Sprite.
 _Avoid_: asset, transport
 
 **Drone**:
@@ -433,10 +400,10 @@ A mechanical modifier that changes a derived stat — e.g. an attribute bonus, d
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
 (cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Adept Powers**, drugs,
 matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others. How active
-effects from all sources are aggregated and applied is an open design question. The
-possessed-thing subset of this list (Items, Qualities, Spells, Adept Powers, and eventually
-Drugs) is exactly what **Entity** now names; matrix connection mode is the one source that
-isn't a possessed Entity.
+effects from all sources are aggregated and applied is an open design question. These sources
+are a *subset* of **Entity**, not all of it — Spirit, Sprite, and Agent are Entities too but
+aren't GameEffect sources today; matrix connection mode is a state the Runner is in, not an
+Entity at all.
 _Avoid_: modifier, bonus (too generic)
 
 **Source**:
@@ -573,8 +540,8 @@ _Avoid_: upgrade, patch, update (use migration)
 - **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
   expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
   nest recursively _(field names are pending migration from `childIds` / `parentId`)_
-- **GameEffect** entries attach to **Entities** (currently Items, Qualities, Spells, and Adept
-  Powers) — never stored directly on base attributes
+- **GameEffect** entries attach to a subset of **Entities** (currently Items, Qualities, Spells,
+  and Adept Powers — not Spirits/Sprites/Agents) — never stored directly on base attributes
 - **Karma** and **Build Points** are separate economies: BP is creation-only, Karma is
   post-creation
 - An **Awakening** of Adept, Magician, or Mystic Adept unlocks the **Magic** special attribute;

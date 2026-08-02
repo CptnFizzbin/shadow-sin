@@ -47,13 +47,16 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
 
 ## Domain Notes
 
-- **Entity** — collective term for Spirits and Sprites; summoned/compiled beings with their own
-  stat block
-- **Spirit** — magical Entity with Force and Services owed; Physical damage track
-- **Sprite** — matrix Entity with Level and Services owed; Matrix damage track
+- **Entity** — the umbrella term for anything with a stat block; see `CONTEXT.md` for the
+  current definition (broader than just Spirit/Sprite — this doc predates that). Spirit and
+  Sprite are the two this doc is actually about; Vehicle (an Item) is an Entity too, tracked
+  here only because it shares the StatusSheet need, not because it's a distinct category from
+  Entity the way the table above implies.
+- **Spirit** — magical being with Force and Services owed; Physical damage track
+- **Sprite** — matrix being with Level and Services owed; Matrix damage track
 - **Vehicle** — Item with its own stat block; Physical damage track
 - **Drone** — conceptual Vehicle subtype; no mechanical distinction in the data model
-- **StatusSheet** — the Viewer-side tracking view for an Entity or Vehicle
+- **StatusSheet** — the Viewer-side tracking view for an Entity (including Vehicle)
 - **Session State** — combat-round data on `RunnerData`; persisted across page reloads
 
 ## Out of Scope

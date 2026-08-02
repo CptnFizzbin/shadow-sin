@@ -68,8 +68,10 @@ the first time (none exists currently). Spell and Adept Power cards are new work
 
 ## Domain Notes
 
-Builds on **Entity**, **EntityData**, **EntityCard**, **Rating** (all in `CONTEXT.md`) and
-ADR-0010. New terms introduced by this doc, not yet in `CONTEXT.md` pending resolution above:
+Builds on **Entity**, **EntityCard**, **Rating** (all in `CONTEXT.md`) and ADR-0010.
+`EntityData` — the concrete interface underlying Entity — is implementation detail scoped to
+this doc and ADR-0010 rather than the glossary; see the Rough Interface Sketches below for its
+shape. New terms introduced by this doc, not yet in `CONTEXT.md` pending resolution above:
 
 - **SubType** — a secondary type label distinct from an Entity's main Type badge, currently
   reinvented per-type (Device, Vehicle, Implant, Credstick each derive their own "subtype"
@@ -79,11 +81,50 @@ ADR-0010. New terms introduced by this doc, not yet in `CONTEXT.md` pending reso
 
 ## Rough Interface Sketches
 
-_Element inventory by which compound card object assembles which elements — not where each
+`EntityData`, the concrete interface underlying **Entity** — the fields shared by every current
+category (`ItemData`, `QualityData`, `SpellData`, `AdeptPowerData`). Each category-level type
+extends it with its own additional fields (e.g. `ItemData` adds
+`cost`/`quantity`/`availability`/`equipped`/`stashed`; `SpellData` adds
+`drain`/`duration`/`category`/`range`). `PowerData` (`src/system/powers/powerData.ts`) already
+implements close to this exact shape today, scoped to the power family only. Spirit/Sprite are
+Entities conceptually but don't implement this interface — their shape is different enough
+(no `source` field on `SpiritData` at all) that forcing them onto it isn't worth it.
+
+```ts
+interface EntityData {
+  id: string
+  name: string
+  description?: string
+  source?: SourceData
+  effects?: GameEffectData[]
+  rating?: Rating
+}
+```
+
+`Rating`, the shared type behind `EntityData.rating` — parameterized so each consumer only
+accepts the sentinel meaningful to it, rather than one global string union every Rating field
+would nominally accept:
+
+```ts
+type Rating<TSentinel extends string = never> = number | TSentinel
+
+// EntityData.rating?: Rating -- defaults to plain number
+// SinData / LicenseData (Real SIN/Licence case): rating: Rating<"real">
+// LanguageSkillData (not an Entity -- Skill isn't in scope, reuses the type anyway): rating: Rating<"native">
+```
+
+Planned location: `src/system/rating.ts`, kept neutral rather than living in `entityData.ts`,
+since non-Entity consumers (Language skill) use it too. `ItemData.rating`'s current
+`number | string` (used by Armor) was never a real Armor need — just `ItemData`'s loose base
+type leaking into `ArmorDataSchema` through inheritance; `ArmorData` doesn't even declare its
+own `rating` (its real stats are `ballistic`/`impact`). Tighten to plain `Rating` (i.e. `number`)
+once this migration reaches Armor.
+
+Element inventory by which compound card object assembles which elements — not where each
 element is defined (all in one flat folder per ADR-0010, each named with a `CardElement` prefix
 — e.g. `CardElementTitle`, `CardElementDamageTrack` — per the naming convention decided there),
 and not data types. Dot-notation names below (`.Title`, `.DamageTrack`) are what each tier's
-compound object exposes at call sites; no implementation code._
+compound object exposes at call sites; no implementation code.
 
 ```
 EntityCard: { .Header, .Body, .Footer, .Title, .Rating, .Source, .Effects, .Stat, .Action }
