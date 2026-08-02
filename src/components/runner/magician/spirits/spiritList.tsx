@@ -12,7 +12,7 @@ import type { SpiritData } from "#/system/magic/spiritData.ts"
 import { SpiritDataSchema } from "#/system/magic/spiritData.ts"
 
 import { SpiritFormDialog } from "./dialogs/spiritFormDialog.tsx"
-import { SpiritItemCard } from "./spiritItemCard.tsx"
+import { SpiritDataCard } from "./spiritDataCard.tsx"
 
 export const SpiritList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
@@ -56,7 +56,7 @@ export const SpiritList: FC = () => {
       <Stack sx={{ gap: 1 }}>
         <ItemList.AddItemButton onClick={handleAdd}>Summon Spirit</ItemList.AddItemButton>
         {spirits.map((spirit) => (
-          <SpiritItemCard
+          <SpiritDataCard
             key={spirit.id}
             spirit={spirit}
             onEdit={() => handleEdit(spirit)}

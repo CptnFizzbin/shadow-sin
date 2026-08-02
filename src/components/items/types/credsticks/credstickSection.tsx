@@ -2,6 +2,7 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiAddLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
@@ -9,16 +10,13 @@ import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { CredstickCard } from "./credstickCard.tsx"
+import { CredstickDataCard } from "./credstickDataCard.tsx"
 import { useCredstickDialog } from "./credstickDialog.tsx"
 
 export const CredstickSection: FC = () => {
+  const navigate = useNavigate({ from: "/$runnerId" })
   const credsticks = useGearByType<CredstickData>(ItemType.credstick)
   const credstickDialog = useCredstickDialog()
-
-  const handleCardClick = (credstick: CredstickData) => {
-    credstickDialog.open({ mode: "edit", credstick })
-  }
 
   return (
 
@@ -34,10 +32,11 @@ export const CredstickSection: FC = () => {
         : (
             <Stack sx={{ gap: 0.5 }}>
               {credsticks.map((credstick) => (
-                <CredstickCard
+                <CredstickDataCard
                   key={credstick.id}
                   credstick={credstick}
-                  onOpen={() => handleCardClick(credstick)}
+                  onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: credstick.id } })}
+                  onEdit={() => credstickDialog.open({ mode: "edit", credstick })}
                 />
               ))}
             </Stack>

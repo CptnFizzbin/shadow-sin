@@ -1,21 +1,12 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import ButtonGroup from "@mui/material/ButtonGroup"
-import { RiDice6Line } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
 
 import { DiceTrayApi } from "#/components/dice/diceTrayApi.ts"
 import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
-import { RunnerNav } from "#/components/runner/nav/runnerNav.tsx"
-import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessButton.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
-import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
-import { useRunnerNav } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
 import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -23,6 +14,14 @@ import type { RunnerData } from "#/system/runnerData.ts"
 // Module-level manager for use in loaders (outside React context)
 const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage() })
 
+/**
+ * Loads the Runner and sets up its store/dice-tray context once, shared by
+ * both child layouts: `_viewer` (the tabbed sheet, with `RunnerNav` and the
+ * swipe surface) and `_details` (full-screen drill-down pages, e.g. item
+ * details — see ADR-0009). Neither child layout adds a path segment, so
+ * `/$runnerId/gear` and `/$runnerId/item/$itemId` are both direct children
+ * of this route.
+ */
 export const Route = createFileRoute("/$runnerId")({
   component: RunnerRoute,
   errorComponent: RunnerErrorRoute,
@@ -53,46 +52,8 @@ function RunnerRoute() {
   return (
     <RunnerStoreProvider store={store}>
       <DiceTrayProvider diceTrayApi={diceTrayApi}>
-        <RunnerContent />
+        <Outlet />
       </DiceTrayProvider>
     </RunnerStoreProvider>
-  )
-}
-
-function RunnerContent() {
-  const { nextPage, prevPage } = useRunnerNav()
-  const diceTray = useDiceTray()
-
-  return (
-    <>
-      <RunnerNav />
-
-      <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>
-        <Box sx={{ padding: 1 }}>
-          <Outlet />
-        </Box>
-      </SwipeSurface>
-
-      <Box
-        sx={{
-          paddingX: 1,
-          position: "sticky",
-          bottom: 12,
-          zIndex: "appBar",
-        }}
-      >
-        <ButtonGroup variant="contained" color="secondary" fullWidth sx={{ borderRadius: 2 }}>
-          <QuickAccessButton />
-
-          <Button
-            startIcon={<RiDice6Line size={18} />}
-            onClick={() => diceTray.setDice(1)}
-            aria-label="Open dice tray"
-          >
-            Dice Tray
-          </Button>
-        </ButtonGroup>
-      </Box>
-    </>
   )
 }

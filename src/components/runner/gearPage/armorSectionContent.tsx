@@ -1,9 +1,10 @@
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
+import { useNavigate } from "@tanstack/react-router"
 import type { FC } from "react"
 
-import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
+import { ArmorDataCard } from "#/components/items/types/armor/armorDataCard.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -14,6 +15,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 export const ArmorSectionContent: FC = () => {
   const dispatch = useRunnerStoreDispatch()
+  const navigate = useNavigate({ from: "/$runnerId" })
   const armorItems = useRunnerStoreSelector(Selectors.gear.selectGearOfType(ItemType.armor))
   const armorFormDialog = useArmorFormDialog()
 
@@ -25,7 +27,12 @@ export const ArmorSectionContent: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {Object.values(armorItems).map((item) => (
-        <ArmorItemCard key={item.id} armor={item} onOpen={() => handleEditArmor(item)} />
+        <ArmorDataCard
+          key={item.id}
+          armor={item}
+          onOpen={() => navigate({ to: "/$runnerId/item/$itemId", params: { itemId: item.id } })}
+          onEdit={() => handleEditArmor(item)}
+        />
       ))}
 
       <Button
