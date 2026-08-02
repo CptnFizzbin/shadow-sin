@@ -26,9 +26,12 @@ import { AttributesBuilderSection } from "./sections/attributes/attributesBuilde
 import { BiologyBuilderSection } from "./sections/biology/biologyBuilderSection.tsx"
 import { BuilderSectionId } from "./sections/builderSectionId.ts"
 import { ContactsBuilderSection } from "./sections/contacts/contactsBuilderSection.tsx"
+import { FinancesBuilderSection } from "./sections/finances/financesBuilderSection.tsx"
 import { GearBuilderSection } from "./sections/gear/gearBuilderSection.tsx"
+import { KarmaBuilderSection } from "./sections/karma/karmaBuilderSection.tsx"
 import { ProfileBuilderSection } from "./sections/profile/profileBuilderSection.tsx"
 import { QualitiesBuilderSection } from "./sections/qualities/qualitiesBuilderSection.tsx"
+import { ReputationBuilderSection } from "./sections/reputation/reputationBuilderSection.tsx"
 import { AdeptPowersBuilderSection } from "./sections/resources/adept/adeptPowersBuilderSection.tsx"
 import { SpellsBuilderSection } from "./sections/resources/magician/spellsBuilderSection.tsx"
 import {
@@ -45,6 +48,7 @@ interface RunnerEditorProps {
 const tabComponents: Record<EditorTabId, FC> = {
   [BuilderSectionId.profile]: ProfileBuilderSection,
   [BuilderSectionId.biology]: BiologyBuilderSection,
+  [BuilderSectionId.reputation]: ReputationBuilderSection,
   [BuilderSectionId.attributes]: AttributesBuilderSection,
   [BuilderSectionId.qualities]: QualitiesBuilderSection,
   [BuilderSectionId.activeSkills]: ActiveSkillsBuilderSection,
@@ -55,6 +59,8 @@ const tabComponents: Record<EditorTabId, FC> = {
   [BuilderSectionId.sprites]: SpritesBuilderSection,
   [BuilderSectionId.gear]: GearBuilderSection,
   [BuilderSectionId.contacts]: ContactsBuilderSection,
+  [BuilderSectionId.karma]: KarmaBuilderSection,
+  [BuilderSectionId.finances]: FinancesBuilderSection,
   [FINALIZE_TAB_ID]: FinalizeSection,
 }
 

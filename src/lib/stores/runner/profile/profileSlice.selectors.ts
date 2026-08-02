@@ -19,6 +19,26 @@ export function selectLifestyle(state: RunnerData): RunnerData["profile"]["lifes
   return state.profile.lifestyle
 }
 
+export function selectStreetCred(state: RunnerData): number {
+  return state.profile.streetCred
+}
+
+export function selectNotoriety(state: RunnerData): number {
+  return state.profile.notoriety
+}
+
+export function selectPublicAwarenessModifier(state: RunnerData): number {
+  return state.profile.publicAwarenessModifier ?? 0
+}
+
+export const selectPublicAwareness = createSelector(
+  selectStreetCred,
+  selectNotoriety,
+  selectPublicAwarenessModifier,
+  (streetCred, notoriety, publicAwarenessModifier) =>
+    Math.max(0, Math.floor((streetCred + notoriety) / 3) + publicAwarenessModifier),
+)
+
 export const selectLifestyleQuality = createSelector(
   selectLifestyle,
   (lifestyle) => lifestyle?.quality,

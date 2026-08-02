@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
 import { ItemDialog } from "#/components/items/dialogs/itemDialog.tsx"
-import { getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
+import { getRandomSinName, getSinCost } from "#/components/items/types/licenses/sinUtils.ts"
 import type { AnyDialogCtrl } from "#/components/ui/dialog/dialogCtrl.ts"
 import { useSinForm } from "#/lib/hooks/items/types/licenses/forms/useSinForm.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -13,7 +13,7 @@ interface SinFormDialogProps {
   sin?: SinData
 }
 
-const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
+export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
   const title = sin ? "Edit SIN" : "Create SIN"
 
   const form = useSinForm({
@@ -29,6 +29,7 @@ const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) => {
       onDelete={onDelete}
       getCost={(s) => getSinCost(Number(s.rating))}
       ratingMax={6}
+      onRandomizeName={getRandomSinName}
       options={{
         hasRating: { forced: true },
         showCost: { forced: true, enabled: false },
