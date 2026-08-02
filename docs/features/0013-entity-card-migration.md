@@ -9,9 +9,12 @@
 
 Every existing typed card (`WeaponDataCard`, `ArmorDataCard`, `DeviceDataCard`, `ProgramDataCard`,
 `ImplantDataCard`, `VehicleDataCard`, `LicenseDataCard`, `SinDataCard`, `CredstickDataCard`,
-`SpiritDataCard`) converts to the tiered `EntityCard`/`ItemCard`/`SpiritCard` system from ADR-0010.
-New elements get built for fields that have no rendering anywhere today. Sprite gets a card for
-the first time (none exists currently). Spell and Adept Power cards are new work, not migrations.
+`SpiritDataCard`, and `SpellCard` — landed in #429 on the old `DataCard`, built on
+`spell.type`/`range`/`duration`/`drain`/`damage` via generic `Stat` plus a Sustained chip in
+`Footer`, matching this doc's Spell element plan closely) converts to the tiered
+`EntityCard`/`ItemCard`/`SpiritCard`/`SpellCard` system from ADR-0010. New elements get built for
+fields that have no rendering anywhere today. Sprite gets a card for the first time (none exists
+currently). Adept Power's `PowerCard` is still new work, not a migration.
 
 ## Open Questions
 
@@ -35,7 +38,7 @@ the first time (none exists currently). Spell and Adept Power cards are new work
   `pilot`, `sensor`, `seats` (Vehicle) — are plain scalars that just need wiring to the existing
   generic `Stat`, no new element required.
 - [x] **Migration order: type-by-type**, not big-bang. Scope here exceeds either prior
-  precedent (spans Item's 9 subtypes plus Spirit conversion, Sprite/Spell/Power new builds);
+  precedent (spans Item's 9 subtypes plus Spirit and Spell conversions, Sprite/Power new builds);
   Sprite is already blocked on the `SpriteData.damage` migration from `0008` landing first,
   forcing some staging regardless; and validating the new flat-elements/`EntityCard` foundation
   on simple types before the ones needing brand-new elements (Weapon's `Ammo`) mirrors what
