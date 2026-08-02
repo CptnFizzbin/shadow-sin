@@ -6,12 +6,14 @@ import type { RunnerData } from "#/system/runnerData.ts"
 import {
   setLifestyleMonthsPaid,
   setLifestyleQuality,
+  setNotoriety,
   setProfileAlias,
   setProfileArchetype,
   setProfileDescription,
   setProfileName,
   setProfilePersonality,
   setProfilePublicAwarenessModifier,
+  setStreetCred,
 } from "./profileSlice.actions.ts"
 
 const initialState: RunnerData["profile"] = {
@@ -44,6 +46,12 @@ export const profileReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setProfilePublicAwarenessModifier, (state, action) => {
       state.publicAwarenessModifier = action.payload
+    })
+    .addCase(setStreetCred, (state, action) => {
+      state.streetCred = action.payload
+    })
+    .addCase(setNotoriety, (state, action) => {
+      state.notoriety = action.payload
     })
     .addCase(setLifestyleQuality, (state, action) => {
       state.lifestyle = { ...(state.lifestyle ?? { quality: action.payload, monthsPaid: 1 }), quality: action.payload }
