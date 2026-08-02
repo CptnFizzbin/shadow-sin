@@ -30,7 +30,7 @@ function RouteComponent() {
   )
 
   return (
-    <Stack>
+    <Stack sx={{ position: "relative" }}>
       <IconButton
         size="small"
         onClick={() => profileEditDialog.open()}
