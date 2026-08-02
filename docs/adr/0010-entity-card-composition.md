@@ -1,0 +1,100 @@
+# Entity Card Composition — Tiered Elements, Renamed Dispatcher
+
+We're extending the card architecture beyond `Item` to the new `Entity` umbrella (Item, Quality,
+Spell, Adept Power, eventually Drug — see `CONTEXT.md`). This supersedes the slot mechanism from
+ADR-0008 with a tiered compound-component structure, and renames the item-type dispatcher so it
+no longer competes for the same identifier as the components namespace.
+
+## Status
+
+accepted — supersedes ADR-0008
+
+## Context
+
+ADR-0008 built `DataCard`/`ItemCard` on a child-scanning slot mechanism (`DataCardSlot`,
+`SlotsProvider.find()`): a fixed, growing list of named slots (`Stat`, `Cost`, `Availability`,
+`DamageTrack`, `Subitem`, ...) that the generic root inspects its children for. That worked for
+Item's ~10 subtypes, which all share `ItemData`'s shape.
+
+Broadening to `Entity` breaks that assumption. Comparing `ItemData`, `QualityData`, `SpellData`,
+and `AdeptPowerData` field-by-field, the only fields shared by all four are `id`, `name`,
+`description?`, `source?`, `effects?`, and (newly) `rating?` — everything else (`cost`,
+`availability`, `drain`, `duration`, `costPerRating`, ...) is category-specific. A single flat
+slot list sized to fit every current and future Entity category would either keep growing
+unboundedly or accumulate slots most consumers never use. Slots also don't reuse cleanly across
+tiers — there's no clean way for `ItemCard` to say "give me `EntityCard`'s `Title` and `Rating`,
+plus my own `Availability`" using child-scanning.
+
+Separately, we want the components namespace to read as `ItemCard.Availability` rather than
+`ItemCardSlot.Availability` (better discoverability — typing `ItemCard.` should show everything
+available). But `src/components/itemCard/itemDataCard.tsx` (the existing `item.itemType`
+dispatcher) already carries this warning on itself:
+
+> "This is the only module allowed to depend on every typed card — typed cards must depend on
+> `ItemDataCardRoot`/`DataCard` instead of this file, or importing it here would create a cycle."
+
+If the compound components namespace and the dispatcher shared one module under one name, typed
+cards (`WeaponCard`, `ArmorCard`, ...) would need to import that combined module for its
+components, while the dispatcher inside that same module needs to import every typed card to
+dispatch to them — an unavoidable circular import once any typed card needs both roles from the
+same file, regardless of which named export is actually used.
+
+## Decision
+
+**Tiered compound components, not slots.** `EntityCard` is the top compound-component tier,
+replacing `DataCard`. It provides generic layout regions (`Header`, `Body`, `Footer`) and
+Entity-core-bound elements (`Title`, `Rating`, `Source`, `Effects`) plus generic
+primitives (`Stat`) and interaction affordances (`Action`). Each category tier (`ItemCard`,
+`SpiritCard`, `SpellCard`, `PowerCard`, ...) owns its own incremental elements — e.g. `ItemCard`
+adds `Availability`, `Cost`, `Quantity`, `DamageTrack` — reusing `EntityCard`'s elements rather
+than duplicating them. A typed card (`WeaponCard`) can create its own one-off element, wrap a
+tier's element, or reuse one outright.
+
+**Rename the dispatcher: `ItemDataCard` → `AnyItemCard`.** `AnyItemCard({ item })` is the
+component that accepts any `ItemData` and renders the correct typed card, same behavior as
+today's dispatcher, new name. This is what breaks the cycle: `AnyItemCard` is the *only* module
+allowed to import every typed card. `ItemCard` (root + compound elements) never imports any typed
+card, so typed cards can safely import `ItemCard` for its elements without creating one. The
+same pattern generalizes upward: an `AnyEntityCard({ entity })` dispatching across
+Item/Quality/Spell/Adept Power kinds, each of which then dispatches further (`AnyItemCard`
+dispatches across `ItemType`), is the expected shape when that tier is built.
+
+**`*CardElements` stays available as an escape hatch.** Alongside the combined `ItemCard`
+(root + attached elements, mirroring today's `DataCard = Object.assign(DataCardComponent,
+DataCardSlot)`), an `ItemCardElements` object exposing just the pure, dependency-free element
+components remains available for composition contexts that want the building blocks without the
+auto-rendering root.
+
+**Whether elements are defined in one flat folder or owned per-tier is left to implementation.**
+Both satisfy the no-cycle constraint (no elements file may import a dispatcher); it's a file-
+organization choice, not a correctness one. Leaning toward per-tier ownership (Rating's
+definition lives with `EntityCard`'s module, `Availability`'s with `ItemCard`'s) since it mirrors
+the `EntityData → ItemData → WeaponData` inheritance already established, but this isn't binding.
+
+**`EntityDetailsRoot` (the details-page analog) is out of scope here.** ADR-0009 deliberately
+gave `ItemDetails` its own bespoke slots rather than reusing `ItemCard`'s, due to a density
+mismatch between card and details rendering. Whether that reasoning still holds once `Entity`
+broadens past Item is an open question for a future ADR, not this one.
+
+## Consequences
+
+- Every current typed card (`WeaponDataCard`, `ArmorDataCard`, etc.) needs updating to the new
+  tiered elements instead of `DataCardSlot`, and `itemDataCard.tsx` needs renaming to
+  `anyItemCard.tsx` (`ItemDataCard` → `AnyItemCard`) — all call sites of the dispatcher change
+  along with it.
+- `spiritDataCard.tsx`'s use of `DataCard.Content` (today the only consumer of that slot) needs
+  an equivalent home in the new `Body` region once `SpiritCard` is built on `EntityCard`.
+- New Entity categories (Spell, Adept Power, Drug) get a real path to a typed card without
+  inventing new slots on a shared root — they add their own tier's elements instead.
+
+## Considered Options
+
+- **Keep the flat slot/child-scanning mechanism from ADR-0008, extended to more slots** —
+  rejected: doesn't scale to Entity categories with mostly-disjoint field sets, and slots don't
+  compose/reuse across tiers.
+- **Standalone components with no compound namespace at all** — rejected: loses the
+  `ItemCard.`-style discoverability we want when composing a new type-specific card.
+  Considered as an intermediate step during this discussion.
+- **One identifier for both the dispatcher and the compound namespace** — rejected: creates an
+  unavoidable circular import once the dispatcher must import every typed card and typed cards
+  must import the compound namespace from the same module.
