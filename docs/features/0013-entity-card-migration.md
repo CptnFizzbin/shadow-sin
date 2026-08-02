@@ -34,8 +34,12 @@ the first time (none exists currently). Spell and Adept Power cards are new work
   (Weapon); `deviceOS`, `dataProcessing`, `programSlots` (Device); `vehicleCategory`, `model`,
   `pilot`, `sensor`, `seats` (Vehicle) — are plain scalars that just need wiring to the existing
   generic `Stat`, no new element required.
-- [ ] Migration order — does this land type-by-type (mirroring ADR-0008's original staged
-  rollout) or big-bang (mirroring ADR-0009's Details rollout)? Not decided.
+- [x] **Migration order: type-by-type**, not big-bang. Scope here exceeds either prior
+  precedent (spans Item's 9 subtypes plus Spirit conversion, Sprite/Spell/Power new builds);
+  Sprite is already blocked on the `SpriteData.damage` migration from `0008` landing first,
+  forcing some staging regardless; and validating the new flat-elements/`EntityCard` foundation
+  on simple types before the ones needing brand-new elements (Weapon's `Ammo`) mirrors what
+  worked in ADR-0008's own rollout (start with License/SIN/Credstick, tackle complex types last).
 
 ## Constraints
 
