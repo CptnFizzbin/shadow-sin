@@ -398,7 +398,9 @@ by")
 **Scope**:
 Declares which item instance(s) a `GameEffect` reaches, independent of *what* it modifies.
 `{ relativeTo?: "self" | "root" | "parent" | "children" | "siblings" | "runner" (default
-"self"), relation?: "ancestors" | "descendants", itemType?: ItemType | ItemType[] }`. `relation`
+"self"), relation?: "ancestors" | "descendants", itemType?: ItemType | ItemType[] }`. Omitting
+`scope` entirely (not just `relativeTo`) resolves the same way — `self` for an Item-attached
+effect. `relation`
 expands outward from `relativeTo` and always includes the starting position (a lone `descendants`
 means "this item and everything under it"). `root` climbs to the topmost item with no parent
 before applying `relation`, letting one item's effect reach its siblings (e.g. a drone's autosoft
