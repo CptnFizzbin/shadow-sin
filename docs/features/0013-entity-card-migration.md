@@ -80,28 +80,37 @@ ADR-0010. New terms introduced by this doc, not yet in `CONTEXT.md` pending reso
 ## Rough Interface Sketches
 
 _Element inventory by which compound card object assembles which elements — not where each
-element is defined (all in one flat folder per ADR-0010), and not data types. No implementation
-code._
+element is defined (all in one flat folder per ADR-0010, each named with a `CardElement` prefix
+— e.g. `CardElementTitle`, `CardElementDamageTrack` — per the naming convention decided there),
+and not data types. Dot-notation names below (`.Title`, `.DamageTrack`) are what each tier's
+compound object exposes at call sites; no implementation code._
 
 ```
-EntityCard: { Header, Body, Footer, Title, Rating, Source, Effects, Stat, Action }
+EntityCard: { .Header, .Body, .Footer, .Title, .Rating, .Source, .Effects, .Stat, .Action }
+  (backed by CardElementHeader, CardElementBody, CardElementFooter, CardElementTitle,
+   CardElementRating, CardElementSource, CardElementEffects, CardElementStat, CardElementAction)
 
 ItemCard (assembles EntityCard's elements plus):
-  { Availability, Cost, Quantity, DamageTrack, Subitem, SubType,
-    StatusIcon<Equipped | Stashed | Fixed | Wireless> }
-  WeaponCard additionally assembles: Ammo (custom, dedicated — not a DamageTrack variant),
-    DicePool (attack pool)
+  { .Availability, .Cost, .Quantity, .DamageTrack, .Subitem, .SubType,
+    .StatusIcon<Equipped | Stashed | Fixed | Wireless> }
+  (backed by CardElementAvailability, CardElementCost, CardElementQuantity,
+   CardElementDamageTrack, CardElementSubitem, CardElementSubType, CardElementStatusIcon)
+  WeaponCard additionally assembles: .Ammo (CardElementAmmo — custom, dedicated, not a
+    DamageTrack variant), .DicePool (CardElementDicePool — attack pool)
 
 SpiritCard (assembles EntityCard's elements plus; SpriteCard shares this shape):
-  { SkillList, PowerList, AttributeBlock, DamageTrack (shared with ItemCard, see above), Notes }
+  { .SkillList, .PowerList, .AttributeBlock, .DamageTrack (CardElementDamageTrack, shared with
+    ItemCard, see above), .Notes }
+  (backed by CardElementSkillList, CardElementPowerList, CardElementAttributeBlock,
+   CardElementNotes)
 
 SpellCard (assembles EntityCard's elements plus):
-  { rendered via generic Stat: Category, Range, Duration, Drain, DamageType;
-    a Sustained status icon; DicePool (casting pool, drain resistance pool — shared with
-    WeaponCard, see above) }
+  { rendered via CardElementStat: Category, Range, Duration, Drain, DamageType;
+    a Sustained status icon; .DicePool (CardElementDicePool, casting pool + drain resistance
+    pool — shared with WeaponCard, see above) }
 
 PowerCard (assembles EntityCard's elements plus):
-  { rendered via generic Stat: Rating, CostPerRating }
+  { rendered via CardElementStat: Rating, CostPerRating }
 ```
 
 ## Out of Scope

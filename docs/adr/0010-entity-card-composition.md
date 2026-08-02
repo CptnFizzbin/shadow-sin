@@ -77,6 +77,14 @@ regardless of which tier(s) end up using it, and each tier's compound object (`E
 `Object.assign`, from that shared pool. Still satisfies the no-cycle constraint the same way:
 the elements folder never imports any dispatcher.
 
+**Every element in that folder is named with a `CardElement` prefix** — `CardElementTitle`,
+`CardElementRating`, `CardElementDamageTrack`, `CardElementAmmo`, etc. This is the source/export
+naming inside the flat folder itself (keeps every element unambiguous and sorted together when
+browsing the folder, avoids collisions with unrelated components elsewhere in the codebase); it's
+separate from the short dot-notation names (`ItemCard.Availability`, `EntityCard.Rating`) each
+tier's compound object exposes at call sites — a tier assembles `ItemCard.Availability =
+CardElementAvailability` under the hood, so callers never type the prefix themselves.
+
 **`EntityDetailsRoot` (the details-page analog) is out of scope here.** ADR-0009 deliberately
 gave `ItemDetails` its own bespoke slots rather than reusing `ItemCard`'s, due to a density
 mismatch between card and details rendering. The expectation is that Details will follow an
