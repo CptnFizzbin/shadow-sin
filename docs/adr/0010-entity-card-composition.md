@@ -65,9 +65,9 @@ DataCardSlot)`), an `ItemCardElements` object exposing just the pure, dependency
 components remains available for composition contexts that want the building blocks without the
 auto-rendering root.
 
-**Elements live in one flat folder, not owned per-tier.** Resolved (reversing this ADR's earlier
-lean toward per-tier ownership): elements are not strictly hierarchical, so tier-owned modules
-don't fit. The concrete case that settled it — `DamageTrack` is needed by both `ItemCard`
+**Elements live in one flat folder, not owned per-tier.** Elements are not strictly
+hierarchical, so tier-owned modules don't fit. The concrete case that settled it — `DamageTrack`
+is needed by both `ItemCard`
 (Vehicle) and `SpiritCard` (Spirit, Sprite), which are *sibling* tiers under `EntityCard`, not
 one extending the other. An element needed by two siblings can't be "owned" by either one
 without the other importing across a tier it doesn't inherit from. A single flat elements folder
