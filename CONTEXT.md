@@ -317,9 +317,13 @@ _Avoid_: ally, NPC (too broad)
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
 implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
 section headings, e.g. "Add Gear") — code identifiers (types, props, filenames, directories) use
-**Item**, not Gear. _(A rename is planned: `src/system/gear/`, `GearTreeNode`, `GearItem`,
-`GearViewSectionProps`, etc. → `Item`-prefixed equivalents; the `/gear` route path and
-user-facing copy are unaffected.)_
+**Item**, not Gear. _(A rename is planned for the TS-only identifiers: `src/system/gear/`,
+`GearTreeNode`, `GearItem`, `GearViewSectionProps`, etc. → `Item`-prefixed equivalents; the
+`/gear` route path and user-facing copy are unaffected. `RunnerData.gear` itself is a heavier,
+separate decision — it's a persisted JSON field, not just a TS identifier, so renaming it to
+`RunnerData.items` would need a migration like the planned `childIds`/`parentId` →
+`attachmentIds`/`attachedToId` rename on **Attachment**, not a plain find-and-replace. Not yet
+decided whether it's in scope.)_
 _Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
@@ -350,7 +354,10 @@ unequipped, and not stashed, e.g. a spare pistol in a holster)
 
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
-track) and requires a **StatusSheet** during play.
+track) and requires a **StatusSheet** during play. As an Item, Vehicle is also an **Entity** —
+independently of its StatusSheet, which tracks a separate concern (in-play state) that only
+Vehicle, Spirit, and Sprite currently need. No conflict: Entity membership and StatusSheet
+membership are orthogonal, not the same axis.
 _Avoid_: asset, transport
 
 **Drone**:
@@ -423,7 +430,10 @@ A mechanical modifier that changes a derived stat — e.g. an attribute bonus, d
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
 (cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Adept Powers**, drugs,
 matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others. How active
-effects from all sources are aggregated and applied is an open design question.
+effects from all sources are aggregated and applied is an open design question. The
+possessed-thing subset of this list (Items, Qualities, Spells, Adept Powers, and eventually
+Drugs) is exactly what **Entity** now names; matrix connection mode is the one source that
+isn't a possessed Entity.
 _Avoid_: modifier, bonus (too generic)
 
 **Source**:
@@ -560,8 +570,8 @@ _Avoid_: upgrade, patch, update (use migration)
 - **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
   expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
   nest recursively _(field names are pending migration from `childIds` / `parentId`)_
-- **GameEffect** entries attach to **Items**, **Qualities**, and **Spells** — never stored
-  directly on base attributes
+- **GameEffect** entries attach to **Entities** (currently Items, Qualities, Spells, and Adept
+  Powers) — never stored directly on base attributes
 - **Karma** and **Build Points** are separate economies: BP is creation-only, Karma is
   post-creation
 - An **Awakening** of Adept, Magician, or Mystic Adept unlocks the **Magic** special attribute;
