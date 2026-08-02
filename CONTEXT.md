@@ -58,7 +58,7 @@ _Avoid_: stun points, fatigue
 **Matrix Damage Track**:
 Tracks damage taken in the matrix. Applies to:
 - **Runners** (hot-sim VR biofeedback)
-- **Sprites** (matrix Entities — their primary damage track)
+- **Sprites** (compiled matrix beings — their primary damage track)
 - **Matrix-capable devices** (commlinks, nodes — tracked on the device's StatusSheet)
 
 Capacity formula varies by subject type. Separate from Physical/Stun because it heals separately
@@ -172,18 +172,31 @@ A positive or negative trait a Runner possesses (e.g. High Pain Tolerance, Unedu
 with BP at creation; some are innate to the metatype.
 
 **Spirit**:
-A magical Entity summoned and bound by a Magician or Mystic Adept. Has its own stat block,
-Force rating, and a pool of Services owed to the Runner.
+A magical being summoned and bound by a Magician or Mystic Adept. Has its own stat block, Force
+rating, and a pool of Services owed to the Runner. Requires a **StatusSheet**.
+_Avoid_: creature, critter (critter is a specific Shadowrun term for wild paranatural animals)
 
 **Sprite**:
-A matrix Entity compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
-own stat block, Level rating, and Services owed.
+A matrix being compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
+own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
+_Avoid_: creature, critter (same reasoning as Spirit)
 
 **Entity**:
-Collective term for Spirits and Sprites — summoned or compiled beings controlled by a Runner
-that have their own stat block, damage track, and in-play state. Each Entity requires a
-**StatusSheet**.
-_Avoid_: creature, critter (critter is a specific Shadowrun term for wild paranatural animals)
+The umbrella term for anything a Runner can possess that carries ratings/stats and may
+contribute a **GameEffect**. Currently covers **Item**, **Quality**, **Spell**, and **Adept
+Power**, with **Drug** planned once it exists as its own type — this mirrors the existing
+source list on the **GameEffect** entry below, minus matrix connection mode (a state the Runner
+is in, not a possessed thing).
+
+Deliberately *not* a general "has stats" test: **Spirit**, **Sprite**, and **Agent**
+_(Agent not yet implemented)_ are independently-tracked beings with their own **StatusSheet**
+and are *not* classified as Entities, even though they clearly have stat blocks too — they were
+formerly grouped under this same term, but that grouping was dropped since Spirit/Sprite/Agent
+are never displayed alongside Entities and don't yet need a shared name. This is a pragmatic
+grouping around the existing `GameEffect`-sourcing shape, not a strict conceptual boundary —
+revisit if Spirit/Sprite/Agent ever need to share data shape or display with Entities.
+_Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
+the `*Data` DTO suffix convention — see RunnerData)
 
 ### Magic & Matrix
 
@@ -319,7 +332,7 @@ Any Vehicle can be a Drone, but not all Drones are cars, planes, ships, or tanks
 _Avoid_: bot, UAV, UGV (use Drone)
 
 **StatusSheet**:
-The in-play tracking view for an Entity (Spirit or Sprite) or Vehicle, showing its own damage
+The in-play tracking view for a Spirit, Sprite, or Vehicle, showing its own damage
 track, stats, and session state independently of the Runner's main sheet.
 _Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet is the UI view)
 
