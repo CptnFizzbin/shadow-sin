@@ -28,13 +28,12 @@ the first time (none exists currently). Spell and Adept Power cards are new work
   `DamageTrack` case above is exactly why: it's needed by `ItemCard` (Vehicle) and `SpiritCard`
   (Spirit, Sprite) — sibling tiers under `EntityCard`, not one extending the other — so no single
   tier can "own" it. Elements aren't strictly hierarchical.
-- [ ] Is a dedicated **Ammo** element (size/remaining/type, counter-like) worth building now, or
-  does Weapon's `ammo` field stay unrendered for this pass? Same question for `recoil`,
-  `attachmentPoints`, `reach`, `meleeType`, `dmgType`, `attribute` (Weapon); `deviceOS`,
-  `dataProcessing`, `programSlots` (Device); `vehicleCategory`, `model`, `pilot`, `sensor`,
-  `seats` (Vehicle) — all currently unrendered anywhere, card or Details. Assumed in scope per
-  "everything will need ... new elements created to support missing items," but the actual
-  element shape (plain `Stat` vs. something bespoke) isn't decided per field yet.
+- [x] **Ammo gets its own custom, dedicated element** (Weapon-specific — not a generalization of
+  `DamageTrack` into a shared current/max "Counter"/"Meter" primitive, which was considered and
+  rejected). The rest — `recoil`, `attachmentPoints`, `reach`, `meleeType`, `dmgType`, `attribute`
+  (Weapon); `deviceOS`, `dataProcessing`, `programSlots` (Device); `vehicleCategory`, `model`,
+  `pilot`, `sensor`, `seats` (Vehicle) — are plain scalars that just need wiring to the existing
+  generic `Stat`, no new element required.
 - [ ] Migration order — does this land type-by-type (mirroring ADR-0008's original staged
   rollout) or big-bang (mirroring ADR-0009's Details rollout)? Not decided.
 
@@ -78,6 +77,7 @@ EntityCard: { Header, Body, Footer, Title, Rating, Source, Effects, Stat, Action
 ItemCard (assembles EntityCard's elements plus):
   { Availability, Cost, Quantity, DamageTrack, Subitem, SubType,
     StatusIcon<Equipped | Stashed | Fixed | Wireless> }
+  WeaponCard additionally assembles: Ammo (custom, dedicated — not a DamageTrack variant)
 
 SpiritCard (assembles EntityCard's elements plus; SpriteCard shares this shape):
   { SkillList, PowerList, AttributeBlock, DamageTrack (shared with ItemCard, see above), Notes }
