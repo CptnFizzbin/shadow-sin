@@ -206,14 +206,39 @@ fields (e.g. `ItemData` adds `cost`/`quantity`/`availability`/`equipped`/`stashe
 adds `drain`/`duration`/`category`/`range`). `PowerData` (`src/system/powers/powerData.ts`)
 already implements close to this exact shape today, scoped to the power family only.
 
-**EntityCard** / **EntityDetailsRoot** _(not yet implemented — planned)_:
-A new root tier beneath which today's `ItemCard`/`ItemDataCardRoot` and `ItemDetailsRoot`
-(`docs/adr/0008-item-card-redesign.md`, `docs/adr/0009-item-details-page.md`) would sit,
-auto-rendering only the `EntityData` core (name, type badge, source, effects) — never growing
-slots for category-specific concepts like Cost or Availability, which stay owned one tier down
-by `ItemCard`/`ItemDetailsRoot`. Category- and type-specific cards/details keep supplying their
-own bespoke slots exactly as today; this adds a tier rather than replacing the existing
-slot-based architecture.
+**EntityCardRoot** _(not yet implemented — planned)_:
+The generic Entity-tier root component, replacing today's bare `DataCard` (renamed for
+consistency with `ItemDataCardRoot`/`ItemDetailsRoot`'s existing "owns layout, auto-renders
+known fields" naming). Assembles a fixed set of generic layout regions — **Header**,
+**Subheader**, **Content**, **Footer** — and auto-renders the `EntityData` core (name,
+description, source, effects, rating) into them without any category- or type-specific card
+needing to ask for them, the same pattern `ItemDetailsRoot` already uses for `ItemData`'s common
+fields (`docs/adr/0009-item-details-page.md`). Notably, this *unifies* two things that are split
+in today's `DataCard`: the inline body area (stat row / damage track / subitems) and the
+separate below-box `DataCard.Content` slot (used today only by `spiritDataCard.tsx`, to hold
+Spirit's entire non-Item-shaped stat block) collapse into one generic **Content** region.
+`ItemDataCardRoot` sits one tier below (name not yet revisited), owning Item-only concepts
+(Cost, Availability, DamageTrack, Subitem) that never become `EntityCardRoot`-level regions —
+e.g. a Weapon's DamageTrack is just content placed into `EntityCardRoot`'s **Content** region by
+`ItemDataCardRoot`, not a slot `EntityCardRoot` itself knows about.
+_(Whether `EntityDetailsRoot`, the details-page analog, reuses `EntityCardSlots` or gets its own
+bespoke slot module is still open — ADR-0009 deliberately rejected sharing slots between card and
+details for `Item` due to a density mismatch, and the same reasoning may apply here.)_
+
+**EntityCardSlots** _(not yet implemented — planned)_:
+The compound-component namespace attached to `EntityCardRoot` (`EntityCardRoot.Title`,
+`EntityCardRoot.Stat`, etc. — mirroring today's `DataCard`/`DataCardSlot` relationship), split
+into three kinds:
+- **Region markers** (`Header`, `Subheader`, `Content`, `Footer`) — say *where* a child renders;
+  carry no data themselves.
+- **Field-bound components** (`Title`, `Rating`, `Source`, `Effects`, description) — auto-rendered
+  directly from `EntityData` by `EntityCardRoot`; a type-specific card never populates these
+  itself.
+- **Generic presentational primitives** (`Stat`) and **UI-interaction affordances** (`Action`) —
+  carry no `EntityData` field behind them; type-specific cards reach for `Stat` to render their
+  own bespoke numbers (a Weapon's Accuracy, a Spell's Drain) in a consistent style, and `Action`
+  to expose edit/remove/context-menu behavior, exactly as today's `onEdit`/`onRemove`/
+  `QuickAction` do.
 
 **Rating**:
 An optional field on **EntityData** representing the strength or level of anything that has
