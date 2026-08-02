@@ -274,7 +274,12 @@ _Avoid_: ally, NPC (too broad)
 
 **Item**:
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
-implant, software, vehicle, etc.).
+implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
+section headings, e.g. "Add Gear") — code identifiers (types, props, filenames, directories) use
+**Item**, not Gear. _(A rename is planned: `src/system/gear/`, `GearTreeNode`, `GearItem`,
+`GearViewSectionProps`, etc. → `Item`-prefixed equivalents; the `/gear` route path and
+user-facing copy are unaffected.)_
+_Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
 `ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
