@@ -65,11 +65,17 @@ DataCardSlot)`), an `ItemCardElements` object exposing just the pure, dependency
 components remains available for composition contexts that want the building blocks without the
 auto-rendering root.
 
-**Whether elements are defined in one flat folder or owned per-tier is left to implementation.**
-Both satisfy the no-cycle constraint (no elements file may import a dispatcher); it's a file-
-organization choice, not a correctness one. Leaning toward per-tier ownership (Rating's
-definition lives with `EntityCard`'s module, `Availability`'s with `ItemCard`'s) since it mirrors
-the `EntityData → ItemData → WeaponData` inheritance already established, but this isn't binding.
+**Elements live in one flat folder, not owned per-tier.** Resolved (reversing this ADR's earlier
+lean toward per-tier ownership): elements are not strictly hierarchical, so tier-owned modules
+don't fit. The concrete case that settled it — `DamageTrack` is needed by both `ItemCard`
+(Vehicle) and `SpiritCard` (Spirit, Sprite), which are *sibling* tiers under `EntityCard`, not
+one extending the other. An element needed by two siblings can't be "owned" by either one
+without the other importing across a tier it doesn't inherit from. A single flat elements folder
+(e.g. `src/components/entityCard/elements/`) sidesteps this — every element lives in one place
+regardless of which tier(s) end up using it, and each tier's compound object (`EntityCard`,
+`ItemCard`, `SpiritCard`, ...) just assembles whichever subset is relevant to it, via
+`Object.assign`, from that shared pool. Still satisfies the no-cycle constraint the same way:
+the elements folder never imports any dispatcher.
 
 **`EntityDetailsRoot` (the details-page analog) is out of scope here.** ADR-0009 deliberately
 gave `ItemDetails` its own bespoke slots rather than reusing `ItemCard`'s, due to a density

@@ -20,8 +20,14 @@ the first time (none exists currently). Spell and Adept Power cards are new work
   ("where does damage live?"), now resolved there: both `SpriteData` and `SpiritData` get a
   persisted damage container directly on the record (matching `SpiritData`'s existing shape),
   not Session State. Decision only — no migration written yet, no code changes made.
-- [ ] Does `ConditionMonitor` (Spirit/Sprite) reuse `DamageTrack` outright (same
-  current/max shape), or does it need its own element? Leaning reuse, not confirmed.
+- [x] Spirit/Sprite's condition monitor reuses `DamageTrack` outright — same pattern as
+  `VehicleCard`: a locally-computed max (from Force, not stored) passed into `DamageTrack`,
+  rendered twice for Spirit (Physical, Stun) and once for Sprite (Matrix only, per `CONTEXT.md`'s
+  Matrix Damage Track entry). No distinct `ConditionMonitor` element.
+- [x] **Elements live in one flat folder, not owned per-tier** — resolved in ADR-0010. The
+  `DamageTrack` case above is exactly why: it's needed by `ItemCard` (Vehicle) and `SpiritCard`
+  (Spirit, Sprite) — sibling tiers under `EntityCard`, not one extending the other — so no single
+  tier can "own" it. Elements aren't strictly hierarchical.
 - [ ] Is a dedicated **Ammo** element (size/remaining/type, counter-like) worth building now, or
   does Weapon's `ammo` field stay unrendered for this pass? Same question for `recoil`,
   `attachmentPoints`, `reach`, `meleeType`, `dmgType`, `attribute` (Weapon); `deviceOS`,
@@ -56,30 +62,31 @@ ADR-0010. New terms introduced by this doc, not yet in `CONTEXT.md` pending reso
 
 - **SubType** — a secondary type label distinct from an Entity's main Type badge, currently
   reinvented per-type (Device, Vehicle, Implant, Credstick each derive their own "subtype"
-  string). Worth formalizing as a shared `ItemCard.SubType` element rather than per-type
+  string). Worth formalizing as a shared element (defined once in the flat elements folder,
+  assembled into `ItemCard` since only Item categories currently need it) rather than per-type
   plumbing, once this migration starts.
-- **ConditionMonitor** — the Spirit/Sprite-tier equivalent of `DamageTrack`, pending the open
-  question above about whether it's a distinct element or a reuse of `DamageTrack` itself.
 
 ## Rough Interface Sketches
 
-_Element inventory by tier — component shapes, not data types. No implementation code._
+_Element inventory by which compound card object assembles which elements — not where each
+element is defined (all in one flat folder per ADR-0010), and not data types. No implementation
+code._
 
 ```
 EntityCard: { Header, Body, Footer, Title, Rating, Source, Effects, Stat, Action }
 
-ItemCard (extends EntityCard's elements):
+ItemCard (assembles EntityCard's elements plus):
   { Availability, Cost, Quantity, DamageTrack, Subitem, SubType,
     StatusIcon<Equipped | Stashed | Fixed | Wireless> }
 
-SpiritCard (extends EntityCard's elements; SpriteCard shares this shape):
-  { SkillList, PowerList, AttributeBlock, ConditionMonitor, Notes }
+SpiritCard (assembles EntityCard's elements plus; SpriteCard shares this shape):
+  { SkillList, PowerList, AttributeBlock, DamageTrack (shared with ItemCard, see above), Notes }
 
-SpellCard (extends EntityCard's elements):
+SpellCard (assembles EntityCard's elements plus):
   { rendered via generic Stat: Category, Range, Duration, Drain, DamageType;
     a Sustained status icon }
 
-PowerCard (extends EntityCard's elements):
+PowerCard (assembles EntityCard's elements plus):
   { rendered via generic Stat: Rating, CostPerRating }
 ```
 
