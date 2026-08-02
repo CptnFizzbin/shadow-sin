@@ -1,5 +1,12 @@
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
+import { SinNameList } from "#/system/gear/sinNameList.ts"
 import type { ItemData } from "#/system/itemData.ts"
+
+/** Picks a random cover name from `SinNameList`, e.g. for the SIN form's "Randomize" button. */
+export const getRandomSinName = (): string => {
+  const index = Math.floor(Math.random() * SinNameList.length)
+  return SinNameList[index]
+}
 
 export const getSinAvailability = (
   rating: ItemData["rating"],

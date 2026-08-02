@@ -1,7 +1,8 @@
 import Divider from "@mui/material/Divider"
 import IconButton from "@mui/material/IconButton"
+import InputAdornment from "@mui/material/InputAdornment"
 import Stack from "@mui/material/Stack"
-import { RiSettings3Line } from "@remixicon/react"
+import { RiDiceLine, RiSettings3Line } from "@remixicon/react"
 import type { FC, ReactNode } from "react"
 import { z } from "zod"
 
@@ -44,6 +45,8 @@ export interface ItemDialogProps {
   parentItemLabel?: string
   /** Maximum value for the hasRating CounterField. Defaults to 12. */
   ratingMax?: number
+  /** When provided, shows a dice button in the Name field that fills it with a random suggestion (e.g. a cover name for a SIN). */
+  onRandomizeName?: () => string
   slots?: {
     /** Content rendered before the Name field (e.g. a category toggle). */
     preForm?: () => ReactNode
@@ -77,6 +80,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
   ratingMax,
   slots,
   options: optionsProp,
+  onRandomizeName,
 }) => {
   // Cast once from AnyItemForm to ItemForm for use with the typed field group
   // components. ItemDialog only accesses ItemData fields from the form, so this is safe.
@@ -150,7 +154,29 @@ export const ItemDialog: FC<ItemDialogProps> = ({
                 validators={{ onChange: z.string().min(1, "Name is required") }}
               >
                 {(field) => (
-                  <field.TextField label="Name" size="small" sx={{ flex: 1 }} autoFocus />
+                  <field.TextField
+                    label="Name"
+                    size="small"
+                    sx={{ flex: 1 }}
+                    autoFocus
+                    slotProps={onRandomizeName
+                      ? {
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  size="small"
+                                  aria-label="Randomize name"
+                                  onClick={() => field.handleChange(onRandomizeName())}
+                                >
+                                  <RiDiceLine size={18} />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          },
+                        }
+                      : undefined}
+                  />
                 )}
               </form.AppField>
 
