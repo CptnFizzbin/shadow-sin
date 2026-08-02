@@ -9,8 +9,8 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
+import { SpellCard } from "./spellCard.tsx"
 import { useSpellCastDialog } from "./spellCastDialog.tsx"
-import { SpellViewerListItem } from "./spellViewerListItem.tsx"
 
 export const SpellsViewerSection: FC = () => {
   const spells = useRunnerStoreSelector(Selectors.spells.selectSpells)
@@ -43,10 +43,10 @@ export const SpellsViewerSection: FC = () => {
         <Stack key={category} sx={{ gap: 0.5 }}>
           <Label label={category} variant="outlined" />
           {categorySpells.map((spell) => (
-            <SpellViewerListItem
+            <SpellCard
               key={spell.id}
               spell={spell}
-              onClick={() => handleOpenSpell(spell)}
+              onOpen={() => handleOpenSpell(spell)}
               onToggleSustained={() => handleToggleSustained(spell)}
             />
           ))}
