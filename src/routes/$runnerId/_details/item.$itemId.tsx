@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
@@ -8,7 +9,6 @@ import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import Button from "@mui/material/Button"
 
 export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
   component: ItemDetailsRoute,

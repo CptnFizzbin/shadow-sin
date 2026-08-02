@@ -1,8 +1,9 @@
-import { type ChipProps } from "@mui/material/Chip"
+import type { ChipProps } from "@mui/material/Chip"
 import type { FC } from "react"
+
+import { StatChip } from "#/components/ui/statChip.tsx"
 import type { AvailabilityInfo } from "#/system/availabilityInfo.ts"
 import { availabilityToString } from "#/system/availabilityInfo.ts"
-import { StatChip } from "#/components/ui/statChip.tsx"
 
 interface AvailabilityChipProps extends Omit<ChipProps, "label"> {
   availability: AvailabilityInfo

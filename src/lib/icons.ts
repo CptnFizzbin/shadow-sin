@@ -1,5 +1,5 @@
+import type { RemixiconComponentType } from "@remixicon/react"
 import {
-  type RemixiconComponentType,
   RiAddLine,
   RiArchive2Line,
   RiCheckboxCircleFill,
@@ -8,7 +8,7 @@ import {
   RiPushpinFill,
   RiSignalWifiLine,
   RiSignalWifiOffLine,
-  RiSwordLine
+  RiSwordLine,
 } from "@remixicon/react"
 
 /**
