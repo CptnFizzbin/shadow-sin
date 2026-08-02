@@ -216,15 +216,20 @@ own bespoke slots exactly as today; this adds a tier rather than replacing the e
 slot-based architecture.
 
 **Rating**:
-An optional numeric field on **EntityData** (`rating?: number`) representing the strength or
-level of anything that has one — e.g. Armor's protection rating, an Adept Power's rating,
-software/Complex Form/Device ratings. Not every Entity populates it (Spells have none).
-Distinct from the unrelated `"real" | number` sentinel-string convention used by SIN/Licence
-(fake vs. real ratings) and Skills' `number | "native"` (Language skill) — those predate this
-and aren't part of the Entity hierarchy.
-_Avoid_: `ItemData.rating`'s current `number | string` looseness (used by Armor) — differs from
-the canonical `number` shape now established at the Entity tier; flagged for tightening, not a
-resolved decision yet.
+An optional field on **EntityData** representing the strength or level of anything that has
+one — e.g. Armor's protection rating, an Adept Power's rating, software/Complex Form/Device
+ratings. Not every Entity populates it (Spells have none). Typed via a shared, parameterized
+`Rating<TSentinel extends string = never> = number | TSentinel` (planned location:
+`src/system/rating.ts`, kept neutral rather than living in `entityData.ts`, since non-Entity
+consumers use it too — see below). `EntityData.rating?: Rating` defaults to plain `number`.
+`SinData`/`LicenseData` (both Items, so both Entities) declare `rating: Rating<"real">` for the
+Real SIN/Licence case; `LanguageSkillData` (not an Entity — Skill isn't in scope) declares
+`rating: Rating<"native">`. Each consumer only accepts the sentinel meaningful to it, rather than
+one global union every Rating field would nominally accept.
+_Avoid_: `ItemData.rating`'s current `number | string` (used by Armor) — this was never a real
+Armor need, just `ItemData`'s loose base type leaking into `ArmorDataSchema` through
+inheritance; `ArmorData` doesn't even declare its own `rating` (its real stats are
+`ballistic`/`impact`). Tighten to plain `Rating` (i.e. `number`) once the rename lands.
 
 ### Magic & Matrix
 
