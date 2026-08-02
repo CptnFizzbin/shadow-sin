@@ -13,7 +13,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import type { UseImplantFormProps } from "./dialogs/implantFormDialog.tsx"
 import { useImplantFormDialog } from "./dialogs/implantFormDialog.tsx"
-import { ImplantItemCard } from "./implantItemCard.tsx"
+import { ImplantDataCard } from "./implantDataCard.tsx"
 
 export const ImplantItemList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
@@ -41,49 +41,16 @@ export const ImplantItemList: FC = () => {
           Add Implant
         </Button>
 
-        {rootImplants.map((implant) => {
-          const accessories = implants.filter((i) => i.parentId === implant.id)
-
-          return (
-            <Stack key={implant.id} sx={{ gap: 1 }}>
-              <ImplantItemCard
-                implant={implant}
-                onOpen={openItemDetails
-                  ? () => openItemDetails(implant.id)
-                  : () => handleAddImplant({ implant })}
-                onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
-              />
-
-              {accessories.length > 0 && (
-                <Stack sx={{ gap: 1, pl: 2 }}>
-                  {accessories.map((accessory) => (
-                    <ImplantItemCard
-                      key={accessory.id}
-                      implant={accessory}
-                      onOpen={openItemDetails
-                        ? () => openItemDetails(accessory.id)
-                        : () => handleAddImplant({ implant: accessory, parentId: implant.id })}
-                      onEdit={openItemDetails
-                        ? () => handleAddImplant({ implant: accessory, parentId: implant.id })
-                        : undefined}
-                    />
-                  ))}
-                </Stack>
-              )}
-
-              <Button
-                variant="text"
-                color="secondary"
-                size="small"
-                startIcon={<RiAddLine size={14} />}
-                onClick={() => handleAddImplant({ parentId: implant.id })}
-                fullWidth
-              >
-                Add Accessory
-              </Button>
-            </Stack>
-          )
-        })}
+        {rootImplants.map((implant) => (
+          <ImplantDataCard
+            key={implant.id}
+            implant={implant}
+            onOpen={openItemDetails
+              ? () => openItemDetails(implant.id)
+              : () => handleAddImplant({ implant })}
+            onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
+          />
+        ))}
       </Stack>
 
       {implantFormDialog.dialog}

@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ItemCard } from "#/components/items/card-redesign/itemCard.tsx"
+import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { useWeaponFormDialog } from "#/components/items/types/weapons/dialogs/weaponFormDialog.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
@@ -33,7 +33,7 @@ export const WeaponsList: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {topLevelWeapons.map((weapon) => (
-        <ItemCard key={weapon.id} item={weapon} onOpen={() => handleEditWeapon(weapon)} />
+        <ItemDataCard key={weapon.id} item={weapon} onOpen={() => handleEditWeapon(weapon)} />
       ))}
 
       <Button

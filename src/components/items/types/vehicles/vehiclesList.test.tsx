@@ -36,7 +36,6 @@ describe("VehiclesList", () => {
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
     expect(screen.getByText("Handling: 5")).toBeDefined()
     expect(screen.getByText("Body: 4")).toBeDefined()
-    expect(screen.getByRole("button", { name: /equipment/i })).toBeDefined()
     expect(screen.getByText("Damage 0/4")).toBeDefined()
   })
 

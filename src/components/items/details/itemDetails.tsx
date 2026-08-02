@@ -25,19 +25,19 @@ import type { WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { BasicItemDetails } from "./basicItemDetails.tsx"
+import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 
 export interface ItemDetailsProps {
   item: ItemData
   /**
    * Remove action for item types without a typed details view (the
-   * BasicItemDetails fallback). Ignored by typed views, which manage
+   * ItemDetailsRoot fallback). Ignored by typed views, which manage
    * removal internally — call `onRemoved` to be notified when that happens.
    */
   onRemove?: () => void
   /**
    * Called after a typed details view removes the item internally (e.g. so
-   * the route can navigate back). Ignored by the BasicItemDetails fallback,
+   * the route can navigate back). Ignored by the ItemDetailsRoot fallback,
    * which calls `onRemove` directly instead.
    */
   onRemoved?: () => void
@@ -47,16 +47,16 @@ export interface ItemDetailsProps {
 
 /**
  * Renders the typed details view for `item.itemType`, falling back to
- * `BasicItemDetails` (common fields only, no type-specific slots) for item
- * types without one yet. Mirrors `ItemCard`'s dispatcher — this is the only
+ * `ItemDetailsRoot` (common fields only, no type-specific slots) for item
+ * types without one yet. Mirrors `ItemDataCard`'s dispatcher — this is the only
  * module allowed to depend on every typed details view; typed views must
- * depend on `BasicItemDetails`/`ItemDetailsSlot` instead of this file, or
+ * depend on `ItemDetailsRoot`/`ItemDetailsSlot` instead of this file, or
  * importing it here would create a cycle.
  *
  * Typed views own their own edit-dialog wiring internally (each opens its
  * matching `use*FormDialog()` hook), the same way they already own their own
  * removal — there's no list context above them to supply it, unlike
- * `ItemCard`. Only the fallback path needs one supplied here, via the
+ * `ItemDataCard`. Only the fallback path needs one supplied here, via the
  * generic `useItemFormDialog()`.
  */
 export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
@@ -69,46 +69,78 @@ export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, o
   }
 
   switch (item.itemType) {
-    // The switch narrows `item.itemType`, not `item` itself, since ItemData
-    // isn't a discriminated union of per-type interfaces; each case match
-    // guarantees its cast is safe.
     case ItemType.weapon:
       return (
-        <WeaponItemDetails weapon={item as WeaponData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <WeaponItemDetails
+          weapon={item as WeaponData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.armor:
       return (
-        <ArmorItemDetails armor={item as ArmorData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <ArmorItemDetails
+          armor={item as ArmorData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.license:
-      return <LicenseItemDetails license={item as LicenseData} onRemoved={onRemoved} />
-
+      return (
+        <LicenseItemDetails
+          license={item as LicenseData}
+          onRemoved={onRemoved}
+        />
+      )
     case ItemType.sin:
-      return <SinItemDetails sin={item as SinData} onRemoved={onRemoved} />
-
+      return (
+        <SinItemDetails
+          sin={item as SinData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
     case ItemType.credstick:
-      return <CredstickItemDetails credstick={item as CredstickData} />
-
+      return (
+        <CredstickItemDetails
+          credstick={item as CredstickData}
+        />
+      )
     case ItemType.device:
       return (
-        <DeviceItemDetails device={item as DeviceData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <DeviceItemDetails
+          device={item as DeviceData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.program:
-      return <ProgramItemDetails program={item as ProgramData} onRemoved={onRemoved} />
-
+      return (
+        <ProgramItemDetails
+          program={item as ProgramData}
+          onRemoved={onRemoved}
+        />
+      )
     case ItemType.implant:
-      return <ImplantItemDetails implant={item as ImplantData} onRemoved={onRemoved} />
-
+      return (
+        <ImplantItemDetails
+          implant={item as ImplantData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
     case ItemType.vehicle:
-      return <VehicleItemDetails vehicle={item as VehicleData} onRemoved={onRemoved} />
-
+      return (
+        <VehicleItemDetails
+          vehicle={item as VehicleData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
     default:
       return (
         <>
-          <BasicItemDetails item={item} onEdit={handleEditGeneric} onRemove={onRemove} />
+          <ItemDetailsRoot item={item} onEdit={handleEditGeneric} onRemove={onRemove} />
           {itemFormDialog.dialog}
         </>
       )

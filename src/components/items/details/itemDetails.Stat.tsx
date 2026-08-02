@@ -27,22 +27,29 @@ const typeColor: Partial<Record<ItemDetailsStatType, (theme: Theme) => string>> 
 
 /**
  * Labeled stat block for ItemDetails — full label and a large value, unlike
- * the condensed chip ItemCard.Stat uses. `type` drives the value's color.
+ * the condensed chip DataCard.Stat uses. `type` drives the value's color.
  */
 export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type }) => (
-  <Stack sx={{ minWidth: 64, gap: 0.25 }}>
+  <Stack
+    sx={{
+      gap: 0.25,
+      flexGrow: 1,
+      flexBasis: 0,
+      borderColor: "divider",
+      borderWidth: 1,
+      borderStyle: "solid",
+      padding: 1,
+    }}
+  >
     {label && (
-      <Typography
-        sx={{ fontSize: "0.7rem", color: "text.secondary", textTransform: "uppercase", letterSpacing: 0.5 }}
-      >
+      <Typography sx={{ color: "text.secondary", textTransform: "uppercase" }}>
         {label}
       </Typography>
     )}
     <Typography
       sx={{
-        fontSize: "1.25rem",
         fontWeight: 600,
-        color: (theme) => (type ? typeColor[type]?.(theme) : theme.palette.text.primary),
+        color: (theme) => (type ? typeColor[type]?.(theme) : undefined),
       }}
     >
       {value}

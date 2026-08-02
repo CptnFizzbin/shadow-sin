@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ArmorItemCard } from "#/components/items/types/armor/armorItemCard.tsx"
+import { ArmorDataCard } from "#/components/items/types/armor/armorDataCard.tsx"
 import { useArmorFormDialog } from "#/components/items/types/armor/dialogs/armorFormDialog.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
@@ -25,7 +25,7 @@ export const ArmorList: FC = () => {
   return (
     <Stack sx={{ gap: 1 }}>
       {armorItems.map((armor) => (
-        <ArmorItemCard
+        <ArmorDataCard
           key={armor.id}
           armor={armor}
           onOpen={() => handleEditArmor(armor)}

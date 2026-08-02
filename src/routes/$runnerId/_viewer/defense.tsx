@@ -44,126 +44,123 @@ function RouteComponent() {
 
       <DefenseCalculatorButton />
 
-      <Grid container columns={{ sm: 1, md: 2 }} spacing={1}>
-        <Grid container columns={2} size={2} spacing={1} sx={{ width: { sm: "100%", md: "50%" }, margin: "auto" }}>
-          <Grid size={1}>
-            <DamageTrack
-              label="Physical"
-              max={physical.max}
-              current={physical.current}
-              woundInterval={physical.woundInterval}
-              allowOverflow
-              onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.physical, value: newValue }))}
-            />
-          </Grid>
+      <Stack>
+        <Stack direction="row" sx={{ justifyContent: "center" }}>
+          <DamageTrack
+            label="Physical"
+            max={physical.max}
+            current={physical.current}
+            woundInterval={physical.woundInterval}
+            allowOverflow
+            onChange={(newValue) => dispatch(Actions.damage.setDamage({
+              track: DamageTrackKey.physical,
+              value: newValue,
+            }))}
+          />
 
-          <Grid size={1}>
-            <DamageTrack
-              label="Stun"
-              max={stun.max}
-              current={stun.current}
-              woundInterval={stun.woundInterval}
-              onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
-            />
-          </Grid>
+          <DamageTrack
+            label="Stun"
+            max={stun.max}
+            current={stun.current}
+            woundInterval={stun.woundInterval}
+            onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
+          />
+        </Stack>
 
+        <WoundModLabel />
+      </Stack>
+
+      <Grid size={2}>
+        <EquippedArmorSection />
+      </Grid>
+
+      <Grid container columns={{ sm: 1, md: 3 }} size={2} spacing={1}>
+        <Grid container columns={2} size={1}>
           <Grid size={2}>
-            <WoundModLabel />
+            <Label label="Resist" variant="outlined" />
+          </Grid>
+
+          <Grid size={1}>
+            <ResistBodyDicePool />
+          </Grid>
+
+          <Grid size={1}>
+            <ResistWillpowerDicePool />
           </Grid>
         </Grid>
 
-        <Grid size={2}>
-          <EquippedArmorSection />
-        </Grid>
-
-        <Grid container columns={{ sm: 1, md: 3 }} size={2} spacing={1}>
-          <Grid container columns={2} size={1}>
-            <Grid size={2}>
-              <Label label="Resist" variant="outlined" />
-            </Grid>
-
-            <Grid size={1}>
-              <ResistBodyDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <ResistWillpowerDicePool />
-            </Grid>
+        <Grid container columns={2} size={1}>
+          <Grid size={2}>
+            <Label label="Ranged Defense" variant="outlined" />
           </Grid>
 
-          <Grid container columns={2} size={1}>
-            <Grid size={2}>
-              <Label label="Ranged Defense" variant="outlined" />
-            </Grid>
-
-            <Grid size={1}>
-              <RangedDefenseDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <RangedFullDefenseDicePool />
-            </Grid>
+          <Grid size={1}>
+            <RangedDefenseDicePool />
           </Grid>
 
-          <Grid container columns={2} size={1}>
-            <Grid size={2}>
-              <Label label="Spell Defense" variant="outlined" />
-            </Grid>
-
-            <Grid size={1}>
-              <PhysicalSpellDefenseDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <ManaSpellDefenseDicePool />
-            </Grid>
+          <Grid size={1}>
+            <RangedFullDefenseDicePool />
           </Grid>
         </Grid>
 
-        <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
-          <Grid container columns={2} size={1}>
-            <Grid size={3}>
-              <Label label="Melee Defense" variant="outlined" />
-            </Grid>
-
-            <Grid size={1}>
-              <MeleeBlockDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <MeleeFullDodgeDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <MeleeDodgeDicePool />
-            </Grid>
-
-            <Grid size={1}>
-              <MeleeFullBlockDicePool />
-            </Grid>
+        <Grid container columns={2} size={1}>
+          <Grid size={2}>
+            <Label label="Spell Defense" variant="outlined" />
           </Grid>
 
-          <Grid container columns={2} size={1}>
-            <Grid size={2}>
-              <Label label="Melee Parry" variant="outlined" />
-            </Grid>
-
-            {[
-              { skill: SkillKey.blades },
-              { skill: SkillKey.clubs },
-              { skill: SkillKey.unarmedCombat },
-            ].map(({ skill }) => (
-              <Fragment key={skill}>
-                <Grid size={1}>
-                  <MeleeParryDicePool weaponSkill={skill} />
-                </Grid>
-
-                <Grid size={1}>
-                  <MeleeFullParryDicePool weaponSkill={skill} />
-                </Grid>
-              </Fragment>
-            ))}
+          <Grid size={1}>
+            <PhysicalSpellDefenseDicePool />
           </Grid>
+
+          <Grid size={1}>
+            <ManaSpellDefenseDicePool />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
+        <Grid container columns={2} size={1}>
+          <Grid size={3}>
+            <Label label="Melee Defense" variant="outlined" />
+          </Grid>
+
+          <Grid size={1}>
+            <MeleeBlockDicePool />
+          </Grid>
+
+          <Grid size={1}>
+            <MeleeFullDodgeDicePool />
+          </Grid>
+
+          <Grid size={1}>
+            <MeleeDodgeDicePool />
+          </Grid>
+
+          <Grid size={1}>
+            <MeleeFullBlockDicePool />
+          </Grid>
+        </Grid>
+
+        <Grid container columns={2} size={1}>
+          <Grid size={2}>
+            <Label label="Melee Parry" variant="outlined" />
+          </Grid>
+
+          {[
+            { skill: SkillKey.blades },
+            { skill: SkillKey.clubs },
+            { skill: SkillKey.unarmedCombat },
+          ].map(({ skill }) => (
+            <Fragment key={skill}>
+              <Grid size={1}>
+                <MeleeParryDicePool weaponSkill={skill} />
+              </Grid>
+
+              <Grid size={1}>
+                <MeleeFullParryDicePool weaponSkill={skill} />
+              </Grid>
+            </Fragment>
+          ))}
         </Grid>
       </Grid>
     </Stack>

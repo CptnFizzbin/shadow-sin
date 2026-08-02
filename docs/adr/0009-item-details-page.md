@@ -48,8 +48,8 @@ space; details slots render the same concepts at higher fidelity (full labels, n
 richer subitems). Forcing them to share components now would mean fighting the card's
 space-constrained styling the moment details needed to diverge.
 
-**`BasicItemDetails` auto-renders common fields.** Same split as `BasicItemCard`/`ItemCard`:
-`BasicItemDetails` renders every common `ItemData` field present on the item — `description`,
+**`ItemDetailsRoot` auto-renders common fields.** Same split as `DataCard`/`ItemCard`:
+`ItemDetailsRoot` renders every common `ItemData` field present on the item — `description`,
 `notes`, `cost`, `quantity`, `availability`, `source`, `effects`, equip/stash/wireless status —
 without the type-specific card needing to ask for them. Only type-specific content (stats,
 subitems, damage track, footer, quick actions) goes through slots. This is exactly the "extended
@@ -64,7 +64,7 @@ components (Weapon, Armor, License, SIN, Credstick, Device, Program, Implant, Ve
 every card call site, replacing its previous meaning ("open the edit dialog"). A new `onEdit` prop
 carries the old behavior — it opens the item's existing `use*FormDialog()` hook — and is exposed as
 a quick action in the card's long-press/right-click menu, and as a button on the details page
-itself. This is a breaking change to `ItemCardProps`/`BasicItemCardProps`, touching all nine typed
+itself. This is a breaking change to `ItemCardProps`/`BasicDataCardProps`, touching all nine typed
 cards and every list call site, because the old menu derived its "Edit" entry from `onOpen`
 directly — that coupling has to break for tap and edit to point at different destinations.
 

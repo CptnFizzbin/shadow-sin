@@ -17,5 +17,5 @@ export const AvailabilityChip: FC<AvailabilityChipProps> = ({
 
   if (availability.rating === 0) return null
 
-  return <StatChip label={`Avail: ${rating}`} {...props} />
+  return <StatChip size="small" label={`Avail: ${rating}`} {...props} />
 }

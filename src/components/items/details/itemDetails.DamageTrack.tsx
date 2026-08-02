@@ -14,7 +14,7 @@ export interface ItemDetailsDamageTrackProps {
 
 /**
  * Full-fidelity damage track for ItemDetails, reusing the same `DamageTrack`
- * StatusSheets use — unlike the compact `InlineDamageTrack` ItemCard uses.
+ * StatusSheets use — unlike the compact `InlineDamageTrack` DataCard uses.
  */
 export const ItemDetailsDamageTrack: FC<ItemDetailsDamageTrackProps> = (props) => (
   <DamageTrack {...props} />

@@ -33,7 +33,7 @@ describe("ItemDetails", () => {
     expect(screen.getByText("8P")).toBeDefined()
   })
 
-  it("falls back to BasicItemDetails for item types without a typed details view", () => {
+  it("falls back to ItemDetailsRoot for item types without a typed details view", () => {
     const item: ItemData = {
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",

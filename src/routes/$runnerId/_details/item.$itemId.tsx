@@ -1,4 +1,4 @@
-import IconButton from "@mui/material/IconButton"
+import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
 })
 
 /**
- * One shared route for every item type (mirrors the `ItemCard` dispatcher):
+ * One shared route for every item type (mirrors the `ItemDataCard` dispatcher):
  * items are stored flat (`RunnerData.gear`), not partitioned by section, so
  * there's no per-section detail route to duplicate the dispatch logic in.
  * Renders full-screen via the `_details` layout — a drill-down page isn't a
@@ -31,25 +31,33 @@ function ItemDetailsRoute() {
   const handleBack = () => router.history.back()
 
   return (
-    <Stack sx={{ gap: 2 }}>
-      <IconButton onClick={handleBack} aria-label="Back" sx={{ alignSelf: "flex-start" }}>
-        <RiArrowLeftLine size={20} />
-      </IconButton>
+    <Stack sx={{ gap: 0 }}>
+      <Button
+        onClick={handleBack}
+        sx={{ alignSelf: "flex-start" }}
+        startIcon={<RiArrowLeftLine size={20} />}
+        variant="contained"
+        fullWidth
+      >
+        Back
+      </Button>
 
-      {item
-        ? (
-            <ItemDetails
-              item={item}
-              onRemove={() => {
-                dispatch(Actions.gear.removeItem({ id: item.id }))
-                handleBack()
-              }}
-              onRemoved={handleBack}
-              onOpenAttachment={(attachment) =>
-                navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}
-            />
-          )
-        : <Typography color="text.secondary">This item no longer exists.</Typography>}
+      {!itemId && (
+        <Typography color="text.secondary">This item no longer exists.</Typography>
+      )}
+
+      {item && (
+        <ItemDetails
+          item={item}
+          onRemove={() => {
+            dispatch(Actions.gear.removeItem({ id: item.id }))
+            handleBack()
+          }}
+          onRemoved={handleBack}
+          onOpenAttachment={(attachment) =>
+            navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}
+        />
+      )}
     </Stack>
   )
 }

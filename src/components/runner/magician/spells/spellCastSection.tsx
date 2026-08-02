@@ -14,6 +14,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
+import { withTheme } from "#/integrations/mui/muiUtils.ts"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -67,18 +68,24 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
 
   return (
     <Box
-      sx={{
-        border: "1px solid",
-        borderColor: isOvercasting ? "error.main" : "divider",
-        borderRadius: 1,
-        padding: 1,
-        bgcolor: isOvercasting
-          ? (theme) => {
-              const fn = theme.palette.mode === "light" ? lighten : darken
-              return fn(theme.palette.error.light, 0.9)
-            }
-          : undefined,
-      }}
+      sx={withTheme({
+        base: () => ({
+          border: "1px solid",
+          borderColor: isOvercasting ? "error.main" : "divider",
+          borderRadius: 1,
+          padding: 1,
+        }),
+        light: (theme) => ({
+          bgcolor: isOvercasting
+            ? lighten(theme.palette.error.light, 0.9)
+            : undefined,
+        }),
+        dark: (theme) => ({
+          bgcolor: isOvercasting
+            ? darken(theme.palette.error.light, 0.9)
+            : undefined,
+        }),
+      })}
     >
       <Stack sx={{ gap: 1 }}>
         <Stack sx={{ gap: 0.5 }}>

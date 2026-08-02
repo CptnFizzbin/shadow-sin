@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -30,10 +30,10 @@ export const ProgramItemDetails: FC<ProgramItemDetailsProps> = ({ program, onRem
 
   return (
     <>
-      <BasicItemDetails item={program} onEdit={handleEdit} onRemove={removeProgram}>
+      <ItemDetailsRoot item={program} onEdit={handleEdit} onRemove={removeProgram}>
         <ItemDetailsSlot.Stat label="Rating" value={program.rating} type="rating" />
         <ItemDetailsSlot.Stat label="Type" value={program.programType} />
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {programFormDialog.dialog}
     </>
