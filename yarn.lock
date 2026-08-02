@@ -658,6 +658,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^10.5.0":
+  version: 10.5.0
+  resolution: "@faker-js/faker@npm:10.5.0"
+  checksum: 10c0/2de3c7b8f41592d52cefc3ab4c99536656249bca78d5ad184a3b7ac43ecc9d946056cef2c4d37060373ef06ad992d82530de08479fabe16fdbe77b911d842446
+  languageName: node
+  linkType: hard
+
 "@fallow-cli/darwin-arm64@npm:3.10.0":
   version: 3.10.0
   resolution: "@fallow-cli/darwin-arm64@npm:3.10.0"
@@ -6760,6 +6767,7 @@ __metadata:
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.1"
     "@eslint/js": "npm:^9.0.0"
+    "@faker-js/faker": "npm:^10.5.0"
     "@mui/icons-material": "npm:9.2.0"
     "@mui/material": "npm:9.2.0"
     "@playwright/test": "npm:^1.62.0"
