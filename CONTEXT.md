@@ -198,6 +198,34 @@ revisit if Spirit/Sprite/Agent ever need to share data shape or display with Ent
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
+**EntityData** _(not yet implemented — planned)_:
+The concrete interface underlying **Entity**: `{ id, name, description?, source?, effects?,
+rating? }` — the fields shared by every current category (`ItemData`, `QualityData`,
+`SpellData`, `AdeptPowerData`). Each category-level type extends it with its own additional
+fields (e.g. `ItemData` adds `cost`/`quantity`/`availability`/`equipped`/`stashed`; `SpellData`
+adds `drain`/`duration`/`category`/`range`). `PowerData` (`src/system/powers/powerData.ts`)
+already implements close to this exact shape today, scoped to the power family only.
+
+**EntityCard** / **EntityDetailsRoot** _(not yet implemented — planned)_:
+A new root tier beneath which today's `ItemCard`/`ItemDataCardRoot` and `ItemDetailsRoot`
+(`docs/adr/0008-item-card-redesign.md`, `docs/adr/0009-item-details-page.md`) would sit,
+auto-rendering only the `EntityData` core (name, type badge, source, effects) — never growing
+slots for category-specific concepts like Cost or Availability, which stay owned one tier down
+by `ItemCard`/`ItemDetailsRoot`. Category- and type-specific cards/details keep supplying their
+own bespoke slots exactly as today; this adds a tier rather than replacing the existing
+slot-based architecture.
+
+**Rating**:
+An optional numeric field on **EntityData** (`rating?: number`) representing the strength or
+level of anything that has one — e.g. Armor's protection rating, an Adept Power's rating,
+software/Complex Form/Device ratings. Not every Entity populates it (Spells have none).
+Distinct from the unrelated `"real" | number` sentinel-string convention used by SIN/Licence
+(fake vs. real ratings) and Skills' `number | "native"` (Language skill) — those predate this
+and aren't part of the Entity hierarchy.
+_Avoid_: `ItemData.rating`'s current `number | string` looseness (used by Armor) — differs from
+the canonical `number` shape now established at the Entity tier; flagged for tightening, not a
+resolved decision yet.
+
 ### Magic & Matrix
 
 **Spell**:
