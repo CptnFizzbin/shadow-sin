@@ -10,6 +10,7 @@ import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 
 import { useDeviceFormDialog } from "./dialogs/deviceFormDialog.tsx"
+import { useProgramFormDialog } from "./dialogs/programFormDialog.tsx"
 
 export interface DeviceItemDetailsProps {
   device: DeviceData
@@ -25,6 +26,7 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const programs = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(device.id))
   const deviceFormDialog = useDeviceFormDialog()
+  const programFormDialog = useProgramFormDialog()
 
   const deviceTypeLabel =
     device.deviceType === "commlink"
@@ -41,9 +43,20 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
     if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
+  const handleAddProgram = async () => {
+    const saved = await programFormDialog.open({ parentId: device.id })
+    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+  }
+
   return (
     <>
-      <ItemDetailsRoot item={device} type={deviceTypeLabel} onEdit={handleEdit} onRemove={removeDevice}>
+      <ItemDetailsRoot
+        item={device}
+        type={deviceTypeLabel}
+        onEdit={handleEdit}
+        onRemove={removeDevice}
+        onAddSubitem={handleAddProgram}
+      >
         {device.deviceRating !== undefined && (
           <ItemDetailsSlot.Stat label="Rating" value={device.deviceRating} type="rating" />
         )}
@@ -62,6 +75,7 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
       </ItemDetailsRoot>
 
       {deviceFormDialog.dialog}
+      {programFormDialog.dialog}
     </>
   )
 }

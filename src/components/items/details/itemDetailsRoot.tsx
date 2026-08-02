@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
 import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
-import type { FC, ReactNode } from "react"
+import type { FC, PropsWithChildren, ReactNode } from "react"
 
 import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSummary.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -16,14 +16,18 @@ import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
 import { ItemDetailsSlot, ItemDetailsSlotsProvider } from "./itemDetailsSlot.tsx"
 
-export interface ItemDetailsRootProps {
+export interface ItemDetailsRootProps extends PropsWithChildren {
   item: ItemData
   type?: ReactNode
   /** When provided, adds a persistent "Edit" action that opens the item's edit dialog. */
   onEdit?: () => void
   /** When provided, adds a persistent "Remove" action. */
   onRemove?: () => void
-  children?: ReactNode
+
+  subitemsName?: string
+
+  onAddSubitem?: () => void
+  onMoveSubitem?: () => void
 }
 
 /**
@@ -43,6 +47,9 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
   type,
   onEdit,
   onRemove,
+  subitemsName = "Attachments",
+  onAddSubitem,
+  onMoveSubitem,
   children,
 }) => {
   const slots = new ItemDetailsSlotsProvider(children)
@@ -56,9 +63,13 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.1),
           padding: 2,
           margin: -2,
+          marginBottom: 0,
         }}
       >
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ justifyContent: "space-between", alignItems: { xs: "flex-start", sm: "center" }, flexWrap: "wrap" }}
+        >
           <Stack direction="row" sx={{ alignItems: "center" }}>
             {slots.title ?? <ItemDetailsSlot.Title title={item.name} />}
             {slots.quantity}
@@ -82,8 +93,11 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
         </Stack>
 
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Stack direction="row" sx={{ alignItems: "center" }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ justifyContent: "space-between", alignItems: { xs: "flex-start", sm: "center" } }}
+        >
+          <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
             {slots.type ?? (type && <ItemDetailsSlot.Type label={type} />)}
             {slots.availability}
             {slots.rating}
@@ -117,44 +131,74 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
             {slots.statuses}
           </Stack>
         </Stack>
+
+        {slots.quickActions.length > 0 && (
+          <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {slots.quickActions}
+          </Stack>
+        )}
       </Stack>
 
-      {slots.quickActions.length > 0 && (
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-          {slots.quickActions}
-        </Stack>
-      )}
-
       {item.description && (
-        <Typography sx={{ color: "text.secondary" }}>{item.description}</Typography>
+        <Stack sx={{ gap: 0.5 }}>
+          <Label>Description</Label>
+          <Typography sx={{ color: "text.secondary" }}>{item.description}</Typography>
+        </Stack>
       )}
 
       {(slots.stats.length > 0) && (
-        <Stack direction="row" sx={{ flexWrap: "wrap" }}>
-          {slots.stats}
+        <Stack>
+          <Label>Stats</Label>
+
+          <Stack direction="row" sx={{ flexWrap: "wrap" }}>
+            {slots.stats}
+          </Stack>
         </Stack>
       )}
 
-      {slots.damageTracks}
+      {slots.damageTracks.length >= 1 && (
+        <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "center" }}>
+          {slots.damageTracks}
+        </Stack>
+      )}
 
       {item.notes && (
-        <Stack sx={{ gap: 0.5 }}>
+        <Stack>
           <Label>Notes</Label>
           <Typography sx={{ whiteSpace: "pre-wrap" }}>{item.notes}</Typography>
         </Stack>
       )}
 
-      <Stack sx={{ gap: 1 }}>
-        <Label>Attachments</Label>
-        <Stack sx={{ gap: 1 }}>{slots.subitems}</Stack>
-        <ButtonGroup fullWidth>
-          <Button variant="outlined" startIcon={<Icons.item.add />}>Add Item</Button>
-          <Button variant="outlined" startIcon={<Icons.item.move />}>Move Item</Button>
-        </ButtonGroup>
+      <Stack>
+        <Label>{subitemsName}</Label>
+        <Stack sx={{ gap: 1 }}>
+          {slots.subitems}
+
+          <ButtonGroup fullWidth>
+            {onAddSubitem && (
+              <Button
+                variant="outlined"
+                startIcon={<Icons.item.add />}
+                onClick={onAddSubitem}
+              >
+                Add Item
+              </Button>
+            )}
+            {onMoveSubitem && (
+              <Button
+                variant="outlined"
+                startIcon={<Icons.item.move />}
+                onClick={onMoveSubitem}
+              >
+                Move Item
+              </Button>
+            )}
+          </ButtonGroup>
+        </Stack>
       </Stack>
 
       {effects.length > 0 && (
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           <Label>Effects</Label>
 
           <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>

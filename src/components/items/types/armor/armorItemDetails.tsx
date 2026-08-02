@@ -3,6 +3,7 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
+import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -22,6 +23,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
   const dispatch = useRunnerStoreDispatch()
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
   const armorFormDialog = useArmorFormDialog()
+  const modFormDialog = useItemFormDialog()
 
   const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...armor, equipped: !armor.equipped }))
 
@@ -35,9 +37,14 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
     if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
+  const handleAddMod = async () => {
+    const saved = await modFormDialog.open({ label: "Mod" })
+    if (saved) dispatch(Actions.gear.addItem({ ...saved, parentId: armor.id }))
+  }
+
   return (
     <>
-      <ItemDetailsRoot item={armor} onEdit={handleEdit} onRemove={removeArmor}>
+      <ItemDetailsRoot item={armor} onEdit={handleEdit} onRemove={removeArmor} onAddSubitem={handleAddMod}>
         <ItemDetailsSlot.Stat label="Ballistic" value={armor.ballistic} type="damage" />
         <ItemDetailsSlot.Stat label="Impact" value={armor.impact} type="damage" />
 
@@ -67,6 +74,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
       </ItemDetailsRoot>
 
       {armorFormDialog.dialog}
+      {modFormDialog.dialog}
     </>
   )
 }

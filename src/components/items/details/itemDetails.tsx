@@ -43,12 +43,6 @@ export interface ItemDetailsProps {
   onRemoved?: () => void
   /** Called with an attached item when its nested subitem card is tapped, to navigate to that item's own details page. */
   onOpenAttachment?: (item: ItemData) => void
-  /**
-   * Back navigation. Ignored by most typed views (the route renders its own
-   * back button above them); `VehicleItemDetails` reads this because it
-   * renders its own back control instead.
-   */
-  onBack?: () => void
 }
 
 /**
@@ -65,7 +59,7 @@ export interface ItemDetailsProps {
  * `ItemDataCard`. Only the fallback path needs one supplied here, via the
  * generic `useItemFormDialog()`.
  */
-export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment, onBack }) => {
+export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
   const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
 
@@ -75,49 +69,74 @@ export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, o
   }
 
   switch (item.itemType) {
-    // The switch narrows `item.itemType`, not `item` itself, since ItemData
-    // isn't a discriminated union of per-type interfaces; each case match
-    // guarantees its cast is safe.
     case ItemType.weapon:
       return (
-        <WeaponItemDetails weapon={item as WeaponData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <WeaponItemDetails
+          weapon={item as WeaponData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.armor:
       return (
-        <ArmorItemDetails armor={item as ArmorData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <ArmorItemDetails
+          armor={item as ArmorData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.license:
-      return <LicenseItemDetails license={item as LicenseData} onRemoved={onRemoved} />
-
+      return (
+        <LicenseItemDetails
+          license={item as LicenseData}
+          onRemoved={onRemoved}
+        />
+      )
     case ItemType.sin:
-      return <SinItemDetails sin={item as SinData} onRemoved={onRemoved} />
-
+      return (
+        <SinItemDetails
+          sin={item as SinData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
     case ItemType.credstick:
-      return <CredstickItemDetails credstick={item as CredstickData} />
-
+      return (
+        <CredstickItemDetails
+          credstick={item as CredstickData}
+        />
+      )
     case ItemType.device:
       return (
-        <DeviceItemDetails device={item as DeviceData} onRemoved={onRemoved} onOpenAttachment={onOpenAttachment} />
+        <DeviceItemDetails
+          device={item as DeviceData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
       )
-
     case ItemType.program:
-      return <ProgramItemDetails program={item as ProgramData} onRemoved={onRemoved} />
-
+      return (
+        <ProgramItemDetails
+          program={item as ProgramData}
+          onRemoved={onRemoved}
+        />
+      )
     case ItemType.implant:
-      return <ImplantItemDetails implant={item as ImplantData} onRemoved={onRemoved} />
-
+      return (
+        <ImplantItemDetails
+          implant={item as ImplantData}
+          onRemoved={onRemoved}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
     case ItemType.vehicle:
       return (
         <VehicleItemDetails
           vehicle={item as VehicleData}
           onRemoved={onRemoved}
-          onBack={onBack}
           onOpenAttachment={onOpenAttachment}
         />
       )
-
     default:
       return (
         <>

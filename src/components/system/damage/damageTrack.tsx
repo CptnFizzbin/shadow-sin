@@ -38,37 +38,38 @@ export default function DamageTrack({
   }
 
   return (
-    <Stack sx={{ gap: 0.5, maxWidth: 300 }}>
+    <Stack sx={{ maxWidth: 200, flexGrow: 1 }}>
       <Label label={label} />
 
-      <DamageTrackCell onClick={() => onChange(0)}>Reset</DamageTrackCell>
-
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${columns ?? woundInterval}, 1fr)`,
-          gap: 0.5,
-        }}
-      >
-        {Array.from({ length: numCells }, (_, offset) => offset + 1).map(
-          (value) => (
-            <DamageCell
-              key={`${label}-${value}`}
-              value={value}
-              filled={value <= current}
-              isOverflow={value > max}
-              woundInterval={woundInterval}
-              toggleCell={(newValue) => {
-                if (newValue === current) {
-                  onChange(newValue - 1)
-                } else {
-                  onChange(newValue)
-                }
-              }}
-            />
-          ),
-        )}
-      </Box>
+      <Stack sx={{ gap: 0.5 }}>
+        <DamageTrackCell onClick={() => onChange(0)}>Reset</DamageTrackCell>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${columns ?? woundInterval}, 1fr)`,
+            gap: 0.5,
+          }}
+        >
+          {Array.from({ length: numCells }, (_, offset) => offset + 1).map(
+            (value) => (
+              <DamageCell
+                key={`${label}-${value}`}
+                value={value}
+                filled={value <= current}
+                isOverflow={value > max}
+                woundInterval={woundInterval}
+                toggleCell={(newValue) => {
+                  if (newValue === current) {
+                    onChange(newValue - 1)
+                  } else {
+                    onChange(newValue)
+                  }
+                }}
+              />
+            ),
+          )}
+        </Box>
+      </Stack>
     </Stack>
   )
 }

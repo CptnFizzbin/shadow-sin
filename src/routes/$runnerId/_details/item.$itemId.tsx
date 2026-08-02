@@ -1,4 +1,3 @@
-import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
@@ -9,7 +8,7 @@ import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
-import { ItemType } from "#/system/itemType.ts"
+import Button from "@mui/material/Button"
 
 export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
   component: ItemDetailsRoute,
@@ -32,13 +31,16 @@ function ItemDetailsRoute() {
   const handleBack = () => router.history.back()
 
   return (
-    <Stack sx={{ gap: 2, padding: 2 }}>
-      {/* VehicleItemDetails renders its own back control (desktop button, mobile back/menu bar). */}
-      {item?.itemType !== ItemType.vehicle && (
-        <IconButton onClick={handleBack} aria-label="Back" sx={{ alignSelf: "flex-start" }}>
-          <RiArrowLeftLine size={20} />
-        </IconButton>
-      )}
+    <Stack sx={{ gap: 0 }}>
+      <Button
+        onClick={handleBack}
+        sx={{ alignSelf: "flex-start" }}
+        startIcon={<RiArrowLeftLine size={20} />}
+        variant="contained"
+        fullWidth
+      >
+        Back
+      </Button>
 
       {!itemId && (
         <Typography color="text.secondary">This item no longer exists.</Typography>
@@ -47,7 +49,6 @@ function ItemDetailsRoute() {
       {item && (
         <ItemDetails
           item={item}
-          onBack={handleBack}
           onRemove={() => {
             dispatch(Actions.gear.removeItem({ id: item.id }))
             handleBack()

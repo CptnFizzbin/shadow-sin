@@ -6,7 +6,7 @@ import type { DataCardStatProps } from "./dataCardSlot.Stat.tsx"
 import { DataCardSlotStat } from "./dataCardSlot.Stat.tsx"
 
 export interface DataCardSubitemStat extends Omit<DataCardStatProps, "value"> {
-  value: string
+  value: string | number
 }
 
 export interface DataCardSubitemProps {

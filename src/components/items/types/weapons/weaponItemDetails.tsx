@@ -3,6 +3,7 @@ import type { FC } from "react"
 
 import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
+import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -28,6 +29,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
   const weaponFormDialog = useWeaponFormDialog()
+  const accessoryFormDialog = useItemFormDialog()
 
   const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
 
@@ -41,9 +43,14 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
     if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
   }
 
+  const handleAddAccessory = async () => {
+    const saved = await accessoryFormDialog.open({ label: "Accessory" })
+    if (saved) dispatch(Actions.gear.addItem({ ...saved, parentId: weapon.id }))
+  }
+
   return (
     <>
-      <ItemDetailsRoot item={weapon} onEdit={handleEdit} onRemove={removeWeapon}>
+      <ItemDetailsRoot item={weapon} onEdit={handleEdit} onRemove={removeWeapon} onAddSubitem={handleAddAccessory}>
         <ItemDetailsSlot.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap && <ItemDetailsSlot.Stat label="AP" value={weapon.ap} type="damage" />}
         <ItemDetailsSlot.Stat label="Skill" value={weapon.skill} type="rating" />
@@ -84,6 +91,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
       </ItemDetailsRoot>
 
       {weaponFormDialog.dialog}
+      {accessoryFormDialog.dialog}
     </>
   )
 }

@@ -34,7 +34,10 @@ export const ItemDetailsStat: FC<ItemDetailsStatProps> = ({ label, value, type }
     sx={{
       gap: 0.25,
       flexGrow: 1,
-      border: (theme) => `1px solid ${theme.palette.divider}`,
+      flexBasis: 0,
+      borderColor: "divider",
+      borderWidth: 1,
+      borderStyle: "solid",
       padding: 1,
     }}
   >

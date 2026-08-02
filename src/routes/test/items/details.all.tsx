@@ -87,7 +87,9 @@ function ItemDetailsTestPage() {
       <ItemDetailsSlot.Stat label="Forbidden" value="Banned" type="forbidden" />
       <ItemDetailsSlot.Stat label="Plain" value="No color" />
 
-      <ItemDetailsSlot.DamageTrack label="Condition Monitor" max={10} current={damage} onChange={setDamage} />
+      <ItemDetailsSlot.DamageTrack label="Physical" max={10} current={damage} onChange={setDamage} />
+      <ItemDetailsSlot.DamageTrack label="Stun" max={10} current={damage} onChange={setDamage} />
+      <ItemDetailsSlot.DamageTrack label="Matrix" max={10} current={damage} onChange={setDamage} />
 
       <ItemDetailsSlot.Subitem item={SUBITEM_A} onOpen={() => alert("open Attached Widget")} />
       <ItemDetailsSlot.Subitem item={SUBITEM_B} />
