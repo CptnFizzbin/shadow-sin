@@ -1,7 +1,7 @@
 import { RiCheckboxCircleLine, RiCloseCircleLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -43,7 +43,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
 
   return (
     <>
-      <BasicItemDetails item={weapon} onEdit={handleEdit} onRemove={removeWeapon}>
+      <ItemDetailsRoot item={weapon} onEdit={handleEdit} onRemove={removeWeapon}>
         <ItemDetailsSlot.Stat label="DV" value={weapon.dmg} type="damage" />
         {weapon.ap && <ItemDetailsSlot.Stat label="AP" value={weapon.ap} type="damage" />}
         <ItemDetailsSlot.Stat label="Skill" value={weapon.skill} type="rating" />
@@ -81,7 +81,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
                 onClick={toggleEquipped}
               />
             )}
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {weaponFormDialog.dialog}
     </>

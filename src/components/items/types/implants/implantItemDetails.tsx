@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
@@ -55,7 +55,7 @@ export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRem
 
   return (
     <>
-      <BasicItemDetails
+      <ItemDetailsRoot
         item={{ ...implant, cost: effectiveNuyen }}
         type={implant.implantType ? (typeLabel[implant.implantType] ?? implant.implantType) : undefined}
         onEdit={handleEdit}
@@ -68,7 +68,7 @@ export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRem
         {implant.grade && implant.grade !== ImplantGrade.standard && (
           <ItemDetailsSlot.Stat label="Grade" value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
         )}
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {confirmDialog.dialog}
       {implantFormDialog.dialog}

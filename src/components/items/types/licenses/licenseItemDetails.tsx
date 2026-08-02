@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -34,13 +34,13 @@ export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRem
 
   return (
     <>
-      <BasicItemDetails item={license} onEdit={handleEdit} onRemove={removeLicense}>
+      <ItemDetailsRoot item={license} onEdit={handleEdit} onRemove={removeLicense}>
         <ItemDetailsSlot.Stat
           label="Rating"
           value={license.rating === "real" ? "Real" : license.rating}
           type="rating"
         />
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {licenseFormDialog.dialog}
     </>

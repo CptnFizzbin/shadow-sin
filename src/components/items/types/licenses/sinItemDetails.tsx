@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
@@ -48,13 +48,13 @@ export const SinItemDetails: FC<SinItemDetailsProps> = ({ sin, onRemoved }) => {
 
   return (
     <>
-      <BasicItemDetails item={sin} onEdit={handleEdit} onRemove={removeSin}>
+      <ItemDetailsRoot item={sin} onEdit={handleEdit} onRemove={removeSin}>
         <ItemDetailsSlot.Stat
           label="Rating"
           value={sin.rating === "real" ? "Real" : sin.rating}
           type="rating"
         />
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {confirmDialog.dialog}
       {sinFormDialog.dialog}

@@ -9,6 +9,7 @@ import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { UUID } from "#/lib/uuidUtils.ts"
+import { ItemType } from "#/system/itemType.ts"
 
 export const Route = createFileRoute("/$runnerId/_details/item/$itemId")({
   component: ItemDetailsRoute,
@@ -31,25 +32,31 @@ function ItemDetailsRoute() {
   const handleBack = () => router.history.back()
 
   return (
-    <Stack sx={{ gap: 2 }}>
-      <IconButton onClick={handleBack} aria-label="Back" sx={{ alignSelf: "flex-start" }}>
-        <RiArrowLeftLine size={20} />
-      </IconButton>
+    <Stack sx={{ gap: 2, padding: 2 }}>
+      {/* VehicleItemDetails renders its own back control (desktop button, mobile back/menu bar). */}
+      {item?.itemType !== ItemType.vehicle && (
+        <IconButton onClick={handleBack} aria-label="Back" sx={{ alignSelf: "flex-start" }}>
+          <RiArrowLeftLine size={20} />
+        </IconButton>
+      )}
 
-      {item
-        ? (
-            <ItemDetails
-              item={item}
-              onRemove={() => {
-                dispatch(Actions.gear.removeItem({ id: item.id }))
-                handleBack()
-              }}
-              onRemoved={handleBack}
-              onOpenAttachment={(attachment) =>
-                navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}
-            />
-          )
-        : <Typography color="text.secondary">This item no longer exists.</Typography>}
+      {!itemId && (
+        <Typography color="text.secondary">This item no longer exists.</Typography>
+      )}
+
+      {item && (
+        <ItemDetails
+          item={item}
+          onBack={handleBack}
+          onRemove={() => {
+            dispatch(Actions.gear.removeItem({ id: item.id }))
+            handleBack()
+          }}
+          onRemoved={handleBack}
+          onOpenAttachment={(attachment) =>
+            navigate({ to: "/$runnerId/item/$itemId", params: { itemId: attachment.id } })}
+        />
+      )}
     </Stack>
   )
 }

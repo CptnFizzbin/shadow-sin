@@ -48,8 +48,8 @@ space; details slots render the same concepts at higher fidelity (full labels, n
 richer subitems). Forcing them to share components now would mean fighting the card's
 space-constrained styling the moment details needed to diverge.
 
-**`BasicItemDetails` auto-renders common fields.** Same split as `DataCard`/`ItemCard`:
-`BasicItemDetails` renders every common `ItemData` field present on the item — `description`,
+**`ItemDetailsRoot` auto-renders common fields.** Same split as `DataCard`/`ItemCard`:
+`ItemDetailsRoot` renders every common `ItemData` field present on the item — `description`,
 `notes`, `cost`, `quantity`, `availability`, `source`, `effects`, equip/stash/wireless status —
 without the type-specific card needing to ask for them. Only type-specific content (stats,
 subitems, damage track, footer, quick actions) goes through slots. This is exactly the "extended

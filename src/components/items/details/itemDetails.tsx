@@ -25,32 +25,38 @@ import type { WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { BasicItemDetails } from "./basicItemDetails.tsx"
+import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 
 export interface ItemDetailsProps {
   item: ItemData
   /**
    * Remove action for item types without a typed details view (the
-   * BasicItemDetails fallback). Ignored by typed views, which manage
+   * ItemDetailsRoot fallback). Ignored by typed views, which manage
    * removal internally — call `onRemoved` to be notified when that happens.
    */
   onRemove?: () => void
   /**
    * Called after a typed details view removes the item internally (e.g. so
-   * the route can navigate back). Ignored by the BasicItemDetails fallback,
+   * the route can navigate back). Ignored by the ItemDetailsRoot fallback,
    * which calls `onRemove` directly instead.
    */
   onRemoved?: () => void
   /** Called with an attached item when its nested subitem card is tapped, to navigate to that item's own details page. */
   onOpenAttachment?: (item: ItemData) => void
+  /**
+   * Back navigation. Ignored by most typed views (the route renders its own
+   * back button above them); `VehicleItemDetails` reads this because it
+   * renders its own back control instead.
+   */
+  onBack?: () => void
 }
 
 /**
  * Renders the typed details view for `item.itemType`, falling back to
- * `BasicItemDetails` (common fields only, no type-specific slots) for item
+ * `ItemDetailsRoot` (common fields only, no type-specific slots) for item
  * types without one yet. Mirrors `ItemDataCard`'s dispatcher — this is the only
  * module allowed to depend on every typed details view; typed views must
- * depend on `BasicItemDetails`/`ItemDetailsSlot` instead of this file, or
+ * depend on `ItemDetailsRoot`/`ItemDetailsSlot` instead of this file, or
  * importing it here would create a cycle.
  *
  * Typed views own their own edit-dialog wiring internally (each opens its
@@ -59,7 +65,7 @@ export interface ItemDetailsProps {
  * `ItemDataCard`. Only the fallback path needs one supplied here, via the
  * generic `useItemFormDialog()`.
  */
-export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
+export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment, onBack }) => {
   const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
 
@@ -103,12 +109,19 @@ export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, o
       return <ImplantItemDetails implant={item as ImplantData} onRemoved={onRemoved} />
 
     case ItemType.vehicle:
-      return <VehicleItemDetails vehicle={item as VehicleData} onRemoved={onRemoved} />
+      return (
+        <VehicleItemDetails
+          vehicle={item as VehicleData}
+          onRemoved={onRemoved}
+          onBack={onBack}
+          onOpenAttachment={onOpenAttachment}
+        />
+      )
 
     default:
       return (
         <>
-          <BasicItemDetails item={item} onEdit={handleEditGeneric} onRemove={onRemove} />
+          <ItemDetailsRoot item={item} onEdit={handleEditGeneric} onRemove={onRemove} />
           {itemFormDialog.dialog}
         </>
       )

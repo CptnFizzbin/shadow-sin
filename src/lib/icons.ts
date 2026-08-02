@@ -1,13 +1,14 @@
-import type { RemixiconComponentType } from "@remixicon/react"
 import {
-
+  type RemixiconComponentType,
+  RiAddLine,
   RiArchive2Line,
   RiCheckboxCircleFill,
+  RiDragMoveLine,
   RiForbidLine,
   RiPushpinFill,
   RiSignalWifiLine,
   RiSignalWifiOffLine,
-  RiSwordLine,
+  RiSwordLine
 } from "@remixicon/react"
 
 /**
@@ -28,5 +29,7 @@ export const Icons = {
       disabled: RiSignalWifiOffLine,
       removed: RiForbidLine,
     },
+    add: RiAddLine,
+    move: RiDragMoveLine,
   },
 }

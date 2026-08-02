@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
@@ -22,14 +22,14 @@ export const CredstickItemDetails: FC<CredstickItemDetailsProps> = ({ credstick 
 
   return (
     <>
-      <BasicItemDetails
+      <ItemDetailsRoot
         item={credstick.name ? credstick : { ...credstick, name: CredstickTypeLabel[credstick.credstickType] }}
         type={CredstickTypeLabel[credstick.credstickType]}
         onEdit={handleEdit}
       >
         <ItemDetailsSlot.Stat label="Balance" value={formatNuyen(credstick.balance)} type="rating" />
         <ItemDetailsSlot.Stat label="Filled" value={`${fillPercent.toFixed(0)}%`} />
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {credstickDialog.dialog}
     </>

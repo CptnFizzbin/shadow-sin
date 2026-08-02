@@ -5,7 +5,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { BasicItemDetails } from "./basicItemDetails.tsx"
+import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "./itemDetailsSlot.tsx"
 
 const baseItem: ItemData = {
@@ -14,12 +14,12 @@ const baseItem: ItemData = {
   itemType: ItemType.other,
 }
 
-describe("BasicItemDetails", () => {
+describe("ItemDetailsRoot", () => {
   it("renders the name and type", () => {
     render(
-      <BasicItemDetails item={baseItem} type="Heavy Pistol">
+      <ItemDetailsRoot item={baseItem} type="Heavy Pistol">
         <ItemDetailsSlot.Stat label="DV" value="8P" type="damage" />
-      </BasicItemDetails>,
+      </ItemDetailsRoot>,
       { wrapper: ThemeWrapper },
     )
 
@@ -39,7 +39,7 @@ describe("BasicItemDetails", () => {
       effects: [{ type: "attribute", target: "BOD", value: 1 }],
     }
 
-    render(<BasicItemDetails item={item} />, { wrapper: ThemeWrapper })
+    render(<ItemDetailsRoot item={item} />, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("A heavy pistol favored by street samurai.")).toBeDefined()
     expect(screen.getByText("Serial number filed off.")).toBeDefined()
@@ -52,12 +52,12 @@ describe("BasicItemDetails", () => {
 
   it("renders equipped and stashed status", () => {
     render(
-      <BasicItemDetails item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
+      <ItemDetailsRoot item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
       { wrapper: ThemeWrapper },
     )
 
     expect(screen.getByText("Equipped")).toBeDefined()
-    expect(screen.getByText("Wireless off")).toBeDefined()
+    expect(screen.getByText("Wireless Off")).toBeDefined()
   })
 
   it("composes stats, damage track, subitems, and footer slots", () => {
@@ -69,14 +69,14 @@ describe("BasicItemDetails", () => {
     }
 
     render(
-      <BasicItemDetails item={baseItem}>
+      <ItemDetailsRoot item={baseItem}>
         <ItemDetailsSlot.Stat label="Handling" value="3" />
         <ItemDetailsSlot.DamageTrack label="Damage" max={12} current={2} onChange={onDamageChange} />
         <ItemDetailsSlot.Subitem item={accessory} />
         <ItemDetailsSlot.Footer>
           <span>Custom footer content</span>
         </ItemDetailsSlot.Footer>
-      </BasicItemDetails>,
+      </ItemDetailsRoot>,
       { wrapper: ThemeWrapper },
     )
 
@@ -88,7 +88,7 @@ describe("BasicItemDetails", () => {
   })
 
   it("renders no Edit/Remove actions without onEdit or onRemove", () => {
-    render(<BasicItemDetails item={baseItem} />, { wrapper: ThemeWrapper })
+    render(<ItemDetailsRoot item={baseItem} />, { wrapper: ThemeWrapper })
 
     expect(screen.queryByRole("button", { name: "Edit" })).toBeNull()
     expect(screen.queryByRole("button", { name: "Remove" })).toBeNull()
@@ -97,7 +97,7 @@ describe("BasicItemDetails", () => {
   it("invokes onEdit and onRemove from persistent action buttons", () => {
     const onEdit = vi.fn()
     const onRemove = vi.fn()
-    render(<BasicItemDetails item={baseItem} onEdit={onEdit} onRemove={onRemove} />, { wrapper: ThemeWrapper })
+    render(<ItemDetailsRoot item={baseItem} onEdit={onEdit} onRemove={onRemove} />, { wrapper: ThemeWrapper })
 
     fireEvent.click(screen.getByRole("button", { name: "Edit" }))
     fireEvent.click(screen.getByRole("button", { name: "Remove" }))

@@ -40,6 +40,7 @@ import { Route as RunnerIdViewerSpritesRouteImport } from './routes/$runnerId/_v
 import { Route as RunnerIdViewerVehiclesRouteImport } from './routes/$runnerId/_viewer/vehicles'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
 import { Route as RunnerIdDetailsItemItemIdRouteImport } from './routes/$runnerId/_details/item.$itemId'
+import { Route as TestItemsDetailsAllRouteImport } from './routes/test/items/details.all'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -197,6 +198,11 @@ const RunnerIdDetailsItemItemIdRoute =
     path: '/item/$itemId',
     getParentRoute: () => RunnerIdDetailsRoute,
   } as any)
+const TestItemsDetailsAllRoute = TestItemsDetailsAllRouteImport.update({
+  id: '/test/items/details/all',
+  path: '/test/items/details/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
+  '/test/items/details/all': typeof TestItemsDetailsAllRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/$runnerId/vehicles': typeof RunnerIdViewerVehiclesRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
+  '/test/items/details/all': typeof TestItemsDetailsAllRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/_viewer/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/_details/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
+  '/test/items/details/all': typeof TestItemsDetailsAllRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -325,6 +334,7 @@ export interface FileRouteTypes {
     | '/test/theme/typography'
     | '/$runnerId/'
     | '/$runnerId/item/$itemId'
+    | '/test/items/details/all'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -355,6 +365,7 @@ export interface FileRouteTypes {
     | '/$runnerId/vehicles'
     | '/test/theme/typography'
     | '/$runnerId/item/$itemId'
+    | '/test/items/details/all'
   id:
     | '__root__'
     | '/'
@@ -388,6 +399,7 @@ export interface FileRouteTypes {
     | '/test/theme/typography'
     | '/$runnerId/_viewer/'
     | '/$runnerId/_details/item/$itemId'
+    | '/test/items/details/all'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -400,6 +412,7 @@ export interface RootRouteChildren {
   GmIndexRoute: typeof GmIndexRoute
   NewIndexRoute: typeof NewIndexRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
+  TestItemsDetailsAllRoute: typeof TestItemsDetailsAllRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -621,6 +634,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunnerIdDetailsItemItemIdRouteImport
       parentRoute: typeof RunnerIdDetailsRoute
     }
+    '/test/items/details/all': {
+      id: '/test/items/details/all'
+      path: '/test/items/details/all'
+      fullPath: '/test/items/details/all'
+      preLoaderRoute: typeof TestItemsDetailsAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -708,6 +728,7 @@ const rootRouteChildren: RootRouteChildren = {
   GmIndexRoute: GmIndexRoute,
   NewIndexRoute: NewIndexRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
+  TestItemsDetailsAllRoute: TestItemsDetailsAllRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

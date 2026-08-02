@@ -5,18 +5,10 @@ import Stack from "@mui/material/Stack"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
 import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
-import type {
-  FC,
-  KeyboardEvent,
-  MouseEvent as ReactMouseEvent,
-  ReactNode,
-  TouchEvent as ReactTouchEvent,
-} from "react"
-import { Children, cloneElement, useRef, useState } from "react"
+import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent } from "react"
+import { cloneElement, useRef, useState } from "react"
 
-import { isElementType } from "#/lib/slotUtils.ts"
-
-import { DataCardSlot } from "./dataCardSlot.tsx"
+import { DataCardSlot, DataCardSlotsProvider } from "./dataCardSlot.tsx"
 
 export interface BasicDataCardProps {
   /** When provided, the whole card becomes tappable/keyboard-activatable and navigates to the item's details page. */
@@ -56,27 +48,8 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
   onRemove,
   children,
 }) => {
-  const childArray = Children.toArray(children)
-
-  const titleNode = childArray.find(isElementType(DataCardSlot.Title))
-  const typeNode = childArray.find(isElementType(DataCardSlot.Type))
-  const sourceNode = childArray.find(isElementType(DataCardSlot.Source))
-  const availabilityNode = childArray.find(isElementType(DataCardSlot.Availability))
-  const quantityNode = childArray.find(isElementType(DataCardSlot.Quantity))
-  const costNode = childArray.find(isElementType(DataCardSlot.Cost))
-  const ratingNode = childArray.find(isElementType(DataCardSlot.Rating))
-  const statusIconNodes = childArray.filter(isElementType(DataCardSlot.StatusIcon))
-  const statNodes = childArray.filter(isElementType(DataCardSlot.Stat))
-  const subitemNodes = childArray.filter(isElementType(DataCardSlot.Subitem))
-  const damageTrackNode = childArray.find(isElementType(DataCardSlot.DamageTrack))
-  const footerNode = childArray.find(isElementType(DataCardSlot.Footer))
-  const contentNode = childArray.find(isElementType(DataCardSlot.Content))
-  const customQuickActionNodes = childArray.filter(isElementType(DataCardSlot.QuickAction))
-
-  const hasStatRow = statNodes.length > 0 || Boolean(ratingNode) || Boolean(quantityNode)
-  const hasBody = hasStatRow || Boolean(damageTrackNode) || subitemNodes.length > 0
-  const hasFooterBand = Boolean(sourceNode) || Boolean(availabilityNode) || Boolean(costNode) || Boolean(footerNode)
-  const hasQuickActions = customQuickActionNodes.length > 0 || Boolean(onEdit) || Boolean(onRemove)
+  const slots = new DataCardSlotsProvider(children)
+  const hasQuickActions = !!(slots.quickActions.length > 0 || onEdit || onRemove)
 
   const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -164,30 +137,30 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
           sx={{ ...bandSx, alignItems: "flex-start", justifyContent: "space-between", gap: 0.5 }}
         >
           <Stack sx={{ gap: 0, minWidth: 0 }}>
-            {typeNode}
-            {titleNode}
+            {slots.type}
+            {slots.title}
           </Stack>
 
-          {statusIconNodes.length > 0 && (
+          {slots.statusIcons.length > 0 && (
             <Stack direction="row" sx={{ gap: 0.5, flexShrink: 0, alignItems: "center" }}>
-              {statusIconNodes}
+              {slots.statusIcons}
             </Stack>
           )}
         </Stack>
 
-        {hasBody && (
+        {slots.hasBody && (
           <Stack sx={{ p: 1, gap: 1 }}>
-            {hasStatRow && (
+            {slots.hasStatRow && (
               <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
-                {statNodes}
-                {ratingNode}
-                {quantityNode}
+                {slots.stats}
+                {slots.rating}
+                {slots.quantity}
               </Stack>
             )}
 
-            {damageTrackNode}
+            {slots.damageTrack}
 
-            {subitemNodes.length > 0 && (
+            {slots.subitems.length > 0 && (
               <Stack
                 sx={{
                   gap: 0.25,
@@ -196,13 +169,13 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
                   borderColor: "secondary.dark",
                 }}
               >
-                {subitemNodes}
+                {slots.subitems}
               </Stack>
             )}
           </Stack>
         )}
 
-        {hasFooterBand && (
+        {slots.hasFooterBand && (
           <Stack
             direction="row"
             sx={{
@@ -215,21 +188,21 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
             }}
           >
             <Stack direction="row" sx={{ gap: 1, alignItems: "center", minWidth: 0 }}>
-              {sourceNode}
-              {availabilityNode}
+              {slots.source}
+              {slots.availability}
             </Stack>
 
             <Stack direction="row" sx={{ gap: 1, alignItems: "center", flexShrink: 0 }}>
-              {costNode}
-              {footerNode}
+              {slots.cost}
+              {slots.footer}
             </Stack>
           </Stack>
         )}
       </Box>
 
-      {contentNode && (
+      {slots.content && (
         <Box sx={{ borderLeft: "4px solid", borderColor: "secondary.dark" }}>
-          {contentNode}
+          {slots.content}
         </Box>
       )}
 
@@ -243,14 +216,14 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
           }
           slotProps={{ paper: { onClick: (event: ReactMouseEvent<HTMLDivElement>) => event.stopPropagation() } }}
         >
-          {customQuickActionNodes.map((node) => cloneElement(node, {
+          {slots.quickActions.map((node) => cloneElement(node, {
             onClick: () => {
               node.props.onClick()
               handleCloseMenu()
             },
           }))}
 
-          {customQuickActionNodes.length > 0 && (onOpen || onRemove) && <Divider />}
+          {slots.quickActions.length > 0 && (onOpen || onRemove) && <Divider />}
 
           {onEdit && (
             <DataCardSlot.QuickAction

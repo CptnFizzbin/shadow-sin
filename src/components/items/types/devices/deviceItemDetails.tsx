@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { BasicItemDetails } from "#/components/items/details/basicItemDetails.tsx"
+import { ItemDetailsRoot } from "#/components/items/details/itemDetailsRoot.tsx"
 import { ItemDetailsSlot } from "#/components/items/details/itemDetailsSlot.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -43,7 +43,7 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
 
   return (
     <>
-      <BasicItemDetails item={device} type={deviceTypeLabel} onEdit={handleEdit} onRemove={removeDevice}>
+      <ItemDetailsRoot item={device} type={deviceTypeLabel} onEdit={handleEdit} onRemove={removeDevice}>
         {device.deviceRating !== undefined && (
           <ItemDetailsSlot.Stat label="Rating" value={device.deviceRating} type="rating" />
         )}
@@ -59,7 +59,7 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
             onOpen={onOpenAttachment ? () => onOpenAttachment(program) : undefined}
           />
         ))}
-      </BasicItemDetails>
+      </ItemDetailsRoot>
 
       {deviceFormDialog.dialog}
     </>

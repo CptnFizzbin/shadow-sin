@@ -1,3 +1,5 @@
+import { SlotsProvider } from "#/lib/slotUtils.ts"
+
 import { DataCardSlotAvailability } from "./dataCardSlot.Availability.tsx"
 import { DataCardSlotContent } from "./dataCardSlot.Content.tsx"
 import { DataCardSlotContextAction } from "./dataCardSlot.ContextAction.tsx"
@@ -47,4 +49,87 @@ export const DataCardSlot = {
   Footer: DataCardSlotFooter,
   Content: DataCardSlotContent,
   QuickAction: DataCardSlotContextAction,
+}
+
+export class DataCardSlotsProvider extends SlotsProvider {
+  get title() {
+    return this.find(DataCardSlotTitle)
+  }
+
+  get type() {
+    return this.find(DataCardSlotType)
+  }
+
+  get source() {
+    return this.find(DataCardSlotSource)
+  }
+
+  get availability() {
+    return this.find(DataCardSlotAvailability)
+  }
+
+  get quantity() {
+    return this.find(DataCardSlotQuantity)
+  }
+
+  get cost() {
+    return this.find(DataCardSlotCost)
+  }
+
+  get rating() {
+    return this.find(DataCardSlotRating)
+  }
+
+  get statusIcons() {
+    return this.filter(DataCardSlotStatusIcon)
+  }
+
+  get stats() {
+    return this.filter(DataCardSlotStat)
+  }
+
+  get subitems() {
+    return this.filter(DataCardSlotSubitem)
+  }
+
+  get damageTrack() {
+    return this.find(DataCardSlotDamageTrack)
+  }
+
+  get footer() {
+    return this.find(DataCardSlotFooter)
+  }
+
+  get content() {
+    return this.find(DataCardSlotContent)
+  }
+
+  get quickActions() {
+    return this.filter(DataCardSlotContextAction)
+  }
+
+  get hasStatRow(): boolean {
+    return !!(
+      this.stats.length > 0
+      || this.rating
+      || this.quantity
+    )
+  }
+
+  get hasBody(): boolean {
+    return !!(
+      this.hasStatRow
+      || this.damageTrack
+      || this.subitems.length > 0
+    )
+  }
+
+  get hasFooterBand(): boolean {
+    return !!(
+      this.source
+      || this.availability
+      || this.cost
+      || this.footer
+    )
+  }
 }

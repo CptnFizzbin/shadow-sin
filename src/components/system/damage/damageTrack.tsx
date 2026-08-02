@@ -38,7 +38,7 @@ export default function DamageTrack({
   }
 
   return (
-    <Stack sx={{ gap: 0.5 }}>
+    <Stack sx={{ gap: 0.5, maxWidth: 300 }}>
       <Label label={label} />
 
       <DamageTrackCell onClick={() => onChange(0)}>Reset</DamageTrackCell>
