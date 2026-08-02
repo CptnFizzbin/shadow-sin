@@ -3,6 +3,7 @@ import { combineReducers, createSlice } from "@reduxjs/toolkit"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+import { agentsReducer } from "./agents/agentsSlice.ts"
 import { attributesReducer } from "./attributes/attributesSlice.ts"
 import { biologyReducer } from "./biology/biologySlice.ts"
 import { complexFormsReducer } from "./complexForms/complexFormsSlice.ts"
@@ -57,6 +58,7 @@ export const runnerRootReducer = combineReducers({
   id: idSlice.reducer,
   _meta_: metaSlice.reducer,
   attributes: attributesReducer,
+  agents: agentsReducer,
   qualities: qualitiesReducer,
   karma: karmaReducer,
   nuyen: nuyenReducer,

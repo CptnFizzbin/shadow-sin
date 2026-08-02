@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { AgentList } from "#/components/runner/matrix/agents/agentList.tsx"
 import { MatrixProgramsSection } from "#/components/runner/matrix/matrixProgramsSection.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
@@ -34,6 +35,8 @@ function RouteComponent() {
       />
 
       <MatrixProgramsSection />
+
+      <AgentList />
     </Stack>
   )
 }

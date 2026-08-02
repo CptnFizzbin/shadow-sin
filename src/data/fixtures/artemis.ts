@@ -136,6 +136,7 @@ export const Artemis: RunnerData = {
   sprites: [],
   complexForms: [],
   spirits: [],
+  agents: [],
 
   gear: createItemMap(
     createItem<SinData>({

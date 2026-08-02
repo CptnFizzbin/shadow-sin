@@ -64,6 +64,7 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
 
     spells: [],
     spirits: [],
+    agents: [],
     powers: [],
     complexForms: [],
     sprites: [],

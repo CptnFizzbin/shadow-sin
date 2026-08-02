@@ -2,6 +2,7 @@ import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
+import * as agentsSelectors from "./agents/agentsSlice.selectors.ts"
 import * as attributesSelectors from "./attributes/attributesSlice.selectors.ts"
 import * as biologySelectors from "./biology/biologySlice.selectors.ts"
 import * as complexFormsSelectors from "./complexForms/complexFormsSlice.selectors.ts"
@@ -40,6 +41,7 @@ export function useRunnerStoreSelector<T>(
  * namespace is mainly useful for discoverability.
  */
 export const Selectors = {
+  agents: agentsSelectors,
   attributes: attributesSelectors,
   biology: biologySelectors,
   complexForms: complexFormsSelectors,

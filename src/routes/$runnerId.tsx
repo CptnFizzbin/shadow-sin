@@ -25,6 +25,14 @@ const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage
 export const Route = createFileRoute("/$runnerId")({
   component: RunnerRoute,
   errorComponent: RunnerErrorRoute,
+  // Loader data is never invalidated by anything outside this app (no
+  // multiplayer sync yet), so treat it as always-fresh. Without this, TanStack
+  // Router's default staleTime of 0 reruns the loader on every navigation —
+  // including the no-op history entry `useCloseOnBrowserBack` pushes/pops
+  // around every dialog open/close — which recreates the `RunnerDataStore`
+  // below from stale persisted data and silently discards any dispatch that
+  // hasn't been flushed to storage yet (writes are debounced by 5s).
+  staleTime: Infinity,
   loader: async ({ params }): Promise<RunnerData> => {
     const runner = await loaderManager.getRunner(params.runnerId)
     return runner

@@ -15,6 +15,7 @@ import type { SpellData } from "./magic/spellData.ts"
 import type { SpiritData } from "./magic/spiritData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
+import type { AgentData } from "./matrix/agentData.ts"
 import type { MetatypeType } from "./metatypeData.ts"
 import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
@@ -124,6 +125,7 @@ export interface RunnerData {
   complexForms: ComplexFormData[]
   sprites: SpriteData[]
   spirits: SpiritData[]
+  agents: AgentData[]
 
   /** Magician/Adept/Mystic Adept initiate grade. 0 until first Initiation. */
   initiateGrade: number

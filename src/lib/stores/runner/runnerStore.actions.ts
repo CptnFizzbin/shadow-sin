@@ -1,3 +1,4 @@
+import * as agentsActions from "./agents/agentsSlice.actions.ts"
 import * as attributesActions from "./attributes/attributesSlice.actions.ts"
 import * as biologyActions from "./biology/biologySlice.actions.ts"
 import * as complexFormsActions from "./complexForms/complexFormsSlice.actions.ts"
@@ -25,6 +26,7 @@ import * as traditionActions from "./tradition/traditionSlice.actions.ts"
  * namespace is mainly useful for discoverability.
  */
 export const Actions = {
+  agents: agentsActions,
   attributes: attributesActions,
   biology: biologyActions,
   complexForms: complexFormsActions,

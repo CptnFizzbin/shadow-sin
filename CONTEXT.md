@@ -262,6 +262,12 @@ A dice pool test using a Commlink stat (Response, System, Firewall, or Signal) c
 Program rating. Parallel in structure to a skill test (Attribute + Skill).
 _Avoid_: hacking roll, matrix roll (use Matrix Test)
 
+**Agent**:
+An autonomous Program that runs independent tasks on a Commlink or node without a Runner
+actively piloting it. Rated 1–6; its Pilot rating and every Matrix attribute it uses on its own
+equal its rating. Tracked as a list on the Matrix tab, alongside loaded Programs.
+_Avoid_: bot, drone (Drone is a Vehicle subtype, not a Matrix-domain concept)
+
 **Contact**:
 An NPC with whom a Runner has an established relationship, rated by **Connection** (how useful
 and well-networked they are) and **Loyalty** (how much they like the Runner). Currently stored
