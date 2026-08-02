@@ -14,12 +14,6 @@ interface SinDataCardProps {
   onEdit?: () => void
 }
 
-/**
- * Licenses are shown as their own interactive cards nested below the SIN by
- * the containing section (see SinsAndLicensesSection / LicensesSectionContent),
- * not as read-only subitems here — unlike accessories on other item types,
- * each license needs to stay individually tappable to edit.
- */
 export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
@@ -43,6 +37,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
       <ItemDataCardRoot item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
         {Object.values(licenses).map((license) => (
           <DataCardSlot.Subitem
+            key={license.id}
             name={license.name}
             stats={[
               { label: "Rating", value: license.rating ?? "unknown" },

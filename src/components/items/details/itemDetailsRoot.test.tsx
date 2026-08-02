@@ -82,7 +82,7 @@ describe("ItemDetailsRoot", () => {
 
     expect(screen.getByText("Handling")).toBeDefined()
     expect(screen.getByText("3")).toBeDefined()
-    expect(screen.getByText("Attached")).toBeDefined()
+    expect(screen.getByText("Attachments")).toBeDefined()
     expect(screen.getByText("GPS Jammer")).toBeDefined()
     expect(screen.getByText("Custom footer content")).toBeDefined()
   })

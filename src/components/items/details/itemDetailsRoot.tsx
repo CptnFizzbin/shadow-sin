@@ -72,8 +72,8 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
         >
           <Stack direction="row" sx={{ alignItems: "center" }}>
             {slots.title ?? <ItemDetailsSlot.Title title={item.name} />}
-            {slots.quantity}
-            {slots.cost}
+            {slots.quantity ?? <ItemDetailsSlot.Quantity value={item.quantity} />}
+            {slots.cost ?? <ItemDetailsSlot.Cost value={item.cost} />}
           </Stack>
 
           <Stack direction="row" sx={{ alignItems: "center" }}>
@@ -99,9 +99,9 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
         >
           <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
             {slots.type ?? (type && <ItemDetailsSlot.Type label={type} />)}
-            {slots.availability}
+            {slots.availability ?? <ItemDetailsSlot.Availability value={item.availability} />}
             {slots.rating}
-            {slots.source}
+            {slots.source ?? <ItemDetailsSlot.Source source={item.source} />}
           </Stack>
 
           <Stack direction="row">

@@ -5,6 +5,7 @@ import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantType } from "#/system/gear/implantData.ts"
 
@@ -31,6 +32,7 @@ const typeLabel: Partial<Record<string, string>> = {
 export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
+  const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(implant.id))
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
 
@@ -59,6 +61,10 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
         {implant.grade && implant.grade !== ImplantGrade.standard && (
           <DataCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
         )}
+
+        {Object.values(accessories).map((accessory) => (
+          <DataCard.Subitem key={accessory.id} name={accessory.name} />
+        ))}
       </ItemDataCardRoot>
 
       {confirmDialog.dialog}

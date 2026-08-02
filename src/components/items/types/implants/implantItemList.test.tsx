@@ -54,7 +54,7 @@ const BuilderWrapperWithGear: FC<WrapperProps> = ({ gear, children }) => {
 }
 
 describe("ImplantItemList", () => {
-  it("opens the edit dialog pre-filled with the accessory's data, not the parent's", async () => {
+  it("shows accessories as read-only subitems inside the parent implant's card", async () => {
     // Arrange
     const parentId = "aaaaaaaa-0000-0000-0000-000000000001"
     const accessoryId = "aaaaaaaa-0000-0000-0000-000000000002"
@@ -76,13 +76,17 @@ describe("ImplantItemList", () => {
       </BuilderWrapperWithGear>,
     )
 
-    // Act: tap the accessory's card to open it for editing.
-    fireEvent.click(screen.getByRole("button", { name: /alphaware upgrade/i }))
+    // Assert: the accessory's name is visible inside the parent's card.
+    expect(screen.getByText("Alphaware Upgrade")).toBeDefined()
+
+    // Act: tapping the accessory's row is no longer its own tap target — it
+    // bubbles to the parent card, opening the parent's edit dialog instead.
+    fireEvent.click(screen.getByText("Alphaware Upgrade"))
 
     // Assert
     const dialog = await screen.findByRole("dialog")
     const nameField = within(dialog).getByLabelText(/^name$/i)
-    expect((nameField as HTMLInputElement).value).toBe("Alphaware Upgrade")
+    expect((nameField as HTMLInputElement).value).toBe("Wired Reflexes 1")
   })
 
   it("removing an implant, once confirmed, dispatches removeItem and updates the store", async () => {

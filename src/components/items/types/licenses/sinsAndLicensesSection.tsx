@@ -12,7 +12,6 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { SinData } from "#/system/gear/sinData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { useLicenseFormDialog } from "./dialogs/licenseFormDialog.tsx"
 import { useSinFormDialog } from "./dialogs/sinFormDialog.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
@@ -23,9 +22,8 @@ export const SinsAndLicensesSection: FC = () => {
   const sins = useGearByType<SinData>(ItemType.sin)
   const licenses = useGearByType<LicenseData>(ItemType.license)
   const sinFormDialog = useSinFormDialog()
-  const licenseFormDialog = useLicenseFormDialog()
 
-  const saveItem = (item: SinData | LicenseData) =>
+  const saveItem = (item: SinData) =>
     dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
 
   const handleRemoveSin = async (sin: SinData, hasLicenses: boolean) => {
@@ -45,9 +43,9 @@ export const SinsAndLicensesSection: FC = () => {
       sin,
       onDelete: sin
         ? () => {
-          const sinLicenses = licenses.filter((l) => l.parentId === sin.id)
-          void handleRemoveSin(sin, sinLicenses.length > 0)
-        }
+            const sinLicenses = licenses.filter((l) => l.parentId === sin.id)
+            void handleRemoveSin(sin, sinLicenses.length > 0)
+          }
         : undefined,
     })
     if (saved) saveItem(saved)
@@ -77,7 +75,6 @@ export const SinsAndLicensesSection: FC = () => {
 
       {confirmDialog.dialog}
       {sinFormDialog.dialog}
-      {licenseFormDialog.dialog}
     </>
   )
 }

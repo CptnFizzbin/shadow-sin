@@ -41,49 +41,16 @@ export const ImplantItemList: FC = () => {
           Add Implant
         </Button>
 
-        {rootImplants.map((implant) => {
-          const accessories = implants.filter((i) => i.parentId === implant.id)
-
-          return (
-            <Stack key={implant.id} sx={{ gap: 1 }}>
-              <ImplantDataCard
-                implant={implant}
-                onOpen={openItemDetails
-                  ? () => openItemDetails(implant.id)
-                  : () => handleAddImplant({ implant })}
-                onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
-              />
-
-              {accessories.length > 0 && (
-                <Stack sx={{ gap: 1, pl: 2 }}>
-                  {accessories.map((accessory) => (
-                    <ImplantDataCard
-                      key={accessory.id}
-                      implant={accessory}
-                      onOpen={openItemDetails
-                        ? () => openItemDetails(accessory.id)
-                        : () => handleAddImplant({ implant: accessory, parentId: implant.id })}
-                      onEdit={openItemDetails
-                        ? () => handleAddImplant({ implant: accessory, parentId: implant.id })
-                        : undefined}
-                    />
-                  ))}
-                </Stack>
-              )}
-
-              <Button
-                variant="text"
-                color="secondary"
-                size="small"
-                startIcon={<RiAddLine size={14} />}
-                onClick={() => handleAddImplant({ parentId: implant.id })}
-                fullWidth
-              >
-                Add Accessory
-              </Button>
-            </Stack>
-          )
-        })}
+        {rootImplants.map((implant) => (
+          <ImplantDataCard
+            key={implant.id}
+            implant={implant}
+            onOpen={openItemDetails
+              ? () => openItemDetails(implant.id)
+              : () => handleAddImplant({ implant })}
+            onEdit={openItemDetails ? () => handleAddImplant({ implant }) : undefined}
+          />
+        ))}
       </Stack>
 
       {implantFormDialog.dialog}
