@@ -1,3 +1,4 @@
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import DeleteIcon from "@mui/icons-material/Delete"
 import DownloadIcon from "@mui/icons-material/Download"
 import EditIcon from "@mui/icons-material/Edit"
@@ -23,6 +24,7 @@ import type { RunnerLoadError } from "#/lib/persistence/runnerLoadError.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { downloadTextFile } from "./exportImport/exportUtils.ts"
+import { resolveAlias } from "./runnerUtils.ts"
 
 interface RunnerRosterListProps {
   runners: Record<string, RunnerData>
@@ -87,6 +89,19 @@ export default function RunnerRosterList({
   const handleDeleteRunner = (runner: RunnerData) => {
     closeMenu()
     void confirmAndDeleteRunner(runner)
+  }
+
+  const handleDuplicateRunner = async (runner: RunnerData) => {
+    closeMenu()
+    const existingAliases = new Set(sortedRunners.map((r) => r.profile.alias))
+    const newAlias = resolveAlias(runner.profile.alias, existingAliases)
+    const duplicated: RunnerData = {
+      ...runner,
+      id: crypto.randomUUID(),
+      profile: { ...runner.profile, alias: newAlias },
+    }
+    await runnerManager.saveRunner(duplicated)
+    await router.invalidate()
   }
 
   return (
@@ -195,6 +210,10 @@ export default function RunnerRosterList({
         <MenuItem onClick={() => menuState && handleEditRunner(menuState.runner)}>
           <ListItemIcon><EditIcon fontSize="small" /></ListItemIcon>
           Edit
+        </MenuItem>
+        <MenuItem onClick={() => menuState && void handleDuplicateRunner(menuState.runner)}>
+          <ListItemIcon><ContentCopyIcon fontSize="small" /></ListItemIcon>
+          Duplicate
         </MenuItem>
         <MenuItem onClick={() => menuState && handleDeleteRunner(menuState.runner)} sx={{ color: "error.main" }}>
           <ListItemIcon sx={{ color: "error.main" }}><DeleteIcon fontSize="small" /></ListItemIcon>
