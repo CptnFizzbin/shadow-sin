@@ -187,8 +187,8 @@ _Avoid_: creature, critter (same reasoning as Spirit)
 **Entity**:
 The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
 stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
-**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and **Agent**
-_(planned)_.
+**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, **Agent**
+_(planned)_, and **MatrixNode**.
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
@@ -273,16 +273,24 @@ already mirror Attribute + Skill tests structurally. `RunnerData.attributes` and
 `selectAttrValue` return `0` for a key that's absent or not computable for that subject (e.g.
 asking a Runner for Firewall).
 
-**Entity Matrix Presence** _(`EntityData.matrix?: { attr: Partial<MatrixAttrs> }`)_:
-Almost every **Entity** — not just `Item` — can be present in the matrix. By default this is a
+**Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
+Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a
 "simplified" presence: all four `MatrixAttrs` resolve to the Entity's own **Rating**, with no
 separate data stored (avoids a value that could drift out of sync after the Entity's Rating
-changes). Setting one or more keys in `attr` overrides just those stats for that Entity — a
-"fully specced" presence. **Commlink** is the canonical fully-specced case: its four stats are
-independently set via `attr`, not derived from a Rating.
-_Avoid_: MatrixNode, Node (as code identifiers for this field — reserved for user-facing copy
-only; see below for the still-open question of whether standalone hackable hosts are a separate
-type from this field)
+changes). `matrix: MatrixStats` (a `Partial<MatrixAttrs>`) is a "fully specced" presence — set
+keys override that stat, unset keys still fall back to Rating. `undefined` means the Entity has
+no matrix presence at all. **Commlink** is the canonical fully-specced case. **MatrixNode**
+(below) is always fully specced, by definition.
+
+**MatrixNode** _(displayed as "Node")_:
+A hackable system in the matrix — a corp server, security system, or other host a Runner can
+connect to and gain an account on. It is itself an **Entity** (added to the list under
+**Entity**, below), not a field bolted onto some other Entity — its `matrix` is always a
+`MatrixStats` value, since being a matrix presence is its entire purpose. User-facing copy and
+rulebook references say "Node"; the code identifier is `MatrixNode` to avoid colliding with the
+DOM global `Node` (same naming-collision class as `RunnerData` vs. `CharacterData` — see
+`RunnerData` above).
+_Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
 
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
