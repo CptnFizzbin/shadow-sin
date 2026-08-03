@@ -184,11 +184,21 @@ A matrix being compiled by a Technomancer. Analogous to a Spirit in the matrix d
 own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
 _Avoid_: creature, critter (same reasoning as Spirit)
 
+**Agent**:
+An autonomous matrix construct, structurally analogous to a Spirit/Sprite (its own Entity, own
+`rating`, requires a **StatusSheet**) rather than an owned `Item` like **Program**, even though a
+Player interacts with both the same way (loaded onto a device, run as a copy on a `MatrixNode`).
+Its single `rating` doubles as Pilot, System, Firewall, and the Skill side of any dice pool it
+rolls — an Agent has no separate skill list. Its Response and Signal are never its own; they're
+resolved live from whichever `MatrixNode` it's currently running on (see **Entity Matrix
+Presence**).
+_Avoid_: bot, program (Program is a distinct, simpler Item type — see below)
+
 **Entity**:
 The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
 stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
-**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, **Agent**
-_(planned)_, and **MatrixNode**.
+**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, **Agent**, and
+**MatrixNode**.
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
@@ -282,6 +292,11 @@ keys override that stat, unset keys still fall back to Rating. `undefined` means
 no matrix presence at all. **Commlink** is the canonical fully-specced case. **MatrixNode**
 (below) is always fully specced, by definition.
 
+Response and Signal are a special case for anything *running on* a `MatrixNode` (a loaded
+**Program**, a running **Agent**): those two stats are never stored on the running thing itself —
+they're resolved live from whichever Node currently hosts it. Only System/Firewall (and, for
+Agent, its Pilot/Skill use) come from the running thing's own rating.
+
 **MatrixNode** _(displayed as "Node")_:
 A hackable system in the matrix — a corp server, security system, or other host a Runner can
 connect to and gain an account on. It is itself an **Entity** (added to the list under
@@ -300,6 +315,21 @@ difference between the two.
 The cap on programs a `MatrixNode` can run simultaneously, mirroring the existing rule that a
 Commlink's loaded programs are capped by its System rating (`docs/features/0005-matrix-programs.md`).
 Formula depends on **Node Type**: `General` = System rating; `Nexus` = System rating × 3.
+Exceeding it isn't a hard block — every multiple of the Processor Limit reached (running count ÷
+Processor Limit, rounded down) drops the Node's effective Response by 1. E.g. Processor Limit 3:
+Response −1 at 3 programs running, −2 at 6, −3 at 9.
+
+**Subscription Limit**:
+The cap on how many `MatrixNode`s a Runner can hold a **Subscribed Node** entry for at once.
+Equal to the System rating of whichever Commlink the Runner is currently running their persona
+from.
+
+**Subscribed Node**:
+A quick-reference entry in a Runner's matrix game state for a `MatrixNode` they currently have
+access to — the Node's ratings and the access level the Runner holds there. Player-maintained
+(not derived from simulating a hacking test this pass); cleared at the start of a new run. One
+Subscribed Node can be flagged as the **Active Node** — the one the Runner is currently working
+in.
 
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
