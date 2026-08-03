@@ -165,7 +165,10 @@ _Avoid_: luck points, hero points (use Edge)
 **Skill**:
 A rated capability tied to an attribute. Comes in three flavours: **Active** (used in tests),
 **Knowledge** (background expertise), and **Language**. Active skills may have a
-**Specialization** (+2 dice for that narrow focus).
+**Specialization** (+2 dice for that narrow focus). Knowledge and Language skills are free-text,
+Player-entered entries (no fixed list like Active skills) and carry their own identity independent
+of their display name, so a `GameEffect` targeting one specific entry survives the Player renaming
+it later.
 
 **Quality**:
 A positive or negative trait a Runner possesses (e.g. High Pain Tolerance, Uneducated). Purchased
@@ -375,10 +378,33 @@ Opposed Test in that check.
 **GameEffect**:
 A mechanical modifier that changes a derived stat — e.g. an attribute bonus, dice pool modifier,
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
-(cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Adept Powers**, drugs,
-matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others. How active
-effects from all sources are aggregated and applied is an open design question.
+(cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Complex Forms**, **Adept
+Powers**, drugs, matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others.
 _Avoid_: modifier, bonus (too generic)
+
+**Granted Effects**:
+The `GameEffect` entries a single source (an Item, Quality, Spell, ...) directly carries as its
+own. Contrast with **Applied Effects**.
+
+**Applied Effects**:
+The `GameEffect` entries that actually resolve onto a given target — an Item, or the Runner
+itself — once every source's **Scope** has been evaluated relative to that source's own position
+in the item tree. See `docs/adr/0009-game-effect-scope-resolution.md`.
+_Avoid_: "effects for X" (ambiguous with Granted Effects — always say "applied to" or "granted
+by")
+
+**Scope**:
+Declares which item instance(s) a `GameEffect` reaches, independent of *what* it modifies.
+Defaults to reaching only the item that grants the effect — or the Runner, for effects not
+attached to an Item. Can instead be widened to that item's parent, children, or siblings, or to
+its full chain of ancestors or descendants; or widened by first climbing to the top of its
+ownership chain, so one item's effect can reach its siblings too (e.g. a drone's autosoft
+reaching the other weapons mounted on that same drone, not just its own descendants — it has
+none). Can also be narrowed to a specific kind of item. The Runner itself is the only valid
+starting point for effects not attached to an Item (Qualities, Spells, Complex Forms, Powers),
+since those aren't part of the Item ownership tree.
+_Avoid_: "target" for describing which item(s) a Scope reaches — a `GameEffect`'s `target`
+means something unrelated (see **Pool Id**)
 
 **Source**:
 A reference to the rulebook and page number where a rule or item is defined
@@ -405,7 +431,21 @@ _Avoid_: optional rule (reserve for published sourcebook variants — see above)
 
 **Dice Pool**:
 The number of d6s rolled for a test. Assembled from Attribute + Skill (or Program for matrix
-tests) plus any active **GameEffect** modifiers. The Wound Modifier subtracts from the pool.
+tests) plus any active **GameEffect** modifiers. The Wound Modifier subtracts from the pool. Every
+Dice Pool carries a stable **Pool Id** so a GameEffect can target it.
+
+**Pool Id**:
+A stable identifier for a Dice Pool's category — what kind of test it is — independent of any
+specific item. Organized as a tree with a hand-authored branch shape (e.g. Active Skills,
+Knowledge Skills, Attack); branches backed by a fixed list (like Active Skills) generate one leaf
+per entry in that list, while free-text branches (Knowledge Skills, Languages, which a Player
+types in themselves rather than picking from a fixed list) generate one leaf per entry the Player
+has actually added — which is why those entries need an identity independent of their display
+name (see **Skill**). A free-text branch can also be targeted as a whole (e.g. "all Knowledge
+skill tests"). The tree's grouped, human-readable labels ("Skills / Active Skills / Data Search")
+are for browsing only and don't need to match the identifier's own internal form.
+_Avoid_: "target" used bare without saying "pool" — conflicts with **Scope**, a different concept
+that also answers a "which" question
 
 **Hit**:
 A die result of 5 or 6. Hits are counted against a **Threshold** to determine success.
@@ -514,8 +554,10 @@ _Avoid_: upgrade, patch, update (use migration)
 - **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
   expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
   nest recursively _(field names are pending migration from `childIds` / `parentId`)_
-- **GameEffect** entries attach to **Items**, **Qualities**, and **Spells** — never stored
-  directly on base attributes
+- **GameEffect** entries attach to **Items**, **Qualities**, **Spells**, **Complex Forms**, and
+  **Adept Powers** — never stored directly on base attributes. Each entry's **Scope** is resolved
+  relative to its own source's position in the Item ownership tree, independent of what the
+  effect modifies (see `docs/adr/0009-game-effect-scope-resolution.md`)
 - **Karma** and **Build Points** are separate economies: BP is creation-only, Karma is
   post-creation
 - An **Awakening** of Adept, Magician, or Mystic Adept unlocks the **Magic** special attribute;
