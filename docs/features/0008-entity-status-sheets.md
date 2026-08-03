@@ -24,8 +24,12 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
 
 - [ ] **Shared abstraction?** Should Entities and Vehicles share a common "thing with a
       StatusSheet" interface, or are they modelled independently?
-- [ ] **Where does damage live?** Persisted on the data record in `RunnerData`, or in Session
-      State (cleared when the tab closes)?
+- [x] **Where does damage live?** Persisted directly on the data record, not Session State —
+      matching `SpiritData.damage` precedent (not cleared on tab close, behaves like any other
+      persisted stat). **Sprite needs the same treatment: `SpriteData` gets a persisted damage
+      container matching `SpiritData`'s shape.** Decided as part of
+      [`docs/features/0013-entity-card-migration.md`](./0013-entity-card-migration.md); not yet
+      implemented — requires a migration, no code changes made yet.
 - [ ] **Spirit services** — is "services owed" a simple integer counter, or does each service
       need a description (e.g. "Guard the safehouse")?
 - [ ] **Drone distinction** — how does a Player indicate a Vehicle Item is a Drone? Tag, name
@@ -43,13 +47,16 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
 
 ## Domain Notes
 
-- **Entity** — collective term for Spirits and Sprites; summoned/compiled beings with their own
-  stat block
-- **Spirit** — magical Entity with Force and Services owed; Physical damage track
-- **Sprite** — matrix Entity with Level and Services owed; Matrix damage track
+- **Entity** — the umbrella term for anything with a stat block; see `CONTEXT.md` for the
+  current definition (broader than just Spirit/Sprite — this doc predates that). Spirit and
+  Sprite are the two this doc is actually about; Vehicle (an Item) is an Entity too, tracked
+  here only because it shares the StatusSheet need, not because it's a distinct category from
+  Entity the way the table above implies.
+- **Spirit** — magical being with Force and Services owed; Physical damage track
+- **Sprite** — matrix being with Level and Services owed; Matrix damage track
 - **Vehicle** — Item with its own stat block; Physical damage track
 - **Drone** — conceptual Vehicle subtype; no mechanical distinction in the data model
-- **StatusSheet** — the Viewer-side tracking view for an Entity or Vehicle
+- **StatusSheet** — the Viewer-side tracking view for an Entity (including Vehicle)
 - **Session State** — combat-round data on `RunnerData`; persisted across page reloads
 
 ## Out of Scope

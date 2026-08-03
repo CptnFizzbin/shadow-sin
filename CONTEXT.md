@@ -58,7 +58,7 @@ _Avoid_: stun points, fatigue
 **Matrix Damage Track**:
 Tracks damage taken in the matrix. Applies to:
 - **Runners** (hot-sim VR biofeedback)
-- **Sprites** (matrix Entities — their primary damage track)
+- **Sprites** (compiled matrix beings — their primary damage track)
 - **Matrix-capable devices** (commlinks, nodes — tracked on the device's StatusSheet)
 
 Capacity formula varies by subject type. Separate from Physical/Stun because it heals separately
@@ -175,18 +175,33 @@ A positive or negative trait a Runner possesses (e.g. High Pain Tolerance, Unedu
 with BP at creation; some are innate to the metatype.
 
 **Spirit**:
-A magical Entity summoned and bound by a Magician or Mystic Adept. Has its own stat block,
-Force rating, and a pool of Services owed to the Runner.
+A magical being summoned and bound by a Magician or Mystic Adept. Has its own stat block, Force
+rating, and a pool of Services owed to the Runner. Requires a **StatusSheet**.
+_Avoid_: creature, critter (critter is a specific Shadowrun term for wild paranatural animals)
 
 **Sprite**:
-A matrix Entity compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
-own stat block, Level rating, and Services owed.
+A matrix being compiled by a Technomancer. Analogous to a Spirit in the matrix domain. Has its
+own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
+_Avoid_: creature, critter (same reasoning as Spirit)
 
 **Entity**:
-Collective term for Spirits and Sprites — summoned or compiled beings controlled by a Runner
-that have their own stat block, damage track, and in-play state. Each Entity requires a
-**StatusSheet**.
-_Avoid_: creature, critter (critter is a specific Shadowrun term for wild paranatural animals)
+The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
+stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
+**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and **Agent**
+_(planned)_.
+_Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
+the `*Data` DTO suffix convention — see RunnerData)
+
+**EntityCard** _(not yet implemented — planned)_:
+The shared card-rendering system for Entities, replacing today's `DataCard`. See
+`docs/adr/0010-entity-card-composition.md` for the architecture.
+
+**Rating**:
+An optional numeric field representing the strength or level of an Entity — e.g. Armor's
+protection rating, an Adept Power's rating, a Spirit's Force, software/Complex Form/Device
+ratings. Not every Entity populates it (Spells have none). A few ratings use a special sentinel
+instead of a number for an unrated/default case (e.g. a Real SIN or Licence, a native Language
+skill) — see `docs/adr/0010-entity-card-composition.md` for the type design.
 
 ### Magic & Matrix
 
@@ -277,7 +292,16 @@ _Avoid_: ally, NPC (too broad)
 
 **Item**:
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
-implant, software, vehicle, etc.).
+implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
+section headings, e.g. "Add Gear") — code identifiers (types, props, filenames, directories) use
+**Item**, not Gear. _(A rename is planned for the TS-only identifiers: `src/system/gear/`,
+`GearTreeNode`, `GearItem`, `GearViewSectionProps`, etc. → `Item`-prefixed equivalents; the
+`/gear` route path and user-facing copy are unaffected. `RunnerData.gear` itself is a heavier,
+separate decision — it's a persisted JSON field, not just a TS identifier, so renaming it to
+`RunnerData.items` would need a migration like the planned `childIds`/`parentId` →
+`attachmentIds`/`attachedToId` rename on **Attachment**, not a plain find-and-replace. Not yet
+decided whether it's in scope.)_
+_Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
 `ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
@@ -307,7 +331,7 @@ unequipped, and not stashed, e.g. a spare pistol in a holster)
 
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
-track) and requires a **StatusSheet** during play.
+track) and requires a **StatusSheet** during play, same as Spirit and Sprite.
 _Avoid_: asset, transport
 
 **Drone**:
@@ -317,7 +341,7 @@ Any Vehicle can be a Drone, but not all Drones are cars, planes, ships, or tanks
 _Avoid_: bot, UAV, UGV (use Drone)
 
 **StatusSheet**:
-The in-play tracking view for an Entity (Spirit or Sprite) or Vehicle, showing its own damage
+The in-play tracking view for a Spirit, Sprite, or Vehicle, showing its own damage
 track, stats, and session state independently of the Runner's main sheet.
 _Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet is the UI view)
 
@@ -380,6 +404,10 @@ A mechanical modifier that changes a derived stat — e.g. an attribute bonus, d
 extra initiative passes, or pain tolerance adjustment. Can originate from many sources: **Items**
 (cyberware, weapons, armor), **Qualities**, **Spells** (sustained), **Complex Forms**, **Adept
 Powers**, drugs, matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and potentially others.
+How a source's effects resolve onto a target is **Scope**'s job — see **Granted Effects** /
+**Applied Effects** below. These sources are a *subset* of **Entity**, not all of it — Spirit,
+Sprite, and Agent are Entities too but aren't GameEffect sources today; matrix connection mode is
+a state the Runner is in, not an Entity at all.
 _Avoid_: modifier, bonus (too generic)
 
 **Granted Effects**:
@@ -389,7 +417,7 @@ own. Contrast with **Applied Effects**.
 **Applied Effects**:
 The `GameEffect` entries that actually resolve onto a given target — an Item, or the Runner
 itself — once every source's **Scope** has been evaluated relative to that source's own position
-in the item tree. See `docs/adr/0009-game-effect-scope-resolution.md`.
+in the item tree. See `docs/adr/0011-game-effect-scope-resolution.md`.
 _Avoid_: "effects for X" (ambiguous with Granted Effects — always say "applied to" or "granted
 by")
 
@@ -554,10 +582,10 @@ _Avoid_: upgrade, patch, update (use migration)
 - **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
   expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
   nest recursively _(field names are pending migration from `childIds` / `parentId`)_
-- **GameEffect** entries attach to **Items**, **Qualities**, **Spells**, **Complex Forms**, and
-  **Adept Powers** — never stored directly on base attributes. Each entry's **Scope** is resolved
-  relative to its own source's position in the Item ownership tree, independent of what the
-  effect modifies (see `docs/adr/0009-game-effect-scope-resolution.md`)
+- **GameEffect** entries attach to a subset of **Entities** — Items, Qualities, Spells, Complex
+  Forms, and Adept Powers, not Spirits/Sprites/Agents — never stored directly on base attributes.
+  Each entry's **Scope** is resolved relative to its own source's position in the Item ownership
+  tree, independent of what the effect modifies (see `docs/adr/0011-game-effect-scope-resolution.md`)
 - **Karma** and **Build Points** are separate economies: BP is creation-only, Karma is
   post-creation
 - An **Awakening** of Adept, Magician, or Mystic Adept unlocks the **Magic** special attribute;

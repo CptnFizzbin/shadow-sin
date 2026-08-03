@@ -4,7 +4,8 @@ We're redesigning item cards to be composable, slot-based components that balanc
 
 ## Status
 
-accepted
+superseded by ADR-0010 (the slot mechanism specifically; the density/wrapper/tap-to-detail
+decisions below are unaffected)
 
 ## Context
 

@@ -9,7 +9,7 @@
 is currently no canonical layer that aggregates all active effects and applies them to derived
 stats — components resolve effects ad-hoc via selector hooks, each re-implementing its own
 target-filtering. The core resolution architecture is now settled (see **Resolved Design** below,
-and `docs/adr/0009-game-effect-scope-resolution.md`); stacking rules and a few source types
+and `docs/adr/0011-game-effect-scope-resolution.md`); stacking rules and a few source types
 remain open.
 
 **Known sources of GameEffects** — multiple sources can affect the same derived stat:
@@ -124,7 +124,7 @@ interface GameEffectData {
 
 ## Related Features
 
-- [`docs/adr/0009-game-effect-scope-resolution.md`](../adr/0009-game-effect-scope-resolution.md)
+- [`docs/adr/0011-game-effect-scope-resolution.md`](../adr/0011-game-effect-scope-resolution.md)
   — the core architectural decision this doc's Resolved Design section summarizes
 - [`docs/features/0005-matrix-programs.md`](./0005-matrix-programs.md) — Program ratings feeding
   into dice pools
