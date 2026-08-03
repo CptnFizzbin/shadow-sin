@@ -292,6 +292,15 @@ DOM global `Node` (same naming-collision class as `RunnerData` vs. `CharacterDat
 `RunnerData` above).
 _Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
 
+**Node Type** (`General` | `Nexus`):
+Determines a `MatrixNode`'s **Processor Limit** formula and nothing else — no other mechanical
+difference between the two.
+
+**Processor Limit**:
+The cap on programs a `MatrixNode` can run simultaneously, mirroring the existing rule that a
+Commlink's loaded programs are capped by its System rating (`docs/features/0005-matrix-programs.md`).
+Formula depends on **Node Type**: `General` = System rating; `Nexus` = System rating × 3.
+
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
 **System**, **Firewall**, and **Signal** — that substitute for attributes in matrix tests.
