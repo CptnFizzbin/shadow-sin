@@ -184,21 +184,12 @@ A matrix being compiled by a Technomancer. Analogous to a Spirit in the matrix d
 own stat block, Level rating, and Services owed. Requires a **StatusSheet**.
 _Avoid_: creature, critter (same reasoning as Spirit)
 
-**Agent**:
-An autonomous matrix construct, structurally analogous to a Spirit/Sprite (its own Entity, own
-`rating`, requires a **StatusSheet**) rather than an owned `Item` like **Program**, even though a
-Player interacts with both the same way (loaded onto a device, run as a copy on a `MatrixNode`).
-Its single `rating` doubles as Pilot, System, Firewall, and the Skill side of any dice pool it
-rolls — an Agent has no separate skill list. Its Response and Signal are never its own; they're
-resolved live from whichever `MatrixNode` it's currently running on (see **Entity Matrix
-Presence**).
-_Avoid_: bot, program (Program is a distinct, simpler Item type — see below)
-
 **Entity**:
 The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
 stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
-**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, **Agent**, and
-**MatrixNode**.
+**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and
+**MatrixNode**. (**Program** and **Agent** are `Item` subtypes, not separate entries in this
+list — see below.)
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
@@ -337,7 +328,7 @@ opposed to simulating hacking tests or matrix combat. Holds:
 - `knownNodes: KnownNode[]` — every `MatrixNode` the Runner currently has some access to
 - `activeNodeId` — which Known Node the Runner is presently working in; every other Known Node is
   informally a "subscription" (nothing marks them separately — non-active is the only distinction)
-- `runningInstances` — running copies of Programs/Agents (see **Running Instance**)
+- `activePrograms` — running copies of Programs/Agents (see **ActiveProgram**, below)
 
 Cleared by the Player-triggered **Clear Matrix Session** action (start of a new run), not
 automatically. `RunnerData.gameState` is a new top-level namespace intended to eventually hold
@@ -350,15 +341,9 @@ field) since a Known Node only ever exists inside **Matrix Game State** today.
 _Avoid_: Subscribed Node (there's no separate subscribed-nodes list — every Known Node other than
 the Active Node is one)
 
-**Running Instance**:
-A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
-owned Program/Agent Entity and the Known Node hosting it. Multiple copies of the same source can
-run at once; each consumes one **Processor Limit** slot on its Node. Requires at least `user`
-**Access Level** on that Node to start.
-
 **Clear Matrix Session**:
 A Player-triggered action (parallel to **End of Month**) that wipes `gameState.matrix` —
-`knownNodes` and `runningInstances` — at the start of a new run.
+`knownNodes` and `activePrograms` — at the start of a new run.
 
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
@@ -368,8 +353,25 @@ Stored as an Item with `ItemType.device`. May have Programs loaded onto it as At
 **Program**:
 Software loaded onto a Commlink. Used in matrix tests the same way Active Skills are used in
 physical tests — e.g. `Response + Analyze` forms a valid dice pool. A Commlink has a limited
-number of program slots determined by its System rating.
+number of program slots determined by its System rating. An owned Program can be run as an
+**ActiveProgram** on a `MatrixNode` (see below).
 _Avoid_: app, software (software is the broader category; Program is the matrix-test-relevant subtype)
+
+**Agent**:
+An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
+construct, not just loaded software. Like **Vehicle**, being an `Item` doesn't exclude requiring
+a **StatusSheet**: Agent gets one, the same way Vehicle does. Its single `rating` doubles as
+Pilot, System, Firewall, and the Skill side of any dice pool it rolls — an Agent has no separate
+skill list. Its Response and Signal are never its own; they're resolved live from whichever
+`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**).
+_Avoid_: bot
+
+**ActiveProgram**:
+A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
+owned Program/Agent `Item` and the Known Node hosting it. Multiple copies of the same source can
+run at once; each consumes one **Processor Limit** slot on its Node. Requires at least `user`
+**Access Level** on that Node to start.
+_Avoid_: Running Instance (earlier working name)
 
 **Matrix Test**:
 A dice pool test using a Commlink stat (Response, System, Firewall, or Signal) combined with a
