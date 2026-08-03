@@ -264,6 +264,13 @@ concentration. Linked to a specific spell via `slottedSpellId`; the spell catego
 slotted spell still appears in the Runner's spell list.
 _Avoid_: spell holder
 
+**MatrixNode** _(displayed as "Node")_:
+A hackable system in the matrix — a corp server, security system, or other host a Runner can
+connect to and gain an account on. User-facing copy and rulebook references say "Node"; the code
+identifier is `MatrixNode` to avoid colliding with the DOM global `Node` (same naming-collision
+class as `RunnerData` vs. `CharacterData` — see `RunnerData` above).
+_Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
+
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
 **System**, **Firewall**, and **Signal** — that substitute for attributes in matrix tests.
