@@ -320,16 +320,45 @@ Processor Limit, rounded down) drops the Node's effective Response by 1. E.g. Pr
 Response −1 at 3 programs running, −2 at 6, −3 at 9.
 
 **Subscription Limit**:
-The cap on how many `MatrixNode`s a Runner can hold a **Subscribed Node** entry for at once.
-Equal to the System rating of whichever Commlink the Runner is currently running their persona
-from.
+The cap on how many `MatrixNode`s a Runner can hold a **Known Node** entry for at once (see
+**Matrix Game State**). Equal to the System rating of whichever Commlink the Runner is currently
+running their persona from.
 
-**Subscribed Node**:
-A quick-reference entry in a Runner's matrix game state for a `MatrixNode` they currently have
-access to — the Node's ratings and the access level the Runner holds there. Player-maintained
-(not derived from simulating a hacking test this pass); cleared at the start of a new run. One
-Subscribed Node can be flagged as the **Active Node** — the one the Runner is currently working
-in.
+**Access Level** (`none` | `user` | `security` | `admin`):
+How much access a Runner has on a given `MatrixNode`. Contributes to the (display-only) hacking
+threshold as an offset: `user` +0, `security` +3, `admin` +6; `none` means no account at all yet.
+Player-set directly on a **Known Node** entry — this pass doesn't simulate the hacking test
+itself (Hacking on the Fly / Probing), just tracks the outcome and displays the threshold
+(`Firewall + (System if Probing) + Access Level offset`) as a reference number.
+
+**Matrix Game State** (`RunnerData.gameState.matrix`):
+The Player-facing matrix session-management state — the helper-tools scope of this feature, as
+opposed to simulating hacking tests or matrix combat. Holds:
+- `knownNodes: KnownNode[]` — every `MatrixNode` the Runner currently has some access to
+- `activeNodeId` — which Known Node the Runner is presently working in; every other Known Node is
+  informally a "subscription" (nothing marks them separately — non-active is the only distinction)
+- `runningInstances` — running copies of Programs/Agents (see **Running Instance**)
+
+Cleared by the Player-triggered **Clear Matrix Session** action (start of a new run), not
+automatically. `RunnerData.gameState` is a new top-level namespace intended to eventually hold
+other in-play state beyond matrix (nothing else lives there yet).
+
+**Known Node**:
+`MatrixNodeData & { accessLevel: AccessLevel }` — a `MatrixNode` the Runner currently has some
+access to, flattened with the Access Level onto one record (not wrapped in a separate `node`
+field) since a Known Node only ever exists inside **Matrix Game State** today.
+_Avoid_: Subscribed Node (there's no separate subscribed-nodes list — every Known Node other than
+the Active Node is one)
+
+**Running Instance**:
+A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
+owned Program/Agent Entity and the Known Node hosting it. Multiple copies of the same source can
+run at once; each consumes one **Processor Limit** slot on its Node. Requires at least `user`
+**Access Level** on that Node to start.
+
+**Clear Matrix Session**:
+A Player-triggered action (parallel to **End of Month**) that wipes `gameState.matrix` —
+`knownNodes` and `runningInstances` — at the start of a new run.
 
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
