@@ -110,8 +110,7 @@ questions together once Details work actually starts.
   rejected: doesn't scale to Entity categories with mostly-disjoint field sets, and slots don't
   compose/reuse across tiers.
 - **Standalone components with no compound namespace at all** — rejected: loses the
-  `ItemCard.`-style discoverability we want when composing a new type-specific card.
-  Considered as an intermediate step during this discussion.
+  `ItemCard.`-style discoverability wanted when composing a new type-specific card.
 - **One identifier for both the dispatcher and the compound namespace** — rejected: creates an
   unavoidable circular import once the dispatcher must import every typed card and typed cards
   must import the compound namespace from the same module.
