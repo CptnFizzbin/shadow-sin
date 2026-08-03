@@ -166,9 +166,9 @@ _Avoid_: luck points, hero points (use Edge)
 A rated capability tied to an attribute. Comes in three flavours: **Active** (used in tests),
 **Knowledge** (background expertise), and **Language**. Active skills may have a
 **Specialization** (+2 dice for that narrow focus). Knowledge and Language skills are free-text,
-Runner-authored entries (no fixed list like Active skills) and carry their own `id` (UUID)
-independent of their display `name`, so a `GameEffect` **Scope** or **Pool Id** targeting one
-specific entry survives the Player renaming it later.
+Player-entered entries (no fixed list like Active skills) and carry their own identity independent
+of their display name, so a `GameEffect` targeting one specific entry survives the Player renaming
+it later.
 
 **Quality**:
 A positive or negative trait a Runner possesses (e.g. High Pain Tolerance, Uneducated). Purchased
@@ -383,32 +383,28 @@ Powers**, drugs, matrix connection mode (AR / Hot-sim VR / Cold-sim VR), and pot
 _Avoid_: modifier, bonus (too generic)
 
 **Granted Effects**:
-The `GameEffect` entries a single source (an Item, Quality, Spell, ...) directly carries in its
-own `effects` field. Contrast with **Applied Effects**. Read via `selectGameEffectsGrantedBy`.
+The `GameEffect` entries a single source (an Item, Quality, Spell, ...) directly carries as its
+own. Contrast with **Applied Effects**.
 
 **Applied Effects**:
-The `GameEffect` entries that resolve onto a given target (an Item, or the Runner itself) once
-every source's **Scope** has been evaluated relative to that source's own position in the item
-tree. Read via `selectGameEffectsAppliedTo(target: UUID | "runner")` — replaces the older pattern
-of each dice-pool hook independently calling `useGameEffects(type)` and filtering by target
-itself. See `docs/adr/0009-game-effect-scope-resolution.md`.
+The `GameEffect` entries that actually resolve onto a given target — an Item, or the Runner
+itself — once every source's **Scope** has been evaluated relative to that source's own position
+in the item tree. See `docs/adr/0009-game-effect-scope-resolution.md`.
 _Avoid_: "effects for X" (ambiguous with Granted Effects — always say "applied to" or "granted
 by")
 
 **Scope**:
 Declares which item instance(s) a `GameEffect` reaches, independent of *what* it modifies.
-`{ relativeTo?: "self" | "root" | "parent" | "children" | "siblings" | "runner" (default
-"self"), relation?: "ancestors" | "descendants", itemType?: ItemType | ItemType[] }`. Omitting
-`scope` entirely (not just `relativeTo`) resolves the same way — `self` for an Item-attached
-effect. `relation`
-expands outward from `relativeTo` and always includes the starting position (a lone `descendants`
-means "this item and everything under it"). `root` climbs to the topmost item with no parent
-before applying `relation`, letting one item's effect reach its siblings (e.g. a drone's autosoft
-reaching the weapons also mounted on that drone via `root+descendants`). `runner` is the only
-valid `relativeTo` for non-Item sources (Qualities, Spells, Complex Forms, Powers), since those
-aren't part of the Item ownership tree.
-_Avoid_: `target` for the `relativeTo` field (collides with `DicePoolModEffect.target`, which
-means something unrelated — see **Pool Id**)
+Defaults to reaching only the item that grants the effect — or the Runner, for effects not
+attached to an Item. Can instead be widened to that item's parent, children, or siblings, or to
+its full chain of ancestors or descendants; or widened by first climbing to the top of its
+ownership chain, so one item's effect can reach its siblings too (e.g. a drone's autosoft
+reaching the other weapons mounted on that same drone, not just its own descendants — it has
+none). Can also be narrowed to a specific kind of item. The Runner itself is the only valid
+starting point for effects not attached to an Item (Qualities, Spells, Complex Forms, Powers),
+since those aren't part of the Item ownership tree.
+_Avoid_: "target" for describing which item(s) a Scope reaches — a `GameEffect`'s `target`
+means something unrelated (see **Pool Id**)
 
 **Source**:
 A reference to the rulebook and page number where a rule or item is defined
@@ -436,22 +432,20 @@ _Avoid_: optional rule (reserve for published sourcebook variants — see above)
 **Dice Pool**:
 The number of d6s rolled for a test. Assembled from Attribute + Skill (or Program for matrix
 tests) plus any active **GameEffect** modifiers. The Wound Modifier subtracts from the pool. Every
-Dice Pool carries a stable **Pool Id** so `dicePoolMod` GameEffects can target it.
+Dice Pool carries a stable **Pool Id** so a GameEffect can target it.
 
 **Pool Id**:
-A dot-separated, singular-segment id identifying a Dice Pool's category, e.g.
-`skill.active.dataSearch`. Forms a two-level tree: a hand-authored branch shape (e.g.
-`skill.active`, `skill.knowledge`, `combat.attack`) with leaves either generated from an existing
-canonical list (active skills, from `skillList`) or, for free-text branches with no fixed list
-(Knowledge Skills, Languages), generated per-Runner from that Runner's own entries — which is why
-those entries need a stable id independent of their display name (see **Knowledge Skill**). The
-special leaf `_all_` targets every leaf under a free-text branch at once (e.g.
-`skill.knowledge._all_` for "+1 to all Knowledge skill tests"). Id segments stay singular
-(`skill.`, not `skills.`) to match the existing runtime ids in `skillDicePools.ts`; the UI
-drill-down picker built over this tree uses plural, human-readable group labels ("Skills / Active
-Skills / Data Search") that don't need to match the id's spelling or case.
-_Avoid_: `target` used bare in conversation without saying "pool" (collides with **Scope**'s
-`relativeTo` — see that entry)
+A stable identifier for a Dice Pool's category — what kind of test it is — independent of any
+specific item. Organized as a tree with a hand-authored branch shape (e.g. Active Skills,
+Knowledge Skills, Attack); branches backed by a fixed list (like Active Skills) generate one leaf
+per entry in that list, while free-text branches (Knowledge Skills, Languages, which a Player
+types in themselves rather than picking from a fixed list) generate one leaf per entry the Player
+has actually added — which is why those entries need an identity independent of their display
+name (see **Skill**). A free-text branch can also be targeted as a whole (e.g. "all Knowledge
+skill tests"). The tree's grouped, human-readable labels ("Skills / Active Skills / Data Search")
+are for browsing only and don't need to match the identifier's own internal form.
+_Avoid_: "target" used bare without saying "pool" — conflicts with **Scope**, a different concept
+that also answers a "which" question
 
 **Hit**:
 A die result of 5 or 6. Hits are counted against a **Threshold** to determine success.

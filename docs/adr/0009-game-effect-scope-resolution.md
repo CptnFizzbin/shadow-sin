@@ -27,7 +27,7 @@ consumer has to re-implement tree-walking.
   Rejected — conflates two unrelated concerns into one string that every consumer would need to
   parse, instead of two independently-typed fields.
 - **Flat enum of every concrete Pool Id**, including one member per Skill/Item instance.
-  Rejected — combinatorially unbounded (one id per Runner-authored Knowledge Skill, per mounted
+  Rejected — combinatorially unbounded (one id per Player-entered Knowledge Skill, per mounted
   weapon, ...); the tree only enumerates the *branch shape*, generating instance leaves from
   existing canonical lists (`skillList`) or per-Runner data at read time instead.
 
