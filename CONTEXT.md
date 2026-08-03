@@ -264,12 +264,25 @@ concentration. Linked to a specific spell via `slottedSpellId`; the spell catego
 slotted spell still appears in the Runner's spell list.
 _Avoid_: spell holder
 
-**MatrixNode** _(displayed as "Node")_:
-A hackable system in the matrix — a corp server, security system, or other host a Runner can
-connect to and gain an account on. User-facing copy and rulebook references say "Node"; the code
-identifier is `MatrixNode` to avoid colliding with the DOM global `Node` (same naming-collision
-class as `RunnerData` vs. `CharacterData` — see `RunnerData` above).
-_Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
+**MatrixAttrs**:
+The four matrix-test stats — Firewall, Response, Signal, System — that substitute for Attributes
+in Matrix Tests (see **Commlink**, **Matrix Test**). Added as members of the same `AttributeKey`
+enum used for Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests
+already mirror Attribute + Skill tests structurally. `RunnerData.attributes` and any
+`MatrixAttrs`-bearing bag are both `Partial<Record<AttributeKey, number>>`; `selectAttrBase` and
+`selectAttrValue` return `0` for a key that's absent or not computable for that subject (e.g.
+asking a Runner for Firewall).
+
+**Entity Matrix Presence** _(`EntityData.matrix?: { attr: Partial<MatrixAttrs> }`)_:
+Almost every **Entity** — not just `Item` — can be present in the matrix. By default this is a
+"simplified" presence: all four `MatrixAttrs` resolve to the Entity's own **Rating**, with no
+separate data stored (avoids a value that could drift out of sync after the Entity's Rating
+changes). Setting one or more keys in `attr` overrides just those stats for that Entity — a
+"fully specced" presence. **Commlink** is the canonical fully-specced case: its four stats are
+independently set via `attr`, not derived from a Rating.
+_Avoid_: MatrixNode, Node (as code identifiers for this field — reserved for user-facing copy
+only; see below for the still-open question of whether standalone hackable hosts are a separate
+type from this field)
 
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
