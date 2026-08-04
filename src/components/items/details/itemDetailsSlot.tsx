@@ -33,8 +33,8 @@ export type { ItemDetailsTypeProps } from "./itemDetails.Type.tsx"
  * typed details view wrapping it). Parallel to `ItemCardSlot`, but not built
  * on top of it — card slots are condensed for space, ItemDetails slots
  * render the same concepts at full fidelity (see ADR-0009). Kept separate
- * from the `ItemDetails` dispatcher so typed details views can depend on
- * slots without depending on `ItemDetails` itself, which would otherwise
+ * from the `AnyItemDetails` dispatcher so typed details views can depend on
+ * slots without depending on `AnyItemDetails` itself, which would otherwise
  * import every typed details view and create a cycle.
  *
  * `ItemDetailsRoot` renders `Title`/`Type`/`Source`/`Availability`/

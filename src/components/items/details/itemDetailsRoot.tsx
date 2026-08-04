@@ -39,7 +39,7 @@ export interface ItemDetailsRootProps extends PropsWithChildren {
  * children to override the field auto-rendered from `item`/`type`; `Rating`
  * and `Content` are purely additive, with no default rendering of their own.
  * Typed details views (e.g. `WeaponItemDetails`) wrap this; the
- * `ItemDetails` dispatcher falls back to this directly for item types
+ * `AnyItemDetails` dispatcher falls back to this directly for item types
  * without a typed details view.
  */
 export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({

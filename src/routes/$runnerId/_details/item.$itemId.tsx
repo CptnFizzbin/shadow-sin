@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import { RiArrowLeftLine } from "@remixicon/react"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
-import { ItemDetails } from "#/components/items/details/itemDetails.tsx"
+import { AnyItemDetails } from "#/components/items/details/anyItemDetails.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
@@ -47,7 +47,7 @@ function ItemDetailsRoute() {
       )}
 
       {item && (
-        <ItemDetails
+        <AnyItemDetails
           item={item}
           onRemove={() => {
             dispatch(Actions.gear.removeItem({ id: item.id }))

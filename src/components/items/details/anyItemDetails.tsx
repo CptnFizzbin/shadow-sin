@@ -27,7 +27,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 
-export interface ItemDetailsProps {
+export interface AnyItemDetailsProps {
   item: ItemData
   /**
    * Remove action for item types without a typed details view (the
@@ -59,7 +59,7 @@ export interface ItemDetailsProps {
  * `AnyItemCard`. Only the fallback path needs one supplied here, via the
  * generic `useItemFormDialog()`.
  */
-export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
+export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
   const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
 
