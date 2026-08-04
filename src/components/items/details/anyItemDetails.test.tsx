@@ -10,7 +10,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 
-import { ItemDetails } from "./itemDetails.tsx"
+import { AnyItemDetails } from "./anyItemDetails.tsx"
 
 const weapon: WeaponData = {
   id: "00000000-0000-0000-0000-000000000001",
@@ -24,9 +24,9 @@ const weapon: WeaponData = {
 const runnerStoreWithWeapon = () =>
   new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [weapon.id]: weapon } })))
 
-describe("ItemDetails", () => {
+describe("AnyItemDetails", () => {
   it("dispatches weapons to WeaponItemDetails", () => {
-    renderWithProviders(<ItemDetails item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
+    renderWithProviders(<AnyItemDetails item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.getByText("DV")).toBeDefined()
@@ -40,7 +40,7 @@ describe("ItemDetails", () => {
       itemType: ItemType.other,
     }
 
-    renderWithProviders(<ItemDetails item={item} />, {
+    renderWithProviders(<AnyItemDetails item={item} />, {
       runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [item.id]: item } }))),
     })
 

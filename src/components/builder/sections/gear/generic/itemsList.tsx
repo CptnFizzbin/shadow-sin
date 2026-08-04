@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack"
 import { RiAddLine } from "@remixicon/react"
 import type { FC } from "react"
 
-import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
+import { AnyItemCard } from "#/components/itemCard/anyItemCard.tsx"
 import { useItemFormDialog } from "#/components/items/dialogs/itemFormDialog.tsx"
 import { isNewItem } from "#/lib/stores/runner/gear/gearSlice.actions.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -43,7 +43,7 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   return (
     <Stack sx={{ gap: 1 }}>
       {topLevelItems.map((item) => (
-        <ItemDataCard
+        <AnyItemCard
           key={item.id}
           item={item}
           onOpen={() => handleEdit(item)}

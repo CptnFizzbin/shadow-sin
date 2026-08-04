@@ -3,12 +3,13 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
+
+import { ArmorDataCard } from "./armorDataCard.tsx"
 
 export const EquippedArmorSection: FC = () => {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
@@ -45,7 +46,7 @@ export const EquippedArmorSection: FC = () => {
         )}
       </Stack>
       {equippedArmor.map((armor) => (
-        <ItemDataCard key={armor.id} item={armor} />
+        <ArmorDataCard key={armor.id} armor={armor} />
       ))}
     </Stack>
   )
