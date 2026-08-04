@@ -187,8 +187,9 @@ _Avoid_: creature, critter (same reasoning as Spirit)
 **Entity**:
 The umbrella term for anything with a stat block, ratings, or effects it can contribute — a
 stat-bearing thing, not just carried equipment. Covers **Item**, **Quality**, **Spell**,
-**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and **Agent**
-_(planned)_.
+**Complex Form**, **Adept Power**, **Drug** _(planned)_, **Spirit**, **Sprite**, and
+**MatrixNode**. (**Program** and **Agent** are `Item` subtypes, not separate entries in this
+list — see below.)
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
@@ -264,6 +265,86 @@ concentration. Linked to a specific spell via `slottedSpellId`; the spell catego
 slotted spell still appears in the Runner's spell list.
 _Avoid_: spell holder
 
+**MatrixAttrs**:
+The four matrix-test stats — Firewall, Response, Signal, System — that substitute for Attributes
+in Matrix Tests (see **Commlink**, **Matrix Test**). Added as members of the same `AttributeKey`
+enum used for Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests
+already mirror Attribute + Skill tests structurally. `RunnerData.attributes` and any
+`MatrixAttrs`-bearing bag are both `Partial<Record<AttributeKey, number>>`; `selectAttrBase` and
+`selectAttrValue` return `0` for a key that's absent or not computable for that subject (e.g.
+asking a Runner for Firewall).
+
+**Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
+Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a
+"simplified" presence: all four `MatrixAttrs` resolve to the Entity's own **Rating**, with no
+separate data stored (avoids a value that could drift out of sync after the Entity's Rating
+changes). `matrix: MatrixStats` (a `Partial<MatrixAttrs>`) is a "fully specced" presence — set
+keys override that stat, unset keys still fall back to Rating. `undefined` means the Entity has
+no matrix presence at all. **Commlink** is the canonical fully-specced case. **MatrixNode**
+(below) is always fully specced, by definition.
+
+Response and Signal are a special case for anything *running on* a `MatrixNode` (a loaded
+**Program**, a running **Agent**): those two stats are never stored on the running thing itself —
+they're resolved live from whichever Node currently hosts it. Only System/Firewall (and, for
+Agent, its Pilot/Skill use) come from the running thing's own rating.
+
+**MatrixNode** _(displayed as "Node")_:
+A hackable system in the matrix — a corp server, security system, or other host a Runner can
+connect to and gain an account on. It is itself an **Entity** (added to the list under
+**Entity**, below), not a field bolted onto some other Entity — its `matrix` is always a
+`MatrixStats` value, since being a matrix presence is its entire purpose. User-facing copy and
+rulebook references say "Node"; the code identifier is `MatrixNode` to avoid colliding with the
+DOM global `Node` (same naming-collision class as `RunnerData` vs. `CharacterData` — see
+`RunnerData` above).
+_Avoid_: Node (as a code identifier — reserved for user-facing copy only), Host
+
+**Node Type** (`General` | `Nexus`):
+Determines a `MatrixNode`'s **Processor Limit** formula and nothing else — no other mechanical
+difference between the two.
+
+**Processor Limit**:
+The cap on programs a `MatrixNode` can run simultaneously, mirroring the existing rule that a
+Commlink's loaded programs are capped by its System rating (`docs/features/0005-matrix-programs.md`).
+Formula depends on **Node Type**: `General` = System rating; `Nexus` = System rating × 3.
+Exceeding it isn't a hard block — every multiple of the Processor Limit reached (running count ÷
+Processor Limit, rounded down) drops the Node's effective Response by 1. E.g. Processor Limit 3:
+Response −1 at 3 programs running, −2 at 6, −3 at 9.
+
+**Subscription Limit**:
+The cap on how many `MatrixNode`s a Runner can hold a **Known Node** entry for at once (see
+**Matrix Game State**). Equal to the System rating of whichever Commlink the Runner is currently
+running their persona from.
+
+**Access Level** (`none` | `user` | `security` | `admin`):
+How much access a Runner has on a given `MatrixNode`. Contributes to the (display-only) hacking
+threshold as an offset: `user` +0, `security` +3, `admin` +6; `none` means no account at all yet.
+Player-set directly on a **Known Node** entry — this pass doesn't simulate the hacking test
+itself (Hacking on the Fly / Probing), just tracks the outcome and displays the threshold
+(`Firewall + (System if Probing) + Access Level offset`) as a reference number.
+
+**Matrix Game State** (`RunnerData.gameState.matrix`):
+The Player-facing matrix session-management state — the helper-tools scope of this feature, as
+opposed to simulating hacking tests or matrix combat. Holds:
+- `knownNodes: KnownNode[]` — every `MatrixNode` the Runner currently has some access to
+- `activeNodeId` — which Known Node the Runner is presently working in; every other Known Node is
+  informally a "subscription" (nothing marks them separately — non-active is the only distinction)
+- `activePrograms` — running copies of Programs/Agents (see **ActiveProgram**, below)
+
+Cleared by the Player-triggered **Clear Matrix Session** action (start of a new run), not
+automatically. `RunnerData.gameState` is a new top-level namespace intended to eventually hold
+other in-play state beyond matrix (nothing else lives there yet).
+
+**Known Node**:
+`MatrixNodeData & { accessLevel: AccessLevel }` — a `MatrixNode` the Runner currently has some
+access to, flattened with the Access Level onto one record (not wrapped in a separate `node`
+field) since a Known Node only ever exists inside **Matrix Game State** today.
+_Avoid_: Subscribed Node (there's no separate subscribed-nodes list — every Known Node other than
+the Active Node is one)
+
+**Clear Matrix Session**:
+A Player-triggered action (parallel to **End of Month**) that wipes `gameState.matrix` —
+`knownNodes` and `activePrograms` — at the start of a new run.
+
 **Commlink**:
 A Runner's personal matrix device and network hub. Has four hardware stats — **Response**,
 **System**, **Firewall**, and **Signal** — that substitute for attributes in matrix tests.
@@ -272,8 +353,25 @@ Stored as an Item with `ItemType.device`. May have Programs loaded onto it as At
 **Program**:
 Software loaded onto a Commlink. Used in matrix tests the same way Active Skills are used in
 physical tests — e.g. `Response + Analyze` forms a valid dice pool. A Commlink has a limited
-number of program slots determined by its System rating.
+number of program slots determined by its System rating. An owned Program can be run as an
+**ActiveProgram** on a `MatrixNode` (see below).
 _Avoid_: app, software (software is the broader category; Program is the matrix-test-relevant subtype)
+
+**Agent**:
+An `Item` subtype of **Program** (`Entity → Item → Program → Agent`) — an autonomous matrix
+construct, not just loaded software. Like **Vehicle**, being an `Item` doesn't exclude requiring
+a **StatusSheet**: Agent gets one, the same way Vehicle does. Its single `rating` doubles as
+Pilot, System, Firewall, and the Skill side of any dice pool it rolls — an Agent has no separate
+skill list. Its Response and Signal are never its own; they're resolved live from whichever
+`MatrixNode` currently hosts it as an **ActiveProgram** (see **Entity Matrix Presence**).
+_Avoid_: bot
+
+**ActiveProgram**:
+A running copy of a Program or Agent on a `MatrixNode` — `{ sourceId, nodeId }`, referencing the
+owned Program/Agent `Item` and the Known Node hosting it. Multiple copies of the same source can
+run at once; each consumes one **Processor Limit** slot on its Node. Requires at least `user`
+**Access Level** on that Node to start.
+_Avoid_: Running Instance (earlier working name)
 
 **Matrix Test**:
 A dice pool test using a Commlink stat (Response, System, Firewall, or Signal) combined with a

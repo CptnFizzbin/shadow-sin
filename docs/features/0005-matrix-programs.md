@@ -27,8 +27,10 @@ and matrix test dice pool calculations are not yet implemented.
       structure, or use a distinct formula?
 - [ ] **Matrix test UI** — where does a Player roll a matrix test? On the Commlink's StatusSheet,
       or inline on the main Viewer?
-- [ ] **GameEffect integration** — should Program ratings feed into the GameEffect system as
-      `dicePoolMod` entries, or does the matrix test system use its own resolver?
+- [x] **GameEffect integration** — resolved by `docs/features/0014-matrix-interactions.md`:
+      `Response`/`System`/`Firewall`/`Signal` are literal `AttributeKey` entries now, so Matrix
+      Tests reuse the existing Attribute/`GameEffect` dice-pool machinery rather than a separate
+      resolver. The dice pool computation itself is still not implemented.
 
 ## Constraints
 
@@ -57,3 +59,6 @@ and matrix test dice pool calculations are not yet implemented.
   StatusSheet (matrix damage track lives here)
 - [`docs/features/0006-game-effect-resolution-model.md`](./0006-game-effect-resolution-model.md)
   — how Program ratings feed into dice pools
+- [`docs/features/0014-matrix-interactions.md`](./0014-matrix-interactions.md) — Nodes, Agents,
+  and the Matrix tab helper tools; establishes the shared `MatrixAttrs`/`AttributeKey` plumbing
+  this feature's dice pools will run on
