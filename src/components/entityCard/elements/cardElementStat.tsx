@@ -17,13 +17,14 @@ export interface CardElementStatProps {
   type?: CardElementStatType
 }
 
-const typeChipProps = {
-  damage: { color: "secondary" },
-  modifier: { color: "info" },
-  rating: { color: "primary" },
-  warning: { color: "warning" },
-  forbidden: { color: "error" },
-} satisfies Partial<Record<CardElementStatType, Partial<Omit<ChipProps, "label">>>>
+const typeChipColor = {
+  damage: "secondary",
+  modifier: "info",
+  rating: "primary",
+  restriction: undefined,
+  warning: "warning",
+  forbidden: "error",
+} satisfies Record<CardElementStatType, ChipProps["color"]>
 
 /**
  * Stat/restriction chip element. `type` drives chip color; "restriction" always renders
@@ -31,11 +32,9 @@ const typeChipProps = {
  */
 export const CardElementStat: FC<CardElementStatProps> = ({ label, value, type }) => {
   const displayLabel = type === "restriction" || !label ? String(value) : `${label}: ${value}`
-  const chipProps: Partial<Omit<ChipProps, "label">> | undefined = type
-    ? (typeChipProps as Partial<Record<CardElementStatType, Partial<Omit<ChipProps, "label">>>>)[type]
-    : undefined
+  const color = type ? typeChipColor[type] : undefined
 
-  return <StatChip label={displayLabel} {...chipProps} />
+  return <StatChip label={displayLabel} color={color} />
 }
 
 CardElementStat.displayName = "EntityCard.Stat"
