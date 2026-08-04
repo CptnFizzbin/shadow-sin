@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { EntityCardLayoutFooter } from "./entityCardLayoutFooter.tsx"
+import { EntityCardLayoutFooterRow } from "./entityCardLayoutFooterRow.tsx"
 
-describe("EntityCardLayoutFooter", () => {
+describe("EntityCardLayoutFooterRow", () => {
   it("renders its children", () => {
-    render(<EntityCardLayoutFooter>SR4A p.427</EntityCardLayoutFooter>, { wrapper: ThemeWrapper })
+    render(<EntityCardLayoutFooterRow>SR4A p.427</EntityCardLayoutFooterRow>, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("SR4A p.427")).toBeDefined()
   })

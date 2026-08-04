@@ -9,16 +9,16 @@ describe("EntityCard", () => {
   it("renders its Layout regions with content elements inside them", () => {
     render(
       <>
-        <EntityCard.Layout.Header>
+        <EntityCard.Layout.HeaderRow>
           <EntityCard.Title title="Ares Predator V" />
-        </EntityCard.Layout.Header>
-        <EntityCard.Layout.Body>
+        </EntityCard.Layout.HeaderRow>
+        <EntityCard.Layout.BodyRow>
           <EntityCard.Rating value={4} />
           <EntityCard.Stat label="DV" value="4P" type="damage" />
-        </EntityCard.Layout.Body>
-        <EntityCard.Layout.Footer>
+        </EntityCard.Layout.BodyRow>
+        <EntityCard.Layout.FooterRow>
           <EntityCard.Source source={{ book: "SR4A", page: 427 }} />
-        </EntityCard.Layout.Footer>
+        </EntityCard.Layout.FooterRow>
       </>,
       { wrapper: ThemeWrapper },
     )
@@ -30,7 +30,7 @@ describe("EntityCard", () => {
   })
 
   it("keeps Layout separate from the top-level content elements", () => {
-    expect(Object.keys(EntityCard.Layout).sort()).toEqual(["Body", "Footer", "Header"])
+    expect(Object.keys(EntityCard.Layout).sort()).toEqual(["BodyRow", "FooterRow", "HeaderRow"])
     expect("Layout" in EntityCardElements).toBe(false)
   })
 

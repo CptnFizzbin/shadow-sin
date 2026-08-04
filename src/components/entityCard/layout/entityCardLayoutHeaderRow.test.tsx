@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { EntityCardLayoutHeader } from "./entityCardLayoutHeader.tsx"
+import { EntityCardLayoutHeaderRow } from "./entityCardLayoutHeaderRow.tsx"
 
-describe("EntityCardLayoutHeader", () => {
+describe("EntityCardLayoutHeaderRow", () => {
   it("renders its children", () => {
-    render(<EntityCardLayoutHeader>Ares Predator V</EntityCardLayoutHeader>, { wrapper: ThemeWrapper })
+    render(<EntityCardLayoutHeaderRow>Ares Predator V</EntityCardLayoutHeaderRow>, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
   })

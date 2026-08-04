@@ -4,9 +4,9 @@ import { CardElementRating } from "./elements/cardElementRating.tsx"
 import { CardElementSource } from "./elements/cardElementSource.tsx"
 import { CardElementStat } from "./elements/cardElementStat.tsx"
 import { CardElementTitle } from "./elements/cardElementTitle.tsx"
-import { EntityCardLayoutBody } from "./layout/entityCardLayoutBody.tsx"
-import { EntityCardLayoutFooter } from "./layout/entityCardLayoutFooter.tsx"
-import { EntityCardLayoutHeader } from "./layout/entityCardLayoutHeader.tsx"
+import { EntityCardLayoutBodyRow } from "./layout/entityCardLayoutBodyRow.tsx"
+import { EntityCardLayoutFooterRow } from "./layout/entityCardLayoutFooterRow.tsx"
+import { EntityCardLayoutHeaderRow } from "./layout/entityCardLayoutHeaderRow.tsx"
 
 export type { CardElementActionProps } from "./elements/cardElementAction.tsx"
 export type { CardElementEffectsProps } from "./elements/cardElementEffects.tsx"
@@ -14,14 +14,14 @@ export type { CardElementRatingProps } from "./elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "./elements/cardElementSource.tsx"
 export type { CardElementStatProps, CardElementStatType } from "./elements/cardElementStat.tsx"
 export type { CardElementTitleProps } from "./elements/cardElementTitle.tsx"
-export type { EntityCardLayoutBodyProps } from "./layout/entityCardLayoutBody.tsx"
-export type { EntityCardLayoutFooterProps } from "./layout/entityCardLayoutFooter.tsx"
-export type { EntityCardLayoutHeaderProps } from "./layout/entityCardLayoutHeader.tsx"
+export type { EntityCardLayoutBodyRowProps } from "./layout/entityCardLayoutBodyRow.tsx"
+export type { EntityCardLayoutFooterRowProps } from "./layout/entityCardLayoutFooterRow.tsx"
+export type { EntityCardLayoutHeaderRowProps } from "./layout/entityCardLayoutHeaderRow.tsx"
 
 /**
  * Pure, dependency-free EntityCard content elements, flat — for composition contexts that want
- * the elements themselves without EntityCard's own grouping. Layout regions (Header/Body/Footer)
- * are a distinct concept, not part of this pool — see `EntityCard.Layout`.
+ * the elements themselves without EntityCard's own grouping. Layout regions (HeaderRow/BodyRow/
+ * FooterRow) are a distinct concept, not part of this pool — see `EntityCard.Layout`.
  */
 export const EntityCardElements = {
   Title: CardElementTitle,
@@ -34,13 +34,13 @@ export const EntityCardElements = {
 
 /**
  * EntityCard's structural regions, kept under `.Layout` so they read distinctly from the content
- * elements below (`EntityCard.Layout.Header` vs. `EntityCard.Title`) — every category tier
+ * elements below (`EntityCard.Layout.HeaderRow` vs. `EntityCard.Title`) — every category tier
  * (`ItemCard`, `SpiritCard`, ...) assembles these regions plus its own incremental elements.
  */
 const EntityCardLayout = {
-  Header: EntityCardLayoutHeader,
-  Body: EntityCardLayoutBody,
-  Footer: EntityCardLayoutFooter,
+  HeaderRow: EntityCardLayoutHeaderRow,
+  BodyRow: EntityCardLayoutBodyRow,
+  FooterRow: EntityCardLayoutFooterRow,
 }
 
 /**
