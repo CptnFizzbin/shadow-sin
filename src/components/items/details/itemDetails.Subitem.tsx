@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
+import { AnyItemCard } from "#/components/itemCard/anyItemCard.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
 export interface ItemDetailsSubitemProps {
@@ -10,13 +10,13 @@ export interface ItemDetailsSubitemProps {
 }
 
 /**
- * Attached-item row for ItemDetails. Renders the full nested ItemDataCard rather
+ * Attached-item row for ItemDetails. Renders the full nested AnyItemCard rather
  * than a one-line name — attachments are themselves complete Items with
  * their own id, so the higher-fidelity details context shows them as such
  * and lets each one drill into its own details page.
  */
 export const ItemDetailsSubitem: FC<ItemDetailsSubitemProps> = ({ item, onOpen }) => (
-  <ItemDataCard item={item} onOpen={onOpen} />
+  <AnyItemCard item={item} onOpen={onOpen} />
 )
 
 ItemDetailsSubitem.displayName = "ItemDetails.Subitem"

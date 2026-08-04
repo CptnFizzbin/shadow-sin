@@ -23,7 +23,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { ItemDataCardRoot } from "./itemDataCardRoot.tsx"
 
-export interface ItemDataCardProps {
+export interface AnyItemCardProps {
   item: ItemData
   /** When provided, the whole card becomes tappable/keyboard-activatable and navigates to the item's details page. */
   onOpen?: () => void
@@ -40,7 +40,7 @@ export interface ItemDataCardProps {
  * cards must depend on `ItemDataCardRoot`/`DataCard` instead of this file, or
  * importing it here would create a cycle.
  */
-export const ItemDataCard: FC<ItemDataCardProps> = ({ item, onOpen, onEdit, onRemove }) => {
+export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemove }) => {
   switch (item.itemType) {
     // The switch narrows `item.itemType`, not `item` itself, since ItemData
     // isn't a discriminated union of per-type interfaces; each case match

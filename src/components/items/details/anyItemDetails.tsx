@@ -27,7 +27,7 @@ import { ItemType } from "#/system/itemType.ts"
 
 import { ItemDetailsRoot } from "./itemDetailsRoot.tsx"
 
-export interface ItemDetailsProps {
+export interface AnyItemDetailsProps {
   item: ItemData
   /**
    * Remove action for item types without a typed details view (the
@@ -48,7 +48,7 @@ export interface ItemDetailsProps {
 /**
  * Renders the typed details view for `item.itemType`, falling back to
  * `ItemDetailsRoot` (common fields only, no type-specific slots) for item
- * types without one yet. Mirrors `ItemDataCard`'s dispatcher — this is the only
+ * types without one yet. Mirrors `AnyItemCard`'s dispatcher — this is the only
  * module allowed to depend on every typed details view; typed views must
  * depend on `ItemDetailsRoot`/`ItemDetailsSlot` instead of this file, or
  * importing it here would create a cycle.
@@ -56,10 +56,10 @@ export interface ItemDetailsProps {
  * Typed views own their own edit-dialog wiring internally (each opens its
  * matching `use*FormDialog()` hook), the same way they already own their own
  * removal — there's no list context above them to supply it, unlike
- * `ItemDataCard`. Only the fallback path needs one supplied here, via the
+ * `AnyItemCard`. Only the fallback path needs one supplied here, via the
  * generic `useItemFormDialog()`.
  */
-export const ItemDetails: FC<ItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
+export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemoved, onOpenAttachment }) => {
   const dispatch = useRunnerStoreDispatch()
   const itemFormDialog = useItemFormDialog()
 

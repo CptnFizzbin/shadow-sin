@@ -10,7 +10,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 import { renderWithProviders, ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { ItemDataCard } from "./itemDataCard.tsx"
+import { AnyItemCard } from "./anyItemCard.tsx"
 
 const weapon: WeaponData = {
   id: "00000000-0000-0000-0000-000000000001",
@@ -24,9 +24,9 @@ const weapon: WeaponData = {
 const runnerStoreWithWeapon = () =>
   new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [weapon.id]: weapon } })))
 
-describe("ItemDataCard", () => {
+describe("AnyItemCard", () => {
   it("dispatches weapons to WeaponDataCard", () => {
-    renderWithProviders(<ItemDataCard item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
+    renderWithProviders(<AnyItemCard item={weapon} />, { runnerStore: runnerStoreWithWeapon() })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
     expect(screen.getByText("DV: 8P")).toBeDefined()
@@ -39,14 +39,14 @@ describe("ItemDataCard", () => {
       itemType: ItemType.other,
     }
 
-    render(<ItemDataCard item={item} />, { wrapper: ThemeWrapper })
+    render(<AnyItemCard item={item} />, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("Fake SIN")).toBeDefined()
   })
 
   it("passes onOpen through to the rendered card", () => {
     const onOpen = vi.fn()
-    renderWithProviders(<ItemDataCard item={weapon} onOpen={onOpen} />, {
+    renderWithProviders(<AnyItemCard item={weapon} onOpen={onOpen} />, {
       runnerStore: runnerStoreWithWeapon(),
     })
 
@@ -57,7 +57,7 @@ describe("ItemDataCard", () => {
 
   it("passes onEdit through to the rendered card's quick-action menu", () => {
     const onEdit = vi.fn()
-    renderWithProviders(<ItemDataCard item={weapon} onEdit={onEdit} />, {
+    renderWithProviders(<AnyItemCard item={weapon} onEdit={onEdit} />, {
       runnerStore: runnerStoreWithWeapon(),
     })
 
