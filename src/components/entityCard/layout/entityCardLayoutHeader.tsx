@@ -3,12 +3,12 @@ import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
 import type { FC, ReactNode } from "react"
 
-export interface CardElementHeaderProps {
+export interface EntityCardLayoutHeaderProps {
   children: ReactNode
 }
 
 /** Top layout region of an EntityCard — title/type on the left, status icons on the right. */
-export const CardElementHeader: FC<CardElementHeaderProps> = ({ children }) => (
+export const EntityCardLayoutHeader: FC<EntityCardLayoutHeaderProps> = ({ children }) => (
   <Stack
     direction="row"
     sx={{
@@ -24,4 +24,4 @@ export const CardElementHeader: FC<CardElementHeaderProps> = ({ children }) => (
   </Stack>
 )
 
-CardElementHeader.displayName = "EntityCard.Layout.Header"
+EntityCardLayoutHeader.displayName = "EntityCard.Layout.Header"

@@ -34,10 +34,13 @@ describe("EntityCard", () => {
     expect("Layout" in EntityCardElements).toBe(false)
   })
 
-  it("exposes the same building blocks flat on EntityCardElements", () => {
-    expect(EntityCardElements.Header).toBe(EntityCard.Layout.Header)
-    expect(EntityCardElements.Body).toBe(EntityCard.Layout.Body)
-    expect(EntityCardElements.Footer).toBe(EntityCard.Layout.Footer)
+  it("excludes Layout regions from EntityCardElements", () => {
+    expect(Object.keys(EntityCardElements).sort()).toEqual([
+      "Action", "Effects", "Rating", "Source", "Stat", "Title",
+    ])
+  })
+
+  it("exposes the same content elements flat on EntityCardElements", () => {
     expect(EntityCardElements.Title).toBe(EntityCard.Title)
     expect(EntityCardElements.Rating).toBe(EntityCard.Rating)
     expect(EntityCardElements.Source).toBe(EntityCard.Source)

@@ -3,12 +3,12 @@ import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
 import type { FC, ReactNode } from "react"
 
-export interface CardElementFooterProps {
+export interface EntityCardLayoutFooterProps {
   children: ReactNode
 }
 
 /** Bottom layout region of an EntityCard — source, availability, cost, and similar metadata. */
-export const CardElementFooter: FC<CardElementFooterProps> = ({ children }) => (
+export const EntityCardLayoutFooter: FC<EntityCardLayoutFooterProps> = ({ children }) => (
   <Stack
     direction="row"
     sx={{
@@ -26,4 +26,4 @@ export const CardElementFooter: FC<CardElementFooterProps> = ({ children }) => (
   </Stack>
 )
 
-CardElementFooter.displayName = "EntityCard.Layout.Footer"
+EntityCardLayoutFooter.displayName = "EntityCard.Layout.Footer"

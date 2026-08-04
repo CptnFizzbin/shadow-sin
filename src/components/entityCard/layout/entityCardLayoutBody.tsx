@@ -1,13 +1,13 @@
 import Stack from "@mui/material/Stack"
 import type { FC, ReactNode } from "react"
 
-export interface CardElementBodyProps {
+export interface EntityCardLayoutBodyProps {
   children: ReactNode
 }
 
 /** Middle layout region of an EntityCard — stats, damage tracks, subitems, etc. */
-export const CardElementBody: FC<CardElementBodyProps> = ({ children }) => (
+export const EntityCardLayoutBody: FC<EntityCardLayoutBodyProps> = ({ children }) => (
   <Stack sx={{ padding: 1, gap: 1 }}>{children}</Stack>
 )
 
-CardElementBody.displayName = "EntityCard.Layout.Body"
+EntityCardLayoutBody.displayName = "EntityCard.Layout.Body"
