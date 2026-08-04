@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { ItemDataCard } from "#/components/itemCard/itemDataCard.tsx"
+import { AnyItemCard } from "#/components/itemCard/anyItemCard.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
@@ -45,7 +45,7 @@ export const EquippedArmorSection: FC = () => {
         )}
       </Stack>
       {equippedArmor.map((armor) => (
-        <ItemDataCard key={armor.id} item={armor} />
+        <AnyItemCard key={armor.id} item={armor} />
       ))}
     </Stack>
   )
