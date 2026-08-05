@@ -6,10 +6,23 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { EntityCard, EntityCardElements } from "./entityCard.tsx"
 
 describe("EntityCard", () => {
-  it("renders as the card's outer frame around arbitrary children", () => {
-    render(<EntityCard>content</EntityCard>, { wrapper: ThemeWrapper })
+  it("renders with no children", () => {
+    render(<EntityCard />, { wrapper: ThemeWrapper })
+  })
 
-    expect(screen.getByText("content")).toBeDefined()
+  it("ignores children that are not a Layout region", () => {
+    render(
+      <EntityCard>
+        <EntityCard.Layout.HeaderRow>
+          <EntityCard.Title title="Ares Predator V" />
+        </EntityCard.Layout.HeaderRow>
+        <div>unexpected child</div>
+      </EntityCard>,
+      { wrapper: ThemeWrapper },
+    )
+
+    expect(screen.getByText("Ares Predator V")).toBeDefined()
+    expect(screen.queryByText("unexpected child")).toBeNull()
   })
 
   it("renders its Layout regions with content elements inside them", () => {
@@ -33,6 +46,23 @@ describe("EntityCard", () => {
     expect(screen.getByText("4")).toBeDefined()
     expect(screen.getByText("DV: 4P")).toBeDefined()
     expect(screen.getByText("SR4A p.427")).toBeDefined()
+  })
+
+  it("renders Layout regions in canonical HeaderRow/BodyRow/FooterRow order regardless of JSX order", () => {
+    const { container } = render(
+      <EntityCard>
+        <EntityCard.Layout.FooterRow>
+          <EntityCard.Source source={{ book: "SR4A", page: 427 }} />
+        </EntityCard.Layout.FooterRow>
+        <EntityCard.Layout.HeaderRow>
+          <EntityCard.Title title="Ares Predator V" />
+        </EntityCard.Layout.HeaderRow>
+      </EntityCard>,
+      { wrapper: ThemeWrapper },
+    )
+
+    const text = container.textContent ?? ""
+    expect(text.indexOf("Ares Predator V")).toBeLessThan(text.indexOf("SR4A p.427"))
   })
 
   it("keeps Layout separate from the top-level content elements", () => {

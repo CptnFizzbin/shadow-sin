@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box"
 import type { FC, ReactNode } from "react"
 
+import { SlotsProvider } from "#/lib/slotUtils.ts"
+
 import { CardElementAction } from "./elements/cardElementAction.tsx"
 import { CardElementEffects } from "./elements/cardElementEffects.tsx"
 import { CardElementRating } from "./elements/cardElementRating.tsx"
@@ -47,21 +49,29 @@ const EntityCardLayout = {
 }
 
 export interface EntityCardRootProps {
-  children: ReactNode
+  children?: ReactNode
 }
 
 /**
  * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
- * Category tiers (`ItemCard`, `SpiritCard`, ...) compose `EntityCard.Layout.*` regions and their
- * own content directly inside it. Interaction affordances (open/edit/remove, long-press menu,
- * ...) are a category-tier concern, not this foundation's — kept out until a real consumer needs
- * them.
+ * Finds its `Layout.*` regions among `children` via `SlotsProvider` (same mechanism as
+ * `DataCard`) and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow order,
+ * regardless of the order they were passed in; any other child is ignored. Category tiers
+ * (`ItemCard`, `SpiritCard`, ...) compose their own content inside those regions. Interaction
+ * affordances (open/edit/remove, long-press menu, ...) are a category-tier concern, not this
+ * foundation's — kept out until a real consumer needs them.
  */
-const EntityCardRoot: FC<EntityCardRootProps> = ({ children }) => (
-  <Box sx={{ border: "1px solid", borderColor: "primary.dark", width: "100%", textAlign: "left" }}>
-    {children}
-  </Box>
-)
+const EntityCardRoot: FC<EntityCardRootProps> = ({ children }) => {
+  const slots = new SlotsProvider(children)
+
+  return (
+    <Box sx={{ border: "1px solid", borderColor: "primary.dark", width: "100%", textAlign: "left" }}>
+      {slots.find(EntityCardLayoutHeaderRow)}
+      {slots.find(EntityCardLayoutBodyRow)}
+      {slots.find(EntityCardLayoutFooterRow)}
+    </Box>
+  )
+}
 
 EntityCardRoot.displayName = "EntityCard"
 
