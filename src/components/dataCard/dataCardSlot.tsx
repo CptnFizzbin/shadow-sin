@@ -1,4 +1,4 @@
-import { SlotManager } from "#/lib/slotUtils.ts"
+import { SlotsProvider } from "#/lib/slotUtils.ts"
 
 import { DataCardSlotAvailability } from "./dataCardSlot.Availability.tsx"
 import { DataCardSlotContent } from "./dataCardSlot.Content.tsx"
@@ -34,7 +34,7 @@ export type { DataCardTypeProps } from "./dataCardSlot.Type.tsx"
  * wrappers (e.g. `ItemDataCardRoot` for `ItemData`, or a domain's own
  * `*DataCard`) decide which slots to populate from their own data.
  */
-export const DataCardSlots = {
+export const DataCardSlot = {
   Title: DataCardSlotTitle,
   Type: DataCardSlotType,
   Source: DataCardSlotSource,
@@ -51,7 +51,7 @@ export const DataCardSlots = {
   QuickAction: DataCardSlotContextAction,
 }
 
-export class DataCardSlotsProvider extends SlotManager {
+export class DataCardSlotsProvider extends SlotsProvider {
   get title() {
     return this.find(DataCardSlotTitle)
   }

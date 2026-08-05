@@ -1,4 +1,4 @@
-import { SlotManager } from "#/lib/slotUtils.ts"
+import { SlotsProvider } from "#/lib/slotUtils.ts"
 
 import { ItemDetailsAvailability } from "./itemDetails.Availability.tsx"
 import { ItemDetailsContent } from "./itemDetails.Content.tsx"
@@ -61,7 +61,7 @@ export const ItemDetailsSlot = {
   QuickAction: ItemDetailsQuickAction,
 }
 
-export class ItemDetailsSlotsProvider extends SlotManager {
+export class ItemDetailsSlotsProvider extends SlotsProvider {
   get title() {
     return this.find(ItemDetailsTitle)
   }

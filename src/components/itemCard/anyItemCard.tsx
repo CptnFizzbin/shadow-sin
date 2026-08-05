@@ -42,6 +42,9 @@ export interface AnyItemCardProps {
  */
 export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemove }) => {
   switch (item.itemType) {
+    // The switch narrows `item.itemType`, not `item` itself, since ItemData
+    // isn't a discriminated union of per-type interfaces; each case match
+    // guarantees its cast is safe.
     case ItemType.weapon:
       return <WeaponDataCard weapon={item as WeaponData} onOpen={onOpen} onEdit={onEdit} />
 

@@ -5,8 +5,8 @@ import type { FC } from "react"
 export interface HeaderRowProps extends StackProps {}
 
 /** Top layout region of an EntityCard — title/type on the left, status icons on the right. */
-export const HeaderRow: FC<HeaderRowProps> = ({ children, ...props }) => (
+export const CardLayoutHeaderRow: FC<HeaderRowProps> = ({ children, ...props }) => (
   <Stack direction="row" {...props}>{children}</Stack>
 )
 
-HeaderRow.displayName = "EntityCard.Layout.HeaderRow"
+CardLayoutHeaderRow.displayName = "Card.Layout.HeaderRow"

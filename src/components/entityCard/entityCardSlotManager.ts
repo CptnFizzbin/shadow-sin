@@ -17,7 +17,7 @@ export class EntityCardSlotManager extends SlotManager {
   }
 
   get effects() {
-    return this.filter(EntityCardElements.Effect)
+    return this.find(EntityCardElements.Effects)
   }
 
   get stats() {

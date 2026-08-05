@@ -11,14 +11,14 @@ import { EntityCardLayout } from "./entityCardLayout.tsx"
 import { EntityCardSlotManager } from "./entityCardSlotManager.ts"
 
 export type { CardElementActionProps } from "./elements/cardElementAction.tsx"
-export type { CardElementEffectsProps } from "./elements/cardElementEffect.tsx"
+export type { CardElementEffectsProps } from "./elements/cardElementEffects.tsx"
 export type { CardElementRatingProps } from "./elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "./elements/cardElementSource.tsx"
 export type { CardElementStatProps, CardElementStatType } from "./elements/cardElementStat.tsx"
 export type { CardElementTitleProps } from "./elements/cardElementTitle.tsx"
-export type { BodyRowProps } from "./layout/bodyRow.tsx"
-export type { FooterRowProps } from "./layout/footerRow.tsx"
-export type { HeaderRowProps } from "./layout/headerRow.tsx"
+export type { BodyRowProps } from "./layout/cardLayoutBodyRow.tsx"
+export type { FooterRowProps } from "./layout/cardLayoutFooterRow.tsx"
+export type { HeaderRowProps } from "./layout/cardLayoutHeaderRow.tsx"
 
 export interface EntityCardProps extends PropsWithChildren {
   entity: EntityData

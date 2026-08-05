@@ -1,5 +1,5 @@
 import { CardElementAction } from "./elements/cardElementAction.tsx"
-import { CardElementEffect } from "./elements/cardElementEffect.tsx"
+import { CardElementEffects } from "./elements/cardElementEffects.tsx"
 import { CardElementRating } from "./elements/cardElementRating.tsx"
 import { CardElementSource } from "./elements/cardElementSource.tsx"
 import { CardElementStat } from "./elements/cardElementStat.tsx"
@@ -14,7 +14,7 @@ export const EntityCardElements = {
   Title: CardElementTitle,
   Rating: CardElementRating,
   Source: CardElementSource,
-  Effect: CardElementEffect,
+  Effects: CardElementEffects,
   Stat: CardElementStat,
   Action: CardElementAction,
 }

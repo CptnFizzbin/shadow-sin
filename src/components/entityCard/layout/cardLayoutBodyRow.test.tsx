@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { BodyRow } from "./bodyRow.tsx"
+import { CardLayoutBodyRow } from "./cardLayoutBodyRow.tsx"
 
-describe("EntityCardLayoutBodyRow", () => {
+describe("Card.Layout.BodyRow", () => {
   it("renders its children", () => {
-    render(<BodyRow>Body content</BodyRow>, { wrapper: ThemeWrapper })
+    render(<CardLayoutBodyRow>Body content</CardLayoutBodyRow>, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("Body content")).toBeDefined()
   })

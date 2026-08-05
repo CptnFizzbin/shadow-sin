@@ -1,6 +1,6 @@
-import { BodyRow } from "./layout/bodyRow.tsx"
-import { FooterRow } from "./layout/footerRow.tsx"
-import { HeaderRow } from "./layout/headerRow.tsx"
+import { CardLayoutBodyRow } from "./layout/cardLayoutBodyRow.tsx"
+import { CardLayoutFooterRow } from "./layout/cardLayoutFooterRow.tsx"
+import { CardLayoutHeaderRow } from "./layout/cardLayoutHeaderRow.tsx"
 
 /**
  * EntityCard's structural regions, kept under `.Layout` so they read distinctly from the content
@@ -8,7 +8,7 @@ import { HeaderRow } from "./layout/headerRow.tsx"
  * (`ItemCard`, `SpiritCard`, ...) assembles these regions plus its own incremental elements.
  */
 export const EntityCardLayout = {
-  HeaderRow,
-  BodyRow,
-  FooterRow,
+  HeaderRow: CardLayoutHeaderRow,
+  BodyRow: CardLayoutBodyRow,
+  FooterRow: CardLayoutFooterRow,
 }
