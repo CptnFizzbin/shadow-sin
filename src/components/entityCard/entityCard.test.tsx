@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
+import { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
+import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { EntityCard } from "./entityCard.tsx"
@@ -10,14 +12,30 @@ import { EntityCardElements } from "./entityCardElements.tsx"
 const entity: EntityData = { id: "00000000-0000-0000-0000-000000000001", name: "Ares Predator V" }
 
 describe("EntityCard", () => {
-  it("renders the entity's name and source automatically, with no extra children", () => {
+  it("renders the entity's name, rating, effects, and source automatically, with no extra children", () => {
     render(
-      <EntityCard entity={{ ...entity, source: { book: "SR4A", page: 427 } }} />,
+      <EntityCard
+        entity={{
+          ...entity,
+          rating: 4,
+          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.body, value: 2 }],
+          source: { book: "SR4A", page: 427 },
+        }}
+      />,
       { wrapper: ThemeWrapper },
     )
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
+    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Attribute Modifier → BOD +2")).toBeDefined()
     expect(screen.getByText("SR4A p.427")).toBeDefined()
+  })
+
+  it("renders no rating or effects when the entity has none", () => {
+    render(<EntityCard entity={entity} />, { wrapper: ThemeWrapper })
+
+    expect(screen.getByText("Ares Predator V")).toBeDefined()
+    expect(screen.queryByText(/attribute modifier/i)).toBeNull()
   })
 
   it("ignores children that are not a Layout region", () => {

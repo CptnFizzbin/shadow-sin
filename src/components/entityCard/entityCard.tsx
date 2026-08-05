@@ -26,12 +26,14 @@ export interface EntityCardProps extends PropsWithChildren {
 
 /**
  * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
- * Finds its `Layout.*` regions among `children` via `SlotManager` (same mechanism as
- * `DataCard`) and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow order,
- * regardless of the order they were passed in; any other child is ignored. Category tiers
- * (`ItemCard`, `SpiritCard`, ...) compose their own content inside those regions. Interaction
- * affordances (open/edit/remove, long-press menu, ...) are a category-tier concern, not this
- * foundation's — kept out until a real consumer needs them.
+ * Auto-renders every field common to `EntityData` — name, rating, effects, source — the same
+ * way `ItemDataCardRoot` auto-renders every field common to `ItemData`, so category tiers only
+ * need to supply their own type-specific content as `children`. Finds its `Layout.*` regions
+ * among `children` via `SlotManager` (same mechanism as `DataCard`) and renders whichever are
+ * present in the fixed HeaderRow/BodyRow/FooterRow order, regardless of the order they were
+ * passed in; any other child is ignored. Interaction affordances (open/edit/remove, long-press
+ * menu, ...) are a category-tier concern, not this foundation's — kept out until a real consumer
+ * needs them.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -53,14 +55,18 @@ const EntityCardRoot: FC<EntityCardProps> = ({
       >
         <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
           <EntityCardElements.Title title={entity.name} />
-
-          <EntityCardElements.Source source={entity.source} />
         </EntityCardLayout.HeaderRow>
 
         {slots.headerRows}
       </Stack>
 
-      <Stack sx={{ gap: 0.5 }}>
+      <Stack sx={{ padding: 1, gap: 0.5 }}>
+        <EntityCardLayout.BodyRow sx={{ flexWrap: "wrap" }}>
+          <EntityCardElements.Rating value={entity.rating} />
+        </EntityCardLayout.BodyRow>
+
+        <EntityCardElements.Effects effects={entity.effects} />
+
         {slots.bodyRows}
       </Stack>
 
@@ -74,6 +80,10 @@ const EntityCardRoot: FC<EntityCardProps> = ({
           bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
         }}
       >
+        <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
+          <EntityCardElements.Source source={entity.source} />
+        </EntityCardLayout.FooterRow>
+
         {slots.footerRows}
       </Stack>
     </Box>
