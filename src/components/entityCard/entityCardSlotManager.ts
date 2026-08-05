@@ -1,9 +1,9 @@
-import { SlotManager } from "#/lib/slotUtils.ts"
+import { SlotsProvider } from "#/lib/slotUtils.ts"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
 import { EntityCardLayout } from "./entityCardLayout.tsx"
 
-export class EntityCardSlotManager extends SlotManager {
+export class EntityCardSlotManager extends SlotsProvider {
   get title() {
     return this.find(EntityCardElements.Title)
   }
