@@ -22,7 +22,7 @@ function cacheKey(elementTypes: FC<never>[]): string {
   }).join(",")
 }
 
-export class SlotsProvider {
+export class SlotManager {
   private childArray: Array<Exclude<ReactNode, boolean | null | undefined>>
   private findCache = new Map<string, ReactElement | undefined>()
   private filterCache = new Map<string, ReactElement[]>()

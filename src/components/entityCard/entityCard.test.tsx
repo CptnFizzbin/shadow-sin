@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { EntityCard, EntityCardElements } from "./entityCard.tsx"
+import { EntityCard } from "./entityCard.tsx"
+import { EntityCardElements } from "./entityCardElements.tsx"
 
 describe("EntityCard", () => {
   it("renders with no children", () => {
@@ -80,7 +81,7 @@ describe("EntityCard", () => {
     expect(EntityCardElements.Title).toBe(EntityCard.Title)
     expect(EntityCardElements.Rating).toBe(EntityCard.Rating)
     expect(EntityCardElements.Source).toBe(EntityCard.Source)
-    expect(EntityCardElements.Effects).toBe(EntityCard.Effects)
+    expect(EntityCardElements.Effect).toBe(EntityCard.Effects)
     expect(EntityCardElements.Stat).toBe(EntityCard.Stat)
     expect(EntityCardElements.Action).toBe(EntityCard.Action)
   })

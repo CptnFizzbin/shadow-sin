@@ -1,55 +1,27 @@
 import Box from "@mui/material/Box"
-import type { FC, ReactNode } from "react"
+import Stack from "@mui/material/Stack"
+import type { Theme } from "@mui/material/styles"
+import { alpha } from "@mui/material/styles"
+import type { FC, PropsWithChildren } from "react"
 
-import { SlotsProvider } from "#/lib/slotUtils.ts"
+import type { EntityData } from "#/system/entityData.ts"
 
-import { CardElementAction } from "./elements/cardElementAction.tsx"
-import { CardElementEffects } from "./elements/cardElementEffects.tsx"
-import { CardElementRating } from "./elements/cardElementRating.tsx"
-import { CardElementSource } from "./elements/cardElementSource.tsx"
-import { CardElementStat } from "./elements/cardElementStat.tsx"
-import { CardElementTitle } from "./elements/cardElementTitle.tsx"
-import { EntityCardLayoutBodyRow } from "./layout/entityCardLayoutBodyRow.tsx"
-import { EntityCardLayoutFooterRow } from "./layout/entityCardLayoutFooterRow.tsx"
-import { EntityCardLayoutHeaderRow } from "./layout/entityCardLayoutHeaderRow.tsx"
+import { EntityCardElements } from "./entityCardElements.tsx"
+import { EntityCardLayout } from "./entityCardLayout.tsx"
+import { EntityCardSlotManager } from "./entityCardSlotManager.ts"
 
 export type { CardElementActionProps } from "./elements/cardElementAction.tsx"
-export type { CardElementEffectsProps } from "./elements/cardElementEffects.tsx"
+export type { CardElementEffectsProps } from "./elements/cardElementEffect.tsx"
 export type { CardElementRatingProps } from "./elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "./elements/cardElementSource.tsx"
 export type { CardElementStatProps, CardElementStatType } from "./elements/cardElementStat.tsx"
 export type { CardElementTitleProps } from "./elements/cardElementTitle.tsx"
-export type { EntityCardLayoutBodyRowProps } from "./layout/entityCardLayoutBodyRow.tsx"
-export type { EntityCardLayoutFooterRowProps } from "./layout/entityCardLayoutFooterRow.tsx"
-export type { EntityCardLayoutHeaderRowProps } from "./layout/entityCardLayoutHeaderRow.tsx"
+export type { BodyRowProps } from "./layout/bodyRow.tsx"
+export type { FooterRowProps } from "./layout/footerRow.tsx"
+export type { HeaderRowProps } from "./layout/headerRow.tsx"
 
-/**
- * Pure, dependency-free EntityCard content elements, flat — for composition contexts that want
- * the elements themselves without EntityCard's own grouping. Layout regions (HeaderRow/BodyRow/
- * FooterRow) are a distinct concept, not part of this pool — see `EntityCard.Layout`.
- */
-export const EntityCardElements = {
-  Title: CardElementTitle,
-  Rating: CardElementRating,
-  Source: CardElementSource,
-  Effects: CardElementEffects,
-  Stat: CardElementStat,
-  Action: CardElementAction,
-}
-
-/**
- * EntityCard's structural regions, kept under `.Layout` so they read distinctly from the content
- * elements below (`EntityCard.Layout.HeaderRow` vs. `EntityCard.Title`) — every category tier
- * (`ItemCard`, `SpiritCard`, ...) assembles these regions plus its own incremental elements.
- */
-const EntityCardLayout = {
-  HeaderRow: EntityCardLayoutHeaderRow,
-  BodyRow: EntityCardLayoutBodyRow,
-  FooterRow: EntityCardLayoutFooterRow,
-}
-
-export interface EntityCardRootProps {
-  children?: ReactNode
+export interface EntityCardProps extends PropsWithChildren {
+  entity: EntityData
 }
 
 /**
@@ -61,14 +33,49 @@ export interface EntityCardRootProps {
  * affordances (open/edit/remove, long-press menu, ...) are a category-tier concern, not this
  * foundation's — kept out until a real consumer needs them.
  */
-const EntityCardRoot: FC<EntityCardRootProps> = ({ children }) => {
-  const slots = new SlotsProvider(children)
+const EntityCardRoot: FC<EntityCardProps> = ({
+  entity,
+  children,
+}) => {
+  const slots = new EntityCardSlotManager(children)
 
   return (
     <Box sx={{ border: "1px solid", borderColor: "primary.dark", width: "100%", textAlign: "left" }}>
-      {slots.find(EntityCardLayoutHeaderRow)}
-      {slots.find(EntityCardLayoutBodyRow)}
-      {slots.find(EntityCardLayoutFooterRow)}
+      <Stack
+        sx={{
+          paddingX: 1,
+          paddingY: 0.75,
+          borderBottom: "1px solid",
+          borderColor: "divider",
+          gap: 0.5,
+          bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+        }}
+      >
+        <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
+          <EntityCardElements.Title title={entity.name} />
+
+          <EntityCardElements.Source source={entity.source} />
+        </EntityCardLayout.HeaderRow>
+
+        {slots.headerRows}
+      </Stack>
+
+      <Stack sx={{ gap: 0.5 }}>
+        {slots.bodyRows}
+      </Stack>
+
+      <Stack
+        sx={{
+          paddingX: 1,
+          paddingY: 0.75,
+          gap: 0.5,
+          borderTop: "1px solid",
+          borderColor: "divider",
+          bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+        }}
+      >
+        {slots.footerRows}
+      </Stack>
     </Box>
   )
 }
@@ -77,16 +84,12 @@ EntityCardRoot.displayName = "EntityCard"
 
 /**
  * Top compound-component tier from ADR-0010, replacing `DataCard`. Mirrors `DataCard =
- * Object.assign(DataCardComponent, DataCardSlot)`: `EntityCardRoot` is the renderable outer
+ * Object.assign(DataCardComponent, DataCardSlotProvider)`: `EntityCardRoot` is the renderable outer
  * frame, and category tiers (`ItemCard`, `SpiritCard`, `SpellCard`, `PowerCard`, ...) assemble
  * these elements plus their own via `Object.assign`, reusing rather than duplicating them.
  */
-export const EntityCard = Object.assign(EntityCardRoot, {
-  Layout: EntityCardLayout,
-  Title: CardElementTitle,
-  Rating: CardElementRating,
-  Source: CardElementSource,
-  Effects: CardElementEffects,
-  Stat: CardElementStat,
-  Action: CardElementAction,
-})
+export const EntityCard = Object.assign(
+  EntityCardRoot,
+  EntityCardElements,
+  { Layout: EntityCardLayout },
+)

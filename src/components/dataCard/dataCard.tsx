@@ -8,7 +8,7 @@ import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
 import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent } from "react"
 import { cloneElement, useRef, useState } from "react"
 
-import { DataCardSlot, DataCardSlotsProvider } from "./dataCardSlot.tsx"
+import { DataCardSlots, DataCardSlotsProvider } from "./dataCardSlots.ts"
 
 export interface BasicDataCardProps {
   /** When provided, the whole card becomes tappable/keyboard-activatable and navigates to the item's details page. */
@@ -226,7 +226,7 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
           {slots.quickActions.length > 0 && (onOpen || onRemove) && <Divider />}
 
           {onEdit && (
-            <DataCardSlot.QuickAction
+            <DataCardSlots.QuickAction
               label="Edit"
               icon={<RiEditLine size={16} />}
               onClick={() => {
@@ -237,7 +237,7 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
           )}
 
           {onRemove && (
-            <DataCardSlot.QuickAction
+            <DataCardSlots.QuickAction
               label="Remove"
               icon={<RiDeleteBinLine size={16} />}
               onClick={() => {
@@ -252,5 +252,5 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
   )
 }
 
-/** `DataCard.Title`, `DataCard.Stat`, etc. — see `dataCardSlot.tsx` for the slot components themselves. */
-export const DataCard = Object.assign(DataCardComponent, DataCardSlot)
+/** `DataCard.Title`, `DataCard.Stat`, etc. — see `dataCardSlotProvider.ts` for the slot components themselves. */
+export const DataCard = Object.assign(DataCardComponent, DataCardSlots)

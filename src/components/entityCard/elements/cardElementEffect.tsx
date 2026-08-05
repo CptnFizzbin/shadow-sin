@@ -10,7 +10,7 @@ export interface CardElementEffectsProps {
 }
 
 /** Read-only summary chips for an Entity's granted effects. Renders nothing when there are none. */
-export const CardElementEffects: FC<CardElementEffectsProps> = ({ effects }) => {
+export const CardElementEffect: FC<CardElementEffectsProps> = ({ effects }) => {
   if (!effects || effects.length === 0) return null
 
   return (
@@ -28,4 +28,4 @@ export const CardElementEffects: FC<CardElementEffectsProps> = ({ effects }) => 
   )
 }
 
-CardElementEffects.displayName = "EntityCard.Effects"
+CardElementEffect.displayName = "EntityCard.Effects"

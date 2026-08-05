@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
-import { EntityCardLayoutHeaderRow } from "./entityCardLayoutHeaderRow.tsx"
+import { EntityCardLayoutHeaderRow } from "./headerRow.tsx"
 
 describe("EntityCardLayoutHeaderRow", () => {
   it("renders its children", () => {

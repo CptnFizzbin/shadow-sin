@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { DataCardSlot } from "#/components/dataCard/dataCardSlot.tsx"
+import { DataCardSlots } from "#/components/dataCard/dataCardSlots.ts"
 import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -36,7 +36,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
     <>
       <ItemDataCardRoot item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
         {Object.values(licenses).map((license) => (
-          <DataCardSlot.Subitem
+          <DataCardSlots.Subitem
             key={license.id}
             name={license.name}
             stats={[
