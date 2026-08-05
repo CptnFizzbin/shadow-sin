@@ -1,4 +1,4 @@
-import { SlotsProvider } from "#/lib/slotUtils.ts"
+import { SlotManager } from "#/lib/slotUtils.ts"
 
 import { DataCardSlotAvailability } from "./dataCardSlot.Availability.tsx"
 import { DataCardSlotContent } from "./dataCardSlot.Content.tsx"
@@ -51,7 +51,7 @@ export const DataCardSlot = {
   QuickAction: DataCardSlotContextAction,
 }
 
-export class DataCardSlotsProvider extends SlotsProvider {
+export class DataCardSlotManager extends SlotManager {
   get title() {
     return this.find(DataCardSlotTitle)
   }

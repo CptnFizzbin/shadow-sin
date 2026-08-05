@@ -26,7 +26,7 @@ export interface EntityCardProps extends PropsWithChildren {
 
 /**
  * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
- * Finds its `Layout.*` regions among `children` via `SlotsProvider` (same mechanism as
+ * Finds its `Layout.*` regions among `children` via `SlotManager` (same mechanism as
  * `DataCard`) and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow order,
  * regardless of the order they were passed in; any other child is ignored. Category tiers
  * (`ItemCard`, `SpiritCard`, ...) compose their own content inside those regions. Interaction
