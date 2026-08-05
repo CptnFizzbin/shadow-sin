@@ -6,9 +6,15 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { EntityCard, EntityCardElements } from "./entityCard.tsx"
 
 describe("EntityCard", () => {
+  it("renders as the card's outer frame around arbitrary children", () => {
+    render(<EntityCard>content</EntityCard>, { wrapper: ThemeWrapper })
+
+    expect(screen.getByText("content")).toBeDefined()
+  })
+
   it("renders its Layout regions with content elements inside them", () => {
     render(
-      <>
+      <EntityCard>
         <EntityCard.Layout.HeaderRow>
           <EntityCard.Title title="Ares Predator V" />
         </EntityCard.Layout.HeaderRow>
@@ -19,7 +25,7 @@ describe("EntityCard", () => {
         <EntityCard.Layout.FooterRow>
           <EntityCard.Source source={{ book: "SR4A", page: 427 }} />
         </EntityCard.Layout.FooterRow>
-      </>,
+      </EntityCard>,
       { wrapper: ThemeWrapper },
     )
 

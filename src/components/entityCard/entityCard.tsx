@@ -1,3 +1,6 @@
+import Box from "@mui/material/Box"
+import type { FC, ReactNode } from "react"
+
 import { CardElementAction } from "./elements/cardElementAction.tsx"
 import { CardElementEffects } from "./elements/cardElementEffects.tsx"
 import { CardElementRating } from "./elements/cardElementRating.tsx"
@@ -43,12 +46,32 @@ const EntityCardLayout = {
   FooterRow: EntityCardLayoutFooterRow,
 }
 
+export interface EntityCardRootProps {
+  children: ReactNode
+}
+
 /**
- * Top compound-component tier from ADR-0010, replacing `DataCard`. Category tiers
- * (`ItemCard`, `SpiritCard`, `SpellCard`, `PowerCard`, ...) assemble these elements plus their
- * own via `Object.assign`, reusing rather than duplicating them.
+ * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
+ * Category tiers (`ItemCard`, `SpiritCard`, ...) compose `EntityCard.Layout.*` regions and their
+ * own content directly inside it. Interaction affordances (open/edit/remove, long-press menu,
+ * ...) are a category-tier concern, not this foundation's — kept out until a real consumer needs
+ * them.
  */
-export const EntityCard = {
+const EntityCardRoot: FC<EntityCardRootProps> = ({ children }) => (
+  <Box sx={{ border: "1px solid", borderColor: "primary.dark", width: "100%", textAlign: "left" }}>
+    {children}
+  </Box>
+)
+
+EntityCardRoot.displayName = "EntityCard"
+
+/**
+ * Top compound-component tier from ADR-0010, replacing `DataCard`. Mirrors `DataCard =
+ * Object.assign(DataCardComponent, DataCardSlot)`: `EntityCardRoot` is the renderable outer
+ * frame, and category tiers (`ItemCard`, `SpiritCard`, `SpellCard`, `PowerCard`, ...) assemble
+ * these elements plus their own via `Object.assign`, reusing rather than duplicating them.
+ */
+export const EntityCard = Object.assign(EntityCardRoot, {
   Layout: EntityCardLayout,
   Title: CardElementTitle,
   Rating: CardElementRating,
@@ -56,4 +79,4 @@ export const EntityCard = {
   Effects: CardElementEffects,
   Stat: CardElementStat,
   Action: CardElementAction,
-}
+})
