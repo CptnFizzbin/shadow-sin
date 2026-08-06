@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { z } from "zod"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
 
 export enum SpiritType {
@@ -81,11 +82,7 @@ export interface SpiritData {
   bound: boolean
   optionalPowers: string[]
   notes?: string
-  // Physical/stun tracks specifically — see EntityDamage for the shared, generic shape.
-  damage: EntityDamage & {
-    physical: number
-    stun: number
-  }
+  damage: EntityDamage<DamageTrackKey.physical | DamageTrackKey.stun>
 }
 
 export const SpiritDataSchema = z.object({

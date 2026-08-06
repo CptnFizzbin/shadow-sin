@@ -1,13 +1,14 @@
+import type { DamageTrackKey } from "./damageTrackKey.ts"
 import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
 import type { Rating } from "./rating.ts"
 import type { SourceData } from "./sourceData.ts"
 
 /**
  * A generic, per-track damage container — e.g. `{ physical, stun }` for a Spirit, `{ matrix }`
- * for a Sprite. Track keys are conventional strings rather than a fixed union, so each entity
- * type only carries the tracks it actually uses.
+ * for a Sprite. Narrow `TTrack` to the specific tracks an entity type uses, e.g.
+ * `EntityDamage<DamageTrackKey.matrix>` or `EntityDamage<DamageTrackKey.physical | DamageTrackKey.stun>`.
  */
-export type EntityDamage = { [track: string]: number }
+export type EntityDamage<TTrack extends DamageTrackKey = DamageTrackKey> = { [track in TTrack]: number }
 
 /**
  * Base interface for anything with a stat block, ratings, or effects it can contribute — Item,

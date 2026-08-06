@@ -1,3 +1,4 @@
+import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { EntityDamage } from "#/system/entityData.ts"
 
 export interface SpriteData {
@@ -18,8 +19,5 @@ export interface SpriteData {
 
   notes?: string
 
-  // Sprites only track matrix damage — see EntityDamage for the shared, generic shape.
-  damage: EntityDamage & {
-    matrix: number
-  }
+  damage: EntityDamage<DamageTrackKey.matrix>
 }
