@@ -247,11 +247,12 @@ doubt, omit the prop and let the theme do the work.
 ## UI changes
 
 Whenever a task involves changes to the visual appearance or layout of a component (new UI, updated styles, added
-controls, rearranged sections), **always include at least one screenshot** of the affected area in your PR or summary.
-Take the screenshot after the dev server is running (`yarn dev`) and the change is visible in the browser. Capture the
-smallest region that clearly shows the new state. Attach the image as part of your response or PR description so
-reviewers can quickly verify the visual result without running the app locally. Do not include screenshots in the git
-commit
+controls, rearranged sections), **always include screenshots** of the affected area in your PR or summary, captured
+in **both** a desktop viewport and a Pixel 8 viewport (412×915, as used by Chrome DevTools device emulation).
+Take the screenshots after the dev server is running (`yarn dev`) and the change is visible in the browser. Capture
+the smallest region that clearly shows the new state in each viewport. Attach both images as part of your response
+or PR description so reviewers can quickly verify the visual result on both desktop and mobile without running the
+app locally. Do not include screenshots in the git commit
 
 - Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of
   `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`,
