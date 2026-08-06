@@ -1,3 +1,5 @@
+import type { EntityDamage } from "#/system/entityData.ts"
+
 export interface SpriteData {
   id: string
   name: string
@@ -16,8 +18,8 @@ export interface SpriteData {
 
   notes?: string
 
-  damage: {
-    physical: number
-    stun: number
+  // Sprites only track matrix damage — see EntityDamage for the shared, generic shape.
+  damage: EntityDamage & {
+    matrix: number
   }
 }

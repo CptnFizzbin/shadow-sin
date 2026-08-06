@@ -8,7 +8,7 @@ const migration: CharacterMigration<{ sprites?: Array<Record<string, unknown>> }
     if (!Array.isArray(draft.sprites)) return
     for (const sprite of draft.sprites) {
       if (typeof sprite.damage === "undefined") {
-        sprite.damage = { physical: 0, stun: 0 }
+        sprite.damage = { matrix: 0 }
       }
     }
   }),

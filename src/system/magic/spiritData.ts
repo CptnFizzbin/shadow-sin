@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { z } from "zod"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { EntityDamage } from "#/system/entityData.ts"
 
 export enum SpiritType {
   wind = "wind",
@@ -80,7 +81,8 @@ export interface SpiritData {
   bound: boolean
   optionalPowers: string[]
   notes?: string
-  damage: {
+  // Physical/stun tracks specifically — see EntityDamage for the shared, generic shape.
+  damage: EntityDamage & {
     physical: number
     stun: number
   }
