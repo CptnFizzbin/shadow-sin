@@ -252,17 +252,16 @@ viewport and a Pixel 8 viewport (412×915, as used by Chrome DevTools device emu
 the dev server is running (`yarn dev`) and the change is visible in the browser. Capture the smallest region that
 clearly shows the new state in each viewport. Do not include screenshots in the git commit.
 
-Screenshots must reach the reviewer in two places, not just be mentioned or linked:
+Screenshots only need to reach the reviewer in chat, not the PR — send the actual image files back in your response
+(not a description of them, and not an offer to attach them if wanted) so they render inline for the user
+immediately. GitHub tooling generally has no way to upload binary image data into a PR comment (no attachment- or
+asset-upload endpoint, and GitHub strips `data:` URIs from rendered comment markdown), so don't try to embed them
+there.
 
-- **Chat**: send the actual image files back in your response (not a description of them, and not an offer to
-  attach them if wanted) so they render inline for the user immediately.
-- **PR**: post them as a **comment** on the pull request — in addition to (not instead of) any reference in the PR
-  description — so reviewers see them in the PR's activity feed without having to ask or open a separate summary.
-  If your GitHub tooling has no way to upload binary image data into a comment (no attachment/asset-upload
-  endpoint), embedding a real image there isn't possible — GitHub strips `data:` URIs from rendered comment
-  markdown, so don't fake it with a base64 `<img>` that will just show as broken. In that case, post a comment
-  saying so explicitly and that the screenshots were delivered in chat instead, rather than silently skipping the
-  PR side of this requirement.
+Instead, put a link to the chat session in the PR description (or a comment) so reviewers who weren't in the
+session can find the screenshots. Most sessions expose this as a session URL alongside your other instructions —
+use that; if none is available, say in the PR that screenshots were shared in the originating chat session and are
+not attached here.
 
 - Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of
   `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`,
