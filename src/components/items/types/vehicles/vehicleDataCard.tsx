@@ -16,12 +16,10 @@ interface VehicleDataCardProps {
 export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
   const attachments = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
-  const damageMax = vehicle.damage?.physical.max || vehicle.body
-
   const removeVehicle = () => dispatch(Actions.gear.removeItem({ id: vehicle.id, removeChildren: true }))
 
-  const handleDamageChange = (current: number) => {
-    const updated: VehicleData = { ...vehicle, damage: { physical: { current, max: damageMax } } }
+  const handleDamageChange = (physical: number) => {
+    const updated: VehicleData = { ...vehicle, damage: { physical } }
     dispatch(Actions.gear.setItem(updated))
   }
 
@@ -35,8 +33,8 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
 
       <DataCard.DamageTrack
         label="Damage"
-        max={damageMax}
-        current={vehicle.damage?.physical.current ?? 0}
+        max={vehicle.body}
+        current={vehicle.damage?.physical ?? 0}
         onChange={handleDamageChange}
       />
 

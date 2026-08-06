@@ -424,7 +424,7 @@ export const Artemis: RunnerData = {
       name: "Yamaha Growler",
       itemType: ItemType.vehicle,
       vehicleCategory: VehicleCategory.vehicle,
-      damage: { physical: { current: 0, max: 0 } },
+      damage: { physical: 0 },
       model: "",
       seats: 0,
       vehicleType: "bike",

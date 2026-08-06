@@ -21,6 +21,7 @@ export const migrations: AnyCharacterMigration[] = [
   await import("#/data/migrations/20260712_normalizeNullableFields.ts"),
   await import("#/data/migrations/20260716_addMagicAdvancementGrades.ts"),
   await import("#/data/migrations/20260806_addSpriteDamage.ts"),
+  await import("#/data/migrations/20260807_flattenVehicleDamage.ts"),
 ].map((module) => module.default)
 
 export const migrationIds: readonly string[] = migrations.map((m) => m.id)
