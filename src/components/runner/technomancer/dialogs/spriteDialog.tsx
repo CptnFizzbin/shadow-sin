@@ -1,14 +1,11 @@
 import Button from "@mui/material/Button"
-import FormControl from "@mui/material/FormControl"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useMaxSpriteTasks } from "#/lib/hooks/runner/technomancer/spritesHooks.ts"
@@ -30,11 +27,6 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
   const [name, setName] = useState<string>(sprite?.name ?? "")
   const [tasks, setTasks] = useState<number>(sprite?.services.max ?? 1)
   const [nameError, setNameError] = useState(false)
-
-  const taskOptions = Array.from(
-    { length: maxSpriteTasks },
-    (_, index) => index + 1,
-  )
 
   const handleSave = () => {
     if (!name.trim()) {
@@ -85,20 +77,15 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
                 </Typography>
               )
             : (
-                <FormControl fullWidth size="small">
-                  <InputLabel>Tasks</InputLabel>
-                  <Select
-                    value={Math.min(tasks, maxSpriteTasks)}
-                    label="Tasks"
-                    onChange={(e) => setTasks(Number(e.target.value))}
-                  >
-                    {taskOptions.map((taskOption) => (
-                      <MenuItem key={taskOption} value={taskOption}>
-                        {taskOption}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <CounterInput
+                  label="Tasks"
+                  size="small"
+                  fullWidth
+                  min={1}
+                  max={maxSpriteTasks}
+                  value={Math.min(tasks, maxSpriteTasks)}
+                  onChange={(newValue) => setTasks(newValue ?? 1)}
+                />
               )}
         </Stack>
       </Dialog.Content>
