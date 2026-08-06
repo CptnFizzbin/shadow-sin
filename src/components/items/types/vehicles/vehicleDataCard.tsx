@@ -17,6 +17,9 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
   const dispatch = useRunnerStoreDispatch()
   const attachments = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
   const removeVehicle = () => dispatch(Actions.gear.removeItem({ id: vehicle.id, removeChildren: true }))
+  // SR4A p.163: vehicle physical condition monitor is 8 + Ceil(Body / 2), same formula as a
+  // character's own physical track (see damageSlice.selectors.ts / calculateSpiritConditionMonitor).
+  const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
   const handleDamageChange = (physical: number) => {
     const updated: VehicleData = { ...vehicle, damage: { physical } }
@@ -33,7 +36,7 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
 
       <DataCard.DamageTrack
         label="Damage"
-        max={vehicle.body}
+        max={damageMax}
         current={vehicle.damage?.physical ?? 0}
         onChange={handleDamageChange}
       />
