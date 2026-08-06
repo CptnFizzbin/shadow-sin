@@ -1,24 +1,19 @@
 import type { UUID } from "node:crypto"
 
 import type { AvailabilityInfo } from "./availabilityInfo.ts"
-import type { GameEffectData } from "./gameEffects/gameEffectData.ts"
+import type { EntityData } from "./entityData.ts"
 import type { ItemType } from "./itemType.ts"
-import type { SourceData } from "./sourceData.ts"
 
 /**
  * Base interface for all gear items, weapons, armor, etc.
  */
-export interface ItemData {
+export interface ItemData extends EntityData {
   id: UUID
-  name: string
   itemType: ItemType
 
-  description?: string
   cost?: number
   quantity?: number
   availability?: AvailabilityInfo
-  source?: SourceData
-  rating?: number | string
 
   parentId?: UUID
   childIds?: UUID[]
@@ -39,8 +34,6 @@ export interface ItemData {
     enabled?: boolean
     removed?: boolean
   }
-
-  effects?: GameEffectData[]
 }
 
 /**

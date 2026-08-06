@@ -8,7 +8,7 @@ import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
 import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent } from "react"
 import { cloneElement, useRef, useState } from "react"
 
-import { DataCardSlot, DataCardSlotsProvider } from "./dataCardSlot.tsx"
+import { DataCardSlot, DataCardSlotManager } from "./dataCardSlot.tsx"
 
 export interface BasicDataCardProps {
   /** When provided, the whole card becomes tappable/keyboard-activatable and navigates to the item's details page. */
@@ -48,7 +48,7 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
   onRemove,
   children,
 }) => {
-  const slots = new DataCardSlotsProvider(children)
+  const slots = new DataCardSlotManager(children)
   const hasQuickActions = !!(slots.quickActions.length > 0 || onEdit || onRemove)
 
   const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)

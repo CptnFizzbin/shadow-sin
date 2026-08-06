@@ -19,6 +19,7 @@ import { Route as GmEncounterBuilderRouteImport } from './routes/gm/encounter-bu
 import { Route as GmInitiativeTrackerRouteImport } from './routes/gm/initiative-tracker'
 import { Route as GmNpcBuilderRouteImport } from './routes/gm/npc-builder'
 import { Route as NewIndexRouteImport } from './routes/new/index'
+import { Route as TestIndexRouteImport } from './routes/test/index'
 import { Route as RunnerIdViewerIndexRouteImport } from './routes/$runnerId/_viewer/index'
 import { Route as RunnerIdViewerAboutRouteImport } from './routes/$runnerId/_viewer/about'
 import { Route as RunnerIdViewerAdeptPowersRouteImport } from './routes/$runnerId/_viewer/adept-powers'
@@ -38,6 +39,7 @@ import { Route as RunnerIdViewerSpellsRouteImport } from './routes/$runnerId/_vi
 import { Route as RunnerIdViewerSpiritsRouteImport } from './routes/$runnerId/_viewer/spirits'
 import { Route as RunnerIdViewerSpritesRouteImport } from './routes/$runnerId/_viewer/sprites'
 import { Route as RunnerIdViewerVehiclesRouteImport } from './routes/$runnerId/_viewer/vehicles'
+import { Route as TestEntityCardAllRouteImport } from './routes/test/entityCard/all'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
 import { Route as RunnerIdDetailsItemItemIdRouteImport } from './routes/$runnerId/_details/item.$itemId'
 import { Route as TestItemsDetailsAllRouteImport } from './routes/test/items/details.all'
@@ -88,6 +90,11 @@ const GmNpcBuilderRoute = GmNpcBuilderRouteImport.update({
 const NewIndexRoute = NewIndexRouteImport.update({
   id: '/new/',
   path: '/new/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestIndexRoute = TestIndexRouteImport.update({
+  id: '/test/',
+  path: '/test/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RunnerIdViewerIndexRoute = RunnerIdViewerIndexRouteImport.update({
@@ -187,6 +194,11 @@ const RunnerIdViewerVehiclesRoute = RunnerIdViewerVehiclesRouteImport.update({
   path: '/vehicles',
   getParentRoute: () => RunnerIdViewerRoute,
 } as any)
+const TestEntityCardAllRoute = TestEntityCardAllRouteImport.update({
+  id: '/test/entityCard/all',
+  path: '/test/entityCard/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
   id: '/test/theme/typography',
   path: '/test/theme/typography',
@@ -213,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/test/': typeof TestIndexRoute
   '/$runnerId/about': typeof RunnerIdViewerAboutRoute
   '/$runnerId/adept-powers': typeof RunnerIdViewerAdeptPowersRoute
   '/$runnerId/complex-forms': typeof RunnerIdViewerComplexFormsRoute
@@ -231,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/$runnerId/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdViewerVehiclesRoute
+  '/test/entityCard/all': typeof TestEntityCardAllRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
@@ -245,6 +259,7 @@ export interface FileRoutesByTo {
   '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/gm': typeof GmIndexRoute
   '/new': typeof NewIndexRoute
+  '/test': typeof TestIndexRoute
   '/$runnerId/about': typeof RunnerIdViewerAboutRoute
   '/$runnerId/adept-powers': typeof RunnerIdViewerAdeptPowersRoute
   '/$runnerId/complex-forms': typeof RunnerIdViewerComplexFormsRoute
@@ -263,6 +278,7 @@ export interface FileRoutesByTo {
   '/$runnerId/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdViewerVehiclesRoute
+  '/test/entityCard/all': typeof TestEntityCardAllRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
   '/test/items/details/all': typeof TestItemsDetailsAllRoute
@@ -279,6 +295,7 @@ export interface FileRoutesById {
   '/gm/npc-builder': typeof GmNpcBuilderRoute
   '/gm/': typeof GmIndexRoute
   '/new/': typeof NewIndexRoute
+  '/test/': typeof TestIndexRoute
   '/$runnerId/_viewer/about': typeof RunnerIdViewerAboutRoute
   '/$runnerId/_viewer/adept-powers': typeof RunnerIdViewerAdeptPowersRoute
   '/$runnerId/_viewer/complex-forms': typeof RunnerIdViewerComplexFormsRoute
@@ -297,6 +314,7 @@ export interface FileRoutesById {
   '/$runnerId/_viewer/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/_viewer/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/_viewer/vehicles': typeof RunnerIdViewerVehiclesRoute
+  '/test/entityCard/all': typeof TestEntityCardAllRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/_viewer/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/_details/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
@@ -313,6 +331,7 @@ export interface FileRouteTypes {
     | '/gm/npc-builder'
     | '/gm/'
     | '/new/'
+    | '/test/'
     | '/$runnerId/about'
     | '/$runnerId/adept-powers'
     | '/$runnerId/complex-forms'
@@ -331,6 +350,7 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/test/entityCard/all'
     | '/test/theme/typography'
     | '/$runnerId/'
     | '/$runnerId/item/$itemId'
@@ -345,6 +365,7 @@ export interface FileRouteTypes {
     | '/gm/npc-builder'
     | '/gm'
     | '/new'
+    | '/test'
     | '/$runnerId/about'
     | '/$runnerId/adept-powers'
     | '/$runnerId/complex-forms'
@@ -363,6 +384,7 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
+    | '/test/entityCard/all'
     | '/test/theme/typography'
     | '/$runnerId/item/$itemId'
     | '/test/items/details/all'
@@ -378,6 +400,7 @@ export interface FileRouteTypes {
     | '/gm/npc-builder'
     | '/gm/'
     | '/new/'
+    | '/test/'
     | '/$runnerId/_viewer/about'
     | '/$runnerId/_viewer/adept-powers'
     | '/$runnerId/_viewer/complex-forms'
@@ -396,6 +419,7 @@ export interface FileRouteTypes {
     | '/$runnerId/_viewer/spirits'
     | '/$runnerId/_viewer/sprites'
     | '/$runnerId/_viewer/vehicles'
+    | '/test/entityCard/all'
     | '/test/theme/typography'
     | '/$runnerId/_viewer/'
     | '/$runnerId/_details/item/$itemId'
@@ -411,6 +435,8 @@ export interface RootRouteChildren {
   GmNpcBuilderRoute: typeof GmNpcBuilderRoute
   GmIndexRoute: typeof GmIndexRoute
   NewIndexRoute: typeof NewIndexRoute
+  TestIndexRoute: typeof TestIndexRoute
+  TestEntityCardAllRoute: typeof TestEntityCardAllRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
   TestItemsDetailsAllRoute: typeof TestItemsDetailsAllRoute
 }
@@ -485,6 +511,13 @@ declare module '@tanstack/react-router' {
       path: '/new'
       fullPath: '/new/'
       preLoaderRoute: typeof NewIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/': {
+      id: '/test/'
+      path: '/test'
+      fullPath: '/test/'
+      preLoaderRoute: typeof TestIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$runnerId/_viewer/': {
@@ -620,6 +653,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunnerIdViewerVehiclesRouteImport
       parentRoute: typeof RunnerIdViewerRoute
     }
+    '/test/entityCard/all': {
+      id: '/test/entityCard/all'
+      path: '/test/entityCard/all'
+      fullPath: '/test/entityCard/all'
+      preLoaderRoute: typeof TestEntityCardAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test/theme/typography': {
       id: '/test/theme/typography'
       path: '/test/theme/typography'
@@ -727,6 +767,8 @@ const rootRouteChildren: RootRouteChildren = {
   GmNpcBuilderRoute: GmNpcBuilderRoute,
   GmIndexRoute: GmIndexRoute,
   NewIndexRoute: NewIndexRoute,
+  TestIndexRoute: TestIndexRoute,
+  TestEntityCardAllRoute: TestEntityCardAllRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
   TestItemsDetailsAllRoute: TestItemsDetailsAllRoute,
 }

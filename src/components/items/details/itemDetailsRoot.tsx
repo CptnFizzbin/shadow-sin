@@ -14,7 +14,7 @@ import { Icons } from "#/lib/icons.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
-import { ItemDetailsSlot, ItemDetailsSlotsProvider } from "./itemDetailsSlot.tsx"
+import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
 
 export interface ItemDetailsRootProps extends PropsWithChildren {
   item: ItemData
@@ -52,7 +52,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
   onMoveSubitem,
   children,
 }) => {
-  const slots = new ItemDetailsSlotsProvider(children)
+  const slots = new ItemDetailsSlotManager(children)
 
   const effects = item.effects ?? []
 
