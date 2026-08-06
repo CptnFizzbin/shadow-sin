@@ -9,13 +9,14 @@ import TextField from "@mui/material/TextField"
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
 import { z } from "zod"
 
-import { createRatingOptions } from "#/components/system/ratings/ratingUtils.ts"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withFieldGroup } from "#/integrations/tanstackForm/useAppForm.ts"
 import { contactFormOpts } from "#/lib/hooks/runner/contacts/form/useContactForm.tsx"
 import { FavourDirection } from "#/system/favourData.ts"
 
-const ratingOptions = createRatingOptions({ min: 1, max: 6 })
+const RATING_MIN = 1
+const RATING_MAX = 6
 
 const favourDirectionOptions: { value: FavourDirection, label: string }[] = [
   { value: FavourDirection.contactOwes, label: "Contact owes" },
@@ -41,22 +42,24 @@ export const ContactFormFields = withFieldGroup({
         <Stack direction="row" sx={{ gap: 1 }}>
           <group.AppField name="connection">
             {(field) => (
-              <field.SelectField
+              <field.CounterField
                 label="Connection"
                 fullWidth
                 size="small"
-                options={ratingOptions}
+                min={RATING_MIN}
+                max={RATING_MAX}
               />
             )}
           </group.AppField>
 
           <group.AppField name="loyalty">
             {(field) => (
-              <field.SelectField
+              <field.CounterField
                 label="Loyalty"
                 fullWidth
                 size="small"
-                options={ratingOptions}
+                min={RATING_MIN}
+                max={RATING_MAX}
               />
             )}
           </group.AppField>
@@ -97,18 +100,15 @@ export const ContactFormFields = withFieldGroup({
                       value={skill.specialization ?? ""}
                       onChange={(e) => field.replaceValue(index, { ...skill, specialization: e.target.value })}
                     />
-                    <FormControl size="small" sx={{ minWidth: 90 }}>
-                      <InputLabel>Rating</InputLabel>
-                      <Select
-                        value={skill.rating}
-                        label="Rating"
-                        onChange={(e) => field.replaceValue(index, { ...skill, rating: Number(e.target.value) })}
-                      >
-                        {ratingOptions.map((option) => (
-                          <MenuItem key={option.value} value={Number(option.value)}>{option.label}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <CounterInput
+                      label="Rating"
+                      size="small"
+                      sx={{ minWidth: 90 }}
+                      min={RATING_MIN}
+                      max={RATING_MAX}
+                      value={skill.rating}
+                      onChange={(newValue) => field.replaceValue(index, { ...skill, rating: newValue ?? RATING_MIN })}
+                    />
                     <IconButton
                       size="small"
                       color="error"

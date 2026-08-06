@@ -10,6 +10,7 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSkills/skillGroupUtils.ts"
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -23,11 +24,6 @@ interface ActiveSkillGroupFormDialogProps extends ControlledDialogProps<SkillGro
   disabledGroups?: ReadonlySet<string>
   onDelete?: () => void
 }
-
-const ratingOptions = Array.from(
-  { length: SkillGroupRatingMax },
-  (_, i) => i + 1,
-)
 
 const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
   ctrl,
@@ -100,20 +96,15 @@ const ActiveSkillGroupFormDialog: FC<ActiveSkillGroupFormDialogProps> = ({
             </Typography>
           )}
 
-          <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
-            <Select
-              value={rating}
-              label="Rating"
-              onChange={(e) => setRating(Number(e.target.value))}
-            >
-              {ratingOptions.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <CounterInput
+            label="Rating"
+            size="small"
+            fullWidth
+            min={1}
+            max={SkillGroupRatingMax}
+            value={rating}
+            onChange={(newValue) => setRating(newValue ?? 1)}
+          />
         </Stack>
       </Dialog.Content>
 

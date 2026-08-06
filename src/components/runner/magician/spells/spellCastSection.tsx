@@ -2,17 +2,14 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
-import FormControl from "@mui/material/FormControl"
 import Grid from "@mui/material/Grid"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { darken, lighten } from "@mui/material/styles"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withTheme } from "#/integrations/mui/muiUtils.ts"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
@@ -97,24 +94,17 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
           )}
         </Stack>
 
-        <FormControl size="small" fullWidth>
-          <InputLabel id="spell-force-label">Force</InputLabel>
-          <Select
-            labelId="spell-force-label"
-            id="spell-force-select"
-            value={force}
-            label="Force"
-            onChange={(e) => setForce(Number(e.target.value))}
-          >
-            {Array.from({ length: maxForce }, (_, i) => i + 1).map((forceValue) => (
-              <MenuItem key={forceValue} value={forceValue}>
-                {forceValue}
-                {forceValue === magicAttr ? " (MAG)" : ""}
-                {forceValue > magicAttr ? " ⚠️" : ""}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <CounterInput
+          id="spell-force-select"
+          label="Force"
+          size="small"
+          fullWidth
+          min={1}
+          max={maxForce}
+          value={force}
+          onChange={(newValue) => setForce(newValue ?? 1)}
+          helperText={`Magic ${magicAttr}${isOvercasting ? " — overcasting" : ""}`}
+        />
 
         <Grid container spacing={1} columns={2}>
           <Grid size={1}>

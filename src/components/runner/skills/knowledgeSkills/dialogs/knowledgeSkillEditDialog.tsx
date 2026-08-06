@@ -1,14 +1,11 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import FormControl from "@mui/material/FormControl"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
@@ -19,8 +16,6 @@ interface KnowledgeSkillEditDialogProps extends ControlledDialogProps<KnowledgeS
   skill?: KnowledgeSkillData
   onDelete?: () => void
 }
-
-const ratingOptions = Array.from({ length: SkillRatingMax }, (_, i) => i + 1)
 
 const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
   ctrl,
@@ -77,20 +72,15 @@ const KnowledgeSkillEditDialog: FC<KnowledgeSkillEditDialogProps> = ({
             autoFocus
           />
 
-          <FormControl fullWidth size="small">
-            <InputLabel>Rating</InputLabel>
-            <Select
-              value={rating}
-              label="Rating"
-              onChange={(e) => setRating(Number(e.target.value))}
-            >
-              {ratingOptions.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <CounterInput
+            label="Rating"
+            size="small"
+            fullWidth
+            min={1}
+            max={SkillRatingMax}
+            value={rating}
+            onChange={(newValue) => setRating(newValue ?? 1)}
+          />
 
           <TextField
             label="Specialization (optional)"
