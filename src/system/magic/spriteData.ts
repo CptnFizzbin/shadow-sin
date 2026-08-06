@@ -15,4 +15,9 @@ export interface SpriteData {
   }
 
   notes?: string
+
+  damage: {
+    physical: number
+    stun: number
+  }
 }
