@@ -258,6 +258,11 @@ Screenshots must reach the reviewer in two places, not just be mentioned or link
   attach them if wanted) so they render inline for the user immediately.
 - **PR**: post them as a **comment** on the pull request — in addition to (not instead of) any reference in the PR
   description — so reviewers see them in the PR's activity feed without having to ask or open a separate summary.
+  If your GitHub tooling has no way to upload binary image data into a comment (no attachment/asset-upload
+  endpoint), embedding a real image there isn't possible — GitHub strips `data:` URIs from rendered comment
+  markdown, so don't fake it with a base64 `<img>` that will just show as broken. In that case, post a comment
+  saying so explicitly and that the screenshots were delivered in chat instead, rather than silently skipping the
+  PR side of this requirement.
 
 - Don't use short or ambiguous variable names. Prefer descriptive identifiers (for example `characterHealth` instead of
   `hp`, `damageThreshold` instead of `dt`). Short names are acceptable only for well-known conventions (`id`, `ok`,
