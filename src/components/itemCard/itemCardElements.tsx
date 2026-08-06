@@ -5,14 +5,22 @@ import { CardElementQuantity } from "#/components/entityCard/elements/cardElemen
 import { CardElementStatusIcon } from "#/components/entityCard/elements/cardElementStatusIcon.tsx"
 import { CardElementSubType } from "#/components/entityCard/elements/cardElementSubType.tsx"
 import { CardElementSubitem } from "#/components/entityCard/elements/cardElementSubitem.tsx"
+import { EntityCardElements } from "#/components/entityCard/entityCardElements.tsx"
 
 /**
- * Pure, dependency-free `ItemCard`-only content elements, flat — the incremental elements
- * `ItemCard` adds on top of `EntityCardElements` (see ADR-0010). Kept separate from
- * `EntityCardElements` so composition contexts can pull just Item's own elements without also
- * pulling in the generic ones.
+ * Pure, dependency-free ItemCard content elements, flat — `EntityCard`'s content elements pulled
+ * in by name (not a blind spread of `EntityCardElements`, so it's explicit which ones `ItemCard`
+ * actually reuses) plus Item's own incremental elements. `Layout` regions are deliberately
+ * excluded — those stay on `EntityCard.Layout` directly; `ItemCard` doesn't re-expose them (see
+ * `ItemCardRoot`, which uses them internally to lay out Item's own common fields).
  */
 export const ItemCardElements = {
+  Title: EntityCardElements.Title,
+  Rating: EntityCardElements.Rating,
+  Source: EntityCardElements.Source,
+  Effects: EntityCardElements.Effects,
+  Stat: EntityCardElements.Stat,
+  Action: EntityCardElements.Action,
   Availability: CardElementAvailability,
   Cost: CardElementCost,
   Quantity: CardElementQuantity,
