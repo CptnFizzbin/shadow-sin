@@ -1,7 +1,7 @@
 import type { FC } from "react"
 
-import { DataCardSlot } from "#/components/dataCard/dataCardSlot.tsx"
-import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
+import { EntityCard } from "#/components/entityCard/entityCard.tsx"
+import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -34,17 +34,22 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
 
   return (
     <>
-      <ItemDataCardRoot item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
-        {Object.values(licenses).map((license) => (
-          <DataCardSlot.Subitem
-            key={license.id}
-            name={license.name}
-            stats={[
-              { label: "Rating", value: license.rating ?? "unknown" },
-            ]}
-          />
-        ))}
-      </ItemDataCardRoot>
+      <ItemCard item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
+        {hasLicenses && (
+          <EntityCard.Layout.BodyRow
+            direction="column"
+            sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
+          >
+            {Object.values(licenses).map((license) => (
+              <ItemCard.Subitem
+                key={license.id}
+                name={license.name}
+                stats={[{ label: "Rating", value: license.rating ?? "unknown" }]}
+              />
+            ))}
+          </EntityCard.Layout.BodyRow>
+        )}
+      </ItemCard>
 
       {confirmDialog.dialog}
     </>

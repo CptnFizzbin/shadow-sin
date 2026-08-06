@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
+import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { LicenseData } from "#/system/gear/licenseData.ts"
@@ -16,7 +16,5 @@ export const LicenseDataCard: FC<LicenseDataCardProps> = ({ license, onOpen, onE
 
   const removeLicense = () => dispatch(Actions.gear.licenses.destroy(license.id))
 
-  return (
-    <ItemDataCardRoot item={license} onOpen={onOpen} onEdit={onEdit} onRemove={removeLicense} />
-  )
+  return <ItemCard item={license} onOpen={onOpen} onEdit={onEdit} onRemove={removeLicense} />
 }
