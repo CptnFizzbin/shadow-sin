@@ -31,9 +31,9 @@ export interface EntityCardProps extends PropsWithChildren {
   entity: EntityData
   /** When provided, the whole card becomes tappable/keyboard-activatable and invokes this (e.g. navigate to the entity's details page). */
   onOpen?: () => void
-  /** When provided, adds an "Edit" quick action (long-press/right-click menu). */
+  /** When provided, adds an "Edit" action (long-press/right-click menu). */
   onEdit?: () => void
-  /** When provided, adds a "Remove" quick action (long-press/right-click menu). */
+  /** When provided, adds a "Remove" action (long-press/right-click menu). */
   onRemove?: () => void
 }
 
@@ -52,10 +52,9 @@ interface MenuPosition {
  * need to supply their own type-specific content as `children`. Finds its `Layout.*` regions
  * among `children` via `SlotManager` (same mechanism as `DataCard`) and renders whichever are
  * present in the fixed HeaderRow/BodyRow/FooterRow order, regardless of the order they were
- * passed in; any other child is ignored. Interaction affordances mirror `DataCard`'s: tap/click
- * (or Enter/Space) invokes `onOpen`, long-press/right-click opens a quick-action menu offering
- * Edit and Remove — `EntityCard` doesn't yet support arbitrary type-specific quick actions the
- * way `DataCard.QuickAction` does; add that when a consumer needs it.
+ * passed in; any other child is ignored. Interaction affordances mirror `DataCard`'s exactly
+ * (same tap/long-press/right-click behavior) so a typed card migrating off `DataCard` doesn't
+ * change behavior for its callers.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -65,7 +64,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
-  const hasQuickActions = !!(onEdit || onRemove)
+  const hasActions = !!(onEdit || onRemove)
 
   const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -81,13 +80,13 @@ const EntityCardRoot: FC<EntityCardProps> = ({
   }
 
   const handleContextMenu = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (!hasQuickActions) return
+    if (!hasActions) return
     event.preventDefault()
     setMenuPosition({ mouseX: event.clientX + 2, mouseY: event.clientY - 6 })
   }
 
   const handleTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
-    if (!hasQuickActions) return
+    if (!hasActions) return
     const touch = event.touches[0]
     touchStartRef.current = { x: touch.clientX, y: touch.clientY }
     clearLongPressTimer()
@@ -193,7 +192,7 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         </Stack>
       </Box>
 
-      {hasQuickActions && (
+      {hasActions && (
         <Menu
           open={menuPosition !== null}
           onClose={handleCloseMenu}

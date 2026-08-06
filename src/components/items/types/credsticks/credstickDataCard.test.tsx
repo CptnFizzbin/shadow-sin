@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
+import { NullUuid } from "#/lib/uuidUtils.ts"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
 import { CredstickType } from "#/system/gear/credstickData.ts"
 import { ItemType } from "#/system/itemType.ts"
@@ -11,7 +12,7 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { CredstickDataCard } from "./credstickDataCard.tsx"
 
 const streetStick: CredstickData = {
-  id: "00000000-0000-0000-0000-000000000001",
+  id: NullUuid,
   name: "Street Cred",
   itemType: ItemType.credstick,
   credstickType: CredstickType.standard,
@@ -58,7 +59,7 @@ describe("CredstickDataCard", () => {
     expect(onOpen).toHaveBeenCalledOnce()
   })
 
-  it("offers an Edit quick action that calls onEdit", () => {
+  it("offers an Edit action that calls onEdit", () => {
     // Arrange
     const onEdit = vi.fn()
     renderWithProviders(<CredstickDataCard credstick={streetStick} onEdit={onEdit} />)

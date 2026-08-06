@@ -12,21 +12,21 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { SinDataCard } from "./sinDataCard.tsx"
 
 const fakeSin: SinData = {
-  id: "00000000-0000-0000-0000-000000000001",
+  id: crypto.randomUUID(),
   name: "National ID (Fake)",
   itemType: ItemType.sin,
   rating: 4,
 }
 
 const realSin: SinData = {
-  id: "00000000-0000-0000-0000-000000000002",
+  id: crypto.randomUUID(),
   name: "Real SIN",
   itemType: ItemType.sin,
   rating: "real",
 }
 
 const coveredLicense: LicenseData = {
-  id: "00000000-0000-0000-0000-000000000003",
+  id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
   rating: 4,

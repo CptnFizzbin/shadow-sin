@@ -10,14 +10,14 @@ import { renderWithProviders } from "#testUtils/renderUtils.tsx"
 import { LicenseDataCard } from "./licenseDataCard.tsx"
 
 const fakeLicense: LicenseData = {
-  id: "00000000-0000-0000-0000-000000000001",
+  id: crypto.randomUUID(),
   name: "License: Ares Predator",
   itemType: ItemType.license,
   rating: 4,
 }
 
 const realLicense: LicenseData = {
-  id: "00000000-0000-0000-0000-000000000002",
+  id: crypto.randomUUID(),
   name: "License: Legal Firearm",
   itemType: ItemType.license,
   rating: "real",
@@ -61,7 +61,7 @@ describe("LicenseDataCard", () => {
     expect(onOpen).toHaveBeenCalledOnce()
   })
 
-  it("offers an Edit quick action that calls onEdit", () => {
+  it("offers an Edit action that calls onEdit", () => {
     // Arrange
     const onEdit = vi.fn()
     renderWithProviders(<LicenseDataCard license={fakeLicense} onEdit={onEdit} />)
