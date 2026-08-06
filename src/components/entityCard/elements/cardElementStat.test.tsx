@@ -46,4 +46,34 @@ describe("CardElementStat", () => {
     const chip = screen.getByText("X: 1").closest(".MuiChip-root")
     expect(chip?.className).not.toMatch(/MuiChip-color(?!Default)/)
   })
+
+  it("renders only the effective value when it equals the raw value", () => {
+    // Arrange / Act
+    render(<CardElementStat label="Ess" value="0.00" effectiveValue="0.00" type="modifier" />, {
+      wrapper: ThemeWrapper,
+    })
+
+    // Assert
+    expect(screen.getAllByText("Ess: 0.00")).toHaveLength(1)
+  })
+
+  it("renders both the raw and effective values when they differ", () => {
+    // Arrange / Act
+    render(<CardElementStat label="Ess" value="1.00" effectiveValue="0.80" type="modifier" />, {
+      wrapper: ThemeWrapper,
+    })
+
+    // Assert
+    expect(screen.getByText("Ess: 1.00")).toBeDefined()
+    expect(screen.getByText("Ess: 0.80")).toBeDefined()
+  })
+
+  it("applies the effective value to restriction-style value-only rendering", () => {
+    // Arrange / Act
+    render(<CardElementStat value="6R" effectiveValue="8F" type="restriction" />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(screen.getByText("6R")).toBeDefined()
+    expect(screen.getByText("8F")).toBeDefined()
+  })
 })
