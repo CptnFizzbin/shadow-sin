@@ -19,11 +19,10 @@ interface ItemCardProps extends PropsWithChildren {
  * `ItemCard`'s own renderable frame — sits on top of `EntityCard` the way `ItemDataCardRoot` sits
  * on top of `DataCard` today: auto-renders every `ItemData` field `EntityCard` doesn't already
  * cover (availability, cost, quantity, equipped/stashed/fixed/wireless status) by placing them
- * into `EntityCard`'s own `Layout` regions internally. `ItemCard` doesn't re-expose `Layout`
- * itself — a category-tier or typed card that needs another row uses `EntityCard.Layout.*`
- * directly and passes it as `children`, the same as any other `EntityCard` consumer.
- * `onOpen`/`onEdit`/`onRemove` pass straight through to `EntityCard` for its tap-to-open and
- * long-press/right-click action menu.
+ * into `EntityCard`'s own `Layout` regions internally. A category-tier or typed card that needs
+ * another row uses `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it
+ * as `children`. `onOpen`/`onEdit`/`onRemove` pass straight through to `EntityCard` for its
+ * tap-to-open and long-press/right-click action menu.
  */
 const ItemCardRoot: FC<ItemCardProps> = ({ item, onOpen, onEdit, onRemove, children }) => (
   <EntityCard entity={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove}>
@@ -57,6 +56,8 @@ ItemCardRoot.displayName = "ItemCard"
  * Category tier from ADR-0010, sitting between `EntityCard` (universal) and a concrete typed
  * card (`WeaponCard`, `ArmorCard`, ...). `ItemCardRoot` is the renderable frame; `ItemCardElements`
  * are attached onto it via `Object.assign` — `ItemCard.Title`, `ItemCard.Cost`, etc. — the same
- * way `EntityCard = Object.assign(EntityCardRoot, EntityCardElements, ...)` does.
+ * way `EntityCard = Object.assign(EntityCardRoot, EntityCardElements, { Layout: ... })` does.
+ * `Layout` is re-exported from `EntityCard` unchanged (not a distinct `ItemCard`-owned copy) so
+ * typed cards reach it as `ItemCard.Layout.*` without a separate `EntityCard` import.
  */
-export const ItemCard = Object.assign(ItemCardRoot, ItemCardElements)
+export const ItemCard = Object.assign(ItemCardRoot, ItemCardElements, { Layout: EntityCard.Layout })

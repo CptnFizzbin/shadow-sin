@@ -1,6 +1,5 @@
 import type { FC } from "react"
 
-import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { formatNuyen } from "#/components/ui/nuyen.tsx"
 import type { CredstickData } from "#/system/gear/credstickData.ts"
@@ -22,14 +21,14 @@ export const CredstickDataCard: FC<CredstickDataCardProps> = ({ credstick, onOpe
       onOpen={onOpen}
       onEdit={onEdit}
     >
-      <EntityCard.Layout.HeaderRow>
+      <ItemCard.Layout.HeaderRow>
         <ItemCard.SubType label={CredstickTypeLabel[credstick.credstickType]} />
-      </EntityCard.Layout.HeaderRow>
+      </ItemCard.Layout.HeaderRow>
 
-      <EntityCard.Layout.BodyRow>
+      <ItemCard.Layout.BodyRow>
         <ItemCard.Stat value={formatNuyen(credstick.balance)} type="rating" />
         <ItemCard.Stat value={`${fillPercent.toFixed(0)}% full`} />
-      </EntityCard.Layout.BodyRow>
+      </ItemCard.Layout.BodyRow>
     </ItemCard>
   )
 }

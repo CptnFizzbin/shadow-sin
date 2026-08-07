@@ -1,6 +1,5 @@
 import type { FC } from "react"
 
-import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -36,7 +35,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
     <>
       <ItemCard item={sin} onOpen={onOpen} onEdit={onEdit} onRemove={removeSin}>
         {hasLicenses && (
-          <EntityCard.Layout.BodyRow
+          <ItemCard.Layout.BodyRow
             direction="column"
             sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
           >
@@ -47,7 +46,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
                 stats={[{ label: "Rating", value: license.rating ?? "unknown" }]}
               />
             ))}
-          </EntityCard.Layout.BodyRow>
+          </ItemCard.Layout.BodyRow>
         )}
       </ItemCard>
 

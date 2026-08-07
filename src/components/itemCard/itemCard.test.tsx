@@ -76,9 +76,9 @@ describe("ItemCard", () => {
     // Arrange / Act
     render(
       <ItemCard item={baseItem}>
-        <EntityCard.Layout.BodyRow>
+        <ItemCard.Layout.BodyRow>
           <ItemCard.Stat label="Handling" value="3" />
-        </EntityCard.Layout.BodyRow>
+        </ItemCard.Layout.BodyRow>
       </ItemCard>,
       { wrapper: ThemeWrapper },
     )
@@ -108,8 +108,8 @@ describe("ItemCard", () => {
     expect(ItemCard.StatusIcon).toBe(ItemCardElements.StatusIcon)
   })
 
-  it("does not re-expose EntityCard's Layout regions", () => {
+  it("re-exposes EntityCard's Layout regions unchanged", () => {
     // Arrange / Act / Assert
-    expect("Layout" in ItemCard).toBe(false)
+    expect(ItemCard.Layout).toBe(EntityCard.Layout)
   })
 })

@@ -10,9 +10,9 @@ import { EntityCardElements } from "#/components/entityCard/entityCardElements.t
 /**
  * Pure, dependency-free ItemCard content elements, flat — `EntityCard`'s content elements pulled
  * in by name (not a blind spread of `EntityCardElements`, so it's explicit which ones `ItemCard`
- * actually reuses) plus Item's own incremental elements. `Layout` regions are deliberately
- * excluded — those stay on `EntityCard.Layout` directly; `ItemCard` doesn't re-expose them (see
- * `ItemCardRoot`, which uses them internally to lay out Item's own common fields).
+ * actually reuses) plus Item's own incremental elements. `Layout` regions live separately —
+ * `ItemCard` (in `itemCard.tsx`) re-exports `EntityCard.Layout` directly onto itself rather than
+ * folding it in here, since `Layout` isn't a content element.
  */
 export const ItemCardElements = {
   Title: EntityCardElements.Title,
