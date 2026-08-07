@@ -37,3 +37,17 @@ Create a GitHub issue.
 ## When a skill says "fetch the relevant ticket"
 
 Run `gh issue view <number> --comments`.
+
+## Ticket claiming hook
+
+`.claude/hooks/claim-ticket.sh` (registered as a `PreToolUse` hook in `.claude/settings.json`) fires on every
+`gh issue view <number>` call — i.e. whenever an agent starts work on a ticket — and:
+
+- **Denies** the call if the issue already has another assignee, or a "starting work" comment from a different
+  session posted within the last 12 hours, so the agent picks a different `ready-for-agent` issue instead of
+  duplicating work already in flight.
+- Otherwise **self-assigns** the issue (`gh issue edit --add-assignee @me`) and **leaves a comment** marking that
+  work has started, so a concurrent agent's hook run sees the claim.
+
+It fails open: if `gh`/`jq` are unavailable, auth fails, or any lookup errors, the hook allows the ticket view to
+proceed rather than blocking work.

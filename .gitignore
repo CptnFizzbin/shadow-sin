@@ -45,7 +45,10 @@ Thumbs.db
 *.local
 
 # Agent Config
-.claude/
+.claude/*
+# ...except shared repo hooks, which are meant to be committed and run for every agent session
+!.claude/settings.json
+!.claude/hooks/
 
 # Agent Artifacts
 .playwright-mcp/
