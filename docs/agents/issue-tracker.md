@@ -46,8 +46,8 @@ any code:
 
 1. **Check for an existing claim**: `gh issue view <number> --json assignees,comments`. If another assignee is
    already present, or a comment matching `🤖 Claude Code is starting work on this ticket` was left recently (within
-   the last several hours), another agent is likely already on it — stop and pick a different `ready-for-agent`
-   issue instead of duplicating the work.
+   the last several hours), another agent is likely already on it — stop and flag this to the user rather than
+   proceeding, instead of starting duplicate work.
 2. **Self-assign**: `gh issue edit <number> --add-assignee @me`
 3. **Leave a claim comment** so a concurrent agent sees the ticket is taken:
    ```
