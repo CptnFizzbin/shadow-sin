@@ -4,6 +4,7 @@ import type { BasicDataCardProps } from "#/components/dataCard/dataCard.tsx"
 import { DataCard } from "#/components/dataCard/dataCard.tsx"
 import { Icons } from "#/lib/icons.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
 export interface ItemCardRootProps extends BasicDataCardProps {
   item: ItemData
@@ -28,8 +29,10 @@ export const ItemDataCardRoot: FC<ItemCardRootProps> = ({ item, subType, childre
       <DataCard.Cost value={item.cost} />
       <DataCard.Rating value={item.rating} />
 
-      {item.equipped && <DataCard.StatusIcon icon={Icons.item.equipped} label="Equipped" />}
-      {item.stashed && <DataCard.StatusIcon icon={Icons.item.stashed} label="Stashed" />}
+      {isEquipped(item) && !isStashed(item) && (
+        <DataCard.StatusIcon icon={Icons.item.equipped} label="Equipped" />
+      )}
+      {isStashed(item) && <DataCard.StatusIcon icon={Icons.item.stashed} label="Stashed" />}
       {item.fixed && <DataCard.StatusIcon icon={Icons.item.fixed} label="Fixed" />}
       {item.wireless && (
         item.wireless.removed

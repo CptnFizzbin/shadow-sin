@@ -6,6 +6,7 @@ import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selector
 import type { EffectByType, GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import type { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { filterByEffectType } from "#/system/gameEffects/gameEffectUtils.ts"
+import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 function getGameEffects(item: { effects?: GameEffectData[] }): GameEffectData[] {
@@ -21,7 +22,7 @@ export const selectAllGameEffects: RunnerDataSelector<GameEffectData[]> = create
     (sheet: RunnerData) => sheet.powers,
   ],
   (qualities, gear, spells, complexForms, powers): GameEffectData[] => {
-    const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped)
+    const equippedGear = Object.values(gear).filter((gearItem) => isEquipped(gearItem) && !isStashed(gearItem))
 
     return [
       ...qualities,

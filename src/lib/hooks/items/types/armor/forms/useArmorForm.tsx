@@ -21,7 +21,10 @@ const defaultFormValues: ArmorData = {
   cost: 0,
   quantity: 1,
   description: "",
-  equipped: false,
+  _state: {
+    equipped: false,
+    stashed: false,
+  },
   availability: {
     rating: 0,
     restricted: false,

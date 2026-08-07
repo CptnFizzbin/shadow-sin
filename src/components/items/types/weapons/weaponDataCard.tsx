@@ -8,6 +8,7 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
+import { isEquipped } from "#/system/items/itemUtils.ts"
 
 interface WeaponDataCardProps {
   weapon: WeaponData
@@ -23,7 +24,10 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
 
-  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({
+    ...weapon,
+    _state: { ...weapon._state, equipped: !isEquipped(weapon) },
+  }))
   const removeWeapon = () => dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
@@ -46,7 +50,7 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
         <DataCard.Subitem key={accessory.id} name={accessory.name} />
       ))}
 
-      {weapon.equipped
+      {isEquipped(weapon)
         ? (
             <DataCard.QuickAction
               label="Unequip"

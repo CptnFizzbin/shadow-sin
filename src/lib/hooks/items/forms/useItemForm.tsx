@@ -33,6 +33,9 @@ export const itemDefaults: ItemData = {
   },
   parentId: undefined,
   effects: [],
+  _state: {
+    stashed: false,
+  },
 }
 
 export const itemFieldMap = createFieldMap(itemDefaults)

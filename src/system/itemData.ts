@@ -26,9 +26,19 @@ export interface ItemData extends EntityData {
   licenseId?: UUID | null
 
   notes?: string
-  equipped?: boolean
-  stashed?: boolean
   fixed?: boolean
+
+  /**
+   * Internal storage for per-item Equipped/Stash state — read through
+   * `isEquipped(item)` / `isStashed(item)` in `src/system/items/itemUtils.ts`, not directly.
+   * Leading underscore matches the `RunnerData._meta_` convention for "internal storage, don't
+   * read directly." `fixed`/`wireless` stay top-level, separate from `_state` — see
+   * `docs/adr/0006-item-state-scope.md`.
+   */
+  _state?: {
+    equipped?: boolean
+    stashed?: boolean
+  }
 
   wireless?: {
     enabled?: boolean

@@ -45,18 +45,18 @@ const withGear = (...items: ItemData[]) =>
   })
 
 describe("selectEquipped", () => {
-  it("returns only items with equipped === true", () => {
+  it("returns only items with _state.equipped === true", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
-        [item.id]: { ...item, equipped: true },
+        [item.id]: { ...item, _state: { equipped: true } },
       }
       return s
     })
 
-    expect(selectEquipped(sheet)).toEqual([{ ...item, equipped: true }])
+    expect(selectEquipped(sheet)).toEqual([{ ...item, _state: { equipped: true } }])
   })
 
-  it("excludes items with equipped false or absent", () => {
+  it("excludes items with _state.equipped false or absent", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
@@ -67,7 +67,18 @@ describe("selectEquipped", () => {
 })
 
 describe("selectStashed", () => {
-  it("always returns an empty array (stubbed pending #388)", () => {
+  it("returns only items with _state.stashed === true", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, _state: { stashed: true } },
+      }
+      return s
+    })
+
+    expect(selectStashed(sheet)).toEqual([{ ...item, _state: { stashed: true } }])
+  })
+
+  it("excludes items with _state.stashed false or absent", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
@@ -78,13 +89,24 @@ describe("selectStashed", () => {
 })
 
 describe("selectAvailable", () => {
-  it("always returns every gear item (stubbed pending #388)", () => {
+  it("returns items that are not stashed", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
     })
 
     expect(selectAvailable(sheet)).toEqual([item])
+  })
+
+  it("excludes stashed items", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, _state: { stashed: true } },
+      }
+      return s
+    })
+
+    expect(selectAvailable(sheet)).toEqual([])
   })
 })
 

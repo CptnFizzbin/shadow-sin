@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { addItem, removeItem, setItem, stashItem } from "./gearSlice.actions.ts"
+import { addItem, removeItem, setItem, stashItem, unstashItem } from "./gearSlice.actions.ts"
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -173,12 +173,67 @@ describe("gearReducer", () => {
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("stash is a no-op stub pending a real _state.stashed field (#388)", () => {
+  it("stash sets _state.stashed on the item", () => {
     // Arrange
     const item = makeItem()
 
     // Act
     const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
+
+    // Assert
+    expect(next[item.id]._state?.stashed).toBe(true)
+  })
+
+  it("stash preserves the item's existing _state.equipped value", () => {
+    // Arrange
+    const item = makeItem({ _state: { equipped: true } })
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
+
+    // Assert
+    expect(next[item.id]._state).toEqual({ equipped: true, stashed: true })
+  })
+
+  it("stash is a no-op when no item matches the id", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, stashItem({ id: crypto.randomUUID() as UUID }))
+
+    // Assert
+    expect(next).toEqual({ [item.id]: item })
+  })
+
+  it("unstash clears _state.stashed on the item", () => {
+    // Arrange
+    const item = makeItem({ _state: { stashed: true } })
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, unstashItem({ id: item.id }))
+
+    // Assert
+    expect(next[item.id]._state?.stashed).toBe(false)
+  })
+
+  it("unstash preserves the item's existing _state.equipped value", () => {
+    // Arrange
+    const item = makeItem({ _state: { equipped: true, stashed: true } })
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, unstashItem({ id: item.id }))
+
+    // Assert
+    expect(next[item.id]._state).toEqual({ equipped: true, stashed: false })
+  })
+
+  it("unstash is a no-op when no item matches the id", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, unstashItem({ id: crypto.randomUUID() as UUID }))
 
     // Assert
     expect(next).toEqual({ [item.id]: item })

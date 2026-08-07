@@ -57,7 +57,7 @@ export function initializeOptions(
   return {
     equipable:
       resolveEnabled(defaults?.equipable)
-      || (!isForceDisabled(defaults?.equipable) && isEditMode && initialValues.equipped !== undefined),
+      || (!isForceDisabled(defaults?.equipable) && isEditMode && initialValues._state?.equipped !== undefined),
     // rating: 0 is not a meaningful value so is treated the same as undefined.
     hasRating:
       resolveEnabled(defaults?.hasRating)
@@ -94,8 +94,8 @@ function clearStaleOptionField(
 ): void {
   switch (key) {
     case "equipable":
-      if (!form.state.values.equipped) {
-        form.setFieldValue("equipped", undefined)
+      if (!form.state.values._state?.equipped) {
+        form.setFieldValue("_state.equipped", undefined)
       }
       break
     case "hasRating":

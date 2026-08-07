@@ -11,6 +11,7 @@ import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerSto
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isFirearmData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
+import { isEquipped } from "#/system/items/itemUtils.ts"
 
 import { useWeaponFormDialog } from "./dialogs/weaponFormDialog.tsx"
 
@@ -31,7 +32,10 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const weaponFormDialog = useWeaponFormDialog()
   const accessoryFormDialog = useItemFormDialog()
 
-  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({
+    ...weapon,
+    _state: { ...weapon._state, equipped: !isEquipped(weapon) },
+  }))
 
   const removeWeapon = () => {
     dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
@@ -73,7 +77,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
           />
         ))}
 
-        {weapon.equipped
+        {isEquipped(weapon)
           ? (
               <ItemDetailsSlot.QuickAction
                 label="Unequip"

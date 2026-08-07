@@ -36,20 +36,16 @@ export function itemIsType<
 }
 
 export function isEquipped(item: ItemData): boolean {
-  return item.equipped === true
+  return item._state?.equipped === true
 }
 
-// TODO(#388): Stubbed pending item-stashing (docs/features/0012-item-stashing.md). Once
-// ItemData carries a real `_state.stashed` flag, read it here instead of hardcoding `false`.
-export function isStashed(_item: ItemData): boolean {
-  return false
+export function isStashed(item: ItemData): boolean {
+  return item._state?.stashed === true
 }
 
-// TODO(#388): Stubbed pending item-stashing. Conceptually `!isStashed(item)`, but hardcoded
-// `true` since `isStashed` always returns `false` today — replace with `!isStashed(item)` once
-// the real `_state.stashed` flag exists and isStashed reads it.
-export function isAvailable(_item: ItemData): boolean {
-  return true
+/** An item is available (present with the Runner) when it hasn't been stashed. */
+export function isAvailable(item: ItemData): boolean {
+  return !isStashed(item)
 }
 
 export function filterRecordBy<TInput extends ItemData = ItemData, TOutput extends TInput = TInput>(

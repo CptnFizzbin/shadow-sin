@@ -1,5 +1,6 @@
 import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
+import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 /**
@@ -27,7 +28,7 @@ function selectHighPainToleranceOffset(track: DamageTrackKey) {
     }
 
     for (const item of Object.values(sheet.gear)) {
-      if (item.equipped !== true) continue
+      if (!isEquipped(item) || isStashed(item)) continue
       for (const effect of item.effects ?? []) {
         if (
           effect.type === GameEffectType.highPainTolerance
@@ -66,7 +67,7 @@ function selectLowPainToleranceModifier(track: DamageTrackKey) {
     }
 
     for (const item of Object.values(sheet.gear)) {
-      if (item.equipped !== true) continue
+      if (!isEquipped(item) || isStashed(item)) continue
       for (const effect of item.effects ?? []) {
         if (
           effect.type === GameEffectType.lowPainTolerance

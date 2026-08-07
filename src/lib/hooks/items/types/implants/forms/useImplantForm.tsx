@@ -41,7 +41,10 @@ const defaultFormValues: ImplantData = {
   rating: undefined as number | undefined,
   childIds: [NullUuid],
   notes: "",
-  equipped: false,
+  _state: {
+    equipped: false,
+    stashed: false,
+  },
   fixed: false,
   wireless: {
     enabled: false,

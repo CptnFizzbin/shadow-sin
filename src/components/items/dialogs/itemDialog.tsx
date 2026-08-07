@@ -193,10 +193,15 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             <Stack direction="row" sx={{ alignItems: "center" }}>
               {localOptions["equipable"] && (
-                <form.AppField name="equipped">
+                <form.AppField name="_state.equipped">
                   {(field) => <field.SwitchField label="Equipped" />}
                 </form.AppField>
               )}
+
+              {/* Stash is available on every item unconditionally, unlike Equip which is gated per item type — see docs/features/0012-item-stashing.md */}
+              <form.AppField name="_state.stashed">
+                {(field) => <field.SwitchField label="Stashed" />}
+              </form.AppField>
 
               <IconButton
                 size="small"

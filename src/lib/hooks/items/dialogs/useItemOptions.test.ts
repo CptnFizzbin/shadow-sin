@@ -97,7 +97,7 @@ describe("initializeOptions", () => {
   describe("force-disabled options (forced=true, enabled=false)", () => {
     it("keeps equipable disabled in edit mode when force-disabled", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, equipped: false }
+      const item: ItemData = { ...baseItem, _state: { equipped: false } }
 
       // Act
       const options = initializeOptions(item, true, { equipable: { forced: true, enabled: false } })
@@ -154,7 +154,7 @@ describe("initializeOptions", () => {
   describe("auto-enabling in edit mode from existing field values", () => {
     it("enables equipable when editing an item that has an equipped value", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, equipped: false }
+      const item: ItemData = { ...baseItem, _state: { equipped: false } }
 
       // Act
       const options = initializeOptions(item, true)
@@ -266,7 +266,7 @@ describe("initializeOptions", () => {
       // Arrange — new item has values pre-filled but should not auto-enable optional options
       const item: ItemData = {
         ...newItem,
-        equipped: true,
+        _state: { equipped: true },
         rating: 3,
         quantity: 5,
         parentId: crypto.randomUUID(),

@@ -44,8 +44,12 @@ export const ArmorDataSchema = z.object({
   childIds: z.array(z.uuid() as z.ZodType<UUID>).optional(),
 
   notes: z.string().optional(),
-  equipped: z.boolean().optional(),
   fixed: z.boolean().optional(),
+
+  _state: z.object({
+    equipped: z.boolean().optional(),
+    stashed: z.boolean().optional(),
+  }).optional(),
 
   wireless: z.object({
     enabled: z.boolean().optional(),

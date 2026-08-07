@@ -65,7 +65,7 @@ describe("licenses.destroy", () => {
 describe("licenses.setLicenseForItem", () => {
   it("patches only licenseId on the target item", () => {
     // Arrange
-    const item = makeItem({ equipped: true })
+    const item = makeItem({ _state: { equipped: true } })
     const licenseId = crypto.randomUUID() as UUID
 
     // Act
@@ -125,7 +125,7 @@ describe("licenses.clearLicenseForItem", () => {
   it("doesn't touch other fields on the item", () => {
     // Arrange
     const licenseId = crypto.randomUUID() as UUID
-    const item = makeItem({ licenseId, equipped: true })
+    const item = makeItem({ licenseId, _state: { equipped: true } })
 
     // Act
     const next = gearReducer({ [item.id]: item }, licenses.clearLicenseForItem({ itemId: item.id }))

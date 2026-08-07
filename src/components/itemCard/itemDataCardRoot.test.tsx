@@ -49,7 +49,7 @@ describe("ItemDataCardRoot", () => {
 
   it("renders equipped and wireless-off status icons from the item", () => {
     render(
-      <ItemDataCardRoot item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
+      <ItemDataCardRoot item={{ ...baseItem, _state: { equipped: true }, wireless: { enabled: false } }} />,
       { wrapper: ThemeWrapper },
     )
 
@@ -64,6 +64,16 @@ describe("ItemDataCardRoot", () => {
     )
 
     expect(screen.getByLabelText("Wireless removed")).toBeDefined()
+  })
+
+  it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
+    render(
+      <ItemDataCardRoot item={{ ...baseItem, _state: { equipped: true, stashed: true } }} />,
+      { wrapper: ThemeWrapper },
+    )
+
+    expect(screen.getByLabelText("Stashed")).toBeDefined()
+    expect(screen.queryByLabelText("Equipped")).toBeNull()
   })
 
   it("renders no status icons when the item has none set", () => {

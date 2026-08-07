@@ -52,12 +52,22 @@ describe("ItemDetailsRoot", () => {
 
   it("renders equipped and stashed status", () => {
     render(
-      <ItemDetailsRoot item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
+      <ItemDetailsRoot item={{ ...baseItem, _state: { equipped: true }, wireless: { enabled: false } }} />,
       { wrapper: ThemeWrapper },
     )
 
     expect(screen.getByText("Equipped")).toBeDefined()
     expect(screen.getByText("Wireless Off")).toBeDefined()
+  })
+
+  it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
+    render(
+      <ItemDetailsRoot item={{ ...baseItem, _state: { equipped: true, stashed: true } }} />,
+      { wrapper: ThemeWrapper },
+    )
+
+    expect(screen.getByText("Stashed")).toBeDefined()
+    expect(screen.queryByText("Equipped")).toBeNull()
   })
 
   it("composes stats, damage track, subitems, and footer slots", () => {

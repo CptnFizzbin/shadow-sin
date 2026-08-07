@@ -56,6 +56,36 @@ describe("ItemDialog", () => {
     expect(within(dialog).getByRole("button", { name: /save/i })).toBeDefined()
   })
 
+  it("always shows the Stashed switch, unlike the gated Equipped switch", () => {
+    renderInBuilder(
+      <ItemDialogWrapper title="Add Thing" onSave={vi.fn()} />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    expect(within(dialog).getByLabelText("Stashed")).toBeDefined()
+    expect(within(dialog).queryByLabelText("Equipped")).toBeNull()
+  })
+
+  it("submits _state.stashed when the Stashed switch is toggled on", async () => {
+    const onSave = vi.fn()
+    renderInBuilder(
+      <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    fireEvent.click(within(dialog).getByLabelText("Stashed"))
+
+    fillNameAndClickSave("Stashed Gadget")
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledOnce()
+      const submitted: ItemData = onSave.mock.calls[0][0]
+      expect(submitted._state?.stashed).toBe(true)
+    })
+  })
+
   it("calls onSave with the item on save", async () => {
     const onSave = vi.fn()
     renderInBuilder(
@@ -287,7 +317,7 @@ describe("ItemDialog", () => {
         id: existingItemId,
         itemType: ItemType.other,
         name: "Holster",
-        equipped: false,
+        _state: { equipped: false },
       }
 
       // Act
@@ -365,7 +395,7 @@ describe("ItemDialog", () => {
         id: existingItemId,
         itemType: ItemType.other,
         name: "Gear",
-        equipped: false,
+        _state: { equipped: false },
       }
 
       renderInBuilder(
@@ -396,7 +426,7 @@ describe("ItemDialog", () => {
       await waitFor(() => {
         expect(onSave).toHaveBeenCalledOnce()
         const submitted: ItemData = onSave.mock.calls[0][0]
-        expect(submitted.equipped).toBeUndefined()
+        expect(submitted._state?.equipped).toBeUndefined()
       })
     })
   })

@@ -62,7 +62,7 @@ describe("selectAllGameEffects", () => {
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
       itemType: ItemType.implant,
-      equipped: true,
+      _state: { equipped: true },
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory((s) => {
@@ -83,7 +83,7 @@ describe("selectAllGameEffects", () => {
     const [synapticBooster] = createItem({
       name: "Synaptic Booster",
       itemType: ItemType.implant,
-      equipped: false,
+      _state: { equipped: false },
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory((s) => {
@@ -178,7 +178,7 @@ describe("selectAllGameEffects", () => {
     const [implant] = createItem({
       name: "Wired Reflexes",
       itemType: ItemType.implant,
-      equipped: true,
+      _state: { equipped: true },
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory((s) => {
@@ -273,7 +273,7 @@ describe("selectGameEffectsByType", () => {
     const [implant] = createItem({
       name: "Wired Reflexes",
       itemType: ItemType.implant,
-      equipped: true,
+      _state: { equipped: true },
       effects: [{ type: GameEffectType.initiativeBonus, value: 1 }],
     })
     const sheet = runnerDataFactory((s) => {

@@ -34,6 +34,9 @@ const defaultFormValues: ProgramData = {
     page: 0,
   },
   effects: [],
+  _state: {
+    stashed: false,
+  },
 }
 
 export const programFieldMap = createFieldMap(defaultFormValues)
