@@ -21,7 +21,7 @@ export const selectAllGameEffects: RunnerDataSelector<GameEffectData[]> = create
     (sheet: RunnerData) => sheet.powers,
   ],
   (qualities, gear, spells, complexForms, powers): GameEffectData[] => {
-    const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped === true)
+    const equippedGear = Object.values(gear).filter((gearItem) => gearItem.equipped)
 
     return [
       ...qualities,

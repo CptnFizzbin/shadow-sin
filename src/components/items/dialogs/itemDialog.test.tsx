@@ -56,7 +56,7 @@ describe("ItemDialog", () => {
     expect(within(dialog).getByRole("button", { name: /save/i })).toBeDefined()
   })
 
-  it("always shows the Stashed switch, unlike the gated Equipped switch", () => {
+  it("shows the Stashed switch by default, unlike the gated-off-by-default Equipped switch", () => {
     renderInBuilder(
       <ItemDialogWrapper title="Add Thing" onSave={vi.fn()} />,
     )

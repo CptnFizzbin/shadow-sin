@@ -31,7 +31,7 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const weaponFormDialog = useWeaponFormDialog()
   const accessoryFormDialog = useItemFormDialog()
 
-  const toggleEquipped = () => dispatch(Actions.item.setEquipped({ id: weapon.id, equipped: !weapon.equipped }))
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
 
   const removeWeapon = () => {
     dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))

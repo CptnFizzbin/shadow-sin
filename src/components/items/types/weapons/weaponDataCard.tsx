@@ -23,7 +23,7 @@ export const WeaponDataCard: FC<WeaponDataCardProps> = ({
   const dispatch = useRunnerStoreDispatch()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(weapon.id))
 
-  const toggleEquipped = () => dispatch(Actions.item.setEquipped({ id: weapon.id, equipped: !weapon.equipped }))
+  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
   const removeWeapon = () => dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
 
   return (
