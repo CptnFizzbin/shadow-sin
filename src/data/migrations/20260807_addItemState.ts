@@ -13,6 +13,13 @@ interface GearItem {
   }
 }
 
+/**
+ * Backfills `_state` — the gear reducer's internal equipped/stashed mirror, added in #388 — from
+ * each item's existing top-level `equipped`/`stashed` values. Additive only: the top-level fields
+ * remain the primary read/write surface (see `docs/adr/0006-item-state-scope.md`), so this never
+ * deletes them, it only seeds `_state` so it's never stale relative to a pre-#388 item that hasn't
+ * gone through the reducer's sync logic yet.
+ */
 const migration: CharacterMigration<{
   gear?: Record<string, GearItem>
 }> = {
@@ -24,14 +31,8 @@ const migration: CharacterMigration<{
       if (item.equipped === undefined && item.stashed === undefined) continue
 
       item._state ??= {}
-      if (item.equipped !== undefined) {
-        item._state.equipped = item.equipped
-        delete item.equipped
-      }
-      if (item.stashed !== undefined) {
-        item._state.stashed = item.stashed
-        delete item.stashed
-      }
+      if (item.equipped !== undefined) item._state.equipped = item.equipped
+      if (item.stashed !== undefined) item._state.stashed = item.stashed
     }
   }),
 }

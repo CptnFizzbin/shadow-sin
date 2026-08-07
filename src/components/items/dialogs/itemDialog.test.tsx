@@ -67,7 +67,7 @@ describe("ItemDialog", () => {
     expect(within(dialog).queryByLabelText("Equipped")).toBeNull()
   })
 
-  it("submits _state.stashed when the Stashed switch is toggled on", async () => {
+  it("submits stashed when the Stashed switch is toggled on", async () => {
     const onSave = vi.fn()
     renderInBuilder(
       <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} />,
@@ -82,8 +82,22 @@ describe("ItemDialog", () => {
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledOnce()
       const submitted: ItemData = onSave.mock.calls[0][0]
-      expect(submitted._state?.stashed).toBe(true)
+      expect(submitted.stashed).toBe(true)
     })
+  })
+
+  it("hides the Stashed switch when canBeStashed is force-disabled", () => {
+    renderInBuilder(
+      <ItemDialogWrapper
+        title="Add Thing"
+        onSave={vi.fn()}
+        options={{ canBeStashed: { forced: true, enabled: false } }}
+      />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    expect(within(dialog).queryByLabelText("Stashed")).toBeNull()
   })
 
   it("calls onSave with the item on save", async () => {
@@ -317,7 +331,7 @@ describe("ItemDialog", () => {
         id: existingItemId,
         itemType: ItemType.other,
         name: "Holster",
-        _state: { equipped: false },
+        equipped: false,
       }
 
       // Act
@@ -395,7 +409,7 @@ describe("ItemDialog", () => {
         id: existingItemId,
         itemType: ItemType.other,
         name: "Gear",
-        _state: { equipped: false },
+        equipped: false,
       }
 
       renderInBuilder(
@@ -426,7 +440,7 @@ describe("ItemDialog", () => {
       await waitFor(() => {
         expect(onSave).toHaveBeenCalledOnce()
         const submitted: ItemData = onSave.mock.calls[0][0]
-        expect(submitted._state?.equipped).toBeUndefined()
+        expect(submitted.equipped).toBeUndefined()
       })
     })
   })

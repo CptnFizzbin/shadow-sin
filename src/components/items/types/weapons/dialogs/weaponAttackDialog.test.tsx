@@ -25,7 +25,7 @@ const pistol: FirearmData = {
   ap: -1,
   skill: SkillKey.pistols,
   attribute: AttributeKey.agility,
-  _state: { equipped: true },
+  equipped: true,
   recoil: 0,
   firemodes: ["SA"],
   ammo: { size: 15, remaining: 15, type: "clip" },
@@ -39,7 +39,7 @@ const knife: MeleeWeaponData = {
   dmg: "5P",
   skill: SkillKey.blades,
   attribute: AttributeKey.agility,
-  _state: { equipped: true },
+  equipped: true,
   reach: 0,
 }
 

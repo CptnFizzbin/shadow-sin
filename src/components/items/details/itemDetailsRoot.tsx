@@ -105,7 +105,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
 
           <Stack direction="row">
-            {isEquipped(item) && !isStashed(item) && (
+            {isEquipped(item) && (
               <ItemDetailsSlot.Status icon={Icons.item.equipped} label="Equipped" color="success" />
             )}
             {isStashed(item) && (

@@ -18,7 +18,7 @@ const weapon: WeaponData = {
   weaponType: WeaponType.firearm,
   skill: SkillKey.pistols,
   dmg: "8P",
-  _state: { equipped: false },
+  equipped: false,
 }
 
 const renderWeaponCard = (data: WeaponData) => {
@@ -39,7 +39,7 @@ describe("WeaponDataCard", () => {
   })
 
   it("offers an Unequip quick action when equipped", () => {
-    renderWeaponCard({ ...weapon, _state: { equipped: true } })
+    renderWeaponCard({ ...weapon, equipped: true })
 
     fireEvent.contextMenu(screen.getByText("Ares Predator V"))
 

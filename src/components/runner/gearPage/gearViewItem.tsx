@@ -17,7 +17,7 @@ import { isLicenseData } from "#/system/gear/licenseData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
+import { isEquipped } from "#/system/items/itemUtils.ts"
 
 interface SubItemCallbacks {
   onEdit?: () => void
@@ -88,7 +88,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({
             />
           )}
 
-          {isEquipped(item) && !isStashed(item) && (
+          {isEquipped(item) && (
             <Chip
               label="Equipped"
               size="small"

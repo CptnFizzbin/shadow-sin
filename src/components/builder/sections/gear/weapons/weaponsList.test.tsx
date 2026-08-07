@@ -23,7 +23,7 @@ const pistol: FirearmData = {
   ap: -1,
   skill: SkillKey.pistols,
   attribute: AttributeKey.agility,
-  _state: { equipped: false },
+  equipped: false,
   recoil: 0,
   firemodes: ["SA"],
   attachmentPoints: [FirearmAttachmentPoint.Top],

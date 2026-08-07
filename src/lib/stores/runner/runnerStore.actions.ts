@@ -31,7 +31,9 @@ export const Actions = {
   contacts: contactsActions,
   damage: damageActions,
   edge: edgeActions,
+  /** @deprecated Use `Actions.item` instead — `gear` is kept only so existing call sites keep working. */
   gear: gearActions,
+  item: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,
   nuyen: nuyenActions,

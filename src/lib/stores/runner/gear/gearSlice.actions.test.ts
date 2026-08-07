@@ -65,7 +65,7 @@ describe("licenses.destroy", () => {
 describe("licenses.setLicenseForItem", () => {
   it("patches only licenseId on the target item", () => {
     // Arrange
-    const item = makeItem({ _state: { equipped: true } })
+    const item = makeItem({ equipped: true })
     const licenseId = crypto.randomUUID() as UUID
 
     // Act
@@ -74,8 +74,8 @@ describe("licenses.setLicenseForItem", () => {
       licenses.setLicenseForItem({ itemId: item.id, licenseId }),
     )
 
-    // Assert
-    expect(next[item.id]).toEqual({ ...item, licenseId })
+    // Assert — the reducer also mirrors the item's existing equipped value into _state on every write
+    expect(next[item.id]).toEqual({ ...item, licenseId, _state: { equipped: true } })
   })
 
   it("overwrites a previously set licenseId", () => {
@@ -125,13 +125,13 @@ describe("licenses.clearLicenseForItem", () => {
   it("doesn't touch other fields on the item", () => {
     // Arrange
     const licenseId = crypto.randomUUID() as UUID
-    const item = makeItem({ licenseId, _state: { equipped: true } })
+    const item = makeItem({ licenseId, equipped: true })
 
     // Act
     const next = gearReducer({ [item.id]: item }, licenses.clearLicenseForItem({ itemId: item.id }))
 
-    // Assert
-    expect(next[item.id]).toEqual({ ...item, licenseId: null })
+    // Assert — the reducer also mirrors the item's existing equipped value into _state on every write
+    expect(next[item.id]).toEqual({ ...item, licenseId: null, _state: { equipped: true } })
   })
 })
 

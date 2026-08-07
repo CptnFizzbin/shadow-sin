@@ -171,7 +171,7 @@ export const Artemis: RunnerData = {
       attribute: AttributeKey.agility,
       skill: SkillKey.pistols,
       dmg: "4P",
-      _state: { equipped: true },
+      equipped: true,
       recoil: 0,
       firemodes: ["SA", "BF", "FA"],
       ammo: {
@@ -239,14 +239,14 @@ export const Artemis: RunnerData = {
     createItem<ArmorData>({
       name: "Armored Jacket",
       itemType: ItemType.armor,
-      _state: { equipped: true },
+      equipped: true,
       ballistic: 8,
       impact: 6,
     }),
     createItem<ArmorData>({
       name: "Form-Fitting Body Armor",
       itemType: ItemType.armor,
-      _state: { equipped: true },
+      equipped: true,
       ballistic: 2,
       impact: 1,
       notes: "Worn under tailored outfits.",

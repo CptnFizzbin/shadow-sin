@@ -45,20 +45,31 @@ const withGear = (...items: ItemData[]) =>
   })
 
 describe("selectEquipped", () => {
-  it("returns only items with _state.equipped === true", () => {
+  it("returns only items with equipped === true", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
-        [item.id]: { ...item, _state: { equipped: true } },
+        [item.id]: { ...item, equipped: true },
       }
       return s
     })
 
-    expect(selectEquipped(sheet)).toEqual([{ ...item, _state: { equipped: true } }])
+    expect(selectEquipped(sheet)).toEqual([{ ...item, equipped: true }])
   })
 
-  it("excludes items with _state.equipped false or absent", () => {
+  it("excludes items with equipped false or absent", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
+      return s
+    })
+
+    expect(selectEquipped(sheet)).toEqual([])
+  })
+
+  it("excludes a stashed item even when equipped is true", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, equipped: true, stashed: true },
+      }
       return s
     })
 
@@ -67,18 +78,18 @@ describe("selectEquipped", () => {
 })
 
 describe("selectStashed", () => {
-  it("returns only items with _state.stashed === true", () => {
+  it("returns only items with stashed === true", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
-        [item.id]: { ...item, _state: { stashed: true } },
+        [item.id]: { ...item, stashed: true },
       }
       return s
     })
 
-    expect(selectStashed(sheet)).toEqual([{ ...item, _state: { stashed: true } }])
+    expect(selectStashed(sheet)).toEqual([{ ...item, stashed: true }])
   })
 
-  it("excludes items with _state.stashed false or absent", () => {
+  it("excludes items with stashed false or absent", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
@@ -101,7 +112,7 @@ describe("selectAvailable", () => {
   it("excludes stashed items", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
-        [item.id]: { ...item, _state: { stashed: true } },
+        [item.id]: { ...item, stashed: true },
       }
       return s
     })

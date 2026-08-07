@@ -21,7 +21,7 @@ interface ItemCardProps extends PropsWithChildren {
 const ItemCardRoot: FC<ItemCardProps> = ({ item, children }) => (
   <EntityCard entity={item}>
     <EntityCard.Layout.HeaderRow>
-      {isEquipped(item) && !isStashed(item) && <ItemCardElements.StatusIcon status="equipped" />}
+      {isEquipped(item) && <ItemCardElements.StatusIcon status="equipped" />}
       {isStashed(item) && <ItemCardElements.StatusIcon status="stashed" />}
       {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
       {item.wireless && (

@@ -126,7 +126,7 @@ describe("useWoundModifier", () => {
     const [painBlocker] = createItem({
       name: "Pain Editor",
       itemType: ItemType.implant,
-      _state: { equipped: true },
+      equipped: true,
       effects: [
         { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],
@@ -151,7 +151,7 @@ describe("useWoundModifier", () => {
     const [painBlocker] = createItem({
       name: "Pain Editor",
       itemType: ItemType.implant,
-      _state: { equipped: false },
+      equipped: false,
       effects: [
         { type: GameEffectType.highPainTolerance, target: DamageTrackKey.physical, value: 1 },
       ],

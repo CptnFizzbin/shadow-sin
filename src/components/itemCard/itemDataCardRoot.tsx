@@ -29,7 +29,7 @@ export const ItemDataCardRoot: FC<ItemCardRootProps> = ({ item, subType, childre
       <DataCard.Cost value={item.cost} />
       <DataCard.Rating value={item.rating} />
 
-      {isEquipped(item) && !isStashed(item) && (
+      {isEquipped(item) && (
         <DataCard.StatusIcon icon={Icons.item.equipped} label="Equipped" />
       )}
       {isStashed(item) && <DataCard.StatusIcon icon={Icons.item.stashed} label="Stashed" />}

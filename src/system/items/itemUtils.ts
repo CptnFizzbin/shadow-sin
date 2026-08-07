@@ -35,12 +35,18 @@ export function itemIsType<
   return item.itemType === type
 }
 
-export function isEquipped(item: ItemData): boolean {
-  return item._state?.equipped === true
+export function isStashed(item: ItemData): boolean {
+  return item.stashed === true
 }
 
-export function isStashed(item: ItemData): boolean {
-  return item._state?.stashed === true
+/**
+ * Equipped implies not-stashed: a stashed item's Equipped effect is never actually active, even
+ * if its stored `equipped` value is still `true` (stashing doesn't clear it — un-stashing later
+ * needs no separate restore step). Callers never need to write `isEquipped(item) &&
+ * !isStashed(item)` themselves.
+ */
+export function isEquipped(item: ItemData): boolean {
+  return item.equipped === true && !isStashed(item)
 }
 
 /** An item is available (present with the Runner) when it hasn't been stashed. */

@@ -25,10 +25,10 @@ export const patchItem = createAction<{ itemId: string, data: Partial<ItemData> 
 
 export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("gear/remove")
 
-/** Sets `_state.stashed` on the item, per docs/features/0012-item-stashing.md. */
-export const stashItem = createAction<{ id: UUID }>("gear/stash")
-/** Clears `_state.stashed` on the item, per docs/features/0012-item-stashing.md. */
-export const unstashItem = createAction<{ id: UUID }>("gear/unstash")
+/** Sets `equipped` (and its `_state` mirror) on the item, per docs/features/0012-item-stashing.md. */
+export const setEquipped = createAction<{ id: UUID, equipped: boolean }>("gear/setEquipped")
+/** Sets `stashed` (and its `_state` mirror) on the item, per docs/features/0012-item-stashing.md. */
+export const setStashed = createAction<{ id: UUID, stashed: boolean }>("gear/setStashed")
 
 /** Lets a caller decide whether to dispatch `addItem` or `setItem` for a save. */
 export function isNewItem(item: ItemData): boolean {

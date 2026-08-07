@@ -14,7 +14,7 @@ describe("20260807_addItemState", () => {
     expect(result.gear).toEqual({})
   })
 
-  it("moves an item's top-level equipped value into _state.equipped, deleting the old key", () => {
+  it("backfills _state.equipped from the existing top-level equipped value, without deleting it", () => {
     // Arrange
     const character = {
       gear: {
@@ -26,11 +26,11 @@ describe("20260807_addItemState", () => {
     const result = migration.up(character)
 
     // Assert
+    expect(result.gear?.w1.equipped).toBe(true)
     expect(result.gear?.w1._state?.equipped).toBe(true)
-    expect(result.gear?.w1.equipped).toBeUndefined()
   })
 
-  it("moves an item's top-level stashed value into _state.stashed, deleting the old key", () => {
+  it("backfills _state.stashed from the existing top-level stashed value, without deleting it", () => {
     // Arrange
     const character = {
       gear: {
@@ -42,11 +42,11 @@ describe("20260807_addItemState", () => {
     const result = migration.up(character)
 
     // Assert
+    expect(result.gear?.w1.stashed).toBe(true)
     expect(result.gear?.w1._state?.stashed).toBe(true)
-    expect(result.gear?.w1.stashed).toBeUndefined()
   })
 
-  it("moves both equipped and stashed onto the same _state object", () => {
+  it("backfills both fields onto the same _state object", () => {
     // Arrange
     const character = {
       gear: {
@@ -61,7 +61,7 @@ describe("20260807_addItemState", () => {
     expect(result.gear?.w1._state).toEqual({ equipped: true, stashed: true })
   })
 
-  it("preserves a false equipped value rather than dropping it", () => {
+  it("preserves a false equipped value rather than skipping it", () => {
     // Arrange
     const character = {
       gear: {
@@ -74,7 +74,6 @@ describe("20260807_addItemState", () => {
 
     // Assert
     expect(result.gear?.w1._state?.equipped).toBe(false)
-    expect(result.gear?.w1.equipped).toBeUndefined()
   })
 
   it("leaves items with neither field untouched", () => {

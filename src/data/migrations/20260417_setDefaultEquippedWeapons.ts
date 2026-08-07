@@ -8,10 +8,7 @@ interface GearItem {
   itemType: string
   weaponType?: string
   parentId?: string
-  _state?: {
-    equipped?: boolean
-    stashed?: boolean
-  }
+  equipped?: boolean
 }
 
 const migration: CharacterMigration<{
@@ -29,32 +26,26 @@ const migration: CharacterMigration<{
     const rangedTypeStrings = rangedWeaponTypes.map(String)
 
     const anyMeleeEquipped = weapons.some(
-      (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && w._state?.equipped,
+      (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType) && w.equipped,
     )
     if (!anyMeleeEquipped) {
       const firstMelee = weapons.find(
         (w) => w.weaponType && meleeTypeStrings.includes(w.weaponType),
       )
       if (firstMelee) {
-        gear[firstMelee.id] = {
-          ...gear[firstMelee.id],
-          _state: { ...gear[firstMelee.id]._state, equipped: true },
-        }
+        gear[firstMelee.id] = { ...gear[firstMelee.id], equipped: true }
       }
     }
 
     const anyRangedEquipped = weapons.some(
-      (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && w._state?.equipped,
+      (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType) && w.equipped,
     )
     if (!anyRangedEquipped) {
       const firstRanged = weapons.find(
         (w) => w.weaponType && rangedTypeStrings.includes(w.weaponType),
       )
       if (firstRanged) {
-        gear[firstRanged.id] = {
-          ...gear[firstRanged.id],
-          _state: { ...gear[firstRanged.id]._state, equipped: true },
-        }
+        gear[firstRanged.id] = { ...gear[firstRanged.id], equipped: true }
       }
     }
   }),

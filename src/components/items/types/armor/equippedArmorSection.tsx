@@ -8,13 +8,13 @@ import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useEncumbrance } from "#/lib/hooks/system/encumbrance/useEncumbrance.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
+import { isEquipped } from "#/system/items/itemUtils.ts"
 
 import { ArmorDataCard } from "./armorDataCard.tsx"
 
 export const EquippedArmorSection: FC = () => {
   const allArmor = useGearByType<ArmorData>(ItemType.armor)
-  const equippedArmor = allArmor.filter((armor) => isEquipped(armor) && !isStashed(armor))
+  const equippedArmor = allArmor.filter((armor) => isEquipped(armor))
   const { totalBallistic, totalImpact, threshold, penalty, isEncumbered } = useEncumbrance()
 
   if (equippedArmor.length === 0) {

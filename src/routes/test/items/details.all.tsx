@@ -25,7 +25,8 @@ const TEST_ITEM: ItemData = {
   availability: { rating: 12, restricted: true },
   source: { book: "core", page: 425 },
   notes: "Multi-line notes render as pre-wrap:\nsecond line.\nthird line.",
-  _state: { equipped: true, stashed: true },
+  equipped: true,
+  stashed: true,
   fixed: true,
   wireless: { enabled: false },
   effects: [

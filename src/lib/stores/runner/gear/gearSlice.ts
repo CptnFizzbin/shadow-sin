@@ -3,7 +3,7 @@ import { createReducer } from "@reduxjs/toolkit"
 import type { ItemData } from "#/system/itemData.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { addItem, patchItem, removeItem, setItem, stashItem, unstashItem } from "./gearSlice.actions.ts"
+import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./gearSlice.actions.ts"
 
 const initialState: RunnerData["gear"] = {}
 
@@ -59,14 +59,37 @@ function removeItemTree(state: RunnerData["gear"], id: string) {
   removeItemById(state, id)
 }
 
+/**
+ * Keeps `equipped`/`stashed` and their `_state` mirror in sync on every write, regardless of
+ * which side a caller wrote to (the item edit form writes the top-level fields; `setEquipped`/
+ * `setStashed` write both directly, but a `patchItem` caller could still touch just one side).
+ * `_state` is internal — see `ItemData._state`'s doc comment — so top-level wins when both are
+ * present, since it's the field readers and forms actually touch today.
+ */
+function syncItemState(item: ItemData): void {
+  if (item.equipped !== undefined) {
+    item._state = { ...item._state, equipped: item.equipped }
+  } else if (item._state?.equipped !== undefined) {
+    item.equipped = item._state.equipped
+  }
+
+  if (item.stashed !== undefined) {
+    item._state = { ...item._state, stashed: item.stashed }
+  } else if (item._state?.stashed !== undefined) {
+    item.stashed = item._state.stashed
+  }
+}
+
 export const gearReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(addItem, (state, action) => {
       state[action.payload.id] = action.payload
+      syncItemState(state[action.payload.id])
       relinkItem(state, action.payload)
     })
     .addCase(setItem, (state, action) => {
       state[action.payload.id] = action.payload
+      syncItemState(state[action.payload.id])
       relinkItem(state, action.payload)
     })
     .addCase(patchItem, (state, action) => {
@@ -76,6 +99,7 @@ export const gearReducer = createReducer(initialState, (builder) => {
         ...item,
         ...action.payload.data,
       }
+      syncItemState(state[action.payload.itemId])
     })
     .addCase(removeItem, (state, action) => {
       const { id, removeChildren } = action.payload
@@ -85,14 +109,16 @@ export const gearReducer = createReducer(initialState, (builder) => {
         removeItemById(state, id)
       }
     })
-    .addCase(stashItem, (state, action) => {
+    .addCase(setEquipped, (state, action) => {
       const item = state[action.payload.id]
       if (!item) return
-      item._state = { ...item._state, stashed: true }
+      item.equipped = action.payload.equipped
+      item._state = { ...item._state, equipped: action.payload.equipped }
     })
-    .addCase(unstashItem, (state, action) => {
+    .addCase(setStashed, (state, action) => {
       const item = state[action.payload.id]
       if (!item) return
-      item._state = { ...item._state, stashed: false }
+      item.stashed = action.payload.stashed
+      item._state = { ...item._state, stashed: action.payload.stashed }
     })
 })

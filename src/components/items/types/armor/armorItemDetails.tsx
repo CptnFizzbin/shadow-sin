@@ -26,10 +26,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
   const armorFormDialog = useArmorFormDialog()
   const modFormDialog = useItemFormDialog()
 
-  const toggleEquipped = () => dispatch(Actions.gear.setItem({
-    ...armor,
-    _state: { ...armor._state, equipped: !isEquipped(armor) },
-  }))
+  const toggleEquipped = () => dispatch(Actions.item.setEquipped({ id: armor.id, equipped: !isEquipped(armor) }))
 
   const removeArmor = () => {
     dispatch(Actions.gear.removeItem({ id: armor.id, removeChildren: true }))

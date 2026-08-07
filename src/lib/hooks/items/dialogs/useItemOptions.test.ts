@@ -97,7 +97,7 @@ describe("initializeOptions", () => {
   describe("force-disabled options (forced=true, enabled=false)", () => {
     it("keeps equipable disabled in edit mode when force-disabled", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, _state: { equipped: false } }
+      const item: ItemData = { ...baseItem, equipped: false }
 
       // Act
       const options = initializeOptions(item, true, { equipable: { forced: true, enabled: false } })
@@ -154,7 +154,7 @@ describe("initializeOptions", () => {
   describe("auto-enabling in edit mode from existing field values", () => {
     it("enables equipable when editing an item that has an equipped value", () => {
       // Arrange
-      const item: ItemData = { ...baseItem, _state: { equipped: false } }
+      const item: ItemData = { ...baseItem, equipped: false }
 
       // Act
       const options = initializeOptions(item, true)
@@ -266,7 +266,7 @@ describe("initializeOptions", () => {
       // Arrange — new item has values pre-filled but should not auto-enable optional options
       const item: ItemData = {
         ...newItem,
-        _state: { equipped: true },
+        equipped: true,
         rating: 3,
         quantity: 5,
         parentId: crypto.randomUUID(),
@@ -350,6 +350,40 @@ describe("initializeOptions", () => {
 
       // Assert
       expect(options.showAvailability).toBe(true)
+    })
+  })
+
+  describe("canBeStashed", () => {
+    it("is true by default for new items", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false)
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
+    })
+
+    it("is true by default for existing items", () => {
+      // Arrange & Act
+      const options = initializeOptions(baseItem, true)
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
+    })
+
+    it("is false when force-disabled", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true, enabled: false } })
+
+      // Assert
+      expect(options.canBeStashed).toBe(false)
+    })
+
+    it("is true when forced without enabled=false", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true } })
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
     })
   })
 })

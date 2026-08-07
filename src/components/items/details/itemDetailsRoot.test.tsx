@@ -52,7 +52,7 @@ describe("ItemDetailsRoot", () => {
 
   it("renders equipped and stashed status", () => {
     render(
-      <ItemDetailsRoot item={{ ...baseItem, _state: { equipped: true }, wireless: { enabled: false } }} />,
+      <ItemDetailsRoot item={{ ...baseItem, equipped: true, wireless: { enabled: false } }} />,
       { wrapper: ThemeWrapper },
     )
 
@@ -62,7 +62,7 @@ describe("ItemDetailsRoot", () => {
 
   it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
     render(
-      <ItemDetailsRoot item={{ ...baseItem, _state: { equipped: true, stashed: true } }} />,
+      <ItemDetailsRoot item={{ ...baseItem, equipped: true, stashed: true }} />,
       { wrapper: ThemeWrapper },
     )
 

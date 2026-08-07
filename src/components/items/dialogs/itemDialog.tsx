@@ -55,6 +55,7 @@ export interface ItemDialogProps {
   }
   options?: {
     equipable?: ItemDialogOptionConfig
+    canBeStashed?: ItemDialogOptionConfig
     hasRating?: ItemDialogOptionConfig
     multiple?: ItemDialogOptionConfig
     isSubItem?: ItemDialogOptionConfig
@@ -93,6 +94,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
+    canBeStashed: resolveForced(optionsProp?.canBeStashed),
     hasRating: resolveForced(optionsProp?.hasRating),
     multiple: resolveForced(optionsProp?.multiple),
     isSubItem: resolveForced(optionsProp?.isSubItem),
@@ -193,15 +195,16 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
             <Stack direction="row" sx={{ alignItems: "center" }}>
               {localOptions["equipable"] && (
-                <form.AppField name="_state.equipped">
+                <form.AppField name="equipped">
                   {(field) => <field.SwitchField label="Equipped" />}
                 </form.AppField>
               )}
 
-              {/* Stash is available on every item unconditionally, unlike Equip which is gated per item type — see docs/features/0012-item-stashing.md */}
-              <form.AppField name="_state.stashed">
-                {(field) => <field.SwitchField label="Stashed" />}
-              </form.AppField>
+              {localOptions["canBeStashed"] && (
+                <form.AppField name="stashed">
+                  {(field) => <field.SwitchField label="Stashed" />}
+                </form.AppField>
+              )}
 
               <IconButton
                 size="small"

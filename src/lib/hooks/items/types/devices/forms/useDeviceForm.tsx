@@ -28,9 +28,7 @@ const defaultFormValues: DeviceData = {
     page: 0,
   },
   effects: [],
-  _state: {
-    stashed: false,
-  },
+  stashed: false,
   deviceType: "commlink",
   customDeviceType: "",
   deviceModel: "",

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { addItem, removeItem, setItem, stashItem, unstashItem } from "./gearSlice.actions.ts"
+import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./gearSlice.actions.ts"
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -173,69 +173,139 @@ describe("gearReducer", () => {
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("stash sets _state.stashed on the item", () => {
+  it("setEquipped sets both equipped and its _state mirror", () => {
     // Arrange
     const item = makeItem()
 
     // Act
-    const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
+    const next = gearReducer({ [item.id]: item }, setEquipped({ id: item.id, equipped: true }))
 
     // Assert
-    expect(next[item.id]._state?.stashed).toBe(true)
+    expect(next[item.id].equipped).toBe(true)
+    expect(next[item.id]._state).toEqual({ equipped: true })
   })
 
-  it("stash preserves the item's existing _state.equipped value", () => {
+  it("setEquipped preserves the item's existing _state.stashed value", () => {
+    // Arrange
+    const item = makeItem({ _state: { stashed: true } })
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, setEquipped({ id: item.id, equipped: true }))
+
+    // Assert
+    expect(next[item.id]._state).toEqual({ stashed: true, equipped: true })
+  })
+
+  it("setEquipped is a no-op when no item matches the id", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer(
+      { [item.id]: item },
+      setEquipped({ id: crypto.randomUUID() as UUID, equipped: true }),
+    )
+
+    // Assert
+    expect(next).toEqual({ [item.id]: item })
+  })
+
+  it("setStashed sets both stashed and its _state mirror", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+
+    // Assert
+    expect(next[item.id].stashed).toBe(true)
+    expect(next[item.id]._state).toEqual({ stashed: true })
+  })
+
+  it("setStashed preserves the item's existing _state.equipped value", () => {
     // Arrange
     const item = makeItem({ _state: { equipped: true } })
 
     // Act
-    const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
+    const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
 
     // Assert
     expect(next[item.id]._state).toEqual({ equipped: true, stashed: true })
   })
 
-  it("stash is a no-op when no item matches the id", () => {
+  it("setStashed is a no-op when no item matches the id", () => {
     // Arrange
     const item = makeItem()
 
     // Act
-    const next = gearReducer({ [item.id]: item }, stashItem({ id: crypto.randomUUID() as UUID }))
+    const next = gearReducer(
+      { [item.id]: item },
+      setStashed({ id: crypto.randomUUID() as UUID, stashed: true }),
+    )
 
     // Assert
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("unstash clears _state.stashed on the item", () => {
-    // Arrange
-    const item = makeItem({ _state: { stashed: true } })
+  describe("equipped/stashed <-> _state sync", () => {
+    it("set mirrors a top-level equipped value onto _state", () => {
+      // Arrange
+      const item = makeItem({ equipped: true })
 
-    // Act
-    const next = gearReducer({ [item.id]: item }, unstashItem({ id: item.id }))
+      // Act
+      const next = gearReducer({}, setItem(item))
 
-    // Assert
-    expect(next[item.id]._state?.stashed).toBe(false)
-  })
+      // Assert
+      expect(next[item.id]._state?.equipped).toBe(true)
+    })
 
-  it("unstash preserves the item's existing _state.equipped value", () => {
-    // Arrange
-    const item = makeItem({ _state: { equipped: true, stashed: true } })
+    it("set mirrors a top-level stashed value onto _state", () => {
+      // Arrange
+      const item = makeItem({ stashed: true })
 
-    // Act
-    const next = gearReducer({ [item.id]: item }, unstashItem({ id: item.id }))
+      // Act
+      const next = gearReducer({}, setItem(item))
 
-    // Assert
-    expect(next[item.id]._state).toEqual({ equipped: true, stashed: false })
-  })
+      // Assert
+      expect(next[item.id]._state?.stashed).toBe(true)
+    })
 
-  it("unstash is a no-op when no item matches the id", () => {
-    // Arrange
-    const item = makeItem()
+    it("set mirrors an _state-only equipped value onto the top-level field", () => {
+      // Arrange — simulates a write that only set _state, not the top-level field
+      const item = makeItem({ _state: { equipped: true } })
 
-    // Act
-    const next = gearReducer({ [item.id]: item }, unstashItem({ id: crypto.randomUUID() as UUID }))
+      // Act
+      const next = gearReducer({}, setItem(item))
 
-    // Assert
-    expect(next).toEqual({ [item.id]: item })
+      // Assert
+      expect(next[item.id].equipped).toBe(true)
+    })
+
+    it("add mirrors a top-level equipped value onto _state", () => {
+      // Arrange
+      const item = makeItem({ equipped: true })
+      const { id: _discarded, ...itemWithoutId } = item
+
+      // Act
+      const next = gearReducer({}, addItem(itemWithoutId))
+
+      // Assert
+      const [stored] = Object.values(next)
+      expect(stored._state?.equipped).toBe(true)
+    })
+
+    it("patch mirrors a patched top-level equipped value onto _state", () => {
+      // Arrange
+      const item = makeItem()
+
+      // Act
+      const next = gearReducer(
+        { [item.id]: item },
+        patchItem({ itemId: item.id, data: { equipped: true } }),
+      )
+
+      // Assert
+      expect(next[item.id]._state?.equipped).toBe(true)
+    })
   })
 })

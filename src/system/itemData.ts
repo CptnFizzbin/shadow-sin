@@ -26,14 +26,17 @@ export interface ItemData extends EntityData {
   licenseId?: UUID | null
 
   notes?: string
+  equipped?: boolean
+  stashed?: boolean
   fixed?: boolean
 
   /**
-   * Internal storage for per-item Equipped/Stash state — read through
-   * `isEquipped(item)` / `isStashed(item)` in `src/system/items/itemUtils.ts`, not directly.
-   * Leading underscore matches the `RunnerData._meta_` convention for "internal storage, don't
-   * read directly." `fixed`/`wireless` stay top-level, separate from `_state` — see
-   * `docs/adr/0006-item-state-scope.md`.
+   * Internal, reducer-maintained mirror of `equipped`/`stashed` — the gear reducer keeps this in
+   * sync with the top-level fields on every write (`src/lib/stores/runner/gear/gearSlice.ts`).
+   * Prefer `isEquipped(item)` / `isStashed(item)` (`src/system/items/itemUtils.ts`) over reading
+   * either form directly. Leading underscore matches the `RunnerData._meta_` convention for
+   * "internal storage, don't read directly." `fixed`/`wireless` stay top-level only, separate
+   * from `_state` — see `docs/adr/0006-item-state-scope.md`.
    */
   _state?: {
     equipped?: boolean
