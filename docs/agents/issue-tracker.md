@@ -38,16 +38,21 @@ Create a GitHub issue.
 
 Run `gh issue view <number> --comments`.
 
-## Ticket claiming hook
+## Claiming a ticket before starting work (cloud/remote sessions)
 
-`.claude/hooks/claim-ticket.sh` (registered as a `PreToolUse` hook in `.claude/settings.json`) fires on every
-`gh issue view <number>` call — i.e. whenever an agent starts work on a ticket — and:
+Two agents can end up on the same `ready-for-agent` issue if they start around the same time. When this session's
+environment is a Claude Code cloud/remote environment (`$CLAUDE_CODE_REMOTE=true`), claim the ticket before writing
+any code:
 
-- **Denies** the call if the issue already has another assignee, or a "starting work" comment from a different
-  session posted within the last 12 hours, so the agent picks a different `ready-for-agent` issue instead of
-  duplicating work already in flight.
-- Otherwise **self-assigns** the issue (`gh issue edit --add-assignee @me`) and **leaves a comment** marking that
-  work has started, so a concurrent agent's hook run sees the claim.
+1. **Check for an existing claim**: `gh issue view <number> --json assignees,comments`. If another assignee is
+   already present, or a comment matching `🤖 Claude Code is starting work on this ticket` was left recently (within
+   the last several hours), another agent is likely already on it — stop and pick a different `ready-for-agent`
+   issue instead of duplicating the work.
+2. **Self-assign**: `gh issue edit <number> --add-assignee @me`
+3. **Leave a claim comment** so a concurrent agent sees the ticket is taken:
+   ```
+   gh issue comment <number> --body "🤖 Claude Code is starting work on this ticket (session <session-id>)."
+   ```
 
-It fails open: if `gh`/`jq` are unavailable, auth fails, or any lookup errors, the hook allows the ticket view to
-proceed rather than blocking work.
+Skip this on local/CLI sessions (no `$CLAUDE_CODE_REMOTE`) — a human is already driving there, so the collision this
+guards against doesn't apply.
