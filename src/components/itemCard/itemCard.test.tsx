@@ -62,18 +62,6 @@ describe("ItemCard", () => {
     expect(screen.getByLabelText("Wireless removed")).toBeDefined()
   })
 
-  it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
-    // Arrange / Act
-    render(
-      <ItemCard item={{ ...baseItem, equipped: true, stashed: true }} />,
-      { wrapper: ThemeWrapper },
-    )
-
-    // Assert
-    expect(screen.getByLabelText("Stashed")).toBeDefined()
-    expect(screen.queryByLabelText("Equipped")).toBeNull()
-  })
-
   it("renders no status icons when the item has none set", () => {
     // Arrange / Act
     render(<ItemCard item={baseItem} />, { wrapper: ThemeWrapper })

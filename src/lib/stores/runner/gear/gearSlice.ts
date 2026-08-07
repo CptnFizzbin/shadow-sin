@@ -60,23 +60,24 @@ function removeItemTree(state: RunnerData["gear"], id: string) {
 }
 
 /**
- * Keeps `equipped`/`stashed` and their `_state` mirror in sync on every write, regardless of
- * which side a caller wrote to (the item edit form writes the top-level fields; `setEquipped`/
- * `setStashed` write both directly, but a `patchItem` caller could still touch just one side).
- * `_state` is internal — see `ItemData._state`'s doc comment — so top-level wins when both are
- * present, since it's the field readers and forms actually touch today.
+ * Enforces the Stash/Equip invariant on every write, regardless of which action produced it (the
+ * item edit form's flat fields via `setItem`/`patchItem`, or the dedicated `setStashed` action):
+ * the moment `stashed` becomes `true`, `equipped` is forced to `false`, with its prior value
+ * recorded in `_state.equipOnUnstash` so un-stashing restores it automatically. This keeps
+ * `item.equipped` always trustworthy on its own — readers never need to also check `!item.stashed`.
+ *
+ * @param wasStashed - whether the item was already stashed before this write, so a same-value
+ * write (still stashed, or never stashed) doesn't re-capture/re-restore `equipped`.
  */
-function syncItemState(item: ItemData): void {
-  if (item.equipped !== undefined) {
-    item._state = { ...item._state, equipped: item.equipped }
-  } else if (item._state?.equipped !== undefined) {
-    item.equipped = item._state.equipped
-  }
+function reconcileEquippedForStash(item: ItemData, wasStashed: boolean): void {
+  const isNowStashed = item.stashed === true
 
-  if (item.stashed !== undefined) {
-    item._state = { ...item._state, stashed: item.stashed }
-  } else if (item._state?.stashed !== undefined) {
-    item.stashed = item._state.stashed
+  if (isNowStashed && !wasStashed) {
+    item._state = { ...item._state, equipOnUnstash: item.equipped === true }
+    item.equipped = false
+  } else if (!isNowStashed && wasStashed) {
+    item.equipped = item._state?.equipOnUnstash === true
+    item._state = { ...item._state, equipOnUnstash: undefined }
   }
 }
 
@@ -84,22 +85,24 @@ export const gearReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(addItem, (state, action) => {
       state[action.payload.id] = action.payload
-      syncItemState(state[action.payload.id])
+      reconcileEquippedForStash(state[action.payload.id], false)
       relinkItem(state, action.payload)
     })
     .addCase(setItem, (state, action) => {
+      const wasStashed = state[action.payload.id]?.stashed === true
       state[action.payload.id] = action.payload
-      syncItemState(state[action.payload.id])
+      reconcileEquippedForStash(state[action.payload.id], wasStashed)
       relinkItem(state, action.payload)
     })
     .addCase(patchItem, (state, action) => {
       const item = state[action.payload.itemId]
       if (!item) return
+      const wasStashed = item.stashed === true
       state[action.payload.itemId] = {
         ...item,
         ...action.payload.data,
       }
-      syncItemState(state[action.payload.itemId])
+      reconcileEquippedForStash(state[action.payload.itemId], wasStashed)
     })
     .addCase(removeItem, (state, action) => {
       const { id, removeChildren } = action.payload
@@ -113,12 +116,12 @@ export const gearReducer = createReducer(initialState, (builder) => {
       const item = state[action.payload.id]
       if (!item) return
       item.equipped = action.payload.equipped
-      item._state = { ...item._state, equipped: action.payload.equipped }
     })
     .addCase(setStashed, (state, action) => {
       const item = state[action.payload.id]
       if (!item) return
+      const wasStashed = item.stashed === true
       item.stashed = action.payload.stashed
-      item._state = { ...item._state, stashed: action.payload.stashed }
+      reconcileEquippedForStash(item, wasStashed)
     })
 })

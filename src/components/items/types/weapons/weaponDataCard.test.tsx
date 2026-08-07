@@ -52,7 +52,7 @@ describe("WeaponDataCard", () => {
     fireEvent.contextMenu(screen.getByText("Ares Predator V"))
     fireEvent.click(screen.getByRole("menuitem", { name: "Equip" }))
 
-    expect(runnerStore.getState().gear[weapon.id]._state?.equipped).toBe(true)
+    expect(runnerStore.getState().gear[weapon.id].equipped).toBe(true)
   })
 
   it("offers a Remove quick action", () => {

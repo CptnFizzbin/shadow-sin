@@ -35,23 +35,27 @@ export function itemIsType<
   return item.itemType === type
 }
 
+/**
+ * @deprecated Read `item.stashed` directly — it's a plain top-level field, always accurate
+ * regardless of which action wrote it.
+ */
 export function isStashed(item: ItemData): boolean {
   return item.stashed === true
 }
 
 /**
- * Equipped implies not-stashed: a stashed item's Equipped effect is never actually active, even
- * if its stored `equipped` value is still `true` (stashing doesn't clear it — un-stashing later
- * needs no separate restore step). Callers never need to write `isEquipped(item) &&
- * !isStashed(item)` themselves.
+ * @deprecated Read `item.equipped` directly. The gear reducer forces it to `false` the moment
+ * `item.stashed` becomes `true` and restores it automatically on un-stash (see
+ * `reconcileEquippedForStash` in `src/lib/stores/runner/gear/gearSlice.ts`), so `item.equipped`
+ * is always trustworthy on its own — no `&& !item.stashed` needed at the read site.
  */
 export function isEquipped(item: ItemData): boolean {
-  return item.equipped === true && !isStashed(item)
+  return item.equipped === true
 }
 
 /** An item is available (present with the Runner) when it hasn't been stashed. */
 export function isAvailable(item: ItemData): boolean {
-  return !isStashed(item)
+  return item.stashed !== true
 }
 
 export function filterRecordBy<TInput extends ItemData = ItemData, TOutput extends TInput = TInput>(

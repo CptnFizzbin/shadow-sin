@@ -66,16 +66,6 @@ describe("ItemDataCardRoot", () => {
     expect(screen.getByLabelText("Wireless removed")).toBeDefined()
   })
 
-  it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
-    render(
-      <ItemDataCardRoot item={{ ...baseItem, equipped: true, stashed: true }} />,
-      { wrapper: ThemeWrapper },
-    )
-
-    expect(screen.getByLabelText("Stashed")).toBeDefined()
-    expect(screen.queryByLabelText("Equipped")).toBeNull()
-  })
-
   it("renders no status icons when the item has none set", () => {
     render(<ItemDataCardRoot item={baseItem} />, { wrapper: ThemeWrapper })
 

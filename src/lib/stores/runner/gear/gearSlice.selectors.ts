@@ -7,7 +7,7 @@ import type { LicenseData } from "#/system/gear/licenseData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 import type { ItemDataFor, ItemDataRecord } from "#/system/items/itemUtils.ts"
-import { isAvailable, isEquipped, isStashed } from "#/system/items/itemUtils.ts"
+import { isAvailable } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export function selectAllGear(state: RunnerData): Record<string, ItemData> {
@@ -19,11 +19,11 @@ export function selectAvailable(state: RunnerData): ItemData[] {
 }
 
 export function selectEquipped(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter(isEquipped)
+  return Object.values(state.gear).filter((item) => item.equipped === true)
 }
 
 export function selectStashed(state: RunnerData): ItemData[] {
-  return Object.values(state.gear).filter(isStashed)
+  return Object.values(state.gear).filter((item) => item.stashed === true)
 }
 
 export const selectById: (id: UUID) => Selector<RunnerData, ItemData> = createCurriedSelector(

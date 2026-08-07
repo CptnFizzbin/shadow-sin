@@ -16,7 +16,6 @@ import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { isEquipped } from "#/system/items/itemUtils.ts"
 
 interface WeaponAttackDialogProps extends ControlledDialogProps<void> {
   weapon: WeaponData
@@ -27,7 +26,7 @@ const WeaponAttackDialog: FC<WeaponAttackDialogProps> = ({ ctrl, weapon }) => {
   const isNarrowViewport = useMediaQuery(theme.breakpoints.down("sm"))
 
   const equippedWeapons = useGearByType<WeaponData>(ItemType.weapon)
-    .filter((item) => !item.parentId && isEquipped(item))
+    .filter((item) => !item.parentId && item.equipped)
   const weapons = equippedWeapons.some((item) => item.id === weapon.id)
     ? equippedWeapons
     : [weapon, ...equippedWeapons]

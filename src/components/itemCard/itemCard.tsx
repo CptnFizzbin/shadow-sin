@@ -2,7 +2,6 @@ import type { FC, PropsWithChildren } from "react"
 
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import type { ItemData } from "#/system/itemData.ts"
-import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
 import { ItemCardElements } from "./itemCardElements.tsx"
 
@@ -21,8 +20,8 @@ interface ItemCardProps extends PropsWithChildren {
 const ItemCardRoot: FC<ItemCardProps> = ({ item, children }) => (
   <EntityCard entity={item}>
     <EntityCard.Layout.HeaderRow>
-      {isEquipped(item) && <ItemCardElements.StatusIcon status="equipped" />}
-      {isStashed(item) && <ItemCardElements.StatusIcon status="stashed" />}
+      {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
+      {item.stashed && <ItemCardElements.StatusIcon status="stashed" />}
       {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
       {item.wireless && (
         item.wireless.removed

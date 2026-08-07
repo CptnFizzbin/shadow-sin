@@ -31,16 +31,15 @@ export interface ItemData extends EntityData {
   fixed?: boolean
 
   /**
-   * Internal, reducer-maintained mirror of `equipped`/`stashed` — the gear reducer keeps this in
-   * sync with the top-level fields on every write (`src/lib/stores/runner/gear/gearSlice.ts`).
-   * Prefer `isEquipped(item)` / `isStashed(item)` (`src/system/items/itemUtils.ts`) over reading
-   * either form directly. Leading underscore matches the `RunnerData._meta_` convention for
-   * "internal storage, don't read directly." `fixed`/`wireless` stay top-level only, separate
-   * from `_state` — see `docs/adr/0006-item-state-scope.md`.
+   * Internal, reducer-maintained bookkeeping for the Stash/Equip interaction — not a general
+   * mirror of `equipped`/`stashed`. The gear reducer forces `equipped` to `false` the moment
+   * `stashed` becomes `true`, recording the prior value here so un-stashing can restore it
+   * automatically (`src/lib/stores/runner/gear/gearSlice.ts`). Leading underscore matches the
+   * `RunnerData._meta_` convention for "internal storage, don't read directly." `fixed`/`wireless`
+   * stay top-level, separate from `_state` — see `docs/adr/0006-item-state-scope.md`.
    */
   _state?: {
-    equipped?: boolean
-    stashed?: boolean
+    equipOnUnstash?: boolean
   }
 
   wireless?: {

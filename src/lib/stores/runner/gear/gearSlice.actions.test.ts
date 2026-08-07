@@ -74,8 +74,8 @@ describe("licenses.setLicenseForItem", () => {
       licenses.setLicenseForItem({ itemId: item.id, licenseId }),
     )
 
-    // Assert — the reducer also mirrors the item's existing equipped value into _state on every write
-    expect(next[item.id]).toEqual({ ...item, licenseId, _state: { equipped: true } })
+    // Assert
+    expect(next[item.id]).toEqual({ ...item, licenseId })
   })
 
   it("overwrites a previously set licenseId", () => {
@@ -130,8 +130,8 @@ describe("licenses.clearLicenseForItem", () => {
     // Act
     const next = gearReducer({ [item.id]: item }, licenses.clearLicenseForItem({ itemId: item.id }))
 
-    // Assert — the reducer also mirrors the item's existing equipped value into _state on every write
-    expect(next[item.id]).toEqual({ ...item, licenseId: null, _state: { equipped: true } })
+    // Assert
+    expect(next[item.id]).toEqual({ ...item, licenseId: null })
   })
 })
 

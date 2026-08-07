@@ -12,7 +12,6 @@ import { getEffectLabel } from "#/components/system/gameEffects/gameEffectsSumma
 import { Label } from "#/components/ui/text/label.tsx"
 import { Icons } from "#/lib/icons.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import { isEquipped, isStashed } from "#/system/items/itemUtils.ts"
 
 import { ItemDetailsSlot, ItemDetailsSlotManager } from "./itemDetailsSlot.tsx"
 
@@ -105,10 +104,10 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
           </Stack>
 
           <Stack direction="row">
-            {isEquipped(item) && (
+            {item.equipped && (
               <ItemDetailsSlot.Status icon={Icons.item.equipped} label="Equipped" color="success" />
             )}
-            {isStashed(item) && (
+            {item.stashed && (
               <ItemDetailsSlot.Status icon={Icons.item.stashed} label="Stashed" />
             )}
             {item.wireless && (() => {

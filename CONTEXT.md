@@ -402,28 +402,26 @@ decided whether it's in scope.)_
 _Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
-`ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
-merely owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
+`ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
+owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
 (`equipable: { forced: true }`); other item types don't offer it.
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
-Read via `isEquipped(item)` from `src/system/items/itemUtils.ts` wherever the raw value is needed
-— the leading underscore on `_state` marks it as internal storage, same convention as
-`RunnerData._meta_`. There is deliberately no combined "actively equipped" helper: call sites that
-care whether an item's Equipped effect is actually active check `isEquipped(item) &&
-!isStashed(item)` directly. `_state` holds only **Equipped** and **Stash** — the other per-item
-booleans (`fixed`, `wireless`) stay top-level on `ItemData` since they don't combine with anything
-else the way Equipped and Stash do.
+`isEquipped(item)` in `src/system/items/itemUtils.ts` is deprecated — read `item.equipped`
+directly. It's always trustworthy on its own: the gear reducer forces it to `false` the moment
+**Stash** turns on and restores it automatically on un-stash (see **Stash**), so no compound check
+against `stashed` is needed at the read site.
 
-**Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
-`ItemData._state.stashed` — whether an item is with the Runner at all right now ("left at the
+**Stash**:
+`ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `_state: {
-equipped: true, stashed: true }` at once. Stash overrides Equipped's mechanical effect without
-clearing its stored value (so un-stashing needs no separate restore step). A stashed item is
-greyed out and sorted to the bottom of gear listings, and cascades to its child items (stashing a
-weapon stashes its attachments too).
+worn/wielded. The gear reducer (`src/lib/stores/runner/gear/gearSlice.ts`) enforces the
+interaction at the write boundary: the moment `stashed` becomes `true`, it forces `equipped` to
+`false` and records the prior value in the internal `ItemData._state.equipOnUnstash` (leading
+underscore, same convention as `RunnerData._meta_` — not read directly), restoring it
+automatically when un-stashed. A stashed item is greyed out and sorted to the bottom of gear
+listings, and cascades to its child items (stashing a weapon stashes its attachments too).
 _Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
 unequipped, and not stashed, e.g. a spare pistol in a holster)
 

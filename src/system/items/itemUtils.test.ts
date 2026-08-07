@@ -7,7 +7,10 @@ import { isAvailable, isEquipped, isStashed } from "./itemUtils.ts"
 
 const baseItem = { id: NullUuid, name: "Test Item", itemType: ItemType.other }
 
-describe("isEquipped", () => {
+// isEquipped/isStashed are deprecated thin wrappers over the top-level fields — the gear reducer
+// (not these functions) is what enforces that a stashed item's `equipped` is false, so these just
+// echo whatever the field holds.
+describe("isEquipped (deprecated)", () => {
   it("returns true when the item's equipped field is true", () => {
     expect(isEquipped({ ...baseItem, equipped: true })).toBe(true)
   })
@@ -16,13 +19,9 @@ describe("isEquipped", () => {
     expect(isEquipped({ ...baseItem, equipped: false })).toBe(false)
     expect(isEquipped(baseItem)).toBe(false)
   })
-
-  it("returns false for a stashed item even when equipped is true", () => {
-    expect(isEquipped({ ...baseItem, equipped: true, stashed: true })).toBe(false)
-  })
 })
 
-describe("isStashed", () => {
+describe("isStashed (deprecated)", () => {
   it("returns true when the item's stashed field is true", () => {
     expect(isStashed({ ...baseItem, stashed: true })).toBe(true)
   })
@@ -30,11 +29,6 @@ describe("isStashed", () => {
   it("returns false when stashed is false or absent", () => {
     expect(isStashed({ ...baseItem, stashed: false })).toBe(false)
     expect(isStashed(baseItem)).toBe(false)
-  })
-
-  it("is independent of equipped — stashing does not depend on equip state", () => {
-    expect(isStashed({ ...baseItem, equipped: true, stashed: true })).toBe(true)
-    expect(isStashed({ ...baseItem, equipped: true, stashed: false })).toBe(false)
   })
 })
 

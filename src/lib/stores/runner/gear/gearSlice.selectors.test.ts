@@ -64,17 +64,6 @@ describe("selectEquipped", () => {
 
     expect(selectEquipped(sheet)).toEqual([])
   })
-
-  it("excludes a stashed item even when equipped is true", () => {
-    const sheet = runnerDataFactory((s) => {
-      s.gear = {
-        [item.id]: { ...item, equipped: true, stashed: true },
-      }
-      return s
-    })
-
-    expect(selectEquipped(sheet)).toEqual([])
-  })
 })
 
 describe("selectStashed", () => {

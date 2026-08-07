@@ -9,7 +9,6 @@ import { Icons } from "#/lib/icons.ts"
 import type { WeaponData } from "#/system/gear/weaponData.ts"
 import { isWeaponData } from "#/system/gear/weaponData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { isEquipped } from "#/system/items/itemUtils.ts"
 
 import { useWeaponAttackDialog } from "./dialogs/weaponAttackDialog.tsx"
 import { WeaponDataCard } from "./weaponDataCard.tsx"
@@ -19,7 +18,7 @@ export const EquippedWeaponsSection: FC = () => {
   const allWeapons = useGearByType<WeaponData>(ItemType.weapon)
 
   const equippedWeapons = allWeapons.filter(
-    (weapon) => !weapon.parentId && isWeaponData(weapon) && isEquipped(weapon),
+    (weapon) => !weapon.parentId && isWeaponData(weapon) && weapon.equipped,
   )
 
   if (equippedWeapons.length === 0) {

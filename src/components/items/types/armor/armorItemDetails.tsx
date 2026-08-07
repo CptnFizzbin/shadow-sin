@@ -10,7 +10,6 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ArmorData } from "#/system/gear/armorData.ts"
 import type { ItemData } from "#/system/itemData.ts"
-import { isEquipped } from "#/system/items/itemUtils.ts"
 
 import { useArmorFormDialog } from "./dialogs/armorFormDialog.tsx"
 
@@ -26,7 +25,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
   const armorFormDialog = useArmorFormDialog()
   const modFormDialog = useItemFormDialog()
 
-  const toggleEquipped = () => dispatch(Actions.item.setEquipped({ id: armor.id, equipped: !isEquipped(armor) }))
+  const toggleEquipped = () => dispatch(Actions.item.setEquipped({ id: armor.id, equipped: !armor.equipped }))
 
   const removeArmor = () => {
     dispatch(Actions.gear.removeItem({ id: armor.id, removeChildren: true }))
@@ -57,7 +56,7 @@ export const ArmorItemDetails: FC<ArmorItemDetailsProps> = ({ armor, onRemoved, 
           />
         ))}
 
-        {isEquipped(armor)
+        {armor.equipped
           ? (
               <ItemDetailsSlot.QuickAction
                 label="Unequip"

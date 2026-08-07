@@ -60,16 +60,6 @@ describe("ItemDetailsRoot", () => {
     expect(screen.getByText("Wireless Off")).toBeDefined()
   })
 
-  it("renders Stashed instead of Equipped for a stashed-but-equipped item", () => {
-    render(
-      <ItemDetailsRoot item={{ ...baseItem, equipped: true, stashed: true }} />,
-      { wrapper: ThemeWrapper },
-    )
-
-    expect(screen.getByText("Stashed")).toBeDefined()
-    expect(screen.queryByText("Equipped")).toBeNull()
-  })
-
   it("composes stats, damage track, subitems, and footer slots", () => {
     const onDamageChange = vi.fn()
     const accessory: ItemData = {

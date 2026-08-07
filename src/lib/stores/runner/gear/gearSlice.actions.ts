@@ -25,9 +25,13 @@ export const patchItem = createAction<{ itemId: string, data: Partial<ItemData> 
 
 export const removeItem = createAction<{ id: UUID, removeChildren?: boolean }>("gear/remove")
 
-/** Sets `equipped` (and its `_state` mirror) on the item, per docs/features/0012-item-stashing.md. */
+/** Sets `equipped` on the item, per docs/features/0012-item-stashing.md. */
 export const setEquipped = createAction<{ id: UUID, equipped: boolean }>("gear/setEquipped")
-/** Sets `stashed` (and its `_state` mirror) on the item, per docs/features/0012-item-stashing.md. */
+/**
+ * Sets `stashed` on the item, per docs/features/0012-item-stashing.md. The reducer forces
+ * `equipped` to `false` while stashed and restores it automatically on un-stash — see
+ * `reconcileEquippedForStash` in `gearSlice.ts`.
+ */
 export const setStashed = createAction<{ id: UUID, stashed: boolean }>("gear/setStashed")
 
 /** Lets a caller decide whether to dispatch `addItem` or `setItem` for a save. */
