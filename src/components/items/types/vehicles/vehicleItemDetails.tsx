@@ -25,8 +25,8 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
   const modFormDialog = useItemFormDialog()
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
 
-  // SR4A p.163: vehicle physical condition monitor is 8 + Ceil(Body / 2), same formula as a
-  // character's own physical track (see damageSlice.selectors.ts / calculateSpiritConditionMonitor).
+  // Same 8 + Ceil(Body / 2) formula as a character's own physical track (damageSlice.selectors.ts)
+  // and Spirit's condition monitor (calculateSpiritConditionMonitor).
   const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
   const removeVehicle = () => {

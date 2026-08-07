@@ -24,7 +24,6 @@ export interface VehicleData extends ItemData {
 
   seats?: number
 
-  // Max is always derived from `body`, not persisted — see EntityDamage.
   damage?: EntityDamage<DamageTrackKey.physical>
 }
 
