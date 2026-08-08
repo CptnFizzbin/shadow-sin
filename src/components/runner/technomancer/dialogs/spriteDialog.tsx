@@ -41,7 +41,7 @@ const SpriteDialog: FC<SpriteDialogProps> = ({
         max: Math.min(tasks, maxSpriteTasks),
         used: sprite?.services.used ?? 0,
       },
-      damage: sprite?.damage ?? { matrix: 0 },
+      damage: { matrix: 0 },
     })
   }
 

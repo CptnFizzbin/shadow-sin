@@ -36,7 +36,6 @@ describe("VehiclesList", () => {
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
     expect(screen.getByText("Handling: 5")).toBeDefined()
     expect(screen.getByText("Body: 4")).toBeDefined()
-    // Max is 8 + Ceil(Body / 2) = 8 + Ceil(4 / 2) = 10
     expect(screen.getByText("Damage 0/10")).toBeDefined()
   })
 
@@ -46,10 +45,10 @@ describe("VehiclesList", () => {
       runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [bike.id]: bike } }))),
     })
 
-    // Act: box 3 (of 10) is a wound marker
+    // Act
     fireEvent.click(screen.getByRole("button", { name: "-1" }))
 
-    // Assert: the UI re-rendered off the updated store.
+    // Assert
     expect(screen.getByText("Damage 3/10")).toBeDefined()
   })
 

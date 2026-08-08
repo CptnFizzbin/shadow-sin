@@ -24,19 +24,16 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
   const vehicleFormDialog = useVehicleFormDialog()
   const modFormDialog = useItemFormDialog()
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
-
-  // Same 8 + Ceil(Body / 2) formula as a character's own physical track (damageSlice.selectors.ts)
-  // and Spirit's condition monitor (calculateSpiritConditionMonitor).
   const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
   const removeVehicle = () => {
-    dispatch(Actions.gear.removeItem({ id: vehicle.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: vehicle.id, removeChildren: true }))
     onRemoved?.()
   }
 
   const handleDamageChange = (physical: number) => {
     const updated: VehicleData = { ...vehicle, damage: { physical } }
-    dispatch(Actions.gear.setItem(updated))
+    dispatch(Actions.item.setItem(updated))
   }
 
   const handleEdit = async () => {
