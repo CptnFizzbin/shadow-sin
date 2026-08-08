@@ -40,7 +40,6 @@ export function searchGear(gear: Record<string, ItemData>, terms: string[]): Ite
       includedIds.add(item.id)
       // Include parent so it is visible as context
       if (item.parentId) includedIds.add(item.parentId)
-      // Include all children of a directly-matching parent
       for (const childId of item.childIds ?? []) {
         includedIds.add(childId)
       }
