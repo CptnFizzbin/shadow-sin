@@ -7,6 +7,13 @@ import { ItemCardElements } from "./itemCardElements.tsx"
 
 interface ItemCardProps extends PropsWithChildren {
   item: ItemData
+  /**
+   * Overrides `item.cost` for display when a modifier changes what the item actually costs (e.g.
+   * an Implant grade's nuyen multiplier) — threaded straight through to `ItemCardElements.Cost`'s
+   * `effectiveValue`. Exists as a root prop (rather than a `children` override) because Cost is
+   * auto-rendered by this root, not composable by a typed card the way stat rows are.
+   */
+  costEffectiveValue?: number
   /** When provided, the whole card becomes tappable/keyboard-activatable and invokes this (e.g. navigate to the item's details page). */
   onOpen?: () => void
   /** When provided, adds an "Edit" action (long-press/right-click menu) that opens the item's edit dialog. */
@@ -24,7 +31,7 @@ interface ItemCardProps extends PropsWithChildren {
  * as `children`. `onOpen`/`onEdit`/`onRemove` pass straight through to `EntityCard` for its
  * tap-to-open and long-press/right-click action menu.
  */
-const ItemCardRoot: FC<ItemCardProps> = ({ item, onOpen, onEdit, onRemove, children }) => (
+const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, onOpen, onEdit, onRemove, children }) => (
   <EntityCard entity={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove}>
     <EntityCard.Layout.HeaderRow>
       {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
@@ -43,7 +50,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, onOpen, onEdit, onRemove, child
     </EntityCard.Layout.BodyRow>
 
     <EntityCard.Layout.FooterRow>
-      <ItemCardElements.Cost value={item.cost} />
+      <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />
     </EntityCard.Layout.FooterRow>
 
     {children}

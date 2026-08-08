@@ -1,7 +1,6 @@
 import type { FC } from "react"
 
-import { DataCard } from "#/components/dataCard/dataCard.tsx"
-import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
+import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
@@ -18,8 +17,10 @@ export const ProgramDataCard: FC<ProgramDataCardProps> = ({ program, onOpen, onE
   const removeProgram = () => dispatch(Actions.gear.programs.destroy(program.id))
 
   return (
-    <ItemDataCardRoot item={program} onOpen={onOpen} onEdit={onEdit} onRemove={removeProgram}>
-      <DataCard.Stat value={program.programType} />
-    </ItemDataCardRoot>
+    <ItemCard item={program} onOpen={onOpen} onEdit={onEdit} onRemove={removeProgram}>
+      <ItemCard.Layout.BodyRow>
+        <ItemCard.Stat value={program.programType} />
+      </ItemCard.Layout.BodyRow>
+    </ItemCard>
   )
 }
