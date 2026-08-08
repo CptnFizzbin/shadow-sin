@@ -10,7 +10,7 @@ export enum GameEffectType {
 
   /**
    * @deprecated Use `highPainTolerance` or `lowPainTolerance` instead.
-   * Retained only for the 20260502 migration that converts existing records.
+   * Retained only for the 011_splitPainToleranceEffects migration that converts existing records.
    */
   painTolerance = "painTolerance",
 

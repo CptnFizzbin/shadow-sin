@@ -3,6 +3,7 @@ import type { UUID } from "node:crypto"
 import { AsyncDebouncer } from "@tanstack/pacer"
 
 import { applyMigrations } from "#/data/applyMigrations.ts"
+import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { RunnerNotFoundError } from "#/lib/errors/runnerNotFoundError.ts"
 import type { JsonValue } from "#/lib/jsonUtils.ts"
 import { toJsonValue } from "#/lib/jsonUtils.ts"
@@ -67,7 +68,18 @@ export class RunnerManager {
     const migrated = applyMigrations(raw as object)
     const postMeta = migrated._meta_
 
-    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
+    // Guards the Viewer against ever rendering a runner that isn't fully migrated. This should
+    // be unreachable — applyMigrations always stamps _meta_.version to CURRENT_RUNNER_VERSION —
+    // but asserting it here, at the boundary getRunner hands data to the route loader, turns a
+    // future migration-pipeline bug into a clear error instead of a silently stale sheet.
+    if (postMeta.version !== CURRENT_RUNNER_VERSION) {
+      throw new Error(
+        `Runner ${String(id)} is at migration version ${postMeta.version}, expected `
+        + `${CURRENT_RUNNER_VERSION}.`,
+      )
+    }
+
+    if (postMeta.version > preMeta.version) {
       await this.saveRunner(migrated)
     }
 

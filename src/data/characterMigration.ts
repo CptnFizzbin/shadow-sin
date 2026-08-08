@@ -1,5 +1,6 @@
 export interface CharacterMigration<TData extends object = object> {
-  id: string
+  /** Sequential migration number — also the value `_meta_.version` reaches once this migration has run. */
+  version: number
   up: (character: Partial<TData>) => TData
 }
 

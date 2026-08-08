@@ -204,9 +204,9 @@ interface KarmaLedgerEntry {
 
 ### Migration (shipped)
 
-[`20260521_addKarmaLog.ts`](../../src/character/migrations/20260521_addKarmaLog.ts)
+[`017_addKarmaLog.ts`](../../src/data/migrations/017_addKarmaLog.ts)
 backfills `log: []` on every existing character — same pattern as
-[`20260517_addFeatureFlags.ts`](../../src/character/migrations/20260517_addFeatureFlags.ts)
+[`016_addFeatureFlags.ts`](../../src/data/migrations/016_addFeatureFlags.ts)
 from #297. The schema on `karma` now requires `log` going forward.
 
 ### Undo (deferred to v2)

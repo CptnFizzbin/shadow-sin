@@ -23,20 +23,16 @@ import type { KnowledgeSkillData } from "./skills/knowledgeSkillData"
 import type { LanguageSkillData } from "./skills/languageSkillData"
 import type { SkillGroupData } from "./skills/skillGroupData"
 
-export const RUNNER_DATA_VERSION = 1
-
 /**
- * Metadata for tracking the version and migration state of a runner sheet.
+ * Metadata for tracking the migration state of a runner sheet.
  */
 export interface RunnerMeta {
+  /** The highest migration version that has been applied to this runner — see `src/data/migrations.ts`. */
   version: number
-  /** IDs of all migrations that have already been applied to this runner. */
-  appliedMigrations: string[]
 }
 
 export const RunnerMetaSchema = z.object({
   version: z.number().default(0),
-  appliedMigrations: z.string().array().default([]),
 })
 
 /**

@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { RUNNER_DATA_VERSION } from "#/system/runnerData.ts"
-
 import { applyMigrations } from "./applyMigrations.ts"
-import { migrationIds, migrations } from "./migrations.ts"
+import { CURRENT_RUNNER_VERSION, migrations } from "./migrations.ts"
 
 describe("applyMigrations", () => {
-  it("stamps the current version and records every migration id when starting from {}", () => {
+  it("stamps the current version when starting from {}", () => {
     // Arrange
     const runner = {}
 
@@ -14,10 +12,7 @@ describe("applyMigrations", () => {
     const result = applyMigrations(runner)
 
     // Assert
-    expect(result._meta_.version).toBe(RUNNER_DATA_VERSION)
-    for (const migrationId of migrationIds) {
-      expect(result._meta_.appliedMigrations).toContain(migrationId)
-    }
+    expect(result._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 
   it("defensively initialises optional collection fields when missing", () => {
@@ -37,11 +32,11 @@ describe("applyMigrations", () => {
     expect(result.contacts).toEqual([])
   })
 
-  it("skips migrations whose id is already in appliedMigrations", () => {
-    // Arrange — pre-mark the loan migration as applied with a known stable loan id
+  it("skips migrations already covered by _meta_.version", () => {
+    // Arrange — pre-mark migration 3 (addLoanIdAndInterestRate) as applied with a known stable loan id
     const knownLoanId = "00000000-0000-0000-0000-0000000000aa"
     const runner = {
-      _meta_: { appliedMigrations: ["20251001"] },
+      _meta_: { version: 3 },
       nuyen: {
         current: 100,
         loans: [
@@ -53,13 +48,13 @@ describe("applyMigrations", () => {
     // Act
     const result = applyMigrations(runner)
 
-    // Assert — the loan id is preserved (20251001 was not re-run, otherwise a UUID would have been re-assigned only if missing)
+    // Assert — the loan id is preserved (migration 3 was not re-run, otherwise a UUID
+    // would have been re-assigned only if missing)
     expect(result.nuyen.loans[0].id).toBe(knownLoanId)
-    // 20251001 still appears as an applied migration, alongside any newly-applied ones
-    expect(result._meta_.appliedMigrations).toContain("20251001")
+    expect(result._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 
-  it("is idempotent — running it twice yields the same set of applied migrations", () => {
+  it("is idempotent — running it twice yields the same version", () => {
     // Arrange
     const runner = {}
 
@@ -68,13 +63,11 @@ describe("applyMigrations", () => {
     const second = applyMigrations(first)
 
     // Assert
-    expect(new Set(second._meta_.appliedMigrations)).toEqual(
-      new Set(first._meta_.appliedMigrations),
-    )
-    expect(second._meta_.version).toBe(RUNNER_DATA_VERSION)
+    expect(second._meta_.version).toBe(first._meta_.version)
+    expect(second._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 
-  it("removes any legacy top-level `version` field via the 20260419 migration", () => {
+  it("removes any legacy top-level `version` field via migration 007", () => {
     // Arrange
     const runner = { version: 1 } as object
 
@@ -85,15 +78,15 @@ describe("applyMigrations", () => {
     expect("version" in result).toBe(false)
   })
 
-  it("runs migrations in ascending id order", () => {
+  it("runs migrations in ascending version order", () => {
     // Arrange — call sites depend on this ordering invariant
-    const sortedIds = [...migrations].map((m) => m.id).sort()
+    const sortedVersions = [...migrations].map((m) => m.version).sort((a, b) => a - b)
 
     // Act
-    const actualIds = migrations.map((m) => m.id)
+    const actualVersions = migrations.map((m) => m.version)
 
     // Assert
-    expect(actualIds).toEqual(sortedIds)
+    expect(actualVersions).toEqual(sortedVersions)
   })
 
   it("does not mutate the input object", () => {

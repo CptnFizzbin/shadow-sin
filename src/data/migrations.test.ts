@@ -16,6 +16,8 @@ import {
 } from "#testUtils/fixtures/characters/runnerDataFixtures.ts"
 import { makeTestRunnerManager } from "#testUtils/storage/makeTestRunnerManager.ts"
 
+import { CURRENT_RUNNER_VERSION } from "./migrations.ts"
+
 describe("runner migrations + yaml round-trip", () => {
   let manager: RunnerManager
   let storage: AsyncJsonStorage
@@ -30,27 +32,38 @@ describe("runner migrations + yaml round-trip", () => {
     )
   })
 
-  it("applies all migrations to a pre-migration runner", async () => {
-    // Arrange — runner already saved in beforeEach
+  it("applies all pending migrations to a partially-migrated runner", async () => {
+    // Arrange — runner already saved in beforeEach, at _meta_.version 7
 
     // Act
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Assert
-    expect(migrated._meta_.appliedMigrations).toContain("20250101")
-    expect(migrated._meta_.appliedMigrations).toContain("20250801")
-    expect(migrated._meta_.appliedMigrations).toContain("20251001")
-    expect(migrated._meta_.appliedMigrations).toContain("20260416")
-    expect(migrated._meta_.appliedMigrations).toContain("20260417")
-    expect(migrated._meta_.appliedMigrations).toContain("20260418")
-    expect(migrated._meta_.appliedMigrations).toContain("20260419")
-    expect(migrated._meta_.appliedMigrations).toContain("20260423")
+    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
     expect("version" in (migrated as object)).toBe(false)
   })
 
-  it("does not re-run migrations already in appliedMigrations", async () => {
-    // Arrange — characterPost20260418 has 20250801–20260418 applied and a
-    // loan with a known stable ID; only 20260419 should run
+  it("migrates a fully-shaped runner that has no _meta_ field at all", async () => {
+    // Arrange — a runner already carrying every field the migrations would add, but never
+    // stamped with `_meta_` (e.g. hand-authored or created before the field existed at all)
+    const { _meta_, ...withoutMeta } = characterV1
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+    await freshStorage.setItem(
+      `characters/${TEST_CHARACTER_ID}`,
+      toJsonValue(withoutMeta),
+    )
+
+    // Act
+    const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
+
+    // Assert — treated as unmigrated (version defaults to 0) but every migration is idempotent,
+    // so it still lands at the current version with no error
+    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+  })
+
+  it("does not re-run migrations already covered by _meta_.version", async () => {
+    // Arrange — characterV1 has migrations 001–007 applied and a loan with a
+    // known stable ID; only 008+ should run
     const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
     await freshStorage.setItem(
       `characters/${TEST_CHARACTER_ID}`,
@@ -60,13 +73,13 @@ describe("runner migrations + yaml round-trip", () => {
     // Act
     const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
 
-    // Assert — loan ID unchanged (20251001 was NOT re-run)
+    // Assert — loan ID unchanged (003 was NOT re-run)
     expect(migrated.nuyen.loans[0]?.id).toBe(TEST_LOAN_ID)
-    expect(migrated._meta_.appliedMigrations).toContain("20260419")
+    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 
   it("yaml export/import round-trips a fully migrated runner", async () => {
-    // Arrange — migrate the pre-migration runner
+    // Arrange — migrate the partially-migrated runner
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
 
     // Act
@@ -80,7 +93,7 @@ describe("runner migrations + yaml round-trip", () => {
     expect(restored.spells).toEqual(migrated.spells)
   })
 
-  it("yaml-imported runner has all migration IDs already applied", async () => {
+  it("yaml-imported runner is already at the current version", async () => {
     // Arrange — migrate then export/import
     const migrated = await manager.getRunner(TEST_CHARACTER_ID)
     const yaml = runnerDataToYaml(migrated)
@@ -94,7 +107,7 @@ describe("runner migrations + yaml round-trip", () => {
     const reloaded = await freshManager.getRunner(restored.id)
 
     // Assert
-    expect(reloaded._meta_.appliedMigrations).toEqual(migrated._meta_.appliedMigrations)
+    expect(reloaded._meta_.version).toBe(migrated._meta_.version)
   })
 
   it("normalises an old-format runner into the current RunnerData shape", async () => {
@@ -164,8 +177,8 @@ describe("runner migrations + yaml round-trip", () => {
     expect(license.parentId).toBe(TEST_OLD_FORMAT_SIN_ID)
     expect(sin.childIds).toContain(TEST_OLD_FORMAT_LICENSE_ID)
 
-    // migration ID recorded
-    expect(migrated._meta_.appliedMigrations).toContain("20250101")
+    // fully migrated
+    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 
   it("imports blur.yaml (v0 export) via yamlToRunnerData into a valid RunnerData", () => {
@@ -209,7 +222,7 @@ describe("runner migrations + yaml round-trip", () => {
     expect(license!.parentId).toBe(sin!.id)
     expect(sin!.childIds).toContain(license!.id)
 
-    // migrations applied
-    expect(runner._meta_.appliedMigrations).toContain("20250101")
+    // fully migrated
+    expect(runner._meta_.version).toBe(CURRENT_RUNNER_VERSION)
   })
 })

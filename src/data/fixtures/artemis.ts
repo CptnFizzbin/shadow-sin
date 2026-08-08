@@ -1,4 +1,4 @@
-import { migrationIds } from "#/data/migrations.ts"
+import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
@@ -49,7 +49,7 @@ const janeMeleeLicense = createItem<LicenseData>({
 
 export const Artemis: RunnerData = {
   id: "5e5b9ece-f1f8-455f-b4fe-9b47758c49b0",
-  _meta_: { version: 1, appliedMigrations: [...migrationIds] },
+  _meta_: { version: CURRENT_RUNNER_VERSION },
 
   biology: {
     metatype: MetatypeType.Elf,
