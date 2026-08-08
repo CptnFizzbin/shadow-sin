@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 import { meleeWeaponTypes, rangedWeaponTypes } from "#/system/gear/weapons/weaponTypeGroups.ts"
 
 const VERSION = 5
@@ -19,10 +18,6 @@ const migration: CharacterMigration<{
 }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as { gear?: Record<string, GearItem> }
-    }
-
     return produce(character, (draft) => {
       const gear = (draft.gear ??= {})
 

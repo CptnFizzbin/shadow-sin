@@ -52,15 +52,4 @@ describe("010_addSpiritDamage", () => {
     expect(result.spirits?.[1].damage).toEqual({ physical: 2, stun: 0 })
     expect(result.spirits?.[2].damage).toEqual({ physical: 0, stun: 0 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    const character = {
-      _meta_: { version: 10 },
-      spirits: [{ id: "abc", spiritType: "wind", force: 4 }],
-    }
-
-    const result = migration.up(character)
-
-    expect(result.spirits?.[0]).not.toHaveProperty("damage")
-  })
 })

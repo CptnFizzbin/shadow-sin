@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 11
 
@@ -35,8 +34,6 @@ function migrateEffects(effects: LegacyEffect[] | undefined): void {
 const migration: CharacterMigration<LegacyCharacter> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as LegacyCharacter
-
     return produce(character, (draft) => {
       for (const quality of draft.qualities ?? []) {
         migrateEffects(quality.effects)

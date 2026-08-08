@@ -24,15 +24,4 @@ describe("006_addMeta", () => {
     // Assert
     expect(result._meta_).toEqual({ version: 3 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange — _meta_ present, so the guard is moot here, but the check still holds
-    const character = { _meta_: { version: 6 } }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert
-    expect(result._meta_).toEqual({ version: 6 })
-  })
 })

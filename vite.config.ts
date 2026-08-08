@@ -35,14 +35,13 @@ const config = defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Runner migrations are dynamically imported (see src/data/migrations.ts) but always
-          // need to load and run together, so keep them in one chunk instead of one-per-file.
-          if (id.includes("/src/data/migrations")) {
-            return "runner-migrations"
+          // Group third-party deps by npm scope (e.g. all of @mui/* in one "vendor-mui" chunk)
+          // instead of Vite's default one-chunk-per-package or one giant omnibus vendor chunk.
+          // Unscoped packages (react, immer, zod, ...) share a single "vendor" chunk.
+          const scopedMatch = id.match(/\/node_modules\/(@[^/]+)\/[^/]+\//)
+          if (scopedMatch) {
+            return `vendor-${scopedMatch[1].slice(1)}`
           }
-
-          // Restores the pre-Vite-2.9 default of a single "vendor" chunk for third-party
-          // dependencies (formerly `splitVendorChunkPlugin`, removed from Vite core).
           if (id.includes("/node_modules/")) {
             return "vendor"
           }

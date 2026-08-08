@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 15
 
@@ -21,8 +20,6 @@ type LegacyCharacter = {
 const migration: CharacterMigration<LegacyCharacter> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as LegacyCharacter
-
     return produce(character, (draft) => {
       for (const item of Object.values(draft.gear ?? {})) {
         if (item.itemType !== "weapon") continue

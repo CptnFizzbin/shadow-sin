@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 12
 
@@ -14,8 +13,6 @@ type OldSpell = Record<string, unknown> & {
 const migration: CharacterMigration<{ spells?: OldSpell[] }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as { spells?: OldSpell[] }
-
     return produce(character, (draft) => {
       if (!Array.isArray(draft.spells)) return
 

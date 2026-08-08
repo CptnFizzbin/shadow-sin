@@ -216,25 +216,4 @@ describe("011_splitPainToleranceEffects", () => {
     expect(result.qualities?.[0].effects?.[1].type).toBe("attrMod")
     expect(result.qualities?.[0].effects?.[2].type).toBe("lowPainTolerance")
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 11 },
-      qualities: [
-        {
-          id: "q1",
-          name: "High Pain Tolerance",
-          type: "positive",
-          effects: [{ type: "painTolerance", target: "physical", value: 3 }],
-        },
-      ],
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the effect type was left untouched
-    expect(result.qualities?.[0].effects?.[0].type).toBe("painTolerance")
-  })
 })

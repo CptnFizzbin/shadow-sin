@@ -62,18 +62,4 @@ describe("004_addVehicleCategory", () => {
     expect(result.gear?.w1.vehicleCategory).toBeUndefined()
     expect(result.gear?.a1.vehicleCategory).toBeUndefined()
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 4 },
-      gear: { v1: { itemType: "vehicle" } },
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — vehicleCategory was not backfilled
-    expect(result.gear?.v1.vehicleCategory).toBeUndefined()
-  })
 })

@@ -669,10 +669,10 @@ A single, immutable schema-upgrade step that transforms one version of `RunnerDa
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
 commit — if a migration has a bug, a new migration fixes the output. Each migration has a
 sequential integer `version` (file names are zero-padded to match, e.g. `001_...ts`,
-`021_...ts`), and `applyMigrations` calls every migration unconditionally in ascending `version`
-order; each migration checks `_meta_.version` itself (`migrationAlreadyApplied`) and no-ops once
-the runner is already past its version, rather than the driver filtering a separate applied-ids
-list. Because migration files must never be edited, the shared `CharacterMigration<T>` type in
+`022_...ts`), and `applyMigrations` is the sole place that decides which migrations run: it
+filters the registered list down to `version > _meta_.version` and calls `up` only on that
+subset, in ascending order — individual migrations don't check `_meta_` themselves. Because
+migration files must never be edited, the shared `CharacterMigration<T>` type in
 `src/data/characterMigration.ts` and the migration files themselves (`src/data/migrations/`) were
 deliberately left out of the `character`→`runner` identifier rename — renaming the shared type
 would have forced an edit into every migration file.

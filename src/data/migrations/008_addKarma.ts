@@ -2,7 +2,6 @@ import { produce } from "immer"
 import { z } from "zod"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 8
 
@@ -14,10 +13,6 @@ const migration: CharacterMigration<{
 }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as { karma?: number | { current?: number, total?: number } }
-    }
-
     return produce(character, (draft) => {
       switch (typeof draft.karma) {
         case "number": {

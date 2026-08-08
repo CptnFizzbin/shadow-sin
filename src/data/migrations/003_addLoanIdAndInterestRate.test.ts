@@ -106,18 +106,4 @@ describe("003_addLoanIdAndInterestRate", () => {
     expect(ids).toHaveLength(2)
     expect(new Set(ids).size).toBe(2)
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 3 },
-      nuyen: { current: 0, loans: [{ lender: "Aztechnology", amount: 1000 }] },
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the loan was not backfilled with an id
-    expect(result.nuyen?.loans?.[0]).not.toHaveProperty("id")
-  })
 })

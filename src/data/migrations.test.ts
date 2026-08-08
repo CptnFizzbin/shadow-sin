@@ -43,6 +43,24 @@ describe("runner migrations + yaml round-trip", () => {
     expect("version" in (migrated as object)).toBe(false)
   })
 
+  it("migrates a fully-shaped runner that has no _meta_ field at all", async () => {
+    // Arrange — a runner already carrying every field the migrations would add, but never
+    // stamped with `_meta_` (e.g. hand-authored or created before the field existed at all)
+    const { _meta_, ...withoutMeta } = characterV1
+    const { manager: freshManager, storage: freshStorage } = makeTestRunnerManager()
+    await freshStorage.setItem(
+      `characters/${TEST_CHARACTER_ID}`,
+      toJsonValue(withoutMeta),
+    )
+
+    // Act
+    const migrated = await freshManager.getRunner(TEST_CHARACTER_ID)
+
+    // Assert — treated as unmigrated (version defaults to 0) but every migration is idempotent,
+    // so it still lands at the current version with no error
+    expect(migrated._meta_.version).toBe(CURRENT_RUNNER_VERSION)
+  })
+
   it("does not re-run migrations already covered by _meta_.version", async () => {
     // Arrange — characterV1 has migrations 001–007 applied and a loan with a
     // known stable ID; only 008+ should run

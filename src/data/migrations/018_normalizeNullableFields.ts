@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 import type { LifestyleType } from "#/system/lifestyleType.ts"
 import type { TraditionData } from "#/system/magic/traditionData.ts"
 
@@ -29,10 +28,6 @@ type NormalizeNullableFieldsCharacter = {
 const migration: CharacterMigration<NormalizeNullableFieldsCharacter> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as NormalizeNullableFieldsCharacter
-    }
-
     return produce(character, (draft) => {
       if (draft.profile) {
         draft.profile.archetype ??= null
@@ -54,6 +49,4 @@ const migration: CharacterMigration<NormalizeNullableFieldsCharacter> = {
   },
 }
 
-// consumed via `await import(...).default` in migrations.ts
-// fallow-ignore-next-line unused-export
 export default migration

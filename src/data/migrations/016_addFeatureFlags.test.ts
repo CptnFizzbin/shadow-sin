@@ -41,15 +41,4 @@ describe("016_addFeatureFlags", () => {
     // Assert
     expect(character).toEqual({})
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 16 } }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — featureFlags was not backfilled
-    expect(result).not.toHaveProperty("featureFlags")
-  })
 })

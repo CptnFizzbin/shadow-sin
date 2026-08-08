@@ -151,10 +151,10 @@ deliberately kept here through the `character` → `runner` rename (see `docs/ad
 since renaming the type would have forced an edit into every migration file.
 
 A `RunnerData`'s migration state is a single `_meta_.version` integer — the highest migration `version` that has
-been applied. `applyMigrations` calls every registered migration unconditionally, in ascending `version` order; each
-migration checks `_meta_.version` itself via `migrationAlreadyApplied` and no-ops once the runner is already past its
-version, so re-running the full list against an up-to-date runner is cheap and side-effect free. There is no separate
-applied-ids list to maintain.
+been applied. `applyMigrations` is the only place that decides whether a migration needs to run: it filters the
+registered list down to `migration.version > _meta_.version` and only calls `up` on that subset, in ascending
+`version` order. Individual migrations don't check `_meta_` themselves — that would just duplicate the same
+comparison in every file — they're plain, self-contained transforms.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
@@ -162,7 +162,7 @@ silently mis-migrate characters.
 
 - **Schema changes always require a new migration** — when a `RunnerData` field is added, renamed, or removed,
   create a new migration file named `NNN_describeChange.ts`, where `NNN` is the next sequential number
-  zero-padded to three digits (e.g. `022_addFoo.ts` after `021_flattenVehicleDamage.ts`), and register it at the
+  zero-padded to three digits (e.g. `023_addFoo.ts` after `022_pruneLegacyMetaFields.ts`), and register it at the
   bottom of `migrations.ts`. Set `version` on the migration object to the same number (as a plain `number`, not
   zero-padded).
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
@@ -171,11 +171,10 @@ silently mis-migrate characters.
   migrated.
 - **New migration numbers must sort after all existing ones** — migrations are applied in ascending numeric order by
   `version`; the zero-padded file name keeps directory listings in the same order.
-- **Guard `up` with `migrationAlreadyApplied`** — every migration's `up` should start with
-  `if (migrationAlreadyApplied(character, VERSION)) return character as TData` before doing any work, where `VERSION`
-  is a local const matching the migration's own `version`.
-- **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes,
-  including a case asserting the migration no-ops when `_meta_.version` is already at or past its own version.
+- **Don't re-check `_meta_.version` inside `up`** — `applyMigrations` already guarantees `up` is only called when
+  the migration is actually pending; a migration only needs its own shape-based idempotency (e.g. `??=`) in case
+  `up` is called directly, such as in its unit tests.
+- **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
 
 ## Conventions
 

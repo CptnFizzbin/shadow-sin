@@ -57,15 +57,4 @@ describe("017_addKarmaLog", () => {
     // Assert
     expect(character).toEqual({ karma: { current: 10, total: 25 } })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 17 }, karma: { current: 10, total: 25 } }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the log field was not backfilled
-    expect(result.karma).not.toHaveProperty("log")
-  })
 })

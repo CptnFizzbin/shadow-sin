@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 3
 
@@ -21,10 +20,6 @@ const migration: CharacterMigration<{
 }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as { nuyen?: { current?: number, loans?: LoanData[] } }
-    }
-
     return produce(character, (draft) => {
       draft.nuyen ??= {}
       draft.nuyen.current ??= 0

@@ -128,18 +128,4 @@ describe("013_renameBookSR20AtoSR4A", () => {
     expect(result.qualities?.[0].source?.book).toBe("SR4A")
     expect(result.adeptPowers?.[0].source?.book).toBe("AU")
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 13 },
-      gear: { "item-1": { source: { book: "SR20A", page: 42 } } },
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the old book name was left untouched
-    expect(result.gear?.["item-1"].source?.book).toBe("SR20A")
-  })
 })

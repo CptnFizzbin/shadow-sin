@@ -16,22 +16,23 @@ interface MigrationDraft {
 const migrationsInOrder = sort(migrations).asc((migration) => migration.version)
 
 /**
- * Run all migrations against a raw runner object and return the migrated
- * result.  This is the synchronous migration core shared between
+ * Run all pending migrations against a raw runner object and return the
+ * migrated result.  This is the synchronous migration core shared between
  * {@link RunnerManager} (which also persists after migration) and
  * {@link yamlToRunnerData} (which only needs the in-memory result).
  *
- * Every migration is called unconditionally, in ascending `version` order —
- * each one checks `_meta_.version` itself (see `migrationAlreadyApplied`)
- * and no-ops once the runner is already past its version, so re-running this
- * on an already-migrated runner is cheap and side-effect free.
+ * Whether a migration needs to run is decided here, once, by comparing its
+ * `version` against `_meta_.version` — individual migrations don't need to
+ * (and don't) check this themselves.
  */
 export function applyMigrations(runner: object): RunnerData {
   const preMeta = RunnerMetaSchema.parse("_meta_" in runner ? runner._meta_ : {})
 
+  const migrationsToRun = migrationsInOrder.filter((migration) => migration.version > preMeta.version)
+
   let migrated: MigrationDraft = { ...runner, _meta_: preMeta }
 
-  for (const migration of migrationsInOrder) {
+  for (const migration of migrationsToRun) {
     migrated = migration.up(migrated)
   }
 

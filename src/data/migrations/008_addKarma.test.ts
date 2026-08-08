@@ -46,15 +46,4 @@ describe("008_addKarma", () => {
     // Assert
     expect(result.karma).toEqual({ current: 0, total: 15 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 8 }, karma: 42 }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the plain karma number was left un-normalised
-    expect(result.karma).toBe(42)
-  })
 })

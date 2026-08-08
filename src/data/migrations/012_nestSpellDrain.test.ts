@@ -101,18 +101,4 @@ describe("012_nestSpellDrain", () => {
     expect(result.spells?.[1].drain).toEqual({ type: "Fixed", value: 4 })
     expect(result.spells?.[2].drain).toEqual({ type: "Force", value: -1 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 12 },
-      spells: [{ id: "abc", drainBaseType: "Force", drainValueMod: -1 }],
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the spell was left in its old flat drain shape
-    expect(result.spells?.[0]).not.toHaveProperty("drain")
-  })
 })

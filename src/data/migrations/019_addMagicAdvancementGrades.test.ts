@@ -49,16 +49,4 @@ describe("019_addMagicAdvancementGrades", () => {
     // Assert
     expect(character).toEqual({ initiateGrade: 1, submersionGrade: 1 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 19 } }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — neither grade was backfilled
-    expect(result.initiateGrade).toBeUndefined()
-    expect(result.submersionGrade).toBeUndefined()
-  })
 })

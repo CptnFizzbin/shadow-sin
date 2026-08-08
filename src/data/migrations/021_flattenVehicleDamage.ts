@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 21
 
@@ -15,10 +14,6 @@ interface OldVehicleGear {
 const migration: CharacterMigration<{ gear?: Record<string, OldVehicleGear> }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as { gear?: Record<string, OldVehicleGear> }
-    }
-
     return produce(character, (draft) => {
       if (!draft.gear) return
 

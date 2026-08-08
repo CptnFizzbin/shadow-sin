@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 import type { JsonObject } from "#/lib/jsonUtils.ts"
 
 const VERSION = 14
@@ -14,8 +13,6 @@ interface OldShape {
 const migration: CharacterMigration<OldShape> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as OldShape
-
     return produce(character, (draft) => {
       if ("adeptPowers" in draft) {
         const mapped = (draft.adeptPowers ?? []).map((power) => {

@@ -88,18 +88,4 @@ describe("021_flattenVehicleDamage", () => {
     // Assert
     expect(result.gear?.w1.damage).toBeUndefined()
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 21 },
-      gear: { v1: { itemType: "vehicle", damage: { physical: { current: 3, max: 6 } } } },
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the old nested damage shape was left as-is
-    expect(result.gear?.v1.damage).toEqual({ physical: { current: 3, max: 6 } })
-  })
 })

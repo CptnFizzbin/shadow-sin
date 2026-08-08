@@ -41,15 +41,4 @@ describe("007_removeVersionField", () => {
     expect(result.profile).toEqual({ alias: "Blur" })
     expect("version" in result).toBe(false)
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 7 }, version: 1 }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — the legacy version field was left in place
-    expect("version" in result).toBe(true)
-  })
 })

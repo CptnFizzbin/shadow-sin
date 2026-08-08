@@ -52,15 +52,4 @@ describe("020_addSpriteDamage", () => {
     expect(result.sprites?.[1].damage).toEqual({ matrix: 1 })
     expect(result.sprites?.[2].damage).toEqual({ matrix: 0 })
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    const character = {
-      _meta_: { version: 20 },
-      sprites: [{ id: "abc", name: "Courier", force: 3 }],
-    }
-
-    const result = migration.up(character)
-
-    expect(result.sprites?.[0]).not.toHaveProperty("damage")
-  })
 })

@@ -37,15 +37,4 @@ describe("009_addSpiritsArray", () => {
     // Assert
     expect(original).toEqual(snapshot)
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = { _meta_: { version: 9 } }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — spirits was not backfilled
-    expect(result).not.toHaveProperty("spirits")
-  })
 })

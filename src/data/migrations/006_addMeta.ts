@@ -1,7 +1,6 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 6
 
@@ -18,8 +17,6 @@ const migration: CharacterMigration<{
 }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as { _meta_: { version?: number } }
-
     return produce(character, (draft) => {
       draft._meta_ ??= {}
     }) as { _meta_: { version?: number } }

@@ -124,20 +124,4 @@ describe("005_setDefaultEquippedWeapons", () => {
     expect(result.gear?.m1.equipped).toBe(true)
     expect(Object.keys(result.gear ?? {})).toHaveLength(1)
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 5 },
-      gear: {
-        m1: { id: "m1", itemType: "weapon", weaponType: WeaponType.melee, equipped: false },
-      },
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — no weapon was auto-equipped
-    expect(result.gear?.m1.equipped).toBe(false)
-  })
 })

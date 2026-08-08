@@ -1,5 +1,4 @@
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 1
 
@@ -98,8 +97,6 @@ const ITEM_TYPE_MAP: Record<string, string> = {
 const migration: CharacterMigration<Record<string, unknown>> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) return character as Record<string, unknown>
-
     // Only transform characters in the old flat format.
     if (!("characterId" in character)) {
       return character as Record<string, unknown>
@@ -259,6 +256,4 @@ const migration: CharacterMigration<Record<string, unknown>> = {
   },
 }
 
-// consumed via `await import(...).default` in migrations.ts
-// fallow-ignore-next-line unused-export
 export default migration

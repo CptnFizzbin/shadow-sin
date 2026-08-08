@@ -66,19 +66,4 @@ describe("014_renameAdeptPowersToPowers", () => {
     expect(result.powers).toEqual([])
     expect("adeptPowers" in result).toBe(false)
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const character = {
-      _meta_: { version: 14 },
-      adeptPowers: [{ id: "abc", name: "Astral Perception", rating: 1, costPerRating: 1 }],
-    }
-
-    // Act
-    const result = migration.up(character)
-
-    // Assert — adeptPowers was left in place, powers was not created
-    expect(result.powers).toBeUndefined()
-    expect("adeptPowers" in result).toBe(true)
-  })
 })

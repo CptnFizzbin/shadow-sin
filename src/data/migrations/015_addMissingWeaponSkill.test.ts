@@ -129,18 +129,4 @@ describe("015_addMissingWeaponSkill", () => {
     // Assert
     expect(result).toEqual({})
   })
-
-  it("does nothing when _meta_.version is already at or past this migration", () => {
-    // Arrange
-    const input = {
-      _meta_: { version: 15 },
-      gear: { "weapon-1": { itemType: "weapon", weaponType: "melee" } },
-    }
-
-    // Act
-    const result = migration.up(input)
-
-    // Assert — the skill was not backfilled
-    expect(result.gear?.["weapon-1"]).not.toHaveProperty("skill")
-  })
 })

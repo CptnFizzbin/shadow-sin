@@ -1,17 +1,12 @@
 import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
-import { migrationAlreadyApplied } from "#/data/characterMigration.ts"
 
 const VERSION = 20
 
 const migration: CharacterMigration<{ sprites?: Array<Record<string, unknown>> }> = {
   version: VERSION,
   up: (character) => {
-    if (migrationAlreadyApplied(character, VERSION)) {
-      return character as { sprites?: Array<Record<string, unknown>> }
-    }
-
     return produce(character, (draft) => {
       if (!Array.isArray(draft.sprites)) return
       for (const sprite of draft.sprites) {
