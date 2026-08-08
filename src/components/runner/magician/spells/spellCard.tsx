@@ -18,8 +18,7 @@ interface SpellCardProps {
  * `SpellCard`'s own renderable frame — sits directly on `EntityCard`, with no intermediate
  * category tier: Spell has no subtypes the way Item does (Weapon, Armor, ...), so this is both
  * the category tier and the concrete typed card. Renders Type/Range/Duration/Drain/Damage via
- * `EntityCard.Stat` (same fields, same values as the old `DataCard`-based card) and a Sustained
- * status icon in place of the old Footer chip.
+ * `EntityCard.Stat` and a Sustained status icon.
  */
 const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained }) => {
   const hasSustainableEffects = onToggleSustained && spell.effects && spell.effects.length > 0

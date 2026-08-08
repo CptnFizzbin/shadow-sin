@@ -80,7 +80,6 @@ export function initializeOptions(
     hasEffects:
       resolveEnabled(defaults?.hasEffects)
       || (!isForceDisabled(defaults?.hasEffects) && isEditMode && initialValues.effects !== undefined),
-    // showCost and showAvailability default to true (always visible) unless force-disabled.
     showCost: resolveEnabled(defaults?.showCost) || !isForceDisabled(defaults?.showCost),
     showAvailability: resolveEnabled(defaults?.showAvailability) || !isForceDisabled(defaults?.showAvailability),
   }

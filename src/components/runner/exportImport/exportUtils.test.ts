@@ -234,7 +234,6 @@ describe("gearFromTree", () => {
     const tree = gearToTree(gear)
     const restored = gearFromTree(tree)
 
-    // Flat map should have both items
     expect(Object.keys(restored)).toHaveLength(2)
 
     const sinEntry = Object.values(restored).find((item) => item.itemType === ItemType.sin)
@@ -337,11 +336,9 @@ describe("yamlToRunnerData / runnerDataToYaml round-trip", () => {
     const yaml = runnerDataToYaml(original)
     const restored = yamlToRunnerData(yaml)
 
-    // Retrieve original items by ID
     const originalSin = gear[sinItem.id]
     const originalLicense = licenses[0]
 
-    // Retrieve restored items by the same IDs
     const restoredSin = restored.gear[sinItem.id]
     const restoredLicense = restored.gear[originalLicense.id]
 

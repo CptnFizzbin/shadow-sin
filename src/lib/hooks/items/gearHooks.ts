@@ -38,7 +38,6 @@ export function searchGear(gear: Record<string, ItemData>, terms: string[]): Ite
   for (const item of allItems) {
     if (itemMatchesTerms(item)) {
       includedIds.add(item.id)
-      // Include parent so it is visible as context
       if (item.parentId) includedIds.add(item.parentId)
       for (const childId of item.childIds ?? []) {
         includedIds.add(childId)

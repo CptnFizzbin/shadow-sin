@@ -6,7 +6,6 @@ import { afterEach } from "vitest"
 const flushSetImmediate = () => new Promise<void>((resolve) => setImmediate(resolve))
 
 afterEach(() => {
-  // Clean up testing library environent
   cleanup()
 })
 

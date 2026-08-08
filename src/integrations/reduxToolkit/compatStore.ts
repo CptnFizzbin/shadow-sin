@@ -33,6 +33,10 @@ export function createCompatStore<TState>(
     return reducer(state, action)
   }
 
+  // serializableCheck is disabled because `applyUpdater`'s payload is a function by design (the
+  // `(prev) => next` updater itself); immutableCheck is disabled because callers are free to hold
+  // a snapshot from `getState()`, mutate it, and write it back via `setState` (some test helpers
+  // do exactly this).
   const store = configureStore({
     reducer: rootReducer,
     preloadedState,
