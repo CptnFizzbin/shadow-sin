@@ -16,6 +16,7 @@ const courier: SpriteData = {
   name: "Courier",
   force: 3,
   services: { max: 2, used: 0 },
+  damage: { matrix: 0 },
 }
 
 function renderWithSprites(sprites: SpriteData[]) {

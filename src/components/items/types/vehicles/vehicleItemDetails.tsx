@@ -24,17 +24,16 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
   const vehicleFormDialog = useVehicleFormDialog()
   const modFormDialog = useItemFormDialog()
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(vehicle.id))
-
-  const damageMax = vehicle.damage?.physical.max || vehicle.body
+  const damageMax = 8 + Math.ceil(vehicle.body / 2)
 
   const removeVehicle = () => {
-    dispatch(Actions.gear.removeItem({ id: vehicle.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: vehicle.id, removeChildren: true }))
     onRemoved?.()
   }
 
-  const handleDamageChange = (current: number) => {
-    const updated: VehicleData = { ...vehicle, damage: { physical: { current, max: damageMax } } }
-    dispatch(Actions.gear.setItem(updated))
+  const handleDamageChange = (physical: number) => {
+    const updated: VehicleData = { ...vehicle, damage: { physical } }
+    dispatch(Actions.item.setItem(updated))
   }
 
   const handleEdit = async () => {
@@ -66,7 +65,7 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
         <ItemDetailsSlot.DamageTrack
           label="Physical"
           max={damageMax}
-          current={vehicle.damage?.physical.current ?? 0}
+          current={vehicle.damage?.physical ?? 0}
           onChange={handleDamageChange}
         />
 

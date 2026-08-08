@@ -80,22 +80,6 @@ export const VehicleFormFields = withFieldGroup({
             </Stack>
           </Stack>
         </Paper>
-
-        <Paper sx={{ padding: 1 }}>
-          <Stack sx={{ gap: 1 }}>
-            <Label label="Physical Damage Track" />
-
-            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
-              <group.AppField name="damage.physical.current">
-                {(field) => <field.CounterField label="Current Damage" min={0} max={50} />}
-              </group.AppField>
-
-              <group.AppField name="damage.physical.max">
-                {(field) => <field.CounterField label="Max Damage" min={0} max={50} />}
-              </group.AppField>
-            </Stack>
-          </Stack>
-        </Paper>
       </Stack>
     )
   },

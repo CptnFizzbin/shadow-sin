@@ -1,3 +1,5 @@
+import type { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import type { EntityDamage } from "#/system/entityData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
@@ -22,12 +24,7 @@ export interface VehicleData extends ItemData {
 
   seats?: number
 
-  damage?: {
-    physical: {
-      current: number
-      max: number
-    }
-  }
+  damage?: EntityDamage<DamageTrackKey.physical>
 }
 
 export function isVehicleData(item: ItemData): item is VehicleData {

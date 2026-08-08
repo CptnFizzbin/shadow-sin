@@ -188,6 +188,9 @@ silently mis-migrate characters.
   export const AdeptPowerDataSchema = z.object({ ... }) satisfies z.ZodType<AdeptPowerData>
   ```
 
+- **Don't fabricate rulebook page citations.** A comment citing a specific page (e.g. `SR4A p.163`) is a claim that
+  the page was checked, not a stylistic flourish — an invented one is worse than no citation at all.
+
 - Quick verification workflow: after making code changes run `yarn fix` (this runs all project :fix scripts via
   `npm-run-all2`) to ensure formatting, linting, and types are clean before pushing.
 

@@ -45,10 +45,7 @@ const defaultFormValues = {
   seats: undefined as number | undefined,
   rating: undefined as number | undefined,
   damage: {
-    physical: {
-      current: 0,
-      max: 0,
-    },
+    physical: 0,
   },
 }
 
@@ -85,10 +82,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     ...(values.seats !== undefined && { seats: values.seats }),
     ...(values.rating !== undefined && { rating: values.rating }),
     damage: {
-      physical: {
-        current: values.damage.physical.current,
-        max: values.damage.physical.max,
-      },
+      physical: values.damage.physical,
     },
   }
 }
@@ -125,10 +119,7 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
     seats: vehicle.seats,
     rating: typeof vehicle.rating === "number" ? vehicle.rating : undefined,
     damage: {
-      physical: {
-        current: vehicle.damage?.physical.current ?? 0,
-        max: vehicle.damage?.physical.max ?? 0,
-      },
+      physical: vehicle.damage?.physical ?? 0,
     },
   }
 }
