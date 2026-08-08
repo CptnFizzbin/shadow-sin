@@ -56,6 +56,49 @@ describe("ItemDialog", () => {
     expect(within(dialog).getByRole("button", { name: /save/i })).toBeDefined()
   })
 
+  it("shows the Stashed switch by default", () => {
+    renderInBuilder(
+      <ItemDialogWrapper title="Add Thing" onSave={vi.fn()} />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    expect(within(dialog).getByLabelText("Stashed")).toBeDefined()
+  })
+
+  it("submits stashed when the Stashed switch is toggled on", async () => {
+    const onSave = vi.fn()
+    renderInBuilder(
+      <ItemDialogWrapper itemType={ItemType.other} title="Add Gadget" onSave={onSave} />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    fireEvent.click(within(dialog).getByLabelText("Stashed"))
+
+    fillNameAndClickSave("Stashed Gadget")
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledOnce()
+      const submitted: ItemData = onSave.mock.calls[0][0]
+      expect(submitted.stashed).toBe(true)
+    })
+  })
+
+  it("hides the Stashed switch when canBeStashed is force-disabled", () => {
+    renderInBuilder(
+      <ItemDialogWrapper
+        title="Add Thing"
+        onSave={vi.fn()}
+        options={{ canBeStashed: { forced: true, enabled: false } }}
+      />,
+    )
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+    expect(within(dialog).queryByLabelText("Stashed")).toBeNull()
+  })
+
   it("calls onSave with the item on save", async () => {
     const onSave = vi.fn()
     renderInBuilder(

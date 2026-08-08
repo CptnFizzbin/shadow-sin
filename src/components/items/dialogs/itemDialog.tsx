@@ -55,6 +55,7 @@ export interface ItemDialogProps {
   }
   options?: {
     equipable?: ItemDialogOptionConfig
+    canBeStashed?: ItemDialogOptionConfig
     hasRating?: ItemDialogOptionConfig
     multiple?: ItemDialogOptionConfig
     isSubItem?: ItemDialogOptionConfig
@@ -93,6 +94,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
 
   const forced: Record<OptionKey, boolean> = {
     equipable: resolveForced(optionsProp?.equipable),
+    canBeStashed: resolveForced(optionsProp?.canBeStashed),
     hasRating: resolveForced(optionsProp?.hasRating),
     multiple: resolveForced(optionsProp?.multiple),
     isSubItem: resolveForced(optionsProp?.isSubItem),
@@ -195,6 +197,12 @@ export const ItemDialog: FC<ItemDialogProps> = ({
               {localOptions["equipable"] && (
                 <form.AppField name="equipped">
                   {(field) => <field.SwitchField label="Equipped" />}
+                </form.AppField>
+              )}
+
+              {localOptions["canBeStashed"] && (
+                <form.AppField name="stashed">
+                  {(field) => <field.SwitchField label="Stashed" />}
                 </form.AppField>
               )}
 

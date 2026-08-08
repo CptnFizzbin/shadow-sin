@@ -386,8 +386,6 @@ upgrade will let players roll checks through a contact to locate gear or gather 
 a Nuyen fee.
 _Avoid_: ally, NPC (too broad)
 
-
-
 **Item**:
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
 implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
@@ -402,30 +400,38 @@ decided whether it's in scope.)_
 _Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
-`ItemData._state.equipped` — whether an item is actively worn/wielded right now, as opposed to
-merely owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
+`ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
+owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
 (`equipable: { forced: true }`); other item types don't offer it.
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
-Read via `isEquipped(item)` from `src/system/items/itemUtils.ts` wherever the raw value is needed
-— the leading underscore on `_state` marks it as internal storage, same convention as
-`RunnerData._meta_`. There is deliberately no combined "actively equipped" helper: call sites that
-care whether an item's Equipped effect is actually active check `isEquipped(item) &&
-!isStashed(item)` directly. `_state` holds only **Equipped** and **Stash** — the other per-item
-booleans (`fixed`, `wireless`) stay top-level on `ItemData` since they don't combine with anything
-else the way Equipped and Stash do.
+`isEquipped(item)` in `src/system/items/itemUtils.ts` is deprecated — read `item.equipped`
+directly. It's always trustworthy on its own: the gear reducer forces it to `false` the moment
+**Stash** turns on and restores it automatically on un-stash (see **Stash**), so no compound check
+against `stashed` is needed at the read site.
 
-**Stash** _(not yet implemented — see `docs/features/0012-item-stashing.md`)_:
-`ItemData._state.stashed` — whether an item is with the Runner at all right now ("left at the
+**Stashed**:
+`ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. Stash and Equipped are independent, coexisting flags — an item can be `_state: {
-equipped: true, stashed: true }` at once. Stash overrides Equipped's mechanical effect without
-clearing its stored value (so un-stashing needs no separate restore step). A stashed item is
-greyed out and sorted to the bottom of gear listings, and cascades to its child items (stashing a
-weapon stashes its attachments too).
+worn/wielded. The gear reducer (`src/lib/stores/runner/gear/gearSlice.ts`) enforces the
+interaction at the write boundary: the moment `stashed` becomes `true`, it forces `equipped` to
+`false` and records the prior value in the internal `ItemData._state.equipOnUnstash` (leading
+underscore, same convention as `RunnerData._meta_` — not read directly), restoring it
+automatically when un-stashed. A stashed item is greyed out and sorted to the bottom of gear
+listings, and cascades to its child items (stashing a weapon stashes its attachments too).
 _Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
 unequipped, and not stashed, e.g. a spare pistol in a holster)
+
+**Available**:
+The inverse of **Stashed** — `!item.stashed`, i.e. an item the Runner currently has on hand,
+regardless of whether it's **Equipped**. `isAvailable(item)` in `src/system/items/itemUtils.ts`
+is deprecated — read `!item.stashed` directly. Used to exclude stashed gear from listings/logic
+that only care about carried items, e.g. `selectAvailable`
+(`src/lib/stores/runner/gear/gearSlice.selectors.ts`) and the **License Check** lane filters
+(`src/components/runner/licenseCheck/licenseCheckLanes.ts`).
+_Avoid_: confusing with **Availability** (the Item legality/rating term below) — unrelated
+concept that happens to share the word
 
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
@@ -442,8 +448,6 @@ _Avoid_: bot, UAV, UGV (use Drone)
 The in-play tracking view for a Spirit, Sprite, or Vehicle, showing its own damage
 track, stats, and session state independently of the Runner's main sheet.
 _Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet is the UI view)
-
-
 
 **Attachment**:
 An Item that is mounted on, installed in, or otherwise associated with a parent Item. Attachments

@@ -42,6 +42,7 @@ const defaultFormValues: ImplantData = {
   childIds: [NullUuid],
   notes: "",
   equipped: false,
+  stashed: false,
   fixed: false,
   wireless: {
     enabled: false,

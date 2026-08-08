@@ -33,6 +33,7 @@ const defaultFormValues = {
     page: 0,
   },
   effects: [] as VehicleData["effects"],
+  stashed: false,
 
   handling: 0,
   accel: "0/0" as string,
@@ -73,6 +74,7 @@ function toVehicleData(values: VehicleFormState): VehicleData {
     availability: values.availability,
     source: values.source,
     effects: values.effects,
+    stashed: values.stashed,
     handling: values.handling,
     accel: values.accel as VehicleData["accel"],
     pilot: values.pilot,
@@ -112,6 +114,7 @@ function vehicleToFormState(vehicle: VehicleData): VehicleFormState {
       page: vehicle.source?.page ?? 0,
     },
     effects: vehicle.effects ?? [],
+    stashed: vehicle.stashed ?? false,
     handling: vehicle.handling,
     accel: vehicle.accel,
     pilot: vehicle.pilot,

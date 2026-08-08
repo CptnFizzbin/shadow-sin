@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { addItem, removeItem, setItem, stashItem } from "./gearSlice.actions.ts"
+import { addItem, patchItem, removeItem, setEquipped, setItem, setStashed } from "./gearSlice.actions.ts"
 import { gearReducer } from "./gearSlice.ts"
 
 const makeItem = (overrides: Partial<ItemData> = {}): ItemData => ({
@@ -173,14 +173,156 @@ describe("gearReducer", () => {
     expect(next).toEqual({ [item.id]: item })
   })
 
-  it("stash is a no-op stub pending a real _state.stashed field (#388)", () => {
+  it("setEquipped sets the equipped field", () => {
     // Arrange
     const item = makeItem()
 
     // Act
-    const next = gearReducer({ [item.id]: item }, stashItem({ id: item.id }))
+    const next = gearReducer({ [item.id]: item }, setEquipped({ id: item.id, equipped: true }))
+
+    // Assert
+    expect(next[item.id].equipped).toBe(true)
+  })
+
+  it("setEquipped is a no-op when no item matches the id", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer(
+      { [item.id]: item },
+      setEquipped({ id: crypto.randomUUID() as UUID, equipped: true }),
+    )
 
     // Assert
     expect(next).toEqual({ [item.id]: item })
+  })
+
+  it("setStashed is a no-op when no item matches the id", () => {
+    // Arrange
+    const item = makeItem()
+
+    // Act
+    const next = gearReducer(
+      { [item.id]: item },
+      setStashed({ id: crypto.randomUUID() as UUID, stashed: true }),
+    )
+
+    // Assert
+    expect(next).toEqual({ [item.id]: item })
+  })
+
+  describe("stashing forces equipped off and remembers it for restore", () => {
+    it("setStashed(true) on an equipped item sets stashed, clears equipped, and records equipOnUnstash", () => {
+      // Arrange
+      const item = makeItem({ equipped: true })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+
+      // Assert
+      expect(next[item.id].stashed).toBe(true)
+      expect(next[item.id].equipped).toBe(false)
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+    })
+
+    it("setStashed(true) on a non-equipped item records equipOnUnstash as false", () => {
+      // Arrange
+      const item = makeItem({ equipped: false })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+
+      // Assert
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: false })
+    })
+
+    it("setStashed(false) restores equipped from equipOnUnstash", () => {
+      // Arrange — already stashed, with a recorded pre-stash equipped value
+      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: true } })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: false }))
+
+      // Assert
+      expect(next[item.id].stashed).toBe(false)
+      expect(next[item.id].equipped).toBe(true)
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: undefined })
+    })
+
+    it("setStashed(false) restores equipped to false when it wasn't equipped before stashing", () => {
+      // Arrange
+      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: false } })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: false }))
+
+      // Assert
+      expect(next[item.id].equipped).toBe(false)
+    })
+
+    it("setStashed(true) is idempotent — re-stashing an already-stashed item doesn't re-capture equipOnUnstash", () => {
+      // Arrange — already stashed with equipOnUnstash recorded; equipped is (unusually) true again
+      const item = makeItem({ stashed: true, equipped: true, _state: { equipOnUnstash: false } })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setStashed({ id: item.id, stashed: true }))
+
+      // Assert — no re-capture: equipped and equipOnUnstash both untouched
+      expect(next[item.id].equipped).toBe(true)
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: false })
+    })
+
+    it("setItem (the item edit form's save path) also enforces the invariant when stashed flips on", () => {
+      // Arrange
+      const item = makeItem({ equipped: true })
+
+      // Act — form save sets stashed directly, without going through setStashed
+      const next = gearReducer({ [item.id]: item }, setItem({ ...item, stashed: true }))
+
+      // Assert
+      expect(next[item.id].equipped).toBe(false)
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+    })
+
+    it("setItem also restores equipped when stashed flips off", () => {
+      // Arrange
+      const item = makeItem({ stashed: true, equipped: false, _state: { equipOnUnstash: true } })
+
+      // Act
+      const next = gearReducer({ [item.id]: item }, setItem({ ...item, stashed: false }))
+
+      // Assert
+      expect(next[item.id].equipped).toBe(true)
+    })
+
+    it("patchItem enforces the invariant when stashed flips on", () => {
+      // Arrange
+      const item = makeItem({ equipped: true })
+
+      // Act
+      const next = gearReducer(
+        { [item.id]: item },
+        patchItem({ itemId: item.id, data: { stashed: true } }),
+      )
+
+      // Assert
+      expect(next[item.id].equipped).toBe(false)
+      expect(next[item.id]._state).toEqual({ equipOnUnstash: true })
+    })
+
+    it("addItem doesn't treat a brand-new stashed item as a transition needing restore later", () => {
+      // Arrange — a new item created already stashed and (inconsistently) marked equipped
+      const item = makeItem({ stashed: true, equipped: true })
+      const { id: _discarded, ...itemWithoutId } = item
+
+      // Act
+      const next = gearReducer({}, addItem(itemWithoutId))
+
+      // Assert — still forces equipped off and records the pre-stash value, same as any other write
+      const [stored] = Object.values(next)
+      expect(stored.equipped).toBe(false)
+      expect(stored._state).toEqual({ equipOnUnstash: true })
+    })
   })
 })

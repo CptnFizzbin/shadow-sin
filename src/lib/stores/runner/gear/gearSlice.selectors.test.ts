@@ -67,7 +67,18 @@ describe("selectEquipped", () => {
 })
 
 describe("selectStashed", () => {
-  it("always returns an empty array (stubbed pending #388)", () => {
+  it("returns only stashed items", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, stashed: true },
+      }
+      return s
+    })
+
+    expect(selectStashed(sheet)).toEqual([{ ...item, stashed: true }])
+  })
+
+  it("excludes items with stashed false or absent", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
@@ -78,13 +89,24 @@ describe("selectStashed", () => {
 })
 
 describe("selectAvailable", () => {
-  it("always returns every gear item (stubbed pending #388)", () => {
+  it("returns items that are not stashed", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = { [item.id]: item }
       return s
     })
 
     expect(selectAvailable(sheet)).toEqual([item])
+  })
+
+  it("excludes stashed items", () => {
+    const sheet = runnerDataFactory((s) => {
+      s.gear = {
+        [item.id]: { ...item, stashed: true },
+      }
+      return s
+    })
+
+    expect(selectAvailable(sheet)).toEqual([])
   })
 })
 
