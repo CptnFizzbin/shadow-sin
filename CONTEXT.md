@@ -386,8 +386,6 @@ upgrade will let players roll checks through a contact to locate gear or gather 
 a Nuyen fee.
 _Avoid_: ally, NPC (too broad)
 
-
-
 **Item**:
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
 implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
@@ -413,7 +411,7 @@ directly. It's always trustworthy on its own: the gear reducer forces it to `fal
 **Stash** turns on and restores it automatically on un-stash (see **Stash**), so no compound check
 against `stashed` is needed at the read site.
 
-**Stash**:
+**Stashed**:
 `ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
 worn/wielded. The gear reducer (`src/lib/stores/runner/gear/gearSlice.ts`) enforces the
@@ -424,6 +422,16 @@ automatically when un-stashed. A stashed item is greyed out and sorted to the bo
 listings, and cascades to its child items (stashing a weapon stashes its attachments too).
 _Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
 unequipped, and not stashed, e.g. a spare pistol in a holster)
+
+**Available**:
+The inverse of **Stashed** — `!item.stashed`, i.e. an item the Runner currently has on hand,
+regardless of whether it's **Equipped**. `isAvailable(item)` in `src/system/items/itemUtils.ts`
+is deprecated — read `!item.stashed` directly. Used to exclude stashed gear from listings/logic
+that only care about carried items, e.g. `selectAvailable`
+(`src/lib/stores/runner/gear/gearSlice.selectors.ts`) and the **License Check** lane filters
+(`src/components/runner/licenseCheck/licenseCheckLanes.ts`).
+_Avoid_: confusing with **Availability** (the Item legality/rating term below) — unrelated
+concept that happens to share the word
 
 **Vehicle**:
 An Item with `ItemType.vehicle`. Has its own stat block (Pilot, Sensor, Armor, Body, damage
@@ -440,8 +448,6 @@ _Avoid_: bot, UAV, UGV (use Drone)
 The in-play tracking view for a Spirit, Sprite, or Vehicle, showing its own damage
 track, stats, and session state independently of the Runner's main sheet.
 _Avoid_: mini-sheet, sub-sheet, stat block (stat block is the data; StatusSheet is the UI view)
-
-
 
 **Attachment**:
 An Item that is mounted on, installed in, or otherwise associated with a parent Item. Attachments

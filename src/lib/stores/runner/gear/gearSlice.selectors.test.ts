@@ -67,7 +67,7 @@ describe("selectEquipped", () => {
 })
 
 describe("selectStashed", () => {
-  it("returns only items with stashed === true", () => {
+  it("returns only stashed items", () => {
     const sheet = runnerDataFactory((s) => {
       s.gear = {
         [item.id]: { ...item, stashed: true },
