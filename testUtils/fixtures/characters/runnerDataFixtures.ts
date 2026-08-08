@@ -7,18 +7,22 @@
  * hadn't been introduced yet, so they are typed as `Record<string, unknown>`
  * rather than `RunnerData`.
  *
- * Migration timeline (each migration adds its ID to `_meta_.appliedMigrations`
- * once run; the manager bootstraps `_meta_` with `appliedMigrations: []` for
- * characters that pre-date the tracking system):
+ * `_meta_.version` tracks the highest migration `version` that has been
+ * applied (see `src/data/migrations.ts`).  It doesn't exist at all until
+ * migration 006 (`addMeta`) runs.
+ *
+ * Migration timeline:
  *
  *   characterOldFormat         – old flat YAML export shape (has `characterId`, not `id`)
  *   characterPreAllMigrations  – before any migration (oldest raw shape, no `_meta_`)
- *   characterPost20250801      – after 20250801_addSpellThreshold
- *   characterPost20251001      – after 20251001_addLoanIdAndInterestRate
- *   characterPost20260416      – after 20260416_addVehicleCategory
- *   characterPost20260417      – after 20260417_setDefaultEquippedWeapons
- *   characterPost20260418      – after 20260418_addMeta (has `_meta_`, still has old `version`)
- *   characterV1                – fully migrated (no `version` field, all migrations in `appliedMigrations`)
+ *   characterPost002           – after 002_addSpellThreshold
+ *   characterPost003           – after 003_addLoanIdAndInterestRate
+ *   characterPost004           – after 004_addVehicleCategory
+ *   characterPost005           – after 005_setDefaultEquippedWeapons
+ *   characterPost006           – after 006_addMeta (has `_meta_`, still has old top-level `version`)
+ *   characterV1                – after 007_removeVersionField — `_meta_.version` is 7, so
+ *                                 migrations 008+ are still pending and will run when a test
+ *                                 exercises `applyMigrations`/`RunnerManager.getRunner`.
  */
 
 // Stable UUIDs shared across all version fixtures so tests can reference them.
@@ -33,7 +37,7 @@ export const TEST_OLD_FORMAT_SIN_ID = "7ad0eba6-e9b1-4b0b-83cf-ee30c560e672" as 
 export const TEST_OLD_FORMAT_LICENSE_ID = "89f99b5a-b065-4827-9bfd-50d7396f07ed" as const
 
 // ---------------------------------------------------------------------------
-// Old flat YAML export shape — before 20250101_normalizeOldFormatCharacter.
+// Old flat YAML export shape — before 001_normalizeOldFormatCharacter.
 // This is the format produced by older versions of the app's YAML export.
 // Key differences from the current RunnerData:
 // • top-level `characterId` instead of `id`
@@ -300,7 +304,7 @@ const characterV1_0 = {
 
   nuyen: {
     current: 1000,
-    // Pre-20251001 loan shape — no `id` or `interestRate`
+    // Pre-003 loan shape — no `id` or `interestRate`
     loans: [{ lender: "TestLender", amount: 500, notes: "test loan" }],
   },
 
@@ -329,7 +333,7 @@ const characterV1_0 = {
       itemType: "weapon",
       weaponType: "melee",
       name: "Combat Knife",
-      // Pre-20260417: no `equipped` field
+      // Pre-005: no `equipped` field
     },
     [TEST_VEHICLE_ID]: {
       id: TEST_VEHICLE_ID,
@@ -342,7 +346,7 @@ const characterV1_0 = {
       speed: 90,
       body: 8,
       armor: 4,
-      // Pre-20260416: no `vehicleCategory` field
+      // Pre-004: no `vehicleCategory` field
     },
   },
 
@@ -356,7 +360,7 @@ const characterV1_0 = {
   qualities: [],
   contacts: [],
 
-  // Pre-20250801 spell shape — no `threshold` field
+  // Pre-002 spell shape — no `threshold` field
   spells: [
     {
       name: "Fireball",
@@ -374,16 +378,15 @@ const characterV1_0 = {
 }
 
 // ---------------------------------------------------------------------------
-// After 20250801_addSpellThreshold
+// After 002_addSpellThreshold
 // • spells:  `threshold: ""` added
 // • loans:   still no `id` or `interestRate`
 // • vehicle: still no `vehicleCategory`
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-const characterV1_20250801 = {
+const characterV1_002 = {
   ...characterV1_0,
-  _meta_: { version: 1, appliedMigrations: ["20250801"] },
   spells: [
     {
       name: "Fireball",
@@ -398,16 +401,15 @@ const characterV1_20250801 = {
 }
 
 // ---------------------------------------------------------------------------
-// After 20251001_addLoanIdAndInterestRate
+// After 003_addLoanIdAndInterestRate
 // • spells:  `threshold: ""` present
 // • loans:   `id` + `interestRate: 0` added
 // • vehicle: still no `vehicleCategory`
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-const characterV1_20251001 = {
-  ...characterV1_20250801,
-  _meta_: { version: 1, appliedMigrations: ["20250801", "20251001"] },
+const characterV1_003 = {
+  ...characterV1_002,
   nuyen: {
     current: 1000,
     loans: [
@@ -423,16 +425,15 @@ const characterV1_20251001 = {
 }
 
 // ---------------------------------------------------------------------------
-// After 20260416_addVehicleCategory
+// After 004_addVehicleCategory
 // • spells:  `threshold: ""` present
 // • loans:   `id` + `interestRate: 0` present
 // • vehicle: `vehicleCategory: "vehicle"` added
 // • weapon:  still no `equipped`
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-const characterV1_20260416 = {
-  ...characterV1_20251001,
-  _meta_: { version: 1, appliedMigrations: ["20250801", "20251001", "20260416"] },
+const characterV1_004 = {
+  ...characterV1_003,
   gear: {
     [TEST_WEAPON_ID]: {
       id: TEST_WEAPON_ID,
@@ -458,19 +459,15 @@ const characterV1_20260416 = {
 }
 
 // ---------------------------------------------------------------------------
-// After 20260417_setDefaultEquippedWeapons
+// After 005_setDefaultEquippedWeapons
 // • spells:  `threshold: ""` present
 // • loans:   `id` + `interestRate: 0` present
 // • vehicle: `vehicleCategory: "vehicle"` present
 // • weapon:  `equipped: true` set on the first melee weapon
 // • sheet:   still no `_meta_`, still has old `version`
 // ---------------------------------------------------------------------------
-const characterV1_20260417 = {
-  ...characterV1_20260416,
-  _meta_: {
-    version: 1,
-    appliedMigrations: ["20250801", "20251001", "20260416", "20260417"],
-  },
+const characterV1_005 = {
+  ...characterV1_004,
   gear: {
     [TEST_WEAPON_ID]: {
       id: TEST_WEAPON_ID,
@@ -496,35 +493,25 @@ const characterV1_20260417 = {
 }
 
 // ---------------------------------------------------------------------------
-// After 20260418_addMeta
-// All previous migrations applied; `_meta_` updated; old `version` still present.
+// After 006_addMeta
+// `_meta_` now exists, stamped with `version: 6`; old top-level `version`
+// string is still present (007 hasn't run yet).
 // ---------------------------------------------------------------------------
-const characterV1_20260418 = {
-  ...characterV1_20260417,
+const characterV1_006 = {
+  ...characterV1_005,
   version: "0.1.0",
-  _meta_: {
-    version: 1,
-    appliedMigrations: ["20250801", "20251001", "20260416", "20260417", "20260418"],
-  },
+  _meta_: { version: 6 },
 }
 
 // ---------------------------------------------------------------------------
-// Fully migrated — v1 (after 20260419_removeVersionField)
-// • All migrations in `appliedMigrations`
-// • `version` field removed by 20260419
+// Fully migrated up through 007_removeVersionField
+// • `_meta_.version` is 7 — migrations 008+ are still pending, so tests that
+//   load this fixture through `applyMigrations`/`RunnerManager` will still
+//   run them
+// • the legacy top-level `version` field is gone
 // ---------------------------------------------------------------------------
-const { version, ...rest } = characterV1_20260418
+const { version, ...rest } = characterV1_006
 export const characterV1 = {
   ...rest,
-  _meta_: {
-    version: 1,
-    appliedMigrations: [
-      "20250801",
-      "20251001",
-      "20260416",
-      "20260417",
-      "20260418",
-      "20260419",
-    ],
-  },
+  _meta_: { version: 7 },
 }

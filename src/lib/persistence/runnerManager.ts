@@ -67,7 +67,7 @@ export class RunnerManager {
     const migrated = applyMigrations(raw as object)
     const postMeta = migrated._meta_
 
-    if (postMeta.appliedMigrations.length > preMeta.appliedMigrations.length) {
+    if (postMeta.version > preMeta.version) {
       await this.saveRunner(migrated)
     }
 

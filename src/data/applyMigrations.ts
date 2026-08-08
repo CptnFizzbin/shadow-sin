@@ -2,42 +2,41 @@ import { sort } from "fast-sort"
 import { produce } from "immer"
 
 import type { RunnerData } from "#/system/runnerData.ts"
-import { RUNNER_DATA_VERSION, RunnerMetaSchema } from "#/system/runnerData.ts"
+import { RunnerMetaSchema } from "#/system/runnerData.ts"
 
-import { migrations } from "./migrations.ts"
+import { CURRENT_RUNNER_VERSION, migrations } from "./migrations.ts"
 
 interface MigrationDraft {
   _meta_: {
     version: number
-    appliedMigrations: string[]
   }
   [key: string]: unknown
 }
 
+const migrationsInOrder = sort(migrations).asc((migration) => migration.version)
+
 /**
- * Run all pending migrations against a raw runner object and return the
- * migrated result.  This is the synchronous migration core shared between
+ * Run all migrations against a raw runner object and return the migrated
+ * result.  This is the synchronous migration core shared between
  * {@link RunnerManager} (which also persists after migration) and
  * {@link yamlToRunnerData} (which only needs the in-memory result).
+ *
+ * Every migration is called unconditionally, in ascending `version` order —
+ * each one checks `_meta_.version` itself (see `migrationAlreadyApplied`)
+ * and no-ops once the runner is already past its version, so re-running this
+ * on an already-migrated runner is cheap and side-effect free.
  */
 export function applyMigrations(runner: object): RunnerData {
   const preMeta = RunnerMetaSchema.parse("_meta_" in runner ? runner._meta_ : {})
-  const appliedMigrationIds = new Set(preMeta.appliedMigrations)
-
-  const migrationsToRun = sort(migrations)
-    .asc((migration) => migration.id)
-    .filter((migration) => !appliedMigrationIds.has(migration.id))
 
   let migrated: MigrationDraft = { ...runner, _meta_: preMeta }
 
-  for (const migration of migrationsToRun) {
+  for (const migration of migrationsInOrder) {
     migrated = migration.up(migrated)
-    appliedMigrationIds.add(migration.id)
   }
 
   migrated = produce(migrated, (draft) => {
-    draft._meta_.version = RUNNER_DATA_VERSION
-    draft._meta_.appliedMigrations = Array.from(appliedMigrationIds)
+    draft._meta_.version = CURRENT_RUNNER_VERSION
 
     // Defensive initialization for fields that might be missing in fixtures
     // or skipped migrations.

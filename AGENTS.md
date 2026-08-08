@@ -146,24 +146,36 @@ Supporting hooks in `src/lib/hooks/items/`:
 ## Character migrations
 
 Migrations live in `src/data/migrations/` and are registered in `src/data/migrations.ts`. The shared
-`CharacterMigration<TInput, TOutput>` type lives in `src/data/characterMigration.ts` — the `character` naming was
+`CharacterMigration<TData>` type lives in `src/data/characterMigration.ts` — the `character` naming was
 deliberately kept here through the `character` → `runner` rename (see `docs/adr/0001-runner-data-not-character-sheet.md`)
 since renaming the type would have forced an edit into every migration file.
+
+A `RunnerData`'s migration state is a single `_meta_.version` integer — the highest migration `version` that has
+been applied. `applyMigrations` calls every registered migration unconditionally, in ascending `version` order; each
+migration checks `_meta_.version` itself via `migrationAlreadyApplied` and no-ops once the runner is already past its
+version, so re-running the full list against an up-to-date runner is cheap and side-effect free. There is no separate
+applied-ids list to maintain.
 
 **Never edit an existing migration file.** Once a migration has been committed it may already have run against real
 character data in user storage. Changing its logic would cause different behaviour on a re-run and could corrupt or
 silently mis-migrate characters.
 
 - **Schema changes always require a new migration** — when a `RunnerData` field is added, renamed, or removed,
-  create a new migration file with a date-prefixed name (e.g. `YYYYMMDD_describeChange.ts`) and register it at the
-  bottom of `migrations.ts`.
+  create a new migration file named `NNN_describeChange.ts`, where `NNN` is the next sequential number
+  zero-padded to three digits (e.g. `022_addFoo.ts` after `021_flattenVehicleDamage.ts`), and register it at the
+  bottom of `migrations.ts`. Set `version` on the migration object to the same number (as a plain `number`, not
+  zero-padded).
 - **Earlier migrations may reference the old field name** — migrations that run before the rename migration can still
   reference the old field name because they operate on pre-rename data. Update them to handle *both* the old and new
   field names (e.g. `draft.oldField ?? draft.newField`) so they stay correct for runners that were already partially
   migrated.
-- **New migration IDs must sort after all existing IDs** — migrations are applied in ascending string order by `id`.
-  Using an ISO date prefix (without separators, e.g. `"20260510"`) keeps ordering unambiguous.
-- **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes.
+- **New migration numbers must sort after all existing ones** — migrations are applied in ascending numeric order by
+  `version`; the zero-padded file name keeps directory listings in the same order.
+- **Guard `up` with `migrationAlreadyApplied`** — every migration's `up` should start with
+  `if (migrationAlreadyApplied(character, VERSION)) return character as TData` before doing any work, where `VERSION`
+  is a local const matching the migration's own `version`.
+- **Add a matching `*.test.ts`** file for every new migration to document and verify the before/after shapes,
+  including a case asserting the migration no-ops when `_meta_.version` is already at or past its own version.
 
 ## Conventions
 

@@ -634,8 +634,9 @@ _Avoid_: sheet view, player view, read mode
 ### Infrastructure
 
 **RunnerMeta**:
-Versioning metadata embedded in every `RunnerData` record. Tracks the schema version and the set
-of migration IDs already applied.
+Versioning metadata embedded in every `RunnerData` record. Holds a single integer `version` —
+the highest migration `version` that has been applied — checked against the ordered migration
+list in `src/data/migrations.ts`.
 
 **RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
@@ -651,7 +652,7 @@ generating a new `RunnerId`. The underlying `localStorage` key format (`characte
 `character-form/<uuid>`) is a fixed historical string and intentionally was **not** renamed
 alongside `CharacterId`/`CharacterManager` — changing it would orphan every already-saved Runner.
 `RunnerManager`, the migration system, and the legacy-format detection in
-`20250101_normalizeOldFormatCharacter.ts` (and its frozen test fixtures under
+`001_normalizeOldFormatCharacter.ts` (and its frozen test fixtures under
 `testUtils/fixtures/characters/`) all still reference `character`-shaped literal strings on
 purpose.
 
@@ -666,13 +667,15 @@ _Avoid_: temporary state, volatile state (all state is durable by design)
 **Migration**:
 A single, immutable schema-upgrade step that transforms one version of `RunnerData` into the
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
-commit — if a migration has a bug, a new migration fixes the output. The current system tracks
-applied migrations as an array of string IDs in `RunnerMeta.appliedMigrations`; this is
-planned to be replaced with a single integer **schema version** number checked against the
-ordered migration list. Because migration files must never be edited, the shared
-`CharacterMigration<T>` type in `src/data/characterMigration.ts` and the migration files
-themselves (`src/data/migrations/`) were deliberately left out of the `character`→`runner`
-identifier rename — renaming the shared type would have forced an edit into every migration file.
+commit — if a migration has a bug, a new migration fixes the output. Each migration has a
+sequential integer `version` (file names are zero-padded to match, e.g. `001_...ts`,
+`021_...ts`), and `applyMigrations` calls every migration unconditionally in ascending `version`
+order; each migration checks `_meta_.version` itself (`migrationAlreadyApplied`) and no-ops once
+the runner is already past its version, rather than the driver filtering a separate applied-ids
+list. Because migration files must never be edited, the shared `CharacterMigration<T>` type in
+`src/data/characterMigration.ts` and the migration files themselves (`src/data/migrations/`) were
+deliberately left out of the `character`→`runner` identifier rename — renaming the shared type
+would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
 ## Relationships

@@ -33,7 +33,6 @@ const metaSlice = createSlice({
   name: "_meta_",
   initialState: {
     version: 0,
-    appliedMigrations: [],
   } as RunnerData["_meta_"],
   reducers: {},
 })

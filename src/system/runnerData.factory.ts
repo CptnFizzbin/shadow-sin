@@ -1,5 +1,5 @@
 import { getAttributesValues } from "#/components/runner/attributes/getAttributesValues.ts"
-import { migrationIds } from "#/data/migrations.ts"
+import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { NullUuid } from "#/lib/uuidUtils.ts"
 
 import { awakenings, AwakeningType } from "./awakeningType.ts"
@@ -10,7 +10,7 @@ import type { RunnerData } from "./runnerData.ts"
 export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData): RunnerData => {
   const data = {
     id: NullUuid,
-    _meta_: { version: 1, appliedMigrations: [...migrationIds] },
+    _meta_: { version: CURRENT_RUNNER_VERSION },
 
     profile: {
       alias: "",

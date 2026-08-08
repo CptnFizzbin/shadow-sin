@@ -1,4 +1,4 @@
-import { migrationIds } from "#/data/migrations.ts"
+import { CURRENT_RUNNER_VERSION } from "#/data/migrations.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 import { SpellCategory, SpellDamage, SpellDrainType, SpellDuration, SpellRange, SpellType } from "#/system/magic/spellData.ts"
@@ -9,7 +9,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const Hexen: RunnerData = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
-  _meta_: { version: 1, appliedMigrations: [...migrationIds] },
+  _meta_: { version: CURRENT_RUNNER_VERSION },
 
   biology: {
     metatype: MetatypeType.Human,
