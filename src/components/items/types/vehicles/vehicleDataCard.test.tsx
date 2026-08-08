@@ -1,14 +1,13 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
+import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { VehicleData } from "#/system/gear/vehicleData.ts"
 import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { VehicleDataCard } from "./vehicleDataCard.tsx"
 
@@ -36,12 +35,11 @@ const mod: ItemData = {
 
 const carWithMod: VehicleData = { ...car, childIds: [mod.id] }
 
-const renderVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [vehicle.id]: vehicle, ...extraGear } })),
-  )
-  renderWithProviders(<VehicleDataCard vehicle={vehicle} onOpen={onOpen} />, { runnerStore })
-  return runnerStore
+const renderVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) =>
+  renderWithRunner(<VehicleDataCard vehicle={vehicle} onOpen={onOpen} />, { [vehicle.id]: vehicle, ...extraGear })
+
+interface RemovableVehicleCardProps {
+  vehicleId: VehicleData["id"]
 }
 
 /**
@@ -50,18 +48,13 @@ const renderVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemD
  * kept mounted with a `vehicle.id` no longer in gear would otherwise re-run its own
  * `selectChildrenOf` selector against a missing parent and throw.
  */
-const RemovableVehicleCard = ({ vehicleId }: { vehicleId: VehicleData["id"] }) => {
+const RemovableVehicleCard: FC<RemovableVehicleCardProps> = ({ vehicleId }) => {
   const vehicle = useRunnerStoreSelector(Selectors.gear.selectById(vehicleId)) as VehicleData | undefined
   return vehicle ? <VehicleDataCard vehicle={vehicle} /> : null
 }
 
-const renderRemovableVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [vehicle.id]: vehicle, ...extraGear } })),
-  )
-  renderWithProviders(<RemovableVehicleCard vehicleId={vehicle.id} />, { runnerStore })
-  return runnerStore
-}
+const renderRemovableVehicleCard = (vehicle: VehicleData, extraGear: Record<string, ItemData> = {}) =>
+  renderWithRunner(<RemovableVehicleCard vehicleId={vehicle.id} />, { [vehicle.id]: vehicle, ...extraGear })
 
 describe("VehicleDataCard", () => {
   it("renders the vehicle's type as its SubType, and its stat block", () => {

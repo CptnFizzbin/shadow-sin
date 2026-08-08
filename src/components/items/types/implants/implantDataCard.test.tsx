@@ -1,14 +1,13 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
+import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantGrade, ImplantLocation, ImplantType } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ImplantDataCard } from "./implantDataCard.tsx"
 
@@ -42,12 +41,11 @@ const accessory: ItemData = {
 
 const implantWithAccessory: ImplantData = { ...alphaImplant, childIds: [accessory.id] }
 
-const renderImplantCard = (implant: ImplantData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [implant.id]: implant, ...extraGear } })),
-  )
-  renderWithProviders(<ImplantDataCard implant={implant} onOpen={onOpen} />, { runnerStore })
-  return runnerStore
+const renderImplantCard = (implant: ImplantData, extraGear: Record<string, ItemData> = {}, onOpen?: () => void) =>
+  renderWithRunner(<ImplantDataCard implant={implant} onOpen={onOpen} />, { [implant.id]: implant, ...extraGear })
+
+interface RemovableImplantCardProps {
+  implantId: ImplantData["id"]
 }
 
 /**
@@ -56,18 +54,13 @@ const renderImplantCard = (implant: ImplantData, extraGear: Record<string, ItemD
  * kept mounted with an `implant.id` no longer in gear would otherwise re-run its own
  * `selectChildrenOf` selector against a missing parent and throw.
  */
-const RemovableImplantCard = ({ implantId }: { implantId: ImplantData["id"] }) => {
+const RemovableImplantCard: FC<RemovableImplantCardProps> = ({ implantId }) => {
   const implant = useRunnerStoreSelector(Selectors.gear.selectById(implantId)) as ImplantData | undefined
   return implant ? <ImplantDataCard implant={implant} /> : null
 }
 
-const renderRemovableImplantCard = (implant: ImplantData, extraGear: Record<string, ItemData> = {}) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [implant.id]: implant, ...extraGear } })),
-  )
-  renderWithProviders(<RemovableImplantCard implantId={implant.id} />, { runnerStore })
-  return runnerStore
-}
+const renderRemovableImplantCard = (implant: ImplantData, extraGear: Record<string, ItemData> = {}) =>
+  renderWithRunner(<RemovableImplantCard implantId={implant.id} />, { [implant.id]: implant, ...extraGear })
 
 describe("ImplantDataCard", () => {
   it("renders the Alpha grade's effective Essence and Cost alongside the raw values", () => {

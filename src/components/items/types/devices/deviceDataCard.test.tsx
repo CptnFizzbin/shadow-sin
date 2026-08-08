@@ -1,14 +1,13 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
+import type { FC } from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { DeviceData } from "#/system/gear/deviceData.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { DeviceDataCard } from "./deviceDataCard.tsx"
 
@@ -36,12 +35,11 @@ const runningProgram: ProgramData = {
 
 const deviceWithProgram: DeviceData = { ...commlink, childIds: [runningProgram.id] }
 
-const renderDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}, onOpen?: () => void) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [device.id]: device, ...extraGear } })),
-  )
-  renderWithProviders(<DeviceDataCard device={device} onOpen={onOpen} />, { runnerStore })
-  return runnerStore
+const renderDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}, onOpen?: () => void) =>
+  renderWithRunner(<DeviceDataCard device={device} onOpen={onOpen} />, { [device.id]: device, ...extraGear })
+
+interface RemovableDeviceCardProps {
+  deviceId: DeviceData["id"]
 }
 
 /**
@@ -50,18 +48,13 @@ const renderDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramD
  * mounted with a `device.id` no longer in gear would otherwise re-run its own `selectChildrenOf`
  * selector against a missing parent and throw.
  */
-const RemovableDeviceCard = ({ deviceId }: { deviceId: DeviceData["id"] }) => {
+const RemovableDeviceCard: FC<RemovableDeviceCardProps> = ({ deviceId }) => {
   const device = useRunnerStoreSelector(Selectors.gear.selectById(deviceId)) as DeviceData | undefined
   return device ? <DeviceDataCard device={device} /> : null
 }
 
-const renderRemovableDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [device.id]: device, ...extraGear } })),
-  )
-  renderWithProviders(<RemovableDeviceCard deviceId={device.id} />, { runnerStore })
-  return runnerStore
-}
+const renderRemovableDeviceCard = (device: DeviceData, extraGear: Record<string, ProgramData> = {}) =>
+  renderWithRunner(<RemovableDeviceCard deviceId={device.id} />, { [device.id]: device, ...extraGear })
 
 describe("DeviceDataCard", () => {
   it("renders the device's model as its SubType, and its comm stats", () => {
@@ -75,6 +68,25 @@ describe("DeviceDataCard", () => {
     expect(screen.getByText("Sig: 3")).toBeDefined()
     expect(screen.getByText("Sys: 4")).toBeDefined()
     expect(screen.getByText("FW: 4")).toBeDefined()
+  })
+
+  it("omits comm stats the device doesn't have", () => {
+    // Arrange / Act
+    renderDeviceCard({
+      ...commlink,
+      deviceRating: undefined,
+      response: undefined,
+      signal: undefined,
+      system: undefined,
+      firewall: undefined,
+    })
+
+    // Assert
+    expect(screen.queryByText(/Rating:/)).toBeNull()
+    expect(screen.queryByText(/Res:/)).toBeNull()
+    expect(screen.queryByText(/Sig:/)).toBeNull()
+    expect(screen.queryByText(/Sys:/)).toBeNull()
+    expect(screen.queryByText(/FW:/)).toBeNull()
   })
 
   it("falls back to a custom device type label when it isn't a commlink", () => {

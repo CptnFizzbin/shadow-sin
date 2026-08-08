@@ -1,12 +1,10 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import type { ProgramData } from "#/system/gear/programData.ts"
 import { ProgramType } from "#/system/gear/programData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { runnerDataFactory } from "#/system/runnerData.factory.ts"
-import { renderWithProviders } from "#testUtils/renderUtils.tsx"
+import { renderWithRunner } from "#testUtils/renderUtils.tsx"
 
 import { ProgramDataCard } from "./programDataCard.tsx"
 
@@ -18,13 +16,8 @@ const fakeProgram: ProgramData = {
   programType: ProgramType.exploit,
 }
 
-const renderProgramCard = (program: ProgramData) => {
-  const runnerStore = new RunnerDataStore(
-    runnerDataFactory((runner) => ({ ...runner, gear: { [program.id]: program } })),
-  )
-  renderWithProviders(<ProgramDataCard program={program} />, { runnerStore })
-  return runnerStore
-}
+const renderProgramCard = (program: ProgramData, onOpen?: () => void, onEdit?: () => void) =>
+  renderWithRunner(<ProgramDataCard program={program} onOpen={onOpen} onEdit={onEdit} />, { [program.id]: program })
 
 describe("ProgramDataCard", () => {
   it("renders the program's own rating and type on itself", () => {
@@ -40,7 +33,7 @@ describe("ProgramDataCard", () => {
   it("navigates via onOpen when tapped", () => {
     // Arrange
     const onOpen = vi.fn()
-    renderWithProviders(<ProgramDataCard program={fakeProgram} onOpen={onOpen} />)
+    renderProgramCard(fakeProgram, onOpen)
 
     // Act
     fireEvent.click(screen.getByRole("button"))
@@ -52,7 +45,7 @@ describe("ProgramDataCard", () => {
   it("offers an Edit action that calls onEdit", () => {
     // Arrange
     const onEdit = vi.fn()
-    renderWithProviders(<ProgramDataCard program={fakeProgram} onEdit={onEdit} />)
+    renderProgramCard(fakeProgram, undefined, onEdit)
 
     // Act
     fireEvent.contextMenu(screen.getByText("Exploit"))

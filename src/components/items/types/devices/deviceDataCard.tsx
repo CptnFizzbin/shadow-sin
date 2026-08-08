@@ -31,11 +31,11 @@ export const DeviceDataCard: FC<DeviceDataCardProps> = ({ device, onOpen, onEdit
       </ItemCard.Layout.HeaderRow>
 
       <ItemCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
-        {device.deviceRating !== undefined && <ItemCard.Stat label="Rating" value={device.deviceRating} type="rating" />}
-        {device.response !== undefined && <ItemCard.Stat label="Res" value={device.response} />}
-        {device.signal !== undefined && <ItemCard.Stat label="Sig" value={device.signal} />}
-        {device.system !== undefined && <ItemCard.Stat label="Sys" value={device.system} />}
-        {device.firewall !== undefined && <ItemCard.Stat label="FW" value={device.firewall} />}
+        <ItemCard.Stat label="Rating" value={device.deviceRating} type="rating" />
+        <ItemCard.Stat label="Res" value={device.response} />
+        <ItemCard.Stat label="Sig" value={device.signal} />
+        <ItemCard.Stat label="Sys" value={device.system} />
+        <ItemCard.Stat label="FW" value={device.firewall} />
       </ItemCard.Layout.BodyRow>
 
       {hasPrograms && (

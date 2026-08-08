@@ -11,6 +11,7 @@ import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import { builderStoreReducer } from "#/lib/stores/builder/builderStore.reducer.ts"
 import type { BuilderStore } from "#/lib/stores/builder/builderStore.ts"
 import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
+import type { ItemData } from "#/system/itemData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import { theme } from "#/theme.ts"
@@ -43,6 +44,19 @@ export function renderWithProviders(
   }
 
   return render(element, { wrapper: Wrapper })
+}
+
+/**
+ * Seeds a fresh `RunnerDataStore`'s gear from the given map and renders `element` under it via
+ * `renderWithProviders` — the `new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner,
+ * gear })))` boilerplate every typed-card unit test (`SinDataCard`, `DeviceDataCard`, ...)
+ * otherwise repeats for itself. Returns the store so callers can assert against it or seed a
+ * reactive wrapper component keyed off it.
+ */
+export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData>) {
+  const runnerStore = new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear })))
+  renderWithProviders(element, { runnerStore })
+  return runnerStore
 }
 
 export function renderInBuilder(
