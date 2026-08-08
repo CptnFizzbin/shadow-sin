@@ -7,10 +7,11 @@
 > - [#390 — Unified per-item action menu; Equip becomes universal](https://github.com/CptnFizzbin/shadow-sin/issues/390)
 > - [#392 — Multi-select bulk actions](https://github.com/CptnFizzbin/shadow-sin/issues/392)
 > - [`docs/features/0011-license-check-dialog.md`](./0011-license-check-dialog.md) depends on
->   #388 for `ItemData._state.stashed`
-> - See [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md) for why `_state`
->   holds only `equipped`/`stashed` (not `fixed`/`wireless`), and why there's no combined
->   "actively equipped" helper
+>   #388 for `ItemData.stashed`
+> - See [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md) — as implemented,
+>   `equipped`/`stashed` are plain top-level fields; `_state.equipOnUnstash` is narrower internal
+>   bookkeeping the gear reducer uses to force `equipped` off on Stash and restore it on Unstash,
+>   not a general mirror of the two public fields (the ADR's "History" section covers the pivot)
 
 A general, persisted way to mark a piece of carried gear as unavailable for a given run — "left at
 the safehouse" — without deleting it or leaving the Builder. Discovered as a dependency while
@@ -25,32 +26,27 @@ that code) closes a pre-existing gap where item removal has no confirmation step
 
 ## Resolved Questions
 
-- **Persistence:** a new field, `ItemData._state.stashed?: boolean`, alongside the existing
-  `equipped` value which moves into the same `_state` object (`ItemData._state.equipped?:
-  boolean`). `_state` is internal storage (leading underscore, same convention as
-  `RunnerData._meta_`) — read through `isEquipped(item)` / `isStashed(item)` in
-  `src/system/items/itemUtils.ts`, not accessed directly outside the edit form. `fixed` and
-  `wireless` stay top-level fields, unaffected by this change — see
+- **Persistence:** `ItemData.stashed?: boolean`, a plain top-level field alongside the existing
+  `equipped` — both read/write directly, the same as any other `ItemData` field, not nested under
+  `_state`. `fixed` and `wireless` are unaffected by this change — see
   [`docs/adr/0006-item-state-scope.md`](../adr/0006-item-state-scope.md). Not local dialog state —
   it lasts until explicitly toggled back. Available on every `ItemData`, unconditionally (unlike
   `equipped`'s history of being gated per `ItemType`) — any gear, including a SIN's covered
-  Licences, can be left behind.
-- **`stashed` and `equipped` are independent, coexisting flags, not mutually exclusive.**
-  `stashed` *overrides* `equipped` — it does not clear it. A weapon can be `_state: { equipped:
-  true, stashed: true }` at the same time; while stashed it behaves as not-actively-equipped, but
-  the underlying `equipped` value is preserved, so un-stashing "just works" with no separate
-  restore step needed.
-- **`isEquipped(item)` / `isStashed(item)` utilities** — new plain functions in
-  `src/system/items/itemUtils.ts` that replace every existing raw `.equipped` read that drives
-  real mechanical behavior. There is deliberately no combined "actively equipped" helper — call
-  sites that need to know whether Equipped's effect is actually active check `isEquipped(item) &&
-  !isStashed(item)` directly (see Constraints for the full list). Prevents a missed call site from
-  silently letting a stashed item keep contributing encumbrance, GameEffects, wound modifiers, etc.
+  Licences, can be left behind (gated per type via the `canBeStashed` item option where it doesn't
+  make sense).
+- **`stashed` and `equipped` interact through the gear reducer, not at every read site.** The
+  moment `stashed` becomes `true` (however it's written — the edit form, or the dedicated
+  `Actions.item.setStashed`), the reducer forces `equipped` to `false` and records what it was in
+  `ItemData._state.equipOnUnstash` (internal — see the ADR). Un-stashing restores it automatically.
+  `item.equipped` is therefore always trustworthy on its own; readers never need `&&
+  !item.stashed`.
+- **`isEquipped(item)` / `isStashed(item)` in `src/system/items/itemUtils.ts` are deprecated.**
+  Read `item.equipped` / `item.stashed` directly — they're plain fields the reducer keeps
+  consistent (see above), so the helpers add nothing over a direct field read anymore.
 - **Gear-list presentation:** a stashed item is greyed out and sorted to the bottom of its gear
-  listing, rather than hidden. The existing "Equipped" display chips (`genericItemCard.tsx`,
-  `gearViewItem.tsx`, `weaponItemCard.tsx`, `armorItemCard.tsx`) switch from raw `item.equipped` to
-  `isEquipped(item) && !isStashed(item)` too, so a stashed-but-equipped item doesn't misleadingly
-  show as Equipped.
+  listing, rather than hidden. Existing "Equipped" display chips read `item.equipped` directly —
+  no compound check needed, since the reducer already guarantees a stashed item's `equipped` is
+  `false`.
 - **Parent/child cascade:** stashing a parent item (e.g. a weapon with attachments) cascades to
   all of its children — you can't stash the gun but keep the scope active. A child cannot be
   independently un-stashed while its parent is stashed, since the whole assembly is already
@@ -124,40 +120,31 @@ not follow that structure:
 
 ## Constraints
 
-- `.equipped` is currently read directly (not through a shared helper) at these sites, all of
-  which must switch to `isEquipped(item) && !isStashed(item)`:
-  - `src/components/system/encumbrance/useEncumbrance.ts`
-  - `src/components/system/gameEffects/useGameEffects.ts`
-  - `src/components/system/damage/damageUtils.ts` (two call sites)
-  - `src/components/items/types/armor/equippedArmorSection.tsx`
-  - `src/components/items/types/weapons/equippedWeaponsSection.tsx`
-  - `src/components/items/types/weapons/dialogs/weaponAttackDialog.tsx`
-  - Display chips: `src/components/items/genericItemCard.tsx`,
-    `src/components/runner/gearPage/gearViewItem.tsx`,
-    `src/components/items/types/weapons/weaponItemCard.tsx`,
-    `src/components/items/types/armor/armorItemCard.tsx`
+- `.equipped` was read directly (not through a shared helper) at several encumbrance/game-effects/
+  damage/display call sites. As implemented, they stay that way — reading `item.equipped` directly
+  is correct and sufficient, since the gear reducer already guarantees it's `false` while
+  `item.stashed` is `true` (see Resolved Questions). `isEquipped`/`isStashed` in `itemUtils.ts`
+  exist only as deprecated wrappers for any caller not yet updated.
   - `useItemOptions.ts`'s own `.equipped` checks are about the edit-form's field-presence logic,
-    not "is this item mechanically active" — those stay as raw `_state.equipped` reads, unrelated
-    to `itemUtils`.
-- **A new migration is required**, even though `stashed` is purely additive and optional. This
-  repo's convention adds a migration for every schema change regardless of triviality — see
-  `20260517_addFeatureFlags.ts` and `20260521_addKarmaLog.ts` for recent precedent of migrations
-  for similarly additive fields. Never edit an existing migration file (see `AGENTS.md`). This
-  migration also moves the existing top-level `equipped` value into `_state.equipped` for every
-  item in `gear`, deleting the stale top-level key; `20260417_setDefaultEquippedWeapons.ts` must be
-  updated to write `_state.equipped` and confirmed to run after this migration.
-- Must not conflict with or duplicate `equipped` at the data level — see "independent, coexisting
-  flags" above; this replaces an earlier, incorrect assumption that stashing would force
-  `equipped` to `false`.
+    not "is this item mechanically active" — unrelated to the above, unaffected either way.
+- **No new migration was needed.** `equipped` and `stashed` were already both present as top-level
+  `ItemData` fields before this ticket (`stashed` simply unused until now) — see
+  `docs/adr/0006-item-state-scope.md`'s History section. `_state.equipOnUnstash` is populated
+  lazily by the reducer the first time an item is stashed; there's no historical value to backfill
+  for existing characters.
+- Must not conflict with or duplicate `equipped` at the data level: stashing *does* force
+  `equipped` to `false` (via the reducer, not by deleting the stored value) — un-stashing restores
+  it from `_state.equipOnUnstash` automatically.
 
 ## Domain Notes
 
 **Stash** and **Equipped** are now defined in `CONTEXT.md` (added alongside this doc). Summary:
-`Equipped` (`ItemData._state.equipped`) says a *present* item is actively worn/wielded; `Stash`
-(`ItemData._state.stashed`) says an item isn't with the Runner at all right now, and overrides
-Equipped's effect without clearing its stored value. An item can be present, unequipped, and not
-stashed all at once (e.g. a spare pistol in a holster) — the two flags are independent axes, not a
-spectrum.
+`Equipped` (`ItemData.equipped`) says a *present* item is actively worn/wielded; `Stash`
+(`ItemData.stashed`) says an item isn't with the Runner at all right now. The gear reducer forces
+`equipped` to `false` the moment `stashed` becomes `true`, remembering the prior value internally
+so un-stashing restores it — from a reader's perspective the two still read as independent axes
+(an item can be present, unequipped, and not stashed all at once, e.g. a spare pistol in a
+holster), but the enforcement now lives in the reducer rather than at every call site.
 
 ## Rough Interface Sketches
 
@@ -166,21 +153,13 @@ _High-level shapes only — no implementation code._
 ```ts
 interface ItemData {
   // ...existing fields (fixed, wireless stay top-level, unchanged)
+  equipped?: boolean
+  stashed?: boolean
+
+  // Internal — the gear reducer's Stash/Equip bookkeeping, not read directly.
   _state?: {
-    equipped?: boolean
-    stashed?: boolean
+    equipOnUnstash?: boolean
   }
-}
-
-// src/system/items/itemUtils.ts
-// No combined "actively equipped" helper — call sites compose these directly:
-// isEquipped(item) && !isStashed(item)
-function isEquipped(item: ItemData): boolean {
-  return item._state?.equipped === true
-}
-
-function isStashed(item: ItemData): boolean {
-  return item._state?.stashed === true
 }
 ```
 

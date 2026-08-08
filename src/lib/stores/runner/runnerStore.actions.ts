@@ -31,7 +31,9 @@ export const Actions = {
   contacts: contactsActions,
   damage: damageActions,
   edge: edgeActions,
+  /** @deprecated Use `Actions.item` instead */
   gear: gearActions,
+  item: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,
   nuyen: nuyenActions,

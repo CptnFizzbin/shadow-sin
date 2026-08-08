@@ -11,6 +11,7 @@ export interface ItemDialogOptionConfig {
 
 export type ItemOptionKey =
   | "equipable"
+  | "canBeStashed"
   | "hasRating"
   | "multiple"
   | "isSubItem"
@@ -21,6 +22,7 @@ export type ItemOptionKey =
 
 export interface ItemOptionsDefaults {
   equipable?: ItemDialogOptionConfig
+  canBeStashed?: ItemDialogOptionConfig
   hasRating?: ItemDialogOptionConfig
   multiple?: ItemDialogOptionConfig
   isSubItem?: ItemDialogOptionConfig
@@ -58,6 +60,9 @@ export function initializeOptions(
     equipable:
       resolveEnabled(defaults?.equipable)
       || (!isForceDisabled(defaults?.equipable) && isEditMode && initialValues.equipped !== undefined),
+    // canBeStashed defaults to true (Stash applies to virtually every item) unless force-disabled —
+    // same pattern as showCost/showAvailability below.
+    canBeStashed: resolveEnabled(defaults?.canBeStashed) || !isForceDisabled(defaults?.canBeStashed),
     // rating: 0 is not a meaningful value so is treated the same as undefined.
     hasRating:
       resolveEnabled(defaults?.hasRating)
@@ -96,6 +101,11 @@ function clearStaleOptionField(
     case "equipable":
       if (!form.state.values.equipped) {
         form.setFieldValue("equipped", undefined)
+      }
+      break
+    case "canBeStashed":
+      if (!form.state.values.stashed) {
+        form.setFieldValue("stashed", undefined)
       }
       break
     case "hasRating":

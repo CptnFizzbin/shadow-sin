@@ -31,6 +31,7 @@ const defaultFormValues = {
   cost: 0,
   description: "",
   equipped: false,
+  stashed: false,
   availability: {
     rating: 0,
     restricted: false,
@@ -86,6 +87,7 @@ function toWeaponData(values: WeaponFormState): WeaponData {
     dmg: values.dmgType === "custom" ? values.dmg : String(values.dmgValue),
     dmgType: values.dmgType,
     equipped: values.equipped,
+    stashed: values.stashed,
     ...(values.ap !== 0 && { ap: values.ap }),
     skill: values.skill as SkillKey,
     ...(values.attribute && { attribute: values.attribute as WeaponData["attribute"] }),
@@ -143,6 +145,7 @@ function weaponToFormState(weapon: WeaponData): WeaponFormState {
     cost: weapon.cost ?? 0,
     description: weapon.description ?? "",
     equipped: weapon.equipped ?? false,
+    stashed: weapon.stashed ?? false,
     availability: {
       rating: weapon.availability?.rating ?? 0,
       restricted: weapon.availability?.restricted ?? false,

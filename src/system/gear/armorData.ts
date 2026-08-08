@@ -45,7 +45,12 @@ export const ArmorDataSchema = z.object({
 
   notes: z.string().optional(),
   equipped: z.boolean().optional(),
+  stashed: z.boolean().optional(),
   fixed: z.boolean().optional(),
+
+  _state: z.object({
+    equipOnUnstash: z.boolean().optional(),
+  }).optional(),
 
   wireless: z.object({
     enabled: z.boolean().optional(),

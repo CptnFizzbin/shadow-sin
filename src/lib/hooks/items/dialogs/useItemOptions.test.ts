@@ -352,4 +352,38 @@ describe("initializeOptions", () => {
       expect(options.showAvailability).toBe(true)
     })
   })
+
+  describe("canBeStashed", () => {
+    it("is true by default for new items", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false)
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
+    })
+
+    it("is true by default for existing items", () => {
+      // Arrange & Act
+      const options = initializeOptions(baseItem, true)
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
+    })
+
+    it("is false when force-disabled", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true, enabled: false } })
+
+      // Assert
+      expect(options.canBeStashed).toBe(false)
+    })
+
+    it("is true when forced without enabled=false", () => {
+      // Arrange & Act
+      const options = initializeOptions(newItem, false, { canBeStashed: { forced: true } })
+
+      // Assert
+      expect(options.canBeStashed).toBe(true)
+    })
+  })
 })

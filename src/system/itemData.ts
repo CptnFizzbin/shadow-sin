@@ -34,6 +34,11 @@ export interface ItemData extends EntityData {
     enabled?: boolean
     removed?: boolean
   }
+
+  /** State object to track data between states */
+  _state?: {
+    equipOnUnstash?: boolean
+  }
 }
 
 /**
