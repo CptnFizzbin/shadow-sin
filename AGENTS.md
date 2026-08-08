@@ -359,7 +359,10 @@ stores (`DiceRoller`, `DialogCtrl`, etc.) omit the reducer and are only ever wri
 ## Version control
 
 - The default branch is `origin/shadowrun-4e` — **not** `origin/main`
-- Do not commit or push — leave that to the user
+- Do not commit or push — leave that to the user (this applies to local/interactive sessions; a remote session with
+  its own push/PR instructions follows those instead)
+- **Remote environment PR workflow**: when running in a remote environment and opening a pull request, after
+  pushing, request a review from `@CptnFizzbin` and mark the PR as ready for review (not left as draft)
 
 ## Fallow (codebase health)
 
