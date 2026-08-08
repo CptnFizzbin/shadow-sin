@@ -17,11 +17,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-      npm-major:
-        patterns:
-          - "*"
-        update-types:
-          - "major"
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     target-branch: "shadowrun-4e"
