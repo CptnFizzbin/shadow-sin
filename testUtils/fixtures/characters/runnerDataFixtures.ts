@@ -13,16 +13,16 @@
  *
  * Migration timeline:
  *
- *   characterOldFormat         – old flat YAML export shape (has `characterId`, not `id`)
- *   characterPreAllMigrations  – before any migration (oldest raw shape, no `_meta_`)
- *   characterPost002           – after 002_addSpellThreshold
- *   characterPost003           – after 003_addLoanIdAndInterestRate
- *   characterPost004           – after 004_addVehicleCategory
- *   characterPost005           – after 005_setDefaultEquippedWeapons
- *   characterPost006           – after 006_addMeta (has `_meta_`, still has old top-level `version`)
- *   characterV1                – after 007_removeVersionField — `_meta_.version` is 7, so
- *                                 migrations 008+ are still pending and will run when a test
- *                                 exercises `applyMigrations`/`RunnerManager.getRunner`.
+ *   characterV0     – old flat YAML export shape (has `characterId`, not `id`)
+ *   characterV1_0   – before any migration (oldest raw shape, no `_meta_`)
+ *   characterV1_002 – after 002_addSpellThreshold
+ *   characterV1_003 – after 003_addLoanIdAndInterestRate
+ *   characterV1_004 – after 004_addVehicleCategory
+ *   characterV1_005 – after 005_setDefaultEquippedWeapons
+ *   characterV1_006 – after 006_addMeta (has `_meta_`, still has old top-level `version`)
+ *   characterV1     – after 007_removeVersionField — `_meta_.version` is 7, so
+ *                     migrations 008+ are still pending and will run when a test
+ *                     exercises `applyMigrations`/`RunnerManager.getRunner`.
  */
 
 // Stable UUIDs shared across all version fixtures so tests can reference them.

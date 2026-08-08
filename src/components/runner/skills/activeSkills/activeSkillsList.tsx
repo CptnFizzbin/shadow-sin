@@ -86,7 +86,6 @@ export const ActiveSkillsList: FC = () => {
       return groupedEntries
     }
 
-    // category grouping
     const byCategory = Object.groupBy(visibleSkills, (s) => s.category)
     return skillCategoryOrder
       .filter((cat) => byCategory[cat]?.length)

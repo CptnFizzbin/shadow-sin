@@ -33,7 +33,6 @@ export default function DamageTrack({
 }: DamageTrackProps) {
   let numCells = Math.max(max, current)
   if (allowOverflow && current >= max) {
-    // Add an extra cell for overflow damage
     numCells += 1
   }
 
