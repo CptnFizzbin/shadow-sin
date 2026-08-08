@@ -47,7 +47,7 @@ describe("SinsAndLicensesSection", () => {
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
 
     // Act
-    fireEvent.contextMenu(screen.getByText("National ID (Fake)"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store (SIN with no licenses removes without confirming).

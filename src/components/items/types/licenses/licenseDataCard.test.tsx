@@ -55,7 +55,7 @@ describe("LicenseDataCard", () => {
     renderWithProviders(<LicenseDataCard license={fakeLicense} onOpen={onOpen} />)
 
     // Act
-    fireEvent.click(screen.getByRole("button"))
+    fireEvent.click(screen.getByText("License: Ares Predator"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()
@@ -67,7 +67,7 @@ describe("LicenseDataCard", () => {
     renderWithProviders(<LicenseDataCard license={fakeLicense} onEdit={onEdit} />)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("License: Ares Predator"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     // Assert
@@ -79,7 +79,7 @@ describe("LicenseDataCard", () => {
     const runnerStore = renderLicenseCard(fakeLicense)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("License: Ares Predator"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert

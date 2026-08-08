@@ -95,7 +95,7 @@ describe("SinDataCard", () => {
     const runnerStore = renderRemovableSinCard(fakeSin)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("National ID (Fake)"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
@@ -108,7 +108,7 @@ describe("SinDataCard", () => {
     const runnerStore = renderRemovableSinCard(sinWithLicense, { [coveredLicense.id]: coveredLicense })
 
     // Act
-    fireEvent.contextMenu(screen.getByText("National ID (Fake)"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert
@@ -128,7 +128,7 @@ describe("SinDataCard", () => {
     renderSinCard(fakeSin, {}, onOpen)
 
     // Act
-    fireEvent.click(screen.getByRole("button"))
+    fireEvent.click(screen.getByText("National ID (Fake)"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()

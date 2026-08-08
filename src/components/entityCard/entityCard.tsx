@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
@@ -7,9 +8,9 @@ import MenuItem from "@mui/material/MenuItem"
 import Stack from "@mui/material/Stack"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
-import { RiDeleteBinLine, RiEditLine } from "@remixicon/react"
-import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, PropsWithChildren, TouchEvent as ReactTouchEvent } from "react"
-import { useRef, useState } from "react"
+import { RiDeleteBinLine, RiEditLine, RiMore2Line } from "@remixicon/react"
+import type { FC, KeyboardEvent, MouseEvent as ReactMouseEvent, PropsWithChildren, ReactNode } from "react"
+import { useState } from "react"
 
 import type { EntityData } from "#/system/entityData.ts"
 
@@ -27,22 +28,22 @@ export type { BodyRowProps } from "./layout/cardLayoutBodyRow.tsx"
 export type { FooterRowProps } from "./layout/cardLayoutFooterRow.tsx"
 export type { HeaderRowProps } from "./layout/cardLayoutHeaderRow.tsx"
 
+/** An outline-style button pinned to the left edge of an `EntityCard`, spanning its full height. */
+export interface EntityCardLeftAction {
+  icon: ReactNode
+  onClick: () => void
+}
+
 export interface EntityCardProps extends PropsWithChildren {
   entity: EntityData
   /** When provided, the whole card becomes tappable/keyboard-activatable and invokes this (e.g. navigate to the entity's details page). */
   onOpen?: () => void
-  /** When provided, adds an "Edit" action (long-press/right-click menu). */
+  /** When provided, adds an "Edit" action to the actions menu (opened via the menu button). */
   onEdit?: () => void
-  /** When provided, adds a "Remove" action (long-press/right-click menu). */
+  /** When provided, adds a "Remove" action to the actions menu (opened via the menu button). */
   onRemove?: () => void
-}
-
-const LONG_PRESS_MS = 500
-const LONG_PRESS_MOVE_TOLERANCE_PX = 10
-
-interface MenuPosition {
-  mouseX: number
-  mouseY: number
+  /** Outline-style button pinned to the left edge of the card, spanning its full height. */
+  leftAction?: EntityCardLeftAction
 }
 
 /**
@@ -52,69 +53,34 @@ interface MenuPosition {
  * need to supply their own type-specific content as `children`. Finds its `Layout.*` regions
  * among `children` via `SlotManager` (same mechanism as `DataCard`) and renders whichever are
  * present in the fixed HeaderRow/BodyRow/FooterRow order, regardless of the order they were
- * passed in; any other child is ignored. Interaction affordances mirror `DataCard`'s exactly
- * (same tap/long-press/right-click behavior) so a typed card migrating off `DataCard` doesn't
- * change behavior for its callers.
+ * passed in; any other child is ignored. `onEdit`/`onRemove` surface as items in a menu opened
+ * by a dedicated menu button on the card's right edge (rather than a context menu or long-press
+ * gesture), and `leftAction` renders a matching outline-style button on the left edge — both
+ * buttons span the card's full height.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
   onOpen,
   onEdit,
   onRemove,
+  leftAction,
   children,
 }) => {
   const slots = new EntityCardSlotManager(children)
   const hasActions = !!(onEdit || onRemove)
 
-  const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null)
-  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const touchStartRef = useRef<{ x: number, y: number } | null>(null)
-  const suppressNextClickRef = useRef(false)
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null)
 
-  const handleCloseMenu = () => setMenuPosition(null)
-
-  const clearLongPressTimer = () => {
-    if (longPressTimerRef.current === undefined) return
-    clearTimeout(longPressTimerRef.current)
-    longPressTimerRef.current = undefined
+  const handleOpenMenu = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    setMenuAnchorEl(event.currentTarget)
   }
 
-  const handleContextMenu = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (!hasActions) return
-    event.preventDefault()
-    setMenuPosition({ mouseX: event.clientX + 2, mouseY: event.clientY - 6 })
-  }
+  const handleCloseMenu = () => setMenuAnchorEl(null)
 
-  const handleTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
-    if (!hasActions) return
-    const touch = event.touches[0]
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-    clearLongPressTimer()
-    longPressTimerRef.current = setTimeout(() => {
-      suppressNextClickRef.current = true
-      setMenuPosition({ mouseX: touch.clientX, mouseY: touch.clientY })
-    }, LONG_PRESS_MS)
-  }
-
-  const handleTouchMove = (event: ReactTouchEvent<HTMLDivElement>) => {
-    if (!touchStartRef.current) return
-    const touch = event.touches[0]
-    const dx = touch.clientX - touchStartRef.current.x
-    const dy = touch.clientY - touchStartRef.current.y
-    if (Math.hypot(dx, dy) > LONG_PRESS_MOVE_TOLERANCE_PX) clearLongPressTimer()
-  }
-
-  const handleTouchEnd = () => {
-    clearLongPressTimer()
-    touchStartRef.current = null
-  }
-
-  const handleClick = () => {
-    if (suppressNextClickRef.current) {
-      suppressNextClickRef.current = false
-      return
-    }
-    onOpen?.()
+  const handleLeftActionClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    leftAction?.onClick()
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -126,81 +92,97 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 
   return (
     <>
-      <Box
-        role={onOpen ? "button" : undefined}
-        tabIndex={onOpen ? 0 : undefined}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        onContextMenu={handleContextMenu}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
-        sx={{
-          border: "1px solid",
-          borderColor: "primary.dark",
-          width: "100%",
-          textAlign: "left",
-          ...(onOpen && {
-            "cursor": "pointer",
-            "&:hover": { bgcolor: "action.hover" },
-          }),
-        }}
-      >
-        <Stack
+      <Stack direction="row" sx={{ width: "100%" }}>
+        {leftAction && (
+          <Button
+            variant="outlined"
+            aria-label="Action"
+            onClick={handleLeftActionClick}
+            sx={{ minWidth: 0, borderRadius: 0, paddingX: 1 }}
+          >
+            {leftAction.icon}
+          </Button>
+        )}
+
+        <Box
+          role={onOpen ? "button" : undefined}
+          tabIndex={onOpen ? 0 : undefined}
+          onClick={onOpen}
+          onKeyDown={handleKeyDown}
           sx={{
-            paddingX: 1,
-            paddingY: 0.75,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-            gap: 0.5,
-            bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+            border: "1px solid",
+            borderColor: "primary.dark",
+            flexGrow: 1,
+            minWidth: 0,
+            textAlign: "left",
+            ...(onOpen && {
+              "cursor": "pointer",
+              "&:hover": { bgcolor: "action.hover" },
+            }),
           }}
         >
-          <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
-            <EntityCardElements.Title title={entity.name} />
-          </EntityCardLayout.HeaderRow>
+          <Stack
+            sx={{
+              paddingX: 1,
+              paddingY: 0.75,
+              borderBottom: "1px solid",
+              borderColor: "divider",
+              gap: 0.5,
+              bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+            }}
+          >
+            <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
+              <EntityCardElements.Title title={entity.name} />
+            </EntityCardLayout.HeaderRow>
 
-          {slots.headerRows}
-        </Stack>
+            {slots.headerRows}
+          </Stack>
 
-        <Stack sx={{ padding: 1, gap: 0.5 }}>
-          <EntityCardLayout.BodyRow sx={{ flexWrap: "wrap" }}>
-            <EntityCardElements.Rating value={entity.rating} />
-          </EntityCardLayout.BodyRow>
+          <Stack sx={{ padding: 1, gap: 0.5 }}>
+            <EntityCardLayout.BodyRow sx={{ flexWrap: "wrap" }}>
+              <EntityCardElements.Rating value={entity.rating} />
+            </EntityCardLayout.BodyRow>
 
-          <EntityCardElements.Effects effects={entity.effects} />
+            <EntityCardElements.Effects effects={entity.effects} />
 
-          {slots.bodyRows}
-        </Stack>
+            {slots.bodyRows}
+          </Stack>
 
-        <Stack
-          sx={{
-            paddingX: 1,
-            paddingY: 0.75,
-            gap: 0.5,
-            borderTop: "1px solid",
-            borderColor: "divider",
-            bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
-          }}
-        >
-          <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
-            <EntityCardElements.Source source={entity.source} />
-          </EntityCardLayout.FooterRow>
+          <Stack
+            sx={{
+              paddingX: 1,
+              paddingY: 0.75,
+              gap: 0.5,
+              borderTop: "1px solid",
+              borderColor: "divider",
+              bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+            }}
+          >
+            <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
+              <EntityCardElements.Source source={entity.source} />
+            </EntityCardLayout.FooterRow>
 
-          {slots.footerRows}
-        </Stack>
-      </Box>
+            {slots.footerRows}
+          </Stack>
+        </Box>
+
+        {hasActions && (
+          <Button
+            variant="outlined"
+            aria-label="Actions menu"
+            onClick={handleOpenMenu}
+            sx={{ minWidth: 0, borderRadius: 0, paddingX: 1 }}
+          >
+            <RiMore2Line size={20} />
+          </Button>
+        )}
+      </Stack>
 
       {hasActions && (
         <Menu
-          open={menuPosition !== null}
+          open={menuAnchorEl !== null}
+          anchorEl={menuAnchorEl}
           onClose={handleCloseMenu}
-          anchorReference="anchorPosition"
-          anchorPosition={
-            menuPosition ? { top: menuPosition.mouseY, left: menuPosition.mouseX } : undefined
-          }
-          slotProps={{ paper: { onClick: (event: ReactMouseEvent<HTMLDivElement>) => event.stopPropagation() } }}
         >
           {onEdit && (
             <MenuItem

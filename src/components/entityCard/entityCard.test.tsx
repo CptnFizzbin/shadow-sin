@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { fireEvent, render, screen } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
 
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
@@ -119,5 +119,71 @@ describe("EntityCard", () => {
     expect(EntityCardElements.Effects).toBe(EntityCard.Effects)
     expect(EntityCardElements.Stat).toBe(EntityCard.Stat)
     expect(EntityCardElements.Action).toBe(EntityCard.Action)
+  })
+
+  it("renders no actions menu button when neither onEdit nor onRemove is provided", () => {
+    render(<EntityCard entity={entity} />, { wrapper: ThemeWrapper })
+
+    expect(screen.queryByRole("button", { name: "Actions menu" })).toBeNull()
+  })
+
+  it("opens a menu with Edit and Remove items from the actions menu button, without triggering onOpen", () => {
+    const onOpen = vi.fn()
+    const onEdit = vi.fn()
+    const onRemove = vi.fn()
+    render(
+      <EntityCard entity={entity} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />,
+      { wrapper: ThemeWrapper },
+    )
+
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+
+    expect(screen.getByText("Edit")).toBeDefined()
+    expect(screen.getByText("Remove")).toBeDefined()
+    expect(onOpen).not.toHaveBeenCalled()
+  })
+
+  it("fires onEdit and closes the menu when the Edit item is clicked", () => {
+    const onEdit = vi.fn()
+    render(<EntityCard entity={entity} onEdit={onEdit} />, { wrapper: ThemeWrapper })
+
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByText("Edit"))
+
+    expect(onEdit).toHaveBeenCalledOnce()
+  })
+
+  it("fires onRemove when the Remove item is clicked", () => {
+    const onRemove = vi.fn()
+    render(<EntityCard entity={entity} onRemove={onRemove} />, { wrapper: ThemeWrapper })
+
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByText("Remove"))
+
+    expect(onRemove).toHaveBeenCalledOnce()
+  })
+
+  it("renders a leftAction button and fires its onClick without triggering onOpen", () => {
+    const onOpen = vi.fn()
+    const onLeftAction = vi.fn()
+    render(
+      <EntityCard
+        entity={entity}
+        onOpen={onOpen}
+        leftAction={{ icon: <span>icon</span>, onClick: onLeftAction }}
+      />,
+      { wrapper: ThemeWrapper },
+    )
+
+    fireEvent.click(screen.getByRole("button", { name: "Action" }))
+
+    expect(onLeftAction).toHaveBeenCalledOnce()
+    expect(onOpen).not.toHaveBeenCalled()
+  })
+
+  it("renders no leftAction button when leftAction is not provided", () => {
+    render(<EntityCard entity={entity} />, { wrapper: ThemeWrapper })
+
+    expect(screen.queryByRole("button", { name: "Action" })).toBeNull()
   })
 })

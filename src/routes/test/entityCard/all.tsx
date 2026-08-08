@@ -2,6 +2,7 @@ import Divider from "@mui/material/Divider"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiStarLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC, ReactNode } from "react"
 
@@ -98,6 +99,20 @@ function EntityCardTestPage() {
                 <EntityCard.Action label="Roll Attack" onClick={() => alert("Roll Attack")} />
               </EntityCard.Layout.FooterRow>
             </EntityCard>
+          </Section>
+        </Stack>
+      </Paper>
+
+      <Paper>
+        <Stack sx={{ gap: 2, padding: 2 }}>
+          <Section title="leftAction plus Edit/Remove actions menu">
+            <EntityCard
+              entity={TEST_ENTITY}
+              onOpen={() => alert("Open")}
+              onEdit={() => alert("Edit")}
+              onRemove={() => alert("Remove")}
+              leftAction={{ icon: <RiStarLine size={20} />, onClick: () => alert("Left action") }}
+            />
           </Section>
         </Stack>
       </Paper>
