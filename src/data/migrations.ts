@@ -22,9 +22,11 @@ import addSpriteDamage from "./migrations/020_addSpriteDamage.ts"
 import flattenVehicleDamage from "./migrations/021_flattenVehicleDamage.ts"
 import pruneLegacyMetaFields from "./migrations/022_pruneLegacyMetaFields.ts"
 
-// Static imports (rather than `await import(...)`) so every migration is pulled into the same
-// bundle as the rest of the app instead of being code-split into its own lazy chunk — migrations
-// always need to run together on load, so there's nothing to gain from loading them separately.
+// Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
+// combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
+// module graph at runtime (confirmed: the built app hangs completely, no error, nothing ever
+// renders). Static imports carry no such await, so the same manualChunks entry can still fold
+// every migration into one dedicated chunk safely — see vite.config.ts.
 export const migrations: AnyCharacterMigration[] = [
   normalizeOldFormatCharacter,
   addSpellThreshold,

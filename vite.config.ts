@@ -35,6 +35,13 @@ const config = defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Runner migrations (src/data/migrations.ts, statically imported — no top-level await)
+          // always need to load and run together, so keep them in one dedicated chunk instead of
+          // wherever Rollup's default chunking happens to put them.
+          if (id.includes("/src/data/migrations")) {
+            return "runner-migrations"
+          }
+
           // Group third-party deps by npm scope (e.g. all of @mui/* in one "vendor-mui" chunk)
           // instead of Vite's default one-chunk-per-package or one giant omnibus vendor chunk.
           // Unscoped packages (react, immer, zod, ...) share a single "vendor" chunk.
