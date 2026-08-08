@@ -15,12 +15,7 @@ export interface CompatStore<TState> {
  * sites that want a plain "read a snapshot, write a next value" store instead of dispatching
  * actions directly.
  *
- * `setState` dispatches a single internal action carrying the `(prev state) => next state)`
- * updater — an Immer `produce(recipe)` call and a plain `(prev) => next` function both work.
- * `configureStore`'s `serializableCheck` is disabled because that payload is a function by design,
- * and `immutableStateInvariantMiddleware` is disabled because callers are free to hold a snapshot
- * from `getState()`, mutate it, and write it back via `setState` (some test helpers do exactly
- * this).
+ * `setState` accepts either a plain `(prev) => next` function or an Immer `produce(recipe)` call.
  *
  * Pass a domain `reducer` (e.g. a `combineReducers` result) to back a store with dispatchable
  * actions/thunks; omit it for stores that are only ever written through `setState`.

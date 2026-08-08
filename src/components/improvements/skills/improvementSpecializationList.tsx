@@ -44,11 +44,10 @@ interface SpecializableRow {
 }
 
 /**
- * Specialization, promoted to its own hub section. Lists every Active,
- * Knowledge, and Language skill already on the runner sheet — skills queued
- * to be *learned* this downtime aren't specializable yet (SR4A), and since
- * they don't exist on `sheet.skills.*` until Save, they're naturally excluded
- * just by reading off the sheet instead of the improvement queue.
+ * Specialization hub section. Lists every Active, Knowledge, and Language skill already on the
+ * runner sheet — skills queued to be *learned* this downtime aren't specializable yet (SR4A),
+ * and since they don't exist on `sheet.skills.*` until Save, they're naturally excluded just by
+ * reading off the sheet instead of the improvement queue.
  */
 export const ImprovementSpecializationList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()

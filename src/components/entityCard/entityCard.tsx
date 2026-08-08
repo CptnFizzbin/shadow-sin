@@ -50,13 +50,12 @@ export interface EntityCardProps extends PropsWithChildren {
  * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
  * Auto-renders every field common to `EntityData` — name, rating, effects, source — the same
  * way `ItemDataCardRoot` auto-renders every field common to `ItemData`, so category tiers only
- * need to supply their own type-specific content as `children`. Finds its `Layout.*` regions
- * among `children` via `SlotManager` (same mechanism as `DataCard`) and renders whichever are
- * present in the fixed HeaderRow/BodyRow/FooterRow order, regardless of the order they were
- * passed in; any other child is ignored. `onEdit`/`onRemove` surface as items in a menu opened
- * by a dedicated menu button on the card's right edge (rather than a context menu or long-press
- * gesture), and `leftAction` renders a matching outline-style button on the left edge — both
- * buttons span the card's full height.
+ * need to supply their own type-specific content as `children`. Recognizes `Layout.*` regions
+ * among `children` and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow
+ * order, regardless of the order they were passed in; any other child is ignored. `onEdit`/
+ * `onRemove` surface as items in a menu opened by a dedicated menu button on the card's right
+ * edge (rather than a context menu or long-press gesture), and `leftAction` renders a matching
+ * outline-style button on the left edge — both buttons span the card's full height.
  */
 const EntityCardRoot: FC<EntityCardProps> = ({
   entity,
@@ -218,10 +217,10 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 EntityCardRoot.displayName = "EntityCard"
 
 /**
- * Top compound-component tier from ADR-0010, replacing `DataCard`. Mirrors `DataCard =
- * Object.assign(DataCardComponent, DataCardSlotProvider)`: `EntityCardRoot` is the renderable outer
- * frame, and category tiers (`ItemCard`, `SpiritCard`, `SpellCard`, `PowerCard`, ...) assemble
- * these elements plus their own via `Object.assign`, reusing rather than duplicating them.
+ * Top compound-component tier for entity cards (ADR-0010). `EntityCardRoot` is the renderable
+ * outer frame, and category tiers (`ItemCard`, `SpiritCard`, `SpellCard`, `PowerCard`, ...)
+ * assemble these elements plus their own via `Object.assign`, reusing rather than duplicating
+ * them.
  */
 export const EntityCard = Object.assign(
   EntityCardRoot,

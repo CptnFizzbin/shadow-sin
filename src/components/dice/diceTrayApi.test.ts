@@ -16,8 +16,6 @@ describe("DiceTrayApi", () => {
     vi.spyOn(api.roller, "setPoolSize").mockReturnValue(api.roller)
   })
 
-  // ─── setDice ───────────────────────────────────────────────────────────────
-
   describe("setDice", () => {
     it("opens the tray, sets pool size, and clears edge state", () => {
       api.store.setState((prev) => ({ ...prev, edgeSpent: true }))
@@ -35,8 +33,6 @@ describe("DiceTrayApi", () => {
       expect(api.store.getState().poolSize).toBe(0)
     })
   })
-
-  // ─── rollEdge ──────────────────────────────────────────────────────────────
 
   describe("rollEdge", () => {
     it("marks edge as spent and delegates to the roller", () => {
@@ -62,8 +58,6 @@ describe("DiceTrayApi", () => {
     })
   })
 
-  // ─── rerollMisses ─────────────────────────────────────────────────────────
-
   describe("rerollMisses", () => {
     it("marks edge as spent and delegates to the roller", () => {
       api.rerollMisses()
@@ -81,8 +75,6 @@ describe("DiceTrayApi", () => {
     })
   })
 
-  // ─── close ────────────────────────────────────────────────────────────────
-
   describe("close", () => {
     it("sets open to false", () => {
       api.open()
@@ -91,8 +83,6 @@ describe("DiceTrayApi", () => {
       expect(api.store.getState().open).toBe(false)
     })
   })
-
-  // ─── reset ────────────────────────────────────────────────────────────────
 
   describe("reset", () => {
     it("clears edgeSpent and extendedHistory", () => {
@@ -108,8 +98,6 @@ describe("DiceTrayApi", () => {
       expect(api.store.getState().extendedHistory).toHaveLength(0)
     })
   })
-
-  // ─── setTestType ──────────────────────────────────────────────────────────
 
   describe("setTestType", () => {
     it("resets state while preserving poolSize, physicalMode, and open", () => {

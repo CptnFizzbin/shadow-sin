@@ -9,9 +9,7 @@ export interface CardElementCostProps {
   /**
    * Overrides `value` for display when a modifier changes what the item actually costs (e.g. an
    * Implant grade's nuyen multiplier). When it differs from `value`, both render — `value` struck
-   * through, `effectiveValue` highlighted — instead of one silently overwriting the other before
-   * it reaches this element (see `ImplantDataCard`'s `{ ...implant, cost: effectiveNuyen }` spread
-   * for the hack this structurally replaces, once Implant migrates onto `ItemCard`).
+   * through, `effectiveValue` highlighted — rather than one silently overwriting the other.
    */
   effectiveValue?: number
 }

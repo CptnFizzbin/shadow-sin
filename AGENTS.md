@@ -222,6 +222,59 @@ it("does something", () => {
 })
 ```
 
+## Code comments
+
+Every comment in the codebase is one of two styles — **Documentation** or **Explanation**. Comments that don't fit
+either style (or that mix them) should be rewritten or removed.
+
+**Documentation** comments describe a class, function, or field (typically a `/**` JSDoc block immediately above the
+declaration):
+
+- MUST NOT refer to old versions of the code (no "used to be", "previously", "renamed from", "legacy" framing) —
+  document what the code *is*, not its history. History belongs in commit messages, ADRs, or migration files.
+- MUST NOT include implementation details — describe the contract (what it's for, inputs/outputs, invariants
+  callers can rely on), not how the body is written internally. If the implementation changes, the doc shouldn't
+  need to.
+- SHOULD include a usage example when the usage isn't self-evident from the signature alone.
+
+```ts
+// ✅ — describes the contract, no history, no internals
+/** Returns the karma cost to raise `skill` from its current rating to `targetRating`. */
+export const skillRaiseCost = (skill: ActiveSkill, targetRating: number): number => { ... }
+
+// ❌ — refers to an old version of the code
+/** Computes the raise cost. Replaces the old flat-rate formula from before the karma rework. */
+
+// ❌ — implementation detail instead of contract
+/** Loops over each rating band and sums the per-band cost. */
+```
+
+**Explanation** comments describe a line or block of code (an inline `//` above or beside it):
+
+- MUST NOT explain what the code does — if the code needs a line-by-line narration, prefer making the code clearer
+  (better names, extracted helper) over commenting it.
+- MUST explain *why* the code is there and what problem it fixed — the non-obvious reason the line exists in the
+  form it does.
+- SHOULD reference a GitHub issue when one exists.
+
+```ts
+// ✅ — explains why, references the issue
+// Round half-away-from-zero: SR4A rules round karma costs up, and Math.round rounds
+// .5 toward +Infinity which breaks negative adjustments. See #123.
+const cost = roundHalfAwayFromZero(rawCost)
+
+// ❌ — narrates what the line does
+// Round the cost to the nearest integer
+const cost = roundHalfAwayFromZero(rawCost)
+```
+
+**Exemptions** — these don't need to fit either style:
+
+- The `// Arrange` / `// Act` / `// Assert` labels required by "Testing conventions" above — they're structural
+  section labels, not documentation or explanation.
+- Tool directives such as `// eslint-disable-next-line` or `// @ts-expect-error` — they instruct tooling, not
+  readers.
+
 ## Type assertions
 
 **Never use `as unknown as T`** (the double type assertion pattern). This two-step cast bypasses TypeScript's structural

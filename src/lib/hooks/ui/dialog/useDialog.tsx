@@ -19,7 +19,7 @@ interface DialogInstance<TProps> {
  * `dialog`'s rendered content remounts fresh on every `open()` call (an internal
  * key bump), so components with state frozen at first mount (e.g. TanStack
  * Form's `defaultValues`) never go stale across repeated opens with different
- * props — matching the previous `DialogApi`'s fresh-instance-per-call behavior.
+ * props.
  *
  * @example
  * ```tsx

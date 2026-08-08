@@ -41,8 +41,8 @@ export const BiologySection: FC = () => {
               prev.biology.metatype = newMetatype.name
               prev.attributes = getAttributesValues(newMetatype, awakening)
 
-              // Swap out innate qualities: remove old metatype's innate qualities,
-              // then add the new metatype's innate qualities.
+              // Innate qualities come from the metatype itself, so switching metatypes must drop
+              // the old metatype's innate qualities rather than leave them alongside the new one's.
               const oldInnateIds = new Set((oldMetatype.innateQualities ?? []).map((q) => q.id))
               const withoutOldInnate = prev.qualities.filter((q) => !oldInnateIds.has(q.id))
               prev.qualities = [...withoutOldInnate, ...(newMetatype.innateQualities ?? [])]

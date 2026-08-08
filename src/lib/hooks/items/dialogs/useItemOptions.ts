@@ -32,9 +32,7 @@ export interface ItemOptionsDefaults {
 }
 
 function resolveEnabled(config: ItemDialogOptionConfig | undefined): boolean {
-  // { forced: true, enabled: false } = force-disabled: never enable.
   if (config?.forced === true && config?.enabled === false) return false
-  // { forced: true } = force-enabled: always on.
   if (config?.forced === true) return true
   return config?.enabled ?? false
 }

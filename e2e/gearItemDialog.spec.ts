@@ -10,7 +10,6 @@ test.describe("Gear page – misc item dialog", () => {
     await page.goto("/")
     await expect(page.getByRole("banner").getByText(/ShadowSIN/i)).toBeVisible()
 
-    // Navigate to Artemis's gear page
     await page.goto(GEAR_URL)
     await expect(page.getByRole("heading", { name: "Gear" })).toBeVisible()
   })
@@ -33,12 +32,10 @@ test.describe("Gear page – misc item dialog", () => {
     await expect(dialog).toBeVisible()
     await expect(dialog.getByText("Edit Item")).toBeVisible()
 
-    // Clear the Name field and type a new name
     const nameField = dialog.getByRole("textbox", { name: /Name/i })
     await nameField.clear()
     await nameField.fill("Medkit")
 
-    // Save the edit
     await dialog.getByRole("button", { name: "Save" }).click()
 
     // Assert — dialog should close and the renamed item appears in the list
@@ -64,7 +61,6 @@ test.describe("Gear page – misc item dialog", () => {
     await expect(dialog).toBeVisible()
     await expect(dialog.getByText("Add Item")).toBeVisible()
 
-    // Fill in the name
     await dialog.getByRole("textbox", { name: /Name/i }).fill("Medkit")
 
     // In runner-sheet view (non-builder) new items use Acquire mode

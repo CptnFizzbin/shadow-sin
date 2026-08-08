@@ -9,11 +9,9 @@ export interface CardElementDicePoolProps {
 }
 
 /**
- * Thin wrapper around `src/components/system/dicePool/dicePool.tsx`, passing its props straight
- * through — no new dice-pool logic or math, just the `CardElement` naming/placement convention so
- * a typed card with a linked test (Weapon's attack pool, Spell's casting/drain-resistance pools)
- * can assemble it as `.DicePool`. Each such card computes its own `groups` via the existing hooks
- * (`useDiceGroup`, `skillDicePools.ts`) and hands them to this element unchanged.
+ * Dice pool element for a card body — renders `groups` under `name` with a roll button, using the
+ * `CardElement` naming/placement convention so a typed card with a linked test (Weapon's attack
+ * pool, Spell's casting/drain-resistance pools) can assemble it as `.DicePool`.
  */
 export const CardElementDicePool: FC<CardElementDicePoolProps> = (props) => <DicePool {...props} />
 
