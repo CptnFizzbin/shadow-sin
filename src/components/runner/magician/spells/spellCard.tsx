@@ -1,8 +1,9 @@
-import Chip from "@mui/material/Chip"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
-import { DataCard } from "#/components/dataCard/dataCard.tsx"
+import { CardElementDicePool } from "#/components/entityCard/elements/cardElementDicePool.tsx"
+import { CardElementStatusIcon } from "#/components/entityCard/elements/cardElementStatusIcon.tsx"
+import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import type { SpellData } from "#/system/magic/spellData.ts"
 
 import { formatDrainFormula } from "./spellDrainFormula.ts"
@@ -13,41 +14,66 @@ interface SpellCardProps {
   onToggleSustained?: () => void
 }
 
-export const SpellCard: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained }) => {
+/**
+ * `SpellCard`'s own renderable frame — sits directly on `EntityCard`, with no intermediate
+ * category tier: Spell has no subtypes the way Item does (Weapon, Armor, ...), so this is both
+ * the category tier and the concrete typed card. Renders Type/Range/Duration/Drain/Damage via
+ * `EntityCard.Stat` (same fields, same values as the old `DataCard`-based card) and a Sustained
+ * status icon in place of the old Footer chip.
+ */
+const SpellCardRoot: FC<SpellCardProps> = ({ spell, onOpen, onToggleSustained }) => {
   const hasSustainableEffects = onToggleSustained && spell.effects && spell.effects.length > 0
 
   return (
-    <DataCard onOpen={onOpen}>
-      <DataCard.Title title={spell.name} />
-
-      <DataCard.Stat label="Type" value={spell.type} />
-      <DataCard.Stat label="Range" value={spell.range} />
-      <DataCard.Stat label="Duration" value={spell.duration} />
-      {spell.dealsDamage && <DataCard.Stat label="Damage" value={spell.damage} type="damage" />}
-      <DataCard.Stat label="Drain" value={formatDrainFormula(spell)} />
-
+    <EntityCard entity={spell} onOpen={onOpen}>
       {hasSustainableEffects && (
-        <DataCard.Footer>
-          <Chip
-            label="Sustained"
-            size="small"
-            variant={spell.sustained ? "filled" : "outlined"}
-            color={spell.sustained ? "secondary" : "default"}
-            onClick={(event) => {
-              event.stopPropagation()
-              onToggleSustained()
-            }}
+        <EntityCard.Layout.HeaderRow>
+          <CardElementStatusIcon
+            status={spell.sustained ? "sustained" : "not-sustained"}
+            onClick={onToggleSustained}
           />
-        </DataCard.Footer>
+        </EntityCard.Layout.HeaderRow>
       )}
+
+      <EntityCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
+        <EntityCard.Stat label="Type" value={spell.type} />
+        <EntityCard.Stat label="Range" value={spell.range} />
+        <EntityCard.Stat label="Duration" value={spell.duration} />
+        {spell.dealsDamage && <EntityCard.Stat label="Damage" value={spell.damage} type="damage" />}
+        <EntityCard.Stat label="Drain" value={formatDrainFormula(spell)} />
+      </EntityCard.Layout.BodyRow>
 
       {spell.description && (
-        <DataCard.Content>
-          <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
+        <EntityCard.Layout.BodyRow>
+          <Typography variant="body2" color="text.secondary">
             {spell.description}
           </Typography>
-        </DataCard.Content>
+        </EntityCard.Layout.BodyRow>
       )}
-    </DataCard>
+    </EntityCard>
   )
 }
+
+SpellCardRoot.displayName = "SpellCard"
+
+/**
+ * Category tier from ADR-0010, assembled directly from `EntityCard`'s elements plus `.DicePool`
+ * (`CardElementDicePool`) — shared with `WeaponCard`'s attack pool (see the feature doc) and used
+ * here for the casting pool (`SpellcastingDicePool`) and drain-resistance pool
+ * (`DrainResistanceDicePool`), each of which still computes its own `groups` via the existing
+ * dice-group hooks and just hands them to this element.
+ */
+export const SpellCard = Object.assign(
+  SpellCardRoot,
+  {
+    Title: EntityCard.Title,
+    Rating: EntityCard.Rating,
+    Source: EntityCard.Source,
+    Effects: EntityCard.Effects,
+    Stat: EntityCard.Stat,
+    Action: EntityCard.Action,
+    StatusIcon: CardElementStatusIcon,
+    DicePool: CardElementDicePool,
+  },
+  { Layout: EntityCard.Layout },
+)
