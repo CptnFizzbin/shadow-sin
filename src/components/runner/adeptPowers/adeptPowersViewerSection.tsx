@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
+import { PowerCard } from "#/components/powerCard/powerCard.tsx"
 import { PowerPoints } from "#/components/ui/powerPoints.tsx"
 import { usePowerPoints } from "#/lib/hooks/runner/adeptPowers/adeptPowersHooks.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
@@ -10,7 +11,6 @@ import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { AdeptPowerData } from "#/system/powers/adeptPowerData.ts"
 
-import { AdeptPowerListItem } from "./adeptPowerListItem.tsx"
 import { useAdeptPowerFormDialog } from "./dialogs/adeptPowerFormDialog.tsx"
 
 export const AdeptPowersViewerSection: FC = () => {
@@ -43,10 +43,10 @@ export const AdeptPowersViewerSection: FC = () => {
 
       <Stack sx={{ gap: 0.5 }}>
         {adeptPowers.map((power) => (
-          <AdeptPowerListItem
+          <PowerCard
             key={power.id}
             power={power}
-            onClick={() => handleEditPower(power)}
+            onOpen={() => handleEditPower(power)}
           />
         ))}
       </Stack>
