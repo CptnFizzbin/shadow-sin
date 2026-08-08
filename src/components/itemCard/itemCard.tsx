@@ -1,5 +1,6 @@
 import type { FC, PropsWithChildren } from "react"
 
+import type { EntityCardLeftAction } from "#/components/entityCard/entityCard.tsx"
 import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import type { ItemData } from "#/system/itemData.ts"
 
@@ -9,10 +10,12 @@ interface ItemCardProps extends PropsWithChildren {
   item: ItemData
   /** When provided, the whole card becomes tappable/keyboard-activatable and invokes this (e.g. navigate to the item's details page). */
   onOpen?: () => void
-  /** When provided, adds an "Edit" action (long-press/right-click menu) that opens the item's edit dialog. */
+  /** When provided, adds an "Edit" action to the actions menu that opens the item's edit dialog. */
   onEdit?: () => void
-  /** When provided, adds a "Remove" action (long-press/right-click menu). */
+  /** When provided, adds a "Remove" action to the actions menu. */
   onRemove?: () => void
+  /** Outline-style button pinned to the left edge of the card, spanning its full height. */
+  leftAction?: EntityCardLeftAction
 }
 
 /**
@@ -21,11 +24,11 @@ interface ItemCardProps extends PropsWithChildren {
  * cover (availability, cost, quantity, equipped/stashed/fixed/wireless status) by placing them
  * into `EntityCard`'s own `Layout` regions internally. A category-tier or typed card that needs
  * another row uses `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it
- * as `children`. `onOpen`/`onEdit`/`onRemove` pass straight through to `EntityCard` for its
- * tap-to-open and long-press/right-click action menu.
+ * as `children`. `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard`
+ * for its tap-to-open behavior, menu-button actions, and left-edge action button.
  */
-const ItemCardRoot: FC<ItemCardProps> = ({ item, onOpen, onEdit, onRemove, children }) => (
-  <EntityCard entity={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove}>
+const ItemCardRoot: FC<ItemCardProps> = ({ item, onOpen, onEdit, onRemove, leftAction, children }) => (
+  <EntityCard entity={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} leftAction={leftAction}>
     <EntityCard.Layout.HeaderRow>
       {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
       {item.stashed && <ItemCardElements.StatusIcon status="stashed" />}
