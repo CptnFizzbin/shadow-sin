@@ -31,6 +31,26 @@ const config = defineConfig({
     }),
   ],
 
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Runner migrations are dynamically imported (see src/data/migrations.ts) but always
+          // need to load and run together, so keep them in one chunk instead of one-per-file.
+          if (id.includes("/src/data/migrations")) {
+            return "runner-migrations"
+          }
+
+          // Restores the pre-Vite-2.9 default of a single "vendor" chunk for third-party
+          // dependencies (formerly `splitVendorChunkPlugin`, removed from Vite core).
+          if (id.includes("/node_modules/")) {
+            return "vendor"
+          }
+        },
+      },
+    },
+  },
+
   test: {
     include: ["**/*.test.{ts,tsx}"],
     setupFiles: ["./testUtils/setup.ts"],
