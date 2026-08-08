@@ -54,6 +54,4 @@ const migration: CharacterMigration<NormalizeNullableFieldsCharacter> = {
   },
 }
 
-// consumed via `await import(...).default` in migrations.ts
-// fallow-ignore-next-line unused-export
 export default migration
