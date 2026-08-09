@@ -25,8 +25,12 @@ test.describe("Gear page – misc item dialog", () => {
     const itemCard = page.getByText("Engineering Shop").first()
     await expect(itemCard).toBeVisible()
 
-    // Act — click the card to open the edit dialog
+    // Act — tapping the card (its ItemCard, like every other gear section) navigates to the
+    // item's details page rather than opening the edit dialog directly.
     await itemCard.click()
+    await expect(page.getByRole("heading", { name: "Engineering Shop" })).toBeVisible()
+
+    await page.getByRole("button", { name: "Edit" }).click()
 
     const dialog = page.getByRole("dialog")
     await expect(dialog).toBeVisible()
@@ -38,8 +42,14 @@ test.describe("Gear page – misc item dialog", () => {
 
     await dialog.getByRole("button", { name: "Save" }).click()
 
-    // Assert — dialog should close and the renamed item appears in the list
+    // Assert — dialog closes and the details page reflects the rename
     await expect(dialog).not.toBeVisible()
+    await expect(page.getByRole("heading", { name: "Medkit", exact: true })).toBeVisible()
+
+    // Assert — the change persists back on the gear list too. Navigating back to the list
+    // remounts the page, so the Misc accordion starts collapsed again.
+    await page.getByRole("button", { name: "Back" }).click()
+    await miscAccordion.click()
     // exact: true — the fixture also carries an unrelated "Medkit (Rating 6)" item.
     await expect(page.getByText("Medkit", { exact: true })).toBeVisible()
     await expect(page.getByText("Engineering Shop")).not.toBeVisible()
