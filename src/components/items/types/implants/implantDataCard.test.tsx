@@ -107,8 +107,9 @@ describe("ImplantDataCard", () => {
     const onOpen = vi.fn()
     renderImplantCard(alphaImplant, {}, onOpen)
 
-    // Act
-    fireEvent.click(screen.getByRole("button"))
+    // Act: click the title rather than getByRole("button") — the implant always wires onRemove,
+    // so the card's own Actions menu button is also present.
+    fireEvent.click(screen.getByText("Wired Reflexes 2"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()

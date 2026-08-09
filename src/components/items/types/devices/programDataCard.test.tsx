@@ -35,8 +35,9 @@ describe("ProgramDataCard", () => {
     const onOpen = vi.fn()
     renderProgramCard(fakeProgram, onOpen)
 
-    // Act
-    fireEvent.click(screen.getByRole("button"))
+    // Act: click the title rather than getByRole("button") — the program always wires onRemove,
+    // so the card's own Actions menu button is also present.
+    fireEvent.click(screen.getByText("Exploit"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()

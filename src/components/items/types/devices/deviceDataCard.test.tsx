@@ -111,8 +111,9 @@ describe("DeviceDataCard", () => {
     const onOpen = vi.fn()
     renderDeviceCard(commlink, {}, onOpen)
 
-    // Act
-    fireEvent.click(screen.getByRole("button"))
+    // Act: click a stat chip rather than getByRole("button") — the device always wires onRemove,
+    // so the card's own Actions menu button is also present.
+    fireEvent.click(screen.getByText("Res: 3"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()
