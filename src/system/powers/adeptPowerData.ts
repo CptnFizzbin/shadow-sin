@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
+import type { Rating } from "#/system/rating.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
 import type { PowerData } from "./powerData.ts"
@@ -11,7 +12,8 @@ import type { PowerData } from "./powerData.ts"
  */
 export interface AdeptPowerData extends PowerData {
   type: "adeptPower"
-  rating: number
+  /** Plain `number` in practice — Adept Powers have no sentinel case — typed as `Rating` for consistency with the rest of the Entity system. */
+  rating: Rating
   costPerRating: number
 }
 
