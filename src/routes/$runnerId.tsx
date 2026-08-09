@@ -25,6 +25,13 @@ const loaderManager = new RunnerManager({ local: LocalStorageProvider.getStorage
 export const Route = createFileRoute("/$runnerId")({
   component: RunnerRoute,
   errorComponent: RunnerErrorRoute,
+  // Nothing outside this single-player app mutates persisted Runner data, so loader
+  // data never goes stale on its own. Without this, the default staleTime (0) reruns
+  // the loader on every navigation — including the no-op history entry
+  // useCloseOnBrowserBack pushes/pops around dialogs — recreating RunnerDataStore from
+  // storage that lags behind debounced writes and silently discarding just-dispatched
+  // changes (e.g. removing a Spirit). See #401.
+  staleTime: Infinity,
   loader: async ({ params }): Promise<RunnerData> => {
     const runner = await loaderManager.getRunner(params.runnerId)
     return runner
