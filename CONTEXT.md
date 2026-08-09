@@ -193,8 +193,8 @@ list — see below.)
 _Avoid_: GameEntity (redundant with this term); Object (too broad/generic); Data (reserved for
 the `*Data` DTO suffix convention — see RunnerData)
 
-**EntityCard** _(not yet implemented — planned)_:
-The shared card-rendering system for Entities, replacing today's `DataCard`. See
+**EntityCard**:
+The shared card-rendering system for Entities, replacing the old `DataCard`. See
 `docs/adr/0010-entity-card-composition.md` for the architecture.
 
 **Rating**:

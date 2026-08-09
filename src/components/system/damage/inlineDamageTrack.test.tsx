@@ -17,21 +17,25 @@ describe("InlineDamageTrack", () => {
     expect(buttons[2].className).toMatch(/MuiButton-contained/) // value 3
     expect(buttons[3].className).toMatch(/MuiButton-outlined/) // value 4
 
-    // Assert: grid stays fixed at 10 columns even with fewer than 10 boxes, so cell size
-    // (and tap target) stays uniform whether a track has a partial or full row
-    const grid = buttons[0].parentElement as HTMLElement
-    const gridStyle = getComputedStyle(grid)
-    expect(gridStyle.gridTemplateColumns).toBe("repeat(10, 1fr)")
-    expect(gridStyle.gridAutoRows).toBe("32px")
+    // Assert: cells are fixed-size flex items in a wrapping row, so cell size (and tap
+    // target) stays uniform regardless of the container's width or how many boxes there are
+    const row = buttons[0].parentElement as HTMLElement
+    const rowStyle = getComputedStyle(row)
+    expect(rowStyle.display).toBe("flex")
+    expect(rowStyle.flexWrap).toBe("wrap")
+    const cellStyle = getComputedStyle(buttons[0])
+    expect(cellStyle.width).toBe("32px")
+    expect(cellStyle.height).toBe("32px")
   })
 
   it("wraps onto additional rows past 10 boxes", () => {
     // Arrange / Act
     render(<InlineDamageTrack max={14} current={0} onChange={vi.fn()} />, { wrapper: ThemeWrapper })
 
-    // Assert: capped at 10 columns regardless of how many boxes there are
-    const grid = screen.getAllByRole("button")[0].parentElement as HTMLElement
-    expect(getComputedStyle(grid).gridTemplateColumns).toBe("repeat(10, 1fr)")
+    // Assert: flexWrap (not a fixed column count) is what lets a narrow container wrap this many
+    // fixed-size cells onto more rows
+    const row = screen.getAllByRole("button")[0].parentElement as HTMLElement
+    expect(getComputedStyle(row).flexWrap).toBe("wrap")
     expect(screen.getAllByRole("button")).toHaveLength(14)
   })
 

@@ -51,11 +51,9 @@ describe("SpiritList", () => {
     // Arrange
     const store = renderWithSpirits([fireSpirit])
 
-    // Act: the edit and remove icon buttons have no accessible name, but
-    // remove is the second icon action rendered on the card.
-    const [, removeButton] = screen.getAllByRole("button")
-      .filter((button) => button.textContent === "")
-    fireEvent.click(removeButton)
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Dismiss" }))
 
     // Assert: state updated...
@@ -64,19 +62,19 @@ describe("SpiritList", () => {
     expect(screen.queryByText("Ember")).toBeNull()
   })
 
-  it("resetting physical damage dispatches saveSpirit and updates the store", async () => {
-    // Arrange: seeded with 2 boxes of physical damage taken
+  it("adjusting the physical damage track dispatches saveSpirit and updates the store", async () => {
+    // Arrange: seeded with 2 boxes of physical damage taken; box 3 is the first wound-marker
+    // cell (labeled "-1") on both Physical and Stun tracks — Physical renders first.
     const store = renderWithSpirits([fireSpirit])
     expect(store.getState().spirits[0].damage.physical).toBe(2)
 
-    // Act: the Physical damage track's Reset button is the first of the two
-    // ("Reset" for Physical, then "Reset" for Stun).
-    const [resetPhysical] = screen.getAllByRole("button", { name: "Reset" })
-    fireEvent.click(resetPhysical)
+    // Act
+    const [physicalWoundCell] = screen.getAllByRole("button", { name: "-1" })
+    fireEvent.click(physicalWoundCell)
 
     // Assert: state updated...
-    await waitFor(() => expect(store.getState().spirits[0].damage.physical).toBe(0))
-    // ...and the UI re-rendered off that same state (only Reset buttons remain, no filled cells).
+    await waitFor(() => expect(store.getState().spirits[0].damage.physical).toBe(3))
+    // ...and the UI re-rendered off that same state.
     expect(store.getState().spirits[0].damage.stun).toBe(0)
   })
 })

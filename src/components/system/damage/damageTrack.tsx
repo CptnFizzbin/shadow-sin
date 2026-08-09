@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
+import type { SxProps, Theme } from "@mui/material/styles"
 import type { ReactNode } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
@@ -113,6 +114,8 @@ interface DamageTrackCellProps {
   onClick: () => void
   filled?: boolean
   isOverflow?: boolean
+  /** Merged on top of the cell's own sizing — e.g. InlineDamageTrack's fixed width/height for flex-wrap layout. */
+  sx?: SxProps<Theme>
 }
 
 export function DamageTrackCell({
@@ -120,6 +123,7 @@ export function DamageTrackCell({
   onClick,
   filled = false,
   isOverflow = false,
+  sx,
 }: DamageTrackCellProps) {
   return (
     <Button
@@ -130,7 +134,7 @@ export function DamageTrackCell({
         onClick()
         e.currentTarget.blur()
       }}
-      sx={{ textAlign: "right", minWidth: 0 }}
+      sx={[{ textAlign: "right", minWidth: 0 }, ...(Array.isArray(sx) ? sx : [sx])]}
     >
       {children}
     </Button>

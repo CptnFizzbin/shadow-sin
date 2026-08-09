@@ -294,12 +294,12 @@ function buildSin(toggles: SinFieldToggles): SinData {
 }
 
 /**
- * Static demo data for the item types still built on the legacy `DataCard`/`ItemDataCardRoot`
- * (armor, device, program, implant, vehicle, weapon). Unlike the migrated cards above, these
- * don't need per-field toggles — they're here for a side-by-side comparison against the migrated
- * look, not a field-coverage check — so each item is seeded once with its subitems/children.
+ * Static demo data for the remaining `ItemCard`-based types (armor, device, program, implant,
+ * vehicle, weapon). Unlike Credstick/License/SIN above, these don't need per-field toggles —
+ * they're here to exercise each type's own stat block, subitems, and inline actions once, not a
+ * field-coverage check — so each item is seeded with its subitems/children.
  */
-const LEGACY_ARMOR: ArmorData = {
+const DEMO_ARMOR: ArmorData = {
   id: ARMOR_ID,
   name: "Armor Jacket",
   itemType: ItemType.armor,
@@ -313,7 +313,7 @@ const LEGACY_ARMOR: ArmorData = {
   childIds: [ARMOR_MOD_ID],
 }
 
-const LEGACY_ARMOR_MOD: ArmorData = {
+const DEMO_ARMOR_MOD: ArmorData = {
   id: ARMOR_MOD_ID,
   name: "Helmet",
   itemType: ItemType.armor,
@@ -323,7 +323,7 @@ const LEGACY_ARMOR_MOD: ArmorData = {
   parentId: ARMOR_ID,
 }
 
-const LEGACY_DEVICE: DeviceData = {
+const DEMO_DEVICE: DeviceData = {
   id: DEVICE_ID,
   name: "Erika Elite",
   itemType: ItemType.device,
@@ -342,7 +342,7 @@ const LEGACY_DEVICE: DeviceData = {
   childIds: [PROGRAM_ID],
 }
 
-const LEGACY_PROGRAM: ProgramData = {
+const DEMO_PROGRAM: ProgramData = {
   id: PROGRAM_ID,
   name: "Analyze",
   itemType: ItemType.program,
@@ -354,7 +354,7 @@ const LEGACY_PROGRAM: ProgramData = {
   parentId: DEVICE_ID,
 }
 
-const LEGACY_IMPLANT: ImplantData = {
+const DEMO_IMPLANT: ImplantData = {
   id: IMPLANT_ID,
   name: "Wired Reflexes",
   itemType: ItemType.implant,
@@ -370,7 +370,7 @@ const LEGACY_IMPLANT: ImplantData = {
   childIds: [IMPLANT_ACCESSORY_ID],
 }
 
-const LEGACY_IMPLANT_ACCESSORY: ImplantData = {
+const DEMO_IMPLANT_ACCESSORY: ImplantData = {
   id: IMPLANT_ACCESSORY_ID,
   name: "Rating 3 Upgrade",
   itemType: ItemType.implant,
@@ -378,7 +378,7 @@ const LEGACY_IMPLANT_ACCESSORY: ImplantData = {
   parentId: IMPLANT_ID,
 }
 
-const LEGACY_VEHICLE: VehicleData = {
+const DEMO_VEHICLE: VehicleData = {
   id: VEHICLE_ID,
   name: "Ares Roadmaster",
   itemType: ItemType.vehicle,
@@ -399,14 +399,14 @@ const LEGACY_VEHICLE: VehicleData = {
   childIds: [VEHICLE_MOD_ID],
 }
 
-const LEGACY_VEHICLE_MOD: ItemData = {
+const DEMO_VEHICLE_MOD: ItemData = {
   id: VEHICLE_MOD_ID,
   name: "Run-Flat Tires",
   itemType: ItemType.other,
   parentId: VEHICLE_ID,
 }
 
-const LEGACY_WEAPON: FirearmData = {
+const DEMO_WEAPON: FirearmData = {
   id: WEAPON_ID,
   name: "Ares Predator V",
   itemType: ItemType.weapon,
@@ -426,7 +426,7 @@ const LEGACY_WEAPON: FirearmData = {
   childIds: [WEAPON_ACCESSORY_ID],
 }
 
-const LEGACY_WEAPON_ACCESSORY: ItemData = {
+const DEMO_WEAPON_ACCESSORY: ItemData = {
   id: WEAPON_ACCESSORY_ID,
   name: "Smartgun System",
   itemType: ItemType.firearmAccessory,
@@ -434,18 +434,17 @@ const LEGACY_WEAPON_ACCESSORY: ItemData = {
 }
 
 /**
- * Every `ItemData` type card rebuilt on `ItemCard`/`EntityCard` (ADR-0010) — `CredstickDataCard`,
- * `LicenseDataCard`, `SinDataCard` — plus, for comparison, the remaining types still on the
- * legacy `DataCard`/`ItemDataCardRoot`. The migrated cards each have a toggle row for every
- * optional `EntityData`/`ItemData` field that visibly affects the card, so a reviewer can check
- * the migrated rendering with a field present vs. absent without hunting through real runner data
- * for an item in that state; the legacy cards use static demo data instead, since there's no
- * migrated rendering to compare against yet.
+ * Every `ItemData` type card rebuilt on `ItemCard`/`EntityCard` (ADR-0010) — Credstick, License,
+ * and SIN each have a toggle row for every optional `EntityData`/`ItemData` field that visibly
+ * affects the card, so a reviewer can check the rendering with a field present vs. absent without
+ * hunting through real runner data for an item in that state; the remaining types (Armor, Device,
+ * Program, Implant, Vehicle, Weapon) use static demo data instead, to exercise their own stat
+ * block, subitems, and inline actions once rather than a field-coverage check.
  *
- * `LicenseDataCard`/`SinDataCard`/all the legacy cards dispatch through the runner store for
- * their built-in Remove action (and `SinDataCard` reads its covered licenses back out of it), so
- * this page wraps everything in a real `RunnerStoreProvider`/`RunnerDataStore` seeded from all of
- * the items, rebuilt from the toggle state on every change.
+ * All of these dispatch through the runner store for their built-in Remove/Equip actions (and
+ * `SinDataCard` reads its covered licenses back out of it), so this page wraps everything in a
+ * real `RunnerStoreProvider`/`RunnerDataStore` seeded from all of the items, rebuilt from the
+ * toggle state on every change.
  */
 function MigratedItemCardsTestPage() {
   const [credstickToggles, setCredstickToggles] = useState<CredstickFieldToggles>({
@@ -468,16 +467,16 @@ function MigratedItemCardsTestPage() {
         [licenseItem.id]: licenseItem,
         [sinItem.id]: sinItem,
         ...(sinToggles.coveredLicense ? { [COVERED_LICENSE_ID]: COVERED_LICENSE } : {}),
-        [ARMOR_ID]: LEGACY_ARMOR,
-        [ARMOR_MOD_ID]: LEGACY_ARMOR_MOD,
-        [DEVICE_ID]: LEGACY_DEVICE,
-        [PROGRAM_ID]: LEGACY_PROGRAM,
-        [IMPLANT_ID]: LEGACY_IMPLANT,
-        [IMPLANT_ACCESSORY_ID]: LEGACY_IMPLANT_ACCESSORY,
-        [VEHICLE_ID]: LEGACY_VEHICLE,
-        [VEHICLE_MOD_ID]: LEGACY_VEHICLE_MOD,
-        [WEAPON_ID]: LEGACY_WEAPON,
-        [WEAPON_ACCESSORY_ID]: LEGACY_WEAPON_ACCESSORY,
+        [ARMOR_ID]: DEMO_ARMOR,
+        [ARMOR_MOD_ID]: DEMO_ARMOR_MOD,
+        [DEVICE_ID]: DEMO_DEVICE,
+        [PROGRAM_ID]: DEMO_PROGRAM,
+        [IMPLANT_ID]: DEMO_IMPLANT,
+        [IMPLANT_ACCESSORY_ID]: DEMO_IMPLANT_ACCESSORY,
+        [VEHICLE_ID]: DEMO_VEHICLE,
+        [VEHICLE_MOD_ID]: DEMO_VEHICLE_MOD,
+        [WEAPON_ID]: DEMO_WEAPON,
+        [WEAPON_ACCESSORY_ID]: DEMO_WEAPON_ACCESSORY,
       },
     }))
     return new RunnerDataStore(runnerData)
@@ -488,9 +487,8 @@ function MigratedItemCardsTestPage() {
       <Stack sx={{ gap: 3, padding: 2 }}>
         <Typography variant="h2">Migrated Item Cards</Typography>
         <Typography color="text.secondary">
-          The `ItemData` type cards currently rebuilt on `ItemCard`/`EntityCard` (ADR-0010) rather than the legacy
-          `DataCard`/`ItemDataCardRoot` — Credstick, License, and SIN. Toggle a field off to check the card still
-          renders sensibly without it.
+          Every `ItemData` type card, all rebuilt on `ItemCard`/`EntityCard` (ADR-0010). Credstick, License, and SIN
+          below have a toggle row per field — toggle one off to check the card still renders sensibly without it.
         </Typography>
 
         <Paper>
@@ -549,17 +547,16 @@ function MigratedItemCardsTestPage() {
           </Stack>
         </Paper>
 
-        <Typography variant="h2">Legacy DataCards</Typography>
+        <Typography variant="h2">More Item Cards (static demo data)</Typography>
         <Typography color="text.secondary">
-          The remaining `ItemData` type cards, still built on the legacy `DataCard`/`ItemDataCardRoot` rather than
-          `ItemCard`/`EntityCard`. Shown for side-by-side comparison against the migrated cards above — data is
-          static, not toggleable.
+          The remaining `ItemData` type cards, also on `ItemCard`/`EntityCard` — each seeded with static demo data
+          rather than toggleable fields, to exercise its own stat block, subitems, and inline actions once.
         </Typography>
 
         <Paper>
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="ArmorDataCard" description="Includes a Helmet mod as a Subitem.">
-              <ArmorDataCard armor={LEGACY_ARMOR} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
+              <ArmorDataCard armor={DEMO_ARMOR} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
             </Section>
           </Stack>
         </Paper>
@@ -567,7 +564,7 @@ function MigratedItemCardsTestPage() {
         <Paper>
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="DeviceDataCard" description="Includes an Analyze program as a Subitem.">
-              <DeviceDataCard device={LEGACY_DEVICE} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
+              <DeviceDataCard device={DEMO_DEVICE} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
             </Section>
           </Stack>
         </Paper>
@@ -576,7 +573,7 @@ function MigratedItemCardsTestPage() {
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="ProgramDataCard" description="Rendered standalone, outside its parent Device.">
               <ProgramDataCard
-                program={LEGACY_PROGRAM}
+                program={DEMO_PROGRAM}
                 onOpen={() => alert("onOpen")}
                 onEdit={() => alert("onEdit")}
               />
@@ -588,7 +585,7 @@ function MigratedItemCardsTestPage() {
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="ImplantDataCard" description="Includes a Rating 3 Upgrade accessory as a Subitem.">
               <ImplantDataCard
-                implant={LEGACY_IMPLANT}
+                implant={DEMO_IMPLANT}
                 onOpen={() => alert("onOpen")}
                 onEdit={() => alert("onEdit")}
               />
@@ -600,7 +597,7 @@ function MigratedItemCardsTestPage() {
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="VehicleDataCard" description="Includes a damage track and a Run-Flat Tires Subitem.">
               <VehicleDataCard
-                vehicle={LEGACY_VEHICLE}
+                vehicle={DEMO_VEHICLE}
                 onOpen={() => alert("onOpen")}
                 onEdit={() => alert("onEdit")}
               />
@@ -611,7 +608,7 @@ function MigratedItemCardsTestPage() {
         <Paper>
           <Stack sx={{ gap: 2, padding: 2 }}>
             <Section title="WeaponDataCard" description="A firearm, with a Smartgun System accessory as a Subitem.">
-              <WeaponDataCard weapon={LEGACY_WEAPON} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
+              <WeaponDataCard weapon={DEMO_WEAPON} onOpen={() => alert("onOpen")} onEdit={() => alert("onEdit")} />
             </Section>
           </Stack>
         </Paper>

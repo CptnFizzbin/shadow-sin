@@ -28,8 +28,8 @@ matrix devices are stored as Items in `RunnerData.gear`. `ItemData` has no damag
       matching `SpiritData.damage` precedent (not cleared on tab close, behaves like any other
       persisted stat). **Sprite needs the same treatment: `SpriteData` gets a persisted damage
       container matching `SpiritData`'s shape.** Decided as part of
-      [`docs/features/0013-entity-card-migration.md`](./0013-entity-card-migration.md); not yet
-      implemented — requires a migration, no code changes made yet.
+      [`docs/features/archive/0013-entity-card-migration.md`](./archive/0013-entity-card-migration.md);
+      implemented.
 - [ ] **Spirit services** — is "services owed" a simple integer counter, or does each service
       need a description (e.g. "Guard the safehouse")?
 - [ ] **Drone distinction** — how does a Player indicate a Vehicle Item is a Drone? Tag, name

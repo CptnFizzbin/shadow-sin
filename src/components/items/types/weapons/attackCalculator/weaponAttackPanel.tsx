@@ -10,11 +10,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 import { useState } from "react"
 
+import { WeaponCard } from "#/components/items/types/weapons/weaponCard.tsx"
 import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import { SkillListItem } from "#/components/runner/skills/skillListItem.tsx"
 import { DiceResult } from "#/components/system/dice/diceResult.tsx"
 import type { DiceGroupList } from "#/components/system/dicePool/diceGroup.tsx"
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { getPoolSize } from "#/components/system/dicePool/dicePoolData.tsx"
 import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
@@ -301,7 +301,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
       {currentStep === "total" && (
         <Stack sx={{ gap: 1.5 }}>
-          <DicePool name="Attack" groups={groups} />
+          <WeaponCard.DicePool name="Attack" groups={groups} />
 
           <Stack sx={{ alignItems: "center" }}>
             <DiceResult roller={diceRoller} iconSize={32} />

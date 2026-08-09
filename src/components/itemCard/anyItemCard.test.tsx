@@ -50,18 +50,20 @@ describe("AnyItemCard", () => {
       runnerStore: runnerStoreWithWeapon(),
     })
 
-    fireEvent.click(screen.getByRole("button"))
+    // WeaponDataCard always has its own Actions menu button (it self-handles Remove), so the
+    // title text — which bubbles up to the card's own onClick — is the unambiguous target.
+    fireEvent.click(screen.getByText("Ares Predator V"))
 
     expect(onOpen).toHaveBeenCalledOnce()
   })
 
-  it("passes onEdit through to the rendered card's quick-action menu", () => {
+  it("passes onEdit through to the rendered card's actions menu", () => {
     const onEdit = vi.fn()
     renderWithProviders(<AnyItemCard item={weapon} onEdit={onEdit} />, {
       runnerStore: runnerStoreWithWeapon(),
     })
 
-    fireEvent.contextMenu(screen.getByText("Ares Predator V"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     expect(onEdit).toHaveBeenCalledOnce()

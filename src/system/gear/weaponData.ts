@@ -84,3 +84,7 @@ export function isWeaponData(item: ItemData): item is WeaponData {
 export function isFirearmData(item: ItemData): item is FirearmData {
   return isWeaponData(item) && item.weaponType === WeaponType.firearm
 }
+
+export function isMeleeWeaponData(item: ItemData): item is MeleeWeaponData {
+  return isWeaponData(item) && item.weaponType === WeaponType.melee
+}
