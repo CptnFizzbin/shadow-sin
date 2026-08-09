@@ -48,7 +48,7 @@ export interface EntityCardProps extends PropsWithChildren {
 /**
  * The card's outer frame — the one piece every EntityCard-based card renders unconditionally.
  * Auto-renders every field common to `EntityData` — name, rating, effects, source — the same
- * way `ItemDataCardRoot` auto-renders every field common to `ItemData`, so category tiers only
+ * way `ItemCard` auto-renders every field common to `ItemData`, so category tiers only
  * need to supply their own type-specific content as `children`. Recognizes `Layout.*` regions
  * among `children` and renders whichever are present in the fixed HeaderRow/BodyRow/FooterRow
  * order, regardless of the order they were passed in; any other child is ignored. `onEdit`/

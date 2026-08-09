@@ -32,7 +32,7 @@ describe("AnyItemCard", () => {
     expect(screen.getByText("DV: 8P")).toBeDefined()
   })
 
-  it("falls back to ItemDataCardRoot for item types without a typed card", () => {
+  it("falls back to ItemCard for item types without a typed card", () => {
     const item: ItemData = {
       id: "00000000-0000-0000-0000-000000000002",
       name: "Fake SIN",

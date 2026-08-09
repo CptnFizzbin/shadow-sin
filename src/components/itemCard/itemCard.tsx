@@ -20,13 +20,13 @@ export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
 }
 
 /**
- * `ItemCard`'s own renderable frame — sits on top of `EntityCard` the way `ItemDataCardRoot` sits
- * on top of `DataCard` today: auto-renders every `ItemData` field `EntityCard` doesn't already
- * cover (availability, cost, quantity, equipped/stashed/fixed/wireless status) by placing them
- * into `EntityCard`'s own `Layout` regions internally. A category-tier or typed card that needs
- * another row uses `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it
- * as `children`. `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard`
- * for its tap-to-open behavior, menu-button actions, and left-edge action button.
+ * `ItemCard`'s own renderable frame — sits on top of `EntityCard`, auto-rendering every
+ * `ItemData` field `EntityCard` doesn't already cover (availability, cost, quantity,
+ * equipped/stashed/fixed/wireless status) by placing them into `EntityCard`'s own `Layout`
+ * regions internally. A category-tier or typed card that needs another row uses
+ * `ItemCard.Layout.*` (re-exported from `EntityCard`, see below) and passes it as `children`.
+ * `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard` for its
+ * tap-to-open behavior, menu-button actions, and left-edge action button.
  */
 const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
