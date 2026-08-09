@@ -36,6 +36,12 @@ function renderWithMatrixState(matrixState: MatrixGameState) {
   return store
 }
 
+/** Opens the (single) card's EntityCard actions menu and clicks the named menu item. */
+function clickCardAction(name: string) {
+  fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
+  fireEvent.click(screen.getByRole("menuitem", { name }))
+}
+
 describe("KnownNodesList", () => {
   it("shows known nodes from the store", () => {
     // Arrange / Act
@@ -75,7 +81,7 @@ describe("KnownNodesList", () => {
     const store = renderWithMatrixState({ knownNodes: [arcologyNode], activePrograms: [] })
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
+    clickCardAction("Remove")
     fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Remove" }))
 
     // Assert: state updated...
@@ -89,13 +95,14 @@ describe("KnownNodesList", () => {
     const store = renderWithMatrixState({ knownNodes: [arcologyNode], activePrograms: [] })
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Set Active" }))
+    clickCardAction("Set Active")
 
     // Assert: state updated...
     await waitFor(() => expect(store.getState().gameState.matrix.activeNodeId).toBe("node-1"))
-    // ...and the UI re-rendered off that same state.
+    // ...and the UI re-rendered off that same state — the actions menu stays open (custom
+    // Actions don't auto-close it, unlike the fixed Edit/Remove items) and now offers Deactivate.
     expect(screen.getByText("Active")).toBeDefined()
-    expect(screen.getByRole("button", { name: "Deactivate" })).toBeDefined()
+    expect(screen.getByRole("menuitem", { name: "Deactivate" })).toBeDefined()
   })
 
   it("deactivating the active node clears activeNodeId without removing the node", async () => {
@@ -107,7 +114,7 @@ describe("KnownNodesList", () => {
     })
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Deactivate" }))
+    clickCardAction("Deactivate")
 
     // Assert
     await waitFor(() => expect(store.getState().gameState.matrix.activeNodeId).toBeUndefined())
@@ -124,7 +131,7 @@ describe("KnownNodesList", () => {
     })
 
     // Act
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }))
+    clickCardAction("Remove")
     fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Remove" }))
 
     // Assert
@@ -137,7 +144,7 @@ describe("KnownNodesList", () => {
     const store = renderWithMatrixState({ knownNodes: [arcologyNode], activePrograms: [] })
 
     // Act
-    fireEvent.click(screen.getByText("Renraku Arcology"))
+    clickCardAction("Edit")
     const nameField = await screen.findByLabelText("Name")
     fireEvent.change(nameField, { target: { value: "Renraku Tsurugi" } })
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Save" }))

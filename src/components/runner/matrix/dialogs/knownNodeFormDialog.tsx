@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import type { FC } from "react"
 import { useId } from "react"
 
-import { KnownNodeFormFields } from "#/components/runner/matrix/form/knownNodeFormFields.tsx"
+import { MatrixNodeFields } from "#/components/runner/matrix/form/matrixNodeFields.tsx"
 import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDialogProps.ts"
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useKnownNodeForm } from "#/lib/hooks/runner/matrix/form/useKnownNodeForm.ts"
@@ -55,7 +55,7 @@ const KnownNodeFormDialog: FC<KnownNodeFormDialogProps> = ({ ctrl, node }) => {
           }}
         >
           <Stack sx={{ padding: 1 }}>
-            <KnownNodeFormFields form={form} />
+            <MatrixNodeFields form={form} />
           </Stack>
         </form>
       </Dialog.Content>

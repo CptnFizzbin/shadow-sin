@@ -10,7 +10,7 @@ import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerSto
 import type { KnownNode } from "#/system/matrix/knownNode.ts"
 
 import { useKnownNodeFormDialog } from "./dialogs/knownNodeFormDialog.tsx"
-import { KnownNodeCard } from "./knownNodeCard.tsx"
+import { MatrixNodeCard } from "./matrixNodeCard.tsx"
 
 export const KnownNodesList: FC = () => {
   const dispatch = useRunnerStoreDispatch()
@@ -31,7 +31,7 @@ export const KnownNodesList: FC = () => {
 
   return (
     <Stack>
-      <Typography variant="h6">Known Nodes</Typography>
+      <Typography>Known Nodes</Typography>
 
       {knownNodes.length === 0 && (
         <Typography color="text.secondary" sx={{ pl: 1 }}>
@@ -40,7 +40,7 @@ export const KnownNodesList: FC = () => {
       )}
 
       {knownNodes.map((node) => (
-        <KnownNodeCard
+        <MatrixNodeCard
           key={node.id}
           node={node}
           isActive={node.id === activeNodeId}

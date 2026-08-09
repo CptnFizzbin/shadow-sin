@@ -12,11 +12,11 @@ const NODE_STAT_MAX = 99
 const nodeTypeOptions = Object.values(NodeType).map((value) => ({ value, label: NodeTypeLabels[value] }))
 const accessLevelOptions = Object.values(AccessLevel).map((value) => ({ value, label: AccessLevelLabels[value] }))
 
-interface KnownNodeFormFieldsProps {
+interface MatrixNodeFieldsProps {
   form: KnownNodeForm
 }
 
-export const KnownNodeFormFields: FC<KnownNodeFormFieldsProps> = ({ form }) => {
+export const MatrixNodeFields: FC<MatrixNodeFieldsProps> = ({ form }) => {
   return (
     <Stack sx={{ gap: 2 }}>
       <form.AppField

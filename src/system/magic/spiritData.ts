@@ -144,8 +144,8 @@ export function calculateSpiritConditionMonitor(force: number, type: SpiritType)
   }
 }
 
-// SR4A p.295-302: attribute offsets from force for each spirit type. Resonance and the four
-// Matrix stats are always 0 — spirits have no Matrix presence.
+// Attribute offsets from force for each spirit type. Resonance and the four Matrix stats are
+// always 0 — spirits have no Matrix presence.
 const baseAttrOffsets: Record<AttributeKey, number> = {
   body: 0, agility: 0, reaction: 0, strength: 0,
   charisma: 0, intuition: 0, logic: 0, willpower: 0,

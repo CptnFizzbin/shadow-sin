@@ -99,11 +99,7 @@ export interface RunnerData {
     matrix: number
   }
 
-  /**
-   * Player-facing Matrix session state — Known Nodes, the Active Node, and running
-   * Programs/Agents. See `MatrixGameState` and the **Matrix Game State** glossary entry in
-   * CONTEXT.md. Cleared by the Player-triggered Clear Matrix Session action, not automatically.
-   */
+  /** Player-facing Matrix session state — Known Nodes, the Active Node, and running Programs/Agents. */
   gameState: {
     matrix: MatrixGameState
   }
