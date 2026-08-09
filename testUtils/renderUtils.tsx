@@ -81,9 +81,9 @@ export function renderInBuilder(
 
 /**
  * Fills the "Name" field in the last rendered MUI Dialog and clicks "Save".
- * MUI Dialog uses portals; using the last dialog avoids stale portal nodes
- * left over from previous tests.
  */
+// MUI Dialog uses portals; querying the last dialog avoids stale portal nodes
+// left over from previous tests.
 export function fillNameAndClickSave(nameValue: string) {
   const dialogs = screen.getAllByRole("dialog")
   const dialog = dialogs[dialogs.length - 1]

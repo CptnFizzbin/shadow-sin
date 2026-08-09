@@ -5,6 +5,7 @@ import ListItemText from "@mui/material/ListItemText"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import type { LinkProps } from "@tanstack/react-router"
 import { createFileRoute, Link } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/test/")({
@@ -18,16 +19,21 @@ const testPages = [
     to: "/test/theme/typography",
   },
   {
-    label: "ItemDetails — All Slots",
+    label: "ItemDetails",
     description: "ItemDetailsRoot with every common field and every ItemDetailsSlot populated at once.",
     to: "/test/items/details/all",
   },
   {
-    label: "EntityCard — All Elements",
+    label: "EntityCard",
     description: "EntityCard with every common EntityData field and every Layout region/element populated at once.",
-    to: "/test/entityCard/all",
+    to: "/test/entity-card/base-entity-card",
   },
-] as const
+  {
+    label: "ItemCard",
+    description: "Every ItemData type card rebuilt on ItemCard/EntityCard",
+    to: "/test/entity-card/item-cards",
+  },
+] as const satisfies ReadonlyArray<LinkProps & { label: string, description: string }>
 
 /**
  * Index of design/visual-QA sandbox pages under `/test` — not part of the app's real navigation.

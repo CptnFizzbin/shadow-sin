@@ -72,7 +72,7 @@ describe("SpellsViewerSection", () => {
     const store = renderWithSpells([manabolt])
 
     // Act
-    fireEvent.click(screen.getByText("Sustained"))
+    fireEvent.click(screen.getByLabelText("Not Sustained"))
 
     // Assert: state updated...
     await waitFor(() => expect(store.getState().spells[0].sustained).toBe(true))

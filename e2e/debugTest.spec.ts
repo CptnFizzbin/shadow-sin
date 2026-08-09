@@ -16,33 +16,25 @@ test("Click attack button - does it crash?", async ({ page }) => {
     }
   })
 
-  // Seed localStorage
   await page.goto("/")
   await expect(page.getByRole("banner").getByText(/ShadowSIN/i)).toBeVisible()
 
-  // Navigate to offense page  
   await page.goto(OFFENSE_URL)
-  
-  // Wait for attack button
+
   const attackButton = page.getByRole("button", { name: "Attack" }).first()
   await expect(attackButton).toBeVisible({ timeout: 10000 })
 
-  // Click the attack button
   console.log("Clicking attack button...")
   await attackButton.click()
 
-  // Check what happened - wait a moment
   await page.waitForTimeout(2000)
-  
-  // Check all visible text
+
   const allText = await page.locator("body").innerText()
   console.log("After clicking attack button, body text:", allText.substring(0, 500))
-  
-  // Check for dialog
+
   const dialogCount = await page.getByRole("dialog").count()
   console.log("Dialog count:", dialogCount)
-  
-  // Check for crash
+
   const failedToLoad = await page.getByText("Failed to load runner").count()
   console.log("'Failed to load runner' count:", failedToLoad)
   

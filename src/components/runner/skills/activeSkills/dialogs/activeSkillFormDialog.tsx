@@ -124,7 +124,6 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
               )}
             </form.AppField>
 
-            {/* Linked attribute (read-only display) */}
             {linkedAttr && (
               <MuiTextField
                 label="Linked Attribute"
@@ -157,7 +156,6 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
                 return (
                   <>
-                    {/* Dropdown for fixed specializations (hidden when custom-only) */}
                     {hasFixed && (
                       <FormControl fullWidth size="small">
                         <InputLabel>Specialization (optional)</InputLabel>
@@ -193,7 +191,6 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
                       </FormControl>
                     )}
 
-                    {/* Free-text input: shown for custom-only skills or after "Custom..." */}
                     {showCustomTextField && customEntries.length > 0 && (
                       <>
                         {customEntries.map((entry, idx) => (
@@ -213,7 +210,6 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
                       </>
                     )}
 
-                    {/* Disabled placeholder for skills with no specializations at all */}
                     {!hasFixed && !hasCustom && (
                       <FormControl fullWidth size="small" disabled>
                         <InputLabel>Specialization (optional)</InputLabel>

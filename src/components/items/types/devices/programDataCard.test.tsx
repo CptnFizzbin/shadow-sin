@@ -26,7 +26,7 @@ describe("ProgramDataCard", () => {
 
     // Assert
     expect(screen.getByText("Exploit")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
     expect(screen.getByText(ProgramType.exploit)).toBeDefined()
   })
 
@@ -48,7 +48,7 @@ describe("ProgramDataCard", () => {
     renderProgramCard(fakeProgram, undefined, onEdit)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Exploit"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     // Assert
@@ -60,7 +60,7 @@ describe("ProgramDataCard", () => {
     const runnerStore = renderProgramCard(fakeProgram)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Exploit"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert

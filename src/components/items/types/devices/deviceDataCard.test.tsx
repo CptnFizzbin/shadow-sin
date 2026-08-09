@@ -123,7 +123,7 @@ describe("DeviceDataCard", () => {
     const runnerStore = renderRemovableDeviceCard(deviceWithProgram, { [runningProgram.id]: runningProgram })
 
     // Act
-    fireEvent.contextMenu(screen.getAllByText("Renraku Sensei")[0])
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert

@@ -54,26 +54,20 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
         onEdit={onEdit}
         onRemove={removeImplant}
       >
-        {implant.implantType && (
-          <ItemCard.Layout.HeaderRow>
-            <ItemCard.SubType label={typeLabel[implant.implantType] ?? implant.implantType} />
-          </ItemCard.Layout.HeaderRow>
+        {implant.implantType && <ItemCard.SubType label={typeLabel[implant.implantType] ?? implant.implantType} />}
+
+        <ItemCard.Stat
+          label="Ess"
+          value={implant.essenceCost.toFixed(2)}
+          effectiveValue={effectiveEssence.toFixed(2)}
+          type="modifier"
+        />
+
+        {implant.location && <ItemCard.Stat value={implant.location} type="rating" />}
+
+        {implant.grade && implant.grade !== ImplantGrade.standard && (
+          <ItemCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
         )}
-
-        <ItemCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
-          <ItemCard.Stat
-            label="Ess"
-            value={implant.essenceCost.toFixed(2)}
-            effectiveValue={effectiveEssence.toFixed(2)}
-            type="modifier"
-          />
-
-          {implant.location && <ItemCard.Stat value={implant.location} type="rating" />}
-
-          {implant.grade && implant.grade !== ImplantGrade.standard && (
-            <ItemCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
-          )}
-        </ItemCard.Layout.BodyRow>
 
         {hasAccessories && (
           <ItemCard.Layout.BodyRow

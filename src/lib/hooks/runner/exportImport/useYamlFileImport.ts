@@ -28,10 +28,10 @@ type ParseResult =
 
 /**
  * Parses YAML content into a RunnerData, capturing any thrown error instead
- * of letting it propagate. Kept as a plain (non-hook) function outside
- * `useYamlFileImport` because the React Compiler transform mishandles a
- * try/catch nested directly inside a hook's returned closures.
+ * of letting it propagate.
  */
+// Kept as a plain function outside `useYamlFileImport` rather than inlined in its closure —
+// the React Compiler transform mishandles a try/catch nested directly inside a hook's returned closures.
 function parseYamlContent(yamlContent: string): ParseResult {
   try {
     return { ok: true, runner: yamlToRunnerData(yamlContent) }

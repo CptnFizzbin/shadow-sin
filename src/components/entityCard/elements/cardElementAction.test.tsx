@@ -1,3 +1,4 @@
+import MenuList from "@mui/material/MenuList"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
@@ -8,17 +9,27 @@ import { CardElementAction } from "./cardElementAction.tsx"
 describe("CardElementAction", () => {
   it("renders the label and fires onClick", () => {
     const onClick = vi.fn()
-    render(<CardElementAction label="Cast" onClick={onClick} />, { wrapper: ThemeWrapper })
+    render(
+      <MenuList>
+        <CardElementAction label="Cast" onClick={onClick} />
+      </MenuList>,
+      { wrapper: ThemeWrapper },
+    )
 
-    fireEvent.click(screen.getByRole("button", { name: "Cast" }))
+    fireEvent.click(screen.getByRole("menuitem", { name: "Cast" }))
 
     expect(onClick).toHaveBeenCalledOnce()
   })
 
   it("respects disabled", () => {
     const onClick = vi.fn()
-    render(<CardElementAction label="Cast" onClick={onClick} disabled />, { wrapper: ThemeWrapper })
+    render(
+      <MenuList>
+        <CardElementAction label="Cast" onClick={onClick} disabled />
+      </MenuList>,
+      { wrapper: ThemeWrapper },
+    )
 
-    expect(screen.getByRole("button", { name: "Cast" })).toHaveProperty("disabled", true)
+    expect(screen.getByRole("menuitem", { name: "Cast" }).getAttribute("aria-disabled")).toBe("true")
   })
 })

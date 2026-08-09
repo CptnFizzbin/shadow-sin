@@ -101,13 +101,14 @@ describe("VehicleDataCard", () => {
   })
 
   it("navigates via onOpen when tapped", () => {
-    // Arrange: the card itself is the first "button" in DOM order — its damage-track cells
-    // (also role="button") are nested inside it.
+    // Arrange
     const onOpen = vi.fn()
     renderVehicleCard(car, {}, onOpen)
 
-    // Act
-    fireEvent.click(screen.getAllByRole("button")[0])
+    // Act: click the name — the card itself has no accessible name of its own, and its
+    // damage-track cells are also role="button", so clicking the title text (which bubbles to
+    // the card's onClick) is the unambiguous way to trigger onOpen.
+    fireEvent.click(screen.getByText("Americar"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()
@@ -118,7 +119,7 @@ describe("VehicleDataCard", () => {
     const runnerStore = renderRemovableVehicleCard(carWithMod, { [mod.id]: mod })
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Americar"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert

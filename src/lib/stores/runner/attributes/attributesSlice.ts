@@ -18,7 +18,6 @@ export const attributesReducer = createReducer(initialState, (builder) => {
       const next = state[key] + delta
       state[key] = min !== undefined ? Math.max(min, next) : next
     })
-    // Burning Edge permanently reduces max Edge by 1, never below 1.
     .addCase(burnEdge, (state) => {
       state[AttributeKey.edge] = Math.max(1, state[AttributeKey.edge] - 1)
     })

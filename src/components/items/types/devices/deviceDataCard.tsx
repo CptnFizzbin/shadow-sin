@@ -26,17 +26,13 @@ export const DeviceDataCard: FC<DeviceDataCardProps> = ({ device, onOpen, onEdit
 
   return (
     <ItemCard item={device} onOpen={onOpen} onEdit={onEdit} onRemove={removeDevice}>
-      <ItemCard.Layout.HeaderRow>
-        <ItemCard.SubType label={deviceTypeLabel} />
-      </ItemCard.Layout.HeaderRow>
+      <ItemCard.SubType label={deviceTypeLabel} />
 
-      <ItemCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
-        <ItemCard.Stat label="Rating" value={device.deviceRating} type="rating" />
-        <ItemCard.Stat label="Res" value={device.response} />
-        <ItemCard.Stat label="Sig" value={device.signal} />
-        <ItemCard.Stat label="Sys" value={device.system} />
-        <ItemCard.Stat label="FW" value={device.firewall} />
-      </ItemCard.Layout.BodyRow>
+      <ItemCard.Stat label="Rating" value={device.deviceRating} type="rating" />
+      <ItemCard.Stat label="Res" value={device.response} />
+      <ItemCard.Stat label="Sig" value={device.signal} />
+      <ItemCard.Stat label="Sys" value={device.system} />
+      <ItemCard.Stat label="FW" value={device.firewall} />
 
       {hasPrograms && (
         <ItemCard.Layout.BodyRow

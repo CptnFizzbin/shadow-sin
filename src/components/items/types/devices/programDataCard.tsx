@@ -18,9 +18,7 @@ export const ProgramDataCard: FC<ProgramDataCardProps> = ({ program, onOpen, onE
 
   return (
     <ItemCard item={program} onOpen={onOpen} onEdit={onEdit} onRemove={removeProgram}>
-      <ItemCard.Layout.BodyRow>
-        <ItemCard.Stat value={program.programType} />
-      </ItemCard.Layout.BodyRow>
+      <ItemCard.Stat value={program.programType} />
     </ItemCard>
   )
 }

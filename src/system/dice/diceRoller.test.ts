@@ -274,7 +274,7 @@ describe("DiceRoller", () => {
       const diceRoller = new DiceRoller()
 
       vi.spyOn(diceRoller, "rollD6")
-        .mockReturnValueOnce(6) // 6 for first roll
+        .mockReturnValueOnce(6)
         .mockReturnValueOnce(3)
 
       diceRoller.addDice(1)

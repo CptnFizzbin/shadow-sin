@@ -38,7 +38,7 @@ describe("LicenseDataCard", () => {
 
     // Assert
     expect(screen.getByText("License: Ares Predator")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("renders the license's own rating when it's a Real License", () => {
@@ -46,7 +46,7 @@ describe("LicenseDataCard", () => {
     renderLicenseCard(realLicense)
 
     // Assert
-    expect(screen.getByText("real")).toBeDefined()
+    expect(screen.getByText("Rating: real")).toBeDefined()
   })
 
   it("navigates via onOpen when tapped", () => {
@@ -55,7 +55,7 @@ describe("LicenseDataCard", () => {
     renderWithProviders(<LicenseDataCard license={fakeLicense} onOpen={onOpen} />)
 
     // Act
-    fireEvent.click(screen.getByRole("button"))
+    fireEvent.click(screen.getByText("License: Ares Predator"))
 
     // Assert
     expect(onOpen).toHaveBeenCalledOnce()
@@ -67,7 +67,7 @@ describe("LicenseDataCard", () => {
     renderWithProviders(<LicenseDataCard license={fakeLicense} onEdit={onEdit} />)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("License: Ares Predator"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     // Assert
@@ -79,7 +79,7 @@ describe("LicenseDataCard", () => {
     const runnerStore = renderLicenseCard(fakeLicense)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("License: Ares Predator"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert

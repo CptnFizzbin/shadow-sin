@@ -28,17 +28,13 @@ export const VehicleDataCard: FC<VehicleDataCardProps> = ({ vehicle, onOpen, onE
 
   return (
     <ItemCard item={vehicle} onOpen={onOpen} onEdit={onEdit} onRemove={removeVehicle}>
-      <ItemCard.Layout.HeaderRow>
-        <ItemCard.SubType label={vehicle.vehicleType} />
-      </ItemCard.Layout.HeaderRow>
+      <ItemCard.SubType label={vehicle.vehicleType} />
 
-      <ItemCard.Layout.BodyRow sx={{ flexWrap: "wrap" }}>
-        <ItemCard.Stat label="Handling" value={vehicle.handling} type="rating" />
-        <ItemCard.Stat label="Accel" value={vehicle.accel} type="rating" />
-        <ItemCard.Stat label="Speed" value={vehicle.speed} type="rating" />
-        <ItemCard.Stat label="Armor" value={vehicle.armor} type="damage" />
-        <ItemCard.Stat label="Body" value={vehicle.body} type="damage" />
-      </ItemCard.Layout.BodyRow>
+      <ItemCard.Stat label="Handling" value={vehicle.handling} type="rating" />
+      <ItemCard.Stat label="Accel" value={vehicle.accel} type="rating" />
+      <ItemCard.Stat label="Speed" value={vehicle.speed} type="rating" />
+      <ItemCard.Stat label="Armor" value={vehicle.armor} type="damage" />
+      <ItemCard.Stat label="Body" value={vehicle.body} type="damage" />
 
       <ItemCard.Layout.BodyRow>
         <ItemCard.DamageTrack

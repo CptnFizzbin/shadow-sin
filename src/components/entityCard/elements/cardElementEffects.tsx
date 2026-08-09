@@ -19,9 +19,7 @@ export const CardElementEffects: FC<CardElementEffectsProps> = ({ effects }) => 
         <Chip
           key={`${effect.type}-${effect.target ?? "none"}-${index}`}
           size="small"
-          variant="outlined"
           label={getEffectLabel(effect)}
-          sx={{ "height": "auto", "& .MuiChip-label": { whiteSpace: "normal" } }}
         />
       ))}
     </Stack>

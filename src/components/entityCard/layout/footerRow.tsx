@@ -5,8 +5,8 @@ import type { FC } from "react"
 export interface FooterRowProps extends StackProps {}
 
 /** Bottom layout region of an EntityCard — source, availability, cost, and similar metadata. */
-export const CardLayoutFooterRow: FC<FooterRowProps> = ({ children, ...props }) => (
+export const FooterRow: FC<FooterRowProps> = ({ children, ...props }) => (
   <Stack direction="row" {...props}>{children}</Stack>
 )
 
-CardLayoutFooterRow.displayName = "Card.Layout.FooterRow"
+FooterRow.displayName = "Card.Layout.FooterRow"

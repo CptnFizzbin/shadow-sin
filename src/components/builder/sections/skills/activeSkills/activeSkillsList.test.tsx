@@ -46,7 +46,6 @@ describe("ActiveSkillsList", () => {
     await waitFor(() => {
       const dialogs = screen.getAllByRole("dialog")
       const dialog = dialogs[dialogs.length - 1]
-      // The skill Select in the dialog should display "Pistols", not "Automatics"
       expect(within(dialog).queryByDisplayValue(SkillKey.automatics)).toBeNull()
       expect(within(dialog).getByDisplayValue(SkillKey.pistols)).toBeTruthy()
     })

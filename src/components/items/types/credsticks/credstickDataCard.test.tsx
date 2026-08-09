@@ -65,7 +65,7 @@ describe("CredstickDataCard", () => {
     renderWithProviders(<CredstickDataCard credstick={streetStick} onEdit={onEdit} />)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Street Cred"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     // Assert

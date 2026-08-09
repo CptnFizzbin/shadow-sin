@@ -41,7 +41,7 @@ export function migrateOldLocalStorageFormat(ls: Storage): void {
     }
   }
 
-  // Build / update the index from migrated characters
+  // The old key-value format had no index; build one so migrated characters show up in listRunners.
   if (migrations.some((m) => m.newKey.startsWith("shadowsin:characters/"))) {
     const indexKey = "shadowsin:index"
     let index: Array<{ id: string, name: string, lastModified: string }> = []

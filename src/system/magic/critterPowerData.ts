@@ -458,7 +458,7 @@ export function lookupCritterPower(name: string): CritterPowerData | undefined {
   const exact = powers[name.toLowerCase()]
   if (exact) return exact
 
-  // Strip parenthetical qualifier: "Elemental Attack (Air)" → "Elemental Attack"
+  // Variant powers like "Elemental Attack (Air)" aren't separate dict entries — fall back to the base name.
   const baseName = name.replace(/\s*\(.*\)$/, "").trim().toLowerCase()
   return powers[baseName]
 }

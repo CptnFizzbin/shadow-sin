@@ -119,7 +119,7 @@ describe("ImplantDataCard", () => {
     const runnerStore = renderRemovableImplantCard(alphaImplant)
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Wired Reflexes 2"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 
