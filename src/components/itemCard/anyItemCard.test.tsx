@@ -35,13 +35,27 @@ describe("AnyItemCard", () => {
   it("falls back to ItemCard for item types without a typed card", () => {
     const item: ItemData = {
       id: "00000000-0000-0000-0000-000000000002",
-      name: "Fake SIN",
-      itemType: ItemType.other,
+      name: "Cyberdeck Firmware",
+      itemType: ItemType.software,
     }
 
     render(<AnyItemCard item={item} />, { wrapper: ThemeWrapper })
 
-    expect(screen.getByText("Fake SIN")).toBeDefined()
+    expect(screen.getByText("Cyberdeck Firmware")).toBeDefined()
+  })
+
+  it("dispatches miscellaneous items to OtherDataCard", () => {
+    const item: ItemData = {
+      id: "00000000-0000-0000-0000-000000000003",
+      name: "Survival Kit",
+      itemType: ItemType.other,
+    }
+
+    renderWithProviders(<AnyItemCard item={item} />, {
+      runnerStore: new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear: { [item.id]: item } }))),
+    })
+
+    expect(screen.getByText("Survival Kit")).toBeDefined()
   })
 
   it("passes onOpen through to the rendered card", () => {

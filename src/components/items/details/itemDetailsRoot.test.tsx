@@ -65,7 +65,7 @@ describe("ItemDetailsRoot", () => {
     const accessory: ItemData = {
       id: "00000000-0000-0000-0000-000000000002",
       name: "GPS Jammer",
-      itemType: ItemType.other,
+      itemType: ItemType.software,
     }
 
     render(

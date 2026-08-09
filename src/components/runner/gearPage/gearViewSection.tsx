@@ -33,10 +33,6 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
 
   if (isSearching && sectionItems.length === 0) return null
 
-  const rootItems = sectionItems.filter((item) => !item.parentId)
-  const getChildItems = (parentId: string) =>
-    sectionItems.filter((item) => item.parentId === parentId)
-
   const isExpanded = isSearching ? sectionItems.length > 0 : isManuallyOpen
 
   return (
@@ -75,11 +71,7 @@ export const GearViewSection: FC<GearViewSectionProps> = ({ section, searchTerms
         </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 1 }}>
-        <GearViewSectionContent
-          section={section}
-          rootItems={rootItems}
-          getChildItems={getChildItems}
-        />
+        <GearViewSectionContent section={section} />
       </AccordionDetails>
     </Accordion>
   )

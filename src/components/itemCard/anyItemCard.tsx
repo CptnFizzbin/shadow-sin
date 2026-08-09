@@ -7,6 +7,7 @@ import { ProgramDataCard } from "#/components/items/types/devices/programDataCar
 import { ImplantDataCard } from "#/components/items/types/implants/implantDataCard.tsx"
 import { LicenseDataCard } from "#/components/items/types/licenses/licenseDataCard.tsx"
 import { SinDataCard } from "#/components/items/types/licenses/sinDataCard.tsx"
+import { OtherDataCard } from "#/components/items/types/other/otherDataCard.tsx"
 import { VehicleDataCard } from "#/components/items/types/vehicles/vehicleDataCard.tsx"
 import { WeaponDataCard } from "#/components/items/types/weapons/weaponDataCard.tsx"
 import type { ArmorData } from "#/system/gear/armorData.ts"
@@ -71,6 +72,9 @@ export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemo
 
     case ItemType.vehicle:
       return <VehicleDataCard vehicle={item as VehicleData} onOpen={onOpen} onEdit={onEdit} />
+
+    case ItemType.other:
+      return <OtherDataCard item={item} onOpen={onOpen} onEdit={onEdit} />
 
     default:
       return <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
