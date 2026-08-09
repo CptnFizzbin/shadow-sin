@@ -6,6 +6,7 @@ import { DiceTrayProvider } from "#/components/dice/diceTrayProvider.tsx"
 import { RunnerErrorRoute } from "#/components/runner/runnerErrorRoute.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
+import { useActiveRunnerStoreContext } from "#/lib/contexts/runner/activeRunnerStoreContext.tsx"
 import { useRunnerManager } from "#/lib/contexts/runner/runnerManagerContext.tsx"
 import { RunnerManager } from "#/lib/persistence/runnerManager.ts"
 import { LocalStorageProvider } from "#/lib/storage/providers/localStorageProvider.ts"
@@ -43,6 +44,7 @@ function RunnerRoute() {
   const store = useMemo(() => new RunnerDataStore(runner), [runner])
   const diceTrayApi = useMemo(() => new DiceTrayApi(), [])
   const runnerManager = useRunnerManager()
+  const { setActiveStore } = useActiveRunnerStoreContext()
 
   useEffect(() => {
     const { unsubscribe } = store.subscribe(async (sheet) => {
@@ -55,6 +57,13 @@ function RunnerRoute() {
 
     return () => unsubscribe()
   }, [store, runnerManager])
+
+  // Header lives above this route's Outlet, outside RunnerStoreProvider — this is how it
+  // gets a live reference to the Runner currently being viewed.
+  useEffect(() => {
+    setActiveStore(store)
+    return () => setActiveStore(null)
+  }, [store, setActiveStore])
 
   return (
     <RunnerStoreProvider store={store}>

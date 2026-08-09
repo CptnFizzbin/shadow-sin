@@ -8,8 +8,13 @@ import { useColorScheme } from "@mui/material/styles"
 import { Link } from "@tanstack/react-router"
 import type { FC } from "react"
 
+import { RunnerHeaderSummary } from "#/components/runner/header/runnerHeaderSummary.tsx"
+import { useActiveRunnerStoreContext } from "#/lib/contexts/runner/activeRunnerStoreContext.tsx"
+import { RunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+
 export const Header: FC = () => {
   const { mode, setMode } = useColorScheme()
+  const { activeStore } = useActiveRunnerStoreContext()
 
   const handleToggleColorMode = () => {
     setMode(mode === "light" ? "dark" : "light")
@@ -30,6 +35,12 @@ export const Header: FC = () => {
           {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
         </IconButton>
       </Toolbar>
+
+      {activeStore && (
+        <RunnerStoreContext.Provider value={activeStore}>
+          <RunnerHeaderSummary />
+        </RunnerStoreContext.Provider>
+      )}
     </AppBar>
   )
 }

@@ -11,6 +11,7 @@ import { TanStackPacerDevtools } from "#/integrations/tanstackPacer/devtools.tsx
 import { TanStackQueryDevtools } from "#/integrations/tanstackQuery/devtools.tsx"
 import TanStackQueryProvider from "#/integrations/tanstackQuery/rootProvider.tsx"
 import { TanStackRouterDevtools } from "#/integrations/tanstackRouter/devtools.tsx"
+import { ActiveRunnerStoreProvider } from "#/lib/contexts/runner/activeRunnerStoreContext.tsx"
 
 type RouterContext = object
 
@@ -26,28 +27,30 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   return (
     <TanStackQueryProvider>
-      <Stack direction="column" sx={{ minHeight: "100vh", gap: 0 }}>
-        <Header />
+      <ActiveRunnerStoreProvider>
+        <Stack direction="column" sx={{ minHeight: "100vh", gap: 0 }}>
+          <Header />
 
-        <Container
-          disableGutters
-          sx={{
-            maxWidth: 1200,
-            mx: "auto",
-            width: "100%",
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Outlet />
-        </Container>
+          <Container
+            disableGutters
+            sx={{
+              maxWidth: 1200,
+              mx: "auto",
+              width: "100%",
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Outlet />
+          </Container>
 
-        <Stack sx={{ padding: 1 }}>
-          <Divider />
-          <Footer />
+          <Stack sx={{ padding: 1 }}>
+            <Divider />
+            <Footer />
+          </Stack>
         </Stack>
-      </Stack>
+      </ActiveRunnerStoreProvider>
       <TanStackDevtools
         plugins={[
           ShadowSinDevtools,
