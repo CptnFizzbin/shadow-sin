@@ -35,7 +35,7 @@ export const ActiveSkillsListItem: FC<ActiveSkillsListItemProps> = ({
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1 }}>
           {skill.name}
         </Typography>

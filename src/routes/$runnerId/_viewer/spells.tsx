@@ -27,7 +27,7 @@ function RouteComponent() {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SpellsViewerSection />
     </Stack>
   )

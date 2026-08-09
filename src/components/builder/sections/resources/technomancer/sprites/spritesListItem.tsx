@@ -36,7 +36,7 @@ export const SpritesListItem: FC<SpriteRowProps> = ({
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Stack sx={{ flexGrow: 1 }}>
           <Typography>{sprite.name}</Typography>
           <Typography color="text.secondary">

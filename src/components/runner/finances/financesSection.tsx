@@ -36,7 +36,7 @@ export const FinancesSection: FC = () => {
 
   return (
     <Stack>
-      <Stack direction="row" sx={{ alignItems: "center", justifyContent: "flex-end", gap: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center", justifyContent: "flex-end" }}>
         <Button
           size="small"
           variant="outlined"
@@ -49,7 +49,7 @@ export const FinancesSection: FC = () => {
 
       <Grid container columns={3} spacing={1}>
         <Grid size={1}>
-          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
+          <Stack sx={{ alignItems: "center", flexGrow: 1 }}>
             <Label label="Nuyen" />
             <Typography color={nuyenBalance < 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={nuyenBalance} />
@@ -58,7 +58,7 @@ export const FinancesSection: FC = () => {
         </Grid>
 
         <Grid size={1}>
-          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
+          <Stack sx={{ alignItems: "center", flexGrow: 1 }}>
             <Label label="Loans" />
             <Typography color={loansBalance > 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={loansBalance} />
@@ -67,7 +67,7 @@ export const FinancesSection: FC = () => {
         </Grid>
 
         <Grid size={1}>
-          <Stack sx={{ alignItems: "center", gap: 1, flexGrow: 1 }}>
+          <Stack sx={{ alignItems: "center", flexGrow: 1 }}>
             <Label label="Net Worth" />
             <Typography color={netWorth < 0 ? "error.main" : "text.primary"}>
               <Nuyen amount={netWorth} />

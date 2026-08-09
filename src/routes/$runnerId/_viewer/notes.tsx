@@ -10,7 +10,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/notes")({
 
 function RouteComponent() {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>Notes</SectionHeader>
 
       <UnderConstruction />

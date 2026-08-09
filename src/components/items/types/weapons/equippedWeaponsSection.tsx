@@ -37,7 +37,7 @@ export const EquippedWeaponsSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Weapons" />
       {equippedWeapons.map((weapon) => (
         <Stack direction="row" key={weapon.id} sx={{ gap: 0.5, alignItems: "center" }}>

@@ -19,7 +19,7 @@ export const SourceFieldGroup = withFieldGroup({
   defaultValues: defaultValues,
   render: ({ group }) => {
     return (
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <group.AppField
           name="source.book"
           listeners={{

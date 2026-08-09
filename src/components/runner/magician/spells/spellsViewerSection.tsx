@@ -38,7 +38,7 @@ export const SpellsViewerSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {Object.entries(spellsByCategory).map(([category, categorySpells]) => (
         <Stack key={category} sx={{ gap: 0.5 }}>
           <Label label={category} variant="outlined" />

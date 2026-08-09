@@ -63,9 +63,9 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
   const showCustomTextField = hasCustom && (customModeActive || !hasFixed)
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {/* Top Row: Type and Delete Button */}
-      <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+      <Stack direction="row" sx={{ alignItems: "flex-start" }}>
         <FormControl size="small" sx={{ flexGrow: 1 }}>
           <InputLabel>Type</InputLabel>
           <Select
@@ -98,7 +98,6 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
       {/* Second Row: Extra Fields (Target, Specialization) and Value */}
       <Stack
         sx={{
-          gap: 1,
           alignItems: "stretch",
           pl: 2,
           ml: 1,
@@ -106,7 +105,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
           borderColor: "divider",
         }}
       >
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", alignItems: "flex-start" }}>
+        <Stack direction="row" sx={{ flexWrap: "wrap", alignItems: "flex-start" }}>
           {targetOptions !== null && (
             <FormControl size="small" sx={{ flex: "1 1 120px" }}>
               <InputLabel>Target</InputLabel>
@@ -127,7 +126,7 @@ export const GameEffectRow: FC<GameEffectRowProps> = ({ effect, onChange, onRemo
           )}
 
           {effect.type === GameEffectType.skillSpecializationMod && (
-            <Stack sx={{ flex: "1 1 120px", gap: 1 }}>
+            <Stack sx={{ flex: "1 1 120px" }}>
               {hasFixed && (
                 <FormControl size="small" fullWidth>
                   <InputLabel>Specialization</InputLabel>

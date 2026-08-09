@@ -15,7 +15,7 @@ export const ImplantsPanel: FC = () => {
   const isEssenceError = essenceInfo.essenceRemaining <= 0
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Stack
         direction="row"
         sx={{ justifyContent: "space-between", alignItems: "center", px: 0.5 }}

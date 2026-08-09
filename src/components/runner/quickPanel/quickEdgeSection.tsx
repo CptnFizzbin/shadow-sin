@@ -52,7 +52,7 @@ export const QuickEdgeSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Edge" />
 
       <Box

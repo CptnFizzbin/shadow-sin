@@ -38,7 +38,7 @@ function RouteComponent() {
 
       <Typography variant="h1" sx={{ textAlign: "center" }}>{profile.alias || profile.name}</Typography>
 
-      <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
+      <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
         <ExportRunnerButton />
         <ImportCurrentRunnerButton />
       </Stack>
@@ -47,9 +47,9 @@ function RouteComponent() {
       <ProfileSection />
       <BiologySection />
 
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Label label="Reputation" />
-        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+        <Stack direction="row" sx={{ alignItems: "center" }}>
           <Chip label={`Street Cred: ${profile.streetCred}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
           <Chip label={`Notoriety: ${profile.notoriety}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />
           <Chip label={`Awareness: ${publicAwareness}`} size="small" variant="outlined" sx={{ flexGrow: 1 }} />

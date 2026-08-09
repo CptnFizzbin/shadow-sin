@@ -297,7 +297,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                       </RadioGroup>
 
                       {counterspellingSource === "other" && (
-                        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+                        <Stack direction="row" sx={{ alignItems: "center" }}>
                           <Typography variant="body2" sx={{ flex: 1 }}>Their Counterspelling rating</Typography>
                           <CounterInput
                             value={otherRating}
@@ -317,7 +317,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                   {groupedSkillOptions.map(({ group, options }) => (
                     <Stack key={group} sx={{ gap: 0.5 }}>
                       <Label label={group} />
-                      <Stack sx={{ gap: 1 }}>
+                      <Stack>
                         {options.map((option) => {
                           const isSelected = option.key === selectedOption.key
                           const rating = option.skill ? skillDataByKey[option.skill]?.rating ?? 0 : 0
@@ -364,7 +364,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
       )}
 
       {currentStep === "modifiers" && (
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           <FormControlLabel
             control={(
               <Checkbox
@@ -426,7 +426,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                   />
 
                   {enabled && (
-                    <Stack direction="row" sx={{ gap: 1, alignItems: "center", pl: 4 }}>
+                    <Stack direction="row" sx={{ alignItems: "center", pl: 4 }}>
                       <Typography variant="body2" sx={{ flex: 1 }}># of Attacks</Typography>
                       <CounterInput
                         value={stepperValues[modifier.id] ?? modifier.min}

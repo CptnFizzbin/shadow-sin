@@ -6,7 +6,7 @@ import { VehicleCategory } from "#/system/gear/vehicleData.ts"
 
 export const VehiclesPanel: FC = () => {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <VehiclesList vehicleCategory={VehicleCategory.vehicle} />
       <VehiclesList vehicleCategory={VehicleCategory.drone} />
     </Stack>

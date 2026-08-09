@@ -34,7 +34,7 @@ export const SpellsList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Stack>
         <BuildPoints
           value={buildPoints.spent}

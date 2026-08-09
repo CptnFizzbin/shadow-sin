@@ -47,7 +47,7 @@ export const ComplexFormsList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Stack sx={{ gap: 0.5 }}>
         <Stack
           direction="row"

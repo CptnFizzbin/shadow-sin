@@ -43,7 +43,7 @@ function RootLayout() {
           <Outlet />
         </Container>
 
-        <Stack sx={{ padding: 1, gap: 1 }}>
+        <Stack sx={{ padding: 1 }}>
           <Divider />
           <Footer />
         </Stack>

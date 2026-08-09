@@ -23,7 +23,7 @@ export const SpendKarmaDialogFooter: FC<SpendKarmaDialogFooterProps> = ({ onCanc
   return (
     <Stack
       direction="row"
-      sx={{ gap: 1, justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", width: "100%" }}
+      sx={{ justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", width: "100%" }}
     >
       <Stack direction="row" sx={{ gap: 1.5, alignItems: "center" }}>
         <Typography variant="caption" color="text.secondary">Remaining</Typography>
@@ -40,7 +40,7 @@ export const SpendKarmaDialogFooter: FC<SpendKarmaDialogFooterProps> = ({ onCanc
         )}
       </Stack>
 
-      <Stack direction="row" sx={{ gap: 1, ml: "auto" }}>
+      <Stack direction="row" sx={{ ml: "auto" }}>
         <Button color="secondary" onClick={onCancel}>Cancel</Button>
         <Button variant="contained" color="secondary" disabled={!canSave} onClick={onSave}>
           Save

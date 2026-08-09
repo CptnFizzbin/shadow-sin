@@ -24,7 +24,7 @@ export const SpellListItem: FC<SpellListItemProps> = ({ spell, onEdit }) => {
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1 }}>{spell.name}</Typography>
         <BuildPoints value={BuilderConfig.magic.spells.bpCost} />
       </Stack>

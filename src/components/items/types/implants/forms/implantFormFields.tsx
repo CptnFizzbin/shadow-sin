@@ -82,8 +82,8 @@ export const ImplantFormFields = withFieldGroup({
     const itemId = useSelector(group.store, (state) => state.values.id)
 
     return (
-      <Stack sx={{ gap: 1 }}>
-        <Stack direction={{ xs: "column", md: "row" }} sx={{ gap: 1 }}>
+      <Stack>
+        <Stack direction={{ xs: "column", md: "row" }}>
           <group.AppField name="implantType">
             {(field) => (
               <field.SelectField
@@ -155,7 +155,7 @@ export const ImplantFormFields = withFieldGroup({
                     const capacity = field.state.value ?? 0
 
                     return (
-                      <Stack sx={{ gap: 1 }}>
+                      <Stack>
                         <field.CounterField label="Capacity" min={0} fullWidth />
                         {capacity >= 1 && (
                           <CapacitySlotsChip implantId={itemId} capacity={capacity} sx={{ width: "100%" }} />

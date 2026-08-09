@@ -25,7 +25,7 @@ export const ArmorSectionContent: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {Object.values(armorItems).map((item) => (
         <ArmorDataCard
           key={item.id}

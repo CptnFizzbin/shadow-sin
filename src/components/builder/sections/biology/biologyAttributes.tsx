@@ -12,7 +12,7 @@ import { metatypes } from "#/system/metatypeData.ts"
 
 export const BiologyAttributes: FC = () => {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="min / max (aug)" />
 
       <Stack sx={{ gap: 0 }}>

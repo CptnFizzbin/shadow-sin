@@ -92,7 +92,7 @@ export const SpiritFormFields: FC<SpiritFormFieldsProps> = ({ form, tradition })
             </Stack>
 
             {registryInfo && (
-              <Stack sx={{ gap: 1 }}>
+              <Stack>
                 <Label label="Optional Powers" variant="text" />
                 <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
                   Pick up to {maxOptionalPowers} powers (1 per 3 Force)

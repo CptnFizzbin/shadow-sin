@@ -52,10 +52,10 @@ export const KnowledgeSkillsList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Stack direction="row" sx={{ justifyContent: "space-between" }}>
         <Stack direction="column">
-          <Stack direction="row" sx={{ gap: 1, alignItems: "baseline" }}>
+          <Stack direction="row" sx={{ alignItems: "baseline" }}>
             <SkillPoints type="Free" value={skillPoints.spent.free} max={skillPoints.free} />
             +
             <SkillPoints value={skillPoints.spent.extra} />
@@ -119,7 +119,7 @@ export const KnowledgeSkillsList: FC = () => {
         </Typography>
       )}
 
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button
           variant="outlined"
           color="secondary"

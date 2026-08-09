@@ -33,7 +33,7 @@ export const DiceTrayDiceDisplay: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Box>
         <Label label="Pool Dice" variant="text" />
         <DiceResult

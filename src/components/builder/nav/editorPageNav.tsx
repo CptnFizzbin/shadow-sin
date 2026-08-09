@@ -24,7 +24,7 @@ export const EditorPageNav: FC<EditorPageNavProps> = ({
   onFinalize,
 }) => {
   return (
-    <Stack direction="row" sx={{ gap: 1 }}>
+    <Stack direction="row">
       <Button
         variant="outlined"
         size="small"

@@ -20,8 +20,8 @@ export const SpiritConditionMonitor: FC<SpiritConditionMonitorProps> = ({ spirit
   const isDestroyed = physical >= physicalMax
 
   return (
-    <Stack sx={{ gap: 1 }}>
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+    <Stack>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Label label="Condition Monitor" variant="text" />
         {isDestroyed && <Chip label="Destroyed" color="error" size="small" />}
       </Stack>

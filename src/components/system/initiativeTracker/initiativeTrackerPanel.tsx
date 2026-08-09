@@ -25,8 +25,8 @@ export const InitiativeTrackerPanel: FC = () => {
   const combatantFormDialog = useCombatantFormDialog()
 
   return (
-    <Stack sx={{ gap: 1, padding: 1 }}>
-      <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+    <Stack sx={{ padding: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1, fontWeight: "bold" }}>Round {round}</Typography>
         <Button variant="outlined" color="secondary" onClick={endRound}>End Round</Button>
         <Button variant="contained" color="primary" startIcon={<RiSkipForwardLine />} onClick={nextTurn}>
@@ -34,7 +34,7 @@ export const InitiativeTrackerPanel: FC = () => {
         </Button>
       </Stack>
 
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         {sortedCombatants.length === 0 && (
           <Typography color="text.secondary" sx={{ pl: 1 }}>
             No combatants yet — add one to begin.

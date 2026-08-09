@@ -15,7 +15,7 @@ export const ItemDetailsContent: FC<ItemDetailsContentProps> = ({ children }) =>
   if (childArray.length === 0) return null
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {childArray}
     </Stack>
   )

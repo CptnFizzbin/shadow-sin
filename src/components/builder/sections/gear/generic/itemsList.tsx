@@ -41,7 +41,7 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {topLevelItems.map((item) => (
         <AnyItemCard
           key={item.id}

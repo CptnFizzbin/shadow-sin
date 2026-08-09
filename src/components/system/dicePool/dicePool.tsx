@@ -56,7 +56,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
         padding: 1,
       }}
     >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1, fontWeight: "bold" }}>{name}</Typography>
 
         <Typography sx={{ fontWeight: "bold", fontVariantNumeric: "tabular-nums" }}>
@@ -87,7 +87,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
       </Stack>
 
       <Collapse in={!isOpen}>
-        <Stack sx={{ gap: 1, paddingTop: 1 }}>
+        <Stack sx={{ paddingTop: 1 }}>
           <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5, color: "text.secondary" }}>
             {Array.from({ length: total }, (_, index) => (
               <DieFace key={index} value={null} size={18} />

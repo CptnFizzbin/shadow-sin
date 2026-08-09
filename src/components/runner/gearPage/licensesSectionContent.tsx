@@ -28,7 +28,7 @@ export const LicensesSectionContent: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {Object.values(sins).map((sin) => (
         <SinDataCard
           key={sin.id}

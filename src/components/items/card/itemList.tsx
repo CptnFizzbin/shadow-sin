@@ -12,7 +12,7 @@ interface ItemListComponent extends FC<ItemListProps> {
 }
 
 const ItemListRoot: FC<ItemListProps> = ({ children }) => (
-  <Stack sx={{ gap: 1 }}>{children}</Stack>
+  <Stack>{children}</Stack>
 )
 
 export const ItemList = ItemListRoot as ItemListComponent

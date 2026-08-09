@@ -38,7 +38,7 @@ export const AdeptPowersViewerSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
       <Stack sx={{ gap: 0.5 }}>

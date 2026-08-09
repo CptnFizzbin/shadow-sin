@@ -49,7 +49,7 @@ export const ActiveSkillsList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <EditorMode.IsBuilder>
         <Typography color="secondary.main">
           {skillsBuildPoints.activeSkills.bpSpent} BP
@@ -99,7 +99,7 @@ export const ActiveSkillsList: FC = () => {
         </Typography>
       )}
 
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button
           variant="outlined"
           color="secondary"
