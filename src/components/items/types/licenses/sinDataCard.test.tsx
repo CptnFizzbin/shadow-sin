@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react"
+import { fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
@@ -70,7 +70,7 @@ describe("SinDataCard", () => {
 
     // Assert
     expect(screen.getByText("National ID (Fake)")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("renders the SIN's own rating when it's a Real SIN", () => {
@@ -78,7 +78,7 @@ describe("SinDataCard", () => {
     renderSinCard(realSin)
 
     // Assert
-    expect(screen.getByText("real")).toBeDefined()
+    expect(screen.getByText("Rating: real")).toBeDefined()
   })
 
   it("renders covered licenses as nested subitems with their own rating", () => {
@@ -86,8 +86,9 @@ describe("SinDataCard", () => {
     renderSinCard(sinWithLicense, { [coveredLicense.id]: coveredLicense })
 
     // Assert
-    expect(screen.getByText("License: Ares Predator")).toBeDefined()
-    expect(screen.getByText("Rating: 4")).toBeDefined()
+    const licenseRow = screen.getByText("License: Ares Predator").parentElement
+    expect(licenseRow).not.toBeNull()
+    expect(within(licenseRow!).getByText("Rating: 4")).toBeDefined()
   })
 
   it("removing a SIN with no licenses dispatches removeItem without confirming", async () => {

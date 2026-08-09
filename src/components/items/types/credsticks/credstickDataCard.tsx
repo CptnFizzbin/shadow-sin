@@ -21,14 +21,10 @@ export const CredstickDataCard: FC<CredstickDataCardProps> = ({ credstick, onOpe
       onOpen={onOpen}
       onEdit={onEdit}
     >
-      <ItemCard.Layout.HeaderRow>
-        <ItemCard.SubType label={CredstickTypeLabel[credstick.credstickType]} />
-      </ItemCard.Layout.HeaderRow>
+      <ItemCard.SubType label={CredstickTypeLabel[credstick.credstickType]} />
 
-      <ItemCard.Layout.BodyRow>
-        <ItemCard.Stat value={formatNuyen(credstick.balance)} type="rating" />
-        <ItemCard.Stat value={`${fillPercent.toFixed(0)}% full`} />
-      </ItemCard.Layout.BodyRow>
+      <ItemCard.Stat value={formatNuyen(credstick.balance)} type="rating" />
+      <ItemCard.Stat value={`${fillPercent.toFixed(0)}% full`} />
     </ItemCard>
   )
 }

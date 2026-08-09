@@ -1,4 +1,6 @@
-import Button from "@mui/material/Button"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
+import MenuItem from "@mui/material/MenuItem"
 import type { FC, ReactNode } from "react"
 
 export interface CardElementActionProps {
@@ -10,9 +12,10 @@ export interface CardElementActionProps {
 
 /** Inline interaction affordance on an EntityCard — e.g. "Cast", "Roll Attack". */
 export const CardElementAction: FC<CardElementActionProps> = ({ label, icon, onClick, disabled }) => (
-  <Button size="small" startIcon={icon} onClick={onClick} disabled={disabled}>
-    {label}
-  </Button>
+  <MenuItem onClick={onClick} disabled={disabled}>
+    {icon && <ListItemIcon>{icon}</ListItemIcon>}
+    <ListItemText>{label}</ListItemText>
+  </MenuItem>
 )
 
 CardElementAction.displayName = "EntityCard.Action"

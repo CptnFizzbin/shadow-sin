@@ -1,10 +1,6 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
 import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
 import Stack from "@mui/material/Stack"
 import type { Theme } from "@mui/material/styles"
 import { alpha } from "@mui/material/styles"
@@ -15,7 +11,7 @@ import { useState } from "react"
 import type { EntityData } from "#/system/entityData.ts"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
-import { EntityCardLayout } from "./entityCardLayout.tsx"
+import EntityCardLayout from "./entityCardLayout.tsx"
 import { EntityCardSlotManager } from "./entityCardSlotManager.ts"
 
 export type { CardElementActionProps } from "./elements/cardElementAction.tsx"
@@ -24,9 +20,12 @@ export type { CardElementRatingProps } from "./elements/cardElementRating.tsx"
 export type { CardElementSourceProps } from "./elements/cardElementSource.tsx"
 export type { CardElementStatProps, CardElementStatType } from "./elements/cardElementStat.tsx"
 export type { CardElementTitleProps } from "./elements/cardElementTitle.tsx"
-export type { BodyRowProps } from "./layout/cardLayoutBodyRow.tsx"
-export type { FooterRowProps } from "./layout/cardLayoutFooterRow.tsx"
-export type { HeaderRowProps } from "./layout/cardLayoutHeaderRow.tsx"
+export type { BodyRowProps } from "./layout/bodyRow.tsx"
+export type { FooterLeftProps } from "./layout/footerLeft.tsx"
+export type { FooterRightProps } from "./layout/footerRight.tsx"
+export type { FooterRowProps } from "./layout/footerRow.tsx"
+export type { HeaderRowProps } from "./layout/headerRow.tsx"
+export type { TitleRightProps } from "./layout/titleRight.tsx"
 
 /** An outline-style button pinned to the left edge of an `EntityCard`, spanning its full height. */
 export interface EntityCardLeftAction {
@@ -67,6 +66,12 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 }) => {
   const slots = new EntityCardSlotManager(children)
   const hasActions = !!(onEdit || onRemove)
+  const hasFooter = !!(
+    slots.layout.footerRows.length >= 1
+    || slots.layout.footerLeft.length >= 1
+    || slots.layout.footerRight.length >= 1
+    || entity.source
+  )
 
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null)
 
@@ -91,13 +96,18 @@ const EntityCardRoot: FC<EntityCardProps> = ({
 
   return (
     <>
-      <Stack direction="row" sx={{ width: "100%" }}>
+      <Stack direction="row" sx={{ width: "100%", gap: 0 }}>
         {leftAction && (
           <Button
             variant="outlined"
             aria-label="Action"
             onClick={handleLeftActionClick}
-            sx={{ minWidth: 0, borderRadius: 0, paddingX: 1 }}
+            sx={{
+              minWidth: 42,
+              alignItems: "flex-start",
+              borderRight: "none",
+              padding: 1,
+            }}
           >
             {leftAction.icon}
           </Button>
@@ -124,45 +134,57 @@ const EntityCardRoot: FC<EntityCardProps> = ({
             sx={{
               paddingX: 1,
               paddingY: 0.75,
-              borderBottom: "1px solid",
-              borderColor: "divider",
               gap: 0.5,
               bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
             }}
           >
             <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
-              <EntityCardElements.Title title={entity.name} />
+              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                <EntityCardElements.Title title={entity.name} />
+
+                {slots.layout.titleRight}
+              </Stack>
+
+              <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center", gap: 1 }}>
+                {slots.layout.topRight}
+
+                <EntityCardElements.Rating value={entity.rating} />
+              </Stack>
             </EntityCardLayout.HeaderRow>
 
-            {slots.headerRows}
+            {slots.layout.headerRows}
           </Stack>
 
-          <Stack sx={{ padding: 1, gap: 0.5 }}>
-            <EntityCardLayout.BodyRow sx={{ flexWrap: "wrap" }}>
-              <EntityCardElements.Rating value={entity.rating} />
-            </EntityCardLayout.BodyRow>
+          {slots.layout.bodyRows.length >= 1 && (
+            <Stack sx={{ padding: 1, gap: 0.5 }}>
+              {slots.layout.bodyRows}
+            </Stack>
+          )}
 
-            <EntityCardElements.Effects effects={entity.effects} />
+          {hasFooter && (
+            <Stack
+              sx={{
+                paddingX: 1,
+                paddingY: 0.75,
+                gap: 0.5,
+                bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
+              }}
+            >
+              <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
+                <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                  <EntityCardElements.Source source={entity.source} />
 
-            {slots.bodyRows}
-          </Stack>
+                  {slots.layout.footerLeft}
+                </Stack>
 
-          <Stack
-            sx={{
-              paddingX: 1,
-              paddingY: 0.75,
-              gap: 0.5,
-              borderTop: "1px solid",
-              borderColor: "divider",
-              bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.08),
-            }}
-          >
-            <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
-              <EntityCardElements.Source source={entity.source} />
-            </EntityCardLayout.FooterRow>
+                <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                  {slots.layout.footerRight}
+                </Stack>
+              </EntityCardLayout.FooterRow>
 
-            {slots.footerRows}
-          </Stack>
+              {slots.layout.footerRows}
+            </Stack>
+          )}
         </Box>
 
         {hasActions && (
@@ -170,7 +192,12 @@ const EntityCardRoot: FC<EntityCardProps> = ({
             variant="outlined"
             aria-label="Actions menu"
             onClick={handleOpenMenu}
-            sx={{ minWidth: 0, borderRadius: 0, paddingX: 1 }}
+            sx={{
+              minWidth: 42,
+              borderLeft: "none",
+              padding: 1,
+              alignItems: "flex-start",
+            }}
           >
             <RiMore2Line size={20} />
           </Button>
@@ -181,32 +208,43 @@ const EntityCardRoot: FC<EntityCardProps> = ({
         <Menu
           open={menuAnchorEl !== null}
           anchorEl={menuAnchorEl}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
           onClose={handleCloseMenu}
+          slotProps={{
+            list: {
+              sx: { padding: 0 },
+            },
+          }}
         >
+          {slots.actions}
+
           {onEdit && (
-            <MenuItem
+            <EntityCard.Action
+              icon={<RiEditLine size={16} />}
+              label="Edit"
               onClick={() => {
                 onEdit()
                 handleCloseMenu()
               }}
-            >
-              <ListItemIcon><RiEditLine size={16} /></ListItemIcon>
-              <ListItemText>Edit</ListItemText>
-            </MenuItem>
+            />
           )}
 
-          {onEdit && onRemove && <Divider />}
-
           {onRemove && (
-            <MenuItem
+            <EntityCard.Action
+              icon={<RiDeleteBinLine size={16} />}
+              label="Remove"
               onClick={() => {
                 onRemove()
                 handleCloseMenu()
               }}
-            >
-              <ListItemIcon><RiDeleteBinLine size={16} /></ListItemIcon>
-              <ListItemText>Remove</ListItemText>
-            </MenuItem>
+            />
           )}
         </Menu>
       )}
