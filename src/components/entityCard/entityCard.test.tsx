@@ -1,9 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { EntityCard } from "./entityCard.tsx"
@@ -12,13 +10,12 @@ import { EntityCardElements } from "./entityCardElements.tsx"
 const entity: EntityData = { id: "00000000-0000-0000-0000-000000000001", name: "Ares Predator V" }
 
 describe("EntityCard", () => {
-  it("renders the entity's name, rating, effects, and source automatically, with no extra children", () => {
+  it("renders the entity's name, rating, and source automatically, with no extra children", () => {
     render(
       <EntityCard
         entity={{
           ...entity,
           rating: 4,
-          effects: [{ type: GameEffectType.attrMod, target: AttributeKey.body, value: 2 }],
           source: { book: "SR4A", page: 427 },
         }}
       />,
@@ -26,16 +23,15 @@ describe("EntityCard", () => {
     )
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
-    expect(screen.getByText("Attribute Modifier → BOD +2")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
     expect(screen.getByText("SR4A p.427")).toBeDefined()
   })
 
-  it("renders no rating or effects when the entity has none", () => {
+  it("renders no rating when the entity has none", () => {
     render(<EntityCard entity={entity} />, { wrapper: ThemeWrapper })
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
-    expect(screen.queryByText(/attribute modifier/i)).toBeNull()
+    expect(screen.queryByText(/rating/i)).toBeNull()
   })
 
   it("ignores children that are not a Layout region", () => {
@@ -61,7 +57,7 @@ describe("EntityCard", () => {
     )
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("renders its Layout regions with content elements inside them", () => {
@@ -79,7 +75,7 @@ describe("EntityCard", () => {
     )
 
     expect(screen.getByText("Ares Predator V")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
     expect(screen.getByText("DV: 4P")).toBeDefined()
     expect(screen.getByText("SR4A p.427")).toBeDefined()
   })
@@ -102,7 +98,9 @@ describe("EntityCard", () => {
   })
 
   it("keeps Layout separate from the top-level content elements", () => {
-    expect(Object.keys(EntityCard.Layout).sort()).toEqual(["BodyRow", "FooterRow", "HeaderRow"])
+    expect(Object.keys(EntityCard.Layout).sort()).toEqual([
+      "BodyRow", "FooterLeft", "FooterRight", "FooterRow", "HeaderRow", "TitleRight", "TopRight",
+    ])
     expect("Layout" in EntityCardElements).toBe(false)
   })
 

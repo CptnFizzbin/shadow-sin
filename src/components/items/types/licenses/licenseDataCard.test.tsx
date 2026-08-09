@@ -38,7 +38,7 @@ describe("LicenseDataCard", () => {
 
     // Assert
     expect(screen.getByText("License: Ares Predator")).toBeDefined()
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("renders the license's own rating when it's a Real License", () => {
@@ -46,7 +46,7 @@ describe("LicenseDataCard", () => {
     renderLicenseCard(realLicense)
 
     // Assert
-    expect(screen.getByText("real")).toBeDefined()
+    expect(screen.getByText("Rating: real")).toBeDefined()
   })
 
   it("navigates via onOpen when tapped", () => {

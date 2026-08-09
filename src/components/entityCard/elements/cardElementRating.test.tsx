@@ -9,13 +9,13 @@ describe("CardElementRating", () => {
   it("renders a numeric rating", () => {
     render(<CardElementRating value={4} />, { wrapper: ThemeWrapper })
 
-    expect(screen.getByText("4")).toBeDefined()
+    expect(screen.getByText("Rating: 4")).toBeDefined()
   })
 
   it("renders a sentinel rating", () => {
     render(<CardElementRating value="real" />, { wrapper: ThemeWrapper })
 
-    expect(screen.getByText("real")).toBeDefined()
+    expect(screen.getByText("Rating: real")).toBeDefined()
   })
 
   it("renders nothing when value is undefined", () => {
