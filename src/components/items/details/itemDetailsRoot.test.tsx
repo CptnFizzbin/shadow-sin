@@ -62,9 +62,6 @@ describe("ItemDetailsRoot", () => {
 
   it("composes stats, damage track, subitems, and footer slots", () => {
     const onDamageChange = vi.fn()
-    // ItemType.software has no typed card, so ItemDetailsSlot.Subitem renders it via AnyItemCard's
-    // plain ItemCard fallback — no RunnerStoreProvider required, unlike a typed card such as
-    // OtherDataCard (ItemType.other) which reads its own children from the store.
     const accessory: ItemData = {
       id: "00000000-0000-0000-0000-000000000002",
       name: "GPS Jammer",
