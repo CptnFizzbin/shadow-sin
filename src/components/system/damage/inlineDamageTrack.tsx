@@ -16,10 +16,11 @@ export interface InlineDamageTrackProps {
 /**
  * Compact damage track for contexts too tight for the full DamageTrack
  * (e.g. an item card). Reuses DamageTrack's own cell and wound-modifier
- * marking for visual consistency, laid out on a fixed 10-column grid on
- * its own row below the label so cells stay uniformly sized (and
- * tappable) regardless of how many boxes are in a partial row; extra
- * boxes wrap onto additional rows automatically.
+ * marking for visual consistency, laid out as a fixed-size, wrapping flex
+ * row so cells stay uniformly sized (and tappable) regardless of the
+ * container's width — a card narrow enough to only fit a few cells per
+ * row (e.g. two tracks side by side) wraps onto more rows instead of
+ * squeezing cells down or overflowing the card.
  */
 export const InlineDamageTrack: FC<InlineDamageTrackProps> = ({
   label,
@@ -40,16 +41,14 @@ export const InlineDamageTrack: FC<InlineDamageTrackProps> = ({
         </Typography>
       )}
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(10, 1fr)",
-          gridAutoRows: "32px",
-          gap: 0.5,
-        }}
-      >
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
         {Array.from({ length: max }, (_, index) => index + 1).map((value) => (
-          <DamageTrackCell key={value} filled={value <= current} onClick={() => toggleCell(value)}>
+          <DamageTrackCell
+            key={value}
+            filled={value <= current}
+            onClick={() => toggleCell(value)}
+            sx={{ width: 32, height: 32, flexShrink: 0 }}
+          >
             {getWoundModifierLabel(value, woundInterval)}
           </DamageTrackCell>
         ))}
