@@ -1,9 +1,9 @@
 # Matrix Interactions
 
-> **Status:** Draft
+> **Status:** In Progress
 >
 > **GitHub Issues / PRs:**
-> <!-- Add links once the feature is ready to implement. A feature may have multiple. -->
+> #438, #439, #440
 
 Player-facing helper tools for managing Matrix presence during a run: an active `MatrixNode`,
 a roster of Known Nodes, running Programs/Agents, and a Matrix Actions cheatsheet — on the
@@ -22,6 +22,12 @@ first slice, and the one the "Matrix tab layout" open question above now answers
 excludes: `Agent` (doesn't exist in the codebase yet), the cheatsheet, Processor Limit/Subscription
 Limit enforcement, and Access Level gating on starting an `ActiveProgram` (tracked but advisory
 only this slice). Those stay open/deferred to later slices of this same doc.
+
+#438/#439/#440 landed the roster itself — `MatrixNodeData`/`KnownNode` types, the
+`gameState.matrix` store slice and migration, and the Known Node list/dialog/Active Node control
+on the Matrix tab (`knownNodesList.tsx`). The store slice includes `startActiveProgram`/
+`stopActiveProgram` actions, but the per-card "Load Program" picker UI described above is not
+wired up yet — still open for a follow-up slice.
 
 ## Open Questions
 

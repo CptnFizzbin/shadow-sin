@@ -144,12 +144,24 @@ export function calculateSpiritConditionMonitor(force: number, type: SpiritType)
   }
 }
 
-// SR4A p.295-302: attribute offsets from force for each spirit type. Resonance is always 0.
+// SR4A p.295-302: attribute offsets from force for each spirit type. Resonance and the four
+// Matrix stats are always 0 — spirits have no Matrix presence.
 const baseAttrOffsets: Record<AttributeKey, number> = {
   body: 0, agility: 0, reaction: 0, strength: 0,
   charisma: 0, intuition: 0, logic: 0, willpower: 0,
   edge: 0, magic: 0, essence: 0, resonance: 0,
+  firewall: 0, response: 0, signal: 0, system: 0,
 }
+
+// Attribute keys that stay pinned at 0 regardless of Force — Resonance (spirits are never
+// Technomancer-aligned) and the four Matrix stats (spirits have no Matrix presence).
+const zeroPinnedAttrKeys: AttributeKey[] = [
+  AttributeKey.resonance,
+  AttributeKey.firewall,
+  AttributeKey.response,
+  AttributeKey.signal,
+  AttributeKey.system,
+]
 
 const spiritAttributeOffsets: Record<SpiritType, Record<AttributeKey, number>> = {
   [SpiritType.wind]: { ...baseAttrOffsets, body: -2, agility: 3, reaction: 4, strength: -3 },
@@ -182,6 +194,10 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
       [AttributeKey.magic]: force,
       [AttributeKey.essence]: force,
       [AttributeKey.resonance]: 0,
+      [AttributeKey.firewall]: 0,
+      [AttributeKey.response]: 0,
+      [AttributeKey.signal]: 0,
+      [AttributeKey.system]: 0,
     }
   }
 
@@ -199,10 +215,14 @@ export function calculateSpiritAttributes(force: number, type: SpiritType): Reco
     [AttributeKey.magic]: force + offsets.magic,
     [AttributeKey.essence]: force + offsets.essence,
     [AttributeKey.resonance]: 0,
+    [AttributeKey.firewall]: 0,
+    [AttributeKey.response]: 0,
+    [AttributeKey.signal]: 0,
+    [AttributeKey.system]: 0,
   }
 
   for (const key of Object.keys(attrs) as AttributeKey[]) {
-    if (key !== AttributeKey.resonance && attrs[key] < 1) {
+    if (!zeroPinnedAttrKeys.includes(key) && attrs[key] < 1) {
       attrs[key] = 1
     }
   }

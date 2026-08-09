@@ -36,6 +36,8 @@ export interface MetatypeData {
   movement: MovementData | MovementData[]
 }
 
+// Metatypes don't have Matrix stats of their own (those belong to MatrixNodes/Commlinks, not
+// Runners) — firewall/response/signal/system stay at a fixed 0/0 range for every metatype.
 const baseAttributes = {
   body: { min: 1, max: 6, augMax: 9 },
   agility: { min: 1, max: 6, augMax: 9 },
@@ -49,6 +51,10 @@ const baseAttributes = {
   essence: { min: 0, max: 6 },
   magic: { min: 0, max: 0 },
   resonance: { min: 0, max: 0 },
+  firewall: { min: 0, max: 0 },
+  response: { min: 0, max: 0 },
+  signal: { min: 0, max: 0 },
+  system: { min: 0, max: 0 },
 } as const
 
 export const metatypes: Record<MetatypeType, MetatypeData> = {

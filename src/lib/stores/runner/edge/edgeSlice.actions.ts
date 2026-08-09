@@ -1,6 +1,7 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
 
 import { NumberUtils } from "#/lib/numberUtils.ts"
+import { selectAttrBase } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
@@ -11,7 +12,7 @@ export const setCurrentEdge = createAsyncThunk<number, number, {
 
   return NumberUtils.clamp(amount, {
     min: 0,
-    max: sheet.attributes[AttributeKey.edge],
+    max: selectAttrBase(AttributeKey.edge)(sheet),
   })
 })
 
@@ -31,7 +32,7 @@ export const restoreAllEdge = createAsyncThunk<void, void, {
   const sheet = getState()
 
   dispatch(
-    setCurrentEdge(sheet.attributes[AttributeKey.edge]),
+    setCurrentEdge(selectAttrBase(AttributeKey.edge)(sheet)),
   )
 })
 
@@ -39,7 +40,7 @@ export const restoreEdge = createAsyncThunk<void, number, {
   state: RunnerData
 }>("edge/restore", (amount, { dispatch, getState }) => {
   const sheet = getState()
-  const maxEdge = sheet.attributes[AttributeKey.edge]
+  const maxEdge = selectAttrBase(AttributeKey.edge)(sheet)
   const current = sheet.edge.current
 
   dispatch(setCurrentEdge(

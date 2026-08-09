@@ -10,6 +10,7 @@ const values: Record<AttributeKey, number> = {
   body: 3, agility: 4, reaction: 5, strength: 2,
   charisma: 0, intuition: 3, logic: 0, willpower: 0,
   edge: 0, essence: 0, magic: 6, resonance: 0,
+  firewall: 0, response: 0, signal: 0, system: 0,
 }
 
 describe("CardElementAttributeBlock", () => {
