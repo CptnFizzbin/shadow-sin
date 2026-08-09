@@ -21,7 +21,7 @@ import type { WeaponData } from "#/system/gear/weaponData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
 
-import { ItemDataCardRoot } from "./itemDataCardRoot.tsx"
+import { ItemCard } from "./itemCard.tsx"
 
 export interface AnyItemCardProps {
   item: ItemData
@@ -34,10 +34,10 @@ export interface AnyItemCardProps {
 }
 
 /**
- * Renders the typed card for `item.itemType`, falling back to `ItemDataCardRoot`
+ * Renders the typed card for `item.itemType`, falling back to `ItemCard`
  * (common fields only, no type-specific slots) for item types without one
  * yet. This is the only module allowed to depend on every typed card — typed
- * cards must depend on `ItemDataCardRoot`/`DataCard` instead of this file, or
+ * cards must depend on `ItemCard`/`EntityCard` instead of this file, or
  * importing it here would create a cycle.
  */
 export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemove }) => {
@@ -73,6 +73,6 @@ export const AnyItemCard: FC<AnyItemCardProps> = ({ item, onOpen, onEdit, onRemo
       return <VehicleDataCard vehicle={item as VehicleData} onOpen={onOpen} onEdit={onEdit} />
 
     default:
-      return <ItemDataCardRoot item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
+      return <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={onRemove} />
   }
 }

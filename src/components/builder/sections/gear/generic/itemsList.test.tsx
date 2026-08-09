@@ -56,7 +56,7 @@ describe("ItemsList", () => {
     expect(screen.getByText("Trodes")).toBeDefined()
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Trodes"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.
