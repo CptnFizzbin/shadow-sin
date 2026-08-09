@@ -30,6 +30,11 @@ describe("applyMigrations", () => {
     expect(result.sprites).toEqual([])
     expect(result.qualities).toEqual([])
     expect(result.contacts).toEqual([])
+    // Not asserted empty here — migration 023 (addMatrixNode) always backfills a blank flat
+    // `matrix` node first, so by the time 025 (addMatrixGameState) runs it always has prior
+    // matrix data to convert into knownNodes[0]. See 025_addMatrixGameState.test.ts for the
+    // "no prior matrix data" case, exercised by calling that migration's `up` in isolation.
+    expect(result.gameState.matrix.knownNodes).toHaveLength(1)
   })
 
   it("skips migrations already covered by _meta_.version", () => {

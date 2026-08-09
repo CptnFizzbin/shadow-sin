@@ -6,14 +6,14 @@ import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
 interface AttributesContextValue {
-  values: Record<AttributeKey, number>
+  values: Partial<Record<AttributeKey, number>>
   infos: Record<AttributeKey, AttributeInfo>
 }
 
 const AttributesContext = createContext<AttributesContextValue | null>(null)
 
 interface AttributesProviderProps extends PropsWithChildren {
-  values: Record<AttributeKey, number>
+  values: Partial<Record<AttributeKey, number>>
   infos: Record<AttributeKey, AttributeInfo>
 }
 
@@ -51,7 +51,7 @@ const useAttributesContext = (): AttributesContextValue => {
  * `AttributesProvider`.
  */
 export const useAttrValue = (attr: AttributeKey): number => {
-  return useAttributesContext().values[attr]
+  return useAttributesContext().values[attr] ?? 0
 }
 
 /**

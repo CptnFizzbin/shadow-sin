@@ -15,10 +15,10 @@ export const attributesReducer = createReducer(initialState, (builder) => {
     })
     .addCase(adjustAttribute, (state, action) => {
       const { key, delta, min } = action.payload
-      const next = state[key] + delta
+      const next = (state[key] ?? 0) + delta
       state[key] = min !== undefined ? Math.max(min, next) : next
     })
     .addCase(burnEdge, (state) => {
-      state[AttributeKey.edge] = Math.max(1, state[AttributeKey.edge] - 1)
+      state[AttributeKey.edge] = Math.max(1, (state[AttributeKey.edge] ?? 0) - 1)
     })
 })

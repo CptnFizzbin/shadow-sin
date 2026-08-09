@@ -37,7 +37,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 export const ImprovementComplexFormList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const knownComplexForms = useRunnerStoreSelector((sheet) => sheet.complexForms)
-  const resonance = useRunnerStoreSelector((sheet) => sheet.attributes[AttributeKey.resonance])
+  const resonance = useRunnerStoreSelector(Selectors.attributes.selectAttrBase(AttributeKey.resonance))
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

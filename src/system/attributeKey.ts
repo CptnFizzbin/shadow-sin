@@ -1,5 +1,9 @@
 /**
- * Keys for all attributes in Shadowrun 4e.
+ * Keys for all attributes in Shadowrun 4e, plus the four Matrix stats
+ * (Firewall/Response/Signal/System) that substitute for attributes in Matrix Tests — see
+ * `MatrixAttrs` in CONTEXT.md. A Runner only ever populates the original twelve; the Matrix
+ * stats exist on this enum so `MatrixNode`s and other Matrix-capable Entities can reuse the same
+ * key space, dice-pool machinery, and `GameEffect` targeting.
  */
 export enum AttributeKey {
   body = "body",
@@ -14,6 +18,10 @@ export enum AttributeKey {
   essence = "essence",
   magic = "magic",
   resonance = "resonance",
+  firewall = "firewall",
+  response = "response",
+  signal = "signal",
+  system = "system",
 }
 
 /**
@@ -33,8 +41,14 @@ export const AttributeLabels: Record<AttributeKey, string> = {
   resonance: "RES",
   edge: "EDG",
   essence: "ESS",
+  firewall: "FWL",
+  response: "RSP",
+  signal: "SIG",
+  system: "SYS",
 }
 
+// Runner-attribute display order — deliberately excludes the four Matrix stats below, which
+// aren't Runner attributes and never appear in the Builder/Viewer attribute rows (see #438).
 export const AttributeOrder: AttributeKey[] = [
   AttributeKey.body,
   AttributeKey.agility,
