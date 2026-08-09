@@ -13,21 +13,37 @@ Fly/Probing extended tests, or model matrix combat. It establishes the entity mo
 `Program`/`Agent` as `Item` subtypes, the shared Matrix attribute system) that a later pass can
 build real dice-pool computation on top of.
 
+### Slices
+
+This doc's scope is bigger than any one PR. The **Known Node roster slice** — replacing the
+current single flat `RunnerData.matrix` node with a `gameState.matrix.knownNodes[]` roster, an
+Active Node designation, and per-node `ActiveProgram` tracking for owned `Program` items — is the
+first slice, and the one the "Matrix tab layout" open question above now answers. It deliberately
+excludes: `Agent` (doesn't exist in the codebase yet), the cheatsheet, Processor Limit/Subscription
+Limit enforcement, and Access Level gating on starting an `ActiveProgram` (tracked but advisory
+only this slice). Those stay open/deferred to later slices of this same doc.
+
 ## Open Questions
 
 - [ ] **Cheatsheet content** — what exact list of Matrix Actions (with descriptions/formulas)
       belongs on the cheatsheet, and is it static copy or does any of it read live Node/Runner
-      values?
+      values? Deferred out of the Known Node roster slice (see "Slices" below).
 - [ ] **`ItemType.software` vs `ItemType.program`** — carried over from
       `docs/features/0005-matrix-programs.md`, still unresolved; doesn't block this feature since
       Program's own shape isn't changing, just gaining Agent as a subtype.
 - [ ] **Complex Forms** — do Technomancer Complex Forms participate in `ActiveProgram` the same
       way Agents do, or are they out of scope for this pass? Not addressed in this design round.
-- [ ] **Matrix tab layout** — exact placement/ordering of the Active Node panel, Known Nodes
-      list, Programs/Agents lists, and cheatsheet on the existing Matrix tab.
+- [x] **Matrix tab layout (Known Node roster slice)** — the roster replaces the old single Active
+      Node panel: a list of Known Node cards (name + `MatrixAttrs` + Access Level + Node Type),
+      each with an "Edit" action opening a `useDialog`-based form and an explicit "Set
+      Active"/"Deactivate" button. Each card also hosts a "Load Program" picker (the affordance
+      for starting an `ActiveProgram` lives on the Node, not on the Program card) listing that
+      card's currently-running Programs with a stop control. `MatrixProgramsSection` (the gear
+      list) is unchanged by this slice. Cheatsheet placement remains open above.
 - [ ] **Agent StatusSheet contents** — beyond `rating` and a Matrix damage track, does Agent need
       anything else in its stat block (e.g. does it ever act independently of being an
-      `ActiveProgram`)?
+      `ActiveProgram`)? Moot for the Known Node roster slice — Agent doesn't exist in the codebase
+      yet, so `ActiveProgram.sourceId` only ever references a `Program` this round.
 
 ## Constraints
 
@@ -47,11 +63,25 @@ build real dice-pool computation on top of.
   resolve live from whichever `MatrixNode` currently hosts it as an `ActiveProgram` — this is
   resolver logic, not a stored field.
 - `RunnerData.gameState` is a brand-new top-level namespace; `gameState.matrix` is its only
-  member so far. Needs a migration adding the default empty shape.
+  member so far. The migration that adds it also retires the old flat `RunnerData.matrix` node:
+  its `{name, system, firewall, response, signal}` become `knownNodes[0]` (Access Level `public`,
+  Node Type `general`) and `activeNodeId` — dropping `numberOfPrograms` entirely, since the
+  running-Program count is now derived by counting `activePrograms` for that node rather than
+  hand-typed.
 - Existing Matrix tab pieces (damage track via `Selectors.damage.selectMatrixTrack`, the Programs
   list via `MatrixProgramsSection`) are the extension points — reuse, don't replace.
 - Access Level and hacking thresholds are Player-set/display-only this pass — no Extended Test
-  wiring, no dice pool computation.
+  wiring, no dice pool computation. Starting an `ActiveProgram` on a node with insufficient Access
+  Level is *not* blocked this slice (advisory only); Node Type is stored on every `MatrixNode`
+  from this slice on but doesn't affect Response yet (Processor Limit enforcement is a later
+  slice); the Subscription Limit is not enforced this slice (the roster is uncapped).
+- `(sourceId, nodeId)` is a unique pair on `activePrograms` — starting a Program on a Node it's
+  already running on is a no-op/toggle-off, not a second entry. A given Program can still run on
+  several different Nodes simultaneously.
+- Deleting a Known Node or an owned Program cascades: every `ActiveProgram` entry referencing the
+  deleted `nodeId`/`sourceId` is removed with it, so `activePrograms` never holds a dangling
+  reference. Deleting the Active Node clears `activeNodeId` rather than auto-promoting another
+  Known Node.
 
 ## Domain Notes
 
@@ -86,18 +116,18 @@ enum NodeType { general = "general", nexus = "nexus" }
 interface MatrixNodeData extends EntityData {
   id: string
   name: string
-  rating: number
-  matrix: MatrixStats // MatrixNode is always fully specced
+  matrix: MatrixStats // MatrixNode is always fully specced; no separate top-level `rating`
   nodeType: NodeType
 }
 
-enum AccessLevel { none = "none", user = "user", security = "security", admin = "admin" }
+enum AccessLevel { none = "none", public = "public", user = "user", security = "security", admin = "admin" }
 
-type KnownNode = MatrixNodeData & { accessLevel: AccessLevel }
+type KnownNode = MatrixNodeData & { accessLevel: AccessLevel } // defaults to accessLevel: "public" when added
 
 interface ActiveProgram {
-  sourceId: string // id of an owned Program or Agent Item
+  sourceId: string // id of an owned Program (or, later, Agent) Item
   nodeId: string   // id of a KnownNode
+  // (sourceId, nodeId) is a unique pair within activePrograms[] — no separate id field
 }
 
 interface MatrixGameState {
@@ -128,6 +158,10 @@ interface AgentData extends ProgramData {
 - Full matrix combat (IC, trace, black ice) — same exclusion as `docs/features/0005-matrix-programs.md`
 - Device modes (Active/Passive/Hidden) — deferred to a later pass
 - Technomancer Complex Forms' relationship to `ActiveProgram` (open question above)
+- Processor Limit enforcement (the Response penalty math) and Subscription Limit enforcement (the
+  roster-size cap) — `nodeType` is stored so a later slice doesn't need a backfill migration, but
+  neither limit is computed or blocked against yet
+- Gating `ActiveProgram` creation on the Node's Access Level — tracked and displayed, not enforced
 
 ## Related Features
 
