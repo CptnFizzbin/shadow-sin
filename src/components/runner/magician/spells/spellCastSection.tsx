@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import ButtonGroup from "@mui/material/ButtonGroup"
 import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
@@ -35,11 +34,13 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const [force, setForce] = useState<number>(Math.max(1, magicAttr))
+  const [drainResistanceHits, setDrainResistanceHits] = useState<number>(0)
 
   const maxForce = Math.max(1, magicAttr * 2)
   const isOvercasting = force > magicAttr
   const drainDv = computeDrainValue(force, spell)
   const drainIsPhysical = isOvercasting
+  const drainAmount = Math.max(0, drainDv - drainResistanceHits)
 
   const dispatch = useRunnerStoreDispatch()
   const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
@@ -60,8 +61,6 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
     }
     onClose()
   }
-
-  const drainAmountOptions = Array.from({ length: drainDv + 1 }, (_, i) => i)
 
   return (
     <Box
@@ -119,21 +118,28 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
 
         <Stack sx={{ gap: 0.5 }}>
           <Label
-            label={`Apply Drain — DV ${drainDv} ${drainIsPhysical ? "Physical" : "Stun"}`}
+            label={`Drain — DV ${drainDv} ${drainIsPhysical ? "Physical" : "Stun"}`}
             variant="text"
             color={drainIsPhysical ? "error.main" : "text.secondary"}
           />
-          <ButtonGroup size="small" variant="outlined" fullWidth>
-            {drainAmountOptions.map((amount) => (
-              <Button
-                key={amount}
-                color={drainIsPhysical ? "error" : "primary"}
-                onClick={() => handleApplyDrain(amount)}
-              >
-                {amount}
-              </Button>
-            ))}
-          </ButtonGroup>
+          <CounterInput
+            id="drain-resistance-hits-select"
+            label="Resistance Hits"
+            size="small"
+            fullWidth
+            min={0}
+            value={drainResistanceHits}
+            onChange={(newValue) => setDrainResistanceHits(newValue ?? 0)}
+          />
+          <Button
+            variant="outlined"
+            color={drainIsPhysical ? "error" : "primary"}
+            fullWidth
+            disabled={drainAmount <= 0}
+            onClick={() => handleApplyDrain(drainAmount)}
+          >
+            Apply {drainAmount} drain
+          </Button>
         </Stack>
       </Stack>
     </Box>
