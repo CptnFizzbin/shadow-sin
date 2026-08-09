@@ -5,8 +5,8 @@ import type { FC } from "react"
 export interface BodyRowProps extends StackProps {}
 
 /** Middle layout region of an EntityCard — stats, damage tracks, subitems, etc. */
-export const CardLayoutBodyRow: FC<BodyRowProps> = ({ children, ...props }) => (
+export const BodyRow: FC<BodyRowProps> = ({ children, ...props }) => (
   <Stack direction="row" {...props}>{children}</Stack>
 )
 
-CardLayoutBodyRow.displayName = "Card.Layout.BodyRow"
+BodyRow.displayName = "Card.Layout.BodyRow"

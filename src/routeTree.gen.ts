@@ -39,8 +39,8 @@ import { Route as RunnerIdViewerSpellsRouteImport } from './routes/$runnerId/_vi
 import { Route as RunnerIdViewerSpiritsRouteImport } from './routes/$runnerId/_viewer/spirits'
 import { Route as RunnerIdViewerSpritesRouteImport } from './routes/$runnerId/_viewer/sprites'
 import { Route as RunnerIdViewerVehiclesRouteImport } from './routes/$runnerId/_viewer/vehicles'
-import { Route as TestEntityCardAllRouteImport } from './routes/test/entityCard/all'
-import { Route as TestEntityCardMigratedItemCardsRouteImport } from './routes/test/entityCard/migratedItemCards'
+import { Route as TestEntityCardBaseEntityCardRouteImport } from './routes/test/entity-card/base-entity-card'
+import { Route as TestEntityCardItemCardsRouteImport } from './routes/test/entity-card/item-cards'
 import { Route as TestThemeTypographyRouteImport } from './routes/test/theme/typography'
 import { Route as RunnerIdDetailsItemItemIdRouteImport } from './routes/$runnerId/_details/item.$itemId'
 import { Route as TestItemsDetailsAllRouteImport } from './routes/test/items/details.all'
@@ -195,17 +195,17 @@ const RunnerIdViewerVehiclesRoute = RunnerIdViewerVehiclesRouteImport.update({
   path: '/vehicles',
   getParentRoute: () => RunnerIdViewerRoute,
 } as any)
-const TestEntityCardAllRoute = TestEntityCardAllRouteImport.update({
-  id: '/test/entityCard/all',
-  path: '/test/entityCard/all',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestEntityCardMigratedItemCardsRoute =
-  TestEntityCardMigratedItemCardsRouteImport.update({
-    id: '/test/entityCard/migratedItemCards',
-    path: '/test/entityCard/migratedItemCards',
+const TestEntityCardBaseEntityCardRoute =
+  TestEntityCardBaseEntityCardRouteImport.update({
+    id: '/test/entity-card/base-entity-card',
+    path: '/test/entity-card/base-entity-card',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TestEntityCardItemCardsRoute = TestEntityCardItemCardsRouteImport.update({
+  id: '/test/entity-card/item-cards',
+  path: '/test/entity-card/item-cards',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestThemeTypographyRoute = TestThemeTypographyRouteImport.update({
   id: '/test/theme/typography',
   path: '/test/theme/typography',
@@ -251,8 +251,8 @@ export interface FileRoutesByFullPath {
   '/$runnerId/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdViewerVehiclesRoute
-  '/test/entityCard/all': typeof TestEntityCardAllRoute
-  '/test/entityCard/migratedItemCards': typeof TestEntityCardMigratedItemCardsRoute
+  '/test/entity-card/base-entity-card': typeof TestEntityCardBaseEntityCardRoute
+  '/test/entity-card/item-cards': typeof TestEntityCardItemCardsRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
@@ -286,8 +286,8 @@ export interface FileRoutesByTo {
   '/$runnerId/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/vehicles': typeof RunnerIdViewerVehiclesRoute
-  '/test/entityCard/all': typeof TestEntityCardAllRoute
-  '/test/entityCard/migratedItemCards': typeof TestEntityCardMigratedItemCardsRoute
+  '/test/entity-card/base-entity-card': typeof TestEntityCardBaseEntityCardRoute
+  '/test/entity-card/item-cards': typeof TestEntityCardItemCardsRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
   '/test/items/details/all': typeof TestItemsDetailsAllRoute
@@ -323,8 +323,8 @@ export interface FileRoutesById {
   '/$runnerId/_viewer/spirits': typeof RunnerIdViewerSpiritsRoute
   '/$runnerId/_viewer/sprites': typeof RunnerIdViewerSpritesRoute
   '/$runnerId/_viewer/vehicles': typeof RunnerIdViewerVehiclesRoute
-  '/test/entityCard/all': typeof TestEntityCardAllRoute
-  '/test/entityCard/migratedItemCards': typeof TestEntityCardMigratedItemCardsRoute
+  '/test/entity-card/base-entity-card': typeof TestEntityCardBaseEntityCardRoute
+  '/test/entity-card/item-cards': typeof TestEntityCardItemCardsRoute
   '/test/theme/typography': typeof TestThemeTypographyRoute
   '/$runnerId/_viewer/': typeof RunnerIdViewerIndexRoute
   '/$runnerId/_details/item/$itemId': typeof RunnerIdDetailsItemItemIdRoute
@@ -360,8 +360,8 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/test/entityCard/all'
-    | '/test/entityCard/migratedItemCards'
+    | '/test/entity-card/base-entity-card'
+    | '/test/entity-card/item-cards'
     | '/test/theme/typography'
     | '/$runnerId/'
     | '/$runnerId/item/$itemId'
@@ -395,8 +395,8 @@ export interface FileRouteTypes {
     | '/$runnerId/spirits'
     | '/$runnerId/sprites'
     | '/$runnerId/vehicles'
-    | '/test/entityCard/all'
-    | '/test/entityCard/migratedItemCards'
+    | '/test/entity-card/base-entity-card'
+    | '/test/entity-card/item-cards'
     | '/test/theme/typography'
     | '/$runnerId/item/$itemId'
     | '/test/items/details/all'
@@ -431,8 +431,8 @@ export interface FileRouteTypes {
     | '/$runnerId/_viewer/spirits'
     | '/$runnerId/_viewer/sprites'
     | '/$runnerId/_viewer/vehicles'
-    | '/test/entityCard/all'
-    | '/test/entityCard/migratedItemCards'
+    | '/test/entity-card/base-entity-card'
+    | '/test/entity-card/item-cards'
     | '/test/theme/typography'
     | '/$runnerId/_viewer/'
     | '/$runnerId/_details/item/$itemId'
@@ -449,8 +449,8 @@ export interface RootRouteChildren {
   GmIndexRoute: typeof GmIndexRoute
   NewIndexRoute: typeof NewIndexRoute
   TestIndexRoute: typeof TestIndexRoute
-  TestEntityCardAllRoute: typeof TestEntityCardAllRoute
-  TestEntityCardMigratedItemCardsRoute: typeof TestEntityCardMigratedItemCardsRoute
+  TestEntityCardBaseEntityCardRoute: typeof TestEntityCardBaseEntityCardRoute
+  TestEntityCardItemCardsRoute: typeof TestEntityCardItemCardsRoute
   TestThemeTypographyRoute: typeof TestThemeTypographyRoute
   TestItemsDetailsAllRoute: typeof TestItemsDetailsAllRoute
 }
@@ -667,18 +667,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunnerIdViewerVehiclesRouteImport
       parentRoute: typeof RunnerIdViewerRoute
     }
-    '/test/entityCard/all': {
-      id: '/test/entityCard/all'
-      path: '/test/entityCard/all'
-      fullPath: '/test/entityCard/all'
-      preLoaderRoute: typeof TestEntityCardAllRouteImport
+    '/test/entity-card/base-entity-card': {
+      id: '/test/entity-card/base-entity-card'
+      path: '/test/entity-card/base-entity-card'
+      fullPath: '/test/entity-card/base-entity-card'
+      preLoaderRoute: typeof TestEntityCardBaseEntityCardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/test/entityCard/migratedItemCards': {
-      id: '/test/entityCard/migratedItemCards'
-      path: '/test/entityCard/migratedItemCards'
-      fullPath: '/test/entityCard/migratedItemCards'
-      preLoaderRoute: typeof TestEntityCardMigratedItemCardsRouteImport
+    '/test/entity-card/item-cards': {
+      id: '/test/entity-card/item-cards'
+      path: '/test/entity-card/item-cards'
+      fullPath: '/test/entity-card/item-cards'
+      preLoaderRoute: typeof TestEntityCardItemCardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/test/theme/typography': {
@@ -789,8 +789,8 @@ const rootRouteChildren: RootRouteChildren = {
   GmIndexRoute: GmIndexRoute,
   NewIndexRoute: NewIndexRoute,
   TestIndexRoute: TestIndexRoute,
-  TestEntityCardAllRoute: TestEntityCardAllRoute,
-  TestEntityCardMigratedItemCardsRoute: TestEntityCardMigratedItemCardsRoute,
+  TestEntityCardBaseEntityCardRoute: TestEntityCardBaseEntityCardRoute,
+  TestEntityCardItemCardsRoute: TestEntityCardItemCardsRoute,
   TestThemeTypographyRoute: TestThemeTypographyRoute,
   TestItemsDetailsAllRoute: TestItemsDetailsAllRoute,
 }

@@ -17,11 +17,9 @@ export interface CardElementSubitemProps {
 
 /** Single-line child-item row (accessories, programs, mods, equipment). */
 export const CardElementSubitem: FC<CardElementSubitemProps> = ({ name, stats = [] }) => (
-  <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, py: 0.25, minWidth: 0 }}>
+  <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, }}>
     <Typography
       sx={{
-        fontSize: "0.8rem",
-        flexGrow: 1,
         minWidth: 0,
         overflow: "hidden",
         textOverflow: "ellipsis",
