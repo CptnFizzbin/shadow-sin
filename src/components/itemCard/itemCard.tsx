@@ -10,6 +10,13 @@ import { ItemCardSlotManager } from "./itemCardSlotManager.ts"
 
 interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
   item: ItemData
+  /**
+   * Overrides `item.cost` for display when a modifier changes what the item actually costs (e.g.
+   * an Implant grade's nuyen multiplier) — threaded straight through to `ItemCardElements.Cost`'s
+   * `effectiveValue`. Exists as a root prop (rather than a `children` override) because Cost is
+   * auto-rendered by this root, not composable by a typed card the way stat rows are.
+   */
+  costEffectiveValue?: number
 }
 
 /**
@@ -21,7 +28,7 @@ interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
  * as `children`. `onOpen`/`onEdit`/`onRemove`/`leftAction` pass straight through to `EntityCard`
  * for its tap-to-open behavior, menu-button actions, and left-edge action button.
  */
-const ItemCardRoot: FC<ItemCardProps> = ({ item, children, ...props }) => {
+const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, ...props }) => {
   const slots = new ItemCardSlotManager(children)
 
   return (
@@ -56,7 +63,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, children, ...props }) => {
       <EntityCard.Layout.FooterRight sx={{ gap: 1, justifyContent: "center", alignItems: "center" }}>
         <Stack direction="row" sx={{ gap: 1, flexGrow: 1, justifyContent: "flex-end", alignItems: "baseline" }}>
           <ItemCardElements.Availability value={item.availability} />
-          <ItemCardElements.Cost value={item.cost} />
+          <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />
         </Stack>
       </EntityCard.Layout.FooterRight>
 

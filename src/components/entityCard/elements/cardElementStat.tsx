@@ -15,7 +15,7 @@ export type CardElementStatType =
 
 export interface CardElementStatProps {
   label?: string
-  value: string | number
+  value: string | number | undefined
   /**
    * Overrides `value` for display when a modifier changes the stat's effective value (e.g. an
    * Implant grade's essence multiplier). When it differs from `value`, both render — `value`
@@ -41,9 +41,14 @@ function statLabel(label: string | undefined, value: string | number, type: Card
 
 /**
  * Stat/restriction chip element. `type` drives chip color; "restriction" always renders
- * value-only (no label) since it mirrors a bare availability rating (e.g. "8R").
+ * value-only (no label) since it mirrors a bare availability rating (e.g. "8R"). `value` is
+ * optional (unlike most of this element's props) so call sites with an optional stat field don't
+ * each need their own `value !== undefined &&` guard — matching `CardElementCost`,
+ * `CardElementQuantity`, and `CardElementRating`, which self-guard the same way.
  */
 export const CardElementStat: FC<CardElementStatProps> = ({ label, value, effectiveValue, type }) => {
+  if (value === undefined) return null
+
   const color = type ? typeChipColor[type] : undefined
   const isModified = effectiveValue !== undefined && effectiveValue !== value
 

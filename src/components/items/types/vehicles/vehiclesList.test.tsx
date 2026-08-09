@@ -72,7 +72,7 @@ describe("VehiclesList", () => {
     expect(screen.getByText("Suzuki Mirage")).toBeDefined()
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Suzuki Mirage"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
 
     // Assert: the UI re-rendered off the updated store.

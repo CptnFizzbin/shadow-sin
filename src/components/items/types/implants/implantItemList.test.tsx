@@ -102,7 +102,7 @@ describe("ImplantItemList", () => {
     expect(screen.getByText("Wired Reflexes 1")).toBeDefined()
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Wired Reflexes 1"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }))
     fireEvent.click(await screen.findByRole("button", { name: "Remove Implant" }))
 

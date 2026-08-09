@@ -6,6 +6,14 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 import { CardElementStat } from "./cardElementStat.tsx"
 
 describe("CardElementStat", () => {
+  it("renders nothing when value is undefined", () => {
+    // Arrange / Act
+    const { container } = render(<CardElementStat label="Res" value={undefined} />, { wrapper: ThemeWrapper })
+
+    // Assert
+    expect(container.firstChild).toBeNull()
+  })
+
   it("renders label and value together", () => {
     render(<CardElementStat label="DV" value="4P" type="damage" />, { wrapper: ThemeWrapper })
 

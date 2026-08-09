@@ -1,7 +1,6 @@
 import type { FC } from "react"
 
-import { DataCard } from "#/components/dataCard/dataCard.tsx"
-import { ItemDataCardRoot } from "#/components/itemCard/itemDataCardRoot.tsx"
+import { ItemCard } from "#/components/itemCard/itemCard.tsx"
 import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
@@ -33,6 +32,7 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
   const dispatch = useRunnerStoreDispatch()
   const confirmDialog = useConfirmDialog()
   const accessories = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(implant.id))
+  const hasAccessories = Object.keys(accessories).length > 0
   const effectiveEssence = getImplantEffectiveEssenceCost(implant)
   const effectiveNuyen = getImplantEffectiveNuyenCost(implant)
 
@@ -47,25 +47,39 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
 
   return (
     <>
-      <ItemDataCardRoot
-        item={{ ...implant, cost: effectiveNuyen }}
-        subType={implant.implantType ? (typeLabel[implant.implantType] ?? implant.implantType) : undefined}
+      <ItemCard
+        item={implant}
+        costEffectiveValue={effectiveNuyen}
         onOpen={onOpen}
         onEdit={onEdit}
         onRemove={removeImplant}
       >
-        <DataCard.Stat label="Ess" value={effectiveEssence.toFixed(2)} type="modifier" />
+        {implant.implantType && <ItemCard.SubType label={typeLabel[implant.implantType] ?? implant.implantType} />}
 
-        {implant.location && <DataCard.Stat value={implant.location} type="rating" />}
+        <ItemCard.Stat
+          label="Ess"
+          value={implant.essenceCost.toFixed(2)}
+          effectiveValue={effectiveEssence.toFixed(2)}
+          type="modifier"
+        />
+
+        {implant.location && <ItemCard.Stat value={implant.location} type="rating" />}
 
         {implant.grade && implant.grade !== ImplantGrade.standard && (
-          <DataCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
+          <ItemCard.Stat value={gradeLabel[implant.grade] ?? implant.grade} type="modifier" />
         )}
 
-        {Object.values(accessories).map((accessory) => (
-          <DataCard.Subitem key={accessory.id} name={accessory.name} />
-        ))}
-      </ItemDataCardRoot>
+        {hasAccessories && (
+          <ItemCard.Layout.BodyRow
+            direction="column"
+            sx={{ gap: 0.25, paddingLeft: 1, borderLeft: "2px solid", borderColor: "secondary.dark" }}
+          >
+            {Object.values(accessories).map((accessory) => (
+              <ItemCard.Subitem key={accessory.id} name={accessory.name} />
+            ))}
+          </ItemCard.Layout.BodyRow>
+        )}
+      </ItemCard>
 
       {confirmDialog.dialog}
     </>
