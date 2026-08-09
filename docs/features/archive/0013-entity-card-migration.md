@@ -1,11 +1,13 @@
 # EntityCard System Migration
 
-> **Status:** Draft
+> **Status:** Implemented
 >
 > **GitHub Issues / PRs:**
-> - Depends on [`docs/adr/0010-entity-card-composition.md`](../adr/0010-entity-card-composition.md)
+> - Depends on [`docs/adr/0010-entity-card-composition.md`](../../adr/0010-entity-card-composition.md)
 >   (architecture decision) and supersedes the card portion of
->   [`docs/adr/0008-item-card-redesign.md`](../adr/0008-item-card-redesign.md)
+>   [`docs/adr/0008-item-card-redesign.md`](../../adr/0008-item-card-redesign.md)
+> - #446, #447, #448, #449, #450, #451, #452, #453, #454 — all closed; Weapon/Armor (#450) and
+>   Spirit/Sprite (#452) were the final migration waves
 
 Every existing typed card (`WeaponDataCard`, `ArmorDataCard`, `DeviceDataCard`, `ProgramDataCard`,
 `ImplantDataCard`, `VehicleDataCard`, `LicenseDataCard`, `SinDataCard`, `CredstickDataCard`,
@@ -19,7 +21,7 @@ currently). Adept Power's `PowerCard` is still new work, not a migration.
 ## Open Questions
 
 - [x] **`SpriteData` has no `damage` field.** Not a fresh gap — already tracked as an open
-  question in [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md)
+  question in [`docs/features/0008-entity-status-sheets.md`](../0008-entity-status-sheets.md)
   ("where does damage live?"), now resolved there: both `SpriteData` and `SpiritData` get a
   persisted damage container directly on the record (matching `SpiritData`'s existing shape),
   not Session State. Decision only — no migration written yet, no code changes made.
@@ -168,13 +170,13 @@ PowerCard (assembles EntityCard's elements plus):
 
 ## Related Features
 
-- [`docs/adr/0010-entity-card-composition.md`](../adr/0010-entity-card-composition.md) — the
+- [`docs/adr/0010-entity-card-composition.md`](../../adr/0010-entity-card-composition.md) — the
   architecture decision this migration implements.
-- [`docs/adr/0008-item-card-redesign.md`](../adr/0008-item-card-redesign.md),
-  [`docs/adr/0009-item-details-page.md`](../adr/0009-item-details-page.md) — prior card/details
+- [`docs/adr/0008-item-card-redesign.md`](../../adr/0008-item-card-redesign.md),
+  [`docs/adr/0009-item-details-page.md`](../../adr/0009-item-details-page.md) — prior card/details
   architecture this supersedes (card) or leaves untouched for now (details).
-- [`docs/features/0008-entity-status-sheets.md`](./0008-entity-status-sheets.md) — owns the
+- [`docs/features/0008-entity-status-sheets.md`](../0008-entity-status-sheets.md) — owns the
   Spirit/Sprite persisted-damage-container decision this doc depends on for `ConditionMonitor`.
-- [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md) — introduces
+- [`docs/features/0012-item-stashing.md`](../0012-item-stashing.md) — introduces
   `ItemData._state.equipped`/`.stashed`, which the `StatusIcon` element must read via
   `isEquipped`/`isStashed` once that migration lands.

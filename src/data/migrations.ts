@@ -21,6 +21,7 @@ import addMagicAdvancementGrades from "./migrations/019_addMagicAdvancementGrade
 import addSpriteDamage from "./migrations/020_addSpriteDamage.ts"
 import flattenVehicleDamage from "./migrations/021_flattenVehicleDamage.ts"
 import pruneLegacyMetaFields from "./migrations/022_pruneLegacyMetaFields.ts"
+import normalizeArmorRating from "./migrations/023_normalizeArmorRating.ts"
 
 // Static imports (not `await import(...)`) — a dynamic import here has top-level await, and
 // combining that with the "runner-migrations" manualChunks entry below deadlocks Rolldown's
@@ -50,6 +51,7 @@ export const migrations: AnyCharacterMigration[] = [
   addSpriteDamage,
   flattenVehicleDamage,
   pruneLegacyMetaFields,
+  normalizeArmorRating,
 ]
 
 /** The current RunnerData schema version — the highest migration `version` registered above. */

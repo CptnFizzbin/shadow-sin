@@ -5,10 +5,16 @@ import { z } from "zod"
 import { GameEffectDataSchema } from "#/system/gameEffects/gameEffectData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
+import type { Rating } from "#/system/rating.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
 export interface ArmorData extends ItemData {
   itemType: ItemType.armor
+  /**
+   * Narrower than `EntityData`'s inherited `Rating<string>` — Armor's real stats are
+   * `ballistic`/`impact`, so this never needed the string sentinel other `Rating` consumers do.
+   */
+  rating?: Rating
   ballistic: number
   impact: number
   damage?: {
@@ -38,7 +44,7 @@ export const ArmorDataSchema = z.object({
     forbidden: z.boolean().optional(),
   }).optional(),
   source: SourceDataSchema.optional(),
-  rating: z.union([z.number(), z.string()]).optional(),
+  rating: z.number().optional(),
 
   parentId: (z.uuid() as z.ZodType<UUID>).optional(),
   childIds: z.array(z.uuid() as z.ZodType<UUID>).optional(),

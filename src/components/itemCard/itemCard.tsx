@@ -8,7 +8,7 @@ import type { ItemData } from "#/system/itemData.ts"
 import { ItemCardElements } from "./itemCardElements.tsx"
 import { ItemCardSlotManager } from "./itemCardSlotManager.ts"
 
-interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
+export interface ItemCardProps extends Omit<EntityCardProps, "entity"> {
   item: ItemData
   /**
    * Overrides `item.cost` for display when a modifier changes what the item actually costs (e.g.
