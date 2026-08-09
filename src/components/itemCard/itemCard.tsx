@@ -44,7 +44,7 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, .
       )}
 
       {slots.stats.length >= 1 && (
-        <EntityCard.Layout.BodyRow sx={{ gap: 1 }}>
+        <EntityCard.Layout.BodyRow sx={{ gap: 1, flexWrap: "wrap" }}>
           {slots.stats}
         </EntityCard.Layout.BodyRow>
       )}
