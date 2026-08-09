@@ -31,7 +31,7 @@ export const WeaponsList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {topLevelWeapons.map((weapon) => (
         <WeaponDataCard key={weapon.id} weapon={weapon} onOpen={() => handleEditWeapon(weapon)} />
       ))}

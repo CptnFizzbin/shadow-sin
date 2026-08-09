@@ -20,7 +20,7 @@ export const CredstickSection: FC = () => {
 
   return (
 
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Credsticks" />
 
       {credsticks.length === 0
@@ -42,7 +42,7 @@ export const CredstickSection: FC = () => {
             </Stack>
           )}
 
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button
           size="small"
           variant="outlined"

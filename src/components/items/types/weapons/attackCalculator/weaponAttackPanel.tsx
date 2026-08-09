@@ -209,7 +209,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
             </Stack>
           )}
 
-          <Stack sx={{ gap: 1 }}>
+          <Stack>
             {visibleSkillOptions.map((skill) => {
               const isSelected = skill === resolvedSkill
               const rating = skillRatingByKey[skill] ?? 0
@@ -251,7 +251,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
       )}
 
       {currentStep === "modifiers" && (
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           {woundMod >= 1 && (
             <FormControlLabel
               control={<Checkbox checked disabled />}
@@ -284,7 +284,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
             }
 
             return (
-              <Stack key={modifier.id} direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <Stack key={modifier.id} direction="row" sx={{ alignItems: "center" }}>
                 <Typography variant="body2" sx={{ flex: 1 }}>{modifier.label}</Typography>
                 <CounterInput
                   value={stepperValues[modifier.id] ?? 0}
@@ -303,7 +303,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
         <Stack sx={{ gap: 1.5 }}>
           <DicePool name="Attack" groups={groups} />
 
-          <Stack sx={{ alignItems: "center", gap: 1 }}>
+          <Stack sx={{ alignItems: "center" }}>
             <DiceResult roller={diceRoller} iconSize={32} />
 
             {isSettled && isCriticalGlitch && (
@@ -327,7 +327,7 @@ export const WeaponAttackPanel: FC<WeaponAttackPanelProps> = ({ weapon }) => {
 
           <Divider />
 
-          <Stack direction="row" sx={{ gap: 1, alignItems: "center", justifyContent: "space-between" }}>
+          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
             <Typography variant="caption" color="text.secondary">
               Hits rolled on the defender's Defense Test
             </Typography>

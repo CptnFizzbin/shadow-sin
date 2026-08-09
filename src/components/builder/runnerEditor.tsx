@@ -98,7 +98,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
     <BuilderStoreProvider runnerStore={runnerStore} builderStore={builderStore}>
       <EditorModeProvider mode="edit">
         <Stack>
-          <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
               variant="outlined"
               color="inherit"
@@ -107,7 +107,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
             >
               Cancel
             </Button>
-            <Stack direction="row" sx={{ gap: 1 }}>
+            <Stack direction="row">
               <BuilderImportButton onImport={loadRunner} />
               <ExportRunnerButton />
               <Button
@@ -141,7 +141,7 @@ export const RunnerEditor: FC<RunnerEditorProps> = ({ runner }) => {
           />
 
           <SwipeSurface onSwipeRightToLeft={nextTab} onSwipeLeftToRight={prevTab}>
-            <Stack sx={{ gap: 1 }}>
+            <Stack>
               <EditorPageNav
                 value={activeTab}
                 isFirst={currentIndex === 0}

@@ -38,7 +38,7 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
           {(field) => <field.TextField label="Name" required autoFocus />}
         </form.AppField>
 
-        <Stack direction="row" sx={{ gap: 1 }}>
+        <Stack direction="row">
           <form.AppField name="score" validators={{ onChange: z.number({ error: "Score is required" }) }}>
             {(field) => <field.NumberField label="Score" sx={{ width: 100 }} slotProps={{ htmlInput: { min: 0 } }} />}
           </form.AppField>
@@ -68,7 +68,7 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
             <>
               <Stack sx={{ gap: 0.5 }}>
                 <Label label="Attributes" variant="outlined" />
-                <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+                <Stack direction="row" sx={{ flexWrap: "wrap" }}>
                   {AttributeOrder.map((key) => (
                     <form.AppField key={key} name={`attributes.${key}`}>
                       {(field) => (
@@ -83,7 +83,7 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
                 </Stack>
               </Stack>
 
-              <Stack direction="row" sx={{ gap: 1 }}>
+              <Stack direction="row">
                 <form.AppField name="armor">
                   {(field) => <field.TextField label="Armor" placeholder="8/6" sx={{ width: 100 }} />}
                 </form.AppField>
@@ -103,7 +103,7 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
                       <Label label="Skills" variant="outlined" />
 
                       {skills.map((skill, index) => (
-                        <Stack key={index} direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+                        <Stack key={index} direction="row" sx={{ alignItems: "flex-start" }}>
                           <TextField
                             label="Skill"
                             size="small"
@@ -154,9 +154,9 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
                       {weapons.map((weapon, index) => (
                         <Stack
                           key={index}
-                          sx={{ gap: 1, padding: 1, border: "1px solid", borderColor: "divider" }}
+                          sx={{ padding: 1, border: "1px solid", borderColor: "divider" }}
                         >
-                          <Stack direction="row" sx={{ gap: 1 }}>
+                          <Stack direction="row">
                             <TextField
                               label="Weapon"
                               size="small"
@@ -173,7 +173,7 @@ export const CombatantFormFields: FC<CombatantFormFieldsProps> = ({ form }) => {
                               <RiDeleteBin6Line size={16} />
                             </IconButton>
                           </Stack>
-                          <Stack direction="row" sx={{ gap: 1 }}>
+                          <Stack direction="row">
                             <TextField
                               label="Pool"
                               type="number"

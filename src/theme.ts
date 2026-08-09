@@ -234,9 +234,9 @@ export const theme = createTheme({
 
     MuiStack: {
       styleOverrides: {
-        root: {
-          gap: 16,
-        },
+        root: ({ theme: activeTheme }) => ({
+          gap: activeTheme.spacing(1),
+        }),
       },
     },
 

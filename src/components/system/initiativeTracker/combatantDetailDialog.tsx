@@ -75,7 +75,7 @@ const CombatantDetailDialog: FC<CombatantDetailDialogProps> = ({ ctrl, combatant
           <Stack sx={{ gap: 0.5 }}>
             <Label label="Damage" />
             {combatant.damageTracks.map((track) => (
-              <Stack key={track.label} direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <Stack key={track.label} direction="row" sx={{ alignItems: "center" }}>
                 <Typography sx={{ minWidth: 16 }}>{track.label}</Typography>
                 <PassPips
                   total={track.boxes}

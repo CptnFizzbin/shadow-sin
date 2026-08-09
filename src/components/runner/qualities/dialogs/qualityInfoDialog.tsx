@@ -23,7 +23,7 @@ const QualityInfoDialog: FC<QualityInfoDialogProps> = ({ ctrl, quality }) => {
   return (
     <DetailDialog ctrl={ctrl} title={quality.name}>
       <Stack sx={{ gap: 1.5 }}>
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+        <Stack direction="row" sx={{ flexWrap: "wrap" }}>
           <Stack sx={{ minWidth: 80 }}>
             <Label label="Type" variant="outlined" />
             <Typography sx={{ textAlign: "center", textTransform: "capitalize" }}>

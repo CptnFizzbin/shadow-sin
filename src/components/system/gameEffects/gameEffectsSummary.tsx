@@ -42,7 +42,7 @@ export const GameEffectsSummary: FC<GameEffectsSummaryProps> = ({ effects, onCha
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Divider />
 
       <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>

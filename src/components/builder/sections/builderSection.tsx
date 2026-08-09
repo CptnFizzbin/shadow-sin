@@ -21,7 +21,7 @@ export const BuilderSection: FC<BuilderSectionProps> = ({
   const title = builderSections[id].label
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>{title}</SectionHeader>
       <AlertsList alerts={alerts} />
 

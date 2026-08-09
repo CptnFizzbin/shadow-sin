@@ -149,7 +149,7 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
         </Stack>
 
         {slots.hasBody && (
-          <Stack sx={{ p: 1, gap: 1 }}>
+          <Stack sx={{ p: 1 }}>
             {slots.hasStatRow && (
               <Stack direction="row" sx={{ gap: 0.5, flexWrap: "wrap" }}>
                 {slots.stats}
@@ -182,17 +182,16 @@ const DataCardComponent: FC<BasicDataCardProps> = ({
               ...bandSx,
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 1,
               borderTop: "1px solid",
               borderColor: "divider",
             }}
           >
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center", minWidth: 0 }}>
+            <Stack direction="row" sx={{ alignItems: "center", minWidth: 0 }}>
               {slots.source}
               {slots.availability}
             </Stack>
 
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center", flexShrink: 0 }}>
+            <Stack direction="row" sx={{ alignItems: "center", flexShrink: 0 }}>
               {slots.cost}
               {slots.footer}
             </Stack>

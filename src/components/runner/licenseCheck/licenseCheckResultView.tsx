@@ -22,7 +22,7 @@ export const LicenseCheckResultView: FC = () => {
       </Typography>
 
       {hasAlerts && (
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           {result.alerts.map((alert) => {
             if (alert.itemId === "multiple-sins") {
               return (

@@ -23,7 +23,7 @@ export const WeaponsSectionContent: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {Object.values(weapons).map((item) => (
         <WeaponDataCard
           key={item.id}

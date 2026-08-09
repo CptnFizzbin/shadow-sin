@@ -35,7 +35,7 @@ export const AdeptPowersList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <PowerPoints value={powerPoints.used} total={powerPoints.max} />
 
       {adeptPowers.length === 0 && (

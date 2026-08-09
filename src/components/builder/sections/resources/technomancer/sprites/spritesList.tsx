@@ -41,7 +41,7 @@ export const SpritesList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Sprites" variant="outlined" />
 
       <Stack sx={{ gap: 0.5 }}>

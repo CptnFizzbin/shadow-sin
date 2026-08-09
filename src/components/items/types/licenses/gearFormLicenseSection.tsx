@@ -35,12 +35,12 @@ const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
   const openAssignDialog = () => assignLicenseDialog.open({ item: { ...item, licenseId: license?.id } })
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="License" />
 
       {license
         ? (
-            <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+            <Stack direction="row" sx={{ alignItems: "center" }}>
               <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>{license.name}</Typography>
               <RatingChip rating={license.rating} />
               <Button size="small" onClick={openAssignDialog}>

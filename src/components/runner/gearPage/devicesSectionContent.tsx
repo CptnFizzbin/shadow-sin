@@ -28,7 +28,7 @@ export const DevicesSectionContent: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {Object.values(devices).map((device) => (
         <DeviceDataCard
           key={device.id}

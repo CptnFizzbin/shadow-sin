@@ -13,7 +13,7 @@ export const ActiveMatrixNodeSection: FC = () => {
   const matrixNode = useRunnerStoreSelector(Selectors.matrix.selectMatrixNode)
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Active Matrix Node" />
 
       <TextField
@@ -24,7 +24,7 @@ export const ActiveMatrixNodeSection: FC = () => {
         onChange={(e) => dispatch(Actions.matrix.setMatrixNodeName(e.target.value))}
       />
 
-      <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+      <Stack direction="row" sx={{ flexWrap: "wrap" }}>
         <CounterInput
           label="System"
           size="small"

@@ -29,7 +29,7 @@ export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
 
   return (
     <form.AppForm>
-      <Stack sx={{ gap: 1, pt: 1 }}>
+      <Stack sx={{ pt: 1 }}>
         <form.AppField
           name="name"
           validators={{ onChange: z.string().min(1, "Language name is required") }}

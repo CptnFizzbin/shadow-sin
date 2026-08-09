@@ -33,9 +33,9 @@ export const AttributesSection: FC = () => {
   const specialAttrs = SpecialAttributes.filter((attr) => attrRows.includes(attr))
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <EditorMode.IsBuilder>
-        <Stack direction="row" sx={{ alignSelf: "flex-end", gap: 1 }}>
+        <Stack direction="row" sx={{ alignSelf: "flex-end" }}>
           <BuildPoints value={budget.spent} total={budget.limit} /> + <BuildPoints value={specialBp} />
         </Stack>
 

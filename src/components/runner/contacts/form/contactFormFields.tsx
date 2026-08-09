@@ -39,7 +39,7 @@ export const ContactFormFields = withFieldGroup({
           )}
         </group.AppField>
 
-        <Stack direction="row" sx={{ gap: 1 }}>
+        <Stack direction="row">
           <group.AppField name="connection">
             {(field) => (
               <field.CounterField
@@ -85,7 +85,7 @@ export const ContactFormFields = withFieldGroup({
                 <Label label="Knowledge Skills" variant="outlined" />
 
                 {skills.map((skill, index) => (
-                  <Stack key={index} direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+                  <Stack key={index} direction="row" sx={{ alignItems: "flex-start" }}>
                     <TextField
                       label="Skill"
                       size="small"
@@ -142,7 +142,7 @@ export const ContactFormFields = withFieldGroup({
                 <Label label="Favours" variant="outlined" />
 
                 {favours.map((favour, index) => (
-                  <Stack key={index} direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+                  <Stack key={index} direction="row" sx={{ alignItems: "flex-start" }}>
                     <TextField
                       label="Description"
                       size="small"

@@ -147,10 +147,10 @@ export const ItemDialog: FC<ItemDialogProps> = ({
         <Dialog.Title>{title}</Dialog.Title>
 
         <Dialog.Content>
-          <Stack sx={{ gap: 1, padding: 1 }}>
+          <Stack sx={{ padding: 1 }}>
             {slots?.preForm?.()}
 
-            <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+            <Stack direction="row" sx={{ alignItems: "flex-start" }}>
               <form.AppField
                 name="name"
                 validators={{ onChange: z.string().min(1, "Name is required") }}
@@ -239,7 +239,7 @@ export const ItemDialog: FC<ItemDialogProps> = ({
             )}
 
             {localOptions["isSubItem"] && (
-              <Stack sx={{ gap: 1 }}>
+              <Stack>
                 <Label label={parentItemLabel ?? "Attached To"} />
 
                 <GearAttachmentFieldGroup

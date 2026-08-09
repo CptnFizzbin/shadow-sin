@@ -194,7 +194,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
                   <Typography color="text.secondary">
                     Withdraw {formatNuyen(credstick.balance)} to your nuyen and delete this credstick?
                   </Typography>
-                  <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
+                  <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
                     <Button size="small" onClick={() => setShowWithdrawConfirm(false)}>
                       Cancel
                     </Button>
@@ -216,7 +216,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
                   <Typography color="error">
                     Remove this credstick? Any remaining balance will be lost.
                   </Typography>
-                  <Stack direction="row" sx={{ gap: 1, justifyContent: "flex-end" }}>
+                  <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
                     <Button size="small" onClick={() => setShowRemoveConfirm(false)}>
                       Cancel
                     </Button>

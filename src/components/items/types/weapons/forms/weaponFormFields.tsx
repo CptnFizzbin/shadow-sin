@@ -35,7 +35,7 @@ export const WeaponFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
     return (
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <group.AppField
           name="weaponType"
           listeners={{

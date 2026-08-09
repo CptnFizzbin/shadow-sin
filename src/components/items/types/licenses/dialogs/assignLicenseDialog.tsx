@@ -101,7 +101,7 @@ const NewLicenseSection: FC<NewLicenseSectionProps> = ({
   <>
     {sins.length === 0
       ? (
-          <Stack sx={{ gap: 1 }}>
+          <Stack>
             <Typography color="text.secondary">
               This Runner has no SIN yet. Create one to attach the licence to.
             </Typography>
@@ -111,7 +111,7 @@ const NewLicenseSection: FC<NewLicenseSectionProps> = ({
           </Stack>
         )
       : (
-          <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
             <FormControl size="small" sx={{ flex: 1 }}>
               <InputLabel>SIN</InputLabel>
               <Select
@@ -253,7 +253,7 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
 
       <Dialog.Content>
         <Stack sx={{ gap: 2, padding: 1 }}>
-          <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
             <Typography sx={{ flexGrow: 1 }}>{item.name}</Typography>
             {item.availability && <AvailabilityChip availability={item.availability} />}
           </Stack>

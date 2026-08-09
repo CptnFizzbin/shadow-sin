@@ -62,14 +62,14 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
 
       <Dialog.Content>
         <Stack divider={<Divider />} sx={{ gap: 2, padding: 1 }}>
-          <Stack sx={{ gap: 1 }}>
+          <Stack>
             <Typography variant="subtitle2">Profile</Typography>
             <ProfileFields value={profileFields} onChange={handleProfileFieldChange} autoFocus />
           </Stack>
 
-          <Stack sx={{ gap: 1 }}>
+          <Stack>
             <Typography variant="subtitle2">Biology</Typography>
-            <Stack direction="row" sx={{ gap: 1 }}>
+            <Stack direction="row">
               <MuiTextField
                 label="Gender"
                 fullWidth
@@ -88,7 +88,7 @@ const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
                 onChange={(e) => setAge(e.target.value)}
               />
             </Stack>
-            <Stack direction="row" sx={{ gap: 1 }}>
+            <Stack direction="row">
               <MuiTextField
                 label="Height"
                 fullWidth

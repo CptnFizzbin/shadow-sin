@@ -13,7 +13,7 @@ interface CostFieldGroupProps {
 export const GearCostFieldGroup = withFieldGroup<ItemData, unknown, CostFieldGroupProps>({
   render: ({ group, enableQuantity, onBuyMore }) => {
     return (
-      <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+      <Stack direction="row" sx={{ alignItems: "flex-start" }}>
         <group.AppField
           name="cost"
           validators={{

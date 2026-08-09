@@ -60,7 +60,7 @@ export const CritterPowerChip: FC<CritterPowerChipProps> = ({
       <DetailDialog ctrl={ctrl} title={name} dividers>
         <Stack sx={{ gap: 1.5 }}>
           {power?.rollType && (
-            <Stack direction="row" sx={{ alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+            <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
               <Chip
                 label={power.rollType}
                 size="small"

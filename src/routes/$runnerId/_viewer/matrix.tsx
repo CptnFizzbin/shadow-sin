@@ -20,7 +20,7 @@ function RouteComponent() {
   const matrix = useRunnerStoreSelector(Selectors.damage.selectMatrixTrack)
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>Matrix</SectionHeader>
 
       <UnderConstruction description="Matrix tests, loaded program limits, and dice pool calculations aren't implemented yet. For now, track Matrix damage and keep a list of your programs here." />

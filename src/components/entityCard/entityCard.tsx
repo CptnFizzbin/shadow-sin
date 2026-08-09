@@ -139,13 +139,13 @@ const EntityCardRoot: FC<EntityCardProps> = ({
             }}
           >
             <EntityCardLayout.HeaderRow sx={{ justifyContent: "space-between" }}>
-              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
                 <EntityCardElements.Title title={entity.name} />
 
                 {slots.layout.titleRight}
               </Stack>
 
-              <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center", gap: 1 }}>
+              <Stack direction="row" sx={{ justifyItems: "flex-end", alignItems: "center" }}>
                 {slots.layout.topRight}
 
                 <EntityCardElements.Rating value={entity.rating} />
@@ -171,13 +171,13 @@ const EntityCardRoot: FC<EntityCardProps> = ({
               }}
             >
               <EntityCardLayout.FooterRow sx={{ justifyContent: "space-between" }}>
-                <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                <Stack direction="row" sx={{ alignItems: "center" }}>
                   <EntityCardElements.Source source={entity.source} />
 
                   {slots.layout.footerLeft}
                 </Stack>
 
-                <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+                <Stack direction="row" sx={{ alignItems: "center" }}>
                   {slots.layout.footerRight}
                 </Stack>
               </EntityCardLayout.FooterRow>

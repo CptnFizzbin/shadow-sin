@@ -133,7 +133,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
         </Stack>
 
         {slots.quickActions.length > 0 && (
-          <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <Stack direction="row" sx={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
             {slots.quickActions}
           </Stack>
         )}
@@ -171,7 +171,7 @@ export const ItemDetailsRoot: FC<ItemDetailsRootProps> = ({
 
       <Stack>
         <Label>{subitemsName}</Label>
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           {slots.subitems}
 
           <ButtonGroup fullWidth>

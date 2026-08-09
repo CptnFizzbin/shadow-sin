@@ -12,7 +12,7 @@ interface DataCardFooterProps {
  * content layout, not the band's border/background.
  */
 export const DataCardSlotFooter: FC<DataCardFooterProps> = ({ children }) => (
-  <Stack direction="row" sx={{ gap: 1, alignItems: "center", flexWrap: "wrap" }}>
+  <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
     {children}
   </Stack>
 )

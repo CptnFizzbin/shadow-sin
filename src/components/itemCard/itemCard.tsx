@@ -44,12 +44,12 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, .
       )}
 
       {slots.stats.length >= 1 && (
-        <EntityCard.Layout.BodyRow sx={{ gap: 1 }}>
+        <EntityCard.Layout.BodyRow>
           {slots.stats}
         </EntityCard.Layout.BodyRow>
       )}
 
-      <EntityCard.Layout.TopRight sx={{ gap: 1 }}>
+      <EntityCard.Layout.TopRight>
         {item.equipped && <ItemCardElements.StatusIcon status="equipped" />}
         {item.stashed && <ItemCardElements.StatusIcon status="stashed" />}
         {item.fixed && <ItemCardElements.StatusIcon status="fixed" />}
@@ -60,8 +60,8 @@ const ItemCardRoot: FC<ItemCardProps> = ({ item, costEffectiveValue, children, .
         )}
       </EntityCard.Layout.TopRight>
 
-      <EntityCard.Layout.FooterRight sx={{ gap: 1, justifyContent: "center", alignItems: "center" }}>
-        <Stack direction="row" sx={{ gap: 1, flexGrow: 1, justifyContent: "flex-end", alignItems: "baseline" }}>
+      <EntityCard.Layout.FooterRight sx={{ justifyContent: "center", alignItems: "center" }}>
+        <Stack direction="row" sx={{ flexGrow: 1, justifyContent: "flex-end", alignItems: "baseline" }}>
           <ItemCardElements.Availability value={item.availability} />
           <ItemCardElements.Cost value={item.cost} effectiveValue={costEffectiveValue} />
         </Stack>

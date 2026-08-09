@@ -38,7 +38,7 @@ export const SpiritDataCard: FC<SpiritDataCardProps> = ({ spirit, onEdit, onRemo
     <DataCard>
       <DataCard.Title
         title={(
-          <Stack direction="row" sx={{ alignItems: "baseline", gap: 1 }}>
+          <Stack direction="row" sx={{ alignItems: "baseline" }}>
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>{title}</Typography>
             {subtitle && (
               <Typography variant="caption" color="text.secondary">
@@ -66,7 +66,7 @@ export const SpiritDataCard: FC<SpiritDataCardProps> = ({ spirit, onEdit, onRemo
       </DataCard.Footer>
 
       <DataCard.Content>
-        <Stack sx={{ p: 1, gap: 1 }}>
+        <Stack sx={{ p: 1 }}>
           {registry.skills.length > 0 && (
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>

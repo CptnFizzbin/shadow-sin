@@ -53,7 +53,7 @@ export const SpiritList: FC = () => {
 
   return (
     <>
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <ItemList.AddItemButton onClick={handleAdd}>Summon Spirit</ItemList.AddItemButton>
         {spirits.map((spirit) => (
           <SpiritDataCard

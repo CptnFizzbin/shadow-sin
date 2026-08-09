@@ -41,7 +41,7 @@ export const DiceTrayEdgeControls: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label color="warning.main">Edge ({currentEdge}/{maxEdge})</Label>
 
       <ButtonGroup fullWidth>

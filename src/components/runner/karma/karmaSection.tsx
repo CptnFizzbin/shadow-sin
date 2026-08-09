@@ -28,14 +28,14 @@ export const KarmaSection: FC = () => {
     <>
       <Grid container columns={2} spacing={1} sx={{ margin: "auto" }}>
         <Grid size={1}>
-          <Stack sx={{ gap: 1, alignItems: "center" }}>
+          <Stack sx={{ alignItems: "center" }}>
             <Label label="Current" />
             <KarmaValue amount={currentKarma} sx={{ fontWeight: "bold" }} />
           </Stack>
         </Grid>
 
         <Grid size={1}>
-          <Stack sx={{ gap: 1, alignItems: "center" }}>
+          <Stack sx={{ alignItems: "center" }}>
             <Label label="Total Earned" />
             <KarmaValue amount={totalKarma} sx={{ fontWeight: "bold" }} />
           </Stack>

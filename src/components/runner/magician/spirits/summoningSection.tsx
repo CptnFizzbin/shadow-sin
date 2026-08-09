@@ -66,7 +66,7 @@ export const SummoningSection: FC<SummoningSectionProps> = ({ spiritType, force,
           : undefined,
       }}
     >
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Stack sx={{ gap: 0.5 }}>
           <Label label={isBound ? "Bind" : "Summon"} variant="text" />
           {isOverforce && (

@@ -13,7 +13,7 @@ export const ArmorFormFields = withFieldGroup({
       <>
         <Label label="Armor Ratings" />
 
-        <Stack direction="row" sx={{ gap: 1 }}>
+        <Stack direction="row">
           <group.AppField name="ballistic">
             {(field) => <field.CounterField label="Ballistic" min={0} max={20} fullWidth />}
           </group.AppField>

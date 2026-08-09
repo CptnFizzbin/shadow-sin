@@ -13,7 +13,7 @@ export const DeviceFormFields = withFieldGroup({
   ...deviceFormOpts,
   render: ({ group }) => {
     return (
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Label label="Device Properties" />
 
         <group.AppField name="deviceType">
@@ -38,7 +38,7 @@ export const DeviceFormFields = withFieldGroup({
                   </group.AppField>
                 )
               : (
-                  <Stack direction="row" sx={{ gap: 1 }}>
+                  <Stack direction="row">
                     <group.AppField name="deviceModel">
                       {(field) => (
                         <field.TextField label="Model" size="small" sx={{ flex: 1 }} />
@@ -56,7 +56,7 @@ export const DeviceFormFields = withFieldGroup({
 
         <Label label="Matrix Properties" />
 
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+        <Stack direction="row" sx={{ flexWrap: "wrap" }}>
           <group.AppField name="deviceRating">
             {(field) => (
               <field.CounterField label="Device Rating" min={0} max={99} />

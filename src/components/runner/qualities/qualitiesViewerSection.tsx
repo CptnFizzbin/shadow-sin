@@ -54,7 +54,7 @@ export const QualitiesViewerSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {positiveQualities.length > 0 && (
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Positive Qualities" variant="outlined" />

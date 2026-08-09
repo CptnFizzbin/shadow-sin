@@ -57,7 +57,7 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               pointerEvents: isBpPanelExpanded ? "none" : "auto",
             }}
           >
-            <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
+            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
               <Button
                 variant="outlined"
                 color="inherit"
@@ -66,7 +66,7 @@ export const RunnerBuilder: FC<RunnerFormProps> = ({ runner }) => {
               >
                 Cancel
               </Button>
-              <Stack direction="row" sx={{ gap: 1 }}>
+              <Stack direction="row">
                 <BuilderImportButton onImport={loadRunner} />
                 <ExportRunnerButton />
                 <Button
