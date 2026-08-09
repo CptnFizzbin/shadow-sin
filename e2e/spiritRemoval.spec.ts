@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test"
 
-import { Artemis } from "#/data/fixtures/artemis.ts"
+import { Hexen } from "#/data/fixtures/hexen.ts"
 
-const SPIRITS_URL = `/#/${Artemis.id}/spirits`
+// Hexen (unlike the Mundane Artemis fixture) is a Magician — RunnerNav redirects away from
+// /spirits to /about for any runner it isn't visible for (see runnerSections.ts).
+const SPIRITS_URL = `/#/${Hexen.id}/spirits`
 
 test.describe("Spirits page – removal", () => {
   test.beforeEach(async ({ page }) => {
