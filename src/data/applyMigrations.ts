@@ -50,6 +50,7 @@ export function applyMigrations(runner: object): RunnerData {
     draft.contacts ??= []
     draft.tradition ??= null
     draft.initiative ??= { passesCompleted: [] }
+    draft.matrix ??= { name: "", system: 0, firewall: 0, response: 0, signal: 0, numberOfPrograms: 0 }
   })
 
   // Using `as` here as migrations are expected to produce a fully valid RunnerData, but the type system can't verify that.

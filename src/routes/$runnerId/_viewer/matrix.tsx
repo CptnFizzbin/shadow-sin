@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
 
+import { ActiveMatrixNodeSection } from "#/components/runner/matrix/activeMatrixNodeSection.tsx"
 import { MatrixProgramsSection } from "#/components/runner/matrix/matrixProgramsSection.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
@@ -23,6 +24,8 @@ function RouteComponent() {
       <SectionHeader>Matrix</SectionHeader>
 
       <UnderConstruction description="Matrix tests, loaded program limits, and dice pool calculations aren't implemented yet. For now, track Matrix damage and keep a list of your programs here." />
+
+      <ActiveMatrixNodeSection />
 
       <DamageTrack
         label="Matrix"

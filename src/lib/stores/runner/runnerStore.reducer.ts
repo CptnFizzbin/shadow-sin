@@ -13,6 +13,7 @@ import { featureFlagsReducer } from "./featureFlags/featureFlagsSlice.ts"
 import { gearReducer } from "./gear/gearSlice.ts"
 import { initiativeReducer } from "./initiative/initiativeSlice.ts"
 import { karmaReducer } from "./karma/karmaSlice.ts"
+import { matrixReducer } from "./matrix/matrixSlice.ts"
 import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
 import { powersReducer } from "./powers/powersSlice.ts"
 import { profileReducer } from "./profile/profileSlice.ts"
@@ -71,6 +72,7 @@ export const runnerRootReducer = combineReducers({
   tradition: traditionReducer,
   edge: edgeReducer,
   damage: damageReducer,
+  matrix: matrixReducer,
   initiative: initiativeReducer,
   gear: gearReducer,
   featureFlags: featureFlagsReducer,

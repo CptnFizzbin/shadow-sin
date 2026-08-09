@@ -97,6 +97,16 @@ export interface RunnerData {
     matrix: number
   }
 
+  /** The Runner's currently active Matrix Node — a manually tracked persona/commlink stat block. */
+  matrix: {
+    name: string
+    system: number
+    firewall: number
+    response: number
+    signal: number
+    numberOfPrograms: number
+  }
+
   gear: Record<string, ItemData>
 
   skills: {
