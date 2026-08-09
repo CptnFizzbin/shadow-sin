@@ -73,6 +73,15 @@ export const Hexen: RunnerData = {
     matrix: 0,
   },
 
+  matrix: {
+    name: "",
+    system: 0,
+    firewall: 0,
+    response: 0,
+    signal: 0,
+    numberOfPrograms: 0,
+  },
+
   tradition: {
     name: "Hermetic",
     drainAttribute: AttributeKey.logic,
