@@ -3,14 +3,11 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import type { FC, PropsWithChildren, ReactElement } from "react"
 import { afterEach } from "vitest"
 
-import { builderStateFactory } from "#/components/builder/builderState.ts"
 import { BuilderStoreProvider } from "#/components/builder/builderStoreProvider.tsx"
 import { RunnerDataStore } from "#/components/runner/sheet/runnerDataStore.ts"
 import { RunnerStoreProvider } from "#/components/runner/sheet/runnerStoreProvider.tsx"
-import { createCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
-import { builderStoreReducer } from "#/lib/stores/builder/builderStore.reducer.ts"
+import { scopeCompatStore } from "#/integrations/reduxToolkit/compatStore.ts"
 import type { BuilderStore } from "#/lib/stores/builder/builderStore.ts"
-import type { RunnerStore } from "#/lib/stores/runner/runnerStore.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
@@ -21,11 +18,11 @@ export const ThemeWrapper: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export interface RenderWithProvidersOptions {
-  runnerStore?: RunnerStore
+  runnerStore?: RunnerDataStore
 }
 
 export interface RenderInBuilderOptions {
-  runnerStore?: RunnerStore
+  runnerStore?: RunnerDataStore
   builderStore?: BuilderStore
 }
 
@@ -63,7 +60,7 @@ export function renderInBuilder(
   element: ReactElement,
   {
     runnerStore = new RunnerDataStore(runnerDataFactory()),
-    builderStore = createCompatStore(builderStateFactory(), builderStoreReducer),
+    builderStore = scopeCompatStore(runnerStore.root, "builder"),
   }: RenderInBuilderOptions = {},
 ) {
   const Wrapper: FC<PropsWithChildren> = ({ children }) => {

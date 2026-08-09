@@ -1,5 +1,4 @@
-import { useSelector } from "#/integrations/reduxToolkit/useSelector.ts"
-import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
+import { useRootStoreSelector } from "#/lib/stores/root/rootStore.selectors.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import * as attributesSelectors from "./attributes/attributesSlice.selectors.ts"
@@ -25,12 +24,17 @@ import * as traditionSelectors from "./tradition/traditionSlice.selectors.ts"
 
 export type RunnerDataSelector<TData> = (state: RunnerData) => TData
 
+/**
+ * Reactive read of the `RunnerData` slice of the merged root store. A thin wrapper around
+ * `useRootStoreSelector` — it curries the given `RunnerData`-scoped selector into a root-state
+ * selector (`(state) => selector(state.runnerData)`), so domain selectors keep operating on
+ * `RunnerData` even though the store's actual root state is wider.
+ */
 export function useRunnerStoreSelector<T>(
   selector: RunnerDataSelector<T>,
   compare?: (prev: T, next: T) => boolean,
 ) {
-  const store = useRunnerStoreContext()
-  return useSelector(store, selector, { compare })
+  return useRootStoreSelector((state) => selector(state.runnerData), compare)
 }
 
 /**

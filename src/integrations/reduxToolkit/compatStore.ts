@@ -58,3 +58,52 @@ export function createCompatStore<TState>(
     },
   }
 }
+
+/**
+ * A read/write view onto one named slice of a {@link CompatStore}, sharing the same underlying
+ * store instance as `root` — writes go through `root`'s reducer, and the slice's `subscribe` only
+ * fires when that slice's reference actually changes.
+ *
+ * Dispatching a thunk (a function, e.g. from `createAsyncThunk`) runs it directly against this
+ * slice's own `dispatch`/`getState` rather than `root`'s, so thunks typed against the slice's own
+ * state keep seeing that type at runtime, even though `root.getState()` returns the wider state.
+ */
+export function scopeCompatStore<TRoot, TKey extends keyof TRoot & string>(
+  root: CompatStore<TRoot>,
+  key: TKey,
+): CompatStore<TRoot[TKey]> {
+  type TSlice = TRoot[TKey]
+
+  const getState = (): TSlice => root.getState()[key]
+
+  const dispatch = ((action: unknown) => {
+    if (typeof action === "function") {
+      return (action as (dispatch: unknown, getState: () => TSlice, extra: undefined) => unknown)(
+        dispatch,
+        getState,
+        undefined,
+      )
+    }
+    return root.dispatch(action as UnknownAction)
+  }) as CompatStore<TSlice>["dispatch"]
+
+  return {
+    dispatch,
+    getState,
+    setState: (updater) => root.setState((prev) => {
+      const next = { ...prev }
+      next[key] = updater(prev[key])
+      return next
+    }),
+    subscribe: (listener) => {
+      let prevSlice = getState()
+      return root.subscribe(() => {
+        const nextSlice = getState()
+        if (nextSlice !== prevSlice) {
+          prevSlice = nextSlice
+          listener(nextSlice)
+        }
+      })
+    },
+  }
+}
