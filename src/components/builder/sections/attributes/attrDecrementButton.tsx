@@ -46,7 +46,7 @@ export const AttrDecrementButton: FC<AttrDecrementButtonProps> = (props) => {
     if (disabled) return
     if (props.attr === AttributeKey.essence) return
     store.setState(produce((sheet) => {
-      sheet.attributes[props.attr] -= 1
+      sheet.attributes[props.attr] = (sheet.attributes[props.attr] ?? 0) - 1
     }))
   }
 

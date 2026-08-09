@@ -49,13 +49,11 @@ export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData)
       matrix: 0,
     },
 
-    matrix: {
-      name: "",
-      system: 0,
-      firewall: 0,
-      response: 0,
-      signal: 0,
-      numberOfPrograms: 0,
+    gameState: {
+      matrix: {
+        knownNodes: [],
+        activePrograms: [],
+      },
     },
 
     skills: {

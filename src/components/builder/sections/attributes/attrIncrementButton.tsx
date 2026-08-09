@@ -63,7 +63,7 @@ export const AttrIncrementButton: FC<AttrIncrementButtonProps> = (props) => {
     if (props.attr === AttributeKey.essence) return
 
     store.setState(produce((draft) => {
-      draft.attributes[attrKey] += 1
+      draft.attributes[attrKey] = (draft.attributes[attrKey] ?? 0) + 1
     }))
   }
 

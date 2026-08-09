@@ -8,11 +8,11 @@ import * as complexFormsSelectors from "./complexForms/complexFormsSlice.selecto
 import * as contactsSelectors from "./contacts/contactsSlice.selectors.ts"
 import * as damageSelectors from "./damage/damageSlice.selectors.ts"
 import * as edgeSelectors from "./edge/edgeSlice.selectors.ts"
+import * as matrixSelectors from "./gameState/matrix/matrixSlice.selectors.ts"
 import * as gearSelectors from "./gear/gearSlice.selectors.ts"
 import * as houseRulesSelectors from "./houseRules/houseRulesSlice.selectors.ts"
 import * as initiativeSelectors from "./initiative/initiativeSlice.selectors.ts"
 import * as karmaSelectors from "./karma/karmaSlice.selectors.ts"
-import * as matrixSelectors from "./matrix/matrixSlice.selectors.ts"
 import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
 import * as powersSelectors from "./powers/powersSlice.selectors.ts"
 import * as profileSelectors from "./profile/profileSlice.selectors.ts"
@@ -47,11 +47,11 @@ export const Selectors = {
   contacts: contactsSelectors,
   damage: damageSelectors,
   edge: edgeSelectors,
+  gameState: { matrix: matrixSelectors },
   gear: gearSelectors,
   houseRules: houseRulesSelectors,
   initiative: initiativeSelectors,
   karma: karmaSelectors,
-  matrix: matrixSelectors,
   nuyen: nuyenSelectors,
   powers: powersSelectors,
   profile: profileSelectors,

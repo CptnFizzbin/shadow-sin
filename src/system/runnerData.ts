@@ -15,6 +15,7 @@ import type { SpellData } from "./magic/spellData.ts"
 import type { SpiritData } from "./magic/spiritData.ts"
 import type { SpriteData } from "./magic/spriteData.ts"
 import type { TraditionData } from "./magic/traditionData.ts"
+import type { MatrixGameState } from "./matrix/matrixGameState.ts"
 import type { MetatypeType } from "./metatypeData.ts"
 import type { AdeptPowerData } from "./powers/adeptPowerData.ts"
 import type { QualityData } from "./qualityData.ts"
@@ -85,7 +86,8 @@ export interface RunnerData {
     loans: LoanData[]
   }
 
-  attributes: Record<AttributeKey, number>
+  /** Not every key is populated — a Runner never sets the four Matrix stats. See `selectAttrBase`/`selectAttrValue`. */
+  attributes: Partial<Record<AttributeKey, number>>
 
   edge: {
     current: number
@@ -97,14 +99,9 @@ export interface RunnerData {
     matrix: number
   }
 
-  /** The Runner's currently active Matrix Node — a manually tracked persona/commlink stat block. */
-  matrix: {
-    name: string
-    system: number
-    firewall: number
-    response: number
-    signal: number
-    numberOfPrograms: number
+  /** Player-facing Matrix session state — Known Nodes, the Active Node, and running Programs/Agents. */
+  gameState: {
+    matrix: MatrixGameState
   }
 
   gear: Record<string, ItemData>
