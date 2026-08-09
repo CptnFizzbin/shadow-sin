@@ -22,7 +22,7 @@ describe("PowerCard", () => {
 
     // Assert
     expect(screen.getByText("Improved Reflexes")).toBeDefined()
-    expect(screen.getByText("2")).toBeDefined()
+    expect(screen.getByText("Rating: 2")).toBeDefined()
   })
 
   it("renders the power's cost per rating and total Power Point cost", () => {
@@ -52,7 +52,7 @@ describe("PowerCard", () => {
     render(<PowerCard power={improvedReflexes} onEdit={onEdit} />, { wrapper: ThemeWrapper })
 
     // Act
-    fireEvent.contextMenu(screen.getByText("Improved Reflexes"))
+    fireEvent.click(screen.getByRole("button", { name: "Actions menu" }))
     fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }))
 
     // Assert
