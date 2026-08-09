@@ -7,8 +7,6 @@ import { ThemeWrapper } from "#testUtils/renderUtils.tsx"
 
 import { CounterInput } from "./counterInput.tsx"
 
-// ── Test helpers ──────────────────────────────────────────────────────────────
-
 interface ControlledCounterProps {
   initial?: number | null
   min?: number
@@ -55,8 +53,6 @@ function change(input: HTMLInputElement, rawValue: string) {
 function blur(input: HTMLInputElement) {
   fireEvent.blur(input)
 }
-
-// ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe("Counter", () => {
   describe("input filtering", () => {

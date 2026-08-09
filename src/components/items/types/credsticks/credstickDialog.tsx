@@ -84,7 +84,6 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
       const [newCredstick] = createItem<CredstickData>(credstickItemData)
       dispatch(Actions.gear.setItem(newCredstick))
       if (isCertified) {
-        // Deduct purchase cost + loaded balance from nuyen
         dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
       }
     }

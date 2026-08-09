@@ -1,9 +1,10 @@
 import type { FC } from "react"
 
-import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
+
+import { SpellCard } from "./spellCard.tsx"
 
 export const SpellcastingDicePool: FC = () => {
   const magicGroup = useAttrDiceGroup(AttributeKey.magic)
@@ -11,7 +12,7 @@ export const SpellcastingDicePool: FC = () => {
   const woundGroup = useWoundDiceGroup()
 
   return (
-    <DicePool
+    <SpellCard.DicePool
       name="Spellcasting"
       groups={[magicGroup, spellcastingGroup, woundGroup]}
     />

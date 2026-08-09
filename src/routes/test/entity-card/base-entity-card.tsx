@@ -2,6 +2,7 @@ import Divider from "@mui/material/Divider"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import { RiStarLine } from "@remixicon/react"
 import { createFileRoute } from "@tanstack/react-router"
 import type { FC, ReactNode } from "react"
 
@@ -9,9 +10,8 @@ import { EntityCard } from "#/components/entityCard/entityCard.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type { EntityData } from "#/system/entityData.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
-import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export const Route = createFileRoute("/test/entityCard/all")({
+export const Route = createFileRoute("/test/entity-card/base-entity-card")({
   component: EntityCardTestPage,
 })
 
@@ -82,6 +82,8 @@ function EntityCardTestPage() {
         <Stack sx={{ gap: 2, padding: 2 }}>
           <Section title="Extra Layout rows with Stat/Action elements (category-tier composition)">
             <EntityCard entity={TEST_ENTITY}>
+              <EntityCard.Action label="Roll Attack" onClick={() => alert("Roll Attack")} />
+
               <EntityCard.Layout.HeaderRow>
                 <EntityCard.Stat label="Type" value="Weapon" />
               </EntityCard.Layout.HeaderRow>
@@ -93,10 +95,6 @@ function EntityCardTestPage() {
                 <EntityCard.Stat label="Forbidden" value="Banned" type="forbidden" />
                 <EntityCard.Stat label="Plain" value="No color" />
               </EntityCard.Layout.BodyRow>
-
-              <EntityCard.Layout.FooterRow>
-                <EntityCard.Action label="Roll Attack" onClick={() => alert("Roll Attack")} />
-              </EntityCard.Layout.FooterRow>
             </EntityCard>
           </Section>
         </Stack>
@@ -104,19 +102,26 @@ function EntityCardTestPage() {
 
       <Paper>
         <Stack sx={{ gap: 2, padding: 2 }}>
-          <Section title="Long name and many effects — wrapping check">
+          <Section title="leftAction plus Edit/Remove actions menu">
+            <EntityCard
+              entity={TEST_ENTITY}
+              onOpen={() => alert("Open")}
+              onEdit={() => alert("Edit")}
+              onRemove={() => alert("Remove")}
+              leftAction={{ icon: <RiStarLine size={20} />, onClick: () => alert("Left action") }}
+            />
+          </Section>
+        </Stack>
+      </Paper>
+
+      <Paper>
+        <Stack sx={{ gap: 2, padding: 2 }}>
+          <Section title="Long name — wrapping check">
             <EntityCard
               entity={{
                 id: crypto.randomUUID(),
                 name: "A Very Long Entity Name That Should Wrap Or Truncate Gracefully In The Header Row",
                 rating: 12,
-                effects: [
-                  { type: GameEffectType.attrMod, target: AttributeKey.body, value: 2 },
-                  { type: GameEffectType.attrMod, target: AttributeKey.agility, value: -1 },
-                  { type: GameEffectType.skillMod, target: SkillKey.automatics, value: 3 },
-                  { type: GameEffectType.initiativeBonus, value: 1 },
-                  { type: GameEffectType.recoilReduction, value: 2 },
-                ],
               }}
             />
           </Section>

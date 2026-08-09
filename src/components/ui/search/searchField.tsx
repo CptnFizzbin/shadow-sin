@@ -46,11 +46,12 @@ export const SearchField: FC<SearchFieldProps> = ({
 }
 
 /**
- * Creates a predicate that checks whether any of the provided search terms appear in an item's searchable text.
+ * Creates a predicate that matches an item when every term in `searchTerms` is found,
+ * case-insensitively, somewhere in the text `getSearchTexts` returns for that item.
  *
- * @param getSearchTexts - Function that returns an array of strings describing the item; these strings are joined with `"|"` and converted to lowercase before matching.
- * @param searchTerms - Array of search terms to test as substrings against the joined searchable text. Each term is compared as-is against the lowercased searchable text (lowercase terms beforehand for case-insensitive matching).
- * @returns `true` if any term in `searchTerms` is a substring of the item's concatenated searchable text, `false` otherwise.
+ * @param getSearchTexts - Returns the searchable text for an item.
+ * @param searchTerms - Terms that must all match for the predicate to return `true`. An empty array never matches.
+ * @returns A predicate suitable for `Array.prototype.filter`.
  */
 export function filterBySearch<TData>(
   getSearchTexts: (item: TData) => string[],

@@ -28,7 +28,6 @@ const SpendKarmaDialogInner: FC<ControlledDialogProps> = ({ ctrl }) => {
   const visibleSections = useVisibleSections()
   const { saveImprovements } = useSpendKarmaSummary()
 
-  // null = the hub (category list); a key = that section is drilled into.
   const [activeSection, setActiveSection] = useState<SpendKarmaSectionKey | null>(null)
   const activeSectionConfig = visibleSections.find(
     (section) => section.key === activeSection,

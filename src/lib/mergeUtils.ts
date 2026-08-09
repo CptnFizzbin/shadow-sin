@@ -17,7 +17,6 @@ export function mergeArrays<TData>(...arrays: unknown[][]): TData[] {
         const itemId = `object:${item.id}`
         const existingIndex = seenIndexes.get(itemId)
         if (existingIndex !== undefined) {
-          // merge into existing item in-place
           outItems[existingIndex] = mergeObjects(
             outItems[existingIndex] as Record<string, unknown>,
             item as Record<string, unknown>,

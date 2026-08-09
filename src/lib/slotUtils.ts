@@ -26,6 +26,7 @@ export class SlotManager {
   private childArray: Array<Exclude<ReactNode, boolean | null | undefined>>
   private findCache = new Map<string, ReactElement | undefined>()
   private filterCache = new Map<string, ReactElement[]>()
+  private claimed = new Set<ReactNode>()
 
   constructor(public children?: ReactNode) {
     this.childArray = Children.toArray(children)
@@ -37,12 +38,30 @@ export class SlotManager {
 
   /** Memoized per type(s) so getters built on `find` can be read repeatedly (e.g. directly in a template) without re-scanning children. */
   find<TProps>(...elementTypes: FC<TProps>[]): ReactElement<TProps> | undefined {
-    return this.withCache(this.findCache, elementTypes, () => this.childArray.find(isElementType(...elementTypes))) as ReactElement<TProps> | undefined
+    return this.withCache(this.findCache, elementTypes, () => {
+      const match = this.childArray.find(isElementType(...elementTypes))
+      if (match) this.claimed.add(match)
+      return match
+    }) as ReactElement<TProps> | undefined
   }
 
   /** Memoized per type(s) so getters built on `filter` can be read repeatedly (e.g. directly in a template) without re-scanning children. */
   filter<TProps>(...elementTypes: FC<TProps>[]): ReactElement<TProps>[] {
-    return this.withCache(this.filterCache, elementTypes, () => this.childArray.filter(isElementType(...elementTypes))) as ReactElement<TProps>[]
+    return this.withCache(this.filterCache, elementTypes, () => {
+      const matches = this.childArray.filter(isElementType(...elementTypes))
+      matches.forEach((match) => this.claimed.add(match))
+      return matches
+    }) as ReactElement<TProps>[]
+  }
+
+  /**
+   * Children not claimed by any `find`/`filter` call made so far — a catch-all for content a
+   * subclass's slot getters don't recognize. Since claims accrue as those getters are called,
+   * read this after querying every slot the subclass exposes, otherwise still-unqueried types
+   * show up here too.
+   */
+  get unmapped(): ReactNode[] {
+    return this.childArray.filter((child) => !this.claimed.has(child))
   }
 
   private withCache<T>(cache: Map<string, T>, elementTypes: FC<never>[], compute: () => T): T {

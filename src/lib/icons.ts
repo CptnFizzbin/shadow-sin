@@ -5,6 +5,8 @@ import {
   RiCheckboxCircleFill,
   RiDragMoveLine,
   RiForbidLine,
+  RiLoopLeftFill,
+  RiLoopLeftLine,
   RiPushpinFill,
   RiSignalWifiLine,
   RiSignalWifiOffLine,
@@ -31,5 +33,9 @@ export const Icons = {
     },
     add: RiAddLine,
     move: RiDragMoveLine,
+  },
+  spell: {
+    sustained: RiLoopLeftFill,
+    notSustained: RiLoopLeftLine,
   },
 }

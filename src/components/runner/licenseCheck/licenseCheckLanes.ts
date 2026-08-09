@@ -32,7 +32,8 @@ function buildSinLane(
   return {
     key: sin.id,
     title: sin.name,
-    // The SIN itself always checks first; its licensed gear checks in a random order.
+    // checks[0] must stay the SIN's own check — callers (e.g. the Setup view's lane grouping)
+    // key off it being first to identify SIN lanes; the rest run in random order.
     checks: [
       { itemId: sin.id, kind: "sin", credentialRating: sin.rating },
       ...ArrayUtils.shuffle(licensedGear).map((item) => ({

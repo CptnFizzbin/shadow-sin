@@ -11,7 +11,7 @@ export interface CardElementRatingProps {
 /** Sugar for a `Stat` chip styled as a rating — kept separate so callers don't need to know that. */
 export const CardElementRating: FC<CardElementRatingProps> = ({ value }) => {
   if (value === undefined) return null
-  return <CardElementStat value={value} type="rating" />
+  return <CardElementStat label="Rating" value={value} type="rating" />
 }
 
 CardElementRating.displayName = "EntityCard.Rating"

@@ -1,9 +1,44 @@
 import { SlotManager } from "#/lib/slotUtils.ts"
 
 import { EntityCardElements } from "./entityCardElements.tsx"
-import { EntityCardLayout } from "./entityCardLayout.tsx"
+import EntityCardLayout from "./entityCardLayout.tsx"
 
 export class EntityCardSlotManager extends SlotManager {
+  get layout() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const slots = this
+
+    return {
+      get titleRight() {
+        return slots.filter(EntityCardLayout.TitleRight)
+      },
+
+      get topRight() {
+        return slots.filter(EntityCardLayout.TopRight)
+      },
+
+      get headerRows() {
+        return slots.filter(EntityCardLayout.HeaderRow)
+      },
+
+      get bodyRows() {
+        return slots.filter(EntityCardLayout.BodyRow)
+      },
+
+      get footerRows() {
+        return slots.filter(EntityCardLayout.FooterRow)
+      },
+
+      get footerLeft() {
+        return slots.filter(EntityCardLayout.FooterLeft)
+      },
+
+      get footerRight() {
+        return slots.filter(EntityCardLayout.FooterRight)
+      },
+    }
+  }
+
   get title() {
     return this.find(EntityCardElements.Title)
   }
@@ -26,17 +61,5 @@ export class EntityCardSlotManager extends SlotManager {
 
   get actions() {
     return this.filter(EntityCardElements.Action)
-  }
-
-  get headerRows() {
-    return this.filter(EntityCardLayout.HeaderRow)
-  }
-
-  get bodyRows() {
-    return this.filter(EntityCardLayout.BodyRow)
-  }
-
-  get footerRows() {
-    return this.filter(EntityCardLayout.FooterRow)
   }
 }
