@@ -28,7 +28,7 @@ export const DevicesList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {rootDevices.map((device) => (
         <DeviceDataCard key={device.id} device={device} onOpen={() => handleEditDevice(device)} />
       ))}

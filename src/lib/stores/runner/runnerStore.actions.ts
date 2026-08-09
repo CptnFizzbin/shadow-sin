@@ -7,6 +7,7 @@ import * as edgeActions from "./edge/edgeSlice.actions.ts"
 import * as gearActions from "./gear/gearSlice.actions.ts"
 import * as initiativeActions from "./initiative/initiativeSlice.actions.ts"
 import * as karmaActions from "./karma/karmaSlice.actions.ts"
+import * as matrixActions from "./matrix/matrixSlice.actions.ts"
 import * as nuyenActions from "./nuyen/nuyenSlice.actions.ts"
 import * as powersActions from "./powers/powersSlice.actions.ts"
 import * as profileActions from "./profile/profileSlice.actions.ts"
@@ -36,6 +37,7 @@ export const Actions = {
   item: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,
+  matrix: matrixActions,
   nuyen: nuyenActions,
   powers: powersActions,
   profile: profileActions,

@@ -51,7 +51,7 @@ interface SectionProps {
 }
 
 const Section: FC<SectionProps> = ({ title, description, children }) => (
-  <Stack sx={{ gap: 1 }}>
+  <Stack>
     <Stack sx={{ gap: 0.25 }}>
       <Typography variant="overline" color="text.secondary">
         {title}

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/licenses")({
 
 function RouteComponent() {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>SINs & Licenses</SectionHeader>
       <SinsAndLicensesSection />
     </Stack>

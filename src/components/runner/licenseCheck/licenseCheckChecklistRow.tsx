@@ -47,7 +47,7 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
   return (
     <Stack
       direction="row"
-      sx={{ alignItems: "center", gap: 1 }}
+      sx={{ alignItems: "center" }}
       onClick={handleRowClick}
     >
       {showCheckbox && (

@@ -107,7 +107,7 @@ export const ActiveSkillsList: FC = () => {
       )}
       emptyMessage="No skills found"
       headerControls={(
-        <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+        <Stack direction="row" sx={{ alignItems: "center" }}>
           <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
             Group by:
           </Typography>

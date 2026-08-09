@@ -41,7 +41,7 @@ const testPages = [
  */
 function TestIndexPage() {
   return (
-    <Stack sx={{ gap: 1, padding: 1 }}>
+    <Stack sx={{ padding: 1 }}>
       <Typography variant="h2">Design Test Pages</Typography>
       <Typography color="text.secondary">
         Sandbox pages for visually exercising in-progress or hard-to-reach component states. Not part of the app's

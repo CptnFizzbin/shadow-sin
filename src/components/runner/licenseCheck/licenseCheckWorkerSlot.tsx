@@ -73,7 +73,7 @@ export const LicenseCheckWorkerSlot: FC<LicenseCheckWorkerSlotProps> = ({
       {currentCheck
         ? (
             <>
-              <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1 }}>
+              <Stack direction="row" sx={{ justifyContent: "space-between" }}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }} noWrap>
                   {gear[currentCheck.itemId]?.name ?? currentCheck.itemId}
                 </Typography>

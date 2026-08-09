@@ -11,7 +11,7 @@ export const Route = createFileRoute("/gm/initiative-tracker")({
 
 function RouteComponent() {
   return (
-    <Stack sx={{ gap: 1, padding: 1 }}>
+    <Stack sx={{ padding: 1 }}>
       <LandingModeSwitch />
       <SectionHeader>Initiative Tracker</SectionHeader>
 

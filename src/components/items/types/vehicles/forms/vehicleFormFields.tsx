@@ -12,7 +12,7 @@ export const VehicleFormFields = withFieldGroup({
   ...vehicleFormOpts,
   render: ({ group }) => {
     return (
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <group.AppField name="vehicleType">
           {(field) => (
             <field.TextField label="Vehicle Type" fullWidth size="small" placeholder="e.g. bike, car, drone" />
@@ -26,10 +26,10 @@ export const VehicleFormFields = withFieldGroup({
         </group.AppField>
 
         <Paper sx={{ padding: 1 }}>
-          <Stack sx={{ gap: 1 }}>
+          <Stack>
             <Label label="Vehicle Stats" />
 
-            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+            <Stack direction="row" sx={{ flexWrap: "wrap" }}>
               <group.AppField name="handling">
                 {(field) => <field.CounterField label="Handling" min={0} max={20} />}
               </group.AppField>
@@ -57,7 +57,7 @@ export const VehicleFormFields = withFieldGroup({
               </group.AppField>
             </Stack>
 
-            <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
+            <Stack direction="row" sx={{ flexWrap: "wrap" }}>
               <group.AppField name="pilot">
                 {(field) => <field.CounterField label="Pilot" min={0} max={12} />}
               </group.AppField>

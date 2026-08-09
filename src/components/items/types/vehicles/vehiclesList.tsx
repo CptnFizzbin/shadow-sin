@@ -40,7 +40,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {vehicles.map((vehicle) => (
         <VehicleDataCard
           key={vehicle.id}

@@ -84,7 +84,7 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
         }),
       })}
     >
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Cast" variant="text" />
           {isOvercasting && (

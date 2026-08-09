@@ -31,7 +31,7 @@ export const LicenseCheckSetupView: FC = () => {
 
   return (
     <Stack sx={{ gap: 2 }}>
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Label>Verification System Rating</Label>
         <ToggleButtonGroup
           exclusive
@@ -50,7 +50,7 @@ export const LicenseCheckSetupView: FC = () => {
       </Stack>
 
       {sinLanes.length > 0 && (
-        <Stack sx={{ gap: 1 }}>
+        <Stack>
           <Label>Licensed Gear</Label>
           {sinLanes.map((lane) => {
             const [sinCheck, ...gearChecks] = lane.checks

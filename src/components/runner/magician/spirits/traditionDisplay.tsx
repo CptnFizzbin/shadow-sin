@@ -29,7 +29,7 @@ export const TraditionDisplay: FC = () => {
       <Stack sx={{ gap: 2 }}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          sx={{ justifyContent: "space-between", alignItems: "flex-start", gap: 1 }}
+          sx={{ justifyContent: "space-between", alignItems: "flex-start" }}
         >
           <Box>
             <Typography variant="overline" color="primary" sx={{ fontWeight: "bold" }}>

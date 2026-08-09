@@ -10,7 +10,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/sprites")({
 
 function RouteComponent() {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>Sprites</SectionHeader>
 
       <SpriteList />

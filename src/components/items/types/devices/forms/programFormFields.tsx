@@ -16,7 +16,7 @@ export const ProgramFormFields = withFieldGroup({
   ...programFormOpts,
   render: ({ group }) => {
     return (
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <group.AppField name="programType">
           {(field) => (
             <field.SelectField

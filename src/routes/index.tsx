@@ -28,10 +28,10 @@ function IndexRoute() {
   const { runners, errors } = Route.useLoaderData()
 
   return (
-    <Stack sx={{ gap: 1, padding: 1 }}>
+    <Stack sx={{ padding: 1 }}>
       <LandingModeSwitch />
 
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button
           variant="outlined"
           onClick={() => {

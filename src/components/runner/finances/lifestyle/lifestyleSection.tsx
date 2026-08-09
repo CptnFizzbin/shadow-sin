@@ -55,15 +55,15 @@ export const LifestyleSection: FC = () => {
         </FormControl>
       </Stack>
 
-      <Stack direction="row" sx={{ gap: 1 }}>
-        <Stack sx={{ flexGrow: 1, alignItems: "center", gap: 1 }}>
+      <Stack direction="row">
+        <Stack sx={{ flexGrow: 1, alignItems: "center" }}>
           <Label label="Monthly Upkeep" />
           <Typography>
             {upkeep > 0 ? <Nuyen amount={upkeep} /> : "Free"}
           </Typography>
         </Stack>
 
-        <Stack sx={{ flexGrow: 1, alignItems: "center", gap: 1 }}>
+        <Stack sx={{ flexGrow: 1, alignItems: "center" }}>
           <Label label="Months Prepaid" />
           <Typography>
             {upkeep > 0 ? monthsPaid : <RiInfinityLine />}

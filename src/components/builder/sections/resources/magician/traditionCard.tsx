@@ -33,7 +33,7 @@ export const TraditionCard: FC = () => {
       >
         {tradition
           ? (
-              <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Typography sx={{ flexGrow: 1 }}>{tradition.name}</Typography>
                 <Typography color="text.secondary">
                   WIL + {AttributeLabels[tradition.drainAttribute]}

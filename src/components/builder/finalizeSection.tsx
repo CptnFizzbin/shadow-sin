@@ -8,7 +8,7 @@ import { SaveRunnerButton } from "./saveRunnerButton.tsx"
 
 export const FinalizeSection: FC = () => {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>Finalize</SectionHeader>
       <AllBuilderAlerts />
       <SaveRunnerButton requireValid={false} />

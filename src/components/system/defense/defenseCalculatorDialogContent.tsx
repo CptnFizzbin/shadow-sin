@@ -31,7 +31,7 @@ export const DefenseCalculatorDialogContent: FC<ControlledDialogProps> = ({ ctrl
       <Dialog.Title>
         {activeAttackTypeInfo
           ? (
-              <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
                 <IconButton aria-label="Back to attack types" onClick={goToHub}>
                   <RiArrowLeftLine size={20} />
                 </IconButton>

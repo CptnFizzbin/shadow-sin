@@ -10,7 +10,7 @@ export const ProfileSection: FC = () => {
   const profile = useRunnerStoreSelector((s) => s.profile)
 
   return (
-    <Stack divider={<Divider />} sx={{ gap: 1 }}>
+    <Stack divider={<Divider />}>
       {profile.description && (
         <Stack sx={{ gap: 0.5 }}>
           <Label label="Description" />

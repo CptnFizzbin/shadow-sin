@@ -144,7 +144,7 @@ const EndOfMonthDialog: FC<Props> = ({ ctrl }) => {
                 />
               )}
               label={(
-                <Stack direction="row" sx={{ justifyContent: "space-between", gap: 1, width: "100%" }}>
+                <Stack direction="row" sx={{ justifyContent: "space-between", width: "100%" }}>
                   <Typography variant="body2">{item.label}</Typography>
                   {item.interestAmount > 0 && (
                     <Typography variant="body2" color="error.main" noWrap>

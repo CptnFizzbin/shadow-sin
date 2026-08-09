@@ -23,7 +23,7 @@ export const ArmorList: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       {armorItems.map((armor) => (
         <ArmorDataCard
           key={armor.id}

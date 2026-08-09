@@ -32,7 +32,7 @@ export const LicenseCoveredItemsSection: FC<LicenseCoveredItemsSectionProps> = (
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Covered Items" />
 
       {coveredItems.length === 0 && (
@@ -42,7 +42,7 @@ export const LicenseCoveredItemsSection: FC<LicenseCoveredItemsSectionProps> = (
       )}
 
       {coveredItems.map((item: ItemData) => (
-        <Stack key={item.id} direction="row" sx={{ gap: 1, alignItems: "center" }}>
+        <Stack key={item.id} direction="row" sx={{ alignItems: "center" }}>
           <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>{item.name}</Typography>
           <IconButton size="small" color="error" aria-label="Remove" onClick={() => handleRemove(item.id)}>
             <RiDeleteBin6Line size={16} />

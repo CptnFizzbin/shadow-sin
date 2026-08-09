@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import migration from "./023_normalizeArmorRating.ts"
+import migration from "./024_normalizeArmorRating.ts"
 
-describe("023_normalizeArmorRating", () => {
+describe("024_normalizeArmorRating", () => {
   it("returns the character unchanged when there is no gear", () => {
     // Arrange
     const character = {}

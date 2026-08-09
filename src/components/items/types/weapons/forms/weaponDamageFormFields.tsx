@@ -15,7 +15,7 @@ export const WeaponDamageFormFields = withFieldGroup({
   ...weaponFormOpts,
   render: ({ group }) => {
     return (
-      <Stack direction="row" sx={{ gap: 1, alignItems: "flex-start" }}>
+      <Stack direction="row" sx={{ alignItems: "flex-start" }}>
         <group.Subscribe selector={({ values }) => values.dmgType}>
           {(dmgType) => (
             <Stack sx={{ gap: 0.5 }}>

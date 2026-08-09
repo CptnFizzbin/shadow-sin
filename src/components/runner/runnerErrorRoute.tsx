@@ -35,7 +35,7 @@ export const RunnerErrorRoute = () => {
         This runner sheet could not be loaded. It may be corrupted or from an incompatible version.
       </Alert>
 
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button variant="outlined" onClick={handleExport}>
           Export raw data as JSON
         </Button>

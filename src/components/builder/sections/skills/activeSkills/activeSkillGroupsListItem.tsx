@@ -38,7 +38,7 @@ export const ActiveSkillGroupsListItem: FC<ActiveSkillGroupsListItemProps> = ({
       }}
       onClick={onEdit}
     >
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography sx={{ flexGrow: 1 }}>
           {group.name}
         </Typography>

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/spirits")({
 
 function RouteComponent() {
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <SectionHeader>Spirits</SectionHeader>
 
       <TraditionDisplay />

@@ -15,7 +15,7 @@ interface BiologyRowProps {
 }
 
 const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
-  <Stack direction="row" sx={{ gap: 1, alignItems: "baseline" }}>
+  <Stack direction="row" sx={{ alignItems: "baseline" }}>
     <Typography color="text.secondary" sx={{ minWidth: 100 }}>
       {label}
     </Typography>
@@ -30,7 +30,7 @@ export const BiologySection: FC = () => {
   const metatype = metatypes[biology.metatype]
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Label label="Biology" />
 
       <Stack sx={{ gap: 0.5 }}>

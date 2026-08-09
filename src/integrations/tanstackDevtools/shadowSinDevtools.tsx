@@ -36,7 +36,7 @@ function ShadowSinDevtoolsPanel() {
   return (
     <Stack sx={{ padding: 2 }}>
       <Typography variant="h6">ShadowSIN</Typography>
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <Button variant="outlined" color="error" onClick={clearAllRunners}>
           Clear All Runners
         </Button>

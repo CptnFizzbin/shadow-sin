@@ -19,7 +19,7 @@ export const ReputationBuilderSection: FC = () => {
 
   return (
     <BuilderSection id={BuilderSectionId.reputation}>
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <TextField
           label="Street Cred"
           type="number"
@@ -49,7 +49,7 @@ export const ReputationBuilderSection: FC = () => {
         />
       </Stack>
 
-      <Stack sx={{ alignItems: "center", gap: 1 }}>
+      <Stack sx={{ alignItems: "center" }}>
         <Label label="Public Awareness" />
         <Typography sx={{ fontWeight: "bold" }}>{publicAwareness}</Typography>
       </Stack>

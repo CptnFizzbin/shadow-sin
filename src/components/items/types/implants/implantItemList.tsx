@@ -29,7 +29,7 @@ export const ImplantItemList: FC = () => {
 
   return (
     <>
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Button
           variant="outlined"
           size="small"

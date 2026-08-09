@@ -32,8 +32,8 @@ export const EquippedArmorSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
-      <Stack direction="row" sx={{ alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+    <Stack>
+      <Stack direction="row" sx={{ alignItems: "center", flexWrap: "wrap" }}>
         <Label label="Armor" />
         <Chip size="small" label={`B: ${totalBallistic}/${threshold}`} variant="outlined" />
         <Chip size="small" label={`I: ${totalImpact}/${threshold}`} variant="outlined" />

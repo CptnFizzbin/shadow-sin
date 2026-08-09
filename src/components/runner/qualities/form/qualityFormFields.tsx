@@ -19,7 +19,7 @@ export const QualityFormFields: FC<QualityFormFieldsProps> = ({ form }) => {
           {(field) => <field.TextField label="Name" required />}
         </form.AppField>
 
-        <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
+        <Stack direction="row" sx={{ alignItems: "center" }}>
           <form.AppField name="type">
             {(field) => (
               <ToggleButton

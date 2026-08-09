@@ -85,7 +85,7 @@ export const SpiritDataCard: FC<SpiritDataCardProps> = ({ spirit, onEdit, onRemo
         />
       </SpiritCard.Layout.BodyRow>
 
-      <SpiritCard.Layout.BodyRow sx={{ gap: 1 }}>
+      <SpiritCard.Layout.BodyRow>
         <Stack sx={{ flexGrow: 1 }}>
           <SpiritCard.DamageTrack
             label="Physical"

@@ -73,7 +73,7 @@ export const StartingNuyenSection: FC = () => {
     <Stack sx={{ gap: 1.5 }}>
       <Divider />
 
-      <Stack sx={{ gap: 1 }}>
+      <Stack>
         <Stack
           direction="row"
           sx={{ justifyContent: "space-between", alignItems: "center" }}

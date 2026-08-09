@@ -12,6 +12,7 @@ import * as gearSelectors from "./gear/gearSlice.selectors.ts"
 import * as houseRulesSelectors from "./houseRules/houseRulesSlice.selectors.ts"
 import * as initiativeSelectors from "./initiative/initiativeSlice.selectors.ts"
 import * as karmaSelectors from "./karma/karmaSlice.selectors.ts"
+import * as matrixSelectors from "./matrix/matrixSlice.selectors.ts"
 import * as nuyenSelectors from "./nuyen/nuyenSlice.selectors.ts"
 import * as powersSelectors from "./powers/powersSlice.selectors.ts"
 import * as profileSelectors from "./profile/profileSlice.selectors.ts"
@@ -50,6 +51,7 @@ export const Selectors = {
   houseRules: houseRulesSelectors,
   initiative: initiativeSelectors,
   karma: karmaSelectors,
+  matrix: matrixSelectors,
   nuyen: nuyenSelectors,
   powers: powersSelectors,
   profile: profileSelectors,

@@ -57,7 +57,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({
     : (item.cost ?? 0)
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <Stack
         direction="column"
         sx={{
@@ -72,7 +72,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({
         }}
         onClick={onEdit}
       >
-        <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+        <Stack direction="row" sx={{ alignItems: "center" }}>
           <Typography sx={{ flexGrow: 1, fontSize: "0.875rem" }}>
             {item.name}
           </Typography>
@@ -125,7 +125,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({
           )}
         </Stack>
 
-        <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap", pt: 1 }}>
+        <Stack direction="row" sx={{ flexWrap: "wrap", pt: 1 }}>
           {isWeaponData(item) && item.dmg && (
             <Chip
               label={`DV: ${item.dmg}`}
@@ -235,7 +235,7 @@ export const GearViewItem: FC<GearViewItemProps> = ({
       {subItems.length > 0 && (
         <Stack
           sx={{
-            gap: 1, paddingLeft: 1,
+            paddingLeft: 1,
             paddingBottom: 1,
             borderLeft: "4px solid",
             borderBottom: "1px solid",

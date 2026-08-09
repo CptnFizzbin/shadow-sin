@@ -15,7 +15,7 @@ export const AvailabilityFieldGroup = withFieldGroup({
   defaultValues: defaultValues,
   render: ({ group }) => {
     return (
-      <Stack direction="row" sx={{ gap: 1 }}>
+      <Stack direction="row">
         <group.AppField name="rating">
           {(field) => (
             <field.CounterField

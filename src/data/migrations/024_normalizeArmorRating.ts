@@ -2,7 +2,7 @@ import { produce } from "immer"
 
 import type { CharacterMigration } from "#/data/characterMigration.ts"
 
-const VERSION = 23
+const VERSION = 24
 
 interface OldArmorGear {
   itemType?: string

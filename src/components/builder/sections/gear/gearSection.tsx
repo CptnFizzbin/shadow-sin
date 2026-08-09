@@ -50,7 +50,7 @@ export const GearSection: FC = () => {
   }
 
   return (
-    <Stack sx={{ gap: 1 }}>
+    <Stack>
       <EditorMode.IsBuilder>
         <Stack sx={{ gap: 0.5 }}>
           <Stack
@@ -104,7 +104,7 @@ export const GearSection: FC = () => {
                 borderColor: "divider",
               }}
             >
-              <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Typography>{sectionName}</Typography>
                 {invalidSections.has(sectionName) && (
                   <RiErrorWarningLine
