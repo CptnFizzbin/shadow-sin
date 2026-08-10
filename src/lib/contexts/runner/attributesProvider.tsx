@@ -5,7 +5,7 @@ import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
-interface AttributesContextValue {
+export interface AttributesContextValue {
   values: Partial<Record<AttributeKey, number>>
   infos: Record<AttributeKey, AttributeInfo>
 }
@@ -36,7 +36,13 @@ export const AttributesProvider: FC<AttributesProviderProps> = ({ values, infos,
   )
 }
 
-const useAttributesContext = (): AttributesContextValue => {
+/**
+ * Reads the nearest `AttributesProvider`'s value. Not for component use — `useRunnerSelector`'s
+ * `attribute` catalog entry is the only sanctioned consumer (see
+ * `docs/adr/0013-unify-runner-state-access.md`); everyone else reads attributes through that
+ * catalog instead of reaching into this context directly.
+ */
+export const useAttributesContext = (): AttributesContextValue => {
   const context = useContext(AttributesContext)
 
   if (!context) {
@@ -47,23 +53,24 @@ const useAttributesContext = (): AttributesContextValue => {
 }
 
 /**
- * Returns the current numeric value for the given attribute from the nearest
- * `AttributesProvider`.
+ * @deprecated Use `useRunnerSelector(({ attribute }) => attribute(attr).baseValue)` instead — see
+ * `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useAttrValue = (attr: AttributeKey): number => {
   return useAttributesContext().values[attr] ?? 0
 }
 
 /**
- * Returns the metadata (min, max, augMax) for the given attribute from the
- * nearest `AttributesProvider`.
+ * @deprecated Use `useRunnerSelector(({ attribute }) => attribute(attr).info)` instead — see
+ * `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useAttrInfo = (attr: AttributeKey): AttributeInfo => {
   return useAttributesContext().infos[attr]
 }
 
 /**
- * Returns all attribute metadata records from the nearest `AttributesProvider`.
+ * @deprecated Use `useRunnerSelector(({ attribute }) => attribute.infos)` instead — see
+ * `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   return useAttributesContext().infos
