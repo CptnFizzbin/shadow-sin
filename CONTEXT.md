@@ -636,6 +636,19 @@ The play-time mode for an existing Runner. Used to track damage, roll dice, spen
 manage active resources during a session. Accessed via `src/components/runner/`.
 _Avoid_: sheet view, player view, read mode
 
+### State Access
+
+**Selector**:
+The single, canonical way to derive any value — raw or computed — from a Runner's data. Every derivable
+value has exactly one Selector; nothing recomputes it a second, independent way.
+_Avoid_: reading Runner fields directly, recomputing a value inline at the point where it's displayed
+
+**Selector Alias**:
+A Selector made reachable from more than one conceptual grouping, for values that genuinely belong to more
+than one (e.g. a wound modifier is both a Damage concept and a Modifier concept). Always the same
+Selector — an Alias is a second name, never a second implementation.
+_Avoid_: duplicate selector, parallel selector
+
 ### Infrastructure
 
 **RunnerMeta**:
