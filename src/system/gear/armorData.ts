@@ -21,9 +21,6 @@ export interface ArmorRating {
 export interface ArmorData extends ItemData, ArmorRating {
   itemType: ItemType.armor
 
-  /** @deprecated use {@link ballistic} or {@link impact} instead */
-  rating?: Rating
-
   damage?: {
     ballistic: number
     impact: number
@@ -51,7 +48,6 @@ export const ArmorDataSchema = z.object({
     forbidden: z.boolean().optional(),
   }).optional(),
   source: SourceDataSchema.optional(),
-  rating: z.number().optional(),
 
   parentId: (z.uuid() as z.ZodType<UUID>).optional(),
   childIds: z.array(z.uuid() as z.ZodType<UUID>).optional(),
