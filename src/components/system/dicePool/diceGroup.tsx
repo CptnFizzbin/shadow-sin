@@ -24,6 +24,8 @@ export function isDiceGroup(group: unknown): group is DiceGroup {
  * `DicePoolData`'s own `.groups`), so a fixed-depth `Array.flat()` isn't enough in general.
  */
 export function flattenDiceGroups(list: DiceGroupList): DiceGroup[] {
-  return list.flatMap((item) => (Array.isArray(item) ? flattenDiceGroups(item) : item))
-    .filter(isDiceGroup)
+  // `list.flat(Infinity)` directly hits TS2589 ("Type instantiation is excessively deep") —
+  // DiceGroupList's self-referential type makes flat()'s depth-tracking generic recurse forever.
+  // Flattening through `unknown[]` keeps the same runtime behavior without that.
+  return (list as unknown[]).flat(Infinity).filter(isDiceGroup)
 }
