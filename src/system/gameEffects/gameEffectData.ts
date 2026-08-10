@@ -78,15 +78,6 @@ export interface ExtraInitiativeDiceEffect extends GameEffectData {
 }
 
 /**
- * @deprecated Use `HighPainToleranceEffect` or `LowPainToleranceEffect` instead.
- * Retained only for parsing old runner data before the 011_splitPainToleranceEffects migration runs.
- */
-export interface PainToleranceEffect extends GameEffectData {
-  type: GameEffectType.painTolerance
-  target: DamageTrackKey | "all"
-}
-
-/**
  * High Pain Tolerance: ignore the first `value` boxes of damage on the target
  * track when calculating wound modifiers. The wound interval is unchanged.
  * `value` must be positive (equal to the quality rating).
@@ -115,8 +106,6 @@ export type EffectByType = {
   [GameEffectType.initiativeBonus]: InitiativeBonusEffect
   [GameEffectType.extraInitiativePasses]: ExtraInitiativePassesEffect
   [GameEffectType.extraInitiativeDice]: ExtraInitiativeDiceEffect
-  /** @deprecated Use `highPainTolerance` or `lowPainTolerance` instead. */
-  [GameEffectType.painTolerance]: PainToleranceEffect
   [GameEffectType.highPainTolerance]: HighPainToleranceEffect
   [GameEffectType.lowPainTolerance]: LowPainToleranceEffect
   [GameEffectType.recoilReduction]: RecoilReductionEffect
@@ -170,16 +159,6 @@ const ExtraInitiativeDiceSchema = z.object({
   value: z.number(),
 })
 
-/**
- * @deprecated Use `HighPainToleranceSchema` or `LowPainToleranceSchema` instead.
- * Retained for parsing old runner data before the 011_splitPainToleranceEffects migration runs.
- */
-const PainToleranceSchema = z.object({
-  type: z.literal(GameEffectType.painTolerance),
-  target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
-  value: z.number(),
-})
-
 const HighPainToleranceSchema = z.object({
   type: z.literal(GameEffectType.highPainTolerance),
   target: z.union([z.enum(DamageTrackKey), z.literal("all")]),
@@ -204,7 +183,6 @@ export const GameEffectDataSchema = z.discriminatedUnion("type", [
   SkillSpecializationModSchema,
   ExtraInitiativePassesSchema,
   ExtraInitiativeDiceSchema,
-  PainToleranceSchema,
   HighPainToleranceSchema,
   LowPainToleranceSchema,
 ]) satisfies z.ZodType<GameEffectData>

@@ -8,12 +8,6 @@ export enum GameEffectType {
   extraInitiativePasses = "extraInitiativePasses",
   extraInitiativeDice = "extraInitiativeDice",
 
-  /**
-   * @deprecated Use `highPainTolerance` or `lowPainTolerance` instead.
-   * Retained only for the 011_splitPainToleranceEffects migration that converts existing records.
-   */
-  painTolerance = "painTolerance",
-
   /** Ignore the first `value` boxes of damage before calculating wound modifiers. */
   highPainTolerance = "highPainTolerance",
 

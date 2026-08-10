@@ -1,5 +1,3 @@
-import { DamageTrackKey } from "#/system/damageTrackKey.ts"
-import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { GameEffectTypeOptions } from "#/system/gameEffects/gameEffectTypeOptions.ts"
 
 /**
@@ -18,11 +16,9 @@ export function getTargetOptions(effectType: string): { label: string, value: st
  * Determine the default target key for a given game effect type.
  *
  * @param effectType - The effect type identifier to look up
- * @returns The default target key for `effectType`. Returns `DamageTrackKey.physical` when `effectType` equals `GameEffectType.painTolerance`; otherwise returns the `value` of the first target for the matching option, or `undefined` if no target is available.
+ * @returns The `value` of the first target for the matching option, or `undefined` if no target is available.
  */
 export function getDefaultTarget(effectType: string): string | undefined {
-  if (effectType === GameEffectType.painTolerance) return DamageTrackKey.physical
-
   const opt = GameEffectTypeOptions.find((o) => o.value === effectType)
   return opt?.targets?.[0]?.value
 }
