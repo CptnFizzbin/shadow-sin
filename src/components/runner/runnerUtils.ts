@@ -67,7 +67,9 @@ export const useActiveSkill = (skill: SkillKey) => {
 }
 
 /**
- * Hook to retrieve essence usage and remaining values.
+ * @deprecated Use `useRunnerSelector(({ item }) => item.essence)` instead (fields are `used`/
+ * `remaining` there, not `essenceUsed`/`essenceRemaining`) — see
+ * `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useEssenceInfo = () => {
   const essenceInfo = useAttrInfo(AttributeKey.essence)

@@ -5,6 +5,8 @@ import type { RunnerAttributeCatalog } from "./selectors/attribute.catalog.ts"
 import { buildAttributeCatalog } from "./selectors/attribute.catalog.ts"
 import type { RunnerDamageCatalog } from "./selectors/damage.catalog.ts"
 import { buildDamageCatalog } from "./selectors/damage.catalog.ts"
+import type { RunnerItemCatalog } from "./selectors/item.catalog.ts"
+import { buildItemCatalog } from "./selectors/item.catalog.ts"
 import type { RunnerModifiersCatalog } from "./selectors/modifiers.catalog.ts"
 import { buildModifiersCatalog } from "./selectors/modifiers.catalog.ts"
 
@@ -16,6 +18,7 @@ import { buildModifiersCatalog } from "./selectors/modifiers.catalog.ts"
 export interface RunnerSelectorCatalog {
   attribute: RunnerAttributeCatalog
   damage: RunnerDamageCatalog
+  item: RunnerItemCatalog
   modifiers: RunnerModifiersCatalog
 }
 
@@ -33,6 +36,7 @@ export interface RunnerSelectorCatalog {
  * const system = useRunnerSelector(({ attribute }) => attribute(AttributeKey.system).baseValue)
  * const physicalDamage = useRunnerSelector(({ damage }) => damage(DamageTrackKey.physical).current)
  * const woundMod = useRunnerSelector(({ damage }) => damage.woundMod)
+ * const effectiveArmor = useRunnerSelector(({ item }) => item.armor.effective)
  */
 export function useRunnerSelector<T>(
   picker: (catalog: RunnerSelectorCatalog) => T,
@@ -41,11 +45,16 @@ export function useRunnerSelector<T>(
   const attributesContext = useAttributesContext()
 
   return useRunnerStoreSelector(
-    (state) => picker({
-      attribute: buildAttributeCatalog(attributesContext),
-      damage: buildDamageCatalog(state),
-      modifiers: buildModifiersCatalog(state),
-    }),
+    (state) => {
+      const attribute = buildAttributeCatalog(attributesContext)
+
+      return picker({
+        attribute,
+        damage: buildDamageCatalog(state),
+        item: buildItemCatalog(state, attribute),
+        modifiers: buildModifiersCatalog(state),
+      })
+    },
     compare,
   )
 }

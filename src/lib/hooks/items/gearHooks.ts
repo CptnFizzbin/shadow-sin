@@ -3,7 +3,8 @@ import type { ItemData } from "#/system/itemData.ts"
 import type { ItemType } from "#/system/itemType.ts"
 
 /**
- * Reactively read all gear items of a given itemType.
+ * @deprecated Use `useRunnerSelector(({ item }) => item.byType(itemType))` instead — see
+ * `docs/adr/0013-unify-runner-state-access.md`.
  */
 export function useGearByType<TItem extends ItemData>(itemType: ItemType): TItem[] {
   return useGearFilter((item): item is TItem => item.itemType === itemType)
