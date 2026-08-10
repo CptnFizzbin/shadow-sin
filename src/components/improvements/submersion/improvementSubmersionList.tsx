@@ -23,7 +23,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementSubmersionList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const currentGrade = useRunnerStoreSelector((sheet) => sheet.submersionGrade)
+  const currentGrade = useRunnerStoreSelector(Selectors.karma.selectSubmersionGrade)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

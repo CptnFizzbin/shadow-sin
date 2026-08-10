@@ -5,12 +5,13 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectTradition } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import type { SpiritType } from "#/system/magic/spiritData.ts"
 import { SpiritTypeLabels } from "#/system/magic/spiritData.ts"
 
 export const TraditionDisplay: FC = () => {
-  const tradition = useRunnerStoreSelector((s) => s.tradition)
+  const tradition = useRunnerStoreSelector(selectTradition)
 
   if (!tradition) {
     return (

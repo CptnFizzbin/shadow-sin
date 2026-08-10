@@ -51,10 +51,10 @@ interface SpecializableRow {
  */
 export const ImprovementSpecializationList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const activeSkills = useRunnerStoreSelector((sheet) => sheet.skills.activeSkills)
-  const skillGroups = useRunnerStoreSelector((sheet) => sheet.skills.skillGroups)
+  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
   const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
-  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

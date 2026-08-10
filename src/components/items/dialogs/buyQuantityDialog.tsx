@@ -12,6 +12,7 @@ import { NumberField } from "#/components/ui/form/fields/numberField.tsx"
 import { NuyenField } from "#/components/ui/form/fields/nuyenField.tsx"
 import { Nuyen } from "#/components/ui/nuyen.tsx"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { selectNuyenAmount } from "#/lib/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface BuyQuantityDialogProps extends ControlledDialogProps<void> {
@@ -28,7 +29,7 @@ const BuyQuantityDialog: FC<BuyQuantityDialogProps> = ({
   const [costPerItem, setCostPerItem] = useState(defaultCost)
   const [discount, setDiscount] = useState(0)
 
-  const currentNuyen = useRunnerStoreSelector((s) => s.nuyen.current)
+  const currentNuyen = useRunnerStoreSelector(selectNuyenAmount)
   const discountPercent = (discount / 100)
   const subTotal = Math.max(0, costPerItem * quantity)
   const discountTotal = subTotal * discountPercent

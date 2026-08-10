@@ -40,7 +40,7 @@ import type { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const ImprovementLanguageSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

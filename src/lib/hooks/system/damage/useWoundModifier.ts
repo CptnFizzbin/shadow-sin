@@ -1,10 +1,6 @@
-import { selectTrackWoundModifier } from "#/components/system/damage/damageUtils.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { selectWoundMod } from "#/lib/stores/runner/selectors/damage.selectors.ts"
 
 export function useWoundModifier() {
-  return useRunnerStoreSelector((sheet) =>
-    selectTrackWoundModifier(DamageTrackKey.physical)(sheet)
-    + selectTrackWoundModifier(DamageTrackKey.stun)(sheet),
-  )
+  return useRunnerStoreSelector(selectWoundMod)
 }

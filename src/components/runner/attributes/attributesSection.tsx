@@ -4,6 +4,7 @@ import type { FC } from "react"
 
 import { useAllAttrInfos } from "#/components/runner/runnerUtils.ts"
 import { Label } from "#/components/ui/text/label.tsx"
+import { selectAttributes } from "#/lib/stores/runner/attributes/attributesSlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 import { AttributeLabels, MentalAttributes, PhysicalAttributes, SpecialAttributes } from "#/system/attributeKey.ts"
@@ -16,7 +17,7 @@ interface AttrListProps {
 }
 
 const AttrList: FC<AttrListProps> = ({ attrKeys, showMaximums }) => {
-  const attrs = useRunnerStoreSelector((s) => s.attributes)
+  const attrs = useRunnerStoreSelector(selectAttributes)
   const attrInfos = useAllAttrInfos()
 
   if (!showMaximums) {

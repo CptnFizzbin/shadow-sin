@@ -14,7 +14,7 @@ import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementS
 import { useActiveAttributes } from "#/lib/hooks/runner/attributes/useActiveAttributes.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
-import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
+import { selectAttributeCapLookup } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isAttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -25,7 +25,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerStoreSelector((s) => s)
+  const attributeCap = useRunnerStoreSelector(selectAttributeCapLookup)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
@@ -44,7 +44,7 @@ export const ImprovementAttributeList: FC = () => {
               (entry) => entry.attr === attrInfo.attr,
             ) ?? null
             // Use the karma-aware cap helper so Exceptional Attribute raises the ceiling.
-            const cap = getAttributeCap(sheet, attrInfo.attr)
+            const cap = attributeCap(attrInfo.attr)
             const isAtMax = attrInfo.value >= cap
             const canAfford = queuedEntry !== null || karmaCost <= remainingKarma
 

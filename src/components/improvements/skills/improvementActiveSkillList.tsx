@@ -18,10 +18,7 @@ import {
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import {
-  getActiveSkillCap,
-  hasAptitudeFor,
-} from "#/system/karma/improvements/improvementCaps.ts"
+import { selectActiveSkillCapLookup } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
@@ -50,9 +47,9 @@ interface SkillRow {
 
 export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerStoreSelector((s) => s)
-  const activeSkills = useRunnerStoreSelector((s) => s.skills.activeSkills)
-  const skillGroups = useRunnerStoreSelector((s) => s.skills.skillGroups)
+  const activeSkillCap = useRunnerStoreSelector(selectActiveSkillCapLookup)
+  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
@@ -69,8 +66,7 @@ export const ImprovementActiveSkillList: FC = () => {
       name: skillKey,
       rating: group.rating,
       isGrouped: true,
-      cap: getActiveSkillCap(sheet, skillKey),
-      hasAptitude: hasAptitudeFor(sheet, skillKey),
+      ...activeSkillCap(skillKey),
     })),
   )
 
@@ -78,8 +74,7 @@ export const ImprovementActiveSkillList: FC = () => {
     name: skill.name,
     rating: skill.rating,
     isGrouped: false,
-    cap: getActiveSkillCap(sheet, skill.name),
-    hasAptitude: hasAptitudeFor(sheet, skill.name),
+    ...activeSkillCap(skill.name),
   }))
 
   const allSkillRows: SkillRow[] = [...standaloneRows, ...groupedSkillRows]

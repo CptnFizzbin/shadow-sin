@@ -4,7 +4,9 @@ import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
 import { buildAttributeCatalog } from "./selectors/attribute.catalog.ts"
 import { buildDamageCatalog } from "./selectors/damage.catalog.ts"
 import { buildItemCatalog } from "./selectors/item.catalog.ts"
+import { buildMagicAdvancementCatalog } from "./selectors/magicAdvancement.catalog.ts"
 import { buildModifiersCatalog } from "./selectors/modifiers.catalog.ts"
+import { buildSkillsCatalog } from "./selectors/skills.catalog.ts"
 
 /**
  * The namespaced menu `useRunnerSelector`'s callback picks from. Mirrors the existing
@@ -17,7 +19,9 @@ export interface RunnerSelectorCatalog {
   attribute: ReturnType<typeof buildAttributeCatalog>
   damage: ReturnType<typeof buildDamageCatalog>
   item: ReturnType<typeof buildItemCatalog>
+  magicAdvancement: ReturnType<typeof buildMagicAdvancementCatalog>
   modifiers: ReturnType<typeof buildModifiersCatalog>
+  skills: ReturnType<typeof buildSkillsCatalog>
 }
 
 /**
@@ -47,7 +51,9 @@ export function useRunnerSelector<T>(
       attribute: buildAttributeCatalog(attributesContext),
       damage: buildDamageCatalog(state),
       item: buildItemCatalog(state),
+      magicAdvancement: buildMagicAdvancementCatalog(state),
       modifiers: buildModifiersCatalog(state),
+      skills: buildSkillsCatalog(state),
     }),
     compare,
   )

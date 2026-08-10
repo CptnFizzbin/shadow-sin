@@ -20,6 +20,8 @@ import {
   getSkillGroupCap,
   hasAptitudeFor,
   hasExceptionalAttributeFor,
+  selectActiveSkillCapLookup,
+  selectAttributeCapLookup,
 } from "./improvementCaps.ts"
 
 describe("hasAptitudeFor", () => {
@@ -166,5 +168,38 @@ describe("getAttributeCap", () => {
 
     // Act + Assert
     expect(getAttributeCap(sheet, AttributeKey.magic)).toBe(0)
+  })
+})
+
+describe("selectActiveSkillCapLookup", () => {
+  it("returns the cap and Aptitude status for a given skill", () => {
+    // Arrange
+    const sheet = runnerDataFactory((draft) => {
+      draft.qualities = [{ id: NullUuid, name: "Aptitude (Pistols)", type: "positive" }]
+      return draft
+    })
+    const lookup = selectActiveSkillCapLookup(sheet)
+
+    // Act
+    const pistolsFacets = lookup(SkillKey.pistols)
+    const longarmsFacets = lookup(SkillKey.longarms)
+
+    // Assert
+    expect(pistolsFacets).toEqual({ cap: APTITUDE_ACTIVE_SKILL_CAP, hasAptitude: true })
+    expect(longarmsFacets).toEqual({ cap: BASE_ACTIVE_SKILL_CAP, hasAptitude: false })
+  })
+})
+
+describe("selectAttributeCapLookup", () => {
+  it("returns the cap for a given attribute", () => {
+    // Arrange
+    const sheet = runnerDataFactory((draft) => {
+      draft.biology.metatype = MetatypeType.Human
+      return draft
+    })
+    const lookup = selectAttributeCapLookup(sheet)
+
+    // Act + Assert
+    expect(lookup(AttributeKey.body)).toBe(6)
   })
 })

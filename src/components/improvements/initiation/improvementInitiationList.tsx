@@ -23,7 +23,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementInitiationList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const currentGrade = useRunnerStoreSelector((sheet) => sheet.initiateGrade)
+  const currentGrade = useRunnerStoreSelector(Selectors.karma.selectInitiateGrade)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

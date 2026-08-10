@@ -39,7 +39,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 
 export const ImprovementSkillGroupList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const skillGroups = useRunnerStoreSelector((sheet) => sheet.skills.skillGroups)
+  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

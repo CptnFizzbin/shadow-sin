@@ -28,7 +28,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 
 export const ImprovementQualityList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const qualities = useRunnerStoreSelector((sheet) => sheet.qualities)
+  const qualities = useRunnerStoreSelector(Selectors.qualities.selectQualities)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
