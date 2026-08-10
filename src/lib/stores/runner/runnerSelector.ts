@@ -45,16 +45,12 @@ export function useRunnerSelector<T>(
   const attributesContext = useAttributesContext()
 
   return useRunnerStoreSelector(
-    (state) => {
-      const attribute = buildAttributeCatalog(attributesContext)
-
-      return picker({
-        attribute,
-        damage: buildDamageCatalog(state),
-        item: buildItemCatalog(state, attribute),
-        modifiers: buildModifiersCatalog(state),
-      })
-    },
+    (state) => picker({
+      attribute: buildAttributeCatalog(attributesContext),
+      damage: buildDamageCatalog(state),
+      item: buildItemCatalog(state),
+      modifiers: buildModifiersCatalog(state),
+    }),
     compare,
   )
 }

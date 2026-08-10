@@ -1,13 +1,13 @@
 import type { Selector } from "reselect"
 import { createSelector } from "reselect"
 
-import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
+import { BASE_ESSENCE, getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
 import { armor as armorSelectors, selectGearOfType } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
 import type { ArmorRating } from "#/system/gear/armorData.ts"
+import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import type { ItemDataFor } from "#/system/items/itemUtils.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 export interface ItemEssenceFacets {
@@ -17,15 +17,10 @@ export interface ItemEssenceFacets {
   biowareEssence: number
 }
 
-const itemsOfTypeSelectors: Partial<Record<ItemType, Selector<RunnerData, ItemData[]>>> = {}
-
-export function selectItemsOfType<T extends ItemType>(state: RunnerData, type: T): ItemDataFor<T>[] {
-  itemsOfTypeSelectors[type] ??= createSelector(
-    [selectGearOfType(type)],
-    (itemsById) => Object.values(itemsById),
-  )
-  return (itemsOfTypeSelectors[type] as Selector<RunnerData, ItemDataFor<T>[]>)(state)
-}
+export const selectItemsOfType: Selector<RunnerData, ItemData[], [type: ItemType]> = createSelector(
+  [(state: RunnerData, type: ItemType) => selectGearOfType(type)(state)],
+  (itemsById) => Object.values(itemsById),
+)
 
 export const selectArmorTotal: Selector<RunnerData, ArmorRating> = createSelector(
   [armorSelectors.selectEquipped],
@@ -43,17 +38,9 @@ export const selectArmorEffective: Selector<RunnerData, ArmorRating> = createSel
   }),
 )
 
-/**
- * `essenceMax` comes from the `attribute` namespace (`attribute(AttributeKey.essence).info.max`)
- * rather than a hardcoded constant, so it's a second selector argument here — `RunnerAttributeCatalog`
- * reads a Context snapshot, not `RunnerData`, so it can't be composed in as an ordinary input selector.
- */
-export const selectEssence = createSelector(
-  [
-    (state: RunnerData) => selectItemsOfType(state, ItemType.implant),
-    (_: RunnerData, essenceMax: number) => essenceMax,
-  ],
-  (implants, essenceMax): ItemEssenceFacets => {
+export const selectEssence: Selector<RunnerData, ItemEssenceFacets> = createSelector(
+  [(state: RunnerData) => selectItemsOfType(state, ItemType.implant) as ImplantData[]],
+  (implants): ItemEssenceFacets => {
     // Accessory implants (parentId set) cost Capacity on their host, not Essence — see
     // getImplantEffectiveEssenceCost.
     const rootImplants = implants.filter((implant) => !implant.parentId)
@@ -73,7 +60,7 @@ export const selectEssence = createSelector(
 
     return {
       used,
-      remaining: essenceMax - used,
+      remaining: BASE_ESSENCE - used,
       cyberwareEssence,
       biowareEssence,
     }
