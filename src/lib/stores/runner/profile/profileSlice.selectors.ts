@@ -15,6 +15,11 @@ export function selectProfileAlias(state: RunnerData): string {
   return state.profile.alias
 }
 
+/** The Runner's alias, falling back to their legal name when no alias is set. */
+export function selectProfileDisplayName(state: RunnerData): string {
+  return state.profile.alias || state.profile.name
+}
+
 export function selectLifestyle(state: RunnerData): RunnerData["profile"]["lifestyle"] {
   return state.profile.lifestyle
 }

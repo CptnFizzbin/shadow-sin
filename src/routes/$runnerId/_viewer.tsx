@@ -10,12 +10,15 @@ import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessBut
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
 import { useDiceTray } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { useRunnerNav } from "#/lib/hooks/runner/nav/useRunnerNav.ts"
+import { useDocumentTitle } from "#/lib/hooks/ui/useDocumentTitle.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 /**
  * The tabbed-sheet chrome: `RunnerNav` and the swipe-between-sections
  * surface. A pathless layout so it doesn't add a URL segment — sibling to
  * `_details`, which renders full-screen drill-down pages without this
- * chrome (see ADR-0009).
+ * chrome (see ADR-0009). Sets the browser tab title to the viewed Runner's
+ * alias (or name, if no alias is set) for as long as this layout is mounted.
  */
 export const Route = createFileRoute("/$runnerId/_viewer")({
   component: ViewerLayout,
@@ -24,6 +27,8 @@ export const Route = createFileRoute("/$runnerId/_viewer")({
 function ViewerLayout() {
   const { nextPage, prevPage } = useRunnerNav()
   const diceTray = useDiceTray()
+  const displayName = useRunnerStoreSelector(Selectors.profile.selectProfileDisplayName)
+  useDocumentTitle(`${displayName} - ShadowSIN`)
 
   return (
     <>
