@@ -13,7 +13,7 @@ import { AttributeLabels, AttributeOrder } from "#/system/attributeKey.ts"
  * row in the app header: name, attributes, damage track values, reputation, and karma.
  */
 export const RunnerHeaderSummary: FC = () => {
-  const displayName = useRunnerStoreSelector((state) => state.profile.alias || state.profile.name)
+  const displayName = useRunnerStoreSelector(Selectors.profile.selectProfileDisplayName)
   const attributes = useRunnerStoreSelector(Selectors.attributes.selectAttributes)
   const physicalTrack = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
   const stunTrack = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
