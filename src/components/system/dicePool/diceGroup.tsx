@@ -17,3 +17,13 @@ export function isDiceGroup(group: unknown): group is DiceGroup {
     && "name" in group
     && "size" in group
 }
+
+/**
+ * Flattens a `DiceGroupList` to its `DiceGroup` entries, discarding `null`/`boolean` filler at
+ * any nesting depth. `DiceGroupList` nests arbitrarily (callers assemble it from other
+ * `DicePoolData`'s own `.groups`), so a fixed-depth `Array.flat()` isn't enough in general.
+ */
+export function flattenDiceGroups(list: DiceGroupList): DiceGroup[] {
+  return list.flatMap((item) => (Array.isArray(item) ? flattenDiceGroups(item) : item))
+    .filter(isDiceGroup)
+}

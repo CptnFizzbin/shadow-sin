@@ -129,10 +129,13 @@ describe("ContactsList", () => {
     expect(within(dialog).getByText("Contact Knowledge Test")).toBeDefined()
     expect(within(dialog).getAllByText("Connection")).toHaveLength(2)
 
-    // Assert: Player pool is Charisma + Etiquette + Loyalty
-    expect(within(dialog).getAllByText("Legwork Test")).toHaveLength(2)
-    expect(within(dialog).getAllByText("CHA")).toHaveLength(2)
+    // Assert: Player pool is Charisma + Etiquette + Loyalty. Only the
+    // defaulting (negative-size) group is a penalty, so DicePool shows it
+    // twice — once as an always-visible chip, once in the expanded ledger;
+    // the positive-size groups and the pool's own name only ever appear once.
+    expect(within(dialog).getByText("Legwork Test")).toBeDefined()
+    expect(within(dialog).getByText("CHA")).toBeDefined()
     expect(within(dialog).getAllByText("Etiquette - Defaulting")).toHaveLength(2)
-    expect(within(dialog).getAllByText("Loyalty")).toHaveLength(2)
+    expect(within(dialog).getByText("Loyalty")).toBeDefined()
   })
 })

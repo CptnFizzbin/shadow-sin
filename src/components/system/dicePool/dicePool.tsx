@@ -13,7 +13,7 @@ import { DiceTrayContext } from "#/lib/contexts/dice/diceTrayContext.ts"
 import { useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 
 import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
-import { isDiceGroup } from "./diceGroup.tsx"
+import { flattenDiceGroups } from "./diceGroup.tsx"
 import { getPoolSize } from "./dicePoolData.tsx"
 
 const typeColors: Record<DiceGroupType, string> = {
@@ -41,10 +41,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups, includeWound = true 
   const diceTrayApi = useContext(DiceTrayContext)
   const woundDiceGroup = useWoundDiceGroup()
 
-  const diceGroups = [
-    groups,
-    includeWound && woundDiceGroup,
-  ].flat().filter(isDiceGroup)
+  const diceGroups = flattenDiceGroups([groups, includeWound && woundDiceGroup])
 
   const total = getPoolSize(diceGroups)
   const penalties = diceGroups.filter((group) => group.size < 0)
