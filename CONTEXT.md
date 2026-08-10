@@ -69,8 +69,7 @@ A dice pool penalty derived from filled damage boxes. Formula per track:
 `floor(max(0, damage − hptOffset) / woundInterval)`. Default interval is 3 boxes per −1 die.
 **High Pain Tolerance** increases the offset (ignoring the first N boxes); **Low Pain Tolerance**
 shrinks the interval (penalties kick in sooner). Both are read from `GameEffect` entries on
-equipped gear and active qualities. Implemented in `damageUtils.ts`; tested in
-`useWoundModifier.test.tsx`.
+equipped gear and active qualities.
 _Avoid_: wound penalty, damage penalty (use Wound Modifier)
 
 ### Reputation
@@ -267,12 +266,10 @@ _Avoid_: spell holder
 
 **MatrixAttrs**:
 The four matrix-test stats — Firewall, Response, Signal, System — that substitute for Attributes
-in Matrix Tests (see **Commlink**, **Matrix Test**). Added as members of the same `AttributeKey`
-enum used for Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests
-already mirror Attribute + Skill tests structurally. `RunnerData.attributes` and any
-`MatrixAttrs`-bearing bag are both `Partial<Record<AttributeKey, number>>`; `selectAttrBase` and
-`selectAttrValue` return `0` for a key that's absent or not computable for that subject (e.g.
-asking a Runner for Firewall).
+in Matrix Tests (see **Commlink**, **Matrix Test**). Shares the same `AttributeKey` enum used for
+Runner attributes (BOD, AGI, …), rather than a separate enum, since Matrix Tests already mirror
+Attribute + Skill tests structurally. A key that's absent or not computable for a given subject
+(e.g. asking a Runner for Firewall) resolves to `0`.
 
 **Entity Matrix Presence** _(`EntityData.matrix?: true | MatrixStats`)_:
 Almost every **Entity** — not just `Item` — can be present in the matrix. `matrix: true` is a
@@ -337,11 +334,11 @@ automatically. `RunnerData.gameState` is a new top-level namespace intended to e
 other in-play state beyond matrix (nothing else lives there yet).
 
 **Known Node**:
-`MatrixNodeData & { accessLevel: AccessLevel }` — a `MatrixNode` the Runner currently has some
-access to, flattened with the Access Level onto one record (not wrapped in a separate `node`
-field) since a Known Node only ever exists inside **Matrix Game State** today. A newly-added Known
-Node defaults to `public` **Access Level** — being "known" only requires the Runner to be aware of
-the Node and have its public-facing surface, not an authenticated account yet.
+A `MatrixNode` the Runner currently has some access to, with its Access Level flattened onto the
+same record (not wrapped in a separate `node` field) since a Known Node only ever exists inside
+**Matrix Game State** today. A newly-added Known Node defaults to `public` **Access Level** —
+being "known" only requires the Runner to be aware of the Node and have its public-facing surface,
+not an authenticated account yet.
 _Avoid_: Subscribed Node (there's no separate subscribed-nodes list — every Known Node other than
 the Active Node is one)
 
@@ -395,46 +392,33 @@ _Avoid_: ally, NPC (too broad)
 Any physical or digital piece of equipment a Runner owns. Typed by `ItemType` (armor, firearm,
 implant, software, vehicle, etc.). **Gear** is an accepted UI-copy-only synonym (route labels,
 section headings, e.g. "Add Gear") — code identifiers (types, props, filenames, directories) use
-**Item**, not Gear. _(A rename is planned for the TS-only identifiers: `src/system/gear/`,
-`GearTreeNode`, `GearItem`, `GearViewSectionProps`, etc. → `Item`-prefixed equivalents; the
-`/gear` route path and user-facing copy are unaffected. `RunnerData.gear` itself is a heavier,
-separate decision — it's a persisted JSON field, not just a TS identifier, so renaming it to
-`RunnerData.items` would need a migration like the planned `childIds`/`parentId` →
-`attachmentIds`/`attachedToId` rename on **Attachment**, not a plain find-and-replace. Not yet
-decided whether it's in scope.)_
+**Item**, not Gear. _(A rename of the remaining Gear-named code identifiers to `Item`-prefixed
+equivalents is planned; user-facing copy is unaffected. Renaming the persisted `RunnerData.gear`
+field itself is a heavier, separate decision needing a migration rather than a plain find-and-
+replace, and not yet decided whether it's in scope.)_
 _Avoid_: Gear (as a code identifier — reserved for user-facing copy only)
 
 **Equipped**:
 `ItemData.equipped` — whether an item is actively worn/wielded right now, as opposed to merely
-owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the toggle
-(`equipable: { forced: true }`); other item types don't offer it.
-`docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
-`ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
-into one action menu.
-`isEquipped(item)` in `src/system/items/itemUtils.ts` is deprecated — read `item.equipped`
-directly. It's always trustworthy on its own: the gear reducer forces it to `false` the moment
-**Stash** turns on and restores it automatically on un-stash (see **Stash**), so no compound check
-against `stashed` is needed at the read site.
+owned. Currently opt-in per `ItemType`: only weapons and armor expose the toggle; other item
+types don't offer it. `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item
+opt-in on every `ItemType` instead, as part of unifying it with **Stash** into one action menu.
+Mutually exclusive with **Stashed** — an item is never both Equipped and Stashed at once; stashing
+clears Equipped and restores it automatically on un-stash (see **Stash**).
 
 **Stashed**:
 `ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
 safehouse"), as opposed to **Equipped**, which only asks whether a *present* item is actively
-worn/wielded. The gear reducer (`src/lib/stores/runner/gear/gearSlice.ts`) enforces the
-interaction at the write boundary: the moment `stashed` becomes `true`, it forces `equipped` to
-`false` and records the prior value in the internal `ItemData._state.equipOnUnstash` (leading
-underscore, same convention as `RunnerData._meta_` — not read directly), restoring it
-automatically when un-stashed. A stashed item is greyed out and sorted to the bottom of gear
-listings, and cascades to its child items (stashing a weapon stashes its attachments too).
+worn/wielded. Stashing an item always clears **Equipped**, restoring its prior value automatically
+on un-stash. A stashed item is greyed out and sorted to the bottom of gear listings, and cascades
+to its child items (stashing a weapon stashes its attachments too).
 _Avoid_: unequipped (that's the absence of Equipped, not Stash — an item can be present,
 unequipped, and not stashed, e.g. a spare pistol in a holster)
 
 **Available**:
 The inverse of **Stashed** — `!item.stashed`, i.e. an item the Runner currently has on hand,
-regardless of whether it's **Equipped**. `isAvailable(item)` in `src/system/items/itemUtils.ts`
-is deprecated — read `!item.stashed` directly. Used to exclude stashed gear from listings/logic
-that only care about carried items, e.g. `selectAvailable`
-(`src/lib/stores/runner/gear/gearSlice.selectors.ts`) and the **License Check** lane filters
-(`src/components/runner/licenseCheck/licenseCheckLanes.ts`).
+regardless of whether it's **Equipped**. Used to exclude stashed gear from listings and logic that
+only care about carried items — e.g. gear-list filtering and the **License Check** lane filters.
 _Avoid_: confusing with **Availability** (the Item legality/rating term below) — unrelated
 concept that happens to share the word
 
@@ -547,19 +531,16 @@ A reference to the rulebook and page number where a rule or item is defined
 
 **Optional Rule**:
 A published variant rule from a Shadowrun source book that modifies core SR4e mechanics and must
-be explicitly opted into. Optional Rules are stored as `featureFlags.optionalRules` on a Runner,
-carry a `Source` citation, and are disabled by default. Known Optional Rules are defined in the
-`optionalRulesRegistry`. See `docs/adr/0002-feature-flags-design.md`.
+be explicitly opted into. Stored as `featureFlags.optionalRules` on a Runner, carries a `Source`
+citation, and is disabled by default. See `docs/adr/0002-feature-flags-design.md`.
 _Avoid_: house rule (a House Rule is app-invented; an Optional Rule is from a source book — see
 below)
 
 **House Rule** _(not yet implemented — see `docs/adr/0005-house-rules-feature-flag-namespace.md`)_:
 An app-invented mechanical choice that isn't from a Shadowrun source book — so it carries no
-`Source` citation — but still needs to be toggleable per table. Stored as `featureFlags.houseRules`
-(dotted, feature-namespaced keys, e.g. `items.licenseCheck.ratingPlusRating`), in a
-`houseRulesRegistry` parallel to `optionalRulesRegistry`. Each House Rule sets its own default
-(often enabled, since it's usually core to how a feature was designed to behave) rather than
-uniformly defaulting to disabled like Optional Rules.
+`Source` citation — but still needs to be toggleable per table. Stored as `featureFlags.houseRules`.
+Each House Rule sets its own default (often enabled, since it's usually core to how a feature was
+designed to behave) rather than uniformly defaulting to disabled like Optional Rules.
 _Avoid_: optional rule (reserve for published sourcebook variants — see above)
 
 ### Dice
@@ -592,7 +573,7 @@ Test**. An **Opposed Test** has no Threshold — the two pools are compared to e
 
 **Standard Test**:
 A single **Dice Pool** rolled against a fixed **Threshold** (a target Hit count); meeting or
-exceeding it succeeds. The default `TestType` in the dice tray (`testType.ts`).
+exceeding it succeeds. The default test type in the dice tray.
 
 **Opposed Test**:
 Two Dice Pools compared against each other; the side with more Hits wins (net Hits = difference).
@@ -608,9 +589,9 @@ time (`extendedInterval`); each intermediate roll is logged (`extendedHistory`),
 `shrinkingPool` optionally removes a die from the pool each subsequent roll.
 
 **Hidden Test**:
-_Not yet implemented — `TestType.Hidden` exists in `testType.ts` but has no dice-tray behavior
-wired to it yet._ In SR4e, a Hidden Test is rolled without revealing the Hit count to the Player
-(typically Perception-type tests), so a failure can't be distinguished from nothing to notice.
+_Not yet implemented._ In SR4e, a Hidden Test is rolled without revealing the Hit count to the
+Player (typically Perception-type tests), so a failure can't be distinguished from nothing to
+notice.
 
 **Glitch**:
 Triggered when half or more of the dice in the pool show 1s. A **Critical Glitch** occurs when
@@ -627,13 +608,12 @@ calculated pool size; the Player enters hits (and optionally the 1s count for gl
 
 **Builder**:
 The character creation and editing mode. Operates on a BP budget, allows structural changes to
-a Runner (metatype, awakening, attribute allocation, quality selection). Accessed via
-`src/components/builder/`.
+a Runner (metatype, awakening, attribute allocation, quality selection).
 _Avoid_: editor, creator, creation mode
 
 **Viewer**:
 The play-time mode for an existing Runner. Used to track damage, roll dice, spend Edge, and
-manage active resources during a session. Accessed via `src/components/runner/`.
+manage active resources during a session.
 _Avoid_: sheet view, player view, read mode
 
 ### State Access
@@ -659,8 +639,7 @@ _Avoid_: selector registry, selector map
 
 **RunnerMeta**:
 Versioning metadata embedded in every `RunnerData` record. Holds a single integer `version` —
-the highest migration `version` that has been applied — checked against the ordered migration
-list in `src/data/migrations.ts`.
+the highest migration `version` that has been applied.
 
 **RunnerId**:
 A string that uniquely identifies a Runner within the app. Format: `source|uuid` (e.g.
@@ -672,13 +651,10 @@ _Avoid_: UUID alone (ambiguous without source), character key, CharacterId
 **StorageSource**:
 A named, pluggable persistence backend (e.g. `"local"` for `localStorage`, `"gdrive"` for Google
 Drive). A Runner belongs to exactly one source at a time; moving it to another source requires
-generating a new `RunnerId`. The underlying `localStorage` key format (`characters/<uuid>`,
-`character-form/<uuid>`) is a fixed historical string and intentionally was **not** renamed
-alongside `CharacterId`/`CharacterManager` — changing it would orphan every already-saved Runner.
-`RunnerManager`, the migration system, and the legacy-format detection in
-`001_normalizeOldFormatCharacter.ts` (and its frozen test fixtures under
-`testUtils/fixtures/characters/`) all still reference `character`-shaped literal strings on
-purpose.
+generating a new `RunnerId`. The underlying `localStorage` key format is a fixed historical string
+and was intentionally not renamed alongside the `character` → `runner` identifier rename —
+changing it would orphan every already-saved Runner. The migration system and its legacy-format
+detection still reference `character`-shaped literal strings on purpose.
 
 **Session State**:
 Combat-round and in-session data stored directly on `RunnerData` (e.g. initiative rolls, passes
@@ -692,14 +668,11 @@ _Avoid_: temporary state, volatile state (all state is durable by design)
 A single, immutable schema-upgrade step that transforms one version of `RunnerData` into the
 next. Migrations operate on potentially invalid or incomplete data and must never be edited after
 commit — if a migration has a bug, a new migration fixes the output. Each migration has a
-sequential integer `version` (file names are zero-padded to match, e.g. `001_...ts`,
-`022_...ts`), and `applyMigrations` is the sole place that decides which migrations run: it
-filters the registered list down to `version > _meta_.version` and calls `up` only on that
-subset, in ascending order — individual migrations don't check `_meta_` themselves. Because
-migration files must never be edited, the shared `CharacterMigration<T>` type in
-`src/data/characterMigration.ts` and the migration files themselves (`src/data/migrations/`) were
-deliberately left out of the `character`→`runner` identifier rename — renaming the shared type
-would have forced an edit into every migration file.
+sequential integer `version`; only migrations newer than a Runner's current version are ever
+applied, in ascending order — individual migrations don't check the current version themselves.
+Because migration files must never be edited, the shared migration type and the migration files
+themselves were deliberately left out of the `character`→`runner` identifier rename — renaming
+the shared type would have forced an edit into every migration file.
 _Avoid_: upgrade, patch, update (use migration)
 
 ## Relationships
@@ -708,9 +681,10 @@ _Avoid_: upgrade, patch, update (use migration)
   under a single GM _(Game not yet implemented)_
 - A **Runner** belongs to exactly one **StorageSource** at a time; copying to another source
   generates a new **RunnerId** (new UUID + new source prefix) — the copy is a distinct Runner
-- **RunnerData** holds a flat `Record<id, Item>` for gear — **Attachment** relationships are
-  expressed via `attachmentIds` on the parent and `attachedToId` on the child; attachments may
-  nest recursively _(field names are pending migration from `childIds` / `parentId`)_
+- **RunnerData** holds a flat collection of Items keyed by id for gear — **Attachment**
+  relationships are expressed via `attachmentIds` on the parent and `attachedToId` on the child;
+  attachments may nest recursively _(field names are pending migration from `childIds` /
+  `parentId`)_
 - **GameEffect** entries attach to a subset of **Entities** — Items, Qualities, Spells, Complex
   Forms, and Adept Powers, not Spirits/Sprites/Agents — never stored directly on base attributes.
   Each entry's **Scope** is resolved relative to its own source's position in the Item ownership
@@ -737,10 +711,7 @@ _Avoid_: upgrade, patch, update (use migration)
   alias.
 - `character` as a variable name was overloaded between Runner identity and `RunnerData` payload.
   Resolved: use `sheet` for the data payload variable; `runner` for identity/display contexts.
-- `CharacterId`, `CharacterManager`, `src/character/`, and the various `character`-named
-  components/hooks/builder files were renamed to `RunnerId`, `RunnerManager`, `src/runner/`, etc.
-  Resolved, with one deliberate exception: the `localStorage` key literals (`characters/<uuid>`,
-  `character-form/<uuid>`), the legacy YAML export's `characterId` field detection, and the
-  migration subsystem (`src/data/migrations/`, `characterMigration.ts`,
-  `testUtils/fixtures/characters/`) were left untouched — see **StorageSource** and **Migration**
-  above.
+- `CharacterId`, `CharacterManager`, and the various `character`-named identifiers were renamed to
+  `RunnerId`, `RunnerManager`, etc. Resolved, with one deliberate exception: the `localStorage` key
+  literals, the legacy YAML export's field detection, and the migration subsystem were left
+  untouched — see **StorageSource** and **Migration** above.

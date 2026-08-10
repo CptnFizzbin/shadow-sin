@@ -6,7 +6,6 @@ import type { SinData } from "#/system/gear/sinData.ts"
 import { isSinData } from "#/system/gear/sinData.ts"
 import type { ItemData } from "#/system/itemData.ts"
 import { ItemType } from "#/system/itemType.ts"
-import { isAvailable } from "#/system/items/itemUtils.ts"
 
 import type { VerificationLane } from "./licenseCheckTypes.ts"
 
@@ -24,7 +23,7 @@ function buildSinLane(
   // Forbidden gear must never be offered a roll, even with a stray licenseId pointing at a real
   // Licence — guard structurally here rather than relying on `kind` alone.
   const licensedGear = allItems.filter((item) =>
-    isAvailable(item) && !isForbidden(item) && sinLicenses.some((license) => license.id === item.licenseId))
+    !item.stashed && !isForbidden(item) && sinLicenses.some((license) => license.id === item.licenseId))
 
   // A SIN with no licensed gear submitted for verification has nothing to check — skip its lane.
   if (licensedGear.length === 0) return null
@@ -57,13 +56,13 @@ export function buildVerificationLanes(gear: Record<string, ItemData>): Verifica
   const allItems = Object.values(gear)
   const licenses = allItems.filter(isLicenseData)
 
-  const sins = allItems.filter(isSinData).filter(isAvailable)
+  const sins = allItems.filter(isSinData).filter((item) => !item.stashed)
   const lanes: VerificationLane[] = sins
     .map((sin) => buildSinLane(sin, licenses, allItems))
     .filter((lane) => lane !== null)
 
   const unlicensedItems = allItems.filter((item) =>
-    isAvailable(item) && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, licenses))
+    !item.stashed && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, licenses))
 
   if (unlicensedItems.length > 0) {
     lanes.push({
@@ -74,7 +73,7 @@ export function buildVerificationLanes(gear: Record<string, ItemData>): Verifica
   }
 
   const forbiddenItems = allItems.filter((item) =>
-    isAvailable(item) && !isSinOrLicense(item) && isForbidden(item))
+    !item.stashed && !isSinOrLicense(item) && isForbidden(item))
 
   if (forbiddenItems.length > 0) {
     lanes.push({

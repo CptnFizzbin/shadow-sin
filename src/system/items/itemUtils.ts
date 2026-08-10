@@ -35,21 +35,6 @@ export function itemIsType<
   return item.itemType === type
 }
 
-/** @deprecated Read `item.stashed` directly. */
-export function isStashed(item: ItemData): boolean {
-  return item.stashed === true
-}
-
-/** @deprecated Read `item.equipped` directly. */
-export function isEquipped(item: ItemData): boolean {
-  return item.equipped === true
-}
-
-/** @deprecated Read `!item.stashed` directly. */
-export function isAvailable(item: ItemData): boolean {
-  return item.stashed !== true
-}
-
 export function filterRecordBy<TInput extends ItemData = ItemData, TOutput extends TInput = TInput>(
   items: ItemDataRecord<TInput>,
   filterFn: (item: TInput) => item is TOutput,
@@ -73,9 +58,6 @@ export function filterRecordByType<
 }
 
 export const ItemUtils = {
-  isEquipped,
-  isStashed,
-  isAvailable,
   filterRecordBy,
   filterRecordByType,
 }
