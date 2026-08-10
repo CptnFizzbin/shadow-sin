@@ -2,7 +2,6 @@ import type { Selector } from "reselect"
 import { createSelector } from "reselect"
 
 import { getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { armor as armorSelectors, selectGearOfType } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
 import type { ArmorRating } from "#/system/gear/armorData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
@@ -18,16 +17,14 @@ export interface ItemEssenceFacets {
   biowareEssence: number
 }
 
-// Same per-type memoization shape as `selectGearOfType` itself (`gearSlice.selectors.ts`) — one
-// cached Selector per `ItemType`, built on first request for that type.
 const itemsOfTypeSelectors: Partial<Record<ItemType, Selector<RunnerData, ItemData[]>>> = {}
 
-export function selectItemsOfType<T extends ItemType>(type: T): Selector<RunnerData, ItemDataFor<T>[]> {
+export function selectItemsOfType<T extends ItemType>(state: RunnerData, type: T): ItemDataFor<T>[] {
   itemsOfTypeSelectors[type] ??= createSelector(
     [selectGearOfType(type)],
     (itemsById) => Object.values(itemsById),
   )
-  return itemsOfTypeSelectors[type] as Selector<RunnerData, ItemDataFor<T>[]>
+  return (itemsOfTypeSelectors[type] as Selector<RunnerData, ItemDataFor<T>[]>)(state)
 }
 
 export const selectArmorTotal: Selector<RunnerData, ArmorRating> = createSelector(
@@ -48,13 +45,12 @@ export const selectArmorEffective: Selector<RunnerData, ArmorRating> = createSel
 
 /**
  * `essenceMax` comes from the `attribute` namespace (`attribute(AttributeKey.essence).info.max`)
- * rather than a hardcoded constant, so it's a curried param here instead of a second selector —
- * `RunnerAttributeCatalog` reads a Context snapshot, not `RunnerData`, so it can't be composed in
- * as an ordinary input selector.
+ * rather than a hardcoded constant, so it's a second selector argument here — `RunnerAttributeCatalog`
+ * reads a Context snapshot, not `RunnerData`, so it can't be composed in as an ordinary input selector.
  */
-export const selectEssence = createCurriedSelector(
+export const selectEssence = createSelector(
   [
-    (state: RunnerData) => selectItemsOfType(ItemType.implant)(state),
+    (state: RunnerData) => selectItemsOfType(state, ItemType.implant),
     (_: RunnerData, essenceMax: number) => essenceMax,
   ],
   (implants, essenceMax): ItemEssenceFacets => {

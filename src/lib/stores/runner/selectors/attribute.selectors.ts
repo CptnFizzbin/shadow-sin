@@ -7,10 +7,6 @@ export interface AttributeFacets {
   info: AttributeInfo
 }
 
-/**
- * Not reselect-memoized — reads a Context snapshot (not `RunnerData`), and is plain property
- * access with nothing expensive to cache.
- */
 export function selectAttributeFacets(attributesContext: AttributesContextValue, key: AttributeKey): AttributeFacets {
   return {
     baseValue: attributesContext.values[key] ?? 0,

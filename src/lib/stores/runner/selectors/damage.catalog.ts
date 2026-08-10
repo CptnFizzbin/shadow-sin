@@ -10,6 +10,6 @@ export interface RunnerDamageCatalog {
 }
 
 export function buildDamageCatalog(state: RunnerData): RunnerDamageCatalog {
-  const catalog = (track: DamageTrackKey): DamageTrackFacets => selectDamageTrackFacets(track)(state)
+  const catalog = (track: DamageTrackKey): DamageTrackFacets => selectDamageTrackFacets(state, track)
   return Object.assign(catalog, { woundMod: selectWoundMod(state) })
 }

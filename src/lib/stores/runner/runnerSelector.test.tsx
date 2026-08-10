@@ -52,7 +52,7 @@ describe("useRunnerSelector", () => {
     })
 
     it("defaults an unset attribute (e.g. a Matrix stat on a Runner) to 0", () => {
-      // Arrange — Runners never populate the Matrix stats (see AttributeKey docs)
+      // Arrange
       const sheet = runnerDataFactory()
 
       // Act
@@ -85,8 +85,7 @@ describe("useRunnerSelector", () => {
     })
 
     it("computes the wound modifier as a bare property", () => {
-      // Arrange — 3 physical + 3 stun → floor(3/3) + floor(3/3) = 2, same fixture as
-      // useWoundModifier.test.ts
+      // Arrange
       const sheet = runnerDataFactory((s) => {
         s.damage.physical = 3
         s.damage.stun = 3
@@ -99,7 +98,7 @@ describe("useRunnerSelector", () => {
         { wrapper: makeRunnerDataWrapper(sheet) },
       )
 
-      // Assert
+      // Assert — floor(3/3) + floor(3/3) = 2
       expect(result.current).toBe(2)
     })
   })
@@ -177,8 +176,7 @@ describe("useRunnerSelector", () => {
     })
 
     it("sums equipped armor for total and takes the best equipped piece for effective", () => {
-      // Arrange — two equipped armor pieces stack for total, but only the highest applies as
-      // effective (unequipped armor counts toward neither)
+      // Arrange
       const [jacket] = createItem<ArmorData>({
         name: "Armor Jacket", itemType: ItemType.armor, ballistic: 6, impact: 4, equipped: true,
       })
@@ -198,14 +196,14 @@ describe("useRunnerSelector", () => {
       const total = renderHook(() => useRunnerSelector(({ item }) => item.armor.total), { wrapper })
       const effective = renderHook(() => useRunnerSelector(({ item }) => item.armor.effective), { wrapper })
 
-      // Assert
+      // Assert — two equipped pieces stack for total, but only the highest applies as effective
+      // (unequipped armor counts toward neither)
       expect(total.result.current).toEqual({ ballistic: 9, impact: 6 })
       expect(effective.result.current).toEqual({ ballistic: 6, impact: 4 })
     })
 
     it("computes essence usage against the attribute namespace's essence cap", () => {
-      // Arrange — 2 cyberware + 1 bioware essence, smaller (bioware) counts at half:
-      // used = 2 + (1 / 2) = 2.5, remaining = 6 - 2.5 = 3.5
+      // Arrange
       const [cyberware] = createItem<ImplantData>({
         name: "Wired Reflexes",
         itemType: ItemType.implant,
@@ -231,7 +229,8 @@ describe("useRunnerSelector", () => {
         { wrapper: makeRunnerDataWrapper(sheet) },
       )
 
-      // Assert
+      // Assert — 2 cyberware + 1 bioware essence, smaller (bioware) counts at half:
+      // used = 2 + (1 / 2) = 2.5, remaining = 6 - 2.5 = 3.5
       expect(result.current).toEqual({
         used: 2.5,
         remaining: 3.5,

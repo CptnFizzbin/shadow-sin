@@ -10,9 +10,7 @@ import { selectArmorTotal, selectItemsOfType } from "./item.selectors.ts"
 describe("item selectors", () => {
   describe("selectArmorTotal", () => {
     it("returns the same reference across calls when the underlying gear hasn't changed", () => {
-      // Arrange — reselect memoization is the whole point of pulling these out of the catalog
-      // factory: a call site that re-derives `item.armor.total` on every render shouldn't get a
-      // new object each time if nothing armor-related actually changed.
+      // Arrange
       const [jacket] = createItem<ArmorData>({
         name: "Armor Jacket", itemType: ItemType.armor, ballistic: 6, impact: 4, equipped: true,
       })
@@ -25,7 +23,7 @@ describe("item selectors", () => {
       const first = selectArmorTotal(sheet)
       const second = selectArmorTotal(sheet)
 
-      // Assert
+      // Assert — reselect memoization: no new object when nothing armor-related changed
       expect(second).toBe(first)
     })
   })
@@ -40,11 +38,10 @@ describe("item selectors", () => {
         s.gear = createItemMap([jacket])
         return s
       })
-      const selectArmor = selectItemsOfType(ItemType.armor)
 
       // Act
-      const first = selectArmor(sheet)
-      const second = selectArmor(sheet)
+      const first = selectItemsOfType(sheet, ItemType.armor)
+      const second = selectItemsOfType(sheet, ItemType.armor)
 
       // Assert
       expect(second).toBe(first)
@@ -52,15 +49,16 @@ describe("item selectors", () => {
 
     it("caches a separate selector per item type", () => {
       // Arrange
-      const selectArmor = selectItemsOfType(ItemType.armor)
+      const sheet = runnerDataFactory()
 
       // Act
-      const selectArmorAgain = selectItemsOfType(ItemType.armor)
-      const selectImplants = selectItemsOfType(ItemType.implant)
+      const armorFirstCall = selectItemsOfType(sheet, ItemType.armor)
+      const armorSecondCall = selectItemsOfType(sheet, ItemType.armor)
+      const implants = selectItemsOfType(sheet, ItemType.implant)
 
       // Assert
-      expect(selectArmorAgain).toBe(selectArmor)
-      expect(selectImplants).not.toBe(selectArmor)
+      expect(armorSecondCall).toBe(armorFirstCall)
+      expect(implants).not.toBe(armorFirstCall)
     })
   })
 })

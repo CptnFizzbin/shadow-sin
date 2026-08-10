@@ -26,12 +26,12 @@ export function buildItemCatalog(state: RunnerData, attribute: RunnerAttributeCa
   const catalog = (id: UUID): ItemData | undefined => selectById(id)(state)
 
   return Object.assign(catalog, {
-    byType: <T extends ItemType>(type: T): ItemDataFor<T>[] => selectItemsOfType(type)(state),
+    byType: <T extends ItemType>(type: T): ItemDataFor<T>[] => selectItemsOfType(state, type),
     equipped: selectEquipped(state),
     armor: {
       total: selectArmorTotal(state),
       effective: selectArmorEffective(state),
     },
-    essence: selectEssence(attribute(AttributeKey.essence).info.max)(state),
+    essence: selectEssence(state, attribute(AttributeKey.essence).info.max),
   })
 }
