@@ -25,7 +25,6 @@ import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { useWoundModifier } from "#/lib/hooks/system/damage/useWoundModifier.ts"
 import {
   useActiveSkillDiceGroup,
-  useDefaultingDiceGroup,
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
@@ -50,6 +49,7 @@ interface DefenseCalculatorPanelProps {
 }
 
 type SpellAttribute = "physical" | "mana"
+type SpellType = "direct" | "indirect"
 type ArmorType = "ballistic" | "impact"
 type CounterspellingSource = "self" | "other"
 type WizardStep = "skill" | "modifiers" | "total" | "resist"
@@ -64,7 +64,6 @@ const wizardSteps: { step: WizardStep, label: string }[] = [
 interface SkillDefenseEntry {
   rating: number
   diceGroup: DiceGroup
-  defaultingGroup: DiceGroup | null
 }
 
 /** Drilled-down view of the Defense Calculator: a paginated wizard for one attack type. */
@@ -76,6 +75,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
   const [selectedKey, setSelectedKey] = useState(skillOptions[0].key)
   const [includeDefaultingSkills, setIncludeDefaultingSkills] = useState(false)
   const [spellAttribute, setSpellAttribute] = useState<SpellAttribute>("physical")
+  const [spellType, setSpellType] = useState<SpellType>("direct")
   const [counterspellingEnabled, setCounterspellingEnabled] = useState(false)
   const [counterspellingSource, setCounterspellingSource] = useState<CounterspellingSource>("self")
   const [otherRating, setOtherRating] = useState(0)
@@ -97,34 +97,25 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const dodgeRating = useActiveSkillRating(SkillKey.dodge)
   const dodgeGroup = useActiveSkillDiceGroup(SkillKey.dodge)
-  const dodgeDefaulting = useDefaultingDiceGroup(SkillKey.dodge)
 
   const unarmedRating = useActiveSkillRating(SkillKey.unarmedCombat)
   const unarmedGroup = useActiveSkillDiceGroup(SkillKey.unarmedCombat)
-  const unarmedDefaulting = useDefaultingDiceGroup(SkillKey.unarmedCombat)
 
   const bladesRating = useActiveSkillRating(SkillKey.blades)
   const bladesGroup = useActiveSkillDiceGroup(SkillKey.blades)
-  const bladesDefaulting = useDefaultingDiceGroup(SkillKey.blades)
 
   const clubsRating = useActiveSkillRating(SkillKey.clubs)
   const clubsGroup = useActiveSkillDiceGroup(SkillKey.clubs)
-  const clubsDefaulting = useDefaultingDiceGroup(SkillKey.clubs)
 
   const counterspellingRating = useActiveSkillRating(SkillKey.counterspelling)
-  const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling)
-  const counterspellingDefaulting = useDefaultingDiceGroup(SkillKey.counterspelling)
+  const counterspellingGroup = useActiveSkillDiceGroup(SkillKey.counterspelling, { defaulting: false })
 
   const skillDataByKey: Partial<Record<SkillKey, SkillDefenseEntry>> = {
-    [SkillKey.dodge]: { rating: dodgeRating, diceGroup: dodgeGroup, defaultingGroup: dodgeDefaulting },
-    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroup: unarmedGroup, defaultingGroup: unarmedDefaulting },
-    [SkillKey.blades]: { rating: bladesRating, diceGroup: bladesGroup, defaultingGroup: bladesDefaulting },
-    [SkillKey.clubs]: { rating: clubsRating, diceGroup: clubsGroup, defaultingGroup: clubsDefaulting },
-    [SkillKey.counterspelling]: {
-      rating: counterspellingRating,
-      diceGroup: counterspellingGroup,
-      defaultingGroup: counterspellingDefaulting,
-    },
+    [SkillKey.dodge]: { rating: dodgeRating, diceGroup: dodgeGroup },
+    [SkillKey.unarmedCombat]: { rating: unarmedRating, diceGroup: unarmedGroup },
+    [SkillKey.blades]: { rating: bladesRating, diceGroup: bladesGroup },
+    [SkillKey.clubs]: { rating: clubsRating, diceGroup: clubsGroup },
+    [SkillKey.counterspelling]: { rating: counterspellingRating, diceGroup: counterspellingGroup },
   }
 
   const woundMod = useWoundModifier()
@@ -144,13 +135,20 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
   const selectedSkillEntry = selectedOption.skill ? skillDataByKey[selectedOption.skill] : undefined
 
+  // Direct combat spells are resisted with Body/Willpower + Counterspelling — that single test
+  // both defends against and resists damage from the spell. Indirect combat spells are dodged
+  // like a physical attack (Reaction + Counterspelling), with a separate Body + half impact armor
+  // test to resist the damage that gets through.
+  const spellDamageAttr = spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower
+  const spellDamageAttrValue = spellAttribute === "physical" ? body : willpower
+
   const baseAttr = attackType === "spell"
-    ? (spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower)
+    ? (spellType === "indirect" ? AttributeKey.reaction : spellDamageAttr)
     : AttributeKey.reaction
 
   const attributeGroup: DiceGroup = {
     name: AttributeLabels[baseAttr],
-    size: attackType === "spell" ? (spellAttribute === "physical" ? body : willpower) : reaction,
+    size: attackType === "spell" ? (spellType === "indirect" ? reaction : spellDamageAttrValue) : reaction,
   }
 
   const spellSkillGroup: DiceGroup | null = attackType === "spell" && counterspellingEnabled
@@ -159,16 +157,7 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
         : { id: "counterspelling-other", name: "Counterspelling (Other)", size: otherRating })
     : null
 
-  const spellDefaultingGroup: DiceGroup | null = attackType === "spell"
-    && counterspellingEnabled
-    && counterspellingSource === "self"
-    ? counterspellingDefaulting
-    : null
-
   const skillGroupForTotal = attackType === "spell" ? spellSkillGroup : (selectedSkillEntry?.diceGroup ?? null)
-  const defaultingGroupForTotal = attackType === "spell"
-    ? spellDefaultingGroup
-    : (selectedSkillEntry?.defaultingGroup ?? null)
 
   // Full Dodge (and similar maneuvers) counts the same skill twice — e.g. Reaction + Dodge + Dodge.
   const doubledSkillGroup: DiceGroup | null = attackType !== "spell" && selectedOption.doubleSkill && selectedSkillEntry?.diceGroup
@@ -213,29 +202,36 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
     attributeGroup,
     skillGroupForTotal,
     doubledSkillGroup,
-    defaultingGroupForTotal,
     woundGroup,
     attackType !== "spell" ? encumbranceGroup : null,
     ...modifierGroups,
   ]
 
-  // Spells bypass armor in SR4e — only melee/ranged damage gets the worn armor's protection.
+  // Direct spells bypass armor entirely and reuse the defense roll as the resist roll. Indirect
+  // spells resist like a physical attack — Body + half impact armor (rounded down) — regardless
+  // of the armor type toggle, which only applies to melee/ranged attacks.
   const resistAttr = attackType === "spell"
-    ? (spellAttribute === "physical" ? AttributeKey.body : AttributeKey.willpower)
+    ? (spellType === "indirect" ? AttributeKey.body : spellDamageAttr)
     : AttributeKey.body
 
   const resistAttrValue = attackType === "spell"
-    ? (spellAttribute === "physical" ? body : willpower)
+    ? (spellType === "indirect" ? body : spellDamageAttrValue)
     : body
 
   const armorValue = armorType === "ballistic" ? armorTotals.totalBallistic : armorTotals.totalImpact
+  const halfImpactArmor = Math.floor(armorTotals.totalImpact / 2)
 
-  const resistGroups: DiceGroupList = [
-    { name: AttributeLabels[resistAttr], size: resistAttrValue },
-    attackType !== "spell"
-      ? { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" }
-      : null,
-  ]
+  const isDirectSpell = attackType === "spell" && spellType === "direct"
+
+  const resistGroups: DiceGroupList = isDirectSpell
+    // Same test as the Defense roll — Body/Willpower + Counterspelling, including modifiers.
+    ? groups
+    : [
+        { name: AttributeLabels[resistAttr], size: resistAttrValue },
+        attackType === "spell"
+          ? { name: "Armor (Impact, half)", size: halfImpactArmor, color: "info.main" }
+          : { name: `Armor (${armorType === "ballistic" ? "Ballistic" : "Impact"})`, size: armorValue, color: "info.main" },
+      ]
 
   const currentStep = wizardSteps[stepIndex].step
   const isFirstStep = stepIndex === 0
@@ -256,6 +252,26 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
           {attackType === "spell" && (
             <Stack sx={{ gap: 0.5 }}>
               <Label label="Spell Type" />
+              <ButtonGroup size="small" variant="outlined" fullWidth>
+                <Button
+                  variant={spellType === "direct" ? "contained" : "outlined"}
+                  onClick={() => setSpellType("direct")}
+                >
+                  Direct
+                </Button>
+                <Button
+                  variant={spellType === "indirect" ? "contained" : "outlined"}
+                  onClick={() => setSpellType("indirect")}
+                >
+                  Indirect
+                </Button>
+              </ButtonGroup>
+            </Stack>
+          )}
+
+          {attackType === "spell" && spellType === "direct" && (
+            <Stack sx={{ gap: 0.5 }}>
+              <Label label="Damage Type" />
               <ButtonGroup size="small" variant="outlined" fullWidth>
                 <Button
                   variant={spellAttribute === "physical" ? "contained" : "outlined"}
@@ -292,7 +308,11 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                         value={counterspellingSource}
                         onChange={(event) => setCounterspellingSource(event.target.value as CounterspellingSource)}
                       >
-                        <FormControlLabel value="self" control={<Radio />} label={`From Yourself (${counterspellingRating})`} />
+                        <FormControlLabel
+                          value="self"
+                          control={<Radio />}
+                          label={`From Yourself (${counterspellingRating})`}
+                        />
                         <FormControlLabel value="other" control={<Radio />} label="From Another" />
                       </RadioGroup>
 
@@ -430,7 +450,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                       <Typography variant="body2" sx={{ flex: 1 }}># of Attacks</Typography>
                       <CounterInput
                         value={stepperValues[modifier.id] ?? modifier.min}
-                        onChange={(value) => setStepperValues((prev) => ({ ...prev, [modifier.id]: value ?? modifier.min }))}
+                        onChange={(value) => setStepperValues((prev) => ({
+                          ...prev,
+                          [modifier.id]: value ?? modifier.min,
+                        }))}
                         min={modifier.min}
                         max={modifier.max}
                         disabled={unaware}
@@ -476,6 +499,12 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
 
       {currentStep === "resist" && (
         <Stack sx={{ gap: 1.5 }}>
+          {isDirectSpell && (
+            <Alert severity="info">
+              Direct combat spells use the Defense roll to resist damage too — no separate test.
+            </Alert>
+          )}
+
           {attackType !== "spell" && (
             <Stack sx={{ gap: 0.5 }}>
               <Label label="Armor Type" />
@@ -509,7 +538,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                 current={physicalTrack.current}
                 woundInterval={physicalTrack.woundInterval}
                 allowOverflow
-                onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.physical, value: newValue }))}
+                onChange={(newValue) => dispatch(Actions.damage.setDamage({
+                  track: DamageTrackKey.physical,
+                  value: newValue,
+                }))}
               />
             </Grid>
 
@@ -519,7 +551,10 @@ export const DefenseCalculatorPanel: FC<DefenseCalculatorPanelProps> = ({ attack
                 max={stunTrack.max}
                 current={stunTrack.current}
                 woundInterval={stunTrack.woundInterval}
-                onChange={(newValue) => dispatch(Actions.damage.setDamage({ track: DamageTrackKey.stun, value: newValue }))}
+                onChange={(newValue) => dispatch(Actions.damage.setDamage({
+                  track: DamageTrackKey.stun,
+                  value: newValue,
+                }))}
               />
             </Grid>
           </Grid>

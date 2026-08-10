@@ -48,6 +48,7 @@ function RootLayout() {
           <Footer />
         </Stack>
       </Stack>
+
       <TanStackDevtools
         plugins={[
           ShadowSinDevtools,

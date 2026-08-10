@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid"
 import Stack from "@mui/material/Stack"
 import { createFileRoute } from "@tanstack/react-router"
-import { Fragment } from "react"
 
 import { EquippedArmorSection } from "#/components/items/types/armor/equippedArmorSection.tsx"
 import DamageTrack from "#/components/system/damage/damageTrack.tsx"
@@ -16,17 +15,18 @@ import {
   PhysicalSpellDefenseDicePool,
   RangedDefenseDicePool,
   RangedFullDefenseDicePool,
-  ResistBodyDicePool,
-  ResistWillpowerDicePool,
+  ResistDamageDicePool,
 } from "#/components/system/damage/resistanceDicePools.tsx"
 import { WoundModLabel } from "#/components/system/damage/woundModLabel.tsx"
 import { DefenseCalculatorButton } from "#/components/system/defense/defenseCalculatorButton.tsx"
+import { DicePoolList } from "#/components/system/dicePool/dicePoolList.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
+import { ArmorRatingType } from "#/system/gear/armorData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/defense")({
@@ -74,94 +74,77 @@ function RouteComponent() {
         <EquippedArmorSection />
       </Grid>
 
-      <Grid container columns={{ sm: 1, md: 3 }} size={2} spacing={1}>
-        <Grid container columns={2} size={1}>
-          <Grid size={2}>
-            <Label label="Resist" variant="outlined" />
-          </Grid>
-
-          <Grid size={1}>
-            <ResistBodyDicePool />
-          </Grid>
-
-          <Grid size={1}>
-            <ResistWillpowerDicePool />
-          </Grid>
-        </Grid>
-
-        <Grid container columns={2} size={1}>
-          <Grid size={2}>
+      <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
+        <Grid size={2}>
+          <Stack>
             <Label label="Ranged Defense" variant="outlined" />
-          </Grid>
 
-          <Grid size={1}>
-            <RangedDefenseDicePool />
-          </Grid>
-
-          <Grid size={1}>
-            <RangedFullDefenseDicePool />
-          </Grid>
+            <DicePoolList>
+              <RangedDefenseDicePool />
+              <RangedFullDefenseDicePool />
+            </DicePoolList>
+          </Stack>
         </Grid>
 
-        <Grid container columns={2} size={1}>
-          <Grid size={2}>
+        <Grid size={2}>
+          <Stack>
             <Label label="Spell Defense" variant="outlined" />
-          </Grid>
 
-          <Grid size={1}>
-            <PhysicalSpellDefenseDicePool />
-          </Grid>
-
-          <Grid size={1}>
-            <ManaSpellDefenseDicePool />
-          </Grid>
+            <DicePoolList>
+              <PhysicalSpellDefenseDicePool />
+              <ManaSpellDefenseDicePool />
+            </DicePoolList>
+          </Stack>
         </Grid>
       </Grid>
 
-      <Grid container columns={{ sm: 1, md: 2 }} size={2} spacing={1}>
-        <Grid container columns={2} size={1}>
-          <Grid size={3}>
-            <Label label="Melee Defense" variant="outlined" />
-          </Grid>
+      <Grid size={2} spacing={1}>
+        <Stack>
+          <Label label="Melee Defense" variant="outlined" />
 
-          <Grid size={1}>
-            <MeleeBlockDicePool />
-          </Grid>
-
-          <Grid size={1}>
-            <MeleeFullDodgeDicePool />
-          </Grid>
-
-          <Grid size={1}>
+          <DicePoolList>
             <MeleeDodgeDicePool />
-          </Grid>
+            <MeleeFullDodgeDicePool />
+          </DicePoolList>
 
-          <Grid size={1}>
+          <DicePoolList>
+            <MeleeBlockDicePool />
             <MeleeFullBlockDicePool />
-          </Grid>
-        </Grid>
+          </DicePoolList>
+        </Stack>
+      </Grid>
 
-        <Grid container columns={2} size={1}>
-          <Grid size={2}>
-            <Label label="Melee Parry" variant="outlined" />
-          </Grid>
+      <Grid size={2} spacing={1}>
+        <Stack>
+          <Label label="Melee Parry" variant="outlined" />
 
           {[
             { skill: SkillKey.blades },
             { skill: SkillKey.clubs },
             { skill: SkillKey.unarmedCombat },
           ].map(({ skill }) => (
-            <Fragment key={skill}>
-              <Grid size={1}>
-                <MeleeParryDicePool weaponSkill={skill} />
-              </Grid>
-
-              <Grid size={1}>
-                <MeleeFullParryDicePool weaponSkill={skill} />
-              </Grid>
-            </Fragment>
+            <DicePoolList key={skill}>
+              <MeleeParryDicePool weaponSkill={skill} />
+              <MeleeFullParryDicePool weaponSkill={skill} />
+            </DicePoolList>
           ))}
-        </Grid>
+        </Stack>
+      </Grid>
+
+      <Grid size={2}>
+        <Stack>
+          <Label label="Resist" variant="outlined" />
+
+          <DicePoolList>
+            <ResistDamageDicePool type="P" armor={ArmorRatingType.ballistic} />
+            <ResistDamageDicePool type="P" armor={ArmorRatingType.impact} />
+          </DicePoolList>
+
+          <DicePoolList>
+            <ResistDamageDicePool type="S" armor={ArmorRatingType.ballistic} />
+            <ResistDamageDicePool type="S" armor={ArmorRatingType.impact} />
+          </DicePoolList>
+        </Stack>
       </Grid>
     </Stack>
   )

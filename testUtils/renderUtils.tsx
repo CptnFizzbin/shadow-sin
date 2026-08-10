@@ -53,7 +53,7 @@ export function renderWithProviders(
  * otherwise repeats for itself. Returns the store so callers can assert against it or seed a
  * reactive wrapper component keyed off it.
  */
-export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData>) {
+export function renderWithRunner(element: ReactElement, gear: Record<string, ItemData> = {}) {
   const runnerStore = new RunnerDataStore(runnerDataFactory((runner) => ({ ...runner, gear })))
   renderWithProviders(element, { runnerStore })
   return runnerStore

@@ -204,9 +204,7 @@ describe("WeaponAttackDialog", () => {
     })
 
     it("shows Net Hits and Total DV once the roll settles and defense hits are entered", async () => {
-      // Arrange: force every die to roll a 5 (a hit). Fake timers are enabled only after the
-      // dialog has opened — RTL's async queries poll via real timers, so faking them earlier
-      // would hang `openCalculator`'s `findByRole`.
+      // Arrange
       vi.spyOn(DiceRoller.prototype, "rollD6").mockReturnValue(5)
       const dialog = await openCalculator()
       goNext(dialog)
@@ -223,8 +221,7 @@ describe("WeaponAttackDialog", () => {
       })
       fireEvent.change(within(dialog).getByLabelText(/defense hits/i), { target: { value: "1" } })
 
-      // Assert: every die is a hit, so rolled hits === poolTotal; net hits = poolTotal - 1
-      // defense hit, and Total DV = base 4P + net hits.
+      // Assert
       const expectedNetHits = poolTotal - 1
       const netHitsCell = within(dialog).getByText("Net Hits").parentElement
       const totalDvCell = within(dialog).getByText("Total DV").parentElement

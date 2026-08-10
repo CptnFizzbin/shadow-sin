@@ -17,7 +17,10 @@ export function useAttrDiceGroup(attrKey: AttributeKey): DiceGroup {
   return { name: label, size: useAttrValue(attrKey), type: "attribute" }
 }
 
-export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
+export function useActiveSkillDiceGroup(
+  skillKey: SkillKey,
+  { defaulting = true }: { defaulting?: boolean } = {},
+): DiceGroup {
   const skillRating = useActiveSkillRating(skillKey)
   const groupId = [skillKey, useId()].join("-")
 
@@ -27,10 +30,29 @@ export function useActiveSkillDiceGroup(skillKey: SkillKey): DiceGroup {
     .reduce((sum, e) => sum + e.value, 0)
 
   if (skillRating >= 1) {
-    return { id: groupId, name: skillKey, size: skillRating + totalMod, type: "skill" }
+    return {
+      id: groupId,
+      name: skillKey,
+      size: skillRating + totalMod,
+      type: "skill",
+    }
   }
 
-  return { id: groupId, name: skillKey, size: totalMod, type: "skill" }
+  if (defaulting) {
+    return {
+      id: groupId,
+      name: `${skillKey} - Defaulting`,
+      size: -1,
+      type: "defaulting",
+    }
+  }
+
+  return {
+    id: groupId,
+    name: skillKey,
+    size: totalMod,
+    type: "skill",
+  }
 }
 
 export function useWoundDiceGroup(): DiceGroup | null {

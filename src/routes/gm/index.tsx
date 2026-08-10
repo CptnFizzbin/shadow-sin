@@ -10,9 +10,12 @@ export const Route = createFileRoute("/gm/")({
 
 function GmScreenRoute() {
   return (
-    <Stack sx={{ padding: 1 }}>
+    <Stack sx={{ gap: 1 }}>
       <LandingModeSwitch />
-      <GmToolList />
+
+      <Stack sx={{ paddingX: 1 }}>
+        <GmToolList />
+      </Stack>
     </Stack>
   )
 }

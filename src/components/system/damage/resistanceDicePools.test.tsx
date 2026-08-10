@@ -53,9 +53,10 @@ describe("MeleeDodgeDicePool", () => {
     // Arrange / Act
     const view = renderWithRunner(<MeleeDodgeDicePool />)
 
-    // Assert: DicePool renders each penalty group twice — once as an
-    // always-visible chip, once as its own line in the expanded ledger.
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
+    // Assert: one "Dodge - Defaulting" group, and DicePool renders each
+    // penalty group twice — once as an always-visible chip, once as its own
+    // line in the expanded ledger.
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(2)
     expect(view.getAllByText("-1")).toHaveLength(2)
   })
 
@@ -66,7 +67,7 @@ describe("MeleeDodgeDicePool", () => {
     })
 
     // Assert
-    expect(view.queryByText("Defaulting")).toBeNull()
+    expect(view.queryByText(/Defaulting/)).toBeNull()
   })
 })
 
@@ -75,9 +76,10 @@ describe("MeleeFullDodgeDicePool", () => {
     // Arrange / Act
     const view = renderWithRunner(<MeleeFullDodgeDicePool />)
 
-    // Assert: one defaulting group, shown twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
-    expect(view.getAllByText("-1")).toHaveLength(2)
+    // Assert: two separate "Dodge - Defaulting" groups (dodge is included
+    // twice), each shown twice (chip + ledger line).
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(4)
+    expect(view.getAllByText("-1")).toHaveLength(4)
   })
 
   it("shows no defaulting entry when dodge is trained", () => {
@@ -87,7 +89,7 @@ describe("MeleeFullDodgeDicePool", () => {
     })
 
     // Assert
-    expect(view.queryByText("Defaulting")).toBeNull()
+    expect(view.queryByText(/Defaulting/)).toBeNull()
   })
 })
 
@@ -97,7 +99,7 @@ describe("RangedFullDefenseDicePool", () => {
     const view = renderWithRunner(<RangedFullDefenseDicePool />)
 
     // Assert: one defaulting group, shown twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(2)
   })
 
   it("shows no defaulting entry when dodge is trained", () => {
@@ -107,7 +109,7 @@ describe("RangedFullDefenseDicePool", () => {
     })
 
     // Assert
-    expect(view.queryByText("Defaulting")).toBeNull()
+    expect(view.queryByText(/Defaulting/)).toBeNull()
   })
 })
 
@@ -118,7 +120,7 @@ describe("MeleeFullParryDicePool", () => {
 
     // Assert: two defaulting groups (weapon skill + dodge), each shown twice
     // (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(4)
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(4)
   })
 
   it("shows one defaulting entry when only dodge is untrained", () => {
@@ -131,7 +133,7 @@ describe("MeleeFullParryDicePool", () => {
     )
 
     // Assert: one defaulting group, shown twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(2)
   })
 
   it("shows no defaulting entries when both weapon skill and dodge are trained", () => {
@@ -147,7 +149,7 @@ describe("MeleeFullParryDicePool", () => {
     )
 
     // Assert
-    expect(view.queryByText("Defaulting")).toBeNull()
+    expect(view.queryByText(/Defaulting/)).toBeNull()
   })
 })
 
@@ -158,7 +160,7 @@ describe("MeleeFullBlockDicePool", () => {
 
     // Assert: two defaulting groups (unarmed combat + dodge), each shown
     // twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(4)
+    expect(view.getAllByText(/Defaulting/)).toHaveLength(4)
   })
 
   it("shows no defaulting entries when both skills are trained", () => {
@@ -171,6 +173,6 @@ describe("MeleeFullBlockDicePool", () => {
     })
 
     // Assert
-    expect(view.queryByText("Defaulting")).toBeNull()
+    expect(view.queryByText(/Defaulting/)).toBeNull()
   })
 })

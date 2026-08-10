@@ -1,30 +1,49 @@
 import type { FC } from "react"
 
 import { DicePool } from "#/components/system/dicePool/dicePool.tsx"
+import { useArmorDiceGroup } from "#/lib/hooks/items/types/armor/useArmorDiceGroup.tsx"
 import {
   useActiveSkillDiceGroup,
   useAttrDiceGroup,
-  useDefaultingDiceGroup,
   useEncumbranceDiceGroup,
   useWoundDiceGroup,
 } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
+import type { ArmorRatingType } from "#/system/gear/armorData.ts"
 import { SkillKey } from "#/system/skills/skillKey.ts"
 
-export const ResistBodyDicePool = () => {
+export const ResistDamageDicePool: FC<{ type: "P" | "S", armor: ArmorRatingType }> = ({ type, armor }) => {
   return (
     <DicePool
-      name="Resist Damage"
-      groups={[useAttrDiceGroup(AttributeKey.body)]}
+      name={`Resist ${armor} (${type})`}
+      groups={[
+        useAttrDiceGroup(type === "P" ? AttributeKey.body : AttributeKey.willpower),
+        useArmorDiceGroup(armor),
+      ]}
     />
   )
 }
 
-export const ResistWillpowerDicePool = () => {
+export const ResistDirectManaSpellDicePool = () => {
   return (
     <DicePool
-      name="Resist Damage"
-      groups={[useAttrDiceGroup(AttributeKey.willpower)]}
+      name="Resist Mana Spell"
+      groups={[
+        useAttrDiceGroup(AttributeKey.willpower),
+        useWoundDiceGroup(),
+      ]}
+    />
+  )
+}
+
+export const ResistDirectPhysicalSpellDicePool = () => {
+  return (
+    <DicePool
+      name="Resist Physical Spell"
+      groups={[
+        useAttrDiceGroup(AttributeKey.body),
+        useWoundDiceGroup(),
+      ]}
     />
   )
 }
@@ -46,11 +65,10 @@ export const RangedFullDefenseDicePool = () => {
   return (
     <DicePool
       name="Ranged Full Defense"
+      includeWound
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
-        useActiveSkillDiceGroup(SkillKey.dodge),
-        useDefaultingDiceGroup(SkillKey.dodge),
-        useWoundDiceGroup(),
+        useActiveSkillDiceGroup(SkillKey.dodge, { defaulting: true }),
         useEncumbranceDiceGroup(),
       ]}
     />
@@ -66,7 +84,6 @@ export const MeleeParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(weaponSkill),
-        useDefaultingDiceGroup(weaponSkill),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
@@ -81,7 +98,6 @@ export const MeleeBlockDicePool = () => {
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useDefaultingDiceGroup(SkillKey.unarmedCombat),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
@@ -96,7 +112,6 @@ export const MeleeDodgeDicePool = () => {
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.dodge),
-        useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
@@ -113,9 +128,7 @@ export const MeleeFullParryDicePool: FC<{ weaponSkill: SkillKey }> = ({
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(weaponSkill),
-        useDefaultingDiceGroup(weaponSkill),
         useActiveSkillDiceGroup(SkillKey.dodge),
-        useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
@@ -130,9 +143,7 @@ export const MeleeFullBlockDicePool = () => {
       groups={[
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.unarmedCombat),
-        useDefaultingDiceGroup(SkillKey.unarmedCombat),
         useActiveSkillDiceGroup(SkillKey.dodge),
-        useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}
@@ -148,7 +159,6 @@ export const MeleeFullDodgeDicePool = () => {
         useAttrDiceGroup(AttributeKey.reaction),
         useActiveSkillDiceGroup(SkillKey.dodge),
         useActiveSkillDiceGroup(SkillKey.dodge),
-        useDefaultingDiceGroup(SkillKey.dodge),
         useWoundDiceGroup(),
         useEncumbranceDiceGroup(),
       ]}

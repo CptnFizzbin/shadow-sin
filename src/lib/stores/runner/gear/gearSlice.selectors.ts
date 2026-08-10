@@ -120,7 +120,16 @@ function makeSelectByIdOfType(type: ItemType) {
   )
 }
 
-export const armor = { selectById: makeSelectByIdOfType(ItemType.armor) }
+export const armor = {
+  selectById: makeSelectByIdOfType(ItemType.armor),
+
+  selectEquipped: createSelector([
+    selectGearOfType(ItemType.armor),
+  ], (allArmor) => {
+    return Object.values(allArmor).filter((item) => item.equipped)
+  }),
+}
+
 export const implants = { selectById: makeSelectByIdOfType(ItemType.implant) }
 export const firearms = { selectById: makeSelectByIdOfType(ItemType.firearm) }
 export const software = { selectById: makeSelectByIdOfType(ItemType.software) }

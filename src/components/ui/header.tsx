@@ -1,10 +1,9 @@
-import DarkModeIcon from "@mui/icons-material/DarkMode"
-import LightModeIcon from "@mui/icons-material/LightMode"
-import AppBar from "@mui/material/AppBar"
 import IconButton from "@mui/material/IconButton"
-import Toolbar from "@mui/material/Toolbar"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { useColorScheme } from "@mui/material/styles"
+import { RiHome2Line, RiMoonLine, RiSunLine } from "@remixicon/react"
 import { Link } from "@tanstack/react-router"
 import type { FC } from "react"
 
@@ -16,20 +15,20 @@ export const Header: FC = () => {
   }
 
   return (
-    <AppBar role="banner" position="sticky" sx={{ backgroundColor: "background.paper" }}>
-      <Toolbar>
-        <Typography
-          variant="h1"
-          component={Link}
-          to="/"
-          sx={{ textDecoration: "none", color: "text.primary", flexGrow: 1, fontSize: 32 }}
-        >
+    <Paper role="banner">
+      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
+        <IconButton component={Link} to="/">
+          <RiHome2Line />
+        </IconButton>
+
+        <Typography variant="h1" sx={{ fontSize: 24 }}>
           ShadowSIN
         </Typography>
-        <IconButton onClick={handleToggleColorMode} color="primary" aria-label="toggle color mode">
-          {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+
+        <IconButton onClick={handleToggleColorMode} aria-label="toggle color mode" sx={{ color: "text.primary" }}>
+          {mode === "light" ? <RiMoonLine /> : <RiSunLine />}
         </IconButton>
-      </Toolbar>
-    </AppBar>
+      </Stack>
+    </Paper>
   )
 }
