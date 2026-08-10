@@ -411,10 +411,9 @@ owned. Currently opt-in per `ItemType`: only weapons and armor forms expose the 
 `docs/features/0012-item-stashing.md` plans to make Equip a free, per-item opt-in on every
 `ItemType` instead (dropping the per-`ItemType` forcing) as part of unifying it with **Stash**
 into one action menu.
-`isEquipped(item)` in `src/system/items/itemUtils.ts` is deprecated — read `item.equipped`
-directly. It's always trustworthy on its own: the gear reducer forces it to `false` the moment
-**Stash** turns on and restores it automatically on un-stash (see **Stash**), so no compound check
-against `stashed` is needed at the read site.
+Read `item.equipped` directly — it's always trustworthy on its own: the gear reducer forces it to
+`false` the moment **Stash** turns on and restores it automatically on un-stash (see **Stash**), so
+no compound check against `stashed` is needed at the read site.
 
 **Stashed**:
 `ItemData.stashed` — whether an item is with the Runner at all right now ("left at the
@@ -430,9 +429,8 @@ unequipped, and not stashed, e.g. a spare pistol in a holster)
 
 **Available**:
 The inverse of **Stashed** — `!item.stashed`, i.e. an item the Runner currently has on hand,
-regardless of whether it's **Equipped**. `isAvailable(item)` in `src/system/items/itemUtils.ts`
-is deprecated — read `!item.stashed` directly. Used to exclude stashed gear from listings/logic
-that only care about carried items, e.g. `selectAvailable`
+regardless of whether it's **Equipped**. Read `!item.stashed` directly. Used to exclude stashed
+gear from listings/logic that only care about carried items, e.g. `selectAvailable`
 (`src/lib/stores/runner/gear/gearSlice.selectors.ts`) and the **License Check** lane filters
 (`src/components/runner/licenseCheck/licenseCheckLanes.ts`).
 _Avoid_: confusing with **Availability** (the Item legality/rating term below) — unrelated
