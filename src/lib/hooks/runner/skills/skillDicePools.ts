@@ -1,4 +1,3 @@
-import { useActiveSkillRating } from "#/components/runner/runnerUtils.ts"
 import type { DicePoolData } from "#/components/system/dicePool/dicePoolData.tsx"
 import { createDicePool } from "#/components/system/dicePool/dicePoolData.tsx"
 import { useActiveSkillDiceGroup, useAttrDiceGroup, useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
@@ -14,11 +13,8 @@ export const useActiveSkillDicePool = (props: {
   attrOverride?: AttributeKey
 }): DicePoolData => {
   const { skillKey, specialization, attrOverride } = props
-  const { attr: defaultAttr, defaultable } = skillList[skillKey]
+  const { attr: defaultAttr } = skillList[skillKey]
   const attr = attrOverride ?? defaultAttr
-
-  const skillRating = useActiveSkillRating(skillKey)
-  const isDefaulted = skillRating === 0 && (defaultable ?? true)
 
   let id = `skill.active.${skillKey}`
   let name = skillKey.toString()
@@ -37,7 +33,6 @@ export const useActiveSkillDicePool = (props: {
   return createDicePool(id, name, [
     useActiveSkillDiceGroup(skillKey),
     useAttrDiceGroup(attr),
-    isDefaulted ? { name: "Defaulting", size: -1, color: "warning.main" } : null,
     specialization ? { name: specialization, size: 2 + totalSpecMod } : null,
     useWoundDiceGroup(),
   ])
