@@ -649,6 +649,12 @@ than one (e.g. a wound modifier is both a Damage concept and a Modifier concept)
 Selector — an Alias is a second name, never a second implementation.
 _Avoid_: duplicate selector, parallel selector
 
+**Selector Catalog**:
+The namespaced menu of Selectors offered to a caller, grouped by the domain each one conceptually belongs to
+(mirroring the Runner's own data domains). A caller picks the specific Selector it needs from the Catalog
+rather than importing one directly.
+_Avoid_: selector registry, selector map
+
 ### Infrastructure
 
 **RunnerMeta**:

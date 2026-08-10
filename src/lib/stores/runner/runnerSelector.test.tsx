@@ -10,7 +10,8 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 import { makeRunnerDataWrapper } from "#testUtils/renderUtils.tsx"
 
 import { setDamage } from "./damage/damageSlice.actions.ts"
-import { Modifier, useRunnerSelector } from "./runnerSelector.ts"
+import { useRunnerSelector } from "./runnerSelector.ts"
+import { Modifier } from "./selectors/modifiers.catalog.ts"
 
 describe("useRunnerSelector", () => {
   describe("attribute namespace", () => {
