@@ -23,13 +23,13 @@ export const LicenseItemDetails: FC<LicenseItemDetailsProps> = ({ license, onRem
   const sin = useRunnerStoreSelector(Selectors.gear.selectById(license.parentId as UUID)) as SinData | undefined
 
   const removeLicense = () => {
-    dispatch(Actions.gear.licenses.destroy(license.id))
+    dispatch(Actions.item.licenses.destroy(license.id))
     onRemoved?.()
   }
 
   const handleEdit = async () => {
     const saved = await licenseFormDialog.open({ sin, license })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

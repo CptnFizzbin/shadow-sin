@@ -33,8 +33,6 @@ export const Actions = {
   damage: damageActions,
   edge: edgeActions,
   gameState: { matrix: matrixActions },
-  /** @deprecated Use `Actions.item` instead */
-  gear: gearActions,
   item: gearActions,
   initiative: initiativeActions,
   karma: karmaActions,

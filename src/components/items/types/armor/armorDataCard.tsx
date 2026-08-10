@@ -18,8 +18,8 @@ export const ArmorDataCard: FC<ArmorDataCardProps> = ({ armor, onOpen, onEdit })
   const mods = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(armor.id))
   const hasMods = Object.keys(mods).length > 0
 
-  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...armor, equipped: !armor.equipped }))
-  const removeArmor = () => dispatch(Actions.gear.removeItem({ id: armor.id, removeChildren: true }))
+  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...armor, equipped: !armor.equipped }))
+  const removeArmor = () => dispatch(Actions.item.removeItem({ id: armor.id, removeChildren: true }))
 
   return (
     <ItemCard item={armor} onOpen={onOpen} onEdit={onEdit} onRemove={removeArmor}>

@@ -21,7 +21,7 @@ export const ArmorSectionContent: FC = () => {
 
   const handleEditArmor = async (armor?: ArmorData) => {
     const saved = await armorFormDialog.open({ armor })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

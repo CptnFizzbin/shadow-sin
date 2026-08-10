@@ -73,7 +73,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
 
     if (isEditMode && credstick) {
       const updatedCredstick: CredstickData = { ...credstick, name: credstickName, balance: clampedBalance }
-      dispatch(Actions.gear.setItem(updatedCredstick))
+      dispatch(Actions.item.setItem(updatedCredstick))
     } else {
       const credstickItemData: Omit<CredstickData, "id" | "childIds"> = {
         name: credstickName,
@@ -82,7 +82,7 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
         balance: clampedBalance,
       }
       const [newCredstick] = createItem<CredstickData>(credstickItemData)
-      dispatch(Actions.gear.setItem(newCredstick))
+      dispatch(Actions.item.setItem(newCredstick))
       if (isCertified) {
         dispatch(Actions.nuyen.withdrawNuyen(CredstickPurchaseCost + clampedBalance))
       }
@@ -95,14 +95,14 @@ const CredstickDialog: FC<CredstickDialogProps> = ({
   const handleWithdraw = () => {
     if (!credstick) return
     dispatch(Actions.nuyen.depositNuyen(credstick.balance))
-    dispatch(Actions.gear.removeItem({ id: credstick.id }))
+    dispatch(Actions.item.removeItem({ id: credstick.id }))
     setShowWithdrawConfirm(false)
     ctrl.close()
   }
 
   const handleRemove = () => {
     if (!credstick) return
-    dispatch(Actions.gear.removeItem({ id: credstick.id }))
+    dispatch(Actions.item.removeItem({ id: credstick.id }))
     setShowRemoveConfirm(false)
     ctrl.close()
   }

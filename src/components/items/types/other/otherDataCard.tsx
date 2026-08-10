@@ -17,7 +17,7 @@ export const OtherDataCard: FC<OtherDataCardProps> = ({ item, onOpen, onEdit }) 
   const subItems = useRunnerStoreSelector(Selectors.gear.selectChildrenOf(item.id))
   const hasSubItems = Object.keys(subItems).length > 0
 
-  const removeItem = () => dispatch(Actions.gear.removeItem({ id: item.id, removeChildren: true }))
+  const removeItem = () => dispatch(Actions.item.removeItem({ id: item.id, removeChildren: true }))
 
   return (
     <ItemCard item={item} onOpen={onOpen} onEdit={onEdit} onRemove={removeItem}>

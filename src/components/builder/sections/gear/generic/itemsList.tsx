@@ -24,7 +24,7 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
   const itemFormDialog = useItemFormDialog()
 
   const saveItem = (item: ItemData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const topLevelItems = items.filter((item) => !item.parentId)
 
@@ -47,7 +47,7 @@ export const ItemsList: FC<ItemsListProps> = ({ itemLabel = "Item", itemType, it
           key={item.id}
           item={item}
           onOpen={() => handleEdit(item)}
-          onRemove={() => dispatch(Actions.gear.removeItem({ id: item.id }))}
+          onRemove={() => dispatch(Actions.item.removeItem({ id: item.id }))}
         />
       ))}
 

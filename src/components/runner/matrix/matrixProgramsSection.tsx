@@ -19,7 +19,7 @@ export const MatrixProgramsSection: FC = () => {
 
   const handleEdit = async (program?: ProgramData) => {
     const saved = await programFormDialog.open({ program })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

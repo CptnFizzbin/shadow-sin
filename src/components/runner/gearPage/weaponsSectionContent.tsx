@@ -19,7 +19,7 @@ export const WeaponsSectionContent: FC = () => {
 
   const handleEditWeapon = async (weapon: WeaponData) => {
     const saved = await weaponFormDialog.open({ weapon })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

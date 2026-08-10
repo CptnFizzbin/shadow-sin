@@ -39,7 +39,7 @@ export const AddCoveredItemDialog: FC<AddCoveredItemDialogProps> = ({ ctrl, lice
 
   const handleAdd = () => {
     if (!selectedItemId) return
-    dispatch(Actions.gear.licenses.setLicenseForItem({
+    dispatch(Actions.item.licenses.setLicenseForItem({
       itemId: selectedItemId as ItemData["id"],
       licenseId: license.id,
     }))

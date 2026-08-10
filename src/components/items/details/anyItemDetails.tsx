@@ -65,7 +65,7 @@ export const AnyItemDetails: FC<AnyItemDetailsProps> = ({ item, onRemove, onRemo
 
   const handleEditGeneric = async () => {
     const saved = await itemFormDialog.open({ item, itemType: item.itemType })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   switch (item.itemType) {

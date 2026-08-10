@@ -34,18 +34,18 @@ export const DeviceItemDetails: FC<DeviceItemDetailsProps> = ({
       : (device.customDeviceType ?? "Device")
 
   const removeDevice = () => {
-    dispatch(Actions.gear.removeItem({ id: device.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: device.id, removeChildren: true }))
     onRemoved?.()
   }
 
   const handleEdit = async () => {
     const saved = await deviceFormDialog.open({ device })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   const handleAddProgram = async () => {
     const saved = await programFormDialog.open({ parentId: device.id })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

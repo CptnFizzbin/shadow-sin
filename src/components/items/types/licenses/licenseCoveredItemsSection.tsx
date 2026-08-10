@@ -28,7 +28,7 @@ export const LicenseCoveredItemsSection: FC<LicenseCoveredItemsSectionProps> = (
   const addCoveredItemDialog = useAddCoveredItemDialog()
 
   const handleRemove = (itemId: ItemData["id"]) => {
-    dispatch(Actions.gear.licenses.clearLicenseForItem({ itemId }))
+    dispatch(Actions.item.licenses.clearLicenseForItem({ itemId }))
   }
 
   return (

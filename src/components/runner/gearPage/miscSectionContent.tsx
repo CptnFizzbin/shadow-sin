@@ -22,7 +22,7 @@ export const MiscSectionContent: FC = () => {
   const rootItems = items.filter((item) => !item.parentId)
 
   const saveItem = (item: ItemData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const handleEditItem = async (item?: ItemData) => {
     const saved = await itemFormDialog.open({ item, itemType: ItemType.other, label: "Item" })
