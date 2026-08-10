@@ -19,13 +19,13 @@ export const ProgramItemDetails: FC<ProgramItemDetailsProps> = ({ program, onRem
   const programFormDialog = useProgramFormDialog()
 
   const removeProgram = () => {
-    dispatch(Actions.gear.programs.destroy(program.id))
+    dispatch(Actions.item.programs.destroy(program.id))
     onRemoved?.()
   }
 
   const handleEdit = async () => {
     const saved = await programFormDialog.open({ program })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

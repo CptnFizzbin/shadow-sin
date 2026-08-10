@@ -24,7 +24,7 @@ export const SinsAndLicensesSection: FC = () => {
   const sinFormDialog = useSinFormDialog()
 
   const saveItem = (item: SinData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const handleRemoveSin = async (sin: SinData, hasLicenses: boolean) => {
     if (hasLicenses) {
@@ -35,7 +35,7 @@ export const SinsAndLicensesSection: FC = () => {
       })
       if (!confirmed) return
     }
-    dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: sin.id, removeChildren: true }))
   }
 
   const handleEditSin = async (sin?: SinData) => {

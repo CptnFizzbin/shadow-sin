@@ -20,7 +20,7 @@ export const LicensesSectionContent: FC = () => {
   const sinFormDialog = useSinFormDialog()
 
   const saveItem = (item: SinData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const handleEditSin = async (sin?: SinData) => {
     const saved = await sinFormDialog.open({ sin })

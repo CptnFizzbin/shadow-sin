@@ -29,7 +29,7 @@ const GearFormLicenseSectionContent: FC<{ item: ItemData }> = ({ item }) => {
   if (!eligible && !license) return null
 
   const handleRemove = () => {
-    dispatch(Actions.gear.licenses.clearLicenseForItem({ itemId: item.id }))
+    dispatch(Actions.item.licenses.clearLicenseForItem({ itemId: item.id }))
   }
 
   const openAssignDialog = () => assignLicenseDialog.open({ item: { ...item, licenseId: license?.id } })

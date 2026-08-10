@@ -38,12 +38,12 @@ export const VehicleItemDetails: FC<VehicleItemDetailsProps> = ({ vehicle, onRem
 
   const handleEdit = async () => {
     const saved = await vehicleFormDialog.open({ vehicle })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   const handleAddMod = async () => {
     const saved = await modFormDialog.open({ label: "Equipment" })
-    if (saved) dispatch(Actions.gear.addItem({ ...saved, parentId: vehicle.id }))
+    if (saved) dispatch(Actions.item.addItem({ ...saved, parentId: vehicle.id }))
   }
 
   return (

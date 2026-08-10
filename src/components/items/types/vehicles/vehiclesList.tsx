@@ -25,7 +25,7 @@ export const VehiclesList: FC<VehiclesListProps> = ({ vehicleCategory }) => {
   const vehicleFormDialog = useVehicleFormDialog()
 
   const saveItem = (item: ItemData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const vehicles = useGearFilter(
     (item): item is VehicleData =>

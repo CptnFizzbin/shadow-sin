@@ -20,7 +20,7 @@ export const DevicesSectionContent: FC = () => {
   const deviceFormDialog = useDeviceFormDialog()
 
   const saveItem = (item: DeviceData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const handleEditDevice = async (device?: DeviceData) => {
     const saved = await deviceFormDialog.open({ device })

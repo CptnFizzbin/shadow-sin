@@ -50,7 +50,7 @@ function ItemDetailsRoute() {
         <AnyItemDetails
           item={item}
           onRemove={() => {
-            dispatch(Actions.gear.removeItem({ id: item.id }))
+            dispatch(Actions.item.removeItem({ id: item.id }))
             handleBack()
           }}
           onRemoved={handleBack}

@@ -31,21 +31,21 @@ export const WeaponItemDetails: FC<WeaponItemDetailsProps> = ({
   const weaponFormDialog = useWeaponFormDialog()
   const accessoryFormDialog = useItemFormDialog()
 
-  const toggleEquipped = () => dispatch(Actions.gear.setItem({ ...weapon, equipped: !weapon.equipped }))
+  const toggleEquipped = () => dispatch(Actions.item.setItem({ ...weapon, equipped: !weapon.equipped }))
 
   const removeWeapon = () => {
-    dispatch(Actions.gear.removeItem({ id: weapon.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: weapon.id, removeChildren: true }))
     onRemoved?.()
   }
 
   const handleEdit = async () => {
     const saved = await weaponFormDialog.open({ weapon })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   const handleAddAccessory = async () => {
     const saved = await accessoryFormDialog.open({ label: "Accessory" })
-    if (saved) dispatch(Actions.gear.addItem({ ...saved, parentId: weapon.id }))
+    if (saved) dispatch(Actions.item.addItem({ ...saved, parentId: weapon.id }))
   }
 
   return (

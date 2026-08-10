@@ -203,18 +203,18 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
     if (!saved) return
 
     if (isNewItem(saved)) {
-      const action = Actions.gear.addItem(saved)
+      const action = Actions.item.addItem(saved)
       dispatch(action)
       setSelectedSinId(action.payload.id)
     } else {
-      dispatch(Actions.gear.setItem(saved))
+      dispatch(Actions.item.setItem(saved))
       setSelectedSinId(saved.id)
     }
   }
 
   const handleAssignExisting = () => {
     if (!selectedLicenseId) return
-    dispatch(Actions.gear.licenses.setLicenseForItem({
+    dispatch(Actions.item.licenses.setLicenseForItem({
       itemId: item.id,
       licenseId: selectedLicenseId as LicenseData["id"],
     }))
@@ -231,9 +231,9 @@ export const AssignLicenseDialog: FC<AssignLicenseDialogProps> = ({ ctrl, item }
       cost,
       parentId: selectedSinId as LicenseData["parentId"],
     }
-    const addLicenseAction = Actions.gear.licenses.create(licenseDraft)
+    const addLicenseAction = Actions.item.licenses.create(licenseDraft)
     dispatch(addLicenseAction)
-    dispatch(Actions.gear.licenses.setLicenseForItem({
+    dispatch(Actions.item.licenses.setLicenseForItem({
       itemId: item.id,
       licenseId: addLicenseAction.payload.id,
     }))

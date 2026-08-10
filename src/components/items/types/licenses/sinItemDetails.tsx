@@ -37,18 +37,18 @@ export const SinItemDetails: FC<SinItemDetailsProps> = ({ sin, onRemoved, onOpen
       })
       if (!confirmed) return
     }
-    dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: sin.id, removeChildren: true }))
     onRemoved?.()
   }
 
   const handleEdit = async () => {
     const saved = await sinFormDialog.open({ sin })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   const handleAddLicense = async () => {
     const saved = await licenseFormDialog.open({ sin })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

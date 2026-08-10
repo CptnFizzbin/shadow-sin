@@ -14,7 +14,7 @@ interface ProgramDataCardProps {
 export const ProgramDataCard: FC<ProgramDataCardProps> = ({ program, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
 
-  const removeProgram = () => dispatch(Actions.gear.programs.destroy(program.id))
+  const removeProgram = () => dispatch(Actions.item.programs.destroy(program.id))
 
   return (
     <ItemCard item={program} onOpen={onOpen} onEdit={onEdit} onRemove={removeProgram}>

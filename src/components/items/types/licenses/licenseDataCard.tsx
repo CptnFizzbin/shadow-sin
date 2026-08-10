@@ -14,7 +14,7 @@ interface LicenseDataCardProps {
 export const LicenseDataCard: FC<LicenseDataCardProps> = ({ license, onOpen, onEdit }) => {
   const dispatch = useRunnerStoreDispatch()
 
-  const removeLicense = () => dispatch(Actions.gear.licenses.destroy(license.id))
+  const removeLicense = () => dispatch(Actions.item.licenses.destroy(license.id))
 
   return <ItemCard item={license} onOpen={onOpen} onEdit={onEdit} onRemove={removeLicense} />
 }

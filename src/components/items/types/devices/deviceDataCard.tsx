@@ -22,7 +22,7 @@ export const DeviceDataCard: FC<DeviceDataCardProps> = ({ device, onOpen, onEdit
       ? (device.deviceModel ?? "Commlink")
       : (device.customDeviceType ?? "Device")
 
-  const removeDevice = () => dispatch(Actions.gear.removeItem({ id: device.id, removeChildren: true }))
+  const removeDevice = () => dispatch(Actions.item.removeItem({ id: device.id, removeChildren: true }))
 
   return (
     <ItemCard item={device} onOpen={onOpen} onEdit={onEdit} onRemove={removeDevice}>

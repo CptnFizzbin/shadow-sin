@@ -42,7 +42,7 @@ export const ImplantDataCard: FC<ImplantDataCardProps> = ({ implant, onOpen, onE
       body: "Are you sure you want to remove this implant? This action cannot be undone.",
       confirmLabel: "Remove Implant",
     })
-    if (result) dispatch(Actions.gear.removeItem({ id: implant.id, removeChildren: true }))
+    if (result) dispatch(Actions.item.removeItem({ id: implant.id, removeChildren: true }))
   }
 
   return (

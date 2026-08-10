@@ -48,19 +48,19 @@ export const ImplantItemDetails: FC<ImplantItemDetailsProps> = ({ implant, onRem
       confirmLabel: "Remove Implant",
     })
     if (result) {
-      dispatch(Actions.gear.removeItem({ id: implant.id, removeChildren: true }))
+      dispatch(Actions.item.removeItem({ id: implant.id, removeChildren: true }))
       onRemoved?.()
     }
   }
 
   const handleEdit = async () => {
     const saved = await implantFormDialog.open({ implant })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   const handleAddAccessory = async () => {
     const saved = await implantFormDialog.open({ parentId: implant.id })
-    if (saved) dispatch(isNewItem(saved) ? Actions.gear.addItem(saved) : Actions.gear.setItem(saved))
+    if (saved) dispatch(isNewItem(saved) ? Actions.item.addItem(saved) : Actions.item.setItem(saved))
   }
 
   return (

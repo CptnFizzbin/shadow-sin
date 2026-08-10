@@ -21,7 +21,7 @@ export const WeaponsList: FC = () => {
   const accessoryFormDialog = useItemFormDialog()
 
   const saveItem = (item: ItemData) =>
-    dispatch(isNewItem(item) ? Actions.gear.addItem(item) : Actions.gear.setItem(item))
+    dispatch(isNewItem(item) ? Actions.item.addItem(item) : Actions.item.setItem(item))
 
   const topLevelWeapons = weapons.filter((weapon) => !weapon.parentId)
 

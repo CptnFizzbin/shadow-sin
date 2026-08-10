@@ -28,7 +28,7 @@ export const SinDataCard: FC<SinDataCardProps> = ({ sin, onOpen, onEdit }) => {
       })
       if (!confirmed) return
     }
-    dispatch(Actions.gear.removeItem({ id: sin.id, removeChildren: true }))
+    dispatch(Actions.item.removeItem({ id: sin.id, removeChildren: true }))
   }
 
   return (
