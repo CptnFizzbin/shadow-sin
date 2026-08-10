@@ -300,6 +300,58 @@ describe("DefenseCalculatorDialogContent", () => {
     })
   })
 
+  describe("Direct vs Indirect combat spells", () => {
+    it("defaults to Direct: resist step reuses the Defense roll, with no separate attribute/armor test", () => {
+      renderDialog((sheet) => {
+        sheet.skills.activeSkills = [{ name: SkillKey.counterspelling, rating: 4 }]
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      fireEvent.click(screen.getByRole("checkbox", { name: /counterspelling/i }))
+      goNext()
+      goNext()
+      goNext()
+
+      expect(screen.getByText(/defense roll to resist damage/i)).toBeTruthy()
+      const poolContainer = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+      expect(poolContainer.textContent).toContain(SkillKey.counterspelling)
+      expect(poolContainer.textContent).not.toContain("Armor")
+    })
+
+    it("Indirect: defense uses Reaction + Counterspelling, resist uses Body + half Impact armor", () => {
+      renderDialog((sheet) => {
+        const jacket: ArmorData = {
+          id: "00000000-0000-0000-0000-000000000001",
+          name: "Test Jacket",
+          itemType: ItemType.armor,
+          equipped: true,
+          ballistic: 8,
+          impact: 6,
+        }
+        sheet.gear[jacket.id] = jacket
+      })
+
+      fireEvent.click(screen.getByRole("button", { name: /spell/i }))
+      fireEvent.click(screen.getByRole("button", { name: /^indirect$/i }))
+
+      // Damage Type (Physical/Mana) only matters for Direct spells.
+      expect(screen.queryByRole("button", { name: /physical \(body\)/i })).toBeNull()
+
+      goNext()
+      goNext()
+
+      const defensePool = screen.getByText(/^Defense$/).parentElement!.parentElement!
+      expect(defensePool.textContent).toContain("REA")
+
+      goNext()
+
+      expect(screen.queryByText(/defense roll to resist damage/i)).toBeNull()
+      const resistPool = screen.getByText(/^Resist Damage$/).parentElement!.parentElement!
+      expect(resistPool.textContent).toContain("BOD")
+      expect(resistPool.textContent).toContain("Armor (Impact, half)3")
+    })
+  })
+
   describe("Resist Damage step", () => {
     it("includes the worn effective armor value for a physical attack", () => {
       renderDialog((sheet) => {

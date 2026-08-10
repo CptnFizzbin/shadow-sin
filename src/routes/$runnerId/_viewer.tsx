@@ -4,6 +4,7 @@ import ButtonGroup from "@mui/material/ButtonGroup"
 import { RiDice6Line } from "@remixicon/react"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 
+import { RunnerHeaderSummary } from "#/components/runner/header/runnerHeaderSummary.tsx"
 import { RunnerNav } from "#/components/runner/nav/runnerNav.tsx"
 import { QuickAccessButton } from "#/components/runner/quickPanel/quickAccessButton.tsx"
 import { SwipeSurface } from "#/components/ui/swipeSurface.tsx"
@@ -26,6 +27,7 @@ function ViewerLayout() {
 
   return (
     <>
+      <RunnerHeaderSummary />
       <RunnerNav />
 
       <SwipeSurface onSwipeRightToLeft={nextPage} onSwipeLeftToRight={prevPage}>

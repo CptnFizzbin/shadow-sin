@@ -130,9 +130,9 @@ describe("ContactsList", () => {
     expect(within(dialog).getAllByText("Connection")).toHaveLength(2)
 
     // Assert: Player pool is Charisma + Etiquette + Loyalty
-    expect(within(dialog).getByText("Legwork Test")).toBeDefined()
-    expect(within(dialog).getByText("CHA")).toBeDefined()
-    expect(within(dialog).getByText("Etiquette")).toBeDefined()
-    expect(within(dialog).getByText("Loyalty")).toBeDefined()
+    expect(within(dialog).getAllByText("Legwork Test")).toHaveLength(2)
+    expect(within(dialog).getAllByText("CHA")).toHaveLength(2)
+    expect(within(dialog).getAllByText("Etiquette - Defaulting")).toHaveLength(2)
+    expect(within(dialog).getAllByText("Loyalty")).toHaveLength(2)
   })
 })

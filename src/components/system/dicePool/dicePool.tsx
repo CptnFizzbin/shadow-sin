@@ -10,6 +10,7 @@ import { useContext, useState } from "react"
 
 import { DieFace } from "#/components/system/dice/dieFace.tsx"
 import { DiceTrayContext } from "#/lib/contexts/dice/diceTrayContext.ts"
+import { useWoundDiceGroup } from "#/lib/hooks/system/dicePool/useDiceGroup.ts"
 
 import type { DiceGroup, DiceGroupList, DiceGroupType } from "./diceGroup.tsx"
 import { isDiceGroup } from "./diceGroup.tsx"
@@ -32,13 +33,19 @@ function getGroupColor(group: DiceGroup): string {
 interface DicePoolProps {
   name: string
   groups: DiceGroupList
+  includeWound?: boolean
 }
 
-export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
+export const DicePool: FC<DicePoolProps> = ({ name, groups, includeWound = true }) => {
   const [isOpen, setIsOpen] = useState(false)
   const diceTrayApi = useContext(DiceTrayContext)
+  const woundDiceGroup = useWoundDiceGroup()
 
-  const diceGroups = groups.flat().filter(isDiceGroup)
+  const diceGroups = [
+    groups,
+    includeWound && woundDiceGroup,
+  ].flat().filter(isDiceGroup)
+
   const total = getPoolSize(diceGroups)
   const penalties = diceGroups.filter((group) => group.size < 0)
 
@@ -54,6 +61,9 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
         border: "1px solid",
         borderColor: "divider",
         padding: 1,
+        flexBasis: 1,
+        flexGrow: 1,
+        minWidth: 250,
       }}
     >
       <Stack direction="row" sx={{ alignItems: "center" }}>
@@ -87,7 +97,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
       </Stack>
 
       <Collapse in={!isOpen}>
-        <Stack sx={{ paddingTop: 1 }}>
+        <Stack sx={{ paddingTop: 1 }} className="overview">
           <Stack direction="row" sx={{ flexWrap: "wrap", gap: 0.5, color: "text.secondary" }}>
             {Array.from({ length: total }, (_, index) => (
               <DieFace key={index} value={null} size={18} />
@@ -134,7 +144,7 @@ export const DicePool: FC<DicePoolProps> = ({ name, groups }) => {
       </Collapse>
 
       <Collapse in={isOpen}>
-        <Stack sx={{ gap: 0.5, paddingTop: 1 }} onClick={(event) => event.stopPropagation()}>
+        <Stack sx={{ gap: 0.5, paddingTop: 1 }} className="ledger">
           {diceGroups.map((group) => {
             const groupColor = getGroupColor(group)
 

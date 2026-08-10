@@ -55,8 +55,8 @@ describe("MeleeDodgeDicePool", () => {
 
     // Assert: DicePool renders each penalty group twice — once as an
     // always-visible chip, once as its own line in the expanded ledger.
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
-    expect(view.getAllByText("-1")).toHaveLength(2)
+    expect(view.getAllByText("Defaulting")).toHaveLength(4)
+    expect(view.getAllByText("-1")).toHaveLength(4)
   })
 
   it("shows no defaulting entry when dodge is trained", () => {
@@ -76,8 +76,8 @@ describe("MeleeFullDodgeDicePool", () => {
     const view = renderWithRunner(<MeleeFullDodgeDicePool />)
 
     // Assert: one defaulting group, shown twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
-    expect(view.getAllByText("-1")).toHaveLength(2)
+    expect(view.getAllByText("Defaulting")).toHaveLength(4)
+    expect(view.getAllByText("-1")).toHaveLength(4)
   })
 
   it("shows no defaulting entry when dodge is trained", () => {
@@ -97,7 +97,7 @@ describe("RangedFullDefenseDicePool", () => {
     const view = renderWithRunner(<RangedFullDefenseDicePool />)
 
     // Assert: one defaulting group, shown twice (chip + ledger line).
-    expect(view.getAllByText("Defaulting")).toHaveLength(2)
+    expect(view.getAllByText("Defaulting")).toHaveLength(4)
   })
 
   it("shows no defaulting entry when dodge is trained", () => {

@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
 import Stack from "@mui/material/Stack"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 
@@ -28,21 +29,24 @@ function IndexRoute() {
   const { runners, errors } = Route.useLoaderData()
 
   return (
-    <Stack sx={{ padding: 1 }}>
+    <Stack sx={{ gap: 1 }}>
       <LandingModeSwitch />
 
-      <Stack direction="row">
-        <Button
-          variant="outlined"
-          onClick={() => {
-            navigate({ to: "/new" })
-          }}
-        >
-          Create New
-        </Button>
-        <ImportRunnerButton onImported={() => router.invalidate({ sync: true })} />
+      <Stack sx={{ paddingX: 1 }}>
+        <ButtonGroup fullWidth>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate({ to: "/new" })
+            }}
+          >
+            Create New
+          </Button>
+          <ImportRunnerButton onImported={() => router.invalidate({ sync: true })} />
+        </ButtonGroup>
+
+        <RunnerRosterList runners={runners} errors={errors} />
       </Stack>
-      <RunnerRosterList runners={runners} errors={errors} />
     </Stack>
   )
 }

@@ -8,15 +8,22 @@ import { ItemType } from "#/system/itemType.ts"
 import type { Rating } from "#/system/rating.ts"
 import { SourceDataSchema } from "#/system/sourceData.ts"
 
-export interface ArmorData extends ItemData {
+export enum ArmorRatingType {
+  ballistic = "ballistic",
+  impact = "impact",
+}
+
+export interface ArmorRating {
+  [ArmorRatingType.ballistic]: Rating
+  [ArmorRatingType.impact]: Rating
+}
+
+export interface ArmorData extends ItemData, ArmorRating {
   itemType: ItemType.armor
-  /**
-   * Narrower than `EntityData`'s inherited `Rating<string>` — Armor's real stats are
-   * `ballistic`/`impact`, so this never needed the string sentinel other `Rating` consumers do.
-   */
+
+  /** @deprecated use {@link ballistic} or {@link impact} instead */
   rating?: Rating
-  ballistic: number
-  impact: number
+
   damage?: {
     ballistic: number
     impact: number

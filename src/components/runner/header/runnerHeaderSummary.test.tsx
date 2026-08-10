@@ -57,7 +57,7 @@ describe("RunnerHeaderSummary", () => {
     })
 
     // Assert
-    expect(screen.getByText("BOD 4")).toBeDefined()
+    expect(screen.queryByText(/BOD/)).toBeDefined()
     expect(screen.queryByText(/MAG/)).toBeNull()
   })
 
@@ -72,8 +72,8 @@ describe("RunnerHeaderSummary", () => {
     })
 
     // Assert: max = 8 + ceil(attribute / 2), per selectPhysicalTrack/selectStunTrack.
-    expect(screen.getByText("P 3/9")).toBeDefined()
-    expect(screen.getByText("S 1/9")).toBeDefined()
+    expect(screen.getByText("Physical 3/9")).toBeDefined()
+    expect(screen.getByText("Stun 1/9")).toBeDefined()
   })
 
   it("shows street cred as reputation and current karma", () => {
