@@ -1,6 +1,6 @@
 import type { RunnerData } from "#/system/runnerData.ts"
 
-import { selectWoundMod } from "./damage.catalog.ts"
+import { selectWoundMod } from "./damage.selectors.ts"
 
 /**
  * A modifier reachable from more than one catalog namespace — proof-of-concept for the "one

@@ -2,10 +2,8 @@ import type { AttributesContextValue } from "#/lib/contexts/runner/attributesPro
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
-export interface AttributeFacets {
-  baseValue: number
-  info: AttributeInfo
-}
+import type { AttributeFacets } from "./attribute.selectors.ts"
+import { selectAttributeFacets } from "./attribute.selectors.ts"
 
 export interface RunnerAttributeCatalog {
   (key: AttributeKey): AttributeFacets
@@ -13,10 +11,6 @@ export interface RunnerAttributeCatalog {
 }
 
 export function buildAttributeCatalog(attributesContext: AttributesContextValue): RunnerAttributeCatalog {
-  const catalog = (key: AttributeKey): AttributeFacets => ({
-    baseValue: attributesContext.values[key] ?? 0,
-    info: attributesContext.infos[key],
-  })
-
+  const catalog = (key: AttributeKey): AttributeFacets => selectAttributeFacets(attributesContext, key)
   return Object.assign(catalog, { infos: attributesContext.infos })
 }
