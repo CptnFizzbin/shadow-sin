@@ -60,23 +60,6 @@ export function getActiveSkillCap(sheet: RunnerData, skill: SkillKey): number {
   return hasAptitudeFor(sheet, skill) ? APTITUDE_ACTIVE_SKILL_CAP : BASE_ACTIVE_SKILL_CAP
 }
 
-export interface ActiveSkillCapFacets {
-  cap: number
-  hasAptitude: boolean
-}
-
-/**
- * Returns a lookup for the karma-spend rating cap and Aptitude status of any given Active Skill,
- * for call sites that need the answer for many skills in one render (e.g. a skill list) without
- * subscribing to the whole `RunnerData` sheet.
- */
-export function selectActiveSkillCapLookup(sheet: RunnerData): (skill: SkillKey) => ActiveSkillCapFacets {
-  return (skill) => ({
-    cap: getActiveSkillCap(sheet, skill),
-    hasAptitude: hasAptitudeFor(sheet, skill),
-  })
-}
-
 export function getSkillGroupCap(): number {
   return BASE_SKILL_GROUP_CAP
 }
@@ -109,13 +92,4 @@ export function getAttributeCap(sheet: RunnerData, attr: AttributeKey): number {
   const metatype = metatypes[sheet.biology.metatype]
   const baseCap = metatype.attributes[attr].max
   return hasExceptionalAttributeFor(sheet, attr) ? baseCap + 1 : baseCap
-}
-
-/**
- * Returns a lookup for the karma-spend rating cap of any given attribute, for call sites that
- * need the answer for many attributes in one render (e.g. an attribute list) without subscribing
- * to the whole `RunnerData` sheet.
- */
-export function selectAttributeCapLookup(sheet: RunnerData): (attr: AttributeKey) => number {
-  return (attr) => getAttributeCap(sheet, attr)
 }

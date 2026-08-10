@@ -12,9 +12,9 @@ import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { useActiveAttributes } from "#/lib/hooks/runner/attributes/useActiveAttributes.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
-import { selectAttributeCapLookup } from "#/system/karma/improvements/improvementCaps.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isAttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -25,7 +25,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const attributeCap = useRunnerStoreSelector(selectAttributeCapLookup)
+  const attributeCap = useRunnerSelector(({ karmaCaps }) => karmaCaps.attribute)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)

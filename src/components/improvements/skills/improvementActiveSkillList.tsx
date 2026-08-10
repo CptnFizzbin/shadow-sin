@@ -17,8 +17,8 @@ import {
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectActiveSkillCapLookup } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
@@ -47,7 +47,7 @@ interface SkillRow {
 
 export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const activeSkillCap = useRunnerStoreSelector(selectActiveSkillCapLookup)
+  const activeSkillCap = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill)
   const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
   const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
