@@ -14,15 +14,11 @@ export enum Modifier {
   woundMod = "woundMod",
 }
 
-export interface ModifierFacets {
+interface ModifierFacets {
   value: number
 }
 
-export interface RunnerModifiersCatalog {
-  (modifier: Modifier): ModifierFacets
-}
-
-export function buildModifiersCatalog(state: RunnerData): RunnerModifiersCatalog {
+export function buildModifiersCatalog(state: RunnerData) {
   return (modifier: Modifier): ModifierFacets => {
     switch (modifier) {
       case Modifier.woundMod:

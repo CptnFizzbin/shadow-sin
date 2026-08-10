@@ -1,25 +1,23 @@
 import { useAttributesContext } from "#/lib/contexts/runner/attributesProvider.tsx"
 
 import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
-import type { RunnerAttributeCatalog } from "./selectors/attribute.catalog.ts"
 import { buildAttributeCatalog } from "./selectors/attribute.catalog.ts"
-import type { RunnerDamageCatalog } from "./selectors/damage.catalog.ts"
 import { buildDamageCatalog } from "./selectors/damage.catalog.ts"
-import type { RunnerItemCatalog } from "./selectors/item.catalog.ts"
 import { buildItemCatalog } from "./selectors/item.catalog.ts"
-import type { RunnerModifiersCatalog } from "./selectors/modifiers.catalog.ts"
 import { buildModifiersCatalog } from "./selectors/modifiers.catalog.ts"
 
 /**
  * The namespaced menu `useRunnerSelector`'s callback picks from. Mirrors the existing
  * `Selectors.<domain>` split — each entry is either callable by key (returning a facet object)
- * or a bare property for a value that doesn't need one.
+ * or a bare property for a value that doesn't need one. Each namespace's shape is inferred from
+ * its `build*Catalog` factory rather than hand-declared, so there's exactly one place that
+ * defines it.
  */
 export interface RunnerSelectorCatalog {
-  attribute: RunnerAttributeCatalog
-  damage: RunnerDamageCatalog
-  item: RunnerItemCatalog
-  modifiers: RunnerModifiersCatalog
+  attribute: ReturnType<typeof buildAttributeCatalog>
+  damage: ReturnType<typeof buildDamageCatalog>
+  item: ReturnType<typeof buildItemCatalog>
+  modifiers: ReturnType<typeof buildModifiersCatalog>
 }
 
 /**
