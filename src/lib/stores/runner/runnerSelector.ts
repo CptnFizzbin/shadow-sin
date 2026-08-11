@@ -13,10 +13,10 @@ import { skillsCatalog } from "./selectors/skills.catalog.ts"
 
 /**
  * The namespaced menu `useRunnerSelector`'s callback picks from. Mirrors the existing
- * `Selectors.<domain>` split — each entry is a `Selector<RunnerData, TData>` (or a factory
- * returning one, for parameterized lookups like `item(id)` or `karmaCaps.activeSkill`). Each
- * namespace's shape is inferred from its catalog module rather than hand-declared, so there's
- * exactly one place that defines it.
+ * `Selectors.<domain>` split — each entry is a `Selector<RunnerData, TData>`, or a scoped-lookup
+ * factory returning one (`byId`/`byType`/`forAttr`/`forTrack`/`forSkill`/`forModifier`, plus an
+ * `all` sibling covering every key at once). Each namespace's shape is inferred from its catalog
+ * module rather than hand-declared, so there's exactly one place that defines it.
  */
 export interface RunnerSelectorCatalog {
   attributes: typeof runnerAttributesCatalog
@@ -52,10 +52,10 @@ const runnerSelectorCatalog: RunnerSelectorCatalog = {
  *
  * @example
  * const system = useRunnerSelector(({ attributes }) => attributes.forAttr(AttributeKey.system).value)
- * const physicalDamage = useRunnerSelector(({ damage }) => damage.track(DamageTrackKey.physical))
+ * const physicalDamage = useRunnerSelector(({ damage }) => damage.forTrack(DamageTrackKey.physical))
  * const woundMod = useRunnerSelector(({ damage }) => damage.woundMod)
  * const effectiveArmor = useRunnerSelector(({ item }) => item.armor.effective)
- * const activeSkillCap = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill) // (skill) => Facets
+ * const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all) // Record<SkillKey, Facets>
  */
 export function useRunnerSelector<T>(
   picker: (catalog: RunnerSelectorCatalog) => Selector<RunnerData, T>,

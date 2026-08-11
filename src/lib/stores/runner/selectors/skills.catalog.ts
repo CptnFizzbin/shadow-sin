@@ -1,5 +1,7 @@
-import { selectNativeLanguageSkill } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
+import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
 
 export const skillsCatalog = {
-  nativeLanguage: selectNativeLanguageSkill,
+  nativeLanguage: (state: RunnerData): LanguageSkillData | undefined =>
+    state.skills.languageSkills.find((skill) => skill.rating === "native"),
 }

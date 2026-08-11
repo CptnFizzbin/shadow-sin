@@ -47,7 +47,7 @@ interface SkillRow {
 
 export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const activeSkillCap = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill)
+  const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all)
   const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
   const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
@@ -66,7 +66,7 @@ export const ImprovementActiveSkillList: FC = () => {
       name: skillKey,
       rating: group.rating,
       isGrouped: true,
-      ...activeSkillCap(skillKey),
+      ...activeSkillCaps[skillKey],
     })),
   )
 
@@ -74,7 +74,7 @@ export const ImprovementActiveSkillList: FC = () => {
     name: skill.name,
     rating: skill.rating,
     isGrouped: false,
-    ...activeSkillCap(skill.name),
+    ...activeSkillCaps[skill.name],
   }))
 
   const allSkillRows: SkillRow[] = [...standaloneRows, ...groupedSkillRows]

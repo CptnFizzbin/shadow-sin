@@ -16,7 +16,13 @@ const trackSelectors: Record<NonMatrixDamageTrackKey, Selector<RunnerData, Damag
   [DamageTrackKey.stun]: selectStunTrack,
 }
 
+const selectAllTracks: Selector<RunnerData, Record<NonMatrixDamageTrackKey, DamageTrackInfo>> = (state) => ({
+  [DamageTrackKey.physical]: selectPhysicalTrack(state),
+  [DamageTrackKey.stun]: selectStunTrack(state),
+})
+
 export const damageCatalog = {
   woundMod: selectWoundMod,
-  track: (track: NonMatrixDamageTrackKey): Selector<RunnerData, DamageTrackInfo> => trackSelectors[track],
+  all: selectAllTracks,
+  forTrack: (track: NonMatrixDamageTrackKey): Selector<RunnerData, DamageTrackInfo> => trackSelectors[track],
 }

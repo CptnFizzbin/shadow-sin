@@ -25,7 +25,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementAttributeList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const attributeCap = useRunnerSelector(({ karmaCaps }) => karmaCaps.attribute)
+  const attributeCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.attribute.all)
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
@@ -44,7 +44,7 @@ export const ImprovementAttributeList: FC = () => {
               (entry) => entry.attr === attrInfo.attr,
             ) ?? null
             // Use the karma-aware cap helper so Exceptional Attribute raises the ceiling.
-            const cap = attributeCap(attrInfo.attr)
+            const cap = attributeCaps[attrInfo.attr]
             const isAtMax = attrInfo.value >= cap
             const canAfford = queuedEntry !== null || karmaCost <= remainingKarma
 

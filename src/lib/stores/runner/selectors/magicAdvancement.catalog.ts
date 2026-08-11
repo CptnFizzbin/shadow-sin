@@ -1,6 +1,6 @@
-import { selectInitiateGrade, selectSubmersionGrade } from "#/lib/stores/runner/karma/karmaSlice.selectors.ts"
+import type { RunnerData } from "#/system/runnerData.ts"
 
 export const magicAdvancementCatalog = {
-  initiateGrade: selectInitiateGrade,
-  submersionGrade: selectSubmersionGrade,
+  initiateGrade: (state: RunnerData): number => state.initiateGrade,
+  submersionGrade: (state: RunnerData): number => state.submersionGrade,
 }

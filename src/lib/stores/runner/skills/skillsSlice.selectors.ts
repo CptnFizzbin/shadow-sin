@@ -26,14 +26,6 @@ export function selectLanguageSkills(state: RunnerData): LanguageSkillData[] {
   return state.skills.languageSkills
 }
 
-/**
- * @deprecated Use `useRunnerSelector(({ skills }) => skills.nativeLanguage)` instead — see
- * `docs/adr/0013-unify-runner-state-access.md`.
- */
-export function selectNativeLanguageSkill(state: RunnerData): LanguageSkillData | undefined {
-  return state.skills.languageSkills.find((skill) => skill.rating === "native")
-}
-
 export function selectSkillValue(skillName: SkillKey) {
   return (state: RunnerData): number => {
     const skillInfo = skillList[skillName]

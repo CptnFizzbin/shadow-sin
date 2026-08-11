@@ -1,6 +1,5 @@
 import { useAppForm } from "#/integrations/tanstackForm/useAppForm.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectNativeLanguageSkill } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData"
 
 interface LanguageSkillFormOptions {
@@ -18,7 +17,7 @@ export const useLanguageSkillForm = ({
   skill,
   onSubmit,
 }: LanguageSkillFormOptions) => {
-  const nativeLanguage = useRunnerStoreSelector(selectNativeLanguageSkill)
+  const nativeLanguage = useRunnerSelector(({ skills }) => skills.nativeLanguage)
 
   return useAppForm({
     defaultValues: {

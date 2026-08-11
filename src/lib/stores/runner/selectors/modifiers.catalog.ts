@@ -20,9 +20,10 @@ interface ModifierFacets {
   value: number
 }
 
-export const modifiersCatalog = (modifier: Modifier): Selector<RunnerData, ModifierFacets> => {
-  switch (modifier) {
-    case Modifier.woundMod:
-      return (state) => ({ value: selectWoundMod(state) })
-  }
+const modifierSelectors: Record<Modifier, Selector<RunnerData, ModifierFacets>> = {
+  [Modifier.woundMod]: (state) => ({ value: selectWoundMod(state) }),
+}
+
+export const modifiersCatalog = {
+  forModifier: (modifier: Modifier): Selector<RunnerData, ModifierFacets> => modifierSelectors[modifier],
 }

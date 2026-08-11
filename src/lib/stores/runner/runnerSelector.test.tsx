@@ -23,7 +23,7 @@ describe("useRunnerSelector — reactivity", () => {
     )
 
     const { result } = renderHook(
-      () => useRunnerSelector(({ damage }) => damage.track(DamageTrackKey.physical)),
+      () => useRunnerSelector(({ damage }) => damage.forTrack(DamageTrackKey.physical)),
       { wrapper: Wrapper },
     )
     expect(result.current.current).toBe(0)
@@ -39,22 +39,38 @@ describe("useRunnerSelector — reactivity", () => {
 })
 
 describe("useRunnerSelector — picker returns a Selector, not a precomputed value", () => {
-  it("applies RunnerData to a curried catalog entry itself, not to its (already-invoked) result", () => {
+  it("resolves an `all` lookup covering every key in one Selector application", () => {
     // Arrange
     const store = new RunnerDataStore(runnerDataFactory())
     const Wrapper: FC<PropsWithChildren> = ({ children }) => (
       <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
     )
 
-    // Act — the picker returns `karmaCaps.activeSkill` unapplied; the hook applies RunnerData once
+    // Act
     const { result } = renderHook(
-      () => useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill),
+      () => useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all),
       { wrapper: Wrapper },
     )
 
-    // Assert — the caller gets back a per-skill lookup function, no RunnerData argument in sight
-    expect(typeof result.current).toBe("function")
-    expect(result.current(SkillKey.pistols)).toEqual({ cap: 6, hasAptitude: false })
+    // Assert
+    expect(result.current[SkillKey.pistols]).toEqual({ cap: 6, hasAptitude: false })
+  })
+
+  it("resolves a `forSkill` scoped lookup to a single Selector, picked by field", () => {
+    // Arrange
+    const store = new RunnerDataStore(runnerDataFactory())
+    const Wrapper: FC<PropsWithChildren> = ({ children }) => (
+      <RunnerStoreProvider store={store}>{children}</RunnerStoreProvider>
+    )
+
+    // Act — the picker calls `forSkill` inside itself and returns one of its Selector fields
+    const { result } = renderHook(
+      () => useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.forSkill(SkillKey.pistols).cap),
+      { wrapper: Wrapper },
+    )
+
+    // Assert
+    expect(result.current).toBe(6)
   })
 
   it("re-derives the applied value on every render without a stale closure over an old state", () => {
