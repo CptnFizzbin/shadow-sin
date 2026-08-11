@@ -4,11 +4,14 @@ import type { RunnerData } from "#/system/runnerData.ts"
 
 import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
 import { runnerAttributesCatalog } from "./selectors/attribute.catalog.ts"
+import { biologyCatalog } from "./selectors/biology.catalog.ts"
+import { complexFormsCatalog } from "./selectors/complexForms.catalog.ts"
 import { damageCatalog } from "./selectors/damage.catalog.ts"
 import { itemCatalog } from "./selectors/item.catalog.ts"
 import { karmaCapsCatalog } from "./selectors/karmaCaps.catalog.ts"
 import { magicAdvancementCatalog } from "./selectors/magicAdvancement.catalog.ts"
 import { modifiersCatalog } from "./selectors/modifiers.catalog.ts"
+import { qualitiesCatalog } from "./selectors/qualities.catalog.ts"
 import { skillsCatalog } from "./selectors/skills.catalog.ts"
 
 /**
@@ -20,11 +23,14 @@ import { skillsCatalog } from "./selectors/skills.catalog.ts"
  */
 export interface RunnerSelectorCatalog {
   attributes: typeof runnerAttributesCatalog
+  biology: typeof biologyCatalog
+  complexForms: typeof complexFormsCatalog
   damage: typeof damageCatalog
   item: typeof itemCatalog
   karmaCaps: typeof karmaCapsCatalog
   magicAdvancement: typeof magicAdvancementCatalog
   modifiers: typeof modifiersCatalog
+  qualities: typeof qualitiesCatalog
   skills: typeof skillsCatalog
 }
 
@@ -33,11 +39,14 @@ export interface RunnerSelectorCatalog {
 // mechanism" in docs/adr/0013-unify-runner-state-access.md.
 const runnerSelectorCatalog: RunnerSelectorCatalog = {
   attributes: runnerAttributesCatalog,
+  biology: biologyCatalog,
+  complexForms: complexFormsCatalog,
   damage: damageCatalog,
   item: itemCatalog,
   karmaCaps: karmaCapsCatalog,
   magicAdvancement: magicAdvancementCatalog,
   modifiers: modifiersCatalog,
+  qualities: qualitiesCatalog,
   skills: skillsCatalog,
 }
 
@@ -56,6 +65,8 @@ const runnerSelectorCatalog: RunnerSelectorCatalog = {
  * const woundMod = useRunnerSelector(({ damage }) => damage.woundMod)
  * const effectiveArmor = useRunnerSelector(({ item }) => item.armor.effective)
  * const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all) // Record<SkillKey, Facets>
+ * const qualities = useRunnerSelector(({ qualities }) => qualities.all)
+ * const specialization = useRunnerSelector(({ skills }) => skills.forSkill(SkillKey.pistols).specialization)
  */
 export function useRunnerSelector<T>(
   picker: (catalog: RunnerSelectorCatalog) => Selector<RunnerData, T>,

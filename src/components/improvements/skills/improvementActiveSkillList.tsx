@@ -48,8 +48,8 @@ interface SkillRow {
 export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
   const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all)
-  const activeSkills = useRunnerStoreSelector(Selectors.skills.selectActiveSkills)
-  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
+  const activeSkills = useRunnerSelector(({ skills }) => skills.activeSkills)
+  const skillGroups = useRunnerSelector(({ skills }) => skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

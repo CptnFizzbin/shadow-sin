@@ -20,6 +20,7 @@ import {
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillGroupFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { getSkillGroupCap } from "#/system/karma/improvements/improvementCaps.ts"
 import type {
@@ -39,7 +40,7 @@ import { getImprovementCost } from "#/system/karma/improvements/improvementUtils
 
 export const ImprovementSkillGroupList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const skillGroups = useRunnerStoreSelector(Selectors.skills.selectSkillGroups)
+  const skillGroups = useRunnerSelector(({ skills }) => skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

@@ -43,7 +43,7 @@ export const ImprovementAttributeList: FC = () => {
             const queuedEntry = queuedAttrIncreases.find(
               (entry) => entry.attr === attrInfo.attr,
             ) ?? null
-            // Use the karma-aware cap helper so Exceptional Attribute raises the ceiling.
+            // attributeCaps accounts for Exceptional Attribute raising the ceiling — see karmaCaps.catalog.ts.
             const cap = attributeCaps[attrInfo.attr]
             const isAtMax = attrInfo.value >= cap
             const canAfford = queuedEntry !== null || karmaCost <= remainingKarma
