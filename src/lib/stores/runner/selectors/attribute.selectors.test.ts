@@ -14,7 +14,7 @@ const makeContext = (overrides?: Partial<AttributesContextValue>): AttributesCon
 })
 
 describe("selectAllAttrs", () => {
-  it("derives min/max/augMax from infos and base/value from values", () => {
+  it("derives min/max/augMax from infos and baseValue/value from values", () => {
     // Arrange
     const context = makeContext()
 
@@ -26,7 +26,7 @@ describe("selectAllAttrs", () => {
       min: 1,
       max: 6,
       augMax: 7,
-      base: 4,
+      baseValue: 4,
       value: 4,
     })
   })
@@ -52,7 +52,7 @@ describe("selectAllAttrs", () => {
     const attrs = selectAllAttrs(context)
 
     // Assert
-    expect(attrs[AttributeKey.body].base).toBe(0)
+    expect(attrs[AttributeKey.body].baseValue).toBe(0)
     expect(attrs[AttributeKey.body].value).toBe(0)
   })
 })
@@ -66,6 +66,6 @@ describe("selectAttr", () => {
     const facets = selectAttr(context, AttributeKey.body)
 
     // Assert
-    expect(facets).toEqual({ min: 1, max: 6, augMax: 7, base: 4, value: 4 })
+    expect(facets).toEqual({ min: 1, max: 6, augMax: 7, baseValue: 4, value: 4 })
   })
 })

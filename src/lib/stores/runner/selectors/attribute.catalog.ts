@@ -17,6 +17,7 @@ export const attrSelectorsCatalog = {
     min: (ctx: AttributesContextValue): number => selectAttr(ctx, key).min,
     max: (ctx: AttributesContextValue): number => selectAttr(ctx, key).max,
     augMax: (ctx: AttributesContextValue): number => selectAttr(ctx, key).augMax,
+    baseValue: (ctx: AttributesContextValue): number => selectAttr(ctx, key).baseValue,
     value: (ctx: AttributesContextValue): number => selectAttr(ctx, key).value,
   }),
 }
@@ -42,6 +43,8 @@ export const runnerAttributesCatalog = {
     min: (state: RunnerData): number => attrSelectorsCatalog.forAttr(key).min(toAttributesContextValue(state)),
     max: (state: RunnerData): number => attrSelectorsCatalog.forAttr(key).max(toAttributesContextValue(state)),
     augMax: (state: RunnerData): number => attrSelectorsCatalog.forAttr(key).augMax(toAttributesContextValue(state)),
+    baseValue: (state: RunnerData): number =>
+      attrSelectorsCatalog.forAttr(key).baseValue(toAttributesContextValue(state)),
     value: (state: RunnerData): number => attrSelectorsCatalog.forAttr(key).value(toAttributesContextValue(state)),
   }),
 }

@@ -53,9 +53,10 @@ export const useAttributesContext = (): AttributesContextValue => {
 }
 
 /**
- * @deprecated Use `useRunnerSelector(({ attributes }) => attributes.forAttr(attr).value)` for the
- * Runner's own attributes, or `useAttrSelector(({ forAttr }) => forAttr(attr).value)` for the
- * nearest entity — see `docs/adr/0013-unify-runner-state-access.md`.
+ * @deprecated Reads the raw stored value, before augments — use
+ * `useRunnerSelector(({ attributes }) => attributes.forAttr(attr).baseValue)` for the Runner's own
+ * attributes, or `useAttrSelector(({ forAttr }) => forAttr(attr).baseValue)` for the nearest
+ * entity — see `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useAttrValue = (attr: AttributeKey): number => {
   return useAttributesContext().values[attr] ?? 0
@@ -64,8 +65,8 @@ export const useAttrValue = (attr: AttributeKey): number => {
 /**
  * @deprecated Use `useRunnerSelector(({ attributes }) => attributes.forAttr(attr))` for the
  * Runner's own attributes, or `useAttrSelector(({ forAttr }) => forAttr(attr))` for the nearest
- * entity — each field (`min`/`max`/`augMax`/`value`) is read individually rather than as one
- * bundled `AttributeInfo` object. See `docs/adr/0013-unify-runner-state-access.md`.
+ * entity — each field (`min`/`max`/`augMax`/`baseValue`/`value`) is read individually rather than
+ * as one bundled `AttributeInfo` object. See `docs/adr/0013-unify-runner-state-access.md`.
  */
 export const useAttrInfo = (attr: AttributeKey): AttributeInfo => {
   return useAttributesContext().infos[attr]

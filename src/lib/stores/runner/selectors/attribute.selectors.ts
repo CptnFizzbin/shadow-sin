@@ -13,19 +13,24 @@ export const selectAllAttrs = createAttrSelector([
   return Object.fromEntries(
     ObjectUtils.keys(infos).map((key) => {
       // `values[key]` is the only stored value today — there's no separate augmentation-tracking
-      // system yet, so `base` and `value` are identical for now. They stay distinct fields so call
-      // sites can already say which one they mean, ahead of that system landing.
+      // system yet, so `baseValue` and `value` are identical for now. They stay distinct fields so
+      // call sites can already say which one they mean, ahead of that system landing.
       const storedValue = values[key] ?? 0
 
       return [key, {
+        /** The minimum value allowed for the attribute (e.g. when editing a character). */
         min: infos[key].min,
+
+        /** The maximum natural value allowed for the attribute, before augments. */
         max: infos[key].max,
+
+        /** The maximum augmented value allowed for the attribute, after cyberware and drugs. */
         augMax: infos[key].augMax ?? infos[key].max,
 
-        /** The base value of the attribute, before any augments or effects */
-        base: storedValue,
+        /** The current value of the attribute, before augments. */
+        baseValue: storedValue,
 
-        /** The effective value of the attribute, after augmentations and other effects */
+        /** The effective current value of the attribute, after augments and drugs. */
         value: storedValue,
       }]
     }),
