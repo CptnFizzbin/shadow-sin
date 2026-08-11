@@ -1,8 +1,8 @@
 import { useAttributesContext } from "#/lib/contexts/runner/attributesProvider.tsx"
 
 import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
-import { buildAttributeCatalog } from "./selectors/attribute.catalog.ts"
-import { buildDamageCatalog } from "./selectors/damage.catalog.ts"
+import { attrSelectorsCatalog } from "./selectors/attribute.catalog.ts"
+import { damageSelectorsCatalog } from "./selectors/damage.catalog.ts"
 import { buildItemCatalog } from "./selectors/item.catalog.ts"
 import { buildKarmaCapsCatalog } from "./selectors/karmaCaps.catalog.ts"
 import { buildMagicAdvancementCatalog } from "./selectors/magicAdvancement.catalog.ts"
@@ -17,8 +17,8 @@ import { buildSkillsCatalog } from "./selectors/skills.catalog.ts"
  * defines it.
  */
 export interface RunnerSelectorCatalog {
-  attribute: ReturnType<typeof buildAttributeCatalog>
-  damage: ReturnType<typeof buildDamageCatalog>
+  attributes: ReturnType<typeof attrSelectorsCatalog>
+  damage: ReturnType<typeof damageSelectorsCatalog>
   item: ReturnType<typeof buildItemCatalog>
   karmaCaps: ReturnType<typeof buildKarmaCapsCatalog>
   magicAdvancement: ReturnType<typeof buildMagicAdvancementCatalog>
@@ -50,8 +50,8 @@ export function useRunnerSelector<T>(
 
   return useRunnerStoreSelector(
     (state) => picker({
-      attribute: buildAttributeCatalog(attributesContext),
-      damage: buildDamageCatalog(state),
+      attributes: attrSelectorsCatalog(attributesContext),
+      damage: damageSelectorsCatalog(),
       item: buildItemCatalog(state),
       karmaCaps: buildKarmaCapsCatalog(state),
       magicAdvancement: buildMagicAdvancementCatalog(state),
