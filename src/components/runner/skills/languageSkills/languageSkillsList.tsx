@@ -4,11 +4,12 @@ import { useState } from "react"
 
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectLanguageSkills } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 
 import { LanguageSkillListItem } from "./languageSkillsListItem.tsx"
 
 export const LanguageSkillsList: FC = () => {
-  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
+  const languageSkills = useRunnerStoreSelector(selectLanguageSkills)
   const [searchQuery, setSearchQuery] = useState("")
 
   const visibleSkills = sort(languageSkills)

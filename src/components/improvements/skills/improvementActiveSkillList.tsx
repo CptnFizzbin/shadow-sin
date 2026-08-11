@@ -17,11 +17,8 @@ import {
 } from "#/components/runner/skills/activeSkills/dialogs/activeSkillFormDialog.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import {
-  getActiveSkillCap,
-  hasAptitudeFor,
-} from "#/system/karma/improvements/improvementCaps.ts"
 import type {
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
@@ -50,9 +47,9 @@ interface SkillRow {
 
 export const ImprovementActiveSkillList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const sheet = useRunnerStoreSelector((s) => s)
-  const activeSkills = useRunnerStoreSelector((s) => s.skills.activeSkills)
-  const skillGroups = useRunnerStoreSelector((s) => s.skills.skillGroups)
+  const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all)
+  const activeSkills = useRunnerSelector(({ skills }) => skills.activeSkills)
+  const skillGroups = useRunnerSelector(({ skills }) => skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
@@ -69,8 +66,7 @@ export const ImprovementActiveSkillList: FC = () => {
       name: skillKey,
       rating: group.rating,
       isGrouped: true,
-      cap: getActiveSkillCap(sheet, skillKey),
-      hasAptitude: hasAptitudeFor(sheet, skillKey),
+      ...activeSkillCaps[skillKey],
     })),
   )
 
@@ -78,8 +74,7 @@ export const ImprovementActiveSkillList: FC = () => {
     name: skill.name,
     rating: skill.rating,
     isGrouped: false,
-    cap: getActiveSkillCap(sheet, skill.name),
-    hasAptitude: hasAptitudeFor(sheet, skill.name),
+    ...activeSkillCaps[skill.name],
   }))
 
   const allSkillRows: SkillRow[] = [...standaloneRows, ...groupedSkillRows]

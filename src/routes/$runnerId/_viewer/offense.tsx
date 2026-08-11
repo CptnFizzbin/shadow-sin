@@ -7,6 +7,7 @@ import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsV
 import { CombatActionsCheatSheetButton } from "#/components/system/combat/combatActionsCheatSheetButton.tsx"
 import { InitiativeSection } from "#/components/system/initiative/initiativeSection.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
+import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/offense")({
 })
 
 function RouteComponent() {
-  const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
+  const awakening = useRunnerStoreSelector(selectAwakening)
   const canCastSpells =
     awakening === AwakeningType.Magician || awakening === AwakeningType.MysticAdept
 

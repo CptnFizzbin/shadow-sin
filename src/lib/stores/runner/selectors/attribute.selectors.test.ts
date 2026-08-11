@@ -3,34 +3,69 @@ import { describe, expect, it } from "vitest"
 import type { AttributesContextValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { AttributeKey } from "#/system/attributeKey.ts"
 
-import { selectAttributeFacets } from "./attribute.selectors.ts"
+import { selectAllAttrs, selectAttr } from "./attribute.selectors.ts"
 
-describe("selectAttributeFacets", () => {
-  it("reads the base value and info for a set attribute", () => {
+const makeContext = (overrides?: Partial<AttributesContextValue>): AttributesContextValue => ({
+  values: { [AttributeKey.body]: 4 },
+  infos: {
+    [AttributeKey.body]: { min: 1, max: 6, augMax: 7 },
+  } as AttributesContextValue["infos"],
+  ...overrides,
+})
+
+describe("selectAllAttrs", () => {
+  it("derives min/max/augMax from infos and baseValue/value from values", () => {
     // Arrange
-    const context: AttributesContextValue = {
-      values: { [AttributeKey.body]: 5 },
-      infos: { [AttributeKey.body]: { min: 1, max: 6 } } as AttributesContextValue["infos"],
-    }
+    const context = makeContext()
 
     // Act
-    const facets = selectAttributeFacets(context, AttributeKey.body)
+    const attrs = selectAllAttrs(context)
 
     // Assert
-    expect(facets).toEqual({ baseValue: 5, info: { min: 1, max: 6 } })
+    expect(attrs[AttributeKey.body]).toEqual({
+      min: 1,
+      max: 6,
+      augMax: 7,
+      baseValue: 4,
+      value: 4,
+    })
   })
 
-  it("defaults an unset attribute's base value to 0", () => {
+  it("falls back augMax to max when unset", () => {
     // Arrange
-    const context: AttributesContextValue = {
-      values: {},
-      infos: { [AttributeKey.system]: { min: 0, max: 0 } } as AttributesContextValue["infos"],
-    }
+    const context = makeContext({
+      infos: { [AttributeKey.body]: { min: 1, max: 6 } } as AttributesContextValue["infos"],
+    })
 
     // Act
-    const facets = selectAttributeFacets(context, AttributeKey.system)
+    const attrs = selectAllAttrs(context)
 
     // Assert
-    expect(facets.baseValue).toBe(0)
+    expect(attrs[AttributeKey.body].augMax).toBe(6)
+  })
+
+  it("defaults an unset stored value to 0", () => {
+    // Arrange
+    const context = makeContext({ values: {} })
+
+    // Act
+    const attrs = selectAllAttrs(context)
+
+    // Assert
+    expect(attrs[AttributeKey.body].baseValue).toBe(0)
+    expect(attrs[AttributeKey.body].value).toBe(0)
+  })
+})
+
+describe("selectAttr", () => {
+  it("returns the facets for a single attribute", () => {
+    // Arrange
+    const context = makeContext()
+
+    // Act
+    const facets = selectAttr(context, AttributeKey.body)
+
+    // Assert
+    expect(facets).toEqual({ min: 1, max: 6, augMax: 7, baseValue: 4, value: 4 })
   })
 })

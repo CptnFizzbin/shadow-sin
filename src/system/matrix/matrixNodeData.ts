@@ -16,6 +16,7 @@ import { NodeType } from "./nodeType.ts"
  */
 export interface MatrixNodeData extends EntityData {
   matrix: Partial<Record<AttributeKey, number>>
+  rating?: number
   nodeType: NodeType
 }
 

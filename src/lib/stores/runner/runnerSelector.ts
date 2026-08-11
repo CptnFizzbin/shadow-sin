@@ -1,54 +1,76 @@
-import { useAttributesContext } from "#/lib/contexts/runner/attributesProvider.tsx"
+import type { Selector } from "reselect"
+
+import type { RunnerData } from "#/system/runnerData.ts"
 
 import { useRunnerStoreSelector } from "./runnerStore.selectors.ts"
-import { buildAttributeCatalog } from "./selectors/attribute.catalog.ts"
-import { buildDamageCatalog } from "./selectors/damage.catalog.ts"
-import { buildItemCatalog } from "./selectors/item.catalog.ts"
-import { buildModifiersCatalog } from "./selectors/modifiers.catalog.ts"
+import { runnerAttributesCatalog } from "./selectors/attribute.catalog.ts"
+import { biologyCatalog } from "./selectors/biology.catalog.ts"
+import { complexFormsCatalog } from "./selectors/complexForms.catalog.ts"
+import { damageCatalog } from "./selectors/damage.catalog.ts"
+import { itemCatalog } from "./selectors/item.catalog.ts"
+import { karmaCapsCatalog } from "./selectors/karmaCaps.catalog.ts"
+import { magicAdvancementCatalog } from "./selectors/magicAdvancement.catalog.ts"
+import { modifiersCatalog } from "./selectors/modifiers.catalog.ts"
+import { qualitiesCatalog } from "./selectors/qualities.catalog.ts"
+import { skillsCatalog } from "./selectors/skills.catalog.ts"
 
 /**
  * The namespaced menu `useRunnerSelector`'s callback picks from. Mirrors the existing
- * `Selectors.<domain>` split — each entry is either callable by key (returning a facet object)
- * or a bare property for a value that doesn't need one. Each namespace's shape is inferred from
- * its `build*Catalog` factory rather than hand-declared, so there's exactly one place that
- * defines it.
+ * `Selectors.<domain>` split — each entry is a `Selector<RunnerData, TData>`, or a scoped-lookup
+ * factory returning one (`byId`/`byType`/`forAttr`/`forTrack`/`forSkill`/`forModifier`, plus an
+ * `all` sibling covering every key at once). Each namespace's shape is inferred from its catalog
+ * module rather than hand-declared, so there's exactly one place that defines it.
  */
 export interface RunnerSelectorCatalog {
-  attribute: ReturnType<typeof buildAttributeCatalog>
-  damage: ReturnType<typeof buildDamageCatalog>
-  item: ReturnType<typeof buildItemCatalog>
-  modifiers: ReturnType<typeof buildModifiersCatalog>
+  attributes: typeof runnerAttributesCatalog
+  biology: typeof biologyCatalog
+  complexForms: typeof complexFormsCatalog
+  damage: typeof damageCatalog
+  item: typeof itemCatalog
+  karmaCaps: typeof karmaCapsCatalog
+  magicAdvancement: typeof magicAdvancementCatalog
+  modifiers: typeof modifiersCatalog
+  qualities: typeof qualitiesCatalog
+  skills: typeof skillsCatalog
+}
+
+// Built once, at module scope — every entry is a Selector reference or a factory that returns
+// one, so this costs nothing to construct and never closes over RunnerData. See "The catalog
+// mechanism" in docs/adr/0013-unify-runner-state-access.md.
+const runnerSelectorCatalog: RunnerSelectorCatalog = {
+  attributes: runnerAttributesCatalog,
+  biology: biologyCatalog,
+  complexForms: complexFormsCatalog,
+  damage: damageCatalog,
+  item: itemCatalog,
+  karmaCaps: karmaCapsCatalog,
+  magicAdvancement: magicAdvancementCatalog,
+  modifiers: modifiersCatalog,
+  qualities: qualitiesCatalog,
+  skills: skillsCatalog,
 }
 
 /**
- * The one way to read `RunnerData` — proof of concept for
- * `docs/adr/0013-unify-runner-state-access.md`. `picker` receives a namespaced catalog
- * (mirroring the existing `Selectors.<domain>` split) and returns whichever value it needs;
- * every catalog entry is backed by exactly one selector, never a parallel implementation.
+ * The one way to read `RunnerData` — see `docs/adr/0013-unify-runner-state-access.md`. `picker`
+ * receives the namespaced catalog and returns whichever `Selector<RunnerData, T>` it needs; the
+ * hook applies `RunnerData` to it once. Every catalog entry is backed by exactly one selector,
+ * never a parallel implementation.
  *
- * Only the `attribute` namespace resolves relative to a hosting entity today (via the nearest
- * `AttributesProvider`, currently always the Runner's own — see ADR-0013's non-goals). Every
- * other namespace reads `RunnerData` directly.
+ * For values relative to something other than the Runner — the nearest `AttributesProvider`, or a
+ * specific `MatrixNode` — see the sibling hooks `useAttrSelector`/`useMatrixSelector` instead.
  *
  * @example
- * const system = useRunnerSelector(({ attribute }) => attribute(AttributeKey.system).baseValue)
- * const physicalDamage = useRunnerSelector(({ damage }) => damage(DamageTrackKey.physical).current)
+ * const system = useRunnerSelector(({ attributes }) => attributes.forAttr(AttributeKey.system).value)
+ * const physicalDamage = useRunnerSelector(({ damage }) => damage.forTrack(DamageTrackKey.physical))
  * const woundMod = useRunnerSelector(({ damage }) => damage.woundMod)
  * const effectiveArmor = useRunnerSelector(({ item }) => item.armor.effective)
+ * const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all) // Record<SkillKey, Facets>
+ * const qualities = useRunnerSelector(({ qualities }) => qualities.all)
+ * const specialization = useRunnerSelector(({ skills }) => skills.forSkill(SkillKey.pistols).specialization)
  */
 export function useRunnerSelector<T>(
-  picker: (catalog: RunnerSelectorCatalog) => T,
+  picker: (catalog: RunnerSelectorCatalog) => Selector<RunnerData, T>,
   compare?: (prev: T, next: T) => boolean,
 ): T {
-  const attributesContext = useAttributesContext()
-
-  return useRunnerStoreSelector(
-    (state) => picker({
-      attribute: buildAttributeCatalog(attributesContext),
-      damage: buildDamageCatalog(state),
-      item: buildItemCatalog(state),
-      modifiers: buildModifiersCatalog(state),
-    }),
-    compare,
-  )
+  return useRunnerStoreSelector((state) => picker(runnerSelectorCatalog)(state), compare)
 }

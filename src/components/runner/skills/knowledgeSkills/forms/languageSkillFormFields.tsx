@@ -4,7 +4,7 @@ import type { FC } from "react"
 import { z } from "zod"
 
 import type { LanguageSkillForm } from "#/lib/hooks/runner/skills/knowledgeSkills/forms/useLanguageSkillForm.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { SkillRatingMax } from "#/system/skills/skillUtils.ts"
 
 interface LanguageSkillFormFieldsProps {
@@ -15,9 +15,7 @@ export const LanguageSkillFormFields: FC<LanguageSkillFormFieldsProps> = ({
   form,
 }) => {
   const skillName = useSelector(form.store, (state) => state.values.name)
-  const nativeLanguage = useRunnerStoreSelector((sheet) => {
-    return sheet.skills.languageSkills.find((skill) => skill.rating === "native")
-  })
+  const nativeLanguage = useRunnerSelector(({ skills }) => skills.nativeLanguage)
 
   const ratingOptions = [
     { label: "Native", value: "native", disabled: nativeLanguage && nativeLanguage.name !== skillName },
