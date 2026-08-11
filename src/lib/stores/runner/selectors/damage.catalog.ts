@@ -1,21 +1,22 @@
-import {
-  selectMatrixTrack,
-  selectPhysicalTrack,
-  selectStunTrack,
-} from "#/lib/stores/runner/damage/damageSlice.selectors.ts"
-import type { MatrixNodeData } from "#/system/matrix/matrixNodeData.ts"
+import type { Selector } from "reselect"
+
+import type { DamageTrackInfo } from "#/lib/stores/runner/damage/damageSlice.selectors.ts"
+import { selectPhysicalTrack, selectStunTrack } from "#/lib/stores/runner/damage/damageSlice.selectors.ts"
+import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { selectWoundMod } from "./damage.selectors.ts"
 
-export const damageSelectorsCatalog = (activeMatrixNode?: MatrixNodeData) => ({
+// Matrix-relative damage isn't RunnerData-only (it needs the active MatrixNode) — it lives in
+// matrix.catalog.ts behind useMatrixSelector instead. See docs/adr/0013-unify-runner-state-access.md.
+type NonMatrixDamageTrackKey = Exclude<DamageTrackKey, DamageTrackKey.matrix>
+
+const trackSelectors: Record<NonMatrixDamageTrackKey, Selector<RunnerData, DamageTrackInfo>> = {
+  [DamageTrackKey.physical]: selectPhysicalTrack,
+  [DamageTrackKey.stun]: selectStunTrack,
+}
+
+export const damageCatalog = {
   woundMod: selectWoundMod,
-  track: {
-    physical: selectPhysicalTrack,
-    sun: selectStunTrack,
-    matrix: (runner: RunnerData) => {
-      if (!activeMatrixNode) return null
-      return selectMatrixTrack(runner, activeMatrixNode.matrix.system ?? activeMatrixNode.rating ?? 0)
-    },
-  },
-})
+  track: (track: NonMatrixDamageTrackKey): Selector<RunnerData, DamageTrackInfo> => trackSelectors[track],
+}

@@ -1,3 +1,5 @@
+import type { Selector } from "reselect"
+
 import type { RunnerData } from "#/system/runnerData.ts"
 
 import { selectWoundMod } from "./damage.selectors.ts"
@@ -18,11 +20,9 @@ interface ModifierFacets {
   value: number
 }
 
-export function buildModifiersCatalog(state: RunnerData) {
-  return (modifier: Modifier): ModifierFacets => {
-    switch (modifier) {
-      case Modifier.woundMod:
-        return { value: selectWoundMod(state) }
-    }
+export const modifiersCatalog = (modifier: Modifier): Selector<RunnerData, ModifierFacets> => {
+  switch (modifier) {
+    case Modifier.woundMod:
+      return (state) => ({ value: selectWoundMod(state) })
   }
 }
