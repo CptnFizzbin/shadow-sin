@@ -3,13 +3,12 @@ import type { FC } from "react"
 import { useState } from "react"
 
 import { SkillListPanel } from "#/components/runner/skills/skillListPanel.tsx"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectLanguageSkills } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 
 import { LanguageSkillListItem } from "./languageSkillsListItem.tsx"
 
 export const LanguageSkillsList: FC = () => {
-  const languageSkills = useRunnerStoreSelector(selectLanguageSkills)
+  const languageSkills = useRunnerSelector(({ skills }) => skills.languageSkills)
   const [searchQuery, setSearchQuery] = useState("")
 
   const visibleSkills = sort(languageSkills)

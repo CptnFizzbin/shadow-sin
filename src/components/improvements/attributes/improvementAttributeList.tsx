@@ -13,7 +13,6 @@ import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKar
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { useActiveAttributes } from "#/lib/hooks/runner/attributes/useActiveAttributes.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeLabels } from "#/system/attributeKey.ts"
 import type { AttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isAttrIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -29,7 +28,7 @@ export const ImprovementAttributeList: FC = () => {
   const activeAttributes = useActiveAttributes()
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(({ karma }) => karma.current)
 
   const remainingKarma = currentKarma - totalQueuedCost
   const queuedAttrIncreases = allImprovements.filter(isAttrIncreaseEntry)

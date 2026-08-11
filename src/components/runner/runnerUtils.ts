@@ -2,8 +2,7 @@ import { getImplantEffectiveEssenceCost } from "#/components/items/types/implant
 import { useAllAttrInfos, useAttrInfo, useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectSkillValue } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -37,7 +36,7 @@ export function resolveAlias(
  * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
  */
 export const useActiveSkillRating = (skill: SkillKey) => {
-  return useRunnerStoreSelector(selectSkillValue(skill))
+  return useRunnerSelector(({ skills }) => skills.forSkill(skill).value)
 }
 
 /**

@@ -18,7 +18,6 @@ import {
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type {
   LearnActiveSkillEntry,
   SkillIncreaseEntry,
@@ -52,7 +51,7 @@ export const ImprovementActiveSkillList: FC = () => {
   const skillGroups = useRunnerSelector(({ skills }) => skills.skillGroups)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
+  const currentKarma = useRunnerSelector(({ karma }) => karma.current)
   const activeSkillDialog = useActiveSkillDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

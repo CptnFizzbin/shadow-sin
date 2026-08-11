@@ -14,7 +14,7 @@ import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { SectionHeader } from "#/components/ui/text/sectionHeader.tsx"
-import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 
 export const Route = createFileRoute("/$runnerId/_viewer/about")({
   component: RouteComponent,
@@ -22,8 +22,8 @@ export const Route = createFileRoute("/$runnerId/_viewer/about")({
 
 function RouteComponent() {
   const profileEditDialog = useProfileEditDialog()
-  const profile = useRunnerStoreSelector(Selectors.profile.selectProfile)
-  const publicAwareness = useRunnerStoreSelector(Selectors.profile.selectPublicAwareness)
+  const profile = useRunnerSelector((catalog) => catalog.profile.all)
+  const publicAwareness = useRunnerSelector((catalog) => catalog.profile.publicAwareness)
 
   return (
     <Stack sx={{ position: "relative" }}>

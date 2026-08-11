@@ -3,8 +3,7 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { selectBiology } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
-import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { metatypes } from "#/system/metatypeData.ts"
 
 import { InnatePowersDisplay } from "./innatePowersDisplay.tsx"
@@ -27,7 +26,7 @@ const BiologyRow: FC<BiologyRowProps> = ({ label, value }) => (
 )
 
 export const BiologySection: FC = () => {
-  const biology = useRunnerStoreSelector(selectBiology)
+  const biology = useRunnerSelector((catalog) => catalog.biology.all)
   const metatype = metatypes[biology.metatype]
 
   return (

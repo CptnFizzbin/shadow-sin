@@ -8,11 +8,16 @@ import { biologyCatalog } from "./selectors/biology.catalog.ts"
 import { complexFormsCatalog } from "./selectors/complexForms.catalog.ts"
 import { damageCatalog } from "./selectors/damage.catalog.ts"
 import { itemCatalog } from "./selectors/item.catalog.ts"
+import { karmaCatalog } from "./selectors/karma.catalog.ts"
 import { karmaCapsCatalog } from "./selectors/karmaCaps.catalog.ts"
 import { magicAdvancementCatalog } from "./selectors/magicAdvancement.catalog.ts"
 import { modifiersCatalog } from "./selectors/modifiers.catalog.ts"
+import { nuyenCatalog } from "./selectors/nuyen.catalog.ts"
+import { profileCatalog } from "./selectors/profile.catalog.ts"
 import { qualitiesCatalog } from "./selectors/qualities.catalog.ts"
 import { skillsCatalog } from "./selectors/skills.catalog.ts"
+import { spellsCatalog } from "./selectors/spells.catalog.ts"
+import { traditionCatalog } from "./selectors/tradition.catalog.ts"
 
 /**
  * The namespaced menu `useRunnerSelector`'s callback picks from. Mirrors the existing
@@ -27,11 +32,16 @@ export interface RunnerSelectorCatalog {
   complexForms: typeof complexFormsCatalog
   damage: typeof damageCatalog
   item: typeof itemCatalog
+  karma: typeof karmaCatalog
   karmaCaps: typeof karmaCapsCatalog
   magicAdvancement: typeof magicAdvancementCatalog
   modifiers: typeof modifiersCatalog
+  nuyen: typeof nuyenCatalog
+  profile: typeof profileCatalog
   qualities: typeof qualitiesCatalog
   skills: typeof skillsCatalog
+  spells: typeof spellsCatalog
+  tradition: typeof traditionCatalog
 }
 
 // Built once, at module scope — every entry is a Selector reference or a factory that returns
@@ -43,11 +53,16 @@ const runnerSelectorCatalog: RunnerSelectorCatalog = {
   complexForms: complexFormsCatalog,
   damage: damageCatalog,
   item: itemCatalog,
+  karma: karmaCatalog,
   karmaCaps: karmaCapsCatalog,
   magicAdvancement: magicAdvancementCatalog,
   modifiers: modifiersCatalog,
+  nuyen: nuyenCatalog,
+  profile: profileCatalog,
   qualities: qualitiesCatalog,
   skills: skillsCatalog,
+  spells: spellsCatalog,
+  tradition: traditionCatalog,
 }
 
 /**
@@ -67,6 +82,7 @@ const runnerSelectorCatalog: RunnerSelectorCatalog = {
  * const activeSkillCaps = useRunnerSelector(({ karmaCaps }) => karmaCaps.activeSkill.all) // Record<SkillKey, Facets>
  * const qualities = useRunnerSelector(({ qualities }) => qualities.all)
  * const specialization = useRunnerSelector(({ skills }) => skills.forSkill(SkillKey.pistols).specialization)
+ * const currentKarma = useRunnerSelector(({ karma }) => karma.current)
  */
 export function useRunnerSelector<T>(
   picker: (catalog: RunnerSelectorCatalog) => Selector<RunnerData, T>,
