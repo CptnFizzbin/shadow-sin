@@ -8,11 +8,12 @@ import { useConfirmDialog } from "#/components/ui/dialog/confirmDialog.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { stringifyError } from "#/lib/errors/errorUtils.ts"
 import { useYamlFileImport } from "#/lib/hooks/runner/exportImport/useYamlFileImport.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
+import { selectProfileDisplayName } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const ImportCurrentRunnerButton: FC = () => {
   const store = useRunnerStoreContext()
-  const runnerName = useRunnerSelector(({ profile }) => profile.displayName)
+  const runnerName = useRunnerStoreSelector(selectProfileDisplayName)
 
   const confirmDialog = useConfirmDialog()
   const alertDialog = useAlertDialog()

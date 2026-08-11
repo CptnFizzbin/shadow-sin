@@ -1,5 +1,6 @@
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectWoundMod } from "#/lib/stores/runner/selectors/damage.selectors.ts"
 
 export function useWoundModifier() {
-  return useRunnerSelector(({ damage }) => damage.woundMod)
+  return useRunnerStoreSelector(selectWoundMod)
 }

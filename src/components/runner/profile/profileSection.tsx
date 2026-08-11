@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography"
 import type { FC } from "react"
 
 import { Label } from "#/components/ui/text/label.tsx"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
+import { selectProfile } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
+import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 export const ProfileSection: FC = () => {
-  const profile = useRunnerSelector((catalog) => catalog.profile.all)
+  const profile = useRunnerStoreSelector(selectProfile)
 
   return (
     <Stack divider={<Divider />}>

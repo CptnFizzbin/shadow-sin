@@ -12,9 +12,10 @@ import { CounterInput } from "#/components/ui/counter/counterInput.tsx"
 import { Label } from "#/components/ui/text/label.tsx"
 import { withTheme } from "#/integrations/mui/muiUtils.ts"
 import { useAttrValue } from "#/lib/contexts/runner/attributesProvider.tsx"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Actions } from "#/lib/stores/runner/runnerStore.actions.ts"
 import { useRunnerStoreDispatch } from "#/lib/stores/runner/runnerStore.dispatch.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
+import { selectTradition } from "#/lib/stores/runner/tradition/traditionSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { DamageTrackKey } from "#/system/damageTrackKey.ts"
 import type { SpellData } from "#/system/magic/spellData.ts"
@@ -30,7 +31,7 @@ interface SpellCastSectionProps {
 
 export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) => {
   const magicAttr = useAttrValue(AttributeKey.magic)
-  const tradition = useRunnerSelector((catalog) => catalog.tradition.all)
+  const tradition = useRunnerStoreSelector(selectTradition)
   const drainAttribute = tradition?.drainAttribute ?? AttributeKey.willpower
 
   const [force, setForce] = useState<number>(Math.max(1, magicAttr))
@@ -43,8 +44,8 @@ export const SpellCastSection: FC<SpellCastSectionProps> = ({ spell, onClose }) 
   const drainAmount = Math.max(0, drainDv - drainResistanceHits)
 
   const dispatch = useRunnerStoreDispatch()
-  const physical = useRunnerSelector(({ damage }) => damage.forTrack(DamageTrackKey.physical))
-  const stun = useRunnerSelector(({ damage }) => damage.forTrack(DamageTrackKey.stun))
+  const physical = useRunnerStoreSelector(Selectors.damage.selectPhysicalTrack)
+  const stun = useRunnerStoreSelector(Selectors.damage.selectStunTrack)
 
   const handleApplyDrain = (amount: number) => {
     if (amount <= 0) return

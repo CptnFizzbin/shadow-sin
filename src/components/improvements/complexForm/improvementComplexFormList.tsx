@@ -18,6 +18,7 @@ import { useComplexFormDialog } from "#/components/runner/technomancer/dialogs/c
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import type {
   ComplexFormIncreaseEntry,
@@ -40,7 +41,7 @@ export const ImprovementComplexFormList: FC = () => {
   const resonance = useRunnerSelector(({ attributes }) => attributes.forAttr(AttributeKey.resonance).baseValue)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerSelector(({ karma }) => karma.current)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const complexFormDialog = useComplexFormDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost

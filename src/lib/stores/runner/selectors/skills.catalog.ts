@@ -6,7 +6,6 @@ import {
   selectLanguageSkills,
   selectSkillGroups,
   selectSkillSpecialization,
-  selectSkillValue,
 } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 import type { RunnerData } from "#/system/runnerData.ts"
 import type { LanguageSkillData } from "#/system/skills/languageSkillData.ts"
@@ -25,7 +24,6 @@ export const skillsCatalog = {
   languageSkills: selectLanguageSkills,
   nativeLanguage: selectNativeLanguageSkill,
   forSkill: (skill: SkillKey) => ({
-    value: selectSkillValue(skill),
     specialization: selectSkillSpecialization(skill),
   }),
 }

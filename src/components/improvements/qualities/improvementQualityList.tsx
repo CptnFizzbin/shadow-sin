@@ -17,6 +17,7 @@ import { useQualityFormDialog } from "#/components/runner/qualities/dialogs/qual
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
 import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
+import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { LearnQualityEntry, QualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isLearnQualityEntry, isQualityBuyOffEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import {
@@ -31,7 +32,7 @@ export const ImprovementQualityList: FC = () => {
   const qualities = useRunnerSelector((catalog) => catalog.qualities.all)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
-  const currentKarma = useRunnerSelector((catalog) => catalog.karma.current)
+  const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
   const qualityFormDialog = useQualityFormDialog()
 
   const remainingKarma = currentKarma - totalQueuedCost
