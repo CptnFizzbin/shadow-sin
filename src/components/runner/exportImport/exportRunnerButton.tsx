@@ -13,19 +13,26 @@ export const ExportRunnerButton: FC = () => {
   const dispatch = useRunnerStoreDispatch()
 
   const handleExport = () => {
+    const now = new Date()
+    const isoTimestamp = now.toISOString()
+    const isoDate = isoTimestamp.slice(0, 10)
+
     const runnerData = store.getState()
-    const yamlContent = runnerDataToYaml(runnerData)
     const sanitizedName =
       (runnerData.profile.alias || runnerData.profile.name || "runner")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "")
 
-    const now = new Date()
-    const isoDate = now.toISOString().slice(0, 10)
+    // The exported file should record this export as its own last-export date,
+    // not the one from before this export ran.
+    const yamlContent = runnerDataToYaml({
+      ...runnerData,
+      _meta_: { ...runnerData._meta_, lastExportDate: isoTimestamp },
+    })
 
     downloadTextFile(yamlContent, `${sanitizedName}.${isoDate}.sin`)
-    dispatch(recordLastExport(now.toISOString()))
+    dispatch(recordLastExport(isoTimestamp))
   }
 
   return (

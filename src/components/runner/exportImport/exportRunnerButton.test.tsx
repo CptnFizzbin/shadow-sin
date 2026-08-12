@@ -8,7 +8,7 @@ import { runnerDataFactory } from "#/system/runnerData.factory.ts"
 
 import { ExportRunnerButton } from "./exportRunnerButton.tsx"
 import type * as ExportUtils from "./exportUtils.ts"
-import { downloadTextFile } from "./exportUtils.ts"
+import { downloadTextFile, yamlToRunnerData } from "./exportUtils.ts"
 
 vi.mock("./exportUtils.ts", async (importOriginal) => {
   const actual = await importOriginal<typeof ExportUtils>()
@@ -65,5 +65,17 @@ describe("ExportRunnerButton", () => {
 
     // Assert
     expect(store.getState()._meta_.lastExportDate).toBe("2026-08-12T12:00:00.000Z")
+  })
+
+  it("bakes the export timestamp into the exported file itself", () => {
+    // Arrange
+    renderWithRunner()
+
+    // Act
+    fireEvent.click(screen.getByRole("button", { name: "Export" }))
+
+    // Assert
+    const [yamlContent] = vi.mocked(downloadTextFile).mock.calls[0]
+    expect(yamlToRunnerData(yamlContent)._meta_.lastExportDate).toBe("2026-08-12T12:00:00.000Z")
   })
 })
