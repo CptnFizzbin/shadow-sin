@@ -5,7 +5,7 @@ import { OutOfContextError } from "#/lib/errors/outOfContextError.ts"
 import type { AttributeInfo } from "#/system/attributeInfo.ts"
 import type { AttributeKey } from "#/system/attributeKey.ts"
 
-export interface AttributesContextValue {
+interface AttributesContextValue {
   values: Partial<Record<AttributeKey, number>>
   infos: Record<AttributeKey, AttributeInfo>
 }
@@ -36,13 +36,7 @@ export const AttributesProvider: FC<AttributesProviderProps> = ({ values, infos,
   )
 }
 
-/**
- * Reads the nearest `AttributesProvider`'s value. Not for component use — `useAttrSelector` (any
- * entity) and `useRunnerSelector`'s `attributes` namespace (always the Runner) are the sanctioned
- * consumers (see `docs/adr/0013-unify-runner-state-access.md`); everyone else reads attributes
- * through one of those instead of reaching into this context directly.
- */
-export const useAttributesContext = (): AttributesContextValue => {
+const useAttributesContext = (): AttributesContextValue => {
   const context = useContext(AttributesContext)
 
   if (!context) {
@@ -53,29 +47,23 @@ export const useAttributesContext = (): AttributesContextValue => {
 }
 
 /**
- * @deprecated Reads the raw stored value, before augments — use
- * `useRunnerSelector(({ attributes }) => attributes.forAttr(attr).baseValue)` for the Runner's own
- * attributes, or `useAttrSelector(({ forAttr }) => forAttr(attr).baseValue)` for the nearest
- * entity — see `docs/adr/0013-unify-runner-state-access.md`.
+ * Returns the current numeric value for the given attribute from the nearest
+ * `AttributesProvider`.
  */
 export const useAttrValue = (attr: AttributeKey): number => {
   return useAttributesContext().values[attr] ?? 0
 }
 
 /**
- * @deprecated Use `useRunnerSelector(({ attributes }) => attributes.forAttr(attr))` for the
- * Runner's own attributes, or `useAttrSelector(({ forAttr }) => forAttr(attr))` for the nearest
- * entity — each field (`min`/`max`/`augMax`/`baseValue`/`value`) is read individually rather than
- * as one bundled `AttributeInfo` object. See `docs/adr/0013-unify-runner-state-access.md`.
+ * Returns the metadata (min, max, augMax) for the given attribute from the
+ * nearest `AttributesProvider`.
  */
 export const useAttrInfo = (attr: AttributeKey): AttributeInfo => {
   return useAttributesContext().infos[attr]
 }
 
 /**
- * @deprecated Use `useRunnerSelector(({ attributes }) => attributes.all)` for the Runner's own
- * attributes, or `useAttrSelector(({ all }) => all)` for the nearest entity — see
- * `docs/adr/0013-unify-runner-state-access.md`.
+ * Returns all attribute metadata records from the nearest `AttributesProvider`.
  */
 export const useAllAttrInfos = (): Record<AttributeKey, AttributeInfo> => {
   return useAttributesContext().infos

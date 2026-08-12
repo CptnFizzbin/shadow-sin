@@ -3,7 +3,6 @@ import { useAllAttrInfos, useAttrInfo, useAttrValue } from "#/lib/contexts/runne
 import { useGearByType } from "#/lib/hooks/items/gearHooks.ts"
 import { useGameEffects } from "#/lib/hooks/system/gameEffects/useGameEffects.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
-import { selectSkillValue } from "#/lib/stores/runner/skills/skillsSlice.selectors.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
@@ -37,7 +36,18 @@ export function resolveAlias(
  * Hook to retrieve the effective rating of an active skill, accounting for skill groups.
  */
 export const useActiveSkillRating = (skill: SkillKey) => {
-  return useRunnerStoreSelector(selectSkillValue(skill))
+  const skillInfo = skillList[skill]
+
+  const skillRating = useRunnerStoreSelector((sheet) => {
+    return sheet.skills.activeSkills.find((s) => s.name === skill)?.rating || 0
+  })
+
+  const groupRating = useRunnerStoreSelector((sheet) => {
+    if (!skillInfo) return 0
+    return sheet.skills.skillGroups.find((s) => s.name === skillInfo.group)?.rating || 0
+  })
+
+  return Math.max(skillRating, groupRating, 0)
 }
 
 /**
@@ -57,9 +67,7 @@ export const useActiveSkill = (skill: SkillKey) => {
 }
 
 /**
- * @deprecated Use `useRunnerSelector(({ item }) => item.essence)` instead (fields are `used`/
- * `remaining` there, not `essenceUsed`/`essenceRemaining`) — see
- * `docs/adr/0013-unify-runner-state-access.md`.
+ * Hook to retrieve essence usage and remaining values.
  */
 export const useEssenceInfo = () => {
   const essenceInfo = useAttrInfo(AttributeKey.essence)

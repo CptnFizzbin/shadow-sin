@@ -11,7 +11,6 @@ import { getSkillsInGroup } from "#/components/builder/sections/skills/activeSki
 import { ImprovementsConfig } from "#/components/improvements/improvementsConfig.ts"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isSkillSpecializationEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -52,10 +51,10 @@ interface SpecializableRow {
  */
 export const ImprovementSpecializationList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const activeSkills = useRunnerSelector(({ skills }) => skills.activeSkills)
-  const skillGroups = useRunnerSelector(({ skills }) => skills.skillGroups)
-  const knowledgeSkills = useRunnerSelector(({ skills }) => skills.knowledgeSkills)
-  const languageSkills = useRunnerSelector(({ skills }) => skills.languageSkills)
+  const activeSkills = useRunnerStoreSelector((sheet) => sheet.skills.activeSkills)
+  const skillGroups = useRunnerStoreSelector((sheet) => sheet.skills.skillGroups)
+  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
+  const languageSkills = useRunnerStoreSelector((sheet) => sheet.skills.languageSkills)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)
