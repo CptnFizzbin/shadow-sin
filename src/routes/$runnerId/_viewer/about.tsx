@@ -9,6 +9,7 @@ import { BiologySection } from "#/components/runner/biology/biologySection.tsx"
 import { ExportRunnerButton } from "#/components/runner/exportImport/exportRunnerButton.tsx"
 import { ImportCurrentRunnerButton } from "#/components/runner/exportImport/importCurrentRunnerButton.tsx"
 import { KarmaSection } from "#/components/runner/karma/karmaSection.tsx"
+import { BackupReminderNotice } from "#/components/runner/profile/backupReminderNotice.tsx"
 import { useProfileEditDialog } from "#/components/runner/profile/profileEditDialog.tsx"
 import { ProfileSection } from "#/components/runner/profile/profileSection.tsx"
 import { QualitiesViewerSection } from "#/components/runner/qualities/qualitiesViewerSection.tsx"
@@ -37,6 +38,8 @@ function RouteComponent() {
       </IconButton>
 
       <Typography variant="h1" sx={{ textAlign: "center" }}>{profile.alias || profile.name}</Typography>
+
+      <BackupReminderNotice />
 
       <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
         <ExportRunnerButton />

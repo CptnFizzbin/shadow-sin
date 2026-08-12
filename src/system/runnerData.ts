@@ -30,10 +30,13 @@ import type { SkillGroupData } from "./skills/skillGroupData"
 export interface RunnerMeta {
   /** The highest migration version that has been applied to this runner — see `src/data/migrations.ts`. */
   version: number
+  /** ISO 8601 timestamp of the runner's most recent export, or `null` if it has never been exported. */
+  lastExportDate: string | null
 }
 
 export const RunnerMetaSchema = z.object({
   version: z.number().default(0),
+  lastExportDate: z.string().nullable().default(null),
 })
 
 /**
