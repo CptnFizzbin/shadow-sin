@@ -34,6 +34,24 @@ describe("ActiveSkillFormDialog", () => {
     expect(within(listbox).queryByText(SkillKey.pistols)).toBeNull()
   })
 
+  it("increments an existing skill's rating via the counter's + button", () => {
+    // Arrange
+    const ctrl = new DialogCtrl<ActiveSkillData>()
+    ctrl.open()
+    renderWithProviders(
+      <ActiveSkillFormDialog ctrl={ctrl} skill={{ name: SkillKey.pistols, rating: 1 }} />,
+    )
+    const ratingInput = screen.getByDisplayValue("1")
+    const incrementButton = within(ratingInput.closest(".MuiInputBase-root") as HTMLElement)
+      .getAllByRole("button")[1]
+
+    // Act
+    fireEvent.click(incrementButton)
+
+    // Assert
+    expect(screen.getByDisplayValue("2")).toBeTruthy()
+  })
+
   it("excludes skills the runner's awakening type can never learn", () => {
     // Arrange
     const ctrl = new DialogCtrl<ActiveSkillData>()

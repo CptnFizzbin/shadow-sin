@@ -38,7 +38,7 @@ interface ActiveSkillFormDialogProps extends ControlledDialogProps<ActiveSkillDa
 
 type ActiveSkillFormData = {
   name: SkillKey | ""
-  rating: string // Stored as string to match SelectField's contract; converted to number on submit
+  rating: number
   specialization: string
 }
 
@@ -58,14 +58,13 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
   const form = useAppForm({
     defaultValues: {
       name: skill?.name ?? "",
-      // Stored as string to match SelectField's string value contract; converted to number on submit
-      rating: String(skill?.rating ?? 1),
+      rating: skill?.rating ?? 1,
       specialization: skill?.specialization ?? "",
     } satisfies ActiveSkillFormData,
     onSubmit: ({ value }) => {
       ctrl.close({
         name: value.name as SkillKey,
-        rating: Number(value.rating),
+        rating: value.rating,
         specialization: value.specialization || undefined,
       })
     },
@@ -136,7 +135,7 @@ export const ActiveSkillFormDialog: FC<ActiveSkillFormDialogProps> = ({
 
             <form.AppField
               name="rating"
-              validators={{ onChange: z.string().refine((v) => Number(v) >= 1 && Number(v) <= SkillRatingMax) }}
+              validators={{ onChange: z.number().min(1).max(SkillRatingMax) }}
             >
               {(field) => (
                 <field.CounterField
