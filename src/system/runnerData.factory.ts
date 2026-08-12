@@ -10,7 +10,7 @@ import type { RunnerData } from "./runnerData.ts"
 export const runnerDataFactory = (overrideFn?: (data: RunnerData) => RunnerData): RunnerData => {
   const data = {
     id: NullUuid,
-    _meta_: { version: CURRENT_RUNNER_VERSION },
+    _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
     profile: {
       alias: "",

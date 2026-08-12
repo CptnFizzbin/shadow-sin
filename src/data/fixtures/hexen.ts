@@ -9,7 +9,7 @@ import { SkillKey } from "#/system/skills/skillKey.ts"
 
 export const Hexen: RunnerData = {
   id: "b7e1c2d3-f4a5-6789-bcde-fa0123456789",
-  _meta_: { version: CURRENT_RUNNER_VERSION },
+  _meta_: { version: CURRENT_RUNNER_VERSION, lastExportDate: null },
 
   biology: {
     metatype: MetatypeType.Human,

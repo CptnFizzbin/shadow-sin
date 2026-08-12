@@ -14,6 +14,7 @@ import { matrixReducer } from "./gameState/matrix/matrixSlice.ts"
 import { gearReducer } from "./gear/gearSlice.ts"
 import { initiativeReducer } from "./initiative/initiativeSlice.ts"
 import { karmaReducer } from "./karma/karmaSlice.ts"
+import { metaReducer } from "./meta/metaSlice.ts"
 import { nuyenReducer } from "./nuyen/nuyenSlice.ts"
 import { powersReducer } from "./powers/powersSlice.ts"
 import { profileReducer } from "./profile/profileSlice.ts"
@@ -30,17 +31,9 @@ const idSlice = createSlice({
   reducers: {},
 })
 
-const metaSlice = createSlice({
-  name: "_meta_",
-  initialState: {
-    version: 0,
-  } as RunnerData["_meta_"],
-  reducers: {},
-})
-
 // Magic-advancement grades are only ever written by the karma-improvement
 // apply flow (a direct `setState(produce(...))`, like spells/qualities), so
-// no dispatched actions are needed — mirrors idSlice/metaSlice above.
+// no dispatched actions are needed — mirrors idSlice above.
 const initiateGradeSlice = createSlice({
   name: "initiateGrade",
   initialState: 0 as RunnerData["initiateGrade"],
@@ -55,7 +48,7 @@ const submersionGradeSlice = createSlice({
 
 export const runnerRootReducer = combineReducers({
   id: idSlice.reducer,
-  _meta_: metaSlice.reducer,
+  _meta_: metaReducer,
   attributes: attributesReducer,
   qualities: qualitiesReducer,
   karma: karmaReducer,
