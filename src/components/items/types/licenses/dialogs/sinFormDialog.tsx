@@ -32,7 +32,7 @@ export const SinFormDialog: FC<SinFormDialogProps> = ({ ctrl, sin, onDelete }) =
       ratingMax={6}
       onRandomizeName={getRandomSinName}
       slots={{
-        preForm: () => <SinRatingField form={form} />,
+        rating: () => <SinRatingField form={form} />,
       }}
       options={{
         hasRating: { forced: true, enabled: false },

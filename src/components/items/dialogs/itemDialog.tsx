@@ -50,6 +50,8 @@ export interface ItemDialogProps {
   slots?: {
     /** Content rendered before the Name field (e.g. a category toggle). */
     preForm?: () => ReactNode
+    /** Replaces the default rating CounterField, rendered after Name in the same row. */
+    rating?: () => ReactNode
     attachmentFields?: () => ReactNode
     itemFields?: () => ReactNode
   }
@@ -182,13 +184,15 @@ export const ItemDialog: FC<ItemDialogProps> = ({
                 )}
               </form.AppField>
 
-              {localOptions["hasRating"] && (
-                <form.AppField name="rating">
-                  {(field) => (
-                    <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
-                  )}
-                </form.AppField>
-              )}
+              {slots?.rating
+                ? slots.rating()
+                : localOptions["hasRating"] && (
+                  <form.AppField name="rating">
+                    {(field) => (
+                      <field.CounterField label="Rating" min={1} max={ratingMax ?? 12} />
+                    )}
+                  </form.AppField>
+                )}
             </Stack>
 
             <Divider />

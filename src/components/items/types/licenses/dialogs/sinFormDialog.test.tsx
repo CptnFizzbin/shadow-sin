@@ -26,7 +26,7 @@ describe("SinFormDialog", () => {
     expect(SinNameList).toContain(nameInput.value)
   })
 
-  it("saves rating \"real\" when the Real SIN switch is toggled on", async () => {
+  it("saves rating \"real\" when the Real toggle is selected", async () => {
     // Arrange
     const ctrl = new DialogCtrl<SinData>()
     const savedPromise = ctrl.open()
@@ -37,7 +37,7 @@ describe("SinFormDialog", () => {
 
     // Act
     fireEvent.change(within(dialog).getByLabelText(/^name$/i), { target: { value: "Test SIN" } })
-    fireEvent.click(within(dialog).getByRole("switch", { name: /real sin/i }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /^real$/i }))
     fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
 
     // Assert
