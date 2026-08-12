@@ -26,9 +26,9 @@ export function selectStunTrack(state: RunnerData): DamageTrackInfo {
   }
 }
 
-export function selectMatrixTrack(state: RunnerData): DamageTrackInfo {
+export function selectMatrixTrack(state: RunnerData, system: number = 0): DamageTrackInfo {
   return {
-    max: 0,
+    max: 8 + Math.ceil(system / 2),
     current: state.damage.matrix,
     woundInterval: 3,
   }

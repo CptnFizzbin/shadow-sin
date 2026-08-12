@@ -11,6 +11,8 @@ import type { ControlledDialogProps } from "#/components/ui/dialog/controlledDia
 import { ControlledDialog, Dialog } from "#/components/ui/dialog/dialog.tsx"
 import { useRunnerStoreContext } from "#/lib/contexts/runner/runnerStore.context.ts"
 import { useDialog } from "#/lib/hooks/ui/dialog/useDialog.tsx"
+import { selectBiology } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
+import { selectProfile } from "#/lib/stores/runner/profile/profileSlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 import type { ProfileFieldsValue } from "./profileFields.tsx"
@@ -20,8 +22,8 @@ type ProfileEditDialogProps = ControlledDialogProps<void>
 
 const ProfileEditDialog: FC<ProfileEditDialogProps> = ({ ctrl }) => {
   const store = useRunnerStoreContext()
-  const profile = useRunnerStoreSelector((s) => s.profile)
-  const biology = useRunnerStoreSelector((s) => s.biology)
+  const profile = useRunnerStoreSelector(selectProfile)
+  const biology = useRunnerStoreSelector(selectBiology)
 
   const [profileFields, setProfileFields] = useState<ProfileFieldsValue>({
     alias: profile.alias,
