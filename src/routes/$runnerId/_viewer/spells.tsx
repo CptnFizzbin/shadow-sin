@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography"
 import { createFileRoute } from "@tanstack/react-router"
 
 import { SpellsViewerSection } from "#/components/runner/magician/spells/spellsViewerSection.tsx"
-import { selectAwakening } from "#/lib/stores/runner/biology/biologySlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import { AwakeningType } from "#/system/awakeningType.ts"
 
@@ -13,7 +12,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/spells")({
 })
 
 function RouteComponent() {
-  const awakening = useRunnerStoreSelector(selectAwakening)
+  const awakening = useRunnerStoreSelector((sheet) => sheet.biology.awakening)
   const canCastSpells =
     awakening === AwakeningType.Magician || awakening === AwakeningType.MysticAdept
 

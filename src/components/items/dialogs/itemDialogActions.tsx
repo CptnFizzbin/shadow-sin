@@ -3,7 +3,6 @@ import Tooltip from "@mui/material/Tooltip"
 import type { FC } from "react"
 
 import { Nuyen } from "#/components/ui/nuyen.tsx"
-import { selectNuyenAmount } from "#/lib/stores/runner/nuyen/nuyenSlice.selectors.ts"
 import { useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 
 interface ItemDialogActionsProps {
@@ -25,7 +24,7 @@ export const ItemDialogActions: FC<ItemDialogActionsProps> = ({
   onSave,
   onDelete,
 }) => {
-  const currentNuyen = useRunnerStoreSelector(selectNuyenAmount)
+  const currentNuyen = useRunnerStoreSelector((s) => s.nuyen.current)
   const canAfford = currentNuyen >= totalCost
 
   if (!isAcquireMode) {

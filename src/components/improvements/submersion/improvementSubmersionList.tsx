@@ -12,7 +12,6 @@ import { KarmaChip } from "#/components/runner/karma/karmaChip.tsx"
 import { UnderConstruction } from "#/components/ui/underConstruction.tsx"
 import { useSpendKarmaDialogContext } from "#/lib/contexts/improvements/spendKarmaDialogContext.tsx"
 import { useImprovementSelector } from "#/lib/hooks/improvements/useImprovementSelector.ts"
-import { useRunnerSelector } from "#/lib/stores/runner/runnerSelector.ts"
 import { Selectors, useRunnerStoreSelector } from "#/lib/stores/runner/runnerStore.selectors.ts"
 import type { SubmersionIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
 import { isSubmersionIncreaseEntry } from "#/system/karma/improvements/improvementEntry.ts"
@@ -24,7 +23,7 @@ import { ImprovementType } from "#/system/karma/improvements/improvementType.ts"
 
 export const ImprovementSubmersionList: FC = () => {
   const { improvementStore } = useSpendKarmaDialogContext()
-  const currentGrade = useRunnerSelector(({ magicAdvancement }) => magicAdvancement.submersionGrade)
+  const currentGrade = useRunnerStoreSelector((sheet) => sheet.submersionGrade)
   const allImprovements = useImprovementSelector(selectAllImprovements)
   const totalQueuedCost = useImprovementSelector(selectImprovementsTotalCost)
   const currentKarma = useRunnerStoreSelector(Selectors.karma.selectCurrentKarma)

@@ -2,7 +2,7 @@ import type { Selector } from "reselect"
 import { createSelector } from "reselect"
 
 import { BASE_ESSENCE, getImplantEffectiveEssenceCost } from "#/components/items/types/implants/implantUtils.ts"
-import { armor as armorSelectors, selectAllGear, selectGearOfType } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
+import { armor as armorSelectors, selectGearOfType } from "#/lib/stores/runner/gear/gearSlice.selectors.ts"
 import type { ArmorRating } from "#/system/gear/armorData.ts"
 import type { ImplantData } from "#/system/gear/implantData.ts"
 import { ImplantType } from "#/system/gear/implantData.ts"
@@ -16,11 +16,6 @@ export interface ItemEssenceFacets {
   cyberwareEssence: number
   biowareEssence: number
 }
-
-export const selectAllItems: Selector<RunnerData, ItemData[]> = createSelector(
-  [selectAllGear],
-  (gear) => Object.values(gear),
-)
 
 export const selectItemsOfType: Selector<RunnerData, ItemData[], [type: ItemType]> = createSelector(
   [(state: RunnerData, type: ItemType) => selectGearOfType(type)(state)],

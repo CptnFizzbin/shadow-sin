@@ -22,7 +22,7 @@ export const Route = createFileRoute("/$runnerId/_viewer/about")({
 
 function RouteComponent() {
   const profileEditDialog = useProfileEditDialog()
-  const profile = useRunnerStoreSelector(Selectors.profile.selectProfile)
+  const profile = useRunnerStoreSelector((s) => s.profile)
   const publicAwareness = useRunnerStoreSelector(Selectors.profile.selectPublicAwareness)
 
   return (
