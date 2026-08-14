@@ -44,7 +44,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@t3-oss/env-core": "^0.13.11",
     "@tanstack/devtools-vite": "^0.8.3",
-    "@tanstack/form-core": "^1.33.3",
+    "@tanstack/form-core": "^4.0.2",
     "@tanstack/pacer": "^0.21.1",
     "@tanstack/react-devtools": "^0.10.9",
     "@tanstack/react-form": "^1.33.3",
