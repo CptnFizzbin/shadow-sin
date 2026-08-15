@@ -38,7 +38,7 @@ describe("buildVerificationChecks", () => {
     expect(checks).toHaveLength(2)
   })
 
-  it("drops a SIN entirely when none of its licensed gear is checked", () => {
+  it("drops a SIN entirely when neither it nor any of its licensed gear is checked", () => {
     const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
     const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
     const weapon: ItemData = { id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
@@ -47,6 +47,17 @@ describe("buildVerificationChecks", () => {
     const checks = buildVerificationChecks(gear, [])
 
     expect(checks).toEqual([])
+  })
+
+  it("keeps a SIN's own credential when it is checked directly, even with no licensed gear checked", () => {
+    const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
+    const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
+    const weapon: ItemData = { id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
+    const gear = gearMap(sin, license, weapon)
+
+    const checks = buildVerificationChecks(gear, [sin])
+
+    expect(checks).toEqual([{ itemId: sinId, kind: "sin", credentialRating: 3 }])
   })
 
   it("keeps only the checked licensed-gear item when a SIN carries more than one", () => {

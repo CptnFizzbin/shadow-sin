@@ -14,8 +14,6 @@ import type { VerificationCheck } from "./licenseCheckTypes.ts"
 interface LicenseCheckChecklistRowProps {
   item: ItemData
   check: VerificationCheck
-  /** SINs have no equip/carry state, so their row is never individually checked/unchecked. */
-  showCheckbox?: boolean
 }
 
 function getRatingBadge(check: VerificationCheck): string | null {
@@ -25,18 +23,12 @@ function getRatingBadge(check: VerificationCheck): string | null {
   return isRealCredential(check.credentialRating) ? "Real" : `Fake License | R${check.credentialRating}`
 }
 
-export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
-  item,
-  check,
-  showCheckbox = true,
-}) => {
+export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({ item, check }) => {
   const { items, addItem, removeItem } = useLicenseCheck()
   const ratingBadge = getRatingBadge(check)
   const isChecked = items.some((checkedItem) => checkedItem.id === item.id)
 
   const handleRowClick = () => {
-    if (!showCheckbox) return
-
     if (isChecked) {
       removeItem(item)
     } else {
@@ -50,20 +42,15 @@ export const LicenseCheckChecklistRow: FC<LicenseCheckChecklistRowProps> = ({
       sx={{ alignItems: "center" }}
       onClick={handleRowClick}
     >
-      {showCheckbox && (
-        <Checkbox
-          size="small"
-          checked={isChecked}
-          slotProps={{ input: { "aria-label": `Include in scan: ${item.name}` } }}
-        />
-      )}
+      <Checkbox
+        size="small"
+        checked={isChecked}
+        slotProps={{ input: { "aria-label": `Include in scan: ${item.name}` } }}
+      />
 
       <Stack
         direction="column"
-        sx={mergeSx(
-          { gap: 0.5 },
-          showCheckbox && !isChecked && { opacity: 0.25 },
-        )}
+        sx={mergeSx({ gap: 0.5 }, !isChecked && { opacity: 0.25 })}
       >
         <Stack direction="row">
           <Typography variant="body2" noWrap>{item.name}</Typography>

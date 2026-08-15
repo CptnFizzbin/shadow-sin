@@ -72,8 +72,14 @@ describe("buildVerificationLanes", () => {
 
     const lanes = buildVerificationLanes(gearMap(sin, license, forbidden))
 
-    // The SIN has no licensed gear (the forbidden item is structurally excluded), so it's not checked.
+    // The forbidden item is structurally excluded from the SIN's licensed gear, but the SIN
+    // itself still gets a lane — it's independently selectable regardless of its gear.
     expect(lanes).toEqual([
+      {
+        key: sinId,
+        title: "John Smith",
+        checks: [{ itemId: sinId, kind: "sin", credentialRating: 3 }],
+      },
       {
         key: "forbidden",
         title: "Forbidden Gear",
@@ -88,20 +94,32 @@ describe("buildVerificationLanes", () => {
     expect(buildVerificationLanes(gearMap(mundane))).toEqual([])
   })
 
-  it("excludes a SIN with no licensed gear submitted for verification — it's not checked", () => {
+  it("still lists a SIN with no licensed gear submitted for verification — it's independently selectable", () => {
     const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
 
-    expect(buildVerificationLanes(gearMap(sin))).toEqual([])
+    expect(buildVerificationLanes(gearMap(sin))).toEqual([
+      {
+        key: sinId,
+        title: "John Smith",
+        checks: [{ itemId: sinId, kind: "sin", credentialRating: 3 }],
+      },
+    ])
   })
 
-  it("excludes a SIN whose Licence has no gear pointing at it", () => {
+  it("still lists a SIN whose Licence has no gear pointing at it", () => {
     const sin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
     const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
 
-    expect(buildVerificationLanes(gearMap(sin, license))).toEqual([])
+    expect(buildVerificationLanes(gearMap(sin, license))).toEqual([
+      {
+        key: sinId,
+        title: "John Smith",
+        checks: [{ itemId: sinId, kind: "sin", credentialRating: 3 }],
+      },
+    ])
   })
 
-  it("checks only the SIN with licensed gear when a second SIN carries none", () => {
+  it("lists every owned SIN as its own lane, with or without licensed gear", () => {
     const checkedSin: SinData = { id: sinId, name: "John Smith", itemType: ItemType.sin, rating: 3 }
     const license: LicenseData = { id: licenseId, name: "License", itemType: ItemType.license, rating: 3, parentId: sinId }
     const weapon: ItemData = { id: itemId, name: "Ares Predator", itemType: ItemType.weapon, licenseId }
@@ -119,6 +137,11 @@ describe("buildVerificationLanes", () => {
           { itemId: sinId, kind: "sin", credentialRating: 3 },
           { itemId, kind: "licensed-gear", credentialRating: 3 },
         ],
+      },
+      {
+        key: emptySinId,
+        title: "Jane Doe",
+        checks: [{ itemId: emptySinId, kind: "sin", credentialRating: 2 }],
       },
     ])
   })

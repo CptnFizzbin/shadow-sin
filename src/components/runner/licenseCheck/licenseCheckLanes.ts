@@ -17,16 +17,13 @@ function buildSinLane(
   sin: SinData,
   licenses: LicenseData[],
   allItems: ItemData[],
-): VerificationLane | null {
+): VerificationLane {
   const sinLicenses = licenses.filter((license) => license.parentId === sin.id)
 
   // Forbidden gear must never be offered a roll, even with a stray licenseId pointing at a real
   // Licence — guard structurally here rather than relying on `kind` alone.
   const licensedGear = allItems.filter((item) =>
     !item.stashed && !isForbidden(item) && sinLicenses.some((license) => license.id === item.licenseId))
-
-  // A SIN with no licensed gear submitted for verification has nothing to check — skip its lane.
-  if (licensedGear.length === 0) return null
 
   return {
     key: sin.id,
@@ -46,20 +43,18 @@ function buildSinLane(
 
 /**
  * Groups a Runner's gear into the SIN / Unlicensed Gear / Forbidden Gear lanes for the Setup
- * checklist, per docs/features/0011-license-check-dialog.md. One lane per SIN carrying licensed
- * gear (unbounded, not a hardcoded count — SINs with no licensed gear are omitted, nothing to
- * check) plus up to two fixed lanes, each omitted when empty. Within a lane, checks other than a
- * SIN's own (always-first) credential run in a random order each time lanes are built, rather than
- * a fixed data-insertion order.
+ * checklist, per docs/features/0011-license-check-dialog.md. One lane per owned SIN (unbounded,
+ * not a hardcoded count — a SIN is a held identity with no carry state of its own, so it's always
+ * eligible even with no licensed gear submitted underneath it) plus up to two fixed lanes, each
+ * omitted when empty. Within a lane, checks other than a SIN's own (always-first) credential run
+ * in a random order each time lanes are built, rather than a fixed data-insertion order.
  */
 export function buildVerificationLanes(gear: Record<string, ItemData>): VerificationLane[] {
   const allItems = Object.values(gear)
   const licenses = allItems.filter(isLicenseData)
 
   const sins = allItems.filter(isSinData).filter((item) => !item.stashed)
-  const lanes: VerificationLane[] = sins
-    .map((sin) => buildSinLane(sin, licenses, allItems))
-    .filter((lane) => lane !== null)
+  const lanes: VerificationLane[] = sins.map((sin) => buildSinLane(sin, licenses, allItems))
 
   const unlicensedItems = allItems.filter((item) =>
     !item.stashed && !isSinOrLicense(item) && isRestricted(item) && !isItemLicensed(item, licenses))
