@@ -9,7 +9,6 @@ import {
 } from "./useKnowledgeSkillPoints.ts"
 
 export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
-  const knowledgeSkills = useRunnerStoreSelector(Selectors.skills.selectKnowledgeSkills)
   const languageSkills = useRunnerStoreSelector(Selectors.skills.selectLanguageSkills)
   const skillPoints = useKnowledgeSkillPoints()
   const editorMode = useEditorMode()
@@ -17,42 +16,6 @@ export const useKnowledgeSkillsAlerts = (): AlertInfo[] => {
   if (editorMode.isEdit) return []
 
   const statuses: AlertInfo[] = []
-
-  // Rating constraints (same rules as active skills)
-  const allRatings = [...knowledgeSkills, ...languageSkills]
-    .map((s) => s.rating)
-    .filter((r) => r !== "native")
-
-  const r6Count = allRatings.filter((r) => r >= 6).length
-  const r5Count = allRatings.filter((r) => r === 5).length
-  const aboveR4Count = allRatings.filter((r) => r > 4).length
-
-  if (r6Count > 1) {
-    statuses.push({
-      section: "Skills",
-      severity: "error",
-      title: "Invalid skill ratings",
-      message: "Cannot have more than 1 skill at Rating 6",
-    })
-  }
-
-  if (r6Count === 1 && r5Count > 0) {
-    statuses.push({
-      section: "Skills",
-      severity: "error",
-      title: "Invalid skill ratings",
-      message: "Cannot have a Rating 6 skill alongside any Rating 5 skills",
-    })
-  }
-
-  if (r6Count === 0 && aboveR4Count > 2) {
-    statuses.push({
-      section: "Skills",
-      severity: "error",
-      title: "Invalid skill ratings",
-      message: "Cannot have more than 2 skills at Rating 5",
-    })
-  }
 
   const nativeCount = languageSkills.filter((s) => s.rating === "native").length
   if (nativeCount > 1) {

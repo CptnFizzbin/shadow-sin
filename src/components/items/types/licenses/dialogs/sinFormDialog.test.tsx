@@ -25,4 +25,23 @@ describe("SinFormDialog", () => {
     const nameInput = within(dialog).getByLabelText(/^name$/i) as HTMLInputElement
     expect(SinNameList).toContain(nameInput.value)
   })
+
+  it("saves rating \"real\" when the Real toggle is selected", async () => {
+    // Arrange
+    const ctrl = new DialogCtrl<SinData>()
+    const savedPromise = ctrl.open()
+    renderInBuilder(<SinFormDialog ctrl={ctrl} />)
+
+    const dialogs = screen.getAllByRole("dialog")
+    const dialog = dialogs[dialogs.length - 1]
+
+    // Act
+    fireEvent.change(within(dialog).getByLabelText(/^name$/i), { target: { value: "Test SIN" } })
+    fireEvent.click(within(dialog).getByRole("button", { name: /^real$/i }))
+    fireEvent.click(within(dialog).getByRole("button", { name: /save/i }))
+
+    // Assert
+    const saved = await savedPromise
+    expect(saved?.rating).toBe("real")
+  })
 })
