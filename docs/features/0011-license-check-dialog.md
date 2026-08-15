@@ -44,23 +44,26 @@ included):
   prototyped. No new entity, no persistence — this is not tied to a location/checkpoint concept.
 - **Setup step:** a 1–6 button group sets the Verification System Rating. A checklist lists every
   eligible item, grouped as:
-  - **SINs** — every owned `SinData` item that has at least one item of licensed gear submitted
-    for verification. A SIN is a held identity, not carried gear, so it has no equip/carry state
-    and no eligibility filter of its own — but a SIN with nothing checked under it (no Licence, or
-    a Licence no gear points at) has nothing to verify and is omitted entirely. Each SIN is a group
-    header, with the Restricted gear covered by a Licence attached to that SIN nested underneath it
-    (via `Licence.parentId` → SIN, `ItemData.licenseId` → Licence).
+  - **SINs** — every owned `SinData` item, unbounded. A SIN is a held identity, not carried gear,
+    so it has no equip/carry state and no eligibility filter of its own — it's always listed, with
+    or without licensed gear submitted underneath it, so it can be verified standalone (e.g. a
+    scan that only checks whether the identity itself holds up, no gear involved). Each SIN is a
+    group header, with the Restricted gear covered by a Licence attached to that SIN nested
+    underneath it (via `Licence.parentId` → SIN, `ItemData.licenseId` → Licence).
   - **Unlicensed Gear** — Restricted items with no `licenseId` at all. Confirmed reachable today:
     `isItemLicensed` (`licenseUtils.ts`) treats a missing or dangling `licenseId` as unlicensed,
     and `0001-license-quick-buy.md`'s own Resolved Questions note there is no SIN-burning
     mechanic to clean up a dangling reference after a Licence is deleted.
   - **Forbidden Gear** — items with restriction code `F`.
   - Unrestricted gear is never listed — there's nothing to check.
-  - Every row (other than a SIN's own) has a checkbox, checked by default; unchecking one excludes
+  - Every row, including a SIN's own, has a checkbox, checked by default; unchecking one excludes
     just that item from this run without touching any persisted state — a dialog-local selection
     (`LicenseCheckContext`), not the item's `stashed` flag from
-    [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md). A SIN with none of its
-    licensed gear checked isn't scanned either — nothing to verify.
+    [`docs/features/0012-item-stashing.md`](./0012-item-stashing.md). A SIN is scanned when its own
+    checkbox is checked, or when at least one of its licensed gear is still checked — presenting a
+    piece of gear implies presenting the identity backing it, so checking gear alone is still
+    enough to pull the SIN into the queue. A SIN with neither its own box nor any of its gear
+    checked isn't scanned — nothing to verify.
 - **Scan step:** every checked item — across every SIN, Unlicensed Gear, and Forbidden Gear — is
   flattened into one shuffled queue. Four worker "terminals" run concurrently, each pulling the
   next check off that shared queue as soon as it finishes its current one, until the queue is

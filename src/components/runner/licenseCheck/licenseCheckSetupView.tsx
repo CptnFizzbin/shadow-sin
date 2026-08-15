@@ -51,13 +51,13 @@ export const LicenseCheckSetupView: FC = () => {
 
       {sinLanes.length > 0 && (
         <Stack>
-          <Label>Licensed Gear</Label>
+          <Label>SINs</Label>
           {sinLanes.map((lane) => {
             const [sinCheck, ...gearChecks] = lane.checks
 
             return (
               <Stack key={lane.key} sx={{ gap: 0.5, border: "1px solid", borderColor: "divider", padding: 1 }}>
-                <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} showCheckbox={false} />
+                <LicenseCheckChecklistRow item={gear[sinCheck.itemId]} check={sinCheck} />
 
                 {gearChecks.length > 0 && (
                   <Stack
