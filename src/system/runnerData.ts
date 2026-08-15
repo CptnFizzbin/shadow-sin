@@ -91,7 +91,7 @@ export interface RunnerData {
     loans: LoanData[]
   }
 
-  /** Not every key is populated — a Runner never sets the four Matrix stats. See `selectAttrBase`/`selectAttrValue`. */
+  /** Not every key is populated — a Runner never sets the four Matrix stats. See `Selectors.attributes.forAttr`. */
   attributes: Partial<Record<AttributeKey, number>>
 
   edge: {
