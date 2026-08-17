@@ -50,20 +50,25 @@ describe("forAttr.baseValue", () => {
 })
 
 describe("forAttr.min / naturalMax / augmentedMax", () => {
-  it("resolves regular attributes from the runner's metatype", () => {
-    // Arrange
-    const sheet = runnerDataFactory((s) => {
-      s.biology.metatype = MetatypeType.Troll
-      return s
+  describe.each([
+    { metatype: MetatypeType.Troll, attr: AttributeKey.body, min: 5, naturalMax: 10, augmentedMax: 15 },
+    { metatype: MetatypeType.Elf, attr: AttributeKey.agility, min: 2, naturalMax: 7, augmentedMax: 10 },
+  ])("$metatype $attr", ({ metatype, attr, min, naturalMax, augmentedMax }) => {
+    it("resolves min/naturalMax/augmentedMax from the runner's metatype", () => {
+      // Arrange
+      const sheet = runnerDataFactory((s) => {
+        s.biology.metatype = metatype
+        return s
+      })
+
+      // Act
+      const attrSelectors = forAttr(attr)
+
+      // Assert
+      expect(attrSelectors.min(sheet)).toBe(min)
+      expect(attrSelectors.naturalMax(sheet)).toBe(naturalMax)
+      expect(attrSelectors.augmentedMax(sheet)).toBe(augmentedMax)
     })
-
-    // Act
-    const body = forAttr(AttributeKey.body)
-
-    // Assert
-    expect(body.min(sheet)).toBe(5)
-    expect(body.naturalMax(sheet)).toBe(10)
-    expect(body.augmentedMax(sheet)).toBe(15)
   })
 
   it("resolves Magic and Resonance from the runner's awakening instead of metatype", () => {

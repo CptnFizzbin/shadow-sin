@@ -1,6 +1,8 @@
+import { createCurriedSelector } from "#/integrations/reselect/selectorUtils.ts"
 import { NumberUtils } from "#/lib/numberUtils.ts"
 import { AttributeKey } from "#/system/attributeKey.ts"
 import { awakenings } from "#/system/awakeningType.ts"
+import type { GameEffectData } from "#/system/gameEffects/gameEffectData.ts"
 import { selectGameEffectsByType } from "#/system/gameEffects/gameEffectSelectors.ts"
 import { GameEffectType } from "#/system/gameEffects/gameEffectType.ts"
 import { getAttributeCap } from "#/system/karma/improvements/improvementCaps.ts"
@@ -41,27 +43,40 @@ function selectAttrAugmentedMax(key: AttributeKey): AttrValueSelector {
   }
 }
 
-function selectAttrModifierTotal(key: AttributeKey) {
-  return (state: RunnerData): number => {
-    return selectGameEffectsByType(GameEffectType.attrMod)(state)
+/** Relies on {@link selectGameEffectsByType}, so it's memoized like any other selector composition. */
+const selectAttrModifierTotal = createCurriedSelector(
+  [
+    (state: RunnerData, _key: AttributeKey) => selectGameEffectsByType(GameEffectType.attrMod)(state),
+    (_state: RunnerData, key: AttributeKey) => key,
+  ],
+  (attrModEffects: GameEffectData[], key: AttributeKey) => {
+    return attrModEffects
       .filter((effect) => effect.target === key)
       .reduce((sum, effect) => sum + effect.value, 0)
-  }
-}
+  },
+)
 
-/** The attribute's current effective rating, after modifiers, augments, and drugs (all carried as `attrMod` GameEffects), clamped to `[min, augmentedMax]`. */
-function selectAttrValue(key: AttributeKey): AttrValueSelector {
-  return (state) => {
-    const baseValue = selectAttrBaseValue(key)(state)
+/**
+ * The attribute's current effective rating, after modifiers, augments, and drugs (all carried as
+ * `attrMod` GameEffects), clamped to `[min, augmentedMax]`. Composes the other `forAttr`
+ * selectors, so it's memoized to avoid re-deriving on every read.
+ */
+const selectAttrValue = createCurriedSelector(
+  [
+    (state: RunnerData, key: AttributeKey) => selectAttrBaseValue(key)(state),
+    (state: RunnerData, key: AttributeKey) => selectAttrModifierTotal(key)(state),
+    (state: RunnerData, key: AttributeKey) => selectAttrMin(key)(state),
+    (state: RunnerData, key: AttributeKey) => selectAttrAugmentedMax(key)(state),
+  ],
+  (baseValue: number | null, modifierTotal: number, min: number | null, augmentedMax: number | null) => {
     if (baseValue === null) return null
 
-    const total = baseValue + selectAttrModifierTotal(key)(state)
-    return NumberUtils.clamp(total, {
-      min: selectAttrMin(key)(state) ?? undefined,
-      max: selectAttrAugmentedMax(key)(state) ?? undefined,
+    return NumberUtils.clamp(baseValue + modifierTotal, {
+      min: min ?? undefined,
+      max: augmentedMax ?? undefined,
     })
-  }
-}
+  },
+)
 
 export interface AttrSelectors {
   /** Current value of the attribute, after modifiers, augments, and drugs. */
